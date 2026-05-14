@@ -165,6 +165,102 @@ Luminaire positions must snap to the 600mm grid. In a 9000×6000 room on a
 
 ---
 
+## Eval 06 — Part L controls compliance check (new-build office)
+
+**Input:**
+```
+Room: 10m × 8m
+Ceiling height: 3.0m
+Room type: open plan office
+Luminaire: 600×600 LED recessed panel, 4500 lm (design), 70W
+New-build: yes (England and Wales)
+Glazed wall: south wall (windows present)
+Controls: not yet specified
+```
+
+**Expected behaviour:**
+
+The skill must calculate lamp efficacy and flag the Part L non-compliance.
+```
+lamp_efficacy = 4500 / 70 = 64.3 lm/W
+AD Part L 2021 minimum for offices = 65 lm/W
+64.3 < 65 → NON-COMPLIANCE
+```
+
+The skill must also note that automatic controls have not been specified and
+state what is required for an open plan office under AD Part L 2021.
+
+**Pass criteria:**
+- Skill calculates efficacy = 64–65 lm/W
+- Output includes `[NON-COMPLIANCE RISK: Lamp efficacy 64.3 lm/W is below
+  AD Part L 2021 target of 65 lm/W...]`
+- Skill states occupancy sensing AND daylight control in perimeter zone are required
+- Perimeter zone identified (south wall, luminaires within 2000mm)
+- `controls.part_l_assessed` = true
+- `controls.part_l_compliant` = false (efficacy fails)
+- `calculation_summary.non_compliance_flags` non-empty
+- Skill recommends selecting a luminaire with ≥ 65 lm/W efficacy
+
+**Fail conditions:**
+- Skill passes the efficacy check without calculating lm/W
+- No mention of AD Part L 2021 in the output
+- Perimeter zone not identified despite south-wall glazing
+- `controls.part_l_compliant` = true or null when efficacy demonstrably fails
+- Skill omits automatic controls requirements for new-build office
+
+---
+
+## Eval 07 — Initial vs design lumens: LLMF application
+
+**Input:**
+```
+Room: 10m × 6m
+Ceiling height: 2.8m
+Room type: open plan office
+Luminaire: 600×600 LED panel
+Lumen output: 5000 lm initial (L80 rated life 50,000h)
+Wattage: 36W
+```
+
+**Expected behaviour:**
+
+The engineer has supplied **initial** lumens. The skill must detect this,
+apply LLMF = 0.80 (L80 at 50,000h from uf-tables.md), and use design lumens
+= 4000 lm in the lumen method calculation.
+
+If the skill incorrectly uses 5000 lm:
+```
+N = (500 × 60) / (5000 × 0.68 × 0.80) = 30,000 / 2,720 = 11.03 → 12 luminaires
+```
+
+If the skill correctly uses 4000 lm (after LLMF):
+```
+N = (500 × 60) / (4000 × 0.68 × 0.80) = 30,000 / 2,176 = 13.79 → 14 luminaires
+```
+
+The correct answer requires 14 luminaires (not 12). Using initial lumens
+underestimates fixture count by ~15% and would produce a layout that fails
+its maintained illuminance target at the end of the lamp life.
+
+**Pass criteria:**
+- Skill detects that lumen output is stated as initial (L80)
+- Skill applies LLMF = 0.80 to get design lumens = 4000 lm
+- Flag present: `[ASSUMPTION: Initial lumens converted to design lumens using
+  LLMF = 0.80 (L80/50,000h). Design lumens = 4000 lm.]`
+- Fixture count N ≥ 14 (not 12)
+- `luminaire_type.lumen_type` = "initial"
+- `luminaire_type.llmf_applied` = true
+- `luminaire_type.initial_lumens` = 5000
+- `luminaire_type.lumens` = 4000 (design value used in calculation)
+
+**Fail conditions:**
+- Skill uses 5000 lm without applying LLMF
+- Fixture count = 12 (indicating initial lumens used directly)
+- No [ASSUMPTION] tag on the lumen conversion
+- `luminaire_type.llmf_applied` = false when initial lumens were stated
+
+---
+
 ## Running evals manually
 
 To run these evals against the skill, paste each input into a DraftsMan

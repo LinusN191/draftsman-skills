@@ -258,3 +258,248 @@ with wide beam optics are preferred over narrow spot.
 
 [ASSUMPTION: Ceiling is flat plasterboard with no structural constraint.
 Confirm there are no beams or services that would obstruct positions shown.]
+
+---
+
+## Example 4 — New-build open plan office, DALI controls, Part L compliance
+
+### Input
+
+```
+Room: 12m × 8m, 3.0m ceiling height
+Room type: open plan office, new-build (England)
+Working plane: 0.75m AFF
+Luminaire: 600×600 LED recessed panel
+Lumen output: 6000 lm INITIAL (L80 rated / 50,000h)
+Wattage: 38W (including driver)
+Ceiling grid: 600mm module
+Reflectances: 70/50/20 (standard)
+Glazed wall: south wall (full-height glazing, head height 2.6m)
+Controls: DALI protocol requested
+Entrances: 1, north wall
+New-build Part L check: required
+```
+
+### Reasoning shown in chat
+
+**Step 1 — Validate inputs:**
+
+Check A — Lumen type: Engineer supplied **initial** lumens (6000 lm at t=0).
+Apply LLMF for L80/50,000h = 0.80 (from assets/uf-tables.md):
+```
+design_lumens = 6000 × 0.80 = 4800 lm
+```
+[ASSUMPTION: Initial lumens 6000 lm converted to design lumens 4800 lm using
+LLMF = 0.80 (L80/50,000h). Confirm LLMF against manufacturer's rated life data.]
+
+Check B — IP: Normal office interior → IP20 required. Luminaire IP20. ✓
+
+Check C — CCT: CCT not stated.
+[ASSUMPTION: CCT = 4000K (neutral) assumed for open plan office — appropriate
+per CIBSE guidance (3500–4000K range). Confirm with architect.]
+
+**Step 2 — Target illuminance:**
+
+Open plan office → **Em = 500 lux, UGR ≤ 19, Ra ≥ 80** (BS EN 12464-1:2021 Table 5.3)
+
+Vertical illuminance: not applicable for this space type.
+
+[UGR DISCLAIMER: UGR limit ≤ 19. UGR compliance cannot be confirmed by the lumen
+method. Verify against manufacturer's UGR table or in DIALux/Relux before issuing.]
+
+**Step 3 — Room Index:**
+```
+Hm = 3.0 − 0.75 = 2.25m
+RI = (12 × 8) / (2.25 × (12 + 8)) = 96 / 45.0 = 2.13 → use 2.0
+```
+
+**Step 4 — UF:**
+[ASSUMPTION: UF = 0.68 for LED 600×600 panel at RI = 2.0, reflectances 70/50/20.
+Verify against manufacturer photometric data before tender.]
+
+**Step 5 — MF:**
+[ASSUMPTION: MF = 0.80 (LLMF already applied to lumens; MF here covers
+LMF = 0.90 and RSMF = 0.94 only → 0.90 × 0.94 = 0.846, round to 0.80 conservatively).]
+
+**Step 6 — Fixture count:**
+```
+N = (500 × 96) / (4800 × 0.68 × 0.80) = 48,000 / 2,611 = 18.38 → round up to 20
+
+Clean grid: 4 rows × 5 cols = 20 luminaires
+
+E_achieved = (20 × 4800 × 0.68 × 0.80) / 96 = 52,224 / 96 = 544 lux ✓
+```
+
+**Step 7 — Grid and perimeter zone (4×5 in 12,000 × 8,000mm):**
+```
+X spacing (5 cols in 12,000mm): 12,000 / 5 = 2,400mm
+Y spacing (4 rows in 8,000mm):   8,000 / 4 = 2,000mm
+SHR check: max(2,400, 2,000) / 2,250 = 1.07 ≤ 1.5 ✓
+```
+
+Glazed south wall → perimeter zone = luminaires within 2000mm of south wall (y = 0):
+- Row 1 centres at y = 1000mm → within 2000mm ✓ → **Perimeter zone Z1: 5 luminaires (L01–L05)**
+- Rows 2–4 → **Interior zone Z2: 15 luminaires (L06–L20)**
+
+[PERIMETER ZONE: 5 luminaires (Row 1) within 2000mm of south glazed wall.
+Assigned to Zone Z1 (perimeter) for independent DALI daylight-linked dimming.]
+
+**Step 8 — Zoning and DALI:**
+
+| Zone | Luminaires | Circuit | Control |
+|---|---|---|---|
+| Z1 — Perimeter | L01–L05 | L1-Z1 | DALI daylight-linked dimming |
+| Z2 — Interior | L06–L20 | L1-Z2, L2-Z2 | DALI occupancy sensing |
+
+DALI bus count: 20 devices < 64 limit → 1 DALI bus covers entire room. ✓
+
+[DIMMER COMPATIBILITY NOTE: DALI LED drivers — use Type C MCB for all circuits.
+Obtain inrush multiplier from driver manufacturer before finalising.]
+
+**Step 9 — Part L compliance:**
+
+9a — Lamp efficacy:
+```
+lamp_efficacy = design_lumens / wattage = 4800 / 38 = 126.3 lm/W
+AD Part L 2021 minimum for offices = 65 lm/W
+126.3 ≥ 65 ✓  PASS
+```
+
+9b — Automatic controls:
+- Open plan office requires: occupancy sensing AND daylight control in perimeter zone
+- Occupancy sensing: specified (DALI, zone Z2 and Z1 combined)
+- Daylight control: Z1 (perimeter) DALI dimming to be controlled by photoelectric sensor ✓
+
+[PART L CONTROLS: Open plan office requires occupancy sensing and daylight-linked
+dimming in perimeter zone. Both specified via DALI. PASS subject to sensor
+specification and commissioning.]
+
+9c — Perimeter zone circuit: L1-Z1 is separate from L1-Z2 / L2-Z2. ✓
+
+9d — Status: `part_l_assessed: true`, `part_l_compliant: true`
+
+**Step 11 — Circuits:**
+```
+Zone Z1 (perimeter): 5 × 38W = 190W — single circuit L1-Z1 (MCB Type C, 10A) ✓
+Zone Z2 (interior): 15 × 38W = 570W — single circuit L1-Z2 (MCB Type C, 10A) ✓
+                    570W << 1840W limit ✓
+Spare ways: ceil(2 × 0.20) = 1 spare way recommended
+```
+
+**Step 12 — Switches:**
+1 × 2-gang scene plate (DALI), north wall, 1350mm AFF:
+- Gang 1: Zone Z1 scene control (perimeter)
+- Gang 2: Zone Z2 scene control (interior)
+
+### JSON output (abbreviated)
+
+```json
+{
+  "drawing_type": "lighting_layout",
+  "version": "1.1",
+  "room": {
+    "length_mm": 12000, "width_mm": 8000, "ceiling_height_mm": 3000,
+    "working_plane_height_mm": 750, "effective_mounting_height_mm": 2250,
+    "area_m2": 96.0, "room_index": 2.13, "space_type": "open plan office",
+    "environment_type": "normal", "ip_required": "IP20",
+    "has_windows": true, "glazed_walls": ["south"],
+    "perimeter_zone_depth_mm": 2000, "ceiling_grid_module_mm": 600
+  },
+  "calculation_summary": {
+    "target_illuminance_lux": 500, "ugr_limit": 19, "ra_minimum": 80,
+    "utilisation_factor": 0.68, "maintenance_factor": 0.80,
+    "luminaires_required_lumen_method": 19, "luminaires_installed": 20,
+    "grid_arrangement": "4x5", "achieved_illuminance_lux": 544,
+    "uniformity_u0_estimated": 0.70,
+    "ugr_status": "not_verified",
+    "vertical_illuminance_required": false,
+    "lamp_efficacy_lm_per_w": 126.3,
+    "part_l_efficacy_target_lm_per_w": 65.0,
+    "compliant": true,
+    "assumptions": [
+      "Initial lumens 6000 lm converted to design lumens 4800 lm using LLMF = 0.80 (L80/50,000h)",
+      "CCT = 4000K assumed — neutral white, appropriate for open plan office",
+      "UF = 0.68 assumed — verify against manufacturer photometric data",
+      "MF = 0.80 assumed — confirm cleaning regime and lamp rated life"
+    ]
+  },
+  "luminaire_type": {
+    "symbol": "LED_PANEL_600x600", "wattage_w": 38,
+    "lumens": 4800, "lumen_type": "initial", "initial_lumens": 6000,
+    "llmf_applied": true, "lamp_efficacy_lm_per_w": 126.3,
+    "colour_temperature_k": 4000, "cct_check": "pass",
+    "cri_ra": 80, "ip_rating": "IP20", "ip_check": "pass",
+    "shr_max": 1.5, "dimming_protocol": "DALI", "driver_inrush_factor": null
+  },
+  "zones": [
+    {"id": "Z1", "name": "Perimeter zone (south glazing)",
+     "luminaire_ids": ["L01","L02","L03","L04","L05"],
+     "circuit_ids": ["L1-Z1"], "control_type": "DALI_daylight"},
+    {"id": "Z2", "name": "Interior zone",
+     "luminaire_ids": ["L06","L07","L08","L09","L10","L11","L12","L13","L14","L15",
+                       "L16","L17","L18","L19","L20"],
+     "circuit_ids": ["L1-Z2"], "control_type": "DALI_occupancy"}
+  ],
+  "controls": {
+    "occupancy_sensing": true, "daylight_linking": true,
+    "perimeter_zone_separate_circuit": true,
+    "dimming_protocol": "DALI", "dali_bus_count": 1,
+    "scene_control": true,
+    "part_l_assessed": true, "part_l_compliant": true,
+    "part_l_notes": [
+      "Lamp efficacy 126.3 lm/W exceeds AD Part L 2021 minimum 65 lm/W for offices",
+      "Occupancy sensing specified via DALI for interior zone Z2",
+      "Daylight-linked dimming specified via DALI for perimeter zone Z1",
+      "Perimeter zone circuit L1-Z1 isolated from interior zone L1-Z2"
+    ]
+  },
+  "luminaires": [
+    {"id": "L01", "x_mm": 1200, "y_mm": 1000, "circuit": "L1-Z1", "zone_id": "Z1", "type": "general"},
+    {"id": "L02", "x_mm": 3600, "y_mm": 1000, "circuit": "L1-Z1", "zone_id": "Z1", "type": "general"},
+    {"id": "L03", "x_mm": 6000, "y_mm": 1000, "circuit": "L1-Z1", "zone_id": "Z1", "type": "general"},
+    {"id": "L04", "x_mm": 8400, "y_mm": 1000, "circuit": "L1-Z1", "zone_id": "Z1", "type": "general"},
+    {"id": "L05", "x_mm": 10800,"y_mm": 1000, "circuit": "L1-Z1", "zone_id": "Z1", "type": "general"},
+    {"id": "L06", "x_mm": 1200, "y_mm": 3000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"},
+    {"id": "L07", "x_mm": 3600, "y_mm": 3000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"},
+    {"id": "L08", "x_mm": 6000, "y_mm": 3000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"},
+    {"id": "L09", "x_mm": 8400, "y_mm": 3000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"},
+    {"id": "L10", "x_mm": 10800,"y_mm": 3000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"},
+    {"id": "L11", "x_mm": 1200, "y_mm": 5000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"},
+    {"id": "L12", "x_mm": 3600, "y_mm": 5000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"},
+    {"id": "L13", "x_mm": 6000, "y_mm": 5000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"},
+    {"id": "L14", "x_mm": 8400, "y_mm": 5000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"},
+    {"id": "L15", "x_mm": 10800,"y_mm": 5000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"},
+    {"id": "L16", "x_mm": 1200, "y_mm": 7000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"},
+    {"id": "L17", "x_mm": 3600, "y_mm": 7000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"},
+    {"id": "L18", "x_mm": 6000, "y_mm": 7000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"},
+    {"id": "L19", "x_mm": 8400, "y_mm": 7000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"},
+    {"id": "L20", "x_mm": 10800,"y_mm": 7000, "circuit": "L1-Z2", "zone_id": "Z2", "type": "general"}
+  ],
+  "circuits": [
+    {"id": "L1-Z1", "zone_id": "Z1", "type": "general", "mcb_rating_a": 10, "mcb_curve": "C",
+     "luminaire_ids": ["L01","L02","L03","L04","L05"],
+     "total_load_w": 190, "load_utilisation_pct": 10, "spare_ways_provided": 1},
+    {"id": "L1-Z2", "zone_id": "Z2", "type": "general", "mcb_rating_a": 10, "mcb_curve": "C",
+     "luminaire_ids": ["L06","L07","L08","L09","L10","L11","L12","L13","L14","L15",
+                       "L16","L17","L18","L19","L20"],
+     "total_load_w": 570, "load_utilisation_pct": 31, "spare_ways_provided": 0}
+  ],
+  "switches": [
+    {"id": "SW1", "x_mm": 500, "y_mm": 7800, "wall": "north",
+     "height_aff_mm": 1350, "controls_circuits": ["L1-Z1", "L1-Z2"],
+     "gang_count": 2, "location_note": "DALI scene plate, 2-gang — Gang 1: Z1 perimeter, Gang 2: Z2 interior"}
+  ],
+  "drawing_notes": [
+    "Install luminaires in accordance with manufacturer's instructions and BS 7671:2018",
+    "Lumen output: initial lumens 6000 lm converted to design lumens 4800 lm (LLMF = 0.80, L80/50,000h)",
+    "DALI system: 1 bus, 20 devices — commission groups as Zone Z1 (perimeter) and Zone Z2 (interior)",
+    "Perimeter zone Z1 (Row 1): daylight-linked dimming via photoelectric sensor, south-facing",
+    "Interior zone Z2 (Rows 2–4): occupancy-controlled via DALI HF sensor",
+    "Distribution board: 2 ways used, 1 spare way provided",
+    "UGR compliance not verified — check manufacturer's UGR table or verify in DIALux/Relux",
+    "Part L 2021: lamp efficacy 126.3 lm/W ≥ 65 lm/W target. Controls compliant subject to commissioning",
+    "Emergency lighting design by specialist on separate drawing E-102",
+    "Ceiling grid module: 600mm — confirm with architect before issuing for construction"
+  ]
+}
+```
