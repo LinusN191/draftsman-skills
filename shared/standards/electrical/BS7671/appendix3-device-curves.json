@@ -1,0 +1,170 @@
+{
+  "_title": "BS 7671:2018+A2:2022 Appendix 3 — Time/Current Characteristics of Overcurrent Protective Devices",
+  "_note": "Tripping time depends on the multiple of In flowing through the device. These curves determine selectivity coordination and disconnection time compliance. Manufacturer's curves should be used for final design — these are typical envelope values.",
+
+  "characteristic_explanation": {
+    "two_regions": {
+      "thermal_region": {
+        "description": "Low overload (1.13× to 5× In typically). Bimetallic strip heats slowly. Trip time decreases with current (inverse-time characteristic).",
+        "purpose": "Trips on sustained overload (cable overheating risk)."
+      },
+      "magnetic_region": {
+        "description": "High overload / short-circuit (above the instantaneous threshold Ia). Solenoid trips almost instantly.",
+        "purpose": "Trips on short-circuit (cable damage and switchgear stress)."
+      }
+    },
+    "transition": "Between thermal and magnetic, there is a 'dead band' where the device may take 0.1 to 1 second to operate. Selectivity studies must account for this."
+  },
+
+  "type_B_MCB_BS_EN_60898": {
+    "_reference": "BS EN 60898 Type B characteristic, instantaneous trip 3-5× In",
+    "_use": "Resistive loads, general lighting, sockets — minimal inrush",
+    "trip_times_typical": {
+      "_format": "current_multiple_of_In: typical_trip_time_seconds",
+      "1.13": "no trip — conventional non-tripping current",
+      "1.45": 3600,
+      "2": 100,
+      "3": 8,
+      "4": 0.05,
+      "5": 0.01,
+      "10": 0.01,
+      "20": 0.01,
+      "50": 0.005
+    },
+    "instantaneous_trip_threshold_Ia": "3 × In to 5 × In (BS uses 5× for worst-case Zs)",
+    "I2_factor": 1.45,
+    "I1_factor": 1.13
+  },
+
+  "type_C_MCB_BS_EN_60898": {
+    "_reference": "BS EN 60898 Type C characteristic, instantaneous trip 5-10× In",
+    "_use": "Inductive loads, motor circuits, LED panel banks with significant inrush, fluorescent lighting (older)",
+    "trip_times_typical": {
+      "1.13": "no trip",
+      "1.45": 3600,
+      "2": 100,
+      "3": 30,
+      "5": 0.5,
+      "7": 0.05,
+      "10": 0.01,
+      "20": 0.01,
+      "50": 0.005
+    },
+    "instantaneous_trip_threshold_Ia": "5 × In to 10 × In (BS uses 10× for worst-case Zs)",
+    "I2_factor": 1.45,
+    "I1_factor": 1.13
+  },
+
+  "type_D_MCB_BS_EN_60898": {
+    "_reference": "BS EN 60898 Type D characteristic, instantaneous trip 10-20× In",
+    "_use": "Transformer primary, lift drives, large discharge lighting, welding sets — very high inrush",
+    "trip_times_typical": {
+      "1.13": "no trip",
+      "1.45": 3600,
+      "2": 200,
+      "5": 30,
+      "10": 0.5,
+      "15": 0.05,
+      "20": 0.01,
+      "50": 0.005
+    },
+    "instantaneous_trip_threshold_Ia": "10 × In to 20 × In (BS uses 20× for worst-case Zs)",
+    "I2_factor": 1.45,
+    "I1_factor": 1.13
+  },
+
+  "BS_88_3_fuse_gG": {
+    "_reference": "BS 88-3 — Low-voltage fuses, gG (general application) class",
+    "_use": "Submains, distribution boards, motor circuits (with overload relay)",
+    "_characteristic": "Steeper than MCBs at high overload — trips faster at high faults. Slower than MCBs at moderate overload.",
+    "trip_times_typical_16A_fuse": {
+      "1.6 × In (25.6A — I2)": 3600,
+      "2 × In (32A)": 1000,
+      "3 × In (48A)": 100,
+      "5 × In (80A)": 10,
+      "10 × In (160A)": 0.4,
+      "20 × In (320A)": 0.04,
+      "50 × In (800A)": 0.005
+    },
+    "I2_factor": 1.6,
+    "minimum_breaking_capacity": "80 kA (typical UK product)"
+  },
+
+  "RCBO_BS_EN_61009": {
+    "_note": "Same overcurrent characteristic as MCB of equivalent type. Plus RCD function.",
+    "RCD_trip_times_required": {
+      "_reference": "BS EN 61008/61009 product standards",
+      "_basis": "Trip time AT 100% IΔn and AT 5× IΔn",
+      "general_use_RCD_at_IΔn": "Maximum 300 ms",
+      "general_use_RCD_at_5_IΔn": "Maximum 40 ms",
+      "additional_protection_30mA_at_IΔn": "Maximum 40 ms",
+      "additional_protection_30mA_at_5_IΔn": "Maximum 40 ms",
+      "S_type_time_delayed_at_IΔn": "Between 130 ms and 500 ms (intentional delay for selectivity)",
+      "S_type_time_delayed_at_5_IΔn": "Maximum 150 ms"
+    },
+    "type_test_currents": [
+      "0.5 × IΔn — should NOT trip",
+      "1.0 × IΔn — within published time",
+      "5.0 × IΔn — within faster published time"
+    ]
+  },
+
+  "selectivity_calculation": {
+    "current_discrimination": {
+      "principle": "Downstream device clears fault before upstream device starts to operate",
+      "rule_of_thumb": "Upstream In ≥ 1.6 × downstream In to achieve discrimination at moderate overload",
+      "limitation": "Above the upstream device's Ia, both will see instantaneous trip — discrimination lost. Use time grading or energy discrimination above this."
+    },
+    "time_grading": {
+      "principle": "Upstream device intentionally delayed so downstream device trips first even on high fault",
+      "implementation": "S-type RCDs (40-130 ms delay), MCCBs with short-time delay (S-band), ACBs with adjustable LSIG settings",
+      "rule_of_thumb": "Minimum 100 ms between cascaded device steps"
+    },
+    "energy_discrimination": {
+      "principle": "Downstream device dissipates fault energy (∫I²dt) before upstream device reaches its trip threshold",
+      "implementation": "Use manufacturer-published I²t coordination tables — only valid within ONE manufacturer's range",
+      "limitation": "Not transferable across brands. Requires detailed data not in generic curves."
+    },
+    "zone_selective_interlocking_ZSI": {
+      "principle": "Electronic communication between cascaded breakers — downstream sees fault, signals upstream, upstream delays trip until downstream clears",
+      "implementation": "Available on ACBs and high-end MCCBs. Requires control wiring or fiber link between devices.",
+      "advantage": "Achieves selectivity AND fast clearance simultaneously — overcomes the speed/selectivity tradeoff of time grading."
+    }
+  },
+
+  "let_through_energy_I2t": {
+    "_purpose": "For adiabatic check (Reg 434.5.2) and for fault discrimination — how much I²·t the device allows through before clearing",
+    "MCB_typical_I2t_at_10kA_RMS_3kA_let_through_kA2s": "Manufacturer specific — typical 6kA MCB lets through approximately 5,000 A²s",
+    "fuse_typical_I2t_pre_arc_kA2s": "Steeply lower than MCB — gG fuse lets through approximately 1,000-3,000 A²s at high currents",
+    "implication": "For high-fault circuits with small cables, fuses often give better cable protection than MCBs."
+  },
+
+  "practical_selectivity_examples": {
+    "domestic_consumer_unit": {
+      "incoming": "100A type 1 supply fuse (DNO)",
+      "consumer_unit_main_switch": "100A isolator (no protection)",
+      "final_circuit": "32A Type B MCB on ring main",
+      "selectivity_verdict": "Type B MCB discriminates with 100A fuse up to approximately 600A fault. Above that, both will trip simultaneously — acceptable for domestic since whole-house disconnection is not catastrophic."
+    },
+    "commercial_office": {
+      "incoming": "400A MCCB at intake, electronic trip, LSIG settings",
+      "submain": "100A MCCB at floor SDB, thermal-magnetic",
+      "final_circuit": "20A Type B RCBO",
+      "selectivity_verdict": "Setup correctly with short-time delay on intake MCCB (50ms delay) and 100A MCCB selected for discrimination, RCBO trips first on most faults. Major fault (>4kA at RCBO) may cause both RCBO and 100A MCCB to trip — acceptable since intake (400A) remains intact."
+    },
+    "industrial_MV_LV": {
+      "incoming": "1600A ACB with full ZSI",
+      "outgoing_to_MCC": "630A MCCB with ZSI",
+      "MCC_starter": "Local motor starter fuse 80A + overload relay",
+      "selectivity_verdict": "ZSI ensures only the nearest device to the fault trips. Even on heavy short-circuit at the motor, only the 80A starter operates — the rest of the plant continues running."
+    }
+  },
+
+  "limitations_of_this_data": {
+    "_note": "Values in this file are TYPICAL envelope values for the device type. For actual design:",
+    "use_manufacturer_data": "Always use the manufacturer's published time/current curves for the specific product being installed. Curves vary between manufacturers and between product ranges within a manufacturer.",
+    "tolerance_band": "Real devices have a tolerance band — typical curves represent the centre. Worst-case selectivity requires considering the upstream device at its FASTEST tolerance and the downstream device at its SLOWEST tolerance.",
+    "temperature_dependence": "Thermal trip characteristics shift with ambient temperature — manufacturer's data typically published at 30°C. Adjust for actual ambient if at extremes.",
+    "ageing": "Trip characteristics drift slowly with age — annual functional testing detects significant drift."
+  }
+}

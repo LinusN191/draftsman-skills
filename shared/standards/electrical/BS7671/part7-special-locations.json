@@ -1,0 +1,242 @@
+{
+  "_title": "BS 7671:2018+A2:2022 Part 7 — Special Installations or Locations",
+  "_note": "Detailed requirements for specific locations where normal protective measures are insufficient or modified. RCD-only requirements are covered in reg411-rcd-requirements.json — this file covers the FULL Part 7 requirements per section.",
+
+  "section_701_bathrooms_and_shower_rooms": {
+    "_reference": "BS 7671:2018 Section 701",
+    "scope": "Rooms or other locations containing a fixed bath or shower. Includes wet rooms, en-suite bathrooms, accessible WCs with shower.",
+    "zones": {
+      "zone_0": {
+        "definition": "Inside the bath/shower basin — the volume within the basin itself",
+        "ip_rating": "IPx7 minimum",
+        "max_voltage": "12V SELV only (Reg 701.414.4.5)",
+        "allowed_equipment": "Only equipment specifically designed for the location and operating at SELV ≤ 12V. Underwater lights for spas/baths."
+      },
+      "zone_1": {
+        "definition": "Above zone 0, extending to 2.25m above floor (or higher of shower head). Excludes the volume below the bath if accessible only by tool.",
+        "ip_rating": "IPx4 minimum (IPx5 where water jets used per Reg 701.512.2)",
+        "max_voltage": "230V permitted but with restrictions",
+        "allowed_equipment": "Fixed water heaters, fixed luminaires, shower pumps, whirlpool units — ALL must be hardwired and SELV-supplied where possible. No socket outlets except SELV ≤ 12V."
+      },
+      "zone_2": {
+        "definition": "0.6m horizontally beyond zone 1 boundary, to 2.25m height",
+        "ip_rating": "IPx4 minimum",
+        "max_voltage": "230V permitted",
+        "allowed_equipment": "Fixed luminaires, hand dryers, towel rails. Shaver sockets ONLY (must comply with BS EN 61558-2-5). Other socket outlets only if ≥ 3m from any zone boundary (in larger rooms)."
+      },
+      "outside_zones": {
+        "definition": "Anywhere in the room beyond the zone boundaries",
+        "ip_rating": "IPx0 (i.e. no special IP) unless splash exposure expected",
+        "_socket_outlet_rule": "Socket outlets permitted but only ≥ 3m from boundary of zone 1 (Reg 701.512.3)"
+      }
+    },
+    "rcd_requirement": "30mA RCD on ALL circuits supplying the room — including outside zones, including circulating lighting, including fixed equipment (Reg 701.411.3.3).",
+    "supplementary_equipotential_bonding": "Required (Reg 701.415.2) between all simultaneously accessible exposed-conductive-parts and extraneous-conductive-parts in zones 1 and 2, UNLESS all of these conditions met: (a) main equipotential bonding present and verified, (b) all circuits to room have 30mA RCD, (c) all extraneous-conductive-parts bonded to MET. In practice, supplementary bonding is usually omitted in modern installations meeting these conditions.",
+    "common_pitfalls": [
+      "Socket outlet too close to shower screen — fails zone 2 horizontal distance",
+      "IP44 fitting in zone 0 — needs IPx7",
+      "Missing 30mA RCD on bathroom lighting — non-compliant since AMD 2 for domestic anyway",
+      "Decorative downlight installed by trade not aware of zone requirements",
+      "Fan ducting that creates electrical path between zones — bonding overlooked"
+    ]
+  },
+
+  "section_702_swimming_pools": {
+    "_reference": "BS 7671:2018 Section 702",
+    "scope": "Pools, paddling pools, basins of swimming pools, fountains.",
+    "zones": {
+      "zone_0": "Interior of pool basin — water itself + tiled basin walls",
+      "zone_1": "Around pool to 2m horizontal, 2.5m vertical",
+      "zone_2": "Beyond zone 1 to 1.5m horizontal, 2.5m vertical (commercial only — domestic pools have no zone 2)"
+    },
+    "ip_ratings": {
+      "zone_0": "IPx8 — submerged equipment, max 12V SELV",
+      "zone_1": "IPx5 (private), IPx4 (public) where water jets cleaning may occur",
+      "zone_2": "IPx2 (private), IPx5 (public)"
+    },
+    "rcd_requirement": "30mA RCD on all circuits supplying or passing through zones 0, 1, 2 (Reg 702.415.1)",
+    "equipotential_bonding": "All metallic parts (ladders, drains, handrails, reinforcement) must be bonded to local equipotential bonding bar, which is connected to MET (Reg 702.415.2)",
+    "underwater_luminaires": "12V SELV ONLY. Transformer must be at least 3.5m from pool edge (Reg 702.55.4)"
+  },
+
+  "section_703_saunas": {
+    "_reference": "BS 7671:2018 Section 703",
+    "scope": "Rooms containing sauna heaters where steam/dry heat is used.",
+    "zones": {
+      "zone_1": "Around the heater — high temperature zone",
+      "zone_2": "Within the sauna room, away from heater",
+      "zone_3": "Higher level — above 1.5m height for accessories"
+    },
+    "key_requirements": [
+      "Cables must be rated for sauna temperatures (typically 170°C in zone 1) — silicone insulated or equivalent",
+      "Light fittings: IPx4 minimum, T-rated for ambient up to 125°C",
+      "30mA RCD on all sauna circuits except the heater (Reg 703.411.3.3)",
+      "All control gear OUTSIDE the sauna",
+      "Only the sauna heater supply may pass through the sauna walls"
+    ]
+  },
+
+  "section_704_construction_and_demolition_sites": {
+    "_reference": "BS 7671:2018 Section 704",
+    "scope": "Temporary electrical installations on construction or demolition sites.",
+    "key_requirements": [
+      "Reduced Low Voltage (RLV) 110V (55V to earth) for portable tools — 'yellow' supplies via site transformer (Reg 704.410.3)",
+      "30mA RCD on ALL socket outlets, regardless of rating (Reg 704.410.3.10)",
+      "500mA S-type RCD at site origin",
+      "TT or TN-S earthing — TN-C-S (PME) requires special precautions due to risk of broken PEN at site cable damage",
+      "All flexible cables to be H07RN-F or equivalent (heavy duty rubber)",
+      "Site distribution boards to BS 4363 (transportable assemblies for construction sites)",
+      "Inspection and testing every 3 months (Reg 704.633)"
+    ]
+  },
+
+  "section_705_agricultural_and_horticultural_premises": {
+    "_reference": "BS 7671:2018 Section 705",
+    "scope": "Farms, stables, animal housing, glasshouses, horticultural enterprises.",
+    "key_requirements": [
+      "All cables must have mechanical protection (SWA or in conduit) — vehicle and animal damage risk",
+      "30mA RCD on socket outlets ≤ 32A (Reg 705.411.1)",
+      "100mA delayed RCD on final circuits supplying equipment in animal areas (Reg 705.411.1)",
+      "300mA RCD at the supply origin to detect fire risk from earth leakage in fodder/straw areas",
+      "Equipotential bonding between all metallic parts accessible to animals (Reg 705.415)",
+      "Locations where livestock may contact equipment — touch voltage limit 25V (vs 50V for human-only areas)",
+      "Lighting in animal housing should be NOT energised in animal areas during animal access (avoid spooking, equipment damage)"
+    ]
+  },
+
+  "section_708_caravan_parks_and_camping_parks": {
+    "_reference": "BS 7671:2018 Section 708",
+    "scope": "Distribution boards and socket outlets at touring caravan/camping pitches.",
+    "key_requirements": [
+      "TT earthing per pitch — independent earth electrode for each pitch socket assembly (Reg 708.411.4)",
+      "Maximum one caravan per socket outlet (Reg 708.553)",
+      "30mA RCD per socket outlet (Reg 708.553.1.7)",
+      "Socket outlet to BS EN 60309-2 (commando type), 16A blue, IP44 minimum",
+      "Maximum 25m flexible cable between pitch socket and caravan inlet (BS 7671:2018 + practice)",
+      "Visual warning notice required at each pitch socket about safe use"
+    ]
+  },
+
+  "section_709_marinas": {
+    "_reference": "BS 7671:2018 Section 709",
+    "scope": "Berths in marinas for boats, sleeping accommodation on board not connected to shore.",
+    "key_requirements": [
+      "TT per pontoon — independent earth electrode for each pontoon distribution assembly (Reg 709.411.4)",
+      "30mA RCD per socket outlet (no shared RCDs)",
+      "Maximum 4 socket outlets per distribution assembly",
+      "Socket outlets to BS EN 60309-2, IP67 (boats use blue 16A or 32A)",
+      "Galvanic isolation: where shore PE and boat PE are connected, install isolation transformer or galvanic isolator to prevent stray currents corroding hull",
+      "Inspection annually (Reg 709.633)"
+    ]
+  },
+
+  "section_710_medical_locations": {
+    "_reference": "BS 7671:2018 Section 710",
+    "scope": "Locations where electrical equipment is used on patients in medical treatment. Three groups.",
+    "groups": {
+      "group_0": {
+        "definition": "Medical locations where no medical electrical equipment in contact with the patient is used (e.g. consulting rooms, general clinical offices)",
+        "supply": "Standard TN-S or TN-C-S, RCD per general requirements"
+      },
+      "group_1": {
+        "definition": "Medical locations where contact with patient is short-term (e.g. examination rooms, recovery rooms, dialysis)",
+        "supply": "TN-S preferred. 30mA RCD on socket outlets. Supplementary equipotential bonding within patient environment"
+      },
+      "group_2": {
+        "definition": "Medical locations where electrical equipment is used in surgical operations, life-supporting treatment, ICU, cardiac procedures",
+        "supply": "MEDICAL IT SYSTEM (IT-M) — isolating transformer per room/group with insulation monitoring (IMD), 8-second alarm response time required",
+        "rcd_status": "NO RCDs on patient-essential equipment (an RCD trip during surgery is unacceptable)",
+        "supplementary_bonding": "Mandatory and extensive — bond all metallic parts within patient environment to local equipotential bonding bar with maximum 0.2Ω to any point",
+        "emergency_lighting": "BS 5266-1 plus HTM 06-01 — battery backup minimum 3 hours for operating lights, 24 hours for general escape",
+        "uninterruptible_supply": "Required for life-supporting equipment — typically 15 minutes minimum, often 2 hours"
+      }
+    },
+    "additional_references": [
+      "HTM 06-01 — Electrical services supply and distribution (NHS technical memorandum, takes precedence in NHS sites)",
+      "BS EN 60601 series — Medical electrical equipment safety standards (for the equipment, not the installation)",
+      "BS EN 61557-8 — Insulation monitoring devices for IT systems"
+    ]
+  },
+
+  "section_711_exhibitions_shows_stands": {
+    "_reference": "BS 7671:2018 Section 711",
+    "scope": "Temporary electrical installations for exhibitions, shows, and stands.",
+    "key_requirements": [
+      "30mA RCD on all socket outlets",
+      "Each stand limited to 13A circuit unless higher specifically agreed",
+      "All cables in armoured or mechanically protected — public traffic",
+      "Daily inspection during use (Reg 711.633)",
+      "Earthing per host venue — typically TN-S provided by venue"
+    ]
+  },
+
+  "section_712_solar_pv_systems": {
+    "_reference": "BS 7671:2018 Section 712",
+    "scope": "PV arrays connected to LV installations.",
+    "key_requirements": [
+      "DC isolator at array AND at inverter (Reg 712.537.2.1.1)",
+      "DC cables suitable for outdoor + UV exposure (typically tinned copper, double insulated, UV-stable sheath)",
+      "Inverter to BS EN 62109-1/2",
+      "Type B RCD on AC side if inverter does not have built-in DC fault current detection (Reg 712.411.3.2.1.2)",
+      "G99 or G98 application to DNO required for grid-connected (G98 ≤ 16A/phase, G99 above)",
+      "Labelling: PV warning labels at array, isolation labels at all isolators, AC labelling at consumer unit identifying solar circuit"
+    ]
+  },
+
+  "section_715_extra_low_voltage_lighting": {
+    "_reference": "BS 7671:2018 Section 715",
+    "scope": "ELV lighting (typically 12V or 24V) — track-and-strip lighting, garden lights, jewellery display.",
+    "key_requirements": [
+      "Transformer must be short-circuit protected (BS EN 61558-2-6)",
+      "Cables sized for full transformer rating, not lamp rating (allow for short circuits)",
+      "Open-circuit/no-load operation must be safe (some transformers fail OC)",
+      "Maximum cable length per leg to maintain lamp output — typically 5-10m for 12V depending on cable size"
+    ]
+  },
+
+  "section_717_mobile_or_transportable_units": {
+    "_reference": "BS 7671:2018 Section 717",
+    "scope": "Mobile catering vans, exhibition trailers, mobile workshops connected via plug to LV supply.",
+    "key_requirements": [
+      "16A or 32A plug-and-socket to BS EN 60309-2",
+      "30mA RCD at the supply or in the unit",
+      "Continuity test on plug-cable-socket-unit assembly required before each use",
+      "If unit has own generator, follow Section 551 for switching between generator and shore supply (interlocking)"
+    ]
+  },
+
+  "section_722_electric_vehicle_charging": {
+    "_reference": "BS 7671:2018 Section 722 (rewritten in AMD 2)",
+    "scope": "EV charging installations — domestic and commercial.",
+    "key_requirements": [
+      "Open-PEN risk (PME supplies): Reg 722.411.4.1 mandates ONE of: (a) supplied via earth electrode AND PME earth disconnected, (b) open-PEN detection device, (c) supplied through TT island, OR (d) continuous monitoring meeting equivalent safety",
+      "RCD: Type A 30mA per charge point minimum (Reg 722.531.3.101); Type B required if charging unit does not have built-in 6mA DC residual detection",
+      "Charging unit to BS EN 61851-1",
+      "Plug and socket: BS EN 62196 (Type 2 'Mennekes' for AC, CCS Combo 2 for DC)",
+      "Cable sizing per BS 7671 — Mode 3 typically 7.4 kW (32A) or 22 kW (32A 3-phase), Mode 4 (DC rapid) 50-350 kW",
+      "Dedicated circuit recommended — no shared loads",
+      "Labelling: warning label at consumer unit, isolation provisions clearly marked"
+    ]
+  },
+
+  "section_730_onshore_units_shore_connections": {
+    "_reference": "BS 7671:2018 Section 730 (added in AMD 1, expanded in AMD 2)",
+    "scope": "Onshore power supplies for inland navigation vessels and other berthed craft.",
+    "key_requirements": [
+      "TT earthing typical — independent earth at the shore connection",
+      "BS EN 60309 high current connectors (typically 63A or 125A 3-phase)",
+      "30mA RCD per outlet",
+      "Galvanic isolation to prevent stray currents through water"
+    ]
+  },
+
+  "common_oversights": [
+    "Bathroom 30mA RCD missing (was always required for domestic) — frequent EICR finding",
+    "EV charger installed without open-PEN protection on PME supply — major safety issue",
+    "Marina pontoon with shared RCD — must be per socket outlet",
+    "Construction site with TN-C-S supply — should be TT or TN-S due to PEN break risk",
+    "Operating theatre with conventional TN circuits — should be medical IT in Group 2",
+    "Solar PV without Type B RCD where required — inverter DC fault undetected",
+    "Caravan park socket without dedicated earth electrode — TT requirement"
+  ]
+}

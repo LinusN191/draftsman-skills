@@ -1,0 +1,138 @@
+{
+  "_title": "BS 7671:2018+A2:2022 Appendix 4 — Aluminium Conductor Cable Ratings",
+  "_note": "Aluminium conductors have approximately 65% the conductivity of copper. Same physical size has lower current rating. Equivalent rating typically requires 1 step larger cross-section vs copper.",
+  "_conductor": "aluminium",
+  "_units": {"rating_A": "amperes", "mVAm": "millivolts per ampere per metre"},
+
+  "use_cases": {
+    "common": [
+      "DNO service cables (consumer service from network) — typically aluminium for cost",
+      "Very large submains in commercial/industrial (typically > 95mm² copper threshold)",
+      "Transformer LV connections (large flexible busbars often aluminium)",
+      "Underground HV cables (16/95mm² Wavecon equivalent and larger)"
+    ],
+    "avoid_for": [
+      "Final circuits — too brittle and large for typical wiring accessories",
+      "Sizes below 16mm² — cost saving is negligible, termination issues outweigh",
+      "Direct connection to copper without bimetallic interface — galvanic corrosion"
+    ]
+  },
+
+  "termination_requirements": {
+    "antioxidant_grease": "Required at all terminations — prevents oxide film build-up",
+    "bimetallic_lugs": "When terminating to copper busbars/terminals — copper-aluminium bimetallic plate or compression lug",
+    "torque": "Use manufacturer-specified torque — aluminium creeps under sustained pressure",
+    "retorque_intervals": "Initial install + 1 year + every 5 years (industrial good practice — not BS 7671 mandatory)"
+  },
+
+  "table_4e2a_aluminium_xlpe_single_core": {
+    "_reference": "BS 7671:2018 Table 4E2A — 90°C thermosetting insulated, single-core, aluminium",
+    "_note": "Ratings ~80% of equivalent copper. Voltage drop is higher (resistance proportional to 1/conductivity).",
+    "method_C": {
+      "_formation": "Two single-core cables flat and touching, clipped direct",
+      "16":   {"rating_A": 73,  "mVAm": 4.6},
+      "25":   {"rating_A": 95,  "mVAm": 2.9},
+      "35":   {"rating_A": 117, "mVAm": 2.1},
+      "50":   {"rating_A": 141, "mVAm": 1.55},
+      "70":   {"rating_A": 179, "mVAm": 1.05},
+      "95":   {"rating_A": 216, "mVAm": 0.79},
+      "120":  {"rating_A": 249, "mVAm": 0.62},
+      "150":  {"rating_A": 285, "mVAm": 0.50},
+      "185":  {"rating_A": 324, "mVAm": 0.41},
+      "240":  {"rating_A": 380, "mVAm": 0.32},
+      "300":  {"rating_A": 435, "mVAm": 0.265},
+      "400":  {"rating_A": 504, "mVAm": 0.215},
+      "500":  {"rating_A": 575, "mVAm": 0.175},
+      "630":  {"rating_A": 656, "mVAm": 0.14}
+    },
+    "method_E_trefoil": {
+      "_formation": "Three single-core cables in trefoil, free air or cable tray",
+      "16":   {"rating_A": 75,  "mVAm": 4.6},
+      "25":   {"rating_A": 100, "mVAm": 2.9},
+      "35":   {"rating_A": 124, "mVAm": 2.1},
+      "50":   {"rating_A": 150, "mVAm": 1.55},
+      "70":   {"rating_A": 192, "mVAm": 1.05},
+      "95":   {"rating_A": 232, "mVAm": 0.79},
+      "120":  {"rating_A": 269, "mVAm": 0.62},
+      "150":  {"rating_A": 309, "mVAm": 0.50},
+      "185":  {"rating_A": 353, "mVAm": 0.41},
+      "240":  {"rating_A": 418, "mVAm": 0.32},
+      "300":  {"rating_A": 482, "mVAm": 0.265},
+      "400":  {"rating_A": 562, "mVAm": 0.215},
+      "500":  {"rating_A": 651, "mVAm": 0.175},
+      "630":  {"rating_A": 749, "mVAm": 0.14}
+    }
+  },
+
+  "table_4e4a_aluminium_swa_xlpe_multicore": {
+    "_reference": "BS 7671:2018 Table 4E4A — 90°C thermosetting, armoured, multi-core, aluminium",
+    "method_C": {
+      "_formation": "Armoured multi-core clipped direct",
+      "16":   {"rating_A": 72,  "mVAm": 4.6},
+      "25":   {"rating_A": 92,  "mVAm": 2.9},
+      "35":   {"rating_A": 113, "mVAm": 2.1},
+      "50":   {"rating_A": 136, "mVAm": 1.55},
+      "70":   {"rating_A": 174, "mVAm": 1.05},
+      "95":   {"rating_A": 210, "mVAm": 0.79},
+      "120":  {"rating_A": 242, "mVAm": 0.62},
+      "150":  {"rating_A": 277, "mVAm": 0.50},
+      "185":  {"rating_A": 314, "mVAm": 0.41},
+      "240":  {"rating_A": 368, "mVAm": 0.32},
+      "300":  {"rating_A": 422, "mVAm": 0.265},
+      "400":  {"rating_A": 482, "mVAm": 0.215}
+    },
+    "method_D2_direct_buried": {
+      "16":   {"rating_A": 80,  "mVAm": 4.6},
+      "25":   {"rating_A": 100, "mVAm": 2.9},
+      "35":   {"rating_A": 119, "mVAm": 2.1},
+      "50":   {"rating_A": 140, "mVAm": 1.55},
+      "70":   {"rating_A": 173, "mVAm": 1.05},
+      "95":   {"rating_A": 204, "mVAm": 0.79},
+      "120":  {"rating_A": 232, "mVAm": 0.62},
+      "150":  {"rating_A": 261, "mVAm": 0.50},
+      "185":  {"rating_A": 292, "mVAm": 0.41},
+      "240":  {"rating_A": 336, "mVAm": 0.32},
+      "300":  {"rating_A": 379, "mVAm": 0.265},
+      "400":  {"rating_A": 425, "mVAm": 0.215}
+    },
+    "method_E_cable_tray": {
+      "16":   {"rating_A": 79,  "mVAm": 4.6},
+      "25":   {"rating_A": 101, "mVAm": 2.9},
+      "35":   {"rating_A": 125, "mVAm": 2.1},
+      "50":   {"rating_A": 151, "mVAm": 1.55},
+      "70":   {"rating_A": 193, "mVAm": 1.05},
+      "95":   {"rating_A": 233, "mVAm": 0.79},
+      "120":  {"rating_A": 270, "mVAm": 0.62},
+      "150":  {"rating_A": 310, "mVAm": 0.50},
+      "185":  {"rating_A": 354, "mVAm": 0.41},
+      "240":  {"rating_A": 417, "mVAm": 0.32},
+      "300":  {"rating_A": 478, "mVAm": 0.265},
+      "400":  {"rating_A": 548, "mVAm": 0.215}
+    }
+  },
+
+  "cross_section_equivalence_to_copper": {
+    "_note": "Approximate rule: aluminium needs ~1.6× the cross-section of copper for the same rating",
+    "table": {
+      "copper_25mm2_equivalent": "aluminium 35mm² or 50mm² (round up)",
+      "copper_50mm2_equivalent": "aluminium 70mm² to 95mm²",
+      "copper_95mm2_equivalent": "aluminium 150mm² to 185mm²",
+      "copper_185mm2_equivalent": "aluminium 300mm² to 400mm²",
+      "copper_300mm2_equivalent": "aluminium 500mm² to 630mm²"
+    }
+  },
+
+  "design_considerations": {
+    "voltage_drop_penalty": "Aluminium voltage drop is approximately 1.6× copper for the same cross-section. Often dominates the sizing decision.",
+    "weight_advantage": "Aluminium is approximately 30% the weight of copper for the same cross-section — significant for very large submains and risers.",
+    "cost_advantage": "Aluminium cable cost per metre is approximately 40-50% of copper at large sizes (>95mm²). Below that, savings are eroded by termination cost.",
+    "thermal_expansion": "Aluminium has higher thermal expansion than copper — terminations must accommodate cyclic movement.",
+    "creep": "Aluminium under sustained mechanical pressure deforms slowly (creep). Re-torque required periodically.",
+    "fault_performance": "Aluminium has lower k value (94 vs 143 for copper/XLPE) — adiabatic check is more onerous. May force larger cross-section for high-fault circuits."
+  },
+
+  "correction_factors_apply_same": {
+    "_note": "All correction factors from appendix4-correction-factors.json apply equally to aluminium. Ca, Cg, Ci, Cd values are independent of conductor material.",
+    "_caveat": "k value (adiabatic constant) differs — see reg434-fault-current.json. Use aluminium k values for adiabatic check."
+  }
+}

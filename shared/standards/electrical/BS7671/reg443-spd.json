@@ -1,0 +1,174 @@
+{
+  "_title": "BS 7671:2018+A2:2022 Regulation 443 — Protection Against Transient Overvoltages",
+  "_note": "AMD 2 (2022) made SPD provision effectively mandatory for most commercial installations. Risk assessment is required to determine SPD type and location.",
+
+  "principle": {
+    "_reference": "BS 7671:2018 Reg 443.4 (revised in AMD 2)",
+    "purpose": "Surge Protective Devices (SPDs) divert transient overvoltages (lightning, switching transients, indirect strikes) to earth before they damage equipment connected to the installation.",
+    "scope": "Transient overvoltages of atmospheric origin (lightning) and switching overvoltages. NOT power frequency overvoltages (those covered by Reg 442)."
+  },
+
+  "regulatory_requirement": {
+    "_reference": "BS 7671:2018 Reg 443.4 (AMD 2)",
+    "amd2_clarification": "Reg 443.4 — Protection against transient overvoltages of atmospheric origin or due to switching shall be provided where the consequence caused by overvoltage affects: a) serious injury or loss of human life; b) interruption of public services or damage to cultural heritage; c) interruption of commercial or industrial activity; d) affects a large number of co-located individuals.",
+    "in_practice": "Most commercial and public buildings — SPD required. Domestic installations — SPD required unless risk assessment justifies otherwise (CRL ≤ 1000 calculation per Reg 443.5).",
+    "risk_assessment_method": "Two routes accepted by BS 7671: (1) Calculated Risk Level (CRL) per Reg 443.5 formula — if CRL > 1000, SPD required. (2) Conservative approach — install SPD by default.",
+    "exceptions": [
+      "Domestic where CRL calculation gives ≤ 1000 AND no critical equipment.",
+      "Single dwelling unit in a multi-occupancy building where SPD is fitted at the building origin.",
+      "Where the consequence of overvoltage damage is acceptable to the client (rare in practice — document in design)."
+    ]
+  },
+
+  "spd_types": {
+    "_reference": "BS EN 61643-11",
+    "type_1": {
+      "alternative_name": "Class I",
+      "tested_with": "10/350 µs waveform — simulates direct lightning strike",
+      "rated_impulse_current_Iimp": "Typically 12.5 to 25 kA per pole",
+      "use_cases": [
+        "Buildings with external Lightning Protection System (LPS) — REQUIRED at the origin",
+        "Overhead supply lines (rural, exposed)",
+        "Buildings on hilltops or otherwise exposed locations",
+        "Installations with high lightning exposure (per BS EN 62305 risk assessment)"
+      ],
+      "location": "At the origin of the installation (main switchboard, immediately downstream of the main switch). Must be installed BEFORE any other equipment.",
+      "voltage_protection_level_Up": "Typically ≤ 4 kV"
+    },
+    "type_2": {
+      "alternative_name": "Class II",
+      "tested_with": "8/20 µs waveform — simulates induced surges from nearby strikes or switching",
+      "nominal_discharge_current_In": "Typically 20 kA per pole, 40 kA per pole for larger",
+      "use_cases": [
+        "All commercial main switchboards (default requirement post-AMD 2)",
+        "Sub-distribution boards in larger installations",
+        "Where Type 1 is not required (no LPS, urban location)"
+      ],
+      "location": "Main switchboard. In larger buildings, also at sub-distribution boards.",
+      "voltage_protection_level_Up": "Typically ≤ 1.5 kV"
+    },
+    "type_3": {
+      "alternative_name": "Class III",
+      "tested_with": "Combination wave 1.2/50 µs voltage + 8/20 µs current",
+      "nominal_discharge_current_In": "≤ 10 kA per pole",
+      "use_cases": [
+        "Local protection for sensitive equipment (PCs, servers, medical equipment, control systems)",
+        "AV equipment, broadcast equipment, lab instrumentation",
+        "Installed within 10m of the protected equipment"
+      ],
+      "location": "Final sub-distribution boards or socket-outlet adjacent. Always downstream of a Type 2.",
+      "voltage_protection_level_Up": "Typically ≤ 1.5 kV (some Type 3 down to ≤ 0.5 kV)",
+      "note": "Type 3 must NEVER be used alone. Always coordinate with upstream Type 2."
+    },
+    "combined_type_1_2": {
+      "description": "Single device tested for both Type 1 and Type 2 waveforms. Common in modern installations where Type 1 is required.",
+      "use_case": "Installations with LPS — provides Type 1 protection at origin plus Type 2 performance downstream in one device."
+    }
+  },
+
+  "coordination": {
+    "principle": "Cascaded SPDs must be coordinated so the upstream device clamps the surge before the downstream device is overwhelmed.",
+    "rules": [
+      "Type 1 → Type 2: at least 10m of cable between them OR specified by manufacturer as 'pre-coordinated set'",
+      "Type 2 → Type 3: at least 10m of cable between them OR manufacturer-coordinated set",
+      "If physical distance is insufficient: use a decoupling inductor (typically 15 µH per pole) between devices",
+      "Never install Type 3 directly downstream of Type 1 without Type 2 in between"
+    ]
+  },
+
+  "impulse_withstand_categories": {
+    "_reference": "BS 7671:2018 Reg 443.4.2 / Table 44.4",
+    "_basis": "Equipment is categorised by its rated impulse voltage withstand Uw — the maximum surge it can survive without damage. SPDs must reduce Up below the equipment's category.",
+    "category_IV": {
+      "Uw_kV": 6,
+      "description": "Equipment at or near the origin of the installation — electricity meters, main switches, primary overcurrent protection. Heavy industrial duty."
+    },
+    "category_III": {
+      "Uw_kV": 4,
+      "description": "Equipment in the fixed installation — distribution boards, MCCBs, fixed wiring, fixed loads (motors, heaters, fixed lighting)."
+    },
+    "category_II": {
+      "Uw_kV": 2.5,
+      "description": "Equipment intended for connection to the fixed installation — appliances, portable tools, most consumer equipment."
+    },
+    "category_I": {
+      "Uw_kV": 1.5,
+      "description": "Equipment with reduced impulse withstand — electronic equipment, computers, sensitive instruments. Requires upstream SPD to bring surges below 1.5 kV."
+    }
+  },
+
+  "spd_selection_parameters": {
+    "Uc": {
+      "name": "Maximum continuous operating voltage",
+      "selection_rule": "Uc ≥ 1.1 × U0 (i.e. ≥ 253V for 230V single-phase, ≥ 440V for 400V three-phase)"
+    },
+    "Up": {
+      "name": "Voltage protection level",
+      "selection_rule": "Up ≤ Uw of the equipment being protected. For category III equipment (most fixed wiring): Up ≤ 2.5 kV typically."
+    },
+    "Iimp": {
+      "name": "Impulse current (Type 1 only)",
+      "selection_rule": "Per BS EN 62305 lightning risk assessment. Typical 12.5 kA per pole."
+    },
+    "In": {
+      "name": "Nominal discharge current (Type 2/3)",
+      "selection_rule": "≥ 5 kA per pole minimum. 20 kA per pole common for main boards."
+    },
+    "Imax": {
+      "name": "Maximum discharge current (Type 2/3)",
+      "selection_rule": "Indicates how many strikes the device can take. Higher = longer service life."
+    }
+  },
+
+  "installation_rules": {
+    "_reference": "BS 7671:2018 Reg 534.4",
+    "connecting_lead_length": {
+      "rule": "Total connecting lead length (line + earth) shall not exceed 0.5m",
+      "rationale": "Long leads add inductance, which significantly increases Up at the protected equipment. The SPD becomes ineffective.",
+      "best_practice": "Use the shortest possible leads. Bond directly to MET (Main Earthing Terminal) or busbar where possible."
+    },
+    "overcurrent_protection": {
+      "rule": "SPDs require dedicated overcurrent protection per the manufacturer's instructions. Typical: 125A or 160A gG fuses for Type 1+2 at origin.",
+      "purpose": "Disconnects the SPD if it fails short-circuit (end-of-life mode). Prevents fire."
+    },
+    "status_indication": {
+      "rule": "SPDs shall provide local visual indication of operational status (green = healthy, red = failed).",
+      "additional": "For unmanned plant rooms, remote indication to BMS or alarm panel recommended."
+    },
+    "tn_s_tn_c_s_arrangement": {
+      "description": "Connect L1, L2, L3 to PE via SPD modules. Connect N to PE via separate N-PE module if required (depends on the SPD topology — Type 3+1 or 4+0 configuration).",
+      "common_config": "4+0 for TN-S (4 modules: L1-PE, L2-PE, L3-PE, N-PE). 3+1 for TT (3 modules L-N + 1 module N-PE)."
+    },
+    "tt_arrangement": {
+      "description": "Specific 3+1 configuration. SPD must be installed BEFORE the RCD to avoid earth fault current passing through the RCD during surge.",
+      "rcd_type": "Use Type S (selective) RCD downstream of SPD to ensure SPD operation does not trip the RCD."
+    }
+  },
+
+  "worked_example": {
+    "description": "4-storey commercial office, urban location, no external LPS, single 1600A TN-C-S supply",
+    "lps_status": "No LPS present per BS EN 62305 risk assessment",
+    "spd_type_required": "Type 2 (no Type 1 needed without LPS)",
+    "device_specification": {
+      "type": "Type 2, three-phase TN-C-S",
+      "topology": "4+0",
+      "In_kA_per_pole": 20,
+      "Imax_kA_per_pole": 40,
+      "Up_kV": 1.5,
+      "Uc_V": 275,
+      "overcurrent_protection": "125A gG fuse per pole (per manufacturer requirement)"
+    },
+    "location": "Immediately downstream of the main incoming switch at the MSB. Maximum 0.5m connecting leads to phase busbars and to MET.",
+    "downstream_strategy": "Additional Type 2 SPDs at each floor SDB for sensitive IT loads. Type 3 at server room PDU as final stage."
+  },
+
+  "common_pitfalls": [
+    "No SPD where AMD 2 requires it — non-compliant since September 2022.",
+    "Type 1 specified without an LPS — Type 2 would suffice and is cheaper.",
+    "Type 3 used as sole protection — incorrect, must be coordinated with upstream Type 2.",
+    "Connecting leads > 0.5m — degrades performance significantly.",
+    "No status indication — failed SPD goes unnoticed until next strike.",
+    "Missing dedicated overcurrent protection — fire risk on end-of-life failure.",
+    "Forgetting separate N-PE module on TT system."
+  ]
+}

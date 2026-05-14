@@ -23,15 +23,26 @@ UF from table for RI = 2.00, reflectances 70/50/20: UF = 0.67
 MF = LLMF × LSF × LMF × RSMF = 0.90 × 1.00 × 0.90 × 0.94 = 0.76 → use 0.80 standard
 [ASSUMPTION: MF = 0.80 for clean office, LED luminaire. Confirm cleaning schedule with FM.]
 
-## Step 6 — Fixture count
+## Step 6 — Fixture count (minimum)
 N = (500 × 80) / (4500 × 0.67 × 0.80)
-N = 40,000 / 2,412 = 16.58 → round UP to 17
+N = 40,000 / 2,412 = 16.58 → minimum 17 luminaires required
 
-## Step 7 — Spacing check
-S_max = 1.5 × 2.25 = 3.375m
-Grid: try 4 columns × 5 rows = 20 luminaires
-Spacing x = 10/4 = 2.5m ≤ 3.375m ✓
-Spacing y = 8/5 = 1.6m ≤ 3.375m ✓
+## Step 7 — Grid selection
+17 satisfies the lux equation but cannot form a uniform grid in a 600mm ceiling tile
+system. Irregular grids cause uneven illuminance and misaligned tiles.
+
+Candidate grids that meet or exceed 17:
+- 3 × 6 = 18: spacing x = 10/3 = 3.33m ≤ 3.375m ✓, spacing y = 8/6 = 1.33m ✓
+- 4 × 5 = 20: spacing x = 10/4 = 2.5m ≤ 3.375m ✓,  spacing y = 8/5 = 1.6m ✓
+
+Select 4 × 5 = 20: column pitch 2500mm and row pitch 1600mm both divide cleanly into
+the 600mm ceiling grid (2400mm, 3600mm column positions; 1600mm, 3200mm row positions).
+The 3 × 6 option gives an x-pitch of 3333mm which does not align to the 600mm module.
+
+S_max = SHR_max × Hm = 1.5 × 2.25 = 3.375m
+Spacing x = 2.5m ≤ 3.375m ✓
+Spacing y = 1.6m ≤ 3.375m ✓
+Proceed with N = 20.
 
 ## Step 8 — Positions (snapped to 600mm grid)
 Row spacing y: 800, 2400, 4000, 5600, 7200 mm

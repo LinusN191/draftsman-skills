@@ -1,0 +1,138 @@
+{
+  "_title": "BS 7671:2018+A2:2022 Regulation 521 — Selection and Installation of Wiring Systems",
+  "_note": "The installation method determines the current-carrying capacity table to use from Appendix 4 (see appendix4-cable-ratings.json). Always select the method that matches the ACTUAL installation, not the most favourable.",
+
+  "method_reference_table": {
+    "_reference": "BS 7671:2018 Table 4A1, IEC 60364-5-52",
+    "A1": {
+      "name": "Single cables in conduit in a thermally insulating wall",
+      "description": "Insulated single-core conductors run inside a conduit which itself is embedded within a thermally insulating wall (e.g. timber stud wall with mineral wool insulation). Heat dissipation is poor.",
+      "typical_application": "Domestic surface wiring inside insulated stud partition walls.",
+      "rating_impact": "Lowest ratings — poor heat dissipation. Use Table 4D2A column A1.",
+      "typical_cable": "Single-core LSZH, T&E with insulation",
+      "design_notes": "Common in modern timber-frame buildings. Often missed by designers using Method C ratings — leads to under-sized cables."
+    },
+    "A2": {
+      "name": "Multi-core cable in conduit in a thermally insulating wall",
+      "description": "Multi-core sheathed cable inside conduit, conduit within insulated wall.",
+      "typical_application": "Domestic refurbishment where cables are pulled through new insulated partition.",
+      "rating_impact": "Slightly higher than A1 due to better thermal coupling within the cable bundle.",
+      "typical_cable": "Twin and earth, multi-core LSZH"
+    },
+    "B1": {
+      "name": "Single cables in conduit on a wall or in trunking",
+      "description": "Insulated single-core conductors in conduit mounted on the wall surface, or in trunking. Conduit/trunking is exposed to room air.",
+      "typical_application": "Commercial offices with surface trunking, schools, industrial control wiring.",
+      "rating_impact": "Better than A1/A2 — heat can dissipate from conduit surface. Use Table 4D2A column B1.",
+      "typical_cable": "Single-core LSZH, panelflex"
+    },
+    "B2": {
+      "name": "Multi-core cable in conduit on a wall or in trunking",
+      "description": "Multi-core sheathed cable inside conduit or trunking on wall.",
+      "typical_application": "Most common method for office final circuits. T&E or LSZH multi-core in dado trunking, conduit, or in trunking above ceiling.",
+      "rating_impact": "Reference method for most commercial work. Use Table 4D2B column B2.",
+      "typical_cable": "T&E, multi-core LSZH",
+      "design_notes": "Beware of grouping — multiple circuits in same trunking attract grouping factor Cg."
+    },
+    "C": {
+      "name": "Clipped direct to a non-metallic surface",
+      "description": "Cable clipped directly to a wall, ceiling, or other surface without any enclosing conduit or trunking. Cable is exposed to free air.",
+      "typical_application": "Plant rooms, basement runs, industrial premises, exposed installations.",
+      "rating_impact": "Good — cable dissipates heat freely. Use Table 4D2B column C.",
+      "typical_cable": "T&E, SWA, multi-core LSZH",
+      "design_notes": "Most generous ratings short of free air. Often the default in pricing assumptions — verify actual install matches."
+    },
+    "D1": {
+      "name": "Multi-core cable in a buried conduit (ducted)",
+      "description": "Cable run inside a conduit buried in the ground. Conduit fills with air or is back-filled with sand. Depth typically 0.7m.",
+      "typical_application": "Underground submains, site lighting feeds, external power supplies from MSB to outbuilding.",
+      "rating_impact": "Lower than D2 due to air gap reducing thermal coupling. Use Table 4D2B column D1.",
+      "typical_cable": "SWA in plastic ducting, MV mains in concrete duct.",
+      "design_notes": "Ducting allows future cable replacement without excavation — preferred method for permanent underground routes."
+    },
+    "D2": {
+      "name": "Multi-core cable direct in ground",
+      "description": "Cable laid directly in the ground (sand bedding, marker tile above, backfill).",
+      "typical_application": "Direct buried submains, street lighting cabling, distribution network cables.",
+      "rating_impact": "Better than D1 — direct soil contact gives better thermal dissipation. Use Table 4D2B/4D4A column D2.",
+      "typical_cable": "SWA (steel wire armoured) — must be armoured for direct burial.",
+      "design_notes": "Apply soil thermal resistivity correction (see appendix4-correction-factors.json). Default tables assume 2.5 K·m/W."
+    },
+    "E": {
+      "name": "Multi-core cable in free air or on a perforated horizontal cable tray",
+      "description": "Cable suspended in free air, or laid on a perforated tray with free air below and beside it. Cables spaced sufficiently to not affect each other.",
+      "typical_application": "Plant rooms, risers with cable tray, industrial overhead routes, computer rooms with cable trays.",
+      "rating_impact": "Highest ratings for multi-core cable. Use Table 4D2B column E.",
+      "typical_cable": "SWA, LSZH multi-core",
+      "design_notes": "Apply grouping factor when cables are touching on tray. Apply 'in air' grouping factors, not buried."
+    },
+    "F": {
+      "name": "Single cables in free air or on a perforated horizontal cable tray (touching)",
+      "description": "Three single-core cables laid touching in trefoil or flat formation, on cable tray with free air below.",
+      "typical_application": "Submain feeders, generator outputs, LV mains where single-core gives more flexibility.",
+      "rating_impact": "Lower than spaced single-core but highest for single-core touching. Use Table 4D2A column F.",
+      "design_notes": "For high-current submains (>250A), single-core touching is often the practical choice. Beware of skin effect and proximity losses above 300mm²."
+    },
+    "G": {
+      "name": "Single cables in free air, spaced",
+      "description": "Single-core cables spaced apart by at least one cable diameter on a tray or hangers.",
+      "typical_application": "Very large submain feeders, generator interconnections, transformer secondary feeds.",
+      "rating_impact": "Highest ratings of all installation methods. Tabulated separately in Table 4D2A column G.",
+      "design_notes": "Spacing significantly improves rating but requires more tray width — physical constraint often."
+    }
+  },
+
+  "wiring_system_selection_factors": {
+    "_reference": "BS 7671:2018 Reg 521.1 and 521.2",
+    "ambient_conditions": "Temperature, humidity, presence of water (IP rating).",
+    "mechanical_stress": "Impact, vibration, abrasion, tension.",
+    "fire_resistance": "Required IEC 60331 rating for life safety circuits — see cable-types-fire-rated.json.",
+    "chemical_exposure": "Resistant sheaths needed for corrosive environments (LSZH for low smoke, special compounds for hydrocarbon exposure).",
+    "flammability": "LSZH (Low Smoke Zero Halogen) preferred for buildings with assembly use — reduces toxic fume on fire.",
+    "future_flexibility": "Trunking and conduit allow re-cabling; direct-buried does not. Match to building lifecycle.",
+    "EMI_immunity": "Separate routes for power and data (see Reg 528.1). Steel armour or screened cable for sensitive runs."
+  },
+
+  "cable_segregation": {
+    "_reference": "BS 7671:2018 Reg 528, Section 528.1",
+    "principle": "Circuits of different categories shall be segregated to prevent mutual interference.",
+    "categories": {
+      "category_1": "Mains-rated wiring (LV power, lighting)",
+      "category_2": "ELV signal circuits — fire alarm, security, intruder alarm, BMS, data networks",
+      "category_3": "Other ELV — call systems, telecoms (low-power), audio"
+    },
+    "segregation_rules": [
+      "Category 1 and Category 2: separate cables, separate compartments of trunking OR ≥150mm physical separation, unless cables are screened",
+      "Fire alarm and emergency lighting: dedicated containment, fire-rated for the duration required (typically FP200 or FP400)",
+      "Data networks: parallel runs with mains must be separated per TIA-569 / EN 50174 — typically 200mm for unscreened, less for screened"
+    ]
+  },
+
+  "fixings_and_supports": {
+    "_reference": "BS 7671:2018 Reg 521.10.202, BS 1192-4",
+    "thermal_movement": "Cable supports must accommodate thermal expansion. Continuous support (clipped direct, in conduit) preferred for long runs.",
+    "support_spacing_typical_mm": {
+      "T&E_horizontal": 300,
+      "T&E_vertical": 400,
+      "SWA_horizontal": 600,
+      "SWA_vertical": 900,
+      "MICC_horizontal": 600,
+      "tray_in_riser_vertical": 1500
+    },
+    "fire_collapse_prevention": {
+      "_reference": "BS 7671:2018 Reg 521.10.202 (added in AMD 1)",
+      "rule": "Cable supports throughout the installation must be such that cables are not liable to premature collapse in the event of a fire.",
+      "implication": "Plastic cable clips alone are non-compliant on escape routes — metal fixings required.",
+      "common_solutions": "P-clips with metal saddle, fire-rated cable clips (BS 8519 compliant), metal cable basket with metallic supports."
+    }
+  },
+
+  "specific_environments": {
+    "_reference": "BS 7671:2018 Part 7",
+    "bathrooms": "Cables outside zones can use any method. Within zones, only mechanically protected (in conduit or under floor) acceptable.",
+    "underfloor_heating": "Maintain separation from heating cables. Use higher temperature rating cables if running through warm zones.",
+    "agricultural": "Mechanical protection mandatory — animals, vehicles. Conduit or SWA standard.",
+    "construction_sites": "Mechanical protection mandatory. 30mA RCD on all socket outlets. Cable hangers or burial preferred.",
+    "swimming_pools": "Special restrictions in Zones 0, 1, 2. Specialised cable types and methods (see Section 702)."
+  }
+}

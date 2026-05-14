@@ -1,0 +1,229 @@
+{
+  "_title": "BS 7671:2018+A2:2022 Regulation 522 — IP Rating Selection by Environment",
+  "_basis": "BS EN 60529 — Degrees of protection provided by enclosures (IP Code). BS 7671 Section 522 references this for protection against external influences.",
+  "_note": "IP ratings are TWO digits: first = solids/dust, second = liquids/water. A third digit (impact, IK code) is sometimes added but is a separate standard.",
+
+  "ip_code_explanation": {
+    "first_digit_solids_dust": {
+      "0": "No protection",
+      "1": "Protected against solid objects ≥ 50mm (e.g. back of hand)",
+      "2": "Protected against solid objects ≥ 12.5mm (e.g. finger)",
+      "3": "Protected against solid objects ≥ 2.5mm (e.g. tools, thick wires)",
+      "4": "Protected against solid objects ≥ 1mm (e.g. most wires, screws)",
+      "5": "Dust-protected — dust may enter but not in quantity to interfere with operation",
+      "6": "Dust-tight — no ingress of dust"
+    },
+    "second_digit_water": {
+      "0": "No protection",
+      "1": "Protected against vertically dripping water",
+      "2": "Protected against dripping water when tilted up to 15°",
+      "3": "Protected against spraying water (60° from vertical)",
+      "4": "Protected against splashing water from any direction",
+      "5": "Protected against water jets (low pressure)",
+      "6": "Protected against powerful water jets (e.g. shipboard washdown)",
+      "7": "Protected against temporary immersion (15cm to 1m depth, 30 min)",
+      "8": "Protected against continuous immersion (manufacturer-specified depth)",
+      "9": "Protected against high-temperature, high-pressure water jets (food industry)"
+    }
+  },
+
+  "common_ip_ratings_explained": {
+    "IP20": "Indoor only. No protection against water. Finger-safe (no exposed live parts). Standard for indoor accessories in dry rooms.",
+    "IP21": "Indoor with dripping water protection. Boiler rooms, plant rooms.",
+    "IP44": "Outdoor general purpose. Splash-proof. External lighting, garden sockets.",
+    "IP54": "Industrial, dust-protected, splash-proof. Workshops, agricultural.",
+    "IP55": "Dust-protected with jet water resistance. Industrial outdoor, car washes.",
+    "IP65": "Dust-tight with jet water resistance. Demanding outdoor, exposed installations.",
+    "IP66": "Dust-tight with powerful jet resistance. Marine, heavy industrial.",
+    "IP67": "Dust-tight with temporary immersion resistance. Flooding-prone areas.",
+    "IP68": "Dust-tight with continuous immersion. Submersible equipment (pumps, pool lights)."
+  },
+
+  "minimum_ip_by_location": {
+    "_reference": "BS 7671:2018 Reg 522.3 and Part 7 special locations",
+    "domestic": {
+      "habitable_rooms_dry": {
+        "minimum": "IP2X",
+        "rationale": "Finger-safe only — no water protection needed."
+      },
+      "kitchens_above_worktop": {
+        "minimum": "IP21",
+        "rationale": "Steam and occasional splash."
+      },
+      "kitchens_below_worktop": {
+        "minimum": "IP44",
+        "rationale": "Cleaning, splashes from sink."
+      },
+      "bathroom_zone_0_inside_bath_shower": {
+        "minimum": "IPx7",
+        "max_voltage": "12V SELV only",
+        "_reference": "BS 7671 Section 701"
+      },
+      "bathroom_zone_1_above_bath_shower_to_2.25m": {
+        "minimum": "IPx4",
+        "_note": "IPx5 if water jets used (e.g. body jets)"
+      },
+      "bathroom_zone_2_0.6m_horizontal_beyond_zone_1": {
+        "minimum": "IPx4"
+      },
+      "bathroom_outside_zones": {
+        "minimum": "IP21 (general) or IPx4 if window or door opens onto wet area"
+      },
+      "garage_workshop_domestic": {
+        "minimum": "IP44",
+        "_note": "Higher if power washing or solvents in use"
+      },
+      "external_walls_under_eaves": {
+        "minimum": "IP44"
+      },
+      "external_exposed_to_weather": {
+        "minimum": "IP55 to IP66 depending on exposure"
+      },
+      "underground_or_buried": {
+        "minimum": "IP67 or IP68"
+      }
+    },
+    "commercial_industrial": {
+      "general_office": {
+        "minimum": "IP20"
+      },
+      "computer_server_rooms": {
+        "minimum": "IP20",
+        "_note": "Sealed cabinets to IP54 to prevent dust"
+      },
+      "warehouse_indoor": {
+        "minimum": "IP21 to IP44 depending on forklift/cleaning regime"
+      },
+      "factory_floor_general": {
+        "minimum": "IP54"
+      },
+      "food_production": {
+        "minimum": "IP66 or IP69K — daily high-pressure cleaning"
+      },
+      "chemical_processing": {
+        "minimum": "IP66 + corrosion-resistant materials per BS EN 14122"
+      },
+      "petrol_filling_station_forecourt": {
+        "minimum": "IP54 + Ex-rated (DSEAR Zone 1/2)",
+        "_note": "Hazardous area — specialist equipment required"
+      },
+      "loading_bays_external": {
+        "minimum": "IP54 to IP65"
+      },
+      "swimming_pool_plant_room": {
+        "minimum": "IP44 (general) to IPx7 (pump pit)"
+      },
+      "swimming_pool_basin_lighting": {
+        "minimum": "IPx8 (submerged)",
+        "max_voltage": "12V SELV"
+      }
+    },
+    "healthcare": {
+      "clean_zone_general_ward": {
+        "minimum": "IP21"
+      },
+      "sterile_zone_operating_theatre": {
+        "minimum": "IP65 with antimicrobial finish",
+        "_reference": "HTM 06-01"
+      },
+      "imaging_room": {
+        "minimum": "IP21 (general) with EMC shielding for MRI suite"
+      }
+    },
+    "education": {
+      "classroom_general": {
+        "minimum": "IP20"
+      },
+      "science_laboratory": {
+        "minimum": "IP44 above bench, IP20 at ceiling"
+      },
+      "external_playground": {
+        "minimum": "IP44 to IP54"
+      },
+      "swimming_pool": {
+        "minimum": "Per Section 702"
+      }
+    },
+    "retail": {
+      "shop_floor": {
+        "minimum": "IP20"
+      },
+      "food_retail_chillers": {
+        "minimum": "IP54"
+      },
+      "checkout_under_counter": {
+        "minimum": "IP21"
+      }
+    },
+    "agricultural": {
+      "_reference": "BS 7671 Section 705",
+      "animal_houses": {
+        "minimum": "IP44 minimum, IP54 preferred",
+        "_note": "Ammonia and moisture from livestock — corrosion-resistant"
+      },
+      "feed_processing_with_dust": {
+        "minimum": "IP6X (dust-tight)"
+      },
+      "milking_parlour_washdown": {
+        "minimum": "IP66"
+      }
+    },
+    "external_civil": {
+      "street_lighting_column": {
+        "minimum": "IP54 minimum, IP65 preferred"
+      },
+      "traffic_signals": {
+        "minimum": "IP65"
+      },
+      "ev_charging_post_outdoor": {
+        "minimum": "IP54 (general), IP55 with operating cable connected, IP44 with operating cable disconnected — per BS EN 61851-1"
+      },
+      "marina_pedestal": {
+        "minimum": "IP55 to IP66 per Section 709"
+      },
+      "exterior_temporary_construction": {
+        "minimum": "IP44 (general use) — Reg 704"
+      }
+    }
+  },
+
+  "impact_protection_ik_code": {
+    "_reference": "BS EN 62262 — Degrees of protection provided by enclosures for electrical equipment against external mechanical impacts (IK code)",
+    "_note": "IK is a separate standard from IP. Specified alongside IP where mechanical risk is significant.",
+    "ik_levels_joules": {
+      "IK01": 0.14,
+      "IK02": 0.2,
+      "IK03": 0.35,
+      "IK04": 0.5,
+      "IK05": 0.7,
+      "IK06": 1.0,
+      "IK07": 2.0,
+      "IK08": 5.0,
+      "IK09": 10.0,
+      "IK10": 20.0
+    },
+    "typical_requirements": {
+      "indoor_office_furniture_height": "IK06",
+      "public_access_height": "IK08",
+      "vandal_prone_external": "IK10",
+      "loading_bay_vehicle_impact_height": "IK10 plus physical barrier"
+    }
+  },
+
+  "selection_principle": {
+    "rule": "Select the IP rating from the WORST credible environmental condition the equipment will face during its lifetime — including cleaning, flooding, and abnormal events.",
+    "common_under_specification": [
+      "External equipment specified IP44 then exposed to power washing (needs IP65 minimum)",
+      "Kitchen worktop sockets at IP20 (need IP44 — cleaning splashes)",
+      "Pump pit equipment at IP54 (needs IP67 — periodic flooding)",
+      "Coastal exposed equipment at IP54 (needs IP66 — salt spray + driving rain)"
+    ]
+  },
+
+  "ip_does_not_mean": {
+    "no_corrosion_protection": "IP66 plastic enclosure may still corrode internal components in salty/chemical atmospheres — specify materials separately",
+    "no_temperature_rating": "IP rating says nothing about operating temperature — check separately",
+    "no_uv_resistance": "Plastic enclosures may degrade in sunlight — specify UV-stable materials for external",
+    "no_emc_shielding": "IP is about physical ingress only — EMC requires conductive enclosure with proper bonding"
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "_title": "BS 7671:2018+A2:2022 Regulation 434 — Protection Against Fault Current",
+  "_note": "Verifies that the cable can survive a short-circuit fault for the time the protective device takes to clear it. The adiabatic equation must be satisfied for every circuit.",
+
+  "principle": {
+    "_reference": "BS 7671:2018 Reg 434.5.2",
+    "purpose": "During a fault, very high current flows for a short time before the device trips. The cable's conductor temperature must stay below the limit that damages the insulation, even momentarily.",
+    "assumption": "Heat generated during fault is too rapid to dissipate — all heat stays in the conductor (adiabatic conditions). True for fault durations ≤ 5 seconds."
+  },
+
+  "adiabatic_equation": {
+    "_reference": "BS 7671:2018 Reg 434.5.2 Equation 3",
+    "formula": "S ≥ √(I² × t) / k",
+    "rearranged": "t_max = (k² × S²) / I²",
+    "variables": {
+      "S": {
+        "name": "Cable cross-sectional area",
+        "units": "mm²",
+        "description": "Conductor size — line, neutral, or CPC depending on the fault path being analysed."
+      },
+      "I": {
+        "name": "Effective fault current",
+        "units": "A",
+        "description": "RMS prospective short-circuit current at the fault location. Use the worst case — typically calculated at the source end (highest fault) and the load end (longest disconnection time)."
+      },
+      "t": {
+        "name": "Operating time of the protective device",
+        "units": "seconds",
+        "description": "From the device's time/current characteristic at current I. For instantaneous trip (MCB above Ia): use 0.1s typical."
+      },
+      "k": {
+        "name": "Material/insulation constant",
+        "units": "A·s^0.5/mm²",
+        "description": "Depends on conductor material AND insulation type. See table below."
+      }
+    },
+    "interpretation": "If S < √(I²t)/k, the cable will be damaged during fault clearance. Increase cable size, fit faster device, or reduce fault current with upstream impedance."
+  },
+
+  "k_values": {
+    "_reference": "BS 7671:2018 Tables 43.1 and 54.2 to 54.6",
+    "_note": "k value depends on conductor material, insulation, and the cable's role (line conductor vs CPC vs separate earth). The CPC may have a different k because its operating temperature differs.",
+    "line_conductors_initial_70C": {
+      "_basis": "Tables 43.1 and 54.2 — line conductor at 70°C maximum (PVC insulated cable)",
+      "copper": 115,
+      "aluminium": 76,
+      "steel": 50
+    },
+    "line_conductors_initial_90C": {
+      "_basis": "Tables 43.1 and 54.2 — line conductor at 90°C maximum (XLPE/EPR insulated cable)",
+      "copper": 143,
+      "aluminium": 94
+    },
+    "cpc_within_cable_pvc": {
+      "_basis": "Table 54.3 — CPC inside cable with PVC sheath. CPC runs cool relative to line conductors.",
+      "copper": 115,
+      "aluminium": 76
+    },
+    "cpc_within_cable_xlpe": {
+      "_basis": "Table 54.3 — CPC inside cable with thermosetting sheath",
+      "copper": 143,
+      "aluminium": 94
+    },
+    "cpc_separate_pvc": {
+      "_basis": "Table 54.4 — separate CPC (e.g. single conductor in conduit) with PVC insulation",
+      "copper": 143,
+      "aluminium": 95
+    },
+    "cpc_separate_xlpe": {
+      "_basis": "Table 54.4 — separate CPC with thermosetting insulation",
+      "copper": 176,
+      "aluminium": 116
+    },
+    "bare_cpc_in_air": {
+      "_basis": "Table 54.5 — bare conductor used as CPC (e.g. earth tape, bare copper)",
+      "copper_not_in_contact_combustible": 228,
+      "copper_in_contact_combustible": 159,
+      "aluminium_not_in_contact": 125,
+      "steel_not_in_contact": 82
+    },
+    "cable_armour_as_cpc": {
+      "_basis": "Table 54.6 — SWA steel armour used as CPC",
+      "steel_armour_pvc_cable": 51,
+      "steel_armour_xlpe_cable": 46
+    }
+  },
+
+  "fault_levels_typical": {
+    "_reference": "Engineering judgement / IEC 60909 / DNO data",
+    "domestic_LV_origin_kA": "1.0 to 6.0 (typical 1.5 for terraced, 4.0 for new estates)",
+    "commercial_LV_intake_kA": "10 to 25",
+    "industrial_LV_main_switchboard_kA": "25 to 50",
+    "transformer_secondary_kA_per_kVA": "approximately Sn / (√3 × Un × Z%)",
+    "worked_500kVA_5_percent_Z": {
+      "Sn_kVA": 500,
+      "Un_V": 400,
+      "Z_percent": 5,
+      "If_kA": "500 / (√3 × 0.4 × 0.05) = 14.43 kA"
+    }
+  },
+
+  "disconnection_times_for_adiabatic_check": {
+    "MCB_above_Ia": {
+      "value": 0.1,
+      "unit": "seconds",
+      "note": "Conservative — actual instantaneous trip time is 10-30ms. Use 0.1s for adiabatic calc unless manufacturer data states faster."
+    },
+    "fuse_at_PSCC": {
+      "value": 0.01,
+      "unit": "seconds",
+      "note": "HRC fuses trip in 10ms or less at high fault current. Read from manufacturer's t/I curve at the fault level."
+    },
+    "MCCB_with_short_circuit_release": {
+      "value": "0.02 to 0.1",
+      "unit": "seconds",
+      "note": "Read from manufacturer's published curve. Some have intentional time delay for selectivity."
+    }
+  },
+
+  "worked_example": {
+    "description": "2.5mm² T&E circuit, 32A Type B MCB, prospective fault current 3kA at the DB",
+    "S_mm2": 2.5,
+    "I_A": 3000,
+    "k_value": 115,
+    "_k_reasoning": "Copper line conductor, PVC insulated (T&E), initial 70°C",
+    "I_squared_t_max": "(115 × 2.5)² = 287.5² = 82,656 A²s",
+    "max_disconnection_time": "82656 / 3000² = 0.0092 s",
+    "MCB_actual_trip_time_at_3kA": "≤ 0.01 s (instantaneous trip well above 5×In = 160A)",
+    "verdict": "MARGINAL — at exactly 3kA, the cable can survive 9.2ms. Typical Type B MCB trips in 5-10ms. Acceptable but tight. For higher fault levels (5kA+), upsize cable or use faster fuse."
+  },
+
+  "design_strategy": {
+    "screening_check": "For most domestic/small commercial work, fault levels at final circuits are low enough that the adiabatic check is automatically satisfied. Detailed calculation only needed for: large fault currents (>10kA), small cables on high-fault systems, long runs where R1+R2 may be deceptive.",
+    "when_in_doubt": "Calculate. Cable failure during fault is a fire risk and a major liability.",
+    "shortcut_for_BS_EN_60898": "For MCBs to BS EN 60898 protecting cables with k ≥ 115, if In ≤ Iz of the cable, the adiabatic check is satisfied at all fault currents the breaker will clear. Holds for typical UK domestic and small commercial."
+  },
+
+  "selectivity_considerations": {
+    "principle": "Time delays added for selectivity (ZSI, S-type RCDs, time-graded MCCBs) increase disconnection time. The cable must survive the LONGER time.",
+    "rule": "When time delay is applied for selectivity, re-check adiabatic equation at the delayed time."
+  }
+}

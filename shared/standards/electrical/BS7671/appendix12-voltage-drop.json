@@ -1,0 +1,140 @@
+{
+  "_title": "BS 7671:2018+A2:2022 Appendix 12 — Voltage Drop in Consumers' Installations",
+  "_note": "Voltage drop is calculated from the origin of the installation (intake) to the equipment in use. Total voltage drop must not exceed the limits below.",
+
+  "limits": {
+    "_reference": "BS 7671:2018 Appendix 12 Section 1, Table 4Ab",
+    "_basis": "Voltage drop from the origin of the installation (where the supply meets the consumer's premises) to any point of utilisation, expressed as percentage of nominal supply voltage (230V single-phase, 400V three-phase).",
+    "lighting_circuits_percent": {
+      "value": 3,
+      "note": "Applies to all lighting installations. Includes both general and emergency lighting. From origin to luminaire."
+    },
+    "other_uses_percent": {
+      "value": 5,
+      "note": "Sockets, fixed appliances, motors, EV charging, all non-lighting loads. From origin to outlet."
+    },
+    "total_low_voltage_supply_percent": {
+      "value": 6,
+      "note": "Where the installation is supplied directly from a public LV network (most domestic and small commercial), the 3% / 5% limits apply. Where supplied from a private LV source (e.g. own transformer), the limits may be doubled to 6% / 8% — but the cumulative drop from the LV side of the transformer applies."
+    },
+    "private_supply_lighting_percent": 6,
+    "private_supply_other_percent": 8
+  },
+
+  "formula": {
+    "_reference": "BS 7671:2018 Appendix 4 Section 6.1",
+    "single_phase": {
+      "formula": "Vd = (mVAm × Ib × L) / 1000",
+      "where": {
+        "Vd":   "voltage drop in volts (V)",
+        "mVAm": "millivolts per ampere per metre — from cable rating tables",
+        "Ib":   "design current in amperes (A)",
+        "L":    "circuit length in metres (m), one-way"
+      },
+      "note": "mVAm value from Appendix 4 already includes both go and return conductors. Do not double the length."
+    },
+    "three_phase": {
+      "formula": "Vd = (mVAm × Ib × L × √3) / 1000  or use the dedicated three-phase mVAm value",
+      "note": "Modern cable tables give separate mVAm values for single-phase and three-phase. Use the three-phase value directly when available. Otherwise multiply single-phase mVAm by √3/2 = 0.866."
+    },
+    "as_percentage": {
+      "single_phase_230V": "Vd_percent = (Vd / 230) × 100",
+      "three_phase_400V": "Vd_percent = (Vd / 400) × 100"
+    }
+  },
+
+  "mVAm_values_by_cable_size": {
+    "_reference": "BS 7671:2018 Tables 4D1B / 4D2B / 4D4B (mVAm columns)",
+    "_note": "Values for copper conductors. Single-phase circuits — multiply by 0.866 for three-phase. XLPE/PVC values are very similar at small sizes; diverge slightly above 35mm².",
+    "_units": "mV per A per m",
+    "copper_xlpe_two_core": {
+      "1.5":  29,
+      "2.5":  18,
+      "4":    11,
+      "6":    7.3,
+      "10":   4.4,
+      "16":   2.8,
+      "25":   1.75,
+      "35":   1.25,
+      "50":   0.93,
+      "70":   0.63,
+      "95":   0.47,
+      "120":  0.37,
+      "150":  0.30,
+      "185":  0.245,
+      "240":  0.19,
+      "300":  0.153
+    },
+    "copper_xlpe_three_or_four_core": {
+      "1.5":  25,
+      "2.5":  15,
+      "4":    9.5,
+      "6":    6.4,
+      "10":   3.8,
+      "16":   2.4,
+      "25":   1.50,
+      "35":   1.10,
+      "50":   0.80,
+      "70":   0.55,
+      "95":   0.41,
+      "120":  0.32,
+      "150":  0.26,
+      "185":  0.21,
+      "240":  0.165,
+      "300":  0.135
+    }
+  },
+
+  "temperature_correction": {
+    "_reference": "BS 7671:2018 Appendix 4 Section 6.1",
+    "_basis": "Tabulated mVAm values assume conductor operating temperature is at its maximum (90°C for XLPE). When cable carries less than tabulated current, conductor runs cooler and resistance is lower — actual voltage drop will be less than calculated.",
+    "rule": "Tabulated mVAm is conservative. For cables operating well below rating, actual voltage drop is lower than calculated.",
+    "correction_when_partially_loaded": "Ct = (230 + tp - (Ib²/Iz²) × (tp - 30)) / (230 + tp), where tp = max operating temperature (90°C for XLPE)",
+    "note": "Apply correction only if voltage drop is borderline. Most designs do not require this refinement."
+  },
+
+  "long_run_strategy": {
+    "_basis": "When voltage drop exceeds the limit, the standard remedies are:",
+    "options": [
+      "1. Upsize the cable — most common. Doubling the cross-section roughly halves the voltage drop.",
+      "2. Reduce the run length — re-route via a closer DB, add intermediate DB.",
+      "3. Move the DB closer to the load centre — most effective for large installations.",
+      "4. Use a higher supply voltage (commercial only, not always feasible).",
+      "5. Power factor correction — reduces current Ib, hence reduces voltage drop proportionally."
+    ],
+    "rule_of_thumb": "For lighting circuits at 230V: 1mm of mVAm × 1m × 1A = 1mV of drop. Useful for rapid sanity checks."
+  },
+
+  "worked_examples": {
+    "lighting_circuit_office": {
+      "description": "Single-phase lighting, 20 × 36W LED panels, 6A circuit, 30m run, 2.5mm² T&E",
+      "Ib_A": 4.5,
+      "L_m": 30,
+      "mVAm": 18,
+      "Vd_V": "(18 × 4.5 × 30) / 1000 = 2.43 V",
+      "Vd_percent": "(2.43 / 230) × 100 = 1.06%",
+      "limit": "3% (lighting)",
+      "verdict": "PASS — well within limit. 2.5mm² acceptable for length."
+    },
+    "submain_three_phase": {
+      "description": "Three-phase submain from MSB to L1 SDB, 80A design current, 45m run, 25mm² XLPE/SWA",
+      "Ib_A": 80,
+      "L_m": 45,
+      "mVAm_three_phase": 1.50,
+      "Vd_V": "(1.50 × 80 × 45) / 1000 = 5.40 V",
+      "Vd_percent_400V": "(5.40 / 400) × 100 = 1.35%",
+      "downstream_budget_percent": "3% lighting limit minus 1.35% submain = 1.65% remaining for final circuits",
+      "verdict": "Acceptable submain drop. Final circuits must stay within 1.65% of 230V = 3.79V drop."
+    },
+    "long_run_failure": {
+      "description": "32A socket circuit, 60m run, 4mm² T&E",
+      "Ib_A": 26,
+      "L_m": 60,
+      "mVAm": 11,
+      "Vd_V": "(11 × 26 × 60) / 1000 = 17.16 V",
+      "Vd_percent": "(17.16 / 230) × 100 = 7.46%",
+      "limit": "5% (other uses)",
+      "verdict": "FAIL — exceeds 5% limit. Upsize to 6mm² (mVAm = 7.3) gives Vd = 11.39V = 4.95% — JUST passes. Recommend 10mm² for margin."
+    }
+  }
+}
