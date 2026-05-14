@@ -1,0 +1,186 @@
+{
+  "_title": "IEC 60364-3 / IEC 60364-5-55 — Demand Factors and Maximum Demand Calculation",
+  "_reference": "IEC 60364-3:2005 (Assessment of general characteristics), Clause 311 (Maximum demand); IEC 60364-5-55 Clause 551 (Low-voltage generating sets); CIBSE Guide C (Reference data) for residential and commercial diversity guidance",
+  "_version": "1.0.0",
+  "_note": "IEC 60364-3 Clause 311 states that the maximum demand of an installation must be assessed. The standard does not mandate specific diversity factors — these are engineering judgement values based on occupancy type, usage patterns, and measured data. The values below represent established practice across Europe, Africa, and Australia-NZ where IEC 60364 applies. Adjust when measured or metered data is available.",
+
+  "maximum_demand_concept": {
+    "_description": "The maximum demand (MD) is the highest load that an installation or circuit will realistically draw simultaneously over a sustained period (typically 30 minutes to 1 hour). It is always less than the sum of all installed connected loads, because not all loads operate at full rated power simultaneously.",
+    "formula": "MD (kVA or kW) = Σ (connected load × demand factor × coincidence factor)",
+    "demand_factor": "The ratio of maximum demand to total connected load. A demand factor of 0.70 means the circuit will carry 70% of its total connected load at maximum usage.",
+    "coincidence_factor": "The ratio of the maximum demand of a group to the sum of the individual maximum demands. Used when aggregating sub-circuits into a main distribution board.",
+    "diversity_factor": "Reciprocal of coincidence factor. Diversity factor > 1 means loads are not coincident. Note: some references define demand factor and diversity factor differently — always clarify the definition being used."
+  },
+
+  "domestic_residential": {
+    "_title": "Domestic / Residential Buildings",
+    "_basis": "IEC 60364-3 Clause 311 and European regional practice. Reflects modern domestic loads including EV charging where applicable.",
+
+    "lighting_circuits": {
+      "demand_factor_per_circuit": 0.66,
+      "basis": "Typical domestic lighting: not all rooms used simultaneously. Some countries apply higher factors (0.75–1.0) in commercial residential (serviced apartments, hotels).",
+      "note": "For dwellings with LED lighting throughout, actual demand is 30–50% of installed connected load. Use connected load × 0.66 as a conservative minimum."
+    },
+    "socket_outlet_circuits": {
+      "demand_factor_per_circuit": 0.40,
+      "basis": "Domestic socket outlets: diverse mix of phone chargers, TVs, computers, kitchen appliances — rarely all at maximum simultaneously.",
+      "note": "For dedicated high-load circuits (electric hob, oven, shower), use 1.0 diversity — these are typically single-load circuits."
+    },
+    "electric_cooker_hob": {
+      "demand_factor": 0.70,
+      "note": "Not all rings at maximum simultaneously. For ovens, 0.8 where oven and hob are separate units on one circuit."
+    },
+    "electric_water_heating": {
+      "demand_factor": 1.0,
+      "note": "Immersion heaters and instantaneous water heaters run at full rated load when on. Apply time diversity only for multiple units."
+    },
+    "space_heating_electric": {
+      "demand_factor": 0.80,
+      "note": "Where thermostatic control is installed. Radiant panels and storage heaters may not all be in heating phase simultaneously."
+    },
+    "ev_charging_domestic": {
+      "demand_factor": 1.0,
+      "note": "For sizing individual EV circuit — use full 7.4kW (32A single-phase) or 22kW (32A three-phase). Where multiple EV points with load management, apply load management system output.",
+      "with_load_management_2_to_4_points": 0.75,
+      "with_load_management_5_plus_points": 0.60
+    },
+    "after_diversity_maximum_demand_guidance": {
+      "single_dwelling_typical": "4–6 kVA for all-electric flat; 8–12 kVA for 3-bedroom all-electric house; 14–18 kVA with EV charging.",
+      "apartment_block_per_flat": "3.5–5 kVA per flat after diversity for 10+ units"
+    }
+  },
+
+  "commercial_office": {
+    "_title": "Commercial — Office Buildings",
+    "_basis": "European commercial practice, IEC 60364-3 Clause 311, CIBSE Guide C Section 4",
+
+    "lighting": {
+      "demand_factor": 0.90,
+      "note": "Commercial offices: most areas lit during business hours — high diversity factor. LED retrofit may halve installed load; use actual connected load × 0.90."
+    },
+    "office_equipment_sockets": {
+      "demand_factor": 0.70,
+      "basis": "Computers, monitors, printers, phone chargers — not all at maximum simultaneously. Open-plan: 0.70. High-density server/trading floors: 0.90.",
+      "per_workstation_allowance_VA": 500,
+      "note": "Alternatively: 50VA/m² general office; 100VA/m² high-density IT use"
+    },
+    "air_conditioning_cooling": {
+      "demand_factor": 0.85,
+      "note": "Split-unit AC: allow for not all zones at peak cooling simultaneously. Central chiller systems: use design cooling load directly."
+    },
+    "lifts_escalators": {
+      "demand_factor": 0.50,
+      "note": "Multiple lifts: typically 50% demand factor — they alternate. Consult lift manufacturer's electrical data for accurate sizing."
+    },
+    "catering_kitchen_commercial": {
+      "demand_factor": 0.70,
+      "note": "Catering equipment: not all appliances at full rated load simultaneously. Reduce for small satellite kitchens; raise toward 0.85 for large production kitchens."
+    }
+  },
+
+  "industrial": {
+    "_title": "Industrial — Manufacturing and Process Facilities",
+    "_basis": "IEC 60364-3 Clause 311, IEC TS 60364-5-523 guidance",
+
+    "motor_groups": {
+      "largest_motor_demand_factor": 1.0,
+      "remaining_motors_demand_factor": 0.70,
+      "note": "Start with the largest motor at full load. Apply 0.70 to the sum of all other motors. Add standby motors at 0 (they don't run simultaneously with the duty motor).",
+      "example": "Largest motor 22kW + sum of others 60kW × 0.70 = 22 + 42 = 64kW total."
+    },
+    "general_power_distribution": {
+      "demand_factor": 0.70,
+      "note": "General industrial socket outlets and small fixed loads. Increase toward 0.85–0.90 for process-critical continuous-duty loads."
+    },
+    "welding_equipment": {
+      "demand_factor": 0.35,
+      "note": "Welding sets have very low duty cycles. Multiple welders: apply 0.35 to the sum of rated KVAs.",
+      "minimum_factor_for_single_set": 1.0
+    },
+    "hvac_plant_mechanical": {
+      "demand_factor": 0.80,
+      "note": "AHUs, fans, pumps: use 0.80 for mixed mechanical plant. Boiler house at full load: 0.90."
+    }
+  },
+
+  "retail": {
+    "_title": "Retail — Shops, Supermarkets, Shopping Centres",
+
+    "general_lighting_and_power": {
+      "demand_factor": 0.85,
+      "note": "Retail lighting typically on during trading hours — high diversity factor."
+    },
+    "refrigeration_display_cases": {
+      "demand_factor": 0.90,
+      "note": "Refrigeration runs continuously. Allow 0.90 for defrost cycle diversity."
+    },
+    "escalators_moving_walkways": {
+      "demand_factor": 0.75,
+      "note": "Load sensing drives reduce demand. Use manufacturer data where available."
+    }
+  },
+
+  "healthcare": {
+    "_title": "Healthcare — Hospitals, Clinics",
+    "_note": "Healthcare facilities require detailed load assessment. Life-safety and critical care loads must never be subject to diversity reduction on their UPS or generator circuits.",
+
+    "general_wards": {
+      "demand_factor": 0.65,
+      "note": "Bed-head trunking loads: not all beds at maximum simultaneously."
+    },
+    "operating_theatres": {
+      "demand_factor": 1.0,
+      "note": "Each operating theatre sized at full simultaneous load — critical."
+    },
+    "medical_imaging_mri_ct": {
+      "demand_factor": 1.0,
+      "note": "Imaging equipment: full rated load. Consult OEM specification. MRI has significant reactive power requirements."
+    },
+    "normal_lighting_power": {
+      "demand_factor": 0.75,
+      "note": "General purpose lighting and power away from critical areas."
+    }
+  },
+
+  "maximum_demand_calculation_method": {
+    "_title": "Step-by-step Maximum Demand Calculation",
+    "_reference": "IEC 60364-3:2005 Clause 311",
+    "steps": [
+      "1. List all loads (circuits) fed from the distribution board being sized",
+      "2. Record the connected load for each circuit in kW or kVA (use kVA for mixed power factor loads)",
+      "3. Assign the appropriate demand factor from this file or from measured data",
+      "4. Multiply connected load × demand factor for each circuit to get the diversity-adjusted demand",
+      "5. Sum all diversity-adjusted demands to get the total maximum demand in kVA",
+      "6. Calculate design current: Ib = MD (kVA) × 1000 / (√3 × 400) for three-phase or MD × 1000 / 230 for single-phase",
+      "7. Select the upstream cable and switchgear: In ≥ Ib, Iz ≥ In (Fundamental Rule)",
+      "8. Add a future growth allowance (typically 20–25%) to the maximum demand when sizing the main switchboard and transformer",
+      "9. Document the diversity factors assumed — the design may be audited"
+    ],
+    "_worked_example": {
+      "scenario": "Office floor distribution board, three-phase 400V/230V TN-S",
+      "loads": [
+        {"circuit": "General lighting (20 circuits)", "connected_kW": 10.0, "demand_factor": 0.90, "MD_kW": 9.0},
+        {"circuit": "Socket outlets (30 circuits)", "connected_kVA": 30.0, "demand_factor": 0.70, "MD_kVA": 21.0},
+        {"circuit": "AC fan coil units (12 units)", "connected_kW": 7.2, "demand_factor": 0.85, "MD_kW": 6.1},
+        {"circuit": "Server room UPS input", "connected_kVA": 20.0, "demand_factor": 1.0, "MD_kVA": 20.0}
+      ],
+      "total_MD_kVA": 56.1,
+      "with_20pct_growth": 67.3,
+      "design_current_A": "67300 / (1.732 × 400) = 97A",
+      "selected_upstream_device": "125A MCB / MCCB",
+      "selected_cable": "35mm² copper XLPE per phase (Method E) — Iz = 171A > 125A ✓"
+    }
+  },
+
+  "ev_charging_load_management": {
+    "_title": "EV Charging Load Management — IEC 60364-7-722 Clause 722.411.4",
+    "_reference": "IEC 60364-7-722:2018",
+    "_note": "Where multiple EV charging points are installed, a load management system limits total drawn current to within the building's available supply capacity. The electrical designer must size for the managed maximum, not the sum of all EV socket outlet ratings.",
+    "approach": {
+      "without_load_management": "Size the supply for all EV points at full simultaneous rating — worst case, typically 100% demand factor",
+      "with_load_management_dynamic": "Size for the managed maximum demand per the load management controller specification — typically 60–80% of sum of all outlet ratings",
+      "with_load_management_static": "Fixed maximum demand set in controller — verify setting and confirm in writing with client"
+    },
+    "note_on_future_proofing": "Always size cable containment and earthing for 100% of installed outlets even where diversity is applied to the active conductors — containment is difficult to uprate later"
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "_title": "IEC 60364-4-43 Clause 434.5 — Fault Current Cable Protection (Adiabatic Equation)",
+  "_basis": "IEC 60364-4-43:2008 Clause 434.5.2. k values derived from IEC 60364-5-54 Table 54.2 and IEC 60364-4-43 informative annex.",
+  "_version": "1.0.0",
+  "_note": "This file covers the adiabatic check — verifying that the cable conductor survives the thermal energy of a fault current before the protective device clears it. The check must be applied at BOTH ends of the cable: for short-circuit faults at the remote end (minimum fault current, maximum device operating time) and at the origin end (maximum fault current, minimum operating time / let-through energy).",
+
+  "adiabatic_equation": {
+    "_reference": "Clause 434.5.2",
+    "formula": "I²t ≤ k²S²",
+    "rearranged_for_minimum_conductor_size": "S ≥ √(I²t) / k",
+    "variables": {
+      "I": "Fault current in amperes (RMS symmetrical)",
+      "t": "Duration of fault current in seconds — the operating time of the protective device at fault current I",
+      "S": "Cross-sectional area of the conductor in mm²",
+      "k": "Material constant (see tables below) — depends on conductor material and insulation type",
+      "I²t": "Energy let-through of the protective device — obtained from manufacturer's data for currents above the instantaneous trip threshold"
+    },
+    "important_notes": [
+      "For currents above the instantaneous trip threshold of an MCB, the device operates in the magnetic region (<0.01s) and the actual I²t let-through is far less than I² × 0.01. Use manufacturer's I²t let-through data for accurate checking.",
+      "For currents in the thermal region (long operating times), the formula applies directly: I²t = I² × t_trip from the time/current curve.",
+      "The adiabatic equation assumes all heat is retained in the conductor (adiabatic = no heat loss). This is conservative and valid for fault durations < 5 seconds.",
+      "For fault durations > 5 seconds, heat loss to insulation becomes significant — more detailed calculation is needed."
+    ]
+  },
+
+  "k_values_for_conductors": {
+    "_reference": "IEC 60364-5-54 Table 54.2 and IEC 60364-4-43 Annex (informative)",
+    "_basis": "k = √(Qc × ρ × (θf - θi)) where Qc = volumetric heat capacity of conductor, ρ = resistivity, θf = final temperature limit, θi = initial temperature",
+
+    "copper_conductors": {
+      "PVC_insulation_70C": {
+        "k": 115,
+        "initial_temp_C": 70,
+        "final_temp_C": 160,
+        "note": "Copper conductor with PVC insulation. k = 115 is used for cables with maximum operating temperature 70°C (PVC). Use for overload/fault protection check."
+      },
+      "XLPE_EPR_insulation_90C": {
+        "k": 143,
+        "initial_temp_C": 90,
+        "final_temp_C": 250,
+        "note": "Copper conductor with XLPE or EPR insulation. k = 143 for cables with maximum operating temperature 90°C. Use for overload/fault protection check."
+      },
+      "mineral_insulated_MICC_bare_70C_sheath": {
+        "k": 135,
+        "initial_temp_C": 70,
+        "note": "MICC cable with PVC sheath, rated 70°C sheath temperature."
+      },
+      "mineral_insulated_MICC_bare_105C": {
+        "k": 135,
+        "initial_temp_C": 105,
+        "note": "MICC cable bare or with a high-temperature sheath."
+      },
+      "CPC_bare_protective_conductor": {
+        "k_in_cable_or_conduit": 115,
+        "k_separate_bare_visible_non_touchable": 135,
+        "k_buried_in_ground": 80,
+        "note": "For protective conductors (CPCs). If CPC is the same cable as the circuit (T&E or multicore), use 115 for PVC insulation. Bare CPCs exposed in cable trays or in conduit use k = 115. Bare buried conductors use k = 80 (lower because soil moisture limits temperature rise)."
+      }
+    },
+
+    "aluminium_conductors": {
+      "PVC_insulation_70C": {
+        "k": 74,
+        "initial_temp_C": 70,
+        "final_temp_C": 160,
+        "note": "Aluminium conductor with PVC insulation. Significantly lower k than copper — adiabatic check is more onerous for aluminium."
+      },
+      "XLPE_EPR_insulation_90C": {
+        "k": 94,
+        "initial_temp_C": 90,
+        "final_temp_C": 250,
+        "note": "Aluminium conductor with XLPE/EPR insulation."
+      }
+    },
+
+    "steel_conductors": {
+      "PVC_insulated": {
+        "k": 51,
+        "note": "Steel conductors (cable armour used as CPC — not recommended but sometimes used). Very low k — check is onerous."
+      }
+    }
+  },
+
+  "worked_examples": {
+    "example_1_MCB_thermal_region": {
+      "_title": "4mm² copper PVC cable, 25A Type B MCB, fault at remote end — thermal region",
+      "scenario": "Long circuit (30m). Short-circuit current at remote end = 100A (in thermal trip region of MCB). MCB operating time at 100A from time/current curve ≈ 40s.",
+      "I_A": 100,
+      "t_s": 40,
+      "k": 115,
+      "S_mm2": 4,
+      "I2t": "100² × 40 = 400000 A²s",
+      "k2S2": "115² × 4² = 13225 × 16 = 211600 A²s",
+      "check": "400000 > 211600 — FAILS",
+      "action": "Increase conductor cross-section. Required S ≥ √(400000) / 115 = 632.5 / 115 = 5.5mm². Select 6mm². OR reduce circuit length to lower the fault impedance and increase fault current (to push into instantaneous region).",
+      "lesson": "Thermal region faults at low fault current are the dangerous case — the MCB takes a long time to clear but the fault energy is still significant. Design must ensure either: (a) fault current is high enough to push into instantaneous trip, or (b) conductor is large enough to absorb the energy."
+    },
+
+    "example_2_MCB_instantaneous_region": {
+      "_title": "2.5mm² copper XLPE cable, 16A Type B MCB — instantaneous region fault at origin",
+      "scenario": "Maximum fault current at DB origin = 3000A (well above 5 × 16A = 80A). MCB is in instantaneous trip region. Manufacturer's I²t let-through data: 6kA MCB lets through approximately 5000 A²s at 3kA symmetrical.",
+      "I2t_let_through_from_manufacturer": 5000,
+      "k": 143,
+      "S_mm2": 2.5,
+      "k2S2": "143² × 2.5² = 20449 × 6.25 = 127806 A²s",
+      "check": "5000 ≤ 127806 — PASSES with significant margin",
+      "lesson": "In the instantaneous region, MCBs are typically current-limiting. The I²t let-through is far less than I² × 0.01. The check almost always passes for cables of reasonable size when MCBs are current-limiting at the fault level. HRC fuses are even more current-limiting and give better cable protection at high fault levels."
+    },
+
+    "example_3_CPC_sizing": {
+      "_title": "Minimum CPC cross-section for a 4mm² copper XLPE circuit, 32A Type B MCB",
+      "scenario": "Determine if a 1.5mm² CPC is adequate for a 4mm² circuit conductor.",
+      "worst_case_fault_current_at_MCB_instant": "32 × 5 = 160A (threshold for instantaneous trip). Use I²t from MCB time/current curve at 160A ≈ 0.01s",
+      "I2t": "160² × 0.01 = 256 A²s",
+      "k_CPC_PVC_in_cable": 115,
+      "S_CPC": 1.5,
+      "k2S2": "115² × 1.5² = 13225 × 2.25 = 29756 A²s",
+      "check": "256 ≤ 29756 — PASSES",
+      "_note": "The rule-of-thumb is CPC ≥ S/2 for S ≤ 16mm² usually satisfies the adiabatic check without detailed calculation. For large conductors (≥ 25mm²), CPC may be reduced below S/2 but adiabatic check must confirm.",
+      "simplified_rule": "For circuits where CPC is the same material and insulation as the line conductor: CPC = S for S ≤ 16mm². CPC = 16mm² for S = 25 or 35mm². CPC = S/2 for S ≥ 50mm²."
+    }
+  },
+
+  "minimum_CPC_cross_sections": {
+    "_reference": "IEC 60364-5-54 Table 54.3",
+    "_title": "Minimum protective conductor cross-sections (rule of thumb — adiabatic check still required for non-standard cases)",
+    "_condition": "CPC of same conductor material and insulation type as line conductor",
+    "line_to_CPC": {
+      "line_up_to_16mm2": "CPC = S (same as line conductor)",
+      "line_25_or_35mm2": "CPC ≥ 16mm²",
+      "line_50mm2_and_above": "CPC ≥ S/2"
+    },
+    "examples": {
+      "1.5mm2_line": "1.5mm² CPC",
+      "2.5mm2_line": "2.5mm² CPC",
+      "4mm2_line": "4mm² CPC",
+      "6mm2_line": "6mm² CPC",
+      "10mm2_line": "10mm² CPC",
+      "16mm2_line": "16mm² CPC",
+      "25mm2_line": "16mm² CPC",
+      "35mm2_line": "16mm² CPC",
+      "50mm2_line": "25mm² CPC",
+      "70mm2_line": "35mm² CPC",
+      "95mm2_line": "50mm² CPC",
+      "120mm2_line": "70mm² CPC",
+      "150mm2_line": "70mm² CPC",
+      "185mm2_line": "95mm² CPC",
+      "240mm2_line": "120mm² CPC",
+      "300mm2_line": "150mm² CPC"
+    }
+  },
+
+  "prospective_short_circuit_current": {
+    "_title": "Determining PSCC at points in the installation",
+    "at_service_origin": {
+      "method": "Measure using a loop impedance tester or a calibrated PSCC meter at the supply terminals.",
+      "typical_values": {
+        "LV_transformer_400kVA_supply": "Approximately 3–10 kA at LV terminals",
+        "urban_high_density": "Up to 16–25 kA at service entrance",
+        "rural_long_overhead_line": "As low as 0.5–2 kA",
+        "note": "Always obtain PSCC from the supply authority or measure on site. Estimated values must be verified before final design."
+      }
+    },
+    "at_downstream_point": {
+      "formula": "I_sc = U0 / Zs_upstream",
+      "Zs_upstream": "Earth fault loop impedance at the origin of the protected cable (Ze + upstream cable impedance)",
+      "note": "Calculate the PSCC at the origin of each protected cable to verify the protective device's breaking capacity is not exceeded."
+    },
+    "minimum_fault_current_at_remote_end": {
+      "formula": "I_fault_min = U0 / (Ze + R_line + R_CPC)",
+      "note": "This minimum fault current must be sufficient to trip the protective device within the required disconnection time from Table 41.1."
+    }
+  }
+}

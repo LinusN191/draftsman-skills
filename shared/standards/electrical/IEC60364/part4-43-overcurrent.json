@@ -1,0 +1,214 @@
+{
+  "_title": "IEC 60364-4-43:2008 — Protection against Overcurrent",
+  "_basis": "IEC 60364-4-43 Edition 2 (2008)",
+  "_version": "1.0.0",
+  "_note": "This file covers the fundamental requirements for protecting cables against overload and short-circuit currents. The central requirement is the Fundamental Rule: Ib ≤ In ≤ Iz. Short-circuit protection requirements — including the adiabatic check — are in fault-current.json.",
+
+  "fundamental_rule": {
+    "_reference": "Clause 433.1",
+    "_title": "The Fundamental Rule of overcurrent protection",
+    "rule": "Ib ≤ In ≤ Iz",
+    "components": {
+      "Ib": {
+        "definition": "Design current of the circuit — the maximum normal sustained load current",
+        "unit": "A",
+        "note": "Ib is determined by the designer from the connected load, applying diversity. For motors, Ib is the full-load current. For heating, Ib is the rated current. For mixed loads, use diversity per local practice or IEC 60364-3."
+      },
+      "In": {
+        "definition": "Nominal rated current of the protective device (MCB, fuse, RCBO)",
+        "unit": "A",
+        "note": "In must be ≥ Ib (device must not nuisance-trip in normal use). In must also be ≤ Iz (device must protect the cable). Standard IEC sizes: 6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630 A."
+      },
+      "Iz": {
+        "definition": "Continuous current-carrying capacity of the cable, after correction factors",
+        "unit": "A",
+        "note": "Iz = It × Ca × Cg × Ci × Cs × Cd. All applicable correction factors must be applied to the tabulated value (It) from Annex B of IEC 60364-5-52. The cable is the limiting element."
+      }
+    },
+    "additional_condition_for_effective_overload_protection": {
+      "_reference": "Clause 433.1 note",
+      "condition": "I2 ≤ 1.45 × Iz",
+      "_where": {
+        "I2": "Effective operating current of the device — the current at which it WILL trip within conventional time",
+        "I2_for_MCB_IEC_60898": "1.45 × In",
+        "I2_for_gG_fuse_IEC_60269": "1.6 × In (therefore for fuses: In ≤ Iz / 1.1 to satisfy I2 ≤ 1.45 × Iz)"
+      },
+      "implication_for_fuses": "When protecting with gG fuses, the nominal fuse rating In must be ≤ 0.91 × Iz (or conservatively ≤ 0.9 × Iz) to satisfy the I2 ≤ 1.45 × Iz condition, because I2 = 1.6 × In for fuses."
+    }
+  },
+
+  "overload_protection": {
+    "_reference": "Clause 433",
+    "requirement": "Every cable must be protected against overload at or before the origin of the cable (or at a point where the current-carrying capacity changes).",
+    "position_of_protective_device": {
+      "standard_position": "At the origin of every circuit — at the point where the cable cross-section decreases (increases in impedance).",
+      "omission_permitted": {
+        "condition_1": "No branch circuit or outlet is present between the upstream device and the downstream device — i.e., the load is fixed and identifiable",
+        "condition_2": "The cable is protected against short-circuit at the upstream device and the cable supplies a fixed load that cannot be overloaded",
+        "_example": "A 4mm² cable supplying a fixed 2kW heater, protected by a 16A MCB upstream — the heater cannot draw more than Ib = 2000/230 = 8.7A, so overload is physically impossible"
+      }
+    },
+    "conventional_tripping_times": {
+      "MCB_IEC_60898": {
+        "I1_non_tripping_current": "1.13 × In — must NOT trip within 1 hour (cold)",
+        "I2_tripping_current": "1.45 × In — MUST trip within 1 hour (cold)"
+      },
+      "gG_fuse_IEC_60269": {
+        "I1_non_tripping_current": "1.25 × In — must NOT melt within 1 hour",
+        "I2_melting_current": "1.6 × In — MUST melt within 1 hour"
+      }
+    }
+  },
+
+  "short_circuit_protection": {
+    "_reference": "Clauses 434–435",
+    "requirement": "Every protective device must be capable of interrupting any short-circuit current that can occur at its point of installation without sustaining damage to the installation.",
+    "breaking_capacity": {
+      "definition": "The maximum prospective short-circuit current (PSCC) the device can safely interrupt.",
+      "requirement": "Device breaking capacity ≥ PSCC at the point of installation.",
+      "standard_MCB_breaking_capacities": {
+        "3kA": "Domestic — only where PSCC is confirmed ≤ 3kA (very long supply paths, high supply impedance)",
+        "6kA": "Most domestic and light commercial applications in many countries",
+        "10kA": "Commercial and industrial applications — standard specification in many markets",
+        "16kA": "Near main switchboards, high fault level environments",
+        "25kA+": "Industrial near transformers — use MCCBs or HRC fuses"
+      }
+    },
+    "cable_protection_against_short_circuit": {
+      "_reference": "Clause 434.5.2 — see also fault-current.json",
+      "requirement": "The device must clear the fault before the cable is thermally damaged.",
+      "check": "I²t ≤ k²S²  (or S ≥ √(I²t) / k)",
+      "note": "This is the adiabatic equation. All values are in fault-current.json."
+    },
+    "back_up_protection": {
+      "_reference": "Clause 435",
+      "principle": "Where a device does not have sufficient breaking capacity on its own, it may be backed up by a device with higher breaking capacity upstream, provided the combination is coordinated (the downstream device limits current let-through to within the upstream device's rating under all fault conditions).",
+      "common_application": "6kA MCB backed up by 16kA MCCB at distribution board. This is only valid where the manufacturer's coordination data confirms the combination.",
+      "warning": "Do not assume any combination is valid without manufacturer coordination data."
+    }
+  },
+
+  "device_current_characteristics": {
+    "_reference": "IEC 60898 (MCBs), IEC 60269 (fuses)",
+
+    "MCB_Type_B": {
+      "standard": "IEC 60898-1",
+      "instantaneous_trip_range": "3× to 5× In",
+      "Ia_for_worst_case_Zs": "5× In (upper limit — use this for Zs_max calculation)",
+      "typical_use": "Resistive and mixed loads — general lighting, heating, socket outlets. Minimal inrush current.",
+      "trip_characteristic": {
+        "_format": "multiple_of_In: typical_trip_time_s",
+        "1.13": "no trip (conventional non-tripping current)",
+        "1.45": 3600,
+        "2": 100,
+        "3": 8,
+        "4": 0.05,
+        "5": 0.01,
+        "10": 0.01,
+        "50": 0.005
+      }
+    },
+
+    "MCB_Type_C": {
+      "standard": "IEC 60898-1",
+      "instantaneous_trip_range": "5× to 10× In",
+      "Ia_for_worst_case_Zs": "10× In",
+      "typical_use": "Inductive loads — small motors, fluorescent lighting banks, LED driver panels with significant inrush, transformers.",
+      "trip_characteristic": {
+        "1.13": "no trip",
+        "1.45": 3600,
+        "2": 100,
+        "3": 30,
+        "5": 0.5,
+        "7": 0.05,
+        "10": 0.01,
+        "50": 0.005
+      }
+    },
+
+    "MCB_Type_D": {
+      "standard": "IEC 60898-1",
+      "instantaneous_trip_range": "10× to 20× In",
+      "Ia_for_worst_case_Zs": "20× In",
+      "typical_use": "Very high inrush — transformer primary circuits, motor-generator sets, large discharge lighting (HID), welding equipment.",
+      "trip_characteristic": {
+        "1.13": "no trip",
+        "1.45": 3600,
+        "2": 200,
+        "5": 30,
+        "10": 0.5,
+        "15": 0.05,
+        "20": 0.01,
+        "50": 0.005
+      }
+    },
+
+    "gG_fuse_IEC_60269": {
+      "standard": "IEC 60269-1 and -3",
+      "type": "gG = general-purpose, full-range current-limiting fuse",
+      "I2_factor": 1.6,
+      "typical_use": "Submain protection, motor circuits (motor starter must provide overload protection separately), industrial distribution boards.",
+      "advantage_over_MCB": "Lower let-through energy (I²t) at high fault levels — gives better cable protection near high-fault-level sources.",
+      "trip_characteristic_16A_gG": {
+        "_note": "Typical 16A gG fuse — manufacturer curves required for precise design",
+        "1.6× In (25.6A)": 3600,
+        "2× In (32A)": 1000,
+        "3× In (48A)": 100,
+        "5× In (80A)": 10,
+        "10× In (160A)": 0.4,
+        "20× In (320A)": 0.04,
+        "50× In (800A)": 0.005
+      },
+      "common_ratings": [2, 4, 6, 10, 13, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630]
+    },
+
+    "aM_fuse_IEC_60269": {
+      "type": "aM = motor circuit — partial range fuse (short-circuit protection only, no overload protection)",
+      "note": "aM fuses do NOT provide overload protection — they only interrupt short-circuit currents. Must always be used with a separate overload relay (motor starter). I2 factor = 1.6× In but the fuse will not blow at 1.6× In within 1 hour — there is no thermal overload capability.",
+      "typical_use": "Motor circuit short-circuit protection, combined with contactor and overload relay in DOL starters."
+    }
+  },
+
+  "motor_circuit_requirements": {
+    "_reference": "IEC 60364-7 (various) and IEC 60947-4",
+    "general": "Motor circuits require overload protection in addition to short-circuit protection. The thermal trip threshold of the overload relay must be set to the motor's full-load current (FLC) from the nameplate.",
+    "short_circuit_protection": "gG fuses or Type D MCB (to handle starting current 5–7× FLC for DOL start).",
+    "overload_relay_setting": "Set to FLC from nameplate ±5%. Electronic relays allow more precise setting.",
+    "combined_motor_starter": "An MCB with motor-protective characteristic (Type K, or BS/IEC 60947-4 combination starter) provides both overload and short-circuit protection in one device."
+  },
+
+  "worked_example": {
+    "_title": "Cable sizing check for Fundamental Rule — 230V single-phase circuit",
+    "scenario": "2.5mm² copper XLPE cable (single-phase, clipped direct — reference method C) supplying a 16A socket outlet circuit. Ze = 0.35Ω. Cable length 25m.",
+    "step1_design_current": {
+      "Ib": "16A (maximum socket outlet load for a dedicated circuit)",
+      "device_selected": "16A Type B MCB"
+    },
+    "step2_cable_capacity": {
+      "It_from_table": "27A (2.5mm² copper XLPE, method C, from IEC 60364-5-52 Table B.52.4)",
+      "Ca_ambient_30C": 1.0,
+      "Cg_single_cable": 1.0,
+      "Iz": "27A × 1.0 × 1.0 = 27A"
+    },
+    "step3_fundamental_rule_check": {
+      "Ib_lte_In": "16 ≤ 16 ✓",
+      "In_lte_Iz": "16 ≤ 27 ✓",
+      "I2_lte_145_Iz": "1.45 × 16 = 23.2 ≤ 1.45 × 27 = 39.15 ✓"
+    },
+    "step4_ADS_check": {
+      "Zs_max_16A_TypeB": "2.88Ω (from part4-41-electric-shock.json)",
+      "R1_R2_for_2_5mm2": "0.0195 Ω/m (R1+R2 at 70°C for 2.5/1.5 cable) — use 2.5mm² conductor data: R at 90°C ≈ 2 × (0.00862 Ω/m) = 0.01724 Ω/m loop",
+      "_note": "For simplified check: R1+R2 ≈ 18 mΩ/m for 2.5mm² outgoing + 2.5mm² CPC at 90°C",
+      "Zs_calculated": "0.35 + (0.018 × 25) = 0.35 + 0.45 = 0.80Ω",
+      "check": "0.80Ω ≤ 2.88Ω ✓ — ADS complies"
+    },
+    "step5_voltage_drop": {
+      "mVAm_for_2_5mm2_XLPE": "15 mV/A/m (approximate — see part5-52-voltage-drop.json)",
+      "VD": "(15 × 16 × 25) / 1000 = 6.0V",
+      "VD_percent": "(6.0/230) × 100 = 2.6%",
+      "limit": "5% for final circuits (Annex G recommendation)",
+      "check": "2.6% ≤ 5% ✓"
+    },
+    "result": "16A Type B MCB protecting 2.5mm² copper XLPE, Method C, 25m single-phase circuit at 230V — COMPLIES with all checks."
+  }
+}

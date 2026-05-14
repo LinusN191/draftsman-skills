@@ -1,0 +1,189 @@
+{
+  "_title": "IEC 60364-6:2016+AMD1:2023 — Verification of Electrical Installations",
+  "_basis": "IEC 60364-6 Edition 2 (2016) with Amendment 1 (2023). Covers initial and periodic verification.",
+  "_version": "1.0.0",
+  "_note": "Verification is the process of confirming that an installation complies with IEC 60364. It comprises two stages: Inspection (visual) and Testing (measurement). Both must be completed and documented before the installation is declared safe for use.",
+
+  "types_of_verification": {
+    "initial_verification": {
+      "description": "Carried out on every new installation, and on additions or alterations to an existing installation.",
+      "when": "Before the installation is put into service — or before the section affected by a modification is energised.",
+      "who": "A competent person — one with knowledge of IEC 60364, the test equipment used, and the relevant hazards.",
+      "output": "An Electrical Installation Certificate (or equivalent national document) confirming the installation complies with the applicable standard at the time of inspection."
+    },
+    "periodic_verification": {
+      "description": "Re-inspection and re-testing of an installation at regular intervals to detect deterioration or modification.",
+      "purpose": "Installations age — insulation degrades, connections loosen, RCDs drift, earthing electrodes corrode. Periodic inspection finds hazards before they cause incidents.",
+      "intervals_guidance": {
+        "domestic": "Every 10 years (or on change of occupancy)",
+        "commercial_offices": "Every 5 years",
+        "industrial": "Every 3 years",
+        "hospitals": "Every 1 year (Part 7-710 areas)",
+        "swimming_pools": "Every 1 year",
+        "construction_sites": "Every 3 months (IEC 60364-7-704)",
+        "caravan_parks_marinas": "Every 1 year",
+        "note": "These are recommended intervals. National codes may specify different mandatory intervals."
+      },
+      "output": "Periodic Inspection Report (PIR) or Electrical Installation Condition Report (EICR) — documents any departures from IEC 60364 and classifies them by risk."
+    }
+  },
+
+  "inspection_checks": {
+    "_reference": "IEC 60364-6 Clause 61.1",
+    "_order": "Inspection must be completed BEFORE testing — testing while installation is damaged or non-compliant may miss hazards or damage test equipment.",
+
+    "items_to_inspect": [
+      {
+        "item": "Methods of protection against electric shock",
+        "checks": ["Basic insulation intact", "Barriers and enclosures in place", "IP ratings appropriate to location", "Supplementary protection (RCDs installed where required)"]
+      },
+      {
+        "item": "Protection against thermal effects",
+        "checks": ["Cables clear of heat sources", "No chafing or mechanical damage visible", "Cable entries sealed where required", "Clearance from combustible materials maintained"]
+      },
+      {
+        "item": "Protection against overcurrent",
+        "checks": ["Protective devices correctly rated", "Devices accessible and labelled", "No bypassed or defeated protection devices", "Fuses of correct rating and type"]
+      },
+      {
+        "item": "Selection and erection of equipment",
+        "checks": ["IP ratings correct for location", "Cable types appropriate for environment (temperature, chemicals, UV)", "Cable supports at correct intervals", "Bending radii not violated", "Cable entries protected against mechanical damage"]
+      },
+      {
+        "item": "Earthing and bonding",
+        "checks": ["CPC continuity connections visible and correctly made", "Main bonding connections in place for all metallic services", "MET accessible and connections secure", "Earth electrode visible and connected", "CPCs correctly identified (green-yellow)"]
+      },
+      {
+        "item": "Identification and notices",
+        "checks": ["Circuit schedule complete and current", "Warning notices present (voltage, phase, test intervals)", "Distribution board circuits labelled", "Hazard warnings at points of danger"]
+      },
+      {
+        "item": "Connection of conductors",
+        "checks": ["No excessive conductor at terminals", "No bare copper visible outside terminals", "Correct polarity at socket outlets (visual check)", "No damage to insulation at terminations"]
+      }
+    ]
+  },
+
+  "testing_sequence": {
+    "_reference": "IEC 60364-6 Clause 61.3",
+    "_critical_order": "Tests must be performed in this order. Subsequent tests assume previous tests passed.",
+
+    "test_1_continuity_of_CPC": {
+      "description": "Verify the circuit protective conductor (CPC) forms a continuous, low-resistance path from the furthest point of every circuit back to the MET.",
+      "method": "Wander lead method: use a calibrated continuity tester (low-resistance ohmmeter). Measure resistance between each exposed-conductive-part and the MET.",
+      "pass_criteria": "CPC resistance should be consistent with the calculated value for the conductor cross-section and length. Abnormally high readings indicate broken or inadequate CPC.",
+      "typical_values": {
+        "1.5mm2_copper_per_10m": "0.12 Ω (at 20°C)",
+        "2.5mm2_copper_per_10m": "0.074 Ω",
+        "note": "Record values for comparison at future periodic inspections — trend more important than absolute value"
+      },
+      "when_not_required": "Not required for consumer units directly supplied at MET where CPC connection is visible and confirmed by inspection."
+    },
+
+    "test_2_continuity_of_main_bonding": {
+      "description": "Verify that all main equipotential bonding conductors are connected and have acceptable resistance.",
+      "method": "Measure resistance between each bonded metallic service (water, gas, structural steel) and the MET.",
+      "pass_criteria": "Resistance should be consistent with conductor size and route. Typically < 0.05Ω for bonding conductors < 5m long.",
+      "note": "Main bonding does not need to be measured on every periodic inspection if it is visually confirmed intact — but must be measured on initial verification."
+    },
+
+    "test_3_insulation_resistance": {
+      "description": "Verify that the insulation between conductors and between live conductors and earth is adequate — no breakdown or tracking paths.",
+      "method": "Apply a DC test voltage between live conductors (L and N bridged) and earth, with all loads disconnected. Use a calibrated insulation tester.",
+      "test_voltages": {
+        "SELV_PELV_circuits": "250V DC",
+        "circuits_up_to_500V": "500V DC",
+        "circuits_above_500V": "1000V DC"
+      },
+      "pass_criteria": {
+        "minimum_insulation_resistance": "≥ 1 MΩ for circuits up to 500V",
+        "preferred_value": "≥ 2 MΩ — installation in good condition",
+        "below_1_MΩ": "Investigate fault — check for moisture ingress, damaged cable, or faulty equipment left connected",
+        "note": "Test with all equipment disconnected. RCDs, surge protective devices, and electronic ballasts will give false low readings if left connected."
+      },
+      "warning": "Never apply insulation test voltage to RCDs, SPDs, electronic ballasts, dimmer switches, or occupancy sensors while connected. Disconnect or bypass before testing."
+    },
+
+    "test_4_polarity": {
+      "description": "Verify that single-pole protective devices are connected in the line (phase) conductor only, and that socket outlets are wired with correct polarity (L to L, N to N, E to E).",
+      "method": "Visual inspection and continuity testing between phase and line terminal of each socket outlet/accessory.",
+      "pass_criteria": "No N-switched or N-fused connections. All accessories correctly polarised.",
+      "critical_for": "MCBs and fuses — if installed in neutral rather than line, they will not protect correctly and may leave live conductors accessible after apparent disconnection."
+    },
+
+    "test_5_earth_fault_loop_impedance_Zs": {
+      "description": "Measure the actual earth fault loop impedance at representative points and verify it does not exceed Zs_max for the protective device protecting each circuit.",
+      "method": "Use a calibrated loop impedance tester. Measure Zs at the furthest accessible point of each circuit (or representative circuits on large installations).",
+      "pass_criteria": {
+        "TN_systems": "Measured Zs ≤ Zs_max for the protective device (from part4-41-electric-shock.json). Apply a multiplier of 0.8 to Zs_max to account for the difference between cold test temperature and hot operating temperature.",
+        "TT_systems": "Ra × IΔn ≤ 50V — measure Ra (electrode resistance) separately. Loop impedance measurement in TT will include the earth electrode resistance.",
+        "correction_for_temperature": "Measured Zs is at ambient temperature. Operating temperature (hot) resistance is higher. Apply factor: Zs_hot = Zs_measured × 1.2 (approximate for copper PVC at 70°C). Verify Zs_hot ≤ Zs_max."
+      },
+      "important": "Zs_max values from IEC 60364-4-41 are for HOT conductors (at operating temperature). Measured values are COLD. Must apply temperature correction to be valid."
+    },
+
+    "test_6_earth_electrode_resistance": {
+      "description": "Measure the resistance of the earth electrode to the general mass of earth.",
+      "method": "Fall-of-potential (three-electrode) method, or clamp-on method for installations with multiple earth points.",
+      "when_required": "Always for TT systems. For TN-C-S, if a supplementary electrode is installed. For IT systems.",
+      "pass_criteria": "Ra ≤ 50V / IΔn for the protective device. Absolute maximum 200Ω for effective protection — ideally ≤ 50Ω."
+    },
+
+    "test_7_RCD_operation": {
+      "description": "Verify that every RCD trips within the required time at its rated residual current and does NOT trip at half rated residual current.",
+      "method": "Use a calibrated RCD tester. Apply test currents at IΔn and at 0.5 × IΔn. Measure trip time.",
+      "test_currents_and_expected_times": {
+        "at_0_5_IΔn": "Must NOT trip within 2 seconds",
+        "at_IΔn_non_S_type": "Must trip in ≤ 300ms",
+        "at_IΔn_for_30mA_additional_protection": "Must trip in ≤ 40ms",
+        "at_5_IΔn_non_S_type": "Must trip in ≤ 40ms",
+        "at_IΔn_S_type_time_delayed": "Must trip between 130ms and 500ms",
+        "at_5_IΔn_S_type": "Must trip in ≤ 150ms"
+      },
+      "test_position": "Test at 0°, 180°, and 90° phase angles where the tester allows — to catch RCDs that only detect certain phases of the AC waveform.",
+      "push_button_test": "After electrical test, verify physical push-button operates the mechanical trip mechanism. Document that button was pressed.",
+      "note": "An RCD that passes the timed test may still fail if the push-button has never been operated — the mechanical trip can seize. Regular monthly user testing by pressing the button is important."
+    },
+
+    "test_8_functional_testing": {
+      "description": "Verify that the installation works correctly under normal operating conditions.",
+      "checks": [
+        "All switching devices operate correctly",
+        "All protective devices can be switched OFF and ON",
+        "Emergency stop buttons operate correctly",
+        "Control circuits function as designed",
+        "Interlocks operate correctly"
+      ]
+    }
+  },
+
+  "documentation": {
+    "_reference": "IEC 60364-6 Clause 62 and 63",
+
+    "installation_certificate": {
+      "required_information": [
+        "Details of installation: address, supply, type of earthing system",
+        "Designer's declaration that design complies with IEC 60364 (or applicable national code)",
+        "Constructor's declaration that erection complies with design and IEC 60364",
+        "Inspector's declaration that inspection and testing has been completed and results comply",
+        "Schedule of all tests performed with measured values",
+        "Schedule of circuits and protective device ratings",
+        "Details of any departures from the standard (with justification)",
+        "Next recommended inspection date"
+      ]
+    },
+
+    "periodic_inspection_report": {
+      "classification_of_findings": {
+        "C1_danger_present": "Risk of injury — immediate remedial action required. Installation should not be used until rectified.",
+        "C2_potentially_dangerous": "Urgent remedial work required. Installation should not continue in use without repair within 90 days (or sooner depending on risk).",
+        "C3_improvement_recommended": "No immediate danger but improvement advised for full compliance or to reduce risk. Note on report — no specific time requirement.",
+        "FI_further_investigation_required": "Could not determine compliance — further investigation needed before declaration of compliance or non-compliance."
+      },
+      "overall_verdict": {
+        "satisfactory": "No C1 or C2 observations — installation complies with applicable standard at the date of inspection",
+        "unsatisfactory": "One or more C1 or C2 observations — installation does not comply. Remedial work required."
+      }
+    }
+  }
+}

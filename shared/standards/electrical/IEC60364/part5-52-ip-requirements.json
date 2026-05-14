@@ -1,0 +1,179 @@
+{
+  "_title": "IEC 60364-5-52 / IEC 60529 — IP Code Requirements for Wiring Systems and Equipment",
+  "_reference": "IEC 60364-5-52:2009+AMD1:2017, Clause 522 (External influences) and IEC 60529:2013 (Degrees of protection — IP code)",
+  "_version": "1.0.0",
+  "_note": "IP codes define the degree of protection provided by an enclosure. The first digit = protection against solid objects (dust/contact); the second digit = protection against water ingress. IK codes (IEC 62262) describe protection against mechanical impact and are separate from IP. Always specify both dimensions when selecting equipment for exposed locations.",
+
+  "ip_code_explanation": {
+    "_title": "Understanding the IP Code System",
+    "_standard": "IEC 60529:2013",
+    "format": "IP [first digit] [second digit]  e.g. IP44, IP65, IPX8",
+    "X_placeholder": "An X in either digit position means that digit has not been rated — not that it is zero. IP2X is not the same as IP20.",
+    "additional_letters": {
+      "A": "Back of hand protected (≥50mm object)",
+      "B": "Finger protected (≥12.5mm object)",
+      "C": "Tool protected (≥2.5mm)",
+      "D": "Wire protected (≥1mm)",
+      "_use": "Additional letters may be appended after the numeric code when supplementary information is needed, e.g. IP44C"
+    }
+  },
+
+  "first_digit_solid_objects": {
+    "_title": "First IP Digit — Protection against solid objects and access",
+    "_standard": "IEC 60529 Table 2",
+    "0": {"description": "No protection", "test": "—"},
+    "1": {"description": "Protected against solid objects >50mm (e.g. back of hand — unintentional contact only, not deliberate intrusion)", "test": "50mm sphere cannot enter"},
+    "2": {"description": "Protected against solid objects >12.5mm (fingers)", "test": "12.5mm sphere cannot enter; 80mm sphere cannot fully enter"},
+    "3": {"description": "Protected against solid objects >2.5mm (tools, wires)", "test": "2.5mm probe cannot enter"},
+    "4": {"description": "Protected against solid objects >1mm (small tools, fine wires)", "test": "1.0mm probe cannot enter"},
+    "5": {"description": "Dust protected — some dust ingress permitted but sufficient to prevent harmful deposit", "test": "Dust chamber test, negative pressure; no harmful deposit"},
+    "6": {"description": "Dust tight — no dust ingress whatsoever", "test": "Total exclusion of dust"}
+  },
+
+  "second_digit_water_ingress": {
+    "_title": "Second IP Digit — Protection against water ingress",
+    "_standard": "IEC 60529 Table 3",
+    "0": {"description": "No protection", "test": "—"},
+    "1": {"description": "Dripping water (vertical) — dripping water shall have no harmful effect", "test": "10 min at 1mm/min drip"},
+    "2": {"description": "Dripping water when tilted up to 15° from vertical", "test": "10 min drip, tilted 15°"},
+    "3": {"description": "Spraying water — water sprayed up to 60° from vertical shall have no harmful effect", "test": "Spray nozzle at 60° arc, 5 min"},
+    "4": {"description": "Splashing water — water splashing from any direction shall have no harmful effect", "test": "Oscillating water spray, all directions, 10 min"},
+    "5": {"description": "Water jets — low-pressure water jets from any direction shall have no harmful effect", "test": "6.3mm nozzle, 12.5 L/min at 3m distance"},
+    "6": {"description": "Powerful water jets — high-pressure water jets from any direction shall have no harmful effect", "test": "12.5mm nozzle, 100 L/min at 3m"},
+    "7": {"description": "Temporary immersion — immersion to 1m depth for up to 30 minutes shall have no harmful effect", "test": "0.15m above top of enclosure, 1m below water surface, 30 min"},
+    "8": {"description": "Continuous immersion — equipment suitable for continuous submersion under conditions specified by manufacturer (typically >1m)", "test": "Manufacturer-specified depth and time, agreed between manufacturer and user"},
+    "9K": {"description": "Powerful high-temperature water jets (additional K designation per IEC 60529 AMD 2:2013) — protection against close-range high pressure, high temperature spray", "test": "Steam cleaning jet, close range"}
+  },
+
+  "ik_mechanical_impact_codes": {
+    "_title": "IK Code — Protection against mechanical impact (IEC 62262:2002)",
+    "_note": "IK is separate from IP. An enclosure can be IP65 but IK03 — excellent water/dust sealing but easily damaged by impact. Specify IK where vandalism or mechanical risk exists.",
+    "_standard": "IEC 62262:2002",
+    "IK00": {"impact_energy_J": "<0.15",  "description": "Not protected"},
+    "IK01": {"impact_energy_J": 0.15, "description": "Very light impact"},
+    "IK02": {"impact_energy_J": 0.2,  "description": "Light impact"},
+    "IK03": {"impact_energy_J": 0.35, "description": "Light impact"},
+    "IK04": {"impact_energy_J": 0.5,  "description": "Medium-light impact"},
+    "IK05": {"impact_energy_J": 0.7,  "description": "Medium impact"},
+    "IK06": {"impact_energy_J": 1.0,  "description": "Medium impact — general indoor use"},
+    "IK07": {"impact_energy_J": 2.0,  "description": "Medium-heavy — commercial, light industrial"},
+    "IK08": {"impact_energy_J": 5.0,  "description": "Heavy — industrial, public areas at risk of vandalism"},
+    "IK09": {"impact_energy_J": 10.0, "description": "Very heavy — heavy industrial, public infrastructure"},
+    "IK10": {"impact_energy_J": 20.0, "description": "Highest — extreme mechanical hazard environments"}
+  },
+
+  "minimum_ip_by_location": {
+    "_reference": "IEC 60364-5-52:2009 Clause 522, IEC 60364-7 location-specific requirements",
+    "_principle": "Select the minimum IP for the external influence classification. IEC 60364-5-51 uses the AE, AF, AG classification system for external influences; IP is the direct translation for AE (water) and AB/AC (solid objects) ratings.",
+
+    "locations": {
+      "dry_indoor_domestic": {
+        "description": "Living rooms, offices, dry internal areas — domestic premises",
+        "minimum_IP": "IP2X",
+        "horizontal_top_surfaces": "IP4X (to prevent objects falling in — clause 412.2.4)",
+        "notes": "IP2X is the minimum for shock protection (finger cannot touch live parts). Top surface of horizontal equipment must be IP4X to prevent object ingress."
+      },
+      "damp_indoor": {
+        "description": "Kitchens (away from sink), utility rooms, laundry, unheated storage",
+        "minimum_IP": "IP44",
+        "notes": "Where condensation or cleaning water is present. Applies to all socket outlets and switches in areas regularly cleaned with water."
+      },
+      "bathroom_zone_0": {
+        "description": "Inside bath or shower tray — permanently wet",
+        "minimum_IP": "IPX7",
+        "notes": "Temporary immersion protection required. Only FELV/SELV circuits ≤12V AC or ≤30V DC permitted. Fixed luminaires IP67 minimum. Reference: IEC 60364-7-701."
+      },
+      "bathroom_zone_1": {
+        "description": "Directly above bath/shower to 2.25m height; shower cubicle walls",
+        "minimum_IP": "IPX4 (IPX5 where jets used for cleaning)",
+        "notes": "Socket outlets not permitted (except SELV shaver supply units). Switches prohibited unless SELV. Reference: IEC 60364-7-701."
+      },
+      "bathroom_zone_2": {
+        "description": "600mm horizontal distance beyond Zone 1, to 2.25m height; basin splash areas",
+        "minimum_IP": "IPX4",
+        "notes": "Socket outlets permitted only if SELV. Switches and junction boxes with appropriate IP. Reference: IEC 60364-7-701."
+      },
+      "swimming_pool_zone_0": {
+        "description": "Inside the pool — permanently submerged during use",
+        "minimum_IP": "IPX8",
+        "notes": "Only fixed underwater luminaires and other fixed equipment permitted. FELV or SELV at ≤12V AC only. All equipment must be rated for continuous submersion."
+      },
+      "swimming_pool_zone_1": {
+        "description": "Up to 2m above pool edge horizontally, up to 2.5m vertically",
+        "minimum_IP": "IPX5 (IPX5 if jets/cleaning used; IPX7 if subject to flooding)",
+        "notes": "Water jet cleaning IP5 typically applies. SELV circuits or fixed Class II equipment. Reference: IEC 60364-7-702."
+      },
+      "swimming_pool_zone_2": {
+        "description": "1.5m beyond Zone 1 boundary at pool edge",
+        "minimum_IP": "IPX4",
+        "notes": "Splash protection. General socket outlets permitted with RCD protection. Reference: IEC 60364-7-702."
+      },
+      "outdoor_exposed": {
+        "description": "External areas — facades, car parks, external lighting columns, external sockets",
+        "minimum_IP": "IP44",
+        "recommended_IP": "IP65",
+        "notes": "IP44 is the minimum for outdoor use. IP54 or IP65 is strongly recommended for any equipment subject to direct rain, hosing, or pressure washing. Garden sockets and external switches: IP44 at minimum."
+      },
+      "underground_buried": {
+        "description": "Junction boxes, terminations, and fittings in buried locations",
+        "minimum_IP": "IP68",
+        "notes": "Continuous submersion IP8 required. Compound-filled or resin-sealed joints are preferred — verify manufacturer's IP68 test pressure and depth rating."
+      },
+      "construction_site": {
+        "description": "Temporary installations on construction and demolition sites",
+        "minimum_IP": "IP44",
+        "recommended_IP": "IP54",
+        "notes": "Plug and socket outlets on construction sites: IP44 minimum per IEC 60364-7-704. Where high-pressure washing or flooding is foreseeable, IP54 or IP65. Socket outlets: IEC 60309 industrial pattern (BS EN 60309) for 16A and above."
+      },
+      "agricultural_horticultural": {
+        "description": "Farm buildings, greenhouses, animal shelters, irrigation systems",
+        "minimum_IP": "IP44",
+        "notes": "Corrosive atmospheres (ammonia from livestock): consider IP54 and stainless steel or GRP enclosures. Where cleaning with pressured water or steam: IP55. Reference: IEC 60364-7-705."
+      },
+      "marina_waterside": {
+        "description": "Marina berths, boat pontoons, waterside pedestals",
+        "minimum_IP": "IP44",
+        "recommended_IP": "IP55",
+        "notes": "Salt-air environment requires additional corrosion protection beyond IP rating alone. Stainless steel fasteners, marine-grade enclosures. Socket outlets: IEC 60309 marine pattern. Reference: IEC 60364-7-708."
+      },
+      "medical_group_2": {
+        "description": "Operating theatres, intensive care units — Group 2 medical locations",
+        "minimum_IP": "IP21",
+        "notes": "IP21 minimum (drip-proof) is common for general equipment. Higher IP where splashing or cleaning chemicals apply. Medical IT system enclosures: IP54 minimum for concealed locations. Reference: IEC 60364-7-710."
+      },
+      "industrial_general": {
+        "description": "Factory floors, plant rooms, process areas",
+        "minimum_IP": "IP44",
+        "notes": "Where metal swarf, oil mist, or cleaning chemicals present: IP54 or IP65. Where washing down with hose is routine: IP55 minimum."
+      }
+    }
+  },
+
+  "common_under_specification_traps": [
+    {
+      "trap": "Using IP44 outdoor luminaires where pressure washing occurs",
+      "problem": "IP44 tests with a fine spray; high-pressure washing forces water past seals. Use IP65 (dust-tight, jet-proof) or IP66 for pressure-wash environments.",
+      "fix": "Specify IP65 minimum for all equipment in areas regularly pressure-washed."
+    },
+    {
+      "trap": "Assuming IPX4 in bathroom Zone 2 covers the whole bathroom",
+      "problem": "Zone 0 and 1 are stricter. A luminaire rated IPX4 above a bath (Zone 1) fails the requirement — it needs IPX4 minimum but also must be rated for Zone 1 conditions.",
+      "fix": "Check zone boundaries carefully. Zone 0 is inside the tub/shower floor. Zone 1 is directly above. Check every fitting's installed position."
+    },
+    {
+      "trap": "IP rating without IK rating in public or vandal-risk areas",
+      "problem": "IP68 enclosure with IK04 can be smashed open. IP and IK are independent.",
+      "fix": "Specify IK08 or IK10 for external luminaires, surface boxes, and distribution boards in public areas."
+    },
+    {
+      "trap": "Mounting an IP22 distribution board in a damp plant room",
+      "problem": "IP22 protects against drip when tilted 15°. Condensation, hose-down, or pressured water cleaning penetrates IP22 easily.",
+      "fix": "IP44 minimum for all enclosures in damp, plant room, or outdoor locations."
+    },
+    {
+      "trap": "Using domestic IP2X switches and sockets in commercial kitchens",
+      "problem": "Commercial kitchens are routinely hosed down. IP2X provides only finger protection — no water resistance.",
+      "fix": "IP65 switches and sockets in commercial kitchen locations."
+    }
+  ]
+}

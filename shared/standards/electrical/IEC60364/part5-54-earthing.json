@@ -1,0 +1,230 @@
+{
+  "_title": "IEC 60364-5-54:2011+AMD1:2021 — Earthing Arrangements and Protective Conductors",
+  "_basis": "IEC 60364-5-54 Edition 3 (2011) with Amendment 1 (2021). Clauses 541–545.",
+  "_version": "1.0.0",
+  "_note": "This file covers: choice of earthing system, protective conductor sizing, equipotential bonding, earth electrode design and sizing, and the special requirements for each earthing system type.",
+
+  "earthing_system_types": {
+    "_reference": "IEC 60364-1 Clause 31.2 and IEC 60364-5-54 Clause 542",
+    "_coding": "Two letters: first = supply earth arrangement (T=directly earthed, I=isolated), second = consumer earth arrangement (T=separate electrode, N=connected to neutral)",
+
+    "TN_S": {
+      "full_name": "Terra-Neutral Separate",
+      "description": "Separate N (neutral) and PE (protective earth) conductors throughout the system, from the supply transformer to all consumer equipment.",
+      "supply_earth": "Transformer neutral directly connected to earth at transformer",
+      "consumer_earth": "PE conductor from transformer neutral earth, run alongside distribution cables. Never combined with N.",
+      "advantages": [
+        "No neutral current in PE — no interference with equipment or protective devices",
+        "Clean earth reference — best for sensitive electronics and instrumentation",
+        "RCDs function reliably — no common-mode noise from neutral current"
+      ],
+      "disadvantages": [
+        "Requires dedicated PE conductor throughout — higher cable costs",
+        "More complex distribution cable (separate N and PE cores)"
+      ],
+      "where_used": "Preferred for: industrial sites with sensitive instruments or VFDs, medical facilities, data centres, new commercial buildings. Increasingly common in Sub-Saharan Africa for urban commercial supplies."
+    },
+
+    "TN_C": {
+      "full_name": "Terra-Neutral Combined",
+      "description": "A single PEN conductor carries both neutral current and earth function throughout. No separate PE conductor in the distribution network.",
+      "consumer_earth": "PEN conductor serves as both N and PE",
+      "restriction": "NOT PERMITTED for new consumer installations — only for fixed distribution (utility networks). Cannot be used in new buildings per IEC 60364.",
+      "risk": "If PEN conductor breaks, all exposed metal parts of equipment connected to it become live at phase voltage — dangerous and not acceptable",
+      "where_found": "Older utility networks in Europe and some developing countries. Never in new consumer wiring."
+    },
+
+    "TN_C_S": {
+      "full_name": "Terra-Neutral Combined then Separate (PME)",
+      "description": "PEN conductor in the supply network (utility distribution). At the consumer's main earthing terminal (MET), the PEN is split: neutral continues as N, earth is derived as PE.",
+      "consumer_earth": "PE derived from PEN split at MET. PE is separate from N within the consumer's installation.",
+      "advantages": [
+        "Lower installation cost (DNO provides earth via neutral — no separate earth electrode needed in many cases)",
+        "Good ADS performance — low earth fault loop impedance because the supply neutral is the return path",
+        "Dominant system in UK (as PME), many parts of Europe, Africa, and Asia"
+      ],
+      "disadvantages": [
+        "Broken PEN upstream = all consumer metalwork at live potential (PME hazard)",
+        "Not suitable for certain rural/coastal areas with high soil resistivity or long overhead lines",
+        "Cannot use TN-C-S where the supply has significant length of overhead distribution (risk of broken neutral)"
+      ],
+      "where_used": "Dominant in urban Africa (Nigeria, Kenya, Ghana, South Africa), most of Europe. Rural areas often use TT instead due to PEN hazard from long overhead lines.",
+      "PME_caution": "In TN-C-S (PME) systems, the PEN conductor earthing points along the distribution route reduce fault loop impedance — BUT also mean that a broken PEN upstream raises the consumer's metalwork to a dangerous voltage. This risk must be assessed for each site."
+    },
+
+    "TT": {
+      "full_name": "Terra-Terra",
+      "description": "Supply transformer neutral directly earthed (at transformer). Consumer has a completely separate and independent earth electrode.",
+      "consumer_earth": "Local earth electrode at the consumer's premises — rod, plate, tape, or foundation earth.",
+      "advantages": [
+        "Independent of supply neutral — no PME hazard",
+        "Suitable for rural areas with overhead supply lines",
+        "Preferred where PEN conductor continuity cannot be guaranteed"
+      ],
+      "disadvantages": [
+        "Earth fault current limited by electrode resistance — typically too low for overcurrent devices to trip quickly. RCDs are mandatory for all circuits.",
+        "Electrode resistance must be regularly tested to ensure it remains within design parameters",
+        "More complex to achieve low electrode resistance in rocky or sandy soils"
+      ],
+      "where_used": "Rural Africa (where overhead lines dominate supply), older urban installations not yet upgraded, areas without reliable utility earth, caravan parks, marinas, wherever PME hazard is unacceptable"
+    },
+
+    "IT": {
+      "full_name": "Isolated Terra (Impedance Earthed)",
+      "description": "Supply neutral is either entirely isolated from earth, or connected to earth through a high impedance (typical 1000–2000Ω). No direct path for earth fault current on first fault.",
+      "consumer_earth": "All exposed conductive parts connected to earth electrode via PE, but no low-impedance path to neutral.",
+      "first_fault_behaviour": "On first fault to earth, the fault current is limited to leakage through supply impedance — typically < 1A. System continues operating. IMD gives alarm.",
+      "second_fault_behaviour": "Creates a fault loop similar to TN between the two faulted points. Must disconnect within the times from Table 41.1.",
+      "advantages": [
+        "Highest continuity of supply — first fault does not cause disconnection",
+        "Critical for: operating theatres (Group 2 medical), semiconductor fabrication, offshore platforms, arc furnaces"
+      ],
+      "where_used": "Group 2 medical locations (per IEC 60364-7-710), industrial processes that cannot tolerate shutdown on fault, offshore oil and gas"
+    }
+  },
+
+  "main_earthing_terminal_MET": {
+    "_reference": "IEC 60364-5-54 Clause 542.4",
+    "definition": "The central connection point in the installation where all earthing and bonding conductors are connected. Every installation must have a MET (or MEB — Main Equipotential Bonding terminal).",
+    "connections_to_MET": [
+      "Earth electrode conductor (TT systems, or TN-C-S supplement)",
+      "Exposed-conductive-parts of all equipment via CPCs",
+      "Extraneous conductive parts — incoming metallic services: water, gas, oil, other structural metalwork",
+      "Lightning protection system equipotential bonding (where LPS is installed)",
+      "Functional earth where required (IT, medical, data)"
+    ],
+    "disconnection_facility": "The connection between the MET and the earth electrode must be accessible and disconnectable for testing (without disconnecting the installation earth). Usually achieved with a disconnectable link or test clamp."
+  },
+
+  "protective_conductor_sizing": {
+    "_reference": "IEC 60364-5-54 Table 54.2 (cross-section of protective conductors in same cable as phase conductors)",
+    "_basis": "The CPC must be able to carry the earth fault current for the duration of protective device operation without thermal damage (adiabatic check). See fault-current.json. The table gives minimum sizes based on the adiabatic check.",
+
+    "minimum_CPC_cross_sections": {
+      "_title": "Minimum CPC cross-section as a function of phase conductor cross-section",
+      "_condition": "CPC of the same conductor material as phase conductor",
+      "S_phase_up_to_16mm2": "S_CPC = S_phase (same size)",
+      "S_phase_25_to_35mm2": "S_CPC = 16mm²",
+      "S_phase_50_and_above": "S_CPC = S_phase / 2 (rounded up to standard size)",
+      "note": "These are the minimum values. Where the adiabatic check (fault-current.json) gives a larger CPC requirement, use the calculated value. The table gives minimum starting points, not the absolute answer."
+    },
+
+    "CPE_in_same_cable": {
+      "description": "When the CPC is a core within the cable (multi-core cable or T&E), it benefits from the same thermal environment as the phase conductor.",
+      "sizing": "Use minimum CPC table above. Adiabatic check rarely requires larger than table minimum for standard residential and commercial circuits."
+    },
+
+    "separate_CPC": {
+      "description": "Where the CPC is a separate conductor (not in the same cable), the thermal environment may differ.",
+      "bare_copper_cpc_on_tray": {
+        "k": 135,
+        "note": "Higher k than insulated copper (115) — slightly smaller size may be used but for convenience use same table values"
+      },
+      "bare_copper_buried": {
+        "k": 80,
+        "minimum_size_buried": "If buried in ground, minimum 16mm² copper for durability regardless of adiabatic check",
+        "note": "Corrosion and mechanical damage dictate minimum size for buried CPCs"
+      },
+      "steel_conduit_as_CPC": {
+        "k": 51,
+        "note": "Steel conduit can serve as CPC but k value is low — often requires larger cross-section conduit to satisfy adiabatic check. Verify by calculation for each circuit."
+      }
+    },
+
+    "colour_coding": {
+      "_reference": "IEC 60446",
+      "CPC_insulated": "Green-yellow bicolour",
+      "PEN_conductor": "Green-yellow with blue marking at terminations, or blue with green-yellow at terminations",
+      "bare_CPC": "Green-yellow tape every 150mm, or at ends and junctions"
+    }
+  },
+
+  "earth_electrodes": {
+    "_reference": "IEC 60364-5-54 Clause 542.2 and AMD1:2021",
+    "_purpose": "Establish an electrical connection to the general mass of earth. Required in TT systems. Recommended as supplementary in TN-C-S (PME) systems where PEN failure is possible.",
+
+    "types": {
+      "earth_rod_or_pipe": {
+        "description": "Copper-bonded steel or stainless steel rod, 16–25mm diameter, driven vertically into the ground.",
+        "typical_length": "1.2m to 3m. Can be coupled rods driven to 6m+ in high-resistivity soil.",
+        "approximate_resistance": {
+          "formula": "R ≈ ρ / (2π × L) where ρ = soil resistivity (Ω·m), L = rod length (m)",
+          "example_1m_rod_100_ohm_m": "R ≈ 100 / (2π × 1.2) = 13.3 Ω",
+          "example_2m_rod_50_ohm_m": "R ≈ 50 / (2π × 2.4) = 3.3 Ω"
+        },
+        "minimum_dimensions": {
+          "copper_bonded_steel_rod": "14mm diameter, 1.2m minimum length",
+          "solid_copper_rod": "12.5mm diameter",
+          "stainless_steel_rod": "16mm diameter"
+        }
+      },
+      "horizontal_tape_or_strip": {
+        "description": "Copper tape or strip buried horizontally, typically in a ring around the building or as a long radial.",
+        "depth": "500mm to 900mm below ground level",
+        "typical_applications": "Perimeter earth electrodes for large buildings, where soil is too rocky for rods",
+        "minimum_conductor": "25mm × 2mm copper tape (50mm² equivalent)"
+      },
+      "foundation_earth_electrode": {
+        "description": "Steel reinforcement bar of building foundation connected to the earthing system. Provides large contact area with soil.",
+        "advantage": "Very low earth resistance — often < 1Ω for large buildings. Also provides effective bonding for the whole building structure.",
+        "connection": "Requires good electrical continuity of rebar — mechanical coupling at laps may not be sufficient. Specify welded or bonded connections at design stage.",
+        "use": "Standard practice for new multi-storey buildings. Most effective and durable electrode type."
+      },
+      "earth_plate": {
+        "description": "Copper or steel plate (minimum 500mm × 500mm × 2mm copper) buried vertically.",
+        "use": "Limited space situations, or supplement to rod electrodes"
+      }
+    },
+
+    "resistance_requirements": {
+      "TT_systems_general": "Ra × IΔn ≤ 50V. For 30mA RCD: Ra ≤ 1667Ω. For 100mA: Ra ≤ 500Ω. For 300mA: Ra ≤ 167Ω.",
+      "TT_maximum_practical": "50Ω — most installations can achieve this without special measures. Ensures RCDs remain effective.",
+      "TN_C_S_supplementary": "No specific limit — supplementary electrode in TN-C-S improves resilience if PEN fails. Target < 100Ω as good practice.",
+      "lightning_protection": "IEC 62305 — Ra ≤ 10Ω preferred for LPS earth electrodes. For low soil resistivity ≤ 1Ω is achievable.",
+      "IT_systems": "No specific earth electrode resistance limit — the system continues on first fault. Target < 50Ω for effective second fault detection."
+    },
+
+    "measuring_electrode_resistance": {
+      "method": "Fall-of-potential (3-point) method using an earth electrode tester",
+      "procedure": "Drive a current spike 30–40m from the electrode under test. Drive a potential spike at 62% of this distance. Measure resistance between electrode and potential spike with test current flowing.",
+      "when_to_test": "At installation, and periodically (every 5 years for critical installations per IEC 60364-6)",
+      "note": "Test in DRY conditions — soil resistivity is lower when wet, masking high-resistance poor electrode. Worst-case is dry season. Record both wet and dry season measurements."
+    }
+  },
+
+  "bonding": {
+    "_reference": "IEC 60364-5-54 Clauses 544.1 (main bonding) and 544.2 (supplementary bonding)",
+
+    "main_bonding": {
+      "purpose": "Connect all metallic services entering the building (water, gas, oil, telecommunications, structural metalwork) to the MET. Ensures all metalwork is at the same earth potential.",
+      "connections_required": [
+        "Metallic water service pipe — at point of entry into building",
+        "Metallic gas service pipe — at point of entry",
+        "Metallic oil supply pipe — at point of entry",
+        "Structural steel framework — column or beam adjacent to MET",
+        "Central heating metallic pipework — if not already connected via exposed-conductive-parts of heating equipment"
+      ],
+      "sizing": {
+        "minimum_bonding_conductor": "6mm² copper (domestic installations)",
+        "typical_commercial": "10mm² to 25mm² copper (for large buildings with high fault levels)",
+        "formula": "Minimum S_bonding = S_phase / 2 of the largest circuit conductor in the installation, but not less than 6mm² copper",
+        "note": "Where MET is connected to supplementary earth electrode, size bonding conductor for full earth fault current flow if needed."
+      }
+    },
+
+    "supplementary_bonding": {
+      "purpose": "Additional local bonding between simultaneously accessible conductive parts where ADS time requirement cannot otherwise be met, or in specific high-risk locations.",
+      "required_in": [
+        "Bathrooms (IEC 60364-7-701) — between all exposed conductive parts and extraneous conductive parts within reach (bath, shower tray, exposed pipework, metallic window frames within reach)",
+        "Agricultural buildings (IEC 60364-7-705) — between metallic structure, water pipes, and livestock floor level",
+        "Swimming pool surrounds — between metallic ladders, handrails, pool coping metalwork",
+        "Any location where ADS check fails and supplementary bonding is the chosen remedy"
+      ],
+      "sizing": {
+        "minimum_to_exposed_conductive_part": "2.5mm² if mechanically protected, 4mm² if not",
+        "minimum_to_extraneous_conductive_part": "2.5mm² if mechanically protected, 4mm² if not"
+      },
+      "verification": "R ≤ 50V / Ia (where Ia is the instantaneous trip current of the protective device) — confirms contact voltage is limited"
+    }
+  }
+}
