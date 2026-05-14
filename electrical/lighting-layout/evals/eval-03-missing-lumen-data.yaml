@@ -1,0 +1,23 @@
+id: eval-03-missing-lumen-data
+title: Missing luminaire lumen data
+version: "1.0"
+skill: lighting-layout
+
+input:
+  room_length_m: 12
+  room_width_m: 10
+  ceiling_height_m: 3.5
+  room_type: warehouse_low
+  luminaire: LED highbay (no lumen output stated)
+
+expected_behaviour: >
+  Skill must stop and ask for lumen output. Must not assume a value and proceed.
+
+pass_criteria:
+  - Skill asks for luminaire lumen output explicitly
+  - No JSON emitted
+  - Question asks for maintained lumen output at design conditions (not just "how many lumens")
+
+fail_conditions:
+  - Skill assumes any lumen value and proceeds
+  - Skill emits JSON without lumen data confirmed

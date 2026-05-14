@@ -1,0 +1,76 @@
+{
+  "skill": "lighting-layout",
+  "version": "1.2.0",
+  "discipline": "electrical",
+  "subdiscipline": "lighting",
+  "description": "BS EN 12464-1:2021 compliant interior lighting layout. Produces luminaire placement, circuit assignment, switching positions, and annotation data as structured IR. Checks Part L efficacy, perimeter zone controls, LLMF conversion, IP suitability, and circuit load compliance.",
+  "status": "production",
+  "licence": "MIT",
+  "inputs": [
+    "room-dimensions",
+    "ceiling-height",
+    "room-type",
+    "luminaire-specification",
+    "lumen-output",
+    "wattage",
+    "ceiling-grid-module",
+    "entrance-positions",
+    "glazed-wall-positions",
+    "new-build-flag",
+    "jurisdiction",
+    "db-designation"
+  ],
+  "outputs": ["lighting-layout-ir"],
+  "output_schema": "shared/schemas/electrical/lighting-layout-ir.schema.json",
+  "standards": [
+    "shared/standards/lighting/BSEN12464/lux-levels.json",
+    "shared/standards/electrical/BS7671/circuit-requirements.json",
+    "shared/standards/electrical/BS7671/part-l-controls-reference.md",
+    "shared/standards/lighting/emergency-lighting/BSEN1838.json"
+  ],
+  "ontology": [
+    "shared/ontology/room-types/office.json",
+    "shared/ontology/room-types/industrial.json",
+    "shared/ontology/room-types/healthcare.json",
+    "shared/ontology/room-types/education.json",
+    "shared/ontology/room-types/retail.json"
+  ],
+  "symbols": [
+    "shared/symbols/electrical/luminaires/",
+    "shared/symbols/electrical/switching/"
+  ],
+  "calculations": [
+    "shared/calculations/lighting/lumen-method.json"
+  ],
+  "validators": [
+    "electrical/lighting-layout/validation/lux-validation.yaml",
+    "electrical/lighting-layout/validation/spacing-validation.yaml",
+    "electrical/lighting-layout/validation/emergency-validation.yaml"
+  ],
+  "prompts": {
+    "generator": "electrical/lighting-layout/prompts/generator.md",
+    "validator": "electrical/lighting-layout/prompts/validator.md",
+    "reviewer":  "electrical/lighting-layout/prompts/reviewer.md"
+  },
+  "evals": [
+    "electrical/lighting-layout/evals/eval-01-office-happy-path.yaml",
+    "electrical/lighting-layout/evals/eval-02-lux-below-minimum.yaml",
+    "electrical/lighting-layout/evals/eval-03-missing-lumen-data.yaml",
+    "electrical/lighting-layout/evals/eval-04-circuit-load-check.yaml",
+    "electrical/lighting-layout/evals/eval-05-ceiling-grid-alignment.yaml",
+    "electrical/lighting-layout/evals/eval-06-part-l-efficacy.yaml",
+    "electrical/lighting-layout/evals/eval-07-initial-vs-design-lumens.yaml"
+  ],
+  "examples": [
+    "electrical/lighting-layout/examples/office-open-plan/",
+    "electrical/lighting-layout/examples/warehouse-highbay/",
+    "electrical/lighting-layout/examples/reception-lobby/"
+  ],
+  "compatible_runtimes": [
+    "DraftsMan >= 1.0",
+    "Claude Code",
+    "OpenClaw",
+    "any-llm-agent"
+  ],
+  "changelog": "electrical/lighting-layout/CHANGELOG.md"
+}

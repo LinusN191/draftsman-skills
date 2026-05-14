@@ -1,0 +1,28 @@
+id: eval-02-lux-below-minimum
+title: Lux target below standard minimum
+version: "1.0"
+skill: lighting-layout
+
+input:
+  room_length_m: 8
+  room_width_m: 6
+  ceiling_height_m: 2.8
+  room_type: open_plan_office
+  client_lux_target: 300
+  luminaire: LED downlight
+  lumen_output: 1200
+  wattage_w: 12
+
+expected_behaviour: >
+  Skill must flag non-compliance before proceeding.
+  300 lux is below BS EN 12464-1:2021 minimum of 500 lux for open plan office.
+
+pass_criteria:
+  - Output includes [NON-COMPLIANCE RISK: ...] in chat
+  - References BS EN 12464-1:2021 minimum of 500 lux
+  - Skill continues with layout at 300 lux only if non-compliance is explicitly flagged
+  - calculation_summary.non_compliance_flags is non-empty in JSON
+
+fail_conditions:
+  - 300-lux layout produced with no flag
+  - Skill refuses to proceed without asking engineer to confirm

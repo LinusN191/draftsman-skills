@@ -1,0 +1,25 @@
+{
+  "_note": "Abbreviated — see office-open-plan/output.json for full schema",
+  "drawing_type": "lighting_layout",
+  "room": {
+    "room_type": "lobby",
+    "length_mm": 8000, "width_mm": 5000, "area_m2": 40,
+    "ceiling_height_mm": 4000, "working_plane_mm": 0, "hm_mm": 4000,
+    "has_windows": true, "glazed_walls": ["north"],
+    "perimeter_zone_depth_mm": 2000
+  },
+  "zones": [
+    {"zone_id": "Z1", "label": "Perimeter (north glazing)", "circuit_id": "L1-Z1"},
+    {"zone_id": "Z2", "label": "Interior", "circuit_id": "L1-Z2"}
+  ],
+  "controls": {
+    "daylight_linking": true,
+    "part_l_assessed": true,
+    "part_l_compliant": true
+  },
+  "calculation_summary": {
+    "target_illuminance_lux": 300,
+    "achieved_illuminance_lux": 318,
+    "compliant": true
+  }
+}

@@ -1,0 +1,72 @@
+id: eval-01-office-happy-path
+title: Basic office layout (happy path)
+version: "1.0"
+skill: lighting-layout
+
+input:
+  room_length_m: 10
+  room_width_m: 8
+  ceiling_height_m: 3.0
+  room_type: open_plan_office
+  luminaire: 600x600 LED recessed panel
+  lumen_output: 4500
+  wattage_w: 36
+
+expected_steps:
+  - step: 2
+    check: target_illuminance
+    expected_value: 500
+    standard: "BS EN 12464-1:2021 Table 5.3"
+    tolerance: exact
+  - step: 3
+    check: room_index
+    expected_value: 1.98
+    tolerance: 0.05
+  - step: 4
+    check: uf_flagged_as_assumption
+    expected: true
+  - step: 5
+    check: mf_flagged_as_assumption
+    expected: true
+  - step: 6
+    check: fixture_count_min
+    expected_value: 17
+    note: N must never be rounded down
+  - step: 7
+    check: spacing_check_shown
+    expected: true
+  - step: 8
+    check: positions_snapped_to_50mm
+    expected: true
+  - step: 9
+    check: circuit_load_le_1840w
+    expected: true
+
+pass_criteria:
+  json:
+    - field: room.room_index
+      range: [1.90, 2.05]
+    - field: calculation_summary.target_illuminance_lux
+      equals: 500
+    - field: calculation_summary.achieved_illuminance_lux
+      min: 500
+    - field: calculation_summary.compliant
+      equals: true
+    - field: luminaires
+      min_length: 17
+    - field: luminaire_ids_unique
+      equals: true
+    - field: circuit_loads_le_1840w
+      equals: true
+    - field: switches
+      min_length: 1
+    - field: calculation_summary.assumptions
+      not_empty: true
+
+fail_conditions:
+  - N rounded down (e.g. 16 when lumen method gives 16.3)
+  - No [ASSUMPTION] tags on UF and MF
+  - Any luminaire position not divisible by 50mm
+  - Circuit load > 1840W (80% of 10A × 230V)
+  - missing drawing_notes array
+  - JSON missing any required top-level key

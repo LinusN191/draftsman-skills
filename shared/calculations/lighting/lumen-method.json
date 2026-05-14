@@ -1,0 +1,53 @@
+{
+  "_title": "Lumen Method — Interior Lighting Design",
+  "_reference": "CIBSE SLL Code for Lighting 2012",
+  "_version": "1.0.0",
+  "room_index": {
+    "formula": "RI = (L × W) / (Hm × (L + W))",
+    "rounding": "Round to nearest 0.25. Cap at 5.0 for table lookup.",
+    "variables": {
+      "RI": {"unit": "dimensionless", "description": "Room Index"},
+      "L":  {"unit": "m", "description": "Room length"},
+      "W":  {"unit": "m", "description": "Room width"},
+      "Hm": {"unit": "m", "description": "Effective mounting height = ceiling height − working plane height"}
+    }
+  },
+  "fixture_count": {
+    "formula": "N = (Em × A) / (Φ × UF × MF)",
+    "rounding": "ALWAYS round UP. Never round down.",
+    "variables": {
+      "N":  {"unit": "count",        "description": "Number of luminaires"},
+      "Em": {"unit": "lux",          "description": "Target maintained illuminance"},
+      "A":  {"unit": "m²",           "description": "Room area = L × W"},
+      "Φ":  {"unit": "lm",           "description": "Design lumen output per luminaire — NOT initial lumens"},
+      "UF": {"unit": "dimensionless", "description": "Utilisation factor from photometric data or table"},
+      "MF": {"unit": "dimensionless", "description": "Maintenance factor = LLMF × LSF × LMF × RSMF"}
+    }
+  },
+  "achieved_illuminance": {
+    "formula": "E_achieved = (N × Φ × UF × MF) / A",
+    "condition": "E_achieved must be ≥ Em"
+  },
+  "maintenance_factor": {
+    "formula": "MF = LLMF × LSF × LMF × RSMF",
+    "default_office_led": 0.80,
+    "components": {
+      "LLMF": "Lamp Lumen Maintenance Factor — LED L80 at 50,000h: 0.80",
+      "LSF":  "Lamp Survival Factor — LED: 1.00",
+      "LMF":  "Luminaire Maintenance Factor — normal office annual clean: 0.90",
+      "RSMF": "Room Surface Maintenance Factor — normal office annual: 0.94"
+    },
+    "note": "Always flag as [ASSUMPTION: ...] unless cleaning regime confirmed"
+  },
+  "spacing_check": {
+    "max_spacing": "S_max = SHR_max × Hm",
+    "edge_spacing": "S_edge_max = 0.5 × S_max",
+    "default_shr_max": 1.5,
+    "note": "SHR_max from photometric data. 1.5 is conservative default."
+  },
+  "initial_vs_design_lumens": {
+    "rule": "If lumen_type = 'initial' and L80 rated life stated, apply LLMF = 0.80",
+    "formula": "design_lumens = initial_lumens × LLMF",
+    "flag_required": "[ASSUMPTION: Initial lumens converted to design lumens using LLMF = {LLMF}. Design lumens = {design_lumens} lm.]"
+  }
+}

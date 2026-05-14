@@ -1,0 +1,29 @@
+id: eval-04-circuit-load-check
+title: Circuit load check — large room
+version: "1.0"
+skill: lighting-layout
+
+input:
+  room_length_m: 20
+  room_width_m: 15
+  ceiling_height_m: 4.0
+  room_type: open_plan_office
+  luminaire: 600x600 LED panel
+  lumen_output: 4500
+  wattage_w: 36
+
+pass_criteria:
+  json:
+    - field: circuits[*].load_w
+      max: 1840
+    - field: circuits
+      min_length: 2
+    - field: circuit_luminaire_ids_non_overlapping
+      equals: true
+    - field: total_luminaire_ids_across_circuits_equals_luminaires_length
+      equals: true
+
+fail_conditions:
+  - Any circuit with load > 1840W
+  - Same luminaire ID in two circuits
+  - Circuit count × max_per_circuit < total luminaires

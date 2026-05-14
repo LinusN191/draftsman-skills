@@ -1,0 +1,38 @@
+id: eval-07-initial-vs-design-lumens
+title: Initial vs design lumens — LLMF application
+version: "1.0"
+skill: lighting-layout
+
+input:
+  room_length_m: 10
+  room_width_m: 6
+  ceiling_height_m: 2.8
+  room_type: open_plan_office
+  luminaire: 600x600 LED panel
+  lumen_output: 5000
+  lumen_type: initial
+  rated_life: 50000h
+  rated_life_factor: L80
+  wattage_w: 36
+
+expected_calculations:
+  llmf: 0.80
+  design_lumens: 4000
+  fixture_count_correct: 14
+  fixture_count_wrong_if_initial_used: 12
+
+pass_criteria:
+  - Skill detects lumen_type = initial
+  - Applies LLMF = 0.80 → design lumens = 4000
+  - [ASSUMPTION] flag on lumen conversion present
+  - Fixture count N >= 14 (not 12)
+  - luminaire_type.lumen_type = "initial"
+  - luminaire_type.llmf_applied = true
+  - luminaire_type.initial_lumens = 5000
+  - luminaire_type.lumens = 4000
+
+fail_conditions:
+  - Skill uses 5000 lm without applying LLMF
+  - Fixture count = 12
+  - No [ASSUMPTION] on lumen conversion
+  - luminaire_type.llmf_applied = false

@@ -1,0 +1,12 @@
+id: lux-validation
+description: Validates achieved illuminance against BS EN 12464-1:2021 targets
+rules:
+  - id: lux-minimum
+    check: achieved_illuminance_lux >= target_illuminance_lux
+    error: "Achieved illuminance below maintained minimum"
+  - id: circuit-load
+    check: circuit_load_w <= 1840
+    error: "Circuit load exceeds 80% of 10A MCB (1840W)"
+  - id: fixture-count-rounded-up
+    check: luminaires.length >= calculated_N_exact
+    error: "Fixture count must be rounded up, not down"

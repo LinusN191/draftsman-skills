@@ -1,0 +1,9 @@
+id: emergency-validation
+description: Validates emergency lighting requirements per BS EN 1838
+rules:
+  - id: escape-route-coverage
+    check: escape_route_luminaires_present
+    error: "Escape route requires emergency luminaires"
+  - id: open-area-spacing
+    check: open_area_spacing_m <= 6
+    error: "Emergency luminaire spacing exceeds 6m for open areas"

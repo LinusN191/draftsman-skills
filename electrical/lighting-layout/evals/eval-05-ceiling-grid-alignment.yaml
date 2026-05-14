@@ -1,0 +1,28 @@
+id: eval-05-ceiling-grid-alignment
+title: Ceiling grid alignment — 600mm module
+version: "1.0"
+skill: lighting-layout
+
+input:
+  room_length_m: 9
+  room_width_m: 6
+  ceiling_grid_mm: 600
+  ceiling_height_m: 2.8
+  room_type: private_office
+  luminaire: 600x600 LED panel
+  lumen_output: 3500
+  wattage_w: 28
+
+expected_behaviour: >
+  Valid x positions: 300, 900, 1500, 2100, 2700, 3300, 3900, 4500, 5100,
+  5700, 6300, 6900, 7500, 8100, 8700 (centres of 600mm cells in 9000mm room).
+  All positions must be multiples of 300mm (centres of 600mm grid cells).
+
+pass_criteria:
+  - All luminaire x positions are multiples of 300mm
+  - All luminaire y positions are multiples of 300mm
+  - Drawing note references ceiling grid module assumption
+
+fail_conditions:
+  - Any position not on 600mm grid centres
+  - No mention of ceiling grid in drawing notes or assumptions

@@ -1,0 +1,19 @@
+{
+  "skill": "sld",
+  "version": "1.1.0",
+  "discipline": "electrical",
+  "subdiscipline": "distribution",
+  "description": "LV single line diagrams from supply intake through MSB to sub-boards. Calculates maximum demand, sizes protective devices, checks PSCC/Zs, identifies life safety circuits, assesses SPD requirements.",
+  "status": "production",
+  "licence": "MIT",
+  "inputs": ["supply-data", "load-schedule", "distribution-hierarchy", "earthing-system", "cable-lengths"],
+  "outputs": ["sld-ir"],
+  "output_schema": "shared/schemas/electrical/sld-ir.schema.json",
+  "standards": [
+    "shared/standards/electrical/BS7671/",
+    "shared/standards/electrical/IEC61439/",
+    "shared/standards/electrical/IEC60617/standard-symbols-reference.md"
+  ],
+  "compatible_runtimes": ["DraftsMan >= 1.0", "Claude Code", "OpenClaw"],
+  "changelog": "electrical/sld/CHANGELOG.md"
+}

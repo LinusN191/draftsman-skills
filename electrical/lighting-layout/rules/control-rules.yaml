@@ -1,0 +1,13 @@
+id: control-rules
+description: Controls specification rules per AD Part L 2021
+rules:
+  - id: occupancy-sensing
+    applies_to: [open_plan_office, private_office, meeting_room]
+    requirement: Required per AD Part L 2021
+  - id: daylight-linking
+    applies_to: perimeter_zone
+    condition: glazed wall present
+    requirement: Required per AD Part L 2021
+  - id: perimeter-separate-circuit
+    applies_to: perimeter_zone
+    requirement: Perimeter zone must be on separate controllable circuit

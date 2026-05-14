@@ -1,0 +1,56 @@
+{
+  "_title": "Imperial / US Customary Units Reference",
+  "_version": "1.0.0",
+  "_note": "SI is the primary unit system for all DraftsMan skills. Imperial units appear in US/Canada projects (NFPA, NEC) and legacy UK drawings.",
+  "length": {
+    "inch":    {"symbol": "in", "si_equivalent_m": 0.0254},
+    "foot":    {"symbol": "ft", "si_equivalent_m": 0.3048},
+    "yard":    {"symbol": "yd", "si_equivalent_m": 0.9144},
+    "mile":    {"symbol": "mi", "si_equivalent_m": 1609.344}
+  },
+  "area": {
+    "square_foot": {"symbol": "ft²", "si_equivalent_m2": 0.092903},
+    "square_yard":  {"symbol": "yd²", "si_equivalent_m2": 0.836127},
+    "square_inch":  {"symbol": "in²", "si_equivalent_m2": 0.00064516}
+  },
+  "volume": {
+    "us_gallon":    {"symbol": "US gal", "si_equivalent_l": 3.78541},
+    "uk_gallon":    {"symbol": "UK gal", "si_equivalent_l": 4.54609},
+    "cubic_foot":   {"symbol": "ft³",    "si_equivalent_m3": 0.0283168}
+  },
+  "flow_rate": {
+    "gpm_us":  {"symbol": "US gpm", "si_equivalent_lps": 0.0630902},
+    "cfm":     {"symbol": "cfm",    "si_equivalent_m3s": 0.000471947}
+  },
+  "temperature": {
+    "fahrenheit": {
+      "symbol": "°F",
+      "to_celsius": "°C = (°F − 32) × 5/9",
+      "from_celsius": "°F = (°C × 9/5) + 32"
+    }
+  },
+  "pressure": {
+    "psi":  {"symbol": "psi", "si_equivalent_kpa": 6.89476},
+    "inHg": {"symbol": "inHg","si_equivalent_kpa": 3.38639}
+  },
+  "power": {
+    "horsepower": {"symbol": "hp", "si_equivalent_kw": 0.745700}
+  },
+  "wire_gauges": {
+    "_note": "AWG — US wire gauge. Larger AWG = smaller conductor.",
+    "AWG": {
+      "14": {"cross_section_mm2": 2.08,  "ampacity_a": 15},
+      "12": {"cross_section_mm2": 3.31,  "ampacity_a": 20},
+      "10": {"cross_section_mm2": 5.26,  "ampacity_a": 30},
+      "8":  {"cross_section_mm2": 8.37,  "ampacity_a": 40},
+      "6":  {"cross_section_mm2": 13.3,  "ampacity_a": 55},
+      "4":  {"cross_section_mm2": 21.2,  "ampacity_a": 70},
+      "2":  {"cross_section_mm2": 33.6,  "ampacity_a": 95},
+      "1":  {"cross_section_mm2": 42.4,  "ampacity_a": 110},
+      "1/0":{"cross_section_mm2": 53.5,  "ampacity_a": 125},
+      "2/0":{"cross_section_mm2": 67.4,  "ampacity_a": 145},
+      "3/0":{"cross_section_mm2": 85.0,  "ampacity_a": 165},
+      "4/0":{"cross_section_mm2": 107.2, "ampacity_a": 195}
+    }
+  }
+}

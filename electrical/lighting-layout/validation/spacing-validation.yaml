@@ -1,0 +1,12 @@
+id: spacing-validation
+description: Validates luminaire spacing against SHR limits
+rules:
+  - id: spacing-x
+    check: spacing_x_mm <= shr_max * hm_mm
+    error: "X spacing exceeds SHR_max × Hm"
+  - id: spacing-y
+    check: spacing_y_mm <= shr_max * hm_mm
+    error: "Y spacing exceeds SHR_max × Hm"
+  - id: grid-snap
+    check: all positions divisible by 50mm
+    error: "Position not snapped to 50mm grid"

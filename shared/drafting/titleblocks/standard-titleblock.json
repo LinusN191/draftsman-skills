@@ -1,0 +1,17 @@
+{
+  "_version": "1.0.0",
+  "_standard": "BS 1192 / ISO 19650",
+  "fields": {
+    "project_name":   {"required": true,  "position": "top_left"},
+    "drawing_title":  {"required": true,  "position": "title_box"},
+    "drawing_number": {"required": true,  "format": "[discipline]-[number]", "example": "E-201"},
+    "revision":       {"required": true,  "format": "P[n] for preliminary, [n] for issued"},
+    "scale":          {"required": true,  "default": "NTS for schematic drawings"},
+    "date":           {"required": true,  "format": "DD/MM/YYYY"},
+    "drawn_by":       {"required": true},
+    "checked_by":     {"required": true},
+    "approved_by":    {"required": false},
+    "client":         {"required": false},
+    "status":         {"required": true,  "values": ["PRELIMINARY", "FOR COMMENT", "FOR CONSTRUCTION", "AS BUILT"]}
+  }
+}

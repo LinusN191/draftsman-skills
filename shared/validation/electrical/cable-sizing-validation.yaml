@@ -1,0 +1,15 @@
+id: cable-sizing-validation
+description: Core cable sizing validation rules per BS 7671:2018
+rules:
+  - id: fundamental-rule
+    check: "Ib <= In <= Iz"
+    standard: "BS 7671:2018 Regulation 433.1.1"
+    error: "Fundamental Rule violated: Ib must be ≤ In ≤ Iz"
+  - id: voltage-drop-lighting
+    check: "voltage_drop_pct <= 3.0"
+    standard: "BS 7671:2018 Appendix 12"
+    error: "Voltage drop exceeds 3% on lighting circuit"
+  - id: voltage-drop-power
+    check: "voltage_drop_pct <= 5.0"
+    standard: "BS 7671:2018 Appendix 12"
+    error: "Voltage drop exceeds 5% on power circuit"

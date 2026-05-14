@@ -1,0 +1,10 @@
+id: lux-validation-shared
+description: Shared lux validation rules per BS EN 12464-1:2021
+rules:
+  - id: achieved-lux
+    check: "achieved_illuminance_lux >= target_illuminance_lux"
+    standard: "BS EN 12464-1:2021 Table 5.3"
+    error: "Achieved illuminance below maintained minimum for room type"
+  - id: fixture-count-rounded-up
+    check: "luminaire_count >= ceil(calculated_N_exact)"
+    error: "Fixture count rounded down — must always round up"

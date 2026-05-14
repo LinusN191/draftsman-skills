@@ -1,0 +1,69 @@
+{
+  "_version": "1.0.0",
+  "_standard": "BS EN 12464-1:2021",
+  "office_open_plan": {
+    "lighting": {
+      "em_lux": 500,
+      "uniformity_min": 0.6,
+      "ugr_max": 19,
+      "ra_min": 80,
+      "working_plane_m": 0.75,
+      "preferred_luminaires": ["LED_PANEL_600", "LINEAR_LED"],
+      "controls": ["daylight_linking_perimeter", "occupancy_sensor", "manual_override"]
+    },
+    "partl_uk": {
+      "controls_required": true,
+      "perimeter_zone_separate_circuit": true,
+      "perimeter_zone_depth_m": 2.0,
+      "efficacy_min_lm_per_w": 65
+    },
+    "hvac": {
+      "fresh_air_lps_per_person": 10,
+      "occupant_density_m2_per_person": 10
+    }
+  },
+  "private_office": {
+    "lighting": {
+      "em_lux": 500,
+      "uniformity_min": 0.6,
+      "ugr_max": 19,
+      "ra_min": 80,
+      "working_plane_m": 0.75,
+      "preferred_luminaires": ["LED_PANEL_600", "LED_DOWNLIGHT"],
+      "controls": ["occupancy_sensor", "dimmer", "manual_override"]
+    },
+    "partl_uk": {
+      "controls_required": true,
+      "perimeter_zone_separate_circuit": false,
+      "efficacy_min_lm_per_w": 65
+    }
+  },
+  "conference_room": {
+    "lighting": {
+      "em_lux": 500,
+      "uniformity_min": 0.6,
+      "ugr_max": 19,
+      "ra_min": 80,
+      "working_plane_m": 0.75,
+      "preferred_luminaires": ["LED_PANEL_600"],
+      "controls": ["scene_setting", "dimming", "presentation_mode", "manual_override"],
+      "presentation_wall_lux": 300
+    },
+    "partl_uk": {
+      "controls_required": true,
+      "scene_control_recommended": true,
+      "efficacy_min_lm_per_w": 65
+    }
+  },
+  "reception_lobby": {
+    "lighting": {
+      "em_lux": 300,
+      "uniformity_min": 0.4,
+      "ugr_max": 22,
+      "ra_min": 80,
+      "working_plane_m": 0.0,
+      "preferred_cct_k": [3000, 3500],
+      "preferred_luminaires": ["LED_DOWNLIGHT", "LED_PANEL_600"]
+    }
+  }
+}

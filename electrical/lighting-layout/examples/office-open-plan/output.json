@@ -1,0 +1,115 @@
+{
+  "drawing_type": "lighting_layout",
+  "version": "1.1",
+  "room": {
+    "length_mm": 10000,
+    "width_mm": 8000,
+    "area_m2": 80,
+    "ceiling_height_mm": 3000,
+    "working_plane_mm": 750,
+    "hm_mm": 2250,
+    "room_index": 1.98,
+    "room_type": "open_plan_office",
+    "environment_type": "normal",
+    "ip_required": "IP20",
+    "has_windows": false
+  },
+  "luminaire_type": {
+    "symbol": "LED_PANEL_600",
+    "description": "600×600 LED Recessed Panel",
+    "lumens": 4500,
+    "lumen_type": "design",
+    "llmf_applied": false,
+    "wattage_w": 36,
+    "cct_k": 4000,
+    "cri_ra": 80,
+    "ip_rating": "IP20",
+    "lamp_efficacy_lm_per_w": 125.0
+  },
+  "zones": [
+    {
+      "zone_id": "Z2",
+      "label": "Interior",
+      "circuit_id": "L1-Z2",
+      "luminaire_count": 20,
+      "total_load_w": 720
+    }
+  ],
+  "luminaires": [
+    {"id": "L01", "x_mm": 1200, "y_mm": 800,  "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L02", "x_mm": 3600, "y_mm": 800,  "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L03", "x_mm": 6000, "y_mm": 800,  "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L04", "x_mm": 8400, "y_mm": 800,  "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L05", "x_mm": 1200, "y_mm": 2400, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L06", "x_mm": 3600, "y_mm": 2400, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L07", "x_mm": 6000, "y_mm": 2400, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L08", "x_mm": 8400, "y_mm": 2400, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L09", "x_mm": 1200, "y_mm": 4000, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L10", "x_mm": 3600, "y_mm": 4000, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L11", "x_mm": 6000, "y_mm": 4000, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L12", "x_mm": 8400, "y_mm": 4000, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L13", "x_mm": 1200, "y_mm": 5600, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L14", "x_mm": 3600, "y_mm": 5600, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L15", "x_mm": 6000, "y_mm": 5600, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L16", "x_mm": 8400, "y_mm": 5600, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L17", "x_mm": 1200, "y_mm": 7200, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L18", "x_mm": 3600, "y_mm": 7200, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L19", "x_mm": 6000, "y_mm": 7200, "zone_id": "Z2", "circuit_id": "L1-Z2"},
+    {"id": "L20", "x_mm": 8400, "y_mm": 7200, "zone_id": "Z2", "circuit_id": "L1-Z2"}
+  ],
+  "switches": [
+    {
+      "id": "SW01",
+      "type": "1_gang",
+      "x_mm": 200,
+      "y_mm": 200,
+      "height_aff_mm": 1200,
+      "controls_circuit": "L1-Z2",
+      "door_swing": "unknown",
+      "switch_side": "latch_side"
+    }
+  ],
+  "circuits": [
+    {
+      "circuit_id": "L1-Z2",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L01","L02","L03","L04","L05","L06","L07","L08","L09","L10",
+                        "L11","L12","L13","L14","L15","L16","L17","L18","L19","L20"],
+      "total_load_w": 720,
+      "mcb_rating_a": 6,
+      "mcb_curve": "C",
+      "spare_ways_provided": 1
+    }
+  ],
+  "controls": {
+    "dimming_protocol": null,
+    "occupancy_sensing": false,
+    "daylight_linking": false,
+    "part_l_assessed": true,
+    "part_l_compliant": true,
+    "part_l_efficacy_target_lm_per_w": 65
+  },
+  "calculation_summary": {
+    "target_illuminance_lux": 500,
+    "achieved_illuminance_lux": 603,
+    "utilisation_factor": 0.67,
+    "maintenance_factor": 0.80,
+    "lamp_efficacy_lm_per_w": 125.0,
+    "part_l_efficacy_target_lm_per_w": 65,
+    "ugr_status": "UGR ≤ 19 — confirm from photometric data",
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "UF = 0.67 from standard reflectance table — confirm from photometric data",
+      "MF = 0.80 for clean office LED — confirm cleaning schedule with FM"
+    ]
+  },
+  "drawing_notes": [
+    "All luminaires: 600×600 LED recessed panel, 4500 lm, 36W, 4000K, CRI ≥ 80",
+    "Maintained illuminance: 500 lux, UGR ≤ 19 per BS EN 12464-1:2021 Table 5.3",
+    "Ceiling grid: 600mm module assumed — confirm from architect's reflected ceiling plan",
+    "Switch heights: 1200mm AFF to centre",
+    "Circuit L1-Z2: 20 × 36W = 720W on DB L1"
+  ]
+}

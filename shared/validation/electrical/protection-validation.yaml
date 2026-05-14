@@ -1,0 +1,15 @@
+id: protection-validation
+description: Protection device validation rules per BS 7671:2018
+rules:
+  - id: breaking-capacity
+    check: "device_icu_ka >= pscc_at_installation_ka"
+    standard: "BS EN 60898-1 / BS EN 60947-2"
+    error: "Device breaking capacity (Icu) less than PSCC at installation point"
+  - id: zs-disconnection
+    check: "zs_ohm <= zs_max_ohm"
+    standard: "BS 7671:2018 Table 41.2 / Table 41.3"
+    error: "Earth fault loop impedance Zs exceeds Zs_max — disconnection time not met"
+  - id: rcd-socket-circuits
+    check: "socket_circuits_le32a have rcd_sensitivity_ma = 30"
+    standard: "BS 7671:2018 Regulation 411.3.3"
+    error: "30mA RCD protection missing on socket circuit ≤ 32A"
