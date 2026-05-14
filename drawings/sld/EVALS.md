@@ -210,6 +210,169 @@ defensible maximum demand figure.
 
 ---
 
+## Eval 06 — Zs disconnection time compliance check
+
+**Input:**
+```
+Building: office floor sub-board
+Board: SDB-L3 fed from MSB
+Supply: TN-C-S, Ze at MSB = 0.45 Ω
+Cable: MSB → SDB-L3: 50m, 10mm² 4C+CPC Cu, method E
+Outgoing circuit at SDB-L3:
+  Way 1: Socket outlets, 20A Type C MCB
+  Cable SDB-L3 → Way 1 sockets: 30m, 2.5mm² 2C+CPC
+```
+
+**Expected reasoning:**
+
+```
+Step 7 — Ze at SDB-L3:
+  Zcable_MSB_to_SDB = (2 × 0.0225 × 50) / 10 = 0.225Ω
+  Ze_SDB-L3 = 0.45 + 0.225 = 0.675Ω
+  PSCC at SDB-L3 = 230 / 0.675 = 341A = 0.34kA → MCB Icu 3kA >> 0.34kA ✓
+
+Step 8 — Zs for socket circuit (Way 1):
+  R1 = 0.0225 × 30 / 2.5 = 0.270Ω  (phase conductor)
+  R2 = 0.0225 × 30 / 1.5 = 0.450Ω  (CPC, 1.5mm² per Table 54.7)
+  Zs = 0.675 + 0.270 + 0.450 = 1.395Ω
+
+  Zs_max for 20A Type C MCB (0.4s, Table 41.2) = 1.15Ω
+
+  1.395Ω > 1.15Ω → NON-COMPLIANCE
+```
+
+**Pass criteria:**
+- Skill calculates Ze at SDB-L3 = 0.67–0.68Ω
+- Skill calculates Zs for Way 1 socket circuit = 1.38–1.40Ω
+- Skill identifies Zs_max for 20A Type C MCB = 1.15Ω (from Table 41.2)
+- Output includes `[NON-COMPLIANCE RISK: Zs = 1.40Ω exceeds Zs_max = 1.15Ω...]`
+- Skill proposes at least one remediation option: reduce cable length,
+  increase CPC size, change to Type B MCB, or install 30mA RCD
+- `boards[SDB-L3].zs_compliant` = false in JSON
+- `calculation_summary.zs_check_compliant` = false
+- `calculation_summary.non_compliance_flags` non-empty
+
+**Fail conditions:**
+- Skill calculates Zs without showing R1 and R2 separately
+- Skill states Zs_max from Table 41.3 (5s) instead of Table 41.2 (0.4s for ≤32A)
+- Skill does not propose any remediation
+- `zs_compliant` = true when Zs > Zs_max
+- No reference to BS 7671:2018 Table 41.2 in output
+
+---
+
+## Eval 07 — Life safety circuit identification
+
+**Input:**
+```
+Building: 3-storey office with life safety systems
+Supply: TN-C-S, 3-phase, 400V
+Ze = 0.35Ω
+Load schedule includes:
+  - Fire alarm and detection panel (BS 5839-1): 2kVA, single-phase
+  - Emergency lighting (BS 5266-1): 1.5kVA, single-phase
+  - Smoke extract fan: 7.5kW, 3-phase, dedicated circuit
+  - General office distribution: 60kVA across 3 floors
+Generator: 20kVA diesel standby
+```
+
+**Expected behaviour:**
+
+The skill must identify the three life safety circuits, specify fire-rated
+cables, assign them to the essential bus, and separate them from general
+distribution.
+
+**Pass criteria:**
+- Fire alarm circuit: `fire_rated: true`, `cable_type: "FP200"`,
+  `fire_rating_minutes: 30`, `life_safety: true` in circuit and connection
+- Emergency lighting circuit: `fire_rated: true`, `cable_type: "FP200"`,
+  `fire_rating_minutes: 60`, `life_safety: true`
+- Smoke extract circuit: `fire_rated: true`, `cable_type: "FP400"`,
+  `fire_rating_minutes: 120`, `life_safety: true`
+- All three circuits assigned `power_source: "essential_bus"` in
+  `life_safety_circuits[]`
+- `calculation_summary.life_safety_circuits_count` = 3
+- Life safety circuits NOT fed from the same board as general office loads
+  (separate essential board or dedicated ways clearly segregated)
+- Drawing note states fire-rated cable standard (IEC 60331-1 or IEC 60331-21)
+- Smoke extract diversity factor = 1.00 (no diversity ever on life safety)
+
+**Fail conditions:**
+- Any life safety circuit has `fire_rated: false`
+- Fire alarm circuit specifies standard XLPE cable
+- Smoke extract uses FP200 instead of FP400 (FP200 not rated for 120min)
+- Life safety circuits share a board with general office loads without segregation note
+- `diversity_factor` < 1.00 applied to any life safety circuit
+- `life_safety_circuits` array absent from JSON output
+
+---
+
+## Eval 08 — SPD assessment and neutral oversizing
+
+**Input:**
+```
+Building: new-build office, 4-storey, England
+Supply: TN-C-S, 3-phase, 400V, Ze = 0.30Ω
+Overhead supply from DNO (rural location, overhead lines)
+Lightning protection system (LPS): present on roof
+Non-linear loads:
+  - IT equipment: 30kVA (servers, workstations)
+  - VFDs (HVAC): 20kVA
+  - UPS (server room): 15kVA
+  - General lighting and power: 35kVA (linear)
+Total: 100kVA
+New-build: yes (England) — Part L sub-metering required
+```
+
+**Expected behaviour — SPD assessment:**
+
+Overhead supply + LPS present = Type 1 SPD mandatory at origin.
+
+```
+[ASSUMPTION: SPD risk assessment not completed by lightning specialist.
+Type 1 SPD specified at MSB (LPS present, overhead supply — both trigger Type 1).
+Type 2 SPD specified at each SDB. Confirm Type 1/Type 2 coordination
+(≥10m cable separation or coordination inductor) with SPD manufacturer.]
+```
+
+**Expected behaviour — neutral oversizing:**
+
+Non-linear loading = (30 + 20 + 15) / 100 = 65% of total load.
+65% >> 15% threshold → neutral must be oversized.
+
+**Pass criteria — SPD:**
+- `spd_assessment.spd_required` = true
+- `spd_assessment.lps_on_building` = true
+- `spd_assessment.overhead_supply` = true
+- `spd_assessment.spd_type_at_origin` = "T1"
+- MSB board has `spd_type: "T1"` and each SDB has `spd_type: "T2"`
+- Output includes SPD [ASSUMPTION] flag noting risk assessment not completed
+- Drawing note references BS EN 61643-11 and Regulation 443.4
+
+**Pass criteria — neutral oversizing:**
+- Skill calculates non-linear loading % = 65% (or 60–70% accepted range)
+- Skill flags neutral oversizing requirement:
+  `[ASSUMPTION: Non-linear loading ~65% of total. Neutral conductor upsized
+  to 150% of phase conductor to accommodate triplen harmonic current.]`
+- `connections[].neutral_size_mm2` ≥ 1.5 × `conductor_size_mm2` on sub-main
+  cables serving IT/VFD loads
+- `calculation_summary.neutral_oversized` = true
+- `calculation_summary.harmonic_loading_pct` = 60–70
+
+**Pass criteria — Part L sub-metering:**
+- `metering_schedule[]` includes at least: MSB landlord meter, IT/server room
+  meter (>50kWh/day), HVAC plant meter (>50kWh/day)
+- Each meter entry has `part_l_required: true` where applicable
+
+**Fail conditions:**
+- LPS present but only Type 2 SPD specified (Type 1 required when LPS fitted)
+- Neutral not oversized despite 65% non-linear loading
+- `neutral_size_mm2` = `conductor_size_mm2` (no oversizing applied)
+- No Part L sub-metering entries in `metering_schedule[]` for new-build
+- `spd_assessment` object absent from JSON
+
+---
+
 ## Running evals manually
 
 To run these evals against the skill, paste each input into a DraftsMan
@@ -221,6 +384,7 @@ using the test harness in `tests/`.
 
 ## Eval pass rate requirement
 
-Before shipping a new skill version: all 5 evals must pass. Evals 01 and 03
-are mandatory for any release (happy path and Fundamental Rule enforcement).
-Evals 02, 04, and 05 must pass before marking the version as production-ready.
+Before shipping a new skill version: all 8 evals must pass. Evals 01, 03,
+and 06 are mandatory for any release (happy path, Fundamental Rule, and Zs
+disconnection check). Evals 02, 04, 05, 07, and 08 must pass before marking
+the version as production-ready.

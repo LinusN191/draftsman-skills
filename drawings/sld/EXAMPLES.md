@@ -448,7 +448,7 @@ the single LB location. Smart meters (AMR) recommended for remote reading.
   "supply": {
     "voltage_ll_v": 230, "voltage_ln_v": 230, "phases": 1,
     "earthing_system": "TN-C-S", "pscc_ka_at_supply": 0.29,
-    "ze_ohm": 0.80, "supply_type": "DNO_underground", "cutout_fuse_a": 100
+    "ze_ohm": 0.80, "supply_type": "DNO_underground", "dno_cutout_fuse_a": 100
   },
   "boards": [
     {
@@ -489,6 +489,475 @@ the single LB location. Smart meters (AMR) recommended for remote reading.
       "PF = 0.85–0.90 assumed per load type — confirm with equipment schedules",
       "Diversity 0.70–0.75 for small retail units — confirm with client",
       "Single-phase supply assumed for all tenant units"
+    ]
+  }
+}
+```
+
+---
+
+## Example 4 — New-build office, life safety circuits, Zs check, SPD, neutral oversizing
+
+This example demonstrates the v1.1.0 additions: life safety circuit identification,
+Zs disconnection time verification, SPD risk assessment, and neutral oversizing for
+harmonic loads.
+
+### Input
+
+```
+Building: new-build 4-storey office, 3000m² GIA, England
+Supply: 3-phase TN-C-S, 400V/230V, 50Hz, DNO underground (urban)
+Ze at supply terminals: 0.30 Ω (confirmed by DNO letter dated [project date])
+MIC: 350A (DNO connection agreement)
+DNO cut-out: 100A per phase
+Lightning protection system: yes (on roof) → Type 1 SPD required
+New-build: yes — AD Part L 2021 sub-metering obligations apply
+
+Load schedule:
+  SDB-GF  (Ground Floor, 750m²)
+    General lighting:          12kW, PF 1.00
+    Socket outlets:            15kW, PF 0.90
+    IT equipment (dense):      20kW, PF 0.90 (non-linear)
+  SDB-L1  (Level 1, 750m²) — same profile as GF: 47kW total
+  SDB-L2  (Level 2, 750m²) — same profile as GF: 47kW total
+  SDB-L3  (Level 3, 750m²) — same profile as GF: 47kW total
+  SDB-HVAC (Basement plant room)
+    AHU (continuous):          45kW, PF 0.85, 3-phase
+    VFDs (FCUs, VAVs):         30kW, PF 0.85, 3-phase (non-linear)
+  SDB-ESSN (Essential services — life safety)
+    Fire alarm panel:           2kVA, PF 1.00, single-phase
+    Emergency lighting:         1.5kVA, PF 1.00, single-phase
+    Smoke extract fans:         7.5kW, PF 0.85, 3-phase
+
+Generator: 50kVA diesel standby — essential services bus only
+Cable lengths: MSB to all SDBs via basement riser — GF 10m, L1 20m,
+              L2 30m, L3 40m, HVAC 8m, ESSN 5m
+All sub-mains on cable tray, method E. ESSN cables in dedicated fire-rated
+conduit.
+```
+
+### Reasoning shown in chat
+
+**Step 1 — Input validation:**
+
+Ze = 0.30Ω confirmed by DNO letter. MIC = 350A. All loads specified.
+New-build in England — AD Part L 2021 applies. Sub-metering required.
+LPS present on roof → Type 1 SPD mandatory at MSB origin (Regulation 443.4).
+
+**Step 2 — Hierarchy:**
+```
+DNO Supply (3-phase, 400V, TN-C-S, Ze = 0.30Ω, MIC = 350A)
+  └── MSB (Main LV Switchboard, Basement Plant Room)
+        ├── MAINS BUS ─────────────────────────────────────┐
+        │     ├── SDB-GF   (Ground Floor — 47kW)           │
+        │     ├── SDB-L1   (Level 1 — 47kW)                │
+        │     ├── SDB-L2   (Level 2 — 47kW)                │
+        │     ├── SDB-L3   (Level 3 — 47kW)                │
+        │     └── SDB-HVAC (Plant — 75kW)                  │
+        │                                                   │
+        └── ESSENTIAL BUS ← ATS ← GENERATOR (50kVA) ───────┘
+              └── SDB-ESSN (Life safety — 11kVA)
+```
+
+Life safety systems (fire alarm, emergency lighting, smoke extract) served
+exclusively from essential bus. No general loads on SDB-ESSN.
+
+**Step 3a — Design currents:**
+```
+Each office floor (GF/L1/L2/L3):
+  kW total = 12 + 15 + 20 = 47kW, PF mixed ≈ 0.92 (weighted average)
+  Ib = 47,000 / (1.732 × 400 × 0.92) = 47,000 / 637.9 = 73.7A → 74A
+
+SDB-HVAC:
+  AHU:  Ib = 45,000 / (1.732 × 400 × 0.85) = 76.5A → 77A
+  VFDs: Ib = 30,000 / 587.9 = 51.0A → 52A
+  Total: 129A
+
+SDB-ESSN:
+  Fire alarm: Ib = 2000 / 230 = 8.7A → 9A
+  Em. lighting: Ib = 1500 / 230 = 6.5A → 7A
+  Smoke extract: Ib = 7500 / (1.732×400×0.85) = 12.8A → 13A
+  Total: 29A (no diversity on life safety)
+```
+
+[ASSUMPTION: PF = 0.92 weighted average for office floors (lighting unity,
+sockets/IT 0.90). Confirm from equipment schedules before tender.]
+
+**Step 3b — Motor check (smoke extract fan):**
+```
+Fan FLC = 12.8A (DOL start assumed)
+Starting current = 6–8 × FLC = 77–102A
+MCB for smoke extract: Curve D (10–20× In) to ride DOL inrush
+  In ≥ 13A → 16A Type D MCB
+```
+
+[ASSUMPTION: Smoke extract fan DOL started. Confirm starting method with
+mechanical engineer — VFD or star-delta may reduce cable/device sizes.]
+
+**Step 4 — Diversity and maximum demand:**
+
+| Circuit | Installed Ib | Load type | Diversity | Demand |
+|---|---|---|---|---|
+| SDB-GF lighting | 20.9A | Lighting | 0.90 | 18.8A |
+| SDB-GF sockets | 26.2A | Sockets | 0.50 | 13.1A |
+| SDB-GF IT | 34.9A | IT | 0.80 | 27.9A |
+| **SDB-GF total** | **74A** | | | **59.8A** |
+| SDB-L1 (same) | 74A | | | 59.8A |
+| SDB-L2 (same) | 74A | | | 59.8A |
+| SDB-L3 (same) | 74A | | | 59.8A |
+| SDB-HVAC AHU | 77A | Continuous HVAC | 1.00 | 77.0A |
+| SDB-HVAC VFDs | 52A | Intermittent HVAC | 0.75 | 39.0A |
+| **SDB-HVAC total** | **129A** | | | **116.0A** |
+| SDB-ESSN (all) | 29A | Life safety | 1.00 | 29.0A |
+
+MSB maximum demand = 59.8 × 4 + 116 + 29 = 384.2A
+→ MSB incomer: 400A MCCB (next standard size above 384A)
+→ 400A < MIC 350A? **NO — 400A > 350A MIC.**
+
+```
+[NON-COMPLIANCE RISK: Calculated maximum demand 384A exceeds MIC 350A.
+Options: (1) Apply additional building diversity to confirm demand ≤ 350A
+with robust justification; (2) apply for increased MIC from DNO (allow
+12+ weeks); (3) reduce connected load. Do not issue for tender without
+resolving against MIC limit.]
+```
+
+With building-level diversity of 0.90 applied (cross-floor diversity in a
+speculative office — not all floors at peak simultaneously):
+```
+Revised MSB demand = 59.8 × 4 × 0.90 + 116 + 29 = 215.3 + 145 = 360.3A
+```
+
+Still marginally above 350A. Flag as [NON-COMPLIANCE RISK] and advise DNO
+consultation. Provisionally select 400A MCCB for design; confirm with DNO.
+
+**Step 5 — Protective devices:**
+```
+SDB-GF through SDB-L3:  Ib = 74A → 80A MCCB, Icu 16kA ✓
+SDB-HVAC:              Ib = 129A → 160A MCCB, Icu 16kA ✓
+SDB-ESSN:              Ib = 29A → 40A MCCB, Icu 16kA ✓ (life safety — specify
+                        MCCB not MCB for robust discrimination)
+MSB incomer:           400A MCCB, Icu 36kA (urban supply — specify 36kA minimum)
+Generator incomer:     50kVA FLC = 72A → 80A MCCB, Icu 10kA
+```
+
+**Step 6 — Cable types:**
+
+Office sub-mains: XLPE/SWA/LSZH (public areas and riser routes in escape
+corridors — use LSZH throughout).
+
+Life safety cables:
+- Fire alarm: FP200 Gold 2C×1.5mm² (IEC 60331-1, 30 min at 830°C)
+- Emergency lighting: FP200 Gold (IEC 60331-1, 60 min circuit integrity)
+- Smoke extract fan: FP400 4C+CPC 2.5mm² (IEC 60331-21, 120 min at 830°C)
+
+```
+[NON-COMPLIANCE RISK: If standard XLPE cable is used for smoke extract fan,
+circuit integrity cannot be guaranteed for 120 min under fire conditions.
+FP400 or MICC is mandatory for this application.]
+```
+
+**Step 6d — Neutral oversizing check:**
+```
+Non-linear loads:
+  IT equipment: 4 × 20kW = 80kW
+  VFDs (HVAC): 30kW
+  Total non-linear: 110kW
+
+Total installed load: 4 × 47kW + 75kW + 11kW = 274kW
+Non-linear %: 110 / 274 = 40%
+
+40% >> 15% threshold → neutral upsized to 150% of phase conductor
+on sub-mains serving IT-dense floors (SDB-GF through SDB-L3) and
+SDB-HVAC.
+```
+
+[ASSUMPTION: Non-linear loading estimated at 40% of total. Neutral conductor
+upsized to 150% of phase conductor (e.g. 25mm² neutral where 16mm² phase
+for office sub-mains). Confirm with power quality survey before cable selection.]
+
+**Step 7 — Breaking capacity (PSCC propagation):**
+```
+ρ = 0.0225 Ω·mm²/m
+
+SDB-GF   (10m, 16mm²):  Zcable = 2×0.0225×10/16 = 0.028Ω → Ze = 0.328 → PSCC = 0.70kA
+SDB-L1   (20m, 16mm²):  Zcable = 0.056Ω → Ze = 0.356 → PSCC = 0.65kA
+SDB-L2   (30m, 16mm²):  Zcable = 0.084Ω → Ze = 0.384 → PSCC = 0.60kA
+SDB-L3   (40m, 16mm²):  Zcable = 0.113Ω → Ze = 0.413 → PSCC = 0.56kA
+SDB-HVAC  (8m, 50mm²):  Zcable = 2×0.0225×8/50 = 0.007Ω → Ze = 0.307 → PSCC = 0.75kA
+SDB-ESSN  (5m, 4mm²):   Zcable = 2×0.0225×5/4  = 0.056Ω → Ze = 0.356 → PSCC = 0.65kA
+```
+
+All PSCC values << device Icu values (16kA minimum). ✓
+
+| Board | Ze (Ω) | PSCC (kA) | Device Icu (kA) | OK? |
+|---|---|---|---|---|
+| MSB | 0.300 | 0.77 | 36 | ✓ |
+| SDB-GF | 0.328 | 0.70 | 16 | ✓ |
+| SDB-L1 | 0.356 | 0.65 | 16 | ✓ |
+| SDB-L2 | 0.384 | 0.60 | 16 | ✓ |
+| SDB-L3 | 0.413 | 0.56 | 16 | ✓ |
+| SDB-HVAC | 0.307 | 0.75 | 16 | ✓ |
+| SDB-ESSN | 0.356 | 0.65 | 16 | ✓ |
+
+**Step 8 — Zs check (SDB-L3 socket circuit as worst case):**
+```
+Circuit: SDB-L3 → socket outlets, 16A Type C RCBO, 20m of 2.5mm²+1.5mm² CPC
+
+R1 = 0.0225 × 20 / 2.5 = 0.180Ω  (phase conductor)
+R2 = 0.0225 × 20 / 1.5 = 0.300Ω  (CPC)
+Ze at SDB-L3 = 0.413Ω
+
+Zs = 0.413 + 0.180 + 0.300 = 0.893Ω
+Zs_max for 16A Type C MCB (0.4s, Table 41.2) = 1.44Ω
+
+0.893Ω < 1.44Ω ✓ — 0.4s disconnection confirmed.
+```
+
+Zs check passes for the worst-case floor (SDB-L3). All other floors are
+closer to the MSB and will have lower Zs values.
+
+**Step 9 — Protection coordination:**
+```
+MSB 400A MCCB (S-delay 100ms) → SDB MCCBs (Instantaneous)
+Ratio: 400A / 80A = 5.0 >> 1.6 ✓ — current discrimination adequate
+
+ESSN MCCB 40A → internal MCBs at 16A
+Ratio: 40A / 16A = 2.5 > 1.6 ✓ — current discrimination adequate
+```
+
+**Step 11 — Life safety circuits:**
+```
+Fire alarm (BS 5839-1):
+  Source: SDB-ESSN (essential bus) → FAP (Fire Alarm Panel)
+  Cable: FP200 Gold 2C×1.5mm², IEC 60331-1, 30 min circuit integrity
+  Diversity: 1.00 (no diversity on life safety)
+
+Emergency lighting (BS 5266-1):
+  Source: SDB-ESSN (essential bus) → CEB (Central Emergency Battery) or
+  distributed self-contained fittings
+  Cable: FP200 Gold 2C×1.5mm², IEC 60331-1, 60 min circuit integrity
+
+Smoke extract fans (BS 9999 / BS EN 12101-3):
+  Source: SDB-ESSN (essential bus) → dedicated MCB per fan
+  Cable: FP400 4C+CPC×2.5mm², IEC 60331-21, 120 min circuit integrity
+  Starting method: DOL, Curve D MCB 16A
+  No other loads on this circuit.
+```
+
+All life safety circuits confirmed segregated in dedicated fire-rated conduit
+separate from general cable containment.
+
+**Step 13 — Generator:**
+```
+Essential loads (on generator):
+  Fire alarm panel:     2kVA
+  Emergency lighting:   1.5kVA
+  Smoke extract fans:   7.5kW / PF 0.85 = 8.8kVA
+  Total essential:     12.3kVA
+
+Generator: 50kVA diesel — 12.3kVA essential load = 25% loading → adequate ✓
+Generator FLC: 50,000 / (1.732 × 400) = 72.2A → 80A MCCB incomer
+
+Non-essential circuits shed on generator: SDB-GF, SDB-L1, SDB-L2, SDB-L3,
+SDB-HVAC.
+
+ATS: 2-way, AMF, ≤15s transfer time
+Interlocking: electrical + mechanical — Regulation 551.7 applies
+```
+
+[ASSUMPTION: Generator PSCC = 3 × 72.2A = 217A = 0.22kA. MCCB Icu 10kA >>
+0.22kA. Confirm sub-transient reactance from manufacturer.]
+
+**Step 14 — SPD assessment:**
+```
+Risk factors present:
+  ✓ LPS on building → Type 1 SPD mandatory at MSB origin
+  ✓ New-build commercial building
+  ✓ IT loads present (sensitive)
+
+SPD specification:
+  MSB: Type 1 + Type 2 combined SPD (BS EN 61643-11)
+  Each SDB: Type 2 SPD
+  Server room (if present): Type 3 at distribution sockets
+
+Type 1/Type 2 coordination: 10m cable separation between MSB Type 1 and
+SDB Type 2 SPDs in riser. If riser < 10m, fit coordination inductor.
+```
+
+[ASSUMPTION: Formal lightning risk assessment (BS EN 62305-2) not yet
+completed. SPD type selections above are preliminary. Confirm with lightning
+protection specialist before procurement.]
+
+**Step 15 — Earthing and sub-metering:**
+```
+Earthing system: TN-C-S (PME)
+Main bonding conductor: supply cable assumed 95mm² → 16mm² Cu per Table 54.8
+Bonding connections: gas, water, structural steel at MSB MET
+TN-C-S restrictions: no PME earth for EV chargers in accessible areas
+  (Regulation 312.2.3) — note on drawing if EV charging specified later
+
+AD Part L 2021 sub-metering obligations:
+  MSB:      Landlord main meter (all building) — mandatory
+  HVAC:     SDB-HVAC sub-meter (AHU + VFDs > 50kWh/day) — mandatory
+  IT/floors: Sub-meters on each SDB-GF through SDB-L3 (IT loads > 50kWh/day)
+             — mandatory
+  Emergency: SDB-ESSN — not required (< 50kWh/day)
+
+BREEAM Ene04: if targeted, AMR meters with 30-min logging on all sub-meters.
+```
+
+### Key JSON fields (abbreviated)
+
+```json
+{
+  "supply": {
+    "voltage_ll_v": 400, "voltage_ln_v": 230, "phases": 3,
+    "earthing_system": "TN-C-S", "ze_ohm": 0.30,
+    "pscc_ka_at_supply": 0.77, "mic_a": 350,
+    "dno_cutout_fuse_a": 100, "overhead_supply": false,
+    "g99_required": false
+  },
+  "boards": [
+    {
+      "id": "MSB", "type": "main_lv_switchboard", "form_of_separation": "Form3b",
+      "busbar_rating_a": 500, "busbar_icw_ka": 36,
+      "incomer": {
+        "device": "MCCB", "rating_a": 400, "breaking_capacity_ka": 36,
+        "poles": 4, "symbol": "MCCB_4P"
+      },
+      "spd": true, "spd_type": "T1",
+      "metering": [
+        {"type": "CT", "ratio": "630/5A", "class": "1", "purpose": "revenue"},
+        {"type": "KWH_METER", "label": "LL01 — Landlord Main Meter"}
+      ],
+      "earthing": {
+        "main_earth_terminal": true, "earth_conductor_mm2": 35,
+        "bonding_connections": ["gas", "water", "structural_steel"]
+      },
+      "pscc_ka": 0.77, "total_installed_load_kva": 274.0,
+      "maximum_demand_kva": 223.8, "overall_diversity_factor": 0.82
+    },
+    {
+      "id": "SDB-ESSN", "type": "emergency_board",
+      "label": "ESSENTIAL SERVICES BOARD", "level": 2,
+      "life_safety": true, "life_safety_source": "essential_bus",
+      "form_of_separation": "Form2b",
+      "incomer": {
+        "device": "MCCB", "rating_a": 40, "breaking_capacity_ka": 16,
+        "poles": 4, "symbol": "MCCB_4P"
+      },
+      "spd": false,
+      "pscc_ka": 0.65, "zs_ohm": null, "zs_compliant": true
+    }
+  ],
+  "connections": [
+    {
+      "id": "C-ESSN-FA", "label": "Fire Alarm Circuit",
+      "conductors": "2C+CPC", "conductor_size_mm2": 1.5,
+      "neutral_size_mm2": 1.5, "cpc_size_mm2": 1.0,
+      "cable_type": "FP200", "lszh": false,
+      "fire_rated": true, "fire_rating_minutes": 30,
+      "armoured": false, "installation_method": "B1"
+    },
+    {
+      "id": "C-ESSN-SE", "label": "Smoke Extract Fan Circuit",
+      "conductors": "4C+CPC", "conductor_size_mm2": 2.5,
+      "neutral_size_mm2": 2.5, "cpc_size_mm2": 1.5,
+      "cable_type": "FP400", "lszh": false,
+      "fire_rated": true, "fire_rating_minutes": 120,
+      "armoured": false, "installation_method": "B1"
+    },
+    {
+      "id": "C-L3", "label": "MSB to SDB-L3",
+      "conductors": "4C+CPC", "conductor_size_mm2": 16,
+      "neutral_size_mm2": 25,
+      "cpc_size_mm2": 10,
+      "cable_type": "XLPE-SWA-LSZH", "lszh": true,
+      "fire_rated": false, "armoured": true,
+      "installation_method": "E", "length_m": 40,
+      "design_current_a": 74.0, "ccc_a": 87,
+      "r1_ohm": 0.056, "r2_ohm": 0.099,
+      "zs_ohm": 0.413, "pscc_at_far_end_ka": 0.56
+    }
+  ],
+  "life_safety_circuits": [
+    {
+      "system": "fire_alarm", "standard": "BS 5839-1:2017",
+      "board_id": "SDB-ESSN", "cable_type": "FP200",
+      "fire_rating_minutes": 30, "power_source": "essential_bus",
+      "circuit_integrity_standard": "IEC 60331-1"
+    },
+    {
+      "system": "emergency_lighting", "standard": "BS 5266-1:2016",
+      "board_id": "SDB-ESSN", "cable_type": "FP200",
+      "fire_rating_minutes": 60, "power_source": "essential_bus",
+      "circuit_integrity_standard": "IEC 60331-1"
+    },
+    {
+      "system": "smoke_extract", "standard": "BS EN 12101-3",
+      "board_id": "SDB-ESSN", "cable_type": "FP400",
+      "fire_rating_minutes": 120, "power_source": "essential_bus",
+      "circuit_integrity_standard": "IEC 60331-21"
+    }
+  ],
+  "spd_assessment": {
+    "risk_assessment_completed": false,
+    "lps_on_building": true,
+    "overhead_supply": false,
+    "sensitive_loads_present": true,
+    "spd_required": true,
+    "spd_type_at_origin": "T1",
+    "t1_t2_coordination_method": "10m_cable_separation",
+    "notes": [
+      "LPS present — Type 1 SPD mandatory at MSB per BS EN 61643-11 / Reg 443.4",
+      "Formal risk assessment per BS EN 62305-2 required before procurement"
+    ]
+  },
+  "load_shedding": {
+    "enabled": true,
+    "essential_boards": ["SDB-ESSN"],
+    "non_essential_boards": ["SDB-GF","SDB-L1","SDB-L2","SDB-L3","SDB-HVAC"],
+    "essential_load_kva": 12.3,
+    "transfer_time_s": 15
+  },
+  "metering_schedule": [
+    {"id": "M01", "board_id": "MSB",      "label": "Landlord main meter",
+     "type": "KWH_METER", "class": "1", "part_l_required": true, "breeam_ene04": true},
+    {"id": "M02", "board_id": "SDB-HVAC", "label": "HVAC plant sub-meter",
+     "type": "KWH_METER", "class": "1", "part_l_required": true, "breeam_ene04": true},
+    {"id": "M03", "board_id": "SDB-GF",   "label": "GF office sub-meter",
+     "type": "KWH_METER", "class": "1", "part_l_required": true, "breeam_ene04": true},
+    {"id": "M04", "board_id": "SDB-L1",   "label": "L1 office sub-meter",
+     "type": "KWH_METER", "class": "1", "part_l_required": true, "breeam_ene04": true},
+    {"id": "M05", "board_id": "SDB-L2",   "label": "L2 office sub-meter",
+     "type": "KWH_METER", "class": "1", "part_l_required": true, "breeam_ene04": true},
+    {"id": "M06", "board_id": "SDB-L3",   "label": "L3 office sub-meter",
+     "type": "KWH_METER", "class": "1", "part_l_required": true, "breeam_ene04": true}
+  ],
+  "calculation_summary": {
+    "total_installed_load_kva": 274.0, "maximum_demand_kva": 223.8,
+    "overall_diversity_factor": 0.82, "incoming_device_rating_a": 400,
+    "supply_pscc_ka": 0.77, "earthing_system": "TN-C-S",
+    "rcd_protected_ways": 16,
+    "life_safety_circuits_count": 3,
+    "zs_check_compliant": true,
+    "breaking_capacity_compliant": true,
+    "selectivity_confirmed": true,
+    "spd_required": true,
+    "harmonic_loading_pct": 40.0, "neutral_oversized": true,
+    "g99_required": false,
+    "compliant": false,
+    "non_compliance_flags": [
+      "Maximum demand 384A (pre building diversity) exceeds MIC 350A — confirm with DNO before tender",
+      "SPD formal risk assessment (BS EN 62305-2) not completed — Type 1 selection is preliminary"
+    ],
+    "assumptions": [
+      "PF = 0.92 weighted for office floors — confirm from equipment schedules",
+      "Building-level diversity 0.90 applied to bring demand to 360A — confirm with client",
+      "Non-linear loading ~40% of total — neutral oversized; confirm with power quality survey",
+      "Generator PSCC = 3×FLC = 0.22kA — confirm sub-transient reactance from manufacturer",
+      "Smoke extract DOL start assumed — confirm starting method with mechanical engineer"
     ]
   }
 }
