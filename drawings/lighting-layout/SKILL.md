@@ -79,6 +79,11 @@ construction.
 - Daylight linking required: yes / no / unknown
 - Luminaire environment: `normal` / `bathroom_zone_1` / `bathroom_zone_2` / `kitchen_commercial` /
   `external_covered` / `car_park` — drives IP check; default `normal` if not stated
+- Door swing for each entrance: `inward_latch_left` / `inward_latch_right` /
+  `outward_latch_left` / `outward_latch_right` / `sliding` / `unknown` — places
+  switches on the latch side, clear of the door sweep arc
+- Distribution board designation (e.g. `DB-L1`) — links this layout's circuits to
+  the DB layout and cable-sizing skills; ask if not provided
 
 ## How You Think Before Acting
 
@@ -178,6 +183,25 @@ the manufacturer's published UGR table (8H/4H room cavity method) or by running 
 full UGR calculation in DIALux or Relux before issuing for construction. Do not mark
 this drawing "compliant for glare" without a verified UGR value.]
 
+**BS 8300 luminance ratios (public access buildings):**
+
+For any building visited by members of the public — offices, retail, healthcare,
+education, transport, hospitality — BS 8300:2018 requires consideration of
+luminance ratios to avoid disorientation for visually impaired people:
+
+- Task area to immediate surround: ratio ≤ 3:1 (task brighter)
+- Immediate surround to general background: ratio ≤ 10:1
+- Avoid abrupt transitions between very bright and very dim areas — use
+  transition zones in corridors leading to high-lux rooms
+- Entrance lobbies: provide a transition zone between exterior light levels
+  and the target interior level (critical on bright days and at night)
+
+[BS 8300 NOTE: Luminance ratio compliance cannot be verified by the lumen
+method. Flag for the lighting consultant / specialist to verify in the
+photometric calculation. For entrance transition zones, consider a separately
+controlled transition circuit maintaining a level between exterior and interior
+targets — specify this as a separate zone in Step 8.]
+
 ### Step 3 — Calculate Room Index (RI)
 
 ```
@@ -204,16 +228,33 @@ C/W/F. Verify against manufacturer's photometric data sheet before tender.]
 MF = LLMF × LSF × LMF × RSMF
 ```
 
-Default for normal office with LED luminaires, annual cleaning: **MF = 0.80**
+**Cross-check MF against the environment type stated in Step 1 Check B.**
+MF = 0.80 is the default for normal offices only. Applying office MF to a
+dirtier environment underestimates fixture count and produces a layout that
+falls below target illuminance well before the maintenance interval.
 
-Components:
-- LLMF = Lamp Lumen Maintenance Factor (LED at L70/50,000h: 0.90–0.95)
-- LSF = Lamp Survival Factor (LED: 1.00)
-- LMF = Luminaire Maintenance Factor (normal office: 0.90)
-- RSMF = Room Surface Maintenance Factor (normal office: 0.94)
+| Environment type | Typical MF | Notes |
+|---|---|---|
+| Very clean (cleanroom, sealed lab) | 0.84–0.88 | LMF=0.95, RSMF=0.97 |
+| Clean (sealed open plan office) | 0.80–0.84 | LMF=0.92, RSMF=0.96 |
+| Normal office (open plan, annual clean) | **0.80** | **Default** |
+| Workshop / light industrial | 0.60–0.70 | LMF=0.80, RSMF=0.88 |
+| Commercial kitchen / canteen | 0.50–0.60 | Steam and grease degrade optics rapidly |
+| Warehouse / dusty industrial | 0.55–0.65 | LMF=0.80, RSMF=0.88 — see uf-tables.md |
+| Car park / very dirty | 0.45–0.55 | 6-monthly clean assumed; check frequency |
 
-[ASSUMPTION: MF = 0.80 assumed. State cleaning regime and LED rated life
-from specification to confirm.]
+Full component values are in assets/uf-tables.md. Use the combined MF table
+(not the 0.80 default) for any non-office space type.
+
+If environment is non-office and MF = 0.80 would be applied:
+[NON-COMPLIANCE RISK: MF = 0.80 (normal office default) has been replaced.
+[Environment] spaces have higher dirt accumulation on luminaire optics and
+room surfaces. MF = [correct value] applied from assets/uf-tables.md.
+Confirm cleaning regime with client before tender — MF is directly
+proportional to fixture count; an over-optimistic MF produces a dim room.]
+
+[ASSUMPTION: MF = [value] assumed for [environment] with [cleaning interval]
+cleaning. Confirm cleaning regime and LED rated life from specification.]
 
 ### Step 6 — Calculate number of luminaires
 
@@ -434,9 +475,26 @@ coordinates connecting luminaires in a circuit.
 - One switch per entrance to the space.
 - Multi-way switching if more than one entrance (state wiring type).
 - Height: 1350mm AFF to centre of switch plate (BS 7671:2018 Clause 411).
-- Keep switches clear of door swings (note if door swing not known).
+- Position switch on the **latch side** of the door (opposite to hinge),
+  minimum 200mm from door frame edge.
+- Clear of door sweep arc: for inward-opening doors, the switch must not
+  sit within the arc the door sweeps when opening.
 - Label: SW1, SW2 ...
 - State which circuits each switch controls.
+
+**Using door swing data:**
+
+If door swing direction is provided:
+  - `inward_latch_left`: switch on left side of opening, outside swing arc
+  - `inward_latch_right`: switch on right side of opening, outside swing arc
+  - `outward_*`: switch can be placed closer to frame (door opens away from room)
+  - `sliding`: no swing constraint — place at latch end of travel
+  - Place switch x/y coordinates accordingly and set `switch_side` in JSON
+
+If door swing is unknown:
+[ASSUMPTION: Door swing direction not provided. Switch positioned on assumed
+latch side, 200mm clear of door frame. Confirm door swing with architect
+before issuing for construction to avoid placing switch behind open door.]
 
 If room has multiple zones, use separate switch gangs or a multi-gang plate.
 A 2-gang switch allows perimeter (Z1) and interior (Z2) zones to be switched
@@ -503,7 +561,8 @@ to the ezdxf renderer. All dimensions in millimetres.
     "volume_code": "",
     "level_code": "",
     "type_code": "EL",
-    "standard": "BS EN 12464-1:2021"
+    "standard": "BS EN 12464-1:2021",
+    "db_designation": ""
   },
   "room": {
     "length_mm": 0,
@@ -603,6 +662,7 @@ to the ezdxf renderer. All dimensions in millimetres.
     {
       "id": "L1-Z1",
       "zone_id": "Z1",
+      "db_designation": "",
       "type": "general",
       "mcb_rating_a": 10,
       "mcb_curve": "C",
@@ -620,6 +680,8 @@ to the ezdxf renderer. All dimensions in millimetres.
       "y_mm": 0,
       "wall": "south",
       "height_aff_mm": 1350,
+      "door_swing": "unknown",
+      "switch_side": "latch",
       "controls_circuits": ["L1-Z1"],
       "gang_count": 1,
       "location_note": "main entrance"
