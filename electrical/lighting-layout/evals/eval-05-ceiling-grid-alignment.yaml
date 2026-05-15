@@ -1,28 +1,36 @@
-id: eval-05-ceiling-grid-alignment
-title: Ceiling grid alignment — 600mm module
-version: "1.0"
+name: eval-05-ceiling-grid-alignment
 skill: lighting-layout
+description: >
+  Edge case — 600 mm ceiling grid present. All luminaire positions must land
+  at the centre of a 600 mm cell, i.e. on a 300 mm modulus. The drawing notes
+  must record the grid-alignment assumption.
+category: edge_case
 
 input:
-  room_length_m: 9
-  room_width_m: 6
-  ceiling_grid_mm: 600
-  ceiling_height_m: 2.8
   room_type: private_office
-  luminaire: 600x600 LED panel
-  lumen_output: 3500
-  wattage_w: 28
+  room_length_mm: 9000
+  room_width_mm: 6000
+  ceiling_height_mm: 2800
+  luminaire_lumens: 3500
+  lumen_type: design
+  luminaire_wattage_w: 28
+  ceiling_grid_mm: 600
 
-expected_behaviour: >
-  Valid x positions: 300, 900, 1500, 2100, 2700, 3300, 3900, 4500, 5100,
-  5700, 6300, 6900, 7500, 8100, 8700 (centres of 600mm cells in 9000mm room).
-  All positions must be multiples of 300mm (centres of 600mm grid cells).
+expected_compliance:
+  grid_modulus_mm: 300
+  notes_reference_grid: true
 
-pass_criteria:
-  - All luminaire x positions are multiples of 300mm
-  - All luminaire y positions are multiples of 300mm
-  - Drawing note references ceiling grid module assumption
+checks:
+  - assertion: ir.luminaires[*].position_mm.x all_equal_modulo_300
+    description: Every luminaire x-position must be on a 300 mm modulus (centre of 600 mm grid cell)
 
-fail_conditions:
-  - Any position not on 600mm grid centres
-  - No mention of ceiling grid in drawing notes or assumptions
+  - assertion: ir.luminaires[*].position_mm.y all_equal_modulo_300
+    description: Every luminaire y-position must be on a 300 mm modulus
+
+  - assertion: ir.drawing_notes contains "ceiling grid"
+    description: Drawing notes must record the grid-alignment assumption
+
+  - assertion: ir.calculation_summary.compliant == true
+    description: Overall compliance on the happy edge-case scenario
+
+expected_flags: []

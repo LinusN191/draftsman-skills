@@ -1,29 +1,42 @@
-id: eval-04-circuit-load-check
-title: Circuit load check — large room
-version: "1.0"
+name: eval-04-circuit-load-check
 skill: lighting-layout
+description: >
+  Cross-validation — 300 m² open-plan office requires multiple lighting circuits.
+  Verifies the skill splits luminaires across circuits so no circuit exceeds the
+  10 A MCB 80%-rule load (1840 W), and that every luminaire belongs to exactly
+  one circuit.
+category: cross_validation
 
 input:
-  room_length_m: 20
-  room_width_m: 15
-  ceiling_height_m: 4.0
   room_type: open_plan_office
-  luminaire: 600x600 LED panel
-  lumen_output: 4500
-  wattage_w: 36
+  room_length_mm: 20000
+  room_width_mm: 15000
+  ceiling_height_mm: 4000
+  luminaire_lumens: 4500
+  lumen_type: design
+  luminaire_wattage_w: 36
+  ceiling_grid_mm: 600
 
-pass_criteria:
-  json:
-    - field: circuits[*].load_w
-      max: 1840
-    - field: circuits
-      min_length: 2
-    - field: circuit_luminaire_ids_non_overlapping
-      equals: true
-    - field: total_luminaire_ids_across_circuits_equals_luminaires_length
-      equals: true
+expected_compliance:
+  max_circuit_load_w: 1840
+  min_circuits: 2
 
-fail_conditions:
-  - Any circuit with load > 1840W
-  - Same luminaire ID in two circuits
-  - Circuit count × max_per_circuit < total luminaires
+checks:
+  - assertion: ir.circuits.length >= 2
+    description: Large room must split into at least 2 circuits
+    standard_ref: BS 7671 Reg 433.1
+
+  - assertion: ir.circuits[*].load_w <= 1840
+    description: Every circuit must respect the 10 A MCB 80% rule (230 V × 10 A × 0.8 = 1840 W)
+    standard_ref: BS 7671 Reg 433.1
+
+  - assertion: ir.circuits[*].luminaire_ids.unique_across_circuits == true
+    description: No luminaire ID may appear in two circuits
+
+  - assertion: ir.calculation_summary.total_luminaires_circuited == ir.luminaires.length
+    description: Every luminaire must be assigned to a circuit
+
+  - assertion: ir.calculation_summary.compliant == true
+    description: Overall compliance on the cross-validation scenario
+
+expected_flags: []

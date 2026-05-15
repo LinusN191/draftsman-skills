@@ -54,6 +54,84 @@ You don't need to be a developer. The most valuable contributions come from:
    - Standard references for any technical claims
    - Your professional background (optional but helps reviewers)
 
+## Authoring evals
+
+Every skill carries one or more eval YAML files under `evals/`. Evals are the
+behavioural spec of the skill — they declare what a correct run must produce
+for a specific input scenario. The runtime executes them in CI on every change.
+
+### Eval file shape
+
+Conforms to `shared/schemas/core/eval.schema.json`. Required fields:
+
+```yaml
+name: eval-NN-short-slug
+skill: lighting-layout
+description: One-line summary of what this eval verifies
+category: happy_path | edge_case | compliance_failure | cross_validation | skill_specific
+input:
+  # maps to inputs.json item ids → answers
+  room_type: open_plan_office
+  room_length_mm: 10000
+  # …
+expected_compliance:
+  # optional: declared expected compliance outcome
+  lux_target_lx: 500
+  compliant: true
+checks:
+  - assertion: ir.luminaires.length >= 17
+    description: N must round UP from lumen method
+    severity: critical
+    standard_ref: CIBSE SLL Code for Lighting 2012
+expected_flags:
+  - "NON-COMPLIANCE"  # substrings expected in ir.flags
+```
+
+### Assertion grammar
+
+Restricted on purpose so the runtime parser stays simple:
+
+```
+<jsonpath> <operator> <value>
+```
+
+Operators: `==`, `!=`, `>=`, `<=`, `>`, `<`, `contains`, `not_contains`,
+`all_equal`, `matches`.
+
+JSONPath examples:
+- `ir.compliance.lux_ok`
+- `ir.luminaires.length`
+- `ir.luminaires[*].circuit_id` — applies the operator to every element
+- `ir.rationale.sections`
+
+Values may be: quoted strings, integers, floats, `true`, `false`.
+
+To extend the grammar (new operator, function call, arithmetic): open an issue
+first. The grammar is deliberately minimal; runtime parsers in multiple agent
+environments depend on its stability.
+
+### Coverage matrix — required for `status: production`
+
+| Eval | Category | Required for production |
+|---|---|---|
+| 1 | happy_path | Yes |
+| 2 | edge_case (input edge, e.g. missing data) | Yes |
+| 3 | edge_case (constraint edge, e.g. grid alignment) | Yes |
+| 4 | compliance_failure (must surface flag) | Yes |
+| 5 | cross_validation (computed values match expected) | Yes |
+| 6+ | skill_specific scenarios | Optional |
+
+`runner-config.json` per skill declares minimum eval counts per status tier
+(production ≥5, beta ≥3, draft ≥1, stub 0) and the minimum model class.
+
+### Existing reference
+
+See `electrical/lighting-layout/evals/` for 7 evals covering all 5 required
+categories plus 2 skill-specific. `electrical/lighting-layout/evals/runner-config.json`
+shows the runner-config shape.
+
+---
+
 ## Quality standards
 
 Every skill must meet these criteria before merging:

@@ -1,0 +1,15 @@
+{
+  "skill": "lighting-layout",
+  "version": "1.0.0",
+  "minimum_status_evals": {
+    "production": 5,
+    "beta": 3,
+    "draft": 1
+  },
+  "minimum_model_class": "sonnet_or_better",
+  "validated_against_model_classes": [
+    "sonnet"
+  ],
+  "production_block_on_failure": true,
+  "_note": "minimum_model_class is a class, not a specific model version, to keep config stable across releases. CI logs per-model runs to an external eval-history file rather than embedding timestamps here."
+}

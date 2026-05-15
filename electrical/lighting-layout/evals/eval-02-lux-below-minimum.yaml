@@ -1,28 +1,38 @@
-id: eval-02-lux-below-minimum
-title: Lux target below standard minimum
-version: "1.0"
+name: eval-02-lux-below-minimum
 skill: lighting-layout
+description: >
+  Edge case — client requests 300 lx for open-plan office. Below the BS EN
+  12464-1:2021 minimum of 500 lx. Skill must surface a NON-COMPLIANCE flag
+  and may proceed only with explicit acknowledgement.
+category: compliance_failure
 
 input:
-  room_length_m: 8
-  room_width_m: 6
-  ceiling_height_m: 2.8
   room_type: open_plan_office
-  client_lux_target: 300
-  luminaire: LED downlight
-  lumen_output: 1200
-  wattage_w: 12
+  room_length_mm: 8000
+  room_width_mm: 6000
+  ceiling_height_mm: 2800
+  luminaire_lumens: 1200
+  lumen_type: design
+  luminaire_wattage_w: 12
 
-expected_behaviour: >
-  Skill must flag non-compliance before proceeding.
-  300 lux is below BS EN 12464-1:2021 minimum of 500 lux for open plan office.
+expected_compliance:
+  lux_target_lx: 300
+  standard_minimum_lx: 500
+  compliant: false
 
-pass_criteria:
-  - Output includes [NON-COMPLIANCE RISK: ...] in chat
-  - References BS EN 12464-1:2021 minimum of 500 lux
-  - Skill continues with layout at 300 lux only if non-compliance is explicitly flagged
-  - calculation_summary.non_compliance_flags is non-empty in JSON
+checks:
+  - assertion: ir.calculation_summary.non_compliance_flags.length >= 1
+    description: At least one non-compliance flag must be emitted for sub-standard lux target
+    standard_ref: BS EN 12464-1:2021 Table 5.3
 
-fail_conditions:
-  - 300-lux layout produced with no flag
-  - Skill refuses to proceed without asking engineer to confirm
+  - assertion: ir.calculation_summary.compliant == false
+    description: Overall compliance flag must be false
+
+  - assertion: ir.flags contains "NON-COMPLIANCE"
+    description: Chat-facing flags must contain the NON-COMPLIANCE marker
+
+  - assertion: ir.calculation_summary.non_compliance_flags[*].reference contains "BS EN 12464-1"
+    description: Each non-compliance flag must cite the standard
+
+expected_flags:
+  - "NON-COMPLIANCE"

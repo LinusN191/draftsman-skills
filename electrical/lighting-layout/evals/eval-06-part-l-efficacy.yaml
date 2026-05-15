@@ -1,37 +1,58 @@
-id: eval-06-part-l-efficacy
-title: Part L controls compliance — new-build office
-version: "1.0"
+name: eval-06-part-l-efficacy
 skill: lighting-layout
+description: >
+  Compliance failure — UK new-build with a luminaire whose efficacy is 64.3 lm/W,
+  below AD Part L 2021 target of 65 lm/W. Skill must compute the efficacy,
+  flag NON-COMPLIANCE, identify the south perimeter zone, and require both
+  occupancy sensing and daylight-linked dimming.
+category: compliance_failure
 
 input:
-  room_length_m: 10
-  room_width_m: 8
-  ceiling_height_m: 3.0
   room_type: open_plan_office
-  luminaire: 600x600 LED recessed panel
-  lumen_output_design: 4500
-  wattage_w: 70
-  new_build: true
-  jurisdiction: england_wales
-  glazed_wall: south
+  room_length_mm: 10000
+  room_width_mm: 8000
+  ceiling_height_mm: 3000
+  luminaire_lumens: 4500
+  lumen_type: design
+  luminaire_wattage_w: 70
+  is_uk_new_build: true
+  jurisdiction: GB
+  glazed_wall_positions:
+    - "S"
 
-expected_calculations:
+expected_compliance:
   lamp_efficacy_lm_per_w: 64.3
-  part_l_minimum: 65
-  result: NON_COMPLIANCE
+  part_l_minimum_lm_per_w: 65
+  part_l_compliant: false
 
-pass_criteria:
-  - Skill calculates efficacy = 64.3 lm/W
-  - Output includes [NON-COMPLIANCE RISK: Lamp efficacy 64.3 lm/W is below AD Part L 2021 target of 65 lm/W]
-  - Skill states occupancy sensing AND daylight control in perimeter zone are required
-  - Perimeter zone identified for south wall
-  - controls.part_l_assessed = true
-  - controls.part_l_compliant = false
-  - calculation_summary.non_compliance_flags non-empty
-  - Skill recommends luminaire with >= 65 lm/W
+checks:
+  - assertion: ir.controls.lamp_efficacy_lm_per_w >= 64.0
+    description: Computed efficacy must be within tolerance of 64.3 lm/W (lower bound)
 
-fail_conditions:
-  - Efficacy check passes without calculating lm/W
-  - No mention of AD Part L 2021
-  - controls.part_l_compliant = true or null when efficacy fails
+  - assertion: ir.controls.lamp_efficacy_lm_per_w <= 64.6
+    description: Computed efficacy upper bound
 
+  - assertion: ir.controls.part_l_assessed == true
+    description: Part L assessment must be performed for UK new-build
+
+  - assertion: ir.controls.part_l_compliant == false
+    description: Part L compliance flag must be false when efficacy < 65 lm/W
+
+  - assertion: ir.calculation_summary.non_compliance_flags[*].reference contains "Part L"
+    description: Non-compliance flag must cite Part L
+
+  - assertion: ir.controls.perimeter_zones[*].wall contains "S"
+    description: South perimeter zone must be identified (glazed wall)
+
+  - assertion: ir.controls.required contains "occupancy"
+    description: Occupancy sensing required
+
+  - assertion: ir.controls.required contains "daylight"
+    description: Daylight-linked dimming required in perimeter zone
+
+  - assertion: ir.flags contains "NON-COMPLIANCE"
+    description: Chat-facing NON-COMPLIANCE flag must appear
+
+expected_flags:
+  - "NON-COMPLIANCE"
+  - "Part L"

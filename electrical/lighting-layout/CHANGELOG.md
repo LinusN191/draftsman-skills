@@ -5,6 +5,9 @@
 - Add `inputs_path: "inputs.json"` to manifest pointing at the new taxonomy
 - Bare-string `inputs: [...]` array retained for back-compat; will be removed in v2.0.0
 - Conforms to new `shared/schemas/core/inputs.schema.json` metaschema (upstream Work Item 1)
+- Rewrite all 7 evals (`eval-01` … `eval-07`) to conform to `shared/schemas/core/eval.schema.json` — restricted assertion grammar, category field, severity, standard refs
+- Add `evals/runner-config.json` declaring minimum status thresholds and minimum model class
+- README documents eval coverage matrix (5 required categories + 2 skill-specific) (upstream Work Item 5)
 
 ## v1.2.0
 - MF environment cross-check table (7 environment types)

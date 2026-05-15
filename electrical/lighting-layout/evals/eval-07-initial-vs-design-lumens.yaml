@@ -1,38 +1,47 @@
-id: eval-07-initial-vs-design-lumens
-title: Initial vs design lumens — LLMF application
-version: "1.0"
+name: eval-07-initial-vs-design-lumens
 skill: lighting-layout
+description: >
+  Skill-specific — luminaire spec gives INITIAL lumens (5000 lm at t=0) with
+  L80 rated-life class. Skill must apply LLMF = 0.80 to derive design lumens
+  (4000 lm), then compute fixture count from the derated value. The wrong
+  behaviour would use 5000 lm directly and yield ~12 fixtures instead of 14.
+category: skill_specific
 
 input:
-  room_length_m: 10
-  room_width_m: 6
-  ceiling_height_m: 2.8
   room_type: open_plan_office
-  luminaire: 600x600 LED panel
-  lumen_output: 5000
+  room_length_mm: 10000
+  room_width_mm: 6000
+  ceiling_height_mm: 2800
+  luminaire_lumens: 5000
   lumen_type: initial
-  rated_life: 50000h
-  rated_life_factor: L80
-  wattage_w: 36
+  luminaire_wattage_w: 36
 
-expected_calculations:
+expected_compliance:
   llmf: 0.80
   design_lumens: 4000
-  fixture_count_correct: 14
-  fixture_count_wrong_if_initial_used: 12
+  fixture_count_min: 14
 
-pass_criteria:
-  - Skill detects lumen_type = initial
-  - Applies LLMF = 0.80 → design lumens = 4000
-  - [ASSUMPTION] flag on lumen conversion present
-  - Fixture count N >= 14 (not 12)
-  - luminaire_type.lumen_type = "initial"
-  - luminaire_type.llmf_applied = true
-  - luminaire_type.initial_lumens = 5000
-  - luminaire_type.lumens = 4000
+checks:
+  - assertion: ir.luminaire_type.lumen_type == "initial"
+    description: Skill must record that the input was initial lumens
 
-fail_conditions:
-  - Skill uses 5000 lm without applying LLMF
-  - Fixture count = 12
-  - No [ASSUMPTION] on lumen conversion
-  - luminaire_type.llmf_applied = false
+  - assertion: ir.luminaire_type.llmf_applied == true
+    description: LLMF must be applied when lumen_type=initial
+
+  - assertion: ir.luminaire_type.initial_lumens == 5000
+    description: Preserve the input value
+
+  - assertion: ir.luminaire_type.lumens == 4000
+    description: Derived design lumens after LLMF=0.80
+
+  - assertion: ir.luminaires.length >= 14
+    description: Fixture count must respect the derated lumens (not the initial value)
+
+  - assertion: ir.calculation_summary.assumptions contains "LLMF"
+    description: Lumen conversion must be flagged as assumption
+    standard_ref: CIBSE TM 3-25 / SLL Code for Lighting
+
+  - assertion: ir.calculation_summary.compliant == true
+    description: Overall compliance on this scenario
+
+expected_flags: []

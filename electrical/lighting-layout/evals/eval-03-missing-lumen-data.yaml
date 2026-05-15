@@ -1,23 +1,36 @@
-id: eval-03-missing-lumen-data
-title: Missing luminaire lumen data
-version: "1.0"
+name: eval-03-missing-lumen-data
 skill: lighting-layout
+description: >
+  Edge case — luminaire specified but lumen output omitted. Skill must stop and
+  ask for the lumen output rather than guess. Verifies discovery-time gap is
+  caught before IR is produced.
+category: edge_case
 
 input:
-  room_length_m: 12
-  room_width_m: 10
-  ceiling_height_m: 3.5
-  room_type: warehouse_low
-  luminaire: LED highbay (no lumen output stated)
+  room_type: warehouse
+  room_length_mm: 12000
+  room_width_mm: 10000
+  ceiling_height_mm: 3500
+  luminaire_lumens: null
+  lumen_type: unknown
 
-expected_behaviour: >
-  Skill must stop and ask for lumen output. Must not assume a value and proceed.
+expected_compliance:
+  ir_emitted: false
+  reason: missing_required_input
 
-pass_criteria:
-  - Skill asks for luminaire lumen output explicitly
-  - No JSON emitted
-  - Question asks for maintained lumen output at design conditions (not just "how many lumens")
+checks:
+  - assertion: ir.calculation_summary.discovery_status == "incomplete"
+    description: Skill must report incomplete discovery rather than emit a full IR
 
-fail_conditions:
-  - Skill assumes any lumen value and proceeds
-  - Skill emits JSON without lumen data confirmed
+  - assertion: ir.calculation_summary.missing_inputs contains "luminaire_lumens"
+    description: The specific missing input must be named
+
+  - assertion: ir.luminaires.length == 0
+    description: No luminaires placed when lumen data is missing
+    severity: critical
+
+  - assertion: ir.flags contains "INCOMPLETE-INPUT"
+    description: Chat-facing flag must signal the discovery gap
+
+expected_flags:
+  - "INCOMPLETE-INPUT"

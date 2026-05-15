@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "shared/schemas/core/eval.schema.json",
+  "title": "Skill evaluation schema",
+  "description": "Metaschema for per-skill eval YAML files. Each eval declares one scenario (input + expected behaviour) the runtime can execute against any LLM and report pass/fail uniformly. Assertion grammar is restricted by design — see assertion_grammar below.",
+  "type": "object",
+  "required": ["name", "skill", "input", "checks"],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Unique within the skill. Convention: eval-NN-short-slug."
+    },
+    "skill": {
+      "type": "string",
+      "description": "Skill id matching the parent skill.manifest.json"
+    },
+    "description": {
+      "type": "string",
+      "description": "One-line summary of what this eval verifies"
+    },
+    "category": {
+      "enum": ["happy_path", "edge_case", "compliance_failure", "cross_validation", "skill_specific"],
+      "description": "Eval-coverage-matrix bucket. The 5 named categories form the production minimum; skill_specific is additional."
+    },
+    "input": {
+      "type": "object",
+      "description": "Maps to inputs.json item ids → answers. Validated by the skill's inputs metaschema at runtime.",
+      "additionalProperties": true
+    },
+    "expected_compliance": {
+      "type": "object",
+      "description": "Optional declarations of the compliance outcome the skill should report.",
+      "additionalProperties": true
+    },
+    "expected_flags": {
+      "type": "array",
+      "description": "Substrings the runtime expects to find in ir.flags or ir.rationale flags.",
+      "items": { "type": "string" }
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/Check" }
+    }
+  },
+  "assertion_grammar": {
+    "format": "<jsonpath> <operator> <value>",
+    "jsonpath_examples": [
+      "ir.compliance.lux_ok",
+      "ir.luminaires.length",
+      "ir.luminaires[*].circuit_id",
+      "ir.rationale.sections",
+      "ir.flags"
+    ],
+    "operators": ["==", "!=", ">=", "<=", ">", "<", "contains", "not_contains", "all_equal", "matches"],
+    "value_types": ["string (quoted)", "integer", "float", "boolean (true/false)"],
+    "no_run_logic": true,
+    "note": "Assertion grammar is restricted by design. To extend (new operator, function call, arithmetic), raise an issue first — runtime parsers must stay simple."
+  },
+  "definitions": {
+    "Check": {
+      "type": "object",
+      "required": ["assertion", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "assertion": {
+          "type": "string",
+          "description": "Single line: jsonpath + operator + value. See assertion_grammar above. Example: 'ir.luminaires.length >= 16'."
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable rationale for the check"
+        },
+        "severity": {
+          "enum": ["critical", "warning", "info"],
+          "default": "critical",
+          "description": "critical = fail eval; warning = report but pass; info = report only"
+        },
+        "standard_ref": {
+          "type": "string",
+          "description": "Optional citation, e.g. 'BS EN 12464-1:2021 Table 5.3'"
+        }
+      }
+    }
+  }
+}
