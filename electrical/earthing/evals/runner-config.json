@@ -1,0 +1,28 @@
+{
+  "$schema": "../../../shared/schemas/core/eval-runner-config.schema.json",
+  "skill": "earthing",
+  "version": "1.0.0",
+  "minimum_model_class": "sonnet",
+  "minimum_status": {
+    "happy_path": "pass",
+    "edge_case": "pass-with-warnings",
+    "validation_trap": "pass",
+    "missing_input": "pass",
+    "jurisdiction_switch": "pass",
+    "rationale_block": "pass"
+  },
+  "evals": [
+    "eval-01-uk-dwelling-tn-cs.yaml",
+    "eval-02-rural-tt-system.yaml",
+    "eval-03-cpc-undersized-trap.yaml",
+    "eval-04-missing-soil-resistivity.yaml",
+    "eval-05-jurisdiction-us-nec.yaml",
+    "eval-06-rationale-block.yaml"
+  ],
+  "scoring": {
+    "schema_validity_weight": 0.25,
+    "invariant_pass_weight": 0.35,
+    "reviewer_score_weight": 0.30,
+    "rationale_quality_weight": 0.10
+  }
+}

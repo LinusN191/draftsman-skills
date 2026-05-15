@@ -1,0 +1,66 @@
+# Eval 01 — UK dwelling, TN-C-S, all consumed-intent layers present
+# Category: happy_path
+# Standard refs: BS 7671:2018+A3, IEC 60617
+
+id: eval-01-uk-dwelling-tn-cs
+category: happy_path
+severity: critical
+description: |
+  Standard UK 3-bed semi-detached dwelling on PME supply. All four upstream skills
+  (db-layout, lighting-layout, small-power, plus jurisdictional defaults) have
+  produced their intents. Earthing skill must produce a complete TN-C-S schematic
+  with correct Zs verification on every circuit.
+
+inputs:
+  jurisdiction: "GB"
+  earthing_system_declared: "TN-C-S"
+  supply_voltage_v: 230
+  ze_ohm_declared: 0.35
+  water_service_metallic: true
+  gas_service_metallic: true
+  extraneous_parts:
+    - { kind: "structural_steel", location: "loft truss steel" }
+  met_location: "consumer unit cupboard, ground floor hallway"
+  supplementary_bonding_required_locations:
+    - { kind: "bathroom", zone: "first_floor_main_bathroom" }
+  consumed_intents:
+    - { intent_type: "db-layout", intent_version: "1.0.0", produced_by: "electrical/db-layout/v1.0.0", payload_ref: "test-fixtures/db-layout-eval01.json" }
+    - { intent_type: "lighting-layout", intent_version: "1.3.0", produced_by: "electrical/lighting-layout/v1.3.0", payload_ref: "test-fixtures/lighting-eval01.json" }
+    - { intent_type: "small-power", intent_version: "1.0.0", produced_by: "electrical/small-power/v1.0.0", payload_ref: "test-fixtures/small-power-eval01.json" }
+
+assertions:
+  - kind: schema_valid
+    schema: "earthing-ir.schema.json"
+  - kind: jsonpath_equals
+    path: "$.earthing_system"
+    expected: "TN-C-S"
+  - kind: jsonpath_equals
+    path: "$.jurisdiction"
+    expected: "GB"
+  - kind: jsonpath_present
+    path: "$.met"
+  - kind: jsonpath_count_gte
+    path: "$.main_bonding.conductors[*]"
+    minimum: 3
+    note: "water + gas + structural_steel"
+  - kind: jsonpath_count_gte
+    path: "$.supplementary_bonding.zones[*]"
+    minimum: 1
+    note: "first_floor bathroom"
+  - kind: jsonpath_all_lte
+    path: "$.circuits[*].zs_calculated_ohm"
+    field_compared_to: "zs_max_ohm"
+    note: "Every circuit must satisfy Zs ≤ Zs_max"
+  - kind: invariant_passes
+    invariant: "INV-5"
+    note: "Zs arithmetic"
+  - kind: invariant_passes
+    invariant: "INV-3"
+    note: "Bonding completeness"
+  - kind: clause_cited
+    clause_pattern: "^BS 7671:2018\\+A3 Reg 411\\."
+    minimum_count: 2
+  - kind: rationale_present
+    require_sections: ["chat_summary", "engineering_objectives", "constraints", "regulatory_basis", "key_decisions", "assumptions", "design_methodology", "risks", "evidence"]
+
+expected_status: "pass"
