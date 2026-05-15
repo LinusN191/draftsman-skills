@@ -1,0 +1,130 @@
+{
+  "_title": "IEC 61439 Part 1 — General rules",
+  "_iec_part": 1,
+  "_version": "1.0.0",
+  "_note": "Part 1 sets the framework for all other parts. The two assembly entries here represent the indoor/normal-service and outdoor/special-service baselines — every Part 2–7 assembly inherits from one of these.",
+  "assemblies": [
+    {
+      "assembly_id": "ASSEMBLY_INDOOR_NORMAL_SERVICE",
+      "iec_ref": "IEC61439-1:2020",
+      "iec_part": 1,
+      "iec_title": "LV assembly — indoor, normal service conditions",
+      "draftsman_id": "ASSEMBLY_INDOOR_NORMAL_SERVICE",
+      "application_scope": "Baseline LV switchgear/controlgear assembly for indoor installation under IEC 61439-1 Clause 7.1 normal service conditions: ambient -5 °C to +40 °C (24-hour average ≤ 35 °C), altitude ≤ 2000 m, relative humidity ≤ 50% at 40 °C (higher at lower temperatures), pollution degree 2 (3 for industrial). Every Part 2/3/7 assembly with no special-service overlay inherits these conditions.",
+      "rated_quantities": {
+        "Ue_V":      [230, 400, 690, 1000],
+        "Ui_V":      [1000],
+        "Uimp_kV":   [4, 6, 8, 12],
+        "In_A":      [16, 32, 63, 100, 125, 160, 250, 400, 630, 800, 1250, 1600, 2000, 2500, 3200, 4000, 5000, 6300],
+        "Icw_kA_1s": [10, 15, 25, 36, 50, 65, 80, 100],
+        "Ipk_kA":    [17, 30, 52, 75, 105, 143, 176, 220]
+      },
+      "form_separation": "n/a",
+      "ip_default": "IP2X minimum (Clause 8.2)",
+      "ik_default": "IK05",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code",
+        "ambient_temperature_range",
+        "altitude",
+        "pollution_degree",
+        "overvoltage_category"
+      ],
+      "verification_clauses": [
+        "10.2 strength of materials and parts",
+        "10.3 degree of protection",
+        "10.4 clearances and creepage distances",
+        "10.5 protection against electric shock and integrity of protective circuits",
+        "10.6 incorporation of switching and protective devices",
+        "10.7 internal electrical circuits and connections",
+        "10.8 terminals for external conductors",
+        "10.9 dielectric properties",
+        "10.10 temperature rise verification (Annex E)",
+        "10.11 short-circuit withstand verification (Annex P)",
+        "10.12 electromagnetic compatibility",
+        "10.13 mechanical operation"
+      ],
+      "drawn_as": ["DB_GENERAL"],
+      "typical_components": ["MCB_3P", "MCCB_3P", "BUSBAR_3PH", "AMMETER", "VOLTMETER"],
+      "application_examples": [
+        "Indoor sub-distribution board in a commercial office",
+        "Indoor MCC in a temperature-controlled plant room",
+        "Indoor consumer unit"
+      ],
+      "related_iec_60364": ["IEC60364-5-53 (Selection and erection of switchgear)", "IEC60364-6 (Verification)"],
+      "related_bs_7671": ["Reg 132.12 (Equipment compatibility with the system)", "Section 537 (Isolation and switching)"],
+      "usage_notes": "Use as the baseline 'no special conditions' assembly. Any deviation (outdoor, dust, vibration, high ambient) requires the SPECIAL_SERVICE_CONDITIONS variant and an OEM-agreed verification path. Designer specifies the ambient explicitly when it differs from the 35 °C 24-h average even if peak stays at 40 °C.",
+      "related_assemblies": ["ASSEMBLY_OUTDOOR_SPECIAL_SERVICE", "PSC_ASSEMBLY_FORM_1", "DBO_ASSEMBLY"]
+    },
+    {
+      "assembly_id": "ASSEMBLY_OUTDOOR_SPECIAL_SERVICE",
+      "iec_ref": "IEC61439-1:2020",
+      "iec_part": 1,
+      "iec_title": "LV assembly — outdoor or special service conditions",
+      "draftsman_id": "ASSEMBLY_OUTDOOR_SPECIAL_SERVICE",
+      "application_scope": "Baseline for assemblies installed under Clause 7.2 special service conditions: outdoor installation, ambient outside -5/+40 °C, altitude > 2000 m, humidity exceeding the indoor envelope, presence of dust/corrosive atmosphere, vibration/shock above normal, exposure to fungus/insects/vermin, exposure to abnormal electrical disturbance. Used as the inherited baseline by Part 4 (ACS), Part 5 (PENDA), and outdoor-installed Part 7 applications.",
+      "rated_quantities": {
+        "Ue_V":      [230, 400, 690, 1000],
+        "Ui_V":      [1000],
+        "Uimp_kV":   [6, 8, 12],
+        "In_A":      [16, 32, 63, 100, 125, 160, 250, 400, 630, 800, 1250, 1600, 2000, 2500, 3200, 4000],
+        "Icw_kA_1s": [10, 15, 25, 36, 50, 65, 80, 100],
+        "Ipk_kA":    [17, 30, 52, 75, 105, 143, 176, 220]
+      },
+      "form_separation": "n/a",
+      "ip_default": "IP44 minimum (outdoor, splash-proof); IP54 in dusty/wash-down environments; IP65+ where direct water spray is foreseeable",
+      "ik_default": "IK08 (outdoor, public-accessible); IK10 where vandalism is foreseeable",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code",
+        "ambient_temperature_range_extended",
+        "altitude_if_above_2000m",
+        "solar_radiation_protection",
+        "pollution_degree_special",
+        "overvoltage_category_special",
+        "corrosion_protection_class",
+        "vibration_class_if_applicable"
+      ],
+      "verification_clauses": [
+        "10.2 strength of materials and parts (including solar/corrosion if outdoor)",
+        "10.3 degree of protection (outdoor IP and IK)",
+        "10.4 clearances and creepage (pollution degree 3 typical)",
+        "10.5 protection against electric shock",
+        "10.6 incorporation of switching/protective devices",
+        "10.7 internal electrical circuits",
+        "10.8 terminals for external conductors",
+        "10.9 dielectric properties (high humidity)",
+        "10.10 temperature rise (solar gain Annex E.5)",
+        "10.11 short-circuit withstand (Annex P)",
+        "10.12 EMC",
+        "10.13 mechanical operation (low-temperature operation)"
+      ],
+      "drawn_as": ["DB_GENERAL"],
+      "typical_components": ["MCCB_3P", "ACB_3P", "BUSBAR_3PH", "SPD_TYPE1", "SPD_TYPE2"],
+      "application_examples": [
+        "Outdoor utility pillar (PENDA, Part 5)",
+        "Construction site assembly (ACS, Part 4)",
+        "Outdoor PV combiner box (Part 7-4)",
+        "Outdoor EV charging station enclosure (Part 7-2)"
+      ],
+      "related_iec_60364": ["IEC60364-5-51 (Common rules — environmental influences)", "IEC60364-7-704 (Construction sites)", "IEC60364-7-712 (Solar PV)", "IEC60364-7-722 (EV charging)"],
+      "related_bs_7671": ["Section 522 (External influences)", "Section 704 (Construction sites)", "Section 712 (Solar PV)", "Section 722 (EV charging)"],
+      "usage_notes": "Specify explicit IP and IK values rather than relying on this default. Solar gain alone can add 15–25 K to internal temperature — verify temperature rise per Annex E.5. For ACS/Part 4, IK08 is mandatory; for PENDA/Part 5 in unattended public locations, IK10.",
+      "related_assemblies": ["ASSEMBLY_INDOOR_NORMAL_SERVICE", "ACS_ASSEMBLY", "PENDA_KIOSK_GROUND_MOUNTED", "PENDA_KIOSK_POLE_MOUNTED"]
+    }
+  ]
+}
