@@ -1,0 +1,122 @@
+{
+  "$schema": "../../schemas/earthing-ir.schema.json",
+  "drawing_type": "earthing_schematic",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "strip-mall-suite4-p01",
+    "skill_version": "earthing/1.0.0",
+    "produced_at": "2026-05-15T12:00:00Z",
+    "consumed_intents": [
+      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.0.0" }
+    ]
+  },
+  "jurisdiction": "US",
+  "earthing_system": {
+    "system_type": "TN-S",
+    "code_clause": "NEC 2023 Art 250.4(A) — Grounded systems with EGC"
+  },
+  "met": {
+    "location": "main service panel — exterior wall (grounding busbar)",
+    "supply_bond_type": "tn_s_separate_pe",
+    "main_earthing_conductor_size_awg": "4 AWG Cu"
+  },
+  "electrodes": [
+    {
+      "id": "E1",
+      "electrode_type": "ufer",
+      "burial_depth_mm": 1200,
+      "ra_ohm_specified": 25
+    },
+    {
+      "id": "E2",
+      "electrode_type": "structural_metal",
+      "ra_ohm_specified": 25
+    }
+  ],
+  "main_bonding": [
+    { "id": "B1", "source": "MET", "target": "water_pipe", "csa_mm2_or_awg": "4 AWG Cu", "code_clause": "NEC 2023 Art 250.104(A)" },
+    { "id": "B2", "source": "MET", "target": "gas_pipe", "csa_mm2_or_awg": "6 AWG Cu", "code_clause": "NEC 2023 Art 250.104(B)" },
+    { "id": "B3", "source": "MET", "target": "structural_steel", "csa_mm2_or_awg": "4 AWG Cu", "code_clause": "NEC 2023 Art 250.104(C)" }
+  ],
+  "circuits": [
+    { "circuit_id": "C01", "db_designation": "MSP", "voltage_class": "LV_power", "breaker_rating_a": 20, "breaker_curve": "C", "route_length_m": 25, "cpc_csa_mm2_or_awg": "12 AWG Cu", "cpc_sizing_method": "nec_table_250.122", "cpc_sizing_clause": "NEC 2023 Table 250.122", "zs_ohm": 0.45, "zs_max_ohm": 5.0, "zs_compliance": "pass", "rcd_required": false },
+    { "circuit_id": "C02", "db_designation": "MSP", "voltage_class": "LV_power", "breaker_rating_a": 20, "breaker_curve": "C", "route_length_m": 30, "cpc_csa_mm2_or_awg": "12 AWG Cu", "cpc_sizing_method": "nec_table_250.122", "cpc_sizing_clause": "NEC 2023 Table 250.122", "zs_ohm": 0.50, "zs_max_ohm": 5.0, "zs_compliance": "pass", "rcd_required": false },
+    { "circuit_id": "C03", "db_designation": "MSP", "voltage_class": "LV_power", "breaker_rating_a": 30, "breaker_curve": "C", "route_length_m": 18, "cpc_csa_mm2_or_awg": "10 AWG Cu", "cpc_sizing_method": "nec_table_250.122", "cpc_sizing_clause": "NEC 2023 Table 250.122", "zs_ohm": 0.35, "zs_max_ohm": 3.5, "zs_compliance": "pass", "rcd_required": false },
+    { "circuit_id": "C04", "db_designation": "MSP", "voltage_class": "LV_power", "breaker_rating_a": 60, "breaker_curve": "C", "route_length_m": 35, "cpc_csa_mm2_or_awg": "10 AWG Cu", "cpc_sizing_method": "nec_table_250.122", "cpc_sizing_clause": "NEC 2023 Table 250.122", "zs_ohm": 0.55, "zs_max_ohm": 1.8, "zs_compliance": "pass", "rcd_required": false }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      { "message": "Confirm UFER (concrete-encased electrode) rebar is ≥20 ft continuous and accessible at service before specifying — verify in field.", "code_clause": "NEC 2023 Art 250.52(A)(3)", "severity": "info" }
+    ],
+    "assumptions": [
+      "POCO-declared Ze=0.20Ω accepted (typical for utility-grounded service).",
+      "UFER electrode assumed accessible from main service panel."
+    ]
+  },
+  "drawn_as_symbols": ["EARTH_GENERAL", "EARTH_PROTECTIVE", "EARTH_ELECTRODE", "CONDUCTOR_PE", "JUNCTION_T", "BUSBAR"],
+  "flags": [],
+  "rationale": {
+    "chat_summary": "US strip-mall retail fit-out, 200A single-phase split service. NEC grounded system (TN-S equivalent) with main service panel grounding busbar. Grounding electrode system bonds UFER and structural steel per NEC 250.50/250.52. Main bonds at 4 AWG to water and structural steel, 6 AWG to gas. EGCs from Table 250.122 by OCPD: 12 AWG for 20A circuits, 10 AWG for 30A and 60A. No GFCI/AFCI for general retail. Reply to refine, e.g. 'add a kitchen — adds 210.8 GFCI requirements'.",
+    "sections": [
+      {
+        "title": "Earthing System",
+        "summary": "NEC grounded system with EGC throughout — IEC equivalent: TN-S. Service grounding is utility responsibility per NEC 250.24; consumer's grounding electrode system is required per 250.50.",
+        "decisions": [
+          { "label": "TN-S (NEC grounded system)", "summary": "Standard US service arrangement with separate EGC.", "rule": "NEC 250.4(A) effective ground-fault current path", "code_clause": "NEC 2023 Art 250.4(A)", "inputs": { "jurisdiction": "US", "earthing_system": "TN-S" } }
+        ]
+      },
+      {
+        "title": "Main Earthing Terminal",
+        "summary": "Grounding busbar in main service panel on exterior wall. Main bonding jumper inside the panel per NEC 250.28. Main grounding electrode conductor 4 AWG Cu per Table 250.66 for a 200A service.",
+        "decisions": [
+          { "label": "4 AWG Cu GEC", "summary": "200A service ungrounded conductor → Table 250.66 row gives 4 AWG.", "rule": "NEC Table 250.66", "code_clause": "NEC 2023 Table 250.66", "inputs": { "service_rating_a": 200, "gec_size_awg": "4" } }
+        ]
+      },
+      {
+        "title": "Electrodes",
+        "summary": "Two grounding electrodes per NEC 250.50/250.52(A): concrete-encased (UFER) and structural steel. Field verification required for UFER continuity.",
+        "decisions": [
+          { "label": "Two-electrode GES", "summary": "UFER plus structural steel bonded together meet 250.50 'all present electrodes' rule.", "rule": "NEC 250.50 — bond all available electrodes", "code_clause": "NEC 2023 Art 250.50", "inputs": { "electrode_types": ["ufer", "structural_metal"] } }
+        ]
+      },
+      {
+        "title": "Main Bonding",
+        "summary": "Three main bonds from grounding busbar to extraneous metallic systems per NEC 250.104.",
+        "decisions": [
+          { "label": "4 AWG bond to water service", "summary": "Metal water pipe entering building bonded near point of entry.", "rule": "NEC 250.104(A) bonding for water piping", "code_clause": "NEC 2023 Art 250.104(A)", "inputs": { "size_awg": "4", "target": "water_pipe" } },
+          { "label": "6 AWG bond to gas pipe", "summary": "Interior metal gas piping bonded.", "rule": "NEC 250.104(B) bonding for other metal piping", "code_clause": "NEC 2023 Art 250.104(B)", "inputs": { "size_awg": "6", "target": "gas_pipe" } },
+          { "label": "4 AWG bond to structural steel", "summary": "Exposed structural metal frame bonded to GES.", "rule": "NEC 250.104(C) structural metal", "code_clause": "NEC 2023 Art 250.104(C)", "inputs": { "size_awg": "4", "target": "structural_steel" } }
+        ]
+      },
+      {
+        "title": "Supplementary Bonding",
+        "summary": "Not applicable — general retail with no pool, no medical, no agricultural.",
+        "decisions": []
+      },
+      {
+        "title": "CPC + Zs Verification",
+        "summary": "EGCs sized via NEC Table 250.122 by OCPD rating, not phase CSA. The 60 A RTU EGC at 10 AWG is the Table 250.122 minimum despite larger phase conductor — NEC's deliberate decoupling. Effective ground-fault path verified by short circuit length and low Ze.",
+        "decisions": [
+          { "label": "EGCs from Table 250.122", "summary": "Sized by OCPD rating per the table.", "rule": "NEC Table 250.122", "code_clause": "NEC 2023 Table 250.122", "inputs": { "cpc_sizing_method": "nec_table_250.122" } },
+          { "label": "Effective ground-fault current path", "summary": "Low Ze + short cable runs ensure adequate fault current.", "rule": "NEC 250.4(A)(5) effective ground-fault path", "code_clause": "NEC 2023 Art 250.4(A)(5)", "inputs": { "ze_ohm": 0.20 } }
+        ]
+      },
+      {
+        "title": "RCD Requirements",
+        "summary": "No GFCI/AFCI required for these general retail circuits. NEC 210.8 GFCI applies to specific locations (bathrooms, kitchens, garages, outdoor); 210.12 AFCI applies to dwelling units, not retail.",
+        "decisions": []
+      },
+      {
+        "title": "Compliance",
+        "summary": "Compliant. One INFO flag for UFER field verification.",
+        "decisions": []
+      },
+      {
+        "title": "Assumptions",
+        "summary": "POCO-declared Ze accepted; UFER electrode assumed accessible.",
+        "decisions": []
+      }
+    ]
+  }
+}

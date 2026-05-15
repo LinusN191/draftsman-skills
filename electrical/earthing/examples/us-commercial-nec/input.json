@@ -1,0 +1,46 @@
+{
+  "$schema": "../../inputs.json",
+  "project_meta": {
+    "name": "Strip mall — Suite 4 fit-out",
+    "client": "Retail tenant",
+    "designer": "DraftsMan Skills demo",
+    "date": "2026-05-15",
+    "revision": "P01"
+  },
+  "jurisdiction": "US",
+  "earthing_system": "TN-S",
+  "supply_voltage_v": "240",
+  "supply_phase": "single_phase_split",
+  "ze_ohm_declared": 0.20,
+  "ze_ohm_source": "POCO declared service grounding",
+  "building_type": "retail",
+  "has_lightning_protection": false,
+  "extraneous_parts": [
+    { "type": "water_pipe", "location_descriptor": "metallic service entry, back-of-house wall" },
+    { "type": "gas_pipe", "location_descriptor": "rooftop unit gas line" },
+    { "type": "structural_steel", "location_descriptor": "exposed beam in service area" }
+  ],
+  "ground_conditions": "unknown",
+  "met_location": "main service panel — exterior wall",
+  "supplementary_bonding_required_locations": [],
+  "life_safety_bonded_assets": ["none"],
+  "rcd_type_default": "A",
+  "consumed_intents": [
+    {
+      "intent_type": "db-layout",
+      "intent_version": "1.0.0",
+      "produced_by": "electrical/db-layout/v1.0.0",
+      "payload": {
+        "boards": [
+          { "id": "MSP", "designation": "Main Service Panel", "phases": 1, "ways": 20, "main_switch_rating_a": 200, "main_switch_type": "main_breaker_200A" }
+        ],
+        "outgoing_circuits": [
+          { "id": "C01", "designation": "General lighting", "ocpd_rating_a": 20, "phase_csa_awg": "12", "length_m": 25 },
+          { "id": "C02", "designation": "General receptacles", "ocpd_rating_a": 20, "phase_csa_awg": "12", "length_m": 30 },
+          { "id": "C03", "designation": "Reach-in cooler dedicated", "ocpd_rating_a": 30, "phase_csa_awg": "10", "length_m": 18 },
+          { "id": "C04", "designation": "RTU HVAC unit", "ocpd_rating_a": 60, "phase_csa_awg": "6", "length_m": 35 }
+        ]
+      }
+    }
+  ]
+}
