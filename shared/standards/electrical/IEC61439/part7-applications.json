@@ -1,0 +1,275 @@
+{
+  "_title": "IEC 61439 Part 7 — Assemblies for specific applications",
+  "_iec_part": 7,
+  "_version": "1.0.0",
+  "_note": "Application-specific overlays on Parts 1–3. Each Part 7-x sub-part adds requirements for a particular application: camping/marinas (7-1), EV charging (7-2), safety services (7-3), PV (7-4), transformer assemblies (7-5).",
+  "assemblies": [
+    {
+      "assembly_id": "PART7_1_MARINA_CAMPING",
+      "iec_ref": "IEC61439-7-1:2014",
+      "iec_part": 7,
+      "iec_title": "Assembly for marinas, camping sites, market squares (Part 7-1)",
+      "draftsman_id": "PART7_1_MARINA_CAMPING",
+      "application_scope": "Distribution assemblies serving plug-in supplies at marinas, camping sites, market squares, charging points for caravans/boats, and similar outdoor public spaces. Mandatory RCD protection, IP44 minimum, tamper resistance.",
+      "rated_quantities": {
+        "Ue_V":      [230, 400],
+        "Ui_V":      [500],
+        "Uimp_kV":   [6, 8],
+        "In_A":      [16, 32, 63, 100, 125],
+        "Icw_kA_1s": [6, 10, 15],
+        "Ipk_kA":    [10, 17, 30]
+      },
+      "form_separation": "n/a",
+      "ip_default": "IP44 minimum (Clause 8 of Part 7-1)",
+      "ik_default": "IK10 (vandal/impact)",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code_minimum_10",
+        "rcd_sensitivity_IDn",
+        "rcd_type"
+      ],
+      "verification_clauses": [
+        "10.2 strength (vandal resistance)",
+        "10.3 IP",
+        "10.4 clearances/creepage",
+        "10.5 electric shock protection (RCD + supplementary)",
+        "10.10 temperature rise",
+        "10.11 short-circuit withstand",
+        "10.13 mechanical operation"
+      ],
+      "drawn_as": ["DB_GENERAL"],
+      "typical_components": ["MCB_1P", "RCD_2P", "RCBO_1P", "SOCKET_INDUSTRIAL_IP44", "SOCKET_COMMANDO_32A"],
+      "application_examples": [
+        "Marina berth supply pedestal",
+        "Camping pitch hookup post",
+        "Market square traders' supply",
+        "Caravan park bollard"
+      ],
+      "related_iec_60364": ["IEC60364-7-708 (Caravan parks, camping sites, marinas)", "IEC60364-7-709 (Marinas — same scope)"],
+      "related_bs_7671": ["Section 708 (Caravan/camping)", "Section 709 (Marinas)"],
+      "usage_notes": "30 mA RCD per outlet is the typical configuration. Specify Type A RCD as minimum; Type B where outlets serve EVSE or DC-leakage equipment (becoming common on EV-charging caravan posts).",
+      "related_assemblies": ["PART7_2_EV_CHARGING", "ACS_TRANSPORTABLE"]
+    },
+    {
+      "assembly_id": "PART7_2_EV_CHARGING",
+      "iec_ref": "IEC61439-7-2:2018",
+      "iec_part": 7,
+      "iec_title": "Assembly for EV charging stations (Part 7-2)",
+      "draftsman_id": "PART7_2_EV_CHARGING",
+      "application_scope": "Assemblies forming part of an EV charging station — Mode 3 wallbox enclosure, Mode 4 DC fast charger cabinet, group-charging panel. Mandatory Type B RCD (or equivalent) where DC leakage is possible; cable rated at 100% of EVSE current per IEC 60364-7-722.",
+      "rated_quantities": {
+        "Ue_V":      [230, 400],
+        "Ui_V":      [690],
+        "Uimp_kV":   [6, 8],
+        "In_A":      [16, 32, 63, 100, 125, 160, 250],
+        "Icw_kA_1s": [10, 15, 25, 36],
+        "Ipk_kA":    [17, 30, 52, 75]
+      },
+      "form_separation": "n/a",
+      "ip_default": "IP44 (indoor); IP54 (outdoor); IP65 where wash-down is foreseeable",
+      "ik_default": "IK08 (indoor); IK10 (outdoor public)",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code",
+        "rcd_sensitivity_IDn",
+        "rcd_type_must_handle_DC_leakage",
+        "evse_rated_current_per_outlet",
+        "cable_sized_100pct_continuous"
+      ],
+      "verification_clauses": [
+        "10.2 strength",
+        "10.3 IP",
+        "10.4 clearances/creepage",
+        "10.5 electric shock protection (Type B RCD)",
+        "10.10 temperature rise (100% continuous duty)",
+        "10.11 short-circuit withstand",
+        "10.13 mechanical operation (cable retraction / connector durability)"
+      ],
+      "drawn_as": ["DB_GENERAL", "EV_CHARGING_POINT"],
+      "typical_components": ["MCB_3P", "MCCB_3P", "RCD_4P", "RCBO_1P", "EV_CHARGING_POINT", "SPD_TYPE2"],
+      "application_examples": [
+        "Single Mode 3 wallbox (7.4 kW / 11 kW / 22 kW)",
+        "Mode 4 DC fast-charger cabinet (50 kW / 150 kW / 350 kW)",
+        "Group-charging assembly with load management"
+      ],
+      "related_iec_60364": ["IEC60364-7-722 (Supply of electric vehicles)", "IEC60364-4-44 AMD2:2018 (SPD requirements)"],
+      "related_bs_7671": ["Section 722 (Electric vehicle charging installations)", "Reg 722.531.3.101 (Type B RCD where DC leakage)"],
+      "usage_notes": "Cable to EVSE sized at 100 % of EVSE rated current — no diversity. Mandatory Type B RCD where DC leakage > 6 mA possible (Mode 3 unmanaged installations and all Mode 4). Document the load management policy if multiple chargers share a feeder.",
+      "related_assemblies": ["PART7_1_MARINA_CAMPING", "PSC_ASSEMBLY_FORM_2B"]
+    },
+    {
+      "assembly_id": "PART7_3_SAFETY_SERVICES",
+      "iec_ref": "IEC61439-7-3:2018",
+      "iec_part": 7,
+      "iec_title": "Assembly for safety services (Part 7-3)",
+      "draftsman_id": "PART7_3_SAFETY_SERVICES",
+      "application_scope": "Assemblies supplying safety services (emergency lighting, fire alarm, fire pumps, smoke extraction, sprinkler pumps). Fire-integrity cabling, monitored supplies, automatic source-changeover with the safety-services generator.",
+      "rated_quantities": {
+        "Ue_V":      [230, 400],
+        "Ui_V":      [690],
+        "Uimp_kV":   [6, 8],
+        "In_A":      [63, 100, 160, 250, 400, 630, 800],
+        "Icw_kA_1s": [25, 36, 50],
+        "Ipk_kA":    [52, 75, 105]
+      },
+      "form_separation": "n/a",
+      "ip_default": "IP40 minimum",
+      "ik_default": "IK08",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code",
+        "source_changeover_method",
+        "fire_integrity_class_E30_E60_E90",
+        "supply_monitoring"
+      ],
+      "verification_clauses": [
+        "10.2 strength",
+        "10.3 IP",
+        "10.4 clearances/creepage",
+        "10.5 electric shock protection",
+        "10.10 temperature rise",
+        "10.11 short-circuit withstand",
+        "10.13 mechanical operation (source-changeover)"
+      ],
+      "drawn_as": ["DB_MAIN", "DB_SUB", "PANEL_GENERATOR"],
+      "typical_components": ["ACB_3P", "MCCB_3P", "ATS_2WAY", "RELAY_UNDERVOLTAGE", "BUSBAR_3PH"],
+      "application_examples": [
+        "Hospital essential supply changeover panel",
+        "Emergency lighting central battery system supply",
+        "Sprinkler/fire-pump motor control centre",
+        "Smoke extraction fan supply"
+      ],
+      "related_iec_60364": ["IEC60364-5-56 (Safety services)", "IEC60364-7-710 (Medical)"],
+      "related_bs_7671": ["Section 560 (Safety services)", "Section 710 (Medical locations)"],
+      "usage_notes": "Specify the fire-integrity duration (E30/E60/E90/E120) per the project's fire strategy. Source-changeover time matters — Class 0 (no break), Class 0.15, Class 0.5, Class 15, or Class > 15 s — and must match the load tolerance.",
+      "related_assemblies": ["PSC_ASSEMBLY_FORM_3B", "PSC_ASSEMBLY_FORM_4A"]
+    },
+    {
+      "assembly_id": "PART7_4_SOLAR_PV",
+      "iec_ref": "IEC61439-7-4:2022",
+      "iec_part": 7,
+      "iec_title": "Assembly for solar PV (Part 7-4)",
+      "draftsman_id": "PART7_4_SOLAR_PV",
+      "application_scope": "PV-side assemblies — string combiner box, recombiner, DC isolator cabinet, AC-side inverter output combiner. DC fault current behaviour differs from AC; arc fault protection (AFCI) required in some jurisdictions.",
+      "rated_quantities": {
+        "Ue_V":      [600, 1000, 1500],
+        "Ui_V":      [1000, 1500],
+        "Uimp_kV":   [6, 8, 12],
+        "In_A":      [16, 32, 63, 100, 160, 250],
+        "Icw_kA_1s": [10, 15, 25],
+        "Ipk_kA":    [17, 30, 52]
+      },
+      "form_separation": "n/a",
+      "ip_default": "IP65 (outdoor exposed); IP54 (indoor inverter room)",
+      "ik_default": "IK08",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue_DC",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code",
+        "DC_isolation_method",
+        "afci_provision_if_applicable",
+        "spd_dc_input"
+      ],
+      "verification_clauses": [
+        "10.2 strength",
+        "10.3 IP",
+        "10.4 clearances/creepage (DC arcing distances)",
+        "10.5 electric shock protection",
+        "10.10 temperature rise (solar gain)",
+        "10.11 short-circuit withstand",
+        "10.13 mechanical operation"
+      ],
+      "drawn_as": ["DB_GENERAL"],
+      "typical_components": ["FUSE_1P", "ISOLATOR_2P", "ISOLATOR_3P", "SPD_TYPE2", "SOLAR_PV"],
+      "application_examples": [
+        "Rooftop PV string combiner box (DC side)",
+        "Ground-mount PV recombiner cabinet",
+        "Inverter AC-side combiner panel"
+      ],
+      "related_iec_60364": ["IEC60364-7-712 (PV installations)", "IEC60364-4-44 AMD2:2018 (SPD)"],
+      "related_bs_7671": ["Section 712 (Solar PV)"],
+      "usage_notes": "Specify DC-rated isolators (not AC isolators repurposed). Type 2 SPD required at the DC input to the inverter per IEC 60364-4-44 AMD2:2018. Arc fault circuit interrupters (AFCI) are mandatory in some markets (US NEC 690.11) — check jurisdiction.",
+      "related_assemblies": ["PART7_2_EV_CHARGING", "ASSEMBLY_OUTDOOR_SPECIAL_SERVICE"]
+    },
+    {
+      "assembly_id": "PART7_5_TRANSFORMER_ASSEMBLY",
+      "iec_ref": "IEC61439-7-5:2022",
+      "iec_part": 7,
+      "iec_title": "Transformer-incorporated assembly (Part 7-5)",
+      "draftsman_id": "PART7_5_TRANSFORMER_ASSEMBLY",
+      "application_scope": "Assemblies that integrate a small transformer with LV switchgear — e.g. site-wide isolating transformer combined with its protection switchgear, separated-circuit medical IT panels, control-transformer panels.",
+      "rated_quantities": {
+        "Ue_V":      [230, 400, 690],
+        "Ui_V":      [1000],
+        "Uimp_kV":   [6, 8, 12],
+        "In_A":      [16, 32, 63, 100, 160, 250, 400],
+        "Icw_kA_1s": [10, 15, 25, 36],
+        "Ipk_kA":    [17, 30, 52, 75]
+      },
+      "form_separation": "n/a",
+      "ip_default": "IP30 (indoor); IP54 (outdoor)",
+      "ik_default": "IK08",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code",
+        "transformer_kVA_rating",
+        "primary_secondary_voltage",
+        "insulation_monitoring_if_IT"
+      ],
+      "verification_clauses": [
+        "10.2 strength",
+        "10.3 IP",
+        "10.4 clearances/creepage",
+        "10.5 electric shock protection",
+        "10.10 temperature rise (transformer plus switchgear combined)",
+        "10.11 short-circuit withstand",
+        "10.13 mechanical operation"
+      ],
+      "drawn_as": ["DB_GENERAL", "DB_SUB"],
+      "typical_components": ["TRANSFORMER_2W", "MCCB_3P", "MCB_3P", "RELAY_DIFFERENTIAL"],
+      "application_examples": [
+        "Medical IT separation transformer panel (Group 2 locations)",
+        "Site-isolating transformer + LV switchgear combined cabinet",
+        "Reduced-voltage power tools supply panel (110 V CTE)"
+      ],
+      "related_iec_60364": ["IEC60364-7-710 (Medical locations)", "IEC60364-4-41 (Electric shock — separation)"],
+      "related_bs_7671": ["Section 710 (Medical locations)", "Reg 413.3 (Electrical separation)"],
+      "usage_notes": "For medical IT applications, insulation-monitoring device (IMD) per IEC 61557-8 is mandatory and must be incorporated in the assembly. Temperature-rise verification must account for transformer losses (typically 1–2 % of rated kVA) plus switchgear losses combined.",
+      "related_assemblies": ["PART7_3_SAFETY_SERVICES", "PSC_ASSEMBLY_FORM_2B"]
+    }
+  ]
+}
