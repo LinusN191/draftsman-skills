@@ -1,0 +1,194 @@
+{
+  "_title": "IEC 61439 — Form Separations",
+  "_iec_part": "2 (with cross-references to 3 and 4)",
+  "_version": "1.0.0",
+  "_note": "Form codes defined in IEC 61439-2 Annex 101. ASCII diagrams use: BUSBARS at top, FU = functional unit compartment, T = outgoing-terminal compartment, | = metallic barrier, space = same compartment.",
+  "forms": [
+    {
+      "form_code": "1",
+      "iec_ref": "IEC61439-2:2020 Annex 101",
+      "title": "Form 1 — no internal segregation",
+      "segregation_of": {
+        "busbars_from_functional_units": false,
+        "functional_units_from_each_other": false,
+        "terminals_for_outgoing_conductors_separated_from_busbar": false,
+        "terminals_for_outgoing_conductors_separated_from_each_other": false
+      },
+      "ascii_diagram": [
+        "+---------------------------------+",
+        "|  BUSBARS  FU  FU  FU  T  T  T   |",
+        "|                                 |",
+        "+---------------------------------+"
+      ],
+      "applications": ["Lowest-cost option where whole-board de-energising is acceptable for any maintenance"],
+      "advantages": ["Cheapest", "Most compact for given rating"],
+      "disadvantages": ["No live-work safety — entire board is exposed once opened"],
+      "vs_neighbours": {"Form_2a": "2a adds a barrier between busbar and functional units"},
+      "draftsman_id": "FORM_1",
+      "drawn_as": ["DB_GENERAL"],
+      "usage_notes": "Acceptable only for plant-only assemblies where maintenance is always with the whole board off."
+    },
+    {
+      "form_code": "2a",
+      "iec_ref": "IEC61439-2:2020 Annex 101",
+      "title": "Form 2a — busbars segregated, functional units in common compartment, terminals not segregated from busbar",
+      "segregation_of": {
+        "busbars_from_functional_units": true,
+        "functional_units_from_each_other": false,
+        "terminals_for_outgoing_conductors_separated_from_busbar": false,
+        "terminals_for_outgoing_conductors_separated_from_each_other": false
+      },
+      "ascii_diagram": [
+        "+---------------------------------+",
+        "|  BUSBARS                        |",
+        "+---------------------------------+",
+        "|  FU  FU  FU  T  T  T            |",
+        "+---------------------------------+"
+      ],
+      "applications": ["Industrial sub-distribution above 250 A where busbar isolation is needed"],
+      "advantages": ["Busbar can stay live while functional units are de-energised"],
+      "disadvantages": ["Outgoing terminations remain at busbar potential when busbar is live"],
+      "vs_neighbours": {"Form_1": "Adds busbar segregation", "Form_2b": "2b adds segregation of outgoing terminals from busbar"},
+      "draftsman_id": "FORM_2A",
+      "drawn_as": ["DB_SUB", "DB_GENERAL"],
+      "usage_notes": "Entry-level form for installations needing busbar isolation."
+    },
+    {
+      "form_code": "2b",
+      "iec_ref": "IEC61439-2:2020 Annex 101",
+      "title": "Form 2b — busbars segregated, functional units common, outgoing terminals segregated from busbar",
+      "segregation_of": {
+        "busbars_from_functional_units": true,
+        "functional_units_from_each_other": false,
+        "terminals_for_outgoing_conductors_separated_from_busbar": true,
+        "terminals_for_outgoing_conductors_separated_from_each_other": false
+      },
+      "ascii_diagram": [
+        "+---------------------------------+",
+        "|  BUSBARS                        |",
+        "+---------------------------------+",
+        "|  FU  FU  FU                     |",
+        "+----+----+----+-----------------+",
+        "|  T |  T |  T |                 |",
+        "+----+----+----+-----------------+"
+      ],
+      "applications": ["Commercial mains 400–1600 A", "Light industrial main switchboards"],
+      "advantages": ["Can work on outgoing terminations without de-energising busbar"],
+      "disadvantages": ["Functional units still share a compartment"],
+      "vs_neighbours": {"Form_2a": "Adds terminal segregation from busbar", "Form_3a": "3a adds segregation between functional units"},
+      "draftsman_id": "FORM_2B",
+      "drawn_as": ["DB_MAIN", "DB_SUB"],
+      "usage_notes": "Common default for commercial mains 400–1600 A where critical-circuit independence is not required."
+    },
+    {
+      "form_code": "3a",
+      "iec_ref": "IEC61439-2:2020 Annex 101",
+      "title": "Form 3a — busbar and functional-unit segregation, terminals not segregated from busbar",
+      "segregation_of": {
+        "busbars_from_functional_units": true,
+        "functional_units_from_each_other": true,
+        "terminals_for_outgoing_conductors_separated_from_busbar": false,
+        "terminals_for_outgoing_conductors_separated_from_each_other": false
+      },
+      "ascii_diagram": [
+        "+---------------------------------+",
+        "|  BUSBARS                        |",
+        "+---------------------------------+",
+        "| FU | FU | FU | FU | FU | FU |   |",
+        "+----+----+----+----+----+----+---+",
+        "|  T    T    T    T    T    T     |",
+        "+---------------------------------+"
+      ],
+      "applications": ["Industrial MCCs where outgoing terminations remain in busbar compartment"],
+      "advantages": ["Single functional unit can be worked on while neighbours stay live"],
+      "disadvantages": ["Outgoing terminations remain risky"],
+      "vs_neighbours": {"Form_2b": "Adds segregation between functional units", "Form_3b": "3b adds terminal segregation from busbar"},
+      "draftsman_id": "FORM_3A",
+      "drawn_as": ["DB_MAIN"],
+      "usage_notes": "Industrial-only — Form 3b is preferred for new commercial designs."
+    },
+    {
+      "form_code": "3b",
+      "iec_ref": "IEC61439-2:2020 Annex 101",
+      "title": "Form 3b — busbar and functional-unit segregation, terminals segregated from busbar but grouped per unit",
+      "segregation_of": {
+        "busbars_from_functional_units": true,
+        "functional_units_from_each_other": true,
+        "terminals_for_outgoing_conductors_separated_from_busbar": true,
+        "terminals_for_outgoing_conductors_separated_from_each_other": false
+      },
+      "ascii_diagram": [
+        "+---------------------------------+",
+        "|  BUSBARS                        |",
+        "+----+----+----+----+----+----+---+",
+        "| FU | FU | FU | FU | FU | FU |   |",
+        "+----+----+----+----+----+----+---+",
+        "| T1 | T2 | T3 | T4 | T5 | T6 |   |",
+        "+----+----+----+----+----+----+---+"
+      ],
+      "applications": ["Critical services main switchboards", "Industrial MCCs requiring single-circuit maintenance", "Hospital essential supply distribution"],
+      "advantages": ["Single circuit maintenance with rest live", "Outgoing terminations isolated from busbar"],
+      "disadvantages": ["Higher cost than Form 3a", "More floor space than Form 2"],
+      "vs_neighbours": {"Form_2b": "Adds segregation between functional units (was a single bay)", "Form_3a": "Form 3a has outgoing terminals in the SAME compartment as the functional unit; 3b separates them", "Form_4a": "Form 4a separates each outgoing terminal individually rather than as a group"},
+      "draftsman_id": "FORM_3B",
+      "drawn_as": ["DB_MAIN", "DB_SUB"],
+      "usage_notes": "Default choice for commercial main switchboards 400–4000 A. Specify explicitly on the assembly schedule — the OEM cannot infer the Form from a generic 'main switchboard' callout."
+    },
+    {
+      "form_code": "4a",
+      "iec_ref": "IEC61439-2:2020 Annex 101",
+      "title": "Form 4a — busbar, functional-unit, and grouped-terminal separation",
+      "segregation_of": {
+        "busbars_from_functional_units": true,
+        "functional_units_from_each_other": true,
+        "terminals_for_outgoing_conductors_separated_from_busbar": true,
+        "terminals_for_outgoing_conductors_separated_from_each_other": true,
+        "individual_terminals_within_same_unit_separated": false
+      },
+      "ascii_diagram": [
+        "+---------------------------------+",
+        "|  BUSBARS                        |",
+        "+----+----+----+----+----+----+---+",
+        "| FU | FU | FU | FU | FU | FU |   |",
+        "+----+----+----+----+----+----+---+",
+        "|T1.x|T2.x|T3.x|T4.x|T5.x|T6.x|   |",
+        "+----+----+----+----+----+----+---+"
+      ],
+      "applications": ["Hospital essential supply", "Data centre main LV boards", "High-availability industrial"],
+      "advantages": ["Each functional unit's terminations isolated from neighbours'"],
+      "disadvantages": ["Higher cost than 3b"],
+      "vs_neighbours": {"Form_3b": "Adds terminal-group separation between units", "Form_4b": "4b adds individual-terminal separation within a unit"},
+      "draftsman_id": "FORM_4A",
+      "drawn_as": ["DB_MAIN"],
+      "usage_notes": "Standard for high-availability commercial/industrial mains."
+    },
+    {
+      "form_code": "4b",
+      "iec_ref": "IEC61439-2:2020 Annex 101",
+      "title": "Form 4b — busbar, functional-unit, and individual-terminal separation",
+      "segregation_of": {
+        "busbars_from_functional_units": true,
+        "functional_units_from_each_other": true,
+        "terminals_for_outgoing_conductors_separated_from_busbar": true,
+        "terminals_for_outgoing_conductors_separated_from_each_other": true,
+        "individual_terminals_within_same_unit_separated": true
+      },
+      "ascii_diagram": [
+        "+---------------------------------+",
+        "|  BUSBARS                        |",
+        "+----+----+----+----+----+----+---+",
+        "| FU | FU | FU | FU | FU | FU |   |",
+        "+----+----+----+----+----+----+---+",
+        "|T|T|T|T|T|T|T|T|T|T|T|T|T|T|T|   |",
+        "+---------------------------------+"
+      ],
+      "applications": ["Nuclear safety LV boards", "Tier IV data centre mains", "Major hospital theatre/ICU primary distribution"],
+      "advantages": ["Highest practical segregation; each outgoing terminal in own compartment"],
+      "disadvantages": ["Highest cost; physically largest"],
+      "vs_neighbours": {"Form_4a": "Adds separation between individual terminals within the same functional unit"},
+      "draftsman_id": "FORM_4B",
+      "drawn_as": ["DB_MAIN"],
+      "usage_notes": "Specify only where regulatory/operational availability requirement justifies the cost premium."
+    }
+  ]
+}
