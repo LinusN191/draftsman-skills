@@ -1,0 +1,50 @@
+{
+  "_title": "NFPA 70 Article 230 — Services",
+  "_version": "1.0.0",
+  "articles": [
+    {
+      "article_id": "ART_230",
+      "nec_ref": "NFPA 70:2023 Article 230",
+      "chapter": 2,
+      "article_number": 230,
+      "article_title": "Services",
+      "scope": "Service conductors, equipment, and connections — overhead service drops, underground service laterals, service entrance conductors, service equipment, service disconnect (6-handle rule), GFP at services ≥1000 A (230.95).",
+      "applies_to": ["services", "service_entrance", "service_disconnect", "gfp"],
+      "key_sections": [
+        {"section": "230.2",  "title": "Number of Services", "summary": "One service per building; multiple services permitted for special conditions (capacity, voltage, classification of supply)"},
+        {"section": "230.40", "title": "Number of Service-Entrance Conductor Sets", "summary": "One set per service drop/lateral; multiple sets only with specific conditions"},
+        {"section": "230.42", "title": "Minimum Size and Rating of Service-Entrance Conductors", "summary": "Sized for the calculated load per Art 220 with 125% continuous; minimum #8 AWG copper or #6 AWG aluminium"},
+        {"section": "230.70", "title": "Service Disconnecting Means — General", "summary": "Service disconnect at readily accessible location, outdoors or near point of entrance"},
+        {"section": "230.71", "title": "Number of Disconnects", "summary": "Maximum 6 service disconnects per service (the 6-handle rule); 2020+ requires that the 6 disconnects be grouped with a single connecting strap"},
+        {"section": "230.85", "title": "Emergency Disconnects (NEW in NEC 2020/2023)", "summary": "Outside emergency disconnect required for one- and two-family dwellings, located readily accessible to first responders, marked accordingly"},
+        {"section": "230.95", "title": "Ground-Fault Protection of Equipment (GFP at Service)", "summary": "GFP required for service disconnect rated ≥1000 A, more than 150 V to ground, less than 600 V phase-to-phase. Setting ≤1200 A; performance test required after installation"}
+      ],
+      "tabulated_values": {
+        "minimum_service_size_230_42": "see tables_inline"
+      },
+      "tables_inline": {
+        "Min_Service_Conductor_Size": {
+          "title": "Minimum Service-Entrance Conductor Size (NEC 230.42)",
+          "rows": [
+            {"copper_awg": "8",   "aluminium_awg": "6",   "applies_to": "Minimum allowed regardless of calculated load"},
+            {"copper_awg": "6",   "aluminium_awg": "4",   "applies_to": "Calculated load up to 50 A"},
+            {"copper_awg": "4",   "aluminium_awg": "2",   "applies_to": "Calculated load 51-70 A"}
+          ],
+          "_note": "Above 70 A, size per Table 310.16 ampacity for the service-entrance temperature column (typically 75 °C for stripped insulation termination)"
+        }
+      },
+      "common_errors": [
+        "Specifying 7 service disconnects — 230.71 limits to 6",
+        "Missing the outside emergency disconnect for new one- and two-family dwellings (added in NEC 2020) — readily accessible to first responders",
+        "Missing GFP at services ≥1000 A (230.95) on a new commercial main service",
+        "Forgetting the GFP performance test (230.95(C)) — required after installation"
+      ],
+      "drawn_as": ["ACB_3P", "MCCB_3P", "ENERGY_METER"],
+      "related_iec_60364": ["IEC 60364-1 Clause 14 (Origin of installation)", "IEC 60364-5-53 (Switchgear)"],
+      "divergence_notes": "NEC's 'service' is a distinct legal/contractual concept (utility/customer boundary); IEC uses 'origin of installation'. NEC 230.71 6-handle rule has no IEC equivalent. NEC 230.85 outside emergency disconnect (2020+) is NEC-specific. NEC GFP at services (230.95) is functionally similar to IEC residual-current monitoring at the main DB but NEC has explicit setpoint (≤1200 A) and performance-test requirement.",
+      "related_bs_7671": [],
+      "usage_notes": "For new dwellings in NEC 2020+ jurisdictions, ALWAYS show the outside emergency disconnect on the drawing. Confirm the AHJ has adopted the 2020 or 2023 edition (some still on 2017).",
+      "related_articles": ["ART_215", "ART_220", "ART_240", "ART_250", "ART_310"]
+    }
+  ]
+}
