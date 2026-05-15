@@ -37,9 +37,9 @@ assertions:
     path: "$.electrodes[*]"
     minimum: 1
   - kind: jsonpath_lte
-    path: "$.electrodes[0].ra_measured_ohm"
+    path: "$.electrodes[0].ra_ohm_specified"
     maximum: 100
-    note: "Ra below target"
+    note: "Ra below target (engineer-input value; calc.electrode_resistance pending per WI3)"
   - kind: jsonpath_all_equals
     path: "$.circuits[*].rcd_required"
     expected: true

@@ -38,9 +38,9 @@ assertions:
     substring: "ELECTRODE"
   - kind: no_invented_values
     paths_must_be_null_or_pending:
-      - "$.electrodes[0].ra_measured_ohm"
+      - "$.electrodes[0].ra_ohm_specified"
       - "$.electrodes[0].soil_resistivity_ohm_m"
     or_tool_call_pending: true
-    note: "Generator must not invent soil data"
+    note: "Generator must not invent soil data — engineer must provide Ra or the electrode must be marked tool_call_pending"
 
 expected_status: "pass"

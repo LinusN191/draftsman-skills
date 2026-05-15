@@ -18,16 +18,17 @@ method_by_jurisdiction:
       - "k from Table 54.2 (typical 115 for Cu 70°C → 160°C in PVC; 143 for 90°C XLPE)"
 
   EU:
-    primary_method: iec_60364_5_54_table_54_1
+    primary_method: iec60364_table_54.2
     standard_file: shared/standards/electrical/IEC60364/part5-54-earthing.json
     rule:
-      - "Table 54.1: CPC sizing identical structure to BS 7671 Table 54.7"
+      - "IEC 60364-5-54 Clause 543.1.2 (CPC sizing by line conductor csa, banded lookup — same shape as BS 7671 Table 54.7)"
       - "S ≤ 16 mm² → CPC = S"
       - "16 < S ≤ 35 mm² → CPC = 16 mm²"
       - "S > 35 mm² → CPC = S/2"
+      - "Adiabatic alternative (Clause 543.1.2): use k from Table 54.2"
 
   INT:
-    primary_method: iec_60364_5_54_table_54_1
+    primary_method: iec60364_table_54.2
     standard_file: shared/standards/electrical/IEC60364/part5-54-earthing.json
     # Same as EU
 

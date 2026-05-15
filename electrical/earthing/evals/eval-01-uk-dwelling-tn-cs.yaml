@@ -40,11 +40,11 @@ assertions:
   - kind: jsonpath_present
     path: "$.met"
   - kind: jsonpath_count_gte
-    path: "$.main_bonding.conductors[*]"
+    path: "$.main_bonding[*]"
     minimum: 3
     note: "water + gas + structural_steel"
   - kind: jsonpath_count_gte
-    path: "$.supplementary_bonding.zones[*]"
+    path: "$.supplementary_bonding[*]"
     minimum: 1
     note: "first_floor bathroom"
   - kind: jsonpath_all_lte
