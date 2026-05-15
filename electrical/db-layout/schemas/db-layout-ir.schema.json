@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/db-layout/schemas/db-layout-ir.schema.json",
+  "title": "DB Layout IR (Stage 1: Schedule + Face Schematic + Selectivity)",
+  "description": "Intermediate Representation for the db-layout skill. One IR document per distribution board. Carries schedule rows, face one-line schematic symbol roll-up, and cascade selectivity verification results.",
+  "type": "object",
+  "required": [
+    "drawing_type",
+    "version",
+    "meta",
+    "jurisdiction",
+    "board",
+    "incoming",
+    "busbar",
+    "circuits",
+    "selectivity_results",
+    "compliance_summary",
+    "rationale"
+  ],
+  "properties": {
+    "drawing_type": { "const": "db_layout_schedule_and_schematic" },
+    "version":      { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "meta": {
+      "type": "object",
+      "required": ["project_id", "skill_version", "produced_at"],
+      "properties": {
+        "project_id":    { "type": "string" },
+        "skill_version": { "type": "string" },
+        "produced_at":   { "type": "string", "format": "date-time" },
+        "consumed_intents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["intent_type", "intent_version", "produced_by"],
+            "properties": {
+              "intent_type":    { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+              "intent_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+              "produced_by":    { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "jurisdiction": {
+      "enum": ["GB", "EU", "INT", "US"]
+    },
+    "board": {
+      "type": "object",
+      "required": ["db_id", "designation", "location", "ways_total"],
+      "properties": {
+        "db_id":                    { "type": "string", "pattern": "^[A-Z][A-Z0-9-]{1,15}$" },
+        "designation":              { "type": "string" },
+        "location":                 { "type": "string" },
+        "enclosure_form_iec61439":  { "enum": ["1", "2a", "2b", "3a", "3b", "4a", "4b"] },
+        "enclosure_form_nec_type":  { "enum": ["NEMA_1", "NEMA_3R", "NEMA_4", "NEMA_4X", "NEMA_12"] },
+        "ip_rating":                { "type": "string", "pattern": "^IP[0-9X]{2,3}$" },
+        "ways_total":               { "type": "integer", "minimum": 1, "maximum": 200 },
+        "ways_used":                { "type": "integer", "minimum": 0 },
+        "ways_spare":               { "type": "integer", "minimum": 0 }
+      }
+    },
+    "incoming": {
+      "type": "object",
+      "required": ["voltage_v", "phase_arrangement", "supply_rating_a"],
+      "properties": {
+        "voltage_v":          { "type": "integer", "enum": [120, 208, 230, 240, 400, 415, 480] },
+        "phase_arrangement":  { "enum": ["single_phase", "single_phase_split", "TPN", "TPN_plus_E"] },
+        "supply_rating_a":    { "type": "integer", "minimum": 6, "maximum": 6300 },
+        "fed_from":           { "type": "string" },
+        "supply_class":       { "enum": ["essential", "non_essential", "ups", "ups_plus_essential"] },
+        "ze_ohm_at_origin":   { "type": "number", "minimum": 0 }
+      }
+    },
+    "busbar": {
+      "type": "object",
+      "required": ["rating_a"],
+      "properties": {
+        "rating_a":    { "type": "integer", "minimum": 16, "maximum": 6300 },
+        "icw_ka_1s":   { "type": "number", "minimum": 0 },
+        "ipk_ka":      { "type": "number", "minimum": 0 }
+      }
+    },
+    "circuits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["circuit_id", "way_module_id", "designation", "ocpd"],
+        "properties": {
+          "circuit_id":      { "type": "string" },
+          "way_module_id":   { "type": "string", "description": "Way number on the DB face, e.g. 'W1', 'W2-W3' for double-pole" },
+          "designation":     { "type": "string" },
+          "voltage_class":   { "enum": ["LV_power", "ELV_control", "comms_data", "fire_alarm", "emergency_lighting"] },
+          "downstream_load_kw": { "type": "number", "minimum": 0 },
+          "ocpd": {
+            "type": "object",
+            "required": ["rating_a", "type"],
+            "properties": {
+              "rating_a":             { "type": "integer", "enum": [6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 400, 630, 800, 1250, 1600] },
+              "curve":                { "enum": ["B", "C", "D"] },
+              "type":                 { "enum": ["MCB", "MCCB", "ACB", "fuse", "RCBO"] },
+              "breaking_capacity_ka": { "type": "number", "minimum": 0 }
+            }
+          },
+          "rcd": {
+            "type": "object",
+            "properties": {
+              "required":       { "type": "boolean" },
+              "type":           { "enum": ["AC", "A", "F", "B"] },
+              "sensitivity_ma": { "type": "integer", "enum": [10, 30, 100, 300, 500] }
+            }
+          },
+          "cable": {
+            "type": "object",
+            "properties": {
+              "csa_mm2_or_awg": { "type": "string" },
+              "cores":          { "type": "integer", "minimum": 2, "maximum": 5 },
+              "length_m":       { "type": "number", "exclusiveMinimum": 0 }
+            }
+          }
+        }
+      }
+    },
+    "selectivity_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["upstream_id", "downstream_id", "source"],
+        "properties": {
+          "upstream_id":           { "type": "string" },
+          "downstream_id":         { "type": "string" },
+          "selective_to_fault_ka": { "type": "number", "minimum": 0 },
+          "source":                { "enum": ["manufacturer_table", "iec_60909_calc", "engineer_declared", "tool_call_pending"] },
+          "tool_call_pending":     { "type": "boolean" },
+          "code_clause":           { "type": "string" }
+        }
+      }
+    },
+    "compliance_summary": {
+      "type": "object",
+      "required": ["compliant", "non_compliance_flags", "assumptions"],
+      "properties": {
+        "compliant":            { "type": "boolean" },
+        "non_compliance_flags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message":      { "type": "string" },
+              "code_clause":  { "type": "string" },
+              "severity":     { "enum": ["critical", "warning", "info"] }
+            }
+          }
+        },
+        "assumptions":          { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "drawing_notes":     { "type": "array", "items": { "type": "string" } },
+    "drawn_as_symbols":  { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" }, "description": "IEC 60617 symbol_id roll-up — each entry must resolve in symbol-index.json" },
+    "flags":             { "type": "array", "items": { "type": "string" } },
+    "rationale":         { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
+  }
+}
