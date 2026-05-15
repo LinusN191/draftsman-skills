@@ -1,0 +1,73 @@
+{
+  "_title": "NFPA 70 Article 430 — Motors, Motor Circuits, and Controllers",
+  "_version": "1.0.0",
+  "articles": [
+    {
+      "article_id": "ART_430",
+      "nec_ref": "NFPA 70:2023 Article 430",
+      "chapter": 4,
+      "article_number": 430,
+      "article_title": "Motors, Motor Circuits, and Controllers",
+      "scope": "Motor branch-circuit conductor sizing (430.22, 430.24), motor short-circuit/ground-fault protection (430.52), motor overload (430.32), motor controller (430.81), motor disconnect (430.102), motor control centres (430.94+).",
+      "applies_to": ["motors", "single_motor", "multiple_motors", "motor_controllers", "mcc"],
+      "key_sections": [
+        {"section": "430.6",   "title": "Ampacity and Motor Rating Determination", "summary": "Use Tables 430.247 / 430.248 / 430.250 / 430.251 (full-load currents) for single-motor branch circuits; use nameplate for thermal overload"},
+        {"section": "430.22",  "title": "Single Motor — Conductors", "summary": "Branch-circuit conductors ≥ 125% × motor FLA from Table 430.250 (3-phase) or 430.248 (single-phase)"},
+        {"section": "430.24",  "title": "Several Motors or Motors plus Other Loads", "summary": "Conductors ≥ 125% × largest motor FLA + 100% × other motors' FLA + 100% × non-motor loads"},
+        {"section": "430.32",  "title": "Continuous-Duty Motors — Overload Protection", "summary": "Overload sized at 115% to 125% of motor nameplate FLA (Service Factor and motor type dependent)"},
+        {"section": "430.52",  "title": "Motor Branch-Circuit Short-Circuit and Ground-Fault Protection", "summary": "OCPD sized by Table 430.52(C)(1) percentage: typical 250% inverse-time breaker / 300% non-time-delay fuse / 175% dual-element time-delay fuse / 800% instantaneous-trip breaker (all of motor FLA from Table 430.250)"},
+        {"section": "430.102", "title": "Disconnecting Means", "summary": "Disconnect within sight of the controller AND within sight of the motor (or lockable disconnect within sight of controller meets both)"}
+      ],
+      "tabulated_values": {
+        "full_load_3phase_motors_430_250": "see tables_inline",
+        "branch_circuit_protection_percentage_430_52": "see tables_inline"
+      },
+      "tables_inline": {
+        "Table_430.250_Full_Load_Current_3-phase_AC_Motors": {
+          "title": "Full-Load Current (A) — Three-Phase AC Motors at 460 V (selected)",
+          "_note": "For sizing branch-circuit conductors and OCPDs. Always use TABLE FLA (not nameplate FLA) for these calculations.",
+          "rows": [
+            {"hp": 1,    "fla_460v": 2.1},
+            {"hp": 2,    "fla_460v": 3.4},
+            {"hp": 3,    "fla_460v": 4.8},
+            {"hp": 5,    "fla_460v": 7.6},
+            {"hp": 7.5,  "fla_460v": 11},
+            {"hp": 10,   "fla_460v": 14},
+            {"hp": 15,   "fla_460v": 21},
+            {"hp": 20,   "fla_460v": 27},
+            {"hp": 25,   "fla_460v": 34},
+            {"hp": 30,   "fla_460v": 40},
+            {"hp": 40,   "fla_460v": 52},
+            {"hp": 50,   "fla_460v": 65},
+            {"hp": 60,   "fla_460v": 77},
+            {"hp": 75,   "fla_460v": 96},
+            {"hp": 100,  "fla_460v": 124},
+            {"hp": 125,  "fla_460v": 156},
+            {"hp": 150,  "fla_460v": 180},
+            {"hp": 200,  "fla_460v": 240}
+          ]
+        },
+        "Table_430.52(C)(1)_Branch_Circuit_OCPD_Percentage": {
+          "title": "Maximum Branch-Circuit OCPD as % of Motor FLA",
+          "rows": [
+            {"motor_type": "Single-phase / Polyphase squirrel-cage / Synchronous", "nontime_delay_fuse_pct": 300, "dual_element_fuse_pct": 175, "instantaneous_breaker_pct": 800, "inverse_time_breaker_pct": 250},
+            {"motor_type": "Wound-rotor",                                         "nontime_delay_fuse_pct": 150, "dual_element_fuse_pct": 150, "instantaneous_breaker_pct": 800, "inverse_time_breaker_pct": 150},
+            {"motor_type": "Direct current",                                      "nontime_delay_fuse_pct": 150, "dual_element_fuse_pct": 150, "instantaneous_breaker_pct": 250, "inverse_time_breaker_pct": 150}
+          ]
+        }
+      },
+      "common_errors": [
+        "Using nameplate FLA for branch-circuit conductor sizing — must use Table 430.250 FLA (430.6(A)(1))",
+        "Using Table 430.250 FLA for overload sizing — must use nameplate FLA (430.6(A)(2))",
+        "Sizing OCPD at 100% of motor FLA — motor must be sized at 250% (inverse-time breaker) or 175% (dual-element fuse) to handle starting inrush",
+        "Disconnect not within sight of motor — 430.102(B) violation. 'Within sight' = visible from one location to the other AND ≤50 ft apart"
+      ],
+      "drawn_as": ["MOTOR", "MOTOR_STARTER", "MOTOR_DISCONNECT"],
+      "related_iec_60364": ["IEC 60364-5-55 Clause 559.5 (Motors)", "IEC 60204-1 (Safety of machinery — electrical equipment of machines)"],
+      "divergence_notes": "NEC Art 430 uses horsepower-based FLA tables (430.247-251) and a percentage-based OCPD sizing rule (430.52). IEC sizes motors per actual rated current with diversity factors and protective-device coordination per IEC 60364-5-53. NEC's 'within sight' disconnect rule (430.102) has no IEC equivalent — IEC requires accessible local isolation but does not specify sightline.",
+      "related_bs_7671": [],
+      "usage_notes": "Always cite TABLE FLA when sizing conductors/OCPDs and NAMEPLATE FLA when sizing overloads. Confusing the two is the #1 motor-circuit inspection failure.",
+      "related_articles": ["ART_240", "ART_310", "ART_440", "ART_670"]
+    }
+  ]
+}
