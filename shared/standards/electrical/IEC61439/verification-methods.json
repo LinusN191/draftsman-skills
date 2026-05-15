@@ -1,0 +1,57 @@
+{
+  "_title": "IEC 61439 — Verification Methods Matrix",
+  "_iec_part": "1 (referenced by all parts)",
+  "_version": "1.0.0",
+  "_note": "Three equivalent verification paths per IEC 61439-1 Clause 10. Annex D defines which methods are allowed for which characteristic. Designer specifies; OEM verifies.",
+  "methods": [
+    {
+      "method_id": "TEST",
+      "name": "Verification by testing",
+      "iec_ref": "IEC61439-1 Clause 10",
+      "description": "Physical test of a representative assembly against the standard. Performed by the original manufacturer (OM) or an accredited test laboratory.",
+      "applies_to_characteristics": ["10.2 strength", "10.3 IP", "10.9 dielectric", "10.10 temperature rise", "10.11 short-circuit withstand", "10.13 mechanical operation"],
+      "documentation": "Test certificate from accredited laboratory; type-test records retained by the OM.",
+      "advantages": ["Most direct evidence", "Required for IP and dielectric"],
+      "disadvantages": ["Costly", "Only the tested arrangement is verified — variants need cross-reference or fresh test"]
+    },
+    {
+      "method_id": "CALC",
+      "name": "Verification by calculation",
+      "iec_ref": "IEC61439-1 Clause 10 + Annex E and Annex P",
+      "description": "Engineering calculation per the standard's annexes. Annex E covers temperature rise (RDF, resistance, ambient correction). Annex P covers short-circuit withstand (force, thermal, mechanical stress).",
+      "applies_to_characteristics": ["10.10 temperature rise (Annex E)", "10.11 short-circuit withstand (Annex P)"],
+      "limits": "Permitted ONLY where an Annex method exists for the characteristic. NOT permitted for IP, dielectric, mechanical strength, or internal arc.",
+      "documentation": "Calculation report referencing exact Annex method, with all assumptions, input data, and component datasheets. Must include the component derating chain.",
+      "advantages": ["Cheaper than test", "Useful for tailored ratings (e.g. RDF for partly-loaded assemblies)"],
+      "disadvantages": ["Limited applicability", "Requires accurate component data"]
+    },
+    {
+      "method_id": "REFERENCE",
+      "name": "Verification by comparison with reference design",
+      "iec_ref": "IEC61439-1 Clause 10.5.3 + Annex D",
+      "description": "Compare candidate assembly against a previously verified reference that bounds it. Bounding rules (same or larger enclosure, no worse component arrangement, busbar at least as oversized, etc.) per Annex D Table 13.",
+      "applies_to_characteristics": ["10.2 strength", "10.5 electric shock protection", "10.10 temperature rise", "10.11 short-circuit withstand"],
+      "limits": "Bounding rules in Annex D Table 13 must be strictly met — a single violation invalidates the comparison. NOT permitted for IP (candidate must be tested).",
+      "documentation": "Reference design verification certificate from the OM + a bounding comparison report showing every Annex D criterion is satisfied.",
+      "advantages": ["Cheapest", "Allows series of similar assemblies to share a single verification chain"],
+      "disadvantages": ["Bounding rules are strict — small departures invalidate the comparison"]
+    }
+  ],
+  "annex_d_matrix": {
+    "_note": "Each row is a verification characteristic per IEC 61439-1 Clause 10. Methods marked 'Y' are permitted; 'N' not permitted. Note 1 columns indicate constraints.",
+    "rows": [
+      {"clause": "10.2",  "characteristic": "Strength of materials and parts",         "TEST": "Y", "CALC": "N", "REFERENCE": "Y"},
+      {"clause": "10.3",  "characteristic": "Degree of protection (IP/IK)",            "TEST": "Y", "CALC": "N", "REFERENCE": "N"},
+      {"clause": "10.4",  "characteristic": "Clearances and creepage distances",       "TEST": "Y", "CALC": "Y (per Annex F)", "REFERENCE": "Y"},
+      {"clause": "10.5",  "characteristic": "Protection against electric shock",       "TEST": "Y", "CALC": "Y", "REFERENCE": "Y"},
+      {"clause": "10.6",  "characteristic": "Incorporation of switching devices",       "TEST": "N", "CALC": "Y", "REFERENCE": "Y"},
+      {"clause": "10.7",  "characteristic": "Internal electrical circuits",              "TEST": "Y", "CALC": "Y", "REFERENCE": "Y"},
+      {"clause": "10.8",  "characteristic": "Terminals for external conductors",        "TEST": "Y", "CALC": "N", "REFERENCE": "Y"},
+      {"clause": "10.9",  "characteristic": "Dielectric properties",                    "TEST": "Y", "CALC": "N", "REFERENCE": "N"},
+      {"clause": "10.10", "characteristic": "Temperature rise",                          "TEST": "Y", "CALC": "Y (Annex E)", "REFERENCE": "Y"},
+      {"clause": "10.11", "characteristic": "Short-circuit withstand",                  "TEST": "Y", "CALC": "Y (Annex P)", "REFERENCE": "Y"},
+      {"clause": "10.12", "characteristic": "EMC",                                       "TEST": "Y", "CALC": "N", "REFERENCE": "Y"},
+      {"clause": "10.13", "characteristic": "Mechanical operation",                      "TEST": "Y", "CALC": "N", "REFERENCE": "Y"}
+    ]
+  }
+}
