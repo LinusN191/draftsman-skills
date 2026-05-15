@@ -1,11 +1,83 @@
 {
   "skill": "earthing",
-  "version": "0.1.0",
-  "status": "stub",
+  "version": "1.0.0",
   "discipline": "electrical",
-  "description": "Earthing and equipotential bonding layouts",
-  "standards": [],
-  "inputs": [],
-  "outputs": [],
-  "compatible_runtimes": ["DraftsMan >= 1.0", "Claude Code", "OpenClaw"]
+  "subdiscipline": "earthing",
+  "description": "Produces earthing single-line schematic IR for LV installations. Covers TN-C-S + TT systems across GB (BS 7671), EU/INT (IEC 60364), and US (NFPA 70) jurisdictions. Sizes CPC/EGC by jurisdiction-appropriate table, verifies Zs against disconnection-time tables, flags RCD requirements, emits structured rationale per WI2.",
+  "status": "beta",
+  "licence": "MIT",
+  "inputs_path": "inputs.json",
+  "inputs": [
+    "jurisdiction",
+    "earthing-system",
+    "supply-data",
+    "ze-declared",
+    "extraneous-parts",
+    "electrode-arrangement",
+    "supplementary-bonding-locations",
+    "db-designations"
+  ],
+  "outputs": ["earthing-ir"],
+  "output_schema": "electrical/earthing/schemas/earthing-ir.schema.json",
+  "produces_intent": "earthing",
+  "produces_intent_schema": "electrical/earthing/schemas/earthing-intent.schema.json",
+  "consumes_intents": ["db-layout", "lighting-layout", "small-power"],
+  "standards": [
+    "shared/standards/electrical/BS7671/reg411-disconnection-times.json",
+    "shared/standards/electrical/BS7671/reg411-rcd-requirements.json",
+    "shared/standards/electrical/BS7671/terminology.md",
+    "shared/standards/electrical/IEC60364/part4-41-electric-shock.json",
+    "shared/standards/electrical/IEC60364/part5-54-earthing.json",
+    "shared/standards/electrical/IEC60364/earthing-systems.md",
+    "shared/standards/electrical/NFPA70/art250-grounding-bonding.json",
+    "shared/standards/electrical/NFPA70/grounding-and-bonding.json",
+    "shared/standards/electrical/NFPA70/terminology.md",
+    "shared/standards/electrical/IEC60617/symbol-index.json",
+    "shared/standards/electrical/IEC60617/part2-general.json"
+  ],
+  "calculations": [
+    "shared/calculations/electrical/electrode-resistance.json",
+    "shared/calculations/electrical/cpc-adiabatic.json"
+  ],
+  "ontology": [
+    "electrical/earthing/ontology/earthing-system-types.json"
+  ],
+  "rules": [
+    "electrical/earthing/rules/electrode-selection.yaml",
+    "electrical/earthing/rules/cpc-sizing.yaml"
+  ],
+  "constraints": [
+    "electrical/earthing/constraints/electrode-resistance.yaml",
+    "electrical/earthing/constraints/bonding-geometry.yaml"
+  ],
+  "validators": [
+    "electrical/earthing/validation/zs-compliance.yaml",
+    "electrical/earthing/validation/bonding-completeness.yaml",
+    "electrical/earthing/validation/cpc-sizing.yaml"
+  ],
+  "prompts": {
+    "generator": "electrical/earthing/prompts/generator.md",
+    "validator": "electrical/earthing/prompts/validator.md",
+    "reviewer":  "electrical/earthing/prompts/reviewer.md"
+  },
+  "evals": [
+    "electrical/earthing/evals/eval-01-tn-cs-uk-happy-path.yaml",
+    "electrical/earthing/evals/eval-02-tt-international.yaml",
+    "electrical/earthing/evals/eval-03-us-nec-art250.yaml",
+    "electrical/earthing/evals/eval-04-zs-too-high-non-compliance.yaml",
+    "electrical/earthing/evals/eval-05-cross-drawing-context.yaml",
+    "electrical/earthing/evals/eval-06-rationale-block.yaml"
+  ],
+  "examples": [
+    "electrical/earthing/examples/uk-dwelling-tn-cs/",
+    "electrical/earthing/examples/intl-rural-tt/",
+    "electrical/earthing/examples/us-commercial-nec/"
+  ],
+  "compatible_runtimes": [
+    "DraftsMan >= 1.0",
+    "Claude Code",
+    "OpenClaw",
+    "any-llm-agent"
+  ],
+  "changelog": "electrical/earthing/CHANGELOG.md"
 }
