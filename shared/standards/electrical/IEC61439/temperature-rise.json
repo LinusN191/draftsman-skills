@@ -1,0 +1,49 @@
+{
+  "_title": "IEC 61439 — Temperature Rise",
+  "_iec_part": "1 (Annex E + Table 6); referenced by all parts",
+  "_version": "1.0.0",
+  "_note": "Temperature rise verification ensures that internal components do not exceed their conventional limits at rated load. Verification by test (Clause 10.10) or calculation (Annex E).",
+  "conventional_temperature_rise_limits": {
+    "_reference": "IEC 61439-1:2020 Table 6",
+    "_ambient_assumed_C": 35,
+    "_24h_average_max_ambient_C": 35,
+    "_peak_ambient_C": 40,
+    "rows": [
+      {"item": "Terminals for external insulated conductors",       "max_rise_K": 70,  "note": "When connecting to 70 °C-insulated cable. Reduces to 55 K for 60 °C-rated cable."},
+      {"item": "Bare conductors (busbars) — connections only",      "max_rise_K": 105, "note": "Where in contact only with bare conductors. Otherwise per next row."},
+      {"item": "Busbars — temperature rise of metal",               "max_rise_K": 105, "note": "For copper or aluminium busbars under normal service."},
+      {"item": "Manual operation handles — metal",                  "max_rise_K": 15,  "note": "Operator-touchable surface."},
+      {"item": "Manual operation handles — insulating material",    "max_rise_K": 25,  "note": "Operator-touchable surface."},
+      {"item": "Accessible enclosure surface — metal",              "max_rise_K": 30,  "note": "Operator-touchable surface (back-of-hand contact)."},
+      {"item": "Accessible enclosure surface — insulating",         "max_rise_K": 40,  "note": "Operator-touchable surface."},
+      {"item": "Built-in components (per their own data)",          "max_rise_K": null,"note": "Use the device manufacturer's rated temperature rise (e.g. 40 K for MCCB terminals at rated current)."}
+    ]
+  },
+  "ambient_correction": {
+    "_note": "If the actual ambient differs from 35 °C 24-h average, derate the rated current using factor Kt = sqrt((max_rise + 35 − actual_24h_ambient) / max_rise). For 70 K terminal rise and 45 °C ambient: Kt = sqrt((70 + 35 − 45)/70) = sqrt(60/70) = 0.926. Apply this to In.",
+    "example": "Assembly rated In = 1000 A at 35 °C ambient. Installation at 45 °C ambient: derated In = 1000 × 0.926 = 926 A."
+  },
+  "rated_diversity_factor_RDF": {
+    "_reference": "IEC 61439-1:2020 Clause 5.4 + Annex E.5",
+    "_note": "Multiplier applied to In to reflect that not all functional units operate at rated current simultaneously. Specified by the designer; verified by the OEM. Default values:",
+    "defaults": [
+      {"outgoing_circuits_count": "2 or 3",  "RDF": 0.90},
+      {"outgoing_circuits_count": "4 or 5",  "RDF": 0.80},
+      {"outgoing_circuits_count": "6 to 9",  "RDF": 0.70},
+      {"outgoing_circuits_count": "10 and above (incl. continuous duty)", "RDF": 0.60}
+    ],
+    "_caveat": "RDF does not apply to assemblies whose loads are inherently continuous (data centre, industrial process). Specify RDF = 1.0 for those."
+  },
+  "annex_e_calculation_overview": [
+    "Step 1: Determine assembly enclosure surface area and effective heat-dissipation area.",
+    "Step 2: Calculate total power dissipation = Σ (I² · R) over all functional units, multiplied by RDF.",
+    "Step 3: Estimate internal temperature rise above ambient using effective dissipation area and enclosure k-factor (per Annex E.6 or test data).",
+    "Step 4: Verify that no internal component sees a rise exceeding the limits in Table 6 above.",
+    "Step 5: If verification fails, increase ventilation, derate In, or move to a larger enclosure."
+  ],
+  "solar_gain_correction": {
+    "_reference": "IEC 61439-1:2020 Annex E.5 (outdoor assemblies)",
+    "_note": "Outdoor enclosures absorb solar radiation; add 15–25 K to internal ambient depending on enclosure colour and orientation. Light grey/white reduces gain by ~40% vs dark colours.",
+    "typical_uplift_K": {"light_colour": 15, "medium": 20, "dark": 25}
+  }
+}
