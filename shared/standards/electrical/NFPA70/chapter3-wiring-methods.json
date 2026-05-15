@@ -1,0 +1,147 @@
+{
+  "_title": "NFPA 70 Chapter 3 — Wiring Methods and Materials",
+  "_chapter": 3,
+  "_version": "1.0.0",
+  "_note": "Wiring methods (raceways, cables, boxes). Art 310 (conductor ampacity) has dedicated file; raceway/cable type articles consolidated here.",
+  "articles": [
+    {
+      "article_id": "ART_300",
+      "nec_ref": "NFPA 70:2023 Article 300",
+      "chapter": 3,
+      "article_number": 300,
+      "article_title": "General Requirements for Wiring Methods and Materials",
+      "scope": "General requirements for all wiring methods covered in Chapter 3 — conductor support, protection from physical damage, conductors in same raceway, securing, bushings, raceways exposed to weather.",
+      "applies_to": ["all_wiring_methods", "raceways", "cables"],
+      "key_sections": [
+        {"section": "300.3",  "title": "Conductors", "summary": "Single conductors must be installed within recognized wiring methods; conductors of same circuit must be grouped in same raceway/cable"},
+        {"section": "300.4",  "title": "Protection Against Physical Damage", "summary": "Bored holes ≥1¼ in from wood face; nail plates where <1¼ in; conduit/cable protection in metal-stud framing"},
+        {"section": "300.5",  "title": "Underground Installations", "summary": "Min cover depths per Table 300.5; warning ribbon; separation from non-electrical underground structures"},
+        {"section": "300.11", "title": "Securing and Supporting", "summary": "Raceways and cables securely fastened — typical spacings in respective raceway/cable articles"},
+        {"section": "300.13(B)","title": "Continuity at Splices and Terminations", "summary": "Grounded (neutral) conductor of a multiwire branch circuit shall not depend on device connections for continuity"},
+        {"section": "300.21", "title": "Spread of Fire or Products of Combustion", "summary": "Fire-stopping at floor/wall penetrations to maintain fire-resistance rating"}
+      ],
+      "tabulated_values": {
+        "underground_cover_300_5": "see tables_inline"
+      },
+      "tables_inline": {
+        "Table_300.5_Minimum_Cover_Direct_Bury": {
+          "title": "Minimum Cover Requirements for Direct-Buried Cables and Raceways (typical residential rows)",
+          "rows": [
+            {"location": "All locations not specified below",                          "direct_bury_in": 24, "rmc_imc_in": 6,  "nonmetallic_raceway_in": 18},
+            {"location": "In trench below 2-in concrete or equivalent",                "direct_bury_in": 18, "rmc_imc_in": 6,  "nonmetallic_raceway_in": 12},
+            {"location": "Under residential driveway",                                 "direct_bury_in": 18, "rmc_imc_in": 18, "nonmetallic_raceway_in": 18},
+            {"location": "In or under building",                                       "direct_bury_in": "n/a", "rmc_imc_in": 0, "nonmetallic_raceway_in": "in raceway"}
+          ]
+        }
+      },
+      "common_errors": [
+        "Routing line and neutral of the same circuit in separate raceways — induces heating and impedance imbalance, prohibited by 300.3(B) except specific permitted cases",
+        "Bored holes too close to wood face — 300.4(A)(1) requires ≥1¼ in; missing the rule is a common framing rough-in violation",
+        "Underground cover below the 300.5 minimum — most often on residential service laterals where contractors aim for ease over compliance"
+      ],
+      "drawn_as": ["CONDUIT", "CABLE_TRAY", "CABLE_DUCT", "CONDUCTOR_UNDERGROUND"],
+      "related_iec_60364": ["IEC 60364-5-52 (Wiring systems)", "IEC 60364-5-52 Clause 521 (Types of wiring systems)"],
+      "divergence_notes": "NEC 300.3(B) prohibition of single-conductor circuits in separate raceways is much more explicit than IEC 60364-5-52. NEC underground cover (Table 300.5) is in inches by location class; IEC 60364-5-52 specifies metric burial depths generically with national-adoption variation. NEC firestop requirement (300.21) is performance-based; IEC defers to local building code.",
+      "related_bs_7671": [],
+      "usage_notes": "Always check Table 300.5 first on outdoor projects — burial depth is by raceway type AND location class.",
+      "related_articles": ["ART_310", "ART_312", "ART_314", "ART_250"]
+    },
+    {
+      "article_id": "ART_310",
+      "nec_ref": "NFPA 70:2023 Article 310 (pointer)",
+      "chapter": 3,
+      "article_number": 310,
+      "article_title": "Conductors for General Wiring",
+      "scope": "Conductor materials, insulation, ampacity tables (310.16, 310.17), correction factors (ambient, grouping), termination temperature limits. The heaviest article in Chapter 3.",
+      "applies_to": ["pointer"],
+      "key_sections": [],
+      "tabulated_values": {},
+      "tables_inline": {},
+      "common_errors": [],
+      "drawn_as": [],
+      "related_iec_60364": [],
+      "divergence_notes": "See art310-conductor-ampacity.json for full content.",
+      "related_bs_7671": [],
+      "usage_notes": "Full content lives in art310-conductor-ampacity.json — load that file when ampacity / correction-factor data is needed.",
+      "related_articles": [],
+      "full_content": "art310-conductor-ampacity.json"
+    },
+    {
+      "article_id": "ART_312_314",
+      "nec_ref": "NFPA 70:2023 Articles 312 (Cabinets) + 314 (Boxes)",
+      "chapter": 3,
+      "article_number": 314,
+      "article_title": "Outlet, Device, Pull, and Junction Boxes; Conduit Bodies",
+      "scope": "Box sizing (314.16 fill calculation), pull box sizing (314.28), conduit body dimensions, cabinet/cutout box installation (Art 312). Bundled here because Art 312 and 314 are short and tightly related.",
+      "applies_to": ["boxes", "cabinets", "fill_calculation", "pull_box_sizing"],
+      "key_sections": [
+        {"section": "312.5",   "title": "Cabinets, Cutout Boxes — Conductors Entering", "summary": "Cable assemblies and conduits must be securely fastened to the cabinet/cutout box; insulating bushings on metal raceway >4 AWG"},
+        {"section": "314.16",  "title": "Number of Conductors in Outlet, Device, and Junction Boxes", "summary": "Box fill calculation — count conductors entering box + device fill + clamp fill + support fitting fill + grounding-conductor fill; sum × volume allowance per conductor size must be ≤ box's listed volume"},
+        {"section": "314.28",  "title": "Pull and Junction Boxes — Straight and Angle/U Pulls", "summary": "Straight pull: 8 × largest raceway trade size. Angle/U pull: 6 × largest raceway + sum of other raceways entering same wall."}
+      ],
+      "tabulated_values": {
+        "box_volume_per_conductor_314_16_B": "see tables_inline"
+      },
+      "tables_inline": {
+        "Table_314.16(B)_Box_Volume_Allowance_per_Conductor": {
+          "title": "Volume Allowance Required per Conductor (Free Space)",
+          "rows": [
+            {"conductor_size_awg": 18, "volume_in3": 1.50},
+            {"conductor_size_awg": 16, "volume_in3": 1.75},
+            {"conductor_size_awg": 14, "volume_in3": 2.00},
+            {"conductor_size_awg": 12, "volume_in3": 2.25},
+            {"conductor_size_awg": 10, "volume_in3": 2.50},
+            {"conductor_size_awg": 8,  "volume_in3": 3.00},
+            {"conductor_size_awg": 6,  "volume_in3": 5.00}
+          ]
+        }
+      },
+      "common_errors": [
+        "Forgetting the device fill (each yoke = 2 × volume allowance for largest conductor connected to that device) when computing 314.16",
+        "Forgetting the clamp/support fill (1 × volume allowance for largest conductor) when boxes have internal clamps",
+        "Pull-box sizing failing 314.28 — 8× rule for straight pulls is per the LARGEST raceway, not the average"
+      ],
+      "drawn_as": ["JUNCTION_BOX"],
+      "related_iec_60364": ["IEC 60670 (Boxes and enclosures for electrical accessories)"],
+      "divergence_notes": "NEC fill calc is volumetric (in³ per conductor); IEC fill is by % cross-section (similar to NEC raceway fill in Chapter 9 Table 1 but applied to boxes). NEC 314.28 pull-box sizing has no IEC equivalent — IEC defers to manufacturer sizing.",
+      "related_bs_7671": [],
+      "usage_notes": "Box fill (314.16) is a frequent inspection failure. Use a fill calculator and always carry the count on the schedule.",
+      "related_articles": ["ART_300", "ART_310", "ART_408"]
+    },
+    {
+      "article_id": "ART_320_399_raceways_cables",
+      "nec_ref": "NFPA 70:2023 Articles 320-399 (Raceway and Cable Types)",
+      "chapter": 3,
+      "article_number": 320,
+      "article_title": "Raceway and Cable Type Bundle (320 AC, 330 MC, 332 MI, 334 NM, 342 IMC, 344 RMC, 348 FMC, 350 LFMC, 352 PVC, 356 LFNC, 358 EMT)",
+      "scope": "All recognized raceway and cable types. Each has its own Article in NEC; this bundle entry summarises the most-used types for MEP design. The decision matrix lives in wiring-methods-by-occupancy.json.",
+      "applies_to": ["raceway_types", "cable_types", "method_selection"],
+      "key_sections": [
+        {"section": "320", "title": "Armored Cable (AC)", "summary": "Metal-clad cable with flexible metal armor; bonded grounding strip required for EGC continuity"},
+        {"section": "330", "title": "Metal-Clad Cable (MC)", "summary": "Smooth or corrugated tube; separate EGC inside the cable assembly"},
+        {"section": "332", "title": "Mineral-Insulated, Metal-Sheathed Cable (MI)", "summary": "Magnesium oxide insulation, copper sheath; fire-rated; used for emergency circuits"},
+        {"section": "334", "title": "Nonmetallic-Sheathed Cable (NM)", "summary": "Common residential cable (Romex); restricted to dwellings and limited commercial under specific conditions"},
+        {"section": "342", "title": "Intermediate Metal Conduit (IMC)", "summary": "Galvanized steel, threaded; permitted in all atmospheric conditions"},
+        {"section": "344", "title": "Rigid Metal Conduit (RMC)", "summary": "Heaviest steel raceway; permitted everywhere"},
+        {"section": "348", "title": "Flexible Metal Conduit (FMC)", "summary": "Continuous helical metal strip; used for short runs to vibrating equipment; bonding rules per 250.118"},
+        {"section": "350", "title": "Liquidtight Flexible Metal Conduit (LFMC)", "summary": "FMC with PVC sheath; outdoor / wet locations"},
+        {"section": "352", "title": "Rigid Polyvinyl Chloride Conduit (PVC)", "summary": "Schedule 40/80; underground common"},
+        {"section": "356", "title": "Liquidtight Flexible Nonmetallic Conduit (LFNC)", "summary": "Nonmetallic equivalent of LFMC; chemical-resistant"},
+        {"section": "358", "title": "Electrical Metallic Tubing (EMT)", "summary": "Thin-wall steel; not threaded; setscrew/compression fittings; not permitted underground or in certain hazardous locations"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {},
+      "common_errors": [
+        "Using NM cable in commercial occupancies other than those explicitly permitted by 334.10 — very restricted",
+        "Using EMT underground — prohibited by 358.10(C) except specific cases",
+        "Using FMC as the EGC on circuits over the length/size limits of 250.118(5) — must run a separate EGC"
+      ],
+      "drawn_as": ["CONDUIT", "CABLE_DUCT", "CABLE_TRAY"],
+      "related_iec_60364": ["IEC 60364-5-52 Tables of installation methods (Table A.52.3)"],
+      "divergence_notes": "NEC has separate articles per raceway/cable type (320-399 series); IEC consolidates into installation methods (A1/A2/B1/B2/C/D/E/F) in Annex A of 60364-5-52. NEC's NM cable (Romex) has no IEC equivalent in common use — IEC typically uses singles in conduit/trunking or armoured multicore.",
+      "related_bs_7671": [],
+      "usage_notes": "See wiring-methods-by-occupancy.json for the decision matrix — which raceway/cable types are permitted in which occupancies.",
+      "related_articles": ["ART_300", "ART_310", "ART_250"]
+    }
+  ]
+}
