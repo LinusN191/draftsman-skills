@@ -1,0 +1,78 @@
+{
+  "_title": "NFPA 70 — Grounding and Bonding (cross-cutting)",
+  "_version": "1.0.0",
+  "_note": "Unified treatment of grounding across NEC. Primary source is Article 250; references from 300, 310, 408, 450. Use this file when looking up grounding rules independently of a specific Article.",
+  "grounding_concepts": [
+    {
+      "concept": "System Grounding",
+      "definition": "Intentional connection of one conductor of the electrical system to the grounding electrode system at one point.",
+      "nec_section": "250.20-26",
+      "examples": ["Grounded conductor of 120/240 V single-phase service is bonded to GES at service via MBJ", "Grounded conductor of 480Y/277 V wye service grounded similarly"]
+    },
+    {
+      "concept": "Equipment Grounding",
+      "definition": "Conductive paths providing low-impedance return for ground-fault current. Bonds all normally non-current-carrying metal parts together and back to the grounded conductor at the source.",
+      "nec_section": "250.118 (acceptable types), 250.122 (sizing)",
+      "examples": ["EGC (insulated or bare copper)", "Metal raceway acting as EGC", "Cable assembly's EGC conductor (e.g. NM cable green/bare)"]
+    },
+    {
+      "concept": "Grounding Electrode System (GES)",
+      "definition": "All grounding electrodes present at the building, bonded together to form a single grounding reference.",
+      "nec_section": "250.50",
+      "required_electrodes_when_present": [
+        "Metal underground water pipe (≥10 ft, in direct contact with earth)",
+        "Concrete-encased electrode (Ufer) — ≥20 ft of bare/zinc-galvanized rebar, ≥1/2 in dia, in concrete in direct contact with earth",
+        "Ground ring — bare copper conductor ≥2 AWG, ≥20 ft, ≥30 in below grade",
+        "Rod/Pipe/Plate electrode (250.52(A)(5)) — typical 5/8 in dia × 8 ft Cu-clad steel rod, ≥8 ft in earth",
+        "Structural metal frame — if present and qualifying"
+      ]
+    },
+    {
+      "concept": "Main Bonding Jumper (MBJ)",
+      "definition": "Connection between grounded service conductor (neutral) and equipment grounding terminal at the service equipment.",
+      "nec_section": "250.28",
+      "sizing": "Per 250.28(D)(1): ≥ size of GEC required by Table 250.66, OR per 250.28(D)(2) if largest ungrounded conductor > 1100 kcmil (12.5% rule)"
+    },
+    {
+      "concept": "Bonding Jumper, Supply-Side",
+      "definition": "Connection between the grounded conductor and equipment grounding system on the supply side of the service disconnect.",
+      "nec_section": "250.30(A)(1) — for separately derived systems",
+      "_note": "Functionally identical to MBJ but applied to SDS (transformer secondary, generator output, etc.)"
+    },
+    {
+      "concept": "Equipment Grounding Conductor (EGC)",
+      "definition": "Conductor that provides the low-impedance fault current path back to the source. Required on every circuit.",
+      "nec_section": "250.118, 250.122",
+      "sizing": "Per Table 250.122 (by OCPD rating) OR adiabatic (250.122(B)) for special conditions (e.g. parallel conductors)",
+      "vs_iec_cpc": "The NEC EGC is the analogue of IEC CPC. Sizing differs: NEC sizes by OCPD rating; IEC sizes by line conductor CSA (Table 54.1) or adiabatic."
+    },
+    {
+      "concept": "Grounding Electrode Conductor (GEC)",
+      "definition": "Conductor that connects the grounded service conductor (or system source) to the grounding electrode system.",
+      "nec_section": "250.66",
+      "sizing": "Per Table 250.66 (by largest ungrounded service conductor)",
+      "vs_iec": "No exact IEC analogue — IEC sizes 'main earthing conductor' adiabatically or per local supplement."
+    }
+  ],
+  "egc_sizing_matrix_summary": {
+    "_source": "NEC Table 250.122 (full table in art250-grounding-bonding.json)",
+    "_rule_of_thumb": "EGC at least the next size up from the OCPD rating in conductor terms. For copper EGC, rough rule: OCPD ≤ 60A → 10 AWG; 60-200A → larger copper EGC needed.",
+    "_adiabatic_when": "Use 250.122(B) adiabatic check when fault current × clearing time > what Table 250.122 EGC can safely carry. Common on parallel circuits with high SCCR."
+  },
+  "common_grounding_errors": [
+    "Confusing GEC (sized by ungrounded conductor) with EGC (sized by OCPD)",
+    "Bonding neutral to ground at sub-panel — illegal except at service or first SDS disconnect (250.142)",
+    "Omitting Ufer when present — 250.50(A)(3) mandates bonding all present electrodes",
+    "Forgetting MBJ at service — without it, the grounded conductor is just a neutral, not a grounded one",
+    "Treating the metal raceway as EGC on circuits where 250.118(5) FMC length/size limits apply — must run separate wire EGC"
+  ],
+  "iec_60364_cross_reference": {
+    "concept_mapping": [
+      {"nec": "System grounding (250.20-26)", "iec": "Earthing arrangement classification (IEC 60364-1 Clause 312 — TN-S, TN-C, TN-C-S, TT, IT)"},
+      {"nec": "Equipment grounding (250.118 EGC)", "iec": "CPC (IEC 60364-5-54 Clause 543)"},
+      {"nec": "Grounding electrode system (250.50)", "iec": "Earth electrode (IEC 60364-5-54 Clause 542)"},
+      {"nec": "MBJ (250.28)", "iec": "Main earthing terminal connection (IEC 60364-5-54 Clause 542.4)"},
+      {"nec": "GEC (250.66)", "iec": "Main earthing conductor / protective bonding conductor (IEC 60364-5-54 Clause 543)"}
+    ]
+  }
+}
