@@ -1,6 +1,12 @@
 # Changelog — sld
 
-## v1.1.0 (current)
+## v1.2.0 (current)
+- Add `inputs.json` carrying full discovery taxonomy (18 items including supply source, earthing, PSCC, transformer/generator/UPS, distribution-board struct_list, Form/IAC, SPD strategy)
+- Add `inputs_path: "inputs.json"` to manifest pointing at the new taxonomy
+- Bare-string `inputs: [...]` array retained for back-compat; will be removed in v2.0.0
+- Conforms to new `shared/schemas/core/inputs.schema.json` metaschema (upstream Work Item 1)
+
+## v1.1.0
 - Zs disconnection time check (Tables 41.2/41.3)
 - Protection coordination and selectivity
 - Life safety circuits (FP200/FP400, essential bus)

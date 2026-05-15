@@ -1,0 +1,27 @@
+{
+  "$schema_note": "Named validators referenced by inputs.json items via the `validator` field. The runtime resolves the validator at discovery time and runs it against the answer. Shape per validator: { kind, ...kind-specific fields }.",
+  "kinds": {
+    "int_range":   "Integer value within [min, max] inclusive; either bound optional",
+    "float_range": "Floating-point value within [min, max] (or min_exclusive/max_exclusive)",
+    "text_length": "Text length within [min, max] characters",
+    "regex":       "Text matches the given pattern (anchored at both ends recommended)",
+    "enum_subset": "Each item in an enum_list answer must be a member of `values`"
+  },
+  "validators": {
+    "in_range_1_2000_A":           { "kind": "int_range",   "min": 1,    "max": 2000   },
+    "in_range_1_6300_A":           { "kind": "int_range",   "min": 1,    "max": 6300   },
+    "in_range_500_100000":         { "kind": "int_range",   "min": 500,  "max": 100000 },
+    "in_range_2000_20000":         { "kind": "int_range",   "min": 2000, "max": 20000  },
+    "in_range_100_10000_lumens":   { "kind": "int_range",   "min": 100,  "max": 10000  },
+    "in_range_1_1000_kVA":         { "kind": "int_range",   "min": 1,    "max": 1000   },
+    "in_range_5_2000_metres":      { "kind": "int_range",   "min": 5,    "max": 2000   },
+    "positive_int":                { "kind": "int_range",   "min": 1 },
+    "non_negative_int":            { "kind": "int_range",   "min": 0 },
+    "positive_float":              { "kind": "float_range", "min_exclusive": 0 },
+    "ze_ohm_range":                { "kind": "float_range", "min_exclusive": 0, "max": 35 },
+    "voltage_drop_pct":            { "kind": "float_range", "min_exclusive": 0, "max": 10 },
+    "non_empty_text":              { "kind": "text_length", "min": 1 },
+    "board_designation":           { "kind": "regex", "pattern": "^[A-Z][A-Z0-9-]{1,15}$" },
+    "valid_isodate":               { "kind": "regex", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" }
+  }
+}

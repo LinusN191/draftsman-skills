@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "shared/schemas/core/inputs.schema.json",
+  "title": "Skill inputs schema",
+  "description": "Metaschema for per-skill inputs.json files. Drives chat-based discovery interviews: question text, answer types, validation rules, defaults, dependencies, and display order.",
+  "type": "object",
+  "required": ["skill", "version", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "skill":   { "type": "string", "description": "Skill id matching the parent skill.manifest.json" },
+    "version": { "type": "string", "description": "Semver of this inputs taxonomy" },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/InputItem" }
+    }
+  },
+  "definitions": {
+    "InputItem": {
+      "type": "object",
+      "required": ["id", "label", "answer_type", "required"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "snake_case identifier; stable contract surface"
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable question text shown to the engineer"
+        },
+        "hint": {
+          "type": "string",
+          "description": "Optional clarifying text shown under the question"
+        },
+        "answer_type": {
+          "enum": ["enum", "int", "float", "boolean", "text", "enum_list", "struct_list"],
+          "description": "Determines UI control and validator behaviour"
+        },
+        "options": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Required when answer_type is enum or enum_list"
+        },
+        "default": {
+          "description": "Optional default value; shape must match answer_type"
+        },
+        "required": {
+          "type": "boolean",
+          "description": "true = engineer must answer before skill runs"
+        },
+        "validator": {
+          "type": "string",
+          "description": "Reference to a named validator in shared/validation/validators.json"
+        },
+        "depends_on": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "IDs of items whose answers must be present before this question is shown"
+        },
+        "project_fact_candidate": {
+          "type": "boolean",
+          "description": "Forward-compat: items describing the building (not THIS room/design) that a future project-memory feature can pre-fill"
+        },
+        "item_schema": {
+          "type": "object",
+          "description": "Required when answer_type=struct_list; JSON Schema for each list element. Depth 1 only — no nested struct_list."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "answer_type": { "enum": ["enum", "enum_list"] } }
+          },
+          "then": { "required": ["options"] }
+        },
+        {
+          "if": {
+            "properties": { "answer_type": { "const": "struct_list" } }
+          },
+          "then": { "required": ["item_schema"] }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "$schema": "../../shared/schemas/core/inputs.schema.json",
+  "skill": "sld",
+  "version": "1.0.0",
+  "items": [
+    {
+      "id": "supply_source",
+      "label": "Supply source type",
+      "hint": "DNO/utility, on-site generator, on-site transformer, or a mix",
+      "answer_type": "enum",
+      "options": [
+        "dno_lv_intake",
+        "dno_hv_transformer_owned",
+        "generator_only",
+        "dno_plus_generator_ats",
+        "dno_plus_ups",
+        "dno_plus_generator_plus_ups"
+      ],
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "supply_voltage_v",
+      "label": "Supply voltage (V, phase-to-phase for 3-phase)",
+      "answer_type": "enum",
+      "options": ["230", "400", "415"],
+      "default": "400",
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "supply_phase",
+      "label": "Supply phase arrangement",
+      "answer_type": "enum",
+      "options": ["single_phase", "TPN", "TPN_plus_E"],
+      "default": "TPN",
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "supply_rating_a",
+      "label": "Supply rating (A, agreed with DNO)",
+      "answer_type": "int",
+      "required": true,
+      "validator": "in_range_1_6300_A",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "earthing_system",
+      "label": "Earthing system",
+      "hint": "Drives RCD selectivity, PE sizing, and bonding requirements",
+      "answer_type": "enum",
+      "options": ["TN-S", "TN-C-S", "TT", "IT"],
+      "default": "TN-C-S",
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "ze_ohm",
+      "label": "Declared Ze (Ω, supply network impedance to earth)",
+      "hint": "From DNO or measured at intake. Used for Zs verification and ADS compliance.",
+      "answer_type": "float",
+      "required": false,
+      "validator": "ze_ohm_range",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "dno_pscc_ka",
+      "label": "DNO declared prospective short-circuit current (kA)",
+      "hint": "Required to size MCB/MCCB Icu and the main switchboard Icw",
+      "answer_type": "float",
+      "required": true,
+      "validator": "positive_float",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "transformer_kva",
+      "label": "On-site transformer rating (kVA)",
+      "hint": "Only when supply_source includes a consumer-owned transformer; leave blank otherwise",
+      "answer_type": "int",
+      "required": false,
+      "validator": "in_range_1_1000_kVA",
+      "depends_on": ["supply_source"],
+      "project_fact_candidate": true
+    },
+    {
+      "id": "transformer_uk_pct",
+      "label": "Transformer percent impedance uk (%)",
+      "hint": "Nameplate value, typically 4–6%. Used in PSCC calc when consumer owns the transformer.",
+      "answer_type": "float",
+      "required": false,
+      "validator": "voltage_drop_pct",
+      "depends_on": ["transformer_kva"],
+      "project_fact_candidate": true
+    },
+    {
+      "id": "generator_kva",
+      "label": "Standby generator rating (kVA)",
+      "answer_type": "int",
+      "required": false,
+      "validator": "in_range_1_1000_kVA",
+      "depends_on": ["supply_source"],
+      "project_fact_candidate": true
+    },
+    {
+      "id": "ups_kva",
+      "label": "UPS rating (kVA)",
+      "answer_type": "int",
+      "required": false,
+      "validator": "in_range_1_1000_kVA",
+      "depends_on": ["supply_source"],
+      "project_fact_candidate": true
+    },
+    {
+      "id": "max_demand_kva",
+      "label": "Estimated maximum demand (kVA)",
+      "hint": "After diversity. Drives main switchgear In selection.",
+      "answer_type": "int",
+      "required": true,
+      "validator": "in_range_1_1000_kVA",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "main_switchboard_form",
+      "label": "Main switchboard Form separation (IEC 61439-2)",
+      "hint": "Form 3b typical for commercial; Form 4a/4b for hospital/data centre",
+      "answer_type": "enum",
+      "options": ["1", "2a", "2b", "3a", "3b", "4a", "4b"],
+      "default": "3b",
+      "required": true,
+      "project_fact_candidate": false
+    },
+    {
+      "id": "main_switchboard_iac_required",
+      "label": "Internal Arc Classification (IAC) required?",
+      "hint": "Required for hospital essential, data centre, critical infrastructure. If yes, runtime will prompt for class + accessibility.",
+      "answer_type": "boolean",
+      "default": false,
+      "required": false,
+      "project_fact_candidate": false
+    },
+    {
+      "id": "spd_strategy",
+      "label": "SPD installation strategy",
+      "hint": "Per IEC 60364-4-44 AMD2:2018 SPDs are mandatory at main DB unless documented risk analysis omits them",
+      "answer_type": "enum",
+      "options": ["type1_plus_type2_at_main", "type2_at_main_only", "type2_at_main_plus_type3_at_sensitive", "none_with_risk_analysis"],
+      "default": "type2_at_main_only",
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "distribution_boards",
+      "label": "Distribution boards in the hierarchy",
+      "hint": "List sub-DBs fed from the main switchboard with rated In, location, and supply method",
+      "answer_type": "struct_list",
+      "required": true,
+      "item_schema": {
+        "type": "object",
+        "required": ["designation", "rated_A", "location"],
+        "properties": {
+          "designation":     { "type": "string", "pattern": "^[A-Z][A-Z0-9-]{1,15}$" },
+          "rated_A":         { "type": "integer", "minimum": 6, "maximum": 1600 },
+          "location":        { "type": "string" },
+          "fed_from":        { "type": "string", "description": "Designation of the upstream board or 'MAIN'" },
+          "supply_class":    { "enum": ["essential", "non_essential", "ups", "ups_plus_essential"] },
+          "approximate_cable_length_m": { "type": "number", "exclusiveMinimum": 0 }
+        }
+      },
+      "project_fact_candidate": false
+    },
+    {
+      "id": "life_safety_circuits_present",
+      "label": "Life-safety circuits present?",
+      "hint": "Fire alarm, emergency lighting, sprinkler pumps, smoke extract. Drives Part 7-3 safety-services assembly requirements.",
+      "answer_type": "boolean",
+      "default": true,
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "jurisdiction",
+      "label": "Project jurisdiction code",
+      "answer_type": "enum",
+      "options": ["GB", "KE", "NG", "ZA", "AE", "AU", "NZ", "IE", "DE", "FR", "OTHER"],
+      "default": "GB",
+      "required": false,
+      "project_fact_candidate": true
+    }
+  ]
+}

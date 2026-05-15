@@ -1,0 +1,170 @@
+{
+  "$schema": "../../shared/schemas/core/inputs.schema.json",
+  "skill": "lighting-layout",
+  "version": "1.0.0",
+  "items": [
+    {
+      "id": "room_type",
+      "label": "Room type / occupancy",
+      "hint": "Determines lux target, UGR limit, and Ra minimum per BS EN 12464-1 Table 5.3",
+      "answer_type": "enum",
+      "options": [
+        "open_plan_office",
+        "private_office",
+        "meeting_room",
+        "corridor",
+        "warehouse",
+        "classroom",
+        "consulting_room",
+        "ward",
+        "kitchen_commercial",
+        "bathroom",
+        "reception_lobby"
+      ],
+      "required": true,
+      "project_fact_candidate": false
+    },
+    {
+      "id": "room_length_mm",
+      "label": "Room length (mm, internal clear)",
+      "answer_type": "int",
+      "required": true,
+      "validator": "in_range_500_100000",
+      "project_fact_candidate": false
+    },
+    {
+      "id": "room_width_mm",
+      "label": "Room width (mm, internal clear)",
+      "answer_type": "int",
+      "required": true,
+      "validator": "in_range_500_100000",
+      "project_fact_candidate": false
+    },
+    {
+      "id": "ceiling_height_mm",
+      "label": "Ceiling height (mm AFF)",
+      "hint": "Above-finished-floor to the underside of the ceiling. Drives mounting height and cavity ratio.",
+      "answer_type": "int",
+      "required": true,
+      "validator": "in_range_2000_20000",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "luminaire_lumens",
+      "label": "Luminaire lumen output (lm)",
+      "hint": "State whether this is INITIAL (rated at t=0) or DESIGN/MAINTAINED lumens",
+      "answer_type": "int",
+      "required": true,
+      "validator": "in_range_100_10000_lumens",
+      "project_fact_candidate": false
+    },
+    {
+      "id": "lumen_type",
+      "label": "Lumen value type",
+      "answer_type": "enum",
+      "options": ["initial", "design", "unknown"],
+      "required": true,
+      "depends_on": ["luminaire_lumens"],
+      "project_fact_candidate": false
+    },
+    {
+      "id": "luminaire_wattage_w",
+      "label": "Luminaire circuit wattage (W)",
+      "hint": "Used for Part L efficacy check and circuit loading",
+      "answer_type": "int",
+      "required": false,
+      "validator": "positive_int",
+      "project_fact_candidate": false
+    },
+    {
+      "id": "ceiling_grid_mm",
+      "label": "Ceiling grid module (mm)",
+      "hint": "Common modules: 600 (UK suspended), 1200 (modular), 0 = no grid",
+      "answer_type": "int",
+      "default": 600,
+      "required": false,
+      "validator": "non_negative_int",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "is_uk_new_build",
+      "label": "UK new-build or major refurbishment?",
+      "hint": "Triggers Part L 2021 compliance checks (efficacy, perimeter zoning, daylight-linked dimming)",
+      "answer_type": "boolean",
+      "default": false,
+      "required": false,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "jurisdiction",
+      "label": "Project jurisdiction code",
+      "hint": "ISO 3166-1 alpha-2, e.g. GB, KE, NG, ZA, AE. Drives which national-adoption standard applies.",
+      "answer_type": "enum",
+      "options": ["GB", "KE", "NG", "ZA", "AE", "AU", "NZ", "IE", "DE", "FR", "OTHER"],
+      "default": "GB",
+      "required": false,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "controls_protocol",
+      "label": "Lighting controls protocol",
+      "answer_type": "enum",
+      "options": ["none", "switched", "0-10V", "DALI", "DALI-2"],
+      "default": "none",
+      "required": false,
+      "project_fact_candidate": false
+    },
+    {
+      "id": "luminaire_environment",
+      "label": "Installation environment",
+      "hint": "Drives IP-rating minimum (BS 7671 Section 522) and zone selection (Section 701 for bathrooms)",
+      "answer_type": "enum",
+      "options": [
+        "normal",
+        "bathroom_zone_1",
+        "bathroom_zone_2",
+        "kitchen_commercial",
+        "external_covered",
+        "car_park"
+      ],
+      "default": "normal",
+      "required": false,
+      "project_fact_candidate": false
+    },
+    {
+      "id": "entrance_positions",
+      "label": "Entrance / door positions (wall + offset_mm)",
+      "hint": "List of doorways used to place switching per BS 7671 559.5 (within reach of entry)",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "required": ["wall", "offset_mm"],
+        "properties": {
+          "wall":      { "enum": ["N", "S", "E", "W"] },
+          "offset_mm": { "type": "integer", "minimum": 0 },
+          "width_mm":  { "type": "integer", "minimum": 600, "maximum": 2400 }
+        }
+      },
+      "project_fact_candidate": false
+    },
+    {
+      "id": "glazed_wall_positions",
+      "label": "Glazed wall / window walls (wall codes)",
+      "hint": "Drives Part L 2021 perimeter daylight-zone separately switched control",
+      "answer_type": "enum_list",
+      "options": ["N", "S", "E", "W"],
+      "required": false,
+      "project_fact_candidate": false
+    },
+    {
+      "id": "db_designation",
+      "label": "Distribution board designation",
+      "hint": "E.g. DB-L1; links to db-layout + cable-sizing skills",
+      "answer_type": "text",
+      "required": false,
+      "validator": "board_designation",
+      "project_fact_candidate": true
+    }
+  ]
+}
