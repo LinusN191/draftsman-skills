@@ -1,0 +1,28 @@
+rule_set: rcd-grouping
+version: 1.0.0
+applies_to: [GB, EU, INT, US]
+
+# RCBO vs grouped-RCD decision for the DB layout.
+# Used by generator.md Step 8.
+
+method_by_jurisdiction:
+  GB:
+    preferred: "RCBO per circuit (BS 7671 17th/18th Edition Amendment 2 informally)"
+    alternative_grouped: "Main RCD covering bank of MCBs (cheaper, but single fault trips multiple circuits)"
+    rule: "If 'inputs.life_safety_bonded_assets includes critical loads' → RCBO per circuit"
+    reference: shared/standards/electrical/BS7671/reg411-rcd-requirements.json
+
+  EU_INT:
+    preferred: "RCBO per circuit (modern installations)"
+    alternative_grouped: "Main RCD or grouped RCDs by ground floor / first floor split"
+    reference: shared/standards/electrical/IEC60364/rcd-requirements.json
+
+  US:
+    note: "NEC uses GFCI / AFCI / dual-function breakers, not 'RCD' terminology"
+    gfci_required_locations: ["bathrooms", "kitchens", "garages", "outdoor", "basements", "near_sinks"]
+    afci_required_locations: ["dwelling_unit_branch_circuits_per_NEC_210.12"]
+    reference: shared/standards/electrical/NFPA70/art240-overcurrent.json
+
+rcbo_vs_grouped_tradeoff:
+  rcbo_advantage: "Single-circuit isolation on fault; better selectivity downstream"
+  grouped_advantage: "Cheaper; suitable for non-critical domestic"

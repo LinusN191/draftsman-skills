@@ -1,0 +1,29 @@
+rule_set: busbar-sizing
+version: 1.0.0
+applies_to: [GB, EU, INT, US]
+
+# Busbar rating must accommodate sum of way loads after diversity.
+# Used by generator.md Step 5.
+
+sizing_inequality:
+  rule: "busbar_rating_a >= sum(way_loads_a) × diversity_factor"
+  rationale: "Per IEC 61439 rated current of assembly"
+
+diversity_factors:
+  GB:
+    source: "BS 7671 Appendix 1 Table A1"
+    domestic_lighting: 0.66
+    domestic_sockets:  0.4
+    commercial_general: 0.7
+    industrial_general: 1.0
+  EU_INT:
+    source: "IEC 60364-1 Annex C"
+    note: "Same conceptual approach; national practice varies"
+  US:
+    source: "NEC Article 220.61 (feeder and service load calculations)"
+    note: "NEC uses VA-based calculation method rather than diversity factor multiplier"
+
+icw_check:
+  rule: "busbar.icw_ka_1s >= ipk_at_busbar"
+  rationale: "Per IEC 61439-1 short-circuit withstand"
+  reference: shared/standards/electrical/IEC61439/short-circuit-withstand.json

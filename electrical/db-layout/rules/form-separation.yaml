@@ -1,0 +1,23 @@
+rule_set: form-separation
+version: 1.0.0
+applies_to: [GB, EU, INT]
+# Not applicable to NEMA panelboards (US uses different classification — NEMA 1/3R/4/4X/12 enclosure types)
+
+# IEC 61439 Form classification: separation between busbars, functional units, terminals.
+# Used by generator.md Step 3.
+
+form_selection_logic:
+  - condition: "domestic"
+    recommended_form: "1"
+    note: "No separation; basic enclosure. Standard consumer units."
+  - condition: "commercial_small"
+    recommended_form: "2a"
+    note: "Busbar separation from functional units."
+  - condition: "commercial_large OR industrial"
+    recommended_form: "3b"
+    note: "Busbar separation + functional unit separation + cabling separated within units."
+  - condition: "critical_facility (hospitals, data centres)"
+    recommended_form: "4a OR 4b"
+    note: "Full separation including individual terminal separation."
+
+reference_file: shared/standards/electrical/IEC61439/form-separations.json

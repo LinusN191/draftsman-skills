@@ -1,0 +1,33 @@
+rule_set: ocpd-coordination
+version: 1.0.0
+applies_to: [GB, EU, INT, US]
+
+# OCPD coordination rule: In ≤ Iz ≤ Iz_corrected ≤ 1.45 × In
+# In = OCPD nominal current; Iz = cable continuous ampacity
+# Used by generator.md Step 7.
+
+coordination_inequality:
+  rule: "In <= Iz (corrected for grouping, ambient, installation method)"
+  rationale: "Per BS 7671 433.1.1 / IEC 60364-4-43 433.1 / NEC 240.4"
+
+design_current_check:
+  rule: "Ib <= In (design current cannot exceed OCPD rating)"
+
+upper_limit_check:
+  rule: "Iz × 1.45 >= I2 (the trip current at conventional time)"
+  rationale: "BS 7671 Reg 433.1.1 / IEC 60364 433.1.4"
+
+method_by_jurisdiction:
+  GB:
+    standard_file: shared/standards/electrical/BS7671/reg433-overcurrent-protection.json
+    cable_rating_source: "BS 7671 Appendix 4 tables for given installation method"
+  EU:
+    standard_file: shared/standards/electrical/IEC60364/part4-43-overcurrent.json
+    cable_rating_source: "IEC 60364-5-52 Annex E tables"
+  INT:
+    standard_file: shared/standards/electrical/IEC60364/part4-43-overcurrent.json
+    cable_rating_source: "IEC 60364-5-52 Annex E tables"
+  US:
+    standard_file: shared/standards/electrical/NFPA70/art240-overcurrent.json
+    cable_rating_source: "NEC Table 310.16 ampacity table"
+    note: "NEC sizes OCPD differently — 80% continuous rule per NEC 210.20(A); next-standard-rating-up per 240.4(B)"
