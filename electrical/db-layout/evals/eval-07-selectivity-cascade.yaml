@@ -1,0 +1,54 @@
+# Eval 07 — Two-level cascade selectivity verification
+# Category: skill_specific (selectivity_cascade)
+
+id: eval-07-selectivity-cascade
+category: skill_specific
+severity: high
+description: |
+  MSB 1000A ACB main → 250A MCCB feeder → 32A MCB final.
+  Engineer-declared fault currents:
+  - At MSB busbar: 35 kA
+  - At sub-DB busbar: 25 kA
+  - At final circuit: 6 kA
+  Generator must emit selectivity_results entries for all three cascade pairs and
+  verify cascade is "selective_to_fault_ka" for each (using manufacturer table source).
+
+inputs:
+  jurisdiction: "GB"
+  board_type: "main_switchboard"
+  db_designation: "MSB-CASC"
+  location: "switchroom"
+  fed_from: "MAIN"
+  supply_voltage_v: "400"
+  phase_arrangement: "TPN"
+  supply_rating_a: 1000
+  ze_ohm_at_origin: 0.03
+  ways_total: 12
+  form_separation_iec61439: "4a"
+  circuits_declared:
+    - { id: "F01", designation: "Feeder to DB-1", ocpd_rating_a: 250, ocpd_curve: "D", ocpd_type: "MCCB", phase_csa_mm2: 150, length_m: 30, load_kw: 120 }
+    - { id: "C01", designation: "Final 32A circuit at DB-1", ocpd_rating_a: 32, ocpd_curve: "C", ocpd_type: "MCB", phase_csa_mm2: 6, length_m: 25, load_kw: 6, upstream_ocpd: "F01" }
+  fault_currents_engineer_declared:
+    - { circuit_id: "MAIN-BUSBAR", ifault_ka: 35 }
+    - { circuit_id: "F01", ifault_ka: 25 }
+    - { circuit_id: "C01", ifault_ka: 6 }
+
+assertions:
+  - kind: schema_valid
+    schema: "db-layout-ir.schema.json"
+  - kind: jsonpath_count_gte
+    path: "$.selectivity_results[*]"
+    minimum: 2
+    note: "At least MAIN→F01 and F01→C01 cascade pairs"
+  - kind: jsonpath_all_in
+    path: "$.selectivity_results[*].source"
+    allowed: ["manufacturer_table", "iec_60909_calc", "engineer_declared"]
+    note: "All cascades resolved (no tool_call_pending since fault currents given)"
+  - kind: jsonpath_all_present
+    path: "$.selectivity_results[*].selective_to_fault_ka"
+    note: "Every cascade has a verdict"
+  - kind: invariant_passes
+    invariant: "INV-9"
+    note: "Selectivity result completeness"
+
+expected_status: "pass"
