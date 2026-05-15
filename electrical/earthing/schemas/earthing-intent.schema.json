@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/earthing/schemas/earthing-intent.schema.json",
+  "title": "Earthing Intent",
+  "description": "Stable subset of the earthing IR consumed by cable-containment, riser, schematic, panel-schedule, sld skills. Wrapped at runtime in shared/schemas/core/intent.schema.json. Forward-compat: optional fields may be added freely; required fields require a major intent_version bump.",
+  "type": "object",
+  "required": [
+    "jurisdiction",
+    "earthing_system",
+    "met_location",
+    "available_zs_at_main_db_ohm",
+    "electrode_target_met",
+    "circuits"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "jurisdiction": {
+      "enum": ["GB", "EU", "INT", "US"],
+      "description": "Echo of producer's jurisdiction so consumers know which standard family was applied"
+    },
+    "earthing_system": {
+      "enum": ["TN-C-S", "TT"]
+    },
+    "met_location": {
+      "type": "string",
+      "description": "Location identifier (room/space + reference point) of the main earthing terminal"
+    },
+    "available_zs_at_main_db_ohm": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Worst-case Zs at the main DB; used by downstream skills sizing distant feeders"
+    },
+    "electrode_target_met": {
+      "type": "boolean",
+      "description": "true if specified/calculated Ra meets the per-jurisdiction target"
+    },
+    "supplementary_bonding_locations": {
+      "type": "array",
+      "items": { "enum": ["bathroom", "pool", "kitchen_commercial", "medical_group_2", "other"] }
+    },
+    "rcd_protected_circuit_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Circuit IDs (from db-layout intent) requiring RCD protection by earthing design"
+    },
+    "circuits": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": ["circuit_id", "cpc_csa_mm2_or_awg", "zs_compliance"],
+        "additionalProperties": false,
+        "properties": {
+          "circuit_id":         { "type": "string" },
+          "cpc_csa_mm2_or_awg": { "type": "string" },
+          "zs_compliance":      { "enum": ["pass", "fail_needs_rcd", "fail_oversize_cpc", "pass_with_rcd"] },
+          "rcd_required":       { "type": "boolean" },
+          "rcd_type":           { "enum": ["AC", "A", "F", "B"] },
+          "rcd_sensitivity_ma": { "type": "integer", "enum": [10, 30, 100, 300, 500] }
+        }
+      }
+    },
+    "life_safety_bonded_assets": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Assets bonded as part of life-safety system (cross-references downstream sld/schematic)"
+    },
+    "compliance_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "compliant":                  { "type": "boolean" },
+        "non_compliance_flag_count":  { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}
