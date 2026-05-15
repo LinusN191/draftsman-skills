@@ -1,0 +1,74 @@
+{
+  "$schema": "../../schemas/db-layout-ir.schema.json",
+  "drawing_type": "db_layout_schedule_and_schematic",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "intl-comm-tpn-eg02",
+    "skill_version": "db-layout/1.0.0",
+    "produced_at": "2026-05-15T12:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "INT",
+  "board": {
+    "db_id": "MSB-01",
+    "designation": "Main Switchboard 800A TPN",
+    "location": "ground floor electrical room",
+    "enclosure_form_iec61439": "4b",
+    "ip_rating": "IP30",
+    "ways_total": 20,
+    "ways_used": 12,
+    "ways_spare": 8
+  },
+  "incoming": {
+    "voltage_v": 400,
+    "phase_arrangement": "TPN",
+    "supply_rating_a": 800,
+    "fed_from": "MAIN",
+    "supply_class": "non_essential",
+    "ze_ohm_at_origin": 0.05
+  },
+  "busbar": {
+    "rating_a": 800,
+    "icw_ka_1s": 36,
+    "ipk_ka": 80
+  },
+  "circuits": [
+    { "circuit_id": "F01", "way_module_id": "W1-W3", "designation": "Feeder to Lighting DB-L1", "voltage_class": "LV_power", "downstream_load_kw": 80, "ocpd": { "rating_a": 250, "curve": "D", "type": "MCCB", "breaking_capacity_ka": 36 }, "cable": { "csa_mm2_or_awg": "150mm²", "cores": 5, "length_m": 35 } },
+    { "circuit_id": "F02", "way_module_id": "W4-W6", "designation": "Feeder to Small-Power DB-P1", "voltage_class": "LV_power", "downstream_load_kw": 150, "ocpd": { "rating_a": 400, "curve": "D", "type": "MCCB", "breaking_capacity_ka": 36 }, "cable": { "csa_mm2_or_awg": "240mm²", "cores": 5, "length_m": 40 } },
+    { "circuit_id": "F03", "way_module_id": "W7-W9", "designation": "Feeder to Mechanical DB-M1", "voltage_class": "LV_power", "downstream_load_kw": 100, "ocpd": { "rating_a": 250, "curve": "D", "type": "MCCB", "breaking_capacity_ka": 36 }, "cable": { "csa_mm2_or_awg": "150mm²", "cores": 5, "length_m": 45 } },
+    { "circuit_id": "F04", "way_module_id": "W10-W12", "designation": "Feeder to Fire Alarm DB-FA1", "voltage_class": "fire_alarm", "downstream_load_kw": 12, "ocpd": { "rating_a": 63, "curve": "C", "type": "MCCB", "breaking_capacity_ka": 36 }, "cable": { "csa_mm2_or_awg": "16mm²", "cores": 5, "length_m": 60 } }
+  ],
+  "selectivity_results": [
+    { "upstream_id": "MAIN", "downstream_id": "F01", "selective_to_fault_ka": 36, "source": "engineer_declared", "tool_call_pending": false, "code_clause": "IEC 60364-5-53:2002 clause 536" },
+    { "upstream_id": "MAIN", "downstream_id": "F02", "selective_to_fault_ka": 36, "source": "engineer_declared", "tool_call_pending": false, "code_clause": "IEC 60364-5-53:2002 clause 536" },
+    { "upstream_id": "MAIN", "downstream_id": "F03", "selective_to_fault_ka": 36, "source": "engineer_declared", "tool_call_pending": false, "code_clause": "IEC 60364-5-53:2002 clause 536" },
+    { "upstream_id": "MAIN", "downstream_id": "F04", "selective_to_fault_ka": 36, "source": "engineer_declared", "tool_call_pending": false, "code_clause": "IEC 60364-5-53:2002 clause 536" }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      { "message": "F04 fire alarm feeder is essential supply class — recommend secondary supply via ATS at the FA1 sub-board.", "code_clause": "IEC 60364-5-56:2018 clause 560", "severity": "info" }
+    ],
+    "assumptions": [
+      "Diversity factor 0.8 (commercial general per IEC 60364-1 Annex C).",
+      "Cable ampacity assumes IEC 60364-5-52 Reference Method E (multicore in free air).",
+      "Fault currents engineer-declared from manufacturer cascade table for ABB Tmax XT MCCBs paired with Emax 2 ACB."
+    ]
+  },
+  "drawn_as_symbols": ["BUSBAR", "MAIN_SWITCH", "MCCB", "SPD", "BUSBAR_RISER", "EARTH_GENERAL"],
+  "flags": [],
+  "rationale": {
+    "chat_summary": "800A TPN main switchboard for an INT commercial office, Form 4b for compartmentalised maintenance access. Four MCCB feeders to sub-DBs (Lighting, Power, Mechanical, Fire Alarm). All cascade pairs verified selective to 36 kA via engineer-declared manufacturer cascade table. INFO flag recommending ATS for the fire alarm sub-board. Reply to refine.",
+    "sections": [
+      { "title": "Board Classification", "summary": "INT commercial MSB, IEC 61439-2 PSC Form 4b, IP30 for indoor electrical room.", "decisions": [ { "label": "Form 4b enclosure", "summary": "Full separation including individual terminal separation — best maintenance access + arc-flash safety.", "rule": "IEC 61439-2 form selection", "code_clause": "IEC 61439-2:2020 clause 8.101", "inputs": { "board_type": "main_switchboard", "form": "4b" } } ] },
+      { "title": "Incoming Supply", "summary": "400V TPN 800A ACB main from utility transformer (Ze 0.05Ω).", "decisions": [ { "label": "800A ACB main breaker", "summary": "Drawout ACB suits service-entrance role with full protection programmability.", "rule": "IEC 60947-2 ACB selection for service entrance", "code_clause": "IEC 60364-1:2005 clause 314.1", "inputs": { "supply_rating_a": 800, "main_breaker_type": "ACB" } } ] },
+      { "title": "Busbar Sizing", "summary": "800A busbar matches main rating, IcW 36 kA accommodates declared 25 kA fault. Diversified load 395A; 50% headroom.", "decisions": [ { "label": "800A busbar IcW 36 kA", "summary": "Sized to match incoming ACB + exceed declared fault current.", "rule": "IEC 61439-1 rated current + short-circuit withstand", "code_clause": "IEC 61439-1:2020 clause 5.3 + clause 10.11", "inputs": { "busbar_a": 800, "icw_ka_1s": 36 } } ] },
+      { "title": "Way Assignment", "summary": "12 ways used (4 × 3-pole feeders W1-W12), 8 ways spare (exceeds minimum 4).", "decisions": [] },
+      { "title": "OCPD Selection", "summary": "All MCCBs Type D curve (motor-friendly for sub-DB feeders). In ≤ Iz verified for every feeder. Icn 36 kA exceeds declared 25 kA Ifault.", "decisions": [ { "label": "Type D curve for all feeders", "summary": "Sub-DB feeders downstream often serve motor circuits — D curve avoids nuisance trip.", "rule": "IEC 60898 / IEC 60947-2 device curve selection for inrush", "code_clause": "IEC 60364-4-43:2017 clause 434.5.1", "inputs": { "curve": "D" } } ] },
+      { "title": "RCD Strategy", "summary": "No RCD at MSB level (sub-DBs handle their own RCD strategy per IEC 60364-4-41 411.5). F04 fire alarm essential supply not RCD-protected upstream.", "decisions": [] },
+      { "title": "Cable Selection", "summary": "Feeder cables sized per IEC 60364-5-52 Reference Method E (multicore in free air). All sizes pass In ≤ Iz check.", "decisions": [] },
+      { "title": "Selectivity Verification", "summary": "4 cascade pairs (MAIN → F01..F04) verified selective to 36 kA via engineer-declared manufacturer cascade table (ABB Tmax XT MCCBs paired with Emax 2 ACB).", "decisions": [ { "label": "Full discrimination at 36 kA", "summary": "ACB-MCCB cascade fully selective per ABB cascade table.", "rule": "IEC 60364-5-53 clause 536", "code_clause": "IEC 60364-5-53:2002 clause 536", "inputs": { "selective_to_fault_ka": 36, "source": "engineer_declared" } } ] },
+      { "title": "Compliance", "summary": "Compliant. One INFO flag recommending ATS for fire alarm sub-board.", "decisions": [] }
+    ]
+  }
+}

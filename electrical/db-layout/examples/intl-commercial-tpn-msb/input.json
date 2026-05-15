@@ -1,0 +1,37 @@
+{
+  "$schema": "../../inputs.json",
+  "project_meta": {
+    "project_id": "intl-comm-tpn-eg02",
+    "name": "Tuscan Office Complex — Block A",
+    "client": "Commercial",
+    "designer": "DraftsMan Skills demo",
+    "date": "2026-05-15",
+    "revision": "P01"
+  },
+  "jurisdiction": "INT",
+  "board_type": "main_switchboard",
+  "db_designation": "MSB-01",
+  "location": "ground floor electrical room",
+  "fed_from": "MAIN",
+  "supply_voltage_v": "400",
+  "phase_arrangement": "TPN",
+  "supply_rating_a": 800,
+  "ze_ohm_at_origin": 0.05,
+  "ways_total": 20,
+  "ways_spare_minimum": 4,
+  "form_separation_iec61439": "4b",
+  "ip_rating": "IP30",
+  "diversity_factor_main": 0.8,
+  "circuits_declared": [
+    { "id": "F01", "designation": "Feeder to Lighting DB-L1", "ocpd_rating_a": 250, "ocpd_curve": "D", "ocpd_type": "MCCB", "phase_csa_mm2": 150, "length_m": 35, "load_kw": 80 },
+    { "id": "F02", "designation": "Feeder to Small-Power DB-P1", "ocpd_rating_a": 400, "ocpd_curve": "D", "ocpd_type": "MCCB", "phase_csa_mm2": 240, "length_m": 40, "load_kw": 150 },
+    { "id": "F03", "designation": "Feeder to Mechanical DB-M1", "ocpd_rating_a": 250, "ocpd_curve": "D", "ocpd_type": "MCCB", "phase_csa_mm2": 150, "length_m": 45, "load_kw": 100 },
+    { "id": "F04", "designation": "Feeder to Fire Alarm DB-FA1", "ocpd_rating_a": 63, "ocpd_curve": "C", "ocpd_type": "MCCB", "phase_csa_mm2": 16, "length_m": 60, "load_kw": 12, "voltage_class": "fire_alarm" }
+  ],
+  "fault_currents_engineer_declared": [
+    { "circuit_id": "F01", "ifault_ka": 25 },
+    { "circuit_id": "F02", "ifault_ka": 25 },
+    { "circuit_id": "F03", "ifault_ka": 25 },
+    { "circuit_id": "F04", "ifault_ka": 22 }
+  ]
+}
