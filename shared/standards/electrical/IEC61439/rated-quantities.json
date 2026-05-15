@@ -1,0 +1,119 @@
+{
+  "_title": "IEC 61439 — Rated Quantities Quick Reference",
+  "_iec_part": "1 (Clause 5)",
+  "_version": "1.0.0",
+  "_note": "All rated quantities the designer must specify on the assembly schedule. Standard-preferred values per IEC 61439-1 Clause 5.",
+  "quantities": {
+    "Ue": {
+      "symbol": "Ue",
+      "name": "Rated operational voltage",
+      "unit": "V (a.c. rms) or V (d.c.)",
+      "iec_ref": "IEC 61439-1 Clause 5.1",
+      "definition": "Voltage between phases (a.c.) or between poles (d.c.) at which the assembly is designed to operate continuously.",
+      "preferred_values_AC_V": [230, 400, 415, 480, 525, 600, 690, 1000],
+      "preferred_values_DC_V": [110, 220, 440, 750, 1000, 1500],
+      "typical_LV_building": "230 V (single-phase), 400 V (three-phase)"
+    },
+    "Ui": {
+      "symbol": "Ui",
+      "name": "Rated insulation voltage",
+      "unit": "V rms",
+      "iec_ref": "IEC 61439-1 Clause 5.2.2",
+      "definition": "Voltage to which the assembly's dielectric strength is referred. Must be ≥ Ue.",
+      "preferred_values_V": [500, 690, 1000],
+      "typical_LV_building": "1000 V"
+    },
+    "Uimp": {
+      "symbol": "Uimp",
+      "name": "Rated impulse withstand voltage",
+      "unit": "kV (1.2/50 µs impulse, peak)",
+      "iec_ref": "IEC 61439-1 Clause 5.2.3",
+      "definition": "Peak value of an impulse voltage that the assembly's insulation can withstand under specified conditions. Selected based on overvoltage category.",
+      "preferred_values_kV": [1.5, 2.5, 4, 6, 8, 12],
+      "overvoltage_category_to_Uimp_for_400V": {
+        "II":  "2.5 kV (appliances and final circuits)",
+        "III": "4 kV (distribution circuits within installation)",
+        "IV":  "6 kV (origin of installation — meter, main switchgear)"
+      },
+      "typical_LV_building_for_400V_MSB": "6 kV (Cat IV)"
+    },
+    "In": {
+      "symbol": "In",
+      "name": "Rated current of the assembly",
+      "unit": "A",
+      "iec_ref": "IEC 61439-1 Clause 5.3.1",
+      "definition": "Maximum sum of currents from incoming circuits, declared by the manufacturer. Used with RDF for verification.",
+      "preferred_values_A": [16, 32, 63, 100, 125, 160, 200, 250, 400, 630, 800, 1000, 1250, 1600, 2000, 2500, 3200, 4000, 5000, 6300, 8000]
+    },
+    "Inc": {
+      "symbol": "Inc",
+      "name": "Rated current of a circuit of the assembly",
+      "unit": "A",
+      "iec_ref": "IEC 61439-1 Clause 5.3.2",
+      "definition": "Maximum continuous current that an individual outgoing circuit can carry.",
+      "preferred_values_A": [6, 10, 13, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 400, 630]
+    },
+    "Icw": {
+      "symbol": "Icw",
+      "name": "Rated short-time withstand current",
+      "unit": "kA rms (for 1 s typical)",
+      "iec_ref": "IEC 61439-1 Clause 5.3.6",
+      "definition": "RMS short-circuit current the assembly can carry for a stated duration. See short-circuit-withstand.json for full treatment.",
+      "preferred_values_kA": [10, 15, 25, 36, 50, 65, 80, 100]
+    },
+    "Ipk": {
+      "symbol": "Ipk",
+      "name": "Rated peak withstand current",
+      "unit": "kA peak",
+      "iec_ref": "IEC 61439-1 Clause 5.3.5",
+      "definition": "Peak instantaneous current the assembly must withstand. Ratio Ipk/Icw via n-factor.",
+      "preferred_values_kA": [17, 30, 52, 75, 105, 143, 176, 220]
+    },
+    "Icc": {
+      "symbol": "Icc",
+      "name": "Rated conditional short-circuit current",
+      "unit": "kA prospective (rms)",
+      "iec_ref": "IEC 61439-1 Clause 5.3.7",
+      "definition": "Prospective fault current when withstand relies on an upstream current-limiting device.",
+      "preferred_values_kA": [25, 36, 50, 70, 100]
+    },
+    "fn": {
+      "symbol": "fn",
+      "name": "Rated frequency",
+      "unit": "Hz",
+      "iec_ref": "IEC 61439-1 Clause 5.5",
+      "definition": "Frequency at which the assembly is designed to operate.",
+      "preferred_values_Hz": [50, 60],
+      "typical": "50 Hz in Europe, Africa, most of Asia; 60 Hz in North/South America and parts of Asia"
+    },
+    "pollution_degree": {
+      "symbol": "PD",
+      "name": "Pollution degree",
+      "unit": "dimensionless (1–4)",
+      "iec_ref": "IEC 61439-1 Clause 5.6",
+      "definition": "Severity of environmental contamination at clearances and creepages.",
+      "values": {
+        "1": "No pollution / dry, clean environment (sealed)",
+        "2": "Normal indoor (typical office, plant room)",
+        "3": "Industrial — conductive pollution may be expected (typical industrial floor)",
+        "4": "Continuous conductive pollution by dust, rain — outdoor"
+      },
+      "typical_LV_building_indoor": "2",
+      "typical_LV_outdoor": "3 (sheltered) or 4 (fully exposed)"
+    },
+    "overvoltage_category": {
+      "symbol": "OVC",
+      "name": "Overvoltage category",
+      "unit": "Roman numeral (I–IV)",
+      "iec_ref": "IEC 60664-1; referenced from IEC 61439-1 Clause 5.2.3",
+      "definition": "Determines required Uimp based on the assembly's position in the installation.",
+      "values": {
+        "I":   "Equipment connected to circuits with overvoltage control (signal-only, separated by SPDs at every interface)",
+        "II":  "Appliances and final circuits — fed from fixed installation",
+        "III": "Distribution circuits — within the installation (DBs, mains)",
+        "IV":  "Origin of the installation — meter, main intake, main switchgear, things upstream of the consumer unit"
+      },
+      "typical_LV_building": "IV at supply intake / MSB; III at sub-DB; II at final circuits"
+    }
+  }
+}
