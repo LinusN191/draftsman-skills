@@ -1,0 +1,188 @@
+{
+  "$schema": "../../shared/schemas/core/inputs.schema.json",
+  "skill": "earthing",
+  "version": "1.0.0",
+  "items": [
+    {
+      "id": "jurisdiction",
+      "label": "Project jurisdiction",
+      "hint": "Selects which standards family the skill loads. GB = BS 7671; EU/INT = IEC 60364; US = NFPA 70.",
+      "answer_type": "enum",
+      "options": ["GB", "EU", "INT", "US"],
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "earthing_system",
+      "label": "Earthing system",
+      "hint": "TN-C-S = combined N+PE upstream of service, separated downstream (most UK/PME). TT = consumer electrode only (rural / no PME).",
+      "answer_type": "enum",
+      "options": ["TN-C-S", "TT"],
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "supply_voltage_v",
+      "label": "Supply voltage (V phase-to-phase for 3-phase, phase-to-neutral for single)",
+      "answer_type": "enum",
+      "options": ["120", "208", "230", "240", "400", "415", "480"],
+      "default": "230",
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "supply_phase",
+      "label": "Supply phase arrangement",
+      "answer_type": "enum",
+      "options": ["single_phase", "single_phase_split", "TPN", "TPN_plus_E"],
+      "default": "single_phase",
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "ze_ohm_declared",
+      "label": "Declared Ze — supply network earth-fault impedance (Ω)",
+      "hint": "From DNO declaration or assumed per jurisdiction default (UK TN-C-S typical 0.35Ω; TT 21Ω+).",
+      "answer_type": "float",
+      "required": true,
+      "validator": "ze_ohm_range",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "dno_pscc_ka",
+      "label": "DNO declared prospective short-circuit current (kA)",
+      "answer_type": "float",
+      "required": false,
+      "validator": "positive_float",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "building_type",
+      "label": "Building / occupancy type",
+      "answer_type": "enum",
+      "options": ["dwelling_single_family", "dwelling_multi_family", "office", "retail", "industrial", "healthcare", "education", "agricultural", "rural_outbuilding", "other"],
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "has_lightning_protection",
+      "label": "Building has a lightning protection system (LPS)?",
+      "hint": "Per BS EN 62305 / NFPA 780. Affects earthing electrode bonding requirements.",
+      "answer_type": "boolean",
+      "default": false,
+      "required": false,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "extraneous_parts",
+      "label": "Extraneous-conductive-parts requiring main protective bonding",
+      "hint": "List of services / structures requiring bonding to MET. Each entry: { type, location_descriptor }.",
+      "answer_type": "struct_list",
+      "required": true,
+      "item_schema": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": { "enum": ["water_pipe", "gas_pipe", "structural_steel", "lift_rails", "external_metalwork", "telecoms_screen", "hvac_duct_metal", "fuel_pipe_external"] },
+          "location_descriptor": { "type": "string" },
+          "service_size_mm":     { "type": "integer", "minimum": 0 }
+        }
+      },
+      "project_fact_candidate": false
+    },
+    {
+      "id": "ground_conditions",
+      "label": "Site soil/ground conditions",
+      "hint": "Drives soil resistivity assumption for TT electrode sizing.",
+      "answer_type": "enum",
+      "options": ["clay_moist", "loam", "sand_dry", "rock", "marsh_wet", "made_ground_imported_fill", "unknown"],
+      "default": "unknown",
+      "required": false,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "electrode_count_planned",
+      "label": "Number of earth electrodes planned",
+      "hint": "TT typically 1-4 rods; TN-C-S supplementary electrodes optional.",
+      "answer_type": "int",
+      "required": false,
+      "validator": "positive_int",
+      "depends_on": ["earthing_system"]
+    },
+    {
+      "id": "electrode_type_planned",
+      "label": "Planned electrode type",
+      "answer_type": "enum",
+      "options": ["rod", "plate", "mat", "ufer", "ground_ring", "structural_metal", "tbd"],
+      "default": "rod",
+      "required": false,
+      "depends_on": ["earthing_system"]
+    },
+    {
+      "id": "target_ra_ohm",
+      "label": "Target earth electrode resistance Ra (Ω)",
+      "hint": "GB TT typical ≤200Ω; US NEC ≤25Ω or use 2 electrodes; EU/INT per IEC 60364-5-54.",
+      "answer_type": "float",
+      "required": false,
+      "validator": "positive_float",
+      "depends_on": ["earthing_system"],
+      "project_fact_candidate": true
+    },
+    {
+      "id": "db_designations",
+      "label": "Distribution boards on this project (from db-layout intent if present)",
+      "hint": "Optional — if db-layout intent is supplied via cross_drawing_context, this is auto-populated.",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "required": ["designation", "rated_a"],
+        "properties": {
+          "designation":     { "type": "string", "pattern": "^[A-Z][A-Z0-9-]{1,15}$" },
+          "rated_a":         { "type": "integer", "minimum": 6, "maximum": 6300 },
+          "location":        { "type": "string" },
+          "fed_from":        { "type": "string" }
+        }
+      },
+      "project_fact_candidate": false
+    },
+    {
+      "id": "met_location",
+      "label": "Main earthing terminal (MET) location",
+      "hint": "Room / area description. E.g. 'plant room', 'meter cupboard'.",
+      "answer_type": "text",
+      "required": true,
+      "validator": "non_empty_text",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "supplementary_bonding_required_locations",
+      "label": "Locations requiring supplementary equipotential bonding",
+      "hint": "Bathroom (BS 7671 Section 701 / IEC 60364-7-701), pool (Section 702 / 60364-7-702 / NEC 680.26), medical Group 2 (Section 710 / 60364-7-710 / NEC 517).",
+      "answer_type": "enum_list",
+      "options": ["bathroom", "pool", "kitchen_commercial", "medical_group_2", "other"],
+      "required": false,
+      "project_fact_candidate": false
+    },
+    {
+      "id": "life_safety_bonded_assets",
+      "label": "Assets bonded as part of life-safety system",
+      "hint": "Fire pump, emergency generator, smoke extract fans, etc. Will appear in produced earthing intent for downstream consumers.",
+      "answer_type": "enum_list",
+      "options": ["fire_pump", "emergency_generator", "smoke_extract", "sprinkler_system", "fire_alarm_panel", "emergency_lighting_central_battery", "lift_emergency", "none"],
+      "default": ["none"],
+      "required": false,
+      "project_fact_candidate": false
+    },
+    {
+      "id": "rcd_type_default",
+      "label": "Default RCD type for circuits requiring earth-leakage protection",
+      "hint": "Type A = AC + pulsating DC (covers most modern equipment). Type B = handles DC components (required for EV chargers, PV, some VFDs).",
+      "answer_type": "enum",
+      "options": ["AC", "A", "F", "B"],
+      "default": "A",
+      "required": false,
+      "project_fact_candidate": false
+    }
+  ]
+}
