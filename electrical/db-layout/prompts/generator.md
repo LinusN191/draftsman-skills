@@ -251,7 +251,7 @@ For each upstream-downstream OCPD pair in the cascade:
      "selective_to_fault_ka": <value or null if pending>,
      "source": "manufacturer_table" | "iec_60909_calc" | "engineer_declared" | "tool_call_pending",
      "tool_call_pending": <boolean>,
-     "code_clause": "BS 7671 Reg 536 / IEC 60364-5-53 / NEC 240.12"
+     "code_clause": "BS 7671 Reg 536 / IEC 60364-5-53 / NEC 240.4 (use NEC 240.12 only when an orderly-shutdown scenario is documented)"
    }
    ```
 

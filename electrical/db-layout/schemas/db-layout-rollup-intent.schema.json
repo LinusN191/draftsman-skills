@@ -41,7 +41,10 @@
           "id":                    { "type": "string", "description": "Circuit id (e.g. 'C01', 'L1-Z2')" },
           "designation":           { "type": "string" },
           "ocpd_rating_a":         { "type": "integer" },
-          "ocpd_type":             { "enum": ["B", "C", "D", "thermal_magnetic", "fuse"] },
+          "ocpd_type":             {
+            "enum": ["B", "C", "D", "thermal_magnetic", "fuse"],
+            "description": "TRIP CURVE / DEVICE-FAMILY-SHORT — for downstream skills that only need to know the trip characteristic (e.g. earthing for Zs verification). IEC jurisdictions use B/C/D; US uses thermal_magnetic. The full device-family code (MCB/MCCB/ACB/RCBO) lives in the per-board IR schema's circuits[].ocpd.type field — NOT here."
+          },
           "phase_csa_mm2":         { "type": "number", "exclusiveMinimum": 0 },
           "phase_csa_awg":         { "type": "string" },
           "length_m":              { "type": "number", "exclusiveMinimum": 0 },

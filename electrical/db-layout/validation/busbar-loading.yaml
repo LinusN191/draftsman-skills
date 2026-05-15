@@ -11,13 +11,23 @@ checks:
     message: "Busbar undersized: rating {rating_a}A < sum × diversity"
     standard_ref: "IEC 61439-1 rated current of assembly"
 
-  - id: busbar-002-icw-vs-ipk
-    name: Busbar IcW must withstand peak fault current
+  - id: busbar-002-ipk-withstand
+    name: Assembly's rated peak withstand current must exceed prospective peak fault current
     severity: critical
     jsonpath: "$.busbar"
-    assert: "icw_ka_1s >= ipk_ka"
-    message: "Busbar IcW ({icw_ka_1s} kA·1s) does not withstand peak fault ({ipk_ka} kA)"
-    standard_ref: "IEC 61439-1 short-circuit withstand"
+    assert: "ipk_withstand_ka >= ipk_ka"
+    message: "Assembly Ipk withstand ({ipk_withstand_ka} kA) does not exceed prospective peak fault ({ipk_ka} kA)"
+    standard_ref: "IEC 61439-1 clause 5.3.7 (peak withstand) + clause 10.11 short-circuit verification"
+    note: "Ipk_withstand and Icw are SEPARATE assembly ratings — both must be verified independently"
+
+  - id: busbar-002b-icw-vs-ifault-rms
+    name: Busbar IcW must withstand the RMS fault current for 1 second
+    severity: critical
+    jsonpath: "$.busbar"
+    when: "ifault_rms_ka is not null"
+    assert: "icw_ka_1s >= ifault_rms_ka"
+    message: "Busbar IcW ({icw_ka_1s} kA·1s) does not withstand prospective RMS fault current ({ifault_rms_ka} kA)"
+    standard_ref: "IEC 61439-1 clause 5.3.6 (rated short-time withstand current)"
 
   - id: busbar-003-ways-accounting
     name: Ways used + spare must equal total

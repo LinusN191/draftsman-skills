@@ -75,9 +75,10 @@
       "type": "object",
       "required": ["rating_a"],
       "properties": {
-        "rating_a":    { "type": "integer", "minimum": 16, "maximum": 6300 },
-        "icw_ka_1s":   { "type": "number", "minimum": 0 },
-        "ipk_ka":      { "type": "number", "minimum": 0 }
+        "rating_a":          { "type": "integer", "minimum": 16, "maximum": 6300 },
+        "icw_ka_1s":         { "type": "number", "minimum": 0, "description": "Assembly's rated short-time withstand current (RMS, 1 s) per IEC 61439-1 clause 5.3.6" },
+        "ipk_withstand_ka":  { "type": "number", "minimum": 0, "description": "Assembly's rated peak withstand current per IEC 61439-1 clause 5.3.7 (must be >= prospective ipk_ka)" },
+        "ipk_ka":            { "type": "number", "minimum": 0, "description": "Prospective peak fault current at the busbar (computed: ~ sqrt(2) × Ifault × n where n is the peak factor by X/R)" }
       }
     },
     "circuits": {

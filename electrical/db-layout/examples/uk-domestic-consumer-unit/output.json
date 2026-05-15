@@ -30,6 +30,7 @@
   "busbar": {
     "rating_a": 100,
     "icw_ka_1s": 6,
+    "ipk_withstand_ka": 12,
     "ipk_ka": 7.5
   },
   "circuits": [
@@ -60,14 +61,14 @@
   "drawn_as_symbols": ["BUSBAR", "MAIN_SWITCH", "RCD_GROUP", "MCB", "EARTH_GENERAL"],
   "flags": ["TOOL-CALL-PENDING"],
   "rationale": {
-    "chat_summary": "100A TN-C-S consumer unit for a UK 3-bed semi, 12-way Form 1 Hager-style enclosure. 6 final circuits all RCBO-protected via the main 30mA RCD. Busbar 100A IcW 6kA accommodates 47A diversified load. Selectivity verification pending fault-level intent — emitted as tool_call_pending per WI3. Reply to refine, e.g. 'add EV charger'.",
+    "chat_summary": "100A TN-C-S consumer unit for a UK 3-bed semi, 12-way Form 1 Hager-style enclosure. 6 final circuits — Type B MCBs grouped behind a main 30mA RCD. Busbar 100A IcW 6kA accommodates 47A diversified load. Selectivity verification pending fault-level intent — emitted as tool_call_pending per WI3. Reply to refine, e.g. 'switch to per-circuit RCBOs' or 'add EV charger'.",
     "sections": [
       { "title": "Board Classification", "summary": "UK domestic consumer unit, IEC 61439-3 DBO Form 1, IP2X for indoor cupboard installation.", "decisions": [ { "label": "Form 1 enclosure", "summary": "Standard for domestic CUs — no separation between busbar and functional units required at this rating.", "rule": "IEC 61439-3 DBO assembly", "code_clause": "IEC 61439-3:2012 clause 7.1", "inputs": { "board_type": "consumer_unit", "form": "1" } } ] },
       { "title": "Incoming Supply", "summary": "230V single-phase 100A main switch from PME supply (Ze 0.35Ω declared).", "decisions": [ { "label": "100A main switch", "summary": "Standard UK domestic main switch rating.", "rule": "DNO service rating", "code_clause": "BS 7671:2018+A3 Reg 132.16", "inputs": { "supply_rating_a": 100 } } ] },
       { "title": "Busbar Sizing", "summary": "100A busbar, IcW 6kA. Sum of way loads ~117A → 47A diversified at 0.4 → 100A busbar adequate with headroom.", "decisions": [ { "label": "100A busbar adequate", "summary": "47A diversified load × 1.5 future expansion factor fits 100A.", "rule": "IEC 61439-1 rated current of assembly", "code_clause": "IEC 61439-3:2012 clause 5.3", "inputs": { "busbar_a": 100, "diversified_a": 47 } } ] },
       { "title": "Way Assignment", "summary": "6 ways used (W1–W6), 6 ways spare. Meets engineer-specified minimum 2.", "decisions": [] },
       { "title": "OCPD Selection", "summary": "All MCBs Type B (domestic standard). In ≤ Iz verified for every circuit. Icn 6kA exceeds prospective fault current.", "decisions": [ { "label": "Type B curve for all circuits", "summary": "Domestic loads (lighting, sockets, cooker, shower) have no significant inrush.", "rule": "BS 7671 Appendix 3 — Type B for general lighting/socket loads", "code_clause": "BS 7671:2018+A3 Appendix 3", "inputs": { "curve": "B" } } ] },
-      { "title": "RCD Strategy", "summary": "All 6 final circuits 30mA RCBO-protected via main RCD. Per BS 7671 411.3.3 (sockets ≤32A in domestic) + Section 701 (bathroom shower).", "decisions": [ { "label": "30mA Type A RCD on every circuit", "summary": "Type A handles AC + pulsating DC residual — covers modern electronics.", "rule": "BS 7671 Reg 411.3.3", "code_clause": "BS 7671:2018+A3 Reg 411.3.3", "inputs": { "rcd_type": "A", "sensitivity_ma": 30 } } ] },
+      { "title": "RCD Strategy", "summary": "Type B MCBs grouped behind a single 30mA main RCD (typical UK domestic CU topology). All 6 final circuits gain RCD protection via the upstream main RCD — satisfies BS 7671 411.3.3 (sockets ≤32A in domestic) + Section 701 (bathroom shower). For better resilience, per-circuit RCBOs would isolate single-circuit faults; the engineer can opt to upgrade.", "decisions": [ { "label": "Grouped 30mA Type A main RCD", "summary": "Type A handles AC + pulsating DC residual — covers modern electronics. Grouped (vs RCBO-per-circuit) is the cheaper standard CU arrangement.", "rule": "BS 7671 Reg 411.3.3", "code_clause": "BS 7671:2018+A3 Reg 411.3.3", "inputs": { "rcd_type": "A", "sensitivity_ma": 30, "rcd_arrangement": "main_rcd_grouped" } } ] },
       { "title": "Cable Selection", "summary": "Cables provided in inputs (twin-and-earth 6242Y typical). All sizes pass In ≤ Iz check at Reference Method C.", "decisions": [] },
       { "title": "Selectivity Verification", "summary": "6 cascade pairs (MAIN → each MCB) emitted as tool_call_pending. fault-level intent absent; engineer Ifault not declared. Will re-emit once fault-level skill ships.", "decisions": [ { "label": "All cascades tool_call_pending", "summary": "Per WI3 deferral pattern.", "rule": "BS 7671 Reg 536 / IEC 60364-5-53", "code_clause": "BS 7671:2018+A3 Reg 536", "inputs": { "tool_call_pending": true } } ] },
       { "title": "Compliance", "summary": "Compliant. One TOOL-CALL-PENDING flag for deferred selectivity.", "decisions": [] }
