@@ -1,0 +1,85 @@
+{
+  "_title": "NFPA 70 — Ampacity Correction Factor Chain (cross-cutting)",
+  "_version": "1.0.0",
+  "_note": "Conductor ampacity corrections come from multiple sources — Table 310.16 base ampacity × Table 310.15(B)(1) ambient × Table 310.15(C)(1) grouping × 110.14(C) termination temperature limit. This file unifies the chain with a worked example.",
+  "correction_chain": [
+    {
+      "step": 1,
+      "source": "Table 310.16",
+      "input": "AWG conductor size + temperature rating (60/75/90 °C)",
+      "output": "Base ampacity at 30 °C ambient, ≤3 current-carrying conductors",
+      "_note": "Use the column matching the conductor INSULATION temperature rating (not termination rating)"
+    },
+    {
+      "step": 2,
+      "source": "Table 310.15(B)(1)",
+      "input": "Actual ambient temperature (°C)",
+      "output": "Ambient correction factor (multiplier)",
+      "formula": "Base ampacity × ambient correction factor"
+    },
+    {
+      "step": 3,
+      "source": "Table 310.15(C)(1)",
+      "input": "Number of current-carrying conductors in raceway/cable",
+      "output": "Grouping adjustment factor (% multiplier)",
+      "formula": "(Base × ambient) × grouping factor",
+      "_note": "Neutral conductors carrying harmonic content count as current-carrying per 310.15(E)"
+    },
+    {
+      "step": 4,
+      "source": "110.14(C) Termination Temperature Limit",
+      "input": "Termination temperature rating (60 / 75 / 90 °C)",
+      "output": "FINAL ampacity = min(corrected ampacity, ampacity from the lower temperature column)",
+      "_note": "If terminations are 75 °C but conductor is 90 °C, the conductor's corrected ampacity is limited to the 75 °C column value (uncorrected from Table 310.16)"
+    }
+  ],
+  "worked_example_full_chain": {
+    "scenario": "Determine the ampacity of #2 AWG Cu THHN conductor in a raceway with 5 current-carrying conductors, 45 °C ambient, terminated at 75 °C rated lugs.",
+    "step_1_base_ampacity": {
+      "table": "310.16",
+      "column": "90 °C (THHN insulation)",
+      "size_awg": 2,
+      "base_a": 130
+    },
+    "step_2_ambient": {
+      "table": "310.15(B)(1)",
+      "ambient_c": 45,
+      "factor_90c": 0.87,
+      "ampacity_after_ambient_a": "130 × 0.87 = 113.1"
+    },
+    "step_3_grouping": {
+      "table": "310.15(C)(1)",
+      "num_current_carrying": "5 (range 4-6)",
+      "factor_pct": 80,
+      "ampacity_after_grouping_a": "113.1 × 0.80 = 90.5"
+    },
+    "step_4_termination_check": {
+      "rule": "110.14(C) — limit to ampacity from the termination temperature column",
+      "termination_rating": "75 °C",
+      "table_310_16_75c_size_2": 115,
+      "termination_limit_a": "115 (uncorrected)",
+      "_note": "Termination limit is BEFORE ambient/grouping correction — apply the corrections to the termination-column value AS WELL, then compare"
+    },
+    "step_4b_full_check": {
+      "alternate_calc_at_75c": {
+        "base_75c_size_2": 115,
+        "ambient_correction_75c_factor": 0.82,
+        "grouping_correction": 0.80,
+        "result_a": "115 × 0.82 × 0.80 = 75.4"
+      },
+      "step_5_final": {
+        "min_of": ["step 3 result: 90.5 A (from 90 °C column corrected)", "step 4b result: 75.4 A (from 75 °C column corrected)"],
+        "final_ampacity_a": 75.4,
+        "_note": "The termination temperature column dominates — the 90 °C conductor's higher base ampacity is wasted because terminations are 75 °C rated"
+      }
+    },
+    "design_decision_with_this_ampacity": "75.4 A available. If circuit's design current is, say, 60 A, this works. If 80 A, oversize the conductor or upgrade terminations to 90 °C rated"
+  },
+  "common_errors": [
+    "Skipping the 110.14(C) termination check — using just the corrected 90 °C column value when terminations are 75 °C",
+    "Applying ambient OR grouping but not both — they multiply",
+    "Counting neutral conductors as non-current-carrying in non-linear loads (computers, VFDs, LEDs) — 310.15(E) requires counting them in harmonic-rich loads",
+    "Using the wrong correction-factor column — the column corresponds to the CONDUCTOR insulation temp, not the termination temp"
+  ],
+  "iec_60364_cross_reference": "IEC 60364-5-52 Annex B has corresponding ambient correction (Annex B Tables B.52.14, B.52.15) and grouping correction (Annex B Tables B.52.17). Methodology is similar but values differ slightly — and IEC has no 110.14(C)-style termination temperature limit (IEC tables assume terminations match conductor)."
+}
