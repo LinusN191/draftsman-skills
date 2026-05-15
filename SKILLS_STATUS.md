@@ -15,7 +15,7 @@ Status codes: `production` | `beta` | `draft` | `stub`
 |-------|------|--------|-----------|-------|-------|
 | lighting-layout | `electrical/lighting-layout` | **production** | BS EN 12464-1:2021, Part L 2021 | 8/5 ✓ | Reference implementation. 8 evals (incl. rationale), 3 examples with rationale, full IR schema. |
 | sld | `electrical/sld` | **beta** | BS 7671:2018, BS EN 60617 | 8/3 ✓ | v1.1.0 prompts complete. 8 evals, 4 examples. Separate eval YAML files pending. |
-| db-layout | `electrical/db-layout` | stub | BS 7671:2018, BS EN 61439 | — | — |
+| db-layout | `electrical/db-layout` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), IEC 60617 | 8/3 ✓ | v1.0.0 schedule + schematic + selectivity. 13-step generator prompt, IR + 2 intent schemas (single-board + rollup), 14 deterministic checks, 8 evals (all WI5 + selectivity_cascade + intent_rollup_shape), 3 worked examples (UK CU, INT TPN MSB, US NEMA panelboard). Selectivity uses fault-level intent (deferred via tool_call_pending until that skill ships). |
 | cable-containment | `electrical/cable-containment` | stub | BS 7671:2018, BS 1192 | — | — |
 | riser | `electrical/riser` | stub | BS 7671:2018 | — | — |
 | schematic | `electrical/schematic` | stub | BS EN 60617 | — | — |
