@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "ontology_type": "board_types",
+  "version": "1.0.0",
+  "source": "IEC 61439-1/2/3/4, NEC Article 408, BS 7671 colloquial terminology",
+  "board_types": [
+    {
+      "id": "consumer_unit",
+      "name": "Consumer Unit (CU)",
+      "iec_standard": "IEC 61439-3 (DBO assemblies)",
+      "typical_jurisdiction": ["GB", "EU"],
+      "typical_capacity_a": [60, 80, 100],
+      "typical_ways": [6, 8, 10, 12, 16, 20],
+      "typical_form": "1 (or DBO without form code)",
+      "notes": "UK domestic terminology. Always has integral main switch + RCD/RCBO arrangement."
+    },
+    {
+      "id": "distribution_board",
+      "name": "Distribution Board (DB)",
+      "iec_standard": "IEC 61439-3 (DBO assemblies)",
+      "typical_jurisdiction": ["GB", "EU", "INT"],
+      "typical_capacity_a": [63, 100, 125, 160, 200, 250],
+      "typical_ways": [12, 18, 24, 36, 48, 72],
+      "typical_form": "2a, 2b, 3a, 3b",
+      "notes": "Sub-distribution to floors / zones / departments. Typically fed from MSB or floor riser."
+    },
+    {
+      "id": "main_switchboard",
+      "name": "Main Switchboard (MSB)",
+      "iec_standard": "IEC 61439-2 (PSC assemblies)",
+      "typical_jurisdiction": ["GB", "EU", "INT"],
+      "typical_capacity_a": [400, 630, 800, 1000, 1250, 1600, 2000, 2500, 3200, 4000],
+      "typical_form": "3a, 3b, 4a, 4b",
+      "notes": "Service entrance assembly. Fed from utility transformer. Distributes to sub-DBs."
+    },
+    {
+      "id": "panelboard_nema",
+      "name": "Panelboard (NEMA)",
+      "iec_standard": "NFPA 70 Article 408",
+      "typical_jurisdiction": ["US"],
+      "typical_capacity_a": [100, 150, 200, 225, 400, 600, 800, 1000, 1200, 2000],
+      "typical_ways": [12, 18, 24, 30, 42, 84],
+      "typical_form": "N/A (NEMA Type 1 / 3R / 12 instead of IEC Form)",
+      "notes": "US distribution board equivalent. Single-section (lighting/branch) or two-section (lighting + power). Per NEC 408 maximum 42 overcurrent devices per section."
+    },
+    {
+      "id": "motor_control_center",
+      "name": "Motor Control Center (MCC)",
+      "iec_standard": "IEC 61439-1/2",
+      "typical_jurisdiction": ["GB", "EU", "INT", "US"],
+      "typical_capacity_a": [400, 630, 800, 1000, 1600, 2500],
+      "typical_form": "4b (full compartmentalisation typical)",
+      "notes": "Houses motor starters, VFDs, soft-starters. Each starter in own compartment for safe maintenance."
+    },
+    {
+      "id": "motor_db",
+      "name": "Motor DB (small)",
+      "iec_standard": "IEC 61439-3",
+      "typical_jurisdiction": ["GB", "EU", "INT"],
+      "typical_capacity_a": [63, 100, 160],
+      "typical_form": "2a, 3a",
+      "notes": "Local distribution feeding 2-6 small motors. Less elaborate than MCC."
+    }
+  ]
+}
