@@ -1,0 +1,45 @@
+# Eval 08 — Rollup intent shape must satisfy earthing skill's existing expectation
+# Category: skill_specific (intent_rollup_shape)
+
+id: eval-08-intent-rollup-shape
+category: skill_specific
+severity: critical
+description: |
+  Reuses eval-01 inputs but specifically validates that the emitted db-layout-rollup
+  intent payload is structurally compatible with what electrical/earthing examples
+  declare as their consumed_intent for db-layout.
+
+  Verifies the cross-skill contract is intact — drift here breaks earthing.
+
+inputs:
+  reuse_eval: "eval-01-uk-domestic-cu-tn-cs"
+
+assertions:
+  - kind: emitted_intent_validates
+    intent_type: "db-layout-rollup"
+    schema: "db-layout-rollup-intent.schema.json"
+  - kind: emitted_intent_field_present
+    intent_type: "db-layout-rollup"
+    path: "$.project_id"
+  - kind: emitted_intent_field_present
+    intent_type: "db-layout-rollup"
+    path: "$.boards[*].id"
+  - kind: emitted_intent_field_present
+    intent_type: "db-layout-rollup"
+    path: "$.boards[*].main_switch_rating_a"
+  - kind: emitted_intent_field_present
+    intent_type: "db-layout-rollup"
+    path: "$.outgoing_circuits[*].id"
+  - kind: emitted_intent_field_present
+    intent_type: "db-layout-rollup"
+    path: "$.outgoing_circuits[*].ocpd_rating_a"
+  - kind: emitted_intent_field_present
+    intent_type: "db-layout-rollup"
+    path: "$.outgoing_circuits[*].ocpd_type"
+  - kind: cross_skill_compatibility_check
+    consumer_skill: "electrical/earthing"
+    consumer_example: "electrical/earthing/examples/uk-dwelling-tn-cs/input.json"
+    consumer_field_path: "consumed_intents[?(@.intent_type=='db-layout')].payload"
+    note: "Earthing example's expected db-layout payload shape must structurally match the emitted rollup intent"
+
+expected_status: "pass"
