@@ -111,5 +111,85 @@
     "Ceiling grid: 600mm module assumed — confirm from architect's reflected ceiling plan",
     "Switch heights: 1200mm AFF to centre",
     "Circuit L1-Z2: 20 × 36W = 720W on DB L1"
-  ]
+  ],
+  "rationale": {
+    "chat_summary": "20 × 600×600 LED panel layout for 80 m² open-plan office. Target 500 lx achieved at 603 lx (UF=0.67, MF=0.80); single 6 A Type C circuit on DB L1 at 720 W. Two assumptions on UF and MF flagged — confirm against the luminaire's photometric datasheet. Reply to refine, e.g. 'use LED downlights instead'.",
+    "sections": [
+      {
+        "title": "Illumination",
+        "summary": "Target 500 lx (open-plan office, BS EN 12464-1:2021 Table 5.3); achieved 603 lx maintained.",
+        "decisions": [
+          {
+            "label": "Lux target 500 lx maintained",
+            "summary": "BS EN 12464-1:2021 Table 5.3 entry for open_plan_office sets 500 lx.",
+            "rule": "BS EN 12464-1 Table 5.3 entry for open_plan_office",
+            "code_clause": "BS EN 12464-1:2021 § 5.3.3",
+            "inputs": { "room_type": "open_plan_office" }
+          },
+          {
+            "label": "UGR ≤ 19 (confirm from photometric)",
+            "summary": "Table 5.3 sets UGR limit 19 for office work; lumen method cannot verify — confirm from the luminaire's UGR table.",
+            "rule": "BS EN 12464-1 Table 5.3 UGR column",
+            "code_clause": "BS EN 12464-1:2021 § 5.3.3"
+          }
+        ]
+      },
+      {
+        "title": "Layout",
+        "summary": "20 luminaires on a 4-wide × 5-deep grid; 50 mm snap; ceiling grid 600 mm respected.",
+        "decisions": [
+          {
+            "label": "N = 17 minimum from lumen method, rounded up to 20 for grid symmetry",
+            "summary": "Lumen method gives 16.58; rounded UP to 17; 20 chosen to fill the 4×5 grid evenly.",
+            "rule": "Round up; never round down",
+            "code_clause": "CIBSE SLL Code for Lighting 2012",
+            "inputs": { "lux_target": 500, "area_m2": 80, "uf": 0.67, "mf": 0.80, "lumens": 4500 }
+          }
+        ]
+      },
+      {
+        "title": "Circuits",
+        "summary": "Single 6 A Type C MCB on DB L1; load 720 W is 39 % of the 1840 W 80%-rule headroom.",
+        "decisions": [
+          {
+            "label": "6 A Type C MCB on DB L1",
+            "summary": "20 × 36 W = 720 W well within 230 V × 6 A × 0.8 = 1104 W; chose 6 A to leave 10 A headroom for shared neutrals.",
+            "rule": "80 % rule with appropriate MCB rating",
+            "code_clause": "BS 7671 Reg 433.1",
+            "inputs": { "luminaire_count": 20, "wattage_w": 36 }
+          }
+        ]
+      },
+      {
+        "title": "Switching",
+        "summary": "Single 1-gang switch at the entrance, latch-side, 1200 mm AFF.",
+        "decisions": [
+          {
+            "label": "Switch at room entrance, latch side, 1200 mm AFF",
+            "summary": "BS 7671 requires switching within reach of the entry door; placed on the latch side for accessibility.",
+            "rule": "BS 7671 § 559.5",
+            "code_clause": "BS 7671:2018 § 559.5"
+          }
+        ]
+      },
+      {
+        "title": "Assumptions",
+        "summary": "Two design assumptions — must be confirmed against the photometric datasheet before issue.",
+        "decisions": [
+          {
+            "label": "UF = 0.67",
+            "summary": "From CIBSE SLL standard reflectance table 0.7/0.5/0.2 for an indoor office.",
+            "rule": "Standard CIBSE reflectance table",
+            "code_clause": "CIBSE SLL Code for Lighting 2012"
+          },
+          {
+            "label": "MF = 0.80",
+            "summary": "Clean office LED on a 3-year cleaning cycle.",
+            "rule": "CIBSE TM 3-25 / standard MF for clean office LED",
+            "code_clause": "CIBSE TM 3-25"
+          }
+        ]
+      }
+    ]
+  }
 }

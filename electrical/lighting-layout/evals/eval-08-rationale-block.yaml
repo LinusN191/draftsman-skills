@@ -1,0 +1,45 @@
+name: eval-08-rationale-block
+skill: lighting-layout
+description: >
+  Skill-specific — verifies the IR includes a structured `rationale` block per
+  shared/schemas/core/rationale.schema.json. Drives the runtime's chat summary,
+  audit panel, and downloadable audit document. Empty rationale = no audit
+  trail = production block.
+category: skill_specific
+
+input:
+  room_type: open_plan_office
+  room_length_mm: 10000
+  room_width_mm: 8000
+  ceiling_height_mm: 3000
+  luminaire_lumens: 4500
+  lumen_type: design
+  luminaire_wattage_w: 36
+  ceiling_grid_mm: 600
+
+checks:
+  - assertion: ir.rationale.chat_summary.length > 0
+    description: chat_summary must be present and non-empty
+
+  - assertion: ir.rationale.chat_summary.length >= 40
+    description: chat_summary must be at least 40 characters (3-sentence minimum)
+
+  - assertion: ir.rationale.chat_summary.length <= 500
+    description: chat_summary must not exceed 500 characters
+
+  - assertion: ir.rationale.sections.length >= 2
+    description: At least two sections required for non-trivial designs
+
+  - assertion: ir.rationale.sections[*].title contains "Illumination"
+    description: Illumination section is mandatory
+
+  - assertion: ir.rationale.sections[*].title contains "Assumptions"
+    description: Assumptions section is mandatory
+
+  - assertion: ir.rationale.sections[*].summary all_non_empty
+    description: Every section must carry a summary (even if decisions are empty)
+
+  - assertion: ir.rationale.sections[*].decisions[*].rule all_non_empty
+    description: Every decision must cite a rule
+
+expected_flags: []

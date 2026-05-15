@@ -721,5 +721,100 @@ to the ezdxf renderer. All dimensions in millimetres.
 
 ---
 
+## Step 14 (final) — Emit `rationale` block
+
+After computing the IR (rooms, luminaires, switches, circuits, controls,
+calculation_summary, drawing_notes), populate a `rationale` block at the
+IR root. Conforms to `shared/schemas/core/rationale.schema.json`.
+
+The rationale is the engineer's audit trail. It is read by the runtime to
+render the chat summary, the collapsible audit panel, and the downloadable
+audit document. **Do not skip this block.**
+
+```json
+"rationale": {
+  "chat_summary": "string — 3 to 5 sentences",
+  "sections": [ { "title": "...", "summary": "...", "decisions": [...] } ]
+}
+```
+
+### `chat_summary` — 3 to 5 sentences
+
+Tell the engineer in order:
+1. **What you designed** — one sentence (room, luminaire, count).
+2. **Key decisions** — one or two sentences (lux target met, MF/UF chosen, circuit split).
+3. **Flags or assumptions** — one sentence (or "no flags").
+4. **Invitation to refine** — "reply to refine, e.g. 'use LED downlights instead'".
+
+Length 40–500 characters. Plain text (no markdown).
+
+### `sections` — one entry per design dimension
+
+Emit each section IF it applies to this design. Order MUST be:
+
+| # | title | When |
+|---|---|---|
+| 1 | Illumination          | Always |
+| 2 | Layout                | Always |
+| 3 | Circuits              | Always |
+| 4 | Switching             | Always |
+| 5 | Emergency lighting    | Only if emergency luminaires placed |
+| 6 | Part L controls       | Only if `is_uk_new_build = true` |
+| 7 | IP + environment      | Only if `luminaire_environment != normal` |
+| 8 | Assumptions           | Always — one decision per assumption flag |
+
+For sections that apply but produced no discrete decisions, set
+`decisions: []` and put the explanation in `summary` (e.g. "Standard
+indoor environment — no IP overlay required.").
+
+### `decisions[]` — discrete reasoning steps
+
+Each decision: `{label, summary, rule, code_clause, inputs}`.
+
+| Field | Required | Description |
+|---|---|---|
+| `label`      | Yes | Human-readable (e.g. "Lux target 500 lx maintained") |
+| `summary`    | Yes | One sentence — the conclusion |
+| `rule`       | Yes | The deterministic rule (e.g. "BS EN 12464-1 Table 5.3 entry for open_plan_office") |
+| `code_clause`| Optional | Specific clause (e.g. "BS EN 12464-1:2021 § 5.3.3"). Cite IEC / BS / NEC interchangeably. |
+| `inputs`     | Optional | Map of values that drove this decision |
+
+### Example rationale block
+
+```json
+"rationale": {
+  "chat_summary": "20 × 600×600 LED panel layout for 80 m² open-plan office. Target 500 lx achieved at 603 lx with UF=0.67, MF=0.80; single 6A circuit on DB L1. Two assumptions flagged on UF/MF — confirm against photometric data. Reply to refine, e.g. 'use LED downlights instead'.",
+  "sections": [
+    {
+      "title": "Illumination",
+      "summary": "Target 500 lx (open-plan office); achieved 603 lx maintained.",
+      "decisions": [
+        {
+          "label": "Lux target 500 lx maintained",
+          "summary": "BS EN 12464-1:2021 Table 5.3 entry for open_plan_office sets 500 lx.",
+          "rule": "BS EN 12464-1 Table 5.3 entry for open_plan_office",
+          "code_clause": "BS EN 12464-1:2021 § 5.3.3",
+          "inputs": { "room_type": "open_plan_office" }
+        }
+      ]
+    },
+    {
+      "title": "Assumptions",
+      "summary": "Two design assumptions; both must be confirmed against the photometric datasheet.",
+      "decisions": [
+        {
+          "label": "UF = 0.67",
+          "summary": "From CIBSE SLL standard reflectance table for an indoor office.",
+          "rule": "Standard CIBSE reflectance table 0.7/0.5/0.2",
+          "code_clause": "CIBSE SLL Code for Lighting 2012"
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
 *Worked examples: EXAMPLES.md | Evaluation criteria: EVALS.md |
 Reference tables: assets/lux-targets.md, assets/uf-tables.md, assets/part-l-controls.md*

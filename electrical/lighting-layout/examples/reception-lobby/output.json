@@ -21,5 +21,57 @@
     "target_illuminance_lux": 300,
     "achieved_illuminance_lux": 318,
     "compliant": true
+  },
+  "rationale": {
+    "chat_summary": "Reception lobby with north glazing — 2 zones (perimeter Z1 daylight-controlled, interior Z2 always on). Target 300 lx achieved at 318 lx maintained. Part L 2021 perimeter daylight-linking applied. Reply to refine, e.g. 'use linear pendants in the interior'.",
+    "sections": [
+      {
+        "title": "Illumination",
+        "summary": "Target 300 lx (lobby, BS EN 12464-1:2021 Table 5.3); 318 lx achieved.",
+        "decisions": [
+          {
+            "label": "Lux target 300 lx",
+            "summary": "BS EN 12464-1 sets 300 lx for entrance lobbies.",
+            "rule": "BS EN 12464-1 Table 5.3 entry for lobby",
+            "code_clause": "BS EN 12464-1:2021 § 5.3"
+          }
+        ]
+      },
+      {
+        "title": "Layout",
+        "summary": "Two-zone split (Z1 perimeter 2 m from north glazing, Z2 interior) to enable independent daylight-linked control.",
+        "decisions": []
+      },
+      {
+        "title": "Circuits",
+        "summary": "Two circuits L1-Z1 (perimeter) and L1-Z2 (interior) so the daylight-linking dims the perimeter without affecting the interior.",
+        "decisions": []
+      },
+      {
+        "title": "Part L controls",
+        "summary": "UK new-build path. Daylight-linked dimming applied on Z1; occupancy not required for lobby.",
+        "decisions": [
+          {
+            "label": "Daylight-linked dimming on perimeter zone (Z1)",
+            "summary": "Part L 2021 § 5 requires daylight-linked control where glazing borders the perimeter zone.",
+            "rule": "Part L 2021 perimeter daylight zoning",
+            "code_clause": "AD Part L 2021 § 5",
+            "inputs": { "glazed_wall_positions": ["N"], "perimeter_depth_mm": 2000 }
+          }
+        ]
+      },
+      {
+        "title": "Assumptions",
+        "summary": "Standard reflectance set assumed (0.7/0.5/0.2) — confirm during interior design coordination.",
+        "decisions": [
+          {
+            "label": "Reflectances 0.7/0.5/0.2",
+            "summary": "Standard ceiling/wall/floor reflectance assumed for a clean lobby.",
+            "rule": "CIBSE SLL standard reflectance table",
+            "code_clause": "CIBSE SLL Code for Lighting 2012"
+          }
+        ]
+      }
+    ]
   }
 }

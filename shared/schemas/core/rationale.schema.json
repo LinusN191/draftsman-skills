@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "shared/schemas/core/rationale.schema.json",
+  "title": "Rationale block embedded in every IR document",
+  "description": "Structured reasoning chain the LLM emits alongside the IR. Drives the runtime's chat-summary, collapsible sections, and downloadable audit document. Replaces bespoke rationale Python in the DraftsMan runtime.",
+  "type": "object",
+  "required": ["chat_summary", "sections"],
+  "additionalProperties": false,
+  "properties": {
+    "chat_summary": {
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 500,
+      "description": "3–5 sentences shown inline in the chat thread. Tell the engineer: what you designed (1 sentence), the key decisions (1–2 sentences), any flags or assumptions (1 sentence), and an invitation to refine."
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/Section" }
+    }
+  },
+  "definitions": {
+    "Section": {
+      "type": "object",
+      "required": ["title", "summary"],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Section heading shown in the collapsible audit, e.g. 'Illumination', 'Layout', 'Circuits'"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 400,
+          "description": "Single-paragraph summary of this design dimension. If the section is not applicable to this design, set summary to explain why and leave decisions empty."
+        },
+        "decisions": {
+          "type": "array",
+          "description": "Discrete decisions made in this section. May be empty when the section's summary explains non-applicability.",
+          "items": { "$ref": "#/definitions/Decision" }
+        }
+      }
+    },
+    "Decision": {
+      "type": "object",
+      "required": ["label", "summary", "rule"],
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Human-readable, e.g. 'Lux target 500 lx maintained'"
+        },
+        "summary": {
+          "type": "string",
+          "description": "One-sentence reasoning"
+        },
+        "rule": {
+          "type": "string",
+          "description": "The deterministic rule or engineering principle invoked (e.g. 'BS EN 12464-1 Table 5.3 entry for open_plan_office')"
+        },
+        "code_clause": {
+          "type": "string",
+          "description": "Standard clause reference (e.g. 'BS 7671 § 411.3.3', 'IEC 60364-4-43', 'IEC 61439-2:2020 Annex 101', 'AD Part L 2021 Section 5')"
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Structured map of the values that drove this decision"
+        }
+      }
+    }
+  },
+  "$validation_note": "Hard-validation rules: chat_summary length is enforced; sections.minItems >= 1; Section.decisions MAY be empty as long as Section.summary is non-empty. Severity policy is set by the runtime — schema-failure is currently a hard fail with one retry via the validator prompt."
+}

@@ -13,7 +13,7 @@ Status codes: `production` | `beta` | `draft` | `stub`
 
 | Skill | Path | Status | Standards | Evals | Notes |
 |-------|------|--------|-----------|-------|-------|
-| lighting-layout | `electrical/lighting-layout` | **production** | BS EN 12464-1:2021, Part L 2021 | 7/5 ✓ | Reference implementation. 7 evals, 3 examples, full IR schema. |
+| lighting-layout | `electrical/lighting-layout` | **production** | BS EN 12464-1:2021, Part L 2021 | 8/5 ✓ | Reference implementation. 8 evals (incl. rationale), 3 examples with rationale, full IR schema. |
 | sld | `electrical/sld` | **beta** | BS 7671:2018, BS EN 60617 | 8/3 ✓ | v1.1.0 prompts complete. 8 evals, 4 examples. Separate eval YAML files pending. |
 | db-layout | `electrical/db-layout` | stub | BS 7671:2018, BS EN 61439 | — | — |
 | cable-containment | `electrical/cable-containment` | stub | BS 7671:2018, BS 1192 | — | — |

@@ -12,5 +12,63 @@
     "achieved_illuminance_lux": 215,
     "maintenance_factor": 0.60,
     "compliant": true
+  },
+  "rationale": {
+    "chat_summary": "Warehouse highbay — 600 m² at 7 m mounting height. Target 200 lx achieved at 215 lx with industrial-dusty MF=0.60 (LSF and LMF degraded for dusty environment). IP65 luminaires specified. Reply to refine, e.g. 'specify 5000 K cool white'.",
+    "sections": [
+      {
+        "title": "Illumination",
+        "summary": "Target 200 lx (warehouse low-bay general); 215 lx achieved.",
+        "decisions": [
+          {
+            "label": "Lux target 200 lx",
+            "summary": "BS EN 12464-1 sets 200 lx for warehouse general activity.",
+            "rule": "BS EN 12464-1 Table 5.3 entry for warehouse",
+            "code_clause": "BS EN 12464-1:2021 § 5.7"
+          }
+        ]
+      },
+      {
+        "title": "Layout",
+        "summary": "Highbay grid with 7 m mounting; spacing-to-mounting-height ratio respected.",
+        "decisions": []
+      },
+      {
+        "title": "Circuits",
+        "summary": "Multi-circuit split required given the area and 80 % MCB rule; each circuit feeds a contiguous bay.",
+        "decisions": []
+      },
+      {
+        "title": "IP + environment",
+        "summary": "Industrial dusty environment — IP65 luminaires specified; MF reduced for dusty deposit.",
+        "decisions": [
+          {
+            "label": "IP65 required",
+            "summary": "Dusty environment per BS 7671 Section 522.5; IP65 protects against ingress and water washdown.",
+            "rule": "BS 7671 Section 522.5 (external influence AE — solid object protection)",
+            "code_clause": "BS 7671:2018 § 522.5",
+            "inputs": { "luminaire_environment": "industrial_dusty" }
+          },
+          {
+            "label": "MF = 0.60 (industrial dusty)",
+            "summary": "LSF + LMF degraded for dusty deposit and 1-year cleaning cycle.",
+            "rule": "CIBSE TM 3-25 industrial MF table",
+            "code_clause": "CIBSE TM 3-25"
+          }
+        ]
+      },
+      {
+        "title": "Assumptions",
+        "summary": "Photometric data and exact luminaire model to be confirmed at tender; UF assumed from highbay narrow-beam standard photometry.",
+        "decisions": [
+          {
+            "label": "UF assumed from standard highbay narrow-beam",
+            "summary": "Final UF must be confirmed against the selected luminaire's photometric file.",
+            "rule": "Standard highbay UF table",
+            "code_clause": "CIBSE SLL Code for Lighting 2012"
+          }
+        ]
+      }
+    ]
   }
 }

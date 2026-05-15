@@ -8,6 +8,11 @@
 - Rewrite all 7 evals (`eval-01` … `eval-07`) to conform to `shared/schemas/core/eval.schema.json` — restricted assertion grammar, category field, severity, standard refs
 - Add `evals/runner-config.json` declaring minimum status thresholds and minimum model class
 - README documents eval coverage matrix (5 required categories + 2 skill-specific) (upstream Work Item 5)
+- IR schema bump — `rationale` block now required at IR root per `shared/schemas/core/rationale.schema.json`
+- Canonical IR schema authored at `shared/schemas/electrical/lighting-layout-ir.schema.json` (resolves the previously-dangling $ref)
+- Generator prompt gains Step 14 — rationale emission (chat_summary + 8-section taxonomy + decision shape)
+- All 3 example outputs regenerated with rationale blocks consistent with their reasoning
+- Add `eval-08-rationale-block.yaml` asserting rationale presence, length bounds, and decision-rule citations (upstream Work Item 2)
 
 ## v1.2.0
 - MF environment cross-check table (7 environment types)
