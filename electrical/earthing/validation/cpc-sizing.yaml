@@ -1,0 +1,47 @@
+# Earthing — CPC sizing rule validation per jurisdiction
+version: 1.0.0
+applies_to_drawing_types: ["earthing_schematic"]
+
+checks:
+  - id: cpc-001-method-jurisdiction-match
+    name: cpc_sizing_method enum must match jurisdiction
+    severity: critical
+    jsonpath: "$.circuits[*].cpc"
+    assert: |
+      (jurisdiction == 'GB' and cpc_sizing_method in ['bs7671_table_54.7', 'bs7671_adiabatic_54.1'])
+      or (jurisdiction in ['EU', 'INT'] and cpc_sizing_method in ['iec60364_table_54.2', 'iec60364_adiabatic_543.1.2'])
+      or (jurisdiction == 'US' and cpc_sizing_method == 'nec_table_250.122')
+    message: "Circuit {circuit_id}: cpc_sizing_method {cpc_sizing_method} is not valid for jurisdiction {jurisdiction}"
+    standard_ref: "manifest standards table"
+
+  - id: cpc-002-bs7671-table-54.7-minimums
+    name: BS 7671 Table 54.7 minimum CSAs
+    severity: critical
+    jsonpath: "$.circuits[?(@.cpc.cpc_sizing_method == 'bs7671_table_54.7')]"
+    assert: |
+      (line_csa_mm2 <= 16 and cpc.csa_mm2 == line_csa_mm2)
+      or (line_csa_mm2 > 16 and line_csa_mm2 <= 35 and cpc.csa_mm2 == 16)
+      or (line_csa_mm2 > 35 and cpc.csa_mm2 == line_csa_mm2 / 2)
+    message: "Circuit {circuit_id}: CPC CSA does not match Table 54.7 for L={line_csa_mm2}mm²"
+    standard_ref: "BS 7671:2018+A3 Table 54.7"
+
+  - id: cpc-003-nec-table-250.122-rating-based
+    name: NEC Table 250.122 sizes EGC by OCPD rating, not by phase CSA
+    severity: critical
+    jsonpath: "$.circuits[?(@.cpc.cpc_sizing_method == 'nec_table_250.122')]"
+    assert: |
+      (ocpd_rating_a <= 15 and cpc.csa_awg == '14')
+      or (ocpd_rating_a <= 20 and cpc.csa_awg == '12')
+      or (ocpd_rating_a <= 60 and cpc.csa_awg == '10')
+      or (ocpd_rating_a <= 100 and cpc.csa_awg == '8')
+      or (ocpd_rating_a <= 200 and cpc.csa_awg == '6')
+    message: "Circuit {circuit_id}: EGC size does not match NEC Table 250.122 for OCPD {ocpd_rating_a}A"
+    standard_ref: "NEC 2023 Table 250.122"
+
+  - id: cpc-004-min-csa-mechanical
+    name: Minimum CPC CSA where not part of cable assembly (BS 7671 Reg 543.1.1)
+    severity: high
+    jsonpath: "$.circuits[?(@.cpc.in_same_wiring_system == false)]"
+    assert: "cpc.csa_mm2 >= 4 or (cpc.csa_mm2 >= 2.5 and cpc.mechanically_protected == true)"
+    message: "Circuit {circuit_id}: separate CPC must be ≥4mm² (or ≥2.5mm² if mechanically protected)"
+    standard_ref: "BS 7671:2018+A3 Reg 543.1.1"

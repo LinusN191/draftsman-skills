@@ -1,0 +1,56 @@
+# Earthing — bonding completeness validation
+version: 1.0.0
+applies_to_drawing_types: ["earthing_schematic"]
+
+checks:
+  - id: bond-001-met-exists
+    name: Main earthing terminal must be declared
+    severity: critical
+    jsonpath: "$.met"
+    assert: "id != null and location != null"
+    message: "MET (Main Earthing Terminal) is missing — every earthing schematic must declare a MET"
+    standard_ref: "BS 7671:2018+A3 Reg 542.4.1"
+
+  - id: bond-002-water-service-bonded-gb
+    name: GB — water service entry must be bonded if metallic
+    severity: high
+    jsonpath: "$"
+    when: "jurisdiction == 'GB' and inputs.water_service_metallic == true"
+    assert: "any(b.bonds_to == 'water_service_entry' for b in main_bonding.conductors)"
+    message: "Metallic water service is declared but no main bonding conductor terminates there"
+    standard_ref: "BS 7671:2018+A3 Reg 411.3.1.2"
+
+  - id: bond-003-gas-service-bonded-gb
+    name: GB — gas service entry must be bonded if metallic
+    severity: high
+    jsonpath: "$"
+    when: "jurisdiction == 'GB' and inputs.gas_service_metallic == true"
+    assert: "any(b.bonds_to == 'gas_service_entry' for b in main_bonding.conductors)"
+    message: "Metallic gas service is declared but no main bonding conductor terminates there"
+    standard_ref: "BS 7671:2018+A3 Reg 411.3.1.2"
+
+  - id: bond-004-structural-steel-bonded
+    name: Structural steel must be bonded where it is an extraneous-conductive-part
+    severity: high
+    jsonpath: "$"
+    when: "any(e.kind == 'structural_steel' for e in inputs.extraneous_parts)"
+    assert: "any(b.bonds_to == 'structural_steel' for b in main_bonding.conductors)"
+    message: "Structural steel declared as extraneous-conductive-part but not bonded to MET"
+    standard_ref: "BS 7671:2018+A3 Reg 411.3.1.2 / IEC 60364-4-41 clause 411.3.1.2"
+
+  - id: bond-005-supplementary-bathroom
+    name: Bathroom locations must have supplementary bonding unless exemption met
+    severity: high
+    jsonpath: "$"
+    when: "any(loc.kind == 'bathroom' for loc in inputs.supplementary_bonding_required_locations)"
+    assert: "supplementary_bonding.zones[?(@.zone_kind == 'bathroom')] != null OR exemption_701.415.2_met == true"
+    message: "Bathroom requires supplementary bonding per BS 7671 Section 701 unless the 701.415.2 exemption is documented"
+    standard_ref: "BS 7671:2018+A3 Section 701"
+
+  - id: bond-006-cpc-size-not-smaller-than-l
+    name: For circuits using table method, CPC must not be smaller than required by Table 54.7
+    severity: critical
+    jsonpath: "$.circuits[?(@.cpc.cpc_sizing_method == 'bs7671_table_54.7')]"
+    assert: "cpc.csa_mm2 >= table_54_7_required_csa_mm2"
+    message: "Circuit {circuit_id}: CPC of {cpc.csa_mm2}mm² is undersized for phase {line_csa_mm2}mm² per Table 54.7"
+    standard_ref: "BS 7671:2018+A3 Table 54.7"

@@ -1,0 +1,37 @@
+# Earthing — Zs compliance validation
+# Asserts every circuit meets Zs ≤ Zs_max per its protective device
+version: 1.0.0
+applies_to_drawing_types: ["earthing_schematic"]
+
+checks:
+  - id: zs-001-arithmetic
+    name: Zs arithmetic must equal Ze + R1 + R2
+    severity: critical
+    jsonpath: "$.circuits[*]"
+    assert: "abs(zs_calculated_ohm - (ze_ohm + r1_ohm + r2_ohm)) <= 0.001"
+    message: "Circuit {circuit_id}: declared zs_calculated_ohm does not equal ze_ohm + r1_ohm + r2_ohm"
+    standard_ref: "BS 7671:2018+A3 Reg 411.4.4"
+
+  - id: zs-002-within-limit
+    name: Zs must not exceed Zs_max
+    severity: critical
+    jsonpath: "$.circuits[*]"
+    assert: "zs_calculated_ohm <= zs_max_ohm"
+    message: "Circuit {circuit_id}: Zs ({zs_calculated_ohm}Ω) exceeds Zs_max ({zs_max_ohm}Ω) — disconnection time will not be met"
+    standard_ref: "BS 7671:2018+A3 Reg 411.4.5"
+
+  - id: zs-003-temperature-correction
+    name: Zs_max must be the temperature-corrected value (0.8× of tabulated)
+    severity: high
+    jsonpath: "$.circuits[*]"
+    assert: "zs_max_source in ['table_41.2_corrected', 'table_41.3_corrected', 'table_41.4_corrected', 'nec_calculated']"
+    message: "Circuit {circuit_id}: Zs_max source must be a temperature-corrected reference"
+    standard_ref: "BS 7671:2018+A3 Appendix 14"
+
+  - id: zs-004-rcd-fallback
+    name: If Zs is high, an RCD must be present to meet disconnection time
+    severity: high
+    jsonpath: "$.circuits[?(@.zs_calculated_ohm > @.zs_max_ohm_no_rcd)]"
+    assert: "rcd_required == true and rcd_rating_ma <= 300"
+    message: "Circuit {circuit_id}: Zs exceeds the no-RCD limit but no RCD is specified"
+    standard_ref: "BS 7671:2018+A3 Reg 411.4.204"
