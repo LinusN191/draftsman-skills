@@ -1,0 +1,53 @@
+constraint_set: electrode-resistance
+version: 1.0.0
+
+# Target electrode resistance Ra by earthing system + jurisdiction.
+# Constraint values used by generator.md Step 5 to flag pass/fail.
+
+targets:
+  TN-C-S_GB:
+    constraint: "Ra not mandated for TN-C-S; consumer electrode is supplementary to DNO-managed earth"
+    typical_supplementary: 200
+    reference: "BS 7671 Reg 411 (TN-C-S earthing arrangement)"
+
+  TN-C-S_EU:
+    constraint: "Same as GB; supplementary electrode optional"
+    typical_supplementary: 200
+    reference: "IEC 60364-4-41 TN systems"
+
+  TN-C-S_US:
+    constraint: "Service-side earthing is utility responsibility; consumer's GES required per 250.50"
+    typical_supplementary_ra_ohm: 25
+    rule: "If single electrode Ra > 25 Ω, install second electrode at ≥6 ft spacing"
+    reference: "NEC 250.53(A)(2)"
+
+  TT_GB:
+    constraint: "Ra × IΔn ≤ 50 V for ADS via RCD"
+    formula: "Ra_max = 50V / IΔn"
+    with_30mA_rcd:  "Ra_max = 50 / 0.030 = 1667 Ω absolute (BS 7671 Reg 411.5.3)"
+    practical_target: 200  # designed for stability margin (5x absolute)
+    reference: "BS 7671 Reg 411.5.3 + BS 7430:2011"
+
+  TT_EU:
+    constraint: "Identical philosophy to BS 7671; per IEC 60364-4-41 Clause 411.5"
+    practical_target: 200
+    reference: "IEC 60364-4-41 Clause 411.5 + IEC 60364-5-54"
+
+  TT_INT:
+    constraint: "Same as EU"
+    practical_target: 200
+    reference: "IEC 60364-4-41 Clause 411.5"
+
+  TT_US:
+    constraint: "Ra ≤ 25 Ω OR second electrode at ≥6 ft spacing"
+    rule: "NEC 250.53(A)(2) — supplemental electrode required when single does not meet 25Ω"
+    reference: "NEC 250.53(A)(2)"
+
+soil_resistivity_typical:
+  clay_moist:           50    # Ω·m
+  loam:                100
+  sand_dry:            200
+  rock:               1000
+  marsh_wet:            30
+  made_ground_imported_fill: 300
+  unknown:             100    # conservative

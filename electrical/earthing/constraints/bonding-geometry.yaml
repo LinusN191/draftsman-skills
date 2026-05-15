@@ -1,0 +1,46 @@
+constraint_set: bonding-geometry
+version: 1.0.0
+
+# Main protective bonding conductor minimum sizes by jurisdiction.
+# Used by generator.md Step 6.
+
+main_bonding_min_csa:
+  GB:
+    rule: "BS 7671 Reg 544.1 — half the cross-section of the largest PE, minimum 6 mm² (10 mm² when not mechanically protected), maximum 25 mm² Cu"
+    minimum_protected_mm2:    6
+    minimum_unprotected_mm2: 10
+    maximum_mm2:             25
+    typical_default_mm2:     10
+    reference: "BS 7671:2018+A3 Reg 544.1.1"
+
+  EU:
+    rule: "IEC 60364-5-54 Clause 544 — equivalent to BS 7671 Reg 544"
+    minimum_mm2:  6
+    typical_default_mm2: 10
+    maximum_mm2: 25
+    reference: "IEC 60364-5-54 Clause 544"
+
+  INT:
+    rule: "Same as EU"
+    minimum_mm2:  6
+    typical_default_mm2: 10
+    maximum_mm2: 25
+    reference: "IEC 60364-5-54 Clause 544"
+
+  US:
+    rule: "NEC 250.66 — by largest ungrounded service conductor (table-lookup)"
+    table_ref: "NEC Table 250.66 (loaded from NFPA70/art250-grounding-bonding.json)"
+    reference: "NEC 250.66"
+
+supplementary_bonding_min_csa:
+  bathroom_zones:
+    GB:  "2.5 mm² (mechanically protected) or 4 mm² (unprotected) per Reg 415.2.1"
+    EU:  "Identical philosophy per IEC 60364-7-701"
+    US:  "Not applicable directly; NEC handles via Art 680 equipotential bonding in pools/spas only"
+
+  pool_equipotential:
+    all_jurisdictions: "Per BS 7671 Section 702 / IEC 60364-7-702 / NEC 680.26 — copper, ≥4 mm² (or #8 AWG solid Cu for NEC)"
+
+bonding_path_length:
+  max_recommended_m: 1.5
+  reference: "Practical guidance — keep bonding path short to maintain low impedance"
