@@ -1,0 +1,127 @@
+{
+  "$schema": "../../schemas/earthing-ir.schema.json",
+  "drawing_type": "earthing_schematic",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "tuscany-vineyard-cottage-p01",
+    "skill_version": "earthing/1.0.0",
+    "produced_at": "2026-05-15T12:00:00Z",
+    "consumed_intents": [
+      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.0.0" }
+    ]
+  },
+  "jurisdiction": "INT",
+  "earthing_system": {
+    "system_type": "TT",
+    "code_clause": "IEC 60364-4-41:2017 clause 411.5 (TT system)"
+  },
+  "met": {
+    "location": "service intake cupboard, north-west corner",
+    "supply_bond_type": "consumer_electrode_only",
+    "main_earthing_conductor_csa_mm2": 10
+  },
+  "electrodes": [
+    {
+      "id": "E1",
+      "electrode_type": "rod",
+      "length_mm": 1500,
+      "diameter_mm": 16,
+      "burial_depth_mm": 600,
+      "soil_resistivity_ohm_m": 100,
+      "ra_ohm_specified": 100,
+      "tool_call_pending": true
+    },
+    {
+      "id": "E2",
+      "electrode_type": "rod",
+      "length_mm": 1500,
+      "diameter_mm": 16,
+      "burial_depth_mm": 600,
+      "soil_resistivity_ohm_m": 100,
+      "ra_ohm_specified": 100,
+      "tool_call_pending": true
+    }
+  ],
+  "main_bonding": [
+    { "id": "B1", "source": "MET", "target": "fuel_pipe_external", "csa_mm2_or_awg": "10mm²", "code_clause": "IEC 60364-5-54:2011 Clause 544" }
+  ],
+  "circuits": [
+    { "circuit_id": "C01", "db_designation": "MB-G", "voltage_class": "LV_power", "breaker_rating_a": 10, "breaker_curve": "B", "route_length_m": 25, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "iec60364_table_54.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2", "zs_ohm": 85.6, "zs_max_ohm": 1667, "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C02", "db_designation": "MB-G", "voltage_class": "LV_power", "breaker_rating_a": 16, "breaker_curve": "C", "route_length_m": 28, "cpc_csa_mm2_or_awg": "2.5mm²", "cpc_sizing_method": "iec60364_table_54.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2", "zs_ohm": 85.4, "zs_max_ohm": 1667, "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C03", "db_designation": "MB-G", "voltage_class": "LV_power", "breaker_rating_a": 20, "breaker_curve": "C", "route_length_m": 35, "cpc_csa_mm2_or_awg": "4mm²", "cpc_sizing_method": "iec60364_table_54.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2", "zs_ohm": 85.3, "zs_max_ohm": 1667, "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 30 }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Soil resistivity 100 Ω·m assumed (loam typical).",
+      "Ra=100Ω target accepted from engineer input; calc.electrode_resistance tool call pending runtime support per WI3.",
+      "Rod electrode formula treats rods as semi-infinite (validated by post-install measurement)."
+    ]
+  },
+  "drawn_as_symbols": ["EARTH_GENERAL", "EARTH_PROTECTIVE", "EARTH_ELECTRODE", "CONDUCTOR_PE", "JUNCTION_T", "BUSBAR"],
+  "flags": ["TOOL-CALL-PENDING"],
+  "rationale": {
+    "chat_summary": "TT earthing for a rural Tuscany cottage. No DNO earth available — two 1.5 m rods in parallel give a target Ra ≤ 100Ω. MET in NW intake cupboard; main 10 mm² bond to the LPG fuel pipe. Three circuits, all 30 mA RCBO-protected (IEC 60364 411.5.3). Soil 100 Ω·m assumed; tool-call pending for live Ra calc. Reply to refine, e.g. 'add a rod for ≤50Ω target'.",
+    "sections": [
+      {
+        "title": "Earthing System",
+        "summary": "TT confirmed because no DNO earth is available at this rural location. Per IEC 60364-1 clause 312.2, TT requires consumer-provided electrode and RCD-based ADS.",
+        "decisions": [
+          { "label": "TT system confirmed", "summary": "No DNO earth at this rural site.", "rule": "Ontology TT entry permitted for INT", "code_clause": "IEC 60364-4-41:2017 clause 411.5", "inputs": { "jurisdiction": "INT", "earthing_system": "TT" } }
+        ]
+      },
+      {
+        "title": "Main Earthing Terminal",
+        "summary": "MET in service intake cupboard, NW corner. 10 mm² Cu main earthing conductor to the electrode array.",
+        "decisions": [
+          { "label": "10 mm² main earthing conductor", "summary": "Minimum per IEC 60364-5-54 for an installation electrode connection.", "rule": "IEC 60364-5-54 Clause 542.3", "code_clause": "IEC 60364-5-54:2011 Clause 542.3", "inputs": { "csa_mm2": 10 } }
+        ]
+      },
+      {
+        "title": "Electrodes",
+        "summary": "Two 1.5 m driven rods in parallel target a combined Ra ≤ 100 Ω in loam (assumed soil resistivity 100 Ω·m). Tool call calc.electrode_resistance is declared but deferred; engineer-input Ra accepted with tool_call_pending=true.",
+        "decisions": [
+          { "label": "Two-rod parallel arrangement", "summary": "Single rod at this site estimated ~150Ω; halving via parallel meets the 100Ω target.", "rule": "BS 7430 Annex F array combination", "code_clause": "IEC 60364-5-54:2011 Clause 542.2", "inputs": { "count": 2, "length_mm": 1500, "spacing_factor": 0.85 } }
+        ]
+      },
+      {
+        "title": "Main Bonding",
+        "summary": "Single main bond from MET to the external LPG fuel pipe (the only extraneous-conductive-part).",
+        "decisions": [
+          { "label": "10 mm² bond to LPG fuel pipe", "summary": "Sized per IEC 60364-5-54 Clause 544 typical default 10 mm².", "rule": "IEC 60364-5-54 Clause 544 minimum bonding CSA", "code_clause": "IEC 60364-5-54:2011 Clause 544", "inputs": { "csa_mm2": 10, "target": "fuel_pipe_external" } }
+        ]
+      },
+      {
+        "title": "Supplementary Bonding",
+        "summary": "No supplementary bonding zones declared. Bathroom is dry, basin-only — no separate bonding zone.",
+        "decisions": []
+      },
+      {
+        "title": "CPC + Zs Verification",
+        "summary": "CPCs sized per IEC 60364-5-54 Table 54.2 (equal to phase CSA for the small sizes used here). Zs verification uses RCD ADS path (Ra·IΔn ≤ 50 V) since TT cannot meet disconnection time on overcurrent alone.",
+        "decisions": [
+          { "label": "CPCs from Table 54.2", "summary": "Domestic small-circuit wiring — table method appropriate.", "rule": "IEC 60364-5-54 Table 54.2 banded lookup", "code_clause": "IEC 60364-5-54:2011 Table 54.2", "inputs": { "cpc_sizing_method": "iec60364_table_54.2" } },
+          { "label": "Ra·IΔn ≤ 50 V check", "summary": "With Ra=100Ω and IΔn=30mA → 3 V ≪ 50 V.", "rule": "IEC 60364-4-41 411.5.3", "code_clause": "IEC 60364-4-41:2017 clause 411.5.3", "inputs": { "ra_ohm": 100, "i_delta_n_a": 0.030 } }
+        ]
+      },
+      {
+        "title": "RCD Requirements",
+        "summary": "All three circuits 30 mA RCBO-protected. TT system mandates RCD on every final circuit per IEC 60364-4-41 411.5.3.",
+        "decisions": [
+          { "label": "30 mA RCBO on every circuit", "summary": "Blanket TT requirement.", "rule": "IEC 60364-4-41 411.5.3 — TT requires RCD ADS", "code_clause": "IEC 60364-4-41:2017 clause 411.5.3", "inputs": { "rcd_sensitivity_ma": 30, "rcd_type": "A" } }
+        ]
+      },
+      {
+        "title": "Compliance",
+        "summary": "Fully compliant. No non-compliance flags. One TOOL-CALL-PENDING flag for the electrode resistance calc.",
+        "decisions": []
+      },
+      {
+        "title": "Assumptions",
+        "summary": "Three assumptions captured: soil resistivity (loam typical), engineer-input Ra accepted, and semi-infinite rod formula for array combination.",
+        "decisions": []
+      }
+    ]
+  }
+}
