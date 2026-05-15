@@ -1,0 +1,54 @@
+{
+  "_title": "IEC 61439 — Low-voltage switchgear and controlgear assemblies",
+  "_version": "1.0.0",
+  "_purpose": "Engineering source of truth for low-voltage assemblies (switchboards, MCCs, DBs, busduct, kiosks, application-specific). Carries the standard's tabulated rules, verification requirements, and form separations. Consumed by every DraftsMan electrical skill that produces or validates an assembly schedule, drawing, or BOM.",
+  "standard": {
+    "title": "Low-voltage switchgear and controlgear assemblies",
+    "issuer": "International Electrotechnical Commission",
+    "issuer_short": "IEC",
+    "designation": "IEC 61439",
+    "status": "Active",
+    "database_url": "https://webstore.iec.ch/publication/series/IEC61439",
+    "first_published": 2009,
+    "current_edition": "2nd edition with ongoing part-by-part revisions (e.g. Part 2:2020)",
+    "language_codes": ["en", "fr"],
+    "national_adoptions": [
+      {"code": "BS EN 61439", "country": "United Kingdom", "notes": "Direct adoption of IEC 61439"},
+      {"code": "DIN EN 61439", "country": "Germany", "notes": "Direct adoption with German titles"},
+      {"code": "NF EN 61439", "country": "France", "notes": "Direct adoption"},
+      {"code": "AS/NZS 61439", "country": "Australia / New Zealand", "notes": "Direct adoption"},
+      {"code": "IS/IEC 61439", "country": "India", "notes": "Direct adoption"}
+    ],
+    "supersedes": {
+      "designation": "IEC 60439",
+      "withdrawn": 2014,
+      "note": "IEC 60439 is fully withdrawn. New designs are specified to IEC 61439. Existing assemblies built to IEC 60439 remain governed by the certificate they were issued under; this layer does not cover IEC 60439."
+    }
+  },
+  "parts": [
+    {"part": 1, "title": "General rules",                                                          "covered": true, "symbol_file": "part1-general.json"},
+    {"part": 2, "title": "Power switchgear and controlgear assemblies (PSC-Assemblies)",           "covered": true, "symbol_file": "part2-psc-assemblies.json"},
+    {"part": 3, "title": "Distribution boards intended to be operated by ordinary persons (DBO)",  "covered": true, "symbol_file": "part3-dbo-assemblies.json"},
+    {"part": 4, "title": "Particular requirements for assemblies for construction sites (ACS)",    "covered": true, "symbol_file": "part4-acs-assemblies.json"},
+    {"part": 5, "title": "Assemblies for power distribution in public networks (PENDA)",           "covered": true, "symbol_file": "part5-penda-assemblies.json"},
+    {"part": 6, "title": "Busbar trunking systems (BTS)",                                          "covered": true, "symbol_file": "part6-busbar-trunking.json"},
+    {"part": 7, "title": "Assemblies for specific applications (marinas, EV, safety, PV, transformer)", "covered": true, "symbol_file": "part7-applications.json"}
+  ],
+  "cross_cutting_topics": [
+    {"file": "form-separations.json",            "scope": "Forms 1 to 4b — segregation of busbars, functional units, and outgoing terminals"},
+    {"file": "verification-methods.json",        "scope": "The three permitted verification paths (test / calculation / reference design) with Annex D matrix"},
+    {"file": "ip-ik-ratings.json",               "scope": "IP code (Part 1 Table 7) + IK code (BS EN 50102) + minimum IP by location"},
+    {"file": "temperature-rise.json",            "scope": "Conventional limits (Table 6), Rated Diversity Factor (RDF), Annex E calculation method"},
+    {"file": "short-circuit-withstand.json",     "scope": "Icw / Ipk / Icc, upstream coordination, n-factor, Annex P verification"},
+    {"file": "internal-arc-classification.json", "scope": "IAC criteria A/B/C/D + accessibility types F/L/R + application boundary"},
+    {"file": "busbar-derating.json",             "scope": "Current carrying capacity, adjacency derating, fault force F = K·Ipk²·s/d, neutral/PE sizing"},
+    {"file": "rated-quantities.json",            "scope": "Quick-reference for all rated quantities (Ue, Ui, Uimp, In, Inc, Icw, Ipk, fn, PD)"}
+  ],
+  "cross_references": {
+    "drawn_as_targets":     "shared/standards/electrical/IEC60617/ (symbol IDs)",
+    "installation_rules":   "shared/standards/electrical/IEC60364/",
+    "uk_practice":          "shared/standards/electrical/BS7671/",
+    "iac_test_method":      "IEC TR 61641 — Guide for testing under conditions of arcing due to internal fault",
+    "ik_standard":          "BS EN 50102 — Degrees of protection provided by enclosures for electrical equipment against external mechanical impacts (IK code)"
+  }
+}
