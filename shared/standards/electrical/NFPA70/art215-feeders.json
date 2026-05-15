@@ -1,0 +1,33 @@
+{
+  "_title": "NFPA 70 Article 215 — Feeders",
+  "_version": "1.0.0",
+  "articles": [
+    {
+      "article_id": "ART_215",
+      "nec_ref": "NFPA 70:2023 Article 215",
+      "chapter": 2,
+      "article_number": 215,
+      "article_title": "Feeders",
+      "scope": "Conductors between service equipment and final branch-circuit OCPD. Feeder ampacity, OCPD sizing, ground-fault protection for feeders ≥1000 A (215.10), voltage drop guidance (informational, not enforceable).",
+      "applies_to": ["feeders", "subfeeders", "voltage_drop_informational"],
+      "key_sections": [
+        {"section": "215.2", "title": "Minimum Rating and Size", "summary": "Feeder rated ≥ continuous load × 125% + non-continuous load × 100%; matches branch-circuit sizing rule"},
+        {"section": "215.3", "title": "Overcurrent Protection", "summary": "OCPD rating ≥ minimum required ampacity (215.2)"},
+        {"section": "215.10","title": "Ground-Fault Protection of Equipment (GFP)", "summary": "Required for feeders rated ≥1000 A, more than 150 V to ground, less than 600 V phase-to-phase. Maximum setting 1200 A. Exceptions for continuous industrial process and fire pumps (Art 695)"},
+        {"section": "215.12","title": "Identification for Feeders", "summary": "Where the premises has feeders supplied from more than one nominal voltage system, each ungrounded conductor must be identified by phase or line and system"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {},
+      "common_errors": [
+        "Sizing feeder for non-continuous load only — must include 125% continuous-load multiplier",
+        "Missing GFP at feeders ≥1000 A (215.10) — frequent inspection failure on commercial mains retrofits"
+      ],
+      "drawn_as": ["MCCB_3P"],
+      "related_iec_60364": ["IEC 60364-4-43 (Protection against overcurrent)", "IEC 60364-5-52 (Wiring systems — ampacity)"],
+      "divergence_notes": "NEC 215.2 explicit 125% continuous + 100% non-continuous rule is more prescriptive than IEC — IEC handles via Iz ampacity tables + diversity factors. NEC 215.10 GFP at ≥1000 A has no direct IEC equivalent — IEC requires RCD per IEC 60364-4-41 but trips below GFP set point.",
+      "related_bs_7671": [],
+      "usage_notes": "Voltage-drop guidance in 215.2(A)(1) Informational Note No. 2 (3% feeders, 5% combined) is NOT enforceable — design intent only.",
+      "related_articles": ["ART_220", "ART_230", "ART_240", "ART_250"]
+    }
+  ]
+}
