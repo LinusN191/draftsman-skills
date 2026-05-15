@@ -1,0 +1,47 @@
+# Eval 04 — No fault-level intent + no engineer Ifault — selectivity must defer, not invent
+# Category: missing_input
+
+id: eval-04-missing-fault-current
+category: missing_input
+severity: high
+description: |
+  Engineer has not declared fault currents, fault-level intent is absent.
+  Generator must NOT invent values. Every selectivity_results entry must:
+  (a) Set source = "tool_call_pending", AND
+  (b) Set tool_call_pending = true, AND
+  (c) The top-level flags array must include "TOOL-CALL-PENDING".
+
+inputs:
+  jurisdiction: "EU"
+  board_type: "distribution_board"
+  db_designation: "DB-EU1"
+  location: "EU test installation"
+  fed_from: "MSB-01"
+  supply_voltage_v: "400"
+  phase_arrangement: "TPN"
+  supply_rating_a: 250
+  ways_total: 18
+  form_separation_iec61439: "3a"
+  circuits_declared:
+    - { id: "C01", designation: "Office lighting", ocpd_rating_a: 16, ocpd_curve: "B", ocpd_type: "MCB", phase_csa_mm2: 2.5, length_m: 30, load_kw: 3 }
+    - { id: "C02", designation: "Office receptacles", ocpd_rating_a: 20, ocpd_curve: "C", ocpd_type: "MCB", phase_csa_mm2: 2.5, length_m: 35, load_kw: 4 }
+  # No fault_currents_engineer_declared
+  # No cross_drawing_context.fault-level
+
+assertions:
+  - kind: schema_valid
+    schema: "db-layout-ir.schema.json"
+  - kind: jsonpath_all_equals
+    path: "$.selectivity_results[*].source"
+    expected: "tool_call_pending"
+  - kind: jsonpath_all_equals
+    path: "$.selectivity_results[*].tool_call_pending"
+    expected: true
+  - kind: jsonpath_contains
+    path: "$.flags"
+    must_contain: "TOOL-CALL-PENDING"
+  - kind: invariant_passes
+    invariant: "INV-9"
+    note: "Selectivity result completeness via tool_call_pending"
+
+expected_status: "pass"
