@@ -1,0 +1,54 @@
+# Eval 03 — Generator MUST detect and reject an undersized CPC
+# Category: validation_trap
+
+id: eval-03-cpc-undersized-trap
+category: validation_trap
+severity: critical
+description: |
+  The input feeds a circuit where the engineer has declared a 1.5mm² CPC on a
+  10mm² phase circuit. Per BS 7671 Table 54.7 this is incorrect — for L>16mm² ÷ 2
+  would give 5mm², but for L≤16mm² CPC must equal L. The generator must EITHER
+  (a) emit cpc.csa_mm2 == 10 with method 'bs7671_table_54.7', OR
+  (b) emit cpc.csa_mm2 lower via adiabatic with method 'bs7671_adiabatic_54.1' and an
+      adiabatic-computed value justified by I²t.
+  Emitting 1.5mm² is a critical fail.
+
+inputs:
+  jurisdiction: "GB"
+  earthing_system_declared: "TN-C-S"
+  supply_voltage_v: 230
+  ze_ohm_declared: 0.30
+  water_service_metallic: true
+  gas_service_metallic: true
+  extraneous_parts: []
+  met_location: "service intake"
+  supplementary_bonding_required_locations: []
+  trap_input_circuit:
+    circuit_id: "L1"
+    designation: "cooker circuit"
+    line_csa_mm2: 10
+    declared_cpc_csa_mm2: 1.5
+    ocpd_rating_a: 32
+    ocpd_type: "B"
+    length_m: 18
+  consumed_intents:
+    - { intent_type: "db-layout", intent_version: "1.0.0", produced_by: "electrical/db-layout/v1.0.0", payload_ref: "test-fixtures/db-layout-eval03.json" }
+
+assertions:
+  - kind: schema_valid
+    schema: "earthing-ir.schema.json"
+  - kind: jsonpath_not_equals
+    path: "$.circuits[?(@.circuit_id=='L1')].cpc.csa_mm2"
+    forbidden: 1.5
+    note: "Generator must NOT accept the undersized declared CPC"
+  - kind: jsonpath_in
+    path: "$.circuits[?(@.circuit_id=='L1')].cpc.cpc_sizing_method"
+    allowed: ["bs7671_table_54.7", "bs7671_adiabatic_54.1"]
+  - kind: invariant_passes
+    invariant: "INV-4"
+    note: "CPC sizing method must match jurisdiction"
+  - kind: compliance_flag_emitted
+    flag_code_pattern: "CPC_OVERRIDE_"
+    note: "Generator should emit a compliance flag explaining the CPC was uprated from declared"
+
+expected_status: "pass"
