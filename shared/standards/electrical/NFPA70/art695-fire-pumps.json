@@ -1,0 +1,37 @@
+{
+  "_title": "NFPA 70 Article 695 — Fire Pumps",
+  "_version": "1.0.0",
+  "articles": [
+    {
+      "article_id": "ART_695",
+      "nec_ref": "NFPA 70:2023 Article 695",
+      "chapter": 6,
+      "article_number": 695,
+      "article_title": "Fire Pumps",
+      "scope": "Fire pump installation — power source (695.3), supply continuity, fire pump controller (695.7), conductor sizing (695.6), feeder location (695.6(B)), disconnect prohibition on the supply line (695.4).",
+      "applies_to": ["fire_pumps", "life_safety_pumping", "diesel_pump", "electric_pump"],
+      "key_sections": [
+        {"section": "695.3", "title": "Power Source(s) for Electric Motor-Driven Fire Pumps", "summary": "Power source either: (1) reliable utility service, (2) reliable on-site source (generator), (3) combination. 'Reliable' is the AHJ's call but generally means continuous availability"},
+        {"section": "695.4", "title": "Continuity of Power", "summary": "Fire pump supply conductors shall be direct from the source of power to the fire pump controller (or a tap from the supply to non-fire-pump loads must not be subject to disconnection by any fire-related event)"},
+        {"section": "695.5", "title": "Transformers", "summary": "Where a transformer feeds a fire pump, the transformer is to be sized at 125% of pump motor + 100% of associated equipment"},
+        {"section": "695.6", "title": "Power Wiring", "summary": "Conductor ampacity ≥ 125% of fire pump motor + accessories. Single-conductor wiring methods may be used (not in raceway with non-fire-pump conductors)"},
+        {"section": "695.7", "title": "Voltage Drop", "summary": "Voltage at fire pump controller terminals: shall not drop more than 15% below normal during motor starting; shall not drop more than 5% below 100% of normal during motor running"},
+        {"section": "695.10","title": "Listed Equipment", "summary": "Listed fire pump controller (NFPA 20-listed) and associated equipment"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {},
+      "common_errors": [
+        "Installing a disconnect on the fire pump supply line (other than the listed fire pump controller's disconnect) — prohibited by 695.4(B)(1)",
+        "Routing fire pump supply through normal panelboards or feeders subject to opening on a fire-floor signal — 695.4(B) requires the supply path to remain energised even on fire",
+        "Specifying voltage drop > 15% at motor start or > 5% at run — fire pump may stall or trip",
+        "Using a non-listed (non-NFPA 20) controller — NEC 695.10 requires listed equipment"
+      ],
+      "drawn_as": ["FIRE_PUMP", "FIRE_PUMP_CONTROLLER"],
+      "related_iec_60364": ["IEC 60364-5-56 (Safety services) — life safety power"],
+      "divergence_notes": "Fire pump rules are NFPA-system-specific (NFPA 20 + NEC 695). IEC handles life-safety pumps via 60364-5-56 + national fire codes. NEC voltage-drop limits at fire pump (15% start, 5% run) are explicit; IEC defers to system-design coordination.",
+      "related_bs_7671": [],
+      "usage_notes": "Coordinate with the fire-protection engineer (NFPA 20 lead). Fire pump electrical and mechanical systems are tightly integrated — single-source design responsibility ideal.",
+      "related_articles": ["ART_230", "ART_240", "ART_430", "ART_700"]
+    }
+  ]
+}
