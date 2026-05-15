@@ -1,0 +1,84 @@
+{
+  "_title": "NFPA 70 Article 220 — Branch-Circuit, Feeder, and Service Load Calculations",
+  "_version": "1.0.0",
+  "articles": [
+    {
+      "article_id": "ART_220",
+      "nec_ref": "NFPA 70:2023 Article 220",
+      "chapter": 2,
+      "article_number": 220,
+      "article_title": "Branch-Circuit, Feeder, and Service Load Calculations",
+      "scope": "Load calculation methods — Standard (220.40) and Optional (220.82 dwelling / 220.84 multi-family / 220.86 office / 220.87 existing). Lighting load (220.12), receptacle load (220.14), motor load (220.50), AC load (220.82(C)).",
+      "applies_to": ["load_calculation", "service_sizing", "feeder_sizing", "dwelling", "commercial"],
+      "key_sections": [
+        {"section": "220.12", "title": "Lighting Load for Listed Occupancies", "summary": "VA/ft² by occupancy from Table 220.12 (dwelling 3 VA/ft², office 3.5, school 3, store 3, hospital 2, etc.)"},
+        {"section": "220.14", "title": "Other Loads — All Occupancies", "summary": "Receptacle outlets: each commercial receptacle = 180 VA; dwelling small-appliance 1500 VA per circuit"},
+        {"section": "220.40", "title": "General — Computation of Loads (Standard Method)", "summary": "Sum of all loads applied to feeder; demand factors per Table 220.42 (dwellings), 220.44 (receptacles in non-dwelling), 220.54 (electric dryers), 220.55 (cooking equipment)"},
+        {"section": "220.82", "title": "Dwelling Unit — Optional Calculation", "summary": "Alternative dwelling calc: 100% of first 10 kVA + 40% of remainder for general loads; HVAC at 100% or AC at 100% (whichever is larger)"},
+        {"section": "220.83", "title": "Existing Dwelling Unit", "summary": "Optional calc for adding load to existing service — based on 80% of existing actual demand load"},
+        {"section": "220.84", "title": "Multifamily Dwelling — Optional", "summary": "Demand factor table from 220.84(C) — applies to # units in the multifamily"},
+        {"section": "220.86", "title": "Schools — Optional", "summary": "School-specific demand factors"},
+        {"section": "220.87", "title": "Determining Existing Loads", "summary": "Use of recorded peak demand from utility for existing building"}
+      ],
+      "tabulated_values": {
+        "lighting_load_va_per_ft2_220_12": "see tables_inline",
+        "dwelling_demand_factors_220_42": "see tables_inline",
+        "dryer_demand_220_54": "see tables_inline"
+      },
+      "tables_inline": {
+        "Table_220.12_General_Lighting_Loads_by_Occupancy": {
+          "title": "Unit Loads for General Lighting (VA per ft²)",
+          "rows": [
+            {"occupancy": "Armories, auditoriums",          "va_per_ft2": 1},
+            {"occupancy": "Banks, offices",                  "va_per_ft2": 3.5},
+            {"occupancy": "Barber shops, beauty parlors",    "va_per_ft2": 3},
+            {"occupancy": "Churches",                        "va_per_ft2": 1},
+            {"occupancy": "Clubs",                           "va_per_ft2": 2},
+            {"occupancy": "Court rooms",                     "va_per_ft2": 2},
+            {"occupancy": "Dwelling units (incl. lighting, small-appliance 1500VA × 2 + laundry 1500VA included in 220.42)", "va_per_ft2": 3},
+            {"occupancy": "Garages — commercial (storage)",  "va_per_ft2": 0.5},
+            {"occupancy": "Hospitals",                       "va_per_ft2": 2},
+            {"occupancy": "Hotels, motels (no provisions for cooking)", "va_per_ft2": 2},
+            {"occupancy": "Industrial commercial loft buildings", "va_per_ft2": 2},
+            {"occupancy": "Lodge rooms",                      "va_per_ft2": 1.5},
+            {"occupancy": "Offices",                          "va_per_ft2": 3.5},
+            {"occupancy": "Restaurants",                      "va_per_ft2": 2},
+            {"occupancy": "Schools",                          "va_per_ft2": 3},
+            {"occupancy": "Stores",                           "va_per_ft2": 3},
+            {"occupancy": "Warehouses (storage)",             "va_per_ft2": 0.25}
+          ]
+        },
+        "Table_220.42_Demand_Factors_for_General_Lighting_Dwelling": {
+          "title": "Demand Factor — Dwelling Unit General Lighting",
+          "rows": [
+            {"portion_va": "First 3000 VA", "demand_factor_pct": 100},
+            {"portion_va": "3001-120,000 VA", "demand_factor_pct": 35},
+            {"portion_va": "Remainder (over 120,000)", "demand_factor_pct": 25}
+          ]
+        },
+        "Table_220.54_Demand_Factors_for_Household_Electric_Clothes_Dryers": {
+          "title": "Electric Clothes Dryer Demand (Dwelling)",
+          "rows": [
+            {"number_of_dryers": "1-4", "demand_pct_of_5kva_per_dryer": 100},
+            {"number_of_dryers": "5",   "demand_pct_of_5kva_per_dryer": 85},
+            {"number_of_dryers": "10",  "demand_pct_of_5kva_per_dryer": 50},
+            {"number_of_dryers": "20",  "demand_pct_of_5kva_per_dryer": 35},
+            {"number_of_dryers": "≥30", "demand_pct_of_5kva_per_dryer": 25}
+          ]
+        }
+      },
+      "common_errors": [
+        "Computing dwelling load with 220.40 (Standard) when 220.82 (Optional) gives a smaller, code-compliant answer — choose the lower of the two valid methods",
+        "Forgetting the two small-appliance circuits (1500 VA each) + laundry circuit (1500 VA) when computing dwelling lighting load",
+        "Using 220.82 Optional without including the HVAC 100% (or AC 100%, whichever is larger) per 220.82(C)",
+        "Applying 220.12 lighting density to a kitchen — kitchen lighting comes through the dwelling load (220.42 + small-appliance)"
+      ],
+      "drawn_as": [],
+      "related_iec_60364": ["IEC 60364-1 Annex Z (Method for assessment of maximum demand)"],
+      "divergence_notes": "NEC 220 has TWO permitted load calc methods per project type (Standard 220.40 and Optional 220.82+) — the designer picks the lower; IEC has no parallel structured method, instead relying on diversity factors per circuit type. NEC 220.12 by-occupancy lighting load density (VA/ft²) is unique to NEC; IEC sizes from actual specified lighting + diversity.",
+      "related_bs_7671": [],
+      "usage_notes": "Always compute BOTH the Standard (220.40) and Optional (220.82+) for dwelling projects and use the smaller. Document which method was used in the design narrative.",
+      "related_articles": ["ART_215", "ART_230", "ART_310", "ART_440"]
+    }
+  ]
+}
