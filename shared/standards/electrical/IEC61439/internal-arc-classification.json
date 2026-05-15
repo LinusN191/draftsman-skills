@@ -1,0 +1,75 @@
+{
+  "_title": "IEC 61439 — Internal Arc Classification (IAC)",
+  "_iec_part": "Primary: IEC TR 61641 (IAC test method); applied via IEC 61439-2 Clauses 8.101 and 9.103; cross-referenced from Parts 3 and 5",
+  "_version": "1.0.0",
+  "_note": "IAC classifies an assembly's behaviour during an internal arc fault. Voluntary in many jurisdictions but increasingly mandatory for high-availability and high-arc-flash applications.",
+  "iac_protection_levels": [
+    {
+      "code": "A",
+      "name": "Person protection — restricted access (authorised personnel only)",
+      "scope": "Door closed; arc cannot escape through enclosure openings rated for closed-door operation.",
+      "applies_to": "Plant rooms, restricted-access industrial",
+      "test_criteria": [
+        "No flame or hot gas escape through door/cover",
+        "Indicators (cotton flag) at 100–300 mm from accessible surfaces show no ignition",
+        "Door/cover does not detach",
+        "Earthing path remains continuous"
+      ]
+    },
+    {
+      "code": "B",
+      "name": "Person protection — general access (laypersons)",
+      "scope": "All access conditions including operator working with cover removed (where rated for operation in that state).",
+      "applies_to": "Public-accessible, hospital-corridor LV boards",
+      "test_criteria": [
+        "All Class A criteria, plus:",
+        "Specified accessible surfaces show no ignition with cover removed where applicable"
+      ]
+    },
+    {
+      "code": "C",
+      "name": "Installer protection — during installation/maintenance",
+      "scope": "Protection during connecting and disconnecting of conductors.",
+      "applies_to": "Industrial / commercial installations where electrician works on the assembly while energised",
+      "test_criteria": [
+        "Worker positions assumed during installation are not ignited"
+      ]
+    },
+    {
+      "code": "D",
+      "name": "Live work — arc-rated under direct intervention",
+      "scope": "Highest level — protection during direct live work inside the enclosure.",
+      "applies_to": "Critical national infrastructure, defense, certain process industries",
+      "test_criteria": [
+        "All lower-class criteria plus arc-rated viewports/PPE-compatible interface"
+      ]
+    }
+  ],
+  "accessibility_types": [
+    {"code": "F", "meaning": "Front access — door/cover at the front face"},
+    {"code": "L", "meaning": "Lateral (side) access"},
+    {"code": "R", "meaning": "Rear access"},
+    {"code": "FL", "meaning": "Front + lateral"},
+    {"code": "FLR", "meaning": "All sides — typical free-standing"}
+  ],
+  "test_conditions": {
+    "test_current": "Equal to the assembly's rated Icw",
+    "test_duration_s": [0.1, 0.3, 0.5, 1.0],
+    "atmosphere": "Indoor reference (per IEC TR 61641)",
+    "indicators": "Black cotton flag, white cotton flag, vertical-grid indicators at standardised distances"
+  },
+  "specifying_iac": {
+    "template": "Specify as: IAC <classification> <accessibility> Icw <kA> / <time> s. Example: IAC AB FL 50 kA / 0.5 s.",
+    "designer_responsibility": [
+      "Determine which protection class applies (A for restricted, B for general access, C for installer)",
+      "Determine accessibility — F only is common in floor-standing wall-mounted boards; FLR for centre-of-room free-standing",
+      "Match Icw test current to the assembly's expected fault level",
+      "Specify the test duration aligned to upstream protection clearing time (typically 0.5 s for ACB-protected mains)"
+    ]
+  },
+  "common_design_errors": [
+    "Specifying IAC without accessibility type — the test result is meaningless without it",
+    "Using a single IAC class for a multi-compartment assembly — different compartments may need different classes",
+    "Mismatching IAC test duration with upstream relay setting — if upstream is set to clear in 0.3 s, an IAC at 0.5 s is over-spec but a 0.1 s IAC is under-spec"
+  ]
+}
