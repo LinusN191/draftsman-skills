@@ -1,0 +1,37 @@
+# DB Layout — Busbar loading validation
+version: 1.0.0
+applies_to_drawing_types: ["db_layout_schedule_and_schematic"]
+
+checks:
+  - id: busbar-001-rating-vs-sum
+    name: Busbar rating must accommodate sum of way loads after diversity
+    severity: critical
+    jsonpath: "$.busbar"
+    assert: "rating_a >= (sum_of_circuit_loads_a * diversity_factor)"
+    message: "Busbar undersized: rating {rating_a}A < sum × diversity"
+    standard_ref: "IEC 61439-1 rated current of assembly"
+
+  - id: busbar-002-icw-vs-ipk
+    name: Busbar IcW must withstand peak fault current
+    severity: critical
+    jsonpath: "$.busbar"
+    assert: "icw_ka_1s >= ipk_ka"
+    message: "Busbar IcW ({icw_ka_1s} kA·1s) does not withstand peak fault ({ipk_ka} kA)"
+    standard_ref: "IEC 61439-1 short-circuit withstand"
+
+  - id: busbar-003-ways-accounting
+    name: Ways used + spare must equal total
+    severity: high
+    jsonpath: "$.board"
+    assert: "ways_used + ways_spare == ways_total"
+    message: "Ways accounting wrong: used + spare != total"
+    standard_ref: "design integrity check"
+
+  - id: busbar-004-spare-ways-minimum
+    name: Spare ways meet engineer-specified minimum
+    severity: warning
+    jsonpath: "$.board"
+    when: "inputs.ways_spare_minimum is not null"
+    assert: "ways_spare >= inputs.ways_spare_minimum"
+    message: "Spare ways {ways_spare} below specified minimum {inputs.ways_spare_minimum}"
+    standard_ref: "design requirement"

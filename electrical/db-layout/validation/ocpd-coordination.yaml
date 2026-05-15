@@ -1,0 +1,38 @@
+# DB Layout — OCPD coordination validation
+version: 1.0.0
+applies_to_drawing_types: ["db_layout_schedule_and_schematic"]
+
+checks:
+  - id: ocpd-001-in-le-iz
+    name: OCPD nominal current must not exceed cable corrected ampacity
+    severity: critical
+    jsonpath: "$.circuits[*]"
+    assert: "ocpd.rating_a <= cable.iz_corrected_a"
+    message: "Circuit {circuit_id}: ocpd.rating_a ({ocpd.rating_a}A) exceeds cable.iz_corrected_a ({cable.iz_corrected_a}A)"
+    standard_ref: "BS 7671:2018+A3 Reg 433.1.1 / IEC 60364-4-43 clause 433.1"
+
+  - id: ocpd-002-ib-le-in
+    name: Design current must not exceed OCPD nominal rating
+    severity: critical
+    jsonpath: "$.circuits[*]"
+    assert: "design_current_a <= ocpd.rating_a"
+    message: "Circuit {circuit_id}: Ib > In"
+    standard_ref: "BS 7671:2018+A3 Reg 433.1.1"
+
+  - id: ocpd-003-icn-ge-ifault
+    name: OCPD breaking capacity must exceed prospective fault current
+    severity: critical
+    jsonpath: "$.circuits[*]"
+    assert: "ocpd.breaking_capacity_ka >= ifault_at_this_point_ka OR selectivity_results[?(@.downstream_id == circuit_id)].tool_call_pending == true"
+    message: "Circuit {circuit_id}: breaker Icn ({ocpd.breaking_capacity_ka} kA) < Ifault — device cannot safely break fault"
+    standard_ref: "BS 7671:2018+A3 Reg 434.5.1 / NEC 110.9"
+
+  - id: ocpd-004-curve-jurisdiction
+    name: OCPD curve type appropriate for jurisdiction
+    severity: high
+    jsonpath: "$.circuits[*]"
+    assert: |
+      (jurisdiction in ['GB', 'EU', 'INT'] and ocpd.curve in ['B', 'C', 'D'])
+      or (jurisdiction == 'US' and ocpd.type in ['thermal_magnetic', 'MCB', 'MCCB', 'fuse'])
+    message: "Circuit {circuit_id}: OCPD curve {ocpd.curve} / type {ocpd.type} not appropriate for jurisdiction {jurisdiction}"
+    standard_ref: "BS 7671:2018+A3 Reg 433 / NEC 240"

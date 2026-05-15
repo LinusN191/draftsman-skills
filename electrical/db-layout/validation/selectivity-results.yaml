@@ -1,0 +1,29 @@
+# DB Layout — Selectivity results validation
+version: 1.0.0
+applies_to_drawing_types: ["db_layout_schedule_and_schematic"]
+
+checks:
+  - id: select-001-every-circuit-has-cascade
+    name: Every circuit must have a corresponding upstream-downstream selectivity entry
+    severity: critical
+    jsonpath: "$.circuits[*]"
+    assert: "any(s.downstream_id == circuit_id for s in selectivity_results)"
+    message: "Circuit {circuit_id} has no selectivity_results entry"
+    standard_ref: "design completeness"
+
+  - id: select-002-source-or-pending
+    name: Every selectivity result must have a source OR be tool_call_pending
+    severity: critical
+    jsonpath: "$.selectivity_results[*]"
+    assert: "source in ['manufacturer_table', 'iec_60909_calc', 'engineer_declared'] OR tool_call_pending == true"
+    message: "Cascade pair {upstream_id}→{downstream_id}: no source declared and not marked tool_call_pending"
+    standard_ref: "BS 7671:2018+A3 Reg 536 / IEC 60364-5-53"
+
+  - id: select-003-pending-flag-emitted
+    name: If any selectivity result is tool_call_pending, top-level flags must include TOOL-CALL-PENDING
+    severity: high
+    jsonpath: "$"
+    when: "any(s.tool_call_pending == true for s in selectivity_results)"
+    assert: "'TOOL-CALL-PENDING' in flags"
+    message: "tool_call_pending selectivity result exists but TOOL-CALL-PENDING flag not emitted"
+    standard_ref: "WI3 tool-call deferral convention"

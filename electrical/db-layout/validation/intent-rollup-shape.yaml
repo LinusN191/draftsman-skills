@@ -1,0 +1,32 @@
+# DB Layout — Rollup intent shape validation (matches earthing's expected consumption)
+version: 1.0.0
+applies_to_drawing_types: ["db_layout_schedule_and_schematic"]
+
+# This validator is special: it asserts that the project-rollup intent payload (emitted alongside
+# the per-board IR) matches the shape earthing/examples/*/input.json declares for its
+# db-layout consumed_intent. Drift here breaks the cross-skill contract.
+
+checks:
+  - id: rollup-001-required-keys
+    name: Rollup intent must have project_id + boards + outgoing_circuits
+    severity: critical
+    target: "project_rollup_intent_payload"
+    assert: "'project_id' in payload AND 'boards' in payload AND 'outgoing_circuits' in payload"
+    message: "Rollup intent missing required top-level keys"
+    standard_ref: "db-layout-rollup-intent.schema.json"
+
+  - id: rollup-002-board-fields-match-earthing-expect
+    name: Each board entry must have the fields earthing expects
+    severity: critical
+    target: "project_rollup_intent_payload.boards[*]"
+    assert: "'id' in board AND 'designation' in board AND 'phases' in board AND 'ways' in board AND 'main_switch_rating_a' in board"
+    message: "Board entry missing field earthing/examples expects (id, designation, phases, ways, main_switch_rating_a)"
+    standard_ref: "verified against electrical/earthing/examples/uk-dwelling-tn-cs/input.json"
+
+  - id: rollup-003-outgoing-fields-match-earthing-expect
+    name: Each outgoing circuit must have the fields earthing expects
+    severity: critical
+    target: "project_rollup_intent_payload.outgoing_circuits[*]"
+    assert: "'id' in circuit AND 'designation' in circuit AND 'ocpd_rating_a' in circuit AND 'ocpd_type' in circuit"
+    message: "Outgoing circuit entry missing field earthing expects (id, designation, ocpd_rating_a, ocpd_type)"
+    standard_ref: "verified against electrical/earthing/examples/uk-dwelling-tn-cs/input.json"
