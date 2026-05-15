@@ -1,0 +1,66 @@
+# Eval 02 — 400V TPN commercial MSB feeding 4 sub-DBs
+# Category: edge_case
+
+id: eval-02-tpn-commercial-msb
+category: edge_case
+severity: critical
+description: |
+  Small commercial building: 400V TPN MSB at 800A main, feeding 4 sub-DBs:
+  - Lighting DB (250A, 24 ways)
+  - Small-power DB (400A, 36 ways)
+  - Mechanical DB (250A, 24 ways)
+  - Fire alarm DB (essential supply, 63A, 8 ways)
+  Form 4b enclosure, IcW 36 kA. Generator must verify cascade selectivity
+  between 800A ACB main and each sub-DB feeder.
+
+inputs:
+  jurisdiction: "GB"
+  board_type: "main_switchboard"
+  db_designation: "MSB-01"
+  location: "ground floor electrical room"
+  fed_from: "MAIN"
+  supply_voltage_v: "400"
+  phase_arrangement: "TPN"
+  supply_rating_a: 800
+  ze_ohm_at_origin: 0.05
+  ways_total: 20
+  ways_spare_minimum: 4
+  form_separation_iec61439: "4b"
+  ip_rating: "IP30"
+  circuits_declared:
+    - { id: "F01", designation: "Feeder to Lighting DB-L1", ocpd_rating_a: 250, ocpd_curve: "D", ocpd_type: "MCCB", phase_csa_mm2: 150, length_m: 35, load_kw: 80 }
+    - { id: "F02", designation: "Feeder to Small-Power DB-P1", ocpd_rating_a: 400, ocpd_curve: "D", ocpd_type: "MCCB", phase_csa_mm2: 240, length_m: 40, load_kw: 150 }
+    - { id: "F03", designation: "Feeder to Mechanical DB-M1", ocpd_rating_a: 250, ocpd_curve: "D", ocpd_type: "MCCB", phase_csa_mm2: 150, length_m: 45, load_kw: 100 }
+    - { id: "F04", designation: "Feeder to Fire Alarm DB-FA1", ocpd_rating_a: 63, ocpd_curve: "C", ocpd_type: "MCCB", phase_csa_mm2: 16, length_m: 60, load_kw: 12, voltage_class: "fire_alarm" }
+  fault_currents_engineer_declared:
+    - { circuit_id: "F01", ifault_ka: 25 }
+    - { circuit_id: "F02", ifault_ka: 25 }
+    - { circuit_id: "F03", ifault_ka: 25 }
+    - { circuit_id: "F04", ifault_ka: 22 }
+  diversity_factor_main: 0.8
+
+assertions:
+  - kind: schema_valid
+    schema: "db-layout-ir.schema.json"
+  - kind: jsonpath_equals
+    path: "$.incoming.phase_arrangement"
+    expected: "TPN"
+  - kind: jsonpath_equals
+    path: "$.board.enclosure_form_iec61439"
+    expected: "4b"
+  - kind: jsonpath_gte
+    path: "$.busbar.icw_ka_1s"
+    minimum: 25
+    note: "IcW must withstand declared 25 kA fault"
+  - kind: jsonpath_count_equals
+    path: "$.selectivity_results[*]"
+    expected: 4
+    note: "One selectivity_results entry per feeder cascade pair"
+  - kind: invariant_passes
+    invariant: "INV-6"
+    note: "Busbar IcW vs Ipk"
+  - kind: clause_cited
+    clause_pattern: "^IEC 61439"
+    minimum_count: 1
+
+expected_status: "pass"
