@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "ontology_type": "earthing_system_types",
+  "version": "1.0.0",
+  "source": "IEC 60364-1 clause 312.2, BS 7671:2018+A3 Part 2",
+  "systems": [
+    {
+      "id": "TN-S",
+      "name": "TN-S",
+      "description": "Separate Neutral and Protective Earth conductors throughout the supply",
+      "earth_source": "DNO transformer star point via separate PE conductor",
+      "common_in": ["GB pre-1970 installations", "US (NEC default)"],
+      "electrode_required_at_consumer": false,
+      "typical_ze_ohm_range": [0.05, 0.5],
+      "typical_use_case": "Older UK installations, all US installations",
+      "rcd_blanket_requirement": false,
+      "notes": "In NEC terms this is the standard grounded-system arrangement: neutral grounded at service, EGC bonded to grounded conductor only at service equipment."
+    },
+    {
+      "id": "TN-C-S",
+      "name": "TN-C-S (PME)",
+      "description": "Combined Neutral and Earth (PEN) from transformer to service head, then separate within installation",
+      "earth_source": "DNO PEN conductor — Protective Multiple Earthing",
+      "common_in": ["GB post-1970 installations (~95%)", "Most of EU"],
+      "electrode_required_at_consumer": false,
+      "electrode_optional_at_consumer": true,
+      "typical_ze_ohm_range": [0.10, 0.35],
+      "typical_use_case": "Default for UK domestic and commercial; PME earth provided by DNO",
+      "rcd_blanket_requirement": false,
+      "rcd_required_for": ["sockets ≤32A in domestic per BS 7671 411.3.3", "outdoor circuits", "bathroom circuits", "EV chargepoints (open-PEN risk)"],
+      "notes": "PME has open-PEN risk; EV chargers, marinas, agricultural require special measures (BS 7671 Section 722, 709, 705)."
+    },
+    {
+      "id": "TT",
+      "name": "TT",
+      "description": "No DNO earth — installation provides its own earth electrode",
+      "earth_source": "Local earth electrode (rod, plate, mat) at the installation",
+      "common_in": ["Rural UK (where DNO declines PME)", "Rural EU", "Caravan sites"],
+      "electrode_required_at_consumer": true,
+      "typical_ra_ohm_target_max": 200,
+      "typical_ra_ohm_target_preferred": 100,
+      "rcd_blanket_requirement": true,
+      "rcd_blanket_requirement_reason": "Disconnection time cannot be met by overcurrent alone — Ra is too high. RCD enforces 30/100/300mA fault disconnection per BS 7671 411.5.3",
+      "notes": "TT requires an RCD on every final circuit (or upstream covering all circuits). Ra target ≤200Ω is the disconnection floor; ≤100Ω is the design target for headroom."
+    },
+    {
+      "id": "IT",
+      "name": "IT",
+      "description": "Source is either isolated from earth or earthed through high impedance; exposed-conductive-parts earthed locally",
+      "earth_source": "Local earth electrode; source impedance to earth limits first-fault current",
+      "common_in": ["Hospitals — Group 2 medical locations", "Industrial processes that must not trip on first fault"],
+      "electrode_required_at_consumer": true,
+      "rcd_blanket_requirement": false,
+      "first_fault_behaviour": "no_disconnection_required",
+      "second_fault_behaviour": "disconnection_required",
+      "notes": "Out of scope for stage 1 of this skill. Requires Insulation Monitoring Device (IMD)."
+    },
+    {
+      "id": "TN-C",
+      "name": "TN-C",
+      "description": "Combined Neutral+Earth conductor throughout — NO separation within the installation",
+      "earth_source": "DNO PEN, not split inside installation",
+      "common_in": [],
+      "electrode_required_at_consumer": false,
+      "rcd_blanket_requirement": false,
+      "permitted": false,
+      "permitted_reason": "Prohibited in installations covered by BS 7671 and most current EU/IEC codes — RCDs cannot function correctly on a TN-C system",
+      "notes": "Listed for completeness only. Never specify in a new design."
+    }
+  ],
+  "jurisdiction_defaults": {
+    "GB": {
+      "default_system": "TN-C-S",
+      "rural_fallback": "TT",
+      "permitted_systems": ["TN-S", "TN-C-S", "TT"]
+    },
+    "EU": {
+      "default_system": "TN-C-S",
+      "rural_fallback": "TT",
+      "permitted_systems": ["TN-S", "TN-C-S", "TT", "IT"]
+    },
+    "INT": {
+      "default_system": "TN-C-S",
+      "rural_fallback": "TT",
+      "permitted_systems": ["TN-S", "TN-C-S", "TT", "IT"]
+    },
+    "US": {
+      "default_system": "TN-S",
+      "rural_fallback": "TN-S",
+      "permitted_systems": ["TN-S"],
+      "notes": "NEC uses different terminology — 'grounded system' ≈ TN-S. NEC 250 requires supplemental grounding electrodes regardless."
+    }
+  }
+}
