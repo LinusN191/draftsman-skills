@@ -1,0 +1,177 @@
+{
+  "$schema": "../../shared/schemas/core/inputs.schema.json",
+  "skill": "db-layout",
+  "version": "1.0.0",
+  "items": [
+    {
+      "id": "jurisdiction",
+      "label": "Project jurisdiction",
+      "hint": "GB=BS 7671; EU/INT=IEC 60364 + IEC 61439; US=NFPA 70.",
+      "answer_type": "enum",
+      "options": ["GB", "EU", "INT", "US"],
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "board_type",
+      "label": "Board type",
+      "hint": "Consumer unit (domestic UK), distribution board (IEC), MSB (main switchboard), panelboard (NEMA), MCC, motor DB.",
+      "answer_type": "enum",
+      "options": ["consumer_unit", "distribution_board", "main_switchboard", "panelboard_nema", "motor_control_center", "motor_db"],
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "db_designation",
+      "label": "Board designation",
+      "hint": "Stable id (e.g. 'DB-L1', 'MSB-01', 'CU-G').",
+      "answer_type": "text",
+      "required": true,
+      "validator": "non_empty_text",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "location",
+      "label": "Board location",
+      "hint": "Room / area description (e.g. 'hallway cupboard', 'electrical riser').",
+      "answer_type": "text",
+      "required": true,
+      "validator": "non_empty_text",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "fed_from",
+      "label": "Fed from",
+      "hint": "Upstream board id or 'MAIN' for service entrance.",
+      "answer_type": "text",
+      "required": true,
+      "default": "MAIN",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "supply_voltage_v",
+      "label": "Supply voltage (V)",
+      "answer_type": "enum",
+      "options": ["120", "208", "230", "240", "400", "415", "480"],
+      "required": true,
+      "default": "230",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "phase_arrangement",
+      "label": "Phase arrangement",
+      "answer_type": "enum",
+      "options": ["single_phase", "single_phase_split", "TPN", "TPN_plus_E"],
+      "required": true,
+      "default": "single_phase",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "supply_rating_a",
+      "label": "Main switch / incoming rating (A)",
+      "answer_type": "int",
+      "required": true,
+      "validator": "positive_int",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "ze_ohm_at_origin",
+      "label": "Ze at supply origin (Ω)",
+      "hint": "From DNO/POCO declaration. Used by selectivity check + downstream earthing skill.",
+      "answer_type": "float",
+      "required": false,
+      "validator": "ze_ohm_range",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "ways_total",
+      "label": "Total ways (modules) on the board",
+      "answer_type": "int",
+      "required": true,
+      "validator": "positive_int"
+    },
+    {
+      "id": "ways_spare_minimum",
+      "label": "Minimum spare ways to retain",
+      "answer_type": "int",
+      "required": false,
+      "default": 2,
+      "validator": "positive_int"
+    },
+    {
+      "id": "form_separation_iec61439",
+      "label": "IEC 61439 form separation",
+      "hint": "Applies to IEC jurisdictions (EU/INT/GB MSB). Not applicable to NEMA panelboards.",
+      "answer_type": "enum",
+      "options": ["1", "2a", "2b", "3a", "3b", "4a", "4b"],
+      "required": false,
+      "depends_on": ["jurisdiction"]
+    },
+    {
+      "id": "ip_rating",
+      "label": "Required IP rating",
+      "hint": "Indoor=IP2X, outdoor=IP55+, washdown=IP65+.",
+      "answer_type": "text",
+      "required": false,
+      "default": "IP2X"
+    },
+    {
+      "id": "circuits_declared",
+      "label": "Outgoing circuit list",
+      "hint": "List each circuit with designation, OCPD rating, OCPD curve, cable CSA, length, load. If consumed via cross_drawing_context, this can be empty.",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "required": ["id", "designation"],
+        "properties": {
+          "id":                 { "type": "string" },
+          "designation":        { "type": "string" },
+          "ocpd_rating_a":      { "type": "integer" },
+          "ocpd_curve":         { "enum": ["B", "C", "D"] },
+          "ocpd_type":          { "enum": ["MCB", "MCCB", "ACB", "fuse", "RCBO"] },
+          "rcd_protected":      { "type": "boolean" },
+          "rcd_sensitivity_ma": { "type": "integer", "enum": [10, 30, 100, 300, 500] },
+          "phase_csa_mm2":      { "type": "number" },
+          "phase_csa_awg":      { "type": "string" },
+          "length_m":           { "type": "number" },
+          "load_kw":            { "type": "number" },
+          "voltage_class":      { "enum": ["LV_power", "ELV_control", "comms_data", "fire_alarm", "emergency_lighting"] }
+        }
+      }
+    },
+    {
+      "id": "fault_currents_engineer_declared",
+      "label": "Engineer-declared fault currents (kA)",
+      "hint": "Map of circuit_id → Ifault_kA. Used as selectivity input until fault-level skill is wired. Optional.",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "required": ["circuit_id", "ifault_ka"],
+        "properties": {
+          "circuit_id": { "type": "string" },
+          "ifault_ka":  { "type": "number", "minimum": 0 }
+        }
+      }
+    },
+    {
+      "id": "diversity_factor_main",
+      "label": "Diversity factor applied to main rating",
+      "hint": "Per BS 7671 Appendix 1 / IEC 60364 / NEC 220.61. Domestic ~0.4; commercial 0.6-0.8.",
+      "answer_type": "float",
+      "required": false,
+      "default": 0.7,
+      "validator": "positive_float",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "rcd_type_default",
+      "label": "Default RCD type for circuits requiring earth-leakage protection",
+      "answer_type": "enum",
+      "options": ["AC", "A", "F", "B"],
+      "default": "A",
+      "required": false
+    }
+  ]
+}
