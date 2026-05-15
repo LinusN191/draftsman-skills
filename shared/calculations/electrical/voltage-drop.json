@@ -1,0 +1,32 @@
+{
+  "$schema": "../../schemas/core/calculation.schema.json",
+  "id": "bs7671-voltage-drop",
+  "name": "BS 7671 Appendix 4 — Voltage Drop",
+  "executor": "tool",
+  "tool_name": "calc.voltage_drop",
+  "formula_reference": "BS 7671:2018+A3 Appendix 4, Tables 4Ab–4F; Appendix 12; IEC 60364-5-52 Annex G",
+  "implementation_note": "Voltage drop = mV/A/m × design_current × length / 1000. The mV/A/m value depends on conductor size, insulation, installation method, and circuit type — requires a table lookup against Appendix 4 Tables 4D1A–4F. Loaded circuits also need power-factor and temperature corrections per Appendix 4 §6. Inline LLM math reliably picks the wrong column (PVC vs XLPE, ref method, single-phase vs 3-phase) on 15–20% of representative cases. Must be tool-executed.",
+  "inputs": [
+    {"id": "csa_mm2",            "unit": "mm²",          "type": "float", "description": "Phase conductor csa"},
+    {"id": "conductor_material", "type": "enum", "values": ["copper", "aluminium"]},
+    {"id": "insulation",         "type": "enum", "values": ["pvc_70", "xlpe_90", "epr_90", "thermosetting_90"]},
+    {"id": "installation_method","type": "enum", "values": ["A1", "A2", "B1", "B2", "C", "D1", "D2", "E", "F"], "description": "Reference method from BS 7671 Table 4A"},
+    {"id": "circuit_type",       "type": "enum", "values": ["single_phase", "three_phase"]},
+    {"id": "length_m",           "unit": "m",            "type": "float", "description": "One-way circuit length"},
+    {"id": "design_current_a",   "unit": "A",            "type": "float", "description": "Ib — design current of the circuit"},
+    {"id": "power_factor",       "unit": "dimensionless","type": "float", "default": 1.0,  "description": "Load PF for correction (1.0 for resistive, ~0.85 typical for motors)"},
+    {"id": "ambient_c",          "unit": "°C",           "type": "float", "default": 30,    "description": "Ambient temperature for temperature correction"},
+    {"id": "max_drop_pct",       "unit": "%",            "type": "float", "default": 3.0,  "description": "Compliance target: 3% for lighting, 5% for power, 6% for motor starting"}
+  ],
+  "output": {
+    "vd_mv_per_a_per_m":  {"unit": "mV/A/m",      "description": "Tabulated value from Appendix 4 (uncorrected)"},
+    "vd_volts":           {"unit": "V",           "description": "Computed voltage drop in volts"},
+    "vd_percent":         {"unit": "%",           "description": "Voltage drop as % of nominal voltage"},
+    "compliant":          {"unit": "boolean",     "description": "true if vd_percent ≤ max_drop_pct"},
+    "table_reference":    {"unit": "string",      "description": "Which Appendix 4 table row was used"}
+  },
+  "runtime_contract": {
+    "request":  "{ tool_name: 'calc.voltage_drop', inputs: <inputs above> }",
+    "response": "{ ok: true, result: { vd_mv_per_a_per_m, vd_volts, vd_percent, compliant, table_reference }, error?: string }"
+  }
+}

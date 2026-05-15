@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "shared/schemas/core/calculation.schema.json",
+  "title": "Calculation contract",
+  "description": "Metaschema for shared/calculations/<discipline>/<calc>.json files. Each calculation declares an `executor` — `inline` (LLM applies the formula directly, safe for closed-form arithmetic) or `tool` (the runtime invokes a named Python tool because LLM math diverges from validated code, e.g. iteration, table lookups, cross-validation).",
+  "type": "object",
+  "required": ["id", "name", "executor", "inputs", "output", "formula_reference"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "kebab-case identifier; stable contract surface"
+    },
+    "name": { "type": "string" },
+    "executor": {
+      "enum": ["inline", "tool"],
+      "description": "inline = LLM applies formula; tool = runtime calls a registered Python tool"
+    },
+    "tool_name": {
+      "type": "string",
+      "pattern": "^calc\\.[a-z][a-z0-9_]*$",
+      "description": "Required when executor=tool. Must appear in shared/calculations/REQUIRED_TOOLS.json. Namespace prefix `calc.` is reserved for tool calls."
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id":          { "type": "string" },
+          "type":        { "enum": ["int", "float", "boolean", "text", "enum"] },
+          "unit":        { "type": "string" },
+          "description": { "type": "string" },
+          "values":      { "type": "array" },
+          "default":     {}
+        }
+      }
+    },
+    "output": {
+      "description": "Output schema — either a single named result or an object of named results"
+    },
+    "formula": {
+      "type": "string",
+      "description": "Required when executor=inline. Plain-text formula the LLM applies."
+    },
+    "formula_reference": {
+      "type": "string",
+      "description": "Standard citation (e.g. 'BS 7430:2011 §§ 9.5–9.7', 'CIBSE SLL Code for Lighting 2012')"
+    },
+    "implementation_note": {
+      "type": "string",
+      "description": "Why this executor mode was chosen. For tool-executor: explain WHY LLM math is risky (iteration, table lookup, cross-validation, etc.)."
+    },
+    "runtime_contract": {
+      "type": "object",
+      "description": "Required when executor=tool. Names the request/response shape the runtime expects.",
+      "properties": {
+        "request":  { "type": "string" },
+        "response": { "type": "string" }
+      }
+    },
+    "sub_calculations": {
+      "type": "object",
+      "description": "Optional. For composite calcs (e.g. lumen method) that bundle multiple closed-form steps. Each sub-calc may carry its own formula. The top-level `formula` is the headline output formula."
+    }
+  },
+  "allOf": [
+    {
+      "if":   { "properties": { "executor": { "const": "tool" } } },
+      "then": { "required": ["tool_name", "runtime_contract", "implementation_note"] }
+    },
+    {
+      "if":   { "properties": { "executor": { "const": "inline" } } },
+      "then": { "required": ["formula"] }
+    }
+  ],
+  "$executor_decision_checklist": {
+    "_note": "Quick checklist for picking executor when authoring a new calc. Mark as `tool` if ANY of the following is true; otherwise mark as `inline`.",
+    "rules": [
+      "Calc involves iteration to convergence (e.g. electrode-array parallel resistance)",
+      "Calc requires a lookup against a standards table (e.g. cable rating tables, Zs max tables)",
+      "Calc has been measured to diverge >5% from a validated Python reference on representative inputs",
+      "Calc requires cross-validation across multiple outputs (e.g. cable size, voltage drop, fault level coordinated together)",
+      "Calc's output drives a safety boundary where precision below ±1% matters (e.g. CPC adiabatic check)"
+    ]
+  }
+}

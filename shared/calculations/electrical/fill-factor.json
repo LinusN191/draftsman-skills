@@ -1,0 +1,27 @@
+{
+  "$schema": "../../schemas/core/calculation.schema.json",
+  "id": "cable-containment-fill-factor",
+  "name": "Cable Containment Fill Factor",
+  "executor": "tool",
+  "tool_name": "calc.containment_fill",
+  "formula_reference": "BS EN 50085 (trunking); BS EN 50086 (conduit); CIBSE/BS 7671 Appendix C tables; manufacturer datasheets for tray/basket/ladder",
+  "implementation_note": "Computes containment fill from cable count × cable outer-diameter / containment area or volume. Requires lookup of standard cable outer diameters (varies by csa, core count, insulation, and armouring) from BS 6004 / BS 5467 / BS 6724 / cable manufacturer data, plus the containment's internal cross-section. Maximum fill is rule-based by containment family (typically 35–45% for tray/basket, 40% for trunking, 45% for conduit). Inline LLM math reliably mis-reads cable outer diameters and applies the wrong containment-family rule on ~20% of representative cases. Must be tool-executed.",
+  "inputs": [
+    {"id": "containment_family", "type": "enum", "values": ["cable_tray", "cable_basket", "cable_ladder", "cable_trunking", "conduit"]},
+    {"id": "containment_size_mm","unit": "mm","type": "int","description": "Major nominal size: tray/basket/ladder width; trunking width × depth; conduit diameter"},
+    {"id": "containment_size_2_mm","unit": "mm","type": "int","description": "Secondary nominal size (e.g. trunking depth); 0 if not applicable"},
+    {"id": "cables",             "type": "text", "description": "Array of cables: [{count, csa_mm2, cores, insulation, armoured, outer_dia_mm?}]. Tool resolves outer_dia from standards tables if not provided."},
+    {"id": "design_safety_factor","unit": "dimensionless", "type": "float", "default": 1.0, "description": "Multiplier on the standard max-fill to enforce design margin (e.g. 0.9 to give 10% headroom)"}
+  ],
+  "output": {
+    "current_fill_percent":   {"unit": "%",          "description": "Sum of cable cross-sections (or volumes for conduit) divided by containment cross-section"},
+    "max_fill_percent":       {"unit": "%",          "description": "Standards limit applied (45% basket/tray, 40% trunking, 45% conduit)"},
+    "compliant":              {"unit": "boolean",    "description": "true if current_fill_percent ≤ max_fill_percent × design_safety_factor"},
+    "headroom_percent":       {"unit": "%",          "description": "max_fill − current_fill (negative if over-filled)"},
+    "cables_unresolved":      {"unit": "string[]",   "description": "Any cable spec missing outer_dia that the tool could not resolve from standards"}
+  },
+  "runtime_contract": {
+    "request":  "{ tool_name: 'calc.containment_fill', inputs: <inputs above> }",
+    "response": "{ ok: true, result: { current_fill_percent, max_fill_percent, compliant, headroom_percent, cables_unresolved }, error?: string }"
+  }
+}

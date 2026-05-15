@@ -1,8 +1,30 @@
 {
+  "$schema": "../../schemas/core/calculation.schema.json",
+  "id": "lumen-method",
+  "name": "Lumen Method (CIBSE SLL)",
+  "executor": "inline",
+  "formula": "N = ceil( (Em × A) / (Φ × UF × MF) )",
+  "formula_reference": "CIBSE SLL Code for Lighting 2012",
+  "implementation_note": "Closed-form arithmetic; safe for inline LLM execution. The lumen method bundles four closed-form sub-calculations (room index, fixture count, achieved illuminance, spacing). All round-UP discipline must be respected on N — never round down.",
+  "inputs": [
+    {"id": "Em",    "unit": "lux", "type": "float",   "description": "Target maintained illuminance"},
+    {"id": "L",     "unit": "m",   "type": "float",   "description": "Room length"},
+    {"id": "W",     "unit": "m",   "type": "float",   "description": "Room width"},
+    {"id": "Hm",    "unit": "m",   "type": "float",   "description": "Effective mounting height (ceiling minus working plane)"},
+    {"id": "lumens","unit": "lm",  "type": "int",     "description": "Design lumens per luminaire (after LLMF if input was initial)"},
+    {"id": "UF",    "unit": "dimensionless", "type": "float", "description": "Utilisation factor from photometric data or standard table"},
+    {"id": "MF",    "unit": "dimensionless", "type": "float", "description": "Maintenance factor = LLMF × LSF × LMF × RSMF"}
+  ],
+  "output": {
+    "luminaire_count":  {"unit": "count", "description": "Number of luminaires required (ceiling-rounded)"},
+    "room_index":       {"unit": "dimensionless", "description": "Computed room index"},
+    "achieved_lux":     {"unit": "lux", "description": "Computed achieved maintained illuminance"}
+  },
   "_title": "Lumen Method — Interior Lighting Design",
   "_reference": "CIBSE SLL Code for Lighting 2012",
-  "_version": "1.0.0",
-  "room_index": {
+  "_version": "1.1.0",
+  "sub_calculations": {
+    "room_index": {
     "formula": "RI = (L × W) / (Hm × (L + W))",
     "rounding": "Round to nearest 0.25. Cap at 5.0 for table lookup.",
     "variables": {
@@ -49,5 +71,6 @@
     "rule": "If lumen_type = 'initial' and L80 rated life stated, apply LLMF = 0.80",
     "formula": "design_lumens = initial_lumens × LLMF",
     "flag_required": "[ASSUMPTION: Initial lumens converted to design lumens using LLMF = {LLMF}. Design lumens = {design_lumens} lm.]"
+  }
   }
 }

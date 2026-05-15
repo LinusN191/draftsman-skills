@@ -1,0 +1,42 @@
+{
+  "_title": "DraftsMan Runtime — Required Tools Registry",
+  "_version": "1.0.0",
+  "_purpose": "Single source of truth for tool names declared by tool-executor calculations. Every calculation file with `executor: \"tool\"` must reference a tool listed here. The DraftsMan runtime implements one Python function per tool entry and exposes them via Anthropic tool-use. Tool names follow `calc.<snake_case>` namespace.",
+  "_namespace_rule": "Names must match regex ^calc\\.[a-z][a-z0-9_]*$. Any new tool requires a PR to BOTH the calculation file AND this registry; the runtime CI refuses to load a calc whose tool_name is not registered here.",
+  "tools": [
+    {
+      "tool_name": "calc.electrode_resistance",
+      "registered_for": "shared/calculations/electrical/electrode-resistance.json",
+      "spec_summary": "BS 7430:2011 earth electrode resistance — rod / plate / mat / foundation. Iterative parallel-array convergence.",
+      "owner": "draftsman-runtime",
+      "since_version": "1.0.0"
+    },
+    {
+      "tool_name": "calc.cpc_adiabatic",
+      "registered_for": "shared/calculations/electrical/cpc-adiabatic.json",
+      "spec_summary": "BS 7671 adiabatic equation S = sqrt(I²t)/k. Reads Table 54.7 k-factors and the protective device's I²t let-through.",
+      "owner": "draftsman-runtime",
+      "since_version": "1.0.0"
+    },
+    {
+      "tool_name": "calc.voltage_drop",
+      "registered_for": "shared/calculations/electrical/voltage-drop.json",
+      "spec_summary": "BS 7671 Appendix 4 mV/A/m table lookup with installation-method + temperature + PF correction.",
+      "owner": "draftsman-runtime",
+      "since_version": "1.0.0"
+    },
+    {
+      "tool_name": "calc.containment_fill",
+      "registered_for": "shared/calculations/electrical/fill-factor.json",
+      "spec_summary": "Cable containment fill factor — tray/basket/ladder/trunking/conduit. Resolves standard cable outer diameters.",
+      "owner": "draftsman-runtime",
+      "since_version": "1.0.0"
+    }
+  ],
+  "_future_candidates": [
+    "calc.fault_current_cascade (IEC 60909 fault distribution through impedance chain)",
+    "calc.selectivity_study (selectivity coordination between multiple protective devices)",
+    "calc.transformer_inrush (transformer magnetic inrush envelope)",
+    "calc.motor_starting (DOL/star-delta/VFD inrush profiles)"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "../../schemas/core/calculation.schema.json",
+  "id": "bs7430-electrode-resistance",
+  "name": "BS 7430:2011 Earth Electrode Resistance",
+  "executor": "tool",
+  "tool_name": "calc.electrode_resistance",
+  "formula_reference": "BS 7430:2011 §§ 9.5, 9.6, 9.7, Annex F",
+  "implementation_note": "Iterative parallel-array convergence with spacing factor. The tool selects rod/plate/mat/foundation formula by electrode_type, computes single-electrode resistance, then iterates count until combined_ohm ≤ target_resistance_ohm. Inline LLM math diverges from validated Python by 10–25% depending on count and electrode type — this calc must NEVER be inline.",
+  "inputs": [
+    {"id": "electrode_type",         "type": "enum",  "values": ["rod", "plate", "mat", "foundation"], "description": "Electrode geometry class"},
+    {"id": "soil_resistivity_ohm_m", "unit": "Ω·m",   "type": "float", "description": "Site-measured or assumed (London clay 50, gravel 200, chalk 100, peat 30)"},
+    {"id": "target_resistance_ohm",  "unit": "Ω",     "type": "float", "description": "Design target; typical: 1 Ω for HV, 10 Ω for primary TT, 200 Ω for socket-RCD TT"},
+    {"id": "length_or_size_mm",      "unit": "mm",    "type": "int",   "description": "Rod length, plate edge length, or mat overall dimension"},
+    {"id": "rod_diameter_mm",        "unit": "mm",    "type": "int",   "default": 16,  "description": "Only used when electrode_type=rod"},
+    {"id": "burial_depth_mm",        "unit": "mm",    "type": "int",   "default": 600, "description": "Cover above the top of the electrode"},
+    {"id": "spacing_factor",         "unit": "dimensionless", "type": "float", "default": 0.85, "description": "Coefficient k applied per BS 7430 Annex F when rods are arrayed at spacing ≥ rod length"}
+  ],
+  "output": {
+    "single_electrode_ohm":   {"unit": "Ω",       "description": "R of one electrode alone"},
+    "combined_ohm":           {"unit": "Ω",       "description": "Parallel-array R after applying spacing_factor"},
+    "count_recommended":      {"unit": "count",   "description": "Minimum number of electrodes needed to meet target_resistance_ohm"},
+    "target_met":             {"unit": "boolean", "description": "true if combined_ohm ≤ target_resistance_ohm at count_recommended"},
+    "formula_used":           {"unit": "string",  "description": "Which BS 7430 sub-formula was applied (rod-Dwight, plate, mat, foundation)"}
+  },
+  "runtime_contract": {
+    "request":  "{ tool_name: 'calc.electrode_resistance', inputs: <inputs above> }",
+    "response": "{ ok: true, result: { single_electrode_ohm, combined_ohm, count_recommended, target_met, formula_used }, error?: string }"
+  }
+}
