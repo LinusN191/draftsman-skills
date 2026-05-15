@@ -1,0 +1,111 @@
+{
+  "_title": "IEC 61439 Part 4 — Assemblies for construction sites (ACS)",
+  "_iec_part": 4,
+  "_version": "1.0.0",
+  "_note": "Temporary supplies for construction, demolition, and similar mobile/transportable sites. Tight constraints on mechanical robustness (IK ≥ 08), portability, and mandatory RCD per BS 7671 Section 704 / IEC 60364-7-704.",
+  "assemblies": [
+    {
+      "assembly_id": "ACS_TRANSPORTABLE",
+      "iec_ref": "IEC61439-4:2012",
+      "iec_part": 4,
+      "iec_title": "Transportable construction site assembly",
+      "draftsman_id": "ACS_TRANSPORTABLE",
+      "application_scope": "Mobile/transportable assembly used during construction or demolition. Designed to be moved between site locations, withstand site mechanical abuse, and remain safe in wet/dusty conditions. Always RCD-protected.",
+      "rated_quantities": {
+        "Ue_V":      [230, 400],
+        "Ui_V":      [500],
+        "Uimp_kV":   [6, 8],
+        "In_A":      [16, 32, 63, 100, 125, 250],
+        "Icw_kA_1s": [10, 15, 25],
+        "Ipk_kA":    [17, 30, 52]
+      },
+      "form_separation": "n/a",
+      "ip_default": "IP44 minimum (Clause 8.2 of Part 4); IP55 where wash-down is foreseeable",
+      "ik_default": "IK08 minimum (mandatory under Part 4)",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code_minimum_08",
+        "rcd_sensitivity_IDn",
+        "mass_kg_for_transportability"
+      ],
+      "verification_clauses": [
+        "10.2 strength (extra: drop test per Part 4)",
+        "10.3 IP (mandatory IP44)",
+        "10.4 clearances/creepage",
+        "10.5 electric shock protection",
+        "10.10 temperature rise (consider sun exposure)",
+        "10.11 short-circuit withstand",
+        "10.13 mechanical operation (including transport)"
+      ],
+      "drawn_as": ["DB_GENERAL"],
+      "typical_components": ["MCB_3P", "RCD_4P", "RCBO_1P", "SOCKET_INDUSTRIAL_IP44", "SOCKET_COMMANDO_32A"],
+      "application_examples": [
+        "Site-distribution unit (SDU) on a construction site",
+        "Transportable hookup for a temporary marquee",
+        "Demolition site temporary supply"
+      ],
+      "related_iec_60364": ["IEC60364-7-704 (Construction and demolition sites)"],
+      "related_bs_7671": ["Section 704 (Construction and demolition site installations)", "Reg 704.410.3 (RCD protection)"],
+      "usage_notes": "Per IEC 60364-7-704 and BS 7671 Section 704, all socket outlets ≤ 32 A on construction sites require 30 mA RCD protection (or be supplied by SELV/PELV/separation). Specify RCD type B where there are DC components (variable-speed drives, EV chargers).",
+      "related_assemblies": ["ACS_FIXED", "PSC_ASSEMBLY_FORM_1"]
+    },
+    {
+      "assembly_id": "ACS_FIXED",
+      "iec_ref": "IEC61439-4:2012",
+      "iec_part": 4,
+      "iec_title": "Fixed construction site assembly",
+      "draftsman_id": "ACS_FIXED",
+      "application_scope": "Fixed (not transportable) site assembly — typically the main site incomer or a permanent floor distribution on a long-running project. Same robustness as transportable but no drop-test requirement.",
+      "rated_quantities": {
+        "Ue_V":      [230, 400],
+        "Ui_V":      [690],
+        "Uimp_kV":   [6, 8],
+        "In_A":      [63, 100, 125, 250, 400, 630],
+        "Icw_kA_1s": [10, 15, 25, 36],
+        "Ipk_kA":    [17, 30, 52, 75]
+      },
+      "form_separation": "n/a",
+      "ip_default": "IP44 minimum",
+      "ik_default": "IK08 minimum",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code_minimum_08",
+        "rcd_sensitivity_IDn"
+      ],
+      "verification_clauses": [
+        "10.2 strength",
+        "10.3 IP",
+        "10.4 clearances/creepage",
+        "10.5 electric shock protection",
+        "10.10 temperature rise",
+        "10.11 short-circuit withstand",
+        "10.13 mechanical operation"
+      ],
+      "drawn_as": ["DB_GENERAL", "DB_MAIN"],
+      "typical_components": ["MCCB_3P", "RCD_4P", "SOCKET_INDUSTRIAL_IP44", "SOCKET_COMMANDO_32A", "BUSBAR_3PH"],
+      "application_examples": [
+        "Site main incomer assembly",
+        "Floor-level fixed DB on a major project",
+        "Long-duration concert venue / event site supply"
+      ],
+      "related_iec_60364": ["IEC60364-7-704"],
+      "related_bs_7671": ["Section 704"],
+      "usage_notes": "Fixed ACS may use higher In than transportable. Still requires IP44/IK08 minimum. Periodic inspection interval per IEC 60364-6 AMD1:2023 is every 3 months for construction sites — note this on the assembly's O&M handover.",
+      "related_assemblies": ["ACS_TRANSPORTABLE", "PSC_ASSEMBLY_FORM_2B"]
+    }
+  ]
+}
