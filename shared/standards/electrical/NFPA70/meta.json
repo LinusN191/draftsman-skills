@@ -1,0 +1,60 @@
+{
+  "_title": "NFPA 70 — National Electrical Code (NEC)",
+  "_version": "1.0.0",
+  "_purpose": "US-side electrical standards source of truth. Covers all 9 Chapters of NEC 2023 with per-article depth, NEC↔IEC divergence catalogue, and worked examples. Consumed by skills targeting US/North American projects.",
+  "standard": {
+    "title": "National Electrical Code",
+    "issuer": "National Fire Protection Association",
+    "issuer_short": "NFPA",
+    "designation": "NFPA 70",
+    "canonical_edition": "2023",
+    "publication_cycle_years": 3,
+    "publisher_url": "https://www.nfpa.org/codes-and-standards/nfpa-70-standard-development/70",
+    "ansi_designation": "ANSI/NFPA 70",
+    "chapters_total": 9
+  },
+  "edition_history": [
+    {"edition": "2017", "key_changes_summary": "Energy storage Article 706 added; rapid shutdown (690.12) expanded; AFCI coverage broadened"},
+    {"edition": "2020", "key_changes_summary": "GFCI receptacle requirements expanded (210.8); 215.10 GFP for feeders ≥1000 A; further EV/PV updates"},
+    {"edition": "2023", "key_changes_summary": "Energy storage updates (706); EV charging refinements (625); receptacle expansion (210.8(F)); broader AFCI coverage", "status": "canonical"},
+    {"edition": "2026", "key_changes_summary": "PV/storage integration; further EV updates", "status": "not yet adopted by any state as of layer build date"}
+  ],
+  "state_adoption_map_2026": {
+    "_note": "Snapshot. Adoption is set by each state's electrical board / authority having jurisdiction; check current status before issue.",
+    "edition_2023": ["AL", "AR", "CO", "DE", "FL", "ID", "IL", "IN", "IA", "KY", "LA", "MD", "MI", "MN", "NE", "NV", "NH", "NJ", "NM", "NY", "ND", "OK", "PA", "RI", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"],
+    "edition_2020": ["AK", "AZ", "CT", "GA", "HI", "ME", "MS", "MO", "MT", "NC", "OH", "OR", "SC", "SD", "DC"],
+    "edition_with_state_amendments": ["CA (California Electrical Code, based on NEC 2023 with state amendments)", "MA (Massachusetts Electrical Code, based on NEC 2023 with state amendments)"]
+  },
+  "international_adoption_notes": [
+    "Mexico — NOM-001-SEDE is based on NEC structure but adapted",
+    "Philippines — Philippine Electrical Code (PEC) Part 1 closely follows NEC",
+    "Saudi Arabia — partial adoption in some industrial sectors; SBC 401 is local code",
+    "Colombia / Costa Rica / Panama — NEC adopted with local amendments"
+  ],
+  "relationship_to_other_standards": {
+    "NFPA_70E": "Workplace electrical safety. Separate standard; not duplicated here. Out of MEP design scope.",
+    "NFPA_72":  "National Fire Alarm Code. Separate; this layer covers only Article 760 (Fire Alarm Circuits) within NEC.",
+    "NFPA_110": "Emergency and Standby Power Systems. Referenced by Articles 700/701/702 but not duplicated here.",
+    "NFPA_111": "Stored Electrical Energy. Referenced by Article 706 but not duplicated here.",
+    "UL_67":    "Panelboards. Referenced by Article 408 — not duplicated here.",
+    "UL_891":   "Switchboards. Referenced by Article 408 — not duplicated here.",
+    "UL_489":   "Molded-Case Circuit Breakers. Referenced by Article 240 — not duplicated here.",
+    "IEC_60364":"International electrical-installations standard. Cross-referenced from every NFPA70 article via `related_iec_60364` + `divergence_notes`. See nec-vs-iec-comparison.md for the divergence catalogue."
+  },
+  "out_of_scope": [
+    "NFPA 70E (workplace electrical safety, PPE, arc-flash analysis)",
+    "NFPA 72 (fire alarm system design beyond NEC Article 760)",
+    "NFPA 110 / 111 (standby power and stored electrical energy beyond NEC 700-706)",
+    "State amendments (California, Massachusetts, etc.) — future per-state layers",
+    "UL equipment standards referenced by NEC",
+    "Pre-1999 Class/Division-only legacy material — Article 505/506 Zone covered for new designs",
+    "NEC editions 2017, 2020, 2026 — only 2023 canonical; transition notes in amendments-summary.md"
+  ],
+  "files": {
+    "layer_level":     ["README.md", "meta.json"],
+    "per_chapter":     ["chapter1-general.json", "chapter2-wiring-protection.json", "chapter3-wiring-methods.json", "chapter4-equipment.json", "chapter5-special-occupancies.json", "chapter6-special-equipment.json", "chapter7-special-conditions.json", "chapter8-communications.json", "chapter9-tables.json"],
+    "per_article":     ["art210-branch-circuits.json", "art215-feeders.json", "art220-load-calculations.json", "art230-services.json", "art240-overcurrent.json", "art250-grounding-bonding.json", "art310-conductor-ampacity.json", "art408-panelboards.json", "art430-motors.json", "art450-transformers.json", "art500-506-hazardous-locations.json", "art517-healthcare.json", "art625-ev-charging.json", "art680-pools-spas.json", "art690-solar-pv.json", "art695-fire-pumps.json", "art700-705-emergency-standby.json"],
+    "cross_cutting":   ["grounding-and-bonding.json", "ocpd-coordination.json", "hazardous-locations-classification.json", "ampacity-correction-factors.json", "conduit-fill.json", "wiring-methods-by-occupancy.json"],
+    "narrative":       ["amendments-summary.md", "nec-vs-iec-comparison.md", "compliance-checklist.md", "terminology.md", "worked-examples.md"]
+  }
+}
