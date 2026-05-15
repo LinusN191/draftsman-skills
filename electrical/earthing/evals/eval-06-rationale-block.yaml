@@ -1,0 +1,46 @@
+# Eval 06 — Rationale block must be present and substantive
+# Category: rationale_block
+
+id: eval-06-rationale-block
+category: rationale_block
+severity: high
+description: |
+  Reuses the eval-01 happy-path scenario but specifically targets the rationale block.
+  Per upstream WI2 the rationale block is mandatory at IR root and must contain the
+  8-section taxonomy plus a chat_summary and a decisions array with citations.
+
+inputs:
+  reuse_eval: "eval-01-uk-dwelling-tn-cs"
+
+assertions:
+  - kind: schema_valid
+    schema: "earthing-ir.schema.json"
+  - kind: jsonpath_present
+    path: "$.rationale.chat_summary"
+  - kind: jsonpath_length_gte
+    path: "$.rationale.chat_summary"
+    minimum: 100
+    maximum: 800
+    note: "1 paragraph, not a sentence and not an essay"
+  - kind: jsonpath_present_all
+    paths:
+      - "$.rationale.engineering_objectives"
+      - "$.rationale.constraints"
+      - "$.rationale.regulatory_basis"
+      - "$.rationale.key_decisions"
+      - "$.rationale.assumptions"
+      - "$.rationale.design_methodology"
+      - "$.rationale.risks"
+      - "$.rationale.evidence"
+  - kind: jsonpath_count_gte
+    path: "$.rationale.key_decisions[*]"
+    minimum: 3
+  - kind: jsonpath_all_present
+    path: "$.rationale.key_decisions[*].clause_ref"
+    note: "Every key decision must cite a standards clause"
+  - kind: jsonpath_pattern_match
+    path: "$.rationale.key_decisions[*].clause_ref"
+    pattern: "^(BS 7671:2018\\+A3|IEC 60364-[0-9]+-[0-9]+|NEC 2023)"
+    note: "Citations must use canonical format"
+
+expected_status: "pass"
