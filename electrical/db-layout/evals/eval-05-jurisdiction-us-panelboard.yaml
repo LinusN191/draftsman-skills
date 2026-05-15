@@ -1,0 +1,56 @@
+# Eval 05 — US strip mall panelboard, NEC Art 408
+# Category: jurisdiction_switch
+
+id: eval-05-jurisdiction-us-panelboard
+category: jurisdiction_switch
+severity: critical
+description: |
+  US 200A 120/240V split-phase NEMA panelboard for a strip-mall retail fit-out.
+  Must:
+  (a) Use NEMA enclosure type (not IEC Form code)
+  (b) Reference NFPA 70 Art 408 + Art 240 (not BS 7671 / IEC 60364)
+  (c) Size by NEC table values (Table 220 for load, Table 250.122 for EGC)
+  (d) Use GFCI/AFCI terminology, not RCD
+
+inputs:
+  jurisdiction: "US"
+  board_type: "panelboard_nema"
+  db_designation: "PB-1"
+  location: "back-of-house service room"
+  fed_from: "MAIN"
+  supply_voltage_v: "240"
+  phase_arrangement: "single_phase_split"
+  supply_rating_a: 200
+  ze_ohm_at_origin: 0.20
+  ways_total: 24
+  ip_rating: "NEMA_1"
+  circuits_declared:
+    - { id: "C01", designation: "General lighting", ocpd_rating_a: 20, ocpd_type: "MCB", phase_csa_awg: "12", length_m: 25, load_kw: 1.5 }
+    - { id: "C02", designation: "General receptacles", ocpd_rating_a: 20, ocpd_type: "MCB", phase_csa_awg: "12", length_m: 30, load_kw: 1.5 }
+    - { id: "C03", designation: "Reach-in cooler dedicated", ocpd_rating_a: 30, ocpd_type: "MCB", phase_csa_awg: "10", length_m: 18, load_kw: 3 }
+    - { id: "C04", designation: "RTU HVAC unit", ocpd_rating_a: 60, ocpd_type: "MCCB", phase_csa_awg: "6", length_m: 35, load_kw: 11 }
+  diversity_factor_main: 0.8
+
+assertions:
+  - kind: schema_valid
+    schema: "db-layout-ir.schema.json"
+  - kind: jsonpath_equals
+    path: "$.jurisdiction"
+    expected: "US"
+  - kind: jsonpath_present
+    path: "$.board.enclosure_form_nec_type"
+    note: "US must use NEMA type, not IEC Form"
+  - kind: jsonpath_absent
+    path: "$.board.enclosure_form_iec61439"
+    note: "US must NOT emit IEC Form code"
+  - kind: clause_cited
+    clause_pattern: "^NEC 2023 Art (408|240|220|250)"
+    minimum_count: 2
+  - kind: clause_not_cited
+    clause_pattern: "^BS 7671"
+    note: "US project must not cite UK regs"
+  - kind: clause_not_cited
+    clause_pattern: "^IEC 60364"
+    note: "US project must not cite IEC 60364"
+
+expected_status: "pass"
