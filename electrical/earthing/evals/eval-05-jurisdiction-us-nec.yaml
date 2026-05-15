@@ -1,0 +1,54 @@
+# Eval 05 — Identical brief, but jurisdiction=US — must produce NEC-conformant design
+# Category: jurisdiction_switch
+
+id: eval-05-jurisdiction-us-nec
+category: jurisdiction_switch
+severity: critical
+description: |
+  Single-family dwelling, but specified as a US project. The skill must:
+  (a) Use NEC terminology (EGC, not CPC; grounding electrode system, not earth electrode array)
+  (b) Size EGCs from NEC Table 250.122 by OCPD rating, NOT by phase CSA
+  (c) Require supplemental grounding electrodes per NEC 250.50/250.53
+  (d) Cite NEC 2023 articles, NOT BS 7671 regulations
+  (e) Reference NFPA70/art250-grounding-bonding.json, not BS7671 files
+
+inputs:
+  jurisdiction: "US"
+  earthing_system_declared: "TN-S"
+  supply_voltage_v: 120
+  supply_voltage_secondary_v: 240
+  ze_ohm_declared: 0.20
+  water_service_metallic: true
+  gas_service_metallic: true
+  extraneous_parts:
+    - { kind: "concrete_encased_electrode", location: "footing UFER" }
+    - { kind: "structural_steel", location: "frame" }
+  met_location: "main service panel, garage"
+  supplementary_bonding_required_locations: []
+  consumed_intents:
+    - { intent_type: "db-layout", intent_version: "1.0.0", produced_by: "electrical/db-layout/v1.0.0", payload_ref: "test-fixtures/db-layout-eval05.json" }
+
+assertions:
+  - kind: schema_valid
+    schema: "earthing-ir.schema.json"
+  - kind: jsonpath_equals
+    path: "$.jurisdiction"
+    expected: "US"
+  - kind: jsonpath_all_equals
+    path: "$.circuits[*].cpc.cpc_sizing_method"
+    expected: "nec_table_250.122"
+  - kind: jsonpath_count_gte
+    path: "$.electrodes[*]"
+    minimum: 2
+    note: "NEC requires supplemental grounding electrode system"
+  - kind: clause_cited
+    clause_pattern: "^NEC 2023 (Art|Table) 250\\."
+    minimum_count: 2
+  - kind: clause_not_cited
+    clause_pattern: "^BS 7671"
+    note: "US project must not cite UK regs"
+  - kind: invariant_passes
+    invariant: "INV-4"
+    note: "CPC method jurisdiction match"
+
+expected_status: "pass"
