@@ -1,0 +1,47 @@
+{
+  "_title": "IEC 60617 — Graphical symbols for diagrams",
+  "_version": "1.0.0",
+  "_purpose": "Single source of truth for the graphical-symbols standard used by all DraftsMan electrical drafting skills (SLD, schematic, panel layout, riser, etc.). Combines IEC clause-level metadata, engineering usage guidance, and SVG-path geometry. Generated symbols in shared/symbols/electrical/ are produced from this layer by the DraftsMan runtime.",
+  "standard": {
+    "title": "Graphical symbols for diagrams",
+    "issuer": "International Electrotechnical Commission",
+    "issuer_short": "IEC",
+    "designation": "IEC 60617",
+    "status": "Active — database edition",
+    "database_url": "https://std.iec.ch/iec60617",
+    "first_published": 1983,
+    "current_edition": "Database edition (continuously updated since 2002)",
+    "language_codes": ["en", "fr"],
+    "national_adoptions": [
+      {"code": "BS EN 60617", "country": "United Kingdom", "notes": "Direct adoption of IEC 60617"},
+      {"code": "DIN EN 60617", "country": "Germany", "notes": "Direct adoption with German titles"},
+      {"code": "NF EN 60617", "country": "France", "notes": "Direct adoption"},
+      {"code": "SS-EN 60617", "country": "Sweden", "notes": "Direct adoption"},
+      {"code": "IS/IEC 60617", "country": "India", "notes": "Direct adoption"}
+    ]
+  },
+  "parts": [
+    {"part": 2,  "title": "Symbol elements, qualifying symbols and other symbols having general application", "covered": true,  "symbol_file": "part2-general.json"},
+    {"part": 3,  "title": "Conductors and connecting devices",                                                "covered": true,  "symbol_file": "part3-conductors.json"},
+    {"part": 4,  "title": "Basic passive components",                                                         "covered": false, "reason_out_of_scope": "Resistors, capacitors, inductors at component level — not relevant for MEP building electrical design above component schematics"},
+    {"part": 5,  "title": "Semiconductors and electron tubes",                                                "covered": false, "reason_out_of_scope": "Discrete semiconductor symbols — not used in LV building electrical diagrams"},
+    {"part": 6,  "title": "Production and conversion of electrical energy",                                   "covered": true,  "symbol_file": "part6-power.json"},
+    {"part": 7,  "title": "Switchgear, controlgear and protective devices",                                   "covered": true,  "symbol_file": "part7-switchgear.json"},
+    {"part": 8,  "title": "Measuring instruments, lamps and signalling devices",                              "covered": true,  "symbol_file": "part8-measurement.json"},
+    {"part": 9,  "title": "Telecommunications: switching and peripheral equipment",                           "covered": false, "reason_out_of_scope": "Telecom — separate discipline"},
+    {"part": 10, "title": "Telecommunications: transmission",                                                 "covered": false, "reason_out_of_scope": "Telecom — separate discipline"},
+    {"part": 11, "title": "Architectural and topographical installation plans and diagrams",                  "covered": true,  "symbol_file": "part11-architectural.json"},
+    {"part": 12, "title": "Binary logic elements",                                                            "covered": false, "reason_out_of_scope": "Logic schematic — covered by IEC 60617-12 future skill"},
+    {"part": 13, "title": "Analogue elements",                                                                "covered": false, "reason_out_of_scope": "Analogue schematic — out of scope for building electrical"}
+  ],
+  "iec_reference_format": {
+    "pattern": "IEC60617-PP-XX-YY",
+    "fields": {
+      "PP": "Part number (zero-padded to 2 digits)",
+      "XX": "Section number within the part",
+      "YY": "Symbol number within the section"
+    },
+    "example": "IEC60617-07-18-01 — Part 7, Section 18 (circuit-breakers), symbol 01 (general)"
+  },
+  "transition_note": "IEC 60617 was published as 13 paper parts between 1996 and 2002. In 2002 it transitioned to a continuously-updated online database at iecdatabase.iec.ch (now std.iec.ch/iec60617). Reference numbers from the printed parts remain valid; new symbols added since 2002 carry database-only references with the same PP-XX-YY format."
+}
