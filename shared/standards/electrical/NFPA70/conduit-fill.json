@@ -1,0 +1,80 @@
+{
+  "_title": "NFPA 70 — Conduit Fill (cross-cutting)",
+  "_version": "1.0.0",
+  "_note": "Conduit fill calculation procedure using Chapter 9 Table 1 (% allowed) + Table 4 (raceway dimensions) + Table 5 (conductor dimensions). Inline tables here are reference; full data lives in chapter9-tables.json.",
+  "calculation_procedure": [
+    {
+      "step": 1,
+      "action": "Identify the conductor types and counts to be installed",
+      "data_needed": "Wire type (THHN, THWN-2, XHHW-2, etc.) + AWG/kcmil size + quantity"
+    },
+    {
+      "step": 2,
+      "action": "Look up each conductor's external area",
+      "data_needed": "Chapter 9 Table 5 — gives external area in² per conductor by insulation type and size",
+      "_note": "External area, NOT copper cross-section (kcmil) — external area includes the insulation"
+    },
+    {
+      "step": 3,
+      "action": "Sum total conductor area",
+      "formula": "Σ (count × area_per_conductor)"
+    },
+    {
+      "step": 4,
+      "action": "Determine allowed conduit fill percentage from Table 1",
+      "rule": "1 conductor: 53%; 2 conductors: 31%; 3 or more conductors: 40%",
+      "_note": "≥3 conductors = 40% is the most common case in commercial work"
+    },
+    {
+      "step": 5,
+      "action": "Look up raceway internal area from Table 4",
+      "data_needed": "Raceway type (RMC, IMC, EMT, PVC) + trade size",
+      "output": "Total internal area (in²) at 100%; allowable area at 31%/40%/53% pre-computed in Table 4"
+    },
+    {
+      "step": 6,
+      "action": "Compare",
+      "rule": "Total conductor area ≤ raceway allowable area at the appropriate % fill"
+    }
+  ],
+  "worked_example": {
+    "scenario": "Run 9 conductors of #6 AWG THHN through an EMT raceway. Determine minimum trade size.",
+    "step_1_conductors": "9 × #6 AWG THHN",
+    "step_2_conductor_area": "Table 5: #6 THHN external area = 0.0507 in²",
+    "step_3_total_area": "9 × 0.0507 = 0.4563 in²",
+    "step_4_fill_percent": "≥3 conductors → 40% allowed",
+    "step_5_emt_minimum": {
+      "trade_size_check_options": [
+        {"trade_size_in": "1",     "emt_40pct_area_in2": 0.346, "passes": false},
+        {"trade_size_in": "1 1/4", "emt_40pct_area_in2": 0.598, "passes": true}
+      ],
+      "minimum_emt": "1 1/4 inch EMT"
+    },
+    "_note": "If 1 inch EMT is preferred for space reasons, reduce to 8 conductors max (8 × 0.0507 = 0.406 in² > 0.346 → still over). 1-inch EMT max with #6 THHN is 6 conductors (6 × 0.0507 = 0.304 < 0.346 ✓)"
+  },
+  "special_cases": [
+    {
+      "case": "Same conductor type, different sizes",
+      "procedure": "Sum each size's area separately, then sum all"
+    },
+    {
+      "case": "Different conductor types",
+      "procedure": "Same — each conductor's area from Table 5 column for its type"
+    },
+    {
+      "case": "Conductors with internal grounding conductor (NM cable, MC cable)",
+      "procedure": "Use the cable's total external diameter, not individual conductor sums (cables are treated as a unit)"
+    },
+    {
+      "case": "Communications cables in same conduit as power",
+      "procedure": "Generally prohibited per 800.133 (≥2 in separation required); when permitted (e.g. fiber), apply fill calc to ALL cables in the raceway"
+    }
+  ],
+  "common_errors": [
+    "Using copper kcmil area instead of external area (with insulation) — frequent error",
+    "Using 53% (1-conductor) fill % for a single piece of wire in a raceway with planned future expansion — once future conductors added, 40% rule applies",
+    "Forgetting to include the EGC as a counted conductor for fill — EGC contributes to total area",
+    "Mixing fill % for different conductors — the entire raceway is single-fill-percent based on the highest conductor count"
+  ],
+  "iec_60364_cross_reference": "IEC 60364-5-52 conduit/trunking fill handled by Annex B in some national supplements (e.g. BS 7671 Appendix 4 + Appendix 6 trunking fill); the IEC base does not have a comprehensive fill table comparable to NEC Chapter 9 Table 1 + 4 + 5. NEC's approach is more codified."
+}
