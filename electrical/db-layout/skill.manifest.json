@@ -1,15 +1,103 @@
 {
   "skill": "db-layout",
-  "version": "0.2.0",
-  "status": "stub",
+  "version": "1.0.0",
   "discipline": "electrical",
   "subdiscipline": "distribution",
-  "description": "Distribution board face layouts with device sizing and circuit schedules. Produces db-layout IR and a stable db-layout intent consumed by earthing, cable-containment, panel-schedule, and riser skills.",
-  "standards": [],
-  "inputs": [],
-  "produces_intent": "db-layout",
-  "produces_intent_schema": "electrical/db-layout/schemas/db-layout-intent.schema.json",
-  "consumes_intents": [],
-  "outputs": [],
-  "compatible_runtimes": ["DraftsMan >= 1.0", "Claude Code", "OpenClaw"]
+  "description": "Produces distribution board schedule + face one-line schematic + cascade selectivity verification IR for LV installations. Covers consumer units, distribution boards, MSBs, and NEMA panelboards across GB (BS 7671 + IEC 61439), EU/INT (IEC 60364 + IEC 61439), and US (NFPA 70) jurisdictions. Emits two stable intent contracts: single-board (panel-schedule/riser/cable-containment consumers) and project-rollup (earthing consumer).",
+  "status": "beta",
+  "licence": "MIT",
+  "inputs_path": "inputs.json",
+  "inputs": [
+    "jurisdiction",
+    "board-type",
+    "db-designation",
+    "incoming-supply",
+    "ways-total",
+    "form-separation",
+    "circuits-declared",
+    "fault-currents-engineer-declared"
+  ],
+  "outputs": ["db-layout-ir"],
+  "output_schema": "electrical/db-layout/schemas/db-layout-ir.schema.json",
+  "produces_intent": ["db-layout", "db-layout-rollup"],
+  "produces_intent_schemas": {
+    "db-layout":         "electrical/db-layout/schemas/db-layout-intent.schema.json",
+    "db-layout-rollup":  "electrical/db-layout/schemas/db-layout-rollup-intent.schema.json"
+  },
+  "consumes_intents": ["fault-level", "lighting-layout"],
+  "standards": [
+    "shared/standards/electrical/IEC60617/symbol-index.json",
+    "shared/standards/electrical/IEC60617/part7-switchgear.json",
+    "shared/standards/electrical/IEC61439/form-separations.json",
+    "shared/standards/electrical/IEC61439/ip-ik-ratings.json",
+    "shared/standards/electrical/IEC61439/short-circuit-withstand.json",
+    "shared/standards/electrical/BS7671/reg433-overcurrent-protection.json",
+    "shared/standards/electrical/BS7671/reg434-fault-current.json",
+    "shared/standards/electrical/BS7671/reg443-spd.json",
+    "shared/standards/electrical/BS7671/reg411-rcd-requirements.json",
+    "shared/standards/electrical/BS7671/appendix3-device-curves.json",
+    "shared/standards/electrical/BS7671/diversity-factors.json",
+    "shared/standards/electrical/IEC60364/part4-43-overcurrent.json",
+    "shared/standards/electrical/IEC60364/part4-44-overvoltage.json",
+    "shared/standards/electrical/IEC60364/rcd-requirements.json",
+    "shared/standards/electrical/IEC60364/device-curves.json",
+    "shared/standards/electrical/IEC60364/diversity-factors.json",
+    "shared/standards/electrical/IEC60364/fault-current.json",
+    "shared/standards/electrical/NFPA70/art408-panelboards.json",
+    "shared/standards/electrical/NFPA70/art240-overcurrent.json",
+    "shared/standards/electrical/NFPA70/art220-load-calculations.json",
+    "shared/standards/electrical/NFPA70/ocpd-coordination.json"
+  ],
+  "calculations": [
+    "shared/calculations/electrical/iec60909-cascade.json",
+    "shared/calculations/electrical/diversity-factor.json"
+  ],
+  "ontology": [
+    "electrical/db-layout/ontology/board-types.json",
+    "electrical/db-layout/ontology/ocpd-types.json"
+  ],
+  "rules": [
+    "electrical/db-layout/rules/ocpd-coordination.yaml",
+    "electrical/db-layout/rules/busbar-sizing.yaml",
+    "electrical/db-layout/rules/form-separation.yaml",
+    "electrical/db-layout/rules/rcd-grouping.yaml"
+  ],
+  "constraints": [
+    "electrical/db-layout/constraints/breaker-breaking-capacity.yaml",
+    "electrical/db-layout/constraints/busbar-icw.yaml",
+    "electrical/db-layout/constraints/ip-rating-by-location.yaml"
+  ],
+  "validators": [
+    "electrical/db-layout/validation/ocpd-coordination.yaml",
+    "electrical/db-layout/validation/busbar-loading.yaml",
+    "electrical/db-layout/validation/selectivity-results.yaml",
+    "electrical/db-layout/validation/intent-rollup-shape.yaml"
+  ],
+  "prompts": {
+    "generator": "electrical/db-layout/prompts/generator.md",
+    "validator": "electrical/db-layout/prompts/validator.md",
+    "reviewer":  "electrical/db-layout/prompts/reviewer.md"
+  },
+  "evals": [
+    "electrical/db-layout/evals/eval-01-uk-domestic-cu-tn-cs.yaml",
+    "electrical/db-layout/evals/eval-02-tpn-commercial-msb.yaml",
+    "electrical/db-layout/evals/eval-03-undersized-busbar-trap.yaml",
+    "electrical/db-layout/evals/eval-04-missing-fault-current.yaml",
+    "electrical/db-layout/evals/eval-05-jurisdiction-us-panelboard.yaml",
+    "electrical/db-layout/evals/eval-06-rationale-block.yaml",
+    "electrical/db-layout/evals/eval-07-selectivity-cascade.yaml",
+    "electrical/db-layout/evals/eval-08-intent-rollup-shape.yaml"
+  ],
+  "examples": [
+    "electrical/db-layout/examples/uk-domestic-consumer-unit/",
+    "electrical/db-layout/examples/intl-commercial-tpn-msb/",
+    "electrical/db-layout/examples/us-strip-mall-panelboard/"
+  ],
+  "compatible_runtimes": [
+    "DraftsMan >= 1.0",
+    "Claude Code",
+    "OpenClaw",
+    "any-llm-agent"
+  ],
+  "changelog": "electrical/db-layout/CHANGELOG.md"
 }
