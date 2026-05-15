@@ -1,0 +1,377 @@
+{
+  "_title": "IEC 61439 Part 2 — Power switchgear and controlgear assemblies (PSC-Assemblies)",
+  "_iec_part": 2,
+  "_version": "1.0.0",
+  "_note": "Main switchboards and motor control centres. One assembly entry per Form code (1, 2a, 2b, 3a, 3b, 4a, 4b). Designer specifies Form on the schedule; OEM verifies. See form-separations.json for the segregation details.",
+  "assemblies": [
+    {
+      "assembly_id": "PSC_ASSEMBLY_FORM_1",
+      "iec_ref": "IEC61439-2:2020",
+      "iec_part": 2,
+      "iec_title": "PSC-Assembly Form 1 — no internal segregation",
+      "draftsman_id": "PSC_ASSEMBLY_FORM_1",
+      "application_scope": "Open-construction PSC-Assembly with no internal segregation between busbars, functional units, or outgoing terminals. Cheapest form. Acceptable only where the entire assembly is de-energised for any maintenance work and there are no operator-access requirements during operation.",
+      "rated_quantities": {
+        "Ue_V":      [230, 400, 690],
+        "Ui_V":      [1000],
+        "Uimp_kV":   [4, 6, 8],
+        "In_A":      [100, 160, 250, 400, 630, 800, 1250, 1600],
+        "Icw_kA_1s": [10, 15, 25, 36, 50],
+        "Ipk_kA":    [17, 30, 52, 75, 105]
+      },
+      "form_separation": "1",
+      "ip_default": "IP2X (front), IP30 (enclosure)",
+      "ik_default": "IK07",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code",
+        "form_separation"
+      ],
+      "verification_clauses": [
+        "10.2 strength",
+        "10.3 IP",
+        "10.4 clearances/creepage",
+        "10.5 electric shock protection",
+        "10.10 temperature rise (Annex E)",
+        "10.11 short-circuit withstand (Annex P)",
+        "10.13 mechanical operation"
+      ],
+      "drawn_as": ["DB_GENERAL", "DB_SUB"],
+      "typical_components": ["MCCB_3P", "BUSBAR_3PH"],
+      "application_examples": [
+        "Small industrial sub-distribution where maintenance is always with the whole board off",
+        "Plant-only assemblies with no operator interface"
+      ],
+      "related_iec_60364": ["IEC60364-5-53 (Switchgear selection)"],
+      "related_bs_7671": ["Section 537 (Isolation and switching)"],
+      "usage_notes": "Avoid for any application requiring single-circuit maintenance with the rest live. Form 1 is functionally equivalent to a switchboard cabinet without internal barriers — once the door is open, all live parts are accessible.",
+      "related_assemblies": ["PSC_ASSEMBLY_FORM_2A", "PSC_ASSEMBLY_FORM_2B"]
+    },
+    {
+      "assembly_id": "PSC_ASSEMBLY_FORM_2A",
+      "iec_ref": "IEC61439-2:2020",
+      "iec_part": 2,
+      "iec_title": "PSC-Assembly Form 2a — busbar separation, common terminations",
+      "draftsman_id": "PSC_ASSEMBLY_FORM_2A",
+      "application_scope": "PSC-Assembly with segregated busbar compartment; functional units share a single compartment, and outgoing-conductor terminals are not separated from the busbar.",
+      "rated_quantities": {
+        "Ue_V":      [230, 400, 690],
+        "Ui_V":      [1000],
+        "Uimp_kV":   [4, 6, 8],
+        "In_A":      [100, 160, 250, 400, 630, 800, 1250, 1600, 2000],
+        "Icw_kA_1s": [10, 15, 25, 36, 50, 65],
+        "Ipk_kA":    [17, 30, 52, 75, 105, 143]
+      },
+      "form_separation": "2a",
+      "ip_default": "IP2X (front), IP30 (enclosure)",
+      "ik_default": "IK07",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code",
+        "form_separation"
+      ],
+      "verification_clauses": [
+        "10.2 strength",
+        "10.3 IP",
+        "10.4 clearances/creepage",
+        "10.5 electric shock protection",
+        "10.10 temperature rise",
+        "10.11 short-circuit withstand",
+        "10.13 mechanical operation"
+      ],
+      "drawn_as": ["DB_SUB", "DB_GENERAL"],
+      "typical_components": ["MCCB_3P", "BUSBAR_3PH", "AMMETER", "VOLTMETER"],
+      "application_examples": [
+        "General industrial sub-distribution where busbar isolation matters but functional-unit segregation is not required",
+        "Small commercial sub-DBs above 250A"
+      ],
+      "related_iec_60364": ["IEC60364-5-53"],
+      "related_bs_7671": ["Section 537"],
+      "usage_notes": "Form 2a is the entry-level form for installations where the busbar must remain undisturbed while a functional unit is being worked on, but the OEM does not need to separate individual functional units. Cheaper than 2b.",
+      "related_assemblies": ["PSC_ASSEMBLY_FORM_1", "PSC_ASSEMBLY_FORM_2B"]
+    },
+    {
+      "assembly_id": "PSC_ASSEMBLY_FORM_2B",
+      "iec_ref": "IEC61439-2:2020",
+      "iec_part": 2,
+      "iec_title": "PSC-Assembly Form 2b — busbar separation, integral terminations",
+      "draftsman_id": "PSC_ASSEMBLY_FORM_2B",
+      "application_scope": "Form 2a plus the outgoing-conductor terminals are separated from the busbar compartment (but still in the functional-unit compartment).",
+      "rated_quantities": {
+        "Ue_V":      [230, 400, 690],
+        "Ui_V":      [1000],
+        "Uimp_kV":   [4, 6, 8],
+        "In_A":      [400, 630, 800, 1250, 1600, 2000, 2500],
+        "Icw_kA_1s": [25, 36, 50, 65, 80],
+        "Ipk_kA":    [52, 75, 105, 143, 176]
+      },
+      "form_separation": "2b",
+      "ip_default": "IP2X (front), IP30 (enclosure)",
+      "ik_default": "IK07",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code",
+        "form_separation"
+      ],
+      "verification_clauses": [
+        "10.2 strength",
+        "10.3 IP",
+        "10.4 clearances/creepage",
+        "10.5 electric shock protection",
+        "10.10 temperature rise",
+        "10.11 short-circuit withstand",
+        "10.13 mechanical operation"
+      ],
+      "drawn_as": ["DB_MAIN", "DB_SUB"],
+      "typical_components": ["MCCB_3P", "ACB_3P", "BUSBAR_3PH", "AMMETER", "VOLTMETER", "ENERGY_METER_KWH"],
+      "application_examples": [
+        "Commercial main switchboards up to ~1600A",
+        "Light industrial main switchboards"
+      ],
+      "related_iec_60364": ["IEC60364-5-53"],
+      "related_bs_7671": ["Section 537"],
+      "usage_notes": "Form 2b is the cheapest form that lets you work on outgoing terminations without de-energising the busbar. Common default for commercial mains 400–1600A where critical-circuit independence is not required.",
+      "related_assemblies": ["PSC_ASSEMBLY_FORM_2A", "PSC_ASSEMBLY_FORM_3B"]
+    },
+    {
+      "assembly_id": "PSC_ASSEMBLY_FORM_3A",
+      "iec_ref": "IEC61439-2:2020",
+      "iec_part": 2,
+      "iec_title": "PSC-Assembly Form 3a — busbar and functional-unit separation, common terminations",
+      "draftsman_id": "PSC_ASSEMBLY_FORM_3A",
+      "application_scope": "Form 2 plus segregation between functional units. Outgoing-conductor terminals are NOT separated from the busbar compartment.",
+      "rated_quantities": {
+        "Ue_V":      [230, 400, 690, 1000],
+        "Ui_V":      [1000],
+        "Uimp_kV":   [4, 6, 8, 12],
+        "In_A":      [400, 630, 800, 1250, 1600, 2000, 2500, 3200],
+        "Icw_kA_1s": [25, 36, 50, 65, 80, 100],
+        "Ipk_kA":    [52, 75, 105, 143, 176, 220]
+      },
+      "form_separation": "3a",
+      "ip_default": "IP2X (front), IP30 (enclosure)",
+      "ik_default": "IK08",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code",
+        "form_separation"
+      ],
+      "verification_clauses": [
+        "10.2 strength",
+        "10.3 IP",
+        "10.4 clearances/creepage",
+        "10.5 electric shock protection",
+        "10.10 temperature rise",
+        "10.11 short-circuit withstand",
+        "10.13 mechanical operation"
+      ],
+      "drawn_as": ["DB_MAIN"],
+      "typical_components": ["ACB_3P", "MCCB_3P", "BUSBAR_3PH", "MULTIFUNCTION_METER"],
+      "application_examples": [
+        "Industrial MCCs without separate-termination requirement",
+        "Mid-tier commercial mains above 1600A"
+      ],
+      "related_iec_60364": ["IEC60364-5-53"],
+      "related_bs_7671": ["Section 537"],
+      "usage_notes": "Form 3a allows working on one functional unit while neighbours stay live, but the outgoing terminations remain in the busbar compartment — risky for cable work. Specify 3b instead unless cost is dominant.",
+      "related_assemblies": ["PSC_ASSEMBLY_FORM_2B", "PSC_ASSEMBLY_FORM_3B"]
+    },
+    {
+      "assembly_id": "PSC_ASSEMBLY_FORM_3B",
+      "iec_ref": "IEC61439-2:2020",
+      "iec_part": 2,
+      "iec_title": "PSC-Assembly Form 3b — busbar and functional-unit separation, integral terminations",
+      "draftsman_id": "PSC_ASSEMBLY_FORM_3B",
+      "application_scope": "Form 3a plus separately-terminated outgoing conductors. Each functional unit and its outgoing terminals are in their own compartments; only the busbar runs across the assembly.",
+      "rated_quantities": {
+        "Ue_V":      [230, 400, 690, 1000],
+        "Ui_V":      [1000],
+        "Uimp_kV":   [4, 6, 8, 12],
+        "In_A":      [630, 800, 1250, 1600, 2000, 2500, 3200, 4000, 5000, 6300],
+        "Icw_kA_1s": [25, 36, 50, 65, 80, 100],
+        "Ipk_kA":    [52, 75, 105, 143, 176, 220]
+      },
+      "form_separation": "3b",
+      "ip_default": "IP2X (front), IP30 (enclosure)",
+      "ik_default": "IK08",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code",
+        "form_separation",
+        "internal_arc_classification_if_applicable"
+      ],
+      "verification_clauses": [
+        "10.2 strength",
+        "10.3 IP",
+        "10.4 clearances/creepage",
+        "10.5 electric shock protection",
+        "10.6 incorporation of switching/protective devices",
+        "10.7 internal electrical circuits",
+        "10.8 terminals for external conductors",
+        "10.9 dielectric properties",
+        "10.10 temperature rise verification (Annex E)",
+        "10.11 short-circuit withstand verification (Annex P)",
+        "10.13 mechanical operation"
+      ],
+      "drawn_as": ["DB_MAIN", "DB_SUB"],
+      "typical_components": ["ACB_3P", "MCCB_3P", "BUSBAR_3PH", "CT_METERING", "MULTIFUNCTION_METER", "SPD_TYPE2"],
+      "application_examples": [
+        "Main LV switchboard (MSB) downstream of LV transformer",
+        "Motor control centre (MCC) with segregated motor circuits",
+        "Critical services switchboard with selectivity to ACB"
+      ],
+      "related_iec_60364": ["IEC60364-4-43 (overcurrent)", "IEC60364-5-53 (switchgear)", "IEC60364-6 (verification)"],
+      "related_bs_7671": ["Reg 432 (Coordination)", "Section 537 (Isolation and switching)"],
+      "usage_notes": "Default choice for commercial main LV switchboards above ~400A. Specify the requirement that incomer can be maintained with outgoers live (and vice versa) so the OEM provides a real Form 3b rather than a 3a relabelled.",
+      "related_assemblies": ["PSC_ASSEMBLY_FORM_4A", "PSC_ASSEMBLY_FORM_3A"]
+    },
+    {
+      "assembly_id": "PSC_ASSEMBLY_FORM_4A",
+      "iec_ref": "IEC61439-2:2020",
+      "iec_part": 2,
+      "iec_title": "PSC-Assembly Form 4a — busbar, functional unit, and grouped-termination separation",
+      "draftsman_id": "PSC_ASSEMBLY_FORM_4A",
+      "application_scope": "Form 3b plus the outgoing-conductor terminals of EACH functional unit are separated from those of every other functional unit. Terminals belonging to the same unit may still be grouped together.",
+      "rated_quantities": {
+        "Ue_V":      [230, 400, 690, 1000],
+        "Ui_V":      [1000],
+        "Uimp_kV":   [4, 6, 8, 12],
+        "In_A":      [630, 800, 1250, 1600, 2000, 2500, 3200, 4000, 5000, 6300],
+        "Icw_kA_1s": [25, 36, 50, 65, 80, 100],
+        "Ipk_kA":    [52, 75, 105, 143, 176, 220]
+      },
+      "form_separation": "4a",
+      "ip_default": "IP3X (front), IP40 (enclosure)",
+      "ik_default": "IK09",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code",
+        "form_separation",
+        "internal_arc_classification"
+      ],
+      "verification_clauses": [
+        "10.2 strength",
+        "10.3 IP",
+        "10.4 clearances/creepage",
+        "10.5 electric shock protection",
+        "10.6 incorporation of switching/protective devices",
+        "10.7 internal electrical circuits",
+        "10.8 terminals for external conductors",
+        "10.9 dielectric properties",
+        "10.10 temperature rise verification",
+        "10.11 short-circuit withstand verification",
+        "10.13 mechanical operation"
+      ],
+      "drawn_as": ["DB_MAIN"],
+      "typical_components": ["ACB_3P", "MCCB_3P", "BUSBAR_3PH", "CT_METERING", "MULTIFUNCTION_METER", "SPD_TYPE1", "SPD_TYPE2"],
+      "application_examples": [
+        "Hospital essential supply main switchboards",
+        "Data centre main LV boards with bus-tie redundancy",
+        "Refineries / petrochemical with high availability requirements"
+      ],
+      "related_iec_60364": ["IEC60364-4-43", "IEC60364-5-53", "IEC60364-6", "IEC60364-7-710 (Medical)"],
+      "related_bs_7671": ["Section 537", "Section 710 (Medical locations)"],
+      "usage_notes": "Form 4a is the standard for high-availability commercial/industrial mains. The cost premium over 3b is justified by the ability to terminate a single outgoing circuit without exposing neighbouring circuits' cables.",
+      "related_assemblies": ["PSC_ASSEMBLY_FORM_3B", "PSC_ASSEMBLY_FORM_4B"]
+    },
+    {
+      "assembly_id": "PSC_ASSEMBLY_FORM_4B",
+      "iec_ref": "IEC61439-2:2020",
+      "iec_part": 2,
+      "iec_title": "PSC-Assembly Form 4b — busbar, functional unit, and individual-termination separation",
+      "draftsman_id": "PSC_ASSEMBLY_FORM_4B",
+      "application_scope": "Form 4a plus separation between INDIVIDUAL outgoing terminals — each outgoing conductor is in its own compartment. Highest cost, highest maintainability and arc-flash containment.",
+      "rated_quantities": {
+        "Ue_V":      [230, 400, 690, 1000],
+        "Ui_V":      [1000],
+        "Uimp_kV":   [4, 6, 8, 12],
+        "In_A":      [800, 1250, 1600, 2000, 2500, 3200, 4000, 5000, 6300],
+        "Icw_kA_1s": [36, 50, 65, 80, 100],
+        "Ipk_kA":    [75, 105, 143, 176, 220]
+      },
+      "form_separation": "4b",
+      "ip_default": "IP4X (front), IP54 (enclosure)",
+      "ik_default": "IK10",
+      "mandatory_characteristics": [
+        "rated_operational_voltage_Ue",
+        "rated_insulation_voltage_Ui",
+        "rated_impulse_withstand_Uimp",
+        "rated_current_In",
+        "rated_short_time_withstand_Icw",
+        "rated_peak_withstand_Ipk",
+        "rated_frequency_fn",
+        "ip_code",
+        "ik_code",
+        "form_separation",
+        "internal_arc_classification"
+      ],
+      "verification_clauses": [
+        "10.2 strength",
+        "10.3 IP",
+        "10.4 clearances/creepage",
+        "10.5 electric shock protection",
+        "10.6 incorporation of switching/protective devices",
+        "10.7 internal electrical circuits",
+        "10.8 terminals for external conductors",
+        "10.9 dielectric properties",
+        "10.10 temperature rise verification",
+        "10.11 short-circuit withstand verification",
+        "10.13 mechanical operation"
+      ],
+      "drawn_as": ["DB_MAIN"],
+      "typical_components": ["ACB_3P", "ACB_4P", "MCCB_3P", "BUSBAR_3PH", "CT_METERING", "MULTIFUNCTION_METER", "SPD_TYPE1", "SPD_TYPE2"],
+      "application_examples": [
+        "Nuclear safety LV boards",
+        "Critical-process petrochemical/offshore mains",
+        "Major hospital theatre/ICU primary distribution",
+        "Tier IV data centre mains"
+      ],
+      "related_iec_60364": ["IEC60364-4-43", "IEC60364-5-53", "IEC60364-6", "IEC60364-7-710"],
+      "related_bs_7671": ["Section 537", "Section 710"],
+      "usage_notes": "Form 4b is rare — specify only where the cost premium is justified by the regulatory/operational availability requirement. Combined with IAC classification, it provides the highest practical arc-flash and live-work protection.",
+      "related_assemblies": ["PSC_ASSEMBLY_FORM_4A"]
+    }
+  ]
+}
