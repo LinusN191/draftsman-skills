@@ -1,0 +1,46 @@
+# Eval 04 — TT system with soil_type unknown — generator must request, not invent
+# Category: missing_input
+
+id: eval-04-missing-soil-resistivity
+category: missing_input
+severity: high
+description: |
+  TT system. Engineer has not declared soil_type or electrode_measured_ra_ohm.
+  The generator must NOT invent a value. It must either:
+  (a) emit a compliance flag asking the engineer to provide soil data and Ra measurement, OR
+  (b) emit electrodes[0].tool_call_pending: true with a clear note that Ra is required.
+
+inputs:
+  jurisdiction: "GB"
+  earthing_system_declared: "TT"
+  supply_voltage_v: 230
+  ze_ohm_declared: null
+  electrode_target_ra_ohm: 100
+  electrode_measured_ra_ohm: null
+  electrode_arrangement: null
+  soil_type: null
+  water_service_metallic: false
+  gas_service_metallic: false
+  extraneous_parts: []
+  met_location: "service intake cupboard"
+  supplementary_bonding_required_locations: []
+  consumed_intents:
+    - { intent_type: "db-layout", intent_version: "1.0.0", produced_by: "electrical/db-layout/v1.0.0", payload_ref: "test-fixtures/db-layout-eval04.json" }
+
+assertions:
+  - kind: schema_valid
+    schema: "earthing-ir.schema.json"
+  - kind: jsonpath_present
+    path: "$.compliance_summary.flags[*]"
+    note: "Generator must emit at least one compliance flag for missing soil/Ra data"
+  - kind: jsonpath_contains_substring
+    path: "$.compliance_summary.flags[*].code"
+    substring: "ELECTRODE"
+  - kind: no_invented_values
+    paths_must_be_null_or_pending:
+      - "$.electrodes[0].ra_measured_ohm"
+      - "$.electrodes[0].soil_resistivity_ohm_m"
+    or_tool_call_pending: true
+    note: "Generator must not invent soil data"
+
+expected_status: "pass"
