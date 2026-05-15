@@ -1,0 +1,185 @@
+{
+  "_title": "NFPA 70 Chapter 4 — Equipment for General Use",
+  "_chapter": 4,
+  "_version": "1.0.0",
+  "_note": "Light Ch 4 articles inline. Arts 408 (panelboards), 430 (motors), 450 (transformers) have dedicated per-article files — pointers only.",
+  "articles": [
+    {
+      "article_id": "ART_400",
+      "nec_ref": "NFPA 70:2023 Article 400",
+      "chapter": 4,
+      "article_number": 400,
+      "article_title": "Flexible Cords and Flexible Cables",
+      "scope": "Flexible cord types (Table 400.4), uses permitted (400.10), uses NOT permitted (400.12 — common violation source).",
+      "applies_to": ["flexible_cords", "portable_equipment", "pendant_drops"],
+      "key_sections": [
+        {"section": "400.10", "title": "Uses Permitted", "summary": "Pendants, fixtures, portable equipment, elevator cables, hoist/crane, prevention of transmission of noise/vibration, removable equipment, identified appliances"},
+        {"section": "400.12", "title": "Uses Not Permitted", "summary": "Substitute for fixed wiring, run through walls/floors/ceilings/doors, attached to building surfaces, concealed, in raceways (with limited exceptions)"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {},
+      "common_errors": ["Using SO/SJOOW flexible cord as fixed wiring — prohibited by 400.12(1) and frequent inspection failure"],
+      "drawn_as": [],
+      "related_iec_60364": ["IEC 60364-5-52 Clause 521.9 (Flexible cables)"],
+      "divergence_notes": "NEC restricts flexible cord use much more tightly than IEC; IEC permits flexible cables in fixed wiring with conditions.",
+      "related_bs_7671": [],
+      "usage_notes": "Read 400.12 first. If the application doesn't match 400.10 exactly, it's prohibited.",
+      "related_articles": ["ART_410", "ART_422"]
+    },
+    {
+      "article_id": "ART_404",
+      "nec_ref": "NFPA 70:2023 Article 404",
+      "chapter": 4,
+      "article_number": 404,
+      "article_title": "Switches",
+      "scope": "Snap switches, dimmers, transfer switches (≤1000 V) — installation, position, ratings, identification.",
+      "applies_to": ["switches", "dimmers", "transfer_switches"],
+      "key_sections": [
+        {"section": "404.2(C)", "title": "Switches Controlling Lighting Loads", "summary": "Grounded conductor (neutral) required at switch box for control devices needing one (most occupancy sensors, dimmers); exceptions for switch loops in existing dwellings"},
+        {"section": "404.9",   "title": "Provisions for General-Use Snap Switches", "summary": "Switches mounted in metal boxes must be effectively grounded"},
+        {"section": "404.14",  "title": "Rating and Use of Snap Switches", "summary": "Switch ratings — AC general-use (40A 277V), AC-DC general-use, motor circuit (Type V), heater"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {},
+      "common_errors": ["Routing a switch loop without the neutral conductor in new construction — 404.2(C) requires neutral at virtually every switch box"],
+      "drawn_as": ["SWITCH_1WAY", "SWITCH_2WAY", "DIMMER_SWITCH"],
+      "related_iec_60364": ["IEC 60364-5-53 (Switchgear and controlgear)"],
+      "divergence_notes": "NEC 404.2(C) neutral-at-switch-box rule (added in 2011) has no IEC equivalent; IEC does not require neutral at every switch.",
+      "related_bs_7671": [],
+      "usage_notes": "Specify neutral at every switch box on new-construction drawings unless one of the four exceptions in 404.2(C) clearly applies.",
+      "related_articles": ["ART_406", "ART_410"]
+    },
+    {
+      "article_id": "ART_406",
+      "nec_ref": "NFPA 70:2023 Article 406",
+      "chapter": 4,
+      "article_number": 406,
+      "article_title": "Receptacles, Cord Connectors, and Attachment Plugs",
+      "scope": "Receptacle ratings, types (15A/20A/30A/50A configurations per NEMA WD-6), GFCI/AFCI compliance via the receptacle, tamper-resistant (TR) requirements (406.12), weather-resistant (WR) (406.9), countertop placement.",
+      "applies_to": ["receptacles", "outlets", "tamper_resistance", "weather_resistance"],
+      "key_sections": [
+        {"section": "406.4",  "title": "General Installation Requirements", "summary": "Mounting, ratings, identification"},
+        {"section": "406.9",  "title": "Receptacles in Damp or Wet Locations", "summary": "Damp = listed for damp/wet; wet = listed for wet + cover that maintains weatherproof when plug inserted (in-use cover)"},
+        {"section": "406.12", "title": "Tamper-Resistant Receptacles (TR)", "summary": "All 125 V and 250 V, 15A/20A receptacles in dwelling units, child care, preschool, classroom, waiting rooms, hotels, dormitories MUST be tamper-resistant"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {},
+      "common_errors": ["Specifying standard (non-TR) receptacles in dwelling units — 406.12 requires TR in every receptacle outlet"],
+      "drawn_as": ["SOCKET_OUTLET_DUPLEX", "SOCKET_OUTLET_GFCI"],
+      "related_iec_60364": ["IEC 60364-5-53 Clause 553 (Plugs and socket-outlets)"],
+      "divergence_notes": "NEC TR receptacle requirement (406.12) has no IEC equivalent; IEC relies on socket-design standards (BS 1363 shutters, Schuko safety, etc.) and does not have a separate 'tamper-resistant' classification.",
+      "related_bs_7671": [],
+      "usage_notes": "Default to TR on all dwelling-unit outlets; default to WR + in-use cover for any outdoor receptacle.",
+      "related_articles": ["ART_210", "ART_404", "ART_680"]
+    },
+    {
+      "article_id": "ART_410",
+      "nec_ref": "NFPA 70:2023 Article 410",
+      "chapter": 4,
+      "article_number": 410,
+      "article_title": "Luminaires, Lampholders, and Lamps",
+      "scope": "Luminaire installation — locations (wet/damp), in clothes closets (410.16), above bathtubs (410.10(D)), recessed (410.110-130), poles (410.30).",
+      "applies_to": ["luminaires", "clothes_closets", "bathtub_zones", "recessed_fixtures", "lighting_poles"],
+      "key_sections": [
+        {"section": "410.10(D)","title": "Luminaires in Bathtub and Shower Areas", "summary": "No luminaire within 3 ft horizontal and 8 ft vertical of bathtub rim/shower stall threshold unless wet-listed"},
+        {"section": "410.16",   "title": "Luminaires in Clothes Closets", "summary": "Permitted types/locations — surface fluorescent/LED on wall or ceiling outside storage volume OK; incandescent prohibited within storage zone"},
+        {"section": "410.110+", "title": "Recessed Luminaires (Part XII)", "summary": "Type IC for direct contact with insulation; Type non-IC requires 3-in clearance from insulation; thermal protection per UL 1598"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {},
+      "common_errors": ["Specifying non-IC recessed luminaires in insulated ceiling — fire hazard; use IC-rated for direct contact"],
+      "drawn_as": ["LUMINAIRE_CEILING", "LUMINAIRE_RECESSED", "LUMINAIRE_WALL"],
+      "related_iec_60364": ["IEC 60364-7-701 (Bath and shower locations)"],
+      "divergence_notes": "NEC bathtub zone (3 ft × 8 ft per 410.10(D)) differs from IEC 60364-7-701 zones (Zone 0, 1, 2 with specific dimensions and IP requirements). NEC has no explicit IPX rating in the bath zone — relies on 'damp' / 'wet' listing.",
+      "related_bs_7671": [],
+      "usage_notes": "On bath/shower designs, default to wet-listed luminaires in the 3-ft × 8-ft envelope.",
+      "related_articles": ["ART_404", "ART_680"]
+    },
+    {
+      "article_id": "ART_422",
+      "nec_ref": "NFPA 70:2023 Article 422",
+      "chapter": 4,
+      "article_number": 422,
+      "article_title": "Appliances",
+      "scope": "Fastened-in-place and cord-connected appliances — branch-circuit sizing (422.10), disconnect (422.30+), GFCI for specific appliances (422.5: vending machines, drinking fountains, dishwashers, etc.).",
+      "applies_to": ["appliances", "branch_circuit_sizing", "disconnect"],
+      "key_sections": [
+        {"section": "422.5",  "title": "GFCI Protection for Personnel", "summary": "Listed appliances requiring GFCI (per their listing) — vending machines, drinking fountains, dishwashers, etc."},
+        {"section": "422.10", "title": "Branch-Circuit Rating", "summary": "Individual branch circuit ≥ 125% of nameplate for continuous-duty appliance; ≥ 100% for non-continuous"},
+        {"section": "422.30", "title": "Disconnecting Means — General", "summary": "Each appliance must have a disconnect"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {},
+      "common_errors": ["Sizing appliance circuit at 100% of nameplate when appliance is continuous-duty — must be 125% per 422.10(A)(1)"],
+      "drawn_as": [],
+      "related_iec_60364": ["IEC 60364-5-55 (Other equipment)"],
+      "divergence_notes": "NEC 125% continuous-duty multiplier is explicit and prescriptive; IEC handles via cable derating + circuit-rated-In selection.",
+      "related_bs_7671": [],
+      "usage_notes": "Always confirm continuous-duty vs non-continuous before sizing the branch circuit.",
+      "related_articles": ["ART_210", "ART_440"]
+    },
+    {
+      "article_id": "ART_440",
+      "nec_ref": "NFPA 70:2023 Article 440",
+      "chapter": 4,
+      "article_number": 440,
+      "article_title": "Air-Conditioning and Refrigerating Equipment",
+      "scope": "Hermetic refrigerant motor-compressor branch circuits — rated-load current (RLA), short-circuit ground-fault protection, conductor sizing (440.32-33), disconnect within sight (440.14).",
+      "applies_to": ["ac_equipment", "refrigeration", "compressors"],
+      "key_sections": [
+        {"section": "440.14", "title": "Location of Disconnect", "summary": "Disconnect within sight from and readily accessible to the AC equipment"},
+        {"section": "440.22", "title": "Application and Selection of Short-Circuit Ground-Fault Protection", "summary": "OCPD selection — up to 175% of RLA + branch-circuit selection current (BCSC); 225% if 175% trips on start"},
+        {"section": "440.32", "title": "Single Motor-Compressor", "summary": "Conductor ampacity ≥ 125% of RLA or branch-circuit selection current (whichever is greater)"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {},
+      "common_errors": ["Using full-load amps (FLA) from a generic motor table for a hermetic compressor — Art 440 requires RLA from the equipment nameplate"],
+      "drawn_as": ["AC_OUTDOOR_UNIT"],
+      "related_iec_60364": ["IEC 60364-5-55 Clause 559 (Luminaires and lighting installations) — peripheral relevance only"],
+      "divergence_notes": "Art 440 is NEC-specific: the 'hermetic refrigerant motor-compressor' construct and the RLA/BCSC dual-rating system have no IEC equivalent; IEC sizes via standard motor-circuit rules (similar to NEC Art 430).",
+      "related_bs_7671": [],
+      "usage_notes": "Always size from nameplate RLA, not generic FLA. Confirm disconnect is within sight (most common AC inspection failure).",
+      "related_articles": ["ART_430", "ART_210"]
+    },
+    {
+      "article_id": "ART_480",
+      "nec_ref": "NFPA 70:2023 Article 480",
+      "chapter": 4,
+      "article_number": 480,
+      "article_title": "Stationary Standby Batteries",
+      "scope": "Storage batteries (lead-acid, alkaline, lithium-ion) for stationary applications — battery rooms, ventilation, disconnect, charging.",
+      "applies_to": ["batteries", "ups_batteries", "ess_subset"],
+      "key_sections": [
+        {"section": "480.6", "title": "Battery Locations", "summary": "Ventilation per 480.10, working space, racks, spill containment for flooded lead-acid"},
+        {"section": "480.7", "title": "Direct-Current Disconnect", "summary": "DC disconnect required; lockable in OFF position"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {},
+      "common_errors": ["Treating Art 480 as the only battery rule for ESS — for ESS systems ≥1 kWh, Art 706 (Energy Storage Systems) applies in addition"],
+      "drawn_as": ["BATTERY", "UPS"],
+      "related_iec_60364": ["IEC 60364-5-55 (Other equipment)", "IEC 62485-2 (Battery safety)"],
+      "divergence_notes": "Art 480 covers stationary lead-acid + alkaline + Li-ion; Art 706 (Energy Storage Systems) layered on top for ESS. IEC handles via IEC 62485-2 (separate standard) referenced from IEC 60364.",
+      "related_bs_7671": [],
+      "usage_notes": "For ESS designs, read 480 + 706 together. UPS systems generally fall under 480 alone.",
+      "related_articles": ["ART_700", "ART_701", "ART_702"]
+    },
+    {
+      "article_number": 408,
+      "article_title": "Switchboards, Switchgear, and Panelboards",
+      "scope": "Panelboard ratings, classification, 42-circuit rule, spacings, working clearances.",
+      "full_content": "art408-panelboards.json"
+    },
+    {
+      "article_number": 430,
+      "article_title": "Motors, Motor Circuits, and Controllers",
+      "scope": "Motor circuit conductor sizing, OCPD, overload, disconnect, MCC.",
+      "full_content": "art430-motors.json"
+    },
+    {
+      "article_number": 450,
+      "article_title": "Transformers and Transformer Vaults",
+      "scope": "Transformer overcurrent protection, primary/secondary, vault, ventilation.",
+      "full_content": "art450-transformers.json"
+    }
+  ]
+}
