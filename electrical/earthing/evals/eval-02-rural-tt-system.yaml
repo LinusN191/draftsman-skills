@@ -1,0 +1,57 @@
+# Eval 02 — Rural UK dwelling, TT (no PME), all circuits need RCD
+# Category: edge_case
+
+id: eval-02-rural-tt-system
+category: edge_case
+severity: critical
+description: |
+  Rural UK farm cottage. DNO has declined to provide PME earth. Installation is TT
+  with a local rod electrode. Soil is loam, engineer declares Ra=85Ω after installation.
+  Every final circuit must have RCD per BS 7671 411.5.3 to meet disconnection time.
+
+inputs:
+  jurisdiction: "GB"
+  earthing_system_declared: "TT"
+  supply_voltage_v: 230
+  ze_ohm_declared: 85.0
+  electrode_target_ra_ohm: 100
+  electrode_measured_ra_ohm: 85.0
+  electrode_arrangement: "single_rod_1200mm_copper_clad"
+  soil_type: "loam"
+  water_service_metallic: false
+  gas_service_metallic: true
+  extraneous_parts:
+    - { kind: "gas_service_entry", location: "kitchen utility" }
+  met_location: "boot room"
+  supplementary_bonding_required_locations: []
+  consumed_intents:
+    - { intent_type: "db-layout", intent_version: "1.0.0", produced_by: "electrical/db-layout/v1.0.0", payload_ref: "test-fixtures/db-layout-eval02.json" }
+
+assertions:
+  - kind: schema_valid
+    schema: "earthing-ir.schema.json"
+  - kind: jsonpath_equals
+    path: "$.earthing_system"
+    expected: "TT"
+  - kind: jsonpath_count_gte
+    path: "$.electrodes[*]"
+    minimum: 1
+  - kind: jsonpath_lte
+    path: "$.electrodes[0].ra_measured_ohm"
+    maximum: 100
+    note: "Ra below target"
+  - kind: jsonpath_all_equals
+    path: "$.circuits[*].rcd_required"
+    expected: true
+    note: "TT requires RCD on every circuit"
+  - kind: invariant_passes
+    invariant: "INV-6"
+    note: "RCD requirement check"
+  - kind: clause_cited
+    clause_pattern: "BS 7671:2018\\+A3 Reg 411\\.5\\.3"
+    minimum_count: 1
+  - kind: tool_call_pending_marked
+    path: "$.electrodes[0]"
+    note: "calc.electrode_resistance is deferred — engineer-provided Ra accepted with pending flag"
+
+expected_status: "pass"
