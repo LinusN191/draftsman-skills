@@ -1,0 +1,728 @@
+{
+  "_title": "IEC 60617 Part 11 — Architectural and topographical installation plans and diagrams",
+  "_iec_part": 11,
+  "_version": "1.0.0",
+  "_note": "Part 11 symbols are plan-view (top-down) representations used on architectural floor plans, not schematic line-diagrams. Terminals are notional (cable entry points) rather than electrical schematic terminals.",
+  "symbols": [
+    {
+      "symbol_id": "DB_GENERAL",
+      "iec_ref": "IEC60617-11-04-01",
+      "iec_part": 11,
+      "iec_description": "Distribution board (general)",
+      "draftsman_id": "DB_GENERAL",
+      "category": "architectural",
+      "display_name": "Distribution board (general)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-30, -20, 30, 20],
+        "path": "M -30 -20 L 30 -20 L 30 20 L -30 20 Z M -30 0 L 30 0",
+        "terminals": {"cable_entry": [0, 20]}
+      },
+      "variants": ["DB_MAIN", "DB_SUB", "CONSUMER_UNIT"],
+      "annotation_fields": ["board_id", "rated_A", "ip_rating"],
+      "usage_notes": "Generic distribution board — rectangle with horizontal divider line. Annotate board ID and rating.",
+      "related_symbols": ["DB_MAIN", "DB_SUB", "CONSUMER_UNIT"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "DB_MAIN",
+      "iec_ref": "IEC60617-11-04-02",
+      "iec_part": 11,
+      "iec_description": "Main distribution board / main switchboard",
+      "draftsman_id": "DB_MAIN",
+      "category": "architectural",
+      "display_name": "Main LV switchboard (MSB)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-40, -25, 40, 25],
+        "path": "M -40 -25 L 40 -25 L 40 25 L -40 25 Z M -40 0 L 40 0 M -40 -12 L 40 -12 M -40 12 L 40 12",
+        "terminals": {"incoming": [-40, 0], "outgoing_1": [40, -12], "outgoing_2": [40, 0], "outgoing_3": [40, 12]}
+      },
+      "variants": ["DB_GENERAL", "DB_SUB"],
+      "annotation_fields": ["board_id", "rated_A", "Icw_kA", "form_separation"],
+      "usage_notes": "Main LV switchboard — larger rectangle with multiple horizontal dividers indicating busbar and panel sections. Annotate form separation (Form 2/3/4 to IEC 61439-2).",
+      "related_symbols": ["DB_GENERAL", "DB_SUB", "ACB_3P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CONSUMER_UNIT",
+      "iec_ref": "IEC60617-11-04-03",
+      "iec_part": 11,
+      "iec_description": "Consumer unit / domestic distribution board",
+      "draftsman_id": "CONSUMER_UNIT",
+      "category": "architectural",
+      "display_name": "Consumer unit",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -15, 25, 15],
+        "path": "M -25 -15 L 25 -15 L 25 15 L -25 15 Z M -25 0 L 25 0",
+        "terminals": {"incoming": [-25, 0], "outgoing": [25, 0]}
+      },
+      "variants": ["DB_GENERAL"],
+      "annotation_fields": ["board_id", "way_count"],
+      "usage_notes": "Domestic consumer unit (smaller DB form). Annotate number of ways and main switch rating. Compliant with BS EN 61439-3.",
+      "related_symbols": ["DB_GENERAL", "RCBO_1P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "DB_SUB",
+      "iec_ref": "IEC60617-11-04-04",
+      "iec_part": 11,
+      "iec_description": "Sub-distribution board",
+      "draftsman_id": "DB_SUB",
+      "category": "architectural",
+      "display_name": "Sub-distribution board (SDB)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-30, -20, 30, 20],
+        "path": "M -30 -20 L 30 -20 L 30 20 L -30 20 Z M -30 0 L 30 0 M -25 -10 L 25 -10",
+        "terminals": {"incoming": [-30, 0], "outgoing": [30, 0]}
+      },
+      "variants": ["DB_MAIN", "DB_GENERAL"],
+      "annotation_fields": ["board_id", "rated_A"],
+      "usage_notes": "Sub-distribution board — fed from MSB or another SDB. Distinct from main board by smaller size and single internal divider.",
+      "related_symbols": ["DB_MAIN", "DB_GENERAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "PANEL_GENERATOR",
+      "iec_ref": "IEC60617-11-04-05",
+      "iec_part": 11,
+      "iec_description": "Generator control panel",
+      "draftsman_id": "PANEL_GENERATOR",
+      "category": "architectural",
+      "display_name": "Generator control panel",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-30, -20, 30, 20],
+        "path": "M -30 -20 L 30 -20 L 30 20 L -30 20 Z M -10 -10 L 10 -10 L 10 10 L -10 10 Z M -15 -5 L -5 -5 M 5 -5 L 15 -5",
+        "terminals": {"incoming": [-30, 0], "outgoing": [30, 0]}
+      },
+      "variants": ["DB_MAIN", "PANEL_UPS"],
+      "annotation_fields": ["board_id", "rating_kVA"],
+      "usage_notes": "Generator control panel — rectangle with internal circle/box indicating generator association. Annotate generator rating.",
+      "related_symbols": ["DB_MAIN", "GENERATOR_GENERAL", "ATS_2WAY"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "PANEL_UPS",
+      "iec_ref": "IEC60617-11-04-06",
+      "iec_part": 11,
+      "iec_description": "UPS control panel",
+      "draftsman_id": "PANEL_UPS",
+      "category": "architectural",
+      "display_name": "UPS panel",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-30, -20, 30, 20],
+        "path": "M -30 -20 L 30 -20 L 30 20 L -30 20 Z M -15 -10 L 15 -10 L 15 10 L -15 10 Z M -10 0 L 10 0",
+        "terminals": {"incoming": [-30, 0], "outgoing": [30, 0]}
+      },
+      "variants": ["PANEL_GENERATOR", "DB_MAIN"],
+      "annotation_fields": ["board_id", "rating_kVA", "autonomy_min"],
+      "usage_notes": "UPS panel — rectangle with internal box indicating UPS association.",
+      "related_symbols": ["UPS", "DB_MAIN"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SOCKET_SINGLE",
+      "iec_ref": "IEC60617-11-15-01",
+      "iec_part": 11,
+      "iec_description": "Single socket outlet",
+      "draftsman_id": "SOCKET_SINGLE",
+      "category": "architectural",
+      "display_name": "Single socket outlet",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-20, -20, 20, 20],
+        "path": "M 20 0 A 20 20 0 1 0 -20 0 L 20 0 Z M 0 -5 L 0 5 M -8 0 L 8 0",
+        "terminals": {"supply": [0, 20]}
+      },
+      "variants": ["SOCKET_DOUBLE", "SOCKET_SWITCHED_SINGLE", "SOCKET_INDUSTRIAL_IP44", "SOCKET_3PHASE"],
+      "annotation_fields": ["rated_A", "type"],
+      "usage_notes": "Plan-view single socket outlet — half-circle facing the wall. Two parallel marks indicate the L+N pins. Annotate rated current and type (e.g. 13A BS1363, 16A Schuko).",
+      "related_symbols": ["SOCKET_DOUBLE", "SOCKET_SWITCHED_SINGLE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SOCKET_DOUBLE",
+      "iec_ref": "IEC60617-11-15-02",
+      "iec_part": 11,
+      "iec_description": "Double socket outlet",
+      "draftsman_id": "SOCKET_DOUBLE",
+      "category": "architectural",
+      "display_name": "Double socket outlet",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-30, -20, 30, 20],
+        "path": "M 30 0 A 30 30 0 1 0 -30 0 L 30 0 Z M -15 -5 L -15 5 M -8 -5 L -8 5 M 8 -5 L 8 5 M 15 -5 L 15 5",
+        "terminals": {"supply": [0, 20]}
+      },
+      "variants": ["SOCKET_SINGLE", "SOCKET_SWITCHED_DOUBLE"],
+      "annotation_fields": ["rated_A", "type"],
+      "usage_notes": "Plan-view double socket outlet — wider half-circle with two pairs of pin marks.",
+      "related_symbols": ["SOCKET_SINGLE", "SOCKET_SWITCHED_DOUBLE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SOCKET_SWITCHED_SINGLE",
+      "iec_ref": "IEC60617-11-15-03",
+      "iec_part": 11,
+      "iec_description": "Switched single socket outlet",
+      "draftsman_id": "SOCKET_SWITCHED_SINGLE",
+      "category": "architectural",
+      "display_name": "Switched single socket",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-20, -25, 20, 20],
+        "path": "M 20 0 A 20 20 0 1 0 -20 0 L 20 0 Z M 0 -5 L 0 5 M -8 0 L 8 0 M 0 -25 L 0 -15 M -5 -20 L 5 -25",
+        "terminals": {"supply": [0, 20]}
+      },
+      "variants": ["SOCKET_SINGLE"],
+      "annotation_fields": ["rated_A", "type"],
+      "usage_notes": "Switched single socket — like SOCKET_SINGLE with an additional switch marker above. Standard for UK installations.",
+      "related_symbols": ["SOCKET_SINGLE", "SWITCH_1WAY"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SOCKET_SWITCHED_DOUBLE",
+      "iec_ref": "IEC60617-11-15-04",
+      "iec_part": 11,
+      "iec_description": "Switched double socket outlet",
+      "draftsman_id": "SOCKET_SWITCHED_DOUBLE",
+      "category": "architectural",
+      "display_name": "Switched double socket",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-30, -25, 30, 20],
+        "path": "M 30 0 A 30 30 0 1 0 -30 0 L 30 0 Z M -15 -5 L -15 5 M -8 -5 L -8 5 M 8 -5 L 8 5 M 15 -5 L 15 5 M -10 -25 L -10 -15 M -15 -20 L -5 -25 M 10 -25 L 10 -15 M 5 -20 L 15 -25",
+        "terminals": {"supply": [0, 20]}
+      },
+      "variants": ["SOCKET_DOUBLE", "SOCKET_SWITCHED_SINGLE"],
+      "annotation_fields": ["rated_A", "type"],
+      "usage_notes": "Switched double socket — most common UK domestic / commercial socket. Two switches above the outlets.",
+      "related_symbols": ["SOCKET_DOUBLE", "SOCKET_SWITCHED_SINGLE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SOCKET_INDUSTRIAL_IP44",
+      "iec_ref": "IEC60617-11-15-05",
+      "iec_part": 11,
+      "iec_description": "Industrial socket outlet — IP44",
+      "draftsman_id": "SOCKET_INDUSTRIAL_IP44",
+      "category": "architectural",
+      "display_name": "Industrial socket (IP44, 16A)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -25, 25, 20],
+        "path": "M 25 0 A 25 25 0 1 0 -25 0 L 25 0 Z M 0 -10 L 0 0 M -10 -5 L 10 -5 M -20 -20 L 20 -20",
+        "terminals": {"supply": [0, 20]}
+      },
+      "variants": ["SOCKET_INDUSTRIAL_IP67", "SOCKET_3PHASE"],
+      "annotation_fields": ["rated_A", "voltage_V", "phase_count"],
+      "usage_notes": "Industrial CEE/Commando socket — IP44 splash-proof, 16A or 32A. Bar across the top indicates IP rating. Used in industrial environments, workshops.",
+      "related_symbols": ["SOCKET_INDUSTRIAL_IP67", "SOCKET_3PHASE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SOCKET_INDUSTRIAL_IP67",
+      "iec_ref": "IEC60617-11-15-06",
+      "iec_part": 11,
+      "iec_description": "Industrial socket outlet — IP67",
+      "draftsman_id": "SOCKET_INDUSTRIAL_IP67",
+      "category": "architectural",
+      "display_name": "Industrial socket (IP67, 16A)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -30, 25, 20],
+        "path": "M 25 0 A 25 25 0 1 0 -25 0 L 25 0 Z M 0 -10 L 0 0 M -10 -5 L 10 -5 M -20 -20 L 20 -20 M -20 -25 L 20 -25",
+        "terminals": {"supply": [0, 20]}
+      },
+      "variants": ["SOCKET_INDUSTRIAL_IP44"],
+      "annotation_fields": ["rated_A", "voltage_V", "phase_count"],
+      "usage_notes": "Industrial CEE/Commando socket — IP67 immersion-proof. Double-bar over the top indicates higher IP. For wet/exterior locations.",
+      "related_symbols": ["SOCKET_INDUSTRIAL_IP44"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SOCKET_3PHASE",
+      "iec_ref": "IEC60617-11-15-07",
+      "iec_part": 11,
+      "iec_description": "Three-phase socket outlet",
+      "draftsman_id": "SOCKET_3PHASE",
+      "category": "architectural",
+      "display_name": "3-phase socket outlet",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -25, 25, 20],
+        "path": "M 25 0 A 25 25 0 1 0 -25 0 L 25 0 Z M 0 -10 L 0 0 M -12 -5 L -8 -5 M -2 -5 L 2 -5 M 8 -5 L 12 -5 M -15 -20 L 15 -20",
+        "terminals": {"supply": [0, 20]}
+      },
+      "variants": ["SOCKET_INDUSTRIAL_IP44", "SOCKET_COMMANDO_32A"],
+      "annotation_fields": ["rated_A", "voltage_V"],
+      "usage_notes": "3-phase industrial socket — three pin marks indicating L1/L2/L3 plus N and PE. Annotate 16A, 32A, or 63A rating.",
+      "related_symbols": ["SOCKET_INDUSTRIAL_IP44", "SOCKET_COMMANDO_32A"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SOCKET_COMMANDO_32A",
+      "iec_ref": "IEC60617-11-15-08",
+      "iec_part": 11,
+      "iec_description": "32A industrial Commando socket",
+      "draftsman_id": "SOCKET_COMMANDO_32A",
+      "category": "architectural",
+      "display_name": "Commando socket (32A)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-30, -25, 30, 20],
+        "path": "M 30 0 A 30 30 0 1 0 -30 0 L 30 0 Z M 0 -10 L 0 0 M -15 -5 L -10 -5 M -3 -5 L 3 -5 M 10 -5 L 15 -5 M -20 -20 L 20 -20",
+        "terminals": {"supply": [0, 20]}
+      },
+      "variants": ["SOCKET_3PHASE", "SOCKET_INDUSTRIAL_IP44"],
+      "annotation_fields": ["rated_A", "voltage_V"],
+      "usage_notes": "32A 3-phase + N + PE Commando socket (IEC 60309). Larger than 16A version. Standard for site/workshop power.",
+      "related_symbols": ["SOCKET_3PHASE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "LUMINAIRE_ARCH",
+      "iec_ref": "IEC60617-11-09-01",
+      "iec_part": 11,
+      "iec_description": "Luminaire (architectural plan)",
+      "draftsman_id": "LUMINAIRE_ARCH",
+      "category": "architectural",
+      "display_name": "Luminaire (general, plan)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -25, 25, 25],
+        "path": "M 25 0 A 25 25 0 1 0 -25 0 A 25 25 0 1 0 25 0 Z M 0 -25 L 0 25 M -25 0 L 25 0",
+        "terminals": {"supply": [25, 0]}
+      },
+      "variants": ["LUMINAIRE_EMERGENCY", "LUMINAIRE_RECESSED", "LUMINAIRE_EXTERIOR", "LUMINAIRE_GENERAL"],
+      "annotation_fields": ["lamp_type", "wattage_W", "lumen_output"],
+      "usage_notes": "Architectural-plan luminaire — circle with internal cross. Annotate lamp type (LED, T5, etc.) and rating. The DraftsMan lighting-layout skill uses this as its primary luminaire symbol.",
+      "related_symbols": ["LUMINAIRE_EMERGENCY", "LUMINAIRE_RECESSED", "LUMINAIRE_GENERAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "LUMINAIRE_EMERGENCY",
+      "iec_ref": "IEC60617-11-09-02",
+      "iec_part": 11,
+      "iec_description": "Emergency luminaire",
+      "draftsman_id": "LUMINAIRE_EMERGENCY",
+      "category": "architectural",
+      "display_name": "Emergency luminaire",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -25, 25, 25],
+        "path": "M 25 0 A 25 25 0 1 0 -25 0 A 25 25 0 1 0 25 0 Z M 0 -25 L 0 25 M -25 0 L 25 0 M -10 -10 L 10 -10 L 10 10 L -10 10 Z",
+        "terminals": {"supply": [25, 0]}
+      },
+      "variants": ["LUMINAIRE_ARCH"],
+      "annotation_fields": ["lamp_type", "wattage_W", "duration_min"],
+      "usage_notes": "Emergency luminaire — luminaire symbol with internal square indicating self-contained battery pack. Annotate duration (1h, 3h per BS EN 50172).",
+      "related_symbols": ["LUMINAIRE_ARCH", "BATTERY"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "LUMINAIRE_RECESSED",
+      "iec_ref": "IEC60617-11-09-03",
+      "iec_part": 11,
+      "iec_description": "Recessed luminaire",
+      "draftsman_id": "LUMINAIRE_RECESSED",
+      "category": "architectural",
+      "display_name": "Recessed luminaire",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -25, 25, 25],
+        "path": "M -25 -25 L 25 -25 L 25 25 L -25 25 Z M 0 -25 L 0 25 M -25 0 L 25 0",
+        "terminals": {"supply": [25, 0]}
+      },
+      "variants": ["LUMINAIRE_ARCH"],
+      "annotation_fields": ["lamp_type", "wattage_W", "size_mm"],
+      "usage_notes": "Recessed luminaire — square outline with internal cross. Common for office ceiling panels (e.g. 600×600 LED).",
+      "related_symbols": ["LUMINAIRE_ARCH"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "LUMINAIRE_EXTERIOR",
+      "iec_ref": "IEC60617-11-09-04",
+      "iec_part": 11,
+      "iec_description": "Exterior luminaire",
+      "draftsman_id": "LUMINAIRE_EXTERIOR",
+      "category": "architectural",
+      "display_name": "External luminaire",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -25, 25, 25],
+        "path": "M 25 0 A 25 25 0 1 0 -25 0 A 25 25 0 1 0 25 0 Z M 0 -25 L 0 25 M -25 0 L 25 0 M -32 -32 L -25 -25 M 25 25 L 32 32 M -32 32 L -25 25 M 25 -25 L 32 -32",
+        "terminals": {"supply": [25, 0]}
+      },
+      "variants": ["LUMINAIRE_ARCH"],
+      "annotation_fields": ["lamp_type", "wattage_W", "ip_rating"],
+      "usage_notes": "Exterior luminaire — luminaire symbol with four light-ray marks. Annotate IP rating (IP44 minimum for outdoor).",
+      "related_symbols": ["LUMINAIRE_ARCH"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SWITCH_1WAY",
+      "iec_ref": "IEC60617-11-12-01",
+      "iec_part": 11,
+      "iec_description": "1-way switch",
+      "draftsman_id": "SWITCH_1WAY",
+      "category": "architectural",
+      "display_name": "1-way switch",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-15, -15, 15, 15],
+        "path": "M 15 0 A 15 15 0 1 0 -15 0 A 15 15 0 1 0 15 0 Z M 0 0 L 10 -10",
+        "terminals": {"supply": [-15, 0], "load": [15, 0]}
+      },
+      "variants": ["SWITCH_2WAY", "SWITCH_INTERMEDIATE", "SWITCH_DIMMER"],
+      "annotation_fields": ["rated_A", "tag"],
+      "usage_notes": "Single-pole one-way switch — circle with internal switch blade. Most common wall switch for lighting circuits.",
+      "related_symbols": ["SWITCH_2WAY", "SWITCH_INTERMEDIATE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SWITCH_2WAY",
+      "iec_ref": "IEC60617-11-12-02",
+      "iec_part": 11,
+      "iec_description": "2-way switch (SPDT)",
+      "draftsman_id": "SWITCH_2WAY",
+      "category": "architectural",
+      "display_name": "2-way switch",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-15, -15, 15, 15],
+        "path": "M 15 0 A 15 15 0 1 0 -15 0 A 15 15 0 1 0 15 0 Z M 0 0 L 10 -10 M 0 0 L 10 10",
+        "terminals": {"common": [-15, 0], "way_a": [15, -10], "way_b": [15, 10]}
+      },
+      "variants": ["SWITCH_1WAY", "SWITCH_INTERMEDIATE"],
+      "annotation_fields": ["rated_A", "tag"],
+      "usage_notes": "2-way (SPDT) switch — used in pairs to control a lighting circuit from two locations (e.g. top and bottom of stairs).",
+      "related_symbols": ["SWITCH_1WAY", "SWITCH_INTERMEDIATE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SWITCH_INTERMEDIATE",
+      "iec_ref": "IEC60617-11-12-03",
+      "iec_part": 11,
+      "iec_description": "Intermediate switch (DPDT)",
+      "draftsman_id": "SWITCH_INTERMEDIATE",
+      "category": "architectural",
+      "display_name": "Intermediate switch",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-15, -15, 15, 15],
+        "path": "M 15 0 A 15 15 0 1 0 -15 0 A 15 15 0 1 0 15 0 Z M 0 -10 L 10 -10 M 0 10 L 10 10 M -10 -10 L 0 0 M -10 10 L 0 0",
+        "terminals": {"l_a": [-15, -10], "l_b": [-15, 10], "r_a": [15, -10], "r_b": [15, 10]}
+      },
+      "variants": ["SWITCH_1WAY", "SWITCH_2WAY"],
+      "annotation_fields": ["rated_A", "tag"],
+      "usage_notes": "Intermediate switch — placed between two 2-way switches for three or more switching points (e.g. long corridor with switches at both ends and middle).",
+      "related_symbols": ["SWITCH_2WAY"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SWITCH_DIMMER",
+      "iec_ref": "IEC60617-11-12-04",
+      "iec_part": 11,
+      "iec_description": "Dimmer switch",
+      "draftsman_id": "SWITCH_DIMMER",
+      "category": "architectural",
+      "display_name": "Dimmer switch",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-15, -20, 15, 15],
+        "path": "M 15 0 A 15 15 0 1 0 -15 0 A 15 15 0 1 0 15 0 Z M 0 0 L 10 -10 M -5 -20 L 5 -10",
+        "terminals": {"supply": [-15, 0], "load": [15, 0]}
+      },
+      "variants": ["SWITCH_1WAY"],
+      "annotation_fields": ["rated_W", "dim_type"],
+      "usage_notes": "Dimmer switch — 1-way switch with diagonal arrow indicating variable output. Annotate dim type (trailing-edge, leading-edge, DALI).",
+      "related_symbols": ["SWITCH_1WAY", "VARIABILITY_ARROW"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SENSOR_PIR",
+      "iec_ref": "IEC60617-11-13-01",
+      "iec_part": 11,
+      "iec_description": "PIR occupancy sensor",
+      "draftsman_id": "SENSOR_PIR",
+      "category": "architectural",
+      "display_name": "PIR sensor",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-20, -25, 20, 20],
+        "path": "M 20 0 A 20 20 0 1 0 -20 0 A 20 20 0 1 0 20 0 Z M -15 -10 L 15 -10 L 10 -5 L 15 0 L 10 5 L 15 10 L -15 10 Z",
+        "terminals": {"supply": [0, 20]}
+      },
+      "variants": ["SENSOR_OCCUPANCY", "SENSOR_DAYLIGHT"],
+      "annotation_fields": ["detection_range_m", "function"],
+      "usage_notes": "Passive infrared occupancy sensor — circle with zigzag indicating PIR detection field. Used for energy-saving lighting control.",
+      "related_symbols": ["SENSOR_OCCUPANCY", "SENSOR_DAYLIGHT"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SENSOR_OCCUPANCY",
+      "iec_ref": "IEC60617-11-13-02",
+      "iec_part": 11,
+      "iec_description": "Occupancy sensor (general)",
+      "draftsman_id": "SENSOR_OCCUPANCY",
+      "category": "architectural",
+      "display_name": "Occupancy sensor",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-20, -25, 20, 20],
+        "path": "M 20 0 A 20 20 0 1 0 -20 0 A 20 20 0 1 0 20 0 Z M -10 0 A 10 10 0 1 0 10 0 A 10 10 0 1 0 -10 0 Z",
+        "terminals": {"supply": [0, 20]}
+      },
+      "variants": ["SENSOR_PIR", "SENSOR_DAYLIGHT"],
+      "annotation_fields": ["sensor_type", "detection_range_m"],
+      "usage_notes": "Generic occupancy sensor — circle with inner circle. Use when sensor type is not PIR-specific (e.g. ultrasonic, dual-tech). PIR-specific = SENSOR_PIR.",
+      "related_symbols": ["SENSOR_PIR"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SENSOR_DAYLIGHT",
+      "iec_ref": "IEC60617-11-13-03",
+      "iec_part": 11,
+      "iec_description": "Daylight / photocell sensor",
+      "draftsman_id": "SENSOR_DAYLIGHT",
+      "category": "architectural",
+      "display_name": "Daylight sensor / photocell",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-20, -25, 20, 20],
+        "path": "M 20 0 A 20 20 0 1 0 -20 0 A 20 20 0 1 0 20 0 Z M -10 -10 L 10 10 M -8 0 A 8 8 0 1 0 8 0 A 8 8 0 1 0 -8 0 Z",
+        "terminals": {"supply": [0, 20]}
+      },
+      "variants": ["SENSOR_OCCUPANCY", "SENSOR_PIR"],
+      "annotation_fields": ["setpoint_lux"],
+      "usage_notes": "Daylight sensor — circle with sun-like marks. Used for automatic lighting control based on ambient light. Required for Part L compliance in many regions.",
+      "related_symbols": ["SENSOR_OCCUPANCY"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "DETECTOR_SMOKE",
+      "iec_ref": "IEC60617-11-14-01",
+      "iec_part": 11,
+      "iec_description": "Smoke detector",
+      "draftsman_id": "DETECTOR_SMOKE",
+      "category": "architectural",
+      "display_name": "Smoke detector",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-20, -20, 20, 20],
+        "path": "M 20 0 A 20 20 0 1 0 -20 0 A 20 20 0 1 0 20 0 Z M 0 -5 L 0 5 M -10 -8 L 10 8 M 10 -8 L -10 8 M -5 -2 L 5 2",
+        "terminals": {"loop_a": [-20, 0], "loop_b": [20, 0]}
+      },
+      "variants": ["DETECTOR_HEAT", "CALL_POINT_MANUAL"],
+      "annotation_fields": ["detector_type", "loop_address"],
+      "usage_notes": "Smoke detector — circle with internal S / cross marker. Annotate detector type (ionisation, optical, multi-sensor) and loop address.",
+      "related_symbols": ["DETECTOR_HEAT", "CALL_POINT_MANUAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "DETECTOR_HEAT",
+      "iec_ref": "IEC60617-11-14-02",
+      "iec_part": 11,
+      "iec_description": "Heat detector",
+      "draftsman_id": "DETECTOR_HEAT",
+      "category": "architectural",
+      "display_name": "Heat detector",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-20, -20, 20, 20],
+        "path": "M 20 0 A 20 20 0 1 0 -20 0 A 20 20 0 1 0 20 0 Z M -8 -8 L 8 -8 L 8 8 L -8 8 Z M 0 -8 L 0 8",
+        "terminals": {"loop_a": [-20, 0], "loop_b": [20, 0]}
+      },
+      "variants": ["DETECTOR_SMOKE"],
+      "annotation_fields": ["detector_type", "loop_address"],
+      "usage_notes": "Heat detector — circle with internal square. Annotate type (fixed temperature, rate-of-rise). Used in kitchens, plant rooms where smoke detector would false-alarm.",
+      "related_symbols": ["DETECTOR_SMOKE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CALL_POINT_MANUAL",
+      "iec_ref": "IEC60617-11-14-03",
+      "iec_part": 11,
+      "iec_description": "Manual call point (fire alarm)",
+      "draftsman_id": "CALL_POINT_MANUAL",
+      "category": "architectural",
+      "display_name": "Manual call point (MCP)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-20, -20, 20, 20],
+        "path": "M -15 -15 L 15 -15 L 15 15 L -15 15 Z M -10 -10 L 10 10 M 10 -10 L -10 10",
+        "terminals": {"loop_a": [-20, 0], "loop_b": [20, 0]}
+      },
+      "variants": ["DETECTOR_SMOKE"],
+      "annotation_fields": ["loop_address"],
+      "usage_notes": "Manual call point — square with internal X. EN 54-11 break-glass type. Required on escape routes.",
+      "related_symbols": ["DETECTOR_SMOKE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "JUNCTION_BOX",
+      "iec_ref": "IEC60617-11-05-01",
+      "iec_part": 11,
+      "iec_description": "Junction box (architectural plan)",
+      "draftsman_id": "JUNCTION_BOX",
+      "category": "architectural",
+      "display_name": "Junction box (plan)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-15, -15, 15, 15],
+        "path": "M -15 -15 L 15 -15 L 15 15 L -15 15 Z M -8 0 L 8 0 M 0 -8 L 0 8",
+        "terminals": {"cable_entry": [0, 15]}
+      },
+      "variants": ["JUNCTION_BOX_CONDUCTOR"],
+      "annotation_fields": ["box_id", "ip_rating"],
+      "usage_notes": "Architectural junction box — square with internal cross. Annotate box ID and IP rating. The plan-view equivalent of the schematic JUNCTION_BOX_CONDUCTOR.",
+      "related_symbols": ["JUNCTION_BOX_CONDUCTOR"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CABLE_ROUTE_GENERAL",
+      "iec_ref": "IEC60617-11-06-01",
+      "iec_part": 11,
+      "iec_description": "Cable route (general)",
+      "draftsman_id": "CABLE_ROUTE_GENERAL",
+      "category": "architectural",
+      "display_name": "Cable route (general)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -3, 50, 3],
+        "path": "M -50 0 L 50 0",
+        "terminals": {"start": [-50, 0], "end": [50, 0]}
+      },
+      "variants": ["CABLE_ROUTE_CONCEALED", "CABLE_ROUTE_SURFACE", "CABLE_ROUTE_OVERHEAD", "CABLE_ROUTE_UNDERGROUND"],
+      "annotation_fields": ["circuit_id", "csa_mm2"],
+      "usage_notes": "Generic cable route on a plan — solid line. Use when route method is not specified or for simplicity.",
+      "related_symbols": ["CABLE_ROUTE_CONCEALED", "CABLE_ROUTE_SURFACE", "CONDUCTOR_SINGLE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CABLE_ROUTE_CONCEALED",
+      "iec_ref": "IEC60617-11-06-02",
+      "iec_part": 11,
+      "iec_description": "Cable route (concealed in wall/ceiling)",
+      "draftsman_id": "CABLE_ROUTE_CONCEALED",
+      "category": "architectural",
+      "display_name": "Concealed cable route",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -3, 50, 3],
+        "path": "M -50 0 L 50 0",
+        "terminals": {"start": [-50, 0], "end": [50, 0]}
+      },
+      "variants": ["CABLE_ROUTE_SURFACE", "CABLE_ROUTE_GENERAL"],
+      "annotation_fields": ["circuit_id"],
+      "usage_notes": "Cable route concealed in wall/ceiling (chased, in conduit). Rendered as dashed line.",
+      "related_symbols": ["CABLE_ROUTE_GENERAL", "CABLE_ROUTE_SURFACE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CABLE_ROUTE_SURFACE",
+      "iec_ref": "IEC60617-11-06-03",
+      "iec_part": 11,
+      "iec_description": "Cable route (surface trunking)",
+      "draftsman_id": "CABLE_ROUTE_SURFACE",
+      "category": "architectural",
+      "display_name": "Surface trunking route",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -5, 50, 5],
+        "path": "M -50 -3 L 50 -3 M -50 3 L 50 3",
+        "terminals": {"start": [-50, 0], "end": [50, 0]}
+      },
+      "variants": ["CABLE_ROUTE_CONCEALED", "TRUNKING"],
+      "annotation_fields": ["circuit_id", "trunking_size"],
+      "usage_notes": "Surface-mounted trunking route — drawn as two parallel solid lines.",
+      "related_symbols": ["TRUNKING", "CABLE_ROUTE_CONCEALED"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CABLE_ROUTE_OVERHEAD",
+      "iec_ref": "IEC60617-11-06-04",
+      "iec_part": 11,
+      "iec_description": "Cable route (overhead)",
+      "draftsman_id": "CABLE_ROUTE_OVERHEAD",
+      "category": "architectural",
+      "display_name": "Overhead cable route",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -10, 50, 5],
+        "path": "M -50 0 L 50 0 M -25 0 L -25 -10 M 25 0 L 25 -10",
+        "terminals": {"start": [-50, 0], "end": [50, 0]}
+      },
+      "variants": ["CABLE_ROUTE_UNDERGROUND", "CONDUCTOR_OVERHEAD"],
+      "annotation_fields": ["circuit_id"],
+      "usage_notes": "Overhead cable route — line with vertical pole markers. Used for site/external runs.",
+      "related_symbols": ["CONDUCTOR_OVERHEAD"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CABLE_ROUTE_UNDERGROUND",
+      "iec_ref": "IEC60617-11-06-05",
+      "iec_part": 11,
+      "iec_description": "Cable route (underground)",
+      "draftsman_id": "CABLE_ROUTE_UNDERGROUND",
+      "category": "architectural",
+      "display_name": "Underground cable route",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -3, 50, 12],
+        "path": "M -50 0 L 50 0 M -25 0 L -25 10 M 25 0 L 25 10",
+        "terminals": {"start": [-50, 0], "end": [50, 0]}
+      },
+      "variants": ["CABLE_ROUTE_OVERHEAD", "CONDUCTOR_UNDERGROUND"],
+      "annotation_fields": ["circuit_id", "depth_mm"],
+      "usage_notes": "Underground / buried cable route — line with downward markers indicating buried position. Annotate burial depth.",
+      "related_symbols": ["CONDUCTOR_UNDERGROUND"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MOTOR_CONNECTION",
+      "iec_ref": "IEC60617-11-08-01",
+      "iec_part": 11,
+      "iec_description": "Motor connection point (architectural)",
+      "draftsman_id": "MOTOR_CONNECTION",
+      "category": "architectural",
+      "display_name": "Motor connection point",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-20, -25, 20, 20],
+        "path": "M 20 0 A 20 20 0 1 0 -20 0 A 20 20 0 1 0 20 0 Z M -8 -8 L 8 -8 M -8 8 L 8 8 M 0 -8 L 0 8",
+        "terminals": {"supply": [0, 20]}
+      },
+      "variants": ["MOTOR_GENERAL", "EV_CHARGING_POINT"],
+      "annotation_fields": ["motor_id", "rating_kW"],
+      "usage_notes": "Plan-view motor connection — circle with internal 'M' marking (drawn as cross-hair). Used to mark where a motor connects to the fixed wiring (e.g. AHU fan, pump set).",
+      "related_symbols": ["MOTOR_INDUCTION", "MOTOR_GENERAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "EV_CHARGING_POINT",
+      "iec_ref": "IEC60617-11-15-10",
+      "iec_part": 11,
+      "iec_description": "Electric vehicle charging point",
+      "draftsman_id": "EV_CHARGING_POINT",
+      "category": "architectural",
+      "display_name": "EV charging point",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-20, -25, 20, 20],
+        "path": "M 20 0 A 20 20 0 1 0 -20 0 A 20 20 0 1 0 20 0 Z M -10 -8 L 10 -8 M -10 -3 L 10 -3 M -3 3 L 3 3 M -3 8 L 3 8 M -10 -8 L -10 -3 M 10 -8 L 10 -3",
+        "terminals": {"supply": [0, 20]}
+      },
+      "variants": ["SOCKET_3PHASE", "MOTOR_CONNECTION"],
+      "annotation_fields": ["rated_A", "mode", "rated_kW"],
+      "usage_notes": "EV charging point — circle with charging plug indicator. Annotate Mode (1-4 per IEC 61851), rated current and kW. Required cable sizing = 100% of EVSE rated current (no diversity).",
+      "related_symbols": ["SOCKET_3PHASE"],
+      "generating_shared_symbol": true
+    }
+  ]
+}
