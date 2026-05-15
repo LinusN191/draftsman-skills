@@ -1,25 +1,25 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "electrical/db-layout/schemas/db-layout-intent.schema.json",
-  "title": "DB Layout Intent",
-  "description": "Stable subset of the db-layout IR that downstream skills (earthing, cable-containment, panel-schedule, riser) consume. Wrapped in shared/schemas/core/intent.schema.json envelope at runtime. Forward-compat: optional fields may be added freely; required fields require a major intent_version bump.",
+  "title": "DB Layout Intent (Single Board)",
+  "description": "Stable subset of the db-layout IR for a single board. Consumed by panel-schedule, riser, cable-containment. Wrapped in shared/schemas/core/intent.schema.json envelope at runtime. Forward-compat: optional fields may be added freely; required-field changes require a major intent_version bump.",
   "type": "object",
   "required": ["db_id", "incoming_supply", "circuits"],
   "additionalProperties": false,
   "properties": {
     "db_id": {
       "type": "string",
-      "pattern": "^[A-Z][A-Z0-9-]{1,15}$",
-      "description": "Board designation, e.g. 'DB-L1', 'MSB-01'"
+      "pattern": "^[A-Z][A-Z0-9-]{1,15}$"
     },
     "incoming_supply": {
       "type": "object",
       "required": ["voltage_v", "phase_arrangement", "supply_rating_a"],
+      "additionalProperties": false,
       "properties": {
-        "voltage_v":         { "type": "integer", "enum": [230, 400, 415] },
-        "phase_arrangement": { "enum": ["single_phase", "TPN", "TPN_plus_E"] },
+        "voltage_v":         { "type": "integer", "enum": [120, 208, 230, 240, 400, 415, 480] },
+        "phase_arrangement": { "enum": ["single_phase", "single_phase_split", "TPN", "TPN_plus_E"] },
         "supply_rating_a":   { "type": "integer", "minimum": 6, "maximum": 6300 },
-        "fed_from":          { "type": "string", "description": "Upstream board designation or 'MAIN'" },
+        "fed_from":          { "type": "string" },
         "supply_class":      { "enum": ["essential", "non_essential", "ups", "ups_plus_essential"] }
       }
     },
@@ -31,34 +31,28 @@
         "required": ["id", "module_id", "breaker_rating_a", "breaker_curve"],
         "additionalProperties": false,
         "properties": {
-          "id":               { "type": "string", "description": "Stable circuit id, e.g. 'L1-Z2'" },
-          "module_id":        { "type": "string", "description": "Way number on the DB face, e.g. 'W1', 'W2'" },
-          "breaker_rating_a": { "type": "integer", "enum": [6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 400, 630, 800, 1250, 1600] },
-          "breaker_curve":    { "enum": ["B", "C", "D"] },
-          "rcd_protected":    { "type": "boolean" },
-          "rcd_type":         { "enum": ["AC", "A", "F", "B"] },
+          "id":                 { "type": "string" },
+          "module_id":          { "type": "string" },
+          "breaker_rating_a":   { "type": "integer", "enum": [6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 400, 630, 800, 1250, 1600] },
+          "breaker_curve":      { "enum": ["B", "C", "D"] },
+          "rcd_protected":      { "type": "boolean" },
+          "rcd_type":           { "enum": ["AC", "A", "F", "B"] },
           "rcd_sensitivity_ma": { "type": "integer", "enum": [10, 30, 100, 300, 500] },
-          "cable_csa_mm2":    { "type": "number" },
-          "cable_cores":      { "type": "integer", "minimum": 2, "maximum": 5 },
-          "voltage_class":    { "enum": ["LV_power", "ELV_control", "comms_data", "fire_alarm", "emergency_lighting"] },
+          "cable_csa_mm2":      { "type": "number" },
+          "cable_csa_awg":      { "type": "string" },
+          "cable_cores":        { "type": "integer", "minimum": 2, "maximum": 5 },
+          "voltage_class":      { "enum": ["LV_power", "ELV_control", "comms_data", "fire_alarm", "emergency_lighting"] },
           "downstream_load_kw": { "type": "number", "minimum": 0 },
           "approximate_route_length_m": { "type": "number", "exclusiveMinimum": 0 }
         }
       }
     },
-    "spare_ways": {
-      "type": "integer",
-      "minimum": 0,
-      "description": "Number of unused ways on the DB"
-    },
-    "form_separation": {
-      "enum": ["1", "2a", "2b", "3a", "3b", "4a", "4b"],
-      "description": "IEC 61439-2 Form code; relevant for downstream IAC and arc-flash analysis"
-    },
-    "icw_ka_1s": {
-      "type": "number",
-      "minimum": 0,
-      "description": "Rated short-time withstand current at 1 s — drives downstream selectivity coordination"
+    "spare_ways":      { "type": "integer", "minimum": 0 },
+    "form_separation": { "enum": ["1", "2a", "2b", "3a", "3b", "4a", "4b"] },
+    "icw_ka_1s":       { "type": "number", "minimum": 0 },
+    "selectivity_tool_call_pending": {
+      "type": "boolean",
+      "description": "true if any cascade verification in the source IR was deferred to a future fault-level skill invocation"
     }
   }
 }
