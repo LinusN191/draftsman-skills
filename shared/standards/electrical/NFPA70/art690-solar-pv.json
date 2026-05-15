@@ -1,0 +1,55 @@
+{
+  "_title": "NFPA 70 Article 690 — Solar Photovoltaic (PV) Systems",
+  "_version": "1.0.0",
+  "articles": [
+    {
+      "article_id": "ART_690",
+      "nec_ref": "NFPA 70:2023 Article 690",
+      "chapter": 6,
+      "article_number": 690,
+      "article_title": "Solar Photovoltaic (PV) Systems",
+      "scope": "PV systems definitions and requirements — circuit sizing at 125% continuous (690.8), maximum voltage (690.7), DC arc-fault circuit interrupter — DC AFCI (690.11), rapid shutdown (690.12), grounding (690.41-43), source-circuit and output-circuit sizing.",
+      "applies_to": ["solar_pv", "photovoltaic", "rapid_shutdown", "dc_arc_fault", "module_strings", "inverters", "interconnection"],
+      "key_sections": [
+        {"section": "690.7",  "title": "Maximum Voltage", "summary": "Maximum PV source-circuit voltage: 600 V for dwelling, 1000 V for non-dwelling, 1500 V for non-dwelling where 1500 V-rated. Determined by adjusted module open-circuit voltage at lowest expected temperature"},
+        {"section": "690.8",  "title": "Circuit Sizing and Current", "summary": "PV source circuit current = max module Isc × 125%. PV output circuit current = sum of PV source circuit currents. Conductor ampacity = 125% × calculated current"},
+        {"section": "690.9",  "title": "Overcurrent Protection", "summary": "OCPD rating ≥ 156% of module Isc (125% module × 125% continuous). Inverter output OCPD per 690.9(B)"},
+        {"section": "690.11", "title": "Arc-Fault Circuit Protection (DC)", "summary": "PV source circuits operating at ≥80 V DC require listed DC arc-fault circuit interrupter (DC AFCI). Typically integrated in modern PV inverters or string combiners"},
+        {"section": "690.12", "title": "Rapid Shutdown of PV Systems on Buildings", "summary": "PV array on building — rapid shutdown system shutting down conductors to ≤30 V within 30 s of initiation. Required at: 1 ft of array on rooftop and 5 ft outside array boundary. Initiation by service disconnect or first-responder switch"},
+        {"section": "690.41", "title": "System Grounding", "summary": "PV systems may be ungrounded, functionally grounded (one conductor referenced to ground through impedance), or solidly grounded. Most modern systems are functionally grounded (transformerless inverters)"},
+        {"section": "690.47", "title": "Grounding Electrode System", "summary": "DC grounding electrode permitted; if AC and DC systems share grounding electrode, the GEC must be sized per the larger of: AC GEC (250.66) or DC GEC (250.166)"},
+        {"section": "690.64", "title": "Point of Interconnection (cross-ref 705)", "summary": "Connection of PV inverter output to premises wiring per Art 705"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {
+        "PV_Voltage_Limits_690.7": {
+          "title": "Maximum PV Source-Circuit Voltage",
+          "rows": [
+            {"installation_type": "Dwelling — one-/two-family + multifamily",  "max_voltage_dc": "600 V"},
+            {"installation_type": "Non-dwelling (commercial, industrial)",       "max_voltage_dc": "1000 V (or 1500 V if equipment listed for 1500 V)"}
+          ]
+        },
+        "Rapid_Shutdown_Initiation_Markings_690.12": {
+          "title": "Rapid Shutdown System — Required Field Marking",
+          "rows": [
+            {"marking_type": "Initiation device label",     "wording": "Solar PV System Equipped With Rapid Shutdown"},
+            {"marking_type": "Initiation device location",  "wording": "At service disconnect, OR within sight of service disconnect, OR location of first responder operation"}
+          ]
+        }
+      },
+      "common_errors": [
+        "Missing the 125% × 125% cascading multiplier (156% of module Isc) for OCPD sizing per 690.9 — frequent error",
+        "Failing to adjust maximum voltage for lowest expected temperature — 690.7 requires Voc adjustment, typically increasing the calc voltage by ~10-15% above STC",
+        "Omitting rapid shutdown on rooftop residential PV (690.12) — added in NEC 2014, expanded in 2017 and 2020",
+        "Treating an ungrounded PV system as needing an AC EGC only — also requires the functional grounding reference",
+        "Sizing inverter output OCPD at 100% of inverter output current — must be ≥125% × inverter max output (690.9(B))"
+      ],
+      "drawn_as": ["PV_MODULE", "PV_INVERTER", "PV_DISCONNECT"],
+      "related_iec_60364": ["IEC 60364-7-712 (Solar photovoltaic power supply systems)"],
+      "divergence_notes": "NEC 690 is more prescriptive than IEC 60364-7-712. NEC requires DC AFCI (690.11) at ≥80 V DC; IEC has no equivalent (DC AFD coverage emerging in IEC 60947). NEC mandates rapid shutdown on rooftop PV (690.12); IEC has no equivalent. NEC 125%-of-125% (156%) OCPD sizing rule is unique to NEC; IEC sizes per Iz × design current with no cascading multiplier. NEC permits 1500 V DC in non-dwelling installations; IEC 60364-7-712 typically limited to 1500 V via national supplements.",
+      "related_bs_7671": [],
+      "usage_notes": "PV designs on US projects must show: (1) string sizing computation with cold-temp Voc, (2) OCPD coordination at 156% Isc, (3) rapid shutdown schematic for rooftop installations, (4) interconnection per 705 (often the most-revised page during AHJ review).",
+      "related_articles": ["ART_240", "ART_250", "ART_310", "ART_705", "ART_706"]
+    }
+  ]
+}
