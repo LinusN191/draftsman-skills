@@ -1,0 +1,62 @@
+{
+  "_title": "NFPA 70 Articles 700-705 — Emergency Systems, Legally Required Standby, Optional Standby, Interconnected Sources",
+  "_version": "1.0.0",
+  "_note": "Bundle of four closely-related articles. Each addresses a different service-continuity tier — Art 700 (life safety, ≤10 s restoration), Art 701 (legally required, ≤60 s), Art 702 (optional, owner-elected), Art 705 (interconnection of multiple sources).",
+  "articles": [
+    {
+      "article_id": "ART_700_705",
+      "nec_ref": "NFPA 70:2023 Articles 700, 701, 702, 705",
+      "chapter": 7,
+      "article_number": 700,
+      "article_title": "Emergency Systems / Legally Required Standby / Optional Standby / Interconnected Power Production Sources",
+      "scope": "Article 700: emergency systems essential for safety to human life (egress lighting, fire alarm, refrigeration of critical med, etc.) — restoration ≤10 s. Article 701: legally required standby (HVAC for life safety, sewage, communications, industrial process) — restoration ≤60 s. Article 702: optional standby (owner-elected — comfort, computer protection). Article 705: interconnection of multiple sources (PV, wind, generator, utility).",
+      "applies_to": ["emergency", "legally_required_standby", "optional_standby", "transfer_equipment", "selective_coordination", "interconnection"],
+      "key_sections": [
+        {"section": "700.4",   "title": "Capacity", "summary": "Sized to carry all emergency loads simultaneously"},
+        {"section": "700.10",  "title": "Wiring, Emergency System", "summary": "Independent wiring from emergency source to emergency loads; SEPARATE from normal-source wiring"},
+        {"section": "700.12",  "title": "General Requirements (Sources of Power)", "summary": "Emergency power source options: storage battery, generator set, uninterruptible power supply (UPS), separate utility service, fuel cell"},
+        {"section": "700.27",  "title": "Coordination — Emergency", "summary": "Emergency system OCPDs shall be selectively coordinated with all supply-side OCPDs (overcurrent that would otherwise open emergency circuits)"},
+        {"section": "700.32",  "title": "Selective Coordination — Emergency System (alt clause #)", "summary": "Same as 700.27 — selective coordination requirement"},
+        {"section": "701.4",   "title": "Capacity — Legally Required", "summary": "Capacity for all legally required standby loads simultaneously"},
+        {"section": "701.10",  "title": "Wiring, Legally Required Standby", "summary": "Per Art 215 / 220 — no special separation requirement (unlike Art 700)"},
+        {"section": "701.32",  "title": "Selective Coordination — Legally Required Standby", "summary": "Same selectivity rule as 700.32 applied to legally required standby"},
+        {"section": "702.4",   "title": "Capacity and Rating — Optional Standby", "summary": "Sized per the loads it serves — no NEC-mandated capacity minimum"},
+        {"section": "702.5",   "title": "Transfer Equipment", "summary": "Transfer equipment listed for the intended purpose (UL 1008 for ATS / manual transfer switches)"},
+        {"section": "705.6",   "title": "Equipment Disconnect", "summary": "Disconnecting means for each power source; lockable, identified"},
+        {"section": "705.12",  "title": "Load-Side Source Connections", "summary": "PV/wind/generator interconnection at load side of service disconnect — busbar/feeder ampacity rules (120% rule, sum rule). Most common interconnection method for residential PV"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {
+        "Emergency_vs_Standby_Comparison": {
+          "title": "Article 700 / 701 / 702 — Required Restoration Times and Scope",
+          "rows": [
+            {"article": 700, "name": "Emergency Systems",                "scope": "Life safety: egress lighting, fire alarm, fire-pump backup, healthcare critical branch, mass transit", "max_restoration_s": 10},
+            {"article": 701, "name": "Legally Required Standby",         "scope": "Communications, industrial process, sewage, HVAC for life safety", "max_restoration_s": 60},
+            {"article": 702, "name": "Optional Standby",                  "scope": "Owner-elected: comfort, computer protection, retail HVAC", "max_restoration_s": "Not specified"}
+          ]
+        },
+        "Load_Side_Interconnection_Rules_705.12": {
+          "title": "PV/Wind Interconnection at Load Side — Busbar Ampacity Rules",
+          "rows": [
+            {"rule": "Sum rule",            "description": "Inverter output OCPD + main breaker rating ≤ 100% of busbar ampacity"},
+            {"rule": "120% rule",            "description": "If sum > 100%: inverter output OCPD ≤ (busbar ampacity × 120% − main breaker rating). I.e., main breaker downgrade or busbar upgrade needed"},
+            {"rule": "Center-fed rule",      "description": "For PV inverter breaker on opposite end from main breaker, allow up to 120% rule without main breaker downgrade"},
+            {"rule": "Sum 100% rule",        "description": "Sum of all overcurrent devices supplying busbar ≤ 100% of busbar ampacity (the conservative rule)"}
+          ]
+        }
+      },
+      "common_errors": [
+        "Mixing Art 700 emergency circuits with normal-source circuits in shared wiring — Art 700.10 requires independent wiring",
+        "Failing selective coordination requirement (700.32, 701.32) — common on retrofit of small commercial buildings adding fire pump",
+        "Misapplying 705.12 — assuming the 120% busbar rule applies when actually the sum rule applies (busbar is the limiting factor)",
+        "Treating Art 702 as having no NEC requirements — capacity sizing per 702.4 and transfer equipment listing per 702.5 still apply"
+      ],
+      "drawn_as": ["ATS", "GENERATOR_SET", "UPS"],
+      "related_iec_60364": ["IEC 60364-5-56 (Safety services)", "IEC 60364-8-2 (Prosumer's electrical installations) — for interconnection rules"],
+      "divergence_notes": "NEC Articles 700/701/702 distinguish emergency vs legally-required-standby vs optional-standby with explicit restoration times (10 s / 60 s / not specified); IEC 60364-5-56 has 'safety services' (corresponds roughly to NEC 700) and 'standby services' (corresponds to NEC 701/702 combined) with different restoration classifications (Class 0 = no break, 0.15 s, 0.5 s, 15 s, > 15 s). NEC 705.12 interconnection rules (sum / 120% / center-fed) are very prescriptive; IEC 60364-8-2 has equivalent requirements but less geometrically specific. Selective coordination requirement (700.32 / 701.32) is more explicit in NEC; IEC handles via IEC 60364-5-53 device coordination tables.",
+      "related_bs_7671": [],
+      "usage_notes": "Always identify which article applies (700 vs 701 vs 702) based on what the loads ARE — emergency systems are by code authority (life safety), legally required by other AHJ/code mandate, optional by owner. Document selective coordination on critical fire-pump and life-safety circuits — frequent inspection failure.",
+      "related_articles": ["ART_215", "ART_230", "ART_240", "ART_517", "ART_690", "ART_695", "ART_706"]
+    }
+  ]
+}
