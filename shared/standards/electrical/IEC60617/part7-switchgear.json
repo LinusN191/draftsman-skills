@@ -1,0 +1,1407 @@
+{
+  "_title": "IEC 60617 Part 7 — Switchgear, controlgear and protective devices",
+  "_iec_part": 7,
+  "_version": "1.0.0",
+  "symbols": [
+    {
+      "symbol_id": "CONTACT_NO",
+      "iec_ref": "IEC60617-07-01-01",
+      "iec_part": 7,
+      "iec_description": "Make contact (normally open)",
+      "draftsman_id": "CONTACT_NO",
+      "category": "switching",
+      "display_name": "Make contact (NO)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -18 M 15 -20 L 15 20 M 15 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["CONTACT_NC", "CONTACT_CHANGEOVER"],
+      "annotation_fields": ["tag"],
+      "usage_notes": "Make contact — normally open. Closes when operated. The moving contact (diagonal blade) and fixed contact (vertical bar) are shown in the open position.",
+      "related_symbols": ["CONTACT_NC", "CONTACT_CHANGEOVER", "CONTACT_AUX_NO"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CONTACT_NC",
+      "iec_ref": "IEC60617-07-01-02",
+      "iec_part": 7,
+      "iec_description": "Break contact (normally closed)",
+      "draftsman_id": "CONTACT_NC",
+      "category": "switching",
+      "display_name": "Break contact (NC)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -15 0 M -15 -20 L -15 20 M -15 0 L 15 0 M 15 -20 L 15 20 M 15 0 L 50 0 M -20 -15 L 20 15",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["CONTACT_NO", "CONTACT_CHANGEOVER"],
+      "annotation_fields": ["tag"],
+      "usage_notes": "Break contact — normally closed. Opens when operated. Shown in the closed position with a diagonal stroke indicating NC behaviour.",
+      "related_symbols": ["CONTACT_NO", "CONTACT_CHANGEOVER", "CONTACT_AUX_NC"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CONTACT_CHANGEOVER",
+      "iec_ref": "IEC60617-07-01-03",
+      "iec_part": 7,
+      "iec_description": "Changeover contact (SPDT)",
+      "draftsman_id": "CONTACT_CHANGEOVER",
+      "category": "switching",
+      "display_name": "Changeover contact (CO)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -22 M 15 -25 L 15 -15 M 15 15 L 15 25 M 15 -20 L 50 -20 M 15 20 L 50 20",
+        "terminals": {"common": [-50, 0], "no": [50, -20], "nc": [50, 20]}
+      },
+      "variants": ["CONTACT_NO", "CONTACT_NC"],
+      "annotation_fields": ["tag"],
+      "usage_notes": "Single-pole double-throw contact. Common terminal switches between NO and NC. Used in selector circuits, indication, control logic.",
+      "related_symbols": ["CONTACT_NO", "CONTACT_NC"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SWITCH_GENERAL",
+      "iec_ref": "IEC60617-07-02-01",
+      "iec_part": 7,
+      "iec_description": "Switch (general)",
+      "draftsman_id": "SWITCH_GENERAL",
+      "category": "switching",
+      "display_name": "Switch (general)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["SWITCH_DISCONNECTOR_2P", "ISOLATOR_2P", "SWITCH_1P"],
+      "annotation_fields": ["rated_A", "tag"],
+      "usage_notes": "Generic switch — single-pole single-throw. Use when device specifics are not yet determined. For an isolating switch, prefer SWITCH_ISOLATING.",
+      "related_symbols": ["SWITCH_DISCONNECTOR_2P", "ISOLATOR_2P", "SWITCH_ISOLATING"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SWITCH_1P",
+      "iec_ref": "IEC60617-07-02-02",
+      "iec_part": 7,
+      "iec_description": "Single-pole switch",
+      "draftsman_id": "SWITCH_1P",
+      "category": "switching",
+      "display_name": "Single-pole switch",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["SWITCH_GENERAL"],
+      "annotation_fields": ["rated_A", "tag"],
+      "usage_notes": "Single-pole switch — most basic mechanical switch.",
+      "related_symbols": ["SWITCH_GENERAL", "SWITCH_DISCONNECTOR_2P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SWITCH_DISCONNECTOR_2P",
+      "iec_ref": "IEC60617-07-13-01",
+      "iec_part": 7,
+      "iec_description": "Switch-disconnector, 2-pole",
+      "draftsman_id": "SWITCH_DISCONNECTOR_2P",
+      "category": "switching",
+      "display_name": "2-pole switch-disconnector",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 -10 L -15 -10 M -15 -10 L 12 -28 M 15 -10 L 50 -10 M -50 10 L -15 10 M -15 10 L 12 -8 M 15 10 L 50 10 M -15 -25 L -15 25",
+        "terminals": {"L1_in": [-50, -10], "L2_in": [-50, 10], "L1_out": [50, -10], "L2_out": [50, 10]}
+      },
+      "variants": ["SWITCH_DISCONNECTOR_3P", "SWITCH_DISCONNECTOR_4P", "ISOLATOR_2P"],
+      "annotation_fields": ["rated_A", "Icw_kA", "tag"],
+      "usage_notes": "2-pole switch-disconnector (load break and isolation). Used as main isolator on single-phase distribution boards. Distinct from ISOLATOR_2P — switch-disconnector can break load current, plain isolator cannot.",
+      "related_symbols": ["SWITCH_DISCONNECTOR_3P", "ISOLATOR_2P", "DISCONNECTOR_GENERAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SWITCH_DISCONNECTOR_3P",
+      "iec_ref": "IEC60617-07-13-02",
+      "iec_part": 7,
+      "iec_description": "Switch-disconnector, 3-pole",
+      "draftsman_id": "SWITCH_DISCONNECTOR_3P",
+      "category": "switching",
+      "display_name": "3-pole switch-disconnector",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -15 L -15 -15 M -15 -15 L 12 -33 M 15 -15 L 50 -15 M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0 M -50 15 L -15 15 M -15 15 L 12 -3 M 15 15 L 50 15 M -15 -30 L -15 30",
+        "terminals": {"L1_in": [-50, -15], "L2_in": [-50, 0], "L3_in": [-50, 15], "L1_out": [50, -15], "L2_out": [50, 0], "L3_out": [50, 15]}
+      },
+      "variants": ["SWITCH_DISCONNECTOR_2P", "SWITCH_DISCONNECTOR_4P"],
+      "annotation_fields": ["rated_A", "Icw_kA", "tag"],
+      "usage_notes": "3-pole switch-disconnector. Used as the main isolator on 3-phase distribution boards. Mechanically linked operation.",
+      "related_symbols": ["SWITCH_DISCONNECTOR_4P", "ISOLATOR_3P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SWITCH_DISCONNECTOR_4P",
+      "iec_ref": "IEC60617-07-13-03",
+      "iec_part": 7,
+      "iec_description": "Switch-disconnector, 4-pole",
+      "draftsman_id": "SWITCH_DISCONNECTOR_4P",
+      "category": "switching",
+      "display_name": "4-pole switch-disconnector",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -20 L -15 -20 M -15 -20 L 12 -38 M 15 -20 L 50 -20 M -50 -7 L -15 -7 M -15 -7 L 12 -25 M 15 -7 L 50 -7 M -50 7 L -15 7 M -15 7 L 12 -11 M 15 7 L 50 7 M -50 20 L -15 20 M -15 20 L 12 2 M 15 20 L 50 20 M -15 -30 L -15 30",
+        "terminals": {"L1_in": [-50, -20], "L2_in": [-50, -7], "L3_in": [-50, 7], "N_in": [-50, 20], "L1_out": [50, -20], "L2_out": [50, -7], "L3_out": [50, 7], "N_out": [50, 20]}
+      },
+      "variants": ["SWITCH_DISCONNECTOR_3P"],
+      "annotation_fields": ["rated_A", "Icw_kA", "tag"],
+      "usage_notes": "4-pole switch-disconnector — switches L1, L2, L3 and N. Used where switched neutral is required (IT systems, generator/utility transfer).",
+      "related_symbols": ["SWITCH_DISCONNECTOR_3P", "ISOLATOR_4P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "BUS_SECTION_SWITCH",
+      "iec_ref": "IEC60617-07-13-08",
+      "iec_part": 7,
+      "iec_description": "Bus section switch",
+      "draftsman_id": "BUS_SECTION_SWITCH",
+      "category": "switching",
+      "display_name": "Bus section switch",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 -15 L -15 -15 M -15 -15 L 12 -33 M 15 -15 L 50 -15 M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0 M -50 15 L -15 15 M -15 15 L 12 -3 M 15 15 L 50 15",
+        "terminals": {"L1_a": [-50, -15], "L2_a": [-50, 0], "L3_a": [-50, 15], "L1_b": [50, -15], "L2_b": [50, 0], "L3_b": [50, 15]}
+      },
+      "variants": ["SWITCH_DISCONNECTOR_3P"],
+      "annotation_fields": ["rated_A", "Icw_kA", "tag"],
+      "usage_notes": "Bus section switch — connects two halves of a split busbar. Used in main switchboards with dual incomers for source-changeover / N+1 topology.",
+      "related_symbols": ["SWITCH_DISCONNECTOR_3P", "ATS_2WAY"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "ISOLATOR_2P",
+      "iec_ref": "IEC60617-07-14-01",
+      "iec_part": 7,
+      "iec_description": "Isolator (disconnector), 2-pole",
+      "draftsman_id": "ISOLATOR_2P",
+      "category": "switching",
+      "display_name": "2-pole isolator",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 -10 L -15 -10 M -15 -10 L 12 -28 M 15 -10 L 50 -10 M -50 10 L -15 10 M -15 10 L 12 -8 M 15 10 L 50 10 M -15 -25 L -15 25 M -25 -22 L -5 -22",
+        "terminals": {"L1_in": [-50, -10], "N_in": [-50, 10], "L1_out": [50, -10], "N_out": [50, 10]}
+      },
+      "variants": ["ISOLATOR_3P", "ISOLATOR_4P", "SWITCH_DISCONNECTOR_2P"],
+      "annotation_fields": ["rated_A", "tag"],
+      "usage_notes": "2-pole isolator (no load break). For visible isolation only — must be operated off-load. Horizontal bar across the top indicates isolator (no quick-break mechanism).",
+      "related_symbols": ["SWITCH_DISCONNECTOR_2P", "DISCONNECTOR_GENERAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "ISOLATOR_3P",
+      "iec_ref": "IEC60617-07-14-02",
+      "iec_part": 7,
+      "iec_description": "Isolator (disconnector), 3-pole",
+      "draftsman_id": "ISOLATOR_3P",
+      "category": "switching",
+      "display_name": "3-pole isolator",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -15 L -15 -15 M -15 -15 L 12 -33 M 15 -15 L 50 -15 M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0 M -50 15 L -15 15 M -15 15 L 12 -3 M 15 15 L 50 15 M -15 -30 L -15 30 M -25 -27 L -5 -27",
+        "terminals": {"L1_in": [-50, -15], "L2_in": [-50, 0], "L3_in": [-50, 15], "L1_out": [50, -15], "L2_out": [50, 0], "L3_out": [50, 15]}
+      },
+      "variants": ["ISOLATOR_2P", "ISOLATOR_4P"],
+      "annotation_fields": ["rated_A", "tag"],
+      "usage_notes": "3-pole isolator for 3-phase circuits. Off-load only.",
+      "related_symbols": ["ISOLATOR_4P", "SWITCH_DISCONNECTOR_3P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "ISOLATOR_4P",
+      "iec_ref": "IEC60617-07-14-03",
+      "iec_part": 7,
+      "iec_description": "Isolator (disconnector), 4-pole",
+      "draftsman_id": "ISOLATOR_4P",
+      "category": "switching",
+      "display_name": "4-pole isolator",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -20 L -15 -20 M -15 -20 L 12 -38 M 15 -20 L 50 -20 M -50 -7 L -15 -7 M -15 -7 L 12 -25 M 15 -7 L 50 -7 M -50 7 L -15 7 M -15 7 L 12 -11 M 15 7 L 50 7 M -50 20 L -15 20 M -15 20 L 12 2 M 15 20 L 50 20 M -15 -30 L -15 30 M -25 -27 L -5 -27",
+        "terminals": {"L1_in": [-50, -20], "L2_in": [-50, -7], "L3_in": [-50, 7], "N_in": [-50, 20], "L1_out": [50, -20], "L2_out": [50, -7], "L3_out": [50, 7], "N_out": [50, 20]}
+      },
+      "variants": ["ISOLATOR_3P"],
+      "annotation_fields": ["rated_A", "tag"],
+      "usage_notes": "4-pole isolator. Off-load only.",
+      "related_symbols": ["ISOLATOR_3P", "SWITCH_DISCONNECTOR_4P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MCB_1P",
+      "iec_ref": "IEC60617-07-18-01",
+      "iec_part": 7,
+      "iec_description": "Circuit-breaker, general symbol — 1-pole",
+      "draftsman_id": "MCB_1P",
+      "category": "protection",
+      "display_name": "1-Pole MCB",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -20 0 M -20 -25 L 20 -25 L 20 25 L -20 25 Z M -20 0 L 20 0 M 20 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["MCB_2P", "MCB_3P", "MCB_4P"],
+      "annotation_fields": ["In_A", "curve", "Icu_kA"],
+      "usage_notes": "1-pole miniature circuit breaker for final circuits. Annotate rated current (In), trip curve (B/C/D), and breaking capacity (Icu). Standard final-circuit protective device.",
+      "related_symbols": ["RCBO_1P", "MCCB_3P", "FUSE_1P", "MCB_2P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MCB_2P",
+      "iec_ref": "IEC60617-07-18-02",
+      "iec_part": 7,
+      "iec_description": "Circuit-breaker — 2-pole",
+      "draftsman_id": "MCB_2P",
+      "category": "protection",
+      "display_name": "2-Pole MCB",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -10 L -20 -10 M -20 -30 L 20 -30 L 20 30 L -20 30 Z M -20 -10 L 20 -10 M 20 -10 L 50 -10 M -50 10 L -20 10 M -20 10 L 20 10 M 20 10 L 50 10",
+        "terminals": {"L_in": [-50, -10], "N_in": [-50, 10], "L_out": [50, -10], "N_out": [50, 10]}
+      },
+      "variants": ["MCB_1P", "MCB_3P", "MCB_4P"],
+      "annotation_fields": ["In_A", "curve", "Icu_kA"],
+      "usage_notes": "2-pole MCB — breaks both line and neutral simultaneously. Required for IT systems, some EV charge points. Mechanically linked operation.",
+      "related_symbols": ["MCB_1P", "MCB_3P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MCB_3P",
+      "iec_ref": "IEC60617-07-18-03",
+      "iec_part": 7,
+      "iec_description": "Circuit-breaker — 3-pole",
+      "draftsman_id": "MCB_3P",
+      "category": "protection",
+      "display_name": "3-Pole MCB",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -15 L -20 -15 M -20 -30 L 20 -30 L 20 30 L -20 30 Z M -20 -15 L 20 -15 M 20 -15 L 50 -15 M -50 0 L -20 0 M -20 0 L 20 0 M 20 0 L 50 0 M -50 15 L -20 15 M -20 15 L 20 15 M 20 15 L 50 15",
+        "terminals": {"L1_in": [-50, -15], "L2_in": [-50, 0], "L3_in": [-50, 15], "L1_out": [50, -15], "L2_out": [50, 0], "L3_out": [50, 15]}
+      },
+      "variants": ["MCB_1P", "MCB_2P", "MCB_4P"],
+      "annotation_fields": ["In_A", "curve", "Icu_kA"],
+      "usage_notes": "3-pole MCB for 3-phase final circuits. Mechanically linked operation.",
+      "related_symbols": ["MCB_4P", "MCCB_3P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MCB_4P",
+      "iec_ref": "IEC60617-07-18-04",
+      "iec_part": 7,
+      "iec_description": "Circuit-breaker — 4-pole",
+      "draftsman_id": "MCB_4P",
+      "category": "protection",
+      "display_name": "4-Pole MCB",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -20 L -20 -20 M -20 -30 L 20 -30 L 20 30 L -20 30 Z M -20 -20 L 20 -20 M 20 -20 L 50 -20 M -50 -7 L -20 -7 M -20 -7 L 20 -7 M 20 -7 L 50 -7 M -50 7 L -20 7 M -20 7 L 20 7 M 20 7 L 50 7 M -50 20 L -20 20 M -20 20 L 20 20 M 20 20 L 50 20",
+        "terminals": {"L1_in": [-50, -20], "L2_in": [-50, -7], "L3_in": [-50, 7], "N_in": [-50, 20], "L1_out": [50, -20], "L2_out": [50, -7], "L3_out": [50, 7], "N_out": [50, 20]}
+      },
+      "variants": ["MCB_3P"],
+      "annotation_fields": ["In_A", "curve", "Icu_kA"],
+      "usage_notes": "4-pole MCB — breaks L1, L2, L3 and N. Used where switched neutral is required (IT systems, source changeover circuits).",
+      "related_symbols": ["MCB_3P", "MCCB_4P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MCCB_3P",
+      "iec_ref": "IEC60617-07-18-11",
+      "iec_part": 7,
+      "iec_description": "Moulded case circuit breaker — 3-pole",
+      "draftsman_id": "MCCB_3P",
+      "category": "protection",
+      "display_name": "3-Pole MCCB",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -15 L -25 -15 M -25 -30 L 25 -30 L 25 30 L -25 30 Z M -25 -15 L 25 -15 M 25 -15 L 50 -15 M -50 0 L -25 0 M -25 0 L 25 0 M 25 0 L 50 0 M -50 15 L -25 15 M -25 15 L 25 15 M 25 15 L 50 15 M -15 -10 L 15 -10",
+        "terminals": {"L1_in": [-50, -15], "L2_in": [-50, 0], "L3_in": [-50, 15], "L1_out": [50, -15], "L2_out": [50, 0], "L3_out": [50, 15]}
+      },
+      "variants": ["MCCB_4P", "MCB_3P", "ACB_3P"],
+      "annotation_fields": ["In_A", "Ir_setting", "Im_setting", "Icu_kA"],
+      "usage_notes": "Moulded case circuit breaker — typically 100A to 1600A. Adjustable thermal (Ir) and magnetic (Im) trip settings. Annotate trip unit type (thermal-magnetic or electronic).",
+      "related_symbols": ["MCCB_4P", "ACB_3P", "MCB_3P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MCCB_4P",
+      "iec_ref": "IEC60617-07-18-12",
+      "iec_part": 7,
+      "iec_description": "Moulded case circuit breaker — 4-pole",
+      "draftsman_id": "MCCB_4P",
+      "category": "protection",
+      "display_name": "4-Pole MCCB",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -20 L -25 -20 M -25 -30 L 25 -30 L 25 30 L -25 30 Z M -25 -20 L 25 -20 M 25 -20 L 50 -20 M -50 -7 L -25 -7 M -25 -7 L 25 -7 M 25 -7 L 50 -7 M -50 7 L -25 7 M -25 7 L 25 7 M 25 7 L 50 7 M -50 20 L -25 20 M -25 20 L 25 20 M 25 20 L 50 20 M -15 -10 L 15 -10",
+        "terminals": {"L1_in": [-50, -20], "L2_in": [-50, -7], "L3_in": [-50, 7], "N_in": [-50, 20], "L1_out": [50, -20], "L2_out": [50, -7], "L3_out": [50, 7], "N_out": [50, 20]}
+      },
+      "variants": ["MCCB_3P"],
+      "annotation_fields": ["In_A", "Ir_setting", "Im_setting", "Icu_kA"],
+      "usage_notes": "4-pole MCCB — for circuits requiring switched neutral or 4-pole isolation (TN-S with neutral isolation, generator/utility transfer).",
+      "related_symbols": ["MCCB_3P", "ACB_4P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "ACB_3P",
+      "iec_ref": "IEC60617-07-18-21",
+      "iec_part": 7,
+      "iec_description": "Air circuit breaker — 3-pole",
+      "draftsman_id": "ACB_3P",
+      "category": "protection",
+      "display_name": "3-Pole ACB",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -15 L -25 -15 M -25 -30 L 25 -30 L 25 30 L -25 30 Z M -25 -15 L 25 -15 M 25 -15 L 50 -15 M -50 0 L -25 0 M -25 0 L 25 0 M 25 0 L 50 0 M -50 15 L -25 15 M -25 15 L 25 15 M 25 15 L 50 15 M -15 -10 L 15 -10 M -15 -5 L 15 -5",
+        "terminals": {"L1_in": [-50, -15], "L2_in": [-50, 0], "L3_in": [-50, 15], "L1_out": [50, -15], "L2_out": [50, 0], "L3_out": [50, 15]}
+      },
+      "variants": ["ACB_4P", "MCCB_3P"],
+      "annotation_fields": ["In_A", "Icu_kA", "trip_unit"],
+      "usage_notes": "Air circuit breaker — typically 800A and above, used as the incomer on main LV switchboards. Drawn similarly to MCCB but with a double internal bar to distinguish. Annotate trip unit type and short-time delay settings.",
+      "related_symbols": ["ACB_4P", "MCCB_3P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "ACB_4P",
+      "iec_ref": "IEC60617-07-18-22",
+      "iec_part": 7,
+      "iec_description": "Air circuit breaker — 4-pole",
+      "draftsman_id": "ACB_4P",
+      "category": "protection",
+      "display_name": "4-Pole ACB",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -20 L -25 -20 M -25 -30 L 25 -30 L 25 30 L -25 30 Z M -25 -20 L 25 -20 M 25 -20 L 50 -20 M -50 -7 L -25 -7 M -25 -7 L 25 -7 M 25 -7 L 50 -7 M -50 7 L -25 7 M -25 7 L 25 7 M 25 7 L 50 7 M -50 20 L -25 20 M -25 20 L 25 20 M 25 20 L 50 20 M -15 -10 L 15 -10 M -15 -5 L 15 -5",
+        "terminals": {"L1_in": [-50, -20], "L2_in": [-50, -7], "L3_in": [-50, 7], "N_in": [-50, 20], "L1_out": [50, -20], "L2_out": [50, -7], "L3_out": [50, 7], "N_out": [50, 20]}
+      },
+      "variants": ["ACB_3P"],
+      "annotation_fields": ["In_A", "Icu_kA", "trip_unit"],
+      "usage_notes": "4-pole ACB — incomer with switched neutral. Common on main LV boards with multiple supply sources.",
+      "related_symbols": ["ACB_3P", "MCCB_4P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "FUSE_1P",
+      "iec_ref": "IEC60617-07-21-01",
+      "iec_part": 7,
+      "iec_description": "Fuse — 1-pole",
+      "draftsman_id": "FUSE_1P",
+      "category": "protection",
+      "display_name": "1-Pole fuse",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -15, 50, 15],
+        "path": "M -50 0 L -20 0 M -20 -10 L 20 -10 L 20 10 L -20 10 Z M 20 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["FUSE_3P", "FUSE_SWITCH"],
+      "annotation_fields": ["In_A", "fuse_type"],
+      "usage_notes": "1-pole fuse — rectangle with leads. Annotate fuse rating and type (gG general purpose, aM motor circuit, gF fast-acting, BS88 etc.). Common at the supply intake (BS88 cut-out) and on final circuits where MCBs are not used.",
+      "related_symbols": ["FUSE_3P", "FUSE_SWITCH", "MCB_1P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "FUSE_3P",
+      "iec_ref": "IEC60617-07-21-02",
+      "iec_part": 7,
+      "iec_description": "Fuse — 3-pole",
+      "draftsman_id": "FUSE_3P",
+      "category": "protection",
+      "display_name": "3-Pole fuses",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 -15 L -20 -15 M -20 -25 L 20 -25 L 20 -5 L -20 -5 Z M 20 -15 L 50 -15 M -50 0 L -20 0 M -20 -10 L 20 -10 M 20 0 L 50 0 M -50 15 L -20 15 M -20 5 L 20 5 L 20 25 L -20 25 Z M 20 15 L 50 15",
+        "terminals": {"L1_in": [-50, -15], "L2_in": [-50, 0], "L3_in": [-50, 15], "L1_out": [50, -15], "L2_out": [50, 0], "L3_out": [50, 15]}
+      },
+      "variants": ["FUSE_1P", "FUSE_SWITCH"],
+      "annotation_fields": ["In_A", "fuse_type"],
+      "usage_notes": "Three single-pole fuses in a 3-phase circuit, drawn aligned. Use for fused supply intake or as backup protection.",
+      "related_symbols": ["FUSE_1P", "FUSE_SWITCH"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "FUSE_SWITCH",
+      "iec_ref": "IEC60617-07-21-04",
+      "iec_part": 7,
+      "iec_description": "Fuse-switch (switch-fuse)",
+      "draftsman_id": "FUSE_SWITCH",
+      "category": "protection",
+      "display_name": "Fuse-switch / switch-fuse",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -25 0 M -25 0 L -2 -18 M 0 -10 L 30 -10 L 30 10 L 0 10 Z M 30 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["FUSE_1P", "SWITCH_DISCONNECTOR_2P"],
+      "annotation_fields": ["In_A", "fuse_type", "rated_A_switch"],
+      "usage_notes": "Combined fuse and switch — switch breaks load, fuse provides backup protection. Common as a main isolator on industrial DBs. Annotate fuse and switch ratings.",
+      "related_symbols": ["FUSE_1P", "SWITCH_DISCONNECTOR_2P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CONTACTOR_3P",
+      "iec_ref": "IEC60617-07-19-01",
+      "iec_part": 7,
+      "iec_description": "Contactor — 3-pole",
+      "draftsman_id": "CONTACTOR_3P",
+      "category": "switching",
+      "display_name": "3-Pole contactor",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -15 L -15 -15 M -15 -15 L 12 -33 M 15 -15 L 50 -15 M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0 M -50 15 L -15 15 M -15 15 L 12 -3 M 15 15 L 50 15 M -15 -30 L -15 30 M -20 -28 A 5 5 0 1 0 -10 -28 A 5 5 0 1 0 -20 -28 Z",
+        "terminals": {"L1_in": [-50, -15], "L2_in": [-50, 0], "L3_in": [-50, 15], "L1_out": [50, -15], "L2_out": [50, 0], "L3_out": [50, 15]}
+      },
+      "variants": ["CONTACTOR_STAR_DELTA", "CONTACTOR_GENERAL", "RELAY_COIL"],
+      "annotation_fields": ["AC_rating_A", "AC3_kW", "tag"],
+      "usage_notes": "3-pole contactor for motor control. Coil shown separately. Small circle at top indicates the automatic-return spring. Annotate AC3 rating (motor switching).",
+      "related_symbols": ["CONTACTOR_STAR_DELTA", "RELAY_COIL", "MOTOR_STARTER_DOL", "RELAY_THERMAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CONTACTOR_STAR_DELTA",
+      "iec_ref": "IEC60617-07-19-02",
+      "iec_part": 7,
+      "iec_description": "Star-delta contactor set",
+      "draftsman_id": "CONTACTOR_STAR_DELTA",
+      "category": "switching",
+      "display_name": "Star-delta contactor set",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -15 L -30 -15 M -30 -15 L -10 -28 M -30 -15 L -30 15 M -10 -15 L 10 -28 M -10 -15 L -10 15 M 10 -15 L 30 -28 M 10 -15 L 10 15 M -30 15 L -10 0 M -10 15 L 10 0 M 10 15 L 30 0 M -30 0 L 50 0",
+        "terminals": {"L_in": [-50, -15], "M_out": [50, 0]}
+      },
+      "variants": ["CONTACTOR_3P", "MOTOR_STARTER_SD"],
+      "annotation_fields": ["AC_rating_A", "rated_kW"],
+      "usage_notes": "Three contactors arranged for star-delta motor starting (main, star, delta). Drawn as a single composite symbol. See MOTOR_STARTER_SD for the complete starter symbol.",
+      "related_symbols": ["CONTACTOR_3P", "MOTOR_STARTER_SD"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "RELAY_COIL",
+      "iec_ref": "IEC60617-07-15-01",
+      "iec_part": 7,
+      "iec_description": "Relay coil (operating coil)",
+      "draftsman_id": "RELAY_COIL",
+      "category": "switching",
+      "display_name": "Relay coil",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -15, 50, 15],
+        "path": "M -50 0 L -20 0 M -20 -15 L 20 -15 L 20 15 L -20 15 Z M 20 0 L 50 0 M -10 -15 L -10 15",
+        "terminals": {"a1": [-50, 0], "a2": [50, 0]}
+      },
+      "variants": ["RELAY_THERMAL", "RELAY_GENERAL"],
+      "annotation_fields": ["coil_V", "tag"],
+      "usage_notes": "Relay / contactor coil — rectangle with vertical bar. Annotate coil voltage (e.g. 230V AC, 24V DC) and tag. Pairs with contacts elsewhere on the schematic.",
+      "related_symbols": ["CONTACTOR_3P", "RELAY_THERMAL", "CONTACT_NO", "CONTACT_NC"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "RELAY_THERMAL",
+      "iec_ref": "IEC60617-07-15-02",
+      "iec_part": 7,
+      "iec_description": "Thermal overload relay",
+      "draftsman_id": "RELAY_THERMAL",
+      "category": "protection",
+      "display_name": "Thermal overload relay",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -15 L -25 -15 M -25 -30 L 25 -30 L 25 30 L -25 30 Z M -25 -15 L 25 -15 M 25 -15 L 50 -15 M -50 0 L -25 0 M -25 0 L 25 0 M 25 0 L 50 0 M -50 15 L -25 15 M -25 15 L 25 15 M 25 15 L 50 15 M -10 -10 L 10 -10 L -10 10 L 10 10",
+        "terminals": {"L1_in": [-50, -15], "L2_in": [-50, 0], "L3_in": [-50, 15], "L1_out": [50, -15], "L2_out": [50, 0], "L3_out": [50, 15]}
+      },
+      "variants": ["MCB_MOTOR"],
+      "annotation_fields": ["set_A_range", "trip_class"],
+      "usage_notes": "Thermal overload relay — installed in series with contactor for motor protection. Zigzag indicates thermal bimetal element. Annotate set current range and trip class (10, 20, 30).",
+      "related_symbols": ["CONTACTOR_3P", "MCB_MOTOR", "MOTOR_STARTER_DOL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MCB_MOTOR",
+      "iec_ref": "IEC60617-07-18-13",
+      "iec_part": 7,
+      "iec_description": "Motor protection circuit breaker (MPCB)",
+      "draftsman_id": "MCB_MOTOR",
+      "category": "protection",
+      "display_name": "Motor circuit breaker (MPCB)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -15 L -25 -15 M -25 -30 L 25 -30 L 25 30 L -25 30 Z M -25 -15 L 25 -15 M 25 -15 L 50 -15 M -50 0 L -25 0 M -25 0 L 25 0 M 25 0 L 50 0 M -50 15 L -25 15 M -25 15 L 25 15 M 25 15 L 50 15 M -10 -25 L 10 -25 M -15 -10 L 15 10",
+        "terminals": {"L1_in": [-50, -15], "L2_in": [-50, 0], "L3_in": [-50, 15], "L1_out": [50, -15], "L2_out": [50, 0], "L3_out": [50, 15]}
+      },
+      "variants": ["MCCB_3P", "RELAY_THERMAL"],
+      "annotation_fields": ["In_A", "set_A", "Icu_kA"],
+      "usage_notes": "Motor protection circuit breaker — combines short-circuit (magnetic) and overload (thermal) protection in one device. Standard final-circuit motor protection up to ~32A. Annotate set current.",
+      "related_symbols": ["RELAY_THERMAL", "CONTACTOR_3P", "MOTOR_STARTER_DOL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "RCD_2P",
+      "iec_ref": "IEC60617-07-22-01",
+      "iec_part": 7,
+      "iec_description": "Residual current device (RCD/RCCB) — 2-pole",
+      "draftsman_id": "RCD_2P",
+      "category": "protection",
+      "display_name": "2-Pole RCD (RCCB)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -10 L -20 -10 M -20 -30 L 20 -30 L 20 30 L -20 30 Z M -20 -10 L 20 -10 M 20 -10 L 50 -10 M -50 10 L -20 10 M -20 10 L 20 10 M 20 10 L 50 10 M -10 -20 L 10 -20 M 0 0 A 8 8 0 1 0 0 16 A 8 8 0 1 0 0 0",
+        "terminals": {"L_in": [-50, -10], "N_in": [-50, 10], "L_out": [50, -10], "N_out": [50, 10]}
+      },
+      "variants": ["RCD_4P", "RCBO_1P", "RCBO_2P"],
+      "annotation_fields": ["In_A", "IDn_mA", "type"],
+      "usage_notes": "2-pole RCD — no overload protection (must be paired with an MCB upstream). Internal toroid symbol (figure-of-eight). Annotate sensitivity (30mA standard for socket outlets) and type (AC, A, F, B).",
+      "related_symbols": ["RCBO_1P", "RCD_4P", "RELAY_EARTH_LEAKAGE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "RCD_4P",
+      "iec_ref": "IEC60617-07-22-02",
+      "iec_part": 7,
+      "iec_description": "Residual current device (RCD/RCCB) — 4-pole",
+      "draftsman_id": "RCD_4P",
+      "category": "protection",
+      "display_name": "4-Pole RCD (RCCB)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -20 L -20 -20 M -20 -30 L 20 -30 L 20 30 L -20 30 Z M -20 -20 L 20 -20 M 20 -20 L 50 -20 M -50 -7 L -20 -7 M -20 -7 L 20 -7 M 20 -7 L 50 -7 M -50 7 L -20 7 M -20 7 L 20 7 M 20 7 L 50 7 M -50 20 L -20 20 M -20 20 L 20 20 M 20 20 L 50 20 M 0 -10 A 6 6 0 1 0 0 2 A 6 6 0 1 0 0 -10",
+        "terminals": {"L1_in": [-50, -20], "L2_in": [-50, -7], "L3_in": [-50, 7], "N_in": [-50, 20], "L1_out": [50, -20], "L2_out": [50, -7], "L3_out": [50, 7], "N_out": [50, 20]}
+      },
+      "variants": ["RCD_2P"],
+      "annotation_fields": ["In_A", "IDn_mA", "type"],
+      "usage_notes": "4-pole RCD for 3-phase + N circuits. Required for 3-phase final circuits with shock protection (workshops, kitchens, EV chargers).",
+      "related_symbols": ["RCD_2P", "RCBO_2P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "RCBO_1P",
+      "iec_ref": "IEC60617-07-22-11",
+      "iec_part": 7,
+      "iec_description": "Residual current circuit-breaker with overcurrent protection — 1P+N",
+      "draftsman_id": "RCBO_1P",
+      "category": "protection",
+      "display_name": "1-Pole RCBO",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -10 L -20 -10 M -20 -30 L 20 -30 L 20 30 L -20 30 Z M -20 -10 L 20 -10 M 20 -10 L 50 -10 M -50 10 L -20 10 M -20 10 L 20 10 M 20 10 L 50 10 M 0 -22 A 6 6 0 1 0 0 -10 A 6 6 0 1 0 0 -22 M -10 0 L 10 20",
+        "terminals": {"L_in": [-50, -10], "N_in": [-50, 10], "L_out": [50, -10], "N_out": [50, 10]}
+      },
+      "variants": ["RCBO_2P", "MCB_1P", "RCD_2P"],
+      "annotation_fields": ["In_A", "IDn_mA", "curve", "type"],
+      "usage_notes": "Combined MCB + RCD in a single device — 1P+N width. Standard for final circuits requiring both overcurrent and earth fault protection (UK domestic since 18th Edition).",
+      "related_symbols": ["MCB_1P", "RCD_2P", "RCBO_2P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "RCBO_2P",
+      "iec_ref": "IEC60617-07-22-12",
+      "iec_part": 7,
+      "iec_description": "Residual current circuit-breaker with overcurrent — 2P",
+      "draftsman_id": "RCBO_2P",
+      "category": "protection",
+      "display_name": "2-Pole RCBO",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -10 L -20 -10 M -20 -30 L 20 -30 L 20 30 L -20 30 Z M -20 -10 L 20 -10 M 20 -10 L 50 -10 M -50 10 L -20 10 M -20 10 L 20 10 M 20 10 L 50 10 M 0 -22 A 6 6 0 1 0 0 -10 A 6 6 0 1 0 0 -22 M -10 0 L 10 20 M -10 22 L 10 22",
+        "terminals": {"L_in": [-50, -10], "N_in": [-50, 10], "L_out": [50, -10], "N_out": [50, 10]}
+      },
+      "variants": ["RCBO_1P"],
+      "annotation_fields": ["In_A", "IDn_mA", "curve", "type"],
+      "usage_notes": "2-pole RCBO — switches both L and N. Required for IT systems and some EV circuits.",
+      "related_symbols": ["RCBO_1P", "RCD_2P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SPD_TYPE1",
+      "iec_ref": "IEC60617-07-25-01",
+      "iec_part": 7,
+      "iec_description": "Surge protective device — Type 1 (Iimp)",
+      "draftsman_id": "SPD_TYPE1",
+      "category": "protection",
+      "display_name": "SPD Type 1",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L 0 0 M 0 -25 L 25 0 L 0 25 L -25 0 Z M 0 25 L 0 50",
+        "terminals": {"line": [-50, 0], "earth": [0, 50]}
+      },
+      "variants": ["SPD_TYPE2", "SPD_TYPE3"],
+      "annotation_fields": ["Iimp_kA", "Up_kV", "Uc_V"],
+      "usage_notes": "Type 1 SPD — diamond shape with earth lead. Tests using lightning impulse (10/350μs). Required where LPS is installed or for buildings in high lightning exposure. Annotate Iimp, Up, Uc.",
+      "related_symbols": ["SPD_TYPE2", "SPD_TYPE3", "EARTH_GENERAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SPD_TYPE2",
+      "iec_ref": "IEC60617-07-25-02",
+      "iec_part": 7,
+      "iec_description": "Surge protective device — Type 2 (In)",
+      "draftsman_id": "SPD_TYPE2",
+      "category": "protection",
+      "display_name": "SPD Type 2",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L 0 0 M 0 -20 L 20 0 L 0 20 L -20 0 Z M 0 20 L 0 50",
+        "terminals": {"line": [-50, 0], "earth": [0, 50]}
+      },
+      "variants": ["SPD_TYPE1", "SPD_TYPE3"],
+      "annotation_fields": ["In_kA", "Up_kV", "Uc_V"],
+      "usage_notes": "Type 2 SPD — smaller diamond. Tests using 8/20μs nominal. Required at main DB in all new installations (IEC 60364-4-44 AMD2:2018). Annotate In, Up, Uc.",
+      "related_symbols": ["SPD_TYPE1", "SPD_TYPE3"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SPD_TYPE3",
+      "iec_ref": "IEC60617-07-25-03",
+      "iec_part": 7,
+      "iec_description": "Surge protective device — Type 3 (point-of-use)",
+      "draftsman_id": "SPD_TYPE3",
+      "category": "protection",
+      "display_name": "SPD Type 3",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 25],
+        "path": "M -50 0 L 0 0 M 0 -15 L 15 0 L 0 15 L -15 0 Z M 0 15 L 0 50",
+        "terminals": {"line": [-50, 0], "earth": [0, 50]}
+      },
+      "variants": ["SPD_TYPE1", "SPD_TYPE2"],
+      "annotation_fields": ["Up_kV", "Uc_V"],
+      "usage_notes": "Type 3 SPD — point-of-use protection for sensitive equipment. Lowest let-through voltage (Up ≤ 1.5kV typically). Annotate Up.",
+      "related_symbols": ["SPD_TYPE1", "SPD_TYPE2"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "ATS_2WAY",
+      "iec_ref": "IEC60617-07-26-01",
+      "iec_part": 7,
+      "iec_description": "Automatic transfer switch — 2-way",
+      "draftsman_id": "ATS_2WAY",
+      "category": "switching",
+      "display_name": "ATS (2-way)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -20 L -20 -20 M -20 -30 L 20 -30 L 20 30 L -20 30 Z M -20 -20 L 0 0 M -20 20 L 0 0 M 20 0 L 50 0 M -10 -10 L 10 -10 M -50 20 L -20 20",
+        "terminals": {"source_A": [-50, -20], "source_B": [-50, 20], "load": [50, 0]}
+      },
+      "variants": ["ATS_3WAY", "TRANSFER_SWITCH_MANUAL", "BUS_SECTION_SWITCH"],
+      "annotation_fields": ["rated_A", "transfer_time_s"],
+      "usage_notes": "Automatic transfer switch — selects between two power sources (typically utility and generator). Two inputs, one output. Annotate rated current and transfer time. Internal logic controls source selection.",
+      "related_symbols": ["ATS_3WAY", "TRANSFER_SWITCH_MANUAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "ATS_3WAY",
+      "iec_ref": "IEC60617-07-26-02",
+      "iec_part": 7,
+      "iec_description": "Automatic transfer switch — 3-way",
+      "draftsman_id": "ATS_3WAY",
+      "category": "switching",
+      "display_name": "ATS (3-way)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -20 L -20 -20 M -20 -30 L 20 -30 L 20 30 L -20 30 Z M -20 -20 L 0 0 M -20 0 L 0 0 M -20 20 L 0 0 M 20 0 L 50 0 M -50 0 L -20 0 M -50 20 L -20 20",
+        "terminals": {"source_A": [-50, -20], "source_B": [-50, 0], "source_C": [-50, 20], "load": [50, 0]}
+      },
+      "variants": ["ATS_2WAY"],
+      "annotation_fields": ["rated_A", "transfer_time_s"],
+      "usage_notes": "Three-way ATS — selects between three sources (e.g. utility, generator, UPS). Used in critical applications (data centres, hospitals).",
+      "related_symbols": ["ATS_2WAY", "TRANSFER_SWITCH_MANUAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "TRANSFER_SWITCH_MANUAL",
+      "iec_ref": "IEC60617-07-26-03",
+      "iec_part": 7,
+      "iec_description": "Manual transfer switch",
+      "draftsman_id": "TRANSFER_SWITCH_MANUAL",
+      "category": "switching",
+      "display_name": "Manual transfer switch",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 -15 L -20 -15 M -20 -15 L 0 0 M 0 0 L 30 -15 M 0 0 L 30 15 M -50 15 L -20 15 M -20 15 L 0 0 M 30 -15 L 50 -15 M 30 15 L 50 15",
+        "terminals": {"source_A": [-50, -15], "source_B": [-50, 15], "load_A": [50, -15], "load_B": [50, 15]}
+      },
+      "variants": ["ATS_2WAY"],
+      "annotation_fields": ["rated_A"],
+      "usage_notes": "Manual transfer switch / changeover switch — operator selects source. Used for small installations or as bypass for an ATS.",
+      "related_symbols": ["ATS_2WAY", "ATS_3WAY"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "RELAY_EARTH_LEAKAGE",
+      "iec_ref": "IEC60617-07-22-03",
+      "iec_part": 7,
+      "iec_description": "Earth leakage relay (sensing only)",
+      "draftsman_id": "RELAY_EARTH_LEAKAGE",
+      "category": "protection",
+      "display_name": "Earth leakage relay",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -20 0 M -20 -20 L 20 -20 L 20 20 L -20 20 Z M 20 0 L 50 0 M 0 0 A 8 8 0 1 0 0 16 A 8 8 0 1 0 0 0 M 0 -10 L 0 -25",
+        "terminals": {"L": [-50, 0], "out": [50, 0], "trip_signal": [0, -25]}
+      },
+      "variants": ["RCD_4P"],
+      "annotation_fields": ["IDn_mA", "trip_output"],
+      "usage_notes": "Earth leakage relay — sensing only, must be paired with a separate switching device (contactor or shunt-trip MCCB). Used on larger circuits where a single RCCB rating is not available.",
+      "related_symbols": ["RCD_4P", "CONTACTOR_3P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CONTACT_INTERLOCK",
+      "iec_ref": "IEC60617-07-08-02",
+      "iec_part": 7,
+      "iec_description": "Interlocked contacts",
+      "draftsman_id": "CONTACT_INTERLOCK",
+      "category": "switching",
+      "display_name": "Interlock contact",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 -10 L -15 -10 M -15 -10 L 12 -28 M 15 -10 L 50 -10 M -50 10 L -15 10 M -15 10 L 12 -8 M 15 10 L 50 10 M 0 -15 L 0 15",
+        "terminals": {"line1_in": [-50, -10], "line1_out": [50, -10], "line2_in": [-50, 10], "line2_out": [50, 10]}
+      },
+      "variants": ["CONTACT_NO", "CONTACT_AUX_NO"],
+      "annotation_fields": ["tag"],
+      "usage_notes": "Mechanically interlocked pair of contacts — both cannot be closed simultaneously. Vertical line indicates the interlock. Used between source ATS contactors (utility/generator) to prevent paralleling.",
+      "related_symbols": ["CONTACT_NO", "ATS_2WAY"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CONTACT_AUX_NO",
+      "iec_ref": "IEC60617-07-08-03",
+      "iec_part": 7,
+      "iec_description": "Auxiliary contact — NO",
+      "draftsman_id": "CONTACT_AUX_NO",
+      "category": "switching",
+      "display_name": "Auxiliary contact (NO)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0 M -25 -15 L -10 -15",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["CONTACT_NO", "CONTACT_AUX_NC"],
+      "annotation_fields": ["tag", "parent_device"],
+      "usage_notes": "Auxiliary contact — derived from a power contactor or breaker. NO state. Used for control logic, indication. Annotate the parent device tag.",
+      "related_symbols": ["CONTACT_NO", "CONTACTOR_3P", "MCCB_3P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CONTACT_AUX_NC",
+      "iec_ref": "IEC60617-07-08-04",
+      "iec_part": 7,
+      "iec_description": "Auxiliary contact — NC",
+      "draftsman_id": "CONTACT_AUX_NC",
+      "category": "switching",
+      "display_name": "Auxiliary contact (NC)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -15 0 M -15 -20 L -15 20 M -15 0 L 15 0 M 15 -20 L 15 20 M 15 0 L 50 0 M -20 -15 L 20 15 M -25 -15 L -10 -15",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["CONTACT_NC", "CONTACT_AUX_NO"],
+      "annotation_fields": ["tag", "parent_device"],
+      "usage_notes": "Auxiliary contact, NC state. Often used for fault/trip signalling from a breaker.",
+      "related_symbols": ["CONTACT_NC", "CONTACTOR_3P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "PUSHBUTTON_NO",
+      "iec_ref": "IEC60617-07-07-01",
+      "iec_part": 7,
+      "iec_description": "Push-button — make contact",
+      "draftsman_id": "PUSHBUTTON_NO",
+      "category": "switching",
+      "display_name": "Pushbutton (NO)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -15 0 M -15 -15 L 15 -15 M -15 0 L 15 0 M 15 -15 L 15 15 M 15 0 L 50 0 M 0 -15 L 0 -25",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["PUSHBUTTON_NC", "PUSHBUTTON_ILLUMINATED", "EMERGENCY_STOP"],
+      "annotation_fields": ["function"],
+      "usage_notes": "Push-to-make pushbutton — momentary NO contact. Vertical line indicates the plunger. Used for start, reset, accept commands.",
+      "related_symbols": ["PUSHBUTTON_NC", "CONTACT_NO", "EMERGENCY_STOP"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "PUSHBUTTON_NC",
+      "iec_ref": "IEC60617-07-07-02",
+      "iec_part": 7,
+      "iec_description": "Push-button — break contact",
+      "draftsman_id": "PUSHBUTTON_NC",
+      "category": "switching",
+      "display_name": "Pushbutton (NC)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -15 0 M -15 -15 L -15 15 M -15 0 L 15 0 M 15 -15 L 15 15 M 15 0 L 50 0 M -20 -15 L 20 15 M 0 15 L 0 25",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["PUSHBUTTON_NO", "EMERGENCY_STOP"],
+      "annotation_fields": ["function"],
+      "usage_notes": "Push-to-break pushbutton — momentary NC contact. Used for stop, cancel commands.",
+      "related_symbols": ["PUSHBUTTON_NO", "EMERGENCY_STOP"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "PUSHBUTTON_ILLUMINATED",
+      "iec_ref": "IEC60617-07-07-03",
+      "iec_part": 7,
+      "iec_description": "Illuminated push-button",
+      "draftsman_id": "PUSHBUTTON_ILLUMINATED",
+      "category": "switching",
+      "display_name": "Illuminated pushbutton",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -15 0 M -15 -15 L 15 -15 M -15 0 L 15 0 M 15 -15 L 15 15 M 15 0 L 50 0 M 0 -15 L 0 -25 M -20 -8 L 20 -8 M -15 -3 L -5 -8 M 5 -3 L 15 -8",
+        "terminals": {"in": [-50, 0], "out": [50, 0], "lamp_a": [-15, 20], "lamp_b": [15, 20]}
+      },
+      "variants": ["PUSHBUTTON_NO"],
+      "annotation_fields": ["function", "lamp_colour"],
+      "usage_notes": "Pushbutton with integral lamp — combines a contact and an indicator. Annotate lamp colour and function.",
+      "related_symbols": ["PUSHBUTTON_NO", "INDICATOR_LAMP"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "EMERGENCY_STOP",
+      "iec_ref": "IEC60617-07-07-04",
+      "iec_part": 7,
+      "iec_description": "Emergency stop button (mushroom head)",
+      "draftsman_id": "EMERGENCY_STOP",
+      "category": "switching",
+      "display_name": "Emergency stop",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -15 0 M -15 -15 L -15 15 M -15 0 L 15 0 M 15 -15 L 15 15 M 15 0 L 50 0 M -20 -15 L 20 15 M 20 -25 A 20 20 0 1 0 -20 -25 A 20 20 0 1 0 20 -25 Z",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["PUSHBUTTON_NC"],
+      "annotation_fields": ["function"],
+      "usage_notes": "Emergency stop — NC contact with mushroom-head latching pushbutton. Drawn with a circle above the contact symbol. Required at machinery to ISO 13850.",
+      "related_symbols": ["PUSHBUTTON_NC"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "KEY_SWITCH",
+      "iec_ref": "IEC60617-07-07-06",
+      "iec_part": 7,
+      "iec_description": "Key-operated switch",
+      "draftsman_id": "KEY_SWITCH",
+      "category": "switching",
+      "display_name": "Key switch",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0 M 0 -25 L 0 -10 M -5 -22 A 5 5 0 1 0 5 -22 A 5 5 0 1 0 -5 -22 Z",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["SELECTOR_SWITCH_2POS", "SWITCH_1P"],
+      "annotation_fields": ["function"],
+      "usage_notes": "Key-operated switch — switch with a key symbol on top. Used for secure or critical operations (e.g. lift maintenance, hospital theatre changeover).",
+      "related_symbols": ["SELECTOR_SWITCH_2POS", "SWITCH_1P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SELECTOR_SWITCH_2POS",
+      "iec_ref": "IEC60617-07-07-07",
+      "iec_part": 7,
+      "iec_description": "Selector switch — 2-position",
+      "draftsman_id": "SELECTOR_SWITCH_2POS",
+      "category": "switching",
+      "display_name": "Selector switch (2-position)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 -10 L -15 -10 M -15 -10 L 0 0 M -50 10 L -15 10 M -15 10 L 0 0 M 0 0 L 15 -10 M 0 0 L 15 10 M 15 -10 L 50 -10 M 15 10 L 50 10",
+        "terminals": {"in_a": [-50, -10], "in_b": [-50, 10], "out_a": [50, -10], "out_b": [50, 10]}
+      },
+      "variants": ["SELECTOR_SWITCH_3POS", "CONTACT_CHANGEOVER"],
+      "annotation_fields": ["positions", "function"],
+      "usage_notes": "Two-position rotary selector. Common for hand/off, manual/auto.",
+      "related_symbols": ["SELECTOR_SWITCH_3POS", "KEY_SWITCH"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SELECTOR_SWITCH_3POS",
+      "iec_ref": "IEC60617-07-07-08",
+      "iec_part": 7,
+      "iec_description": "Selector switch — 3-position",
+      "draftsman_id": "SELECTOR_SWITCH_3POS",
+      "category": "switching",
+      "display_name": "Selector switch (3-position)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 -15 L -15 -15 M -15 -15 L 0 0 M -50 0 L -15 0 M -15 0 L 0 0 M -50 15 L -15 15 M -15 15 L 0 0 M 0 0 L 15 -15 M 0 0 L 15 0 M 0 0 L 15 15 M 15 -15 L 50 -15 M 15 0 L 50 0 M 15 15 L 50 15",
+        "terminals": {"in_a": [-50, -15], "in_b": [-50, 0], "in_c": [-50, 15], "out_a": [50, -15], "out_b": [50, 0], "out_c": [50, 15]}
+      },
+      "variants": ["SELECTOR_SWITCH_2POS"],
+      "annotation_fields": ["positions", "function"],
+      "usage_notes": "Three-position rotary selector. Common for hand/off/auto, forward/off/reverse.",
+      "related_symbols": ["SELECTOR_SWITCH_2POS"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CONTACT_ON_DELAY",
+      "iec_ref": "IEC60617-07-09-01",
+      "iec_part": 7,
+      "iec_description": "Time-delay contact, on-delay (delayed when closing)",
+      "draftsman_id": "CONTACT_ON_DELAY",
+      "category": "switching",
+      "display_name": "Time-delay contact (on-delay)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -18 M 15 -20 L 15 20 M 15 0 L 50 0 M -25 -20 L -25 -10 A 10 10 0 0 0 -15 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["CONTACT_OFF_DELAY", "DELAY_SYMBOL", "CONTACT_NO"],
+      "annotation_fields": ["delay_s"],
+      "usage_notes": "On-delay contact — delays closing after operation. Curve symbol indicates the timing function. Annotate delay duration.",
+      "related_symbols": ["CONTACT_OFF_DELAY", "DELAY_SYMBOL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CONTACT_OFF_DELAY",
+      "iec_ref": "IEC60617-07-09-02",
+      "iec_part": 7,
+      "iec_description": "Time-delay contact, off-delay (delayed when opening)",
+      "draftsman_id": "CONTACT_OFF_DELAY",
+      "category": "switching",
+      "display_name": "Time-delay contact (off-delay)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -18 M 15 -20 L 15 20 M 15 0 L 50 0 M 25 -20 L 25 -10 A 10 10 0 0 1 15 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["CONTACT_ON_DELAY"],
+      "annotation_fields": ["delay_s"],
+      "usage_notes": "Off-delay contact — delays opening after de-energising. Mirror curve symbol. Annotate delay duration.",
+      "related_symbols": ["CONTACT_ON_DELAY", "DELAY_SYMBOL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "DISCONNECT_HANDLE",
+      "iec_ref": "IEC60617-07-13-09",
+      "iec_part": 7,
+      "iec_description": "Disconnect handle (manual operating mechanism)",
+      "draftsman_id": "DISCONNECT_HANDLE",
+      "category": "switching",
+      "display_name": "Manual disconnect handle",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -25, 25, 25],
+        "path": "M 0 -25 L 0 25 M -15 0 L 15 0",
+        "terminals": {}
+      },
+      "variants": [],
+      "annotation_fields": [],
+      "usage_notes": "Qualifying overlay indicating a switching device has a manual external handle. Often combined with SWITCH_DISCONNECTOR or ISOLATOR.",
+      "related_symbols": ["SWITCH_DISCONNECTOR_3P", "ISOLATOR_3P"],
+      "generating_shared_symbol": false
+    },
+    {
+      "symbol_id": "LIMITER_CURRENT",
+      "iec_ref": "IEC60617-07-21-05",
+      "iec_part": 7,
+      "iec_description": "Current limiter",
+      "draftsman_id": "LIMITER_CURRENT",
+      "category": "protection",
+      "display_name": "Current limiter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -15, 50, 15],
+        "path": "M -50 0 L -20 0 M -20 -10 L 20 -10 L 20 10 L -20 10 Z M 20 0 L 50 0 M -10 -10 L -10 10 M 10 -10 L 10 10",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["FUSE_1P"],
+      "annotation_fields": ["limit_A", "let_through_A"],
+      "usage_notes": "Current-limiting device — fuse-like rectangle with internal bars. Used to reduce let-through energy at high PSCC.",
+      "related_symbols": ["FUSE_1P", "MCCB_3P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "LIMITER_VOLTAGE",
+      "iec_ref": "IEC60617-07-25-04",
+      "iec_part": 7,
+      "iec_description": "Voltage limiter",
+      "draftsman_id": "LIMITER_VOLTAGE",
+      "category": "protection",
+      "display_name": "Voltage limiter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L 0 0 M 0 -15 L 15 0 L 0 15 L -15 0 Z M 0 15 L 0 25 L 20 25",
+        "terminals": {"line": [-50, 0], "earth": [20, 25]}
+      },
+      "variants": ["SPD_TYPE2", "SPD_TYPE3"],
+      "annotation_fields": ["Uc_V", "Up_kV"],
+      "usage_notes": "Voltage limiter — diamond with earth lead. Generic form for an MOV or gas discharge tube. SPD_TYPE2 is the formal IEC type-classified form.",
+      "related_symbols": ["SPD_TYPE2", "SPD_TYPE3"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "RELAY_OVERCURRENT",
+      "iec_ref": "IEC60617-07-15-04",
+      "iec_part": 7,
+      "iec_description": "Overcurrent relay",
+      "draftsman_id": "RELAY_OVERCURRENT",
+      "category": "protection",
+      "display_name": "Overcurrent relay",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -15, 50, 15],
+        "path": "M -50 0 L -20 0 M -20 -15 L 20 -15 L 20 15 L -20 15 Z M 20 0 L 50 0 M -10 -10 L 10 10 M -10 0 L 10 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["RELAY_GENERAL", "RELAY_THERMAL"],
+      "annotation_fields": ["pickup_A", "time_s"],
+      "usage_notes": "Overcurrent protection relay — rectangle with internal indication. Used on MV switchgear, large MCCBs with separate trip units.",
+      "related_symbols": ["RELAY_GENERAL", "MCCB_3P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "RELAY_UNDERVOLTAGE",
+      "iec_ref": "IEC60617-07-15-05",
+      "iec_part": 7,
+      "iec_description": "Undervoltage relay",
+      "draftsman_id": "RELAY_UNDERVOLTAGE",
+      "category": "protection",
+      "display_name": "Undervoltage relay",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -15, 50, 15],
+        "path": "M -50 0 L -20 0 M -20 -15 L 20 -15 L 20 15 L -20 15 Z M 20 0 L 50 0 M -10 -8 L -5 -8 M -8 -8 L -8 8 M 5 -8 L 10 -8 M 8 -8 L 8 8",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["RELAY_GENERAL"],
+      "annotation_fields": ["pickup_V", "time_s"],
+      "usage_notes": "Undervoltage relay — used for automatic disconnection on supply loss (e.g. generator changeover trigger, motor undervoltage trip).",
+      "related_symbols": ["RELAY_GENERAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "RELAY_DIFFERENTIAL",
+      "iec_ref": "IEC60617-07-15-06",
+      "iec_part": 7,
+      "iec_description": "Differential relay",
+      "draftsman_id": "RELAY_DIFFERENTIAL",
+      "category": "protection",
+      "display_name": "Differential relay",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 -10 L -20 -10 M -20 -20 L 20 -20 L 20 20 L -20 20 Z M 20 -10 L 50 -10 M -50 10 L -20 10 M 20 10 L 50 10 M -10 -5 L 10 5 M 10 -5 L -10 5",
+        "terminals": {"in_a": [-50, -10], "in_b": [-50, 10], "out_a": [50, -10], "out_b": [50, 10]}
+      },
+      "variants": ["RELAY_GENERAL"],
+      "annotation_fields": ["bias", "pickup_A"],
+      "usage_notes": "Differential protection relay — compares current in two CTs (in/out). Used for transformer differential, busbar protection.",
+      "related_symbols": ["RELAY_GENERAL", "TRANSFORMER_CURRENT"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MOTOR_STARTER_DOL",
+      "iec_ref": "IEC60617-07-19-03",
+      "iec_part": 7,
+      "iec_description": "Direct-on-line motor starter",
+      "draftsman_id": "MOTOR_STARTER_DOL",
+      "category": "switching",
+      "display_name": "DOL motor starter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M -30 -25 L 30 -25 L 30 25 L -30 25 Z M 30 0 L 50 0 M -20 -10 L -10 10 M -5 -10 L 5 10 M 10 -10 L 20 10 M -15 15 L 15 15",
+        "terminals": {"L_in": [-50, 0], "M_out": [50, 0]}
+      },
+      "variants": ["MOTOR_STARTER_SD", "MOTOR_STARTER_VFD", "SOFT_STARTER"],
+      "annotation_fields": ["rated_kW", "tag"],
+      "usage_notes": "Direct-on-line motor starter — composite symbol for contactor + overload relay. Annotate motor rating. Simplest motor control; high inrush current.",
+      "related_symbols": ["CONTACTOR_3P", "RELAY_THERMAL", "MOTOR_INDUCTION"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MOTOR_STARTER_SD",
+      "iec_ref": "IEC60617-07-19-04",
+      "iec_part": 7,
+      "iec_description": "Star-delta motor starter",
+      "draftsman_id": "MOTOR_STARTER_SD",
+      "category": "switching",
+      "display_name": "Star-delta motor starter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M -30 -25 L 30 -25 L 30 25 L -30 25 Z M 30 0 L 50 0 M -15 -10 L 15 10 M -15 0 L 15 -10 L 15 10 Z M -10 15 L 10 15",
+        "terminals": {"L_in": [-50, 0], "M_out": [50, 0]}
+      },
+      "variants": ["MOTOR_STARTER_DOL", "CONTACTOR_STAR_DELTA"],
+      "annotation_fields": ["rated_kW", "transition_time_s"],
+      "usage_notes": "Star-delta starter for reduced-inrush motor starting. Suitable for motors > 7.5 kW where DOL inrush is too high. Annotate transition time.",
+      "related_symbols": ["MOTOR_STARTER_DOL", "CONTACTOR_STAR_DELTA"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MOTOR_STARTER_VFD",
+      "iec_ref": "IEC60617-07-19-05",
+      "iec_part": 7,
+      "iec_description": "VFD motor starter",
+      "draftsman_id": "MOTOR_STARTER_VFD",
+      "category": "switching",
+      "display_name": "VFD motor starter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M -30 -25 L 30 -25 L 30 25 L -30 25 Z M 30 0 L 50 0 M -15 -10 L -10 -10 L -10 0 L -5 0 M 0 0 Q 5 -8 10 0 M 10 -5 L 15 -10",
+        "terminals": {"L_in": [-50, 0], "M_out": [50, 0]}
+      },
+      "variants": ["VFD", "MOTOR_STARTER_DOL"],
+      "annotation_fields": ["rated_kW", "speed_range_Hz"],
+      "usage_notes": "VFD-based motor starter — soft starting plus variable speed. Standard for HVAC fans, pumps. Annotate speed range.",
+      "related_symbols": ["VFD", "MOTOR_STARTER_SD"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SWITCH_PRESSURE",
+      "iec_ref": "IEC60617-07-03-01",
+      "iec_part": 7,
+      "iec_description": "Pressure-operated switch",
+      "draftsman_id": "SWITCH_PRESSURE",
+      "category": "switching",
+      "display_name": "Pressure switch",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0 M 0 -25 L 0 -15 M -8 -20 A 8 8 0 0 0 8 -20",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["SWITCH_TEMPERATURE", "SWITCH_FLOAT", "SWITCH_LEVEL"],
+      "annotation_fields": ["setpoint_bar"],
+      "usage_notes": "Pressure-operated switch — dome symbol above the contact represents the pressure sensor. Annotate setpoint.",
+      "related_symbols": ["SWITCH_TEMPERATURE", "SWITCH_FLOAT"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SWITCH_TEMPERATURE",
+      "iec_ref": "IEC60617-07-03-02",
+      "iec_part": 7,
+      "iec_description": "Temperature-operated switch (thermostat)",
+      "draftsman_id": "SWITCH_TEMPERATURE",
+      "category": "switching",
+      "display_name": "Temperature switch (thermostat)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0 M 0 -25 L 0 -15 M -5 -25 L -5 -18 L 5 -18 L 5 -25",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["SWITCH_PRESSURE"],
+      "annotation_fields": ["setpoint_C"],
+      "usage_notes": "Thermostat — rectangle symbol above the contact represents the temperature sensor. Used for HVAC controls, motor temperature trip.",
+      "related_symbols": ["SWITCH_PRESSURE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SWITCH_FLOAT",
+      "iec_ref": "IEC60617-07-03-03",
+      "iec_part": 7,
+      "iec_description": "Float (liquid level) switch",
+      "draftsman_id": "SWITCH_FLOAT",
+      "category": "switching",
+      "display_name": "Float switch",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0 M 0 -25 L 0 -15 M -10 -25 L 10 -25",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["SWITCH_LEVEL"],
+      "annotation_fields": ["level_position"],
+      "usage_notes": "Float switch — bar symbol above the contact represents the float. Used in sump pumps, water tanks.",
+      "related_symbols": ["SWITCH_LEVEL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SWITCH_LEVEL",
+      "iec_ref": "IEC60617-07-03-04",
+      "iec_part": 7,
+      "iec_description": "Level switch (general)",
+      "draftsman_id": "SWITCH_LEVEL",
+      "category": "switching",
+      "display_name": "Level switch",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0 M 0 -25 L 0 -15 M -8 -25 L 8 -25 M -8 -20 L 8 -20",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["SWITCH_FLOAT"],
+      "annotation_fields": ["level_position"],
+      "usage_notes": "Level switch — generic (capacitive, ultrasonic, conductive). Distinct from FLOAT which is the mechanical/buoyancy form.",
+      "related_symbols": ["SWITCH_FLOAT"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CIRCUIT_BREAKER_GENERAL",
+      "iec_ref": "IEC60617-07-18-00",
+      "iec_part": 7,
+      "iec_description": "Circuit-breaker (general)",
+      "draftsman_id": "CIRCUIT_BREAKER_GENERAL",
+      "category": "protection",
+      "display_name": "Circuit-breaker (general)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -20 0 M -20 -25 L 20 -25 L 20 25 L -20 25 Z M -20 0 L 20 0 M 20 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["MCB_1P", "MCCB_3P", "ACB_3P"],
+      "annotation_fields": ["In_A", "Icu_kA"],
+      "usage_notes": "Generic circuit-breaker box. Use only when device class (MCB/MCCB/ACB) is not yet decided. Otherwise prefer the specific class symbol.",
+      "related_symbols": ["MCB_1P", "MCCB_3P", "ACB_3P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "DISCONNECTOR_GENERAL",
+      "iec_ref": "IEC60617-07-14-00",
+      "iec_part": 7,
+      "iec_description": "Disconnector (general)",
+      "draftsman_id": "DISCONNECTOR_GENERAL",
+      "category": "switching",
+      "display_name": "Disconnector (general)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0 M -25 -15 L -5 -15",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["ISOLATOR_2P", "ISOLATOR_3P", "ISOLATOR_4P"],
+      "annotation_fields": ["rated_A"],
+      "usage_notes": "Generic single-pole disconnector. Used when pole count is not yet fixed. Horizontal bar indicates 'no load' (isolator) operation.",
+      "related_symbols": ["ISOLATOR_2P", "ISOLATOR_3P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CONTACTOR_GENERAL",
+      "iec_ref": "IEC60617-07-19-00",
+      "iec_part": 7,
+      "iec_description": "Contactor (general)",
+      "draftsman_id": "CONTACTOR_GENERAL",
+      "category": "switching",
+      "display_name": "Contactor (general)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0 M -20 -22 A 5 5 0 1 0 -10 -22 A 5 5 0 1 0 -20 -22 Z",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["CONTACTOR_3P"],
+      "annotation_fields": ["AC_rating_A", "tag"],
+      "usage_notes": "Generic single-pole contactor. The small circle indicates the spring-return / power-operated behaviour (distinct from a manual switch).",
+      "related_symbols": ["CONTACTOR_3P", "RELAY_COIL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "RELAY_GENERAL",
+      "iec_ref": "IEC60617-07-15-00",
+      "iec_part": 7,
+      "iec_description": "Relay (general)",
+      "draftsman_id": "RELAY_GENERAL",
+      "category": "switching",
+      "display_name": "Relay (general)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -15, 50, 15],
+        "path": "M -50 0 L -20 0 M -20 -15 L 20 -15 L 20 15 L -20 15 Z M 20 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["RELAY_COIL", "RELAY_OVERCURRENT", "RELAY_THERMAL"],
+      "annotation_fields": ["function", "tag"],
+      "usage_notes": "Generic relay symbol — rectangle without specific function marking. Annotate function (overcurrent, undervoltage, etc.).",
+      "related_symbols": ["RELAY_COIL", "RELAY_OVERCURRENT"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SWITCH_ISOLATING",
+      "iec_ref": "IEC60617-07-02-03",
+      "iec_part": 7,
+      "iec_description": "Switch suitable for isolation",
+      "draftsman_id": "SWITCH_ISOLATING",
+      "category": "switching",
+      "display_name": "Isolating switch",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -15 0 M -15 0 L 12 -18 M 15 0 L 50 0 M -25 -15 L 25 -15",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["SWITCH_GENERAL", "ISOLATOR_2P"],
+      "annotation_fields": ["rated_A"],
+      "usage_notes": "Switch certified for isolation duty (e.g. MAINS marked). Long horizontal bar over the contact indicates the isolation rating. Used as functional switch + isolator.",
+      "related_symbols": ["SWITCH_GENERAL", "ISOLATOR_2P"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "LINK_REMOVABLE",
+      "iec_ref": "IEC60617-07-04-01",
+      "iec_part": 7,
+      "iec_description": "Removable link / bolted link",
+      "draftsman_id": "LINK_REMOVABLE",
+      "category": "switching",
+      "display_name": "Removable link",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -10, 50, 10],
+        "path": "M -50 0 L -15 0 M -15 0 L 15 0 M 15 0 L 50 0 M -15 -10 A 5 5 0 1 0 -15 0 M 15 -10 A 5 5 0 1 0 15 0",
+        "terminals": {"a": [-50, 0], "b": [50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": [],
+      "usage_notes": "Bolted/removable link — a non-switching connection that can be unbolted for maintenance. Two terminals connected by a bar with knobs. Used on PE-N links in TN-C-S systems.",
+      "related_symbols": ["DISCONNECTOR_GENERAL"],
+      "generating_shared_symbol": true
+    }
+  ]
+}
