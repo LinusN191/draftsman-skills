@@ -1,0 +1,70 @@
+# Eval 01 — UK domestic consumer unit, TN-C-S
+# Category: happy_path
+# Standard refs: BS 7671:2018+A3, IEC 61439-3, IEC 60617
+
+id: eval-01-uk-domestic-cu-tn-cs
+category: happy_path
+severity: critical
+description: |
+  Standard UK 3-bed semi-detached dwelling on PME supply (TN-C-S). 100A main switch +
+  12-way Hager consumer unit + 30mA main RCD + 6 final circuits (lighting × 2, sockets × 2,
+  cooker, shower). All circuits RCBO or behind main RCD. Form 1 enclosure.
+
+inputs:
+  jurisdiction: "GB"
+  board_type: "consumer_unit"
+  db_designation: "CU-G"
+  location: "hallway cupboard"
+  fed_from: "MAIN"
+  supply_voltage_v: "230"
+  phase_arrangement: "single_phase"
+  supply_rating_a: 100
+  ze_ohm_at_origin: 0.35
+  ways_total: 12
+  ways_spare_minimum: 2
+  form_separation_iec61439: "1"
+  ip_rating: "IP2X"
+  circuits_declared:
+    - { id: "C01", designation: "Ground floor lighting", ocpd_rating_a: 6, ocpd_curve: "B", ocpd_type: "MCB", rcd_protected: true, rcd_sensitivity_ma: 30, phase_csa_mm2: 1.5, length_m: 18, load_kw: 0.8, voltage_class: "LV_power" }
+    - { id: "C02", designation: "First floor lighting", ocpd_rating_a: 6, ocpd_curve: "B", ocpd_type: "MCB", rcd_protected: true, rcd_sensitivity_ma: 30, phase_csa_mm2: 1.5, length_m: 22, load_kw: 0.7, voltage_class: "LV_power" }
+    - { id: "C03", designation: "Ground floor sockets ring", ocpd_rating_a: 32, ocpd_curve: "B", ocpd_type: "MCB", rcd_protected: true, rcd_sensitivity_ma: 30, phase_csa_mm2: 2.5, length_m: 38, load_kw: 5.0, voltage_class: "LV_power" }
+    - { id: "C04", designation: "First floor sockets ring", ocpd_rating_a: 32, ocpd_curve: "B", ocpd_type: "MCB", rcd_protected: true, rcd_sensitivity_ma: 30, phase_csa_mm2: 2.5, length_m: 42, load_kw: 4.0, voltage_class: "LV_power" }
+    - { id: "C05", designation: "Cooker radial", ocpd_rating_a: 32, ocpd_curve: "B", ocpd_type: "MCB", rcd_protected: true, rcd_sensitivity_ma: 30, phase_csa_mm2: 6.0, length_m: 14, load_kw: 7.5, voltage_class: "LV_power" }
+    - { id: "C06", designation: "Bathroom shower", ocpd_rating_a: 40, ocpd_curve: "B", ocpd_type: "MCB", rcd_protected: true, rcd_sensitivity_ma: 30, phase_csa_mm2: 10.0, length_m: 16, load_kw: 9.0, voltage_class: "LV_power" }
+  diversity_factor_main: 0.4
+  rcd_type_default: "A"
+
+assertions:
+  - kind: schema_valid
+    schema: "db-layout-ir.schema.json"
+  - kind: jsonpath_equals
+    path: "$.jurisdiction"
+    expected: "GB"
+  - kind: jsonpath_equals
+    path: "$.board.db_id"
+    expected: "CU-G"
+  - kind: jsonpath_equals
+    path: "$.board.enclosure_form_iec61439"
+    expected: "1"
+  - kind: jsonpath_count_equals
+    path: "$.circuits[*]"
+    expected: 6
+  - kind: jsonpath_lte
+    path: "$.board.ways_used"
+    maximum: 12
+  - kind: invariant_passes
+    invariant: "INV-1"
+    note: "Way accounting"
+  - kind: invariant_passes
+    invariant: "INV-3"
+    note: "Busbar rating coverage"
+  - kind: invariant_passes
+    invariant: "INV-4"
+    note: "OCPD-cable coordination"
+  - kind: clause_cited
+    clause_pattern: "^BS 7671:2018\\+A3 Reg 4(11|33)\\."
+    minimum_count: 2
+  - kind: rationale_present
+    require_sections: ["Board Classification", "Incoming Supply", "Busbar Sizing", "Way Assignment", "OCPD Selection", "RCD Strategy", "Cable Selection", "Selectivity Verification", "Compliance"]
+
+expected_status: "pass"
