@@ -1,0 +1,64 @@
+{
+  "_title": "IEC 61439 — Busbar Derating and Fault-Current Force",
+  "_iec_part": "1 (Annex E + Annex P)",
+  "_version": "1.0.0",
+  "_note": "Typical current-carrying capacities and derating factors. These are indicative values per IEC 61439-1 Annex E.6 and reference designs — the OEM's verified data supersedes for any specific assembly.",
+  "current_carrying_capacity_copper": {
+    "_conductor": "Copper",
+    "_reference_ambient_C": 35,
+    "_busbar_temperature_C": 90,
+    "_orientation": "Vertical, in ventilated enclosure",
+    "_note": "Per single rectangular bar. Multi-bar arrangements derated for proximity per derating_for_multiple_bars below.",
+    "table_A_per_csa": [
+      {"csa_mm2": 100,  "width_x_thickness_mm": "20 × 5",   "rated_A": 281},
+      {"csa_mm2": 150,  "width_x_thickness_mm": "30 × 5",   "rated_A": 393},
+      {"csa_mm2": 200,  "width_x_thickness_mm": "40 × 5",   "rated_A": 500},
+      {"csa_mm2": 250,  "width_x_thickness_mm": "50 × 5",   "rated_A": 595},
+      {"csa_mm2": 400,  "width_x_thickness_mm": "80 × 5",   "rated_A": 858},
+      {"csa_mm2": 500,  "width_x_thickness_mm": "100 × 5",  "rated_A": 1011},
+      {"csa_mm2": 600,  "width_x_thickness_mm": "60 × 10",  "rated_A": 1110},
+      {"csa_mm2": 800,  "width_x_thickness_mm": "80 × 10",  "rated_A": 1390},
+      {"csa_mm2": 1000, "width_x_thickness_mm": "100 × 10", "rated_A": 1640},
+      {"csa_mm2": 1600, "width_x_thickness_mm": "160 × 10", "rated_A": 2370},
+      {"csa_mm2": 2000, "width_x_thickness_mm": "200 × 10", "rated_A": 2810}
+    ]
+  },
+  "current_carrying_capacity_aluminium": {
+    "_conductor": "Aluminium",
+    "_factor_vs_copper": 0.78,
+    "_note": "Aluminium busbar carries approximately 78% of an equal-CSA copper busbar's current at the same temperature rise."
+  },
+  "derating_for_ambient": {
+    "_formula": "Kt = sqrt((max_rise_K + 35 − actual_ambient_C) / max_rise_K)",
+    "_examples": [
+      {"ambient_C": 35, "rise_K": 55, "Kt": 1.0},
+      {"ambient_C": 40, "rise_K": 55, "Kt": 0.953},
+      {"ambient_C": 45, "rise_K": 55, "Kt": 0.905},
+      {"ambient_C": 50, "rise_K": 55, "Kt": 0.853},
+      {"ambient_C": 55, "rise_K": 55, "Kt": 0.798}
+    ]
+  },
+  "derating_for_multiple_bars_per_phase": {
+    "_note": "Multiple bars per phase (parallel) experience proximity heating. Indicative derating factors:",
+    "_factors": [
+      {"bars_per_phase": 1, "factor": 1.00},
+      {"bars_per_phase": 2, "factor": 0.85},
+      {"bars_per_phase": 3, "factor": 0.78},
+      {"bars_per_phase": 4, "factor": 0.72}
+    ]
+  },
+  "fault_current_force": {
+    "_formula": "F = K · Ipk² · s / d",
+    "_units": "F in N/m; Ipk in kA peak; s in m (centre-to-centre between phase conductors); d in m (span between supports)",
+    "_constant_K": "K depends on conductor geometry and configuration. For typical 3-phase rectangular busbar with K = 0.173 (per kA² · m / m): F[N/m] = 0.173 · Ipk² · s / d when s and d in m and Ipk in kA peak.",
+    "worked_example": {
+      "context": "3-phase busbar, Ipk = 100 kA peak, s = 0.15 m, d = 0.5 m",
+      "calculation": "F = 0.173 × 100² × 0.15 / 0.5 = 519 N/m",
+      "interpretation": "Each busbar experiences ~519 N/m of lateral force during the fault peak. Supports must withstand this; busbar deflection between supports must remain elastic."
+    }
+  },
+  "neutral_and_pe_sizing": {
+    "neutral_csa": "Min 50% of phase CSA for In ≤ 1600 A; 100% for harmonic-rich loads (THDi > 15 %). See IEC 60364-5-52 for harmonic derating.",
+    "pe_csa":      "Per IEC 60364-5-54 Table 54.1: PE = S phase for S ≤ 16 mm²; PE = 16 mm² for S = 16–35 mm²; PE = S/2 for S > 35 mm². Or as agreed with adiabatic equation k²S² ≥ I²t."
+  }
+}
