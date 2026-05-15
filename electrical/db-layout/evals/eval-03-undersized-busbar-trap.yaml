@@ -1,0 +1,51 @@
+# Eval 03 — Generator MUST detect and flag an undersized busbar
+# Category: validation_trap
+
+id: eval-03-undersized-busbar-trap
+category: validation_trap
+severity: critical
+description: |
+  Engineer declares busbar rating 200A but sum of way loads × diversity = 230A.
+  Generator must either:
+  (a) Emit busbar.rating_a = 250 (next standard rating up) AND flag the engineer
+      override in compliance_summary.non_compliance_flags, OR
+  (b) Accept the 200A only with a critical flag "BUSBAR_UNDERSIZED".
+  Silently accepting 200A is a FAIL.
+
+inputs:
+  jurisdiction: "GB"
+  board_type: "distribution_board"
+  db_designation: "DB-X1"
+  location: "test fixture"
+  fed_from: "MSB-01"
+  supply_voltage_v: "400"
+  phase_arrangement: "TPN"
+  supply_rating_a: 200
+  busbar_rating_a_declared: 200
+  ways_total: 12
+  form_separation_iec61439: "2a"
+  circuits_declared:
+    - { id: "C01", designation: "Trap load 1", ocpd_rating_a: 80, ocpd_curve: "C", ocpd_type: "MCCB", load_kw: 50 }
+    - { id: "C02", designation: "Trap load 2", ocpd_rating_a: 80, ocpd_curve: "C", ocpd_type: "MCCB", load_kw: 50 }
+    - { id: "C03", designation: "Trap load 3", ocpd_rating_a: 80, ocpd_curve: "C", ocpd_type: "MCCB", load_kw: 50 }
+    - { id: "C04", designation: "Trap load 4", ocpd_rating_a: 50, ocpd_curve: "C", ocpd_type: "MCCB", load_kw: 30 }
+  diversity_factor_main: 0.85
+
+assertions:
+  - kind: schema_valid
+    schema: "db-layout-ir.schema.json"
+  - kind: any_one_of_must_be_true
+    options:
+      - condition: "$.busbar.rating_a >= 250"
+        note: "Generator chose next-rating-up"
+      - condition: "any(f.message contains 'BUSBAR' for f in $.compliance_summary.non_compliance_flags)"
+        note: "Generator flagged the undersize"
+  - kind: jsonpath_not_equals
+    path: "$.busbar.rating_a"
+    forbidden: 200
+    note_if_violated: "Generator silently accepted the trap input — critical fail"
+  - kind: invariant_passes
+    invariant: "INV-3"
+    note: "Busbar rating coverage"
+
+expected_status: "pass"
