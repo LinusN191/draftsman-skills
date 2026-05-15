@@ -1,0 +1,47 @@
+{
+  "_title": "NFPA 70 Article 625 — Electric Vehicle Power Transfer System",
+  "_version": "1.0.0",
+  "articles": [
+    {
+      "article_id": "ART_625",
+      "nec_ref": "NFPA 70:2023 Article 625",
+      "chapter": 6,
+      "article_number": 625,
+      "article_title": "Electric Vehicle Power Transfer System",
+      "scope": "Conductive and inductive EV charging — Levels 1 (120 V), 2 (208/240 V), 3 (DC fast charging). Conductor sizing at 125% continuous (625.40), GFCI for personnel (625.54), ventilation (625.52), disconnect, load management (625.42).",
+      "applies_to": ["ev_charging", "evse", "dc_fast_charging", "wireless_ev_charging", "load_management"],
+      "key_sections": [
+        {"section": "625.40", "title": "Electric Vehicle Branch Circuit", "summary": "Branch circuit dedicated to EVSE; conductors sized at 125% of EVSE rated input current (continuous load assumption per 625.41(B))"},
+        {"section": "625.41", "title": "Overcurrent Protection", "summary": "OCPD rated ≥ EVSE rated input current; cannot exceed conductor ampacity"},
+        {"section": "625.42", "title": "Rating", "summary": "EVSE rating shall not exceed branch circuit rating. Load management systems permitted per 625.42(A)(2) — multiple EVSEs sharing a feeder with controlled total load"},
+        {"section": "625.43", "title": "Disconnecting Means", "summary": "Disconnect for EVSE rated >60 A or >150 V to ground; lockable in OFF position"},
+        {"section": "625.46", "title": "Loss of Primary Source", "summary": "EVSE shall automatically disconnect from premises when primary source is lost"},
+        {"section": "625.52", "title": "Ventilation", "summary": "Indoor charging area ventilation required for Level 2 charging of vehicles that vent hydrogen during charging (rare in modern Li-ion vehicles, but rule still applies)"},
+        {"section": "625.54", "title": "Personnel Protection System (GFCI)", "summary": "EVSE shall include integral GFCI ≤20 mA Class A AND/OR equipment ground-fault circuit protection (EGFCI). For circuits supplying single-phase Level 2 EVSE, the LISTED EVSE provides the GFCI internally — external GFCI breaker required ONLY for receptacle-type EVSE connections"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {
+        "EV_Charging_Levels": {
+          "title": "EV Charging Level Classification (typical, not from Article 625)",
+          "rows": [
+            {"level": "Level 1", "voltage": "120 V AC", "typical_current": "12-16 A", "typical_kw": "1.4-1.9 kW", "connector": "SAE J1772"},
+            {"level": "Level 2", "voltage": "208-240 V AC", "typical_current": "16-80 A", "typical_kw": "3-19 kW", "connector": "SAE J1772 (NACS / Tesla also)"},
+            {"level": "Level 3 / DCFC", "voltage": "200-1000 V DC", "typical_current": "100-500 A", "typical_kw": "50-350 kW", "connector": "CCS Type 1, CHAdeMO, NACS/Tesla, GB/T"}
+          ]
+        }
+      },
+      "common_errors": [
+        "Sizing the EVSE branch circuit at 100% of EVSE rating — 625.41(B) requires 125% continuous (matches 215.2 feeder rule)",
+        "Omitting load management documentation on multi-EVSE feeders — required by 625.42(A)(2)",
+        "Installing an external GFCI breaker on a hard-wired listed Level 2 EVSE — redundant and may cause nuisance trips; listed EVSE provides GFCI internally",
+        "Treating Level 3 DCFC as a normal EV charger — it requires utility-scale interconnection coordination (often >150 kW)"
+      ],
+      "drawn_as": ["EV_CHARGER"],
+      "related_iec_60364": ["IEC 60364-7-722 (Supply of electric vehicles)"],
+      "divergence_notes": "NEC 625.40 cable sizing at 125% of EVSE input current vs IEC 60364-7-722 cable sizing at 100% continuous of EVSE rating with no diversity — same end value for most charger ratings, different framing. NEC mandates GFCI (Class A or EGFCI) per 625.54; IEC mandates Type B RCD where DC leakage > 6 mA possible (functional equivalent — both detect DC fault currents). NEC has no PEN broken-conductor protection requirement; IEC 60364-7-722 requires it for PME/TN-C-S installations. NEC permits separable receptacle EVSE; IEC permits both fixed-cord and separable.",
+      "related_bs_7671": [],
+      "usage_notes": "Document the load management scheme explicitly when multiple EVSEs share a feeder. Default to 125% continuous (matches NEC 215.2 / 220 conventions). For DC fast chargers, coordinate with the utility early — most require formal interconnection study.",
+      "related_articles": ["ART_210", "ART_215", "ART_220", "ART_240"]
+    }
+  ]
+}
