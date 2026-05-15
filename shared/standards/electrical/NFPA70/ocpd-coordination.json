@@ -1,0 +1,59 @@
+{
+  "_title": "NFPA 70 — OCPD Selective Coordination (cross-cutting)",
+  "_version": "1.0.0",
+  "_note": "Selective coordination requirements across NEC — 240.12, 700.32 (emergency), 701.32 (legally required), 645.27 (IT room), 695.6 (fire pump).",
+  "selective_coordination_definition": "OCPDs are 'selectively coordinated' when only the OCPD nearest the fault opens to clear the fault — all upstream OCPDs remain closed.",
+  "where_required": [
+    {
+      "nec_article_section": "700.32",
+      "title": "Emergency Systems",
+      "scope": "Selective coordination required between emergency-system OCPDs and supply-side OCPDs for the full range of available fault currents",
+      "rationale": "An emergency-circuit fault must not open an upstream OCPD that would also de-energise non-emergency circuits — but more importantly, must not de-energise OTHER emergency loads"
+    },
+    {
+      "nec_article_section": "701.32",
+      "title": "Legally Required Standby Systems",
+      "scope": "Same selectivity rule as 700.32, applied to legally required standby",
+      "rationale": "Same logic as emergency, applied at 60 s restoration tier"
+    },
+    {
+      "nec_article_section": "645.27",
+      "title": "Information Technology Equipment Rooms",
+      "scope": "Selective coordination of OCPDs supplying IT room critical loads",
+      "rationale": "Single circuit fault must not cascade to take down the entire IT room"
+    },
+    {
+      "nec_article_section": "695.6",
+      "title": "Fire Pumps",
+      "scope": "OCPDs supplying the fire pump shall be selectively coordinated such that an OCPD downstream of the fire pump controller does NOT open ahead of the fire pump controller",
+      "rationale": "Fire pump must run during a fire even if part of the building distribution is faulted"
+    }
+  ],
+  "methods": [
+    {
+      "method": "Time-current curve comparison",
+      "description": "Plot the time-current characteristics of upstream and downstream OCPDs on the same log-log graph; selective coordination achieved if the downstream curve is entirely BELOW the upstream curve (lower time and current) for ALL fault currents up to the maximum available",
+      "engineering_caveat": "Selective coordination through the full range of fault currents is hard — modern PV-rich systems can require very large frame circuit breakers upstream to maintain selectivity at high fault levels"
+    },
+    {
+      "method": "Series-rated OCPDs",
+      "description": "Listed combinations of fuses + circuit breakers tested together (240.86) — the upstream device's interrupting rating extends to the downstream device. NOT the same as selective coordination — series ratings allow the downstream device to clear faults exceeding its own interrupting rating but upstream device may also open",
+      "engineering_caveat": "Series ratings do NOT necessarily provide selective coordination — confirm with manufacturer's published combinations"
+    },
+    {
+      "method": "Zone-Selective Interlocking (ZSI)",
+      "description": "Communication between OCPDs — downstream OCPD signals 'I have this fault' to upstream, restraining the upstream from tripping until the downstream attempts to clear",
+      "engineering_caveat": "Requires compatible circuit breakers with ZSI capability (typically electronic trip units)"
+    }
+  ],
+  "fuse_circuit_breaker_compatibility": {
+    "rule": "Fuse-to-fuse selectivity easier than CB-to-CB at high fault currents. CB-to-CB selectivity at low/medium fault currents managed by time-delay settings; at high fault currents both may trip via instantaneous element unless ZSI",
+    "typical_recommendation": "Selective coordination required by NEC 700.32 or 695.6 — engage a coordination study with the OCPD manufacturer at design stage; do not assume off-the-shelf devices will coordinate"
+  },
+  "common_errors": [
+    "Specifying 'selective coordination required' on the drawings without doing the coordination study — the schedule must show the OCPDs that achieve selectivity",
+    "Treating series-rated combinations as selective — series ratings are about interrupting capability, not selectivity",
+    "Ignoring instantaneous trip on circuit breakers — at fault currents above the instantaneous threshold, all CBs in series may trip together"
+  ],
+  "iec_60364_cross_reference": "IEC 60364-4-43 Annex D provides cascading rules ≈ NEC series ratings. IEC has no explicit 'selective coordination' mandate for safety services equivalent to NEC 700.32 / 701.32 — IEC handles via system design coordination guidance."
+}
