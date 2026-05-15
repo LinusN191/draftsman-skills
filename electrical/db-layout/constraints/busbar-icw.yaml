@@ -1,0 +1,29 @@
+constraint_set: busbar-icw
+version: 1.0.0
+
+# Busbar 1-second withstand current (IcW) must exceed prospective peak fault current.
+# Used by generator.md Step 5.
+
+constraint:
+  rule: "busbar.icw_ka_1s >= ipk_at_busbar"
+  rationale: "Per IEC 61439-1 — busbars must withstand short-circuit forces without distortion"
+
+typical_icw_values:
+  domestic_consumer_unit_busbar:
+    icw_ka_1s: 6
+    note: "BS EN 60439 / IEC 61439-3 DBO assemblies — typical 6 kA, 10 kA"
+  commercial_msb_busbar:
+    icw_ka_1s: 25
+    note: "BS EN 61439-2 PSC assemblies — 25 kA, 36 kA, 50 kA"
+  industrial_msb_busbar:
+    icw_ka_1s: 50
+    note: "Up to 100 kA for utility-tied assemblies"
+
+ipk_relationship:
+  rule: "Ipk = √2 × Ifault × n, where n is the peak factor (typically 1.7-2.2 depending on X/R ratio)"
+  rationale: "Peak fault current including DC offset"
+  reference: "IEC 60865-1 short-circuit current calculation"
+
+cross_reference:
+  standard_file: shared/standards/electrical/IEC61439/short-circuit-withstand.json
+  related: "constraints/breaker-breaking-capacity.yaml — both must be checked together"

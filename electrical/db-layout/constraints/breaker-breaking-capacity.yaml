@@ -1,0 +1,32 @@
+constraint_set: breaker-breaking-capacity
+version: 1.0.0
+
+# Breaker breaking capacity Icn must exceed the prospective fault current at the point of installation.
+# Used by generator.md Step 7 + Step 11.
+
+constraint:
+  rule: "Icn (rated short-circuit breaking capacity) >= Ifault at point of installation"
+  rationale: "Per BS 7671 Reg 434.5.1 / IEC 60364-4-43 434.5 / NEC 110.9 — devices must safely break the maximum fault current"
+
+typical_minimum_breaking_capacities:
+  domestic_consumer_unit:
+    icn_ka_min: 6
+    standard: "BS EN 60898 / IEC 60898 — MCBs rated typically 6 kA, 10 kA"
+  light_commercial_msb:
+    icn_ka_min: 10
+    standard: "BS EN 60898 / IEC 60947-2 — MCBs/MCCBs 10 kA, 16 kA"
+  industrial_msb:
+    icn_ka_min: 25
+    standard: "BS EN 60947-2 — MCCBs and ACBs 25 kA, 36 kA, 50 kA, 65 kA"
+  utility_intake:
+    icn_ka_min: 50
+    standard: "BS EN 60947-2 — ACBs, typically 50 kA, 65 kA, 100 kA"
+
+energy_let_through:
+  rule: "If Ifault exceeds tested Icn, replace with higher-rated device OR add upstream current-limiting (HRC fuse, current limiter)"
+  fault_let_through_check: "I²t at downstream OCPD must be less than withstand I²t of cable + busbar"
+  reference: "BS 7671 Reg 434.5.2 / IEC 60364-4-43 434.5.2"
+
+cascade_pattern:
+  description: "Upstream high-Icn fuse or current limiter protects downstream lower-rated MCBs from Ifault > their Icn"
+  rationale: "Verified per manufacturer cascade tables (Hager, Schneider, Eaton, ABB) — emit selectivity_results[].source = manufacturer_table"

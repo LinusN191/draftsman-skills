@@ -1,0 +1,38 @@
+constraint_set: ip-rating-by-location
+version: 1.0.0
+
+# Minimum IP rating by installation environment.
+# Used by generator.md Step 3 (board classification).
+
+minimum_ip_by_environment:
+  indoor_dry:
+    ip_min: "IP2X"
+    rationale: "Finger-safe access; basic protection"
+    reference: "IEC 60529"
+  indoor_general_commercial:
+    ip_min: "IP3X"
+    rationale: "Tool access protection; offices, retail, restaurants"
+  bathroom_zone_1_2:
+    ip_min: "IPX4"
+    rationale: "BS 7671 Section 701 / IEC 60364-7-701"
+  outdoor_sheltered:
+    ip_min: "IP44"
+    rationale: "Splash-proof; eaves, covered porches"
+  outdoor_exposed:
+    ip_min: "IP55"
+    rationale: "Direct rain exposure; full outdoor installation"
+  washdown_industrial:
+    ip_min: "IP65"
+    rationale: "Dust-tight + low-pressure water jets; food processing, dairy"
+  hose_down_marine:
+    ip_min: "IP66"
+    rationale: "Powerful water jets; ships, exterior coastal installations"
+
+nec_equivalent_translation:
+  IP2X: "NEMA 1 (indoor general purpose)"
+  IP44: "NEMA 3R (rainproof outdoor)"
+  IP55: "NEMA 3R+ / NEMA 4 (rainproof/watertight)"
+  IP65: "NEMA 4 (watertight + dust)"
+  IP66: "NEMA 4X (watertight + dust + corrosion resistant)"
+  IP54: "NEMA 12 (dust-tight, drip-proof)"
+  reference: "IEC 60529 ↔ NEMA 250 translation guidance"
