@@ -1,0 +1,508 @@
+{
+  "_title": "IEC 60617 Part 2 — Symbol elements, qualifying symbols and other symbols having general application",
+  "_iec_part": 2,
+  "_version": "1.0.0",
+  "_note": "Qualifying symbols (overlays, modifiers) have generating_shared_symbol=false because they are rendered on top of other symbols by the runtime rather than standing alone. Connection points (junctions, terminals) and earth symbols have generating_shared_symbol=true.",
+  "symbols": [
+    {
+      "symbol_id": "JUNCTION_T",
+      "iec_ref": "IEC60617-02-02-02",
+      "iec_part": 2,
+      "iec_description": "Junction of conductors (T)",
+      "draftsman_id": "JUNCTION_T",
+      "category": "general",
+      "display_name": "T-junction (connected)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -50, 50, 5],
+        "path": "M -50 0 L 50 0 M 0 0 L 0 -50 M 5 0 A 5 5 0 1 0 -5 0 A 5 5 0 1 0 5 0 Z",
+        "terminals": {"h_left": [-50, 0], "h_right": [50, 0], "stem": [0, -50]}
+      },
+      "variants": ["JUNCTION_CROSS"],
+      "annotation_fields": [],
+      "usage_notes": "Use at three-way connections where conductors meet. The filled dot is mandatory — absence of the dot indicates wires cross without connecting (use WIRE_CROSSING for that case).",
+      "related_symbols": ["JUNCTION_CROSS", "WIRE_CROSSING"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "JUNCTION_CROSS",
+      "iec_ref": "IEC60617-02-02-03",
+      "iec_part": 2,
+      "iec_description": "Junction of conductors (4-way)",
+      "draftsman_id": "JUNCTION_CROSS",
+      "category": "general",
+      "display_name": "Cross junction (connected)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -50, 50, 50],
+        "path": "M -50 0 L 50 0 M 0 -50 L 0 50 M 5 0 A 5 5 0 1 0 -5 0 A 5 5 0 1 0 5 0 Z",
+        "terminals": {"left": [-50, 0], "right": [50, 0], "top": [0, -50], "bottom": [0, 50]}
+      },
+      "variants": ["JUNCTION_T"],
+      "annotation_fields": [],
+      "usage_notes": "Use at four-way connections where conductors meet. Convention varies: many drafting offices avoid the 4-way cross with dot and prefer two staggered T-junctions for clarity. The dot is mandatory if used.",
+      "related_symbols": ["JUNCTION_T", "WIRE_CROSSING"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "WIRE_CROSSING",
+      "iec_ref": "IEC60617-02-02-01",
+      "iec_part": 2,
+      "iec_description": "Crossing of conductors without electrical connection",
+      "draftsman_id": "WIRE_CROSSING",
+      "category": "general",
+      "display_name": "Wire crossing (no connection)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -50, 50, 50],
+        "path": "M -50 0 L 50 0 M 0 -50 L 0 50",
+        "terminals": {"left": [-50, 0], "right": [50, 0], "top": [0, -50], "bottom": [0, 50]}
+      },
+      "variants": [],
+      "annotation_fields": [],
+      "usage_notes": "Plain crossing without a dot. Absence of the junction dot signals no electrical connection. Some drafting offices add a small arc (hop) over one conductor for extra clarity — IEC permits both.",
+      "related_symbols": ["JUNCTION_T", "JUNCTION_CROSS"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "TERMINAL_SYMBOL",
+      "iec_ref": "IEC60617-02-09-02",
+      "iec_part": 2,
+      "iec_description": "Terminal",
+      "draftsman_id": "TERMINAL_SYMBOL",
+      "category": "general",
+      "display_name": "Terminal",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -5, 5, 5],
+        "path": "M -50 0 L -5 0 M 5 0 A 5 5 0 1 0 -5 0 A 5 5 0 1 0 5 0 Z",
+        "terminals": {"connect": [-50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": ["tag"],
+      "usage_notes": "Marks a physical terminal on a piece of equipment (a screw terminal, a busbar lug). Annotate with the terminal tag (e.g. T1, L1, COM).",
+      "related_symbols": ["JUNCTION_T"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "TEST_POINT",
+      "iec_ref": "IEC60617-02-09-04",
+      "iec_part": 2,
+      "iec_description": "Test point",
+      "draftsman_id": "TEST_POINT",
+      "category": "general",
+      "display_name": "Test point",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 5],
+        "path": "M -50 0 L 50 0 M 0 -30 L 0 -5 M -8 -15 L 0 -5 L 8 -15",
+        "terminals": {"left": [-50, 0], "right": [50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": ["tp_id"],
+      "usage_notes": "Use to mark an accessible test point on a circuit. Common at the line side of MCBs for Zs verification.",
+      "related_symbols": [],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "VARIABILITY_ARROW",
+      "iec_ref": "IEC60617-02-04-01",
+      "iec_part": 2,
+      "iec_description": "Inherent variability — arrow",
+      "draftsman_id": "VARIABILITY_ARROW",
+      "category": "general",
+      "display_name": "Variability arrow (qualifying)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-30, -30, 30, 30],
+        "path": "M -30 30 L 30 -30 M 15 -30 L 30 -30 L 30 -15",
+        "terminals": {}
+      },
+      "variants": ["ADJUSTABILITY_MARKER"],
+      "annotation_fields": [],
+      "usage_notes": "Overlay symbol indicating the parent device's value varies inherently with operating conditions (e.g. thermistor). Drawn diagonally across the parent symbol.",
+      "related_symbols": ["ADJUSTABILITY_MARKER"],
+      "generating_shared_symbol": false
+    },
+    {
+      "symbol_id": "ADJUSTABILITY_MARKER",
+      "iec_ref": "IEC60617-02-04-02",
+      "iec_part": 2,
+      "iec_description": "Adjustability — arrow with perpendicular bar",
+      "draftsman_id": "ADJUSTABILITY_MARKER",
+      "category": "general",
+      "display_name": "Adjustability marker (qualifying)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -25, 25, 25],
+        "path": "M -25 25 L 25 -25 M 10 -25 L 25 -25 L 25 -10 M -5 5 L 5 -5",
+        "terminals": {}
+      },
+      "variants": ["VARIABILITY_ARROW"],
+      "annotation_fields": [],
+      "usage_notes": "Overlay symbol indicating the parent device is user-adjustable (e.g. variable resistor, adjustable trip MCCB). The perpendicular cross-bar distinguishes from inherent variability.",
+      "related_symbols": ["VARIABILITY_ARROW"],
+      "generating_shared_symbol": false
+    },
+    {
+      "symbol_id": "POLARITY_PLUS",
+      "iec_ref": "IEC60617-02-05-01",
+      "iec_part": 2,
+      "iec_description": "Positive polarity",
+      "draftsman_id": "POLARITY_PLUS",
+      "category": "general",
+      "display_name": "Positive polarity (+)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-15, -15, 15, 15],
+        "path": "M 0 -15 L 0 15 M -15 0 L 15 0",
+        "terminals": {}
+      },
+      "variants": ["POLARITY_MINUS"],
+      "annotation_fields": [],
+      "usage_notes": "Label symbol for DC positive polarity. Place adjacent to the terminal it marks.",
+      "related_symbols": ["POLARITY_MINUS", "BATTERY"],
+      "generating_shared_symbol": false
+    },
+    {
+      "symbol_id": "POLARITY_MINUS",
+      "iec_ref": "IEC60617-02-05-02",
+      "iec_part": 2,
+      "iec_description": "Negative polarity",
+      "draftsman_id": "POLARITY_MINUS",
+      "category": "general",
+      "display_name": "Negative polarity (-)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-15, -5, 15, 5],
+        "path": "M -15 0 L 15 0",
+        "terminals": {}
+      },
+      "variants": ["POLARITY_PLUS"],
+      "annotation_fields": [],
+      "usage_notes": "Label symbol for DC negative polarity. Place adjacent to the terminal it marks.",
+      "related_symbols": ["POLARITY_PLUS", "BATTERY"],
+      "generating_shared_symbol": false
+    },
+    {
+      "symbol_id": "FUNCTIONAL_GROUP",
+      "iec_ref": "IEC60617-02-07-01",
+      "iec_part": 2,
+      "iec_description": "Functional grouping — dashed boundary",
+      "draftsman_id": "FUNCTIONAL_GROUP",
+      "category": "general",
+      "display_name": "Functional grouping (dashed)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -50, 50, 50],
+        "path": "M -50 -50 L 50 -50 L 50 50 L -50 50 Z",
+        "terminals": {}
+      },
+      "variants": ["ENCLOSURE_DOTTED"],
+      "annotation_fields": ["group_label"],
+      "usage_notes": "Dashed rectangular boundary around a set of related symbols (e.g. all components inside one enclosure, a functional unit such as a star-delta starter). The runtime renders with dashed line style.",
+      "related_symbols": ["ENCLOSURE_DOTTED"],
+      "generating_shared_symbol": false
+    },
+    {
+      "symbol_id": "ENCLOSURE_DOTTED",
+      "iec_ref": "IEC60617-02-07-02",
+      "iec_part": 2,
+      "iec_description": "Enclosure boundary — dotted",
+      "draftsman_id": "ENCLOSURE_DOTTED",
+      "category": "general",
+      "display_name": "Enclosure boundary (dotted)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -50, 50, 50],
+        "path": "M -50 -50 L 50 -50 L 50 50 L -50 50 Z",
+        "terminals": {}
+      },
+      "variants": ["FUNCTIONAL_GROUP"],
+      "annotation_fields": ["enclosure_label", "IP_rating"],
+      "usage_notes": "Dotted rectangular boundary around a physical enclosure (e.g. all components inside a panel cabinet). Distinct from FUNCTIONAL_GROUP — that is dashed and indicates a functional unit, this is dotted and indicates a physical container.",
+      "related_symbols": ["FUNCTIONAL_GROUP"],
+      "generating_shared_symbol": false
+    },
+    {
+      "symbol_id": "SHIELD_SYMBOL",
+      "iec_ref": "IEC60617-02-06-01",
+      "iec_part": 2,
+      "iec_description": "Shielding (general)",
+      "draftsman_id": "SHIELD_SYMBOL",
+      "category": "general",
+      "display_name": "Shield / screen (qualifying)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-40, -30, 40, 30],
+        "path": "M -20 -30 L -40 -30 L -40 30 L -20 30 M 20 -30 L 40 -30 L 40 30 L 20 30",
+        "terminals": {}
+      },
+      "variants": ["SCREEN_CONDUCTOR"],
+      "annotation_fields": [],
+      "usage_notes": "Overlay symbol indicating the parent component is electrostatically shielded. Drawn as two open bracket shapes flanking the parent.",
+      "related_symbols": ["SCREEN_CONDUCTOR"],
+      "generating_shared_symbol": false
+    },
+    {
+      "symbol_id": "SCREEN_CONDUCTOR",
+      "iec_ref": "IEC60617-02-06-02",
+      "iec_part": 2,
+      "iec_description": "Screened conductor",
+      "draftsman_id": "SCREEN_CONDUCTOR",
+      "category": "general",
+      "display_name": "Screened conductor",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -8, 50, 8],
+        "path": "M -50 0 L 50 0 M -30 -8 L -30 8 M -10 -8 L -10 8 M 10 -8 L 10 8 M 30 -8 L 30 8",
+        "terminals": {"start": [-50, 0], "end": [50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": [],
+      "usage_notes": "Conductor with electrostatic screen. Tick marks along the length indicate the screen wrap. Use for instrument cables, control cables in noisy environments.",
+      "related_symbols": ["CONDUCTOR_SINGLE", "SHIELD_SYMBOL", "CONDUCTOR_COAX"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "EARTH_GENERAL",
+      "iec_ref": "IEC60617-02-15-01",
+      "iec_part": 2,
+      "iec_description": "Earth (general)",
+      "draftsman_id": "EARTH_GENERAL",
+      "category": "general",
+      "display_name": "Earth (general)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -50, 25, 25],
+        "path": "M 0 -50 L 0 0 M -25 0 L 25 0 M -15 10 L 15 10 M -8 20 L 8 20",
+        "terminals": {"line": [0, -50]}
+      },
+      "variants": ["EARTH_PROTECTIVE", "EARTH_CLEAN", "EARTH_CHASSIS"],
+      "annotation_fields": [],
+      "usage_notes": "General-purpose earth symbol. Three horizontal bars decreasing in length. Use where the earth nature is unspecified or for the building's main earthing terminal.",
+      "related_symbols": ["EARTH_PROTECTIVE", "EARTH_CLEAN", "EARTH_CHASSIS", "EARTH_ELECTRODE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "EARTH_PROTECTIVE",
+      "iec_ref": "IEC60617-02-15-02",
+      "iec_part": 2,
+      "iec_description": "Protective earth (PE)",
+      "draftsman_id": "EARTH_PROTECTIVE",
+      "category": "general",
+      "display_name": "Protective earth (PE)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -50, 25, 25],
+        "path": "M 0 -50 L 0 -5 M -25 -5 L 25 -5 M -15 5 L 15 5 M -8 15 L 8 15 M -20 -25 A 20 20 0 1 0 20 -25 A 20 20 0 1 0 -20 -25 Z",
+        "terminals": {"line": [0, -50]}
+      },
+      "variants": ["EARTH_GENERAL", "EARTH_CLEAN", "EARTH_CHASSIS"],
+      "annotation_fields": [],
+      "usage_notes": "Protective earth — earth used for shock protection (the CPC system). The enclosing circle distinguishes from EARTH_GENERAL. Required at all Class I equipment exposed-conductive-parts.",
+      "related_symbols": ["EARTH_GENERAL", "EARTH_ELECTRODE", "CONDUCTOR_PE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "EARTH_CLEAN",
+      "iec_ref": "IEC60617-02-15-04",
+      "iec_part": 2,
+      "iec_description": "Noiseless (clean) earth",
+      "draftsman_id": "EARTH_CLEAN",
+      "category": "general",
+      "display_name": "Clean / noiseless earth",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -50, 25, 25],
+        "path": "M 0 -50 L 0 0 M -25 0 L 25 0 L 0 25 Z",
+        "terminals": {"line": [0, -50]}
+      },
+      "variants": ["EARTH_GENERAL", "EARTH_PROTECTIVE", "EARTH_CHASSIS"],
+      "annotation_fields": [],
+      "usage_notes": "Clean earth — a separate low-noise earth used for sensitive electronic equipment (data centres, hospital electromedical Group 2). Triangle shape distinguishes from PE. Do not connect to PE except at one defined point.",
+      "related_symbols": ["EARTH_GENERAL", "EARTH_PROTECTIVE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "EARTH_CHASSIS",
+      "iec_ref": "IEC60617-02-15-03",
+      "iec_part": 2,
+      "iec_description": "Chassis (frame) earth",
+      "draftsman_id": "EARTH_CHASSIS",
+      "category": "general",
+      "display_name": "Chassis earth",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -50, 25, 15],
+        "path": "M 0 -50 L 0 0 M -20 0 L 20 0 M -20 0 L -25 15 M -10 0 L -10 15 M 0 0 L 0 15 M 10 0 L 10 15 M 20 0 L 25 15",
+        "terminals": {"line": [0, -50]}
+      },
+      "variants": ["EARTH_GENERAL", "EARTH_PROTECTIVE"],
+      "annotation_fields": [],
+      "usage_notes": "Chassis or frame earth — bond to equipment frame, not necessarily connected to the electrical earth network. Used for equipotential bonding within an enclosure.",
+      "related_symbols": ["EARTH_GENERAL", "EARTH_PROTECTIVE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "NOT_CONNECTED",
+      "iec_ref": "IEC60617-02-09-01",
+      "iec_part": 2,
+      "iec_description": "Terminal not connected",
+      "draftsman_id": "NOT_CONNECTED",
+      "category": "general",
+      "display_name": "Not connected (X marker)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-10, -10, 10, 10],
+        "path": "M -10 -10 L 10 10 M -10 10 L 10 -10",
+        "terminals": {}
+      },
+      "variants": [],
+      "annotation_fields": [],
+      "usage_notes": "X-mark placed at the end of a conductor or on a terminal to indicate it is intentionally not connected (e.g. a spare contact on a relay).",
+      "related_symbols": ["TERMINAL_SYMBOL"],
+      "generating_shared_symbol": false
+    },
+    {
+      "symbol_id": "COMMON_RETURN",
+      "iec_ref": "IEC60617-02-13-01",
+      "iec_part": 2,
+      "iec_description": "Common return / bus",
+      "draftsman_id": "COMMON_RETURN",
+      "category": "general",
+      "display_name": "Common return bus",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -3, 50, 3],
+        "path": "M -50 0 L 50 0",
+        "terminals": {"start": [-50, 0], "end": [50, 0]}
+      },
+      "variants": ["BUSBAR"],
+      "annotation_fields": ["bus_id"],
+      "usage_notes": "Thick horizontal line representing a common return or shared bus. Distinct from BUSBAR — this is the schematic single-line representation of any shared connection point. Annotate with the bus identifier.",
+      "related_symbols": ["BUSBAR", "BUSBAR_3PH"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SIGNAL_LEVEL",
+      "iec_ref": "IEC60617-02-13-04",
+      "iec_part": 2,
+      "iec_description": "Signal level / arrow",
+      "draftsman_id": "SIGNAL_LEVEL",
+      "category": "general",
+      "display_name": "Signal level indicator",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-15, -15, 15, 15],
+        "path": "M -15 -15 L 0 0 L -15 15 M 0 -15 L 15 0 L 0 15",
+        "terminals": {}
+      },
+      "variants": [],
+      "annotation_fields": ["level"],
+      "usage_notes": "Qualifying symbol indicating a signal at a defined level (e.g. logic high, control signal). Used in control schematics. Annotate with the level value.",
+      "related_symbols": [],
+      "generating_shared_symbol": false
+    },
+    {
+      "symbol_id": "FILTER_GENERAL",
+      "iec_ref": "IEC60617-02-12-01",
+      "iec_part": 2,
+      "iec_description": "Filter (general)",
+      "draftsman_id": "FILTER_GENERAL",
+      "category": "general",
+      "display_name": "Filter (general)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -20 0 M -20 -20 L 20 -20 L 20 20 L -20 20 Z M -20 -20 L 20 20 M -20 20 L 20 -20 M 20 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": ["filter_type", "cutoff_Hz"],
+      "usage_notes": "Generic filter symbol — a rectangle with internal X. Annotate type (LPF/HPF/BPF/notch) and cut-off frequency. Used for harmonic filters, EMC filters in LV distribution.",
+      "related_symbols": [],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "COAX_CONNECTOR",
+      "iec_ref": "IEC60617-02-09-05",
+      "iec_part": 2,
+      "iec_description": "Coaxial connection point",
+      "draftsman_id": "COAX_CONNECTOR",
+      "category": "general",
+      "display_name": "Coaxial connector",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -12, 12, 12],
+        "path": "M -50 0 L -12 0 M 12 0 A 12 12 0 1 0 -12 0 A 12 12 0 1 0 12 0 Z M 3 0 A 3 3 0 1 0 -3 0 A 3 3 0 1 0 3 0 Z",
+        "terminals": {"signal": [-50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": ["conn_type"],
+      "usage_notes": "Coaxial connector face — outer ring is shield, inner dot is signal core. Annotate connector type (BNC, N, F, SMA). Rare in MEP building but appears on instrument distribution.",
+      "related_symbols": ["CONDUCTOR_COAX"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "OPTIONAL_PATH",
+      "iec_ref": "IEC60617-02-13-02",
+      "iec_part": 2,
+      "iec_description": "Optional / alternative path",
+      "draftsman_id": "OPTIONAL_PATH",
+      "category": "general",
+      "display_name": "Optional path (dashed line)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -3, 50, 3],
+        "path": "M -50 0 L 50 0",
+        "terminals": {"start": [-50, 0], "end": [50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": ["condition"],
+      "usage_notes": "Dashed line representing an optional or alternative circuit path (e.g. spare circuit, future connection). Runtime renders with dashed line style.",
+      "related_symbols": ["CONDUCTOR_SINGLE"],
+      "generating_shared_symbol": false
+    },
+    {
+      "symbol_id": "DELAY_SYMBOL",
+      "iec_ref": "IEC60617-02-12-03",
+      "iec_part": 2,
+      "iec_description": "Delay (general)",
+      "draftsman_id": "DELAY_SYMBOL",
+      "category": "general",
+      "display_name": "Delay element (qualifying)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -15, 50, 15],
+        "path": "M -50 0 L -20 0 M -20 -15 L 20 -15 L 20 15 L -20 15 Z M -10 0 L 10 0 M 20 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": ["delay_s"],
+      "usage_notes": "Qualifying symbol for a delay element. The arrow inside indicates direction of signal flow with a time delay. Annotate the delay duration.",
+      "related_symbols": ["CONTACT_ON_DELAY", "CONTACT_OFF_DELAY"],
+      "generating_shared_symbol": false
+    },
+    {
+      "symbol_id": "FAULT_INDICATOR",
+      "iec_ref": "IEC60617-02-12-05",
+      "iec_part": 2,
+      "iec_description": "Fault / failure indication",
+      "draftsman_id": "FAULT_INDICATOR",
+      "category": "general",
+      "display_name": "Fault indicator (qualifying)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-20, -20, 20, 20],
+        "path": "M -15 -15 L 15 15 M -15 15 L 15 -15 M 20 0 A 20 20 0 1 0 -20 0 A 20 20 0 1 0 20 0 Z",
+        "terminals": {}
+      },
+      "variants": [],
+      "annotation_fields": [],
+      "usage_notes": "Circle with internal X — overlay symbol indicating fault detection or fault state. Used on relay logic and protection schematics.",
+      "related_symbols": ["RELAY_GENERAL"],
+      "generating_shared_symbol": false
+    }
+  ]
+}
