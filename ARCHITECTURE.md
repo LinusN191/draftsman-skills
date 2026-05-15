@@ -205,6 +205,102 @@ Every skill must have a `skill.manifest.json` at its root. Required fields:
 }
 ```
 
+## Cross-drawing intents
+
+A real project has multiple chats — earthing, DB, lighting, small-power,
+cable-containment — and engineering decisions on one drawing affect others.
+The earthing chat's Zs verification needs breaker ratings from the DB chat.
+The cable-containment chat needs cable counts from DB / lighting / small-power.
+
+To make this composable, skills declare their cross-drawing data flow on the
+manifest:
+
+```json
+{
+  "produces_intent":         "lighting-layout",
+  "produces_intent_schema":  "electrical/lighting-layout/schemas/lighting-layout-intent.schema.json",
+  "consumes_intents":        ["db-layout", "lighting-layout", "small-power"]
+}
+```
+
+### Intent payload vs full IR
+
+The **full IR** carries everything the runtime needs to render a drawing
+(positions, drawing notes, layers, presentation). The **intent payload**
+is a stable, smaller subset published for downstream skills.
+
+| | Full IR | Intent payload |
+|---|---|---|
+| Audience | runtime renderer | sibling skills |
+| Size | thousands of lines | dozens to hundreds |
+| Stability contract | per skill version | per intent_version (independent semver) |
+| Forward-compat | minor IR changes can break renderer | only major intent bumps may remove required fields |
+
+### Envelope schema
+
+Every intent payload is wrapped at runtime in
+`shared/schemas/core/intent.schema.json`:
+
+```json
+{
+  "intent_type":   "lighting-layout",
+  "intent_version":"1.0.0",
+  "produced_by":   { "skill": "lighting-layout", "skill_version": "1.3.0", "chat_id": "..." },
+  "produced_at":   "2026-05-15T11:34:00Z",
+  "payload":       { /* conforms to <skill>-intent.schema.json */ }
+}
+```
+
+### Producer rules
+
+- A skill produces **one** intent type only. Name it the same as the skill id.
+- Author the per-skill intent schema at `<skill>/schemas/<skill>-intent.schema.json`.
+- Reference it from the manifest's `produces_intent_schema` field.
+- Forward-compat: add optional fields freely; remove or rename required
+  fields only with a major `intent_version` bump.
+
+### Consumer rules
+
+When a skill declares `consumes_intents: [...]`, the runtime pre-fetches the
+latest intent for each declared producer from the project's other chats and
+injects them as additional context in the user message under
+`cross_drawing_context`:
+
+```json
+{
+  "cross_drawing_context": {
+    "db-layout":       { /* db-layout intent envelope */ },
+    "lighting-layout": [ /* per chat */ ],
+    "small-power":     [ /* per chat */ ]
+  }
+}
+```
+
+A `consumes_intents` skill **must handle the case where one or more intents
+are absent** (empty project, sibling chat hasn't completed yet). Generate a
+flag in `rationale.sections[].decisions` indicating the gap, e.g.
+`"no db-layout chat in this project; cable demand from explicit entry only"`.
+
+### Current intent producers
+
+| Skill | Produces | Status |
+|---|---|---|
+| lighting-layout | `lighting-layout` | schema authored, manifest declared |
+| db-layout       | `db-layout`       | schema authored, manifest declared (skill itself still a stub) |
+
+### Planned intent producers (when those skills are authored)
+
+| Skill | Produces | Consumes |
+|---|---|---|
+| small-power      | `small-power`      | `db-layout` |
+| earthing         | `earthing`         | `db-layout`, `lighting-layout`, `small-power` |
+| cable-containment| `cable-containment`| `db-layout`, `lighting-layout`, `small-power`, `earthing` |
+
+The runtime cannot validate `consumes_intents` references until the matching
+producer schemas exist. Adding a new `consumes_intents` entry referencing a
+not-yet-authored producer is fine — the runtime treats the missing producer
+as an absent intent and the consumer skill flags the gap per its prompt.
+
 ## Contribution guide
 
 See `CONTRIBUTING.md` for how to add a new skill, update standards values,

@@ -13,6 +13,8 @@
 - Generator prompt gains Step 14 — rationale emission (chat_summary + 8-section taxonomy + decision shape)
 - All 3 example outputs regenerated with rationale blocks consistent with their reasoning
 - Add `eval-08-rationale-block.yaml` asserting rationale presence, length bounds, and decision-rule citations (upstream Work Item 2)
+- Declare `produces_intent: "lighting-layout"` + schema at `schemas/lighting-layout-intent.schema.json` (stable subset: room_id, luminaire_summary, circuits, emergency_lighting_present, controls_summary)
+- `consumes_intents: []` for now — earthing / cable-containment will be added when those skills are authored (upstream Work Item 4)
 
 ## v1.2.0
 - MF environment cross-check table (7 environment types)

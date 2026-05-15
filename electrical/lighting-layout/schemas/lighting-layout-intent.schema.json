@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/lighting-layout/schemas/lighting-layout-intent.schema.json",
+  "title": "Lighting Layout Intent",
+  "description": "Stable subset of the lighting-layout IR that downstream skills (db-layout, cable-containment, panel-schedule, earthing) consume. The full IR includes per-luminaire positions and drawing notes — downstream skills do NOT need those. Wrapped in shared/schemas/core/intent.schema.json envelope at runtime. Forward-compat: optional fields may be added freely; required fields require a major intent_version bump.",
+  "type": "object",
+  "required": ["room_id", "circuits"],
+  "additionalProperties": false,
+  "properties": {
+    "room_id": {
+      "type": "string",
+      "description": "Stable room/space identifier from the project context"
+    },
+    "room_type": {
+      "type": "string",
+      "description": "Echo of the inputs.json room_type value; helps downstream filtering"
+    },
+    "luminaire_summary": {
+      "type": "object",
+      "required": ["luminaire_count", "luminaire_wattage_w_each"],
+      "properties": {
+        "luminaire_count":         { "type": "integer", "minimum": 0 },
+        "luminaire_wattage_w_each":{ "type": "integer", "minimum": 1 },
+        "luminaire_lumens_each":   { "type": "integer", "minimum": 100 },
+        "lumen_type":              { "enum": ["initial", "design"] },
+        "ip_rating":               { "type": "string" }
+      }
+    },
+    "circuits": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["circuit_id", "voltage_class", "load_w", "luminaire_count"],
+        "additionalProperties": false,
+        "properties": {
+          "circuit_id":      { "type": "string", "description": "Stable circuit id, e.g. 'L1-Z2'" },
+          "db_designation":  { "type": "string", "description": "Upstream DB designation (links to db-layout intent)" },
+          "zone_id":         { "type": "string", "description": "Perimeter Z1 or interior Z2 etc." },
+          "voltage_class":   { "enum": ["LV_power", "ELV_control", "emergency_lighting"] },
+          "load_w":          { "type": "number", "minimum": 0 },
+          "luminaire_count": { "type": "integer", "minimum": 1 },
+          "mcb_rating_a_suggested": { "type": "integer", "enum": [6, 10, 16, 20, 32] },
+          "approximate_route_length_m": { "type": "number", "exclusiveMinimum": 0 }
+        }
+      }
+    },
+    "emergency_lighting_present": {
+      "type": "boolean",
+      "description": "true if any emergency luminaires placed; drives earthing skill's life-safety circuit list"
+    },
+    "controls_summary": {
+      "type": "object",
+      "properties": {
+        "occupancy_sensing":         { "type": "boolean" },
+        "daylight_linking":          { "type": "boolean" },
+        "dimming_protocol":          { "type": ["string", "null"], "enum": [null, "none", "switched", "0-10V", "DALI", "DALI-2"] },
+        "part_l_assessed":           { "type": "boolean" },
+        "part_l_compliant":          { "type": "boolean" }
+      }
+    }
+  }
+}

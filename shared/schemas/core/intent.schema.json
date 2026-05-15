@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "shared/schemas/core/intent.schema.json",
+  "title": "Cross-drawing intent envelope",
+  "description": "Metaschema for cross-drawing intent payloads. When a skill declares `produces_intent: \"<skill-id>\"` it commits to emitting a stable subset of its IR conforming to a per-skill `<skill>-intent.schema.json` that is itself wrapped in this envelope. Consumer skills read these intents from sibling chats via the runtime's `cross_drawing_context` injection.",
+  "type": "object",
+  "required": ["intent_type", "intent_version", "produced_by", "produced_at", "payload"],
+  "additionalProperties": false,
+  "properties": {
+    "intent_type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Matches the producer's `produces_intent` value, e.g. 'db-layout', 'lighting-layout'."
+    },
+    "intent_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semver for the intent payload schema (independent of skill version). Bump major when removing/renaming a required field; minor when adding optional fields; patch for clarifications. Consumers dispatch on this version."
+    },
+    "produced_by": {
+      "type": "object",
+      "required": ["skill", "skill_version"],
+      "properties": {
+        "skill":         { "type": "string", "description": "Source skill id" },
+        "skill_version": { "type": "string", "description": "Source skill version that produced this intent" },
+        "chat_id":       { "type": "string", "description": "Optional chat/session id where this intent was produced" }
+      }
+    },
+    "produced_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this intent payload was finalised"
+    },
+    "payload": {
+      "type": "object",
+      "description": "The intent-specific data conforming to the producer skill's <skill>-intent.schema.json. Shape varies per intent_type."
+    }
+  },
+  "$design_note": "Why a separate intent vs full IR? The full IR includes positions, drawings, presentation data — downstream skills don't need it. The intent is a stability contract; the full IR can change in non-breaking ways without breaking downstream consumers. Forward-compatibility rule: new optional fields can be added freely; required fields cannot be removed or renamed without a major version bump."
+}
