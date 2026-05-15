@@ -1,0 +1,46 @@
+{
+  "_title": "NFPA 70 Article 680 — Swimming Pools, Fountains, and Similar Installations",
+  "_version": "1.0.0",
+  "articles": [
+    {
+      "article_id": "ART_680",
+      "nec_ref": "NFPA 70:2023 Article 680",
+      "chapter": 6,
+      "article_number": 680,
+      "article_title": "Swimming Pools, Fountains, and Similar Installations",
+      "scope": "Permanently installed pools (Part II — 680.20+), storable pools (Part III — 680.30+), spas/hot tubs (Part IV — 680.40+), fountains (Part V — 680.50+), hydromassage bathtubs (Part VII — 680.70+). GFCI rules, equipotential bonding (680.26), receptacle clearances (5 ft / 10 ft / 20 ft rules), underwater lighting.",
+      "applies_to": ["pools", "spas", "hot_tubs", "fountains", "hydromassage", "equipotential_bonding", "wet_locations"],
+      "key_sections": [
+        {"section": "680.21", "title": "Motors — Permanently Installed Pools", "summary": "Pool pump motor branch circuits: GFCI protection (680.21(C)) for single-phase 120-240 V"},
+        {"section": "680.22", "title": "Area Lighting, Receptacles, and Equipment", "summary": "Receptacle outlets: at least one within 6-20 ft of pool wall (681.22(A)), all 125 V 15/20 A receptacles within 20 ft of pool wall GFCI-protected, NO receptacles within 5 ft of inside wall of pool except low-voltage installations"},
+        {"section": "680.26", "title": "Equipotential Bonding", "summary": "Equipotential bonding grid required at all permanently installed pools — connects: pool reinforcing steel, deck steel/copper grid, metal pool fittings, pool water (via conductive surface or intentional grid), pumps, lights, fences within 5 ft, etc. #8 AWG solid copper minimum, 4500 lb tensile strength"},
+        {"section": "680.42", "title": "Spas and Hot Tubs (Outdoor)", "summary": "GFCI for all 125 V receptacles within 10 ft of inside walls of spa/hot tub. Indoor spas: same rules + interior wiring per Part IV"},
+        {"section": "680.50", "title": "Fountains — General", "summary": "Fountains include decorative pools, water displays, etc. Conductive metal parts equipotentially bonded; underwater lighting limited to specific listings"},
+        {"section": "680.74", "title": "Hydromassage Bathtub — Bonding", "summary": "Hydromassage bathtub: all metal piping/parts and motor frame bonded together with #8 AWG solid copper"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {
+        "Pool_Receptacle_Distance_Rules_680.22": {
+          "title": "Receptacle Distances from Pool Inside Wall",
+          "rows": [
+            {"distance_from_pool": "Within 5 ft",       "rule": "No general-purpose receptacle (low-voltage equipment receptacle exception)"},
+            {"distance_from_pool": "6-20 ft",            "rule": "At least one general-purpose receptacle required. GFCI-protected"},
+            {"distance_from_pool": "Beyond 20 ft",       "rule": "Receptacles permitted; GFCI required for those serving pool equipment"}
+          ]
+        }
+      },
+      "common_errors": [
+        "Omitting the equipotential bonding grid (680.26) — most frequent pool inspection failure",
+        "Specifying a receptacle within 5 ft of pool inside wall — prohibited (except low-voltage)",
+        "Treating an outdoor hot tub like a regular outdoor receptacle — 680.42 GFCI distance is 10 ft, not the dwelling-outdoor 6 ft",
+        "Using #10 AWG for equipotential bonding — 680.26 requires #8 AWG solid copper"
+      ],
+      "drawn_as": ["GFCI_RECEPTACLE", "POOL_LIGHT"],
+      "related_iec_60364": ["IEC 60364-7-702 (Swimming pools and fountains)"],
+      "divergence_notes": "NEC 680.22 uses imperial distance rules (5 ft / 6-20 ft / 20 ft / 10 ft for spas). IEC 60364-7-702 uses zone classification (Zone 0 = pool water + 0.3 m around, Zone 1 = 2 m horizontal from pool edge, Zone 2 = 1.5 m beyond Zone 1) with different rules per zone. NEC equipotential bonding grid (680.26) ≈ IEC 60364-7-702 supplementary bonding but NEC is more prescriptive on grid construction (#8 AWG solid Cu).",
+      "related_bs_7671": [],
+      "usage_notes": "Coordinate with the pool contractor's bonding plan and the local AHJ — equipotential bonding is THE pool electrical safety requirement.",
+      "related_articles": ["ART_210", "ART_240", "ART_250"]
+    }
+  ]
+}
