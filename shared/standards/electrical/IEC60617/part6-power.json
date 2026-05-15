@@ -1,0 +1,707 @@
+{
+  "_title": "IEC 60617 Part 6 — Production and conversion of electrical energy",
+  "_iec_part": 6,
+  "_version": "1.0.0",
+  "symbols": [
+    {
+      "symbol_id": "GENERATOR_GENERAL",
+      "iec_ref": "IEC60617-06-04-01",
+      "iec_part": 6,
+      "iec_description": "Generator (general)",
+      "draftsman_id": "GENERATOR_GENERAL",
+      "category": "power",
+      "display_name": "Generator (general)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0",
+        "terminals": {"out_pos": [50, 0], "out_neg": [-50, 0]}
+      },
+      "variants": ["GENERATOR_SYNC", "GENERATOR_INDUCTION"],
+      "annotation_fields": ["rating_kVA", "voltage_V", "label"],
+      "usage_notes": "Generic generator — circle with internal 'G' (label annotation). Use when type is unspecified or for diesel/gas standby gensets at the schematic level.",
+      "related_symbols": ["GENERATOR_SYNC", "GENERATOR_INDUCTION", "MOTOR_GENERAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "GENERATOR_SYNC",
+      "iec_ref": "IEC60617-06-04-02",
+      "iec_part": 6,
+      "iec_description": "Synchronous generator",
+      "draftsman_id": "GENERATOR_SYNC",
+      "category": "power",
+      "display_name": "Synchronous generator",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0",
+        "terminals": {"out_pos": [50, 0], "out_neg": [-50, 0]}
+      },
+      "variants": ["GENERATOR_GENERAL", "GENERATOR_INDUCTION"],
+      "annotation_fields": ["rating_kVA", "voltage_V", "pf", "label_GS"],
+      "usage_notes": "Synchronous generator — circle annotated 'GS'. Standard for diesel gensets, gas turbines, hydro generators. Excitation system separate.",
+      "related_symbols": ["GENERATOR_GENERAL", "MOTOR_SYNC"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "GENERATOR_INDUCTION",
+      "iec_ref": "IEC60617-06-04-03",
+      "iec_part": 6,
+      "iec_description": "Induction (asynchronous) generator",
+      "draftsman_id": "GENERATOR_INDUCTION",
+      "category": "power",
+      "display_name": "Induction generator",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0",
+        "terminals": {"out_pos": [50, 0], "out_neg": [-50, 0]}
+      },
+      "variants": ["GENERATOR_GENERAL", "GENERATOR_SYNC"],
+      "annotation_fields": ["rating_kVA", "voltage_V", "label_GA"],
+      "usage_notes": "Induction generator — circle annotated 'GA' (asynchronous). Common in small wind turbines, some micro-hydro. Requires grid reactive power for excitation.",
+      "related_symbols": ["GENERATOR_GENERAL", "MOTOR_INDUCTION", "WIND_TURBINE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MOTOR_GENERAL",
+      "iec_ref": "IEC60617-06-05-01",
+      "iec_part": 6,
+      "iec_description": "Motor (general)",
+      "draftsman_id": "MOTOR_GENERAL",
+      "category": "power",
+      "display_name": "Motor (general)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0",
+        "terminals": {"in_a": [-50, 0], "in_b": [50, 0]}
+      },
+      "variants": ["MOTOR_INDUCTION", "MOTOR_SYNC", "MOTOR_DC"],
+      "annotation_fields": ["rating_kW", "voltage_V", "rpm", "label_M"],
+      "usage_notes": "Generic motor — circle annotated 'M'. Use when type is unspecified at the SLD level. Distinguish synchronous (MS), asynchronous (MA), DC (MC).",
+      "related_symbols": ["MOTOR_INDUCTION", "MOTOR_SYNC", "MOTOR_DC", "GENERATOR_GENERAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MOTOR_INDUCTION",
+      "iec_ref": "IEC60617-06-05-02",
+      "iec_part": 6,
+      "iec_description": "Induction (asynchronous) motor",
+      "draftsman_id": "MOTOR_INDUCTION",
+      "category": "power",
+      "display_name": "Induction motor",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0",
+        "terminals": {"L1": [-50, 0], "L2": [50, 0]}
+      },
+      "variants": ["MOTOR_GENERAL", "MOTOR_SYNC", "MOTOR_DC"],
+      "annotation_fields": ["rating_kW", "voltage_V", "rpm", "starting_kVA", "label_MA"],
+      "usage_notes": "Induction (asynchronous) motor — circle annotated 'MA' or '3~M'. Most common motor type for HVAC fans, pumps, conveyors. Annotate kW, starting kVA for SLD coordination.",
+      "related_symbols": ["MOTOR_GENERAL", "MOTOR_STARTER_DOL", "VFD"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MOTOR_SYNC",
+      "iec_ref": "IEC60617-06-05-03",
+      "iec_part": 6,
+      "iec_description": "Synchronous motor",
+      "draftsman_id": "MOTOR_SYNC",
+      "category": "power",
+      "display_name": "Synchronous motor",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0",
+        "terminals": {"L1": [-50, 0], "L2": [50, 0]}
+      },
+      "variants": ["MOTOR_INDUCTION", "MOTOR_GENERAL"],
+      "annotation_fields": ["rating_kW", "voltage_V", "rpm", "label_MS"],
+      "usage_notes": "Synchronous motor — circle annotated 'MS'. Used in large compressors, mills. Can provide leading PF.",
+      "related_symbols": ["MOTOR_INDUCTION", "GENERATOR_SYNC"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MOTOR_DC",
+      "iec_ref": "IEC60617-06-05-04",
+      "iec_part": 6,
+      "iec_description": "Direct current motor",
+      "draftsman_id": "MOTOR_DC",
+      "category": "power",
+      "display_name": "DC motor",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0",
+        "terminals": {"pos": [-50, 0], "neg": [50, 0]}
+      },
+      "variants": ["MOTOR_GENERAL", "MOTOR_INDUCTION"],
+      "annotation_fields": ["rating_kW", "voltage_V_DC", "rpm", "label_MC"],
+      "usage_notes": "DC motor — circle annotated 'MC' (continuous). Used in some lifts, EV drives. Less common in modern installations.",
+      "related_symbols": ["MOTOR_GENERAL", "RECTIFIER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "TRANSFORMER_2W",
+      "iec_ref": "IEC60617-06-09-01",
+      "iec_part": 6,
+      "iec_description": "Two-winding transformer (single-line)",
+      "draftsman_id": "TRANSFORMER_2W",
+      "category": "power",
+      "display_name": "Two-winding transformer",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -35 0 M 5 0 A 20 20 0 1 0 -35 0 A 20 20 0 1 0 5 0 Z M 35 0 A 20 20 0 1 0 -5 0 A 20 20 0 1 0 35 0 Z M 35 0 L 50 0",
+        "terminals": {"primary": [-50, 0], "secondary": [50, 0]}
+      },
+      "variants": ["TRANSFORMER_3W", "TRANSFORMER_AUTO", "TRANSFORMER_1PH", "TRANSFORMER_3PH"],
+      "annotation_fields": ["rating_kVA", "primary_V", "secondary_V", "vector_group", "uk_pct"],
+      "usage_notes": "Two-winding transformer — two touching circles. Annotate kVA, primary and secondary voltages, vector group (e.g. Dyn11), uk% for fault calculations.",
+      "related_symbols": ["TRANSFORMER_3W", "TRANSFORMER_AUTO", "TRANSFORMER_CURRENT", "TRANSFORMER_VOLTAGE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "TRANSFORMER_3W",
+      "iec_ref": "IEC60617-06-09-02",
+      "iec_part": 6,
+      "iec_description": "Three-winding transformer (single-line)",
+      "draftsman_id": "TRANSFORMER_3W",
+      "category": "power",
+      "display_name": "Three-winding transformer",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -40, 50, 30],
+        "path": "M -40 0 A 15 15 0 1 0 -10 0 A 15 15 0 1 0 -40 0 Z M 10 0 A 15 15 0 1 0 40 0 A 15 15 0 1 0 10 0 Z M -15 -25 A 15 15 0 1 0 15 -25 A 15 15 0 1 0 -15 -25 Z M -50 0 L -40 0 M 40 0 L 50 0 M 0 -40 L 0 -25",
+        "terminals": {"primary": [-50, 0], "secondary": [50, 0], "tertiary": [0, -40]}
+      },
+      "variants": ["TRANSFORMER_2W", "TRANSFORMER_AUTO"],
+      "annotation_fields": ["rating_kVA", "primary_V", "secondary_V", "tertiary_V", "vector_group"],
+      "usage_notes": "Three-winding transformer — three interconnected circles. Used for HV/MV/LV step-down with a tertiary winding (e.g. for delta stabiliser or auxiliary supply).",
+      "related_symbols": ["TRANSFORMER_2W"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "TRANSFORMER_AUTO",
+      "iec_ref": "IEC60617-06-09-03",
+      "iec_part": 6,
+      "iec_description": "Autotransformer (single-line)",
+      "draftsman_id": "TRANSFORMER_AUTO",
+      "category": "power",
+      "display_name": "Autotransformer",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -25 0 M 25 0 A 25 25 0 1 0 -25 0 A 25 25 0 1 0 25 0 Z M 25 0 L 50 0 M 0 0 L 0 -25 L 30 -25",
+        "terminals": {"primary": [-50, 0], "secondary": [50, 0], "tap": [30, -25]}
+      },
+      "variants": ["TRANSFORMER_2W"],
+      "annotation_fields": ["rating_kVA", "primary_V", "secondary_V", "tap_V"],
+      "usage_notes": "Autotransformer — single circle with tap. Common for voltage step-up/down where galvanic isolation is not required (e.g. motor starting, distribution voltage matching). Annotate tap voltage.",
+      "related_symbols": ["TRANSFORMER_2W"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "TRANSFORMER_CURRENT",
+      "iec_ref": "IEC60617-06-09-05",
+      "iec_part": 6,
+      "iec_description": "Current transformer",
+      "draftsman_id": "TRANSFORMER_CURRENT",
+      "category": "power",
+      "display_name": "Current transformer (CT)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L 50 0 M 0 25 A 25 25 0 1 0 0 -25 M 0 -25 A 8 8 0 1 0 -16 -25 M -16 -25 L -16 25 M 0 25 A 8 8 0 1 0 -16 25",
+        "terminals": {"primary_in": [-50, 0], "primary_out": [50, 0], "sec_S1": [-16, -25], "sec_S2": [-16, 25]}
+      },
+      "variants": ["TRANSFORMER_VOLTAGE", "CT_METERING"],
+      "annotation_fields": ["ratio", "burden_VA", "class", "accuracy"],
+      "usage_notes": "CT — primary conductor passes through the core, secondary winding feeds metering or protection. Annotate ratio (e.g. 800/5), class (P, PR, PX for protection; 0.2, 0.5 for metering), burden VA.",
+      "related_symbols": ["TRANSFORMER_VOLTAGE", "AMMETER", "CT_METERING"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "TRANSFORMER_VOLTAGE",
+      "iec_ref": "IEC60617-06-09-06",
+      "iec_part": 6,
+      "iec_description": "Voltage transformer",
+      "draftsman_id": "TRANSFORMER_VOLTAGE",
+      "category": "power",
+      "display_name": "Voltage transformer (VT)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -25 0 M 5 0 A 20 20 0 1 0 -25 0 A 20 20 0 1 0 5 0 Z M 25 0 A 20 20 0 1 0 -5 0 A 20 20 0 1 0 25 0 Z M 25 0 L 50 0",
+        "terminals": {"hv_a": [-50, 0], "hv_b": [50, 0], "lv_a": [-15, -20], "lv_b": [15, -20]}
+      },
+      "variants": ["TRANSFORMER_CURRENT", "VT_METERING"],
+      "annotation_fields": ["ratio", "burden_VA", "class"],
+      "usage_notes": "VT (PT) — steps high voltage down for metering and protection. Annotate ratio (e.g. 11000/110), class, burden. Two circles like a power transformer but smaller.",
+      "related_symbols": ["TRANSFORMER_CURRENT", "VOLTMETER", "VT_METERING"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "TRANSFORMER_1PH",
+      "iec_ref": "IEC60617-06-09-04",
+      "iec_part": 6,
+      "iec_description": "Single-phase transformer",
+      "draftsman_id": "TRANSFORMER_1PH",
+      "category": "power",
+      "display_name": "1-phase transformer",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 -10 L -35 -10 M -50 10 L -35 10 M -15 -10 A 20 20 0 1 0 -15 10 A 20 20 0 1 0 -15 -10 Z M 15 -10 A 20 20 0 1 0 15 10 A 20 20 0 1 0 15 -10 Z M 35 -10 L 50 -10 M 35 10 L 50 10",
+        "terminals": {"prim_a": [-50, -10], "prim_b": [-50, 10], "sec_a": [50, -10], "sec_b": [50, 10]}
+      },
+      "variants": ["TRANSFORMER_2W", "TRANSFORMER_3PH"],
+      "annotation_fields": ["rating_kVA", "primary_V", "secondary_V"],
+      "usage_notes": "Single-phase transformer with explicit two-terminal primary and secondary. Use when phase distinction is important (e.g. control transformers).",
+      "related_symbols": ["TRANSFORMER_2W", "TRANSFORMER_3PH"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "TRANSFORMER_3PH",
+      "iec_ref": "IEC60617-06-09-07",
+      "iec_part": 6,
+      "iec_description": "Three-phase transformer (detailed)",
+      "draftsman_id": "TRANSFORMER_3PH",
+      "category": "power",
+      "display_name": "3-phase transformer",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 -15 L -35 -15 M -50 0 L -35 0 M -50 15 L -35 15 M -15 -15 A 20 20 0 1 0 -15 5 A 20 20 0 1 0 -15 -15 Z M 15 -15 A 20 20 0 1 0 15 5 A 20 20 0 1 0 15 -15 Z M 35 -15 L 50 -15 M 35 0 L 50 0 M 35 15 L 50 15",
+        "terminals": {"L1_prim": [-50, -15], "L2_prim": [-50, 0], "L3_prim": [-50, 15], "L1_sec": [50, -15], "L2_sec": [50, 0], "L3_sec": [50, 15]}
+      },
+      "variants": ["TRANSFORMER_2W", "TRANSFORMER_1PH"],
+      "annotation_fields": ["rating_kVA", "primary_V", "secondary_V", "vector_group", "uk_pct"],
+      "usage_notes": "Three-phase transformer with all phase terminals shown. Use on detailed schematics where phase routing matters; the single-line TRANSFORMER_2W is preferred on SLDs.",
+      "related_symbols": ["TRANSFORMER_2W", "TRANSFORMER_1PH"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "BATTERY",
+      "iec_ref": "IEC60617-06-15-01",
+      "iec_part": 6,
+      "iec_description": "Battery (cell or accumulator)",
+      "draftsman_id": "BATTERY",
+      "category": "power",
+      "display_name": "Battery",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -15, 50, 15],
+        "path": "M -50 0 L -10 0 M -10 -15 L -10 15 M 0 -8 L 0 8 M 10 -15 L 10 15 M 20 -8 L 20 8 M 20 0 L 50 0",
+        "terminals": {"pos": [50, 0], "neg": [-50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": ["capacity_Ah", "voltage_V", "chemistry"],
+      "usage_notes": "Battery — long plate (positive) and short plate (negative) alternating. Two cells shown here. Annotate capacity (Ah), nominal voltage, chemistry (lead-acid, Li-ion, NiMH).",
+      "related_symbols": ["BATTERY_CHARGER", "UPS", "POLARITY_PLUS", "POLARITY_MINUS"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "BATTERY_CHARGER",
+      "iec_ref": "IEC60617-06-15-02",
+      "iec_part": 6,
+      "iec_description": "Battery charger / rectifier-charger",
+      "draftsman_id": "BATTERY_CHARGER",
+      "category": "power",
+      "display_name": "Battery charger",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -25 0 M -25 -20 L 25 -20 L 25 20 L -25 20 Z M 25 0 L 50 0 M -15 -10 L 15 10 M -15 10 L -10 10 M 15 -10 L 10 -10",
+        "terminals": {"ac_in": [-50, 0], "dc_out": [50, 0]}
+      },
+      "variants": ["RECTIFIER"],
+      "annotation_fields": ["rating_kW", "input_V_AC", "output_V_DC"],
+      "usage_notes": "Battery charger — rectangle with diagonal indicating AC→DC. Annotate ratings. Distinct from generic RECTIFIER by inclusion of charge management.",
+      "related_symbols": ["BATTERY", "RECTIFIER", "UPS"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "UPS",
+      "iec_ref": "IEC60617-06-15-04",
+      "iec_part": 6,
+      "iec_description": "Uninterruptible power supply",
+      "draftsman_id": "UPS",
+      "category": "power",
+      "display_name": "UPS",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -30 0 M -30 -25 L 30 -25 L 30 25 L -30 25 Z M 30 0 L 50 0 M -15 -10 L 15 10 M -15 10 L -10 10 M 15 -10 L 10 -10",
+        "terminals": {"ac_in": [-50, 0], "ac_out": [50, 0]}
+      },
+      "variants": ["BATTERY_CHARGER"],
+      "annotation_fields": ["rating_kVA", "autonomy_min", "topology"],
+      "usage_notes": "UPS — rectangle annotated 'UPS'. Common annotation: kVA rating, autonomy (minutes), topology (online double-conversion, line-interactive). Distinct from BATTERY_CHARGER — UPS includes inverter and bypass.",
+      "related_symbols": ["BATTERY", "BATTERY_CHARGER", "INVERTER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SOLAR_PV",
+      "iec_ref": "IEC60617-06-16-01",
+      "iec_part": 6,
+      "iec_description": "Photovoltaic cell / module",
+      "draftsman_id": "SOLAR_PV",
+      "category": "power",
+      "display_name": "Photovoltaic source",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -20 0 M -20 -20 L 20 -20 L 20 20 L -20 20 Z M -20 -20 L 20 20 M 20 0 L 50 0 M -10 -30 L -5 -25 M 0 -30 L 5 -25 M 10 -30 L 15 -25",
+        "terminals": {"pos": [50, 0], "neg": [-50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": ["rating_kWp", "voltage_V_DC", "module_count"],
+      "usage_notes": "PV source — rectangle with diagonal (indicating a diode/cell-like behaviour) plus arrows indicating incident sunlight. Annotate peak rating (kWp).",
+      "related_symbols": ["INVERTER", "BATTERY"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "WIND_TURBINE",
+      "iec_ref": "IEC60617-06-16-02",
+      "iec_part": 6,
+      "iec_description": "Wind-powered generator",
+      "draftsman_id": "WIND_TURBINE",
+      "category": "power",
+      "display_name": "Wind turbine",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0 M 0 -25 L 0 25 M -25 0 L 0 0 L 22 -12",
+        "terminals": {"out_a": [-50, 0], "out_b": [50, 0]}
+      },
+      "variants": ["GENERATOR_INDUCTION"],
+      "annotation_fields": ["rating_kW", "voltage_V", "rotor_dia_m"],
+      "usage_notes": "Wind turbine — generator circle with three-blade indicator. Annotate rated kW. Internal generator may be induction or synchronous (refer to cross-referenced symbol).",
+      "related_symbols": ["GENERATOR_INDUCTION", "GENERATOR_SYNC", "INVERTER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CAPACITOR",
+      "iec_ref": "IEC60617-06-04-04",
+      "iec_part": 6,
+      "iec_description": "Capacitor (general)",
+      "draftsman_id": "CAPACITOR",
+      "category": "power",
+      "display_name": "Capacitor",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -15, 50, 15],
+        "path": "M -50 0 L -5 0 M -5 -15 L -5 15 M 5 -15 L 5 15 M 5 0 L 50 0",
+        "terminals": {"a": [-50, 0], "b": [50, 0]}
+      },
+      "variants": ["CAPACITOR_BANK"],
+      "annotation_fields": ["capacitance_uF", "voltage_V"],
+      "usage_notes": "Single capacitor — two parallel plates. Annotate capacitance and rated voltage.",
+      "related_symbols": ["CAPACITOR_BANK", "REACTOR_INDUCTOR"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CAPACITOR_BANK",
+      "iec_ref": "IEC60617-06-06-01",
+      "iec_part": 6,
+      "iec_description": "Capacitor bank (PFC)",
+      "draftsman_id": "CAPACITOR_BANK",
+      "category": "power",
+      "display_name": "Capacitor bank (PFC)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -25 0 M -25 -20 L 25 -20 L 25 20 L -25 20 Z M -10 -10 L -10 10 M 0 -10 L 0 10 M 10 -10 L 10 10 M -5 -10 L -5 10 M 5 -10 L 5 10 M 25 0 L 50 0",
+        "terminals": {"L": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["CAPACITOR"],
+      "annotation_fields": ["rating_kVAr", "voltage_V", "stages"],
+      "usage_notes": "Power factor correction capacitor bank — rectangle with multiple capacitor plate marks. Annotate kVAr rating and number of stages. Distinct from a single CAPACITOR.",
+      "related_symbols": ["CAPACITOR", "REACTOR_INDUCTOR"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "REACTOR_INDUCTOR",
+      "iec_ref": "IEC60617-06-04-05",
+      "iec_part": 6,
+      "iec_description": "Inductor / reactor",
+      "draftsman_id": "REACTOR_INDUCTOR",
+      "category": "power",
+      "display_name": "Reactor / inductor",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -15, 50, 15],
+        "path": "M -50 0 L -25 0 M -25 0 A 7 7 0 1 0 -11 0 M -11 0 A 7 7 0 1 0 3 0 M 3 0 A 7 7 0 1 0 17 0 M 17 0 A 7 7 0 1 0 25 0 M 25 0 L 50 0",
+        "terminals": {"a": [-50, 0], "b": [50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": ["inductance_mH", "current_A"],
+      "usage_notes": "Reactor / inductor — series of half-circles representing the coil. Used for harmonic filters, motor starting reactors, transformer neutral grounding.",
+      "related_symbols": ["CAPACITOR", "FILTER_GENERAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "RECTIFIER",
+      "iec_ref": "IEC60617-06-12-01",
+      "iec_part": 6,
+      "iec_description": "Rectifier (general)",
+      "draftsman_id": "RECTIFIER",
+      "category": "power",
+      "display_name": "Rectifier (AC→DC)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -20 0 M -20 -20 L 20 -20 L 20 20 L -20 20 Z M -15 0 L 15 0 M -15 -10 L -10 0 L -15 10 M 15 -10 L 10 0 L 15 10 M 20 0 L 50 0",
+        "terminals": {"ac_in": [-50, 0], "dc_out": [50, 0]}
+      },
+      "variants": ["CONVERTER_AC_DC", "BATTERY_CHARGER"],
+      "annotation_fields": ["rating_kW", "input_V_AC", "output_V_DC"],
+      "usage_notes": "Rectifier — rectangle with internal AC/DC indication. Generic AC to DC conversion device. Use CONVERTER_AC_DC for a more specific labelling.",
+      "related_symbols": ["INVERTER", "CONVERTER_AC_DC", "BATTERY_CHARGER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "INVERTER",
+      "iec_ref": "IEC60617-06-12-02",
+      "iec_part": 6,
+      "iec_description": "Inverter (general)",
+      "draftsman_id": "INVERTER",
+      "category": "power",
+      "display_name": "Inverter (DC→AC)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -20 0 M -20 -20 L 20 -20 L 20 20 L -20 20 Z M -15 -10 L -10 -10 M -15 10 L -10 10 M 10 -10 L 15 -10 L 15 10 L 10 10 M -10 0 Q 0 -8 5 0 Q 10 8 15 0 M 20 0 L 50 0",
+        "terminals": {"dc_in": [-50, 0], "ac_out": [50, 0]}
+      },
+      "variants": ["CONVERTER_DC_AC"],
+      "annotation_fields": ["rating_kW", "input_V_DC", "output_V_AC", "phase_count"],
+      "usage_notes": "Inverter — DC to AC conversion. Rectangle with DC and AC indicators. Used in PV systems, UPS, VFD output stages.",
+      "related_symbols": ["RECTIFIER", "SOLAR_PV", "UPS", "VFD"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CONVERTER_DC_DC",
+      "iec_ref": "IEC60617-06-12-03",
+      "iec_part": 6,
+      "iec_description": "DC/DC converter",
+      "draftsman_id": "CONVERTER_DC_DC",
+      "category": "power",
+      "display_name": "DC/DC converter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -20 0 M -20 -20 L 20 -20 L 20 20 L -20 20 Z M -15 -5 L -10 -5 L -10 5 L -15 5 M 10 -5 L 15 -5 L 15 5 L 10 5 M 20 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": ["input_V_DC", "output_V_DC", "rating_W"],
+      "usage_notes": "DC to DC converter (e.g. PV string optimisers, telecom power). Rectangle with DC marks both sides.",
+      "related_symbols": ["CONVERTER_AC_DC", "CONVERTER_DC_AC"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CONVERTER_AC_DC",
+      "iec_ref": "IEC60617-06-12-04",
+      "iec_part": 6,
+      "iec_description": "AC/DC converter",
+      "draftsman_id": "CONVERTER_AC_DC",
+      "category": "power",
+      "display_name": "AC/DC converter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -20 0 M -20 -20 L 20 -20 L 20 20 L -20 20 Z M -15 -5 Q -10 -10 -5 -5 Q 0 0 -5 5 M 10 -5 L 15 -5 L 15 5 L 10 5 M 20 0 L 50 0",
+        "terminals": {"ac_in": [-50, 0], "dc_out": [50, 0]}
+      },
+      "variants": ["RECTIFIER"],
+      "annotation_fields": ["input_V_AC", "output_V_DC", "rating_W"],
+      "usage_notes": "AC to DC converter — same function as RECTIFIER but the converter label form preferred in modern installations.",
+      "related_symbols": ["RECTIFIER", "CONVERTER_DC_AC"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CONVERTER_DC_AC",
+      "iec_ref": "IEC60617-06-12-05",
+      "iec_part": 6,
+      "iec_description": "DC/AC converter (inverter)",
+      "draftsman_id": "CONVERTER_DC_AC",
+      "category": "power",
+      "display_name": "DC/AC converter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -20 0 M -20 -20 L 20 -20 L 20 20 L -20 20 Z M -15 -5 L -10 -5 L -10 5 L -15 5 M 5 0 Q 10 -8 15 0 M 20 0 L 50 0",
+        "terminals": {"dc_in": [-50, 0], "ac_out": [50, 0]}
+      },
+      "variants": ["INVERTER"],
+      "annotation_fields": ["input_V_DC", "output_V_AC", "rating_W"],
+      "usage_notes": "DC to AC converter — same function as INVERTER but the converter label form. Use as preferred in PV/battery storage SLDs.",
+      "related_symbols": ["INVERTER", "CONVERTER_AC_DC"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "RESISTOR",
+      "iec_ref": "IEC60617-06-04-06",
+      "iec_part": 6,
+      "iec_description": "Resistor (general)",
+      "draftsman_id": "RESISTOR",
+      "category": "power",
+      "display_name": "Resistor",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -10, 50, 10],
+        "path": "M -50 0 L -20 0 M -20 -10 L 20 -10 L 20 10 L -20 10 Z M 20 0 L 50 0",
+        "terminals": {"a": [-50, 0], "b": [50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": ["resistance_ohm", "power_W"],
+      "usage_notes": "IEC resistor symbol — rectangle. Used for neutral earthing resistors (NER), dummy loads, snubber resistors. Annotate Ω and power rating.",
+      "related_symbols": ["REACTOR_INDUCTOR", "CAPACITOR"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "EARTH_ELECTRODE",
+      "iec_ref": "IEC60617-06-15-06",
+      "iec_part": 6,
+      "iec_description": "Earth electrode",
+      "draftsman_id": "EARTH_ELECTRODE",
+      "category": "power",
+      "display_name": "Earth electrode",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-25, -50, 25, 25],
+        "path": "M 0 -50 L 0 0 M -20 0 L 20 0 L 0 25 Z M -15 -10 L 0 -25 L 15 -10",
+        "terminals": {"line": [0, -50]}
+      },
+      "variants": ["EARTH_GENERAL", "EARTH_PROTECTIVE"],
+      "annotation_fields": ["electrode_type", "Ra_ohm"],
+      "usage_notes": "Earth electrode (rod, plate, mesh) — triangle with downward arrow representing the buried electrode. Annotate measured/designed resistance Ra. Distinct from EARTH_GENERAL which is the symbolic earth terminal.",
+      "related_symbols": ["EARTH_GENERAL", "EARTH_PROTECTIVE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "FUEL_CELL",
+      "iec_ref": "IEC60617-06-16-03",
+      "iec_part": 6,
+      "iec_description": "Fuel cell",
+      "draftsman_id": "FUEL_CELL",
+      "category": "power",
+      "display_name": "Fuel cell",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -25 0 M -25 -20 L 25 -20 L 25 20 L -25 20 Z M 25 0 L 50 0 M -10 -10 L 10 -10 M -10 0 L 10 0 M -10 10 L 10 10",
+        "terminals": {"pos": [50, 0], "neg": [-50, 0]}
+      },
+      "variants": ["BATTERY", "SOLAR_PV"],
+      "annotation_fields": ["rating_kW", "voltage_V_DC", "fuel"],
+      "usage_notes": "Fuel cell — rectangle with stack-cell indication. Annotate rated power, output voltage, fuel type (hydrogen, methanol).",
+      "related_symbols": ["BATTERY", "INVERTER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "STABILIZER",
+      "iec_ref": "IEC60617-06-12-06",
+      "iec_part": 6,
+      "iec_description": "Voltage stabiliser",
+      "draftsman_id": "STABILIZER",
+      "category": "power",
+      "display_name": "Voltage stabiliser",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -25 0 M -25 -20 L 25 -20 L 25 20 L -25 20 Z M 25 0 L 50 0 M -10 -10 L -10 0 L 10 0 L 10 10",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": ["rating_kVA", "input_V_range", "output_V"],
+      "usage_notes": "Voltage stabiliser / AVR — rectangle with internal step pattern indicating voltage regulation. Used where supply voltage fluctuates outside equipment tolerance.",
+      "related_symbols": ["TRANSFORMER_AUTO", "UPS"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "FREQUENCY_CONVERTER",
+      "iec_ref": "IEC60617-06-12-07",
+      "iec_part": 6,
+      "iec_description": "Frequency converter (static)",
+      "draftsman_id": "FREQUENCY_CONVERTER",
+      "category": "power",
+      "display_name": "Frequency converter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -25 0 M -25 -20 L 25 -20 L 25 20 L -25 20 Z M 25 0 L 50 0 M -15 0 L -10 0 L -10 -8 L -5 -8 M -5 0 Q 0 -8 5 0 M 5 0 L 10 0 L 10 -8 L 15 -8",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["VFD"],
+      "annotation_fields": ["input_Hz", "output_Hz", "rating_kVA"],
+      "usage_notes": "Frequency converter — between two AC systems of different frequencies (e.g. 50Hz to 60Hz for marine shore power, 50Hz to 400Hz for aerospace test). Annotate both frequencies.",
+      "related_symbols": ["VFD", "INVERTER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SOFT_STARTER",
+      "iec_ref": "IEC60617-06-12-09",
+      "iec_part": 6,
+      "iec_description": "Soft starter (motor)",
+      "draftsman_id": "SOFT_STARTER",
+      "category": "power",
+      "display_name": "Soft starter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -25 0 M -25 -20 L 25 -20 L 25 20 L -25 20 Z M 25 0 L 50 0 M -15 10 L -5 -10 L 15 -10",
+        "terminals": {"L_in": [-50, 0], "M_out": [50, 0]}
+      },
+      "variants": ["VFD", "MOTOR_STARTER_DOL"],
+      "annotation_fields": ["rating_kW", "ramp_time_s"],
+      "usage_notes": "Soft starter — controls motor inrush current by ramping voltage. Annotate motor rating and ramp time. Cheaper than VFD but no speed control.",
+      "related_symbols": ["VFD", "MOTOR_STARTER_DOL", "MOTOR_INDUCTION"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "VFD",
+      "iec_ref": "IEC60617-06-12-08",
+      "iec_part": 6,
+      "iec_description": "Variable frequency drive",
+      "draftsman_id": "VFD",
+      "category": "power",
+      "display_name": "Variable frequency drive (VFD)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -25 0 M -25 -20 L 25 -20 L 25 20 L -25 20 Z M 25 0 L 50 0 M -15 -10 L -10 -10 L -10 0 L -5 0 M 0 0 Q 5 -8 10 0 M 10 -5 L 15 -10",
+        "terminals": {"L_in": [-50, 0], "M_out": [50, 0]}
+      },
+      "variants": ["FREQUENCY_CONVERTER", "SOFT_STARTER"],
+      "annotation_fields": ["rating_kW", "output_Hz_range"],
+      "usage_notes": "VFD / variable speed drive — controls motor speed by varying frequency. Standard for HVAC fans, pumps, energy efficiency retrofits. Annotate motor rating and speed range.",
+      "related_symbols": ["MOTOR_INDUCTION", "INVERTER", "MOTOR_STARTER_VFD", "SOFT_STARTER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "TRANSFORMER_PEC",
+      "iec_ref": "IEC60617-06-09-08",
+      "iec_part": 6,
+      "iec_description": "Transformer with primary earth clamp / point",
+      "draftsman_id": "TRANSFORMER_PEC",
+      "category": "power",
+      "display_name": "Transformer with earth point",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 30],
+        "path": "M -50 0 L -35 0 M 5 0 A 20 20 0 1 0 -35 0 A 20 20 0 1 0 5 0 Z M 35 0 A 20 20 0 1 0 -5 0 A 20 20 0 1 0 35 0 Z M 35 0 L 50 0 M 0 0 L 0 25 M -10 25 L 10 25 M -5 30 L 5 30",
+        "terminals": {"primary": [-50, 0], "secondary": [50, 0], "earth": [0, 30]}
+      },
+      "variants": ["TRANSFORMER_2W"],
+      "annotation_fields": ["rating_kVA", "primary_V", "secondary_V", "earth_method"],
+      "usage_notes": "Two-winding transformer with explicit earth point (typically star-point earth on the secondary). Annotate the earthing method (solid, resistor, reactor).",
+      "related_symbols": ["TRANSFORMER_2W", "EARTH_GENERAL"],
+      "generating_shared_symbol": true
+    }
+  ]
+}
