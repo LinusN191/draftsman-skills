@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/db-layout/schemas/db-layout-rollup-intent.schema.json",
+  "title": "DB Layout Rollup Intent (Project-Wide)",
+  "description": "Project-wide rollup of all distribution boards in an installation. Consumed primarily by electrical/earthing for full-cascade circuit visibility. Shape matches the earthing skill's existing payload expectations verbatim.",
+  "type": "object",
+  "required": ["project_id", "boards", "outgoing_circuits"],
+  "additionalProperties": false,
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "description": "Stable project identifier carried through cross-drawing context"
+    },
+    "boards": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "designation", "phases", "ways", "main_switch_rating_a"],
+        "additionalProperties": false,
+        "properties": {
+          "id":                    { "type": "string", "pattern": "^[A-Z][A-Z0-9-]{1,15}$" },
+          "designation":           { "type": "string" },
+          "location":              { "type": "string" },
+          "phases":                { "type": "integer", "enum": [1, 3] },
+          "ways":                  { "type": "integer", "minimum": 1, "maximum": 200 },
+          "main_switch_rating_a":  { "type": "integer", "minimum": 6, "maximum": 6300 },
+          "main_switch_type":      { "type": "string", "description": "e.g. 'isolator', 'RCD_main_30mA', 'main_breaker_200A'" },
+          "fed_from":              { "type": "string", "description": "Upstream board id, or 'MAIN' for the service entrance" }
+        }
+      }
+    },
+    "outgoing_circuits": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": ["id", "designation", "ocpd_rating_a", "ocpd_type"],
+        "additionalProperties": false,
+        "properties": {
+          "id":                    { "type": "string", "description": "Circuit id (e.g. 'C01', 'L1-Z2')" },
+          "designation":           { "type": "string" },
+          "ocpd_rating_a":         { "type": "integer" },
+          "ocpd_type":             { "enum": ["B", "C", "D", "thermal_magnetic", "fuse"] },
+          "phase_csa_mm2":         { "type": "number", "exclusiveMinimum": 0 },
+          "phase_csa_awg":         { "type": "string" },
+          "length_m":              { "type": "number", "exclusiveMinimum": 0 },
+          "db_designation":        { "type": "string", "description": "Which board this circuit originates from (matches boards[].id)" },
+          "rcbo_rating_ma":        { "type": "integer", "enum": [10, 30, 100, 300, 500] }
+        }
+      }
+    }
+  }
+}
