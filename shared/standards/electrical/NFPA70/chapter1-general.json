@@ -1,0 +1,122 @@
+{
+  "_title": "NFPA 70 Chapter 1 — General",
+  "_chapter": 1,
+  "_version": "1.0.0",
+  "_note": "Arts 90 (Introduction), 100 (Definitions), 110 (Requirements for Electrical Installations). All small enough to live inline; no per-article files needed.",
+  "articles": [
+    {
+      "article_id": "ART_90",
+      "nec_ref": "NFPA 70:2023 Article 90",
+      "chapter": 1,
+      "article_number": 90,
+      "article_title": "Introduction",
+      "scope": "Defines the purpose, scope, arrangement and enforcement of the NEC. Sets out what the NEC covers (90.2(A)) and does not cover (90.2(B)). Establishes the AHJ (Authority Having Jurisdiction) as the enforcement authority.",
+      "applies_to": ["all_installations", "scope_definition"],
+      "key_sections": [
+        {"section": "90.1", "title": "Purpose", "summary": "Practical safeguarding of persons and property from hazards arising from the use of electricity"},
+        {"section": "90.2", "title": "Scope", "summary": "What NEC covers (and does NOT cover — utilities under their own jurisdiction, mining, ships, railway rolling stock, etc.)"},
+        {"section": "90.3", "title": "Code Arrangement", "summary": "Chapters 1-4 apply generally; Chapters 5-7 supplement or modify; Chapter 8 stands alone; Chapter 9 informational"},
+        {"section": "90.4", "title": "Enforcement", "summary": "AHJ has authority to interpret, grant special permission, waive specific requirements"},
+        {"section": "90.5", "title": "Mandatory Rules, Permissive Rules, and Explanatory Material", "summary": "'shall' = mandatory; 'shall be permitted' = permissive; Informational Notes are not enforceable"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {},
+      "common_errors": [
+        "Treating Informational Notes as enforceable — they are explanatory, not mandatory",
+        "Assuming utility-owned equipment falls under NEC — Section 90.2(B)(5) excludes installations under exclusive utility control",
+        "Forgetting that AHJ acceptance (90.4) is separate from NEC compliance — both are required"
+      ],
+      "drawn_as": [],
+      "related_iec_60364": ["IEC 60364-1 Clause 11 (Scope and purpose)"],
+      "divergence_notes": "NEC's AHJ concept has no direct IEC equivalent — IEC relies on national adoption and certification regimes. NEC 90.3 chapter-arrangement rule (Chapters 5-7 supplement Chapters 1-4) has no IEC analogue; IEC parts each carry independent scope.",
+      "related_bs_7671": [],
+      "usage_notes": "Read 90.2 first on any new project to confirm NEC applies. AHJ interpretations vary — document the AHJ name, the contact, and any project-specific waivers in the design narrative.",
+      "related_articles": ["ART_100", "ART_110"]
+    },
+    {
+      "article_id": "ART_100",
+      "nec_ref": "NFPA 70:2023 Article 100",
+      "chapter": 1,
+      "article_number": 100,
+      "article_title": "Definitions",
+      "scope": "Defines terms used throughout the NEC. Definitions in Article 100 apply globally; definitions in Part II apply to circuits operating over 1000 V AC. Article-specific definitions in individual articles override Article 100 within those articles.",
+      "applies_to": ["terminology", "all_installations"],
+      "key_sections": [
+        {"section": "100.I",  "title": "General",       "summary": "Definitions applicable to all NEC articles. Includes ampacity, branch circuit, feeder, service, grounded conductor, neutral conductor, equipment grounding conductor, etc."},
+        {"section": "100.II", "title": "Over 1000 V AC, Nominal", "summary": "Definitions applicable only to circuits operating over 1000 V AC"}
+      ],
+      "tabulated_values": {},
+      "tables_inline": {
+        "key_definitions": {
+          "title": "Critical NEC↔IEC terminology pairings (selected — full list in terminology.md)",
+          "rows": [
+            {"nec_term": "Ampacity",                       "definition": "Maximum current, in amperes, a conductor can carry continuously under conditions of use without exceeding its temperature rating", "iec_analogue": "Current-carrying capacity (Iz)"},
+            {"nec_term": "Branch Circuit",                 "definition": "Circuit conductors between final OCPD and outlet(s)", "iec_analogue": "Final circuit"},
+            {"nec_term": "Feeder",                         "definition": "Circuit conductors between service equipment and final branch-circuit OCPD", "iec_analogue": "Sub-main / distribution circuit"},
+            {"nec_term": "Service",                        "definition": "Conductors and equipment connecting the utility supply to the wiring system", "iec_analogue": "Origin of installation / supply intake"},
+            {"nec_term": "Grounded Conductor",             "definition": "System or circuit conductor intentionally grounded", "iec_analogue": "Neutral (N) in TN systems"},
+            {"nec_term": "Neutral Conductor",              "definition": "Conductor connected to the neutral point of a system that is intended to carry current under normal conditions", "iec_analogue": "Neutral (N)"},
+            {"nec_term": "Equipment Grounding Conductor (EGC)", "definition": "Conductive path(s) that provides a ground-fault current path and connects normally non-current-carrying metal parts of equipment together and to the system grounded conductor or to the GEC", "iec_analogue": "Circuit Protective Conductor (CPC)"},
+            {"nec_term": "Grounding Electrode Conductor (GEC)", "definition": "Conductor used to connect the system grounded conductor or the equipment to a grounding electrode", "iec_analogue": "Main earthing conductor (no exact IEC term)"},
+            {"nec_term": "Bonding Jumper, Main (MBJ)",     "definition": "Connection between the grounded service conductor and EGC at the service", "iec_analogue": "Main earthing terminal connection"},
+            {"nec_term": "Working Space",                  "definition": "Clear space required in front of equipment likely to require examination, servicing, or maintenance while energized (110.26)", "iec_analogue": "Access and maintenance space (IEC 60364-7-729)"}
+          ]
+        }
+      },
+      "common_errors": [
+        "Using NEC 'ground' interchangeably with IEC 'earth' in mixed-jurisdiction documents — confuses inspectors",
+        "Mixing 'grounded conductor' (load-carrying neutral that happens to be grounded) with 'grounding electrode conductor' (carries fault current only)",
+        "Treating service conductors as branch circuits — they are governed by Article 230 separately"
+      ],
+      "drawn_as": [],
+      "related_iec_60364": ["IEC 60050 (International Electrotechnical Vocabulary)", "IEC 60364-1 Clause 3 (Definitions)"],
+      "divergence_notes": "Major terminology divergence — see nec-vs-iec-comparison.md and terminology.md for the full catalogue. Most-cited: grounded conductor (NEC) ≠ neutral conductor (IEC), but NEC also uses both terms; EGC (NEC) ≈ CPC (IEC); ampacity (NEC) ≈ current-carrying capacity Iz (IEC); branch circuit (NEC) = final circuit (IEC).",
+      "related_bs_7671": [],
+      "usage_notes": "Every cross-jurisdiction project should include a one-page terminology key. Use NEC terms in NEC-jurisdiction documents and IEC terms in IEC-jurisdiction documents; do NOT mix.",
+      "related_articles": ["ART_90", "ART_110", "ART_200", "ART_250"]
+    },
+    {
+      "article_id": "ART_110",
+      "nec_ref": "NFPA 70:2023 Article 110",
+      "chapter": 1,
+      "article_number": 110,
+      "article_title": "Requirements for Electrical Installations",
+      "scope": "General requirements for the examination and approval, installation and use, access to and spaces about electrical equipment.",
+      "applies_to": ["all_installations", "workmanship", "working_clearances", "termination_temperature"],
+      "key_sections": [
+        {"section": "110.3",    "title": "Examination, Identification, Installation, Use, and Listing of Equipment", "summary": "Equipment must be evaluated, identified, listed where required, and installed in accordance with listing"},
+        {"section": "110.10",   "title": "Circuit Impedance, Short-Circuit Current Ratings, and Other Characteristics", "summary": "OCPDs, conductors, and equipment must have short-circuit current ratings (SCCR) ≥ available fault current"},
+        {"section": "110.12",   "title": "Mechanical Execution of Work", "summary": "Workmanship — neat and workmanlike installation"},
+        {"section": "110.14(C)","title": "Temperature Limitations (the '60/75/90 °C rule')", "summary": "Conductor ampacity limited to the lowest temperature rating of any connected terminal — typically 60 °C or 75 °C even when conductor is 90 °C rated"},
+        {"section": "110.26",   "title": "Spaces About Electrical Equipment", "summary": "Working clearances — depth (Table 110.26(A)(1)) × width (30 in min or width of equipment) × headroom (6.5 ft min) for equipment likely to be examined energised"},
+        {"section": "110.34",   "title": "Working Space and Guarding (Over 1000 V)", "summary": "Increased working clearances for HV equipment"}
+      ],
+      "tabulated_values": {
+        "working_space_depth_110_26_A_1": "see tables_inline"
+      },
+      "tables_inline": {
+        "Table_110.26(A)(1)": {
+          "title": "Working Space Depth — to Live Parts (≤ 1000 V Nominal)",
+          "rows": [
+            {"nominal_voltage_to_ground": "0-150 V",     "condition_1_in": 36, "condition_2_in": 36, "condition_3_in": 36},
+            {"nominal_voltage_to_ground": "151-600 V",   "condition_1_in": 36, "condition_2_in": 42, "condition_3_in": 48},
+            {"nominal_voltage_to_ground": "601-1000 V",  "condition_1_in": 36, "condition_2_in": 48, "condition_3_in": 60}
+          ],
+          "_conditions": "Condition 1: exposed live parts on one side only, no live or grounded parts on the other. Condition 2: exposed live parts on one side, grounded parts on the other. Condition 3: exposed live parts on both sides."
+        }
+      },
+      "common_errors": [
+        "Ignoring 110.14(C) — using 90 °C ampacity column when terminals are 60 °C or 75 °C rated; ampacity must be limited to the lower",
+        "Specifying inadequate working clearance — Table 110.26(A)(1) is by voltage AND condition AND nominal voltage to ground (not phase-to-phase)",
+        "Forgetting 110.10 SCCR coordination — equipment marked 5 kA SCCR in a 22 kA available fault location is non-compliant",
+        "Confusing working space (110.26) with dedicated electrical space (110.26(E)) — both are required and have different criteria"
+      ],
+      "drawn_as": [],
+      "related_iec_60364": ["IEC 60364-1 Clause 13 (Selection of equipment)", "IEC 60364-1 Clause 132 (Compatibility)", "IEC 60364-7-729 (Access to electrical installations and equipment)"],
+      "divergence_notes": "NEC's 110.14(C) 60/75/90 °C termination rule is much more prescriptive than IEC's tabulated ratings — IEC ampacity tables (Annex B) generally assume terminations rated at the same temperature as the conductor. NEC 110.26 working space requirements are stated in feet/inches and structured by voltage-to-ground × condition; IEC 60364-7-729 uses metric and is generally less prescriptive. NEC has explicit SCCR coordination (110.10); IEC handles via Icc/Icu separately per device.",
+      "related_bs_7671": [],
+      "usage_notes": "110.14(C) is the most common cause of failed inspections for first-time NEC designers. Always state the termination temperature rating on the schedule (60 °C, 75 °C, 90 °C) and confirm the conductor ampacity column matches.",
+      "related_articles": ["ART_240", "ART_250", "ART_310", "ART_408"]
+    }
+  ]
+}
