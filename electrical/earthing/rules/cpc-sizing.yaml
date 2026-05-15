@@ -1,0 +1,51 @@
+rule_set: cpc-sizing
+version: 1.0.0
+applies_to: [GB, EU, INT, US]
+
+# CPC (or EGC in NEC) sizing rules. Jurisdiction-gated lookup tables.
+# Used by generator.md Step 8.
+
+method_by_jurisdiction:
+  GB:
+    primary_method: bs7671_table_54_7_or_adiabatic
+    standard_file: shared/standards/electrical/BS7671/reg411-disconnection-times.json
+    rule:
+      - "Table 54.7 (Reg 543.1.4): CPC csa by line conductor csa S"
+      - "S ≤ 16 mm² → CPC = S"
+      - "16 < S ≤ 35 mm² → CPC = 16 mm²"
+      - "S > 35 mm² → CPC = S/2"
+      - "Adiabatic alternative (Reg 543.1.3): S_CPC = sqrt(I²·t)/k"
+      - "k from Table 54.2 (typical 115 for Cu 70°C → 160°C in PVC; 143 for 90°C XLPE)"
+
+  EU:
+    primary_method: iec_60364_5_54_table_54_1
+    standard_file: shared/standards/electrical/IEC60364/part5-54-earthing.json
+    rule:
+      - "Table 54.1: CPC sizing identical structure to BS 7671 Table 54.7"
+      - "S ≤ 16 mm² → CPC = S"
+      - "16 < S ≤ 35 mm² → CPC = 16 mm²"
+      - "S > 35 mm² → CPC = S/2"
+
+  INT:
+    primary_method: iec_60364_5_54_table_54_1
+    standard_file: shared/standards/electrical/IEC60364/part5-54-earthing.json
+    # Same as EU
+
+  US:
+    primary_method: nec_table_250_122
+    standard_file: shared/standards/electrical/NFPA70/art250-grounding-bonding.json
+    rule:
+      - "Table 250.122 — EGC sized by OCPD rating (NOT line conductor csa)"
+      - "OCPD ≤ 15A → EGC #14 AWG Cu"
+      - "OCPD 20A → #12 AWG Cu"
+      - "OCPD 30-60A → #10 AWG Cu"
+      - "OCPD 100A → #8 AWG Cu"
+      - "OCPD 200A → #6 AWG Cu"
+      - "OCPD 400A → #3 AWG Cu"
+      - "OCPD 800A → #1/0 AWG Cu"
+      - "OCPD 1200A → #3/0 AWG Cu"
+      - "OCPD 2000A → 250 kcmil Cu"
+      - "Adiabatic check per 250.122(B) for high SCCR / short cables"
+
+cross_jurisdiction_warning:
+  - "BS 7671 / IEC 60364 size by line conductor; NEC sizes by OCPD rating. Same circuit yields different CPC vs EGC. See divergence_notes in art250-grounding-bonding.json."

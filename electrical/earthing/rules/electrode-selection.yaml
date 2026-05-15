@@ -1,0 +1,55 @@
+rule_set: electrode-selection
+version: 1.0.0
+applies_to: [TT, TN-C-S-supplementary]
+
+# Earth electrode type selection by ground conditions, jurisdiction, and target Ra.
+# Used by generator.md Step 5.
+
+defaults:
+  rod:
+    length_mm:       2400
+    diameter_mm:     16
+    burial_depth_mm: 600
+    material:        copper-bonded-steel
+    bs_7430_reference: "BS 7430:2011 Clause 9.5 — driven rod electrode"
+    iec_reference:     "IEC 60364-5-54 Clause 542.2.1"
+    nec_reference:     "NEC 250.52(A)(5)(b) — pipe or rod electrode"
+  plate:
+    edge_length_mm:  600
+    thickness_mm:    3
+    burial_depth_mm: 900
+    bs_7430_reference: "BS 7430:2011 Clause 9.6 — plate electrode"
+  mat:
+    grid_module_m:   2
+    overall_min_m:   6
+    burial_depth_mm: 500
+    bs_7430_reference: "BS 7430:2011 Clause 9.7 — mat electrode (typical earth mat for substations / large buildings)"
+  ufer:
+    rebar_min_size_mm: 13
+    rebar_min_length_m: 6
+    nec_reference: "NEC 250.52(A)(3) — concrete-encased electrode (Ufer)"
+    bs_7430_reference: "BS 7430:2011 Clause 9.8 — foundation earth electrode"
+  ground_ring:
+    conductor_csa_mm2_min: 50
+    burial_depth_mm: 750
+    iec_reference: "IEC 62305-3 Type B earthing arrangement"
+
+selection_logic:
+  - condition: "ground_conditions == 'rock'"
+    prefer: [plate, mat]
+    avoid:  [rod]
+    reason: "Rocky ground prevents driving a rod to full depth"
+  - condition: "ground_conditions in ['marsh_wet', 'clay_moist']"
+    prefer: [rod, mat]
+    note:   "Wet conductive ground gives lower Ra per electrode"
+  - condition: "building_type == 'new_construction' AND has_concrete_foundation"
+    prefer: [ufer]
+    reason: "NEC 250.50(A)(3) and BS 7430 favour Ufer when present in new builds"
+  - condition: "has_lightning_protection == true"
+    prefer: [ground_ring, mat]
+    reason: "BS EN 62305-3 prefers Type B (ring/mat) for combined power-and-lightning earthing"
+
+multi_electrode_array:
+  rule: "Where multiple rods, space ≥ rod_length to minimise mutual coupling"
+  spacing_factor_default: 0.85
+  reference: "BS 7430:2011 Annex F — combined resistance of array"
