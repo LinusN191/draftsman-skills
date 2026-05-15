@@ -1,0 +1,607 @@
+{
+  "_title": "IEC 60617 Part 8 — Measuring instruments, lamps and signalling devices",
+  "_iec_part": 8,
+  "_version": "1.0.0",
+  "symbols": [
+    {
+      "symbol_id": "AMMETER",
+      "iec_ref": "IEC60617-08-01-01",
+      "iec_part": 8,
+      "iec_description": "Ammeter",
+      "draftsman_id": "AMMETER",
+      "category": "measurement",
+      "display_name": "Ammeter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["VOLTMETER", "WATTMETER"],
+      "annotation_fields": ["range_A", "class", "label_A"],
+      "usage_notes": "Ammeter — circle labelled 'A'. Annotate full-scale range and class. Used at outgoing circuit metering, motor control centres. Wired through CT for currents above 10A.",
+      "related_symbols": ["VOLTMETER", "TRANSFORMER_CURRENT"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "VOLTMETER",
+      "iec_ref": "IEC60617-08-01-02",
+      "iec_part": 8,
+      "iec_description": "Voltmeter",
+      "draftsman_id": "VOLTMETER",
+      "category": "measurement",
+      "display_name": "Voltmeter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["AMMETER", "WATTMETER"],
+      "annotation_fields": ["range_V", "class", "label_V"],
+      "usage_notes": "Voltmeter — circle labelled 'V'. Connected line-to-line or line-to-neutral.",
+      "related_symbols": ["AMMETER", "TRANSFORMER_VOLTAGE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "WATTMETER",
+      "iec_ref": "IEC60617-08-01-03",
+      "iec_part": 8,
+      "iec_description": "Wattmeter",
+      "draftsman_id": "WATTMETER",
+      "category": "measurement",
+      "display_name": "Wattmeter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["VAR_METER", "AMMETER", "VOLTMETER"],
+      "annotation_fields": ["range_W", "class", "label_W"],
+      "usage_notes": "Wattmeter — circle labelled 'W'. Measures active power; requires both current and voltage inputs.",
+      "related_symbols": ["VAR_METER", "ENERGY_METER_KWH"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "VAR_METER",
+      "iec_ref": "IEC60617-08-01-04",
+      "iec_part": 8,
+      "iec_description": "Var-meter (reactive power)",
+      "draftsman_id": "VAR_METER",
+      "category": "measurement",
+      "display_name": "VAR meter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["WATTMETER", "POWER_FACTOR_METER"],
+      "annotation_fields": ["range_VAr", "class", "label_VAr"],
+      "usage_notes": "Reactive power meter — circle labelled 'var'. Used at PFC installations to verify reactive load.",
+      "related_symbols": ["WATTMETER", "POWER_FACTOR_METER", "CAPACITOR_BANK"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "POWER_FACTOR_METER",
+      "iec_ref": "IEC60617-08-01-05",
+      "iec_part": 8,
+      "iec_description": "Power factor meter",
+      "draftsman_id": "POWER_FACTOR_METER",
+      "category": "measurement",
+      "display_name": "Power factor meter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["VAR_METER"],
+      "annotation_fields": ["range", "class", "label_cosphi"],
+      "usage_notes": "Power factor meter — circle labelled 'cos φ' or 'PF'. Used at PFC, large motor circuits.",
+      "related_symbols": ["VAR_METER", "WATTMETER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "FREQUENCY_METER",
+      "iec_ref": "IEC60617-08-01-06",
+      "iec_part": 8,
+      "iec_description": "Frequency meter",
+      "draftsman_id": "FREQUENCY_METER",
+      "category": "measurement",
+      "display_name": "Frequency meter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": [],
+      "annotation_fields": ["range_Hz", "class", "label_Hz"],
+      "usage_notes": "Frequency meter — circle labelled 'Hz'. Used at generator synchronising panels.",
+      "related_symbols": ["VOLTMETER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "ENERGY_METER_KWH",
+      "iec_ref": "IEC60617-08-02-01",
+      "iec_part": 8,
+      "iec_description": "Energy meter (kWh)",
+      "draftsman_id": "ENERGY_METER_KWH",
+      "category": "measurement",
+      "display_name": "Energy meter (kWh)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -25 0 M -25 -20 L 25 -20 L 25 20 L -25 20 Z M 25 0 L 50 0 M -10 -8 L 10 -8 M -10 0 L 10 0 M -10 8 L 10 8",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["ENERGY_METER_KVARH", "SMART_METER"],
+      "annotation_fields": ["rating_A", "ratio_CT", "label_kWh"],
+      "usage_notes": "Active energy meter (kWh) — rectangle with internal register marks. Annotate kWh and CT ratio if used. Required at every billing point.",
+      "related_symbols": ["ENERGY_METER_KVARH", "SMART_METER", "WATTMETER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "ENERGY_METER_KVARH",
+      "iec_ref": "IEC60617-08-02-02",
+      "iec_part": 8,
+      "iec_description": "Reactive energy meter (kVArh)",
+      "draftsman_id": "ENERGY_METER_KVARH",
+      "category": "measurement",
+      "display_name": "Reactive energy meter (kVArh)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -25 0 M -25 -20 L 25 -20 L 25 20 L -25 20 Z M 25 0 L 50 0 M -10 -8 L 10 -8 M -10 0 L 10 0 M -10 8 L 10 8 M -15 -15 L -10 -15",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["ENERGY_METER_KWH"],
+      "annotation_fields": ["rating_A", "ratio_CT", "label_kVArh"],
+      "usage_notes": "Reactive energy meter — used at billing points where the utility charges for reactive consumption (typically commercial/industrial above a kVA threshold).",
+      "related_symbols": ["ENERGY_METER_KWH", "VAR_METER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SMART_METER",
+      "iec_ref": "IEC60617-08-02-03",
+      "iec_part": 8,
+      "iec_description": "Smart / AMR energy meter",
+      "draftsman_id": "SMART_METER",
+      "category": "measurement",
+      "display_name": "Smart meter (AMR)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -25 0 M -25 -20 L 25 -20 L 25 20 L -25 20 Z M 25 0 L 50 0 M -10 -8 L 10 -8 M -10 0 L 10 0 M -10 8 L 10 8 M 20 -25 L 30 -15 M 25 -25 L 35 -15",
+        "terminals": {"in": [-50, 0], "out": [50, 0], "comms": [25, -25]}
+      },
+      "variants": ["ENERGY_METER_KWH", "MULTIFUNCTION_METER"],
+      "annotation_fields": ["rating_A", "comms_protocol"],
+      "usage_notes": "Smart meter / automatic meter reader — energy meter with comms link (antenna marks). Annotate comms protocol (Modbus, BACnet, M-Bus, RF).",
+      "related_symbols": ["ENERGY_METER_KWH", "MULTIFUNCTION_METER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "CT_METERING",
+      "iec_ref": "IEC60617-08-03-01",
+      "iec_part": 8,
+      "iec_description": "Current transformer for metering",
+      "draftsman_id": "CT_METERING",
+      "category": "measurement",
+      "display_name": "CT (metering class)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L 50 0 M 0 25 A 25 25 0 1 0 0 -25 M 0 -25 A 8 8 0 1 0 -16 -25 M -16 -25 L -16 25 M 0 25 A 8 8 0 1 0 -16 25",
+        "terminals": {"primary_in": [-50, 0], "primary_out": [50, 0], "S1": [-16, -25], "S2": [-16, 25]}
+      },
+      "variants": ["TRANSFORMER_CURRENT", "VT_METERING"],
+      "annotation_fields": ["ratio", "class", "burden_VA"],
+      "usage_notes": "Metering-class CT — same form as TRANSFORMER_CURRENT but with metering accuracy class (0.2, 0.5). Used for revenue metering and instrumentation.",
+      "related_symbols": ["TRANSFORMER_CURRENT", "AMMETER", "ENERGY_METER_KWH"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "VT_METERING",
+      "iec_ref": "IEC60617-08-03-02",
+      "iec_part": 8,
+      "iec_description": "Voltage transformer for metering",
+      "draftsman_id": "VT_METERING",
+      "category": "measurement",
+      "display_name": "VT (metering class)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -25 0 M 5 0 A 20 20 0 1 0 -25 0 A 20 20 0 1 0 5 0 Z M 25 0 A 20 20 0 1 0 -5 0 A 20 20 0 1 0 25 0 Z M 25 0 L 50 0 M -15 -20 L 15 -20",
+        "terminals": {"hv_a": [-50, 0], "hv_b": [50, 0], "lv_a": [-15, -20], "lv_b": [15, -20]}
+      },
+      "variants": ["TRANSFORMER_VOLTAGE", "CT_METERING"],
+      "annotation_fields": ["ratio", "class", "burden_VA"],
+      "usage_notes": "Metering-class VT — same form as TRANSFORMER_VOLTAGE with measurement accuracy class. Used in revenue metering chains.",
+      "related_symbols": ["TRANSFORMER_VOLTAGE", "VOLTMETER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "MULTIFUNCTION_METER",
+      "iec_ref": "IEC60617-08-02-04",
+      "iec_part": 8,
+      "iec_description": "Multifunction metering device",
+      "draftsman_id": "MULTIFUNCTION_METER",
+      "category": "measurement",
+      "display_name": "Multifunction meter",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -25 0 M -25 -20 L 25 -20 L 25 20 L -25 20 Z M 25 0 L 50 0 M -15 -10 L 15 -10 M -15 0 L 15 0 M -15 10 L 15 10",
+        "terminals": {"in": [-50, 0], "out": [50, 0], "comms": [25, -25]}
+      },
+      "variants": ["SMART_METER", "ENERGY_METER_KWH"],
+      "annotation_fields": ["rating_A", "functions", "comms_protocol"],
+      "usage_notes": "Multifunction meter — V, I, kW, kVAr, kWh, PF, frequency in one device. Common at MSB incomer for power quality monitoring.",
+      "related_symbols": ["SMART_METER", "ENERGY_METER_KWH", "POWER_ANALYSER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "INDICATOR_LAMP",
+      "iec_ref": "IEC60617-08-04-01",
+      "iec_part": 8,
+      "iec_description": "Lamp (indicator)",
+      "draftsman_id": "INDICATOR_LAMP",
+      "category": "measurement",
+      "display_name": "Indicator lamp",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -15 0 M 15 0 A 15 15 0 1 0 -15 0 A 15 15 0 1 0 15 0 Z M 15 0 L 50 0 M -10 -10 L 10 10 M 10 -10 L -10 10",
+        "terminals": {"a": [-50, 0], "b": [50, 0]}
+      },
+      "variants": ["INDICATOR_LAMP_R", "INDICATOR_LAMP_G", "INDICATOR_LAMP_A", "LED_INDICATOR"],
+      "annotation_fields": ["voltage_V", "colour", "function"],
+      "usage_notes": "Indicator lamp — circle with internal X. Used to signal supply present, equipment status. Annotate voltage and colour. Colour-specific variants below.",
+      "related_symbols": ["INDICATOR_LAMP_R", "INDICATOR_LAMP_G", "PUSHBUTTON_ILLUMINATED"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "INDICATOR_LAMP_R",
+      "iec_ref": "IEC60617-08-04-02",
+      "iec_part": 8,
+      "iec_description": "Red indicator lamp",
+      "draftsman_id": "INDICATOR_LAMP_R",
+      "category": "measurement",
+      "display_name": "Indicator lamp (red)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -15 0 M 15 0 A 15 15 0 1 0 -15 0 A 15 15 0 1 0 15 0 Z M 15 0 L 50 0 M -10 -10 L 10 10 M 10 -10 L -10 10",
+        "terminals": {"a": [-50, 0], "b": [50, 0]}
+      },
+      "variants": ["INDICATOR_LAMP", "INDICATOR_LAMP_G", "INDICATOR_LAMP_A"],
+      "annotation_fields": ["voltage_V", "function", "label_R"],
+      "usage_notes": "Red indicator lamp — convention: trip/fault/danger. Annotate function (e.g. 'CB tripped', 'Fault').",
+      "related_symbols": ["INDICATOR_LAMP_G", "INDICATOR_LAMP_A"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "INDICATOR_LAMP_G",
+      "iec_ref": "IEC60617-08-04-03",
+      "iec_part": 8,
+      "iec_description": "Green indicator lamp",
+      "draftsman_id": "INDICATOR_LAMP_G",
+      "category": "measurement",
+      "display_name": "Indicator lamp (green)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -15 0 M 15 0 A 15 15 0 1 0 -15 0 A 15 15 0 1 0 15 0 Z M 15 0 L 50 0 M -10 -10 L 10 10 M 10 -10 L -10 10",
+        "terminals": {"a": [-50, 0], "b": [50, 0]}
+      },
+      "variants": ["INDICATOR_LAMP", "INDICATOR_LAMP_R", "INDICATOR_LAMP_A"],
+      "annotation_fields": ["voltage_V", "function", "label_G"],
+      "usage_notes": "Green indicator lamp — convention: ready/normal/safe. Annotate function (e.g. 'Ready', 'Running').",
+      "related_symbols": ["INDICATOR_LAMP_R", "INDICATOR_LAMP_A"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "INDICATOR_LAMP_A",
+      "iec_ref": "IEC60617-08-04-04",
+      "iec_part": 8,
+      "iec_description": "Amber / yellow indicator lamp",
+      "draftsman_id": "INDICATOR_LAMP_A",
+      "category": "measurement",
+      "display_name": "Indicator lamp (amber)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -15 0 M 15 0 A 15 15 0 1 0 -15 0 A 15 15 0 1 0 15 0 Z M 15 0 L 50 0 M -10 -10 L 10 10 M 10 -10 L -10 10",
+        "terminals": {"a": [-50, 0], "b": [50, 0]}
+      },
+      "variants": ["INDICATOR_LAMP_R", "INDICATOR_LAMP_G"],
+      "annotation_fields": ["voltage_V", "function", "label_A"],
+      "usage_notes": "Amber/yellow indicator lamp — convention: warning/caution/maintenance. Annotate function.",
+      "related_symbols": ["INDICATOR_LAMP_R", "INDICATOR_LAMP_G"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "LED_INDICATOR",
+      "iec_ref": "IEC60617-08-04-05",
+      "iec_part": 8,
+      "iec_description": "Light-emitting diode (LED) indicator",
+      "draftsman_id": "LED_INDICATOR",
+      "category": "measurement",
+      "display_name": "LED indicator",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -15 0 M 15 0 A 15 15 0 1 0 -15 0 A 15 15 0 1 0 15 0 Z M 15 0 L 50 0 M -10 -10 L 10 10 M 10 -10 L -10 10 M 18 -15 L 25 -22 M 22 -22 L 25 -22 L 25 -19",
+        "terminals": {"anode": [-50, 0], "cathode": [50, 0]}
+      },
+      "variants": ["INDICATOR_LAMP"],
+      "annotation_fields": ["voltage_V", "colour"],
+      "usage_notes": "LED indicator — like INDICATOR_LAMP with two angled arrows indicating light emission. Replacement for incandescent indicator lamps in modern installations.",
+      "related_symbols": ["INDICATOR_LAMP"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "BUZZER",
+      "iec_ref": "IEC60617-08-05-01",
+      "iec_part": 8,
+      "iec_description": "Buzzer",
+      "draftsman_id": "BUZZER",
+      "category": "measurement",
+      "display_name": "Buzzer",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -20 0 M -20 -20 A 20 20 0 0 1 20 -20 L 20 20 A 20 20 0 0 1 -20 20 Z M 20 0 L 50 0",
+        "terminals": {"a": [-50, 0], "b": [50, 0]}
+      },
+      "variants": ["HORN", "BELL", "ALARM_AUDIBLE"],
+      "annotation_fields": ["voltage_V", "dB"],
+      "usage_notes": "Buzzer — semicircle outline. Used for low-volume audible signalling (panel alarms, doorbells). Distinct from HORN (louder).",
+      "related_symbols": ["HORN", "BELL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "HORN",
+      "iec_ref": "IEC60617-08-05-02",
+      "iec_part": 8,
+      "iec_description": "Horn / siren",
+      "draftsman_id": "HORN",
+      "category": "measurement",
+      "display_name": "Horn / siren",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -20 0 M -20 -15 L 0 -15 L 25 -5 L 25 5 L 0 15 L -20 15 Z M 25 0 L 50 0",
+        "terminals": {"a": [-50, 0], "b": [50, 0]}
+      },
+      "variants": ["BUZZER", "BELL", "ALARM_AUDIBLE"],
+      "annotation_fields": ["voltage_V", "dB"],
+      "usage_notes": "Horn / siren — trumpet-shaped outline. Used for high-volume audible signalling (fire alarm sounders, evacuation).",
+      "related_symbols": ["BUZZER", "BELL", "ALARM_AUDIBLE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "BELL",
+      "iec_ref": "IEC60617-08-05-03",
+      "iec_part": 8,
+      "iec_description": "Bell",
+      "draftsman_id": "BELL",
+      "category": "measurement",
+      "display_name": "Bell",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 20],
+        "path": "M -50 0 L -20 0 M -20 0 A 20 20 0 0 1 20 0 L 20 5 L -20 5 Z M 20 0 L 50 0 M 0 -25 L 0 -20",
+        "terminals": {"a": [-50, 0], "b": [50, 0]}
+      },
+      "variants": ["BUZZER", "HORN"],
+      "annotation_fields": ["voltage_V", "dB"],
+      "usage_notes": "Bell — semicircle (bell-shape) outline. Used for traditional alarm bells. Less common in modern installations than horns.",
+      "related_symbols": ["BUZZER", "HORN"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "ALARM_AUDIBLE",
+      "iec_ref": "IEC60617-08-05-04",
+      "iec_part": 8,
+      "iec_description": "Audible alarm (general)",
+      "draftsman_id": "ALARM_AUDIBLE",
+      "category": "measurement",
+      "display_name": "Audible alarm",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 20],
+        "path": "M -50 0 L -20 0 M -20 -15 L 0 -15 L 25 -5 L 25 5 L 0 15 L -20 15 Z M 25 0 L 50 0 M 30 -10 L 35 -15 M 30 0 L 40 0 M 30 10 L 35 15",
+        "terminals": {"a": [-50, 0], "b": [50, 0]}
+      },
+      "variants": ["HORN", "BUZZER", "BELL"],
+      "annotation_fields": ["voltage_V", "dB"],
+      "usage_notes": "Generic audible alarm — horn with sound-wave indicator. Use when device type is not yet specified.",
+      "related_symbols": ["HORN", "ALARM_VISUAL"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "ALARM_VISUAL",
+      "iec_ref": "IEC60617-08-05-05",
+      "iec_part": 8,
+      "iec_description": "Visual alarm (strobe / xenon flasher)",
+      "draftsman_id": "ALARM_VISUAL",
+      "category": "measurement",
+      "display_name": "Visual alarm (strobe)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 25],
+        "path": "M -50 0 L -15 0 M 15 0 A 15 15 0 1 0 -15 0 A 15 15 0 1 0 15 0 Z M 15 0 L 50 0 M 0 -25 L -10 -10 L 10 -5 L 0 10 L 5 5",
+        "terminals": {"a": [-50, 0], "b": [50, 0]}
+      },
+      "variants": ["INDICATOR_LAMP"],
+      "annotation_fields": ["voltage_V", "candela", "colour"],
+      "usage_notes": "Strobe / visual alarm — lamp circle with lightning-bolt indicator. Used in fire alarm and emergency systems. Annotate candela rating per EN 54-23.",
+      "related_symbols": ["INDICATOR_LAMP", "ALARM_AUDIBLE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "LUMINAIRE_GENERAL",
+      "iec_ref": "IEC60617-08-04-10",
+      "iec_part": 8,
+      "iec_description": "Luminaire (general)",
+      "draftsman_id": "LUMINAIRE_GENERAL",
+      "category": "measurement",
+      "display_name": "Luminaire (general)",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -20 0 M 20 0 A 20 20 0 1 0 -20 0 A 20 20 0 1 0 20 0 Z M 20 0 L 50 0 M -14 -14 L 14 14 M 14 -14 L -14 14",
+        "terminals": {"a": [-50, 0], "b": [50, 0]}
+      },
+      "variants": ["LUMINAIRE_ARCH", "LUMINAIRE_EMERGENCY"],
+      "annotation_fields": ["voltage_V", "wattage_W"],
+      "usage_notes": "Luminaire — circle with internal X. The schematic-side luminaire symbol. For architectural-plan luminaire, see LUMINAIRE_ARCH (Part 11).",
+      "related_symbols": ["LUMINAIRE_ARCH", "INDICATOR_LAMP"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "OSCILLOSCOPE",
+      "iec_ref": "IEC60617-08-06-01",
+      "iec_part": 8,
+      "iec_description": "Oscilloscope",
+      "draftsman_id": "OSCILLOSCOPE",
+      "category": "measurement",
+      "display_name": "Oscilloscope",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0 M -20 5 Q -10 -15 0 5 Q 10 25 20 -5",
+        "terminals": {"signal": [-50, 0], "trig": [50, 0]}
+      },
+      "variants": ["POWER_ANALYSER", "RECORDER"],
+      "annotation_fields": ["bandwidth_MHz", "label"],
+      "usage_notes": "Oscilloscope — circle with sine-wave trace. Used on test equipment racks, calibration benches. Rare in MEP building electrical.",
+      "related_symbols": ["POWER_ANALYSER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "POWER_ANALYSER",
+      "iec_ref": "IEC60617-08-06-02",
+      "iec_part": 8,
+      "iec_description": "Power quality analyser",
+      "draftsman_id": "POWER_ANALYSER",
+      "category": "measurement",
+      "display_name": "Power quality analyser",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -25 0 M -25 -20 L 25 -20 L 25 20 L -25 20 Z M 25 0 L 50 0 M -15 -5 L -5 5 L 5 -10 L 15 0 M -15 10 L 15 10",
+        "terminals": {"in": [-50, 0], "out": [50, 0], "comms": [25, -25]}
+      },
+      "variants": ["MULTIFUNCTION_METER", "OSCILLOSCOPE", "RECORDER"],
+      "annotation_fields": ["functions", "comms_protocol"],
+      "usage_notes": "Power quality analyser — rectangle with waveform indicator. Measures harmonics, transients, flicker. Used at incomer of critical loads.",
+      "related_symbols": ["MULTIFUNCTION_METER", "RECORDER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "SIGNAL_GENERATOR",
+      "iec_ref": "IEC60617-08-06-03",
+      "iec_part": 8,
+      "iec_description": "Signal generator (test)",
+      "draftsman_id": "SIGNAL_GENERATOR",
+      "category": "measurement",
+      "display_name": "Signal generator",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -30, 50, 30],
+        "path": "M -50 0 L -30 0 M 30 0 A 30 30 0 1 0 -30 0 A 30 30 0 1 0 30 0 Z M 30 0 L 50 0 M -15 0 Q -8 -10 0 0 Q 8 10 15 0",
+        "terminals": {"out": [50, 0], "ref": [-50, 0]}
+      },
+      "variants": ["OSCILLOSCOPE"],
+      "annotation_fields": ["frequency_Hz", "amplitude_V"],
+      "usage_notes": "Signal generator for test bench / calibration. Circle with sine-wave indicator. Out of normal MEP scope but included for completeness on test panels.",
+      "related_symbols": ["OSCILLOSCOPE"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "TRANSDUCER_CURRENT",
+      "iec_ref": "IEC60617-08-07-01",
+      "iec_part": 8,
+      "iec_description": "Current transducer (4-20mA output)",
+      "draftsman_id": "TRANSDUCER_CURRENT",
+      "category": "measurement",
+      "display_name": "Current transducer",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 25],
+        "path": "M -50 0 L -20 0 M -20 -15 L 20 -15 L 20 15 L -20 15 Z M 20 0 L 50 0 M 0 15 L 0 25 M -5 5 L 5 5 M -10 -5 L 10 -5",
+        "terminals": {"in": [-50, 0], "out": [50, 0], "signal": [0, 25]}
+      },
+      "variants": ["TRANSDUCER_VOLTAGE", "CT_METERING"],
+      "annotation_fields": ["input_A", "output_signal"],
+      "usage_notes": "Current transducer — converts AC current to a 4-20mA or 0-10V signal for BMS or PLC. Annotate input range and output signal type.",
+      "related_symbols": ["TRANSDUCER_VOLTAGE", "CT_METERING"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "TRANSDUCER_VOLTAGE",
+      "iec_ref": "IEC60617-08-07-02",
+      "iec_part": 8,
+      "iec_description": "Voltage transducer (4-20mA output)",
+      "draftsman_id": "TRANSDUCER_VOLTAGE",
+      "category": "measurement",
+      "display_name": "Voltage transducer",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -20, 50, 25],
+        "path": "M -50 0 L -20 0 M -20 -15 L 20 -15 L 20 15 L -20 15 Z M 20 0 L 50 0 M 0 15 L 0 25 M -10 -5 L 10 -5 M -5 5 L 5 5 M -5 -8 L -5 -2 M 5 -8 L 5 -2",
+        "terminals": {"in": [-50, 0], "out": [50, 0], "signal": [0, 25]}
+      },
+      "variants": ["TRANSDUCER_CURRENT"],
+      "annotation_fields": ["input_V", "output_signal"],
+      "usage_notes": "Voltage transducer — AC voltage to analogue signal converter. Used for BMS feedback.",
+      "related_symbols": ["TRANSDUCER_CURRENT", "VT_METERING"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "RECORDER",
+      "iec_ref": "IEC60617-08-06-04",
+      "iec_part": 8,
+      "iec_description": "Recorder (chart / data)",
+      "draftsman_id": "RECORDER",
+      "category": "measurement",
+      "display_name": "Recorder",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -25 0 M -25 -20 L 25 -20 L 25 20 L -25 20 Z M 25 0 L 50 0 M -15 5 L -5 -10 L 5 5 L 15 -5",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["POWER_ANALYSER"],
+      "annotation_fields": ["channels", "memory_days"],
+      "usage_notes": "Recorder — rectangle with waveform indicator. Used for long-term load profile recording, generator test data.",
+      "related_symbols": ["POWER_ANALYSER"],
+      "generating_shared_symbol": true
+    },
+    {
+      "symbol_id": "TOTALISER",
+      "iec_ref": "IEC60617-08-02-05",
+      "iec_part": 8,
+      "iec_description": "Totaliser / integrator",
+      "draftsman_id": "TOTALISER",
+      "category": "measurement",
+      "display_name": "Totaliser",
+      "geometry": {
+        "grid": 100,
+        "bbox": [-50, -25, 50, 25],
+        "path": "M -50 0 L -25 0 M -25 -20 L 25 -20 L 25 20 L -25 20 Z M 25 0 L 50 0 M -10 -8 L 10 -8 M -10 0 L 10 0 M -10 8 L 10 8 M -15 -15 L 15 -15",
+        "terminals": {"in": [-50, 0], "out": [50, 0]}
+      },
+      "variants": ["ENERGY_METER_KWH"],
+      "annotation_fields": ["quantity", "units"],
+      "usage_notes": "Totaliser — generic integrating counter (e.g. running hours meter, kWh totaliser). Distinct from ENERGY_METER_KWH which has the explicit kWh function.",
+      "related_symbols": ["ENERGY_METER_KWH"],
+      "generating_shared_symbol": true
+    }
+  ]
+}
