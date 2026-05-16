@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "ontology_type": "fault_level_cascade_node_kinds",
+  "version": "1.0.0",
+  "source": "Internal ontology aligned with IEC 60909-0 + IEC 60364-4-43",
+  "node_kinds": [
+    {
+      "id": "hv_source",
+      "name": "HV Primary Supply",
+      "level": "≥ 1 kV",
+      "description": "DNO supply at HV primary substation. Source of Ik\"_HV. Cascade root for HV-side projects.",
+      "downstream_typical": "transformer_secondary"
+    },
+    {
+      "id": "transformer_secondary",
+      "name": "Transformer LV Secondary",
+      "level": "≤ 1 kV (typically 400V or 480V TPN)",
+      "description": "LV side of incoming or distribution transformer. Source of Ik\"_LV. Cascade root for LV-only projects.",
+      "downstream_typical": "board_incoming"
+    },
+    {
+      "id": "board_incoming",
+      "name": "Board Incoming Terminals",
+      "description": "Terminals of distribution board's main switch. Ik\" check for main switch breaker rating.",
+      "downstream_typical": "board_busbar"
+    },
+    {
+      "id": "board_busbar",
+      "name": "Board Busbar",
+      "description": "DB busbar after main switch but before way breakers. Ipk check for busbar mechanical withstand.",
+      "downstream_typical": "board_outgoing_feeder"
+    },
+    {
+      "id": "board_outgoing_feeder",
+      "name": "Outgoing Feeder Breaker Output",
+      "description": "Downstream of way breaker, upstream of cable feeder. Each outgoing feeder is one node.",
+      "downstream_typical": "another board_incoming OR final_circuit_endpoint"
+    },
+    {
+      "id": "final_circuit_endpoint",
+      "name": "Final Circuit End",
+      "description": "End of branch circuit at load equipment. Lowest Ifault in cascade. ADS check uses Ik\"_min here.",
+      "downstream_typical": "none (leaf)"
+    }
+  ]
+}

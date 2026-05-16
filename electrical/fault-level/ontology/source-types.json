@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "ontology_type": "fault_level_source_types",
+  "version": "1.0.0",
+  "source": "IEC 60909-0:2016 §4",
+  "source_types": [
+    {
+      "id": "utility_transformer",
+      "name": "Utility / DNO Transformer",
+      "iec_reference": "IEC 60909-0:2016 §4.2 + §4.3",
+      "contribution_method": "constant",
+      "near_or_far_classification": "far",
+      "typical_zpu_pct": [4, 7],
+      "typical_xover_r": [5, 10],
+      "notes": "Standard utility-side source. Constant EMF, no decrement. Building services projects typically use this."
+    },
+    {
+      "id": "generator",
+      "name": "Synchronous Generator (Standby / Cogen)",
+      "iec_reference": "IEC 60909-0:2016 §4.4 + §3.5",
+      "contribution_method": "subtransient_decrement",
+      "near_or_far_classification": "near",
+      "typical_xd_doubleprime_pu": [0.12, 0.20],
+      "decrement_profile": "X\"d → X'd → Xd over t",
+      "notes": "Standby gen or cogen unit. Subtransient X\"d first cycle. Decrement factor μ at breaking time."
+    },
+    {
+      "id": "ups",
+      "name": "UPS / Battery Inverter",
+      "iec_reference": "Not directly in IEC 60909-0; IEC 62040-3 + manufacturer data",
+      "contribution_method": "current_limited",
+      "first_half_cycle_limit_x_rated": [2, 3],
+      "bypass_switchover_ms": [3, 5],
+      "notes": "Output current limited by IGBT/IGCT. Transitions to bypass during sustained fault."
+    },
+    {
+      "id": "motor_aggregate",
+      "name": "Induction Motor Aggregate Back-Feed",
+      "iec_reference": "IEC 60909-0:2016 §4.5",
+      "contribution_method": "locked_rotor",
+      "inclusion_threshold_pct_of_sk": 1.0,
+      "typical_ilr_avg": 5.0,
+      "decay_to_zero_cycles": 2,
+      "notes": "Running motors contribute via subtransient reactance for 1-2 cycles. 2016 amendment lowered threshold from 5% to 1%."
+    }
+  ]
+}
