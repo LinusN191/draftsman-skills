@@ -1,0 +1,25 @@
+constraint_set: breaker-icn-vs-ifault
+version: 1.0.0
+
+# Every breaker downstream must have Icn ≥ Ik"max at its installation point.
+# Used by generator.md Step 12 to populate selectivity_implications.
+
+constraint:
+  rule: "breaker.icn_ka >= ifault_ka_max_at_breaker"
+  rationale: "Per IEC 60947-2 / IEC 60898 / NEC 110.9 — breaker must safely interrupt the worst-case fault"
+
+severity_levels:
+  critical:
+    condition: "breaker.icn_ka < ifault_ka_max"
+    flag: "BREAKER_UNDERRATED_FOR_FAULT_LEVEL"
+    recommendation: "Replace with higher Icn breaker OR add upstream cascade-rated current limiter (HRC fuse, current-limiting breaker)"
+
+  warning:
+    condition: "breaker.icn_ka < 1.2 × ifault_ka_max"
+    flag: "BREAKER_MARGIN_LOW"
+    recommendation: "20% headroom recommended for future-proofing"
+
+cascade_rating_alternative:
+  per_iec_60947_2_annex_d: "Series ratings allow lower-Icn downstream breaker if upstream device demonstrates compatible let-through"
+  manufacturer_table_required: "Cascade ratings are manufacturer-specific (Hager, Schneider, Eaton, ABB cascade tables)"
+  emit_in_selectivity_implications: "If cascade rating applied: note in recommendation field"

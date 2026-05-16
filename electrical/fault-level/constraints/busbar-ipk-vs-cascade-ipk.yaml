@@ -1,0 +1,23 @@
+constraint_set: busbar-ipk-vs-cascade-ipk
+version: 1.0.0
+
+# Assembly's rated peak withstand current (Ipk) must exceed prospective ipk at busbar.
+# Used by generator.md Step 12 + db-layout-side validation.
+
+constraint:
+  rule: "busbar.ipk_withstand_ka >= ipk_ka_at_busbar"
+  rationale: "Per IEC 61439-1 clause 5.3.7 — busbar mechanical force from peak current must not damage assembly"
+
+ipk_derivation:
+  formula: "ipk = κ × √2 × Ik\"max"
+  k_factor_source: "IEC 60865-1 κ formula (see rules/peak-factor-kappa.yaml)"
+
+cross_reference:
+  related_constraint: "Icw 1-sec withstand must also exceed RMS Ifault — separate check"
+  related_file: "electrical/db-layout/validation/busbar-loading.yaml"
+
+severity_levels:
+  critical:
+    condition: "busbar.ipk_withstand_ka < ipk_ka"
+    flag: "BUSBAR_IPK_INADEQUATE"
+    recommendation: "Increase assembly rating to higher Ipk class OR add upstream current-limiting"

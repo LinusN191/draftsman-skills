@@ -1,0 +1,23 @@
+constraint_set: cable-i2t-vs-cascade
+version: 1.0.0
+
+# Cable adiabatic survival: cable I²t withstand ≥ protective device I²t let-through at Ifault.
+# Used by generator.md Step 12.
+
+constraint:
+  rule: "k² × S² >= I²t_let_through"
+  rationale: "Per BS 7671 Reg 434.5 / IEC 60364-4-43 434.5 / NEC 240.4 — cable must survive thermal energy of fault"
+
+variables:
+  k: "Material constant from BS 7671 Table 54.7 / IEC 60364-5-54 Table 54.2 (Cu 70°C = 115; XLPE 90°C = 143)"
+  S: "Cable phase conductor csa (mm²)"
+  i_squared_t: "Energy let-through from protective device — manufacturer-specific I²t curve at fault current"
+
+simplification_for_thermal_region:
+  applicable_when: "Fault current is in the thermal (long) region of the trip curve"
+  formula: "I²t = I² × t_trip from device time/current curve"
+  note: "For instantaneous magnetic trip region: must use manufacturer I²t let-through data — not I² × t"
+
+cross_reference:
+  related_calc: "shared/calculations/electrical/cpc-adiabatic.json"
+  consumers: ["electrical/cable-sizing (skill, future)", "electrical/db-layout (validation)"]
