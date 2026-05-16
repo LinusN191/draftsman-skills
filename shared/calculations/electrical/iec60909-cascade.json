@@ -1,0 +1,31 @@
+{
+  "$schema": "../../schemas/core/calculation.schema.json",
+  "id": "iec60909-cascade",
+  "name": "IEC 60909 — Prospective Fault Current Cascade",
+  "executor": "tool",
+  "tool_name": "calc.iec60909_cascade",
+  "formula_reference": "IEC 60909-0:2016 (short-circuit currents in three-phase AC systems), IEC 60865-1 (peak factor), BS 7671:2018+A3 Reg 434, NEC 110.9 + 240.86",
+  "implementation_note": "Computes the prospective three-phase symmetrical short-circuit current (Ik\") at each node in a cascade by iteratively adding source impedance + each upstream feeder impedance. Requires complex-number arithmetic (R + jX), per-stage transformer + cable + busbar impedance tables, and the IEC 60909 voltage-factor 'c' (1.05 max-fault, 0.95 min-fault). Also derives the peak factor n = 1.02 + 0.98 × exp(-3 R/X) per IEC 60909 / 60865. Inline LLM math gets the impedance addition AND the peak factor wrong on >30% of representative cases — must be tool-executed. Output feeds db-layout selectivity, breaker breaking-capacity check, and ADS disconnection-time check.",
+  "inputs": [
+    {"id": "supply_voltage_v",         "unit": "V",     "type": "float", "description": "Nominal line-to-line voltage (400 TPN, 230 single-phase, 240/120 split, 480 US TPN)"},
+    {"id": "supply_type",              "type": "enum", "values": ["utility_transformer", "generator", "ups", "battery_inverter"], "description": "Source type — drives source impedance modelling"},
+    {"id": "source_rating_kva",        "unit": "kVA",   "type": "float", "description": "Transformer kVA OR generator kVA OR UPS kVA"},
+    {"id": "source_z_percent",         "unit": "%",     "type": "float", "default": 5.0, "description": "Per-unit impedance of source (transformer Zpu typically 4-6%, generator subtransient X\"d typically 12-20%, UPS bypass typically 1-2%)"},
+    {"id": "source_x_over_r",          "unit": "dimensionless", "type": "float", "default": 6.0, "description": "X/R ratio at the source — drives peak factor n"},
+    {"id": "voltage_factor_c",         "unit": "dimensionless", "type": "float", "default": 1.05, "description": "IEC 60909 c-factor — 1.05 for max fault current (Ik\"max), 0.95 for min fault (Ik\"min). Default max for breaker breaking-capacity check."},
+    {"id": "cascade_path",             "type": "text", "description": "JSON array of stages: [{stage_id, fed_from, length_m, csa_mm2_or_awg, conductor_material, insulation, installation_method}]. Each stage adds R+jX in series. Empty array = fault at source terminals."},
+    {"id": "frequency_hz",             "unit": "Hz",    "type": "float", "default": 50, "description": "50 Hz (IEC) or 60 Hz (US) — affects cable X per IEC 60909-2 Annex B"}
+  ],
+  "output": {
+    "ifault_ka_per_node": {"unit": "kA",  "description": "Map of {stage_id → Ik\" RMS in kA} for every node in the cascade path"},
+    "ipk_ka_per_node":    {"unit": "kA",  "description": "Map of {stage_id → ip peak in kA} computed via n × √2 × Ik\""},
+    "x_over_r_per_node":  {"unit": "dimensionless", "description": "Map of {stage_id → X/R ratio at that node}"},
+    "z_total_ohm_per_node": {"unit": "Ω", "description": "Map of {stage_id → |Z_total| in ohms} for reference"},
+    "voltage_factor_c_applied": {"unit": "dimensionless", "description": "Echo of c-factor used"},
+    "calc_basis": {"unit": "string", "description": "Either 'far-from-generator' (constant source) or 'near-generator' (with decrement) per IEC 60909-0 §3"}
+  },
+  "runtime_contract": {
+    "request":  "{ tool_name: 'calc.iec60909_cascade', inputs: <inputs above> }",
+    "response": "{ ok: true, result: { ifault_ka_per_node, ipk_ka_per_node, x_over_r_per_node, z_total_ohm_per_node, voltage_factor_c_applied, calc_basis }, error?: string }"
+  }
+}

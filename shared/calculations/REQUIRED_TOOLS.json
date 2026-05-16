@@ -1,6 +1,6 @@
 {
   "_title": "DraftsMan Runtime — Required Tools Registry",
-  "_version": "1.0.0",
+  "_version": "1.1.0",
   "_purpose": "Single source of truth for tool names declared by tool-executor calculations. Every calculation file with `executor: \"tool\"` must reference a tool listed here. The DraftsMan runtime implements one Python function per tool entry and exposes them via Anthropic tool-use. Tool names follow `calc.<snake_case>` namespace.",
   "_namespace_rule": "Names must match regex ^calc\\.[a-z][a-z0-9_]*$. Any new tool requires a PR to BOTH the calculation file AND this registry; the runtime CI refuses to load a calc whose tool_name is not registered here.",
   "tools": [
@@ -31,12 +31,35 @@
       "spec_summary": "Cable containment fill factor — tray/basket/ladder/trunking/conduit. Resolves standard cable outer diameters.",
       "owner": "draftsman-runtime",
       "since_version": "1.0.0"
-    }
+    },
+    {
+      "tool_name": "calc.iec60909_cascade",
+      "registered_for": "shared/calculations/electrical/iec60909-cascade.json",
+      "spec_summary": "IEC 60909-0 prospective fault current cascade. Computes Ik\" + ipk + X/R at every node in the impedance chain. Drives db-layout selectivity + fault-level skill.",
+      "owner": "draftsman-runtime",
+      "since_version": "1.1.0"
+    },
+    {
+      "tool_name": "calc.diversity_factor",
+      "registered_for": "shared/calculations/electrical/diversity-factor.json",
+      "spec_summary": "Jurisdiction-gated diversity factor lookup (BS 7671 App 1, NEC 220.61, IEC 60364-1 Annex C). Mixed-load diversification with future expansion headroom.",
+      "owner": "draftsman-runtime",
+      "since_version": "1.1.0"
+    },
+    {
+      "tool_name": "calc.cable_ampacity",
+      "registered_for": "shared/calculations/electrical/cable-ampacity.json",
+      "spec_summary": "Jurisdiction-gated cable Iz lookup (BS 7671 App 4, IEC 60364-5-52 Annex E, NEC Table 310.16) with Ca/Cg/Ci/Ch correction factors. Drives cable-sizing skill + db-layout OCPD coordination.",
+      "owner": "draftsman-runtime",
+      "since_version": "1.1.0"
+    },
   ],
+  "_inline_calculations_note": "Closed-form calcs run inline by the LLM (no tool needed). For reference: shared/calculations/lighting/lumen-method.json (N = E×A / Φ×UF×MF) — already shipped in lighting-layout v1.3.0 production.",
   "_future_candidates": [
-    "calc.fault_current_cascade (IEC 60909 fault distribution through impedance chain)",
-    "calc.selectivity_study (selectivity coordination between multiple protective devices)",
+    "calc.selectivity_study (selectivity coordination between multiple protective devices — depends on iec60909_cascade)",
     "calc.transformer_inrush (transformer magnetic inrush envelope)",
-    "calc.motor_starting (DOL/star-delta/VFD inrush profiles)"
+    "calc.motor_starting (DOL/star-delta/VFD inrush profiles)",
+    "calc.arc_flash (IEEE 1584 incident energy)",
+    "calc.lightning_risk (BS EN 62305-2 risk assessment R1/R2/R3/R4)"
   ]
 }

@@ -1,0 +1,29 @@
+{
+  "$schema": "../../schemas/core/calculation.schema.json",
+  "id": "diversity-factor",
+  "name": "Jurisdiction-Gated Diversity Factor Lookup",
+  "executor": "tool",
+  "tool_name": "calc.diversity_factor",
+  "formula_reference": "BS 7671:2018+A3 Appendix 1; IEC 60364-1 Annex C; NEC Article 220.61, 220.84 (multi-dwelling), 220.86 (commercial); CIBSE Guide K; ASHRAE Standard 90.1",
+  "implementation_note": "Applies jurisdiction-appropriate diversity factor table to a mixed load list. BS 7671 Appendix 1 gives per-load-type rows (lighting 66%, sockets 40%, cooker first 10A + 30% of remainder, etc.). NEC 220.61 uses a different approach (general-purpose lighting at 100% of first 3 kVA, 35% of next 117 kVA, 25% beyond). IEC 60364-1 Annex C gives national-practice ranges. Inline LLM math reliably mis-applies the jurisdiction's specific banding (especially the NEC step-rate). Multi-table lookup + jurisdiction switching → tool-executed. Output drives db-layout busbar sizing and load-schedule mains sizing.",
+  "inputs": [
+    {"id": "jurisdiction",      "type": "enum", "values": ["GB", "EU", "INT", "US", "AU_NZ", "CA"], "description": "Standards family that drives the diversity table"},
+    {"id": "occupancy_type",    "type": "enum", "values": ["dwelling_single", "dwelling_multi", "office", "retail", "industrial_general", "industrial_motor_heavy", "healthcare", "education", "hospitality", "warehouse", "data_centre"], "description": "Building / occupancy class — picks the correct table row"},
+    {"id": "load_breakdown",    "type": "text", "description": "JSON array of loads: [{type: 'lighting'|'sockets'|'cooker'|'water_heater'|'motor'|'hvac'|'fixed_appliance', load_kw: number, count: int}]. Each entry processed against jurisdiction-appropriate diversity factor."},
+    {"id": "supply_phase_kind", "type": "enum", "values": ["single_phase", "single_phase_split", "TPN"], "default": "single_phase", "description": "Affects balanced-vs-unbalanced load assumption"},
+    {"id": "include_future_expansion_pct", "unit": "%", "type": "float", "default": 25.0, "description": "Headroom % added to the diversified total (industry standard 20-30%)"}
+  ],
+  "output": {
+    "diversified_load_kw":   {"unit": "kW",  "description": "Total load after diversity applied per load type"},
+    "diversified_load_a":    {"unit": "A",   "description": "Diversified current at the declared supply voltage + phase arrangement"},
+    "diversity_factor_overall": {"unit": "dimensionless", "description": "Ratio diversified / connected"},
+    "breakdown_by_type":     {"unit": "object", "description": "Map of {load_type: {connected_kw, factor_applied, diversified_kw, table_row_cited}}"},
+    "future_expansion_kw":   {"unit": "kW",  "description": "Headroom added beyond diversified — separate line item"},
+    "recommended_main_a":    {"unit": "A",   "description": "Next standard main switch / busbar rating ≥ diversified + future expansion"},
+    "table_reference":       {"unit": "string", "description": "Standard + clause cited (e.g. 'BS 7671 Appendix 1 Table A1', 'NEC 220.61')"}
+  },
+  "runtime_contract": {
+    "request":  "{ tool_name: 'calc.diversity_factor', inputs: <inputs above> }",
+    "response": "{ ok: true, result: { diversified_load_kw, diversified_load_a, diversity_factor_overall, breakdown_by_type, future_expansion_kw, recommended_main_a, table_reference }, error?: string }"
+  }
+}

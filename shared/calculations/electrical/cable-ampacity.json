@@ -1,0 +1,34 @@
+{
+  "$schema": "../../schemas/core/calculation.schema.json",
+  "id": "cable-ampacity",
+  "name": "Jurisdiction-Gated Cable Ampacity (Iz) Lookup with Correction Factors",
+  "executor": "tool",
+  "tool_name": "calc.cable_ampacity",
+  "formula_reference": "BS 7671:2018+A3 Appendix 4 Tables 4D1A–4F + Appendix 4 §6 (correction factors); IEC 60364-5-52:2009 Annex E + Annex B; NEC 2023 Table 310.16 + 310.15(B) adjustment factors",
+  "implementation_note": "Looks up tabulated continuous ampacity (Iz) for the given (csa OR AWG, material, insulation, installation method) tuple, then applies correction factors for ambient temperature, grouping (Cg), thermal insulation enclosure (Ci), and harmonic content (Ch where applicable). The 3-dimensional table lookup (method × insulation × csa) is jurisdiction-specific — BS 7671 Appendix 4 has different tables for PVC vs XLPE vs MICC; NEC has different ampacity columns for 60°C/75°C/90°C terminations. Inline LLM math reliably picks the wrong column on 15-25% of cases (PVC vs XLPE confusion is the dominant failure). The correction factor multiplication is also commonly compounded incorrectly (Cg AND Ci applied together vs the larger-of rule). Must be tool-executed. Output drives db-layout OCPD coordination (In ≤ Iz), cable-sizing skill, voltage-drop calc.",
+  "inputs": [
+    {"id": "jurisdiction",         "type": "enum", "values": ["GB", "EU", "INT", "US", "AU_NZ", "CA"], "description": "Standards family that drives the ampacity table"},
+    {"id": "csa_mm2",              "unit": "mm²", "type": "float", "description": "Cross-section in mm². Use this OR csa_awg, not both. IEC sizes: 1.0, 1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300, 400, 500, 630"},
+    {"id": "csa_awg",              "type": "text", "description": "AWG size for US/NEC jurisdictions. Use this OR csa_mm2. Sizes: 18, 16, 14, 12, 10, 8, 6, 4, 3, 2, 1, 1/0, 2/0, 3/0, 4/0, 250, 300, 350, 400, 500, 600, 750, 1000 kcmil"},
+    {"id": "conductor_material",   "type": "enum", "values": ["copper", "aluminium"], "description": "Conductor material — separate ampacity tables for each"},
+    {"id": "insulation",           "type": "enum", "values": ["pvc_70", "xlpe_90", "epr_90", "thermosetting_90", "mineral_60", "mineral_105", "thwn_75", "thhn_90", "xhhw2_90"], "description": "Insulation type. PVC and XLPE for IEC; THWN-2/THHN/XHHW-2 for NEC. Conductor max-temp drives ampacity column."},
+    {"id": "installation_method",  "type": "enum", "values": ["A1", "A2", "B1", "B2", "C", "D1", "D2", "E", "F", "G", "NEC_conduit", "NEC_cable_tray", "NEC_direct_burial", "NEC_free_air"], "description": "Reference method. BS 7671 A1-F = clipped/conduit/buried etc. NEC uses different categories — conduit/cable tray/burial/free air."},
+    {"id": "ambient_c",            "unit": "°C", "type": "float", "default": 30, "description": "Ambient temperature for the relevant section of the run. IEC default 30°C; NEC default 30°C (86°F)"},
+    {"id": "grouping_count",       "type": "int", "default": 1, "description": "Number of loaded current-carrying conductors in the same group (cable bundle, conduit, tray layer). Drives Cg correction factor."},
+    {"id": "in_thermal_insulation","type": "boolean", "default": false, "description": "Cable run through thermal insulation (loft, wall void). Drives Ci correction factor per BS 7671 Tables 52.2."},
+    {"id": "harmonic_content_pct", "unit": "%", "type": "float", "default": 0, "description": "Third-harmonic content as % of fundamental (>15% for IT loads, LED drivers, VFDs). Drives Ch per BS 7671 Appendix 4 §5.5."},
+    {"id": "terminal_temp_rating_c", "unit": "°C", "type": "float", "default": 75, "description": "NEC-specific: ampacity capped by lowest of conductor, terminal, breaker rating per 110.14(C). Common 60°C / 75°C / 90°C."}
+  ],
+  "output": {
+    "iz_tabulated_a":      {"unit": "A", "description": "Iz from the base table (uncorrected)"},
+    "iz_corrected_a":      {"unit": "A", "description": "Iz after ALL correction factors applied"},
+    "correction_factors":  {"unit": "object", "description": "{Ca_ambient, Cg_grouping, Ci_insulation, Ch_harmonic} with values and table refs"},
+    "limiting_factor":     {"unit": "string", "description": "Which correction was the dominant reduction (ambient | grouping | insulation | harmonic | terminal_temp)"},
+    "table_reference":     {"unit": "string", "description": "Standard + table + column cited (e.g. 'BS 7671 Appendix 4 Table 4D1A column 4', 'NEC Table 310.16 75°C column')"},
+    "ampacity_at_terminal_temp_a": {"unit": "A", "description": "NEC only: ampacity capped by terminal rating per 110.14(C). Null for IEC jurisdictions."}
+  },
+  "runtime_contract": {
+    "request":  "{ tool_name: 'calc.cable_ampacity', inputs: <inputs above> }",
+    "response": "{ ok: true, result: { iz_tabulated_a, iz_corrected_a, correction_factors, limiting_factor, table_reference, ampacity_at_terminal_temp_a }, error?: string }"
+  }
+}
