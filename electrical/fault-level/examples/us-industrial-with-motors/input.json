@@ -1,0 +1,30 @@
+{
+  "$schema": "../../inputs.json",
+  "project_meta": {
+    "project_id": "us-ind-fl-eg03",
+    "name": "Industrial Plant — Building C",
+    "client": "Industrial",
+    "designer": "DraftsMan Skills demo",
+    "date": "2026-05-16",
+    "revision": "P01"
+  },
+  "jurisdiction": "US",
+  "supply_voltage_v": "480",
+  "hv_side_present": true,
+  "hv_voltage_kv": "12.47",
+  "hv_pscc_at_primary_ka": 25,
+  "primary_transformer_kva": 2500,
+  "primary_transformer_zpu_pct": 6.0,
+  "primary_transformer_xover_r": 8,
+  "standby_generator_present": false,
+  "ups_present": false,
+  "motor_load_kw": 500,
+  "cascade_topology_source": "engineer_declared",
+  "cascade_engineer_declared": [
+    { "node_id": "HV-1", "parent_node_id": null, "node_kind": "hv_source", "designation": "12.47 kV primary supply" },
+    { "node_id": "TX-1", "parent_node_id": "HV-1", "node_kind": "transformer_secondary", "designation": "2500 kVA TX 480V TPN LV" },
+    { "node_id": "MSB-1", "parent_node_id": "TX-1", "node_kind": "board_incoming", "designation": "Main switchboard 3000A", "feeder": { "length_m": 20, "csa_mm2_or_awg": "350 kcmil", "material": "copper", "insulation": "thwn_75" } },
+    { "node_id": "MSB-1.BUSBAR", "parent_node_id": "MSB-1", "node_kind": "board_busbar", "designation": "MSB busbar" },
+    { "node_id": "MCC-1", "parent_node_id": "MSB-1.BUSBAR", "node_kind": "board_incoming", "designation": "Motor Control Center (500 kW motor load)", "feeder": { "length_m": 30, "csa_mm2_or_awg": "350 kcmil", "material": "copper", "insulation": "thwn_75" } }
+  ]
+}

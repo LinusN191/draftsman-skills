@@ -1,0 +1,71 @@
+{
+  "$schema": "../../schemas/fault-level-ir.schema.json",
+  "drawing_type": "fault_level_study",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "us-ind-fl-eg03",
+    "skill_version": "fault-level/1.0.0",
+    "produced_at": "2026-05-16T12:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "US",
+  "project_supply": {
+    "hv_side": {
+      "voltage_kv": 12.47,
+      "network_arrangement": "radial",
+      "declared_pscc_at_primary_ka": 25,
+      "x_over_r_at_primary": 6
+    },
+    "lv_source": {
+      "type": "mixed",
+      "kva": 2500,
+      "voltage_v": 480,
+      "z_percent": 6.0,
+      "x_over_r": 8,
+      "near_or_far_from_generator": "far"
+    }
+  },
+  "sources": [
+    { "id": "utility-POCO", "kind": "utility", "contribution_method": "constant", "ifault_contribution_ka": 52.0 },
+    { "id": "motor-aggregate-500kw", "kind": "motor_aggregate", "contribution_method": "locked_rotor", "ifault_contribution_ka": 3.0 }
+  ],
+  "cascade": [
+    { "node_id": "HV-1",          "parent_node_id": null,           "node_kind": "hv_source",              "designation": "12.47 kV primary",      "ifault_ka_max": 27.5, "ifault_ka_min": 25.0, "ipk_ka": 67.2, "x_over_r_at_node": 6, "z_total_ohm": 0.317, "tool_call_pending": true },
+    { "node_id": "TX-1",          "parent_node_id": "HV-1",         "node_kind": "transformer_secondary", "designation": "2500 kVA TX 480V LV",  "ifault_ka_max": 52.0, "ifault_ka_min": 47.0, "ipk_ka": 122.6, "x_over_r_at_node": 8, "z_total_ohm": 0.00553, "tool_call_pending": true },
+    { "node_id": "MSB-1",         "parent_node_id": "TX-1",         "node_kind": "board_incoming",         "designation": "Main switchboard 3000A","feeder": { "length_m": 20, "csa_mm2_or_awg": "350 kcmil", "material": "copper", "insulation": "thwn_75" }, "z_addition_ohm": {"r": 0.001, "x": 0.001}, "ifault_ka_max": 38.0, "ifault_ka_min": 34.4, "ipk_ka": 84.5, "x_over_r_at_node": 5, "z_total_ohm": 0.0075, "tool_call_pending": true },
+    { "node_id": "MSB-1.BUSBAR",  "parent_node_id": "MSB-1",        "node_kind": "board_busbar",           "designation": "MSB busbar",            "ifault_ka_max": 37.5, "ifault_ka_min": 33.9, "ipk_ka": 83.4, "x_over_r_at_node": 5, "z_total_ohm": 0.0076, "tool_call_pending": true },
+    { "node_id": "MCC-1",         "parent_node_id": "MSB-1.BUSBAR", "node_kind": "board_incoming",         "designation": "MCC (500 kW motor load)","feeder": { "length_m": 30, "csa_mm2_or_awg": "350 kcmil", "material": "copper", "insulation": "thwn_75" }, "z_addition_ohm": {"r": 0.0015, "x": 0.0015}, "ifault_ka_max": 35.0, "ifault_ka_min": 31.7, "ipk_ka": 75.0, "x_over_r_at_node": 4, "z_total_ohm": 0.0091, "tool_call_pending": true }
+  ],
+  "selectivity_implications": [
+    { "breaker_id": "MSB-ACB-3200A", "breaker_rating_a": 3200, "breaker_icn_ka": 100, "ifault_at_breaker_ka": 38.0, "adequate": true, "recommendation": "ACB Icn 100 kA per NEC 110.9 — adequate at 38 kA" },
+    { "breaker_id": "MCC-MCCB-800A", "breaker_rating_a": 800, "breaker_icn_ka": 35, "ifault_at_breaker_ka": 35.0, "adequate": true, "recommendation": "MCCB Icn 35 kA — adequate at 35 kA. Marginal headroom. Cascade rating per NEC 240.86 if downstream starters need 25 kA Icn." }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      { "message": "Motor contribution material — 14% of total Ik\" at MCC. Verify Icn ratings at MCC starters individually.", "code_clause": "IEC 60909-0:2016 §4.5.1.2", "severity": "warning" }
+    ],
+    "assumptions": [
+      "POCO PSCC declared 25 kA at HV primary; X/R = 6 typical for US 12.47 kV.",
+      "Transformer Zpu = 6% (typical 2500 kVA dry-type).",
+      "Motor ILR_avg = 5 (NEMA Letter K equivalent).",
+      "Cable impedance from NEC 2023 Chapter 9 Table 9 at 75°C.",
+      "tool_call_pending: true — calc.iec60909_cascade pending."
+    ]
+  },
+  "drawn_as_symbols": ["TRANSFORMER", "MOTOR", "BREAKER", "BUSBAR", "EARTH_GENERAL"],
+  "flags": ["TOOL-CALL-PENDING", "MOTOR_CONTRIBUTION_MATERIAL"],
+  "rationale": {
+    "chat_summary": "US industrial 12.47 kV → 480V TPN, 2500 kVA TX. 500 kW motor load contributes 14% of Ik\" — material per IEC 60909-0:2016 §4.5.1.2. ACB 100 kA + MCCB 35 kA adequate. Motor contribution flag emitted; verify individual MCC starter Icn. tool_call_pending until cascade tool runs.",
+    "sections": [
+      { "title": "Source Specification", "summary": "Utility + motor aggregate. 2500 kVA TX (Zpu 6%) + 500 kW motor load (ILR 5).", "decisions": [ { "label": "Motor contribution included", "summary": "500 kW / 22 MVA ≈ 14% > 1% threshold.", "rule": "IEC 60909-0:2016 §4.5.1.2", "code_clause": "IEC 60909-0:2016 §4.5.1.2", "inputs": { "motor_kw": 500, "threshold_pct": 1.0 } } ] },
+      { "title": "Cascade Topology", "summary": "5 nodes — HV → TX → MSB → busbar → MCC.", "decisions": [] },
+      { "title": "HV-side Assumptions", "summary": "12.47 kV radial, declared PSCC 25 kA, X/R 6. c_max=1.10.", "decisions": [] },
+      { "title": "Transformer + Source Impedances", "summary": "Z_TX = 5.53 mΩ at LV. X/R 8. Cable Z from NEC Chapter 9 Table 9.", "decisions": [] },
+      { "title": "Motor Contribution Assessment", "summary": "500 kW × ILR 5 → 3 kA contribution at MCC. Above 1% threshold per §4.5.1.2 — include.", "decisions": [ { "label": "Motor Ik\" = 3 kA at MCC", "summary": "Aggregate locked-rotor contribution.", "rule": "IEC 60909-0:2016 §4.5.1.2", "code_clause": "IEC 60909-0:2016 §4.5.1.2", "inputs": { "motor_kw": 500, "ilr_avg": 5, "ik_motor_ka": 3.0 } } ] },
+      { "title": "Per-node Ifault Computation", "summary": "Ik\"max range 27.5-52 kA across cascade. ipk range 67-123 kA.", "decisions": [ { "label": "tool_call_pending", "summary": "Multi-source + motor aggregate requires tool execution.", "rule": "IEC 60909-0:2016 §3.6 superposition", "code_clause": "IEC 60909-0:2016 §3.6", "inputs": { "tool_call_pending": true } } ] },
+      { "title": "Selectivity Implications", "summary": "ACB 100 kA adequate. MCCB 35 kA adequate but marginal at 35 kA. Cascade-rate downstream MCC starters per NEC 240.86.", "decisions": [ { "label": "NEC 110.9 + 240.86 compliance", "summary": "All breakers verified against IEC 60909-derived Ik\".", "rule": "NEC 110.9 interrupting rating", "code_clause": "NEC 2023 Art 110.9", "inputs": {} } ] },
+      { "title": "Compliance + Assumptions", "summary": "Compliant with one motor-contribution flag for awareness. tool_call_pending logged.", "decisions": [] }
+    ]
+  }
+}
