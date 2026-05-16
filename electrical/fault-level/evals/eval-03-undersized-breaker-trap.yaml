@@ -1,0 +1,42 @@
+id: eval-03-undersized-breaker-trap
+category: validation_trap
+severity: critical
+description: |
+  Cascade Ifault = 12 kA at MSB-1 outgoing. Engineer-declared MCB at that node has Icn = 6 kA.
+  Generator MUST emit a CRITICAL flag, NOT silently pass selectivity_implications[*].adequate = true.
+
+inputs:
+  jurisdiction: "GB"
+  project_id: "trap-fl-eg03"
+  supply_voltage_v: "400"
+  hv_side_present: false
+  primary_transformer_kva: 1000
+  primary_transformer_zpu_pct: 4.0
+  standby_generator_present: false
+  ups_present: false
+  motor_load_kw: 0
+  cascade_topology_source: "engineer_declared"
+  cascade_engineer_declared:
+    - { node_id: "TX-1", parent_node_id: null, node_kind: "transformer_secondary" }
+    - { node_id: "MSB-1.F01", parent_node_id: "TX-1", node_kind: "board_outgoing_feeder", designation: "Feeder with under-rated MCB" }
+  declared_devices:
+    - { breaker_id: "F01-MCB", breaker_rating_a: 32, breaker_icn_ka: 6, at_node: "MSB-1.F01" }
+
+assertions:
+  - kind: schema_valid
+    schema: "fault-level-ir.schema.json"
+  - kind: jsonpath_equals
+    path: "$.selectivity_implications[?(@.breaker_id=='F01-MCB')].adequate"
+    expected: false
+    note_if_violated: "Generator silently accepted the trap"
+  - kind: jsonpath_contains
+    path: "$.flags"
+    must_contain: "BREAKER_UNDERRATED_FOR_FAULT_LEVEL"
+  - kind: jsonpath_equals
+    path: "$.compliance_summary.compliant"
+    expected: false
+  - kind: invariant_passes
+    invariant: "INV-6"
+    note: "Breaker adequacy check"
+
+expected_status: "pass"
