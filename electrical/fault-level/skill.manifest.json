@@ -1,0 +1,91 @@
+{
+  "skill": "fault-level",
+  "version": "1.0.0",
+  "discipline": "electrical",
+  "subdiscipline": "fault-analysis",
+  "description": "Produces IEC 60909-0 prospective short-circuit current (Ik\" + ipk + X/R) cascade IR for any node in a project's distribution tree, HV+LV. Models four source types: utility transformer, standby generator (with subtransient decrement), UPS (current-limited), and induction motor back-feed. Emits stable fault-level intent that resolves db-layout selectivity tool_call_pending entries.",
+  "status": "beta",
+  "licence": "MIT",
+  "inputs_path": "inputs.json",
+  "inputs": [
+    "jurisdiction", "project-id", "supply-voltage", "hv-side", "primary-transformer",
+    "standby-generator", "ups", "motor-load", "cascade-topology"
+  ],
+  "outputs": ["fault-level-ir"],
+  "output_schema": "electrical/fault-level/schemas/fault-level-ir.schema.json",
+  "produces_intent": "fault-level",
+  "produces_intent_schema": "electrical/fault-level/schemas/fault-level-intent.schema.json",
+  "consumes_intents": ["db-layout-rollup"],
+  "standards": [
+    "shared/standards/electrical/IEC60909/part0-fundamentals.json",
+    "shared/standards/electrical/IEC60909/part0-method.md",
+    "shared/standards/electrical/IEC60909/peak-factor-kappa.json",
+    "shared/standards/electrical/IEC60909/voltage-factor-c.json",
+    "shared/standards/electrical/IEC60909/source-impedances.json",
+    "shared/standards/electrical/IEC60909/transformer-zpu-table.json",
+    "shared/standards/electrical/IEC60909/generator-subtransient-tables.json",
+    "shared/standards/electrical/IEC60909/motor-contribution-rules.json",
+    "shared/standards/electrical/IEC60617/symbol-index.json",
+    "shared/standards/electrical/IEC60617/part7-switchgear.json",
+    "shared/standards/electrical/BS7671/reg434-fault-current.json",
+    "shared/standards/electrical/BS7671/pscc-determination.md",
+    "shared/standards/electrical/BS7671/appendix4-cable-ratings.json",
+    "shared/standards/electrical/IEC60364/fault-current.json",
+    "shared/standards/electrical/IEC60364/pscc-determination.md",
+    "shared/standards/electrical/IEC60364/part5-52-cable-ratings-copper.json",
+    "shared/standards/electrical/IEC60364/part5-52-cable-ratings-aluminium.json",
+    "shared/standards/electrical/NFPA70/chapter1-general.json",
+    "shared/standards/electrical/NFPA70/art240-overcurrent.json",
+    "shared/standards/electrical/NFPA70/ocpd-coordination.json",
+    "shared/standards/electrical/NFPA70/chapter9-tables.json"
+  ],
+  "calculations": [
+    "shared/calculations/electrical/iec60909-cascade.json"
+  ],
+  "ontology": [
+    "electrical/fault-level/ontology/source-types.json",
+    "electrical/fault-level/ontology/cascade-node-kinds.json"
+  ],
+  "rules": [
+    "electrical/fault-level/rules/source-impedance-defaults.yaml",
+    "electrical/fault-level/rules/motor-contribution-thresholds.yaml",
+    "electrical/fault-level/rules/voltage-factor-c-selection.yaml",
+    "electrical/fault-level/rules/ups-current-limiting.yaml",
+    "electrical/fault-level/rules/peak-factor-kappa.yaml"
+  ],
+  "constraints": [
+    "electrical/fault-level/constraints/breaker-icn-vs-ifault.yaml",
+    "electrical/fault-level/constraints/busbar-ipk-vs-cascade-ipk.yaml",
+    "electrical/fault-level/constraints/cable-i2t-vs-cascade.yaml",
+    "electrical/fault-level/constraints/source-impedance-bounds.yaml"
+  ],
+  "validators": [
+    "electrical/fault-level/validation/cascade-tree-integrity.yaml",
+    "electrical/fault-level/validation/ifault-monotonicity.yaml",
+    "electrical/fault-level/validation/tool-call-resolved.yaml",
+    "electrical/fault-level/validation/intent-shape.yaml"
+  ],
+  "prompts": {
+    "generator": "electrical/fault-level/prompts/generator.md",
+    "validator": "electrical/fault-level/prompts/validator.md",
+    "reviewer":  "electrical/fault-level/prompts/reviewer.md"
+  },
+  "evals": [
+    "electrical/fault-level/evals/eval-01-uk-domestic-cu-cascade.yaml",
+    "electrical/fault-level/evals/eval-02-tpn-commercial-with-gen.yaml",
+    "electrical/fault-level/evals/eval-03-undersized-breaker-trap.yaml",
+    "electrical/fault-level/evals/eval-04-missing-source-data.yaml",
+    "electrical/fault-level/evals/eval-05-jurisdiction-us-with-hv.yaml",
+    "electrical/fault-level/evals/eval-06-rationale-block.yaml",
+    "electrical/fault-level/evals/eval-07-multi-source-coordination.yaml",
+    "electrical/fault-level/evals/eval-08-induction-motor-contribution.yaml",
+    "electrical/fault-level/evals/eval-09-intent-shape.yaml"
+  ],
+  "examples": [
+    "electrical/fault-level/examples/uk-domestic-single-source/",
+    "electrical/fault-level/examples/intl-commercial-with-genset/",
+    "electrical/fault-level/examples/us-industrial-with-motors/"
+  ],
+  "compatible_runtimes": ["DraftsMan >= 1.0", "Claude Code", "OpenClaw", "any-llm-agent"],
+  "changelog": "electrical/fault-level/CHANGELOG.md"
+}
