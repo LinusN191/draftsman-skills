@@ -1,0 +1,31 @@
+{
+  "$schema": "../../inputs.json",
+  "project_meta": {
+    "project_id": "intl-comm-fl-eg02",
+    "name": "Tuscan Office Complex — Block A",
+    "client": "Commercial",
+    "designer": "DraftsMan Skills demo",
+    "date": "2026-05-16",
+    "revision": "P01"
+  },
+  "jurisdiction": "INT",
+  "supply_voltage_v": "400",
+  "hv_side_present": true,
+  "hv_voltage_kv": "11",
+  "hv_pscc_at_primary_ka": 16,
+  "primary_transformer_kva": 1600,
+  "primary_transformer_zpu_pct": 5.0,
+  "primary_transformer_xover_r": 7,
+  "standby_generator_present": true,
+  "standby_generator_kva": 800,
+  "ups_present": false,
+  "motor_load_kw": 0,
+  "cascade_topology_source": "engineer_declared",
+  "cascade_engineer_declared": [
+    { "node_id": "HV-1", "parent_node_id": null, "node_kind": "hv_source", "designation": "11 kV primary supply" },
+    { "node_id": "TX-1", "parent_node_id": "HV-1", "node_kind": "transformer_secondary", "designation": "1600 kVA TX 400V TPN LV terminals" },
+    { "node_id": "MSB-1", "parent_node_id": "TX-1", "node_kind": "board_incoming", "designation": "Main switchboard", "feeder": { "length_m": 15, "csa_mm2_or_awg": "240mm²", "material": "copper", "insulation": "xlpe_90" } },
+    { "node_id": "MSB-1.BUSBAR", "parent_node_id": "MSB-1", "node_kind": "board_busbar", "designation": "MSB busbar 2000A" },
+    { "node_id": "DB-L1", "parent_node_id": "MSB-1.BUSBAR", "node_kind": "board_incoming", "designation": "Lighting DB", "feeder": { "length_m": 35, "csa_mm2_or_awg": "150mm²", "material": "copper", "insulation": "xlpe_90" } }
+  ]
+}

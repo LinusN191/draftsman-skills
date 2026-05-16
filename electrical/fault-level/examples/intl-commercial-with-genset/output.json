@@ -1,0 +1,69 @@
+{
+  "$schema": "../../schemas/fault-level-ir.schema.json",
+  "drawing_type": "fault_level_study",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "intl-comm-fl-eg02",
+    "skill_version": "fault-level/1.0.0",
+    "produced_at": "2026-05-16T12:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "INT",
+  "project_supply": {
+    "hv_side": {
+      "voltage_kv": 11,
+      "network_arrangement": "ring_main",
+      "declared_pscc_at_primary_ka": 16,
+      "x_over_r_at_primary": 5
+    },
+    "lv_source": {
+      "type": "mixed",
+      "kva": 1600,
+      "voltage_v": 400,
+      "z_percent": 5.0,
+      "x_over_r": 7,
+      "near_or_far_from_generator": "far"
+    }
+  },
+  "sources": [
+    { "id": "utility-DNO", "kind": "utility", "contribution_method": "constant", "ifault_contribution_ka": 22.5 },
+    { "id": "standby-gen", "kind": "generator", "contribution_method": "subtransient_decrement", "ifault_contribution_ka": 12.0, "decrement_profile": { "x_d_doubleprime_pu": 0.15, "x_d_prime_pu": 0.25, "x_d_pu": 1.20 } }
+  ],
+  "cascade": [
+    { "node_id": "HV-1",          "parent_node_id": null,           "node_kind": "hv_source",              "designation": "11 kV primary",         "ifault_ka_max": 17.6, "ifault_ka_min": 16.0, "ipk_ka": 39.0, "x_over_r_at_node": 5,   "z_total_ohm": 0.436, "tool_call_pending": true },
+    { "node_id": "TX-1",          "parent_node_id": "HV-1",         "node_kind": "transformer_secondary", "designation": "1600 kVA TX LV",        "ifault_ka_max": 22.5, "ifault_ka_min": 20.4, "ipk_ka": 48.8, "x_over_r_at_node": 7,   "z_total_ohm": 0.005, "tool_call_pending": true },
+    { "node_id": "MSB-1",         "parent_node_id": "TX-1",         "node_kind": "board_incoming",         "designation": "Main MSB",              "feeder": { "length_m": 15, "csa_mm2_or_awg": "240mm²", "material": "copper", "insulation": "xlpe_90" }, "z_addition_ohm": {"r": 0.0012, "x": 0.0012}, "ifault_ka_max": 21.5, "ifault_ka_min": 19.5, "ipk_ka": 46.5, "x_over_r_at_node": 6, "z_total_ohm": 0.007, "tool_call_pending": true },
+    { "node_id": "MSB-1.BUSBAR",  "parent_node_id": "MSB-1",        "node_kind": "board_busbar",           "designation": "MSB busbar 2000A",      "ifault_ka_max": 21.4, "ifault_ka_min": 19.4, "ipk_ka": 46.3, "x_over_r_at_node": 6, "z_total_ohm": 0.007, "tool_call_pending": true },
+    { "node_id": "DB-L1",         "parent_node_id": "MSB-1.BUSBAR", "node_kind": "board_incoming",         "designation": "Lighting DB",           "feeder": { "length_m": 35, "csa_mm2_or_awg": "150mm²", "material": "copper", "insulation": "xlpe_90" }, "z_addition_ohm": {"r": 0.0045, "x": 0.0028}, "ifault_ka_max": 18.2, "ifault_ka_min": 16.5, "ipk_ka": 35.4, "x_over_r_at_node": 4, "z_total_ohm": 0.012, "tool_call_pending": true }
+  ],
+  "selectivity_implications": [
+    { "breaker_id": "MSB-ACB-2000A", "breaker_rating_a": 2000, "breaker_icn_ka": 65, "ifault_at_breaker_ka": 21.5, "adequate": true, "recommendation": "ACB Icn 65 kA — adequate at 21.5 kA cascade" },
+    { "breaker_id": "DB-L1-MCCB", "breaker_rating_a": 250, "breaker_icn_ka": 25, "ifault_at_breaker_ka": 18.2, "adequate": true, "recommendation": "MCCB Icn 25 kA — adequate at 18.2 kA" }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "DNO declared PSCC 16 kA at HV primary; X/R = 5 assumed.",
+      "Generator X\"d = 0.15 pu assumed (IEC 60909-2 typical for 1 MVA salient pole).",
+      "Utility-mode worst case modelled. Gen-mode would give lower Ik\"; emit both for full audit when tool runs.",
+      "Cable impedance from IEC 60364-5-52 Annex E tables.",
+      "tool_call_pending: true — calc.iec60909_cascade pending."
+    ]
+  },
+  "drawn_as_symbols": ["TRANSFORMER", "GENERATOR", "BREAKER", "BUSBAR", "EARTH_GENERAL"],
+  "flags": ["TOOL-CALL-PENDING"],
+  "rationale": {
+    "chat_summary": "INT commercial 11 kV/400V TPN with 1600 kVA TX + 800 kVA standby genset. 5-node cascade. Ik\"max at MSB 21.5 kA (utility mode worst case). ACB 65 kA Icn + MCCB 25 kA Icn both adequate. Near-from-gen decrement modelled per §3.5. tool_call_pending until calc runs.",
+    "sections": [
+      { "title": "Source Specification", "summary": "Two sources modelled: utility transformer (1600 kVA, Zpu 5%) + standby gen (800 kVA, X\"d 0.15 pu).", "decisions": [ { "label": "Mixed source modelling", "summary": "Utility-mode worst case + gen-mode capability documented.", "rule": "IEC 60909-0:2016 §3.5 near-from-generator + §3.4 far-from-generator", "code_clause": "IEC 60909-0:2016 §3.5", "inputs": { "utility_kva": 1600, "gen_kva": 800 } } ] },
+      { "title": "Cascade Topology", "summary": "5 nodes engineer-declared. HV → TX → MSB → busbar → DB-L1.", "decisions": [] },
+      { "title": "HV-side Assumptions", "summary": "11 kV primary, ring-main, declared PSCC 16 kA, X/R 5. c_max = 1.10 per Table 1 (HV).", "decisions": [ { "label": "c_max = 1.10 HV", "summary": "Per IEC 60909-0 Table 1 for Un > 1 kV.", "rule": "IEC 60909-0:2016 Table 1", "code_clause": "IEC 60909-0:2016 Table 1", "inputs": { "c_max_hv": 1.10 } } ] },
+      { "title": "Transformer + Source Impedances", "summary": "Z_TX = 5 mΩ at LV. X/R = 7. ZQ at HV referred to LV ≈ 0.0023 mΩ.", "decisions": [] },
+      { "title": "Motor Contribution Assessment", "summary": "Motor load 0 kW; threshold not met.", "decisions": [] },
+      { "title": "Per-node Ifault Computation", "summary": "Ik\"max range 17.6-22.5 kA across LV cascade; HV ≈ 17.6 kA referred. ipk range 35-49 kA.", "decisions": [ { "label": "tool_call_pending across cascade", "summary": "Multi-source superposition + near-gen decrement requires deterministic tool execution.", "rule": "IEC 60909-0:2016 §3.5 + §3.6", "code_clause": "IEC 60909-0:2016 §3.5", "inputs": { "tool_call_pending": true } } ] },
+      { "title": "Selectivity Implications", "summary": "ACB 65 kA Icn adequate at MSB. DB-L1 MCCB 25 kA Icn adequate at 18.2 kA.", "decisions": [] },
+      { "title": "Compliance + Assumptions", "summary": "Compliant. Assumptions captured: utility PSCC, gen X\"d, X/R, cable tables.", "decisions": [] }
+    ]
+  }
+}
