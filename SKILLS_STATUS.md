@@ -103,7 +103,7 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | cable-sizing | `calculations/electrical/cable-sizing` | stub | BS 7671:2018 Appendix 4 | — | — |
 | voltage-drop | `calculations/electrical/voltage-drop` | stub | BS 7671:2018 Appendix 12 | — | — |
 | load-schedule | `calculations/electrical/load-schedule` | stub | BS 7671:2018 | — | — |
-| fault-level | `calculations/electrical/fault-level` | stub | IEC 60909 | — | — |
+| fault-level | `electrical/fault-level` | **beta** | IEC 60909-0:2016, BS 7671 Reg 434, IEC 60364-4-43, NEC 110.9 + 240.86, IEC 60617 | 9/3 ✓ | v1.0.0 IEC 60909 HV+LV cascade. 14-step generator, IR + intent schemas, 12 deterministic checks, 9 evals (all WI5 + 3 skill-specific), 3 worked examples (UK / INT+gen / US+motors). New IEC60909 standards layer (13 files) shipped alongside. Cascade math deferred to calc.iec60909_cascade runtime tool per WI3. |
 | generator-sizing | `calculations/electrical/generator-sizing` | stub | BS ISO 8528 | — | — |
 | power-factor | `calculations/electrical/power-factor` | stub | BS EN 60831 | — | — |
 | arc-flash | `calculations/electrical/arc-flash` | stub | IEEE 1584, BS EN 50110 | — | — |
