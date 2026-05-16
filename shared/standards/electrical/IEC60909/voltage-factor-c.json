@@ -1,0 +1,42 @@
+{
+  "_title": "IEC 60909-0 — Voltage Factor c (Table 1)",
+  "_version": "1.0.0",
+  "_reference": "IEC 60909-0:2016 §3.7 Table 1; IEC 60038:2009 Standard voltages",
+  "purpose": "Adjust nominal voltage Un to account for normal supply variation (tap changing, no-load TX secondary, regulation drops)",
+  "table_1": {
+    "lv_systems_ge_100v": {
+      "_scope": "Three-phase LV: 230/400 V (IEC), 277/480 V (NEC). Single-phase LV: 230 V (IEC), 120/240 V (NEC).",
+      "c_max": {
+        "value": 1.05,
+        "use_for": "Calculation of maximum Ik\" — drives breaker breaking-capacity verification + busbar Ipk withstand check",
+        "rationale": "Accounts for normal over-voltage at lightly loaded transformer secondary"
+      },
+      "c_min": {
+        "value": 0.95,
+        "use_for": "Calculation of minimum Ik\" — drives ADS (automatic disconnection of supply) protection setting verification",
+        "rationale": "Accounts for under-voltage at heavily loaded transformer + cable drop"
+      }
+    },
+    "lv_systems_lt_100v": {
+      "_scope": "ELV systems",
+      "c_max": 1.10,
+      "c_min": 0.95
+    },
+    "mv_hv_systems": {
+      "_scope": "Un > 1 kV up to 230 kV (11 kV, 33 kV, 132 kV typical)",
+      "c_max": 1.10,
+      "c_min": 1.00
+    }
+  },
+  "engineering_application": {
+    "for_breaker_selection": "Always use c_max for Ik\"_max — under-sizing a breaker on c=1.0 is unsafe",
+    "for_protection_setting": "Use c_min for Ik\"_min — over-setting protection on c=1.0 can leave faults unprotected (ADS fails)",
+    "for_selectivity_coordination": "Use c_max for upstream Icn check, c_min for downstream sensitivity check"
+  },
+  "cross_reference": {
+    "consumed_by": [
+      "electrical/fault-level (generator Steps 4, 10)",
+      "electrical/db-layout (selectivity verification per IEC 60364-5-53)"
+    ]
+  }
+}
