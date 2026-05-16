@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/fault-level/schemas/fault-level-intent.schema.json",
+  "title": "Fault-Level Intent (Downstream-Facing)",
+  "description": "Stable subset of the fault-level IR. Consumed by db-layout (selectivity resolution), earthing (ADS cross-check), cable-sizing (adiabatic verification), generator-sizing (Iek). Forward-compat: optional fields may be added; required-field changes require a major intent_version bump.",
+  "type": "object",
+  "required": ["project_id", "source_summary", "fault_currents"],
+  "additionalProperties": false,
+  "properties": {
+    "project_id": { "type": "string" },
+    "intent_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "source_summary": {
+      "type": "object",
+      "required": ["type", "voltage_v"],
+      "additionalProperties": false,
+      "properties": {
+        "type":        { "enum": ["utility_transformer", "generator", "ups", "mixed"] },
+        "kva":         { "type": "number", "minimum": 0 },
+        "voltage_v":   { "type": "integer", "enum": [120, 208, 230, 240, 277, 400, 415, 480] },
+        "x_over_r":    { "type": "number", "minimum": 0 }
+      }
+    },
+    "fault_currents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["node_id", "node_kind", "ifault_ka_max"],
+        "additionalProperties": false,
+        "properties": {
+          "node_id":          { "type": "string" },
+          "node_kind":        { "enum": ["hv_source", "transformer_secondary", "board_incoming", "board_busbar", "board_outgoing_feeder", "final_circuit_endpoint"] },
+          "ifault_ka_max":    { "type": "number", "minimum": 0, "description": "Ik\"max with c=1.05 — for breaker rating verification" },
+          "ifault_ka_min":    { "type": "number", "minimum": 0, "description": "Ik\"min with c=0.95 — for ADS / protection setting" },
+          "ipk_ka":           { "type": "number", "minimum": 0, "description": "Peak — for busbar Ipk_withstand check" },
+          "x_over_r_ratio":   { "type": "number", "minimum": 0 },
+          "z_total_ohm":      { "type": "number", "minimum": 0 }
+        }
+      }
+    }
+  }
+}
