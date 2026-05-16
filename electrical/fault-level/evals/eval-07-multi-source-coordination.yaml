@@ -1,0 +1,40 @@
+id: eval-07-multi-source-coordination
+category: skill_specific
+severity: high
+description: |
+  Data centre topology: utility (1600 kVA) + standby gen (800 kVA) + UPS (500 kVA) all active simultaneously.
+  Multi-source superposition per IEC 60909-0 §3.6. Sources[] must contain ≥3 entries.
+
+inputs:
+  jurisdiction: "INT"
+  project_id: "dc-multi-fl-eg07"
+  supply_voltage_v: "400"
+  hv_side_present: false
+  primary_transformer_kva: 1600
+  primary_transformer_zpu_pct: 5.0
+  standby_generator_present: true
+  standby_generator_kva: 800
+  ups_present: true
+  ups_kva: 500
+  motor_load_kw: 0
+  cascade_topology_source: "engineer_declared"
+  cascade_engineer_declared:
+    - { node_id: "TX-1", parent_node_id: null, node_kind: "transformer_secondary" }
+    - { node_id: "MSB-1", parent_node_id: "TX-1", node_kind: "board_incoming", feeder: { length_m: 20, csa_mm2_or_awg: "240mm²", material: "copper", insulation: "xlpe_90" } }
+
+assertions:
+  - kind: schema_valid
+    schema: "fault-level-ir.schema.json"
+  - kind: jsonpath_count_gte
+    path: "$.sources[*]"
+    minimum: 3
+    note: "utility + generator + UPS"
+  - kind: jsonpath_in
+    path: "$.sources[*].kind"
+    allowed: ["utility", "generator", "ups", "motor_aggregate"]
+  - kind: clause_cited
+    clause_pattern: "IEC 60909-0:2016 §3.6"
+    minimum_count: 1
+    note: "Multi-source superposition cited"
+
+expected_status: "pass"
