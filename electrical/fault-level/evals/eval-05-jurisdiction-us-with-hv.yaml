@@ -1,0 +1,47 @@
+id: eval-05-jurisdiction-us-with-hv
+category: jurisdiction_switch
+severity: critical
+description: |
+  US industrial: 12.47 kV primary → 480V TPN service, 2500 kVA TX. NEC 110.9 + 240.86 cited alongside IEC 60909.
+  No BS 7671 / IEC 60364 citations. Use NEC Chapter 9 Table 9 for cable impedance.
+
+inputs:
+  jurisdiction: "US"
+  project_id: "us-ind-fl-eg05"
+  supply_voltage_v: "480"
+  hv_side_present: true
+  hv_voltage_kv: "12.47"
+  hv_pscc_at_primary_ka: 25
+  primary_transformer_kva: 2500
+  primary_transformer_zpu_pct: 6.0
+  standby_generator_present: false
+  ups_present: false
+  motor_load_kw: 0
+  cascade_topology_source: "engineer_declared"
+  cascade_engineer_declared:
+    - { node_id: "HV-1", parent_node_id: null, node_kind: "hv_source", designation: "12.47 kV primary" }
+    - { node_id: "TX-1", parent_node_id: "HV-1", node_kind: "transformer_secondary", designation: "2500 kVA TX 480V LV" }
+    - { node_id: "MSB-1", parent_node_id: "TX-1", node_kind: "board_incoming", designation: "Main switchboard", feeder: { length_m: 20, csa_mm2_or_awg: "350 kcmil", material: "copper", insulation: "thwn_75" } }
+
+assertions:
+  - kind: schema_valid
+    schema: "fault-level-ir.schema.json"
+  - kind: jsonpath_equals
+    path: "$.jurisdiction"
+    expected: "US"
+  - kind: jsonpath_present
+    path: "$.project_supply.hv_side"
+  - kind: clause_cited
+    clause_pattern: "^NEC 2023 Art (110|240)"
+    minimum_count: 1
+  - kind: clause_cited
+    clause_pattern: "^IEC 60909-0:2016"
+    minimum_count: 2
+  - kind: clause_not_cited
+    clause_pattern: "^BS 7671"
+    note: "US project must not cite UK regs"
+  - kind: clause_not_cited
+    clause_pattern: "^IEC 60364"
+    note: "US project must not cite IEC 60364"
+
+expected_status: "pass"
