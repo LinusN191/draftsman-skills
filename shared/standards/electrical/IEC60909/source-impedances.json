@@ -1,0 +1,73 @@
+{
+  "_title": "IEC 60909 — Source Impedance Reference",
+  "_version": "1.0.0",
+  "_reference": "IEC 60909-0:2016 §4.2 (network feeder), §4.3 (transformer), §4.4 (generator), §4.5 (motor); IEC 60909-2:2008 data tables",
+  "purpose": "Unified reference for source-impedance modelling across all source types used by the IEC 60909 method.",
+
+  "network_feeder_zq": {
+    "_reference": "IEC 60909-0:2016 §4.2",
+    "definition": "Equivalent impedance of the upstream network seen from the LV-side primary of the building's incoming transformer (or service entrance)",
+    "from_declared_pscc": {
+      "method": "If DNO/POCO declares PSCC (Sk\") at primary substation:",
+      "formula_zq": "ZQ = c × U²_n_primary / Sk\"",
+      "split_into_r_x": "Use X/R_ratio from declaration; XQ = ZQ × X/R / √(1 + (X/R)²); RQ = ZQ / √(1 + (X/R)²)",
+      "typical_x_over_r": {
+        "11_kv_urban_dense": 5,
+        "11_kv_rural": 3,
+        "33_kv": 8,
+        "132_kv": 15
+      }
+    },
+    "default_when_not_declared": {
+      "_warning": "Use only when no DNO declaration available; engineer must flag this as an assumption",
+      "uk_typical_11kv_supply": { "sk_mva": 200, "x_over_r": 5 },
+      "us_typical_12_47kv": { "sk_mva": 300, "x_over_r": 6 }
+    }
+  },
+
+  "transformer_zk": {
+    "_reference": "IEC 60909-0:2016 §4.3; transformer nameplate Zpu",
+    "definition": "Transformer short-circuit impedance referred to LV side",
+    "formula": "Zk_TX = Zpu × U²_LV / S_TX_kVA × 1000  (result in ohms)",
+    "rk_xk_split": {
+      "for_distribution_tx_below_1000_kva": "Use X/R = 5 (typical)",
+      "for_distribution_tx_1000_to_3150_kva": "Use X/R = 8 (typical)",
+      "for_distribution_tx_above_3150_kva": "Use X/R = 12 (typical)",
+      "from_nameplate": "If nameplate provides cu losses (Pcu) and Zpu: Rk = (Pcu × U²_LV) / S²_TX; Xk = √(Zk² − Rk²)"
+    },
+    "reference_table": "transformer-zpu-table.json"
+  },
+
+  "generator_xd_subtransient_xd_prime_xd": {
+    "_reference": "IEC 60909-0:2016 §4.4; near-from-generator",
+    "definition": "Synchronous generator subtransient X\"d (first cycle), transient X'd (~100ms), synchronous Xd (steady-state)",
+    "formula_subtransient": "X\"d_ohm = X\"d_pu × U²_LV / S_gen_kVA × 1000",
+    "decrement_application": [
+      "First cycle (t = 0+, for Ik\"): use X\"d",
+      "Breaking time (tmin = 30-90 ms, for Ib): apply decrement factor μ from §3.5 Table 4",
+      "Steady state (long t, for Ik): use Xd; apply λ-factor from §3.5 Table 5"
+    ],
+    "reference_table": "generator-subtransient-tables.json"
+  },
+
+  "ups_battery_inverter_zups": {
+    "_reference": "Not directly in IEC 60909-0 (manufacturer-specific); IEC 62040-3 UPS standard",
+    "definition": "UPS / static inverter — current-limited source, very different from rotating machines",
+    "first_half_cycle": "Inverter output current limited to 2-3 × I_rated by IGBT/IGCT current sensors. First-half-cycle Ik\"_UPS = 2 × I_rated_UPS typical (manufacturer-specific)",
+    "after_first_cycle": "Most UPSes transition to bypass within 4-5 ms during sustained fault. After bypass: source becomes upstream utility — use utility path Ik\".",
+    "modelling_recommendation": [
+      "For first-cycle breaker rating: include UPS contribution + utility (worst case)",
+      "For sustained-fault protection: UPS is bypassed → use utility path only"
+    ]
+  },
+
+  "induction_motor_xm_doubleprime": {
+    "_reference": "IEC 60909-0:2016 §4.5",
+    "definition": "Induction motor short-circuit contribution via subtransient reactance (back-EMF from rotating mass)",
+    "inclusion_threshold": "Sum of motor kVA contribution > 1% of Sk\"_total at fault location (2016 amendment tightened from 5%)",
+    "formula": "Ik\"_motor = ILR / In_motor × I_rated_motor, where ILR is the locked-rotor current ratio (typical 5-7 × FLC)",
+    "aggregate_contribution": "Σ Ik\"_motor_i for all motors connected at or downstream of the fault location",
+    "exclusion": "If sum < 1% of Ik\"_source — exclude (per §4.5.1.2)",
+    "reference_table": "motor-contribution-rules.json"
+  }
+}
