@@ -1,0 +1,25 @@
+rule_set: motor-contribution-thresholds
+version: 1.0.0
+
+# IEC 60909-0:2016 §4.5 motor contribution inclusion rules.
+# Used by generator.md Step 8.
+
+inclusion_threshold:
+  current_threshold: "Σ P_motors_kW ≥ 1% × Sk\"_at_fault"
+  rationale: "Motors contribute via subtransient reactance for 1-2 cycles. Below 1% threshold, contribution is rounding error."
+  reference: shared/standards/electrical/IEC60909/motor-contribution-rules.json
+
+calculation:
+  formula_aggregate: "Ik\"_motor = ILR_avg × ΣP_motor / (√3 × V)"
+  default_ilr_avg: 5.0
+  rationale: "ILR average for HVAC + general industrial motors (IEC Letter K)"
+
+decay:
+  ib_at_breaking_time: "Ib_motor ≈ 0.5 × Ik\"_motor for tmin ≥ 30 ms"
+  ik_steady_state: 0
+  rationale: "Motor contribution decays within 1-2 cycles (20-40 ms at 50 Hz). Negligible at steady state."
+
+exclusions:
+  - "VFD-driven motors (VFD blocks back-feed via DC link)"
+  - "Soft-starter motors in run mode (soft-starter bypassed; treat as DOL)"
+  - "Stopped or standby motors (no rotational kinetic energy)"

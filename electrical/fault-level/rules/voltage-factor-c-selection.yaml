@@ -1,0 +1,24 @@
+rule_set: voltage-factor-c-selection
+version: 1.0.0
+
+# IEC 60909-0:2016 Table 1 — voltage factor c selection rules.
+# Used by generator.md Steps 4 + 10.
+
+selection_rules:
+  for_breaker_breaking_capacity_check:
+    c_value: 1.05
+    use_when_lv: "Un ≥ 100 V"
+    use_when_mv_hv: "Un > 1 kV (use c=1.10 instead)"
+    rationale: "Maximum Ik\" — ensures breaker can interrupt worst-case fault current"
+
+  for_ads_protection_setting:
+    c_value: 0.95
+    use_when_lv: "Un ≥ 100 V"
+    use_when_mv_hv: "Un > 1 kV (use c=1.00 instead)"
+    rationale: "Minimum Ik\" — ensures protection responds even at supply under-voltage"
+
+  for_cascade_selectivity:
+    use_both: true
+    rationale: "Upstream breaker rated to c_max Ifault; downstream protection set to c_min Ifault sensitivity"
+
+reference_file: shared/standards/electrical/IEC60909/voltage-factor-c.json

@@ -1,0 +1,24 @@
+rule_set: peak-factor-kappa
+version: 1.0.0
+
+# IEC 60909-0:2016 §4.3 + IEC 60865-1 — peak factor κ calculation.
+# Used by generator.md Step 5.
+
+formula:
+  expression: "κ = 1.02 + 0.98 × exp(-3 × R/X)"
+  ipk_relationship: "ipk = κ × √2 × Ik\""
+  reference: shared/standards/electrical/IEC60909/peak-factor-kappa.json
+
+selection_per_path:
+  rule: "Compute κ at each cascade node using the X/R at that node (not at the source)"
+  rationale: "Cable resistance increases R faster than X as you walk downstream — κ decreases"
+
+asymptotic_bounds:
+  min: { value: 1.0, condition: "Pure resistive (R/X → ∞)" }
+  max: { value: 2.0, condition: "Pure inductive (R/X → 0)" }
+
+simplification:
+  for_lv_cable_dominated_paths:
+    typical_xr: "1-3"
+    typical_kappa: "1.1-1.3"
+    note: "Use formula even when range is narrow"

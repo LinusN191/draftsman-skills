@@ -1,0 +1,27 @@
+rule_set: ups-current-limiting
+version: 1.0.0
+
+# UPS / battery inverter fault contribution rules (IEC 60909-0 + IEC 62040-3).
+# Used by generator.md Step 7.
+
+contribution_model:
+  first_half_cycle:
+    duration_ms: 8.33
+    duration_ms_at_60hz: 6.94
+    current_basis: "I_rated_UPS_a × 2.0 (IGBT/IGCT current sensor limit)"
+    rationale: "Inverter output current limited by IGBT/IGCT switching protection. Typical limit 2-3× I_rated."
+
+  after_first_cycle:
+    behavior: "UPS transitions to bypass within 4-5 ms during sustained fault"
+    source_after_bypass: "Upstream utility / generator path — UPS effectively absent"
+    rationale: "UPS internal protection trips inverter; bypass switch closes"
+
+modelling_decision:
+  for_first_cycle_breaker_rating: "Include UPS contribution + utility/gen contribution (worst case)"
+  for_sustained_fault_protection: "Exclude UPS; treat as bypass-fed from upstream"
+  for_ads_check: "Use sustained-fault path (post-bypass)"
+
+manufacturer_specific:
+  typical_static_ups_2024: { current_limit_x_rated: 2.0, bypass_ms: 4 }
+  typical_modular_ups_2024: { current_limit_x_rated: 2.5, bypass_ms: 3 }
+  flow_battery_inverter: { current_limit_x_rated: 1.2, bypass_ms: 8, _note: "Conservative; varies widely" }

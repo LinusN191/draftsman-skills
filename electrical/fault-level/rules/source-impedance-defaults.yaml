@@ -1,0 +1,35 @@
+rule_set: source-impedance-defaults
+version: 1.0.0
+applies_to: [GB, EU, INT, US]
+
+# Defaults for source impedance when engineer doesn't provide nameplate data.
+# Used by generator.md Steps 5 + 6.
+# THESE ARE FALLBACK ONLY — real designs use nameplate Zpu / X"d / etc.
+
+defaults_by_source_type:
+  utility_transformer:
+    zpu_percent_by_rating:
+      _reference: shared/standards/electrical/IEC60909/transformer-zpu-table.json
+      below_400_kva: 4.0
+      400_to_1000_kva: 4.0
+      1000_to_2500_kva: 5.0
+      2500_to_5000_kva: 6.0
+      above_5000_kva: 7.0
+    x_over_r_default: 6
+    flag_when_default_used: "Utility transformer Zpu = {value}% assumed from IEC60909/transformer-zpu-table.json (kVA-banded default). Real design must use nameplate Zpu."
+
+  generator:
+    x_d_doubleprime_pu_default: 0.15
+    x_d_prime_pu_default: 0.25
+    x_d_pu_default: 1.20
+    x_over_r_default: 8
+    flag_when_default_used: "Generator X\"d = {value} pu assumed from IEC60909/generator-subtransient-tables.json. Real design must use manufacturer data."
+
+  ups:
+    i_rated_multiplier_first_cycle: 2.0
+    bypass_switchover_ms: 5
+    flag_when_default_used: "UPS first-cycle contribution = 2 × I_rated assumed. UPS manufacturer data must confirm output current limit."
+
+  motor_aggregate:
+    ilr_default: 5.5
+    flag_when_default_used: "Motor ILR = 5.5 × FLC assumed (IEC Letter K). Real design must verify per motor nameplate code letter."
