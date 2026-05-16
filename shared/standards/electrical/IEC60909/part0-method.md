@@ -33,7 +33,10 @@ For a utility supply with known Sk" at primary substation:
 - `RQ ≈ ZQ / √(1 + (X/R)²)`
 
 For a transformer LV-side calculation (typical building services):
-- `Zk_TX_ohm = Zpu × U²_LV / S_TX_kVA` (where Zpu = transformer % impedance from nameplate)
+- `Zk_TX_ohm = (Zpu_percent / 100) × U²_LV[V] / S_TX[VA]`
+- Equivalent with kVA notation: `Zk_TX_ohm = (Zpu_percent / 100) × U²_LV[V] / (S_TX_kVA × 1000)`
+- Or in kV/MVA convention: `Zk_TX_ohm = (Zpu_percent / 100) × U²_LV[kV] / S_TX[MVA]` × 1000 *(returns mΩ; divide by 1000 for Ω)*
+- Worked: 500 kVA, 4% Zpu, 230V → Z = 0.04 × 230² / (500 × 1000) = 4.23 mΩ
 - Split Zk into R + jX using transformer X/R (typical 5-10 for distribution transformers)
 
 For a generator (near-from-generator):

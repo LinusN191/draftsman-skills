@@ -104,7 +104,14 @@ If no HV side → skip; LV source is at network terminals.
 
 For utility transformer (always present unless source is pure generator/UPS):
 
-`Z_TX_ohm = (Zpu / 100) × (U²_LV / S_TX_kVA × 1000)` (result in ohms)
+```
+Z_TX_ohm = (Zpu_percent / 100) × U²_LV[V] / S_TX[VA]
+
+  i.e., with kVA notation:  Z_TX_ohm = (Zpu_percent / 100) × U²_LV[V] / (S_TX_kVA × 1000)
+```
+
+**Worked example to confirm units:** 500 kVA TX at 4% Zpu on 230V LV side →
+`Z = 0.04 × 230² / (500 × 1000) = 0.04 × 52,900 / 500,000 = 4.23 mΩ`. ✓ Matches example 1.
 
 Split into R + X using transformer X/R (typical 5-10 for distribution):
 - `X_TX = Z_TX × X/R / √(1 + (X/R)²)`
@@ -158,9 +165,11 @@ Emit `decrement_profile` for the source describing this transition.
 
 ## Step 8 — Induction motor contribution
 
-If `inputs.motor_load_kw > 0` AND `motor_load_kw / source_kva ≥ 0.01`:
+If `inputs.motor_load_kw > 0` AND `motor_load_kw ≥ 0.01 × Sk"_at_fault[kVA]`:
 
-Per IEC 60909-0:2016 §4.5 (2016 amendment tightened threshold from 5% to 1%):
+Per IEC 60909-0:2016 §4.5.1.2 (2016 amendment tightened threshold from 5% to 1%):
+
+**Sk"_at_fault denominator:** the short-circuit power at the fault location, NOT the transformer rating. For most LV building-services projects with short feeder runs, `Sk"_at_fault ≈ S_TX_kVA × (1 / Zpu)` and using `S_TX_kVA` as a proxy is reasonable. For long feeder runs OR sub-DB faults, Sk"_at_fault drops materially — use the actual cascade-computed Sk" at the node. Document the approximation in `compliance_summary.assumptions` if the proxy is used.
 
 State in `ir.sources` an entry with `kind: "motor_aggregate"`:
 - `contribution_method: "locked_rotor"`
@@ -202,7 +211,12 @@ Ik"_min = c_min × V / (√3 × |Z_total|)   with c_min = 0.95 (LV)
 
 Where `|Z_total| = √(R_total² + X_total²)`.
 
-For single-phase nodes (UK domestic, US 120V): replace `√3` with appropriate divisor per IEC 60909-0 §1.3.
+**For single-phase TN-S / TN-C-S nodes (UK domestic 230V; US 120V split-phase):**
+- Line-to-neutral fault: `Ik"_1ph = c × U_n / (2 × |Z_phase_loop|)` where `Z_phase_loop = Z_phase_conductor + Z_neutral_conductor` (the full loop impedance including return path)
+- Line-to-earth fault (TT system): use the sequence-network form `Ik"_1ph = c × U_n × √3 / |Z1 + Z2 + Z0|` per `part0-fundamentals.json` `fault_types_covered.line_to_earth`
+- Reference: IEC 60909-0:2016 §4.7.1 (unbalanced faults)
+
+**For three-phase nodes:** keep the √3 form above.
 
 Emit `cascade[*].ifault_ka_max`, `cascade[*].ifault_ka_min`, `cascade[*].x_over_r_at_node`, `cascade[*].z_total_ohm`.
 
