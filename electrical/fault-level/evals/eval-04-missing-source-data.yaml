@@ -1,0 +1,39 @@
+id: eval-04-missing-source-data
+category: missing_input
+severity: high
+description: |
+  No transformer Zpu, no DNO PSCC, no engineer-declared Ifault.
+  Skill must emit tool_call_pending: true on every cascade node + TOOL-CALL-PENDING flag, NOT invent values.
+
+inputs:
+  jurisdiction: "EU"
+  project_id: "missing-data-fl-eg04"
+  supply_voltage_v: "400"
+  hv_side_present: false
+  primary_transformer_kva: 630
+  standby_generator_present: false
+  ups_present: false
+  motor_load_kw: 0
+  cascade_topology_source: "engineer_declared"
+  cascade_engineer_declared:
+    - { node_id: "TX-1", parent_node_id: null, node_kind: "transformer_secondary" }
+    - { node_id: "DB-EU1", parent_node_id: "TX-1", node_kind: "board_incoming" }
+
+assertions:
+  - kind: schema_valid
+    schema: "fault-level-ir.schema.json"
+  - kind: jsonpath_all_equals
+    path: "$.cascade[*].tool_call_pending"
+    expected: true
+    note: "All nodes deferred until calc.iec60909_cascade tool runs OR engineer provides Zpu"
+  - kind: jsonpath_contains
+    path: "$.flags"
+    must_contain: "TOOL-CALL-PENDING"
+  - kind: jsonpath_count_gte
+    path: "$.compliance_summary.non_compliance_flags[*]"
+    minimum: 1
+    note: "At least one flag for missing source data"
+  - kind: invariant_passes
+    invariant: "INV-7"
+
+expected_status: "pass"
