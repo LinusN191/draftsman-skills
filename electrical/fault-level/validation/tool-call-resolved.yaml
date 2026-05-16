@@ -1,0 +1,19 @@
+version: 1.0.0
+applies_to_drawing_types: ["fault_level_study"]
+checks:
+  - id: tool-001-pending-flag-emitted
+    name: If any cascade node is tool_call_pending, top-level flags must include TOOL-CALL-PENDING
+    severity: high
+    jsonpath: "$"
+    when: "any(n.tool_call_pending == true for n in cascade)"
+    assert: "'TOOL-CALL-PENDING' in flags"
+    message: "tool_call_pending node exists but TOOL-CALL-PENDING flag not emitted"
+    standard_ref: "WI3 tool-call deferral convention"
+
+  - id: tool-002-completeness
+    name: Every cascade node has Ifault values (computed OR engineer-fallback)
+    severity: critical
+    jsonpath: "$.cascade[*]"
+    assert: "ifault_ka_max is not null"
+    message: "Node {node_id}: ifault_ka_max is null (no computed value, no fallback)"
+    standard_ref: "design completeness"

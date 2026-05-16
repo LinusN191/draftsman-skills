@@ -1,0 +1,29 @@
+version: 1.0.0
+applies_to_drawing_types: ["fault_level_study"]
+checks:
+  - id: monotonic-001-downstream-decrease
+    name: Ifault_max decreases (or stays equal) as you walk downstream
+    severity: high
+    jsonpath: "$.cascade[*]"
+    when: "parent_node_id is not null"
+    assert: "ifault_ka_max <= cascade[parent_node_id].ifault_ka_max + (motor_contribution if motor_aggregate_present)"
+    message: "Node {node_id}: Ifault_max ({ifault_ka_max} kA) > parent's Ifault_max ({parent_ifault} kA) — violates monotonicity unless motor back-feed at this node"
+    standard_ref: "IEC 60909-0:2016 §3.6"
+    note: "Exception: motor back-feed point can add to Ifault — check sources[] for motor_aggregate"
+
+  - id: monotonic-002-max-ge-min
+    name: ifault_ka_max must be ≥ ifault_ka_min at every node (c=1.05 ≥ c=0.95)
+    severity: critical
+    jsonpath: "$.cascade[*]"
+    assert: "ifault_ka_max >= ifault_ka_min"
+    message: "Node {node_id}: ifault_max ({ifault_ka_max}) < ifault_min ({ifault_ka_min}) — c-factor application inverted"
+    standard_ref: "IEC 60909-0:2016 §3.7"
+
+  - id: monotonic-003-c-factor-ratio
+    name: ifault_ka_max / ifault_ka_min ≈ 1.10 (c_max/c_min ratio)
+    severity: warning
+    jsonpath: "$.cascade[*]"
+    when: "ifault_ka_min > 0"
+    assert: "abs(ifault_ka_max / ifault_ka_min - 1.105) < 0.05"
+    message: "Node {node_id}: max/min ratio {ratio} differs from expected 1.105 (= 1.05/0.95)"
+    standard_ref: "IEC 60909-0:2016 §3.7"

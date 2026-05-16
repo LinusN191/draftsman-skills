@@ -1,0 +1,28 @@
+version: 1.0.0
+applies_to_drawing_types: ["fault_level_study"]
+# Asserts the emitted fault-level intent satisfies db-layout's expected shape.
+
+checks:
+  - id: intent-001-required-fields
+    name: Intent has project_id + source_summary + fault_currents
+    severity: critical
+    target: "fault_level_intent_payload"
+    assert: "'project_id' in payload AND 'source_summary' in payload AND 'fault_currents' in payload"
+    message: "Intent missing required top-level keys"
+    standard_ref: "fault-level-intent.schema.json"
+
+  - id: intent-002-fault-currents-per-node
+    name: fault_currents[*] has node_id + ifault_ka_max minimum
+    severity: critical
+    target: "fault_level_intent.fault_currents[*]"
+    assert: "'node_id' in fc AND 'ifault_ka_max' in fc AND 'node_kind' in fc"
+    message: "fault_currents entry missing required fields"
+    standard_ref: "fault-level-intent.schema.json"
+
+  - id: intent-003-db-layout-compatibility
+    name: Intent fault_currents shape matches what db-layout v1.0 expects to consume
+    severity: critical
+    target: "fault_level_intent"
+    assert: "for each fault_currents entry: node_kind in valid_node_kinds AND ifault_ka_max is number"
+    message: "Intent shape incompatible with db-layout expectations"
+    standard_ref: "verified against electrical/db-layout/evals/eval-04-missing-fault-current.yaml expectations"

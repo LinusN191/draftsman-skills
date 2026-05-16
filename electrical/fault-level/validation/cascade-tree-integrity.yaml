@@ -1,0 +1,34 @@
+version: 1.0.0
+applies_to_drawing_types: ["fault_level_study"]
+checks:
+  - id: tree-001-parent-exists
+    name: Every cascade node's parent_node_id must reference an existing node_id
+    severity: critical
+    jsonpath: "$.cascade[*]"
+    assert: "parent_node_id is null OR parent_node_id in [n.node_id for n in cascade]"
+    message: "Node {node_id} has parent_node_id '{parent_node_id}' which does not exist"
+    standard_ref: "design integrity check"
+
+  - id: tree-002-no-cycles
+    name: Cascade tree must be acyclic (no node is its own ancestor)
+    severity: critical
+    target: "cascade_tree_walk"
+    assert: "walk_from_root_visits_every_node_exactly_once"
+    message: "Cycle detected in cascade tree"
+    standard_ref: "design integrity check"
+
+  - id: tree-003-single-root
+    name: Exactly one cascade root (parent_node_id is null)
+    severity: critical
+    target: "cascade_roots"
+    assert: "count_of_nodes_with_null_parent == 1"
+    message: "Cascade has {n} roots; expected exactly 1"
+    standard_ref: "design integrity check"
+
+  - id: tree-004-node-id-unique
+    name: All cascade node_id values must be unique
+    severity: critical
+    target: "cascade_node_ids"
+    assert: "len(set(node_ids)) == len(node_ids)"
+    message: "Duplicate node_id detected"
+    standard_ref: "design integrity check"
