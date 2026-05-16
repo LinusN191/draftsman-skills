@@ -1,0 +1,28 @@
+{
+  "$schema": "../../inputs.json",
+  "project_meta": {
+    "project_id": "uk-dom-fl-eg01",
+    "name": "23 Elm Crescent — 3-bed Semi",
+    "client": "Private",
+    "designer": "DraftsMan Skills demo",
+    "date": "2026-05-16",
+    "revision": "P01"
+  },
+  "jurisdiction": "GB",
+  "supply_voltage_v": "230",
+  "hv_side_present": false,
+  "primary_transformer_kva": 500,
+  "primary_transformer_zpu_pct": 4.0,
+  "primary_transformer_xover_r": 5,
+  "standby_generator_present": false,
+  "ups_present": false,
+  "motor_load_kw": 0,
+  "cascade_topology_source": "engineer_declared",
+  "cascade_engineer_declared": [
+    { "node_id": "TX-1", "parent_node_id": null, "node_kind": "transformer_secondary", "designation": "500 kVA DNO TX 230V LV terminals" },
+    { "node_id": "CU-G", "parent_node_id": "TX-1", "node_kind": "board_incoming", "designation": "Main consumer unit", "feeder": { "length_m": 5, "csa_mm2_or_awg": "25mm²", "material": "copper", "insulation": "pvc_70" } },
+    { "node_id": "CU-G.BUSBAR", "parent_node_id": "CU-G", "node_kind": "board_busbar", "designation": "CU busbar 100A" },
+    { "node_id": "CU-G.C01", "parent_node_id": "CU-G.BUSBAR", "node_kind": "final_circuit_endpoint", "designation": "GF lighting", "feeder": { "length_m": 18, "csa_mm2_or_awg": "1.5mm²", "material": "copper", "insulation": "pvc_70" } },
+    { "node_id": "CU-G.C03", "parent_node_id": "CU-G.BUSBAR", "node_kind": "final_circuit_endpoint", "designation": "GF sockets ring", "feeder": { "length_m": 38, "csa_mm2_or_awg": "2.5mm²", "material": "copper", "insulation": "pvc_70" } }
+  ]
+}

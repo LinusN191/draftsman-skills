@@ -1,0 +1,62 @@
+{
+  "$schema": "../../schemas/fault-level-ir.schema.json",
+  "drawing_type": "fault_level_study",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "uk-dom-fl-eg01",
+    "skill_version": "fault-level/1.0.0",
+    "produced_at": "2026-05-16T12:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "GB",
+  "project_supply": {
+    "lv_source": {
+      "type": "utility_transformer",
+      "kva": 500,
+      "voltage_v": 230,
+      "z_percent": 4.0,
+      "x_over_r": 5,
+      "near_or_far_from_generator": "far"
+    }
+  },
+  "sources": [
+    { "id": "utility-DNO", "kind": "utility", "contribution_method": "constant", "ifault_contribution_ka": 1.5 }
+  ],
+  "cascade": [
+    { "node_id": "TX-1",         "parent_node_id": null,         "node_kind": "transformer_secondary", "designation": "500 kVA DNO TX LV terminals", "ifault_ka_max": 1.575, "ifault_ka_min": 1.425, "ipk_ka": 2.40, "x_over_r_at_node": 5, "z_total_ohm": 0.0042, "tool_call_pending": true },
+    { "node_id": "CU-G",         "parent_node_id": "TX-1",       "node_kind": "board_incoming",         "designation": "Main CU 100A",                  "feeder": { "length_m": 5, "csa_mm2_or_awg": "25mm²", "material": "copper", "insulation": "pvc_70" }, "z_addition_ohm": {"r": 0.004, "x": 0.0005}, "ifault_ka_max": 1.50, "ifault_ka_min": 1.36, "ipk_ka": 2.30, "x_over_r_at_node": 2.5, "z_total_ohm": 0.008, "tool_call_pending": true },
+    { "node_id": "CU-G.BUSBAR",  "parent_node_id": "CU-G",       "node_kind": "board_busbar",           "designation": "CU busbar",                     "ifault_ka_max": 1.49, "ifault_ka_min": 1.35, "ipk_ka": 2.28, "x_over_r_at_node": 2.5, "z_total_ohm": 0.0081, "tool_call_pending": true },
+    { "node_id": "CU-G.C01",     "parent_node_id": "CU-G.BUSBAR","node_kind": "final_circuit_endpoint", "designation": "GF lighting",                    "feeder": { "length_m": 18, "csa_mm2_or_awg": "1.5mm²", "material": "copper", "insulation": "pvc_70" }, "z_addition_ohm": {"r": 0.22, "x": 0.004}, "ifault_ka_max": 0.85, "ifault_ka_min": 0.77, "ipk_ka": 1.22, "x_over_r_at_node": 0.5, "z_total_ohm": 0.228, "tool_call_pending": true },
+    { "node_id": "CU-G.C03",     "parent_node_id": "CU-G.BUSBAR","node_kind": "final_circuit_endpoint", "designation": "GF sockets ring",                "feeder": { "length_m": 38, "csa_mm2_or_awg": "2.5mm²", "material": "copper", "insulation": "pvc_70" }, "z_addition_ohm": {"r": 0.281, "x": 0.009}, "ifault_ka_max": 0.79, "ifault_ka_min": 0.71, "ipk_ka": 1.14, "x_over_r_at_node": 0.4, "z_total_ohm": 0.289, "tool_call_pending": true }
+  ],
+  "selectivity_implications": [
+    { "breaker_id": "DNO-100A", "breaker_rating_a": 100, "breaker_icn_ka": 33, "ifault_at_breaker_ka": 1.575, "adequate": true, "recommendation": "BS 1361 Type II service fuse 100A Icn 33 kA — adequate" },
+    { "breaker_id": "CU-MAIN", "breaker_rating_a": 100, "breaker_icn_ka": 6, "ifault_at_breaker_ka": 1.50, "adequate": true, "recommendation": "Main switch — Ifault well within rating" },
+    { "breaker_id": "MCB-C01", "breaker_rating_a": 6, "breaker_icn_ka": 6, "ifault_at_breaker_ka": 0.85, "adequate": true, "recommendation": "6 kA MCB adequate at 0.85 kA cascade" }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "DNO declared PSCC 1.5 kA at service head — engineer input.",
+      "Transformer Zpu 4% assumed (no nameplate provided) per IEC60909/transformer-zpu-table.json default for 500 kVA.",
+      "Cable impedance from BS 7671 Appendix 4 Tables 4D5 (R) + 4F (X).",
+      "tool_call_pending: true on all nodes — calc.iec60909_cascade runtime not yet available."
+    ]
+  },
+  "drawn_as_symbols": ["TRANSFORMER", "BREAKER", "BUSBAR", "EARTH_GENERAL"],
+  "flags": ["TOOL-CALL-PENDING"],
+  "rationale": {
+    "chat_summary": "UK 3-bed semi on 500 kVA DNO TX with declared PSCC 1.5 kA at service head. 5-node cascade (TX → CU → 2 final circuits). All Ifault values within standard MCB Icn 6 kA. Selectivity adequate at all nodes. tool_call_pending until calc.iec60909_cascade runs — values are engineer-input fallback.",
+    "sections": [
+      { "title": "Source Specification", "summary": "Single utility source. 500 kVA distribution TX. Zpu 4% assumed (IEC 60909-2 default).", "decisions": [ { "label": "Far-from-generator method", "summary": "Utility-only project, no on-site generation.", "rule": "IEC 60909-0:2016 §3.4 far-from-generator constant source", "code_clause": "IEC 60909-0:2016 §3.4", "inputs": { "kva": 500, "zpu_pct": 4.0 } } ] },
+      { "title": "Cascade Topology", "summary": "5 nodes engineer-declared (no db-layout-rollup intent supplied).", "decisions": [] },
+      { "title": "HV-side Assumptions", "summary": "N/A — no HV side present (LV-fed service).", "decisions": [] },
+      { "title": "Transformer + Source Impedances", "summary": "Z_TX = 4.23 mΩ at 230V LV with X/R = 5.", "decisions": [ { "label": "Z_TX = 4.23 mΩ", "summary": "Computed from Zpu × U² / kVA per IEC 60909-0.", "rule": "IEC 60909-0:2016 §4.3 transformer impedance", "code_clause": "IEC 60909-0:2016 §4.3", "inputs": { "z_tx_ohm": 0.00423 } } ] },
+      { "title": "Motor Contribution Assessment", "summary": "Motor load 0 kW → no motor contribution. Threshold ≥ 1% not met.", "decisions": [] },
+      { "title": "Per-node Ifault Computation", "summary": "Ik\"max range 0.79-1.575 kA across cascade. ipk range 1.14-2.40 kA.", "decisions": [ { "label": "tool_call_pending across all nodes", "summary": "calc.iec60909_cascade runtime not yet available; engineer-input PSCC + cable tables used as fallback.", "rule": "WI3 deferral pattern", "code_clause": "IEC 60909-0:2016 §3.3", "inputs": { "tool_call_pending": true } } ] },
+      { "title": "Selectivity Implications", "summary": "All breakers in cascade adequate at their installation Ifault. DNO 100A fuse Icn 33 kA, CU MCBs Icn 6 kA.", "decisions": [] },
+      { "title": "Compliance + Assumptions", "summary": "Compliant. Single TOOL-CALL-PENDING flag for deferred cascade tool.", "decisions": [] }
+    ]
+  }
+}
