@@ -100,39 +100,37 @@ Status codes: `production` | `beta` | `draft` | `stub`
 
 | Skill | Path | Status | Standards | Evals | Notes |
 |-------|------|--------|-----------|-------|-------|
-| cable-sizing | `calculations/electrical/cable-sizing` | stub | BS 7671:2018 Appendix 4 | — | — |
-| voltage-drop | `calculations/electrical/voltage-drop` | stub | BS 7671:2018 Appendix 12 | — | — |
-| load-schedule | `calculations/electrical/load-schedule` | stub | BS 7671:2018 | — | — |
+| cable-sizing | `electrical/cable-sizing` | stub | BS 7671:2018 App 4, IEC 60364-5-52, NEC Chapter 9 + 310.16 | — | next — Item 3 of Tier 1 sequence. Spec approved at `docs/superpowers/specs/2026-05-16-cable-sizing-skill-design.md`. |
+| voltage-drop | `electrical/voltage-drop` | stub | BS 7671:2018 Appendix 12, IEC 60364-5-52 §G, NEC 215.2 IN | — | — |
+| load-schedule | `electrical/load-schedule` | stub | BS 7671:2018 App 1, NEC 220, IEC 60364-1 Annex C | — | — |
 | fault-level | `electrical/fault-level` | **beta** | IEC 60909-0:2016, BS 7671 Reg 434, IEC 60364-4-43, NEC 110.9 + 240.86, IEC 60617 | 9/3 ✓ | v1.0.0 IEC 60909 HV+LV cascade. 14-step generator, IR + intent schemas, 12 deterministic checks, 9 evals (all WI5 + 3 skill-specific), 3 worked examples (UK / INT+gen / US+motors). New IEC60909 standards layer (13 files) shipped alongside. Cascade math deferred to calc.iec60909_cascade runtime tool per WI3. |
-| generator-sizing | `calculations/electrical/generator-sizing` | stub | BS ISO 8528 | — | — |
-| power-factor | `calculations/electrical/power-factor` | stub | BS EN 60831 | — | — |
-| arc-flash | `calculations/electrical/arc-flash` | stub | IEEE 1584, BS EN 50110 | — | — |
-| breaker-sizing | `calculations/electrical/breaker-sizing` | stub | BS 7671:2018, IEC 60947-2 | — | — |
-| harmonic-analysis | `calculations/electrical/harmonic-analysis` | stub | G5/5, IEC 61000-3-2 | — | — |
-| selectivity-study | `calculations/electrical/selectivity-study` | stub | IEC 60947-2 | — | — |
+| generator-sizing | `electrical/generator-sizing` | stub | BS ISO 8528 | — | — |
+| power-factor | `electrical/power-factor` | stub | BS EN 60831 | — | — |
+| arc-flash | `electrical/arc-flash` | stub | IEEE 1584, BS EN 50110 | — | — |
+| breaker-sizing | `electrical/breaker-sizing` | stub | BS 7671:2018, IEC 60947-2 | — | — |
+| harmonic-analysis | `electrical/harmonic-analysis` | stub | G5/5, IEC 61000-3-2 | — | — |
+| selectivity-study | `electrical/selectivity-study` | stub | IEC 60947-2 | — | — |
 
 ### Lighting
 
-| Skill | Path | Status | Standards | Evals | Notes |
-|-------|------|--------|-----------|-------|-------|
-| lux | `calculations/lighting/lux` | stub | CIBSE SLL Code 2012, BS EN 12464-1 | — | — |
+(Lighting calc folded into `electrical/lighting-layout` v1.3.0 production via `shared/calculations/lighting/lumen-method.json` inline contract.)
 
 ### HVAC
 
 | Skill | Path | Status | Standards | Evals | Notes |
 |-------|------|--------|-----------|-------|-------|
-| cooling-load | `calculations/hvac/cooling-load` | stub | CIBSE Guide A, ASHRAE 90.1 | — | — |
-| heating-load | `calculations/hvac/heating-load` | stub | CIBSE Guide A | — | — |
-| duct-sizing | `calculations/hvac/duct-sizing` | stub | CIBSE Guide C, SMACNA | — | — |
-| ventilation-rate | `calculations/hvac/ventilation-rate` | stub | CIBSE Guide B2, Building Regs F | — | — |
+| cooling-load | `mechanical/cooling-load` | stub | CIBSE Guide A, ASHRAE 90.1 | — | — |
+| heating-load | `mechanical/heating-load` | stub | CIBSE Guide A | — | — |
+| duct-sizing | `mechanical/duct-sizing` | stub | CIBSE Guide C, SMACNA | — | — |
+| ventilation-rate | `mechanical/ventilation-rate` | stub | CIBSE Guide B2, Building Regs F | — | — |
 
 ### Plumbing
 
 | Skill | Path | Status | Standards | Evals | Notes |
 |-------|------|--------|-----------|-------|-------|
-| pipe-sizing | `calculations/plumbing/pipe-sizing` | stub | BS EN 806-3, CIBSE Guide G | — | — |
-| pump-head | `calculations/plumbing/pump-head` | stub | CIBSE Guide G | — | — |
-| tank-sizing | `calculations/plumbing/tank-sizing` | stub | Water Regs 1999, CIBSE Guide G | — | — |
+| pipe-sizing | `plumbing/pipe-sizing` | stub | BS EN 806-3, CIBSE Guide G | — | — |
+| pump-head | `plumbing/pump-head` | stub | CIBSE Guide G | — | — |
+| tank-sizing | `plumbing/tank-sizing` | stub | Water Regs 1999, CIBSE Guide G | — | — |
 
 ---
 
@@ -169,22 +167,29 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | Status | Count |
 |--------|-------|
 | production | 1 |
-| beta | 1 |
+| beta | 4 |
 | draft | 0 |
-| stub | 74 |
-| **Total** | **76** |
+| stub | 70 |
+| **Total** | **75** |
+
+**Beta (4):** `electrical/sld`, `electrical/db-layout`, `electrical/earthing`, `electrical/fault-level`
+**Production (1):** `electrical/lighting-layout`
 
 ---
 
 ## Roadmap — next skills to promote
 
-Priority order based on engineering dependency chain:
+Tier 1 sequence (live):
 
-1. `calculations/electrical/cable-sizing` — prerequisite for db-layout, sld verification
-2. `calculations/electrical/voltage-drop` — referenced in cable-sizing
-3. `electrical/db-layout` — depends on cable-sizing + sld
-4. `calculations/electrical/load-schedule` — feeds db-layout and sld
-5. `calculations/lighting/lux` — extends lighting-layout calculations
-6. `electrical/small-power` — high-demand skill, independent of above
-7. `electrical/earthing` — required for sld completion
-8. `electrical/emergency-lighting` — depends on lighting-layout patterns
+1. ✅ Tighten calc contracts in `shared/calculations/electrical/` (shipped)
+2. ✅ `electrical/fault-level` v1.0.0 beta (shipped 2026-05-16)
+3. 🔄 `electrical/cable-sizing` — in progress (spec approved 2026-05-16)
+4. `electrical/voltage-drop` — adjacent to cable-sizing
+5. `electrical/earthing` v1.1 — TN-S system support + Zs table
+6. `electrical/db-layout` v1.1 — DC distribution + Type B RCD
+7. `electrical/sld` v1.2 — eval split
+
+Tier 2 (next):
+- `electrical/small-power` — high-demand skill, BS 7671 socket-outlet layouts
+- `electrical/emergency-lighting` — depends on lighting-layout patterns
+- `documents/cable-schedule` — consumes `cable-sizing` intent
