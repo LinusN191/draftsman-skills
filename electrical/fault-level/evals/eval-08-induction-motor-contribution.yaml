@@ -1,0 +1,36 @@
+id: eval-08-induction-motor-contribution
+category: skill_specific
+severity: high
+description: |
+  Industrial site: 2500 kVA TX + 500 kW connected motor load (running). Motor contribution > 1% threshold per IEC 60909-0 §4.5.1.2.
+  Must include motor_aggregate source in sources[] with ILR-based Ik" contribution.
+
+inputs:
+  jurisdiction: "INT"
+  project_id: "ind-motor-fl-eg08"
+  supply_voltage_v: "400"
+  hv_side_present: false
+  primary_transformer_kva: 2500
+  primary_transformer_zpu_pct: 6.0
+  standby_generator_present: false
+  ups_present: false
+  motor_load_kw: 500
+  cascade_topology_source: "engineer_declared"
+  cascade_engineer_declared:
+    - { node_id: "TX-1", parent_node_id: null, node_kind: "transformer_secondary" }
+    - { node_id: "MCC-1", parent_node_id: "TX-1", node_kind: "board_incoming", designation: "Motor control center" }
+
+assertions:
+  - kind: schema_valid
+    schema: "fault-level-ir.schema.json"
+  - kind: jsonpath_contains
+    path: "$.sources[*].kind"
+    must_contain: "motor_aggregate"
+  - kind: clause_cited
+    clause_pattern: "IEC 60909-0:2016 §4.5"
+    minimum_count: 1
+  - kind: jsonpath_present
+    path: "$.compliance_summary.assumptions[*]"
+    note: "Engineer-input motor ILR assumption captured"
+
+expected_status: "pass"
