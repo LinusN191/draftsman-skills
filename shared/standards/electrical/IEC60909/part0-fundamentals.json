@@ -1,0 +1,103 @@
+{
+  "_title": "IEC 60909-0:2016 §3 — Fundamentals of Short-Circuit Current Calculation",
+  "_version": "1.0.0",
+  "_basis": "IEC 60909-0:2016 Edition 3.0 §3.1–§3.7, Annex A (equivalent voltage source method)",
+
+  "ik_doubleprime_definition": {
+    "name": "Initial symmetrical short-circuit current",
+    "symbol": "Ik\"",
+    "unit": "A (RMS)",
+    "definition": "RMS value of the AC symmetrical component of a prospective (available) short-circuit current at the instant of short-circuit if the impedance retains its value at time zero",
+    "formula": "Ik\" = c × Un / (√3 × |Zk|) for three-phase faults",
+    "formula_single_phase": "Ik\" = c × Un / (2 × |Zk|) for line-to-line faults",
+    "reference": "IEC 60909-0:2016 §3.3"
+  },
+
+  "voltage_factor_c": {
+    "purpose": "Adjusts nominal voltage Un to account for variations in supply (load voltage drop, tap settings, transformer regulation)",
+    "table_1_lv_systems": {
+      "_reference": "IEC 60909-0:2016 Table 1",
+      "_scope": "Low-voltage systems with Un ≥ 100 V (e.g. 230 V, 400 V, 480 V)",
+      "c_max": {
+        "value": 1.05,
+        "use_for": "Calculation of maximum short-circuit current (Ik\"max) — drives breaker breaking-capacity verification",
+        "rationale": "Allows for over-voltage from no-load transformer secondary, normal supply tolerance"
+      },
+      "c_min": {
+        "value": 0.95,
+        "use_for": "Calculation of minimum short-circuit current (Ik\"min) — drives protection setting verification (ADS disconnection time)",
+        "rationale": "Accounts for under-voltage from supply variation, drop on heavily loaded transformers"
+      }
+    },
+    "table_1_hv_systems": {
+      "_scope": "Systems with Un > 1 kV up to 230 kV",
+      "c_max": 1.1,
+      "c_min": 1.0
+    }
+  },
+
+  "near_or_far_from_generator": {
+    "purpose": "Classifies whether synchronous source contribution changes over fault duration",
+    "near_from_generator": {
+      "_reference": "IEC 60909-0:2016 §3.5",
+      "definition": "Calculation path includes a synchronous machine whose internal voltage decays during the fault (subtransient → transient → steady-state)",
+      "applicable_when": [
+        "Generator supplies the fault (standby genset, on-site generation)",
+        "Synchronous motor contributes via back-EMF"
+      ],
+      "calculation_basis": "Use subtransient reactance X\"d for first cycle (Ik\"); transient X'd at ~100 ms (Ib); steady-state Xd at long times (Ik)",
+      "decrement_factor_mu": "Apply IEC 60909-0 §3.5 decrement factor μ × Ik\" for breaking-current calculation at contact-separation time tmin"
+    },
+    "far_from_generator": {
+      "_reference": "IEC 60909-0:2016 §3.4",
+      "definition": "Source contribution stays approximately constant over fault duration (utility transformer, large interconnected network)",
+      "applicable_when": [
+        "Utility / DNO supply is far enough that source EMF doesn't decay",
+        "Building services projects fed from public distribution grid"
+      ],
+      "calculation_basis": "Ik = Ib = Ik\" (constant source) — no decrement applied"
+    },
+    "selection_rule": "If ΣP_synchronous_generation > 5% of source Sk\" → use near-from-generator method. Otherwise far-from-generator."
+  },
+
+  "equivalent_voltage_source_method": {
+    "_reference": "IEC 60909-0:2016 Annex A",
+    "principle": "Replace all active EMFs with a single equivalent voltage source c × Un at the fault location. All other generators and motors are replaced with their internal impedances only.",
+    "advantages": [
+      "Avoids tracking individual source EMFs over time",
+      "Compatible with steady-state load-flow analysis tools",
+      "Standard accepted by IEC 60909-2 data tables"
+    ],
+    "computation_steps": [
+      "1. Identify fault location and three-phase fault type",
+      "2. Build positive-sequence impedance network from each source to fault",
+      "3. Apply c × Un at fault → compute Ik\" = c × Un / (√3 × |Z_total|)",
+      "4. For peak current: ipk = κ × √2 × Ik\" where κ = 1.02 + 0.98 × exp(-3 R/X)",
+      "5. For breaking current (near-from-generator): Ib = μ × Ik\""
+    ]
+  },
+
+  "fault_types_covered": {
+    "_reference": "IEC 60909-0:2016 §1",
+    "three_phase_balanced": {
+      "description": "Symmetrical three-phase short-circuit",
+      "formula": "Ik\"_3ph = c × Un / (√3 × |Zk_positive|)",
+      "usage": "Standard breaker breaking-capacity verification; usually the highest current case"
+    },
+    "line_to_line": {
+      "description": "Two-phase short-circuit (no earth contact)",
+      "formula": "Ik\"_2ph = (√3 / 2) × Ik\"_3ph (when only positive-sequence considered)"
+    },
+    "line_to_earth": {
+      "description": "Single-phase to earth — used for ADS disconnection time verification",
+      "formula": "Ik\"_1ph = c × Un × √3 / |Z1 + Z2 + Z0|",
+      "usage": "Earthing systems coordination, ADS check"
+    }
+  },
+
+  "cross_reference": {
+    "method_walkthrough": "part0-method.md",
+    "peak_factor": "peak-factor-kappa.json",
+    "source_impedances": "source-impedances.json"
+  }
+}
