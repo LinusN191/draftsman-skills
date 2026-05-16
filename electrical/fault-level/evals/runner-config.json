@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../shared/schemas/core/eval-runner-config.schema.json",
+  "skill": "fault-level",
+  "version": "1.0.0",
+  "minimum_model_class": "sonnet",
+  "minimum_status": {
+    "happy_path": "pass",
+    "edge_case": "pass-with-warnings",
+    "validation_trap": "pass",
+    "missing_input": "pass",
+    "jurisdiction_switch": "pass",
+    "rationale_block": "pass",
+    "skill_specific": "pass-with-warnings"
+  },
+  "evals": [
+    "eval-01-uk-domestic-cu-cascade.yaml",
+    "eval-02-tpn-commercial-with-gen.yaml",
+    "eval-03-undersized-breaker-trap.yaml",
+    "eval-04-missing-source-data.yaml",
+    "eval-05-jurisdiction-us-with-hv.yaml",
+    "eval-06-rationale-block.yaml",
+    "eval-07-multi-source-coordination.yaml",
+    "eval-08-induction-motor-contribution.yaml",
+    "eval-09-intent-shape.yaml"
+  ],
+  "scoring": {
+    "schema_validity_weight": 0.20,
+    "invariant_pass_weight": 0.30,
+    "cascade_accuracy_weight": 0.20,
+    "reviewer_score_weight": 0.20,
+    "rationale_quality_weight": 0.10
+  }
+}

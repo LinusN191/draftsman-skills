@@ -1,0 +1,45 @@
+id: eval-01-uk-domestic-cu-cascade
+category: happy_path
+severity: critical
+description: |
+  UK 3-bed semi: 230V single-phase service from 500 kVA DNO transformer. Engineer declares PSCC = 1.5 kA at service head.
+  100A service → CU → 6 final circuits. Single utility source. Cascade Ifault decreases as you walk downstream.
+
+inputs:
+  jurisdiction: "GB"
+  project_id: "uk-dom-fl-eg01"
+  supply_voltage_v: "230"
+  hv_side_present: false
+  primary_transformer_kva: 500
+  primary_transformer_zpu_pct: 4.0
+  primary_transformer_xover_r: 5
+  standby_generator_present: false
+  ups_present: false
+  motor_load_kw: 0
+  cascade_topology_source: "engineer_declared"
+  cascade_engineer_declared:
+    - { node_id: "TX-1", parent_node_id: null, node_kind: "transformer_secondary", designation: "DNO supply terminals" }
+    - { node_id: "CU-G", parent_node_id: "TX-1", node_kind: "board_incoming", designation: "Main consumer unit", feeder: { length_m: 5, csa_mm2_or_awg: "25mm²", material: "copper", insulation: "pvc_70" } }
+    - { node_id: "CU-G.BUSBAR", parent_node_id: "CU-G", node_kind: "board_busbar", designation: "CU busbar" }
+    - { node_id: "CU-G.C01", parent_node_id: "CU-G.BUSBAR", node_kind: "final_circuit_endpoint", designation: "Lighting GF", feeder: { length_m: 18, csa_mm2_or_awg: "1.5mm²", material: "copper", insulation: "pvc_70" } }
+
+assertions:
+  - kind: schema_valid
+    schema: "fault-level-ir.schema.json"
+  - kind: jsonpath_equals
+    path: "$.jurisdiction"
+    expected: "GB"
+  - kind: jsonpath_present
+    path: "$.cascade[?(@.node_id=='TX-1')].ifault_ka_max"
+  - kind: jsonpath_lte
+    path: "$.cascade[?(@.node_id=='CU-G.C01')].ifault_ka_max"
+    field_compared_to: "$.cascade[?(@.node_id=='CU-G')].ifault_ka_max"
+    note: "Monotonicity — final circuit Ifault < CU incoming Ifault"
+  - kind: invariant_passes
+    invariant: "INV-4"
+    note: "Monotonicity downstream"
+  - kind: clause_cited
+    clause_pattern: "^IEC 60909-0:2016"
+    minimum_count: 2
+
+expected_status: "pass"
