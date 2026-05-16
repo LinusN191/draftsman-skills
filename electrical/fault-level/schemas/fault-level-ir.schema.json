@@ -1,0 +1,159 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/fault-level/schemas/fault-level-ir.schema.json",
+  "title": "Fault-Level IR (IEC 60909 cascade)",
+  "description": "Intermediate Representation for the fault-level skill. One IR per project. Carries cascade tree + source modelling + per-node Ik\"/ipk/X-R + selectivity implications + rationale.",
+  "type": "object",
+  "required": [
+    "drawing_type",
+    "version",
+    "meta",
+    "jurisdiction",
+    "project_supply",
+    "sources",
+    "cascade",
+    "selectivity_implications",
+    "compliance_summary",
+    "rationale"
+  ],
+  "properties": {
+    "drawing_type": { "const": "fault_level_study" },
+    "version":      { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "meta": {
+      "type": "object",
+      "required": ["project_id", "skill_version", "produced_at"],
+      "properties": {
+        "project_id":    { "type": "string" },
+        "skill_version": { "type": "string" },
+        "produced_at":   { "type": "string", "format": "date-time" },
+        "consumed_intents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["intent_type", "intent_version", "produced_by"],
+            "properties": {
+              "intent_type":    { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+              "intent_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+              "produced_by":    { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "jurisdiction": { "enum": ["GB", "EU", "INT", "US"] },
+    "project_supply": {
+      "type": "object",
+      "required": ["lv_source"],
+      "properties": {
+        "hv_side": {
+          "type": "object",
+          "properties": {
+            "voltage_kv":                    { "type": "number", "exclusiveMinimum": 1.0 },
+            "network_arrangement":           { "enum": ["radial", "ring_main", "interconnected_mesh"] },
+            "declared_pscc_at_primary_ka":   { "type": "number", "minimum": 0 },
+            "x_over_r_at_primary":           { "type": "number", "minimum": 0 }
+          }
+        },
+        "lv_source": {
+          "type": "object",
+          "required": ["type", "voltage_v"],
+          "properties": {
+            "type":                       { "enum": ["utility_transformer", "generator", "ups", "mixed"] },
+            "kva":                        { "type": "number", "minimum": 0 },
+            "voltage_v":                  { "type": "integer", "enum": [120, 208, 230, 240, 277, 400, 415, 480] },
+            "z_percent":                  { "type": "number", "minimum": 0, "maximum": 30 },
+            "x_over_r":                   { "type": "number", "minimum": 0 },
+            "near_or_far_from_generator": { "enum": ["near", "far"] }
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind"],
+        "properties": {
+          "id":                       { "type": "string" },
+          "kind":                     { "enum": ["utility", "generator", "ups", "motor_aggregate"] },
+          "contribution_method":      { "enum": ["constant", "subtransient_decrement", "current_limited", "locked_rotor"] },
+          "ifault_contribution_ka":   { "type": "number", "minimum": 0 },
+          "decrement_profile":        { "type": "object" }
+        }
+      }
+    },
+    "cascade": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["node_id", "node_kind"],
+        "properties": {
+          "node_id":             { "type": "string", "description": "Path-like id, e.g. 'HV-1', 'TX-1', 'MSB-1', 'MSB-1.F01.DB-L1.C03'" },
+          "parent_node_id":      { "type": ["string", "null"] },
+          "node_kind":           { "enum": ["hv_source", "transformer_secondary", "board_incoming", "board_busbar", "board_outgoing_feeder", "final_circuit_endpoint"] },
+          "designation":         { "type": "string" },
+          "feeder": {
+            "type": "object",
+            "properties": {
+              "length_m":           { "type": "number", "exclusiveMinimum": 0 },
+              "csa_mm2_or_awg":     { "type": "string" },
+              "material":           { "enum": ["copper", "aluminium"] },
+              "insulation":         { "enum": ["pvc_70", "xlpe_90", "epr_90", "thermosetting_90", "thwn_75", "thhn_90"] }
+            }
+          },
+          "z_addition_ohm":      {
+            "type": "object",
+            "properties": {
+              "r": { "type": "number", "minimum": 0 },
+              "x": { "type": "number", "minimum": 0 }
+            }
+          },
+          "ifault_ka_max":       { "type": "number", "minimum": 0, "description": "Ik\"max with c=1.05" },
+          "ifault_ka_min":       { "type": "number", "minimum": 0, "description": "Ik\"min with c=0.95" },
+          "ipk_ka":              { "type": "number", "minimum": 0, "description": "κ × √2 × Ik\"max" },
+          "x_over_r_at_node":    { "type": "number", "minimum": 0 },
+          "z_total_ohm":         { "type": "number", "minimum": 0 },
+          "tool_call_pending":   { "type": "boolean", "description": "true when calc.iec60909_cascade has not yet executed" }
+        }
+      }
+    },
+    "selectivity_implications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["breaker_id", "ifault_at_breaker_ka", "adequate"],
+        "properties": {
+          "breaker_id":             { "type": "string" },
+          "breaker_rating_a":       { "type": "integer" },
+          "breaker_icn_ka":         { "type": "number", "minimum": 0 },
+          "ifault_at_breaker_ka":   { "type": "number", "minimum": 0 },
+          "adequate":               { "type": "boolean" },
+          "recommendation":         { "type": "string" }
+        }
+      }
+    },
+    "compliance_summary": {
+      "type": "object",
+      "required": ["compliant", "non_compliance_flags", "assumptions"],
+      "properties": {
+        "compliant":            { "type": "boolean" },
+        "non_compliance_flags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message":      { "type": "string" },
+              "code_clause":  { "type": "string" },
+              "severity":     { "enum": ["critical", "warning", "info"] }
+            }
+          }
+        },
+        "assumptions":          { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "drawn_as_symbols": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" } },
+    "flags":            { "type": "array", "items": { "type": "string" } },
+    "rationale":        { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
+  }
+}
