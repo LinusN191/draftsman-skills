@@ -1,0 +1,71 @@
+{
+  "_title": "Synchronous Generator Subtransient / Transient / Synchronous Reactance Reference",
+  "_version": "1.0.0",
+  "_reference": "IEC 60909-0:2016 §4.4 + §3.5; IEC 60034-1 (rotating machines); IEC 60909-2:2008 Annex C (typical generator data)",
+  "purpose": "Default X\"d, X'd, Xd values for engineer use when no manufacturer data is available. Real designs MUST use manufacturer data — these are last-resort defaults.",
+  "table_typical_values_per_unit": [
+    {
+      "machine_type": "salient_pole_with_damper_windings",
+      "typical_rating_kva": "10 - 1000",
+      "x_d_doubleprime_pu": 0.12,
+      "x_d_prime_pu":      0.20,
+      "x_d_pu":            1.10,
+      "_application": "Small standby gensets (≤ 1 MVA), engine-driven"
+    },
+    {
+      "machine_type": "salient_pole_with_damper_windings_medium",
+      "typical_rating_kva": "1000 - 5000",
+      "x_d_doubleprime_pu": 0.15,
+      "x_d_prime_pu":      0.25,
+      "x_d_pu":            1.20,
+      "_application": "Medium standby gensets (1-5 MVA) — large commercial, healthcare"
+    },
+    {
+      "machine_type": "cylindrical_rotor_no_damper",
+      "typical_rating_kva": "5000 - 20000",
+      "x_d_doubleprime_pu": 0.18,
+      "x_d_prime_pu":      0.28,
+      "x_d_pu":            1.50,
+      "_application": "Large standby + cogeneration units (5-20 MVA)"
+    },
+    {
+      "machine_type": "turbogenerator",
+      "typical_rating_kva": "20000 +",
+      "x_d_doubleprime_pu": 0.20,
+      "x_d_prime_pu":      0.30,
+      "x_d_pu":            1.80,
+      "_application": "Power-station turbogenerators (out of building services scope)"
+    }
+  ],
+  "decrement_factor_mu": {
+    "_reference": "IEC 60909-0:2016 §3.5 Table 4",
+    "purpose": "Apply to Ik\" to obtain breaking current Ib at contact-separation time tmin",
+    "_typical_values": {
+      "tmin_30ms": 0.85,
+      "tmin_50ms": 0.80,
+      "tmin_90ms": 0.75,
+      "tmin_250ms": 0.68
+    },
+    "engineering_note": "tmin depends on protection device clearing time. MCCB ≈ 30-50 ms; ACB with short delay ≈ 50-100 ms; with definite-time intentional delay ≈ 200-500 ms."
+  },
+  "steady_state_lambda": {
+    "_reference": "IEC 60909-0:2016 §3.5 Table 5",
+    "purpose": "Steady-state short-circuit current as λ × I_rated",
+    "_typical_values": {
+      "machine_with_avr_overshoot": 2.0,
+      "machine_with_avr_normal": 1.5,
+      "machine_without_avr": 0.4
+    }
+  },
+  "warnings": [
+    "These are INDICATIVE typical values. Always use manufacturer data sheet for actual generator.",
+    "Subtransient X\"d defines first-cycle Ik\" — drives breaker breaking-capacity check on gen-fed side.",
+    "Decrement matters when breaking time tmin > 30 ms — for fast MCCBs near-generator approximation simplifies to FG."
+  ],
+  "cross_reference": {
+    "consumed_by": [
+      "electrical/fault-level (generator Step 6 generator modelling)",
+      "shared/calculations/electrical/iec60909-cascade.json (source generator inputs)"
+    ]
+  }
+}

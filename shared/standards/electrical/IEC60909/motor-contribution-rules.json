@@ -1,0 +1,54 @@
+{
+  "_title": "IEC 60909-0 §4.5 — Induction Motor Short-Circuit Contribution Rules",
+  "_version": "1.0.0",
+  "_reference": "IEC 60909-0:2016 §4.5 + §4.5.1; IEC 60909-0:2016 amendment (2016) tightened threshold from 5% to 1%",
+  "purpose": "Determine when and how to include running induction motor back-feed into the cascade Ik\".",
+  "principle": "Running induction motors store kinetic energy in the rotor. On a downstream fault, the motor briefly back-feeds via its subtransient reactance (locked-rotor reactance), contributing Ik\"_motor for ~1-2 cycles before mechanical decay dominates.",
+
+  "inclusion_threshold": {
+    "_reference": "IEC 60909-0:2016 §4.5.1.2 (2016 amendment)",
+    "rule": "Include motor contribution in Ik\" if: Σ(P_motors_rated_kW) ≥ 1% × Sk\"_at_fault",
+    "old_threshold_2001": "Pre-2016 amendment used 5% — many existing studies still cite this",
+    "rationale": "For non-industrial sites (offices, retail, residential), motor load is small fraction of supply — exclude. For industrial with material motor load, must include."
+  },
+
+  "calculation_formula": {
+    "ik_doubleprime_motor": "Ik\"_motor = ILR × I_rated_motor",
+    "where": {
+      "ILR": "Locked-rotor current ratio. NEMA Code Letters: B=3.5×, F=5.5×, K=8.5×. IEC Letters: H=4.5×, K=6.5×, L=8×. Typical: 5-7 × FLC for general-purpose motors.",
+      "I_rated_motor": "Motor full-load current at rated voltage"
+    },
+    "aggregate_contribution": "Σ Ik\"_motor_i for all running motors connected at or downstream of fault location. Sum is to FIRST CYCLE only — motors decay rapidly."
+  },
+
+  "calculation_simplification_when_motors_dispersed": {
+    "method": "When motors are spread across many small loads (e.g. air handling units 5-20 kW each in a commercial building):",
+    "simplified_formula": "Ik\"_motor_total ≈ ILR_avg × (Σ P_motors_kW / V) / √3",
+    "default_ILR_avg": "5 (representing IEC Letter K — common for HVAC fans, pumps, compressors)"
+  },
+
+  "decrement_after_first_cycle": {
+    "rule": "Motor contribution decays within 1-2 cycles (~20-40 ms at 50 Hz)",
+    "ib_motor_at_breaking_time": "Ib_motor ≈ 0.5 × Ik\"_motor for tmin ≥ 30 ms",
+    "ik_motor_steady_state": "Zero — motors do not sustain steady-state fault current"
+  },
+
+  "exclusions": [
+    "Motors stopped or in standby — no rotational kinetic energy, no contribution",
+    "VFD-driven motors — VFD blocks back-feed via DC link",
+    "Motors fed via soft-starter in run mode — DOL back-feed only (soft-starter is bypassed in run)"
+  ],
+
+  "warnings": [
+    "Motor contribution increases Ik\" by 10-30% in industrial sites with material motor load",
+    "Ignoring motor contribution can under-rate breakers near MCCs and motor distribution boards",
+    "Conversely, over-counting non-running motors (only counting nameplate) gives unrealistic worst case — use realistic running motor load"
+  ],
+
+  "cross_reference": {
+    "consumed_by": [
+      "electrical/fault-level (generator Step 8 induction motor contribution)",
+      "shared/calculations/electrical/iec60909-cascade.json (motor source path)"
+    ]
+  }
+}
