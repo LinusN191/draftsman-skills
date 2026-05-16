@@ -1,0 +1,34 @@
+{
+  "$schema": "../../shared/schemas/core/inputs.schema.json",
+  "skill": "fault-level",
+  "version": "1.0.0",
+  "items": [
+    { "id": "jurisdiction", "label": "Project jurisdiction", "hint": "GB=BS 7671 + IEC 60909; EU/INT=IEC 60364 + IEC 60909; US=NFPA 70 + IEC 60909 method.", "answer_type": "enum", "options": ["GB", "EU", "INT", "US"], "required": true, "project_fact_candidate": true },
+    { "id": "project_id", "label": "Project identifier", "answer_type": "text", "required": true, "validator": "non_empty_text", "project_fact_candidate": true },
+    { "id": "supply_voltage_v", "label": "LV nominal voltage (V)", "answer_type": "enum", "options": ["120", "208", "230", "240", "277", "400", "415", "480"], "required": true, "project_fact_candidate": true },
+    { "id": "hv_side_present", "label": "Project has HV (>1 kV) primary supply?", "hint": "Yes if utility transformer is on site (private substation). No if fed from existing LV service.", "answer_type": "boolean", "default": false, "required": true, "project_fact_candidate": true },
+    { "id": "hv_voltage_kv", "label": "HV primary voltage (kV)", "answer_type": "enum", "options": ["6.6", "11", "12.47", "22", "33", "66"], "required": false, "depends_on": ["hv_side_present"], "project_fact_candidate": true },
+    { "id": "hv_pscc_at_primary_ka", "label": "DNO-declared PSCC at HV primary (kA)", "answer_type": "float", "required": false, "validator": "positive_float", "depends_on": ["hv_side_present"] },
+    { "id": "primary_transformer_kva", "label": "Primary transformer rating (kVA)", "answer_type": "int", "required": false, "validator": "positive_int", "project_fact_candidate": true },
+    { "id": "primary_transformer_zpu_pct", "label": "Primary transformer Z (% impedance)", "hint": "From transformer nameplate. Typical 4-7% for distribution.", "answer_type": "float", "required": false, "validator": "positive_float", "depends_on": ["primary_transformer_kva"] },
+    { "id": "primary_transformer_xover_r", "label": "Primary transformer X/R ratio", "hint": "Typical 5-10 for distribution transformers.", "answer_type": "float", "default": 6, "required": false },
+    { "id": "standby_generator_present", "label": "Project includes standby generator?", "answer_type": "boolean", "default": false, "required": true, "project_fact_candidate": true },
+    { "id": "standby_generator_kva", "label": "Standby generator rating (kVA)", "answer_type": "int", "required": false, "validator": "positive_int", "depends_on": ["standby_generator_present"] },
+    { "id": "ups_present", "label": "Project includes UPS / battery inverter?", "answer_type": "boolean", "default": false, "required": true, "project_fact_candidate": true },
+    { "id": "ups_kva", "label": "UPS rating (kVA)", "answer_type": "int", "required": false, "depends_on": ["ups_present"] },
+    { "id": "motor_load_kw", "label": "Total connected motor load (kW)", "hint": "Sum of all running induction motors. If > 1% of source Sk\" → motor back-feed material. Industrial sites only typically.", "answer_type": "float", "default": 0, "required": false, "validator": "positive_float" },
+    { "id": "cascade_topology_source", "label": "Cascade topology source", "hint": "Where the cascade tree comes from. Prefer db-layout intent; engineer-declared as fallback.", "answer_type": "enum", "options": ["db_layout_rollup_intent", "engineer_declared"], "required": true, "default": "db_layout_rollup_intent" },
+    { "id": "cascade_engineer_declared", "label": "Engineer-declared cascade tree (JSON)", "hint": "Required if cascade_topology_source = engineer_declared. JSON array of {node_id, parent_node_id, node_kind, feeder{...}}.", "answer_type": "struct_list", "required": false, "item_schema": {
+        "type": "object",
+        "required": ["node_id", "node_kind"],
+        "properties": {
+          "node_id":         { "type": "string" },
+          "parent_node_id":  { "type": "string" },
+          "node_kind":       { "enum": ["hv_source", "transformer_secondary", "board_incoming", "board_busbar", "board_outgoing_feeder", "final_circuit_endpoint"] },
+          "designation":     { "type": "string" },
+          "feeder":          { "type": "object" }
+        }
+      }
+    }
+  ]
+}
