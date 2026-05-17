@@ -1,0 +1,58 @@
+eval_id: eval-02-tpn-commercial-feeders-cumulative-vd
+category: edge_case
+skill: cable-sizing
+skill_version: 1.0.0
+description: |
+  400V TPN commercial cascade: TX → MSB → riser feeder → DB-L1 → lighting final circuits.
+  Tests cumulative-Vd binding on a deep cascade where each segment alone is fine but
+  the sum exceeds the lighting limit at the leaf.
+input:
+  jurisdiction: GB
+  project_supply:
+    voltage_v: 400
+    phases: three
+    frequency_hz: 50
+    earthing_system: TN-S
+  consumed_intents:
+    db-layout-rollup: { tool_call_pending: false }
+  circuits_declared:
+    - id: "MSB-1"
+      parent_node_id: null
+      node_kind: service_entrance
+      designation: "Main MSB 2000A incomer"
+      load: { ib_a: 1450, in_a: 2000, load_type: mixed, phases: three_plus_n }
+      route: { length_m: 12, installation_method: F, ambient_c: 30, grouping_count: 1 }
+    - id: "MSB-1.F03"
+      parent_node_id: "MSB-1"
+      node_kind: feeder
+      designation: "Riser feeder to Level 3 DB-L1"
+      load: { ib_a: 180, in_a: 250, load_type: mixed, phases: three_plus_n }
+      route: { length_m: 65, installation_method: E, ambient_c: 35, grouping_count: 2 }
+    - id: "MSB-1.F03.DB-L1"
+      parent_node_id: "MSB-1.F03"
+      node_kind: sub_feeder
+      designation: "DB-L1 incoming"
+      load: { ib_a: 45, in_a: 63, load_type: mixed, phases: three_plus_n }
+      route: { length_m: 8, installation_method: C, ambient_c: 30, grouping_count: 1 }
+    - id: "MSB-1.F03.DB-L1.C07"
+      parent_node_id: "MSB-1.F03.DB-L1"
+      node_kind: final_circuit
+      designation: "Lighting circuit L1-C07 long run"
+      load: { ib_a: 8.5, in_a: 10, load_type: lighting, phases: single }
+      route: { length_m: 48, installation_method: B1, ambient_c: 30, grouping_count: 2 }
+expected:
+  per_node:
+    - node_id: "MSB-1.F03.DB-L1.C07"
+      binding_constraint: "vd_cumulative"
+      walk_up_trail_min_length: 2
+      vd_limit_pct: 3.0
+      vd_limit_source_contains: "App 12"
+  notes: |
+    Critical: even though the 48m final circuit at 1.5 mm² gives ~2.2% segment Vd
+    (under the 3% lighting limit on its own), cumulative Vd from MSB+riser+sub-feeder
+    pushes it over. Expected upsize to 2.5 mm² or higher.
+pass_criteria:
+  - "MSB-1.F03.DB-L1.C07 binding_constraint == 'vd_cumulative'"
+  - "walk_up_trail records the rejection at the smaller csa with vd_cumulative_pct > 3.0"
+  - "vd_cumulative_pct at MSB-1.F03.DB-L1.C07 ≤ 3.0 in final accepted selection"
+  - "Cumulative math: vd_cumulative_pct at node N == sum of vd_segment_pct from root to N"
