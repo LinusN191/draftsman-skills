@@ -1,0 +1,123 @@
+{
+  "clause_ref": "IEC-60364-5-52 2009:Annex-B",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-from-iec-reference-needs-second-source-pair",
+  "_verification_note": "Numbers transcribed from a representative IEC 60364-5-52 Annex B reference. Cross-checked against BS 7671 Appendix 4 mV/A/m values (which imply equivalent loop R): 1.5mm² Cu XLPE BS-7671 mVAm=29 → conductor R=14.5 Ω/km at the BS-tabulated reference temperature, which matches this file's PVC@70°C value rather than XLPE@90°C. The thermal-correction ratio R(90°C)/R(70°C) = (1+0.00393×70)/(1+0.00393×50) = 1.065 confirms 15.4/14.5 = 1.062, so the brief's PVC/XLPE numerical split is internally consistent. BS 7671 Table 4D2B appears to tabulate XLPE at the PVC reference temperature — a known BS/IEC harmonisation difference. Recommend a second-source pair check against the published IEC 60364-5-52:2009+A1:2011 Annex B PDF before downstream skills rely on tight tolerances.",
+  "_title": "IEC 60364-5-52 Annex B — Cable AC Resistance and Reactance per Unit Length",
+  "_version": "1.0.0",
+  "_reference": "IEC 60364-5-52:2009+A1:2011 Annex B, Tables B.52.1 to B.52.4. PVC and XLPE insulated cables; conductor temperature 70°C (PVC) / 90°C (XLPE). 50 Hz frequency. Stranded class-2 conductors per IEC 60228.",
+  "_purpose": "Source of truth for calc.iec60909_cascade and calc.voltage_drop on IEC/BS jurisdictions. Runtime engine reads {csa × material × installation_method × insulation} → (R per km, X per km).",
+  "_temperature_correction": "Tabulated R values are at 70°C (PVC) / 90°C (XLPE). For other operating temperatures, apply R(θ) = R_table × (1 + α × (θ - θ_table)) where α = 0.00393 K⁻¹ Cu, 0.00403 K⁻¹ Al.",
+  "_units": {
+    "r_per_km_ohm": "ohms per kilometre at tabulated temperature (50 Hz AC, stranded class-2)",
+    "x_per_km_ohm": "ohms per kilometre at 50 Hz",
+    "x_per_km_ohm_touching": "reactance for trefoil/touching arrangement (typical multicore + sheath-contact singles)",
+    "x_per_km_ohm_spaced": "reactance for spaced arrangement (singles laid flat or vertical, one diameter apart)"
+  },
+  "_x_method_factor_note": "Engine should use installation_method to select the X column. For the simple cascade case (touching trefoil or sheath-contact), use 'x_per_km_ohm_touching'. For free-air singles with spacing ≥1×diameter, use 'x_per_km_ohm_spaced'.",
+  "_x_independent_of_installation": false,
+
+  "copper_pvc_70c": {
+    "_reference": "IEC 60364-5-52 Annex B Table B.52.1 — Cu/PVC, 70°C conductor",
+    "_installation_methods": "A1/A2/B1/B2 (in conduit) and C (clipped direct) — R column applies to all. X column varies by trefoil-touching vs spaced.",
+    "table": [
+      {"csa_mm2": 1.5,  "r_per_km_ohm": 14.5,   "x_per_km_ohm_touching": 0.115, "x_per_km_ohm_spaced": 0.140},
+      {"csa_mm2": 2.5,  "r_per_km_ohm": 8.87,   "x_per_km_ohm_touching": 0.110, "x_per_km_ohm_spaced": 0.135},
+      {"csa_mm2": 4,    "r_per_km_ohm": 5.52,   "x_per_km_ohm_touching": 0.107, "x_per_km_ohm_spaced": 0.130},
+      {"csa_mm2": 6,    "r_per_km_ohm": 3.69,   "x_per_km_ohm_touching": 0.100, "x_per_km_ohm_spaced": 0.125},
+      {"csa_mm2": 10,   "r_per_km_ohm": 2.19,   "x_per_km_ohm_touching": 0.094, "x_per_km_ohm_spaced": 0.118},
+      {"csa_mm2": 16,   "r_per_km_ohm": 1.38,   "x_per_km_ohm_touching": 0.090, "x_per_km_ohm_spaced": 0.113},
+      {"csa_mm2": 25,   "r_per_km_ohm": 0.870,  "x_per_km_ohm_touching": 0.086, "x_per_km_ohm_spaced": 0.108},
+      {"csa_mm2": 35,   "r_per_km_ohm": 0.627,  "x_per_km_ohm_touching": 0.083, "x_per_km_ohm_spaced": 0.103},
+      {"csa_mm2": 50,   "r_per_km_ohm": 0.463,  "x_per_km_ohm_touching": 0.082, "x_per_km_ohm_spaced": 0.101},
+      {"csa_mm2": 70,   "r_per_km_ohm": 0.321,  "x_per_km_ohm_touching": 0.080, "x_per_km_ohm_spaced": 0.097},
+      {"csa_mm2": 95,   "r_per_km_ohm": 0.232,  "x_per_km_ohm_touching": 0.079, "x_per_km_ohm_spaced": 0.094},
+      {"csa_mm2": 120,  "r_per_km_ohm": 0.184,  "x_per_km_ohm_touching": 0.078, "x_per_km_ohm_spaced": 0.092},
+      {"csa_mm2": 150,  "r_per_km_ohm": 0.150,  "x_per_km_ohm_touching": 0.077, "x_per_km_ohm_spaced": 0.090},
+      {"csa_mm2": 185,  "r_per_km_ohm": 0.121,  "x_per_km_ohm_touching": 0.076, "x_per_km_ohm_spaced": 0.088},
+      {"csa_mm2": 240,  "r_per_km_ohm": 0.0933, "x_per_km_ohm_touching": 0.075, "x_per_km_ohm_spaced": 0.086},
+      {"csa_mm2": 300,  "r_per_km_ohm": 0.0741, "x_per_km_ohm_touching": 0.074, "x_per_km_ohm_spaced": 0.085},
+      {"csa_mm2": 400,  "r_per_km_ohm": 0.0573, "x_per_km_ohm_touching": 0.073, "x_per_km_ohm_spaced": 0.083}
+    ]
+  },
+
+  "copper_xlpe_90c": {
+    "_reference": "IEC 60364-5-52 Annex B Table B.52.2 — Cu/XLPE, 90°C conductor",
+    "_note": "R values ~6.5% higher than 70°C PVC due to operating temperature (1+α×Δθ = 1+0.00393×20 = 1.079; tabulated stranded-class-2 with AC skin/proximity effect ≈1.062-1.065). X values identical to PVC (geometric).",
+    "table": [
+      {"csa_mm2": 1.5,  "r_per_km_ohm": 15.4,   "x_per_km_ohm_touching": 0.115, "x_per_km_ohm_spaced": 0.140},
+      {"csa_mm2": 2.5,  "r_per_km_ohm": 9.40,   "x_per_km_ohm_touching": 0.110, "x_per_km_ohm_spaced": 0.135},
+      {"csa_mm2": 4,    "r_per_km_ohm": 5.84,   "x_per_km_ohm_touching": 0.107, "x_per_km_ohm_spaced": 0.130},
+      {"csa_mm2": 6,    "r_per_km_ohm": 3.91,   "x_per_km_ohm_touching": 0.100, "x_per_km_ohm_spaced": 0.125},
+      {"csa_mm2": 10,   "r_per_km_ohm": 2.32,   "x_per_km_ohm_touching": 0.094, "x_per_km_ohm_spaced": 0.118},
+      {"csa_mm2": 16,   "r_per_km_ohm": 1.47,   "x_per_km_ohm_touching": 0.090, "x_per_km_ohm_spaced": 0.113},
+      {"csa_mm2": 25,   "r_per_km_ohm": 0.927,  "x_per_km_ohm_touching": 0.086, "x_per_km_ohm_spaced": 0.108},
+      {"csa_mm2": 35,   "r_per_km_ohm": 0.668,  "x_per_km_ohm_touching": 0.083, "x_per_km_ohm_spaced": 0.103},
+      {"csa_mm2": 50,   "r_per_km_ohm": 0.494,  "x_per_km_ohm_touching": 0.082, "x_per_km_ohm_spaced": 0.101},
+      {"csa_mm2": 70,   "r_per_km_ohm": 0.342,  "x_per_km_ohm_touching": 0.080, "x_per_km_ohm_spaced": 0.097},
+      {"csa_mm2": 95,   "r_per_km_ohm": 0.247,  "x_per_km_ohm_touching": 0.079, "x_per_km_ohm_spaced": 0.094},
+      {"csa_mm2": 120,  "r_per_km_ohm": 0.196,  "x_per_km_ohm_touching": 0.078, "x_per_km_ohm_spaced": 0.092},
+      {"csa_mm2": 150,  "r_per_km_ohm": 0.160,  "x_per_km_ohm_touching": 0.077, "x_per_km_ohm_spaced": 0.090},
+      {"csa_mm2": 185,  "r_per_km_ohm": 0.129,  "x_per_km_ohm_touching": 0.076, "x_per_km_ohm_spaced": 0.088},
+      {"csa_mm2": 240,  "r_per_km_ohm": 0.0994, "x_per_km_ohm_touching": 0.075, "x_per_km_ohm_spaced": 0.086},
+      {"csa_mm2": 300,  "r_per_km_ohm": 0.0789, "x_per_km_ohm_touching": 0.074, "x_per_km_ohm_spaced": 0.085},
+      {"csa_mm2": 400,  "r_per_km_ohm": 0.0610, "x_per_km_ohm_touching": 0.073, "x_per_km_ohm_spaced": 0.083}
+    ]
+  },
+
+  "aluminium_pvc_70c": {
+    "_reference": "IEC 60364-5-52 Annex B Table B.52.3 — Al/PVC, 70°C conductor",
+    "_note": "Aluminium R approximately 1.64× copper at same CSA (ρ_Al/ρ_Cu ≈ 1.64). X values identical to copper (geometric). Aluminium below 16mm² not generally tabulated — use copper instead.",
+    "table": [
+      {"csa_mm2": 16,   "r_per_km_ohm": 2.27,   "x_per_km_ohm_touching": 0.090, "x_per_km_ohm_spaced": 0.113},
+      {"csa_mm2": 25,   "r_per_km_ohm": 1.43,   "x_per_km_ohm_touching": 0.086, "x_per_km_ohm_spaced": 0.108},
+      {"csa_mm2": 35,   "r_per_km_ohm": 1.03,   "x_per_km_ohm_touching": 0.083, "x_per_km_ohm_spaced": 0.103},
+      {"csa_mm2": 50,   "r_per_km_ohm": 0.761,  "x_per_km_ohm_touching": 0.082, "x_per_km_ohm_spaced": 0.101},
+      {"csa_mm2": 70,   "r_per_km_ohm": 0.527,  "x_per_km_ohm_touching": 0.080, "x_per_km_ohm_spaced": 0.097},
+      {"csa_mm2": 95,   "r_per_km_ohm": 0.380,  "x_per_km_ohm_touching": 0.079, "x_per_km_ohm_spaced": 0.094},
+      {"csa_mm2": 120,  "r_per_km_ohm": 0.302,  "x_per_km_ohm_touching": 0.078, "x_per_km_ohm_spaced": 0.092},
+      {"csa_mm2": 150,  "r_per_km_ohm": 0.246,  "x_per_km_ohm_touching": 0.077, "x_per_km_ohm_spaced": 0.090},
+      {"csa_mm2": 185,  "r_per_km_ohm": 0.199,  "x_per_km_ohm_touching": 0.076, "x_per_km_ohm_spaced": 0.088},
+      {"csa_mm2": 240,  "r_per_km_ohm": 0.153,  "x_per_km_ohm_touching": 0.075, "x_per_km_ohm_spaced": 0.086},
+      {"csa_mm2": 300,  "r_per_km_ohm": 0.122,  "x_per_km_ohm_touching": 0.074, "x_per_km_ohm_spaced": 0.085},
+      {"csa_mm2": 400,  "r_per_km_ohm": 0.0940, "x_per_km_ohm_touching": 0.073, "x_per_km_ohm_spaced": 0.083}
+    ]
+  },
+
+  "aluminium_xlpe_90c": {
+    "_reference": "IEC 60364-5-52 Annex B Table B.52.4 — Al/XLPE, 90°C conductor",
+    "_note": "Aluminium XLPE — combined uplift for both material and temperature (Al base × 1.065 thermal).",
+    "table": [
+      {"csa_mm2": 16,   "r_per_km_ohm": 2.41,   "x_per_km_ohm_touching": 0.090, "x_per_km_ohm_spaced": 0.113},
+      {"csa_mm2": 25,   "r_per_km_ohm": 1.52,   "x_per_km_ohm_touching": 0.086, "x_per_km_ohm_spaced": 0.108},
+      {"csa_mm2": 35,   "r_per_km_ohm": 1.10,   "x_per_km_ohm_touching": 0.083, "x_per_km_ohm_spaced": 0.103},
+      {"csa_mm2": 50,   "r_per_km_ohm": 0.811,  "x_per_km_ohm_touching": 0.082, "x_per_km_ohm_spaced": 0.101},
+      {"csa_mm2": 70,   "r_per_km_ohm": 0.562,  "x_per_km_ohm_touching": 0.080, "x_per_km_ohm_spaced": 0.097},
+      {"csa_mm2": 95,   "r_per_km_ohm": 0.405,  "x_per_km_ohm_touching": 0.079, "x_per_km_ohm_spaced": 0.094},
+      {"csa_mm2": 120,  "r_per_km_ohm": 0.322,  "x_per_km_ohm_touching": 0.078, "x_per_km_ohm_spaced": 0.092},
+      {"csa_mm2": 150,  "r_per_km_ohm": 0.262,  "x_per_km_ohm_touching": 0.077, "x_per_km_ohm_spaced": 0.090},
+      {"csa_mm2": 185,  "r_per_km_ohm": 0.212,  "x_per_km_ohm_touching": 0.076, "x_per_km_ohm_spaced": 0.088},
+      {"csa_mm2": 240,  "r_per_km_ohm": 0.163,  "x_per_km_ohm_touching": 0.075, "x_per_km_ohm_spaced": 0.086},
+      {"csa_mm2": 300,  "r_per_km_ohm": 0.130,  "x_per_km_ohm_touching": 0.074, "x_per_km_ohm_spaced": 0.085},
+      {"csa_mm2": 400,  "r_per_km_ohm": 0.100,  "x_per_km_ohm_touching": 0.073, "x_per_km_ohm_spaced": 0.083}
+    ]
+  },
+
+  "_consuming_skills": [
+    "calc.iec60909_cascade (downstream of source impedance in cascade path)",
+    "calc.voltage_drop (replaces the prose 'X ≈ 0.07-0.10 mΩ/m' approximation in part5-52-voltage-drop.json with per-CSA values)",
+    "cable-sizing skill (selectivity check input)"
+  ],
+
+  "_cross_references": {
+    "us_equivalent": "shared/standards/electrical/NFPA70/chapter9-tables.json::Table_9_Alternating_Current_Resistance_and_Reactance_for_600V_Cables",
+    "ampacity_companion_copper": "shared/standards/electrical/IEC60364/part5-52-cable-ratings-copper.json",
+    "ampacity_companion_aluminium": "shared/standards/electrical/IEC60364/part5-52-cable-ratings-aluminium.json",
+    "bs_7671_voltage_drop_companion": "shared/standards/electrical/BS7671/appendix12-voltage-drop.json (mV/A/m form, BS-harmonised values)"
+  },
+
+  "_known_discrepancies": [
+    "BS 7671 Table 4D2B XLPE mV/A/m values, when converted to conductor R, match this file's PVC@70°C column rather than XLPE@90°C column. BS appears to tabulate XLPE at PVC-equivalent reference temperature. Use this IEC file directly for IEC jurisdictions; cross-check before applying BS values in engine flow for tight tolerances."
+  ]
+}
