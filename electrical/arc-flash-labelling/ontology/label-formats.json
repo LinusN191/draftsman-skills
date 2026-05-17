@@ -1,0 +1,52 @@
+{
+  "$schema": "../../../shared/schemas/core/ontology.schema.json",
+  "ontology": "label-formats",
+  "version": "1.0.0",
+  "description": "Enumeration of label formats supported by the arc-flash-labelling skill. Each maps format ID → applicable jurisdictions + standards layer + SVG template + signal-word panel style.",
+  "entries": [
+    {
+      "id": "ansi_z535_4",
+      "label": "ANSI Z535.4:2023 (US format)",
+      "source_standard": "ANSI Z535.4:2023",
+      "default_jurisdictions": ["US"],
+      "signal_word_panel_style": "coloured_background_uppercase",
+      "symbol_panel_style": "lightning_bolt_in_triangle",
+      "svg_template": "templates/ansi-z535-4-label.svg.template",
+      "supplementary_text_language": "English",
+      "note": "Z535.4 is text-driven + coloured signal-word panel. Most US installations use this."
+    },
+    {
+      "id": "iso_7010",
+      "label": "ISO 7010:2019 (international format)",
+      "source_standard": "ISO 7010:2019",
+      "default_jurisdictions": ["EU", "INT"],
+      "signal_word_panel_style": "none (symbol-first)",
+      "symbol_panel_style": "yellow_triangle_w012",
+      "svg_template": "templates/iso-7010-label.svg.template",
+      "supplementary_text_language": "language-flexible (English default)",
+      "note": "ISO 7010 is symbol-first; supplementary text optional. Common in EU + INT."
+    },
+    {
+      "id": "bs_5499",
+      "label": "BS 5499 (UK conventions, ISO 7010 base)",
+      "source_standard": "BS 5499 (multi-part) + ISO 7010 + HSG48",
+      "default_jurisdictions": ["GB"],
+      "signal_word_panel_style": "english_signal_word_supplementary",
+      "symbol_panel_style": "yellow_triangle_w012",
+      "svg_template": "templates/bs-5499-label.svg.template",
+      "supplementary_text_language": "English",
+      "note": "BS 5499 adopts ISO 7010 + adds English signal words + HSG48 framing. Used in UK."
+    },
+    {
+      "id": "restricted_format",
+      "label": "RESTRICTED (DraftsMan extension for IE > 40 cal/cm²)",
+      "source_standard": "DraftsMan extension (NFPA 70E §130.5 + safety convention)",
+      "default_jurisdictions": ["any"],
+      "signal_word_panel_style": "purple_black_banner",
+      "symbol_panel_style": "lightning_bolt_in_triangle + DO_NOT_OPERATE_overlay",
+      "svg_template": "templates/restricted-label.svg.template",
+      "supplementary_text_language": "English",
+      "note": "Safety-critical override — supersedes jurisdiction defaults when IE > 40 cal/cm². Visual treatment intentionally distinct to signal that no standard PPE category applies."
+    }
+  ]
+}

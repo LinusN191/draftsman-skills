@@ -1,0 +1,45 @@
+{
+  "$schema": "../../../shared/schemas/core/ontology.schema.json",
+  "ontology": "signal-words",
+  "version": "1.0.0",
+  "description": "Enumeration of signal words used on arc-flash labels with their colour, severity, and trigger conditions.",
+  "entries": [
+    {
+      "id": "DANGER",
+      "panel_colour": "Safety Red (#E00034)",
+      "severity": "Imminent hazard — death or serious injury if not avoided",
+      "trigger_ppe_category": [3, 4],
+      "trigger_incident_energy_range_cal_per_cm2": [8.0, 40.0]
+    },
+    {
+      "id": "WARNING",
+      "panel_colour": "Safety Orange (#F28900)",
+      "severity": "Could result in death or serious injury",
+      "trigger_ppe_category": [1, 2],
+      "trigger_incident_energy_range_cal_per_cm2": [1.2, 8.0]
+    },
+    {
+      "id": "CAUTION",
+      "panel_colour": "Safety Yellow (#FFD600)",
+      "severity": "Minor or moderate injury risk",
+      "trigger_ppe_category": [],
+      "trigger_incident_energy_range_cal_per_cm2": "below threshold (rare)"
+    },
+    {
+      "id": "NOTICE",
+      "panel_colour": "Safety Blue (#0073CF)",
+      "severity": "Information / no injury risk",
+      "trigger_ppe_category": [],
+      "trigger_incident_energy_range_cal_per_cm2": "not applicable",
+      "use_case": "Property / equipment-policy notices; not arc-flash"
+    },
+    {
+      "id": "RESTRICTED",
+      "panel_colour": "Restricted Purple/Black (#64446E)",
+      "severity": "Above NFPA 70E Cat 4 ceiling — energized work prohibited",
+      "trigger_ppe_category": null,
+      "trigger_incident_energy_range_cal_per_cm2": [40.1, null],
+      "note": "DraftsMan extension; supersedes jurisdiction defaults for IE > 40 cal/cm²"
+    }
+  ]
+}
