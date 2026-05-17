@@ -1,0 +1,45 @@
+eval_id: eval-02-mv-cascade-with-drawout
+category: edge_case
+skill: arc-flash
+skill_version: 1.0.0
+description: |
+  11kV MV switchgear with drawout breakers (HCB electrode config) cascaded to 400V LV.
+  Tests voltage-class crossing (14300V class for MV → 600V class for LV) + interleaved
+  electrode configs (HCB at MV, VCB at LV). Verifies different methods/configs in one cascade.
+input:
+  jurisdiction: INT
+  project_supply: { voltage_v: 11000, phases: three, frequency_hz: 50 }
+  cascade_declared:
+    - id: "MV-SWB"
+      parent_node_id: null
+      node_kind: service_entrance
+      designation: "11 kV switchboard 1600A — drawout breakers"
+      equipment: { type: "drawout switchgear", current_type: ac, voltage_v: 11000 }
+      fault_inputs: { ibf_ka_max: 12, x_over_r: 15 }
+      ocpd_inputs: { ocpd_type: "ACB_with_intentional_delay", t_clear_s: 0.5 }
+      geometry: { working_distance_mm: 910 }
+    - id: "MV-SWB.TX-1.LV-MSB"
+      parent_node_id: "MV-SWB"
+      node_kind: feeder
+      designation: "LV MSB 3200A (downstream of 11kV/400V transformer)"
+      equipment: { type: "LV switchgear", current_type: ac, voltage_v: 400 }
+      fault_inputs: { ibf_ka_max: 35, x_over_r: 8 }
+      ocpd_inputs: { ocpd_type: "ACB_electronic", t_clear_s: 0.3 }
+      geometry: { working_distance_mm: 455 }
+expected:
+  per_node:
+    - node_id: "MV-SWB"
+      voltage_class: "14300V"
+      electrode_config: "HCB"
+      electrode_config_source: "auto_inferred_from_equipment_type"
+      shock_approach_source_contains: "751V to 15 kV"
+      shock_approach_restricted_mm: 660
+    - node_id: "MV-SWB.TX-1.LV-MSB"
+      voltage_class: "600V"
+      electrode_config: "VCB"
+      shock_approach_source_contains: "151V to 750V"
+pass_criteria:
+  - "Two voltage classes resolved correctly (14300V + 600V)"
+  - "Drawout switchgear inferred to HCB; LV switchgear to VCB"
+  - "Each node gets shock-approach from correct voltage row"
+  - "Cascade tree consistent (parent_node_id resolves)"

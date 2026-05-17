@@ -1,0 +1,47 @@
+eval_id: eval-03-coefficient-fallback-trap
+category: validation_trap
+skill: arc-flash
+skill_version: 1.0.0
+description: |
+  IEEE 1584:2018 coefficients are null (pending-verification) for one or more (voltage_class,
+  electrode_config) pairs. Skill MUST fall back to Lee 1982 (or NFPA 70E table) AND record
+  the trail AND emit the LEE_1982_FALLBACK_USED flag. Verifies the fallback chain doesn't
+  silently fail with null IE.
+input:
+  jurisdiction: US
+  project_supply: { voltage_v: 480, phases: three, frequency_hz: 60 }
+  simulated_environment:
+    ieee1584_2018_coefficients_available: false
+    ieee1584_2002_coefficients_available: false
+  cascade_declared:
+    - id: "PNL-A1"
+      parent_node_id: null
+      node_kind: final_circuit
+      designation: "480V panelboard PNL-A1"
+      equipment: { type: "LV panelboard", current_type: ac, voltage_v: 480 }
+      fault_inputs: { ibf_ka_max: 30 }
+      ocpd_inputs: { ocpd_type: "MCCB_thermal_magnetic", t_clear_s: 0.2 }
+      geometry: { working_distance_mm: 455 }
+expected:
+  per_node:
+    - node_id: "PNL-A1"
+      method_applied: "lee_1982"
+      method_fallback_trail_length_min: 3
+      method_fallback_trail_must_contain:
+        - method: "ieee1584_2018"
+          result: "skipped"
+        - method: "ieee1584_2002"
+          result: "skipped"
+        - method: "lee_1982"
+          result: "applied"
+      incident_energy_cal_per_cm2_gt: 1.0
+      arc_flash_boundary_mm_gt: 455
+  non_compliance_flags_must_include:
+    - code: "LEE_1982_FALLBACK_USED"
+      severity: "info"
+pass_criteria:
+  - "method_applied = lee_1982 (not pending — fallback chain works)"
+  - "method_fallback_trail records all skipped attempts with reasons"
+  - "LEE_1982_FALLBACK_USED flag emitted with info severity"
+  - "Lee 1982 produces a numeric IE (conservative upper bound)"
+  - "No silent failure — engineer sees the fallback chain"
