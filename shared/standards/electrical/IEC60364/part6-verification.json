@@ -1,9 +1,12 @@
 {
+  "clause_ref": "IEC-60364-6 2016:Part-6",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60364-6:2016+AMD1:2023 — Verification of Electrical Installations",
   "_basis": "IEC 60364-6 Edition 2 (2016) with Amendment 1 (2023). Covers initial and periodic verification.",
   "_version": "1.0.0",
   "_note": "Verification is the process of confirming that an installation complies with IEC 60364. It comprises two stages: Inspection (visual) and Testing (measurement). Both must be completed and documented before the installation is declared safe for use.",
-
   "types_of_verification": {
     "initial_verification": {
       "description": "Carried out on every new installation, and on additions or alterations to an existing installation.",
@@ -27,47 +30,80 @@
       "output": "Periodic Inspection Report (PIR) or Electrical Installation Condition Report (EICR) — documents any departures from IEC 60364 and classifies them by risk."
     }
   },
-
   "inspection_checks": {
     "_reference": "IEC 60364-6 Clause 61.1",
     "_order": "Inspection must be completed BEFORE testing — testing while installation is damaged or non-compliant may miss hazards or damage test equipment.",
-
     "items_to_inspect": [
       {
         "item": "Methods of protection against electric shock",
-        "checks": ["Basic insulation intact", "Barriers and enclosures in place", "IP ratings appropriate to location", "Supplementary protection (RCDs installed where required)"]
+        "checks": [
+          "Basic insulation intact",
+          "Barriers and enclosures in place",
+          "IP ratings appropriate to location",
+          "Supplementary protection (RCDs installed where required)"
+        ]
       },
       {
         "item": "Protection against thermal effects",
-        "checks": ["Cables clear of heat sources", "No chafing or mechanical damage visible", "Cable entries sealed where required", "Clearance from combustible materials maintained"]
+        "checks": [
+          "Cables clear of heat sources",
+          "No chafing or mechanical damage visible",
+          "Cable entries sealed where required",
+          "Clearance from combustible materials maintained"
+        ]
       },
       {
         "item": "Protection against overcurrent",
-        "checks": ["Protective devices correctly rated", "Devices accessible and labelled", "No bypassed or defeated protection devices", "Fuses of correct rating and type"]
+        "checks": [
+          "Protective devices correctly rated",
+          "Devices accessible and labelled",
+          "No bypassed or defeated protection devices",
+          "Fuses of correct rating and type"
+        ]
       },
       {
         "item": "Selection and erection of equipment",
-        "checks": ["IP ratings correct for location", "Cable types appropriate for environment (temperature, chemicals, UV)", "Cable supports at correct intervals", "Bending radii not violated", "Cable entries protected against mechanical damage"]
+        "checks": [
+          "IP ratings correct for location",
+          "Cable types appropriate for environment (temperature, chemicals, UV)",
+          "Cable supports at correct intervals",
+          "Bending radii not violated",
+          "Cable entries protected against mechanical damage"
+        ]
       },
       {
         "item": "Earthing and bonding",
-        "checks": ["CPC continuity connections visible and correctly made", "Main bonding connections in place for all metallic services", "MET accessible and connections secure", "Earth electrode visible and connected", "CPCs correctly identified (green-yellow)"]
+        "checks": [
+          "CPC continuity connections visible and correctly made",
+          "Main bonding connections in place for all metallic services",
+          "MET accessible and connections secure",
+          "Earth electrode visible and connected",
+          "CPCs correctly identified (green-yellow)"
+        ]
       },
       {
         "item": "Identification and notices",
-        "checks": ["Circuit schedule complete and current", "Warning notices present (voltage, phase, test intervals)", "Distribution board circuits labelled", "Hazard warnings at points of danger"]
+        "checks": [
+          "Circuit schedule complete and current",
+          "Warning notices present (voltage, phase, test intervals)",
+          "Distribution board circuits labelled",
+          "Hazard warnings at points of danger"
+        ]
       },
       {
         "item": "Connection of conductors",
-        "checks": ["No excessive conductor at terminals", "No bare copper visible outside terminals", "Correct polarity at socket outlets (visual check)", "No damage to insulation at terminations"]
+        "checks": [
+          "No excessive conductor at terminals",
+          "No bare copper visible outside terminals",
+          "Correct polarity at socket outlets (visual check)",
+          "No damage to insulation at terminations"
+        ]
       }
     ]
   },
-
   "testing_sequence": {
     "_reference": "IEC 60364-6 Clause 61.3",
     "_critical_order": "Tests must be performed in this order. Subsequent tests assume previous tests passed.",
-
     "test_1_continuity_of_CPC": {
       "description": "Verify the circuit protective conductor (CPC) forms a continuous, low-resistance path from the furthest point of every circuit back to the MET.",
       "method": "Wander lead method: use a calibrated continuity tester (low-resistance ohmmeter). Measure resistance between each exposed-conductive-part and the MET.",
@@ -79,14 +115,12 @@
       },
       "when_not_required": "Not required for consumer units directly supplied at MET where CPC connection is visible and confirmed by inspection."
     },
-
     "test_2_continuity_of_main_bonding": {
       "description": "Verify that all main equipotential bonding conductors are connected and have acceptable resistance.",
       "method": "Measure resistance between each bonded metallic service (water, gas, structural steel) and the MET.",
       "pass_criteria": "Resistance should be consistent with conductor size and route. Typically < 0.05Ω for bonding conductors < 5m long.",
       "note": "Main bonding does not need to be measured on every periodic inspection if it is visually confirmed intact — but must be measured on initial verification."
     },
-
     "test_3_insulation_resistance": {
       "description": "Verify that the insulation between conductors and between live conductors and earth is adequate — no breakdown or tracking paths.",
       "method": "Apply a DC test voltage between live conductors (L and N bridged) and earth, with all loads disconnected. Use a calibrated insulation tester.",
@@ -103,14 +137,12 @@
       },
       "warning": "Never apply insulation test voltage to RCDs, SPDs, electronic ballasts, dimmer switches, or occupancy sensors while connected. Disconnect or bypass before testing."
     },
-
     "test_4_polarity": {
       "description": "Verify that single-pole protective devices are connected in the line (phase) conductor only, and that socket outlets are wired with correct polarity (L to L, N to N, E to E).",
       "method": "Visual inspection and continuity testing between phase and line terminal of each socket outlet/accessory.",
       "pass_criteria": "No N-switched or N-fused connections. All accessories correctly polarised.",
       "critical_for": "MCBs and fuses — if installed in neutral rather than line, they will not protect correctly and may leave live conductors accessible after apparent disconnection."
     },
-
     "test_5_earth_fault_loop_impedance_Zs": {
       "description": "Measure the actual earth fault loop impedance at representative points and verify it does not exceed Zs_max for the protective device protecting each circuit.",
       "method": "Use a calibrated loop impedance tester. Measure Zs at the furthest accessible point of each circuit (or representative circuits on large installations).",
@@ -121,14 +153,12 @@
       },
       "important": "Zs_max values from IEC 60364-4-41 are for HOT conductors (at operating temperature). Measured values are COLD. Must apply temperature correction to be valid."
     },
-
     "test_6_earth_electrode_resistance": {
       "description": "Measure the resistance of the earth electrode to the general mass of earth.",
       "method": "Fall-of-potential (three-electrode) method, or clamp-on method for installations with multiple earth points.",
       "when_required": "Always for TT systems. For TN-C-S, if a supplementary electrode is installed. For IT systems.",
       "pass_criteria": "Ra ≤ 50V / IΔn for the protective device. Absolute maximum 200Ω for effective protection — ideally ≤ 50Ω."
     },
-
     "test_7_RCD_operation": {
       "description": "Verify that every RCD trips within the required time at its rated residual current and does NOT trip at half rated residual current.",
       "method": "Use a calibrated RCD tester. Apply test currents at IΔn and at 0.5 × IΔn. Measure trip time.",
@@ -144,7 +174,6 @@
       "push_button_test": "After electrical test, verify physical push-button operates the mechanical trip mechanism. Document that button was pressed.",
       "note": "An RCD that passes the timed test may still fail if the push-button has never been operated — the mechanical trip can seize. Regular monthly user testing by pressing the button is important."
     },
-
     "test_8_functional_testing": {
       "description": "Verify that the installation works correctly under normal operating conditions.",
       "checks": [
@@ -156,10 +185,8 @@
       ]
     }
   },
-
   "documentation": {
     "_reference": "IEC 60364-6 Clause 62 and 63",
-
     "installation_certificate": {
       "required_information": [
         "Details of installation: address, supply, type of earthing system",
@@ -172,7 +199,6 @@
         "Next recommended inspection date"
       ]
     },
-
     "periodic_inspection_report": {
       "classification_of_findings": {
         "C1_danger_present": "Risk of injury — immediate remedial action required. Installation should not be used until rectified.",

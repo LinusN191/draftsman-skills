@@ -1,4 +1,8 @@
 {
+  "clause_ref": "IEC-61439-1 2020:§10.11-Icw",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 61439 — Short-Circuit Withstand",
   "_iec_part": "1 (Annex P); referenced by all parts",
   "_version": "1.0.0",
@@ -10,7 +14,18 @@
       "unit": "kA rms (with associated time, typically 1 s or 3 s)",
       "iec_ref": "IEC 61439-1 Clause 5.3.6",
       "description": "RMS short-circuit current the assembly can carry for a stated duration without damage. Used where the upstream protective device has a delayed trip (selectivity).",
-      "typical_values_1s": [10, 15, 25, 36, 50, 65, 80, 100, 150, 200],
+      "typical_values_1s": [
+        10,
+        15,
+        25,
+        36,
+        50,
+        65,
+        80,
+        100,
+        150,
+        200
+      ],
       "specify_when": "Assembly is selectively coordinated with upstream protection AND that protection has a defined short-time delay band."
     },
     {
@@ -20,11 +35,31 @@
       "iec_ref": "IEC 61439-1 Clause 5.3.5",
       "description": "Peak-instantaneous current the assembly must withstand. Required alongside Icw. Ratio Ipk/Icw governed by the n-factor (depends on power factor).",
       "n_factor_table": [
-        {"Icw_rms_kA_range": "≤ 5",     "power_factor": 0.7,  "n_ratio_Ipk_Icw": 1.5},
-        {"Icw_rms_kA_range": "5 to 10",  "power_factor": 0.5,  "n_ratio_Ipk_Icw": 1.7},
-        {"Icw_rms_kA_range": "10 to 20", "power_factor": 0.3,  "n_ratio_Ipk_Icw": 2.0},
-        {"Icw_rms_kA_range": "20 to 50", "power_factor": 0.25, "n_ratio_Ipk_Icw": 2.1},
-        {"Icw_rms_kA_range": "> 50",     "power_factor": 0.2,  "n_ratio_Ipk_Icw": 2.2}
+        {
+          "Icw_rms_kA_range": "≤ 5",
+          "power_factor": 0.7,
+          "n_ratio_Ipk_Icw": 1.5
+        },
+        {
+          "Icw_rms_kA_range": "5 to 10",
+          "power_factor": 0.5,
+          "n_ratio_Ipk_Icw": 1.7
+        },
+        {
+          "Icw_rms_kA_range": "10 to 20",
+          "power_factor": 0.3,
+          "n_ratio_Ipk_Icw": 2.0
+        },
+        {
+          "Icw_rms_kA_range": "20 to 50",
+          "power_factor": 0.25,
+          "n_ratio_Ipk_Icw": 2.1
+        },
+        {
+          "Icw_rms_kA_range": "> 50",
+          "power_factor": 0.2,
+          "n_ratio_Ipk_Icw": 2.2
+        }
       ],
       "specify_when": "Always specified together with Icw."
     },
@@ -34,7 +69,13 @@
       "unit": "kA prospective (rms)",
       "iec_ref": "IEC 61439-1 Clause 5.3.7",
       "description": "Prospective fault current at the assembly's incoming terminals when the assembly relies on an upstream current-limiting device (fuse or current-limiting MCCB) to constrain let-through energy and peak.",
-      "typical_values": [25, 36, 50, 70, 100],
+      "typical_values": [
+        25,
+        36,
+        50,
+        70,
+        100
+      ],
       "specify_when": "Domestic consumer units (with upstream BS88 service cutout) and other DBO assemblies where Icw alone is not sufficient. Annotate the specified upstream device.",
       "linked_upstream_device_required": true
     }

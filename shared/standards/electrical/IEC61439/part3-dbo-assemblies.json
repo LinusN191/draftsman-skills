@@ -1,4 +1,8 @@
 {
+  "clause_ref": "IEC-61439-3 2014:Part-3-Distribution-Boards",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 61439 Part 3 — Distribution boards intended to be operated by ordinary persons (DBO)",
   "_iec_part": 3,
   "_version": "1.0.0",
@@ -12,12 +16,36 @@
       "draftsman_id": "DBO_CONSUMER_UNIT",
       "application_scope": "Final distribution board operated by an ordinary (non-skilled) person — domestic consumer units, small office units, apartments. Single-phase or three-phase incoming; up to ~125 A typical In. Internal-arc and finger-safe characteristics enforced; child-resistant where children may access.",
       "rated_quantities": {
-        "Ue_V":      [230, 400],
-        "Ui_V":      [500],
-        "Uimp_kV":   [4, 6],
-        "In_A":      [40, 63, 80, 100, 125],
-        "Icw_kA_1s": [3, 4.5, 6, 10],
-        "Ipk_kA":    [5, 8, 10, 17]
+        "Ue_V": [
+          230,
+          400
+        ],
+        "Ui_V": [
+          500
+        ],
+        "Uimp_kV": [
+          4,
+          6
+        ],
+        "In_A": [
+          40,
+          63,
+          80,
+          100,
+          125
+        ],
+        "Icw_kA_1s": [
+          3,
+          4.5,
+          6,
+          10
+        ],
+        "Ipk_kA": [
+          5,
+          8,
+          10,
+          17
+        ]
       },
       "form_separation": "n/a",
       "ip_default": "IP2XC (front, finger-safe with cover); IP30 (enclosure)",
@@ -47,17 +75,34 @@
         "10.11 short-circuit withstand (typically Inc with upstream BS88 cut-out)",
         "10.13 mechanical operation"
       ],
-      "drawn_as": ["CONSUMER_UNIT"],
-      "typical_components": ["MCB_1P", "RCBO_1P", "RCD_2P", "SPD_TYPE2"],
+      "drawn_as": [
+        "CONSUMER_UNIT"
+      ],
+      "typical_components": [
+        "MCB_1P",
+        "RCBO_1P",
+        "RCD_2P",
+        "SPD_TYPE2"
+      ],
       "application_examples": [
         "Single-family domestic consumer unit",
         "Apartment final DB",
         "Small SOHO unit"
       ],
-      "related_iec_60364": ["IEC60364-4-41 (electric shock)", "IEC60364-5-53 (switchgear)"],
-      "related_bs_7671": ["Reg 421.1.201 (CU enclosure material — non-combustible/metal)", "Section 537 (Isolation and switching)", "Section 314 (Division of installation)"],
+      "related_iec_60364": [
+        "IEC60364-4-41 (electric shock)",
+        "IEC60364-5-53 (switchgear)"
+      ],
+      "related_bs_7671": [
+        "Reg 421.1.201 (CU enclosure material — non-combustible/metal)",
+        "Section 537 (Isolation and switching)",
+        "Section 314 (Division of installation)"
+      ],
       "usage_notes": "Per BS 7671 Reg 421.1.201, consumer units in domestic UK installations must be constructed of non-combustible material (metal). Specify RCBO per way rather than upstream RCD to avoid losing the whole installation on a single earth fault.",
-      "related_assemblies": ["DBO_SUB_DB", "PSC_ASSEMBLY_FORM_1"]
+      "related_assemblies": [
+        "DBO_SUB_DB",
+        "PSC_ASSEMBLY_FORM_1"
+      ]
     },
     {
       "assembly_id": "DBO_SUB_DB",
@@ -67,12 +112,33 @@
       "draftsman_id": "DBO_SUB_DB",
       "application_scope": "Commercial / light-industrial sub-DB located in tenant/operator accessible areas (offices, retail, classrooms). Higher rating than a consumer unit but still finger-safe and operable by non-skilled persons.",
       "rated_quantities": {
-        "Ue_V":      [230, 400],
-        "Ui_V":      [500],
-        "Uimp_kV":   [4, 6],
-        "In_A":      [100, 125, 160, 250],
-        "Icw_kA_1s": [6, 10, 15],
-        "Ipk_kA":    [10, 17, 30]
+        "Ue_V": [
+          230,
+          400
+        ],
+        "Ui_V": [
+          500
+        ],
+        "Uimp_kV": [
+          4,
+          6
+        ],
+        "In_A": [
+          100,
+          125,
+          160,
+          250
+        ],
+        "Icw_kA_1s": [
+          6,
+          10,
+          15
+        ],
+        "Ipk_kA": [
+          10,
+          17,
+          30
+        ]
       },
       "form_separation": "n/a",
       "ip_default": "IP2XC (front); IP30 (enclosure); IP44 if installed in dust/humid areas",
@@ -97,17 +163,34 @@
         "10.10 temperature rise",
         "10.11 short-circuit withstand"
       ],
-      "drawn_as": ["DB_SUB"],
-      "typical_components": ["MCB_1P", "MCB_3P", "RCBO_1P", "RCD_4P", "SPD_TYPE2"],
+      "drawn_as": [
+        "DB_SUB"
+      ],
+      "typical_components": [
+        "MCB_1P",
+        "MCB_3P",
+        "RCBO_1P",
+        "RCD_4P",
+        "SPD_TYPE2"
+      ],
       "application_examples": [
         "Floor-level sub-DB in an office building",
         "Retail tenancy DB",
         "Classroom DB in a school"
       ],
-      "related_iec_60364": ["IEC60364-4-41", "IEC60364-5-53"],
-      "related_bs_7671": ["Reg 411.4 (TN systems)", "Section 537"],
+      "related_iec_60364": [
+        "IEC60364-4-41",
+        "IEC60364-5-53"
+      ],
+      "related_bs_7671": [
+        "Reg 411.4 (TN systems)",
+        "Section 537"
+      ],
       "usage_notes": "Specify finger-safe IP2XC on the front face — common cause of failures is the OEM defaulting to IP2X which is finger-safe with a tool but NOT finger-safe to a child's finger.",
-      "related_assemblies": ["DBO_CONSUMER_UNIT", "PSC_ASSEMBLY_FORM_2B"]
+      "related_assemblies": [
+        "DBO_CONSUMER_UNIT",
+        "PSC_ASSEMBLY_FORM_2B"
+      ]
     }
   ]
 }

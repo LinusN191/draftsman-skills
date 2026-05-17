@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Article-250-Grounding",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 — Grounding and Bonding (cross-cutting)",
   "_version": "1.0.0",
   "_note": "Unified treatment of grounding across NEC. Primary source is Article 250; references from 300, 310, 408, 450. Use this file when looking up grounding rules independently of a specific Article.",
@@ -7,13 +11,20 @@
       "concept": "System Grounding",
       "definition": "Intentional connection of one conductor of the electrical system to the grounding electrode system at one point.",
       "nec_section": "250.20-26",
-      "examples": ["Grounded conductor of 120/240 V single-phase service is bonded to GES at service via MBJ", "Grounded conductor of 480Y/277 V wye service grounded similarly"]
+      "examples": [
+        "Grounded conductor of 120/240 V single-phase service is bonded to GES at service via MBJ",
+        "Grounded conductor of 480Y/277 V wye service grounded similarly"
+      ]
     },
     {
       "concept": "Equipment Grounding",
       "definition": "Conductive paths providing low-impedance return for ground-fault current. Bonds all normally non-current-carrying metal parts together and back to the grounded conductor at the source.",
       "nec_section": "250.118 (acceptable types), 250.122 (sizing)",
-      "examples": ["EGC (insulated or bare copper)", "Metal raceway acting as EGC", "Cable assembly's EGC conductor (e.g. NM cable green/bare)"]
+      "examples": [
+        "EGC (insulated or bare copper)",
+        "Metal raceway acting as EGC",
+        "Cable assembly's EGC conductor (e.g. NM cable green/bare)"
+      ]
     },
     {
       "concept": "Grounding Electrode System (GES)",
@@ -68,11 +79,26 @@
   ],
   "iec_60364_cross_reference": {
     "concept_mapping": [
-      {"nec": "System grounding (250.20-26)", "iec": "Earthing arrangement classification (IEC 60364-1 Clause 312 — TN-S, TN-C, TN-C-S, TT, IT)"},
-      {"nec": "Equipment grounding (250.118 EGC)", "iec": "CPC (IEC 60364-5-54 Clause 543)"},
-      {"nec": "Grounding electrode system (250.50)", "iec": "Earth electrode (IEC 60364-5-54 Clause 542)"},
-      {"nec": "MBJ (250.28)", "iec": "Main earthing terminal connection (IEC 60364-5-54 Clause 542.4)"},
-      {"nec": "GEC (250.66)", "iec": "Main earthing conductor / protective bonding conductor (IEC 60364-5-54 Clause 543)"}
+      {
+        "nec": "System grounding (250.20-26)",
+        "iec": "Earthing arrangement classification (IEC 60364-1 Clause 312 — TN-S, TN-C, TN-C-S, TT, IT)"
+      },
+      {
+        "nec": "Equipment grounding (250.118 EGC)",
+        "iec": "CPC (IEC 60364-5-54 Clause 543)"
+      },
+      {
+        "nec": "Grounding electrode system (250.50)",
+        "iec": "Earth electrode (IEC 60364-5-54 Clause 542)"
+      },
+      {
+        "nec": "MBJ (250.28)",
+        "iec": "Main earthing terminal connection (IEC 60364-5-54 Clause 542.4)"
+      },
+      {
+        "nec": "GEC (250.66)",
+        "iec": "Main earthing conductor / protective bonding conductor (IEC 60364-5-54 Clause 543)"
+      }
     ]
   }
 }

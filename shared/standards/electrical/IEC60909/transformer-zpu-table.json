@@ -1,19 +1,71 @@
 {
+  "clause_ref": "IEC-60909-0 2016:§3.3-Transformer",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "Typical Distribution Transformer Z-pu by Rating (Indicative Defaults)",
   "_version": "1.0.0",
   "_reference": "IEC 60076-5 (Power Transformers Part 5: Ability to withstand short-circuit), IEC 60076-1 Table 1 — typical Zk%",
   "purpose": "Default Zpu values for engineer use when no nameplate is available. Real designs MUST use nameplate Zpu — these are last-resort defaults.",
   "table_distribution_transformers": [
-    { "kva_min": 100,   "kva_max": 315,   "zpu_typical_percent": 4.0, "x_over_r_typical": 4,  "_note": "Small distribution TX (5kV pri / 400V sec or 25 kV / 277 V)" },
-    { "kva_min": 400,   "kva_max": 800,   "zpu_typical_percent": 4.0, "x_over_r_typical": 5,  "_note": "Medium distribution TX" },
-    { "kva_min": 1000,  "kva_max": 1600,  "zpu_typical_percent": 5.0, "x_over_r_typical": 6,  "_note": "Large distribution TX (commercial substation)" },
-    { "kva_min": 2000,  "kva_max": 2500,  "zpu_typical_percent": 6.0, "x_over_r_typical": 8,  "_note": "Heavy commercial / industrial" },
-    { "kva_min": 3150,  "kva_max": 5000,  "zpu_typical_percent": 7.0, "x_over_r_typical": 10, "_note": "Industrial / utility primary" },
-    { "kva_min": 6300,  "kva_max": 10000, "zpu_typical_percent": 8.0, "x_over_r_typical": 12, "_note": "Large industrial / sub-station" }
+    {
+      "kva_min": 100,
+      "kva_max": 315,
+      "zpu_typical_percent": 4.0,
+      "x_over_r_typical": 4,
+      "_note": "Small distribution TX (5kV pri / 400V sec or 25 kV / 277 V)"
+    },
+    {
+      "kva_min": 400,
+      "kva_max": 800,
+      "zpu_typical_percent": 4.0,
+      "x_over_r_typical": 5,
+      "_note": "Medium distribution TX"
+    },
+    {
+      "kva_min": 1000,
+      "kva_max": 1600,
+      "zpu_typical_percent": 5.0,
+      "x_over_r_typical": 6,
+      "_note": "Large distribution TX (commercial substation)"
+    },
+    {
+      "kva_min": 2000,
+      "kva_max": 2500,
+      "zpu_typical_percent": 6.0,
+      "x_over_r_typical": 8,
+      "_note": "Heavy commercial / industrial"
+    },
+    {
+      "kva_min": 3150,
+      "kva_max": 5000,
+      "zpu_typical_percent": 7.0,
+      "x_over_r_typical": 10,
+      "_note": "Industrial / utility primary"
+    },
+    {
+      "kva_min": 6300,
+      "kva_max": 10000,
+      "zpu_typical_percent": 8.0,
+      "x_over_r_typical": 12,
+      "_note": "Large industrial / sub-station"
+    }
   ],
   "table_dry_type_transformers": [
-    { "kva_min": 100,   "kva_max": 1000,  "zpu_typical_percent": 5.75, "x_over_r_typical": 4, "_note": "NEMA dry-type — typical US data centre / commercial fit-out" },
-    { "kva_min": 1000,  "kva_max": 2500,  "zpu_typical_percent": 5.75, "x_over_r_typical": 6, "_note": "NEMA dry-type — larger commercial" }
+    {
+      "kva_min": 100,
+      "kva_max": 1000,
+      "zpu_typical_percent": 5.75,
+      "x_over_r_typical": 4,
+      "_note": "NEMA dry-type — typical US data centre / commercial fit-out"
+    },
+    {
+      "kva_min": 1000,
+      "kva_max": 2500,
+      "zpu_typical_percent": 5.75,
+      "x_over_r_typical": 6,
+      "_note": "NEMA dry-type — larger commercial"
+    }
   ],
   "warnings": [
     "These are INDICATIVE typical values from IEC 60076-1. Always use the actual transformer nameplate Zpu when available.",

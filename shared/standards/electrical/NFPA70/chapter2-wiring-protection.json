@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Chapter-2",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 Chapter 2 — Wiring and Protection",
   "_chapter": 2,
   "_version": "1.0.0",
@@ -11,10 +15,22 @@
       "article_number": 200,
       "article_title": "Use and Identification of Grounded Conductors",
       "scope": "Use and identification of the grounded conductor — colour coding, terminal identification, polarity at switching/protective devices.",
-      "applies_to": ["grounded_conductor", "identification", "premise_wiring"],
+      "applies_to": [
+        "grounded_conductor",
+        "identification",
+        "premise_wiring"
+      ],
       "key_sections": [
-        {"section": "200.6", "title": "Means of Identifying Grounded Conductors", "summary": "≤6 AWG: continuous white or gray insulation, or three white stripes. >6 AWG: white at terminations only OR colour distinct + white tape/marking at every termination"},
-        {"section": "200.7", "title": "Use of Insulation that is White or Gray or has Three Continuous White Stripes", "summary": "White/gray/striped insulation reserved for grounded conductor — exceptions for reidentification in cable assemblies, dimmer-controlled circuits, etc."}
+        {
+          "section": "200.6",
+          "title": "Means of Identifying Grounded Conductors",
+          "summary": "≤6 AWG: continuous white or gray insulation, or three white stripes. >6 AWG: white at terminations only OR colour distinct + white tape/marking at every termination"
+        },
+        {
+          "section": "200.7",
+          "title": "Use of Insulation that is White or Gray or has Three Continuous White Stripes",
+          "summary": "White/gray/striped insulation reserved for grounded conductor — exceptions for reidentification in cable assemblies, dimmer-controlled circuits, etc."
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
@@ -22,12 +38,19 @@
         "Using white tape on a black conductor as the only identification on a high-voltage feeder — for >6 AWG only the entire termination must be re-identified; on circuits ≤6 AWG, white insulation is required (not tape)",
         "Reusing a white conductor as a hot leg in a 240 V two-wire circuit without re-identification per 200.7"
       ],
-      "drawn_as": ["CONDUCTOR_NEUTRAL"],
-      "related_iec_60364": ["IEC 60364-5-52 Clause 514.3 (Identification of conductors)"],
+      "drawn_as": [
+        "CONDUCTOR_NEUTRAL"
+      ],
+      "related_iec_60364": [
+        "IEC 60364-5-52 Clause 514.3 (Identification of conductors)"
+      ],
       "divergence_notes": "NEC requires white or gray for grounded conductor (200.6); IEC uses blue (BS EN 60446 / IEC 60446) for the neutral. NEC permits orange to identify the high-leg in 4-wire delta systems; IEC has no equivalent (delta neutral systems are rare in IEC jurisdictions).",
       "related_bs_7671": [],
       "usage_notes": "On US/IEC bi-jurisdiction projects, document the colour code in the design narrative — defaulting to either standard alone causes confusion at site.",
-      "related_articles": ["ART_250", "ART_310"]
+      "related_articles": [
+        "ART_250",
+        "ART_310"
+      ]
     },
     {
       "article_id": "ART_285",
@@ -36,12 +59,32 @@
       "article_number": 242,
       "article_title": "Overvoltage Protection (formerly Art 285 SPDs, reorganised in 2020 to Art 242)",
       "scope": "Surge protective devices (SPDs) — selection, location, application, marking. SPD types and classes per UL 1449. NOTE: Article number 285 used in NEC 2017; reorganised to 242 in NEC 2020 onwards. References to 'Art 285' in older documents map to 'Art 242' under NEC 2023.",
-      "applies_to": ["spd", "surge_protection", "transient_overvoltage"],
+      "applies_to": [
+        "spd",
+        "surge_protection",
+        "transient_overvoltage"
+      ],
       "key_sections": [
-        {"section": "242.6",   "title": "Listing", "summary": "SPDs must be listed to UL 1449"},
-        {"section": "242.14",  "title": "Number Required", "summary": "Where required by AHJ or design — typically Type 1 or 2 at service entrance, Type 3 at sensitive equipment"},
-        {"section": "242.16",  "title": "Location", "summary": "Type 1 ahead of service disconnect; Type 2 on load side of service; Type 3 within 30 ft of protected equipment"},
-        {"section": "242.22",  "title": "Type 1, 2, 3, 4 SPDs", "summary": "Type 1 = supply-side of service disconnect; Type 2 = load-side; Type 3 = point-of-use; Type 4 = component SPDs"}
+        {
+          "section": "242.6",
+          "title": "Listing",
+          "summary": "SPDs must be listed to UL 1449"
+        },
+        {
+          "section": "242.14",
+          "title": "Number Required",
+          "summary": "Where required by AHJ or design — typically Type 1 or 2 at service entrance, Type 3 at sensitive equipment"
+        },
+        {
+          "section": "242.16",
+          "title": "Location",
+          "summary": "Type 1 ahead of service disconnect; Type 2 on load side of service; Type 3 within 30 ft of protected equipment"
+        },
+        {
+          "section": "242.22",
+          "title": "Type 1, 2, 3, 4 SPDs",
+          "summary": "Type 1 = supply-side of service disconnect; Type 2 = load-side; Type 3 = point-of-use; Type 4 = component SPDs"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
@@ -50,12 +93,22 @@
         "Failing to coordinate Type 2 (8/20 µs nominal discharge) with upstream Type 1 (10/350 µs lightning impulse) — see ocpd-coordination.json for the let-through-voltage coordination",
         "Using Article 285 in design references with NEC 2020+ — the article was renumbered to 242"
       ],
-      "drawn_as": ["SPD_TYPE1", "SPD_TYPE2", "SPD_TYPE3"],
-      "related_iec_60364": ["IEC 60364-4-44 Clause 443 (Surge protection)"],
+      "drawn_as": [
+        "SPD_TYPE1",
+        "SPD_TYPE2",
+        "SPD_TYPE3"
+      ],
+      "related_iec_60364": [
+        "IEC 60364-4-44 Clause 443 (Surge protection)"
+      ],
       "divergence_notes": "NEC SPD types (1, 2, 3, 4 per UL 1449) correspond loosely to IEC SPD types (Type 1 / 2 / 3 per IEC 61643-11) but the test waveforms differ — UL 1449 short-circuit current test vs IEC 8/20 µs and 10/350 µs impulses. NEC does not yet mandate SPDs universally (AHJ-dependent); IEC 60364-4-44 AMD2:2018 made SPDs effectively mandatory at the main DB in all new installations unless a risk analysis justifies omission.",
       "related_bs_7671": [],
       "usage_notes": "Cite Art 242 (NEC 2023) in new design documents; legacy 'Art 285' references in client/utility specs map to Art 242. Always coordinate Type 1 + Type 2 let-through voltages so Type 2 protects the panelboard's downstream equipment.",
-      "related_articles": ["ART_230", "ART_240", "ART_250"]
+      "related_articles": [
+        "ART_230",
+        "ART_240",
+        "ART_250"
+      ]
     },
     {
       "article_number": 210,

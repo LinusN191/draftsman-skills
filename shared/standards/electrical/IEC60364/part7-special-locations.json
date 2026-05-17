@@ -1,21 +1,31 @@
 {
+  "clause_ref": "IEC-60364-7 2017:Part-7",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60364-7 — Special Locations: Zones, IP, RCD and Bonding Requirements",
   "_reference": "IEC 60364 Part 7 Sections: 701 (2019), 702 (2010), 704 (2005), 705 (2006), 708 (2010), 710 (2002, under revision), 712 (2017), 722 (2018)",
   "_version": "1.0.0",
   "_note": "Part 7 contains requirements additional to or derogating from the general requirements of Parts 1–6. Where Part 7 is silent, the general requirements of Parts 4 and 5 apply. Always read the relevant Part 7 section in full — this file captures the critical design parameters only.",
-
   "section_701_bath_shower": {
     "_title": "IEC 60364-7-701:2019 — Rooms containing a bath or shower",
     "_edition": 3,
     "_published": "2019",
-
     "zone_definitions": {
       "zone_0": {
         "description": "Interior of the bath tub or shower tray, or below the floor-level shower area",
         "volume": "The space enclosed by the walls/floor of the bath or shower — the wet zone itself",
         "IP_minimum": "IPX7 (immersion protection)",
-        "permitted_equipment": ["Fixed SELV luminaires rated for Zone 0", "Whirlpool pump units if specifically certified for Zone 0"],
-        "prohibited": ["Socket outlets", "Switches", "Accessories", "Junction boxes (unless IP67 and only SELV circuits)"],
+        "permitted_equipment": [
+          "Fixed SELV luminaires rated for Zone 0",
+          "Whirlpool pump units if specifically certified for Zone 0"
+        ],
+        "prohibited": [
+          "Socket outlets",
+          "Switches",
+          "Accessories",
+          "Junction boxes (unless IP67 and only SELV circuits)"
+        ],
         "circuit_types": "SELV only, voltage ≤ 12V AC or ≤ 30V DC"
       },
       "zone_1": {
@@ -27,7 +37,11 @@
           "Whirlpool and spa jet pumps specifically designed for Zone 1",
           "Instantaneous water heaters where specifically designed for Zone 1"
         ],
-        "prohibited": ["Standard socket outlets", "Switches (except SELV systems)", "Consumer unit components"],
+        "prohibited": [
+          "Standard socket outlets",
+          "Switches (except SELV systems)",
+          "Consumer unit components"
+        ],
         "circuit_types": "SELV preferred; PELV and 230V fixed equipment permitted if specifically designed and rated for Zone 1"
       },
       "zone_2": {
@@ -40,24 +54,29 @@
           "Socket outlets (shaver sockets only — IEC 61558-2-5)",
           "Exhaust ventilation fan rated IPX4 minimum"
         ],
-        "prohibited": ["Standard socket outlets", "Unswitched spurs"],
+        "prohibited": [
+          "Standard socket outlets",
+          "Unswitched spurs"
+        ],
         "circuit_types": "230V fixed equipment permitted with appropriate RCD protection"
       },
       "outside_zones": {
         "description": "Areas outside Zones 0, 1, 2 within the same room",
         "IP_minimum": "IPX1 (drip-proof) minimum — but IPX4 recommended",
-        "permitted_equipment": ["Standard socket outlets (with 30mA RCD)", "Light switches", "Shaver sockets"],
+        "permitted_equipment": [
+          "Standard socket outlets (with 30mA RCD)",
+          "Light switches",
+          "Shaver sockets"
+        ],
         "note": "Many countries apply Zone 2 requirements to the whole bathroom — verify national requirements"
       }
     },
-
     "rcd_requirements": {
       "mandatory": true,
       "rating_mA": 30,
       "scope": "All circuits in Zones 0, 1, and 2 must be protected by 30mA RCD. Recommended for all circuits within the bathroom.",
       "reference": "IEC 60364-7-701:2019 Clause 701.411.3.3"
     },
-
     "supplementary_bonding": {
       "required": true,
       "scope": "All exposed conductive parts (metalwork of shower trays, bath frames, heated towel rails) AND extraneous conductive parts (metallic water pipes, gas pipes, heating pipes, metallic structural parts accessible) within Zones 0, 1, and 2",
@@ -66,49 +85,54 @@
       "note": "Supplementary bonding connects metal parts together but does not require a connection back to the main earthing terminal — it equalises potential locally. The exposed conductive parts must also be connected to the CPC in the normal way."
     }
   },
-
   "section_702_swimming_pools": {
     "_title": "IEC 60364-7-702:2010 — Swimming pools and fountains",
     "_edition": 2,
     "_published": "2010",
-
     "zone_definitions": {
       "zone_0": {
         "description": "Interior of the pool basin, fountain basin, wading pool",
         "IP_minimum": "IPX8",
         "circuit_types": "FELV at max 12V AC / 30V DC, or SELV",
-        "permitted": ["Underwater luminaires rated for Zone 0", "Circulation pump inlets/outlets"],
-        "prohibited": ["All switchgear and accessories"]
+        "permitted": [
+          "Underwater luminaires rated for Zone 0",
+          "Circulation pump inlets/outlets"
+        ],
+        "prohibited": [
+          "All switchgear and accessories"
+        ]
       },
       "zone_1": {
         "description": "2m horizontally from pool edge; up to 2.5m above floor level; below floor level where pool structure accessible",
         "IP_minimum": "IPX5 (jets used); IPX7 where flooding is possible",
         "circuit_types": "SELV or Class II fixed equipment only",
-        "prohibited": ["Socket outlets (except SELV)", "Switches (except SELV)"],
+        "prohibited": [
+          "Socket outlets (except SELV)",
+          "Switches (except SELV)"
+        ],
         "rcd_required_mA": 30
       },
       "zone_2": {
         "description": "Further 1.5m horizontally beyond Zone 1 boundary (3.5m total from pool edge)",
         "IP_minimum": "IPX4",
-        "permitted": ["Socket outlets with 30mA RCD", "Fixed luminaires IPX4"],
+        "permitted": [
+          "Socket outlets with 30mA RCD",
+          "Fixed luminaires IPX4"
+        ],
         "rcd_required_mA": 30
       }
     },
-
     "fountain_additional": {
       "accessible_fountains": "Zone 0 where water accessible to persons. SELV ≤12V AC, IPX8.",
       "inaccessible_decorative_fountains": "SELV or PELV ≤25V AC, IPX5 minimum at equipment"
     },
-
     "bonding": "All metallic components of pool structure, ladders, handrails, lighting fittings, water treatment equipment, and structural metalwork within 3.5m of pool edge must be bonded",
     "reference": "IEC 60364-7-702:2010"
   },
-
   "section_704_construction_sites": {
     "_title": "IEC 60364-7-704:2005 — Construction and demolition site installations",
     "_edition": 2,
     "_published": "2005",
-
     "key_requirements": {
       "rcd_all_socket_outlets": {
         "required": true,
@@ -139,15 +163,20 @@
       "cable_protection": "Cables on ground subject to mechanical damage must be armoured or routed in conduit. Overhead cables must be at safe height or protected from vehicle strike."
     }
   },
-
   "section_705_agricultural_horticultural": {
     "_title": "IEC 60364-7-705:2006 — Agricultural and horticultural premises",
     "_edition": 2,
     "_published": "2006",
-
     "key_requirements": {
-      "rcd_socket_outlets": {"required": true, "rating_mA": 30},
-      "rcd_fixed_equipment_outdoors": {"required": true, "rating_mA": 300, "note": "Fixed equipment outdoors (irrigation, yard lighting): 300mA RCD for fire protection, or 30mA where persons may be present"},
+      "rcd_socket_outlets": {
+        "required": true,
+        "rating_mA": 30
+      },
+      "rcd_fixed_equipment_outdoors": {
+        "required": true,
+        "rating_mA": 300,
+        "note": "Fixed equipment outdoors (irrigation, yard lighting): 300mA RCD for fire protection, or 30mA where persons may be present"
+      },
       "IP_minimum": {
         "general_agricultural_area": "IP44",
         "areas_with_livestock": "IP44 minimum, IP54 where regular hosing",
@@ -164,12 +193,10 @@
       }
     }
   },
-
   "section_708_marinas": {
     "_title": "IEC 60364-7-708:2010 — Marinas and pleasure craft",
     "_edition": 2,
     "_published": "2010",
-
     "key_requirements": {
       "rcd_per_berth": {
         "required": true,
@@ -197,22 +224,29 @@
       }
     }
   },
-
   "section_710_medical_locations": {
     "_title": "IEC 60364-7-710:2002 — Medical locations",
     "_edition": 2,
     "_published": "2002",
     "_status": "Under revision — verify with current national adoption",
-
     "location_groups": {
       "group_0": {
         "description": "No electrical medical devices applied to patient body",
-        "examples": ["Waiting rooms", "Corridors", "Offices within hospital"],
+        "examples": [
+          "Waiting rooms",
+          "Corridors",
+          "Offices within hospital"
+        ],
         "requirements": "General IEC 60364 requirements apply"
       },
       "group_1": {
         "description": "Electrical medical devices applied externally to patient body (non-critical)",
-        "examples": ["Examination rooms", "Treatment rooms", "Physiotherapy", "X-ray rooms"],
+        "examples": [
+          "Examination rooms",
+          "Treatment rooms",
+          "Physiotherapy",
+          "X-ray rooms"
+        ],
         "requirements": {
           "rcd": "30mA RCD on all socket outlet circuits",
           "supply_continuity": "15-second switchover to standby source acceptable",
@@ -221,7 +255,12 @@
       },
       "group_2": {
         "description": "Life-support and critical care — electrical medical devices invasively connected to patient heart region",
-        "examples": ["Operating theatres", "ICU", "Cardiac catheterisation labs", "Neonatal ICU"],
+        "examples": [
+          "Operating theatres",
+          "ICU",
+          "Cardiac catheterisation labs",
+          "Neonatal ICU"
+        ],
         "requirements": {
           "supply_system": "IT (isolated) system mandatory using medical IT transformer (IEC 61558-2-15) and Insulation Monitoring Device (IMD/IMS)",
           "first_fault_behaviour": "First earth fault — ALARM only, no disconnection. Supply continuity maintained.",
@@ -234,7 +273,6 @@
         }
       }
     },
-
     "key_design_points": [
       "IT system in Group 2 requires one transformer per 25-50m² maximum (one per operating theatre typically)",
       "IMD alarm panel must be visible to clinical staff at the point of care",
@@ -243,12 +281,10 @@
       "Reference: IEC 60364-7-710 and IEC 60601-1 for medical electrical equipment requirements"
     ]
   },
-
   "section_712_solar_pv": {
     "_title": "IEC 60364-7-712:2017 — Solar photovoltaic (PV) power supply systems",
     "_edition": 2,
     "_published": "2017",
-
     "key_requirements": {
       "dc_wiring": {
         "string_protection": "String fuses or string combiner diodes where more than one string is connected in parallel — to prevent reverse current in a faulted string",
@@ -275,12 +311,10 @@
       "rcd_for_pv_circuits": "AC output circuit from inverter: 30mA Type A RCD minimum on circuits feeding socket outlets or accessible areas. Type B where significant DC leakage possible from inverter."
     }
   },
-
   "section_722_ev_charging": {
     "_title": "IEC 60364-7-722:2018 — Supply of electric vehicles",
     "_edition": 2,
     "_published": "2018",
-
     "ev_charging_modes": {
       "mode_1": {
         "description": "Slow AC charging via standard domestic socket outlet — no dedicated communication or vehicle detection. Plug directly into standard 13A or 16A socket.",
@@ -313,7 +347,6 @@
         "note": "Mode 4 installation is specialist work — outside scope of standard electrical contractor. Manufacturer commissioning required."
       }
     },
-
     "cable_sizing_rule": {
       "reference": "IEC 60364-7-722:2018 Clause 722.523",
       "rule": "The cable supplying an EVSE must be sized for 100% of the EVSE rated continuous current. No diversity factor is applied to individual EV circuit cables.",
@@ -327,7 +360,6 @@
         "note": "XLPE allows one size smaller. Verify voltage drop especially for long runs to remote parking."
       }
     },
-
     "protective_measures": {
       "rcd_mandatory": true,
       "rcd_rating_mA": 30,

@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Chapter-5",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 Chapter 5 — Special Occupancies",
   "_chapter": 5,
   "_version": "1.0.0",
@@ -11,20 +15,39 @@
       "article_number": 511,
       "article_title": "Commercial Garages, Repair and Storage",
       "scope": "Repair garages where flammable liquids/gases are dispensed or transferred. Classified locations depend on whether the garage is major repair (Class I Div 2 within 18 in of floor) or minor repair (unclassified).",
-      "applies_to": ["repair_garages", "automotive", "hazardous_classification"],
+      "applies_to": [
+        "repair_garages",
+        "automotive",
+        "hazardous_classification"
+      ],
       "key_sections": [
-        {"section": "511.3", "title": "Area Classification", "summary": "Major repair: Class I Div 2 within 18 in of floor in service/repair areas. Minor repair: unclassified unless flammable fuel-dispensing or fuel-tank repair"},
-        {"section": "511.7", "title": "Wiring and Equipment Above Class I Locations", "summary": "Above 18 in: ordinary location wiring acceptable; below 18 in: hazardous-location wiring per Art 501"}
+        {
+          "section": "511.3",
+          "title": "Area Classification",
+          "summary": "Major repair: Class I Div 2 within 18 in of floor in service/repair areas. Minor repair: unclassified unless flammable fuel-dispensing or fuel-tank repair"
+        },
+        {
+          "section": "511.7",
+          "title": "Wiring and Equipment Above Class I Locations",
+          "summary": "Above 18 in: ordinary location wiring acceptable; below 18 in: hazardous-location wiring per Art 501"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Treating an EV-repair garage as unclassified — EV battery rooms may warrant Class I Div 2 around electrolyte vent points"],
+      "common_errors": [
+        "Treating an EV-repair garage as unclassified — EV battery rooms may warrant Class I Div 2 around electrolyte vent points"
+      ],
       "drawn_as": [],
-      "related_iec_60364": ["IEC 60079 series (Hazardous areas)"],
+      "related_iec_60364": [
+        "IEC 60079 series (Hazardous areas)"
+      ],
       "divergence_notes": "Art 511 + 500-506 use Class/Division (legacy US) and Class/Zone (Art 505); IEC uses Zone classification only. See hazardous-locations-classification.json for the conversion matrix.",
       "related_bs_7671": [],
       "usage_notes": "Always confirm the AHJ's expected classification — many jurisdictions adopt stricter local interpretations.",
-      "related_articles": ["ART_500_506", "ART_514"]
+      "related_articles": [
+        "ART_500_506",
+        "ART_514"
+      ]
     },
     {
       "article_id": "ART_513",
@@ -33,19 +56,33 @@
       "article_number": 513,
       "article_title": "Aircraft Hangars",
       "scope": "Hangars for aircraft maintenance/storage. Floor + 18 in classified Class I Div 2; 5 ft horizontal from aircraft Class I Div 2; full hangar Class I Div 2 above grade up to specific limits.",
-      "applies_to": ["aviation", "hangars", "hazardous_classification"],
+      "applies_to": [
+        "aviation",
+        "hangars",
+        "hazardous_classification"
+      ],
       "key_sections": [
-        {"section": "513.3", "title": "Classification of Locations", "summary": "Floor + 18 in: Class I Div 2 throughout. Within 5 ft of aircraft: Class I Div 2. Above 18 in but within the hangar volume: generally unclassified"}
+        {
+          "section": "513.3",
+          "title": "Classification of Locations",
+          "summary": "Floor + 18 in: Class I Div 2 throughout. Within 5 ft of aircraft: Class I Div 2. Above 18 in but within the hangar volume: generally unclassified"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Failing to classify the wing-tip envelope when defueling — aircraft fuel ops temporarily extend the classified zone"],
+      "common_errors": [
+        "Failing to classify the wing-tip envelope when defueling — aircraft fuel ops temporarily extend the classified zone"
+      ],
       "drawn_as": [],
-      "related_iec_60364": ["IEC 60079 series"],
+      "related_iec_60364": [
+        "IEC 60079 series"
+      ],
       "divergence_notes": "Art 513 is highly application-specific; IEC handles via 60079-10-1 area classification with no aviation-specific guide.",
       "related_bs_7671": [],
       "usage_notes": "Coordinate with the hangar's fire-protection layout (foam suppression, fuel-handling SOPs).",
-      "related_articles": ["ART_500_506"]
+      "related_articles": [
+        "ART_500_506"
+      ]
     },
     {
       "article_id": "ART_514",
@@ -54,20 +91,39 @@
       "article_number": 514,
       "article_title": "Motor Fuel Dispensing Facilities",
       "scope": "Gas stations, EV-fast-charging-with-fuel-dispensing combo sites. Defines classified zones around dispensers (Class I Div 1 inside dispenser; Class I Div 2 within 18 in of grade × 20 ft horizontal).",
-      "applies_to": ["gas_stations", "fuel_dispensing", "hazardous_classification"],
+      "applies_to": [
+        "gas_stations",
+        "fuel_dispensing",
+        "hazardous_classification"
+      ],
       "key_sections": [
-        {"section": "514.3", "title": "Class I Locations", "summary": "Dispenser internal: Div 1. Within 18 in of grade × 20 ft horizontal radius: Div 2. Tank vents: Div 1 within 3 ft × Div 2 to 10 ft"},
-        {"section": "514.9", "title": "Seal-off requirements", "summary": "Conduit seals at boundary of classified location"}
+        {
+          "section": "514.3",
+          "title": "Class I Locations",
+          "summary": "Dispenser internal: Div 1. Within 18 in of grade × 20 ft horizontal radius: Div 2. Tank vents: Div 1 within 3 ft × Div 2 to 10 ft"
+        },
+        {
+          "section": "514.9",
+          "title": "Seal-off requirements",
+          "summary": "Conduit seals at boundary of classified location"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Missing the 20-ft horizontal envelope around dispensers — frequent inspection failure"],
+      "common_errors": [
+        "Missing the 20-ft horizontal envelope around dispensers — frequent inspection failure"
+      ],
       "drawn_as": [],
-      "related_iec_60364": ["IEC 60079-10-1 (Gas hazardous areas classification)"],
+      "related_iec_60364": [
+        "IEC 60079-10-1 (Gas hazardous areas classification)"
+      ],
       "divergence_notes": "Art 514 dimensions (18 in, 20 ft, 3 ft, 10 ft) are NEC-specific; IEC uses similar zonal envelopes but in metric and via the API RP 500 / IEC 60079-10-1 source-based classification method.",
       "related_bs_7671": [],
       "usage_notes": "On a project that combines fuel dispensing + EV fast-charging, verify the EV equipment is sited OUTSIDE the Class I Div 2 envelope.",
-      "related_articles": ["ART_500_506", "ART_625"]
+      "related_articles": [
+        "ART_500_506",
+        "ART_625"
+      ]
     },
     {
       "article_id": "ART_518",
@@ -76,19 +132,32 @@
       "article_number": 518,
       "article_title": "Assembly Occupancies",
       "scope": "Spaces accommodating ≥100 persons (auditoriums, theatres, churches, conference centres). Wiring method restrictions, emergency-circuit independence.",
-      "applies_to": ["assembly_occupancies", "auditoriums", "wiring_method_restrictions"],
+      "applies_to": [
+        "assembly_occupancies",
+        "auditoriums",
+        "wiring_method_restrictions"
+      ],
       "key_sections": [
-        {"section": "518.4", "title": "Wiring Methods", "summary": "Metal-clad wiring (RMC/IMC/EMT/MC/AC) typical; NM cable prohibited in occupancies of >100 persons (exception: dwelling-style portions)"}
+        {
+          "section": "518.4",
+          "title": "Wiring Methods",
+          "summary": "Metal-clad wiring (RMC/IMC/EMT/MC/AC) typical; NM cable prohibited in occupancies of >100 persons (exception: dwelling-style portions)"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Specifying NM cable in assembly occupancy floor — prohibited"],
+      "common_errors": [
+        "Specifying NM cable in assembly occupancy floor — prohibited"
+      ],
       "drawn_as": [],
       "related_iec_60364": [],
       "divergence_notes": "NEC restricts NM cable in assembly occupancies; IEC has no NM-cable equivalent (uses singles in conduit/trunking by default).",
       "related_bs_7671": [],
       "usage_notes": "Confirm occupancy load classification with the building code (IBC) before selecting wiring methods.",
-      "related_articles": ["ART_300", "ART_700"]
+      "related_articles": [
+        "ART_300",
+        "ART_700"
+      ]
     },
     {
       "article_id": "ART_547",
@@ -97,19 +166,33 @@
       "article_number": 547,
       "article_title": "Agricultural Buildings",
       "scope": "Buildings housing livestock or storing/handling materials creating dust/corrosive/moisture issues. Equipotential bonding (547.10), site-specific wiring methods.",
-      "applies_to": ["agricultural", "livestock", "equipotential_bonding"],
+      "applies_to": [
+        "agricultural",
+        "livestock",
+        "equipotential_bonding"
+      ],
       "key_sections": [
-        {"section": "547.10", "title": "Equipotential Planes and Bonding of Equipotential Planes", "summary": "Equipotential plane required in animal-confinement areas — bonded to building grounding electrode system"}
+        {
+          "section": "547.10",
+          "title": "Equipotential Planes and Bonding of Equipotential Planes",
+          "summary": "Equipotential plane required in animal-confinement areas — bonded to building grounding electrode system"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Omitting the equipotential plane in dairy/swine facilities — animals are sensitive to step voltages from stray currents"],
+      "common_errors": [
+        "Omitting the equipotential plane in dairy/swine facilities — animals are sensitive to step voltages from stray currents"
+      ],
       "drawn_as": [],
-      "related_iec_60364": ["IEC 60364-7-705 (Agricultural and horticultural premises)"],
+      "related_iec_60364": [
+        "IEC 60364-7-705 (Agricultural and horticultural premises)"
+      ],
       "divergence_notes": "NEC's equipotential plane requirement (547.10) and IEC 60364-7-705 supplementary bonding rules cover similar ground but with different mandatory thresholds.",
       "related_bs_7671": [],
       "usage_notes": "Always include the equipotential plane on agricultural building designs.",
-      "related_articles": ["ART_250"]
+      "related_articles": [
+        "ART_250"
+      ]
     },
     {
       "article_id": "ART_590",
@@ -118,19 +201,34 @@
       "article_number": 590,
       "article_title": "Temporary Installations",
       "scope": "Temporary wiring for construction, decorations, holidays. GFCI required on construction site receptacles (590.6).",
-      "applies_to": ["temporary_wiring", "construction_sites", "decorative_lighting"],
+      "applies_to": [
+        "temporary_wiring",
+        "construction_sites",
+        "decorative_lighting"
+      ],
       "key_sections": [
-        {"section": "590.6", "title": "Ground-Fault Protection for Personnel (Construction Sites)", "summary": "All 125 V/15-, 20-, 30-A receptacles on construction sites require GFCI protection (Class A) for personnel"}
+        {
+          "section": "590.6",
+          "title": "Ground-Fault Protection for Personnel (Construction Sites)",
+          "summary": "All 125 V/15-, 20-, 30-A receptacles on construction sites require GFCI protection (Class A) for personnel"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Using non-GFCI 'plug strips' on construction sites — prohibited; every receptacle must be GFCI-protected"],
+      "common_errors": [
+        "Using non-GFCI 'plug strips' on construction sites — prohibited; every receptacle must be GFCI-protected"
+      ],
       "drawn_as": [],
-      "related_iec_60364": ["IEC 60364-7-704 (Construction and demolition site installations)"],
+      "related_iec_60364": [
+        "IEC 60364-7-704 (Construction and demolition site installations)"
+      ],
       "divergence_notes": "NEC 590.6 GFCI requirement is functionally equivalent to IEC 60364-7-704 30 mA RCD requirement, but NEC requires Class A GFCI (4-6 mA trip) which is more sensitive than IEC general-use 30 mA RCD.",
       "related_bs_7671": [],
       "usage_notes": "Default to GFCI on all construction site receptacles regardless of voltage.",
-      "related_articles": ["ART_210", "ART_250"]
+      "related_articles": [
+        "ART_210",
+        "ART_250"
+      ]
     },
     {
       "article_number": 500,

@@ -1,7 +1,10 @@
 {
+  "clause_ref": "BS7671 2018:Reg-433.1.1",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "BS 7671:2018+A2:2022 Regulation 433 — Protection Against Overload Current",
   "_note": "The Fundamental Rule of cable sizing. Every circuit must satisfy this rule. If any of the three conditions fail, the circuit is non-compliant.",
-
   "fundamental_rule": {
     "_reference": "BS 7671:2018 Reg 433.1.1",
     "statement": "Protection against overload shall be such that: the protective device characteristics ensure both that (i) the protective device is suitable to operate at the load current of the circuit, and (ii) the cable can carry the let-through current of the protective device without overheating.",
@@ -29,7 +32,6 @@
       }
     }
   },
-
   "the_three_conditions": {
     "condition_1": {
       "rule": "Ib ≤ In",
@@ -48,7 +50,6 @@
       "must_be_checked_for": "HRC fuses to BS 88-3 — I2 = 1.6 × In, so we need 1.6 × In ≤ 1.45 × Iz, i.e. In ≤ 0.906 × Iz. In practice, select fuse such that In × 1.1 ≤ Iz."
     }
   },
-
   "device_characteristics": {
     "_reference": "BS EN 60898 (MCBs), BS EN 61009-1 (RCBOs), BS 88-3 (HRC fuses), BS EN 60947-2 (MCCBs)",
     "MCB_BS_EN_60898": {
@@ -72,14 +73,76 @@
       "note": "Industrial moulded case circuit breakers. Adjustable trip units allow tuning In within the frame size. Refer to manufacturer's published curves."
     }
   },
-
   "standard_device_sizes": {
     "_reference": "BS EN 60898 Table 3, BS 88-3",
-    "MCB_ratings_A": [6, 10, 13, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125],
-    "MCCB_typical_ratings_A": [16, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630, 800, 1000, 1250, 1600, 2000, 2500, 3200],
-    "BS_88_3_fuse_ratings_A": [2, 4, 6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 355, 400, 500, 630, 800, 1000, 1250]
+    "MCB_ratings_A": [
+      6,
+      10,
+      13,
+      16,
+      20,
+      25,
+      32,
+      40,
+      50,
+      63,
+      80,
+      100,
+      125
+    ],
+    "MCCB_typical_ratings_A": [
+      16,
+      25,
+      32,
+      40,
+      50,
+      63,
+      80,
+      100,
+      125,
+      160,
+      200,
+      250,
+      315,
+      400,
+      500,
+      630,
+      800,
+      1000,
+      1250,
+      1600,
+      2000,
+      2500,
+      3200
+    ],
+    "BS_88_3_fuse_ratings_A": [
+      2,
+      4,
+      6,
+      10,
+      16,
+      20,
+      25,
+      32,
+      40,
+      50,
+      63,
+      80,
+      100,
+      125,
+      160,
+      200,
+      250,
+      315,
+      355,
+      400,
+      500,
+      630,
+      800,
+      1000,
+      1250
+    ]
   },
-
   "diversity_and_design_current_Ib": {
     "_reference": "IET On-Site Guide Appendix A, BS 7671:2018 (no specific clause — engineering judgement)",
     "principle": "Ib is the maximum sustained current after applying diversity. For domestic and small commercial, use OSG diversity factors. For large commercial, perform load schedule with engineer's judgement.",
@@ -93,7 +156,6 @@
     },
     "note": "Diversity factors are guidance, not absolute. The engineer is responsible for correct Ib determination. See diversity-factors.json for full table."
   },
-
   "selection_sequence": {
     "1": "Calculate Ib (design current) from connected load × diversity",
     "2": "Select device rating In such that In ≥ Ib (round up to next standard size)",
@@ -107,7 +169,6 @@
     "10": "Check fault current capability of the device against PSCC (prospective short-circuit current).",
     "11": "Check adiabatic equation per reg434-fault-current.json — cable must survive fault current for the disconnection time."
   },
-
   "worked_example": {
     "description": "20-luminaire LED lighting circuit, 36W each, 230V single-phase, Method B2, 30m run, 35°C ambient, grouped with 2 other circuits in same trunking, no insulation",
     "step_1_Ib": {
@@ -126,9 +187,9 @@
     },
     "step_5_corrections": {
       "Ca_35C": 0.96,
-      "Cg_3_circuits": 0.70,
-      "Ci": 1.00,
-      "Cd": 1.00,
+      "Cg_3_circuits": 0.7,
+      "Ci": 1.0,
+      "Cd": 1.0,
       "Iz_corrected_A": "16.5 × 0.96 × 0.70 × 1.00 × 1.00 = 11.09 A"
     },
     "step_6_check_In_le_Iz": "10A ≤ 11.09A ✓ PASS",
@@ -140,7 +201,6 @@
     },
     "verdict": "Compliant. 1.5mm² T&E with 10A Type B MCB, Method B2 installation. Just."
   },
-
   "common_failures": [
     "Selecting In > Iz — most common error. Cable overheats at rated current.",
     "Ignoring grouping factor — designer assumes one circuit per conduit but multiple circuits share the same trunking.",

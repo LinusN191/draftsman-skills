@@ -21,10 +21,16 @@ CLAUSE_REF_PATTERN = re.compile(
     re.IGNORECASE,
 )
 
-# Layers that follow the clause_ref convention (added in 2026-05+ sprints)
-# Other layers (BS7671, IEC60364, IEC60617, IEC60909, IEC61439, NFPA70 etc.)
-# predate this convention and are tracked as cross-cutting tech debt to migrate.
+# Layers that follow the clause_ref convention.
+# Phase A (2026-05): IEEE1584, NFPA70E
+# Retrofit (2026-05): BS7671, IEC60364, IEC60617, IEC60909, IEC61439, NFPA70
 LAYERS_REQUIRING_CLAUSE_REF = {
+    "BS7671",
+    "IEC60364",
+    "IEC60617",
+    "IEC60909",
+    "IEC61439",
+    "NFPA70",
     "IEEE1584",
     "NFPA70E",
 }

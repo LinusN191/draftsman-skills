@@ -1,4 +1,8 @@
 {
+  "clause_ref": "IEC-60364-5-52 2009:Annex-E-Aluminium",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60364-5-52:2009+AMD1:2017 — Aluminium Conductor Cable Current Ratings (Annex B)",
   "_basis": "IEC 60364-5-52 Annex B — Tables B.52.11 through B.52.14 for aluminium conductors",
   "_version": "1.0.0",
@@ -16,116 +20,309 @@
   },
   "_note": "Aluminium conductors must not be used below 16mm² due to termination risk and mechanical fragility. Minimum 16mm² throughout. Apply correction factors from part5-52-correction-factors.json. All ratings at reference conditions only.",
   "_termination_warning": "Aluminium conductors require tinned copper ferrules or bi-metallic connectors at terminations. Direct aluminium-to-copper contact causes galvanic corrosion. Anti-oxidant jointing compound is mandatory at all stranded aluminium terminations. Check equipment ratings — many devices are rated for copper only.",
-
   "installation_methods_reference": {
-    "C":  "Single-core or multi-core cable clipped direct to a surface",
+    "C": "Single-core or multi-core cable clipped direct to a surface",
     "D2": "Multi-core cable direct buried in the ground",
-    "E":  "Multi-core cable in free air on a cable tray or ladder",
+    "E": "Multi-core cable in free air on a cable tray or ladder",
     "note": "Methods A, B, D1 are generally used only with copper conductors for aluminium of sizes used in practice. Large aluminium cables (≥95mm²) are common in underground mains and industrial submains."
   },
-
   "method_C_clipped_direct": {
     "_description": "Multi-core aluminium cable clipped directly to a non-thermally insulating wall, ceiling, or cable tray resting against a surface. Most common installation method for aluminium distribution cables in buildings. Sizes below 35mm² rarely used in practice; 50–300mm² is the typical aluminium range.",
     "aluminium_PVC_70C": {
       "_table_ref": "B.52.12 (multi-core, aluminium, PVC, Method C)",
       "_basis": "IEC 60364-5-52:2009+AMD1:2017 Table B.52.12",
-      "16":  {"rating_A": 59,  "mVAm_2cond": 4.6},
-      "25":  {"rating_A": 77,  "mVAm_2cond": 2.9},
-      "35":  {"rating_A": 93,  "mVAm_2cond": 2.1},
-      "50":  {"rating_A": 113, "mVAm_2cond": 1.5},
-      "70":  {"rating_A": 142, "mVAm_2cond": 1.1},
-      "95":  {"rating_A": 172, "mVAm_2cond": 0.76},
-      "120": {"rating_A": 200, "mVAm_2cond": 0.61},
-      "150": {"rating_A": 230, "mVAm_2cond": 0.49},
-      "185": {"rating_A": 262, "mVAm_2cond": 0.39},
-      "240": {"rating_A": 310, "mVAm_2cond": 0.30},
-      "300": {"rating_A": 358, "mVAm_2cond": 0.24}
+      "16": {
+        "rating_A": 59,
+        "mVAm_2cond": 4.6
+      },
+      "25": {
+        "rating_A": 77,
+        "mVAm_2cond": 2.9
+      },
+      "35": {
+        "rating_A": 93,
+        "mVAm_2cond": 2.1
+      },
+      "50": {
+        "rating_A": 113,
+        "mVAm_2cond": 1.5
+      },
+      "70": {
+        "rating_A": 142,
+        "mVAm_2cond": 1.1
+      },
+      "95": {
+        "rating_A": 172,
+        "mVAm_2cond": 0.76
+      },
+      "120": {
+        "rating_A": 200,
+        "mVAm_2cond": 0.61
+      },
+      "150": {
+        "rating_A": 230,
+        "mVAm_2cond": 0.49
+      },
+      "185": {
+        "rating_A": 262,
+        "mVAm_2cond": 0.39
+      },
+      "240": {
+        "rating_A": 310,
+        "mVAm_2cond": 0.3
+      },
+      "300": {
+        "rating_A": 358,
+        "mVAm_2cond": 0.24
+      }
     },
     "aluminium_XLPE_90C": {
       "_table_ref": "B.52.12 (multi-core, aluminium, XLPE, Method C)",
       "_basis": "IEC 60364-5-52:2009+AMD1:2017 Table B.52.12",
-      "16":  {"rating_A": 73,  "mVAm_2cond": 4.9},
-      "25":  {"rating_A": 94,  "mVAm_2cond": 3.1},
-      "35":  {"rating_A": 113, "mVAm_2cond": 2.2},
-      "50":  {"rating_A": 136, "mVAm_2cond": 1.6},
-      "70":  {"rating_A": 174, "mVAm_2cond": 1.2},
-      "95":  {"rating_A": 211, "mVAm_2cond": 0.82},
-      "120": {"rating_A": 246, "mVAm_2cond": 0.65},
-      "150": {"rating_A": 284, "mVAm_2cond": 0.52},
-      "185": {"rating_A": 324, "mVAm_2cond": 0.42},
-      "240": {"rating_A": 383, "mVAm_2cond": 0.32},
-      "300": {"rating_A": 444, "mVAm_2cond": 0.25}
+      "16": {
+        "rating_A": 73,
+        "mVAm_2cond": 4.9
+      },
+      "25": {
+        "rating_A": 94,
+        "mVAm_2cond": 3.1
+      },
+      "35": {
+        "rating_A": 113,
+        "mVAm_2cond": 2.2
+      },
+      "50": {
+        "rating_A": 136,
+        "mVAm_2cond": 1.6
+      },
+      "70": {
+        "rating_A": 174,
+        "mVAm_2cond": 1.2
+      },
+      "95": {
+        "rating_A": 211,
+        "mVAm_2cond": 0.82
+      },
+      "120": {
+        "rating_A": 246,
+        "mVAm_2cond": 0.65
+      },
+      "150": {
+        "rating_A": 284,
+        "mVAm_2cond": 0.52
+      },
+      "185": {
+        "rating_A": 324,
+        "mVAm_2cond": 0.42
+      },
+      "240": {
+        "rating_A": 383,
+        "mVAm_2cond": 0.32
+      },
+      "300": {
+        "rating_A": 444,
+        "mVAm_2cond": 0.25
+      }
     }
   },
-
   "method_D2_direct_buried": {
     "_description": "Multi-core aluminium cable direct buried in the ground without mechanical protection duct. Standard for LV distribution mains, service cables, and HV cables with armour. Reference depth 0.7m. Apply Cs factor for soil thermal resistivity other than 1.0 K·m/W.",
     "aluminium_PVC_70C": {
       "_table_ref": "B.52.14 (multi-core, aluminium, PVC, Method D2)",
       "_basis": "IEC 60364-5-52:2009+AMD1:2017 Table B.52.14",
-      "16":  {"rating_A": 73,  "mVAm_2cond": 4.6},
-      "25":  {"rating_A": 93,  "mVAm_2cond": 2.9},
-      "35":  {"rating_A": 112, "mVAm_2cond": 2.1},
-      "50":  {"rating_A": 133, "mVAm_2cond": 1.5},
-      "70":  {"rating_A": 163, "mVAm_2cond": 1.1},
-      "95":  {"rating_A": 193, "mVAm_2cond": 0.76},
-      "120": {"rating_A": 220, "mVAm_2cond": 0.61},
-      "150": {"rating_A": 248, "mVAm_2cond": 0.49},
-      "185": {"rating_A": 279, "mVAm_2cond": 0.39},
-      "240": {"rating_A": 320, "mVAm_2cond": 0.30},
-      "300": {"rating_A": 362, "mVAm_2cond": 0.24}
+      "16": {
+        "rating_A": 73,
+        "mVAm_2cond": 4.6
+      },
+      "25": {
+        "rating_A": 93,
+        "mVAm_2cond": 2.9
+      },
+      "35": {
+        "rating_A": 112,
+        "mVAm_2cond": 2.1
+      },
+      "50": {
+        "rating_A": 133,
+        "mVAm_2cond": 1.5
+      },
+      "70": {
+        "rating_A": 163,
+        "mVAm_2cond": 1.1
+      },
+      "95": {
+        "rating_A": 193,
+        "mVAm_2cond": 0.76
+      },
+      "120": {
+        "rating_A": 220,
+        "mVAm_2cond": 0.61
+      },
+      "150": {
+        "rating_A": 248,
+        "mVAm_2cond": 0.49
+      },
+      "185": {
+        "rating_A": 279,
+        "mVAm_2cond": 0.39
+      },
+      "240": {
+        "rating_A": 320,
+        "mVAm_2cond": 0.3
+      },
+      "300": {
+        "rating_A": 362,
+        "mVAm_2cond": 0.24
+      }
     },
     "aluminium_XLPE_90C": {
       "_table_ref": "B.52.14 (multi-core, aluminium, XLPE, Method D2)",
       "_basis": "IEC 60364-5-52:2009+AMD1:2017 Table B.52.14",
-      "16":  {"rating_A": 87,  "mVAm_2cond": 4.9},
-      "25":  {"rating_A": 112, "mVAm_2cond": 3.1},
-      "35":  {"rating_A": 135, "mVAm_2cond": 2.2},
-      "50":  {"rating_A": 160, "mVAm_2cond": 1.6},
-      "70":  {"rating_A": 195, "mVAm_2cond": 1.2},
-      "95":  {"rating_A": 232, "mVAm_2cond": 0.82},
-      "120": {"rating_A": 264, "mVAm_2cond": 0.65},
-      "150": {"rating_A": 298, "mVAm_2cond": 0.52},
-      "185": {"rating_A": 336, "mVAm_2cond": 0.42},
-      "240": {"rating_A": 386, "mVAm_2cond": 0.32},
-      "300": {"rating_A": 437, "mVAm_2cond": 0.25}
+      "16": {
+        "rating_A": 87,
+        "mVAm_2cond": 4.9
+      },
+      "25": {
+        "rating_A": 112,
+        "mVAm_2cond": 3.1
+      },
+      "35": {
+        "rating_A": 135,
+        "mVAm_2cond": 2.2
+      },
+      "50": {
+        "rating_A": 160,
+        "mVAm_2cond": 1.6
+      },
+      "70": {
+        "rating_A": 195,
+        "mVAm_2cond": 1.2
+      },
+      "95": {
+        "rating_A": 232,
+        "mVAm_2cond": 0.82
+      },
+      "120": {
+        "rating_A": 264,
+        "mVAm_2cond": 0.65
+      },
+      "150": {
+        "rating_A": 298,
+        "mVAm_2cond": 0.52
+      },
+      "185": {
+        "rating_A": 336,
+        "mVAm_2cond": 0.42
+      },
+      "240": {
+        "rating_A": 386,
+        "mVAm_2cond": 0.32
+      },
+      "300": {
+        "rating_A": 437,
+        "mVAm_2cond": 0.25
+      }
     }
   },
-
   "method_E_free_air": {
     "_description": "Multi-core aluminium cable in free air on a perforated cable tray, cable ladder, or cleated to a structure with free air circulation on all sides. Used for large aluminium submain cables routed on cable ladders in risers, plant rooms, or external routes.",
     "aluminium_PVC_70C": {
       "_table_ref": "B.52.13 (multi-core, aluminium, PVC, Method E)",
       "_basis": "IEC 60364-5-52:2009+AMD1:2017 Table B.52.13",
-      "16":  {"rating_A": 62,  "mVAm_2cond": 4.6},
-      "25":  {"rating_A": 79,  "mVAm_2cond": 2.9},
-      "35":  {"rating_A": 95,  "mVAm_2cond": 2.1},
-      "50":  {"rating_A": 115, "mVAm_2cond": 1.5},
-      "70":  {"rating_A": 147, "mVAm_2cond": 1.1},
-      "95":  {"rating_A": 179, "mVAm_2cond": 0.76},
-      "120": {"rating_A": 207, "mVAm_2cond": 0.61},
-      "150": {"rating_A": 239, "mVAm_2cond": 0.49},
-      "185": {"rating_A": 273, "mVAm_2cond": 0.39},
-      "240": {"rating_A": 322, "mVAm_2cond": 0.30},
-      "300": {"rating_A": 372, "mVAm_2cond": 0.24}
+      "16": {
+        "rating_A": 62,
+        "mVAm_2cond": 4.6
+      },
+      "25": {
+        "rating_A": 79,
+        "mVAm_2cond": 2.9
+      },
+      "35": {
+        "rating_A": 95,
+        "mVAm_2cond": 2.1
+      },
+      "50": {
+        "rating_A": 115,
+        "mVAm_2cond": 1.5
+      },
+      "70": {
+        "rating_A": 147,
+        "mVAm_2cond": 1.1
+      },
+      "95": {
+        "rating_A": 179,
+        "mVAm_2cond": 0.76
+      },
+      "120": {
+        "rating_A": 207,
+        "mVAm_2cond": 0.61
+      },
+      "150": {
+        "rating_A": 239,
+        "mVAm_2cond": 0.49
+      },
+      "185": {
+        "rating_A": 273,
+        "mVAm_2cond": 0.39
+      },
+      "240": {
+        "rating_A": 322,
+        "mVAm_2cond": 0.3
+      },
+      "300": {
+        "rating_A": 372,
+        "mVAm_2cond": 0.24
+      }
     },
     "aluminium_XLPE_90C": {
       "_table_ref": "B.52.13 (multi-core, aluminium, XLPE, Method E)",
       "_basis": "IEC 60364-5-52:2009+AMD1:2017 Table B.52.13",
-      "16":  {"rating_A": 80,  "mVAm_2cond": 4.9},
-      "25":  {"rating_A": 102, "mVAm_2cond": 3.1},
-      "35":  {"rating_A": 123, "mVAm_2cond": 2.2},
-      "50":  {"rating_A": 150, "mVAm_2cond": 1.6},
-      "70":  {"rating_A": 192, "mVAm_2cond": 1.2},
-      "95":  {"rating_A": 234, "mVAm_2cond": 0.82},
-      "120": {"rating_A": 272, "mVAm_2cond": 0.65},
-      "150": {"rating_A": 314, "mVAm_2cond": 0.52},
-      "185": {"rating_A": 360, "mVAm_2cond": 0.42},
-      "240": {"rating_A": 426, "mVAm_2cond": 0.32},
-      "300": {"rating_A": 492, "mVAm_2cond": 0.25}
+      "16": {
+        "rating_A": 80,
+        "mVAm_2cond": 4.9
+      },
+      "25": {
+        "rating_A": 102,
+        "mVAm_2cond": 3.1
+      },
+      "35": {
+        "rating_A": 123,
+        "mVAm_2cond": 2.2
+      },
+      "50": {
+        "rating_A": 150,
+        "mVAm_2cond": 1.6
+      },
+      "70": {
+        "rating_A": 192,
+        "mVAm_2cond": 1.2
+      },
+      "95": {
+        "rating_A": 234,
+        "mVAm_2cond": 0.82
+      },
+      "120": {
+        "rating_A": 272,
+        "mVAm_2cond": 0.65
+      },
+      "150": {
+        "rating_A": 314,
+        "mVAm_2cond": 0.52
+      },
+      "185": {
+        "rating_A": 360,
+        "mVAm_2cond": 0.42
+      },
+      "240": {
+        "rating_A": 426,
+        "mVAm_2cond": 0.32
+      },
+      "300": {
+        "rating_A": 492,
+        "mVAm_2cond": 0.25
+      }
     }
   },
-
   "aluminium_vs_copper_comparison": {
     "_note": "At the same cross-section, aluminium carries approximately 77–80% of the copper current rating. To replace a copper conductor with aluminium, move up approximately one or two standard sizes.",
     "equivalence_guide": {
@@ -154,7 +351,6 @@
       "Circuits where re-termination may be done by unqualified persons"
     ]
   },
-
   "adiabatic_k_values": {
     "_reference": "IEC 60364-4-43, Table 43A — k values for aluminium conductors",
     "_note": "Used in fault current check: S ≥ √(I²t) / k. Aluminium has lower k than copper due to lower conductivity and lower melting point.",

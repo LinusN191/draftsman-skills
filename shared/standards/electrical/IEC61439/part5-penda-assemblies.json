@@ -1,4 +1,8 @@
 {
+  "clause_ref": "IEC-61439-5 2015:Part-5-Power-Electronic-Assemblies",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 61439 Part 5 — Power distribution assemblies for public electricity networks (PENDA)",
   "_iec_part": 5,
   "_version": "1.0.0",
@@ -12,12 +16,38 @@
       "draftsman_id": "PENDA_KIOSK_GROUND_MOUNTED",
       "application_scope": "Outdoor ground-mounted DNO distribution kiosk feeding LV mains in residential or light-commercial neighbourhoods. Subject to vandalism, weather, and lightning impulse stress.",
       "rated_quantities": {
-        "Ue_V":      [400, 690],
-        "Ui_V":      [1000],
-        "Uimp_kV":   [8, 12],
-        "In_A":      [400, 630, 800, 1250, 1600, 2000, 2500],
-        "Icw_kA_1s": [25, 36, 50, 65],
-        "Ipk_kA":    [52, 75, 105, 143]
+        "Ue_V": [
+          400,
+          690
+        ],
+        "Ui_V": [
+          1000
+        ],
+        "Uimp_kV": [
+          8,
+          12
+        ],
+        "In_A": [
+          400,
+          630,
+          800,
+          1250,
+          1600,
+          2000,
+          2500
+        ],
+        "Icw_kA_1s": [
+          25,
+          36,
+          50,
+          65
+        ],
+        "Ipk_kA": [
+          52,
+          75,
+          105,
+          143
+        ]
       },
       "form_separation": "n/a",
       "ip_default": "IP44 minimum (Part 5 Clause 8.2); IP54 where wash-down is foreseeable",
@@ -45,17 +75,31 @@
         "10.11 short-circuit withstand",
         "10.13 mechanical operation"
       ],
-      "drawn_as": ["DB_MAIN"],
-      "typical_components": ["FUSE_3P", "FUSE_SWITCH", "BUSBAR_3PH", "SPD_TYPE1"],
+      "drawn_as": [
+        "DB_MAIN"
+      ],
+      "typical_components": [
+        "FUSE_3P",
+        "FUSE_SWITCH",
+        "BUSBAR_3PH",
+        "SPD_TYPE1"
+      ],
       "application_examples": [
         "Residential street distribution pillar",
         "Light commercial area DNO kiosk",
         "DNO LV branch-line feeder cabinet"
       ],
-      "related_iec_60364": ["Note: PENDA assemblies are DNO-side and not covered by IEC 60364 (which is consumer-side). They appear at the supply interface only."],
-      "related_bs_7671": ["Reg 113.1 (Distributor supply interface)"],
+      "related_iec_60364": [
+        "Note: PENDA assemblies are DNO-side and not covered by IEC 60364 (which is consumer-side). They appear at the supply interface only."
+      ],
+      "related_bs_7671": [
+        "Reg 113.1 (Distributor supply interface)"
+      ],
       "usage_notes": "Outside the scope of most MEP design — relevant only at the supply boundary where the DNO's PENDA terminates and the consumer's installation begins. Cross-reference for SPD coordination — a Type 1 SPD inside the building is typically coordinated with a Type 1+2 in the upstream PENDA.",
-      "related_assemblies": ["PENDA_POLE_MOUNTED", "ASSEMBLY_OUTDOOR_SPECIAL_SERVICE"]
+      "related_assemblies": [
+        "PENDA_POLE_MOUNTED",
+        "ASSEMBLY_OUTDOOR_SPECIAL_SERVICE"
+      ]
     },
     {
       "assembly_id": "PENDA_POLE_MOUNTED",
@@ -65,12 +109,31 @@
       "draftsman_id": "PENDA_POLE_MOUNTED",
       "application_scope": "Smaller pole-mounted PENDA used on rural LV overhead networks for service drops, single-customer breaks, or transformer-mounted incomers.",
       "rated_quantities": {
-        "Ue_V":      [400],
-        "Ui_V":      [690],
-        "Uimp_kV":   [8],
-        "In_A":      [63, 100, 160, 250],
-        "Icw_kA_1s": [10, 15, 25],
-        "Ipk_kA":    [17, 30, 52]
+        "Ue_V": [
+          400
+        ],
+        "Ui_V": [
+          690
+        ],
+        "Uimp_kV": [
+          8
+        ],
+        "In_A": [
+          63,
+          100,
+          160,
+          250
+        ],
+        "Icw_kA_1s": [
+          10,
+          15,
+          25
+        ],
+        "Ipk_kA": [
+          17,
+          30,
+          52
+        ]
       },
       "form_separation": "n/a",
       "ip_default": "IP44 minimum",
@@ -96,17 +159,29 @@
         "10.11 short-circuit withstand",
         "10.13 mechanical operation"
       ],
-      "drawn_as": ["DB_GENERAL"],
-      "typical_components": ["FUSE_1P", "FUSE_3P", "SPD_TYPE1"],
+      "drawn_as": [
+        "DB_GENERAL"
+      ],
+      "typical_components": [
+        "FUSE_1P",
+        "FUSE_3P",
+        "SPD_TYPE1"
+      ],
       "application_examples": [
         "Rural LV service drop cabinet",
         "Pole-top single-customer break box",
         "Distribution transformer LV incomer cabinet"
       ],
-      "related_iec_60364": ["Note: DNO-side equipment, outside IEC 60364 consumer-side scope"],
-      "related_bs_7671": ["Reg 113.1"],
+      "related_iec_60364": [
+        "Note: DNO-side equipment, outside IEC 60364 consumer-side scope"
+      ],
+      "related_bs_7671": [
+        "Reg 113.1"
+      ],
       "usage_notes": "Pole-mounted PENDA matters to MEP design only at the consumer interface — typically a service cutout fed from the PENDA. Specify the building SPD as Type 1+2 if the supply traverses overhead lines (high probability of lightning surge).",
-      "related_assemblies": ["PENDA_KIOSK_GROUND_MOUNTED"]
+      "related_assemblies": [
+        "PENDA_KIOSK_GROUND_MOUNTED"
+      ]
     }
   ]
 }

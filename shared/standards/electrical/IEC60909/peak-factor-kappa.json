@@ -1,4 +1,8 @@
 {
+  "clause_ref": "IEC-60909-0 2016:§4.3.1.1-Kappa",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60909-0:2016 §4.3 — Peak Factor κ (Kappa)",
   "_version": "1.0.0",
   "_reference": "IEC 60909-0:2016 §4.3.1.1 (peak factor κ formula). IEC 60865-1:2011 covers mechanical / thermal effects of short-circuit currents and does NOT contain the κ formula — do not cite IEC 60865-1 as the source.",
@@ -9,22 +13,76 @@
     "alternative_for_meshed_networks": "κb method per IEC 60909-0 §4.3.1.2"
   },
   "lookup_table_by_x_over_r": [
-    { "x_over_r": 0.5,  "kappa": 1.022, "regime": "highly_resistive_cable" },
-    { "x_over_r": 1.0,  "kappa": 1.069, "regime": "moderate" },
-    { "x_over_r": 2.0,  "kappa": 1.180, "regime": "lv_cable_typical" },
-    { "x_over_r": 3.0,  "kappa": 1.279, "regime": "lv_busbar" },
-    { "x_over_r": 5.0,  "kappa": 1.439, "regime": "industrial_typical" },
-    { "x_over_r": 7.0,  "kappa": 1.557, "regime": "large_transformer_secondary" },
-    { "x_over_r": 10.0, "kappa": 1.668, "regime": "transformer_terminals" },
-    { "x_over_r": 15.0, "kappa": 1.768, "regime": "generator_terminals" },
-    { "x_over_r": 20.0, "kappa": 1.823, "regime": "mv_busbar" },
-    { "x_over_r": 30.0, "kappa": 1.873, "regime": "high_voltage_close_to_source" },
-    { "x_over_r": 50.0, "kappa": 1.910, "regime": "approaching_maximum" },
-    { "x_over_r": 100.0,"kappa": 1.940, "regime": "near_maximum_pure_inductive" }
+    {
+      "x_over_r": 0.5,
+      "kappa": 1.022,
+      "regime": "highly_resistive_cable"
+    },
+    {
+      "x_over_r": 1.0,
+      "kappa": 1.069,
+      "regime": "moderate"
+    },
+    {
+      "x_over_r": 2.0,
+      "kappa": 1.18,
+      "regime": "lv_cable_typical"
+    },
+    {
+      "x_over_r": 3.0,
+      "kappa": 1.279,
+      "regime": "lv_busbar"
+    },
+    {
+      "x_over_r": 5.0,
+      "kappa": 1.439,
+      "regime": "industrial_typical"
+    },
+    {
+      "x_over_r": 7.0,
+      "kappa": 1.557,
+      "regime": "large_transformer_secondary"
+    },
+    {
+      "x_over_r": 10.0,
+      "kappa": 1.668,
+      "regime": "transformer_terminals"
+    },
+    {
+      "x_over_r": 15.0,
+      "kappa": 1.768,
+      "regime": "generator_terminals"
+    },
+    {
+      "x_over_r": 20.0,
+      "kappa": 1.823,
+      "regime": "mv_busbar"
+    },
+    {
+      "x_over_r": 30.0,
+      "kappa": 1.873,
+      "regime": "high_voltage_close_to_source"
+    },
+    {
+      "x_over_r": 50.0,
+      "kappa": 1.91,
+      "regime": "approaching_maximum"
+    },
+    {
+      "x_over_r": 100.0,
+      "kappa": 1.94,
+      "regime": "near_maximum_pure_inductive"
+    }
   ],
   "asymptotic_limits": {
-    "min": { "value": 1.0, "condition": "pure resistive — instantaneous current = RMS × √2 with no DC offset envelope" },
-    "max": { "value": 2.0, "condition": "pure inductive — full DC offset adds to first peak" }
+    "min": {
+      "value": 1.0,
+      "condition": "pure resistive — instantaneous current = RMS × √2 with no DC offset envelope"
+    },
+    "max": {
+      "value": 2.0,
+      "condition": "pure inductive — full DC offset adds to first peak"
+    }
   },
   "engineering_notes": [
     "For LV cable-dominated paths (X/R typically 1-3): κ ≈ 1.1-1.3 — moderate first peak",

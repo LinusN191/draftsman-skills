@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Article-500-Classification",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 — Hazardous Locations: Class/Division and Class/Zone Classification",
   "_version": "1.0.0",
   "_note": "Unified treatment of the two parallel classification systems used in NEC — Division (legacy, Arts 500-503) and Zone (IEC-aligned, Arts 505-506). Plus equipment selection matrix and seal placement rules.",
@@ -34,31 +38,107 @@
     }
   ],
   "severity_equivalence_matrix": [
-    {"nec_division": "Class I Div 1",  "iec_zone": "Class I Zone 0 + Zone 1 combined",  "severity_note": "Division 1 covers both 'continuously present' AND 'occasionally present' — broader than Zone 1 alone"},
-    {"nec_division": "Class I Div 2",  "iec_zone": "Class I Zone 2",                    "severity_note": "Direct equivalence"},
-    {"nec_division": "Class II Div 1", "iec_zone": "Zone 20 + Zone 21 combined",        "severity_note": "Similar broadening"},
-    {"nec_division": "Class II Div 2", "iec_zone": "Zone 22",                            "severity_note": "Direct equivalence"}
+    {
+      "nec_division": "Class I Div 1",
+      "iec_zone": "Class I Zone 0 + Zone 1 combined",
+      "severity_note": "Division 1 covers both 'continuously present' AND 'occasionally present' — broader than Zone 1 alone"
+    },
+    {
+      "nec_division": "Class I Div 2",
+      "iec_zone": "Class I Zone 2",
+      "severity_note": "Direct equivalence"
+    },
+    {
+      "nec_division": "Class II Div 1",
+      "iec_zone": "Zone 20 + Zone 21 combined",
+      "severity_note": "Similar broadening"
+    },
+    {
+      "nec_division": "Class II Div 2",
+      "iec_zone": "Zone 22",
+      "severity_note": "Direct equivalence"
+    }
   ],
   "equipment_marking_examples": [
-    {"system": "Class/Division", "example": "Class I, Div 1, Group D, T4", "interpretation": "Suitable for Class I (gases) Div 1 (continuous/occasional), Group D (propane/gasoline), T4 (max surface temp 135 °C)"},
-    {"system": "Class/Zone",     "example": "Class I, Zone 1, IIA T3",      "interpretation": "Class I Zone 1 (occasional), Group IIA, T3 (max surface temp 200 °C)"},
-    {"system": "IEC",            "example": "II 2 G Ex db IIB+H2 T4 Gb",   "interpretation": "Group II equipment, Category 2 (Zone 1), G (gas), explosion proof, IIB + hydrogen, T4 (135 °C), EPL Gb (high level protection)"}
+    {
+      "system": "Class/Division",
+      "example": "Class I, Div 1, Group D, T4",
+      "interpretation": "Suitable for Class I (gases) Div 1 (continuous/occasional), Group D (propane/gasoline), T4 (max surface temp 135 °C)"
+    },
+    {
+      "system": "Class/Zone",
+      "example": "Class I, Zone 1, IIA T3",
+      "interpretation": "Class I Zone 1 (occasional), Group IIA, T3 (max surface temp 200 °C)"
+    },
+    {
+      "system": "IEC",
+      "example": "II 2 G Ex db IIB+H2 T4 Gb",
+      "interpretation": "Group II equipment, Category 2 (Zone 1), G (gas), explosion proof, IIB + hydrogen, T4 (135 °C), EPL Gb (high level protection)"
+    }
   ],
   "protection_techniques_class_division": [
-    {"technique": "Explosionproof", "marking": "XP",      "applicability": "Class I Div 1, Class I Div 2"},
-    {"technique": "Intrinsically safe", "marking": "IS",  "applicability": "Class I Div 1 (uA), Class I Div 2"},
-    {"technique": "Nonincendive", "marking": "NIC",       "applicability": "Class I Div 2"},
-    {"technique": "Purged/Pressurized", "marking": "Type X/Y/Z", "applicability": "Class I Div 1 (Type X), Div 2 (Type Z)"},
-    {"technique": "Hermetically sealed", "marking": "—",  "applicability": "Class I Div 2 only"},
-    {"technique": "Oil immersion", "marking": "—",        "applicability": "Class I Div 2 only"}
+    {
+      "technique": "Explosionproof",
+      "marking": "XP",
+      "applicability": "Class I Div 1, Class I Div 2"
+    },
+    {
+      "technique": "Intrinsically safe",
+      "marking": "IS",
+      "applicability": "Class I Div 1 (uA), Class I Div 2"
+    },
+    {
+      "technique": "Nonincendive",
+      "marking": "NIC",
+      "applicability": "Class I Div 2"
+    },
+    {
+      "technique": "Purged/Pressurized",
+      "marking": "Type X/Y/Z",
+      "applicability": "Class I Div 1 (Type X), Div 2 (Type Z)"
+    },
+    {
+      "technique": "Hermetically sealed",
+      "marking": "—",
+      "applicability": "Class I Div 2 only"
+    },
+    {
+      "technique": "Oil immersion",
+      "marking": "—",
+      "applicability": "Class I Div 2 only"
+    }
   ],
   "protection_techniques_class_zone": [
-    {"technique": "Flameproof (Ex d)",          "iec_marking": "Ex d", "applicability": "Zone 1, Zone 2"},
-    {"technique": "Increased safety (Ex e)",     "iec_marking": "Ex e", "applicability": "Zone 1, Zone 2"},
-    {"technique": "Pressurized (Ex p)",          "iec_marking": "Ex p", "applicability": "Zone 1 (px), Zone 2 (py, pz)"},
-    {"technique": "Intrinsic safety (Ex ia/ib)", "iec_marking": "Ex ia (Zone 0), Ex ib (Zone 1)", "applicability": "Ex ia = Zone 0; Ex ib = Zone 1"},
-    {"technique": "Encapsulation (Ex m)",        "iec_marking": "Ex m", "applicability": "Zone 1 (ma, mb), Zone 2 (mc)"},
-    {"technique": "Non-sparking (Ex nA)",        "iec_marking": "Ex nA","applicability": "Zone 2 only"}
+    {
+      "technique": "Flameproof (Ex d)",
+      "iec_marking": "Ex d",
+      "applicability": "Zone 1, Zone 2"
+    },
+    {
+      "technique": "Increased safety (Ex e)",
+      "iec_marking": "Ex e",
+      "applicability": "Zone 1, Zone 2"
+    },
+    {
+      "technique": "Pressurized (Ex p)",
+      "iec_marking": "Ex p",
+      "applicability": "Zone 1 (px), Zone 2 (py, pz)"
+    },
+    {
+      "technique": "Intrinsic safety (Ex ia/ib)",
+      "iec_marking": "Ex ia (Zone 0), Ex ib (Zone 1)",
+      "applicability": "Ex ia = Zone 0; Ex ib = Zone 1"
+    },
+    {
+      "technique": "Encapsulation (Ex m)",
+      "iec_marking": "Ex m",
+      "applicability": "Zone 1 (ma, mb), Zone 2 (mc)"
+    },
+    {
+      "technique": "Non-sparking (Ex nA)",
+      "iec_marking": "Ex nA",
+      "applicability": "Zone 2 only"
+    }
   ],
   "seal_placement_rules": {
     "rule_summary": "Conduit seal required at the boundary between hazardous and non-hazardous locations, and at certain equipment entries inside the hazardous location",
@@ -70,20 +150,76 @@
   "temperature_class_table": {
     "_source": "NEC 500.8(D) / 505.9(D) — equipment maximum surface temperature codes",
     "rows": [
-      {"t_class": "T1", "max_surface_c": 450, "max_surface_f": 842},
-      {"t_class": "T2", "max_surface_c": 300, "max_surface_f": 572},
-      {"t_class": "T2A","max_surface_c": 280, "max_surface_f": 536},
-      {"t_class": "T2B","max_surface_c": 260, "max_surface_f": 500},
-      {"t_class": "T2C","max_surface_c": 230, "max_surface_f": 446},
-      {"t_class": "T2D","max_surface_c": 215, "max_surface_f": 419},
-      {"t_class": "T3", "max_surface_c": 200, "max_surface_f": 392},
-      {"t_class": "T3A","max_surface_c": 180, "max_surface_f": 356},
-      {"t_class": "T3B","max_surface_c": 165, "max_surface_f": 329},
-      {"t_class": "T3C","max_surface_c": 160, "max_surface_f": 320},
-      {"t_class": "T4", "max_surface_c": 135, "max_surface_f": 275},
-      {"t_class": "T4A","max_surface_c": 120, "max_surface_f": 248},
-      {"t_class": "T5", "max_surface_c": 100, "max_surface_f": 212},
-      {"t_class": "T6", "max_surface_c":  85, "max_surface_f": 185}
+      {
+        "t_class": "T1",
+        "max_surface_c": 450,
+        "max_surface_f": 842
+      },
+      {
+        "t_class": "T2",
+        "max_surface_c": 300,
+        "max_surface_f": 572
+      },
+      {
+        "t_class": "T2A",
+        "max_surface_c": 280,
+        "max_surface_f": 536
+      },
+      {
+        "t_class": "T2B",
+        "max_surface_c": 260,
+        "max_surface_f": 500
+      },
+      {
+        "t_class": "T2C",
+        "max_surface_c": 230,
+        "max_surface_f": 446
+      },
+      {
+        "t_class": "T2D",
+        "max_surface_c": 215,
+        "max_surface_f": 419
+      },
+      {
+        "t_class": "T3",
+        "max_surface_c": 200,
+        "max_surface_f": 392
+      },
+      {
+        "t_class": "T3A",
+        "max_surface_c": 180,
+        "max_surface_f": 356
+      },
+      {
+        "t_class": "T3B",
+        "max_surface_c": 165,
+        "max_surface_f": 329
+      },
+      {
+        "t_class": "T3C",
+        "max_surface_c": 160,
+        "max_surface_f": 320
+      },
+      {
+        "t_class": "T4",
+        "max_surface_c": 135,
+        "max_surface_f": 275
+      },
+      {
+        "t_class": "T4A",
+        "max_surface_c": 120,
+        "max_surface_f": 248
+      },
+      {
+        "t_class": "T5",
+        "max_surface_c": 100,
+        "max_surface_f": 212
+      },
+      {
+        "t_class": "T6",
+        "max_surface_c": 85,
+        "max_surface_f": 185
+      }
     ]
   },
   "common_errors": [

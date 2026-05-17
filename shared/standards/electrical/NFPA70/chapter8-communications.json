@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Chapter-8",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 Chapter 8 — Communications Systems",
   "_chapter": 8,
   "_version": "1.0.0",
@@ -11,11 +15,28 @@
       "article_number": 800,
       "article_title": "General Requirements for Communications Systems",
       "scope": "General installation requirements for ALL Chapter 8 communications systems — telephone, intercom, network, audio. Wiring/cable listing, separation from power circuits (800.133), bonding of primary protector (800.100).",
-      "applies_to": ["communications_general", "telephone", "intercom", "data"],
+      "applies_to": [
+        "communications_general",
+        "telephone",
+        "intercom",
+        "data"
+      ],
       "key_sections": [
-        {"section": "800.100", "title": "Cable and Primary Protector Bonding and Grounding", "summary": "Primary protector grounded to building grounding electrode via #14 AWG (or larger) grounding conductor; bonded to power grounding system"},
-        {"section": "800.133", "title": "Installation of Communications Wires, Cables, and Equipment", "summary": "Separation from power and Class 1 circuits — communications cables generally must be separated by 2 in from power conductors of >300 V unless one is in conduit"},
-        {"section": "800.179", "title": "Listing and Marking of Communications Wires and Cables", "summary": "CMP (plenum), CMR (riser), CMG (general), CM (general restricted)"}
+        {
+          "section": "800.100",
+          "title": "Cable and Primary Protector Bonding and Grounding",
+          "summary": "Primary protector grounded to building grounding electrode via #14 AWG (or larger) grounding conductor; bonded to power grounding system"
+        },
+        {
+          "section": "800.133",
+          "title": "Installation of Communications Wires, Cables, and Equipment",
+          "summary": "Separation from power and Class 1 circuits — communications cables generally must be separated by 2 in from power conductors of >300 V unless one is in conduit"
+        },
+        {
+          "section": "800.179",
+          "title": "Listing and Marking of Communications Wires and Cables",
+          "summary": "CMP (plenum), CMR (riser), CMG (general), CM (general restricted)"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
@@ -28,7 +49,12 @@
       "divergence_notes": "NEC Chapter 8 stands alone (90.3); IEC handles communications via separate standards (ISO/IEC 11801, EN 50173). The 'primary protector' concept (800.100) is NEC-specific — bonding telecom protector to the building grounding electrode.",
       "related_bs_7671": [],
       "usage_notes": "Chapter 8 cross-references back to Chapter 1-4 are explicit (e.g., 800.100 references Art 250). Otherwise Chapter 8 stands alone.",
-      "related_articles": ["ART_805", "ART_820", "ART_830", "ART_770"]
+      "related_articles": [
+        "ART_805",
+        "ART_820",
+        "ART_830",
+        "ART_770"
+      ]
     },
     {
       "article_id": "ART_805",
@@ -37,19 +63,30 @@
       "article_number": 805,
       "article_title": "Communications Circuits (Telephone, etc.)",
       "scope": "Telephone-circuit-specific requirements — primary protectors, listing of communications equipment, premises wiring.",
-      "applies_to": ["telephone", "voice_circuits"],
+      "applies_to": [
+        "telephone",
+        "voice_circuits"
+      ],
       "key_sections": [
-        {"section": "805.50", "title": "Circuit Loading", "summary": "Primary protector required where communications circuit exposed to lightning or accidental contact with power circuits >300 V"}
+        {
+          "section": "805.50",
+          "title": "Circuit Loading",
+          "summary": "Primary protector required where communications circuit exposed to lightning or accidental contact with power circuits >300 V"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Omitting primary protector on aerial communications cable — required by 805.50"],
+      "common_errors": [
+        "Omitting primary protector on aerial communications cable — required by 805.50"
+      ],
       "drawn_as": [],
       "related_iec_60364": [],
       "divergence_notes": "NEC Art 805 telephone-specific rules; IEC defers to national telecoms regulation.",
       "related_bs_7671": [],
       "usage_notes": "Read 805 + 800 together for the full picture.",
-      "related_articles": ["ART_800"]
+      "related_articles": [
+        "ART_800"
+      ]
     },
     {
       "article_id": "ART_810",
@@ -58,20 +95,37 @@
       "article_number": 810,
       "article_title": "Radio and Television Equipment",
       "scope": "Antenna systems (transmitting and receiving) — antenna lead-in cables, masts, antenna discharge units, grounding.",
-      "applies_to": ["radio", "tv_antenna", "satellite_dish"],
+      "applies_to": [
+        "radio",
+        "tv_antenna",
+        "satellite_dish"
+      ],
       "key_sections": [
-        {"section": "810.20", "title": "Antenna Discharge Units", "summary": "Antenna discharge unit (lightning arrester) on receiving antenna lead-ins"},
-        {"section": "810.21", "title": "Grounding Conductors — Receiving Stations", "summary": "Antenna mast and antenna discharge unit grounded to building grounding electrode"}
+        {
+          "section": "810.20",
+          "title": "Antenna Discharge Units",
+          "summary": "Antenna discharge unit (lightning arrester) on receiving antenna lead-ins"
+        },
+        {
+          "section": "810.21",
+          "title": "Grounding Conductors — Receiving Stations",
+          "summary": "Antenna mast and antenna discharge unit grounded to building grounding electrode"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Omitting antenna discharge unit on rooftop receiving antenna — required by 810.20"],
+      "common_errors": [
+        "Omitting antenna discharge unit on rooftop receiving antenna — required by 810.20"
+      ],
       "drawn_as": [],
       "related_iec_60364": [],
       "divergence_notes": "Art 810 antenna grounding ≈ IEC 62305-3 (Lightning protection) external systems. NEC requires antenna discharge unit grounding for receiving antennas; IEC handles via SPD coordination.",
       "related_bs_7671": [],
       "usage_notes": "Always coordinate antenna grounding with the building lightning-protection system if present.",
-      "related_articles": ["ART_800", "ART_820"]
+      "related_articles": [
+        "ART_800",
+        "ART_820"
+      ]
     },
     {
       "article_id": "ART_820",
@@ -80,19 +134,30 @@
       "article_number": 820,
       "article_title": "Community Antenna Television and Radio Distribution Systems (CATV)",
       "scope": "Cable television and coaxial distribution — same primary-protector / separation / bonding regime as Art 800.",
-      "applies_to": ["catv", "coaxial_cable_tv"],
+      "applies_to": [
+        "catv",
+        "coaxial_cable_tv"
+      ],
       "key_sections": [
-        {"section": "820.100", "title": "Cable and Primary Protector Bonding and Grounding", "summary": "Coaxial cable shield bonded/grounded at building entrance via #14 AWG conductor"}
+        {
+          "section": "820.100",
+          "title": "Cable and Primary Protector Bonding and Grounding",
+          "summary": "Coaxial cable shield bonded/grounded at building entrance via #14 AWG conductor"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Failing to ground the cable TV shield at building entrance"],
+      "common_errors": [
+        "Failing to ground the cable TV shield at building entrance"
+      ],
       "drawn_as": [],
       "related_iec_60364": [],
       "divergence_notes": "NEC Art 820 CATV-specific; IEC handles via ISO/IEC 11801 and national CATV regulations.",
       "related_bs_7671": [],
       "usage_notes": "Coordinate with the cable provider's drop installation.",
-      "related_articles": ["ART_800"]
+      "related_articles": [
+        "ART_800"
+      ]
     },
     {
       "article_id": "ART_830",
@@ -101,10 +166,21 @@
       "article_number": 830,
       "article_title": "Network-Powered Broadband Communications Systems",
       "scope": "Network-powered broadband (power from the central office over the broadband line) — primary protector requirements, separation, cable types (BMR, BLP/BLR/BL).",
-      "applies_to": ["network_powered_broadband", "fttp"],
+      "applies_to": [
+        "network_powered_broadband",
+        "fttp"
+      ],
       "key_sections": [
-        {"section": "830.100","title": "Primary Protector Grounding and Bonding", "summary": "Primary protector grounded same as Art 800"},
-        {"section": "830.179","title": "Listing of Equipment, Wires, Cables, and Devices", "summary": "Cable types BMR, BLP, BLR, BL by application"}
+        {
+          "section": "830.100",
+          "title": "Primary Protector Grounding and Bonding",
+          "summary": "Primary protector grounded same as Art 800"
+        },
+        {
+          "section": "830.179",
+          "title": "Listing of Equipment, Wires, Cables, and Devices",
+          "summary": "Cable types BMR, BLP, BLR, BL by application"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
@@ -114,7 +190,10 @@
       "divergence_notes": "NEC Art 830 covers network-powered broadband (rare topology); IEC has no direct equivalent.",
       "related_bs_7671": [],
       "usage_notes": "Read in conjunction with the provider's drop equipment spec.",
-      "related_articles": ["ART_800", "ART_840"]
+      "related_articles": [
+        "ART_800",
+        "ART_840"
+      ]
     },
     {
       "article_id": "ART_840",
@@ -123,9 +202,17 @@
       "article_number": 840,
       "article_title": "Premises-Powered Broadband Communications Systems",
       "scope": "Premises-powered broadband (the customer powers the ONT/router locally) — Power over Ethernet (PoE) at the network interface, battery backup considerations.",
-      "applies_to": ["premises_powered_broadband", "poe", "fttp_premises"],
+      "applies_to": [
+        "premises_powered_broadband",
+        "poe",
+        "fttp_premises"
+      ],
       "key_sections": [
-        {"section": "840.160", "title": "Powering Circuits", "summary": "Premises power source for the broadband terminal — typically PoE (Class 2/3 power-limited)"}
+        {
+          "section": "840.160",
+          "title": "Powering Circuits",
+          "summary": "Premises power source for the broadband terminal — typically PoE (Class 2/3 power-limited)"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
@@ -135,7 +222,11 @@
       "divergence_notes": "NEC Art 840 covers premises-powered broadband + PoE specifics; IEC handles via IEC 60364-4-41 PELV and IEC 60950 / IEC 62368 for ONT/router equipment.",
       "related_bs_7671": [],
       "usage_notes": "On fiber-to-the-premises (FTTP) installations, this is the primary article — read with 770 (optical fiber).",
-      "related_articles": ["ART_770", "ART_800", "ART_725"]
+      "related_articles": [
+        "ART_770",
+        "ART_800",
+        "ART_725"
+      ]
     }
   ]
 }

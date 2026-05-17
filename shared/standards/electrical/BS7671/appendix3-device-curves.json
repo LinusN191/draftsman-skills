@@ -1,7 +1,10 @@
 {
+  "clause_ref": "BS7671 2018:Appendix-3",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "BS 7671:2018+A2:2022 Appendix 3 — Time/Current Characteristics of Overcurrent Protective Devices",
   "_note": "Tripping time depends on the multiple of In flowing through the device. These curves determine selectivity coordination and disconnection time compliance. Manufacturer's curves should be used for final design — these are typical envelope values.",
-
   "characteristic_explanation": {
     "two_regions": {
       "thermal_region": {
@@ -15,7 +18,6 @@
     },
     "transition": "Between thermal and magnetic, there is a 'dead band' where the device may take 0.1 to 1 second to operate. Selectivity studies must account for this."
   },
-
   "type_B_MCB_BS_EN_60898": {
     "_reference": "BS EN 60898 Type B characteristic, instantaneous trip 3-5× In",
     "_use": "Resistive loads, general lighting, sockets — minimal inrush",
@@ -35,7 +37,6 @@
     "I2_factor": 1.45,
     "I1_factor": 1.13
   },
-
   "type_C_MCB_BS_EN_60898": {
     "_reference": "BS EN 60898 Type C characteristic, instantaneous trip 5-10× In",
     "_use": "Inductive loads, motor circuits, LED panel banks with significant inrush, fluorescent lighting (older)",
@@ -54,7 +55,6 @@
     "I2_factor": 1.45,
     "I1_factor": 1.13
   },
-
   "type_D_MCB_BS_EN_60898": {
     "_reference": "BS EN 60898 Type D characteristic, instantaneous trip 10-20× In",
     "_use": "Transformer primary, lift drives, large discharge lighting, welding sets — very high inrush",
@@ -72,7 +72,6 @@
     "I2_factor": 1.45,
     "I1_factor": 1.13
   },
-
   "BS_88_3_fuse_gG": {
     "_reference": "BS 88-3 — Low-voltage fuses, gG (general application) class",
     "_use": "Submains, distribution boards, motor circuits (with overload relay)",
@@ -89,7 +88,6 @@
     "I2_factor": 1.6,
     "minimum_breaking_capacity": "80 kA (typical UK product)"
   },
-
   "RCBO_BS_EN_61009": {
     "_note": "Same overcurrent characteristic as MCB of equivalent type. Plus RCD function.",
     "RCD_trip_times_required": {
@@ -108,7 +106,6 @@
       "5.0 × IΔn — within faster published time"
     ]
   },
-
   "selectivity_calculation": {
     "current_discrimination": {
       "principle": "Downstream device clears fault before upstream device starts to operate",
@@ -131,14 +128,12 @@
       "advantage": "Achieves selectivity AND fast clearance simultaneously — overcomes the speed/selectivity tradeoff of time grading."
     }
   },
-
   "let_through_energy_I2t": {
     "_purpose": "For adiabatic check (Reg 434.5.2) and for fault discrimination — how much I²·t the device allows through before clearing",
     "MCB_typical_I2t_at_10kA_RMS_3kA_let_through_kA2s": "Manufacturer specific — typical 6kA MCB lets through approximately 5,000 A²s",
     "fuse_typical_I2t_pre_arc_kA2s": "Steeply lower than MCB — gG fuse lets through approximately 1,000-3,000 A²s at high currents",
     "implication": "For high-fault circuits with small cables, fuses often give better cable protection than MCBs."
   },
-
   "practical_selectivity_examples": {
     "domestic_consumer_unit": {
       "incoming": "100A type 1 supply fuse (DNO)",
@@ -159,7 +154,6 @@
       "selectivity_verdict": "ZSI ensures only the nearest device to the fault trips. Even on heavy short-circuit at the motor, only the 80A starter operates — the rest of the plant continues running."
     }
   },
-
   "limitations_of_this_data": {
     "_note": "Values in this file are TYPICAL envelope values for the device type. For actual design:",
     "use_manufacturer_data": "Always use the manufacturer's published time/current curves for the specific product being installed. Curves vary between manufacturers and between product ranges within a manufacturer.",

@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Chapter-9-Table-1",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 — Conduit Fill (cross-cutting)",
   "_version": "1.0.0",
   "_note": "Conduit fill calculation procedure using Chapter 9 Table 1 (% allowed) + Table 4 (raceway dimensions) + Table 5 (conductor dimensions). Inline tables here are reference; full data lives in chapter9-tables.json.",
@@ -45,8 +49,16 @@
     "step_4_fill_percent": "≥3 conductors → 40% allowed",
     "step_5_emt_minimum": {
       "trade_size_check_options": [
-        {"trade_size_in": "1",     "emt_40pct_area_in2": 0.346, "passes": false},
-        {"trade_size_in": "1 1/4", "emt_40pct_area_in2": 0.598, "passes": true}
+        {
+          "trade_size_in": "1",
+          "emt_40pct_area_in2": 0.346,
+          "passes": false
+        },
+        {
+          "trade_size_in": "1 1/4",
+          "emt_40pct_area_in2": 0.598,
+          "passes": true
+        }
       ],
       "minimum_emt": "1 1/4 inch EMT"
     },

@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Article-450",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 Article 450 — Transformers and Transformer Vaults",
   "_version": "1.0.0",
   "articles": [
@@ -9,14 +13,45 @@
       "article_number": 450,
       "article_title": "Transformers and Transformer Vaults",
       "scope": "Transformer installation, overcurrent protection, primary and secondary connections, vault construction. Transformer classifications: dry-type, oil-insulated, less-flammable-liquid (FR3 etc.), askarel (legacy/banned).",
-      "applies_to": ["transformers", "dry_type", "oil_filled", "transformer_vault", "primary_protection", "secondary_protection"],
+      "applies_to": [
+        "transformers",
+        "dry_type",
+        "oil_filled",
+        "transformer_vault",
+        "primary_protection",
+        "secondary_protection"
+      ],
       "key_sections": [
-        {"section": "450.3", "title": "Overcurrent Protection", "summary": "Primary OCPD per Table 450.3(A) (>1000 V) or 450.3(B) (≤1000 V). Secondary OCPD often required to size feeder conductors per 240.21(C)"},
-        {"section": "450.4", "title": "Autotransformer Protection", "summary": "Autotransformer OCPD sized differently from isolation transformer; based on input current rating"},
-        {"section": "450.9", "title": "Ventilation", "summary": "Ventilation requirements for transformers; clearances per manufacturer + Code"},
-        {"section": "450.21","title": "Dry-Type Transformer Installation (Indoor)", "summary": "≤112.5 kVA: any location. >112.5 kVA: 1-hour fire-resistant separation from combustibles (3-ft clearance from combustible building material if not in fire-rated room)"},
-        {"section": "450.43","title": "Less-Flammable Liquid-Insulated Transformer Installation (Indoor)", "summary": "Indoor installation permitted with conditions: containment, ventilation, automatic fire suppression"},
-        {"section": "450.46","title": "Liquid-Insulated Transformer Installation (Indoor)", "summary": "Mineral-oil-insulated transformer indoor only in approved vault per Part III"}
+        {
+          "section": "450.3",
+          "title": "Overcurrent Protection",
+          "summary": "Primary OCPD per Table 450.3(A) (>1000 V) or 450.3(B) (≤1000 V). Secondary OCPD often required to size feeder conductors per 240.21(C)"
+        },
+        {
+          "section": "450.4",
+          "title": "Autotransformer Protection",
+          "summary": "Autotransformer OCPD sized differently from isolation transformer; based on input current rating"
+        },
+        {
+          "section": "450.9",
+          "title": "Ventilation",
+          "summary": "Ventilation requirements for transformers; clearances per manufacturer + Code"
+        },
+        {
+          "section": "450.21",
+          "title": "Dry-Type Transformer Installation (Indoor)",
+          "summary": "≤112.5 kVA: any location. >112.5 kVA: 1-hour fire-resistant separation from combustibles (3-ft clearance from combustible building material if not in fire-rated room)"
+        },
+        {
+          "section": "450.43",
+          "title": "Less-Flammable Liquid-Insulated Transformer Installation (Indoor)",
+          "summary": "Indoor installation permitted with conditions: containment, ventilation, automatic fire suppression"
+        },
+        {
+          "section": "450.46",
+          "title": "Liquid-Insulated Transformer Installation (Indoor)",
+          "summary": "Mineral-oil-insulated transformer indoor only in approved vault per Part III"
+        }
       ],
       "tabulated_values": {
         "primary_ocpd_lt_1000v_450_3_B": "see tables_inline"
@@ -26,9 +61,18 @@
           "title": "Maximum Primary OCPD for Transformer ≤1000 V (% of primary rated current)",
           "_note": "Where only primary protection is provided (no secondary OCPD)",
           "rows": [
-            {"primary_amps": "≥ 9", "primary_ocpd_max_pct": 125},
-            {"primary_amps": "2-9", "primary_ocpd_max_pct": 167},
-            {"primary_amps": "< 2", "primary_ocpd_max_pct": 300}
+            {
+              "primary_amps": "≥ 9",
+              "primary_ocpd_max_pct": 125
+            },
+            {
+              "primary_amps": "2-9",
+              "primary_ocpd_max_pct": 167
+            },
+            {
+              "primary_amps": "< 2",
+              "primary_ocpd_max_pct": 300
+            }
           ]
         }
       },
@@ -38,12 +82,22 @@
         "Treating an autotransformer like an isolation transformer for OCPD sizing — 450.4 specifies different rules",
         "Specifying mineral-oil transformer indoor without a vault per Part III — only less-flammable-liquid (FR3, K-class, midel) is permitted indoor without vault"
       ],
-      "drawn_as": ["TRANSFORMER_2W", "TRANSFORMER_3W"],
-      "related_iec_60364": ["IEC 60364-5-55 (Other equipment) — limited treatment", "IEC 60076 series (Power transformers — primary reference)"],
+      "drawn_as": [
+        "TRANSFORMER_2W",
+        "TRANSFORMER_3W"
+      ],
+      "related_iec_60364": [
+        "IEC 60364-5-55 (Other equipment) — limited treatment",
+        "IEC 60076 series (Power transformers — primary reference)"
+      ],
       "divergence_notes": "NEC Art 450 handles installation; IEC defers to IEC 60076 (power transformer equipment) and 60364-5-55 (installation, limited). NEC's primary OCPD sizing rule (Table 450.3(B), 125% / 167% / 300% of primary current) has no direct IEC equivalent — IEC sizes based on Iz of the primary cable + transformer Icc.",
       "related_bs_7671": [],
       "usage_notes": "Confirm transformer type (dry / less-flammable-liquid / oil) early — determines whether vault is required.",
-      "related_articles": ["ART_240", "ART_310", "ART_408"]
+      "related_articles": [
+        "ART_240",
+        "ART_310",
+        "ART_408"
+      ]
     }
   ]
 }

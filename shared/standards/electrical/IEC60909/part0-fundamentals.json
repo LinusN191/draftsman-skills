@@ -1,8 +1,11 @@
 {
+  "clause_ref": "IEC-60909-0 2016:§1-Scope-Definitions",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60909-0:2016 §3 — Fundamentals of Short-Circuit Current Calculation",
   "_version": "1.0.0",
   "_basis": "IEC 60909-0:2016 Edition 3.0 §3.1–§3.7, Annex A (equivalent voltage source method)",
-
   "ik_doubleprime_definition": {
     "name": "Initial symmetrical short-circuit current",
     "symbol": "Ik\"",
@@ -12,7 +15,6 @@
     "formula_single_phase": "Ik\" = c × Un / (2 × |Zk|) for line-to-line faults",
     "reference": "IEC 60909-0:2016 §3.3"
   },
-
   "voltage_factor_c": {
     "purpose": "Adjusts nominal voltage Un to account for variations in supply (load voltage drop, tap settings, transformer regulation)",
     "table_1_lv_systems": {
@@ -35,7 +37,6 @@
       "c_min": 1.0
     }
   },
-
   "near_or_far_from_generator": {
     "purpose": "Classifies whether synchronous source contribution changes over fault duration",
     "near_from_generator": {
@@ -59,7 +60,6 @@
     },
     "selection_rule": "If ΣP_synchronous_generation > 5% of source Sk\" → use near-from-generator method. Otherwise far-from-generator."
   },
-
   "equivalent_voltage_source_method": {
     "_reference": "IEC 60909-0:2016 Annex A",
     "principle": "Replace all active EMFs with a single equivalent voltage source c × Un at the fault location. All other generators and motors are replaced with their internal impedances only.",
@@ -76,7 +76,6 @@
       "5. For breaking current (near-from-generator): Ib = μ × Ik\""
     ]
   },
-
   "fault_types_covered": {
     "_reference": "IEC 60909-0:2016 §1",
     "three_phase_balanced": {
@@ -94,7 +93,6 @@
       "usage": "Earthing systems coordination, ADS check"
     }
   },
-
   "cross_reference": {
     "method_walkthrough": "part0-method.md",
     "peak_factor": "peak-factor-kappa.json",

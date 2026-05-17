@@ -1,13 +1,15 @@
 {
+  "clause_ref": "IEC-60364-4-41 2017:§411.3.3-RCD",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60364 — RCD Requirements (Clauses 411.3, 531 and Part 7)",
   "_basis": "IEC 60364-4-41:2005+AMD1:2017 Clause 411.3.3 (30mA additional protection), IEC 60364-5-53 (device selection), IEC 60364-7 series (special locations)",
   "_version": "1.0.0",
   "_note": "RCDs provide protection against indirect contact (fault voltage on exposed metal parts) and additional protection against direct contact (protection against shock from a live conductor). Different IΔn ratings and types serve different purposes. This file covers when and what type of RCD is required.",
-
   "RCD_types_by_current_waveform": {
     "_reference": "IEC 60364-5-53 Clause 531, IEC 61008, IEC 61009",
     "_note": "RCD type selection is critical — an RCD of the wrong type may not detect certain fault current waveforms.",
-
     "type_AC": {
       "detects": "Sinusoidal AC fault currents only",
       "does_not_detect": "Pulsating DC, smooth DC, high-frequency currents",
@@ -15,7 +17,6 @@
       "not_permitted_for": "Circuits with EV chargers, VFDs, switched-mode power supplies, medical equipment",
       "note": "Many older standards permitted Type AC as the default. IEC 60364-4-41 AMD1:2017 now restricts Type AC to circuits where DC components of fault current are excluded by design."
     },
-
     "type_A": {
       "detects": "Sinusoidal AC fault currents AND pulsating DC fault currents (rectified half-wave or full-wave)",
       "does_not_detect": "Smooth DC, high-frequency above rated detection bandwidth",
@@ -23,20 +24,17 @@
       "recommended_as_standard": "Type A is the minimum recommended type for general use in modern installations",
       "note": "Switch-mode power supplies and Class II EV chargers can produce pulsating DC fault currents. Type AC RCDs will not detect these — Type A is the minimum."
     },
-
     "type_F": {
       "detects": "Sinusoidal AC, pulsating DC, AND composite currents (multiple frequencies — typical of variable-speed drives)",
       "permitted_for": "Circuits supplying VFDs (variable frequency drives / inverters) for single-phase motors, washing machine motors with VFD",
       "note": "AMD1:2017 to IEC 60364-4-41 introduced Type F requirement for circuits with single-phase VFDs. Type F is more sensitive to the complex waveforms these devices produce."
     },
-
     "type_B": {
       "detects": "Sinusoidal AC, pulsating DC, smooth DC, and high-frequency fault currents",
       "permitted_for": "All circuit types including three-phase EV chargers (Mode 3 with three-phase onboard charger), three-phase VFDs, medical IT systems with DC components",
       "mandatory_for": "Three-phase EV charging points (Mode 3/4) unless a separate DC detection device (IΔn DC ≤ 6mA) is incorporated in the EVSE",
       "note": "Type B RCDs are significantly more expensive. Consider specifying a Type A RCD with a separate DC fault monitoring module for three-phase EV circuits as a cost-effective alternative where permitted."
     },
-
     "type_S_time_delayed": {
       "description": "Type S (or 'Selective') RCDs have an intentional time delay — they trip between 130ms and 500ms at IΔn and ≤ 150ms at 5× IΔn, instead of immediately (<300ms at IΔn for non-delayed types).",
       "purpose": "Selectivity — used upstream of 30mA RCDs so that only the downstream RCD trips on a fault, preserving supply to unaffected circuits.",
@@ -44,47 +42,38 @@
       "note": "Type S must be used upstream where 30mA RCDs are installed downstream. Without type S upstream, a serious fault may trip both the 30mA and the 300mA RCD — losing entire floor or building supply."
     }
   },
-
   "RCD_ratings_and_applications": {
     "_reference": "IEC 60364-4-41, IEC 60364-5-53",
-
     "6mA": {
       "application": "DC fault detection device for EV chargers where Type B RCD is not fitted",
       "note": "A 6mA smooth DC detection device monitors for DC leakage ≥ 6mA, which would blind a Type A RCD. When triggered, it disconnects before the RCD is required to operate."
     },
-
     "10mA": {
       "application": "Swimming pool circuits — Zone 1 (IEC 60364-7-702)",
       "note": "Not commonly used outside specialist applications"
     },
-
     "30mA": {
       "application": "Additional protection against direct contact — mandatory for: socket outlets up to 20A (all accessible socket outlets used by general public or untrained persons), cables buried in walls at depth < 50mm without earthed metallic coverage, circuits in bathrooms (IEC 60364-7-701), and all circuits in locations accessible to the general public",
       "_mandatory_requirement_411_3_3": "IEC 60364-4-41 AMD1:2017 Clause 411.3.3 — RCDs with IΔn ≤ 30mA are required for: (a) all socket outlets up to 20A rated current for general use; (b) cables concealed in walls or partitions at depth < 50mm that are not in earthed metallic conduit or containment.",
-      "IΔn_A": 0.030,
+      "IΔn_A": 0.03,
       "contact_voltage_at_trip": "I × Ra — at 30mA and Ra = 1667Ω (extreme), contact voltage = 50V — borderline safe",
       "practical_contact_voltage": "If Ra ≤ 200Ω (typical earthed installation), contact voltage = 0.030 × 200 = 6V — very safe"
     },
-
     "100mA": {
       "application": "Fire protection — detection of sustained earth leakage that could cause smouldering fires. Not for direct contact protection. Used on circuits in high fire-risk areas.",
-      "IΔn_A": 0.100
+      "IΔn_A": 0.1
     },
-
     "300mA": {
       "application": "Upstream protection at distribution board — fire protection and upstream fault protection. Must be Type S (time-delayed) where 30mA RCDs are installed downstream.",
-      "IΔn_A": 0.300
+      "IΔn_A": 0.3
     },
-
     "500mA_to_1A": {
       "application": "Fire protection on large commercial circuits, protection of submains in high-leakage installations (many VFDs, long cable runs with leakage). Not for personal protection.",
       "note": "Verify total background leakage current < 0.3 × IΔn to avoid nuisance tripping in installations with many electronic devices"
     }
   },
-
   "mandatory_RCD_locations": {
     "_reference": "IEC 60364-4-41 Clause 411.3.3 and Part 7 special locations",
-
     "socket_outlets_general_use": {
       "requirement": "30mA RCD protection for all socket outlets ≤ 20A intended for use by general public or untrained persons",
       "IΔn": "≤ 30mA",
@@ -94,51 +83,42 @@
         "Shaver sockets (supplied through isolating transformer — SELV — no RCD needed)"
       ]
     },
-
     "cables_in_walls": {
       "requirement": "30mA RCD for cables concealed in walls or partitions at depth < 50mm",
       "IΔn": "≤ 30mA",
       "exemptions": "Cables in earthed metallic conduit or trunking, or cables forming part of a wiring system with earthed metallic sheath, do not require 30mA RCD under this rule"
     },
-
     "TT_earthing_systems": {
       "requirement": "ALL circuits in TT systems must be RCD protected (ADS by overcurrent devices is impractical in TT systems — see part4-41-electric-shock.json)",
       "IΔn": "30mA for final circuits, 300mA Type S at main board",
       "note": "In rural areas of Africa and Asia where TT earthing is common, every circuit panel must have RCDs on every circuit"
     },
-
     "bathrooms_IEC_60364_7_701": {
       "requirement": "30mA RCD for all circuits in the bathroom",
       "IΔn": "≤ 30mA",
       "note": "Any circuit with a cable passing through a bathroom zone requires 30mA RCD protection. Socket outlets in Zone 2 are prohibited except where specifically permitted by national code."
     },
-
     "swimming_pools_IEC_60364_7_702": {
       "requirement": "30mA RCD for all circuits within pool zones 0, 1, and 2",
       "IΔn": "≤ 30mA, preferably 10mA for Zone 1 circuits"
     },
-
     "construction_sites_IEC_60364_7_704": {
       "requirement": "30mA RCD for all socket outlets up to 32A. 500mA RCD for circuits > 32A.",
       "note": "Construction sites have particularly high shock risk — damaged cables, wet conditions, unqualified users. RCD protection is non-negotiable."
     },
-
     "agricultural_IEC_60364_7_705": {
       "requirement": "30mA RCD for all socket outlets. 300mA or 500mA for circuits feeding fixed equipment in livestock buildings.",
       "note": "Livestock are highly sensitive to small currents. IEC recommends additional precautions where animals could contact live parts."
     },
-
     "marinas_IEC_60364_7_708": {
       "requirement": "30mA RCD for all shore supply circuits, preferably on each pedestal outlet",
       "note": "Corrosive environment — increased risk of cable damage and earth fault. Individual RCD per berth socket provides best selectivity."
     },
-
     "medical_locations_IEC_60364_7_710": {
       "Group_0": "Standard installation — 30mA RCDs on socket outlets",
       "Group_1": "30mA RCD on all circuits, Type A minimum. No IT system requirement.",
       "Group_2": "IT system (insulated from earth) with insulation monitoring device (IMD). No RCDs in operating theatres — the IT system prevents shock on first fault. RCDs are used in non-critical areas. 30mA RCDs on any sockets in general areas."
     },
-
     "EV_charging_IEC_60364_7_722": {
       "requirement": "RCD with IΔn ≤ 30mA required for all EV charging points",
       "type_requirement": {
@@ -147,36 +127,30 @@
         "note": "EV onboard chargers produce DC fault currents. Type AC RCDs will not detect these and must not be used on EV circuits."
       }
     },
-
     "PV_systems_IEC_60364_7_712": {
       "AC_side": "30mA RCD on inverter output circuit. Type A minimum, Type B if inverter can produce DC component.",
       "DC_side": "No RCD on DC side unless national code requires. DC circuit requires isolation and arc fault protection.",
       "inverter_type": "Most modern grid-tied inverters have galvanic isolation — Type A RCD is sufficient. Non-isolated inverters require Type B on AC output."
     }
   },
-
   "RCD_performance_requirements": {
     "_reference": "IEC 61008 (RCCB), IEC 61009 (RCBO), IEC 60364-4-41 Table 41.1",
-
     "non_S_type_trip_times": {
       "at_IΔn_rated_current": "Maximum 300ms",
       "at_2_IΔn": "Maximum 150ms",
       "at_5_IΔn": "Maximum 40ms",
       "at_IΔn_instantaneous_for_additional_protection_30mA": "Maximum 40ms"
     },
-
     "S_type_trip_times": {
       "at_IΔn": "Between 130ms and 500ms (intentional delay)",
       "at_2_IΔn": "Between 60ms and 200ms",
       "at_5_IΔn": "Maximum 150ms",
       "note": "Type S RCDs intentionally delay to allow downstream instant-trip RCDs to operate first, maintaining supply selectivity"
     },
-
     "non_tripping_requirement": {
       "at_0_5_IΔn": "RCD must NOT trip at 0.5 × IΔn (to prevent nuisance tripping from normal leakage currents)"
     }
   },
-
   "leakage_current_and_nuisance_tripping": {
     "cause": "Every electrical device with a Class I or Class II connection has some leakage current to earth through Y-capacitors, EMC filters, and cable capacitance. In aggregate, multiple devices on one circuit can reach a significant total leakage.",
     "rule_of_thumb": "Total leakage on any circuit should be < IΔn / 3 (i.e., < 10mA for a 30mA RCD). Above this, nuisance tripping is likely.",

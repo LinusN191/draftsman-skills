@@ -1,13 +1,15 @@
 {
+  "clause_ref": "BS7671 2018:Reg-443",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "BS 7671:2018+A2:2022 Regulation 443 — Protection Against Transient Overvoltages",
   "_note": "AMD 2 (2022) made SPD provision effectively mandatory for most commercial installations. Risk assessment is required to determine SPD type and location.",
-
   "principle": {
     "_reference": "BS 7671:2018 Reg 443.4 (revised in AMD 2)",
     "purpose": "Surge Protective Devices (SPDs) divert transient overvoltages (lightning, switching transients, indirect strikes) to earth before they damage equipment connected to the installation.",
     "scope": "Transient overvoltages of atmospheric origin (lightning) and switching overvoltages. NOT power frequency overvoltages (those covered by Reg 442)."
   },
-
   "regulatory_requirement": {
     "_reference": "BS 7671:2018 Reg 443.4 (AMD 2)",
     "amd2_clarification": "Reg 443.4 — Protection against transient overvoltages of atmospheric origin or due to switching shall be provided where the consequence caused by overvoltage affects: a) serious injury or loss of human life; b) interruption of public services or damage to cultural heritage; c) interruption of commercial or industrial activity; d) affects a large number of co-located individuals.",
@@ -19,7 +21,6 @@
       "Where the consequence of overvoltage damage is acceptable to the client (rare in practice — document in design)."
     ]
   },
-
   "spd_types": {
     "_reference": "BS EN 61643-11",
     "type_1": {
@@ -65,7 +66,6 @@
       "use_case": "Installations with LPS — provides Type 1 protection at origin plus Type 2 performance downstream in one device."
     }
   },
-
   "coordination": {
     "principle": "Cascaded SPDs must be coordinated so the upstream device clamps the surge before the downstream device is overwhelmed.",
     "rules": [
@@ -75,7 +75,6 @@
       "Never install Type 3 directly downstream of Type 1 without Type 2 in between"
     ]
   },
-
   "impulse_withstand_categories": {
     "_reference": "BS 7671:2018 Reg 443.4.2 / Table 44.4",
     "_basis": "Equipment is categorised by its rated impulse voltage withstand Uw — the maximum surge it can survive without damage. SPDs must reduce Up below the equipment's category.",
@@ -96,7 +95,6 @@
       "description": "Equipment with reduced impulse withstand — electronic equipment, computers, sensitive instruments. Requires upstream SPD to bring surges below 1.5 kV."
     }
   },
-
   "spd_selection_parameters": {
     "Uc": {
       "name": "Maximum continuous operating voltage",
@@ -119,7 +117,6 @@
       "selection_rule": "Indicates how many strikes the device can take. Higher = longer service life."
     }
   },
-
   "installation_rules": {
     "_reference": "BS 7671:2018 Reg 534.4",
     "connecting_lead_length": {
@@ -144,7 +141,6 @@
       "rcd_type": "Use Type S (selective) RCD downstream of SPD to ensure SPD operation does not trip the RCD."
     }
   },
-
   "worked_example": {
     "description": "4-storey commercial office, urban location, no external LPS, single 1600A TN-C-S supply",
     "lps_status": "No LPS present per BS EN 62305 risk assessment",
@@ -161,7 +157,6 @@
     "location": "Immediately downstream of the main incoming switch at the MSB. Maximum 0.5m connecting leads to phase busbars and to MET.",
     "downstream_strategy": "Additional Type 2 SPDs at each floor SDB for sensitive IT loads. Type 3 at server room PDU as final stage."
   },
-
   "common_pitfalls": [
     "No SPD where AMD 2 requires it — non-compliant since September 2022.",
     "Type 1 specified without an LPS — Type 2 would suffice and is cheaper.",

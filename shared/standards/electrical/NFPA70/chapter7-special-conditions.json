@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Chapter-7",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 Chapter 7 — Special Conditions",
   "_chapter": 7,
   "_version": "1.0.0",
@@ -11,12 +15,34 @@
       "article_number": 706,
       "article_title": "Energy Storage Systems (ESS)",
       "scope": "Stationary ESS — batteries (Li-ion, lead-acid, flow), capacitors. Listing per UL 9540 (706.4), disconnect (706.7), location (residential garage, utility closet limits), interconnection with PV and grid (705).",
-      "applies_to": ["energy_storage", "battery_ess", "li_ion_ess", "residential_storage", "commercial_storage"],
+      "applies_to": [
+        "energy_storage",
+        "battery_ess",
+        "li_ion_ess",
+        "residential_storage",
+        "commercial_storage"
+      ],
       "key_sections": [
-        {"section": "706.4",  "title": "Listing", "summary": "ESS must be listed per UL 9540 (System) and components per UL 9540A (Thermal runaway test)"},
-        {"section": "706.7",  "title": "Disconnecting Means", "summary": "Disconnect within sight or remote with lockout-tagout; identified for service personnel; first responder readability"},
-        {"section": "706.10", "title": "Qualified Personnel", "summary": "Installation by qualified persons; commissioning per manufacturer"},
-        {"section": "706.20", "title": "Self-Contained Energy Storage System", "summary": "Listed self-contained ESS — installation, ventilation, location restrictions"}
+        {
+          "section": "706.4",
+          "title": "Listing",
+          "summary": "ESS must be listed per UL 9540 (System) and components per UL 9540A (Thermal runaway test)"
+        },
+        {
+          "section": "706.7",
+          "title": "Disconnecting Means",
+          "summary": "Disconnect within sight or remote with lockout-tagout; identified for service personnel; first responder readability"
+        },
+        {
+          "section": "706.10",
+          "title": "Qualified Personnel",
+          "summary": "Installation by qualified persons; commissioning per manufacturer"
+        },
+        {
+          "section": "706.20",
+          "title": "Self-Contained Energy Storage System",
+          "summary": "Listed self-contained ESS — installation, ventilation, location restrictions"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
@@ -24,12 +50,22 @@
         "Treating an ESS as just an Art 480 battery installation — 706 layered requirements apply, including UL 9540 listing",
         "Installing residential Li-ion ESS in an attached garage without complying with NFPA 855 separation rules (referenced from 706)"
       ],
-      "drawn_as": ["BATTERY", "ESS_BATTERY"],
-      "related_iec_60364": ["IEC 60364-8-2 (Prosumer's electrical installations)", "IEC 62933 series (Electrical energy storage systems)"],
+      "drawn_as": [
+        "BATTERY",
+        "ESS_BATTERY"
+      ],
+      "related_iec_60364": [
+        "IEC 60364-8-2 (Prosumer's electrical installations)",
+        "IEC 62933 series (Electrical energy storage systems)"
+      ],
       "divergence_notes": "Art 706 (since NEC 2017) consolidates ESS-specific rules; IEC handles via IEC 62933 (technical) + IEC 60364-8-2 (installation). UL 9540 listing is NEC-mandated; IEC equivalent is IEC 62933-5-2. NFPA 855 (Stationary Energy Storage Systems) is the companion installation standard referenced from Art 706; IEC equivalent IEC 62933-5-1.",
       "related_bs_7671": [],
       "usage_notes": "For PV+ESS, read Art 690 + 705 + 706 together. ESS rapid shutdown handled via 690.12 when PV-coupled.",
-      "related_articles": ["ART_480", "ART_690", "ART_705"]
+      "related_articles": [
+        "ART_480",
+        "ART_690",
+        "ART_705"
+      ]
     },
     {
       "article_id": "ART_710",
@@ -38,20 +74,40 @@
       "article_number": 710,
       "article_title": "Stand-Alone Systems",
       "scope": "Off-grid power systems — PV-only, wind-only, gen-only, or hybrid where no utility connection exists. Voltage limits, backup load sizing, identification of power sources.",
-      "applies_to": ["off_grid", "stand_alone_pv", "remote_systems"],
+      "applies_to": [
+        "off_grid",
+        "stand_alone_pv",
+        "remote_systems"
+      ],
       "key_sections": [
-        {"section": "710.10", "title": "Identification of Power Sources", "summary": "Permanent plaque at service equipment identifying all power sources"},
-        {"section": "710.15", "title": "General", "summary": "Backup load may be lower than original-utility load; sized per actual standalone capacity"}
+        {
+          "section": "710.10",
+          "title": "Identification of Power Sources",
+          "summary": "Permanent plaque at service equipment identifying all power sources"
+        },
+        {
+          "section": "710.15",
+          "title": "General",
+          "summary": "Backup load may be lower than original-utility load; sized per actual standalone capacity"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Sizing stand-alone system to original utility load instead of actual standalone autonomy needs"],
+      "common_errors": [
+        "Sizing stand-alone system to original utility load instead of actual standalone autonomy needs"
+      ],
       "drawn_as": [],
-      "related_iec_60364": ["IEC 60364-8-2 (Prosumer's electrical installations) — partial coverage"],
+      "related_iec_60364": [
+        "IEC 60364-8-2 (Prosumer's electrical installations) — partial coverage"
+      ],
       "divergence_notes": "Art 710 is NEC-specific to stand-alone (no utility) systems. IEC 60364-8-2 covers prosumer (with-grid) systems more thoroughly; standalone is via national supplements.",
       "related_bs_7671": [],
       "usage_notes": "Document the stand-alone capacity vs total load on the design narrative; cite NEC 710 for the source identification plaque requirement.",
-      "related_articles": ["ART_690", "ART_705", "ART_706"]
+      "related_articles": [
+        "ART_690",
+        "ART_705",
+        "ART_706"
+      ]
     },
     {
       "article_id": "ART_712",
@@ -60,19 +116,34 @@
       "article_number": 712,
       "article_title": "Direct Current Microgrids",
       "scope": "DC microgrids — distribution at DC voltage levels, bus voltages, interconnection with AC system, DC OCPDs.",
-      "applies_to": ["dc_microgrid", "data_centre_dc", "telecom_dc"],
+      "applies_to": [
+        "dc_microgrid",
+        "data_centre_dc",
+        "telecom_dc"
+      ],
       "key_sections": [
-        {"section": "712.10", "title": "Voltage", "summary": "DC microgrid bus voltage classifications: ≤60 V (ELV), 60-1500 V"}
+        {
+          "section": "712.10",
+          "title": "Voltage",
+          "summary": "DC microgrid bus voltage classifications: ≤60 V (ELV), 60-1500 V"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Using AC-rated OCPDs in a DC microgrid — DC has no zero-crossing; OCPDs must be DC-rated"],
+      "common_errors": [
+        "Using AC-rated OCPDs in a DC microgrid — DC has no zero-crossing; OCPDs must be DC-rated"
+      ],
       "drawn_as": [],
-      "related_iec_60364": ["IEC 60364-8-2 (Prosumer's electrical installations) — partial"],
+      "related_iec_60364": [
+        "IEC 60364-8-2 (Prosumer's electrical installations) — partial"
+      ],
       "divergence_notes": "Art 712 is NEC-specific. IEC handles DC distribution via IEC 60364-5-52 with DC-specific Annex content; full DC microgrid standardisation is emerging (IEC 60364-8-3 in development).",
       "related_bs_7671": [],
       "usage_notes": "DC microgrid design is still emerging; coordinate with the equipment vendor's DC-rated component list.",
-      "related_articles": ["ART_690", "ART_706"]
+      "related_articles": [
+        "ART_690",
+        "ART_706"
+      ]
     },
     {
       "article_id": "ART_725",
@@ -81,20 +152,39 @@
       "article_number": 725,
       "article_title": "Class 1, Class 2, and Class 3 Remote-Control, Signaling, and Power-Limited Circuits",
       "scope": "Low-voltage / power-limited circuits — Class 1 (≤30 V, 1000 VA limited), Class 2 (60 V, 100 VA), Class 3 (similar voltage, lower energy). Wiring methods, separation from other circuits.",
-      "applies_to": ["control_circuits", "low_voltage", "signaling"],
+      "applies_to": [
+        "control_circuits",
+        "low_voltage",
+        "signaling"
+      ],
       "key_sections": [
-        {"section": "725.41", "title": "Power Sources for Class 2 and Class 3 Circuits", "summary": "Listed Class 2 / 3 transformer or power supply per UL 1310"},
-        {"section": "725.143","title": "Conductors of Different Circuits in Same Cable, Cable Tray, Enclosure, or Raceway", "summary": "Class 2/3 circuits cannot share with Class 1, power, or lighting circuits except with permitted separation"}
+        {
+          "section": "725.41",
+          "title": "Power Sources for Class 2 and Class 3 Circuits",
+          "summary": "Listed Class 2 / 3 transformer or power supply per UL 1310"
+        },
+        {
+          "section": "725.143",
+          "title": "Conductors of Different Circuits in Same Cable, Cable Tray, Enclosure, or Raceway",
+          "summary": "Class 2/3 circuits cannot share with Class 1, power, or lighting circuits except with permitted separation"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Mixing Class 2 control wiring with power circuits in the same raceway — prohibited"],
+      "common_errors": [
+        "Mixing Class 2 control wiring with power circuits in the same raceway — prohibited"
+      ],
       "drawn_as": [],
-      "related_iec_60364": ["IEC 60364-4-41 Clause 414 (PELV/SELV systems)"],
+      "related_iec_60364": [
+        "IEC 60364-4-41 Clause 414 (PELV/SELV systems)"
+      ],
       "divergence_notes": "NEC Class 2/3 ≈ IEC SELV/PELV but with different voltage/energy limits and listing regimes.",
       "related_bs_7671": [],
       "usage_notes": "Specify the Class on every low-voltage circuit on the schedule.",
-      "related_articles": ["ART_645", "ART_760"]
+      "related_articles": [
+        "ART_645",
+        "ART_760"
+      ]
     },
     {
       "article_id": "ART_760",
@@ -103,20 +193,40 @@
       "article_number": 760,
       "article_title": "Fire Alarm Systems",
       "scope": "Fire alarm circuits — Non-power-limited (NPLFA) and Power-limited (PLFA) systems. Wiring methods, conductor sizing, separation from other circuits, cable listing (FPLP, FPL, FPLR).",
-      "applies_to": ["fire_alarm", "life_safety_circuits"],
+      "applies_to": [
+        "fire_alarm",
+        "life_safety_circuits"
+      ],
       "key_sections": [
-        {"section": "760.41",  "title": "Power Sources for Power-Limited Fire Alarm Circuits", "summary": "Listed PLFA transformer or power supply"},
-        {"section": "760.139", "title": "Listing and Marking of PLFA Cables", "summary": "FPLP (plenum), FPLR (riser), FPL (general)"}
+        {
+          "section": "760.41",
+          "title": "Power Sources for Power-Limited Fire Alarm Circuits",
+          "summary": "Listed PLFA transformer or power supply"
+        },
+        {
+          "section": "760.139",
+          "title": "Listing and Marking of PLFA Cables",
+          "summary": "FPLP (plenum), FPLR (riser), FPL (general)"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Using non-fire-rated cable on plenum-rated fire alarm circuit — FPLP required in air-handling spaces"],
-      "drawn_as": ["FIRE_ALARM_DEVICE"],
-      "related_iec_60364": ["IEC 60364-5-56 (Safety services)"],
+      "common_errors": [
+        "Using non-fire-rated cable on plenum-rated fire alarm circuit — FPLP required in air-handling spaces"
+      ],
+      "drawn_as": [
+        "FIRE_ALARM_DEVICE"
+      ],
+      "related_iec_60364": [
+        "IEC 60364-5-56 (Safety services)"
+      ],
       "divergence_notes": "Art 760 is the NEC-specific fire alarm wiring standard; NFPA 72 (National Fire Alarm Code) is the companion device-and-system standard. IEC covers fire alarm wiring via 60364-5-56 + national supplements.",
       "related_bs_7671": [],
       "usage_notes": "Coordinate with the project's NFPA 72 fire alarm design. Cable type (FPLP/FPLR/FPL) by installation location.",
-      "related_articles": ["ART_725", "ART_770"]
+      "related_articles": [
+        "ART_725",
+        "ART_770"
+      ]
     },
     {
       "article_id": "ART_770",
@@ -125,19 +235,30 @@
       "article_number": 770,
       "article_title": "Optical Fiber Cables",
       "scope": "Optical fiber cable installation — conductive vs non-conductive cable types, abandoned cable removal, raceway and routing rules.",
-      "applies_to": ["fiber_optic", "data_cabling"],
+      "applies_to": [
+        "fiber_optic",
+        "data_cabling"
+      ],
       "key_sections": [
-        {"section": "770.179", "title": "Listing and Marking of Optical Fiber Cables", "summary": "OFNP (plenum), OFNR (riser), OFNG (general), OFN (general restricted)"}
+        {
+          "section": "770.179",
+          "title": "Listing and Marking of Optical Fiber Cables",
+          "summary": "OFNP (plenum), OFNR (riser), OFNG (general), OFN (general restricted)"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Leaving abandoned fiber in place after retrofit — 770.25 requires removal"],
+      "common_errors": [
+        "Leaving abandoned fiber in place after retrofit — 770.25 requires removal"
+      ],
       "drawn_as": [],
       "related_iec_60364": [],
       "divergence_notes": "Art 770 (optical fiber) has no direct IEC 60364 analogue; IEC defers to ISO/IEC 11801 (premises cabling).",
       "related_bs_7671": [],
       "usage_notes": "Coordinate with the structured cabling design (ISO/IEC 11801).",
-      "related_articles": ["ART_800"]
+      "related_articles": [
+        "ART_800"
+      ]
     },
     {
       "article_number": 700,

@@ -1,9 +1,12 @@
 {
+  "clause_ref": "IEC-60364-5-52 2009:Annex-A",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60364-5-52 — Wiring System Reference Methods for Cable Rating Selection",
   "_basis": "IEC 60364-5-52:2009+AMD1:2017 Clause 521 and Annex B",
   "_version": "1.0.0",
   "_note": "The reference method determines which column of Annex B current rating tables to use. Choose the method that best describes the ACTUAL installation — not the most favourable method. If in doubt, use the more conservative method.",
-
   "method_A1": {
     "code": "A1",
     "description": "Insulated single-core conductors (not multi-core cable) in conduit embedded in a thermally insulating wall or ceiling",
@@ -21,7 +24,6 @@
       "For runs through insulated walls, use the Method A1/A2 rating for the length within insulation, not the overall circuit rating"
     ]
   },
-
   "method_A2": {
     "code": "A2",
     "description": "Multi-core cable in conduit embedded in a thermally insulating wall",
@@ -33,7 +35,6 @@
     ],
     "table_reference": "Annex B Table B.52.2"
   },
-
   "method_B1": {
     "code": "B1",
     "description": "Insulated single-core conductors in conduit on a wall or ceiling surface, or in open or ventilated trunking on a wall",
@@ -46,7 +47,6 @@
     ],
     "table_reference": "Annex B Table B.52.3 or B.52.4 (method B1 column)"
   },
-
   "method_B2": {
     "code": "B2",
     "description": "Multi-core cable in conduit on a wall or ceiling, or in surface-mounted trunking",
@@ -64,7 +64,6 @@
       "Where multiple cables share a conduit or trunking, apply grouping factor Cg (see correction factors)"
     ]
   },
-
   "method_C": {
     "code": "C",
     "description": "Single-core or multi-core cable clipped directly to a surface (wall, ceiling, cable tray touching a wall, or under a floor)",
@@ -83,7 +82,6 @@
       "XLPE armoured cable clipped direct is the standard design for submains in commercial buildings"
     ]
   },
-
   "method_D1": {
     "code": "D1",
     "description": "Multi-core cable installed in a conduit, duct, or pipe buried in the ground",
@@ -96,14 +94,18 @@
       "Cables under car parks in multiple duct runs"
     ],
     "table_reference": "Annex B Table B.52.6 (D1 column)",
-    "correction_factors_required": ["Cs (soil thermal resistivity if not 0.9 K·m/W)", "Cd (burial depth if not 0.5m)", "Ca (soil ambient temperature if not 20°C)", "Cg (multiple cables in adjacent ducts)"],
+    "correction_factors_required": [
+      "Cs (soil thermal resistivity if not 0.9 K·m/W)",
+      "Cd (burial depth if not 0.5m)",
+      "Ca (soil ambient temperature if not 20°C)",
+      "Cg (multiple cables in adjacent ducts)"
+    ],
     "design_notes": [
       "Preferable to D2 (direct buried) for cables that may need future replacement",
       "Multiple cables in same duct — treat as single bundle, apply Cg",
       "Apply soil thermal resistivity correction factor — vary greatly from 0.5 (wet clay) to 3.0 (dry rock)"
     ]
   },
-
   "method_D2": {
     "code": "D2",
     "description": "Multi-core cable direct buried in ground (no duct or conduit)",
@@ -116,7 +118,12 @@
       "Underground rural distribution cables"
     ],
     "table_reference": "Annex B Table B.52.6 (D2 column) or B.52.7 for armoured",
-    "correction_factors_required": ["Cs (soil thermal resistivity if not 1.0 K·m/W)", "Cd (depth if not 0.7m)", "Ca (soil temperature if not 20°C)", "Cg (multiple cables in close proximity)"],
+    "correction_factors_required": [
+      "Cs (soil thermal resistivity if not 1.0 K·m/W)",
+      "Cd (depth if not 0.7m)",
+      "Ca (soil temperature if not 20°C)",
+      "Cg (multiple cables in close proximity)"
+    ],
     "design_notes": [
       "Cable MUST be suitable for direct burial — armoured or with UV-stable sheath",
       "Minimum burial depth: 600mm under gardens and light trafficking, 900mm under light roads, 1000mm under heavy roads",
@@ -124,7 +131,6 @@
       "Soil conditions dominate sizing — always assess or assume worst-case resistivity"
     ]
   },
-
   "method_E": {
     "code": "E",
     "description": "Multi-core cable on a perforated cable tray, cable ladder, or cleated on stands in free air",
@@ -137,14 +143,17 @@
       "Armoured cables on standoff brackets in substation cable areas"
     ],
     "table_reference": "Annex B Table B.52.9 (Method E column)",
-    "correction_factors_required": ["Ca (ambient temperature)", "Cg (multiple cables — apply when cables are touching or close)", "Multi-layer correction (0.80 for 2 layers, 0.73 for 3 layers)"],
+    "correction_factors_required": [
+      "Ca (ambient temperature)",
+      "Cg (multiple cables — apply when cables are touching or close)",
+      "Multi-layer correction (0.80 for 2 layers, 0.73 for 3 layers)"
+    ],
     "design_notes": [
       "Highest practical rating for multi-core cables above ground — specify Method E wherever layout permits",
       "Solid-bottom trays do not qualify as Method E — they restrict underside airflow. Use Method C ratings for solid-bottom trays",
       "When loading a tray, maintain single-layer where possible. Multi-layer requires additional derating."
     ]
   },
-
   "method_F": {
     "code": "F",
     "description": "Single-core cables (three or four) in free air — trefoil formation or flat formation with cables touching",
@@ -163,7 +172,6 @@
       "Factor in the reactive component of impedance for voltage drop calculations (X ≈ 0.07–0.10 mΩ/m per conductor for trefoil)"
     ]
   },
-
   "method_G": {
     "code": "G",
     "description": "Single-core cables in free air — flat formation, spaced at least one cable diameter apart (one De spacing between adjacent cable surfaces)",
@@ -181,22 +189,50 @@
       "Use Method F ratings for conservative design unless spacing can be guaranteed to be maintained throughout the installation's life"
     ]
   },
-
   "selection_guide": {
     "_title": "Quick reference — choosing the correct reference method",
     "decision_tree": [
-      {"condition": "Cable in conduit/trunking AND embedded in thermal insulation wall", "method": "A1 or A2 — use A2 for multi-core"},
-      {"condition": "Cable in conduit/trunking AND surface-mounted on wall or ceiling", "method": "B1 or B2 — use B2 for multi-core"},
-      {"condition": "Multi-core cable clipped directly to wall/ceiling without conduit", "method": "C"},
-      {"condition": "Single-core cables clipped to wall (no conduit)", "method": "C"},
-      {"condition": "Multi-core cable in buried conduit or duct", "method": "D1"},
-      {"condition": "Armoured multi-core cable direct buried", "method": "D2"},
-      {"condition": "Multi-core cable on perforated tray or cable ladder, free air", "method": "E"},
-      {"condition": "Single-core cables in free air, trefoil or touching flat", "method": "F"},
-      {"condition": "Single-core cables in free air, spaced ≥ 1 diameter apart", "method": "G"},
-      {"condition": "Cable in enclosed cable duct (solid walls, limited airflow, surface mounted)", "method": "B2 — treat as conduit on wall"}
+      {
+        "condition": "Cable in conduit/trunking AND embedded in thermal insulation wall",
+        "method": "A1 or A2 — use A2 for multi-core"
+      },
+      {
+        "condition": "Cable in conduit/trunking AND surface-mounted on wall or ceiling",
+        "method": "B1 or B2 — use B2 for multi-core"
+      },
+      {
+        "condition": "Multi-core cable clipped directly to wall/ceiling without conduit",
+        "method": "C"
+      },
+      {
+        "condition": "Single-core cables clipped to wall (no conduit)",
+        "method": "C"
+      },
+      {
+        "condition": "Multi-core cable in buried conduit or duct",
+        "method": "D1"
+      },
+      {
+        "condition": "Armoured multi-core cable direct buried",
+        "method": "D2"
+      },
+      {
+        "condition": "Multi-core cable on perforated tray or cable ladder, free air",
+        "method": "E"
+      },
+      {
+        "condition": "Single-core cables in free air, trefoil or touching flat",
+        "method": "F"
+      },
+      {
+        "condition": "Single-core cables in free air, spaced ≥ 1 diameter apart",
+        "method": "G"
+      },
+      {
+        "condition": "Cable in enclosed cable duct (solid walls, limited airflow, surface mounted)",
+        "method": "B2 — treat as conduit on wall"
+      }
     ],
-
     "common_mistakes": [
       "Using Method E for cables on solid-bottom trays — must use Method C",
       "Using Method C for cables packed tightly together on a wall — apply grouping factor Cg",

@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Article-517",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 Article 517 — Health Care Facilities",
   "_version": "1.0.0",
   "articles": [
@@ -9,25 +13,76 @@
       "article_number": 517,
       "article_title": "Health Care Facilities",
       "scope": "Healthcare facility electrical systems — patient care spaces (Categories 1-4 per 517.2), Type 1/2/3 essential electrical systems (EES), isolated power systems, X-ray, anesthetizing locations (517.60+).",
-      "applies_to": ["healthcare", "hospitals", "outpatient", "patient_care_spaces", "essential_electrical_system", "isolated_power"],
+      "applies_to": [
+        "healthcare",
+        "hospitals",
+        "outpatient",
+        "patient_care_spaces",
+        "essential_electrical_system",
+        "isolated_power"
+      ],
       "key_sections": [
-        {"section": "517.2",   "title": "Definitions — Patient Care Space Categories", "summary": "Category 1 (critical care): includes operating, ICU, etc. Category 2 (general care): includes patient rooms, exam rooms. Category 3 (basic care). Category 4 (support areas — corridors, lobbies). Determines receptacle type, EES requirement, redundancy"},
-        {"section": "517.13",  "title": "Grounding of Receptacles and Fixed Electrical Equipment in Patient Care Spaces", "summary": "Two equipment grounding paths: (1) EGC in raceway, (2) insulated copper EGC bonded to grounding terminal of receptacle. Both required for Category 1 and 2"},
-        {"section": "517.30",  "title": "Sources of Power (Type 1 EES)", "summary": "Type 1 hospital EES: two independent sources of power (utility + on-site generator). Generator must start within 10 s and provide power for ≥1.5 hours minimum. Required for Category 1 + 2 patient care"},
-        {"section": "517.31",  "title": "Emergency System (Type 1 EES — Branches)", "summary": "Type 1 EES has THREE branches: (1) Life Safety Branch, (2) Critical Branch, (3) Equipment System. All three on the same EES bus + transfer scheme"},
-        {"section": "517.41",  "title": "Sources of Power (Type 2 EES)", "summary": "Type 2 EES: two independent sources but with reduced scope. For nursing homes (Type 2 generally) and outpatient (Type 3 reduced further)"},
-        {"section": "517.60",  "title": "Anesthetizing Locations", "summary": "Definitions, grounding requirements for hazardous (Class I Div 1 flammable anesthetic — RARE in modern practice with non-flammable gases) and other anesthetizing locations"},
-        {"section": "517.160", "title": "Isolated Power Systems (IT Systems)", "summary": "Required in wet locations (e.g. ORs) where line-isolation is critical. Includes Line Isolation Monitor (LIM) per IEC 61557-9 / NEC 517.160"}
+        {
+          "section": "517.2",
+          "title": "Definitions — Patient Care Space Categories",
+          "summary": "Category 1 (critical care): includes operating, ICU, etc. Category 2 (general care): includes patient rooms, exam rooms. Category 3 (basic care). Category 4 (support areas — corridors, lobbies). Determines receptacle type, EES requirement, redundancy"
+        },
+        {
+          "section": "517.13",
+          "title": "Grounding of Receptacles and Fixed Electrical Equipment in Patient Care Spaces",
+          "summary": "Two equipment grounding paths: (1) EGC in raceway, (2) insulated copper EGC bonded to grounding terminal of receptacle. Both required for Category 1 and 2"
+        },
+        {
+          "section": "517.30",
+          "title": "Sources of Power (Type 1 EES)",
+          "summary": "Type 1 hospital EES: two independent sources of power (utility + on-site generator). Generator must start within 10 s and provide power for ≥1.5 hours minimum. Required for Category 1 + 2 patient care"
+        },
+        {
+          "section": "517.31",
+          "title": "Emergency System (Type 1 EES — Branches)",
+          "summary": "Type 1 EES has THREE branches: (1) Life Safety Branch, (2) Critical Branch, (3) Equipment System. All three on the same EES bus + transfer scheme"
+        },
+        {
+          "section": "517.41",
+          "title": "Sources of Power (Type 2 EES)",
+          "summary": "Type 2 EES: two independent sources but with reduced scope. For nursing homes (Type 2 generally) and outpatient (Type 3 reduced further)"
+        },
+        {
+          "section": "517.60",
+          "title": "Anesthetizing Locations",
+          "summary": "Definitions, grounding requirements for hazardous (Class I Div 1 flammable anesthetic — RARE in modern practice with non-flammable gases) and other anesthetizing locations"
+        },
+        {
+          "section": "517.160",
+          "title": "Isolated Power Systems (IT Systems)",
+          "summary": "Required in wet locations (e.g. ORs) where line-isolation is critical. Includes Line Isolation Monitor (LIM) per IEC 61557-9 / NEC 517.160"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {
         "Patient_Care_Space_Categories_Quick_Reference": {
           "title": "Healthcare Patient Care Space Categories (NEC 2023 — 517.2)",
           "rows": [
-            {"category": 1, "description": "Critical Care Space",    "typical_areas": "Operating rooms, ICUs, cath labs, NICU, ER trauma, recovery"},
-            {"category": 2, "description": "General Care Space",     "typical_areas": "Patient rooms, exam rooms, treatment rooms"},
-            {"category": 3, "description": "Basic Care Space",       "typical_areas": "Outpatient procedure rooms in lower-risk facilities"},
-            {"category": 4, "description": "Support Spaces",         "typical_areas": "Corridors, lobbies, common areas, offices"}
+            {
+              "category": 1,
+              "description": "Critical Care Space",
+              "typical_areas": "Operating rooms, ICUs, cath labs, NICU, ER trauma, recovery"
+            },
+            {
+              "category": 2,
+              "description": "General Care Space",
+              "typical_areas": "Patient rooms, exam rooms, treatment rooms"
+            },
+            {
+              "category": 3,
+              "description": "Basic Care Space",
+              "typical_areas": "Outpatient procedure rooms in lower-risk facilities"
+            },
+            {
+              "category": 4,
+              "description": "Support Spaces",
+              "typical_areas": "Corridors, lobbies, common areas, offices"
+            }
           ]
         }
       },
@@ -37,12 +92,21 @@
         "Specifying Type 1 EES for an outpatient facility — Type 1 is for Category 1 patient care; outpatient surgery centers typically Type 2 or 3 depending on procedure scope",
         "Omitting isolated power systems in wet locations like ORs — required by 517.160 and the FGI guidelines"
       ],
-      "drawn_as": ["RECEPTACLE_HOSPITAL_GRADE", "ATS"],
-      "related_iec_60364": ["IEC 60364-7-710 (Medical locations)"],
+      "drawn_as": [
+        "RECEPTACLE_HOSPITAL_GRADE",
+        "ATS"
+      ],
+      "related_iec_60364": [
+        "IEC 60364-7-710 (Medical locations)"
+      ],
       "divergence_notes": "NEC Art 517 uses Categories 1-4 + Type 1/2/3 EES classification; IEC 60364-7-710 uses Group 0/1/2 + 'safety' / 'critical' / 'general' service categories. Patient-care space classification differs in detail though the philosophy is similar. NEC Type 1 EES three-branch structure (Life Safety / Critical / Equipment) has direct IEC equivalent in 60364-7-710 essential power supply but with different grouping. NEC's isolated power system requirements (517.160) align with IEC 60364-7-710 medical IT but specifics differ — NEC mandates Line Isolation Monitor (LIM) hardware per UL 1022, IEC mandates IMD per IEC 61557-8.",
       "related_bs_7671": [],
       "usage_notes": "Coordinate with FGI Guidelines for Design and Construction of Hospitals (referenced from Art 517) and NFPA 99 (Health Care Facilities Code) — the latter is the companion standard.",
-      "related_articles": ["ART_700", "ART_701", "ART_250"]
+      "related_articles": [
+        "ART_700",
+        "ART_701",
+        "ART_250"
+      ]
     }
   ]
 }

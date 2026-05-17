@@ -1,9 +1,12 @@
 {
+  "clause_ref": "IEC-60909-0 2016:§3-Source-Impedances",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60909 — Source Impedance Reference",
   "_version": "1.0.0",
   "_reference": "IEC 60909-0:2016 §4.2 (network feeder), §4.3 (transformer), §4.4 (generator), §4.5 (motor); IEC 60909-2:2008 data tables",
   "purpose": "Unified reference for source-impedance modelling across all source types used by the IEC 60909 method.",
-
   "network_feeder_zq": {
     "_reference": "IEC 60909-0:2016 §4.2",
     "definition": "Equivalent impedance of the upstream network seen from the LV-side primary of the building's incoming transformer (or service entrance)",
@@ -20,11 +23,16 @@
     },
     "default_when_not_declared": {
       "_warning": "Use only when no DNO declaration available; engineer must flag this as an assumption",
-      "uk_typical_11kv_supply": { "sk_mva": 200, "x_over_r": 5 },
-      "us_typical_12_47kv": { "sk_mva": 300, "x_over_r": 6 }
+      "uk_typical_11kv_supply": {
+        "sk_mva": 200,
+        "x_over_r": 5
+      },
+      "us_typical_12_47kv": {
+        "sk_mva": 300,
+        "x_over_r": 6
+      }
     }
   },
-
   "transformer_zk": {
     "_reference": "IEC 60909-0:2016 §4.3; transformer nameplate Zpu",
     "definition": "Transformer short-circuit impedance referred to LV side",
@@ -37,7 +45,6 @@
     },
     "reference_table": "transformer-zpu-table.json"
   },
-
   "generator_xd_subtransient_xd_prime_xd": {
     "_reference": "IEC 60909-0:2016 §4.4; near-from-generator",
     "definition": "Synchronous generator subtransient X\"d (first cycle), transient X'd (~100ms), synchronous Xd (steady-state)",
@@ -49,7 +56,6 @@
     ],
     "reference_table": "generator-subtransient-tables.json"
   },
-
   "ups_battery_inverter_zups": {
     "_reference": "Not directly in IEC 60909-0 (manufacturer-specific); IEC 62040-3 UPS standard",
     "definition": "UPS / static inverter — current-limited source, very different from rotating machines",
@@ -60,7 +66,6 @@
       "For sustained-fault protection: UPS is bypassed → use utility path only"
     ]
   },
-
   "induction_motor_xm_doubleprime": {
     "_reference": "IEC 60909-0:2016 §4.5",
     "definition": "Induction motor short-circuit contribution via subtransient reactance (back-EMF from rotating mass)",

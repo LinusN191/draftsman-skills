@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Table-310.15(B)",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 — Ampacity Correction Factor Chain (cross-cutting)",
   "_version": "1.0.0",
   "_note": "Conductor ampacity corrections come from multiple sources — Table 310.16 base ampacity × Table 310.15(B)(1) ambient × Table 310.15(C)(1) grouping × 110.14(C) termination temperature limit. This file unifies the chain with a worked example.",
@@ -64,11 +68,14 @@
       "alternate_calc_at_75c": {
         "base_75c_size_2": 115,
         "ambient_correction_75c_factor": 0.82,
-        "grouping_correction": 0.80,
+        "grouping_correction": 0.8,
         "result_a": "115 × 0.82 × 0.80 = 75.4"
       },
       "step_5_final": {
-        "min_of": ["step 3 result: 90.5 A (from 90 °C column corrected)", "step 4b result: 75.4 A (from 75 °C column corrected)"],
+        "min_of": [
+          "step 3 result: 90.5 A (from 90 °C column corrected)",
+          "step 4b result: 75.4 A (from 75 °C column corrected)"
+        ],
         "final_ampacity_a": 75.4,
         "_note": "The termination temperature column dominates — the 90 °C conductor's higher base ampacity is wasted because terminations are 75 °C rated"
       }

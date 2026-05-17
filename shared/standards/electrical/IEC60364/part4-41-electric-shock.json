@@ -1,9 +1,12 @@
 {
+  "clause_ref": "IEC-60364-4-41 2017:§411",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60364-4-41:2005+AMD1:2017 — Protection against Electric Shock",
   "_basis": "IEC 60364-4-41 Edition 5 (2005) with Amendment 1 (2017)",
   "_version": "1.0.0",
   "_note": "This file covers Automatic Disconnection of Supply (ADS) as the primary protective measure — Clauses 411 through 414. ADS requires both basic insulation and a fault-responsive disconnect. SELV, PELV, Class II, and electrical separation are covered briefly; consult the standard for full requirements.",
-
   "voltage_limits_for_shock_protection": {
     "_reference": "Clause 411.1 and 414",
     "SELV_PELV": {
@@ -17,11 +20,9 @@
       "note": "This file uses 230V (U0 = 230V) as the reference. Scale Zs_max values proportionally for other voltages: Zs_max = U0 / Ia"
     }
   },
-
   "disconnection_times_table_41_1": {
     "_reference": "IEC 60364-4-41 Table 41.1",
     "_note": "These are the maximum permitted disconnection times. Protective devices MUST trip within these times under earth fault conditions. 'Final circuit' means a circuit with socket outlets or supplying portable equipment. 'Distribution circuit' means a circuit feeding a sub-distribution board.",
-
     "TN_systems": {
       "_condition": "Earth fault in a TN system — fault current is limited only by conductor impedance (Zs)",
       "_formula": "If = U0 / Zs — fault current in amps. Device must trip in time t when If flows.",
@@ -44,7 +45,6 @@
         "distribution_circuits": "5s"
       }
     },
-
     "TT_systems": {
       "_condition": "Earth fault in a TT system — fault current is limited by the sum of (transformer earth + installation earth electrode + CPC). Fault current is usually low — RCD is the normal protective device.",
       "_formula": "If = U0 / (Rn + Ra). For TT, use: Ra × IΔn ≤ 50V where Ra = electrode resistance, IΔn = RCD rated current.",
@@ -54,7 +54,6 @@
       "U0_above_400V": "0.04s",
       "_note": "For TT systems, ADS using overcurrent devices is often impractical because fault currents are too low to trip the device quickly. An RCD is almost always required. Exception: where earth electrode resistance is so low that overcurrent devices can meet the time requirement."
     },
-
     "IT_systems": {
       "_note": "Under a first earth fault in an IT system, no significant fault current flows — the system can continue operating. Second fault creates a fault loop similar to TN. IT systems must have an insulation monitoring device (IMD) per Clause 411.6. Medical locations (Group 2) use IT systems with IMD per IEC 60364-7-710.",
       "first_fault": "No disconnection required — IMD must give alarm. Fault must be located and corrected.",
@@ -62,7 +61,6 @@
       "second_fault_where_neutrals_distributed": "Apply TN times but with double the fault loop impedance consideration."
     }
   },
-
   "ADS_check_TN_system": {
     "_reference": "Clause 411.4",
     "_title": "Maximum permissible earth fault loop impedance for TN systems",
@@ -75,61 +73,155 @@
       "Ia_for_MCB_Type_D": "20 × In (instantaneous magnetic trip)",
       "Ia_for_gG_fuse": "See manufacturer's time/current curves — typically 10–20 × In for 0.4s at full fault"
     },
-
     "Zs_max_table_TN_230V_04s_MCB_Type_B": {
       "_title": "Maximum Zs for Type B MCBs — 230V TN system — 0.4s disconnection (final circuits)",
       "_formula_applied": "Zs = 230 / (5 × In)",
-      "6A":   {"Ia_A": 30,  "Zs_max_ohm": 7.67},
-      "10A":  {"Ia_A": 50,  "Zs_max_ohm": 4.60},
-      "16A":  {"Ia_A": 80,  "Zs_max_ohm": 2.88},
-      "20A":  {"Ia_A": 100, "Zs_max_ohm": 2.30},
-      "25A":  {"Ia_A": 125, "Zs_max_ohm": 1.84},
-      "32A":  {"Ia_A": 160, "Zs_max_ohm": 1.44},
-      "40A":  {"Ia_A": 200, "Zs_max_ohm": 1.15},
-      "50A":  {"Ia_A": 250, "Zs_max_ohm": 0.92},
-      "63A":  {"Ia_A": 315, "Zs_max_ohm": 0.73},
-      "80A":  {"Ia_A": 400, "Zs_max_ohm": 0.575},
-      "100A": {"Ia_A": 500, "Zs_max_ohm": 0.46},
-      "125A": {"Ia_A": 625, "Zs_max_ohm": 0.368}
+      "6A": {
+        "Ia_A": 30,
+        "Zs_max_ohm": 7.67
+      },
+      "10A": {
+        "Ia_A": 50,
+        "Zs_max_ohm": 4.6
+      },
+      "16A": {
+        "Ia_A": 80,
+        "Zs_max_ohm": 2.88
+      },
+      "20A": {
+        "Ia_A": 100,
+        "Zs_max_ohm": 2.3
+      },
+      "25A": {
+        "Ia_A": 125,
+        "Zs_max_ohm": 1.84
+      },
+      "32A": {
+        "Ia_A": 160,
+        "Zs_max_ohm": 1.44
+      },
+      "40A": {
+        "Ia_A": 200,
+        "Zs_max_ohm": 1.15
+      },
+      "50A": {
+        "Ia_A": 250,
+        "Zs_max_ohm": 0.92
+      },
+      "63A": {
+        "Ia_A": 315,
+        "Zs_max_ohm": 0.73
+      },
+      "80A": {
+        "Ia_A": 400,
+        "Zs_max_ohm": 0.575
+      },
+      "100A": {
+        "Ia_A": 500,
+        "Zs_max_ohm": 0.46
+      },
+      "125A": {
+        "Ia_A": 625,
+        "Zs_max_ohm": 0.368
+      }
     },
-
     "Zs_max_table_TN_230V_04s_MCB_Type_C": {
       "_title": "Maximum Zs for Type C MCBs — 230V TN system — 0.4s disconnection",
       "_formula_applied": "Zs = 230 / (10 × In)",
-      "6A":   {"Ia_A": 60,  "Zs_max_ohm": 3.83},
-      "10A":  {"Ia_A": 100, "Zs_max_ohm": 2.30},
-      "16A":  {"Ia_A": 160, "Zs_max_ohm": 1.44},
-      "20A":  {"Ia_A": 200, "Zs_max_ohm": 1.15},
-      "25A":  {"Ia_A": 250, "Zs_max_ohm": 0.92},
-      "32A":  {"Ia_A": 320, "Zs_max_ohm": 0.719},
-      "40A":  {"Ia_A": 400, "Zs_max_ohm": 0.575},
-      "50A":  {"Ia_A": 500, "Zs_max_ohm": 0.46},
-      "63A":  {"Ia_A": 630, "Zs_max_ohm": 0.365},
-      "80A":  {"Ia_A": 800, "Zs_max_ohm": 0.288},
-      "100A": {"Ia_A": 1000,"Zs_max_ohm": 0.230},
-      "125A": {"Ia_A": 1250,"Zs_max_ohm": 0.184}
+      "6A": {
+        "Ia_A": 60,
+        "Zs_max_ohm": 3.83
+      },
+      "10A": {
+        "Ia_A": 100,
+        "Zs_max_ohm": 2.3
+      },
+      "16A": {
+        "Ia_A": 160,
+        "Zs_max_ohm": 1.44
+      },
+      "20A": {
+        "Ia_A": 200,
+        "Zs_max_ohm": 1.15
+      },
+      "25A": {
+        "Ia_A": 250,
+        "Zs_max_ohm": 0.92
+      },
+      "32A": {
+        "Ia_A": 320,
+        "Zs_max_ohm": 0.719
+      },
+      "40A": {
+        "Ia_A": 400,
+        "Zs_max_ohm": 0.575
+      },
+      "50A": {
+        "Ia_A": 500,
+        "Zs_max_ohm": 0.46
+      },
+      "63A": {
+        "Ia_A": 630,
+        "Zs_max_ohm": 0.365
+      },
+      "80A": {
+        "Ia_A": 800,
+        "Zs_max_ohm": 0.288
+      },
+      "100A": {
+        "Ia_A": 1000,
+        "Zs_max_ohm": 0.23
+      },
+      "125A": {
+        "Ia_A": 1250,
+        "Zs_max_ohm": 0.184
+      }
     },
-
     "Zs_max_table_TN_230V_04s_MCB_Type_D": {
       "_title": "Maximum Zs for Type D MCBs — 230V TN system — 0.4s disconnection",
       "_formula_applied": "Zs = 230 / (20 × In)",
-      "6A":   {"Ia_A": 120, "Zs_max_ohm": 1.92},
-      "10A":  {"Ia_A": 200, "Zs_max_ohm": 1.15},
-      "16A":  {"Ia_A": 320, "Zs_max_ohm": 0.719},
-      "20A":  {"Ia_A": 400, "Zs_max_ohm": 0.575},
-      "25A":  {"Ia_A": 500, "Zs_max_ohm": 0.46},
-      "32A":  {"Ia_A": 640, "Zs_max_ohm": 0.359},
-      "40A":  {"Ia_A": 800, "Zs_max_ohm": 0.288},
-      "50A":  {"Ia_A": 1000,"Zs_max_ohm": 0.230},
-      "63A":  {"Ia_A": 1260,"Zs_max_ohm": 0.183}
+      "6A": {
+        "Ia_A": 120,
+        "Zs_max_ohm": 1.92
+      },
+      "10A": {
+        "Ia_A": 200,
+        "Zs_max_ohm": 1.15
+      },
+      "16A": {
+        "Ia_A": 320,
+        "Zs_max_ohm": 0.719
+      },
+      "20A": {
+        "Ia_A": 400,
+        "Zs_max_ohm": 0.575
+      },
+      "25A": {
+        "Ia_A": 500,
+        "Zs_max_ohm": 0.46
+      },
+      "32A": {
+        "Ia_A": 640,
+        "Zs_max_ohm": 0.359
+      },
+      "40A": {
+        "Ia_A": 800,
+        "Zs_max_ohm": 0.288
+      },
+      "50A": {
+        "Ia_A": 1000,
+        "Zs_max_ohm": 0.23
+      },
+      "63A": {
+        "Ia_A": 1260,
+        "Zs_max_ohm": 0.183
+      }
     },
-
     "distribution_circuits_5s": {
       "_note": "For distribution circuits (5s disconnection), the instantaneous magnetic trip threshold still applies for short-circuit protection. For the 5s overload protection check, the thermal trip applies. Typically, distribution circuits comply if the overcurrent device is correctly rated per the Fundamental Rule (Ib ≤ In ≤ Iz), since thermal trip will operate within 5s under fault conditions causing sustained overload.",
       "practical_guidance": "Verify Zs × In ≤ U0 / 0.2 at distribution board busbars as a sanity check. Use RCDs rated ≤ 300mA as an alternative protective measure for distribution boards where Zs compliance is difficult."
     }
   },
-
   "ADS_check_TT_system": {
     "_reference": "Clause 411.5",
     "_formula": "Ra × IΔn ≤ 50V",
@@ -140,20 +232,20 @@
     },
     "worked_examples": {
       "30mA_RCD": {
-        "IΔn_A": 0.030,
+        "IΔn_A": 0.03,
         "max_Ra_ohm": 1667,
         "_comment": "Any earth electrode resistance below 1667Ω satisfies the check for a 30mA RCD. In practice, electrode resistance <200Ω is achievable, so 30mA RCDs will always pass this check."
       },
       "100mA_RCD": {
-        "IΔn_A": 0.100,
+        "IΔn_A": 0.1,
         "max_Ra_ohm": 500
       },
       "300mA_RCD": {
-        "IΔn_A": 0.300,
+        "IΔn_A": 0.3,
         "max_Ra_ohm": 167
       },
       "500mA_RCD": {
-        "IΔn_A": 0.500,
+        "IΔn_A": 0.5,
         "max_Ra_ohm": 100
       }
     },
@@ -171,7 +263,6 @@
       ]
     }
   },
-
   "SELV_and_PELV": {
     "_reference": "Clause 414",
     "SELV": {
@@ -184,7 +275,12 @@
         "Exposed conductive parts of SELV equipment must NOT be earthed",
         "SELV socket outlets must be a non-interchangeable type"
       ],
-      "applications": ["Zone 0/1 in bathrooms (IEC 60364-7-701)", "Submerged pool luminaires", "Safe ELV garden lighting", "Medical equipment in Group 2 locations"],
+      "applications": [
+        "Zone 0/1 in bathrooms (IEC 60364-7-701)",
+        "Submerged pool luminaires",
+        "Safe ELV garden lighting",
+        "Medical equipment in Group 2 locations"
+      ],
       "protection_against_direct_contact": {
         "below_25V_AC_or_60V_DC": "No additional protection required in normal dry conditions",
         "above_25V_AC_or_60V_DC": "Protection by basic insulation or barriers required"
@@ -200,21 +296,26 @@
         "Source separation requirement same as SELV",
         "One point of circuit may be earthed (often required for functional reasons)"
       ],
-      "applications": ["Control circuit earthed for EMC reasons", "Floor heating safety circuits (IEC 60364-7-753)"]
+      "applications": [
+        "Control circuit earthed for EMC reasons",
+        "Floor heating safety circuits (IEC 60364-7-753)"
+      ]
     },
     "FELV": {
       "full_name": "Functional Extra-Low Voltage",
       "note": "ELV used for functional reasons, NOT as a protective measure. Must meet the protective requirements of the higher-voltage supply. Requires basic protection and fault protection of the supply circuit. Not a recognised protective measure for electric shock per IEC 60364."
     }
   },
-
   "supplementary_equipotential_bonding": {
     "_reference": "Clause 415.2",
     "purpose": "Where ADS cannot achieve the required disconnection time (e.g. long circuit runs), supplementary bonding between simultaneously accessible conductive parts brings them to the same potential, limiting contact voltage even if disconnection is slow.",
     "check": "R ≤ 50V / IΔn for RCD-protected circuits, or R ≤ 50 / Ia for overcurrent-protected circuits",
-    "applications": ["Bathrooms (Part 7-701)", "Agricultural buildings (Part 7-705)", "Long submain runs in TN-S systems"]
+    "applications": [
+      "Bathrooms (Part 7-701)",
+      "Agricultural buildings (Part 7-705)",
+      "Long submain runs in TN-S systems"
+    ]
   },
-
   "practical_guidance": {
     "new_installations_230V_TN": "All socket outlet and portable equipment circuits must be protected by 30mA RCDs for additional protection (Clause 411.3.3). RCD protection ensures compliance even where Zs is marginal.",
     "long_circuits": "For circuits where Zs_max cannot be met (very long run), either: (a) increase conductor cross-section to reduce Zs, (b) add 30mA RCD — RCD trip current is 0.03A so Zs_max = 230/0.03 = 7667Ω, always satisfied, or (c) use supplementary bonding.",

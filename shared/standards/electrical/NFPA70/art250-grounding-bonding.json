@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Article-250",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 Article 250 — Grounding and Bonding",
   "_version": "1.0.0",
   "articles": [
@@ -9,18 +13,65 @@
       "article_number": 250,
       "article_title": "Grounding and Bonding",
       "scope": "System grounding, equipment grounding, grounding electrode system (GES), bonding. The most cross-jurisdiction-divergent NEC article — NEC uses 'grounding' terminology where IEC uses 'earthing'.",
-      "applies_to": ["all_systems", "service_grounded", "separately_derived", "gec", "egc", "bonding"],
+      "applies_to": [
+        "all_systems",
+        "service_grounded",
+        "separately_derived",
+        "gec",
+        "egc",
+        "bonding"
+      ],
       "key_sections": [
-        {"section": "250.4",   "title": "General Requirements for Grounding and Bonding", "summary": "Performance-based: effective ground-fault current path with low impedance; bonding of equipment, structural metal, piping systems"},
-        {"section": "250.20",  "title": "AC Systems to Be Grounded", "summary": "Systems supplying premises wiring under 1000 V to be grounded if any of: (1) phase-to-ground < 150 V, (2) star-connected 4-wire, (3) delta with one phase grounded"},
-        {"section": "250.28",  "title": "Main Bonding Jumper (MBJ)", "summary": "Connection between grounded service conductor and EGC at service. Sized per 250.28(D)"},
-        {"section": "250.30",  "title": "Grounding Separately Derived Alternating-Current Systems", "summary": "SDS (transformer secondary, generator output, etc.) grounded at the first system disconnect; system bonding jumper required"},
-        {"section": "250.50",  "title": "Grounding Electrode System", "summary": "All electrode types present at the building must be bonded together: metal underground water pipe (≥10 ft), concrete-encased electrode (Ufer), ground ring, rod/pipe/plate, structural metal"},
-        {"section": "250.52",  "title": "Grounding Electrodes", "summary": "Permitted types and specifications"},
-        {"section": "250.66",  "title": "Size of Alternating-Current Grounding Electrode Conductor (GEC)", "summary": "GEC sized by largest ungrounded service conductor via Table 250.66"},
-        {"section": "250.118", "title": "Types of Equipment Grounding Conductors (EGC)", "summary": "Permitted EGC types: copper wire, aluminium wire, RMC, IMC, EMT (qualified), flexible metal conduit (qualified by length and size), etc."},
-        {"section": "250.122", "title": "Size of Equipment Grounding Conductors", "summary": "EGC sized by upstream OCPD rating via Table 250.122 — the NEC equivalent of BS 7671 Table 54.7 / IEC 60364-5-54 Table 54.1"},
-        {"section": "250.142", "title": "Use of Grounded Circuit Conductor for Grounding Equipment", "summary": "TN-C concept permitted ONLY within service equipment (and on the supply side of the service disconnect). After service disconnect, neutral and EGC must be separate (the NEC's 'no TN-C downstream' rule)"}
+        {
+          "section": "250.4",
+          "title": "General Requirements for Grounding and Bonding",
+          "summary": "Performance-based: effective ground-fault current path with low impedance; bonding of equipment, structural metal, piping systems"
+        },
+        {
+          "section": "250.20",
+          "title": "AC Systems to Be Grounded",
+          "summary": "Systems supplying premises wiring under 1000 V to be grounded if any of: (1) phase-to-ground < 150 V, (2) star-connected 4-wire, (3) delta with one phase grounded"
+        },
+        {
+          "section": "250.28",
+          "title": "Main Bonding Jumper (MBJ)",
+          "summary": "Connection between grounded service conductor and EGC at service. Sized per 250.28(D)"
+        },
+        {
+          "section": "250.30",
+          "title": "Grounding Separately Derived Alternating-Current Systems",
+          "summary": "SDS (transformer secondary, generator output, etc.) grounded at the first system disconnect; system bonding jumper required"
+        },
+        {
+          "section": "250.50",
+          "title": "Grounding Electrode System",
+          "summary": "All electrode types present at the building must be bonded together: metal underground water pipe (≥10 ft), concrete-encased electrode (Ufer), ground ring, rod/pipe/plate, structural metal"
+        },
+        {
+          "section": "250.52",
+          "title": "Grounding Electrodes",
+          "summary": "Permitted types and specifications"
+        },
+        {
+          "section": "250.66",
+          "title": "Size of Alternating-Current Grounding Electrode Conductor (GEC)",
+          "summary": "GEC sized by largest ungrounded service conductor via Table 250.66"
+        },
+        {
+          "section": "250.118",
+          "title": "Types of Equipment Grounding Conductors (EGC)",
+          "summary": "Permitted EGC types: copper wire, aluminium wire, RMC, IMC, EMT (qualified), flexible metal conduit (qualified by length and size), etc."
+        },
+        {
+          "section": "250.122",
+          "title": "Size of Equipment Grounding Conductors",
+          "summary": "EGC sized by upstream OCPD rating via Table 250.122 — the NEC equivalent of BS 7671 Table 54.7 / IEC 60364-5-54 Table 54.1"
+        },
+        {
+          "section": "250.142",
+          "title": "Use of Grounded Circuit Conductor for Grounding Equipment",
+          "summary": "TN-C concept permitted ONLY within service equipment (and on the supply side of the service disconnect). After service disconnect, neutral and EGC must be separate (the NEC's 'no TN-C downstream' rule)"
+        }
       ],
       "tabulated_values": {
         "gec_sizing_table_250_66": "see tables_inline",
@@ -30,39 +81,144 @@
         "Table_250.66_GEC_for_AC_Systems": {
           "title": "Grounding Electrode Conductor for AC Systems",
           "rows": [
-            {"largest_ungrounded_cu_awg": "2 or smaller",          "gec_cu_awg": "8"},
-            {"largest_ungrounded_cu_awg": "1 or 1/0",              "gec_cu_awg": "6"},
-            {"largest_ungrounded_cu_awg": "2/0 or 3/0",            "gec_cu_awg": "4"},
-            {"largest_ungrounded_cu_awg": "over 3/0 to 350 kcmil", "gec_cu_awg": "2"},
-            {"largest_ungrounded_cu_awg": "over 350 to 600 kcmil", "gec_cu_awg": "1/0"},
-            {"largest_ungrounded_cu_awg": "over 600 to 1100 kcmil","gec_cu_awg": "2/0"},
-            {"largest_ungrounded_cu_awg": "over 1100 kcmil",       "gec_cu_awg": "3/0"}
+            {
+              "largest_ungrounded_cu_awg": "2 or smaller",
+              "gec_cu_awg": "8"
+            },
+            {
+              "largest_ungrounded_cu_awg": "1 or 1/0",
+              "gec_cu_awg": "6"
+            },
+            {
+              "largest_ungrounded_cu_awg": "2/0 or 3/0",
+              "gec_cu_awg": "4"
+            },
+            {
+              "largest_ungrounded_cu_awg": "over 3/0 to 350 kcmil",
+              "gec_cu_awg": "2"
+            },
+            {
+              "largest_ungrounded_cu_awg": "over 350 to 600 kcmil",
+              "gec_cu_awg": "1/0"
+            },
+            {
+              "largest_ungrounded_cu_awg": "over 600 to 1100 kcmil",
+              "gec_cu_awg": "2/0"
+            },
+            {
+              "largest_ungrounded_cu_awg": "over 1100 kcmil",
+              "gec_cu_awg": "3/0"
+            }
           ]
         },
         "Table_250.122_EGC_for_Equipment_Grounding": {
           "title": "Minimum Size Equipment Grounding Conductors for Grounding Raceway and Equipment",
           "rows": [
-            {"ocpd_rating_a": 15,   "cu_egc_awg": "14",  "al_egc_awg": "12"},
-            {"ocpd_rating_a": 20,   "cu_egc_awg": "12",  "al_egc_awg": "10"},
-            {"ocpd_rating_a": 30,   "cu_egc_awg": "10",  "al_egc_awg": "8"},
-            {"ocpd_rating_a": 40,   "cu_egc_awg": "10",  "al_egc_awg": "8"},
-            {"ocpd_rating_a": 60,   "cu_egc_awg": "10",  "al_egc_awg": "8"},
-            {"ocpd_rating_a": 100,  "cu_egc_awg": "8",   "al_egc_awg": "6"},
-            {"ocpd_rating_a": 200,  "cu_egc_awg": "6",   "al_egc_awg": "4"},
-            {"ocpd_rating_a": 300,  "cu_egc_awg": "4",   "al_egc_awg": "2"},
-            {"ocpd_rating_a": 400,  "cu_egc_awg": "3",   "al_egc_awg": "1"},
-            {"ocpd_rating_a": 500,  "cu_egc_awg": "2",   "al_egc_awg": "1/0"},
-            {"ocpd_rating_a": 600,  "cu_egc_awg": "1",   "al_egc_awg": "2/0"},
-            {"ocpd_rating_a": 800,  "cu_egc_awg": "1/0", "al_egc_awg": "3/0"},
-            {"ocpd_rating_a": 1000, "cu_egc_awg": "2/0", "al_egc_awg": "4/0"},
-            {"ocpd_rating_a": 1200, "cu_egc_awg": "3/0", "al_egc_awg": "250 kcmil"},
-            {"ocpd_rating_a": 1600, "cu_egc_awg": "4/0", "al_egc_awg": "350 kcmil"},
-            {"ocpd_rating_a": 2000, "cu_egc_awg": "250 kcmil", "al_egc_awg": "400 kcmil"},
-            {"ocpd_rating_a": 2500, "cu_egc_awg": "350 kcmil", "al_egc_awg": "600 kcmil"},
-            {"ocpd_rating_a": 3000, "cu_egc_awg": "400 kcmil", "al_egc_awg": "600 kcmil"},
-            {"ocpd_rating_a": 4000, "cu_egc_awg": "500 kcmil", "al_egc_awg": "750 kcmil"},
-            {"ocpd_rating_a": 5000, "cu_egc_awg": "700 kcmil", "al_egc_awg": "1200 kcmil"},
-            {"ocpd_rating_a": 6000, "cu_egc_awg": "800 kcmil", "al_egc_awg": "1200 kcmil"}
+            {
+              "ocpd_rating_a": 15,
+              "cu_egc_awg": "14",
+              "al_egc_awg": "12"
+            },
+            {
+              "ocpd_rating_a": 20,
+              "cu_egc_awg": "12",
+              "al_egc_awg": "10"
+            },
+            {
+              "ocpd_rating_a": 30,
+              "cu_egc_awg": "10",
+              "al_egc_awg": "8"
+            },
+            {
+              "ocpd_rating_a": 40,
+              "cu_egc_awg": "10",
+              "al_egc_awg": "8"
+            },
+            {
+              "ocpd_rating_a": 60,
+              "cu_egc_awg": "10",
+              "al_egc_awg": "8"
+            },
+            {
+              "ocpd_rating_a": 100,
+              "cu_egc_awg": "8",
+              "al_egc_awg": "6"
+            },
+            {
+              "ocpd_rating_a": 200,
+              "cu_egc_awg": "6",
+              "al_egc_awg": "4"
+            },
+            {
+              "ocpd_rating_a": 300,
+              "cu_egc_awg": "4",
+              "al_egc_awg": "2"
+            },
+            {
+              "ocpd_rating_a": 400,
+              "cu_egc_awg": "3",
+              "al_egc_awg": "1"
+            },
+            {
+              "ocpd_rating_a": 500,
+              "cu_egc_awg": "2",
+              "al_egc_awg": "1/0"
+            },
+            {
+              "ocpd_rating_a": 600,
+              "cu_egc_awg": "1",
+              "al_egc_awg": "2/0"
+            },
+            {
+              "ocpd_rating_a": 800,
+              "cu_egc_awg": "1/0",
+              "al_egc_awg": "3/0"
+            },
+            {
+              "ocpd_rating_a": 1000,
+              "cu_egc_awg": "2/0",
+              "al_egc_awg": "4/0"
+            },
+            {
+              "ocpd_rating_a": 1200,
+              "cu_egc_awg": "3/0",
+              "al_egc_awg": "250 kcmil"
+            },
+            {
+              "ocpd_rating_a": 1600,
+              "cu_egc_awg": "4/0",
+              "al_egc_awg": "350 kcmil"
+            },
+            {
+              "ocpd_rating_a": 2000,
+              "cu_egc_awg": "250 kcmil",
+              "al_egc_awg": "400 kcmil"
+            },
+            {
+              "ocpd_rating_a": 2500,
+              "cu_egc_awg": "350 kcmil",
+              "al_egc_awg": "600 kcmil"
+            },
+            {
+              "ocpd_rating_a": 3000,
+              "cu_egc_awg": "400 kcmil",
+              "al_egc_awg": "600 kcmil"
+            },
+            {
+              "ocpd_rating_a": 4000,
+              "cu_egc_awg": "500 kcmil",
+              "al_egc_awg": "750 kcmil"
+            },
+            {
+              "ocpd_rating_a": 5000,
+              "cu_egc_awg": "700 kcmil",
+              "al_egc_awg": "1200 kcmil"
+            },
+            {
+              "ocpd_rating_a": 6000,
+              "cu_egc_awg": "800 kcmil",
+              "al_egc_awg": "1200 kcmil"
+            }
           ]
         }
       },
@@ -73,12 +229,26 @@
         "Treating concrete-encased electrode (Ufer) as optional — required when present per 250.50(A)(3)",
         "Failing to bond ALL present electrodes (250.50) — water pipe + Ufer + ground rod + ring + structural steel all must be bonded together"
       ],
-      "drawn_as": ["EARTH_GENERAL", "EARTH_ELECTRODE", "CONDUCTOR_PE"],
-      "related_iec_60364": ["IEC 60364-5-54 (Earthing arrangements and protective conductors)", "IEC 60364-5-54 Table 54.1 (CPC sizing)", "IEC 60364-5-54 Clause 541 (Earthing arrangements)"],
+      "drawn_as": [
+        "EARTH_GENERAL",
+        "EARTH_ELECTRODE",
+        "CONDUCTOR_PE"
+      ],
+      "related_iec_60364": [
+        "IEC 60364-5-54 (Earthing arrangements and protective conductors)",
+        "IEC 60364-5-54 Table 54.1 (CPC sizing)",
+        "IEC 60364-5-54 Clause 541 (Earthing arrangements)"
+      ],
       "divergence_notes": "NEC uses 'grounding' / 'grounded conductor' / 'EGC' where IEC uses 'earthing' / 'neutral' / 'CPC'. NEC EGC sizes from 250.122 by OCPD rating; IEC 60364-5-54 sizes from line-conductor CSA (Table 54.1) OR adiabatic — same circuit yields different EGC/CPC under the two codes. NEC requires concrete-encased electrode (Ufer) when present (250.50(A)(3)); IEC does not mandate. NEC permits TN-C only within service equipment (250.142); IEC permits TN-C throughout for cables ≥10 mm² Cu / 16 mm² Al. NEC GEC sizing (250.66 — by ungrounded conductor) has no IEC analogue — IEC sizes main earthing conductor adiabatically. See nec-vs-iec-comparison.md and grounding-and-bonding.json for the full divergence catalogue.",
       "related_bs_7671": [],
       "usage_notes": "The most cited NEC article in MEP design. Always confirm AHJ acceptance of the grounding electrode arrangement before issue. Specify EGC type (insulated/bare/raceway) per 250.118 and size per 250.122 with adiabatic verification (250.122(B)) for short cable runs with high fault current. For separately-derived systems, the system bonding jumper at the SDS replaces the MBJ function — see 250.30.",
-      "related_articles": ["ART_200", "ART_300", "ART_310", "ART_408", "ART_450"]
+      "related_articles": [
+        "ART_200",
+        "ART_300",
+        "ART_310",
+        "ART_408",
+        "ART_450"
+      ]
     }
   ]
 }

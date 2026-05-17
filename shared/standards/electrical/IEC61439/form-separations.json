@@ -1,4 +1,8 @@
 {
+  "clause_ref": "IEC-61439-2 2020:Annex-J-Forms",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 61439 — Form Separations",
   "_iec_part": "2 (with cross-references to 3 and 4)",
   "_version": "1.0.0",
@@ -20,12 +24,23 @@
         "|                                 |",
         "+---------------------------------+"
       ],
-      "applications": ["Lowest-cost option where whole-board de-energising is acceptable for any maintenance"],
-      "advantages": ["Cheapest", "Most compact for given rating"],
-      "disadvantages": ["No live-work safety — entire board is exposed once opened"],
-      "vs_neighbours": {"Form_2a": "2a adds a barrier between busbar and functional units"},
+      "applications": [
+        "Lowest-cost option where whole-board de-energising is acceptable for any maintenance"
+      ],
+      "advantages": [
+        "Cheapest",
+        "Most compact for given rating"
+      ],
+      "disadvantages": [
+        "No live-work safety — entire board is exposed once opened"
+      ],
+      "vs_neighbours": {
+        "Form_2a": "2a adds a barrier between busbar and functional units"
+      },
       "draftsman_id": "FORM_1",
-      "drawn_as": ["DB_GENERAL"],
+      "drawn_as": [
+        "DB_GENERAL"
+      ],
       "usage_notes": "Acceptable only for plant-only assemblies where maintenance is always with the whole board off."
     },
     {
@@ -45,12 +60,24 @@
         "|  FU  FU  FU  T  T  T            |",
         "+---------------------------------+"
       ],
-      "applications": ["Industrial sub-distribution above 250 A where busbar isolation is needed"],
-      "advantages": ["Busbar can stay live while functional units are de-energised"],
-      "disadvantages": ["Outgoing terminations remain at busbar potential when busbar is live"],
-      "vs_neighbours": {"Form_1": "Adds busbar segregation", "Form_2b": "2b adds segregation of outgoing terminals from busbar"},
+      "applications": [
+        "Industrial sub-distribution above 250 A where busbar isolation is needed"
+      ],
+      "advantages": [
+        "Busbar can stay live while functional units are de-energised"
+      ],
+      "disadvantages": [
+        "Outgoing terminations remain at busbar potential when busbar is live"
+      ],
+      "vs_neighbours": {
+        "Form_1": "Adds busbar segregation",
+        "Form_2b": "2b adds segregation of outgoing terminals from busbar"
+      },
       "draftsman_id": "FORM_2A",
-      "drawn_as": ["DB_SUB", "DB_GENERAL"],
+      "drawn_as": [
+        "DB_SUB",
+        "DB_GENERAL"
+      ],
       "usage_notes": "Entry-level form for installations needing busbar isolation."
     },
     {
@@ -72,12 +99,25 @@
         "|  T |  T |  T |                 |",
         "+----+----+----+-----------------+"
       ],
-      "applications": ["Commercial mains 400–1600 A", "Light industrial main switchboards"],
-      "advantages": ["Can work on outgoing terminations without de-energising busbar"],
-      "disadvantages": ["Functional units still share a compartment"],
-      "vs_neighbours": {"Form_2a": "Adds terminal segregation from busbar", "Form_3a": "3a adds segregation between functional units"},
+      "applications": [
+        "Commercial mains 400–1600 A",
+        "Light industrial main switchboards"
+      ],
+      "advantages": [
+        "Can work on outgoing terminations without de-energising busbar"
+      ],
+      "disadvantages": [
+        "Functional units still share a compartment"
+      ],
+      "vs_neighbours": {
+        "Form_2a": "Adds terminal segregation from busbar",
+        "Form_3a": "3a adds segregation between functional units"
+      },
       "draftsman_id": "FORM_2B",
-      "drawn_as": ["DB_MAIN", "DB_SUB"],
+      "drawn_as": [
+        "DB_MAIN",
+        "DB_SUB"
+      ],
       "usage_notes": "Common default for commercial mains 400–1600 A where critical-circuit independence is not required."
     },
     {
@@ -99,12 +139,23 @@
         "|  T    T    T    T    T    T     |",
         "+---------------------------------+"
       ],
-      "applications": ["Industrial MCCs where outgoing terminations remain in busbar compartment"],
-      "advantages": ["Single functional unit can be worked on while neighbours stay live"],
-      "disadvantages": ["Outgoing terminations remain risky"],
-      "vs_neighbours": {"Form_2b": "Adds segregation between functional units", "Form_3b": "3b adds terminal segregation from busbar"},
+      "applications": [
+        "Industrial MCCs where outgoing terminations remain in busbar compartment"
+      ],
+      "advantages": [
+        "Single functional unit can be worked on while neighbours stay live"
+      ],
+      "disadvantages": [
+        "Outgoing terminations remain risky"
+      ],
+      "vs_neighbours": {
+        "Form_2b": "Adds segregation between functional units",
+        "Form_3b": "3b adds terminal segregation from busbar"
+      },
       "draftsman_id": "FORM_3A",
-      "drawn_as": ["DB_MAIN"],
+      "drawn_as": [
+        "DB_MAIN"
+      ],
       "usage_notes": "Industrial-only — Form 3b is preferred for new commercial designs."
     },
     {
@@ -126,12 +177,29 @@
         "| T1 | T2 | T3 | T4 | T5 | T6 |   |",
         "+----+----+----+----+----+----+---+"
       ],
-      "applications": ["Critical services main switchboards", "Industrial MCCs requiring single-circuit maintenance", "Hospital essential supply distribution"],
-      "advantages": ["Single circuit maintenance with rest live", "Outgoing terminations isolated from busbar"],
-      "disadvantages": ["Higher cost than Form 3a", "More floor space than Form 2"],
-      "vs_neighbours": {"Form_2b": "Adds segregation between functional units (was a single bay)", "Form_3a": "Form 3a has outgoing terminals in the SAME compartment as the functional unit; 3b separates them", "Form_4a": "Form 4a separates each outgoing terminal individually rather than as a group"},
+      "applications": [
+        "Critical services main switchboards",
+        "Industrial MCCs requiring single-circuit maintenance",
+        "Hospital essential supply distribution"
+      ],
+      "advantages": [
+        "Single circuit maintenance with rest live",
+        "Outgoing terminations isolated from busbar"
+      ],
+      "disadvantages": [
+        "Higher cost than Form 3a",
+        "More floor space than Form 2"
+      ],
+      "vs_neighbours": {
+        "Form_2b": "Adds segregation between functional units (was a single bay)",
+        "Form_3a": "Form 3a has outgoing terminals in the SAME compartment as the functional unit; 3b separates them",
+        "Form_4a": "Form 4a separates each outgoing terminal individually rather than as a group"
+      },
       "draftsman_id": "FORM_3B",
-      "drawn_as": ["DB_MAIN", "DB_SUB"],
+      "drawn_as": [
+        "DB_MAIN",
+        "DB_SUB"
+      ],
       "usage_notes": "Default choice for commercial main switchboards 400–4000 A. Specify explicitly on the assembly schedule — the OEM cannot infer the Form from a generic 'main switchboard' callout."
     },
     {
@@ -154,12 +222,25 @@
         "|T1.x|T2.x|T3.x|T4.x|T5.x|T6.x|   |",
         "+----+----+----+----+----+----+---+"
       ],
-      "applications": ["Hospital essential supply", "Data centre main LV boards", "High-availability industrial"],
-      "advantages": ["Each functional unit's terminations isolated from neighbours'"],
-      "disadvantages": ["Higher cost than 3b"],
-      "vs_neighbours": {"Form_3b": "Adds terminal-group separation between units", "Form_4b": "4b adds individual-terminal separation within a unit"},
+      "applications": [
+        "Hospital essential supply",
+        "Data centre main LV boards",
+        "High-availability industrial"
+      ],
+      "advantages": [
+        "Each functional unit's terminations isolated from neighbours'"
+      ],
+      "disadvantages": [
+        "Higher cost than 3b"
+      ],
+      "vs_neighbours": {
+        "Form_3b": "Adds terminal-group separation between units",
+        "Form_4b": "4b adds individual-terminal separation within a unit"
+      },
       "draftsman_id": "FORM_4A",
-      "drawn_as": ["DB_MAIN"],
+      "drawn_as": [
+        "DB_MAIN"
+      ],
       "usage_notes": "Standard for high-availability commercial/industrial mains."
     },
     {
@@ -182,12 +263,24 @@
         "|T|T|T|T|T|T|T|T|T|T|T|T|T|T|T|   |",
         "+---------------------------------+"
       ],
-      "applications": ["Nuclear safety LV boards", "Tier IV data centre mains", "Major hospital theatre/ICU primary distribution"],
-      "advantages": ["Highest practical segregation; each outgoing terminal in own compartment"],
-      "disadvantages": ["Highest cost; physically largest"],
-      "vs_neighbours": {"Form_4a": "Adds separation between individual terminals within the same functional unit"},
+      "applications": [
+        "Nuclear safety LV boards",
+        "Tier IV data centre mains",
+        "Major hospital theatre/ICU primary distribution"
+      ],
+      "advantages": [
+        "Highest practical segregation; each outgoing terminal in own compartment"
+      ],
+      "disadvantages": [
+        "Highest cost; physically largest"
+      ],
+      "vs_neighbours": {
+        "Form_4a": "Adds separation between individual terminals within the same functional unit"
+      },
       "draftsman_id": "FORM_4B",
-      "drawn_as": ["DB_MAIN"],
+      "drawn_as": [
+        "DB_MAIN"
+      ],
       "usage_notes": "Specify only where regulatory/operational availability requirement justifies the cost premium."
     }
   ]

@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Article-408",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 Article 408 — Switchboards, Switchgear, and Panelboards",
   "_version": "1.0.0",
   "articles": [
@@ -9,12 +13,34 @@
       "article_number": 408,
       "article_title": "Switchboards, Switchgear, and Panelboards",
       "scope": "Switchboards, switchgear (rated up to 6000 V — Class IIIA), and panelboards (≤1000 V, typically ≤600 V). Classifications, ratings, OCPD count limits, working clearances (cross-ref 110.26).",
-      "applies_to": ["switchboards", "switchgear", "panelboards", "lighting_panelboard", "power_panelboard"],
+      "applies_to": [
+        "switchboards",
+        "switchgear",
+        "panelboards",
+        "lighting_panelboard",
+        "power_panelboard"
+      ],
       "key_sections": [
-        {"section": "408.4",  "title": "Field Identification Required", "summary": "Panelboards/switchboards marked with: max OCPD ahead, SCCR, voltage rating, manufacturer, equipment description, available fault current"},
-        {"section": "408.30", "title": "General — Panelboards", "summary": "Panelboard rating ≥ minimum feeder rating; rated for short-circuit current available"},
-        {"section": "408.36", "title": "Overcurrent Protection — Panelboards", "summary": "Panelboard with OCPDs sums ≥ panelboard rating: each panelboard requires individual OCPD protection on the feeder ahead, sized ≤ panelboard rating. (Maximum 42 OCPDs rule was removed in NEC 2008 — modern panelboards are rated by ampere/voltage, not by OCPD count)"},
-        {"section": "408.41", "title": "Grounded Conductor Terminations", "summary": "Each grounded (neutral) conductor terminated in an individual terminal that is not also used for another conductor"}
+        {
+          "section": "408.4",
+          "title": "Field Identification Required",
+          "summary": "Panelboards/switchboards marked with: max OCPD ahead, SCCR, voltage rating, manufacturer, equipment description, available fault current"
+        },
+        {
+          "section": "408.30",
+          "title": "General — Panelboards",
+          "summary": "Panelboard rating ≥ minimum feeder rating; rated for short-circuit current available"
+        },
+        {
+          "section": "408.36",
+          "title": "Overcurrent Protection — Panelboards",
+          "summary": "Panelboard with OCPDs sums ≥ panelboard rating: each panelboard requires individual OCPD protection on the feeder ahead, sized ≤ panelboard rating. (Maximum 42 OCPDs rule was removed in NEC 2008 — modern panelboards are rated by ampere/voltage, not by OCPD count)"
+        },
+        {
+          "section": "408.41",
+          "title": "Grounded Conductor Terminations",
+          "summary": "Each grounded (neutral) conductor terminated in an individual terminal that is not also used for another conductor"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
@@ -24,12 +50,24 @@
         "Failing to mark available fault current at the panelboard (408.4(C)) — required for any equipment expected to be replaced/serviced",
         "Treating switchgear and switchboards as interchangeable — 'switchgear' (per NEMA SG-3) is metal-enclosed, drawout-rated, generally higher SCCR; 'switchboard' is less stringent"
       ],
-      "drawn_as": ["PANELBOARD", "SWITCHBOARD", "MCC"],
-      "related_iec_60364": ["IEC 60364-5-53 (Switchgear)", "IEC 61439-1/2/3 (Low-voltage switchgear assemblies — see existing IEC61439/ layer)"],
+      "drawn_as": [
+        "PANELBOARD",
+        "SWITCHBOARD",
+        "MCC"
+      ],
+      "related_iec_60364": [
+        "IEC 60364-5-53 (Switchgear)",
+        "IEC 61439-1/2/3 (Low-voltage switchgear assemblies — see existing IEC61439/ layer)"
+      ],
       "divergence_notes": "NEC 408 + UL 67 (panelboards) + UL 891 (switchboards) ≈ IEC 61439 series — see existing IEC61439/ layer for the comprehensive IEC treatment of assemblies. NEC's 'panelboard vs switchboard vs switchgear' classification is distinct from IEC's PSC-Assembly/DBO-Assembly classification. NEC 408.4(C) field-marking of available fault current is more prescriptive than IEC equivalent.",
       "related_bs_7671": [],
       "usage_notes": "Cross-reference the existing IEC61439/ layer when working bi-jurisdiction projects — `divergence_notes` in art500-506-hazardous-locations.json and art250-grounding-bonding.json reference IEC 61439 indirectly through specific assembly types.",
-      "related_articles": ["ART_110", "ART_240", "ART_250", "ART_312_314"]
+      "related_articles": [
+        "ART_110",
+        "ART_240",
+        "ART_250",
+        "ART_312_314"
+      ]
     }
   ]
 }

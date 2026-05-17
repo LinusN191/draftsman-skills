@@ -1,4 +1,8 @@
 {
+  "clause_ref": "IEC-60617 2012:Part-3-Conductors",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60617 Part 3 — Conductors and connecting devices",
   "_iec_part": 3,
   "_version": "1.0.0",
@@ -13,14 +17,41 @@
       "display_name": "Single conductor",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -2, 50, 2],
+        "bbox": [
+          -50,
+          -2,
+          50,
+          2
+        ],
         "path": "M -50 0 L 50 0",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_2CORE", "CONDUCTOR_3CORE", "CONDUCTOR_4CORE", "CONDUCTOR_NCORE"],
-      "annotation_fields": ["csa_mm2", "insulation", "tag"],
+      "variants": [
+        "CONDUCTOR_2CORE",
+        "CONDUCTOR_3CORE",
+        "CONDUCTOR_4CORE",
+        "CONDUCTOR_NCORE"
+      ],
+      "annotation_fields": [
+        "csa_mm2",
+        "insulation",
+        "tag"
+      ],
       "usage_notes": "The fundamental conductor symbol. On SLDs, a single line represents the whole circuit (line + neutral + CPC). On schematics, one line per conductor. Annotate with CSA and insulation type.",
-      "related_symbols": ["BUSBAR", "CONDUCTOR_NEUTRAL", "CONDUCTOR_PE"],
+      "related_symbols": [
+        "BUSBAR",
+        "CONDUCTOR_NEUTRAL",
+        "CONDUCTOR_PE"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -33,14 +64,47 @@
       "display_name": "2-core cable",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -5, 50, 5],
+        "bbox": [
+          -50,
+          -5,
+          50,
+          5
+        ],
         "path": "M -50 -3 L 50 -3 M -50 3 L 50 3",
-        "terminals": {"start_1": [-50, -3], "start_2": [-50, 3], "end_1": [50, -3], "end_2": [50, 3]}
+        "terminals": {
+          "start_1": [
+            -50,
+            -3
+          ],
+          "start_2": [
+            -50,
+            3
+          ],
+          "end_1": [
+            50,
+            -3
+          ],
+          "end_2": [
+            50,
+            3
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_SINGLE", "CONDUCTOR_3CORE", "CONDUCTOR_4CORE"],
-      "annotation_fields": ["csa_mm2", "insulation", "tag"],
+      "variants": [
+        "CONDUCTOR_SINGLE",
+        "CONDUCTOR_3CORE",
+        "CONDUCTOR_4CORE"
+      ],
+      "annotation_fields": [
+        "csa_mm2",
+        "insulation",
+        "tag"
+      ],
       "usage_notes": "Two parallel lines for a 2-core cable (e.g. L+N, or twin twisted pair).",
-      "related_symbols": ["CONDUCTOR_3CORE", "CONDUCTOR_4CORE"],
+      "related_symbols": [
+        "CONDUCTOR_3CORE",
+        "CONDUCTOR_4CORE"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -53,14 +117,38 @@
       "display_name": "3-core cable",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -8, 50, 8],
+        "bbox": [
+          -50,
+          -8,
+          50,
+          8
+        ],
         "path": "M -50 -6 L 50 -6 M -50 0 L 50 0 M -50 6 L 50 6",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_2CORE", "CONDUCTOR_4CORE"],
-      "annotation_fields": ["csa_mm2", "insulation", "tag"],
+      "variants": [
+        "CONDUCTOR_2CORE",
+        "CONDUCTOR_4CORE"
+      ],
+      "annotation_fields": [
+        "csa_mm2",
+        "insulation",
+        "tag"
+      ],
       "usage_notes": "Three parallel lines for a 3-core cable (L1+L2+L3, or L+N+CPC).",
-      "related_symbols": ["CONDUCTOR_2CORE", "CONDUCTOR_4CORE"],
+      "related_symbols": [
+        "CONDUCTOR_2CORE",
+        "CONDUCTOR_4CORE"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -73,14 +161,38 @@
       "display_name": "4-core cable",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -12, 50, 12],
+        "bbox": [
+          -50,
+          -12,
+          50,
+          12
+        ],
         "path": "M -50 -9 L 50 -9 M -50 -3 L 50 -3 M -50 3 L 50 3 M -50 9 L 50 9",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_3CORE", "CONDUCTOR_NCORE"],
-      "annotation_fields": ["csa_mm2", "insulation", "tag"],
+      "variants": [
+        "CONDUCTOR_3CORE",
+        "CONDUCTOR_NCORE"
+      ],
+      "annotation_fields": [
+        "csa_mm2",
+        "insulation",
+        "tag"
+      ],
       "usage_notes": "Four parallel lines for a 4-core cable (L1+L2+L3+N, or L1+L2+L3+CPC).",
-      "related_symbols": ["CONDUCTOR_3CORE", "CONDUCTOR_NCORE"],
+      "related_symbols": [
+        "CONDUCTOR_3CORE",
+        "CONDUCTOR_NCORE"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -93,14 +205,39 @@
       "display_name": "Multi-core cable (n-core)",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -20, 50, 20],
+        "bbox": [
+          -50,
+          -20,
+          50,
+          20
+        ],
         "path": "M -50 0 L 50 0 M -10 -20 L 10 20",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_2CORE", "CONDUCTOR_3CORE", "CONDUCTOR_4CORE"],
-      "annotation_fields": ["core_count", "csa_mm2", "insulation", "tag"],
+      "variants": [
+        "CONDUCTOR_2CORE",
+        "CONDUCTOR_3CORE",
+        "CONDUCTOR_4CORE"
+      ],
+      "annotation_fields": [
+        "core_count",
+        "csa_mm2",
+        "insulation",
+        "tag"
+      ],
       "usage_notes": "Compact representation when core count is high (e.g. 5-core, 7-core, 19-core). Single line with diagonal slash; annotate count above the slash. Use for control multi-core, screened instrumentation cables.",
-      "related_symbols": ["CONDUCTOR_4CORE"],
+      "related_symbols": [
+        "CONDUCTOR_4CORE"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -113,14 +250,39 @@
       "display_name": "Busbar (single)",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -4, 50, 4],
+        "bbox": [
+          -50,
+          -4,
+          50,
+          4
+        ],
         "path": "M -50 0 L 50 0",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["BUSBAR_3PH", "BUSDUCT"],
-      "annotation_fields": ["bus_id", "rated_A", "material"],
+      "variants": [
+        "BUSBAR_3PH",
+        "BUSDUCT"
+      ],
+      "annotation_fields": [
+        "bus_id",
+        "rated_A",
+        "material"
+      ],
       "usage_notes": "Heavy horizontal line. Rendered at thick lineweight to distinguish from a normal conductor. Use for the main bus of a switchboard or distribution board.",
-      "related_symbols": ["BUSBAR_3PH", "COMMON_RETURN", "BUSDUCT"],
+      "related_symbols": [
+        "BUSBAR_3PH",
+        "COMMON_RETURN",
+        "BUSDUCT"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -133,14 +295,55 @@
       "display_name": "3-phase busbar",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -12, 50, 12],
+        "bbox": [
+          -50,
+          -12,
+          50,
+          12
+        ],
         "path": "M -50 -8 L 50 -8 M -50 0 L 50 0 M -50 8 L 50 8",
-        "terminals": {"L1": [-50, -8], "L2": [-50, 0], "L3": [-50, 8], "L1_end": [50, -8], "L2_end": [50, 0], "L3_end": [50, 8]}
+        "terminals": {
+          "L1": [
+            -50,
+            -8
+          ],
+          "L2": [
+            -50,
+            0
+          ],
+          "L3": [
+            -50,
+            8
+          ],
+          "L1_end": [
+            50,
+            -8
+          ],
+          "L2_end": [
+            50,
+            0
+          ],
+          "L3_end": [
+            50,
+            8
+          ]
+        }
       },
-      "variants": ["BUSBAR", "BUSDUCT"],
-      "annotation_fields": ["bus_id", "rated_A", "material"],
+      "variants": [
+        "BUSBAR",
+        "BUSDUCT"
+      ],
+      "annotation_fields": [
+        "bus_id",
+        "rated_A",
+        "material"
+      ],
       "usage_notes": "Three parallel heavy lines representing L1, L2, L3 in a 3-phase busbar arrangement. Add CONDUCTOR_NEUTRAL and CONDUCTOR_PE separately if a 4-wire or 5-wire system.",
-      "related_symbols": ["BUSBAR", "CONDUCTOR_NEUTRAL", "CONDUCTOR_PE"],
+      "related_symbols": [
+        "BUSBAR",
+        "CONDUCTOR_NEUTRAL",
+        "CONDUCTOR_PE"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -153,14 +356,37 @@
       "display_name": "Conductor in conduit",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -15, 50, 15],
+        "bbox": [
+          -50,
+          -15,
+          50,
+          15
+        ],
         "path": "M -50 0 L 50 0 M 15 0 A 15 15 0 1 0 -15 0 A 15 15 0 1 0 15 0 Z",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_IN_DUCT", "CONDUIT"],
-      "annotation_fields": ["conduit_dia_mm", "csa_mm2"],
+      "variants": [
+        "CONDUCTOR_IN_DUCT",
+        "CONDUIT"
+      ],
+      "annotation_fields": [
+        "conduit_dia_mm",
+        "csa_mm2"
+      ],
       "usage_notes": "Indicates the conductor is enclosed in a conduit run. Annotate conduit diameter. The circle is a section view of the conduit.",
-      "related_symbols": ["CONDUIT", "CONDUCTOR_IN_DUCT"],
+      "related_symbols": [
+        "CONDUIT",
+        "CONDUCTOR_IN_DUCT"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -173,14 +399,37 @@
       "display_name": "Conductor in duct/trunking",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -10, 50, 10],
+        "bbox": [
+          -50,
+          -10,
+          50,
+          10
+        ],
         "path": "M -50 0 L 50 0 M -20 -10 L 20 -10 L 20 10 L -20 10 Z",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["TRUNKING", "CABLE_DUCT"],
-      "annotation_fields": ["duct_size", "csa_mm2"],
+      "variants": [
+        "TRUNKING",
+        "CABLE_DUCT"
+      ],
+      "annotation_fields": [
+        "duct_size",
+        "csa_mm2"
+      ],
       "usage_notes": "Indicates conductor in a duct, trunking, or wireway. Rectangle is a section view.",
-      "related_symbols": ["TRUNKING", "CABLE_DUCT"],
+      "related_symbols": [
+        "TRUNKING",
+        "CABLE_DUCT"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -193,14 +442,37 @@
       "display_name": "Grouped conductors",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -10, 50, 10],
+        "bbox": [
+          -50,
+          -10,
+          50,
+          10
+        ],
         "path": "M -50 -6 L 50 -6 M -50 0 L 50 0 M -50 6 L 50 6 M 0 -10 A 10 10 0 0 1 0 10",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_3CORE", "CONDUCTOR_4CORE"],
-      "annotation_fields": ["core_count", "csa_mm2"],
+      "variants": [
+        "CONDUCTOR_3CORE",
+        "CONDUCTOR_4CORE"
+      ],
+      "annotation_fields": [
+        "core_count",
+        "csa_mm2"
+      ],
       "usage_notes": "Multiple conductors bundled together (e.g. clipped together but not in a common sheath). Arc indicates grouping. Use where derating factor for grouping applies.",
-      "related_symbols": ["CONDUCTOR_3CORE", "CONDUCTOR_4CORE"],
+      "related_symbols": [
+        "CONDUCTOR_3CORE",
+        "CONDUCTOR_4CORE"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -213,14 +485,37 @@
       "display_name": "Armoured cable (SWA)",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -8, 50, 8],
+        "bbox": [
+          -50,
+          -8,
+          50,
+          8
+        ],
         "path": "M -50 0 L 50 0 M -25 -8 L -25 8 M -15 -8 L -15 8 M -5 -8 L -5 8 M 5 -8 L 5 8 M 15 -8 L 15 8 M 25 -8 L 25 8",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_SINGLE"],
-      "annotation_fields": ["core_count", "csa_mm2", "armour_type"],
+      "variants": [
+        "CONDUCTOR_SINGLE"
+      ],
+      "annotation_fields": [
+        "core_count",
+        "csa_mm2",
+        "armour_type"
+      ],
       "usage_notes": "Conductor with steel wire (SWA) or aluminium wire (AWA) armour. Tick marks indicate the armour layer. Common for underground, outdoor, and industrial cabling. Armour is bonded to PE at both ends.",
-      "related_symbols": ["CONDUCTOR_SINGLE", "CONDUCTOR_UNDERGROUND"],
+      "related_symbols": [
+        "CONDUCTOR_SINGLE",
+        "CONDUCTOR_UNDERGROUND"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -233,14 +528,37 @@
       "display_name": "Overhead line",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -20, 50, 5],
+        "bbox": [
+          -50,
+          -20,
+          50,
+          5
+        ],
         "path": "M -50 0 L 50 0 M -20 0 L -20 -15 M -25 -15 L -15 -15 M 20 0 L 20 -15 M 15 -15 L 25 -15",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_UNDERGROUND", "CONDUCTOR_SINGLE"],
-      "annotation_fields": ["csa_mm2", "pole_spacing"],
+      "variants": [
+        "CONDUCTOR_UNDERGROUND",
+        "CONDUCTOR_SINGLE"
+      ],
+      "annotation_fields": [
+        "csa_mm2",
+        "pole_spacing"
+      ],
       "usage_notes": "Conductor strung overhead on poles or pylons. The cross-bars represent insulator supports. Use for service drop from DNO overhead network, site overhead distribution.",
-      "related_symbols": ["CONDUCTOR_UNDERGROUND", "CONDUCTOR_SINGLE"],
+      "related_symbols": [
+        "CONDUCTOR_UNDERGROUND",
+        "CONDUCTOR_SINGLE"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -253,14 +571,37 @@
       "display_name": "Underground cable",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -3, 50, 15],
+        "bbox": [
+          -50,
+          -3,
+          50,
+          15
+        ],
         "path": "M -50 0 L 50 0 M -25 0 L -25 12 M 0 0 L 0 12 M 25 0 L 25 12",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_OVERHEAD", "CONDUCTOR_ARMOURED"],
-      "annotation_fields": ["csa_mm2", "depth_mm"],
+      "variants": [
+        "CONDUCTOR_OVERHEAD",
+        "CONDUCTOR_ARMOURED"
+      ],
+      "annotation_fields": [
+        "csa_mm2",
+        "depth_mm"
+      ],
       "usage_notes": "Conductor laid underground. Vertical ticks represent earth/buried marker. Use for service feed from utility, site distribution mains, EV charging supply runs.",
-      "related_symbols": ["CONDUCTOR_OVERHEAD", "CONDUCTOR_ARMOURED"],
+      "related_symbols": [
+        "CONDUCTOR_OVERHEAD",
+        "CONDUCTOR_ARMOURED"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -273,14 +614,35 @@
       "display_name": "Flexible connection",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -10, 50, 10],
+        "bbox": [
+          -50,
+          -10,
+          50,
+          10
+        ],
         "path": "M -50 0 L -40 0 L -30 -8 L -20 8 L -10 -8 L 0 8 L 10 -8 L 20 8 L 30 -8 L 40 0 L 50 0",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_SINGLE"],
-      "annotation_fields": ["csa_mm2", "length_m"],
+      "variants": [
+        "CONDUCTOR_SINGLE"
+      ],
+      "annotation_fields": [
+        "csa_mm2",
+        "length_m"
+      ],
       "usage_notes": "Wavy/zigzag line representing a flexible cable connection (e.g. between a fixed wiring system and a vibrating/moving piece of equipment such as a motor on a slide rail, or a robot arm).",
-      "related_symbols": ["CONDUCTOR_SINGLE"],
+      "related_symbols": [
+        "CONDUCTOR_SINGLE"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -293,14 +655,39 @@
       "display_name": "Earth conductor",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -10, 50, 10],
+        "bbox": [
+          -50,
+          -10,
+          50,
+          10
+        ],
         "path": "M -50 0 L 50 0 M -10 -10 L 10 10 M 10 -10 L -10 10",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_PE", "CONDUCTOR_PEN", "CONDUCTOR_NEUTRAL"],
-      "annotation_fields": ["csa_mm2", "colour"],
+      "variants": [
+        "CONDUCTOR_PE",
+        "CONDUCTOR_PEN",
+        "CONDUCTOR_NEUTRAL"
+      ],
+      "annotation_fields": [
+        "csa_mm2",
+        "colour"
+      ],
       "usage_notes": "Earth conductor — generic. For protective earth specifically, prefer CONDUCTOR_PE. For the combined PEN, use CONDUCTOR_PEN.",
-      "related_symbols": ["CONDUCTOR_PE", "CONDUCTOR_PEN", "EARTH_GENERAL"],
+      "related_symbols": [
+        "CONDUCTOR_PE",
+        "CONDUCTOR_PEN",
+        "EARTH_GENERAL"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -313,14 +700,39 @@
       "display_name": "Neutral conductor",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -10, 50, 10],
+        "bbox": [
+          -50,
+          -10,
+          50,
+          10
+        ],
         "path": "M -50 0 L 50 0 M -10 -10 L -10 10 L 10 -10 L 10 10",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_EARTH", "CONDUCTOR_PE", "CONDUCTOR_PEN"],
-      "annotation_fields": ["csa_mm2", "colour"],
+      "variants": [
+        "CONDUCTOR_EARTH",
+        "CONDUCTOR_PE",
+        "CONDUCTOR_PEN"
+      ],
+      "annotation_fields": [
+        "csa_mm2",
+        "colour"
+      ],
       "usage_notes": "Neutral conductor. The 'N' shape marker distinguishes from earth and live conductors. Colour code: blue (IEC). Annotate CSA; in harmonic-rich circuits the neutral may need oversizing.",
-      "related_symbols": ["CONDUCTOR_PE", "CONDUCTOR_PEN", "CONDUCTOR_SINGLE"],
+      "related_symbols": [
+        "CONDUCTOR_PE",
+        "CONDUCTOR_PEN",
+        "CONDUCTOR_SINGLE"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -333,14 +745,39 @@
       "display_name": "PE conductor",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -10, 50, 10],
+        "bbox": [
+          -50,
+          -10,
+          50,
+          10
+        ],
         "path": "M -50 0 L 50 0 M -10 -10 L 10 10 M 10 -10 L -10 10 M -15 5 L -15 -5 M 15 5 L 15 -5",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_EARTH", "CONDUCTOR_PEN", "CONDUCTOR_NEUTRAL"],
-      "annotation_fields": ["csa_mm2", "colour"],
+      "variants": [
+        "CONDUCTOR_EARTH",
+        "CONDUCTOR_PEN",
+        "CONDUCTOR_NEUTRAL"
+      ],
+      "annotation_fields": [
+        "csa_mm2",
+        "colour"
+      ],
       "usage_notes": "Protective earth (CPC) conductor. Colour code: green/yellow. Minimum size determined by IEC 60364-5-54 Table 54.1 vs line conductor.",
-      "related_symbols": ["EARTH_PROTECTIVE", "CONDUCTOR_PEN", "CONDUCTOR_NEUTRAL"],
+      "related_symbols": [
+        "EARTH_PROTECTIVE",
+        "CONDUCTOR_PEN",
+        "CONDUCTOR_NEUTRAL"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -353,14 +790,38 @@
       "display_name": "PEN conductor",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -10, 50, 10],
+        "bbox": [
+          -50,
+          -10,
+          50,
+          10
+        ],
         "path": "M -50 0 L 50 0 M -10 -10 L -10 10 L 10 -10 L 10 10 M -20 5 L -20 -5 M 20 5 L 20 -5",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_EARTH", "CONDUCTOR_PE", "CONDUCTOR_NEUTRAL"],
-      "annotation_fields": ["csa_mm2", "colour"],
+      "variants": [
+        "CONDUCTOR_EARTH",
+        "CONDUCTOR_PE",
+        "CONDUCTOR_NEUTRAL"
+      ],
+      "annotation_fields": [
+        "csa_mm2",
+        "colour"
+      ],
       "usage_notes": "Combined PEN conductor (used in TN-C systems and TN-C-S supply side). Combines functions of N and PE. Once separated downstream, must not be re-combined. Minimum CSA 10mm² Cu or 16mm² Al.",
-      "related_symbols": ["CONDUCTOR_PE", "CONDUCTOR_NEUTRAL"],
+      "related_symbols": [
+        "CONDUCTOR_PE",
+        "CONDUCTOR_NEUTRAL"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -373,14 +834,43 @@
       "display_name": "Drain wire",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -3, 50, 8],
+        "bbox": [
+          -50,
+          -3,
+          50,
+          8
+        ],
         "path": "M -50 0 L 50 0 M -50 6 L 50 6",
-        "terminals": {"signal": [-50, 0], "drain": [-50, 6], "signal_end": [50, 0], "drain_end": [50, 6]}
+        "terminals": {
+          "signal": [
+            -50,
+            0
+          ],
+          "drain": [
+            -50,
+            6
+          ],
+          "signal_end": [
+            50,
+            0
+          ],
+          "drain_end": [
+            50,
+            6
+          ]
+        }
       },
-      "variants": ["SCREEN_CONDUCTOR"],
-      "annotation_fields": ["csa_mm2"],
+      "variants": [
+        "SCREEN_CONDUCTOR"
+      ],
+      "annotation_fields": [
+        "csa_mm2"
+      ],
       "usage_notes": "Drain wire associated with a screened cable — bonded to screen at one end (typically the source). Used on instrumentation cables.",
-      "related_symbols": ["SCREEN_CONDUCTOR", "CONDUCTOR_COAX"],
+      "related_symbols": [
+        "SCREEN_CONDUCTOR",
+        "CONDUCTOR_COAX"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -393,14 +883,36 @@
       "display_name": "Coaxial cable",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -15, 50, 15],
+        "bbox": [
+          -50,
+          -15,
+          50,
+          15
+        ],
         "path": "M -50 0 L 50 0 M 15 0 A 15 15 0 1 0 -15 0 A 15 15 0 1 0 15 0 Z M 5 0 A 5 5 0 1 0 -5 0 A 5 5 0 1 0 5 0 Z",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["SCREEN_CONDUCTOR"],
-      "annotation_fields": ["impedance_ohm", "csa_mm2"],
+      "variants": [
+        "SCREEN_CONDUCTOR"
+      ],
+      "annotation_fields": [
+        "impedance_ohm",
+        "csa_mm2"
+      ],
       "usage_notes": "Coaxial cable — inner conductor inside grounded outer conductor. Annotate characteristic impedance (50Ω or 75Ω). Used for HF and RF signal runs.",
-      "related_symbols": ["COAX_CONNECTOR", "SCREEN_CONDUCTOR"],
+      "related_symbols": [
+        "COAX_CONNECTOR",
+        "SCREEN_CONDUCTOR"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -413,14 +925,35 @@
       "display_name": "Mineral insulated cable",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -6, 50, 6],
+        "bbox": [
+          -50,
+          -6,
+          50,
+          6
+        ],
         "path": "M -50 0 L 50 0 M -50 -4 L 50 -4 M -50 4 L 50 4",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_SINGLE"],
-      "annotation_fields": ["core_count", "csa_mm2"],
+      "variants": [
+        "CONDUCTOR_SINGLE"
+      ],
+      "annotation_fields": [
+        "core_count",
+        "csa_mm2"
+      ],
       "usage_notes": "Mineral insulated (MgO) copper sheathed cable (MICC). Used for fire-integrity circuits — fire alarm, emergency lighting, smoke extraction.",
-      "related_symbols": ["CONDUCTOR_SINGLE"],
+      "related_symbols": [
+        "CONDUCTOR_SINGLE"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -433,14 +966,37 @@
       "display_name": "Cable duct",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -15, 50, 15],
+        "bbox": [
+          -50,
+          -15,
+          50,
+          15
+        ],
         "path": "M -50 -15 L 50 -15 L 50 15 L -50 15 Z M -50 -5 L 50 -5 M -50 5 L 50 5",
-        "terminals": {"left": [-50, 0], "right": [50, 0]}
+        "terminals": {
+          "left": [
+            -50,
+            0
+          ],
+          "right": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["TRUNKING", "BUSDUCT"],
-      "annotation_fields": ["size", "material"],
+      "variants": [
+        "TRUNKING",
+        "BUSDUCT"
+      ],
+      "annotation_fields": [
+        "size",
+        "material"
+      ],
       "usage_notes": "A closed cable duct (e.g. underground concrete duct, ceiling void duct). Closed rectangle with internal section lines. Distinct from open-top trunking.",
-      "related_symbols": ["TRUNKING", "CABLE_LADDER"],
+      "related_symbols": [
+        "TRUNKING",
+        "CABLE_LADDER"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -453,14 +1009,37 @@
       "display_name": "Cable trunking",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -15, 50, 15],
+        "bbox": [
+          -50,
+          -15,
+          50,
+          15
+        ],
         "path": "M -50 15 L -50 -15 L 50 -15 L 50 15",
-        "terminals": {"left": [-50, 0], "right": [50, 0]}
+        "terminals": {
+          "left": [
+            -50,
+            0
+          ],
+          "right": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CABLE_DUCT", "BUSDUCT"],
-      "annotation_fields": ["size", "material"],
+      "variants": [
+        "CABLE_DUCT",
+        "BUSDUCT"
+      ],
+      "annotation_fields": [
+        "size",
+        "material"
+      ],
       "usage_notes": "Open-top cable trunking (with removable lid). Three-sided rectangle. Distinct from closed cable duct.",
-      "related_symbols": ["CABLE_DUCT", "CABLE_LADDER"],
+      "related_symbols": [
+        "CABLE_DUCT",
+        "CABLE_LADDER"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -473,14 +1052,35 @@
       "display_name": "Conduit",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -10, 50, 10],
+        "bbox": [
+          -50,
+          -10,
+          50,
+          10
+        ],
         "path": "M -50 -8 L 50 -8 M -50 8 L 50 8",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_IN_CONDUIT"],
-      "annotation_fields": ["diameter_mm", "material"],
+      "variants": [
+        "CONDUCTOR_IN_CONDUIT"
+      ],
+      "annotation_fields": [
+        "diameter_mm",
+        "material"
+      ],
       "usage_notes": "Conduit shown in section as two parallel lines. Use for conduit runs in containment drawings. Annotate diameter and material (steel, PVC, flexible).",
-      "related_symbols": ["CONDUCTOR_IN_CONDUIT"],
+      "related_symbols": [
+        "CONDUCTOR_IN_CONDUIT"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -493,14 +1093,37 @@
       "display_name": "Cable ladder",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -12, 50, 12],
+        "bbox": [
+          -50,
+          -12,
+          50,
+          12
+        ],
         "path": "M -50 -10 L 50 -10 M -50 10 L 50 10 M -40 -10 L -40 10 M -20 -10 L -20 10 M 0 -10 L 0 10 M 20 -10 L 20 10 M 40 -10 L 40 10",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CABLE_DUCT", "TRUNKING"],
-      "annotation_fields": ["width_mm", "material"],
+      "variants": [
+        "CABLE_DUCT",
+        "TRUNKING"
+      ],
+      "annotation_fields": [
+        "width_mm",
+        "material"
+      ],
       "usage_notes": "Cable ladder — two side rails with cross rungs at regular intervals. Used for heavy cable runs in plant rooms, utility risers.",
-      "related_symbols": ["CABLE_DUCT", "TRUNKING"],
+      "related_symbols": [
+        "CABLE_DUCT",
+        "TRUNKING"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -513,14 +1136,38 @@
       "display_name": "Busbar trunking / busduct",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -12, 50, 12],
+        "bbox": [
+          -50,
+          -12,
+          50,
+          12
+        ],
         "path": "M -50 -12 L 50 -12 L 50 12 L -50 12 Z M -50 -4 L 50 -4 M -50 4 L 50 4",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["BUSBAR", "BUSBAR_3PH"],
-      "annotation_fields": ["rated_A", "manufacturer", "length_m"],
+      "variants": [
+        "BUSBAR",
+        "BUSBAR_3PH"
+      ],
+      "annotation_fields": [
+        "rated_A",
+        "manufacturer",
+        "length_m"
+      ],
       "usage_notes": "Prefabricated busbar trunking system. Use for high-current vertical risers and horizontal mains distribution. Annotate rated current and manufacturer/range.",
-      "related_symbols": ["BUSBAR", "BUSBAR_3PH"],
+      "related_symbols": [
+        "BUSBAR",
+        "BUSBAR_3PH"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -533,14 +1180,36 @@
       "display_name": "Conductor junction box",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -15, 50, 15],
+        "bbox": [
+          -50,
+          -15,
+          50,
+          15
+        ],
         "path": "M -50 0 L -15 0 M -15 -15 L 15 -15 L 15 15 L -15 15 Z M 15 0 L 50 0",
-        "terminals": {"in": [-50, 0], "out": [50, 0]}
+        "terminals": {
+          "in": [
+            -50,
+            0
+          ],
+          "out": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["JUNCTION_BOX"],
-      "annotation_fields": ["box_id", "IP_rating"],
+      "variants": [
+        "JUNCTION_BOX"
+      ],
+      "annotation_fields": [
+        "box_id",
+        "IP_rating"
+      ],
       "usage_notes": "Junction box inserted in a conductor run for splicing or branching. Distinct from JUNCTION_BOX (Part 11) which is the architectural-plan symbol.",
-      "related_symbols": ["JUNCTION_BOX", "CABLE_SPLICE"],
+      "related_symbols": [
+        "JUNCTION_BOX",
+        "CABLE_SPLICE"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -553,14 +1222,28 @@
       "display_name": "Cable end seal",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -10, 5, 10],
+        "bbox": [
+          -50,
+          -10,
+          5,
+          10
+        ],
         "path": "M -50 0 L 0 0 M -20 -10 L 0 0 L -20 10",
-        "terminals": {"cable": [-50, 0]}
+        "terminals": {
+          "cable": [
+            -50,
+            0
+          ]
+        }
       },
       "variants": [],
-      "annotation_fields": ["seal_type"],
+      "annotation_fields": [
+        "seal_type"
+      ],
       "usage_notes": "End seal on an MICC or other moisture-sensitive cable. Triangle/arrowhead indicates the sealed termination. Required at every MICC entry into a gland or terminal.",
-      "related_symbols": ["CONDUCTOR_MINERAL"],
+      "related_symbols": [
+        "CONDUCTOR_MINERAL"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -573,14 +1256,34 @@
       "display_name": "Lapped conductors",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -8, 50, 8],
+        "bbox": [
+          -50,
+          -8,
+          50,
+          8
+        ],
         "path": "M -50 0 L 50 0 M -30 -6 L -15 6 M -15 -6 L 0 6 M 0 -6 L 15 6 M 15 -6 L 30 6",
-        "terminals": {"start": [-50, 0], "end": [50, 0]}
+        "terminals": {
+          "start": [
+            -50,
+            0
+          ],
+          "end": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["CONDUCTOR_SINGLE"],
-      "annotation_fields": ["csa_mm2"],
+      "variants": [
+        "CONDUCTOR_SINGLE"
+      ],
+      "annotation_fields": [
+        "csa_mm2"
+      ],
       "usage_notes": "Lapped or braided conductor — multi-strand braid used for high-current flexible connections, equipotential bonding straps, lightning down-conductors.",
-      "related_symbols": ["CONDUCTOR_FLEXIBLE"],
+      "related_symbols": [
+        "CONDUCTOR_FLEXIBLE"
+      ],
       "generating_shared_symbol": true
     },
     {
@@ -593,14 +1296,34 @@
       "display_name": "Cable splice joint",
       "geometry": {
         "grid": 100,
-        "bbox": [-50, -15, 50, 15],
+        "bbox": [
+          -50,
+          -15,
+          50,
+          15
+        ],
         "path": "M -50 0 L -15 0 M -15 0 L 0 -15 L 15 0 L 0 15 Z M 15 0 L 50 0",
-        "terminals": {"in": [-50, 0], "out": [50, 0]}
+        "terminals": {
+          "in": [
+            -50,
+            0
+          ],
+          "out": [
+            50,
+            0
+          ]
+        }
       },
-      "variants": ["JUNCTION_BOX_CONDUCTOR"],
-      "annotation_fields": ["splice_type"],
+      "variants": [
+        "JUNCTION_BOX_CONDUCTOR"
+      ],
+      "annotation_fields": [
+        "splice_type"
+      ],
       "usage_notes": "In-line cable splice — a diamond shape where two conductor lengths are jointed. Used for cable repairs or extension joints on underground/site cabling.",
-      "related_symbols": ["JUNCTION_BOX_CONDUCTOR"],
+      "related_symbols": [
+        "JUNCTION_BOX_CONDUCTOR"
+      ],
       "generating_shared_symbol": true
     }
   ]

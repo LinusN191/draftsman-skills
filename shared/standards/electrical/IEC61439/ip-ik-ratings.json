@@ -1,28 +1,83 @@
 {
+  "clause_ref": "IEC-61439-1 2020:§9.13-IP-IK",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 61439 — IP and IK Ratings",
   "_iec_part": "1 (Table 7); referenced by all parts",
   "_version": "1.0.0",
   "_note": "IP per IEC 60529, IK per IEC 62262 (formerly BS EN 50102). Default minimum IP and IK per application context shown in the minimum_per_application table below.",
   "ip_first_digit": [
-    {"digit": 0, "meaning": "No protection"},
-    {"digit": 1, "meaning": "Protected against solid foreign objects ≥ 50 mm (back of hand)"},
-    {"digit": 2, "meaning": "Protected against solid foreign objects ≥ 12.5 mm (finger)"},
-    {"digit": 3, "meaning": "Protected against solid foreign objects ≥ 2.5 mm (tool)"},
-    {"digit": 4, "meaning": "Protected against solid foreign objects ≥ 1.0 mm (wire)"},
-    {"digit": 5, "meaning": "Dust-protected — ingress not totally prevented but no harmful deposit"},
-    {"digit": 6, "meaning": "Dust-tight — no ingress"}
+    {
+      "digit": 0,
+      "meaning": "No protection"
+    },
+    {
+      "digit": 1,
+      "meaning": "Protected against solid foreign objects ≥ 50 mm (back of hand)"
+    },
+    {
+      "digit": 2,
+      "meaning": "Protected against solid foreign objects ≥ 12.5 mm (finger)"
+    },
+    {
+      "digit": 3,
+      "meaning": "Protected against solid foreign objects ≥ 2.5 mm (tool)"
+    },
+    {
+      "digit": 4,
+      "meaning": "Protected against solid foreign objects ≥ 1.0 mm (wire)"
+    },
+    {
+      "digit": 5,
+      "meaning": "Dust-protected — ingress not totally prevented but no harmful deposit"
+    },
+    {
+      "digit": 6,
+      "meaning": "Dust-tight — no ingress"
+    }
   ],
   "ip_second_digit": [
-    {"digit": 0, "meaning": "No protection"},
-    {"digit": 1, "meaning": "Vertically dripping water"},
-    {"digit": 2, "meaning": "Dripping water at 15° tilt"},
-    {"digit": 3, "meaning": "Spraying water (rain)"},
-    {"digit": 4, "meaning": "Splashing water from any direction"},
-    {"digit": 5, "meaning": "Water jets from any direction"},
-    {"digit": 6, "meaning": "Powerful water jets"},
-    {"digit": 7, "meaning": "Temporary immersion to 1 m for 30 min"},
-    {"digit": 8, "meaning": "Continuous immersion under conditions agreed with manufacturer"},
-    {"digit": 9, "meaning": "High-pressure / high-temperature water jets (≥ 80 °C, ≥ 8 MPa)"}
+    {
+      "digit": 0,
+      "meaning": "No protection"
+    },
+    {
+      "digit": 1,
+      "meaning": "Vertically dripping water"
+    },
+    {
+      "digit": 2,
+      "meaning": "Dripping water at 15° tilt"
+    },
+    {
+      "digit": 3,
+      "meaning": "Spraying water (rain)"
+    },
+    {
+      "digit": 4,
+      "meaning": "Splashing water from any direction"
+    },
+    {
+      "digit": 5,
+      "meaning": "Water jets from any direction"
+    },
+    {
+      "digit": 6,
+      "meaning": "Powerful water jets"
+    },
+    {
+      "digit": 7,
+      "meaning": "Temporary immersion to 1 m for 30 min"
+    },
+    {
+      "digit": 8,
+      "meaning": "Continuous immersion under conditions agreed with manufacturer"
+    },
+    {
+      "digit": 9,
+      "meaning": "High-pressure / high-temperature water jets (≥ 80 °C, ≥ 8 MPa)"
+    }
   ],
   "ip_supplementary_letters": {
     "A": "Back of hand finger-safe (12.5 mm)",
@@ -32,30 +87,140 @@
   },
   "ip_supplementary_letters_meaning_notes": "Letters after the IP digits (e.g. IP2XC) provide finger-safe rating independent of the first digit. IP2XC means '≥ 12.5 mm protection plus 2.5 mm tool-finger-safe'.",
   "ik_codes": [
-    {"code": "IK00", "energy_joules": "no protection", "test_mass_kg": "n/a", "drop_height_mm": "n/a"},
-    {"code": "IK01", "energy_joules": 0.14, "test_mass_kg": 0.2, "drop_height_mm": 70},
-    {"code": "IK02", "energy_joules": 0.2,  "test_mass_kg": 0.2, "drop_height_mm": 100},
-    {"code": "IK03", "energy_joules": 0.35, "test_mass_kg": 0.2, "drop_height_mm": 175},
-    {"code": "IK04", "energy_joules": 0.5,  "test_mass_kg": 0.2, "drop_height_mm": 250},
-    {"code": "IK05", "energy_joules": 0.7,  "test_mass_kg": 0.2, "drop_height_mm": 350},
-    {"code": "IK06", "energy_joules": 1.0,  "test_mass_kg": 0.5, "drop_height_mm": 200},
-    {"code": "IK07", "energy_joules": 2.0,  "test_mass_kg": 0.5, "drop_height_mm": 400},
-    {"code": "IK08", "energy_joules": 5.0,  "test_mass_kg": 1.7, "drop_height_mm": 300},
-    {"code": "IK09", "energy_joules": 10.0, "test_mass_kg": 5.0, "drop_height_mm": 200},
-    {"code": "IK10", "energy_joules": 20.0, "test_mass_kg": 5.0, "drop_height_mm": 400}
+    {
+      "code": "IK00",
+      "energy_joules": "no protection",
+      "test_mass_kg": "n/a",
+      "drop_height_mm": "n/a"
+    },
+    {
+      "code": "IK01",
+      "energy_joules": 0.14,
+      "test_mass_kg": 0.2,
+      "drop_height_mm": 70
+    },
+    {
+      "code": "IK02",
+      "energy_joules": 0.2,
+      "test_mass_kg": 0.2,
+      "drop_height_mm": 100
+    },
+    {
+      "code": "IK03",
+      "energy_joules": 0.35,
+      "test_mass_kg": 0.2,
+      "drop_height_mm": 175
+    },
+    {
+      "code": "IK04",
+      "energy_joules": 0.5,
+      "test_mass_kg": 0.2,
+      "drop_height_mm": 250
+    },
+    {
+      "code": "IK05",
+      "energy_joules": 0.7,
+      "test_mass_kg": 0.2,
+      "drop_height_mm": 350
+    },
+    {
+      "code": "IK06",
+      "energy_joules": 1.0,
+      "test_mass_kg": 0.5,
+      "drop_height_mm": 200
+    },
+    {
+      "code": "IK07",
+      "energy_joules": 2.0,
+      "test_mass_kg": 0.5,
+      "drop_height_mm": 400
+    },
+    {
+      "code": "IK08",
+      "energy_joules": 5.0,
+      "test_mass_kg": 1.7,
+      "drop_height_mm": 300
+    },
+    {
+      "code": "IK09",
+      "energy_joules": 10.0,
+      "test_mass_kg": 5.0,
+      "drop_height_mm": 200
+    },
+    {
+      "code": "IK10",
+      "energy_joules": 20.0,
+      "test_mass_kg": 5.0,
+      "drop_height_mm": 400
+    }
   ],
   "minimum_per_application": [
-    {"context": "Indoor consumer unit (Part 3 DBO)",        "ip_min": "IP2XC", "ik_min": "IK07", "reference": "IEC 61439-3 Clause 8"},
-    {"context": "Indoor commercial sub-DB (Part 3 DBO)",    "ip_min": "IP2XC", "ik_min": "IK07", "reference": "IEC 61439-3 Clause 8"},
-    {"context": "Indoor commercial main switchboard (Part 2)", "ip_min": "IP2X", "ik_min": "IK07", "reference": "IEC 61439-2 Clause 8"},
-    {"context": "Indoor MCC (Part 2)",                      "ip_min": "IP30",  "ik_min": "IK08", "reference": "IEC 61439-2 Clause 8 + project requirements"},
-    {"context": "Construction site (Part 4 ACS)",           "ip_min": "IP44",  "ik_min": "IK08", "reference": "IEC 61439-4 Clause 8 (mandatory)"},
-    {"context": "Outdoor DNO kiosk (Part 5 PENDA)",         "ip_min": "IP44",  "ik_min": "IK10", "reference": "IEC 61439-5 Clause 8"},
-    {"context": "Outdoor EV charging post (Part 7-2)",       "ip_min": "IP54",  "ik_min": "IK10", "reference": "IEC 61439-7-2 Clause 8"},
-    {"context": "Marina berth supply (Part 7-1)",           "ip_min": "IP44",  "ik_min": "IK10", "reference": "IEC 61439-7-1 Clause 8"},
-    {"context": "Rooftop PV combiner (Part 7-4)",           "ip_min": "IP65",  "ik_min": "IK08", "reference": "IEC 61439-7-4 Clause 8"},
-    {"context": "Vertical riser BTS (Part 6)",              "ip_min": "IP54",  "ik_min": "IK08", "reference": "IEC 61439-6 Clause 8"},
-    {"context": "Bathroom-zone consumer unit",              "ip_min": "IP44 in Zone 2", "ik_min": "IK07", "reference": "IEC 60364-7-701 (location-dependent)"}
+    {
+      "context": "Indoor consumer unit (Part 3 DBO)",
+      "ip_min": "IP2XC",
+      "ik_min": "IK07",
+      "reference": "IEC 61439-3 Clause 8"
+    },
+    {
+      "context": "Indoor commercial sub-DB (Part 3 DBO)",
+      "ip_min": "IP2XC",
+      "ik_min": "IK07",
+      "reference": "IEC 61439-3 Clause 8"
+    },
+    {
+      "context": "Indoor commercial main switchboard (Part 2)",
+      "ip_min": "IP2X",
+      "ik_min": "IK07",
+      "reference": "IEC 61439-2 Clause 8"
+    },
+    {
+      "context": "Indoor MCC (Part 2)",
+      "ip_min": "IP30",
+      "ik_min": "IK08",
+      "reference": "IEC 61439-2 Clause 8 + project requirements"
+    },
+    {
+      "context": "Construction site (Part 4 ACS)",
+      "ip_min": "IP44",
+      "ik_min": "IK08",
+      "reference": "IEC 61439-4 Clause 8 (mandatory)"
+    },
+    {
+      "context": "Outdoor DNO kiosk (Part 5 PENDA)",
+      "ip_min": "IP44",
+      "ik_min": "IK10",
+      "reference": "IEC 61439-5 Clause 8"
+    },
+    {
+      "context": "Outdoor EV charging post (Part 7-2)",
+      "ip_min": "IP54",
+      "ik_min": "IK10",
+      "reference": "IEC 61439-7-2 Clause 8"
+    },
+    {
+      "context": "Marina berth supply (Part 7-1)",
+      "ip_min": "IP44",
+      "ik_min": "IK10",
+      "reference": "IEC 61439-7-1 Clause 8"
+    },
+    {
+      "context": "Rooftop PV combiner (Part 7-4)",
+      "ip_min": "IP65",
+      "ik_min": "IK08",
+      "reference": "IEC 61439-7-4 Clause 8"
+    },
+    {
+      "context": "Vertical riser BTS (Part 6)",
+      "ip_min": "IP54",
+      "ik_min": "IK08",
+      "reference": "IEC 61439-6 Clause 8"
+    },
+    {
+      "context": "Bathroom-zone consumer unit",
+      "ip_min": "IP44 in Zone 2",
+      "ik_min": "IK07",
+      "reference": "IEC 60364-7-701 (location-dependent)"
+    }
   ],
   "common_underspecifications": [
     "Specifying 'IP30' when finger-safe is required — IP30 protects against 2.5 mm objects but is NOT finger-safe; specify IP3XC or IP2XC",

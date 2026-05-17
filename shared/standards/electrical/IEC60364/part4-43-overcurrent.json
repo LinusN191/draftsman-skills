@@ -1,9 +1,12 @@
 {
+  "clause_ref": "IEC-60364-4-43 2017:§433",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60364-4-43:2008 — Protection against Overcurrent",
   "_basis": "IEC 60364-4-43 Edition 2 (2008)",
   "_version": "1.0.0",
   "_note": "This file covers the fundamental requirements for protecting cables against overload and short-circuit currents. The central requirement is the Fundamental Rule: Ib ≤ In ≤ Iz. Short-circuit protection requirements — including the adiabatic check — are in fault-current.json.",
-
   "fundamental_rule": {
     "_reference": "Clause 433.1",
     "_title": "The Fundamental Rule of overcurrent protection",
@@ -36,7 +39,6 @@
       "implication_for_fuses": "When protecting with gG fuses, the nominal fuse rating In must be ≤ 0.91 × Iz (or conservatively ≤ 0.9 × Iz) to satisfy the I2 ≤ 1.45 × Iz condition, because I2 = 1.6 × In for fuses."
     }
   },
-
   "overload_protection": {
     "_reference": "Clause 433",
     "requirement": "Every cable must be protected against overload at or before the origin of the cable (or at a point where the current-carrying capacity changes).",
@@ -59,7 +61,6 @@
       }
     }
   },
-
   "short_circuit_protection": {
     "_reference": "Clauses 434–435",
     "requirement": "Every protective device must be capable of interrupting any short-circuit current that can occur at its point of installation without sustaining damage to the installation.",
@@ -87,10 +88,8 @@
       "warning": "Do not assume any combination is valid without manufacturer coordination data."
     }
   },
-
   "device_current_characteristics": {
     "_reference": "IEC 60898 (MCBs), IEC 60269 (fuses)",
-
     "MCB_Type_B": {
       "standard": "IEC 60898-1",
       "instantaneous_trip_range": "3× to 5× In",
@@ -108,7 +107,6 @@
         "50": 0.005
       }
     },
-
     "MCB_Type_C": {
       "standard": "IEC 60898-1",
       "instantaneous_trip_range": "5× to 10× In",
@@ -125,7 +123,6 @@
         "50": 0.005
       }
     },
-
     "MCB_Type_D": {
       "standard": "IEC 60898-1",
       "instantaneous_trip_range": "10× to 20× In",
@@ -142,7 +139,6 @@
         "50": 0.005
       }
     },
-
     "gG_fuse_IEC_60269": {
       "standard": "IEC 60269-1 and -3",
       "type": "gG = general-purpose, full-range current-limiting fuse",
@@ -159,16 +155,37 @@
         "20× In (320A)": 0.04,
         "50× In (800A)": 0.005
       },
-      "common_ratings": [2, 4, 6, 10, 13, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630]
+      "common_ratings": [
+        2,
+        4,
+        6,
+        10,
+        13,
+        16,
+        20,
+        25,
+        32,
+        40,
+        50,
+        63,
+        80,
+        100,
+        125,
+        160,
+        200,
+        250,
+        315,
+        400,
+        500,
+        630
+      ]
     },
-
     "aM_fuse_IEC_60269": {
       "type": "aM = motor circuit — partial range fuse (short-circuit protection only, no overload protection)",
       "note": "aM fuses do NOT provide overload protection — they only interrupt short-circuit currents. Must always be used with a separate overload relay (motor starter). I2 factor = 1.6× In but the fuse will not blow at 1.6× In within 1 hour — there is no thermal overload capability.",
       "typical_use": "Motor circuit short-circuit protection, combined with contactor and overload relay in DOL starters."
     }
   },
-
   "motor_circuit_requirements": {
     "_reference": "IEC 60364-7 (various) and IEC 60947-4",
     "general": "Motor circuits require overload protection in addition to short-circuit protection. The thermal trip threshold of the overload relay must be set to the motor's full-load current (FLC) from the nameplate.",
@@ -176,7 +193,6 @@
     "overload_relay_setting": "Set to FLC from nameplate ±5%. Electronic relays allow more precise setting.",
     "combined_motor_starter": "An MCB with motor-protective characteristic (Type K, or BS/IEC 60947-4 combination starter) provides both overload and short-circuit protection in one device."
   },
-
   "worked_example": {
     "_title": "Cable sizing check for Fundamental Rule — 230V single-phase circuit",
     "scenario": "2.5mm² copper XLPE cable (single-phase, clipped direct — reference method C) supplying a 16A socket outlet circuit. Ze = 0.35Ω. Cable length 25m.",

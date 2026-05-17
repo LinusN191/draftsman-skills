@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Article-310-Table-310.16",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 Article 310 — Conductors for General Wiring",
   "_version": "1.0.0",
   "articles": [
@@ -9,12 +13,34 @@
       "article_number": 310,
       "article_title": "Conductors for General Wiring",
       "scope": "Conductor types and markings, ampacity tables (310.16 raceway/cable, 310.17 free air), correction factors for ambient (Table 310.15(B)(1)) and grouping (Table 310.15(C)(1)), 60/75/90 °C termination temperature limit from 110.14(C).",
-      "applies_to": ["conductors", "ampacity", "ambient_correction", "grouping_correction", "termination_temperature_limit"],
+      "applies_to": [
+        "conductors",
+        "ampacity",
+        "ambient_correction",
+        "grouping_correction",
+        "termination_temperature_limit"
+      ],
       "key_sections": [
-        {"section": "310.6",   "title": "Conductor Construction and Applications", "summary": "Common conductor types: THWN-2/THHN (90 °C dry, 75 °C wet), XHHW-2 (90 °C dry/wet), USE-2 (90 °C, underground service), RHH/RHW (rubber). Use the lowest-rated termination temp limits ampacity"},
-        {"section": "310.15",  "title": "Ampacities for Conductors Rated 0-2000 V", "summary": "General ampacity rules; correction factors for ambient temperature (310.15(B)(1)) and number of current-carrying conductors (310.15(C)(1))"},
-        {"section": "310.16",  "title": "Ampacity Table — Conductors in Raceway, Cable, or Earth (≤3 current-carrying)", "summary": "Primary ampacity table for raceway/cable installations"},
-        {"section": "310.17",  "title": "Ampacity Table — Free Air", "summary": "Single insulated conductors in free air; higher ampacity than raceway"}
+        {
+          "section": "310.6",
+          "title": "Conductor Construction and Applications",
+          "summary": "Common conductor types: THWN-2/THHN (90 °C dry, 75 °C wet), XHHW-2 (90 °C dry/wet), USE-2 (90 °C, underground service), RHH/RHW (rubber). Use the lowest-rated termination temp limits ampacity"
+        },
+        {
+          "section": "310.15",
+          "title": "Ampacities for Conductors Rated 0-2000 V",
+          "summary": "General ampacity rules; correction factors for ambient temperature (310.15(B)(1)) and number of current-carrying conductors (310.15(C)(1))"
+        },
+        {
+          "section": "310.16",
+          "title": "Ampacity Table — Conductors in Raceway, Cable, or Earth (≤3 current-carrying)",
+          "summary": "Primary ampacity table for raceway/cable installations"
+        },
+        {
+          "section": "310.17",
+          "title": "Ampacity Table — Free Air",
+          "summary": "Single insulated conductors in free air; higher ampacity than raceway"
+        }
       ],
       "tabulated_values": {
         "ampacity_table_310_16": "see tables_inline",
@@ -25,56 +51,244 @@
         "Table_310.16_Ampacity_Raceway_Cable_Cu": {
           "title": "Ampacity (A) — Copper, ≤3 Current-Carrying Conductors in Raceway/Cable, 30 °C Ambient",
           "rows": [
-            {"size_awg_kcmil": 14,    "tw_60c": 15,  "thw_75c": 20,  "thhn_thwn_90c": 25},
-            {"size_awg_kcmil": 12,    "tw_60c": 20,  "thw_75c": 25,  "thhn_thwn_90c": 30},
-            {"size_awg_kcmil": 10,    "tw_60c": 30,  "thw_75c": 35,  "thhn_thwn_90c": 40},
-            {"size_awg_kcmil": 8,     "tw_60c": 40,  "thw_75c": 50,  "thhn_thwn_90c": 55},
-            {"size_awg_kcmil": 6,     "tw_60c": 55,  "thw_75c": 65,  "thhn_thwn_90c": 75},
-            {"size_awg_kcmil": 4,     "tw_60c": 70,  "thw_75c": 85,  "thhn_thwn_90c": 95},
-            {"size_awg_kcmil": 3,     "tw_60c": 85,  "thw_75c": 100, "thhn_thwn_90c": 115},
-            {"size_awg_kcmil": 2,     "tw_60c": 95,  "thw_75c": 115, "thhn_thwn_90c": 130},
-            {"size_awg_kcmil": 1,     "tw_60c": 110, "thw_75c": 130, "thhn_thwn_90c": 145},
-            {"size_awg_kcmil": "1/0", "tw_60c": 125, "thw_75c": 150, "thhn_thwn_90c": 170},
-            {"size_awg_kcmil": "2/0", "tw_60c": 145, "thw_75c": 175, "thhn_thwn_90c": 195},
-            {"size_awg_kcmil": "3/0", "tw_60c": 165, "thw_75c": 200, "thhn_thwn_90c": 225},
-            {"size_awg_kcmil": "4/0", "tw_60c": 195, "thw_75c": 230, "thhn_thwn_90c": 260},
-            {"size_awg_kcmil": 250,   "tw_60c": 215, "thw_75c": 255, "thhn_thwn_90c": 290},
-            {"size_awg_kcmil": 300,   "tw_60c": 240, "thw_75c": 285, "thhn_thwn_90c": 320},
-            {"size_awg_kcmil": 350,   "tw_60c": 260, "thw_75c": 310, "thhn_thwn_90c": 350},
-            {"size_awg_kcmil": 400,   "tw_60c": 280, "thw_75c": 335, "thhn_thwn_90c": 380},
-            {"size_awg_kcmil": 500,   "tw_60c": 320, "thw_75c": 380, "thhn_thwn_90c": 430},
-            {"size_awg_kcmil": 600,   "tw_60c": 350, "thw_75c": 420, "thhn_thwn_90c": 475},
-            {"size_awg_kcmil": 750,   "tw_60c": 400, "thw_75c": 475, "thhn_thwn_90c": 535},
-            {"size_awg_kcmil": 1000,  "tw_60c": 455, "thw_75c": 545, "thhn_thwn_90c": 615}
+            {
+              "size_awg_kcmil": 14,
+              "tw_60c": 15,
+              "thw_75c": 20,
+              "thhn_thwn_90c": 25
+            },
+            {
+              "size_awg_kcmil": 12,
+              "tw_60c": 20,
+              "thw_75c": 25,
+              "thhn_thwn_90c": 30
+            },
+            {
+              "size_awg_kcmil": 10,
+              "tw_60c": 30,
+              "thw_75c": 35,
+              "thhn_thwn_90c": 40
+            },
+            {
+              "size_awg_kcmil": 8,
+              "tw_60c": 40,
+              "thw_75c": 50,
+              "thhn_thwn_90c": 55
+            },
+            {
+              "size_awg_kcmil": 6,
+              "tw_60c": 55,
+              "thw_75c": 65,
+              "thhn_thwn_90c": 75
+            },
+            {
+              "size_awg_kcmil": 4,
+              "tw_60c": 70,
+              "thw_75c": 85,
+              "thhn_thwn_90c": 95
+            },
+            {
+              "size_awg_kcmil": 3,
+              "tw_60c": 85,
+              "thw_75c": 100,
+              "thhn_thwn_90c": 115
+            },
+            {
+              "size_awg_kcmil": 2,
+              "tw_60c": 95,
+              "thw_75c": 115,
+              "thhn_thwn_90c": 130
+            },
+            {
+              "size_awg_kcmil": 1,
+              "tw_60c": 110,
+              "thw_75c": 130,
+              "thhn_thwn_90c": 145
+            },
+            {
+              "size_awg_kcmil": "1/0",
+              "tw_60c": 125,
+              "thw_75c": 150,
+              "thhn_thwn_90c": 170
+            },
+            {
+              "size_awg_kcmil": "2/0",
+              "tw_60c": 145,
+              "thw_75c": 175,
+              "thhn_thwn_90c": 195
+            },
+            {
+              "size_awg_kcmil": "3/0",
+              "tw_60c": 165,
+              "thw_75c": 200,
+              "thhn_thwn_90c": 225
+            },
+            {
+              "size_awg_kcmil": "4/0",
+              "tw_60c": 195,
+              "thw_75c": 230,
+              "thhn_thwn_90c": 260
+            },
+            {
+              "size_awg_kcmil": 250,
+              "tw_60c": 215,
+              "thw_75c": 255,
+              "thhn_thwn_90c": 290
+            },
+            {
+              "size_awg_kcmil": 300,
+              "tw_60c": 240,
+              "thw_75c": 285,
+              "thhn_thwn_90c": 320
+            },
+            {
+              "size_awg_kcmil": 350,
+              "tw_60c": 260,
+              "thw_75c": 310,
+              "thhn_thwn_90c": 350
+            },
+            {
+              "size_awg_kcmil": 400,
+              "tw_60c": 280,
+              "thw_75c": 335,
+              "thhn_thwn_90c": 380
+            },
+            {
+              "size_awg_kcmil": 500,
+              "tw_60c": 320,
+              "thw_75c": 380,
+              "thhn_thwn_90c": 430
+            },
+            {
+              "size_awg_kcmil": 600,
+              "tw_60c": 350,
+              "thw_75c": 420,
+              "thhn_thwn_90c": 475
+            },
+            {
+              "size_awg_kcmil": 750,
+              "tw_60c": 400,
+              "thw_75c": 475,
+              "thhn_thwn_90c": 535
+            },
+            {
+              "size_awg_kcmil": 1000,
+              "tw_60c": 455,
+              "thw_75c": 545,
+              "thhn_thwn_90c": 615
+            }
           ]
         },
         "Table_310.15(B)(1)_Ambient_Temperature_Correction": {
           "title": "Ambient Temperature Correction Factors (apply to ampacity tables based on 30 °C ambient)",
           "rows": [
-            {"ambient_temp_c": "≤10",   "60c_factor": 1.29, "75c_factor": 1.20, "90c_factor": 1.15},
-            {"ambient_temp_c": "11-15", "60c_factor": 1.22, "75c_factor": 1.15, "90c_factor": 1.12},
-            {"ambient_temp_c": "16-20", "60c_factor": 1.15, "75c_factor": 1.11, "90c_factor": 1.08},
-            {"ambient_temp_c": "21-25", "60c_factor": 1.08, "75c_factor": 1.05, "90c_factor": 1.04},
-            {"ambient_temp_c": "26-30", "60c_factor": 1.00, "75c_factor": 1.00, "90c_factor": 1.00},
-            {"ambient_temp_c": "31-35", "60c_factor": 0.91, "75c_factor": 0.94, "90c_factor": 0.96},
-            {"ambient_temp_c": "36-40", "60c_factor": 0.82, "75c_factor": 0.88, "90c_factor": 0.91},
-            {"ambient_temp_c": "41-45", "60c_factor": 0.71, "75c_factor": 0.82, "90c_factor": 0.87},
-            {"ambient_temp_c": "46-50", "60c_factor": 0.58, "75c_factor": 0.75, "90c_factor": 0.82},
-            {"ambient_temp_c": "51-55", "60c_factor": 0.41, "75c_factor": 0.67, "90c_factor": 0.76},
-            {"ambient_temp_c": "56-60", "60c_factor": "—", "75c_factor": 0.58, "90c_factor": 0.71},
-            {"ambient_temp_c": "61-70", "60c_factor": "—", "75c_factor": 0.33, "90c_factor": 0.58},
-            {"ambient_temp_c": "71-80", "60c_factor": "—", "75c_factor": "—", "90c_factor": 0.41}
+            {
+              "ambient_temp_c": "≤10",
+              "60c_factor": 1.29,
+              "75c_factor": 1.2,
+              "90c_factor": 1.15
+            },
+            {
+              "ambient_temp_c": "11-15",
+              "60c_factor": 1.22,
+              "75c_factor": 1.15,
+              "90c_factor": 1.12
+            },
+            {
+              "ambient_temp_c": "16-20",
+              "60c_factor": 1.15,
+              "75c_factor": 1.11,
+              "90c_factor": 1.08
+            },
+            {
+              "ambient_temp_c": "21-25",
+              "60c_factor": 1.08,
+              "75c_factor": 1.05,
+              "90c_factor": 1.04
+            },
+            {
+              "ambient_temp_c": "26-30",
+              "60c_factor": 1.0,
+              "75c_factor": 1.0,
+              "90c_factor": 1.0
+            },
+            {
+              "ambient_temp_c": "31-35",
+              "60c_factor": 0.91,
+              "75c_factor": 0.94,
+              "90c_factor": 0.96
+            },
+            {
+              "ambient_temp_c": "36-40",
+              "60c_factor": 0.82,
+              "75c_factor": 0.88,
+              "90c_factor": 0.91
+            },
+            {
+              "ambient_temp_c": "41-45",
+              "60c_factor": 0.71,
+              "75c_factor": 0.82,
+              "90c_factor": 0.87
+            },
+            {
+              "ambient_temp_c": "46-50",
+              "60c_factor": 0.58,
+              "75c_factor": 0.75,
+              "90c_factor": 0.82
+            },
+            {
+              "ambient_temp_c": "51-55",
+              "60c_factor": 0.41,
+              "75c_factor": 0.67,
+              "90c_factor": 0.76
+            },
+            {
+              "ambient_temp_c": "56-60",
+              "60c_factor": "—",
+              "75c_factor": 0.58,
+              "90c_factor": 0.71
+            },
+            {
+              "ambient_temp_c": "61-70",
+              "60c_factor": "—",
+              "75c_factor": 0.33,
+              "90c_factor": 0.58
+            },
+            {
+              "ambient_temp_c": "71-80",
+              "60c_factor": "—",
+              "75c_factor": "—",
+              "90c_factor": 0.41
+            }
           ]
         },
         "Table_310.15(C)(1)_Adjustment_for_More_Than_3_Conductors": {
           "title": "Adjustment Factors for More Than Three Current-Carrying Conductors",
           "rows": [
-            {"num_current_carrying": "4-6",   "percent_ampacity": 80},
-            {"num_current_carrying": "7-9",   "percent_ampacity": 70},
-            {"num_current_carrying": "10-20", "percent_ampacity": 50},
-            {"num_current_carrying": "21-30", "percent_ampacity": 45},
-            {"num_current_carrying": "31-40", "percent_ampacity": 40},
-            {"num_current_carrying": "≥41",   "percent_ampacity": 35}
+            {
+              "num_current_carrying": "4-6",
+              "percent_ampacity": 80
+            },
+            {
+              "num_current_carrying": "7-9",
+              "percent_ampacity": 70
+            },
+            {
+              "num_current_carrying": "10-20",
+              "percent_ampacity": 50
+            },
+            {
+              "num_current_carrying": "21-30",
+              "percent_ampacity": 45
+            },
+            {
+              "num_current_carrying": "31-40",
+              "percent_ampacity": 40
+            },
+            {
+              "num_current_carrying": "≥41",
+              "percent_ampacity": 35
+            }
           ]
         }
       },
@@ -85,11 +299,19 @@
         "Sizing the conductor based on ampacity after correction but forgetting 110.14(C) termination limit ends up REDUCING the answer further"
       ],
       "drawn_as": [],
-      "related_iec_60364": ["IEC 60364-5-52 (Wiring systems — current-carrying capacity)", "IEC 60364-5-52 Annex B (Ampacity tables)"],
+      "related_iec_60364": [
+        "IEC 60364-5-52 (Wiring systems — current-carrying capacity)",
+        "IEC 60364-5-52 Annex B (Ampacity tables)"
+      ],
       "divergence_notes": "NEC ampacity tables use AWG/kcmil with three temperature-rating columns (60/75/90 °C); IEC Annex B uses mm² and named insulation types (PVC/XLPE/EPR) with reference installation methods (A1/A2/B1/B2/C/D/E/F). NEC's 110.14(C) termination temperature limit has no IEC equivalent — IEC ampacity tables assume terminations are rated to match conductor. NEC ambient correction is per Table 310.15(B)(1); IEC Annex B Tables B.52.14 / B.52.15. NEC grouping adjustment per Table 310.15(C)(1) (4-6: 80%, 7-9: 70%, etc.); IEC has similar but slightly different multipliers in Annex B.",
       "related_bs_7671": [],
       "usage_notes": "Always state on the schedule: (1) conductor type (THHN/THWN-2/XHHW-2), (2) termination temperature rating (60/75/90 °C), (3) ambient temperature, (4) number of current-carrying conductors. Without these four, ampacity is ambiguous.",
-      "related_articles": ["ART_110", "ART_220", "ART_240", "ART_300"]
+      "related_articles": [
+        "ART_110",
+        "ART_220",
+        "ART_240",
+        "ART_300"
+      ]
     }
   ]
 }

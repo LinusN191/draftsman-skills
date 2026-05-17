@@ -1,13 +1,15 @@
 {
+  "clause_ref": "BS7671 2018:Reg-411.4-411.5",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "BS 7671:2018+A2:2022 Regulation 411.3.3 — RCD Additional Protection",
   "_note": "RCD requirements are MANDATORY for the listed circuits — not optional. Any compliant design must include RCD protection where required.",
-
   "principle": {
     "_reference": "BS 7671:2018 Reg 411.3.3",
     "purpose": "RCDs (Residual Current Devices) provide additional protection against direct contact (touching live conductors) and indirect contact (touching exposed-conductive-parts made live by fault). They detect imbalance between line and neutral currents indicating fault to earth.",
     "trip_threshold_30mA": "Below the threshold for ventricular fibrillation. Trip time at IΔn ≤ 40 ms, at 5×IΔn ≤ 40 ms (BS EN 61008/61009)."
   },
-
   "mandatory_30ma_protection": {
     "_reference": "BS 7671:2018 Reg 411.3.3, AMD 2 expanded scope",
     "circuits_requiring_30ma_rcd": [
@@ -43,7 +45,6 @@
       }
     ]
   },
-
   "special_locations": {
     "_reference": "BS 7671:2018 Part 7",
     "bathrooms_section_701": {
@@ -81,7 +82,6 @@
       "regulation": "722.531.3.101"
     }
   },
-
   "rcd_types": {
     "_reference": "BS EN 61008-1, BS EN 61009-1, BS EN 62423",
     "AC": {
@@ -102,7 +102,6 @@
     },
     "selection_rule": "Match the RCD type to the load. Type AC RCD on an EV charger will fail to detect a DC fault — illegal under BS 7671. When in doubt, use Type A as minimum and Type B for any DC-capable load."
   },
-
   "selectivity_between_rcds": {
     "_reference": "BS 7671:2018 Reg 536.3, BS EN 61008-1",
     "principle": "When RCDs are cascaded (e.g. 100mA at incomer + 30mA at final circuit), the upstream device must NOT trip when the downstream device trips. Achieved through both current ratio AND time delay.",
@@ -114,13 +113,11 @@
       "500mA S-type at construction site origin + 30mA on socket outlets"
     ]
   },
-
   "rcd_vs_rcbo": {
     "RCD": "Residual Current Device. Trips on earth fault only. Does NOT provide overcurrent protection. Used at consumer unit incomer or board incomer to protect groups of circuits.",
     "RCBO": "Residual Current Breaker with Overcurrent protection. Combines MCB + RCD in one device. Preferred for final circuits — provides discrete protection per circuit and isolates fault to one circuit only.",
     "design_preference": "Modern installations: RCBO per circuit. Avoids cascading trips and meets fault-isolation best practice. Cost ~3× MCB but justified."
   },
-
   "common_pitfalls": [
     "Type AC RCD on circuit with electronic loads — will fail to detect DC component faults. Use Type A minimum.",
     "Single 30mA RCD covering entire installation — nuisance trips, loss of all circuits on fault. Use RCBOs per circuit.",

@@ -1,14 +1,16 @@
 {
+  "clause_ref": "IEC-60364-5-52 2009:Annex-E-Correction",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60364-5-52:2009+AMD1:2017 — Correction Factors for Cable Current Ratings",
   "_basis": "Annex B of IEC 60364-5-52, Tables B.52.14 (ambient temperature), B.52.17–B.52.20 (grouping), and supplementary tables for soil, depth, and harmonics",
   "_version": "1.0.0",
   "_note": "All correction factors are multiplied together to give the overall factor applied to the tabulated current rating (It): Iz = It × Ca × Cg × Ci × Cs × Cd × Cf. For most installations only Ca and Cg apply; check each factor and include all that apply.",
-
   "ambient_temperature_Ca": {
     "_reference": "IEC 60364-5-52 Table B.52.14",
     "_basis": "Ca = √[(θc - θa) / (θc - 30)] where θc = maximum conductor temperature, θa = actual ambient temperature, 30°C = reference ambient",
     "_application": "Apply when ambient temperature at cable installation is not the reference 30°C (air) or 20°C (ground — use Cs for ground instead).",
-
     "PVC_insulation_70C_max_conductor": {
       "_θc": 70,
       "_formula": "Ca = √[(70 - θa) / 40]",
@@ -16,15 +18,14 @@
       "15": 1.17,
       "20": 1.12,
       "25": 1.06,
-      "30": 1.00,
+      "30": 1.0,
       "35": 0.94,
       "40": 0.87,
       "45": 0.79,
       "50": 0.71,
       "55": 0.61,
-      "60": 0.50
+      "60": 0.5
     },
-
     "XLPE_EPR_insulation_90C_max_conductor": {
       "_θc": 90,
       "_formula": "Ca = √[(90 - θa) / 60]",
@@ -32,7 +33,7 @@
       "15": 1.12,
       "20": 1.08,
       "25": 1.04,
-      "30": 1.00,
+      "30": 1.0,
       "35": 0.96,
       "40": 0.91,
       "45": 0.87,
@@ -42,88 +43,78 @@
       "65": 0.65,
       "70": 0.58
     },
-
     "MICC_PVC_sheath_70C": {
       "_same_as": "PVC_insulation_70C_max_conductor",
       "_note": "MICC with PVC sheath — sheath temperature governs, use 70°C table"
     },
-
     "_tropical_design_note": "For projects in tropical climates (West Africa, East Africa, South/Southeast Asia), the default design ambient should be 35–40°C, not 30°C. At 40°C: PVC Ca = 0.87, XLPE Ca = 0.91. This is a significant derating — use XLPE in preference to PVC in hot climates."
   },
-
   "grouping_factor_Cg": {
     "_reference": "IEC 60364-5-52 Tables B.52.17 to B.52.20",
     "_basis": "Mutual heating between adjacent cables reduces each cable's effective current rating.",
     "_application": "Apply to ALL cables in the group, including the one being sized.",
     "_note_AMD1_2017": "AMD1:2017 updated the grouping tables. Values here are from the AMD1 version.",
-
     "cables_touching_on_horizontal_tray_or_directly_buried_single_layer": {
       "_methods": "Methods C (clipped direct), E (free air on tray), F (single-core free air touching)",
       "_reference": "Table B.52.17",
-      "1":  1.00,
-      "2":  0.80,
-      "3":  0.70,
-      "4":  0.65,
-      "5":  0.60,
-      "6":  0.57,
-      "7":  0.54,
-      "8":  0.52,
-      "9":  0.50,
-      "10": 0.50,
+      "1": 1.0,
+      "2": 0.8,
+      "3": 0.7,
+      "4": 0.65,
+      "5": 0.6,
+      "6": 0.57,
+      "7": 0.54,
+      "8": 0.52,
+      "9": 0.5,
+      "10": 0.5,
       "12": 0.45,
       "16": 0.41,
       "20": 0.38
     },
-
     "cables_in_conduit_or_duct_on_wall_or_in_ground": {
       "_methods": "Methods A1, A2, B1, B2 (in conduit/duct), D1, D2 (in ground)",
       "_reference": "Table B.52.18 / B.52.19",
       "_note": "Number of circuits (multi-core cables) or pairs of conductors (single-core)",
-      "1":  1.00,
-      "2":  0.80,
-      "3":  0.70,
-      "4":  0.65,
-      "5":  0.60,
-      "6":  0.57,
-      "7":  0.54,
-      "8":  0.52,
-      "9":  0.50,
-      "10": 0.50
+      "1": 1.0,
+      "2": 0.8,
+      "3": 0.7,
+      "4": 0.65,
+      "5": 0.6,
+      "6": 0.57,
+      "7": 0.54,
+      "8": 0.52,
+      "9": 0.5,
+      "10": 0.5
     },
-
     "cables_in_air_spaced_one_diameter_apart": {
       "_methods": "Method G (single-core cables spaced)",
       "_reference": "Table B.52.20",
-      "1":  1.00,
-      "2":  0.90,
-      "3":  0.82,
-      "4":  0.77,
-      "5":  0.74,
-      "6":  0.71,
-      "7":  0.69,
-      "8":  0.67,
-      "9":  0.65,
+      "1": 1.0,
+      "2": 0.9,
+      "3": 0.82,
+      "4": 0.77,
+      "5": 0.74,
+      "6": 0.71,
+      "7": 0.69,
+      "8": 0.67,
+      "9": 0.65,
       "10": 0.65
     },
-
     "multi_layer_cables_on_trays": {
       "_note": "When cables are stacked in multiple layers on a tray, apply an additional derating factor on top of the single-layer grouping factor.",
       "2_layers": "Multiply single-layer Cg by 0.80",
       "3_layers": "Multiply single-layer Cg by 0.73",
       "more_than_3_layers": "Treat as enclosed — use Method B2 or D1 ratings instead"
     },
-
     "mixed_loading": {
       "_note": "Grouping factor is based on ALL loaded cables in the group. Cables carrying less than 30% of their rated capacity may be ignored when counting the group, but only if confident that loading will remain below 30% for the life of the installation.",
       "practical_guidance": "Count all circuits. Do not assume future loads will remain low."
     }
   },
-
   "thermal_insulation_factor_Ci": {
     "_reference": "IEC 60364-5-52 Clause 523 and Table B.52.15",
     "_application": "Apply when cables are installed in contact with or enclosed by thermal insulation (building fabric insulation — mineral wool, foam board, etc.).",
     "_not_for": "Do not apply to cables in conduit or trunking — conduit provides an air gap.",
-
     "cable_touching_thermal_insulation_on_one_side_only": {
       "Ci": 0.75,
       "description": "Cable clipped to a joist or wall face with insulation against one side. Common in domestic installations in roof spaces with insulation laid on top of joists."
@@ -132,65 +123,79 @@
       "Ci": {
         "length_lt_0.5m": 0.75,
         "length_0.5m_to_1m": "0.75 to 0.50 interpolate",
-        "length_gt_1m": 0.50
+        "length_gt_1m": 0.5
       },
       "description": "Cable buried within or fully surrounded by insulation. This is a severe condition — XLPE cable must be used for any run exceeding 0.5m in insulation. Never use PVC cable buried in thick insulation.",
       "_warning": "Cables completely surrounded by thermal insulation for lengths > 0.5m must be sized to Ci = 0.5. This effectively halves the cable's current rating. Avoid where possible by routing cables in conduit or through gaps."
     }
   },
-
   "soil_thermal_resistivity_Cs": {
     "_reference": "IEC 60364-5-52 Table B.52.16",
     "_basis": "IEC reference soil thermal resistivity is 1.0 K·m/W for direct-buried cables (Method D2) and 0.9 K·m/W for cables in ducts (Method D1).",
     "_application": "Apply to buried cables only (Methods D1, D2). For air-installed cables, Cs = 1.0.",
     "_note": "Soil resistivity is the single biggest variable in buried cable sizing. Always test or obtain from local geological data. Assume worst case (dry sandy soil = 2.5–3.0 K·m/W) if data is unavailable.",
-
     "direct_buried_D2_reference_1pt0": {
       "0.5": 1.28,
       "0.7": 1.15,
-      "1.0": 1.00,
+      "1.0": 1.0,
       "1.5": 0.86,
       "2.0": 0.76,
-      "2.5": 0.70,
+      "2.5": 0.7,
       "3.0": 0.65
     },
-
     "in_duct_D1_reference_0pt9": {
       "0.5": 1.18,
-      "0.7": 1.10,
-      "0.9": 1.00,
+      "0.7": 1.1,
+      "0.9": 1.0,
       "1.5": 0.84,
       "2.0": 0.75,
       "2.5": 0.68,
       "3.0": 0.63
     },
-
     "typical_soil_types": {
-      "very_moist_clay": {"resistivity_Km_W": 0.5, "note": "Very favourable — apply Cs > 1.0"},
-      "moist_clay_loam": {"resistivity_Km_W": 0.7, "note": "Favourable — slight uprating"},
-      "normal_clay_or_mixed_soil": {"resistivity_Km_W": 1.0, "note": "Reference — no correction needed"},
-      "moist_sand": {"resistivity_Km_W": 1.5, "note": "Minor derating"},
-      "dry_sand": {"resistivity_Km_W": 2.0, "note": "Moderate derating — common in tropical dry season"},
-      "arid_sandy_soil_Sahel_North_Africa": {"resistivity_Km_W": 2.5, "note": "Significant derating — common in northern Nigeria, Kenya highlands, similar"},
-      "rocky_ground": {"resistivity_Km_W": 3.0, "note": "Severe derating — use air-cooled cable route if possible"}
+      "very_moist_clay": {
+        "resistivity_Km_W": 0.5,
+        "note": "Very favourable — apply Cs > 1.0"
+      },
+      "moist_clay_loam": {
+        "resistivity_Km_W": 0.7,
+        "note": "Favourable — slight uprating"
+      },
+      "normal_clay_or_mixed_soil": {
+        "resistivity_Km_W": 1.0,
+        "note": "Reference — no correction needed"
+      },
+      "moist_sand": {
+        "resistivity_Km_W": 1.5,
+        "note": "Minor derating"
+      },
+      "dry_sand": {
+        "resistivity_Km_W": 2.0,
+        "note": "Moderate derating — common in tropical dry season"
+      },
+      "arid_sandy_soil_Sahel_North_Africa": {
+        "resistivity_Km_W": 2.5,
+        "note": "Significant derating — common in northern Nigeria, Kenya highlands, similar"
+      },
+      "rocky_ground": {
+        "resistivity_Km_W": 3.0,
+        "note": "Severe derating — use air-cooled cable route if possible"
+      }
     }
   },
-
   "depth_of_burial_Cd": {
     "_reference": "IEC 60364-5-52 Table B.52.16 footnotes",
     "_application": "Apply to buried cables only (Methods D1, D2). Reference depths: 0.7m for D2 (direct buried), 0.5m for D1 (in duct).",
     "_note": "Deeper burial means slower heat dissipation to surface — derating applies.",
-
     "direct_buried_D2_reference_0pt7m": {
       "0.5": 1.05,
-      "0.7": 1.00,
+      "0.7": 1.0,
       "1.0": 0.96,
       "1.5": 0.91,
       "2.0": 0.88
     },
-
     "in_duct_D1_reference_0pt5m": {
-      "0.5": 1.00,
+      "0.5": 1.0,
       "0.6": 0.98,
       "0.7": 0.97,
       "0.8": 0.95,
@@ -198,17 +203,20 @@
       "1.2": 0.91
     }
   },
-
   "harmonic_correction_Cf": {
     "_reference": "IEC 60364-5-52 Annex E (AMD1:2017)",
     "_application": "Apply when the circuit carries significant third-harmonic (and odd multiples: 9th, 15th) currents due to non-linear loads. Triplen harmonics add in the neutral conductor.",
-    "_relevant_loads": ["LED lighting supplies with non-PFC drivers", "Switch-mode power supplies (computers, servers, UPS)", "Variable speed drives without input filters", "Uninterruptible power supplies"],
-
+    "_relevant_loads": [
+      "LED lighting supplies with non-PFC drivers",
+      "Switch-mode power supplies (computers, servers, UPS)",
+      "Variable speed drives without input filters",
+      "Uninterruptible power supplies"
+    ],
     "3_phase_4_wire_with_neutral": {
       "_note": "When triplen harmonic content causes neutral current to approach or exceed phase current, the neutral becomes the limiting factor and phases must be derated.",
       "correction_based_on_3rd_harmonic_content_in_line_current": {
         "0_to_15_percent": {
-          "Cf_line_conductor": 1.00,
+          "Cf_line_conductor": 1.0,
           "neutral_sizing": "Normal — neutral = line cross-section",
           "note": "No harmonic correction needed for line conductors"
         },
@@ -229,12 +237,10 @@
         }
       }
     },
-
     "single_phase_circuits": {
       "note": "Single-phase circuits (no neutral sharing) — triplen harmonics do NOT accumulate in the neutral. Harmonic correction only needed if the circuit current itself is heavily distorted and the heating in the conductor is underestimated by RMS measurement."
     }
   },
-
   "combined_correction_example": {
     "_title": "Combined correction factor calculation for a tropical installation",
     "scenario": "4-core armoured XLPE cable, Method D1 (in duct, 1m deep), 3 cables in duct, Nigeria (ambient soil 25°C, soil resistivity 2.0 K·m/W)",
@@ -243,8 +249,8 @@
       "Ca": 0.963
     },
     "Cg_3_cables_in_duct": {
-      "from_table": 0.70,
-      "Cg": 0.70
+      "from_table": 0.7,
+      "Cg": 0.7
     },
     "Cs_soil_resistivity_2pt0": {
       "from_table": 0.75,

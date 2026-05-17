@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Article-240",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 Article 240 — Overcurrent Protection",
   "_version": "1.0.0",
   "articles": [
@@ -9,14 +13,44 @@
       "article_number": 240,
       "article_title": "Overcurrent Protection",
       "scope": "Overcurrent protection requirements for conductors and equipment — OCPD types, ratings, interrupting rating, conductor protection at 240.4, tap rules (240.21), location, series ratings, selective coordination (240.12).",
-      "applies_to": ["overcurrent_protection", "fuses", "circuit_breakers", "tap_rules", "selective_coordination"],
+      "applies_to": [
+        "overcurrent_protection",
+        "fuses",
+        "circuit_breakers",
+        "tap_rules",
+        "selective_coordination"
+      ],
       "key_sections": [
-        {"section": "240.4",   "title": "Protection of Conductors", "summary": "Conductors protected at their ampacity (per Table 310.16 with 110.14(C) termination temp limit). 'Next higher size rule' (240.4(B)): standard OCPD just above conductor ampacity permitted if conductor ampacity is not a standard size and load ≤ conductor ampacity"},
-        {"section": "240.6",   "title": "Standard Ampere Ratings", "summary": "Standard fuse and breaker ratings: 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100, 110, 125, 150, 175, 200, 225, 250, 300, 350, 400, 450, 500, 600, 700, 800, 1000, 1200, 1600, 2000, 2500, 3000, 4000, 5000, 6000 A"},
-        {"section": "240.12",  "title": "Electrical System Coordination", "summary": "Where coordination is required by 700.32, 701.32, 645.27, 695.6 — selective coordination across all OCPDs"},
-        {"section": "240.21",  "title": "Location in Circuit (Tap Rules)", "summary": "10-foot tap (240.21(B)(1)), 25-foot tap (240.21(B)(2)), outside feeder tap (240.21(B)(5)), transformer secondary tap (240.21(C)) — common in commercial design"},
-        {"section": "240.86",  "title": "Series Ratings", "summary": "Series-rated combinations permitted under specific conditions — tested combinations marked on the equipment"},
-        {"section": "240.87",  "title": "Arc Energy Reduction", "summary": "Required for circuit breakers rated ≥1200 A — methods include zone-selective interlocking, differential relaying, energy-reducing maintenance switching, or instantaneous trip with adjustable settings"}
+        {
+          "section": "240.4",
+          "title": "Protection of Conductors",
+          "summary": "Conductors protected at their ampacity (per Table 310.16 with 110.14(C) termination temp limit). 'Next higher size rule' (240.4(B)): standard OCPD just above conductor ampacity permitted if conductor ampacity is not a standard size and load ≤ conductor ampacity"
+        },
+        {
+          "section": "240.6",
+          "title": "Standard Ampere Ratings",
+          "summary": "Standard fuse and breaker ratings: 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100, 110, 125, 150, 175, 200, 225, 250, 300, 350, 400, 450, 500, 600, 700, 800, 1000, 1200, 1600, 2000, 2500, 3000, 4000, 5000, 6000 A"
+        },
+        {
+          "section": "240.12",
+          "title": "Electrical System Coordination",
+          "summary": "Where coordination is required by 700.32, 701.32, 645.27, 695.6 — selective coordination across all OCPDs"
+        },
+        {
+          "section": "240.21",
+          "title": "Location in Circuit (Tap Rules)",
+          "summary": "10-foot tap (240.21(B)(1)), 25-foot tap (240.21(B)(2)), outside feeder tap (240.21(B)(5)), transformer secondary tap (240.21(C)) — common in commercial design"
+        },
+        {
+          "section": "240.86",
+          "title": "Series Ratings",
+          "summary": "Series-rated combinations permitted under specific conditions — tested combinations marked on the equipment"
+        },
+        {
+          "section": "240.87",
+          "title": "Arc Energy Reduction",
+          "summary": "Required for circuit breakers rated ≥1200 A — methods include zone-selective interlocking, differential relaying, energy-reducing maintenance switching, or instantaneous trip with adjustable settings"
+        }
       ],
       "tabulated_values": {
         "standard_ratings_240_6": "see tables_inline"
@@ -25,21 +59,61 @@
         "Standard_Ampere_Ratings_240.6": {
           "title": "Standard Fuse and Circuit Breaker Ratings (A)",
           "rows": [
-            {"low": 15, "high": 50,  "values": "15, 20, 25, 30, 35, 40, 45, 50"},
-            {"low": 60, "high": 100, "values": "60, 70, 80, 90, 100"},
-            {"low": 110,"high": 200, "values": "110, 125, 150, 175, 200"},
-            {"low": 225,"high": 600, "values": "225, 250, 300, 350, 400, 450, 500, 600"},
-            {"low": 700,"high": 1200,"values": "700, 800, 1000, 1200"},
-            {"low": 1600,"high": 6000,"values": "1600, 2000, 2500, 3000, 4000, 5000, 6000"}
+            {
+              "low": 15,
+              "high": 50,
+              "values": "15, 20, 25, 30, 35, 40, 45, 50"
+            },
+            {
+              "low": 60,
+              "high": 100,
+              "values": "60, 70, 80, 90, 100"
+            },
+            {
+              "low": 110,
+              "high": 200,
+              "values": "110, 125, 150, 175, 200"
+            },
+            {
+              "low": 225,
+              "high": 600,
+              "values": "225, 250, 300, 350, 400, 450, 500, 600"
+            },
+            {
+              "low": 700,
+              "high": 1200,
+              "values": "700, 800, 1000, 1200"
+            },
+            {
+              "low": 1600,
+              "high": 6000,
+              "values": "1600, 2000, 2500, 3000, 4000, 5000, 6000"
+            }
           ]
         },
         "Tap_Rules_240.21": {
           "title": "Feeder Tap Conductor Rules (selected)",
           "rows": [
-            {"tap_rule": "10-foot (240.21(B)(1))", "max_length_ft": 10,  "tap_ampacity_min": "1/10 of feeder OCPD rating"},
-            {"tap_rule": "25-foot (240.21(B)(2))", "max_length_ft": 25,  "tap_ampacity_min": "1/3 of feeder OCPD rating"},
-            {"tap_rule": "Outside feeder (240.21(B)(5))", "max_length_ft": "unlimited", "tap_ampacity_min": "no length limit if outside building"},
-            {"tap_rule": "Transformer secondary (240.21(C))", "max_length_ft": "varies",  "tap_ampacity_min": "per 240.21(C)(2-6) based on tap length and primary protection"}
+            {
+              "tap_rule": "10-foot (240.21(B)(1))",
+              "max_length_ft": 10,
+              "tap_ampacity_min": "1/10 of feeder OCPD rating"
+            },
+            {
+              "tap_rule": "25-foot (240.21(B)(2))",
+              "max_length_ft": 25,
+              "tap_ampacity_min": "1/3 of feeder OCPD rating"
+            },
+            {
+              "tap_rule": "Outside feeder (240.21(B)(5))",
+              "max_length_ft": "unlimited",
+              "tap_ampacity_min": "no length limit if outside building"
+            },
+            {
+              "tap_rule": "Transformer secondary (240.21(C))",
+              "max_length_ft": "varies",
+              "tap_ampacity_min": "per 240.21(C)(2-6) based on tap length and primary protection"
+            }
           ]
         }
       },
@@ -49,12 +123,28 @@
         "Treating series-rated combinations (240.86) as interchangeable — only the specific marked combinations are permitted; the equipment manufacturer's listing controls",
         "Missing arc-energy reduction (240.87) on circuit breakers ≥1200 A — added in NEC 2014, expanded in 2020 and 2023"
       ],
-      "drawn_as": ["MCB_1P", "MCB_3P", "MCCB_3P", "ACB_3P", "FUSE_1P"],
-      "related_iec_60364": ["IEC 60364-4-43 (Protection against overcurrent)", "IEC 60364-5-53 Clause 533 (Devices for protection against overcurrent)"],
+      "drawn_as": [
+        "MCB_1P",
+        "MCB_3P",
+        "MCCB_3P",
+        "ACB_3P",
+        "FUSE_1P"
+      ],
+      "related_iec_60364": [
+        "IEC 60364-4-43 (Protection against overcurrent)",
+        "IEC 60364-5-53 Clause 533 (Devices for protection against overcurrent)"
+      ],
       "divergence_notes": "NEC's 'standard ratings' (240.6) are imperial-A values; IEC has its own preferred-value series. NEC 240.21 tap rules (10-ft, 25-ft, outside, transformer-secondary) have no direct IEC equivalent — IEC handles via Iz/Z calculations for protection effectiveness at the tap end. NEC 240.86 series ratings are common; IEC permits cascading (IEC 60364-4-43 Annex D) but more cautious. NEC 240.87 arc-energy reduction (≥1200 A) has no IEC equivalent.",
       "related_bs_7671": [],
       "usage_notes": "Tap rules (240.21) are the #1 source of inspection failures on commercial feeder designs — always document tap length and conductor ampacity on the schedule.",
-      "related_articles": ["ART_210", "ART_215", "ART_310", "ART_408", "ART_695", "ART_700"]
+      "related_articles": [
+        "ART_210",
+        "ART_215",
+        "ART_310",
+        "ART_408",
+        "ART_695",
+        "ART_700"
+      ]
     }
   ]
 }

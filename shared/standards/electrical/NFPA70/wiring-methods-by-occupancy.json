@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Chapter-3-by-Occupancy",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 — Wiring Methods by Occupancy (decision matrix)",
   "_version": "1.0.0",
   "_note": "Which raceway/cable types are permitted in which occupancies. Synthesized from NEC Arts 300-399 (raceway/cable type articles) + Arts 511-590 (special occupancy restrictions) + Arts 500-506 (hazardous locations).",
@@ -6,81 +10,164 @@
     {
       "wiring_method": "Nonmetallic Sheathed Cable (NM, Romex)",
       "nec_article": 334,
-      "permitted_occupancies": ["one- and two-family dwellings", "multifamily dwellings (Type V construction)", "other structures permitted by 334.10"],
-      "prohibited_occupancies": ["Type I-IV construction in commercial occupancies", "wet locations", "embedded in concrete", "hazardous locations (most)", "as service-entrance cable", "exposed in dropped/suspended ceilings of commercial occupancies"],
+      "permitted_occupancies": [
+        "one- and two-family dwellings",
+        "multifamily dwellings (Type V construction)",
+        "other structures permitted by 334.10"
+      ],
+      "prohibited_occupancies": [
+        "Type I-IV construction in commercial occupancies",
+        "wet locations",
+        "embedded in concrete",
+        "hazardous locations (most)",
+        "as service-entrance cable",
+        "exposed in dropped/suspended ceilings of commercial occupancies"
+      ],
       "key_restrictions": "Cannot be exposed in dropped ceilings — must be in protective raceway above suspended ceiling tiles in commercial occupancies"
     },
     {
       "wiring_method": "Armored Cable (AC)",
       "nec_article": 320,
-      "permitted_occupancies": ["Most occupancies (dry locations, exposed or concealed)", "Returns to dwellings since NEC 2017 update"],
-      "prohibited_occupancies": ["Wet locations", "Direct embedded in concrete", "Hazardous locations"],
+      "permitted_occupancies": [
+        "Most occupancies (dry locations, exposed or concealed)",
+        "Returns to dwellings since NEC 2017 update"
+      ],
+      "prohibited_occupancies": [
+        "Wet locations",
+        "Direct embedded in concrete",
+        "Hazardous locations"
+      ],
       "key_restrictions": "AC cable has a bonding strip for EGC; must terminate properly to maintain EGC continuity. Not suitable for wet locations."
     },
     {
       "wiring_method": "Metal-Clad Cable (MC)",
       "nec_article": 330,
-      "permitted_occupancies": ["All occupancies — including healthcare patient care (with restrictions per 517)", "Wet locations if listed for wet location"],
-      "prohibited_occupancies": ["Hazardous locations except where listed"],
+      "permitted_occupancies": [
+        "All occupancies — including healthcare patient care (with restrictions per 517)",
+        "Wet locations if listed for wet location"
+      ],
+      "prohibited_occupancies": [
+        "Hazardous locations except where listed"
+      ],
       "key_restrictions": "Most versatile cable type. MC with separate EGC permitted in patient care areas (517.13)."
     },
     {
       "wiring_method": "Mineral-Insulated Cable (MI)",
       "nec_article": 332,
-      "permitted_occupancies": ["All occupancies", "Hazardous locations", "Fire-rated emergency circuits (life safety, fire pump supply)"],
+      "permitted_occupancies": [
+        "All occupancies",
+        "Hazardous locations",
+        "Fire-rated emergency circuits (life safety, fire pump supply)"
+      ],
       "prohibited_occupancies": [],
       "key_restrictions": "Most fire-resistant cable type. Highest cost; specialized terminations."
     },
     {
       "wiring_method": "Rigid Metal Conduit (RMC)",
       "nec_article": 344,
-      "permitted_occupancies": ["All occupancies", "Hazardous locations (with proper sealing per 501.15+)", "Direct buried", "Embedded in concrete"],
+      "permitted_occupancies": [
+        "All occupancies",
+        "Hazardous locations (with proper sealing per 501.15+)",
+        "Direct buried",
+        "Embedded in concrete"
+      ],
       "prohibited_occupancies": [],
       "key_restrictions": "Most universally accepted raceway. Heaviest steel; threaded connections."
     },
     {
       "wiring_method": "Intermediate Metal Conduit (IMC)",
       "nec_article": 342,
-      "permitted_occupancies": ["Same as RMC — all occupancies, hazardous locations, direct burial, embedded"],
+      "permitted_occupancies": [
+        "Same as RMC — all occupancies, hazardous locations, direct burial, embedded"
+      ],
       "prohibited_occupancies": [],
       "key_restrictions": "Lighter than RMC but same approval scope; preferred for cost-sensitive overhead/wall work"
     },
     {
       "wiring_method": "Electrical Metallic Tubing (EMT)",
       "nec_article": 358,
-      "permitted_occupancies": ["Most occupancies (dry locations primarily)", "Concealed in walls", "Above ceilings (commercial)"],
-      "prohibited_occupancies": ["Direct buried", "Embedded in concrete in contact with earth", "Class I Div 1 hazardous locations", "Severe corrosive environments (without supplementary protection)"],
+      "permitted_occupancies": [
+        "Most occupancies (dry locations primarily)",
+        "Concealed in walls",
+        "Above ceilings (commercial)"
+      ],
+      "prohibited_occupancies": [
+        "Direct buried",
+        "Embedded in concrete in contact with earth",
+        "Class I Div 1 hazardous locations",
+        "Severe corrosive environments (without supplementary protection)"
+      ],
       "key_restrictions": "Thin-wall, not threaded. Compression or setscrew fittings only. Most common commercial raceway."
     },
     {
       "wiring_method": "Flexible Metal Conduit (FMC)",
       "nec_article": 348,
-      "permitted_occupancies": ["Short runs (typically ≤6 ft) to vibrating equipment (motors, transformers)"],
-      "prohibited_occupancies": ["Used as EGC where length > 6 ft or size > certain limits per 250.118(5)", "Wet locations (use LFMC instead)"],
+      "permitted_occupancies": [
+        "Short runs (typically ≤6 ft) to vibrating equipment (motors, transformers)"
+      ],
+      "prohibited_occupancies": [
+        "Used as EGC where length > 6 ft or size > certain limits per 250.118(5)",
+        "Wet locations (use LFMC instead)"
+      ],
       "key_restrictions": "Limited as EGC. Must be installed with separate EGC wire on long runs."
     },
     {
       "wiring_method": "Liquidtight Flexible Metal Conduit (LFMC)",
       "nec_article": 350,
-      "permitted_occupancies": ["Outdoor connections to vibrating equipment", "Wet locations"],
+      "permitted_occupancies": [
+        "Outdoor connections to vibrating equipment",
+        "Wet locations"
+      ],
       "prohibited_occupancies": [],
       "key_restrictions": "FMC + PVC sheath for outdoor / wet use"
     },
     {
       "wiring_method": "Rigid Polyvinyl Chloride Conduit (PVC) — Schedule 40/80",
       "nec_article": 352,
-      "permitted_occupancies": ["Direct buried (Schedule 40 or 80)", "Concealed in walls", "Wet locations", "Sunlight-exposed (Schedule 80 only — Schedule 40 may degrade)"],
-      "prohibited_occupancies": ["Hazardous locations except as permitted in 514.8 (gas stations) and similar", "Concealed in walls of dwellings if expanding into ambient temperature variation causing telegraphic movement (rare concern)"],
+      "permitted_occupancies": [
+        "Direct buried (Schedule 40 or 80)",
+        "Concealed in walls",
+        "Wet locations",
+        "Sunlight-exposed (Schedule 80 only — Schedule 40 may degrade)"
+      ],
+      "prohibited_occupancies": [
+        "Hazardous locations except as permitted in 514.8 (gas stations) and similar",
+        "Concealed in walls of dwellings if expanding into ambient temperature variation causing telegraphic movement (rare concern)"
+      ],
       "key_restrictions": "Most common underground raceway. Schedule 80 needed for direct mechanical hits/sun exposure"
     }
   ],
   "occupancy_specific_restrictions": [
-    {"occupancy": "Healthcare patient care space (Category 1, 2)", "permitted": "AC, MC with insulated EGC, RMC, IMC, EMT, MI", "_note": "All require dual EGC paths per 517.13"},
-    {"occupancy": "Class I Div 1 hazardous", "permitted": "RMC, IMC, listed flexible methods (LFMC type, listed Class I) with proper seals", "_note": "EMT prohibited"},
-    {"occupancy": "Class I Div 2 hazardous", "permitted": "Above + EMT with listed fittings", "_note": ""},
-    {"occupancy": "Assembly occupancy (>100 persons)", "permitted": "Metal raceways (RMC, IMC, EMT), MC, AC", "_note": "NM cable prohibited (518.4)"},
-    {"occupancy": "Wet locations", "permitted": "RMC, IMC, PVC, LFMC, LFNC, MC listed for wet, MI", "_note": "EMT generally permitted with listed fittings; NM cable prohibited"},
-    {"occupancy": "Dwelling units", "permitted": "All including NM cable (most common)", "_note": ""}
+    {
+      "occupancy": "Healthcare patient care space (Category 1, 2)",
+      "permitted": "AC, MC with insulated EGC, RMC, IMC, EMT, MI",
+      "_note": "All require dual EGC paths per 517.13"
+    },
+    {
+      "occupancy": "Class I Div 1 hazardous",
+      "permitted": "RMC, IMC, listed flexible methods (LFMC type, listed Class I) with proper seals",
+      "_note": "EMT prohibited"
+    },
+    {
+      "occupancy": "Class I Div 2 hazardous",
+      "permitted": "Above + EMT with listed fittings",
+      "_note": ""
+    },
+    {
+      "occupancy": "Assembly occupancy (>100 persons)",
+      "permitted": "Metal raceways (RMC, IMC, EMT), MC, AC",
+      "_note": "NM cable prohibited (518.4)"
+    },
+    {
+      "occupancy": "Wet locations",
+      "permitted": "RMC, IMC, PVC, LFMC, LFNC, MC listed for wet, MI",
+      "_note": "EMT generally permitted with listed fittings; NM cable prohibited"
+    },
+    {
+      "occupancy": "Dwelling units",
+      "permitted": "All including NM cable (most common)",
+      "_note": ""
+    }
   ],
   "common_errors": [
     "Using NM cable in commercial-occupancy ceilings — must use AC, MC, or in raceway",

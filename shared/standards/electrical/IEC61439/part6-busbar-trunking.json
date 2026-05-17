@@ -1,4 +1,8 @@
 {
+  "clause_ref": "IEC-61439-6 2012:Part-6-Busbar-Trunking",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 61439 Part 6 — Busbar trunking systems (BTS)",
   "_iec_part": 6,
   "_version": "1.0.0",
@@ -12,12 +16,46 @@
       "draftsman_id": "BTS_VERTICAL_RISER",
       "application_scope": "Vertical riser BTS for tall buildings — feeds floor-level tap-off boxes from the main LV switchboard at building base. Includes fire-rated floor crossings (typically 2 h compartmentation), expansion compensation for thermal length change, and a tap-off plug-in interface at each floor.",
       "rated_quantities": {
-        "Ue_V":      [400, 690],
-        "Ui_V":      [1000],
-        "Uimp_kV":   [8, 12],
-        "In_A":      [400, 630, 800, 1250, 1600, 2000, 2500, 3200, 4000, 5000, 6300],
-        "Icw_kA_1s": [25, 36, 50, 65, 80, 100],
-        "Ipk_kA":    [52, 75, 105, 143, 176, 220]
+        "Ue_V": [
+          400,
+          690
+        ],
+        "Ui_V": [
+          1000
+        ],
+        "Uimp_kV": [
+          8,
+          12
+        ],
+        "In_A": [
+          400,
+          630,
+          800,
+          1250,
+          1600,
+          2000,
+          2500,
+          3200,
+          4000,
+          5000,
+          6300
+        ],
+        "Icw_kA_1s": [
+          25,
+          36,
+          50,
+          65,
+          80,
+          100
+        ],
+        "Ipk_kA": [
+          52,
+          75,
+          105,
+          143,
+          176,
+          220
+        ]
       },
       "form_separation": "n/a",
       "ip_default": "IP54 (sandwich-style) or IP55 (compact aluminium)",
@@ -46,17 +84,30 @@
         "10.11 short-circuit withstand (force F = K·Ipk²·s/d on joints)",
         "10.13 mechanical operation (tap-off plug-in/out under load)"
       ],
-      "drawn_as": ["BUSDUCT"],
-      "typical_components": ["BUSBAR_3PH", "BUSDUCT", "FUSE_3P", "MCCB_3P"],
+      "drawn_as": [
+        "BUSDUCT"
+      ],
+      "typical_components": [
+        "BUSBAR_3PH",
+        "BUSDUCT",
+        "FUSE_3P",
+        "MCCB_3P"
+      ],
       "application_examples": [
         "Tall commercial office riser (typical 4000A copper or 5000A aluminium)",
         "Hospital tower vertical mains",
         "Data centre primary distribution riser"
       ],
-      "related_iec_60364": ["IEC60364-5-52 (Wiring systems — busbar trunking installation)"],
-      "related_bs_7671": ["Reg 521.4 (Busbar trunking systems)"],
+      "related_iec_60364": [
+        "IEC60364-5-52 (Wiring systems — busbar trunking installation)"
+      ],
+      "related_bs_7671": [
+        "Reg 521.4 (Busbar trunking systems)"
+      ],
       "usage_notes": "Specify fire compartmentation at every floor crossing (typically intumescent fire-stop kit supplied with the BTS) and expansion joints at the building expansion-joint locations. Ipk fault force on joints can exceed 50 kN — joint torquing and support spacing per the OEM's verified design.",
-      "related_assemblies": ["BTS_HORIZONTAL_MAIN"]
+      "related_assemblies": [
+        "BTS_HORIZONTAL_MAIN"
+      ]
     },
     {
       "assembly_id": "BTS_HORIZONTAL_MAIN",
@@ -66,12 +117,47 @@
       "draftsman_id": "BTS_HORIZONTAL_MAIN",
       "application_scope": "Horizontal BTS — used in plant rooms, industrial halls, and data centres to feed multiple downstream sub-DBs or rack PDUs from a single switchboard outgoer. Tap-off boxes provide circuit drops at each load location.",
       "rated_quantities": {
-        "Ue_V":      [400, 690],
-        "Ui_V":      [1000],
-        "Uimp_kV":   [6, 8, 12],
-        "In_A":      [400, 630, 800, 1250, 1600, 2000, 2500, 3200, 4000, 5000, 6300],
-        "Icw_kA_1s": [25, 36, 50, 65, 80, 100],
-        "Ipk_kA":    [52, 75, 105, 143, 176, 220]
+        "Ue_V": [
+          400,
+          690
+        ],
+        "Ui_V": [
+          1000
+        ],
+        "Uimp_kV": [
+          6,
+          8,
+          12
+        ],
+        "In_A": [
+          400,
+          630,
+          800,
+          1250,
+          1600,
+          2000,
+          2500,
+          3200,
+          4000,
+          5000,
+          6300
+        ],
+        "Icw_kA_1s": [
+          25,
+          36,
+          50,
+          65,
+          80,
+          100
+        ],
+        "Ipk_kA": [
+          52,
+          75,
+          105,
+          143,
+          176,
+          220
+        ]
       },
       "form_separation": "n/a",
       "ip_default": "IP55 (horizontal, indoor); IP65 (overhead in wet areas)",
@@ -98,17 +184,30 @@
         "10.11 short-circuit withstand",
         "10.13 mechanical operation"
       ],
-      "drawn_as": ["BUSDUCT"],
-      "typical_components": ["BUSBAR_3PH", "BUSDUCT", "MCCB_3P"],
+      "drawn_as": [
+        "BUSDUCT"
+      ],
+      "typical_components": [
+        "BUSBAR_3PH",
+        "BUSDUCT",
+        "MCCB_3P"
+      ],
       "application_examples": [
         "Data centre overhead busway feeding rack PDUs",
         "Industrial hall horizontal mains feeding zone DBs",
         "Plant room horizontal interlink between switchboards"
       ],
-      "related_iec_60364": ["IEC60364-5-52", "IEC60364-5-54 (Earthing)"],
-      "related_bs_7671": ["Reg 521.4"],
+      "related_iec_60364": [
+        "IEC60364-5-52",
+        "IEC60364-5-54 (Earthing)"
+      ],
+      "related_bs_7671": [
+        "Reg 521.4"
+      ],
       "usage_notes": "Specify the maximum support spacing (typically 1.5 m for straight runs, less at joints). Where the BTS uses the enclosure as PE, verify Icw across the enclosure path is sufficient — this is a common failure mode in third-party verifications.",
-      "related_assemblies": ["BTS_VERTICAL_RISER"]
+      "related_assemblies": [
+        "BTS_VERTICAL_RISER"
+      ]
     }
   ]
 }

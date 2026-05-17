@@ -1,4 +1,8 @@
 {
+  "clause_ref": "IEC-60364-5-52 2009:Annex-E-Copper",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60364-5-52:2009+AMD1:2017 — Copper Conductor Cable Current Ratings (Annex B)",
   "_basis": "IEC 60364-5-52 Annex B — Tables B.52.2 through B.52.10 for copper conductors",
   "_version": "1.0.0",
@@ -15,426 +19,1339 @@
     "mVAm_3phase_note": "For 3-phase balanced circuits: ΔU(phase) = mVAm_2conductor × 0.866 × Ib × L / 1000"
   },
   "_note": "Apply correction factors from part5-52-correction-factors.json before comparing to design current. Tabulated values are at reference conditions only.",
-
   "installation_methods_reference": {
     "A1": "Insulated conductors in conduit in a thermally insulated wall (single-core)",
     "A2": "Multi-core cable in conduit in a thermally insulated wall",
     "B1": "Insulated conductors (single-core) in conduit on a wall, ceiling or in a trunking on a wall",
     "B2": "Multi-core cable in conduit on a wall, ceiling or in trunking on a wall",
-    "C":  "Single-core or multi-core cable clipped direct to a surface (wall, ceiling, tray against wall)",
+    "C": "Single-core or multi-core cable clipped direct to a surface (wall, ceiling, tray against wall)",
     "D1": "Multi-core cable in a conduit or duct in the ground",
     "D2": "Multi-core cable direct buried in the ground",
-    "E":  "Multi-core cable in free air on a cable tray (perforated or unperforated), cable ladder, cleated",
-    "F":  "Single-core cables in free air — trefoil or flat touching (large cables, power submains)",
-    "G":  "Single-core cables in free air — flat, spaced at least one cable diameter apart"
+    "E": "Multi-core cable in free air on a cable tray (perforated or unperforated), cable ladder, cleated",
+    "F": "Single-core cables in free air — trefoil or flat touching (large cables, power submains)",
+    "G": "Single-core cables in free air — flat, spaced at least one cable diameter apart"
   },
-
   "method_A1_single_core_in_conduit_thermal_wall": {
     "_description": "Single-core cables in conduit embedded in thermally insulating wall. Worst heat dissipation condition — most conservative ratings. Use where cables must pass through insulated walls or ceilings.",
     "copper_PVC_70C": {
       "_table_ref": "B.52.1 (single-core, PVC, Method A1)",
-      "1.5":  {"rating_A": 13,  "mVAm_2cond": 29},
-      "2.5":  {"rating_A": 17.5,"mVAm_2cond": 18},
-      "4":    {"rating_A": 23,  "mVAm_2cond": 11},
-      "6":    {"rating_A": 29.5,"mVAm_2cond": 7.3},
-      "10":   {"rating_A": 40,  "mVAm_2cond": 4.4},
-      "16":   {"rating_A": 53,  "mVAm_2cond": 2.8},
-      "25":   {"rating_A": 70,  "mVAm_2cond": 1.75},
-      "35":   {"rating_A": 86,  "mVAm_2cond": 1.25},
-      "50":   {"rating_A": 103, "mVAm_2cond": 0.93},
-      "70":   {"rating_A": 129, "mVAm_2cond": 0.63},
-      "95":   {"rating_A": 154, "mVAm_2cond": 0.47},
-      "120":  {"rating_A": 178, "mVAm_2cond": 0.38}
+      "1.5": {
+        "rating_A": 13,
+        "mVAm_2cond": 29
+      },
+      "2.5": {
+        "rating_A": 17.5,
+        "mVAm_2cond": 18
+      },
+      "4": {
+        "rating_A": 23,
+        "mVAm_2cond": 11
+      },
+      "6": {
+        "rating_A": 29.5,
+        "mVAm_2cond": 7.3
+      },
+      "10": {
+        "rating_A": 40,
+        "mVAm_2cond": 4.4
+      },
+      "16": {
+        "rating_A": 53,
+        "mVAm_2cond": 2.8
+      },
+      "25": {
+        "rating_A": 70,
+        "mVAm_2cond": 1.75
+      },
+      "35": {
+        "rating_A": 86,
+        "mVAm_2cond": 1.25
+      },
+      "50": {
+        "rating_A": 103,
+        "mVAm_2cond": 0.93
+      },
+      "70": {
+        "rating_A": 129,
+        "mVAm_2cond": 0.63
+      },
+      "95": {
+        "rating_A": 154,
+        "mVAm_2cond": 0.47
+      },
+      "120": {
+        "rating_A": 178,
+        "mVAm_2cond": 0.38
+      }
     },
     "copper_XLPE_90C": {
       "_table_ref": "B.52.1 (single-core, XLPE, Method A1)",
-      "1.5":  {"rating_A": 15.5,"mVAm_2cond": 31},
-      "2.5":  {"rating_A": 21,  "mVAm_2cond": 19},
-      "4":    {"rating_A": 28,  "mVAm_2cond": 12},
-      "6":    {"rating_A": 36,  "mVAm_2cond": 7.8},
-      "10":   {"rating_A": 50,  "mVAm_2cond": 4.7},
-      "16":   {"rating_A": 66,  "mVAm_2cond": 3.0},
-      "25":   {"rating_A": 87,  "mVAm_2cond": 1.85},
-      "35":   {"rating_A": 107, "mVAm_2cond": 1.35},
-      "50":   {"rating_A": 128, "mVAm_2cond": 0.99},
-      "70":   {"rating_A": 161, "mVAm_2cond": 0.67},
-      "95":   {"rating_A": 193, "mVAm_2cond": 0.50},
-      "120":  {"rating_A": 223, "mVAm_2cond": 0.41}
+      "1.5": {
+        "rating_A": 15.5,
+        "mVAm_2cond": 31
+      },
+      "2.5": {
+        "rating_A": 21,
+        "mVAm_2cond": 19
+      },
+      "4": {
+        "rating_A": 28,
+        "mVAm_2cond": 12
+      },
+      "6": {
+        "rating_A": 36,
+        "mVAm_2cond": 7.8
+      },
+      "10": {
+        "rating_A": 50,
+        "mVAm_2cond": 4.7
+      },
+      "16": {
+        "rating_A": 66,
+        "mVAm_2cond": 3.0
+      },
+      "25": {
+        "rating_A": 87,
+        "mVAm_2cond": 1.85
+      },
+      "35": {
+        "rating_A": 107,
+        "mVAm_2cond": 1.35
+      },
+      "50": {
+        "rating_A": 128,
+        "mVAm_2cond": 0.99
+      },
+      "70": {
+        "rating_A": 161,
+        "mVAm_2cond": 0.67
+      },
+      "95": {
+        "rating_A": 193,
+        "mVAm_2cond": 0.5
+      },
+      "120": {
+        "rating_A": 223,
+        "mVAm_2cond": 0.41
+      }
     }
   },
-
   "method_A2_multicore_in_conduit_thermal_wall": {
     "_description": "Multi-core cable in conduit embedded in a thermally insulating wall. Similar to A1 but for multi-core cables. Ratings very similar to A1.",
     "copper_PVC_70C": {
-      "1.5":  {"rating_A": 13,  "mVAm_2cond": 29},
-      "2.5":  {"rating_A": 17.5,"mVAm_2cond": 18},
-      "4":    {"rating_A": 23,  "mVAm_2cond": 11},
-      "6":    {"rating_A": 30,  "mVAm_2cond": 7.3},
-      "10":   {"rating_A": 40,  "mVAm_2cond": 4.4},
-      "16":   {"rating_A": 54,  "mVAm_2cond": 2.8},
-      "25":   {"rating_A": 72,  "mVAm_2cond": 1.75},
-      "35":   {"rating_A": 88,  "mVAm_2cond": 1.25},
-      "50":   {"rating_A": 106, "mVAm_2cond": 0.93},
-      "70":   {"rating_A": 134, "mVAm_2cond": 0.63},
-      "95":   {"rating_A": 160, "mVAm_2cond": 0.47},
-      "120":  {"rating_A": 185, "mVAm_2cond": 0.38}
+      "1.5": {
+        "rating_A": 13,
+        "mVAm_2cond": 29
+      },
+      "2.5": {
+        "rating_A": 17.5,
+        "mVAm_2cond": 18
+      },
+      "4": {
+        "rating_A": 23,
+        "mVAm_2cond": 11
+      },
+      "6": {
+        "rating_A": 30,
+        "mVAm_2cond": 7.3
+      },
+      "10": {
+        "rating_A": 40,
+        "mVAm_2cond": 4.4
+      },
+      "16": {
+        "rating_A": 54,
+        "mVAm_2cond": 2.8
+      },
+      "25": {
+        "rating_A": 72,
+        "mVAm_2cond": 1.75
+      },
+      "35": {
+        "rating_A": 88,
+        "mVAm_2cond": 1.25
+      },
+      "50": {
+        "rating_A": 106,
+        "mVAm_2cond": 0.93
+      },
+      "70": {
+        "rating_A": 134,
+        "mVAm_2cond": 0.63
+      },
+      "95": {
+        "rating_A": 160,
+        "mVAm_2cond": 0.47
+      },
+      "120": {
+        "rating_A": 185,
+        "mVAm_2cond": 0.38
+      }
     },
     "copper_XLPE_90C": {
-      "1.5":  {"rating_A": 15.5,"mVAm_2cond": 31},
-      "2.5":  {"rating_A": 21,  "mVAm_2cond": 19},
-      "4":    {"rating_A": 28,  "mVAm_2cond": 12},
-      "6":    {"rating_A": 36,  "mVAm_2cond": 7.8},
-      "10":   {"rating_A": 50,  "mVAm_2cond": 4.7},
-      "16":   {"rating_A": 67,  "mVAm_2cond": 3.0},
-      "25":   {"rating_A": 88,  "mVAm_2cond": 1.85},
-      "35":   {"rating_A": 108, "mVAm_2cond": 1.35},
-      "50":   {"rating_A": 130, "mVAm_2cond": 0.99},
-      "70":   {"rating_A": 164, "mVAm_2cond": 0.67},
-      "95":   {"rating_A": 197, "mVAm_2cond": 0.50},
-      "120":  {"rating_A": 229, "mVAm_2cond": 0.41}
+      "1.5": {
+        "rating_A": 15.5,
+        "mVAm_2cond": 31
+      },
+      "2.5": {
+        "rating_A": 21,
+        "mVAm_2cond": 19
+      },
+      "4": {
+        "rating_A": 28,
+        "mVAm_2cond": 12
+      },
+      "6": {
+        "rating_A": 36,
+        "mVAm_2cond": 7.8
+      },
+      "10": {
+        "rating_A": 50,
+        "mVAm_2cond": 4.7
+      },
+      "16": {
+        "rating_A": 67,
+        "mVAm_2cond": 3.0
+      },
+      "25": {
+        "rating_A": 88,
+        "mVAm_2cond": 1.85
+      },
+      "35": {
+        "rating_A": 108,
+        "mVAm_2cond": 1.35
+      },
+      "50": {
+        "rating_A": 130,
+        "mVAm_2cond": 0.99
+      },
+      "70": {
+        "rating_A": 164,
+        "mVAm_2cond": 0.67
+      },
+      "95": {
+        "rating_A": 197,
+        "mVAm_2cond": 0.5
+      },
+      "120": {
+        "rating_A": 229,
+        "mVAm_2cond": 0.41
+      }
     }
   },
-
   "method_B1_single_core_in_conduit_on_wall": {
     "_description": "Single-core cables in conduit installed on a wall or ceiling surface, or in cable trunking on a wall. Most common method for concealed wiring in commercial buildings.",
     "copper_PVC_70C": {
-      "1.5":  {"rating_A": 15.5,"mVAm_2cond": 29},
-      "2.5":  {"rating_A": 21,  "mVAm_2cond": 18},
-      "4":    {"rating_A": 28,  "mVAm_2cond": 11},
-      "6":    {"rating_A": 36,  "mVAm_2cond": 7.3},
-      "10":   {"rating_A": 50,  "mVAm_2cond": 4.4},
-      "16":   {"rating_A": 68,  "mVAm_2cond": 2.8},
-      "25":   {"rating_A": 89,  "mVAm_2cond": 1.75},
-      "35":   {"rating_A": 110, "mVAm_2cond": 1.25},
-      "50":   {"rating_A": 134, "mVAm_2cond": 0.93},
-      "70":   {"rating_A": 171, "mVAm_2cond": 0.63},
-      "95":   {"rating_A": 207, "mVAm_2cond": 0.47},
-      "120":  {"rating_A": 240, "mVAm_2cond": 0.38},
-      "150":  {"rating_A": 275, "mVAm_2cond": 0.30},
-      "185":  {"rating_A": 314, "mVAm_2cond": 0.24},
-      "240":  {"rating_A": 366, "mVAm_2cond": 0.19},
-      "300":  {"rating_A": 419, "mVAm_2cond": 0.15}
+      "1.5": {
+        "rating_A": 15.5,
+        "mVAm_2cond": 29
+      },
+      "2.5": {
+        "rating_A": 21,
+        "mVAm_2cond": 18
+      },
+      "4": {
+        "rating_A": 28,
+        "mVAm_2cond": 11
+      },
+      "6": {
+        "rating_A": 36,
+        "mVAm_2cond": 7.3
+      },
+      "10": {
+        "rating_A": 50,
+        "mVAm_2cond": 4.4
+      },
+      "16": {
+        "rating_A": 68,
+        "mVAm_2cond": 2.8
+      },
+      "25": {
+        "rating_A": 89,
+        "mVAm_2cond": 1.75
+      },
+      "35": {
+        "rating_A": 110,
+        "mVAm_2cond": 1.25
+      },
+      "50": {
+        "rating_A": 134,
+        "mVAm_2cond": 0.93
+      },
+      "70": {
+        "rating_A": 171,
+        "mVAm_2cond": 0.63
+      },
+      "95": {
+        "rating_A": 207,
+        "mVAm_2cond": 0.47
+      },
+      "120": {
+        "rating_A": 240,
+        "mVAm_2cond": 0.38
+      },
+      "150": {
+        "rating_A": 275,
+        "mVAm_2cond": 0.3
+      },
+      "185": {
+        "rating_A": 314,
+        "mVAm_2cond": 0.24
+      },
+      "240": {
+        "rating_A": 366,
+        "mVAm_2cond": 0.19
+      },
+      "300": {
+        "rating_A": 419,
+        "mVAm_2cond": 0.15
+      }
     },
     "copper_XLPE_90C": {
-      "1.5":  {"rating_A": 18.5,"mVAm_2cond": 31},
-      "2.5":  {"rating_A": 25,  "mVAm_2cond": 19},
-      "4":    {"rating_A": 33,  "mVAm_2cond": 12},
-      "6":    {"rating_A": 43,  "mVAm_2cond": 7.8},
-      "10":   {"rating_A": 60,  "mVAm_2cond": 4.7},
-      "16":   {"rating_A": 80,  "mVAm_2cond": 3.0},
-      "25":   {"rating_A": 105, "mVAm_2cond": 1.85},
-      "35":   {"rating_A": 128, "mVAm_2cond": 1.35},
-      "50":   {"rating_A": 154, "mVAm_2cond": 0.99},
-      "70":   {"rating_A": 194, "mVAm_2cond": 0.67},
-      "95":   {"rating_A": 233, "mVAm_2cond": 0.50},
-      "120":  {"rating_A": 268, "mVAm_2cond": 0.41},
-      "150":  {"rating_A": 307, "mVAm_2cond": 0.32},
-      "185":  {"rating_A": 349, "mVAm_2cond": 0.26},
-      "240":  {"rating_A": 406, "mVAm_2cond": 0.20},
-      "300":  {"rating_A": 462, "mVAm_2cond": 0.16}
+      "1.5": {
+        "rating_A": 18.5,
+        "mVAm_2cond": 31
+      },
+      "2.5": {
+        "rating_A": 25,
+        "mVAm_2cond": 19
+      },
+      "4": {
+        "rating_A": 33,
+        "mVAm_2cond": 12
+      },
+      "6": {
+        "rating_A": 43,
+        "mVAm_2cond": 7.8
+      },
+      "10": {
+        "rating_A": 60,
+        "mVAm_2cond": 4.7
+      },
+      "16": {
+        "rating_A": 80,
+        "mVAm_2cond": 3.0
+      },
+      "25": {
+        "rating_A": 105,
+        "mVAm_2cond": 1.85
+      },
+      "35": {
+        "rating_A": 128,
+        "mVAm_2cond": 1.35
+      },
+      "50": {
+        "rating_A": 154,
+        "mVAm_2cond": 0.99
+      },
+      "70": {
+        "rating_A": 194,
+        "mVAm_2cond": 0.67
+      },
+      "95": {
+        "rating_A": 233,
+        "mVAm_2cond": 0.5
+      },
+      "120": {
+        "rating_A": 268,
+        "mVAm_2cond": 0.41
+      },
+      "150": {
+        "rating_A": 307,
+        "mVAm_2cond": 0.32
+      },
+      "185": {
+        "rating_A": 349,
+        "mVAm_2cond": 0.26
+      },
+      "240": {
+        "rating_A": 406,
+        "mVAm_2cond": 0.2
+      },
+      "300": {
+        "rating_A": 462,
+        "mVAm_2cond": 0.16
+      }
     }
   },
-
   "method_B2_multicore_in_conduit_on_wall": {
     "_description": "Multi-core cable (2, 3, or 4 core) in conduit on a wall or ceiling, or in surface-mounted trunking. Very common method for power and final circuit wiring.",
     "copper_PVC_70C": {
-      "1.5":  {"rating_A": 15,  "mVAm_2cond": 29},
-      "2.5":  {"rating_A": 20,  "mVAm_2cond": 18},
-      "4":    {"rating_A": 27,  "mVAm_2cond": 11},
-      "6":    {"rating_A": 34,  "mVAm_2cond": 7.3},
-      "10":   {"rating_A": 46,  "mVAm_2cond": 4.4},
-      "16":   {"rating_A": 62,  "mVAm_2cond": 2.8},
-      "25":   {"rating_A": 80,  "mVAm_2cond": 1.75},
-      "35":   {"rating_A": 99,  "mVAm_2cond": 1.25},
-      "50":   {"rating_A": 118, "mVAm_2cond": 0.93},
-      "70":   {"rating_A": 149, "mVAm_2cond": 0.63},
-      "95":   {"rating_A": 179, "mVAm_2cond": 0.47},
-      "120":  {"rating_A": 206, "mVAm_2cond": 0.38},
-      "150":  {"rating_A": 236, "mVAm_2cond": 0.30},
-      "185":  {"rating_A": 268, "mVAm_2cond": 0.24},
-      "240":  {"rating_A": 314, "mVAm_2cond": 0.19},
-      "300":  {"rating_A": 358, "mVAm_2cond": 0.15}
+      "1.5": {
+        "rating_A": 15,
+        "mVAm_2cond": 29
+      },
+      "2.5": {
+        "rating_A": 20,
+        "mVAm_2cond": 18
+      },
+      "4": {
+        "rating_A": 27,
+        "mVAm_2cond": 11
+      },
+      "6": {
+        "rating_A": 34,
+        "mVAm_2cond": 7.3
+      },
+      "10": {
+        "rating_A": 46,
+        "mVAm_2cond": 4.4
+      },
+      "16": {
+        "rating_A": 62,
+        "mVAm_2cond": 2.8
+      },
+      "25": {
+        "rating_A": 80,
+        "mVAm_2cond": 1.75
+      },
+      "35": {
+        "rating_A": 99,
+        "mVAm_2cond": 1.25
+      },
+      "50": {
+        "rating_A": 118,
+        "mVAm_2cond": 0.93
+      },
+      "70": {
+        "rating_A": 149,
+        "mVAm_2cond": 0.63
+      },
+      "95": {
+        "rating_A": 179,
+        "mVAm_2cond": 0.47
+      },
+      "120": {
+        "rating_A": 206,
+        "mVAm_2cond": 0.38
+      },
+      "150": {
+        "rating_A": 236,
+        "mVAm_2cond": 0.3
+      },
+      "185": {
+        "rating_A": 268,
+        "mVAm_2cond": 0.24
+      },
+      "240": {
+        "rating_A": 314,
+        "mVAm_2cond": 0.19
+      },
+      "300": {
+        "rating_A": 358,
+        "mVAm_2cond": 0.15
+      }
     },
     "copper_XLPE_90C": {
-      "1.5":  {"rating_A": 18,  "mVAm_2cond": 31},
-      "2.5":  {"rating_A": 24,  "mVAm_2cond": 19},
-      "4":    {"rating_A": 31,  "mVAm_2cond": 12},
-      "6":    {"rating_A": 40,  "mVAm_2cond": 7.8},
-      "10":   {"rating_A": 54,  "mVAm_2cond": 4.7},
-      "16":   {"rating_A": 73,  "mVAm_2cond": 3.0},
-      "25":   {"rating_A": 95,  "mVAm_2cond": 1.85},
-      "35":   {"rating_A": 117, "mVAm_2cond": 1.35},
-      "50":   {"rating_A": 140, "mVAm_2cond": 0.99},
-      "70":   {"rating_A": 178, "mVAm_2cond": 0.67},
-      "95":   {"rating_A": 215, "mVAm_2cond": 0.50},
-      "120":  {"rating_A": 249, "mVAm_2cond": 0.41},
-      "150":  {"rating_A": 286, "mVAm_2cond": 0.32},
-      "185":  {"rating_A": 328, "mVAm_2cond": 0.26},
-      "240":  {"rating_A": 383, "mVAm_2cond": 0.20},
-      "300":  {"rating_A": 434, "mVAm_2cond": 0.16}
+      "1.5": {
+        "rating_A": 18,
+        "mVAm_2cond": 31
+      },
+      "2.5": {
+        "rating_A": 24,
+        "mVAm_2cond": 19
+      },
+      "4": {
+        "rating_A": 31,
+        "mVAm_2cond": 12
+      },
+      "6": {
+        "rating_A": 40,
+        "mVAm_2cond": 7.8
+      },
+      "10": {
+        "rating_A": 54,
+        "mVAm_2cond": 4.7
+      },
+      "16": {
+        "rating_A": 73,
+        "mVAm_2cond": 3.0
+      },
+      "25": {
+        "rating_A": 95,
+        "mVAm_2cond": 1.85
+      },
+      "35": {
+        "rating_A": 117,
+        "mVAm_2cond": 1.35
+      },
+      "50": {
+        "rating_A": 140,
+        "mVAm_2cond": 0.99
+      },
+      "70": {
+        "rating_A": 178,
+        "mVAm_2cond": 0.67
+      },
+      "95": {
+        "rating_A": 215,
+        "mVAm_2cond": 0.5
+      },
+      "120": {
+        "rating_A": 249,
+        "mVAm_2cond": 0.41
+      },
+      "150": {
+        "rating_A": 286,
+        "mVAm_2cond": 0.32
+      },
+      "185": {
+        "rating_A": 328,
+        "mVAm_2cond": 0.26
+      },
+      "240": {
+        "rating_A": 383,
+        "mVAm_2cond": 0.2
+      },
+      "300": {
+        "rating_A": 434,
+        "mVAm_2cond": 0.16
+      }
     }
   },
-
   "method_C_clipped_direct": {
     "_description": "Single-core or multi-core cable clipped directly to a wall, ceiling, or surface — best air circulation of the 'in building' methods. Good for exposed wiring in plant rooms, switchrooms, and industrial areas.",
     "copper_PVC_70C": {
-      "1.5":  {"rating_A": 17.5,"mVAm_2cond": 29},
-      "2.5":  {"rating_A": 24,  "mVAm_2cond": 18},
-      "4":    {"rating_A": 32,  "mVAm_2cond": 11},
-      "6":    {"rating_A": 41,  "mVAm_2cond": 7.3},
-      "10":   {"rating_A": 57,  "mVAm_2cond": 4.4},
-      "16":   {"rating_A": 76,  "mVAm_2cond": 2.8},
-      "25":   {"rating_A": 101, "mVAm_2cond": 1.75},
-      "35":   {"rating_A": 125, "mVAm_2cond": 1.25},
-      "50":   {"rating_A": 151, "mVAm_2cond": 0.93},
-      "70":   {"rating_A": 192, "mVAm_2cond": 0.63},
-      "95":   {"rating_A": 232, "mVAm_2cond": 0.47},
-      "120":  {"rating_A": 269, "mVAm_2cond": 0.38},
-      "150":  {"rating_A": 309, "mVAm_2cond": 0.30},
-      "185":  {"rating_A": 353, "mVAm_2cond": 0.24},
-      "240":  {"rating_A": 415, "mVAm_2cond": 0.19},
-      "300":  {"rating_A": 477, "mVAm_2cond": 0.15}
+      "1.5": {
+        "rating_A": 17.5,
+        "mVAm_2cond": 29
+      },
+      "2.5": {
+        "rating_A": 24,
+        "mVAm_2cond": 18
+      },
+      "4": {
+        "rating_A": 32,
+        "mVAm_2cond": 11
+      },
+      "6": {
+        "rating_A": 41,
+        "mVAm_2cond": 7.3
+      },
+      "10": {
+        "rating_A": 57,
+        "mVAm_2cond": 4.4
+      },
+      "16": {
+        "rating_A": 76,
+        "mVAm_2cond": 2.8
+      },
+      "25": {
+        "rating_A": 101,
+        "mVAm_2cond": 1.75
+      },
+      "35": {
+        "rating_A": 125,
+        "mVAm_2cond": 1.25
+      },
+      "50": {
+        "rating_A": 151,
+        "mVAm_2cond": 0.93
+      },
+      "70": {
+        "rating_A": 192,
+        "mVAm_2cond": 0.63
+      },
+      "95": {
+        "rating_A": 232,
+        "mVAm_2cond": 0.47
+      },
+      "120": {
+        "rating_A": 269,
+        "mVAm_2cond": 0.38
+      },
+      "150": {
+        "rating_A": 309,
+        "mVAm_2cond": 0.3
+      },
+      "185": {
+        "rating_A": 353,
+        "mVAm_2cond": 0.24
+      },
+      "240": {
+        "rating_A": 415,
+        "mVAm_2cond": 0.19
+      },
+      "300": {
+        "rating_A": 477,
+        "mVAm_2cond": 0.15
+      }
     },
     "copper_XLPE_90C": {
-      "1.5":  {"rating_A": 22,  "mVAm_2cond": 31},
-      "2.5":  {"rating_A": 30,  "mVAm_2cond": 19},
-      "4":    {"rating_A": 40,  "mVAm_2cond": 12},
-      "6":    {"rating_A": 51,  "mVAm_2cond": 7.8},
-      "10":   {"rating_A": 70,  "mVAm_2cond": 4.7},
-      "16":   {"rating_A": 94,  "mVAm_2cond": 3.0},
-      "25":   {"rating_A": 119, "mVAm_2cond": 1.85},
-      "35":   {"rating_A": 148, "mVAm_2cond": 1.35},
-      "50":   {"rating_A": 179, "mVAm_2cond": 0.99},
-      "70":   {"rating_A": 229, "mVAm_2cond": 0.67},
-      "95":   {"rating_A": 278, "mVAm_2cond": 0.50},
-      "120":  {"rating_A": 322, "mVAm_2cond": 0.41},
-      "150":  {"rating_A": 371, "mVAm_2cond": 0.32},
-      "185":  {"rating_A": 424, "mVAm_2cond": 0.26},
-      "240":  {"rating_A": 500, "mVAm_2cond": 0.20},
-      "300":  {"rating_A": 576, "mVAm_2cond": 0.16}
+      "1.5": {
+        "rating_A": 22,
+        "mVAm_2cond": 31
+      },
+      "2.5": {
+        "rating_A": 30,
+        "mVAm_2cond": 19
+      },
+      "4": {
+        "rating_A": 40,
+        "mVAm_2cond": 12
+      },
+      "6": {
+        "rating_A": 51,
+        "mVAm_2cond": 7.8
+      },
+      "10": {
+        "rating_A": 70,
+        "mVAm_2cond": 4.7
+      },
+      "16": {
+        "rating_A": 94,
+        "mVAm_2cond": 3.0
+      },
+      "25": {
+        "rating_A": 119,
+        "mVAm_2cond": 1.85
+      },
+      "35": {
+        "rating_A": 148,
+        "mVAm_2cond": 1.35
+      },
+      "50": {
+        "rating_A": 179,
+        "mVAm_2cond": 0.99
+      },
+      "70": {
+        "rating_A": 229,
+        "mVAm_2cond": 0.67
+      },
+      "95": {
+        "rating_A": 278,
+        "mVAm_2cond": 0.5
+      },
+      "120": {
+        "rating_A": 322,
+        "mVAm_2cond": 0.41
+      },
+      "150": {
+        "rating_A": 371,
+        "mVAm_2cond": 0.32
+      },
+      "185": {
+        "rating_A": 424,
+        "mVAm_2cond": 0.26
+      },
+      "240": {
+        "rating_A": 500,
+        "mVAm_2cond": 0.2
+      },
+      "300": {
+        "rating_A": 576,
+        "mVAm_2cond": 0.16
+      }
     }
   },
-
   "method_D1_multicore_in_duct_in_ground": {
     "_description": "Multi-core cable installed in a conduit, duct, or pipe buried in the ground. Soil thermal resistivity reference: 0.9 K·m/W. Depth reference: 0.5m. Ambient soil: 20°C. Apply Cs and Cd correction factors for other conditions.",
     "copper_PVC_70C": {
-      "1.5":  {"rating_A": 22,  "mVAm_2cond": 29},
-      "2.5":  {"rating_A": 30,  "mVAm_2cond": 18},
-      "4":    {"rating_A": 38,  "mVAm_2cond": 11},
-      "6":    {"rating_A": 47,  "mVAm_2cond": 7.3},
-      "10":   {"rating_A": 63,  "mVAm_2cond": 4.4},
-      "16":   {"rating_A": 81,  "mVAm_2cond": 2.8},
-      "25":   {"rating_A": 104, "mVAm_2cond": 1.75},
-      "35":   {"rating_A": 125, "mVAm_2cond": 1.25},
-      "50":   {"rating_A": 148, "mVAm_2cond": 0.93},
-      "70":   {"rating_A": 183, "mVAm_2cond": 0.63},
-      "95":   {"rating_A": 216, "mVAm_2cond": 0.47},
-      "120":  {"rating_A": 246, "mVAm_2cond": 0.38},
-      "150":  {"rating_A": 278, "mVAm_2cond": 0.30},
-      "185":  {"rating_A": 312, "mVAm_2cond": 0.24},
-      "240":  {"rating_A": 361, "mVAm_2cond": 0.19},
-      "300":  {"rating_A": 407, "mVAm_2cond": 0.15}
+      "1.5": {
+        "rating_A": 22,
+        "mVAm_2cond": 29
+      },
+      "2.5": {
+        "rating_A": 30,
+        "mVAm_2cond": 18
+      },
+      "4": {
+        "rating_A": 38,
+        "mVAm_2cond": 11
+      },
+      "6": {
+        "rating_A": 47,
+        "mVAm_2cond": 7.3
+      },
+      "10": {
+        "rating_A": 63,
+        "mVAm_2cond": 4.4
+      },
+      "16": {
+        "rating_A": 81,
+        "mVAm_2cond": 2.8
+      },
+      "25": {
+        "rating_A": 104,
+        "mVAm_2cond": 1.75
+      },
+      "35": {
+        "rating_A": 125,
+        "mVAm_2cond": 1.25
+      },
+      "50": {
+        "rating_A": 148,
+        "mVAm_2cond": 0.93
+      },
+      "70": {
+        "rating_A": 183,
+        "mVAm_2cond": 0.63
+      },
+      "95": {
+        "rating_A": 216,
+        "mVAm_2cond": 0.47
+      },
+      "120": {
+        "rating_A": 246,
+        "mVAm_2cond": 0.38
+      },
+      "150": {
+        "rating_A": 278,
+        "mVAm_2cond": 0.3
+      },
+      "185": {
+        "rating_A": 312,
+        "mVAm_2cond": 0.24
+      },
+      "240": {
+        "rating_A": 361,
+        "mVAm_2cond": 0.19
+      },
+      "300": {
+        "rating_A": 407,
+        "mVAm_2cond": 0.15
+      }
     },
     "copper_XLPE_90C": {
-      "1.5":  {"rating_A": 26,  "mVAm_2cond": 31},
-      "2.5":  {"rating_A": 34,  "mVAm_2cond": 19},
-      "4":    {"rating_A": 44,  "mVAm_2cond": 12},
-      "6":    {"rating_A": 56,  "mVAm_2cond": 7.8},
-      "10":   {"rating_A": 75,  "mVAm_2cond": 4.7},
-      "16":   {"rating_A": 95,  "mVAm_2cond": 3.0},
-      "25":   {"rating_A": 121, "mVAm_2cond": 1.85},
-      "35":   {"rating_A": 146, "mVAm_2cond": 1.35},
-      "50":   {"rating_A": 173, "mVAm_2cond": 0.99},
-      "70":   {"rating_A": 213, "mVAm_2cond": 0.67},
-      "95":   {"rating_A": 252, "mVAm_2cond": 0.50},
-      "120":  {"rating_A": 287, "mVAm_2cond": 0.41},
-      "150":  {"rating_A": 324, "mVAm_2cond": 0.32},
-      "185":  {"rating_A": 363, "mVAm_2cond": 0.26},
-      "240":  {"rating_A": 419, "mVAm_2cond": 0.20},
-      "300":  {"rating_A": 474, "mVAm_2cond": 0.16}
+      "1.5": {
+        "rating_A": 26,
+        "mVAm_2cond": 31
+      },
+      "2.5": {
+        "rating_A": 34,
+        "mVAm_2cond": 19
+      },
+      "4": {
+        "rating_A": 44,
+        "mVAm_2cond": 12
+      },
+      "6": {
+        "rating_A": 56,
+        "mVAm_2cond": 7.8
+      },
+      "10": {
+        "rating_A": 75,
+        "mVAm_2cond": 4.7
+      },
+      "16": {
+        "rating_A": 95,
+        "mVAm_2cond": 3.0
+      },
+      "25": {
+        "rating_A": 121,
+        "mVAm_2cond": 1.85
+      },
+      "35": {
+        "rating_A": 146,
+        "mVAm_2cond": 1.35
+      },
+      "50": {
+        "rating_A": 173,
+        "mVAm_2cond": 0.99
+      },
+      "70": {
+        "rating_A": 213,
+        "mVAm_2cond": 0.67
+      },
+      "95": {
+        "rating_A": 252,
+        "mVAm_2cond": 0.5
+      },
+      "120": {
+        "rating_A": 287,
+        "mVAm_2cond": 0.41
+      },
+      "150": {
+        "rating_A": 324,
+        "mVAm_2cond": 0.32
+      },
+      "185": {
+        "rating_A": 363,
+        "mVAm_2cond": 0.26
+      },
+      "240": {
+        "rating_A": 419,
+        "mVAm_2cond": 0.2
+      },
+      "300": {
+        "rating_A": 474,
+        "mVAm_2cond": 0.16
+      }
     }
   },
-
   "method_D2_multicore_direct_buried": {
     "_description": "Multi-core armoured cable direct buried in ground. Soil thermal resistivity reference: 1.0 K·m/W. Depth reference: 0.7m. Ambient soil: 20°C. Higher rating than D1 due to better thermal contact with soil (no air gap in duct). Apply Cs, Cd, and Ca corrections for actual conditions.",
     "copper_PVC_70C": {
-      "1.5":  {"rating_A": 24,  "mVAm_2cond": 29},
-      "2.5":  {"rating_A": 31,  "mVAm_2cond": 18},
-      "4":    {"rating_A": 40,  "mVAm_2cond": 11},
-      "6":    {"rating_A": 51,  "mVAm_2cond": 7.3},
-      "10":   {"rating_A": 67,  "mVAm_2cond": 4.4},
-      "16":   {"rating_A": 87,  "mVAm_2cond": 2.8},
-      "25":   {"rating_A": 112, "mVAm_2cond": 1.75},
-      "35":   {"rating_A": 135, "mVAm_2cond": 1.25},
-      "50":   {"rating_A": 160, "mVAm_2cond": 0.93},
-      "70":   {"rating_A": 198, "mVAm_2cond": 0.63},
-      "95":   {"rating_A": 233, "mVAm_2cond": 0.47},
-      "120":  {"rating_A": 265, "mVAm_2cond": 0.38},
-      "150":  {"rating_A": 299, "mVAm_2cond": 0.30},
-      "185":  {"rating_A": 338, "mVAm_2cond": 0.24},
-      "240":  {"rating_A": 391, "mVAm_2cond": 0.19},
-      "300":  {"rating_A": 441, "mVAm_2cond": 0.15}
+      "1.5": {
+        "rating_A": 24,
+        "mVAm_2cond": 29
+      },
+      "2.5": {
+        "rating_A": 31,
+        "mVAm_2cond": 18
+      },
+      "4": {
+        "rating_A": 40,
+        "mVAm_2cond": 11
+      },
+      "6": {
+        "rating_A": 51,
+        "mVAm_2cond": 7.3
+      },
+      "10": {
+        "rating_A": 67,
+        "mVAm_2cond": 4.4
+      },
+      "16": {
+        "rating_A": 87,
+        "mVAm_2cond": 2.8
+      },
+      "25": {
+        "rating_A": 112,
+        "mVAm_2cond": 1.75
+      },
+      "35": {
+        "rating_A": 135,
+        "mVAm_2cond": 1.25
+      },
+      "50": {
+        "rating_A": 160,
+        "mVAm_2cond": 0.93
+      },
+      "70": {
+        "rating_A": 198,
+        "mVAm_2cond": 0.63
+      },
+      "95": {
+        "rating_A": 233,
+        "mVAm_2cond": 0.47
+      },
+      "120": {
+        "rating_A": 265,
+        "mVAm_2cond": 0.38
+      },
+      "150": {
+        "rating_A": 299,
+        "mVAm_2cond": 0.3
+      },
+      "185": {
+        "rating_A": 338,
+        "mVAm_2cond": 0.24
+      },
+      "240": {
+        "rating_A": 391,
+        "mVAm_2cond": 0.19
+      },
+      "300": {
+        "rating_A": 441,
+        "mVAm_2cond": 0.15
+      }
     },
     "copper_XLPE_90C": {
-      "1.5":  {"rating_A": 28,  "mVAm_2cond": 31},
-      "2.5":  {"rating_A": 37,  "mVAm_2cond": 19},
-      "4":    {"rating_A": 48,  "mVAm_2cond": 12},
-      "6":    {"rating_A": 61,  "mVAm_2cond": 7.8},
-      "10":   {"rating_A": 82,  "mVAm_2cond": 4.7},
-      "16":   {"rating_A": 105, "mVAm_2cond": 3.0},
-      "25":   {"rating_A": 135, "mVAm_2cond": 1.85},
-      "35":   {"rating_A": 163, "mVAm_2cond": 1.35},
-      "50":   {"rating_A": 194, "mVAm_2cond": 0.99},
-      "70":   {"rating_A": 240, "mVAm_2cond": 0.67},
-      "95":   {"rating_A": 284, "mVAm_2cond": 0.50},
-      "120":  {"rating_A": 324, "mVAm_2cond": 0.41},
-      "150":  {"rating_A": 366, "mVAm_2cond": 0.32},
-      "185":  {"rating_A": 411, "mVAm_2cond": 0.26},
-      "240":  {"rating_A": 477, "mVAm_2cond": 0.20},
-      "300":  {"rating_A": 539, "mVAm_2cond": 0.16}
+      "1.5": {
+        "rating_A": 28,
+        "mVAm_2cond": 31
+      },
+      "2.5": {
+        "rating_A": 37,
+        "mVAm_2cond": 19
+      },
+      "4": {
+        "rating_A": 48,
+        "mVAm_2cond": 12
+      },
+      "6": {
+        "rating_A": 61,
+        "mVAm_2cond": 7.8
+      },
+      "10": {
+        "rating_A": 82,
+        "mVAm_2cond": 4.7
+      },
+      "16": {
+        "rating_A": 105,
+        "mVAm_2cond": 3.0
+      },
+      "25": {
+        "rating_A": 135,
+        "mVAm_2cond": 1.85
+      },
+      "35": {
+        "rating_A": 163,
+        "mVAm_2cond": 1.35
+      },
+      "50": {
+        "rating_A": 194,
+        "mVAm_2cond": 0.99
+      },
+      "70": {
+        "rating_A": 240,
+        "mVAm_2cond": 0.67
+      },
+      "95": {
+        "rating_A": 284,
+        "mVAm_2cond": 0.5
+      },
+      "120": {
+        "rating_A": 324,
+        "mVAm_2cond": 0.41
+      },
+      "150": {
+        "rating_A": 366,
+        "mVAm_2cond": 0.32
+      },
+      "185": {
+        "rating_A": 411,
+        "mVAm_2cond": 0.26
+      },
+      "240": {
+        "rating_A": 477,
+        "mVAm_2cond": 0.2
+      },
+      "300": {
+        "rating_A": 539,
+        "mVAm_2cond": 0.16
+      }
     }
   },
-
   "method_E_multicore_free_air": {
     "_description": "Multi-core cable on perforated cable tray, cable ladder, cleated in free air. Good air circulation — higher ratings than surface-mounted methods. Standard for industrial and commercial plant rooms. Not for cables packed on solid trays (use B2 or apply grouping factor).",
     "copper_PVC_70C": {
-      "1.5":  {"rating_A": 19.5,"mVAm_2cond": 29},
-      "2.5":  {"rating_A": 27,  "mVAm_2cond": 18},
-      "4":    {"rating_A": 36,  "mVAm_2cond": 11},
-      "6":    {"rating_A": 46,  "mVAm_2cond": 7.3},
-      "10":   {"rating_A": 63,  "mVAm_2cond": 4.4},
-      "16":   {"rating_A": 85,  "mVAm_2cond": 2.8},
-      "25":   {"rating_A": 112, "mVAm_2cond": 1.75},
-      "35":   {"rating_A": 138, "mVAm_2cond": 1.25},
-      "50":   {"rating_A": 168, "mVAm_2cond": 0.93},
-      "70":   {"rating_A": 213, "mVAm_2cond": 0.63},
-      "95":   {"rating_A": 258, "mVAm_2cond": 0.47},
-      "120":  {"rating_A": 299, "mVAm_2cond": 0.38},
-      "150":  {"rating_A": 344, "mVAm_2cond": 0.30},
-      "185":  {"rating_A": 392, "mVAm_2cond": 0.24},
-      "240":  {"rating_A": 461, "mVAm_2cond": 0.19},
-      "300":  {"rating_A": 530, "mVAm_2cond": 0.15}
+      "1.5": {
+        "rating_A": 19.5,
+        "mVAm_2cond": 29
+      },
+      "2.5": {
+        "rating_A": 27,
+        "mVAm_2cond": 18
+      },
+      "4": {
+        "rating_A": 36,
+        "mVAm_2cond": 11
+      },
+      "6": {
+        "rating_A": 46,
+        "mVAm_2cond": 7.3
+      },
+      "10": {
+        "rating_A": 63,
+        "mVAm_2cond": 4.4
+      },
+      "16": {
+        "rating_A": 85,
+        "mVAm_2cond": 2.8
+      },
+      "25": {
+        "rating_A": 112,
+        "mVAm_2cond": 1.75
+      },
+      "35": {
+        "rating_A": 138,
+        "mVAm_2cond": 1.25
+      },
+      "50": {
+        "rating_A": 168,
+        "mVAm_2cond": 0.93
+      },
+      "70": {
+        "rating_A": 213,
+        "mVAm_2cond": 0.63
+      },
+      "95": {
+        "rating_A": 258,
+        "mVAm_2cond": 0.47
+      },
+      "120": {
+        "rating_A": 299,
+        "mVAm_2cond": 0.38
+      },
+      "150": {
+        "rating_A": 344,
+        "mVAm_2cond": 0.3
+      },
+      "185": {
+        "rating_A": 392,
+        "mVAm_2cond": 0.24
+      },
+      "240": {
+        "rating_A": 461,
+        "mVAm_2cond": 0.19
+      },
+      "300": {
+        "rating_A": 530,
+        "mVAm_2cond": 0.15
+      }
     },
     "copper_XLPE_90C": {
-      "1.5":  {"rating_A": 24,  "mVAm_2cond": 31},
-      "2.5":  {"rating_A": 33,  "mVAm_2cond": 19},
-      "4":    {"rating_A": 45,  "mVAm_2cond": 12},
-      "6":    {"rating_A": 57,  "mVAm_2cond": 7.8},
-      "10":   {"rating_A": 79,  "mVAm_2cond": 4.7},
-      "16":   {"rating_A": 105, "mVAm_2cond": 3.0},
-      "25":   {"rating_A": 138, "mVAm_2cond": 1.85},
-      "35":   {"rating_A": 171, "mVAm_2cond": 1.35},
-      "50":   {"rating_A": 209, "mVAm_2cond": 0.99},
-      "70":   {"rating_A": 269, "mVAm_2cond": 0.67},
-      "95":   {"rating_A": 328, "mVAm_2cond": 0.50},
-      "120":  {"rating_A": 382, "mVAm_2cond": 0.41},
-      "150":  {"rating_A": 441, "mVAm_2cond": 0.32},
-      "185":  {"rating_A": 508, "mVAm_2cond": 0.26},
-      "240":  {"rating_A": 600, "mVAm_2cond": 0.20},
-      "300":  {"rating_A": 692, "mVAm_2cond": 0.16}
+      "1.5": {
+        "rating_A": 24,
+        "mVAm_2cond": 31
+      },
+      "2.5": {
+        "rating_A": 33,
+        "mVAm_2cond": 19
+      },
+      "4": {
+        "rating_A": 45,
+        "mVAm_2cond": 12
+      },
+      "6": {
+        "rating_A": 57,
+        "mVAm_2cond": 7.8
+      },
+      "10": {
+        "rating_A": 79,
+        "mVAm_2cond": 4.7
+      },
+      "16": {
+        "rating_A": 105,
+        "mVAm_2cond": 3.0
+      },
+      "25": {
+        "rating_A": 138,
+        "mVAm_2cond": 1.85
+      },
+      "35": {
+        "rating_A": 171,
+        "mVAm_2cond": 1.35
+      },
+      "50": {
+        "rating_A": 209,
+        "mVAm_2cond": 0.99
+      },
+      "70": {
+        "rating_A": 269,
+        "mVAm_2cond": 0.67
+      },
+      "95": {
+        "rating_A": 328,
+        "mVAm_2cond": 0.5
+      },
+      "120": {
+        "rating_A": 382,
+        "mVAm_2cond": 0.41
+      },
+      "150": {
+        "rating_A": 441,
+        "mVAm_2cond": 0.32
+      },
+      "185": {
+        "rating_A": 508,
+        "mVAm_2cond": 0.26
+      },
+      "240": {
+        "rating_A": 600,
+        "mVAm_2cond": 0.2
+      },
+      "300": {
+        "rating_A": 692,
+        "mVAm_2cond": 0.16
+      }
     }
   },
-
   "method_F_single_core_trefoil_or_flat_touching": {
     "_description": "Three single-core cables in trefoil formation (or flat touching) in free air. Used for large power submains. Sizes typically start at 16mm² — smaller sizes use multi-core cables.",
     "_note": "Trefoil (one cable on top of two) gives slightly lower rating than flat touching. Use trefoil values (lower) for conservative design. The grouping factor for flat touching is already included in Method F ratings.",
     "copper_PVC_70C": {
-      "16":  {"rating_A": 91,  "mVAm_2cond": 2.8},
-      "25":  {"rating_A": 120, "mVAm_2cond": 1.75},
-      "35":  {"rating_A": 148, "mVAm_2cond": 1.25},
-      "50":  {"rating_A": 178, "mVAm_2cond": 0.93},
-      "70":  {"rating_A": 228, "mVAm_2cond": 0.63},
-      "95":  {"rating_A": 273, "mVAm_2cond": 0.47},
-      "120": {"rating_A": 315, "mVAm_2cond": 0.38},
-      "150": {"rating_A": 360, "mVAm_2cond": 0.30},
-      "185": {"rating_A": 411, "mVAm_2cond": 0.24},
-      "240": {"rating_A": 482, "mVAm_2cond": 0.19},
-      "300": {"rating_A": 551, "mVAm_2cond": 0.15},
-      "400": {"rating_A": 640, "mVAm_2cond": 0.116},
-      "500": {"rating_A": 726, "mVAm_2cond": 0.094},
-      "630": {"rating_A": 818, "mVAm_2cond": 0.076}
+      "16": {
+        "rating_A": 91,
+        "mVAm_2cond": 2.8
+      },
+      "25": {
+        "rating_A": 120,
+        "mVAm_2cond": 1.75
+      },
+      "35": {
+        "rating_A": 148,
+        "mVAm_2cond": 1.25
+      },
+      "50": {
+        "rating_A": 178,
+        "mVAm_2cond": 0.93
+      },
+      "70": {
+        "rating_A": 228,
+        "mVAm_2cond": 0.63
+      },
+      "95": {
+        "rating_A": 273,
+        "mVAm_2cond": 0.47
+      },
+      "120": {
+        "rating_A": 315,
+        "mVAm_2cond": 0.38
+      },
+      "150": {
+        "rating_A": 360,
+        "mVAm_2cond": 0.3
+      },
+      "185": {
+        "rating_A": 411,
+        "mVAm_2cond": 0.24
+      },
+      "240": {
+        "rating_A": 482,
+        "mVAm_2cond": 0.19
+      },
+      "300": {
+        "rating_A": 551,
+        "mVAm_2cond": 0.15
+      },
+      "400": {
+        "rating_A": 640,
+        "mVAm_2cond": 0.116
+      },
+      "500": {
+        "rating_A": 726,
+        "mVAm_2cond": 0.094
+      },
+      "630": {
+        "rating_A": 818,
+        "mVAm_2cond": 0.076
+      }
     },
     "copper_XLPE_90C": {
-      "16":  {"rating_A": 113, "mVAm_2cond": 3.0},
-      "25":  {"rating_A": 149, "mVAm_2cond": 1.85},
-      "35":  {"rating_A": 184, "mVAm_2cond": 1.35},
-      "50":  {"rating_A": 222, "mVAm_2cond": 0.99},
-      "70":  {"rating_A": 286, "mVAm_2cond": 0.67},
-      "95":  {"rating_A": 342, "mVAm_2cond": 0.50},
-      "120": {"rating_A": 396, "mVAm_2cond": 0.41},
-      "150": {"rating_A": 455, "mVAm_2cond": 0.32},
-      "185": {"rating_A": 521, "mVAm_2cond": 0.26},
-      "240": {"rating_A": 615, "mVAm_2cond": 0.20},
-      "300": {"rating_A": 709, "mVAm_2cond": 0.16},
-      "400": {"rating_A": 827, "mVAm_2cond": 0.123},
-      "500": {"rating_A": 942, "mVAm_2cond": 0.100},
-      "630": {"rating_A": 1080,"mVAm_2cond": 0.079}
+      "16": {
+        "rating_A": 113,
+        "mVAm_2cond": 3.0
+      },
+      "25": {
+        "rating_A": 149,
+        "mVAm_2cond": 1.85
+      },
+      "35": {
+        "rating_A": 184,
+        "mVAm_2cond": 1.35
+      },
+      "50": {
+        "rating_A": 222,
+        "mVAm_2cond": 0.99
+      },
+      "70": {
+        "rating_A": 286,
+        "mVAm_2cond": 0.67
+      },
+      "95": {
+        "rating_A": 342,
+        "mVAm_2cond": 0.5
+      },
+      "120": {
+        "rating_A": 396,
+        "mVAm_2cond": 0.41
+      },
+      "150": {
+        "rating_A": 455,
+        "mVAm_2cond": 0.32
+      },
+      "185": {
+        "rating_A": 521,
+        "mVAm_2cond": 0.26
+      },
+      "240": {
+        "rating_A": 615,
+        "mVAm_2cond": 0.2
+      },
+      "300": {
+        "rating_A": 709,
+        "mVAm_2cond": 0.16
+      },
+      "400": {
+        "rating_A": 827,
+        "mVAm_2cond": 0.123
+      },
+      "500": {
+        "rating_A": 942,
+        "mVAm_2cond": 0.1
+      },
+      "630": {
+        "rating_A": 1080,
+        "mVAm_2cond": 0.079
+      }
     }
   },
-
   "method_G_single_core_flat_spaced": {
     "_description": "Three single-core cables in flat formation, spaced at least one cable diameter apart (clear air gap between cables). Maximum air cooling — highest ratings. Used for very large submains where reducing impedance is critical.",
     "copper_PVC_70C": {
-      "16":  {"rating_A": 100, "mVAm_2cond": 2.8},
-      "25":  {"rating_A": 133, "mVAm_2cond": 1.75},
-      "35":  {"rating_A": 164, "mVAm_2cond": 1.25},
-      "50":  {"rating_A": 198, "mVAm_2cond": 0.93},
-      "70":  {"rating_A": 253, "mVAm_2cond": 0.63},
-      "95":  {"rating_A": 304, "mVAm_2cond": 0.47},
-      "120": {"rating_A": 350, "mVAm_2cond": 0.38},
-      "150": {"rating_A": 402, "mVAm_2cond": 0.30},
-      "185": {"rating_A": 460, "mVAm_2cond": 0.24},
-      "240": {"rating_A": 541, "mVAm_2cond": 0.19},
-      "300": {"rating_A": 621, "mVAm_2cond": 0.15},
-      "400": {"rating_A": 723, "mVAm_2cond": 0.116},
-      "500": {"rating_A": 822, "mVAm_2cond": 0.094},
-      "630": {"rating_A": 927, "mVAm_2cond": 0.076}
+      "16": {
+        "rating_A": 100,
+        "mVAm_2cond": 2.8
+      },
+      "25": {
+        "rating_A": 133,
+        "mVAm_2cond": 1.75
+      },
+      "35": {
+        "rating_A": 164,
+        "mVAm_2cond": 1.25
+      },
+      "50": {
+        "rating_A": 198,
+        "mVAm_2cond": 0.93
+      },
+      "70": {
+        "rating_A": 253,
+        "mVAm_2cond": 0.63
+      },
+      "95": {
+        "rating_A": 304,
+        "mVAm_2cond": 0.47
+      },
+      "120": {
+        "rating_A": 350,
+        "mVAm_2cond": 0.38
+      },
+      "150": {
+        "rating_A": 402,
+        "mVAm_2cond": 0.3
+      },
+      "185": {
+        "rating_A": 460,
+        "mVAm_2cond": 0.24
+      },
+      "240": {
+        "rating_A": 541,
+        "mVAm_2cond": 0.19
+      },
+      "300": {
+        "rating_A": 621,
+        "mVAm_2cond": 0.15
+      },
+      "400": {
+        "rating_A": 723,
+        "mVAm_2cond": 0.116
+      },
+      "500": {
+        "rating_A": 822,
+        "mVAm_2cond": 0.094
+      },
+      "630": {
+        "rating_A": 927,
+        "mVAm_2cond": 0.076
+      }
     },
     "copper_XLPE_90C": {
-      "16":  {"rating_A": 125, "mVAm_2cond": 3.0},
-      "25":  {"rating_A": 166, "mVAm_2cond": 1.85},
-      "35":  {"rating_A": 205, "mVAm_2cond": 1.35},
-      "50":  {"rating_A": 249, "mVAm_2cond": 0.99},
-      "70":  {"rating_A": 321, "mVAm_2cond": 0.67},
-      "95":  {"rating_A": 386, "mVAm_2cond": 0.50},
-      "120": {"rating_A": 448, "mVAm_2cond": 0.41},
-      "150": {"rating_A": 517, "mVAm_2cond": 0.32},
-      "185": {"rating_A": 594, "mVAm_2cond": 0.26},
-      "240": {"rating_A": 703, "mVAm_2cond": 0.20},
-      "300": {"rating_A": 812, "mVAm_2cond": 0.16},
-      "400": {"rating_A": 948, "mVAm_2cond": 0.123},
-      "500": {"rating_A": 1082,"mVAm_2cond": 0.100},
-      "630": {"rating_A": 1243,"mVAm_2cond": 0.079}
+      "16": {
+        "rating_A": 125,
+        "mVAm_2cond": 3.0
+      },
+      "25": {
+        "rating_A": 166,
+        "mVAm_2cond": 1.85
+      },
+      "35": {
+        "rating_A": 205,
+        "mVAm_2cond": 1.35
+      },
+      "50": {
+        "rating_A": 249,
+        "mVAm_2cond": 0.99
+      },
+      "70": {
+        "rating_A": 321,
+        "mVAm_2cond": 0.67
+      },
+      "95": {
+        "rating_A": 386,
+        "mVAm_2cond": 0.5
+      },
+      "120": {
+        "rating_A": 448,
+        "mVAm_2cond": 0.41
+      },
+      "150": {
+        "rating_A": 517,
+        "mVAm_2cond": 0.32
+      },
+      "185": {
+        "rating_A": 594,
+        "mVAm_2cond": 0.26
+      },
+      "240": {
+        "rating_A": 703,
+        "mVAm_2cond": 0.2
+      },
+      "300": {
+        "rating_A": 812,
+        "mVAm_2cond": 0.16
+      },
+      "400": {
+        "rating_A": 948,
+        "mVAm_2cond": 0.123
+      },
+      "500": {
+        "rating_A": 1082,
+        "mVAm_2cond": 0.1
+      },
+      "630": {
+        "rating_A": 1243,
+        "mVAm_2cond": 0.079
+      }
     }
   },
-
   "conductor_resistance_reference": {
     "_title": "Copper conductor DC resistance at 20°C and operating temperature (per metre, per conductor)",
     "_basis": "IEC 60228 Class 1/2 stranded conductors. Resistance at temperature T: R_T = R_20 × [1 + 0.00393 × (T - 20)]",
     "_units": "mΩ/m per conductor",
     "at_20C": {
-      "1.5": 12.10, "2.5": 7.41, "4": 4.61, "6": 3.08, "10": 1.83,
-      "16": 1.15, "25": 0.727, "35": 0.524, "50": 0.387,
-      "70": 0.268, "95": 0.193, "120": 0.153, "150": 0.124,
-      "185": 0.0991, "240": 0.0754, "300": 0.0601,
-      "400": 0.0470, "500": 0.0366, "630": 0.0283
+      "1.5": 12.1,
+      "2.5": 7.41,
+      "4": 4.61,
+      "6": 3.08,
+      "10": 1.83,
+      "16": 1.15,
+      "25": 0.727,
+      "35": 0.524,
+      "50": 0.387,
+      "70": 0.268,
+      "95": 0.193,
+      "120": 0.153,
+      "150": 0.124,
+      "185": 0.0991,
+      "240": 0.0754,
+      "300": 0.0601,
+      "400": 0.047,
+      "500": 0.0366,
+      "630": 0.0283
     },
     "at_70C_PVC_max": {
       "_factor": "1.197",
-      "1.5": 14.48, "2.5": 8.87, "4": 5.52, "6": 3.69, "10": 2.19,
-      "16": 1.38, "25": 0.870, "35": 0.627, "50": 0.463,
-      "70": 0.321, "95": 0.231, "120": 0.183, "150": 0.148,
-      "185": 0.119, "240": 0.0902, "300": 0.0719
+      "1.5": 14.48,
+      "2.5": 8.87,
+      "4": 5.52,
+      "6": 3.69,
+      "10": 2.19,
+      "16": 1.38,
+      "25": 0.87,
+      "35": 0.627,
+      "50": 0.463,
+      "70": 0.321,
+      "95": 0.231,
+      "120": 0.183,
+      "150": 0.148,
+      "185": 0.119,
+      "240": 0.0902,
+      "300": 0.0719
     },
     "at_90C_XLPE_max": {
       "_factor": "1.275",
-      "1.5": 15.43, "2.5": 9.45, "4": 5.88, "6": 3.93, "10": 2.33,
-      "16": 1.47, "25": 0.927, "35": 0.668, "50": 0.494,
-      "70": 0.342, "95": 0.246, "120": 0.195, "150": 0.158,
-      "185": 0.126, "240": 0.0961, "300": 0.0766
+      "1.5": 15.43,
+      "2.5": 9.45,
+      "4": 5.88,
+      "6": 3.93,
+      "10": 2.33,
+      "16": 1.47,
+      "25": 0.927,
+      "35": 0.668,
+      "50": 0.494,
+      "70": 0.342,
+      "95": 0.246,
+      "120": 0.195,
+      "150": 0.158,
+      "185": 0.126,
+      "240": 0.0961,
+      "300": 0.0766
     }
   },
-
   "method_selection_guide": {
     "final_circuit_in_building": {
       "concealed_in_insulated_wall": "Method A2 (lowest rating — ensure adequate size)",

@@ -1,14 +1,16 @@
 {
+  "clause_ref": "IEC-60364-4-43 2017:Annex-A-Device-Curves",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60364-5-53 / IEC 60898 / IEC 60269 — Protective Device Time/Current Characteristics and Selectivity",
   "_reference": "IEC 60364-5-53:2019, IEC 60898-1:2015 (MCBs), IEC 60269-1:2006+AMD1:2009+AMD2:2014 (fuses), IEC 61008/61009 (RCDs)",
   "_version": "1.0.0",
   "_note": "Time/current curves define the operating boundaries of protective devices. Designers use these to verify ADS disconnection times, selectivity between upstream and downstream devices, and to calculate Zs_max. All values are for guidance; always verify against manufacturer datasheets for coordination studies.",
-
   "mcb_characteristics": {
     "_title": "Miniature Circuit Breaker — Type B, C, D Characteristics (IEC 60898-1)",
     "_standard": "IEC 60898-1:2015",
     "_note": "MCBs have two independent trip elements: thermal (overload, inverse time) and magnetic (short circuit, instantaneous). The instantaneous range is expressed as multiples of rated current In.",
-
     "thermal_region_all_types": {
       "_description": "Thermal trip is identical for Types B, C, and D at the same In rating",
       "I1_conventional_non_trip_current": {
@@ -23,79 +25,208 @@
       },
       "_implication": "At 1.45 × In, the MCB will eventually trip — but it may take up to 1 hour. Do not rely on MCB thermal protection for fast disconnection at mild overloads. Cable Iz must be ≥ I₂/1.45 = In to satisfy the Fundamental Rule."
     },
-
     "type_B": {
       "_description": "Type B: magnetic instantaneous trip at 3–5× In. Standard general-purpose MCB for resistive loads, lighting, domestic circuits. Lowest magnetic trip threshold.",
-      "magnetic_trip_range": {"lower_Ia": "3 × In", "upper_Ia": "5 × In"},
+      "magnetic_trip_range": {
+        "lower_Ia": "3 × In",
+        "upper_Ia": "5 × In"
+      },
       "Ia_for_ADS_calculation": "5 × In (upper boundary used to find worst-case Zs_max)",
       "Zs_max_formula": "Zs_max = U₀ / (5 × In)  [U₀ = 230V for most systems]",
-      "applications": ["Domestic lighting circuits", "Domestic socket outlet circuits", "Resistive heating circuits", "Circuits with no significant inrush current"],
+      "applications": [
+        "Domestic lighting circuits",
+        "Domestic socket outlet circuits",
+        "Resistive heating circuits",
+        "Circuits with no significant inrush current"
+      ],
       "Zs_max_at_230V": {
-        "6":   {"Ia_A": 30,  "Zs_max_ohm": 7.67},
-        "10":  {"Ia_A": 50,  "Zs_max_ohm": 4.60},
-        "16":  {"Ia_A": 80,  "Zs_max_ohm": 2.88},
-        "20":  {"Ia_A": 100, "Zs_max_ohm": 2.30},
-        "25":  {"Ia_A": 125, "Zs_max_ohm": 1.84},
-        "32":  {"Ia_A": 160, "Zs_max_ohm": 1.44},
-        "40":  {"Ia_A": 200, "Zs_max_ohm": 1.15},
-        "50":  {"Ia_A": 250, "Zs_max_ohm": 0.92},
-        "63":  {"Ia_A": 315, "Zs_max_ohm": 0.73},
-        "80":  {"Ia_A": 400, "Zs_max_ohm": 0.575},
-        "100": {"Ia_A": 500, "Zs_max_ohm": 0.46},
-        "125": {"Ia_A": 625, "Zs_max_ohm": 0.37}
+        "6": {
+          "Ia_A": 30,
+          "Zs_max_ohm": 7.67
+        },
+        "10": {
+          "Ia_A": 50,
+          "Zs_max_ohm": 4.6
+        },
+        "16": {
+          "Ia_A": 80,
+          "Zs_max_ohm": 2.88
+        },
+        "20": {
+          "Ia_A": 100,
+          "Zs_max_ohm": 2.3
+        },
+        "25": {
+          "Ia_A": 125,
+          "Zs_max_ohm": 1.84
+        },
+        "32": {
+          "Ia_A": 160,
+          "Zs_max_ohm": 1.44
+        },
+        "40": {
+          "Ia_A": 200,
+          "Zs_max_ohm": 1.15
+        },
+        "50": {
+          "Ia_A": 250,
+          "Zs_max_ohm": 0.92
+        },
+        "63": {
+          "Ia_A": 315,
+          "Zs_max_ohm": 0.73
+        },
+        "80": {
+          "Ia_A": 400,
+          "Zs_max_ohm": 0.575
+        },
+        "100": {
+          "Ia_A": 500,
+          "Zs_max_ohm": 0.46
+        },
+        "125": {
+          "Ia_A": 625,
+          "Zs_max_ohm": 0.37
+        }
       }
     },
-
     "type_C": {
       "_description": "Type C: magnetic instantaneous trip at 5–10× In. General-purpose MCB for mixed inductive loads, small motors, transformers with moderate inrush. Most widely used commercial type.",
-      "magnetic_trip_range": {"lower_Ia": "5 × In", "upper_Ia": "10 × In"},
+      "magnetic_trip_range": {
+        "lower_Ia": "5 × In",
+        "upper_Ia": "10 × In"
+      },
       "Ia_for_ADS_calculation": "10 × In",
       "Zs_max_formula": "Zs_max = U₀ / (10 × In)  [U₀ = 230V]",
-      "applications": ["Commercial socket outlet circuits", "Fluorescent lighting with ballasts", "Small motor starters (direct-on-line ≤ ~2.2kW)", "HVAC fan coil units", "Office equipment"],
+      "applications": [
+        "Commercial socket outlet circuits",
+        "Fluorescent lighting with ballasts",
+        "Small motor starters (direct-on-line ≤ ~2.2kW)",
+        "HVAC fan coil units",
+        "Office equipment"
+      ],
       "Zs_max_at_230V": {
-        "6":   {"Ia_A": 60,  "Zs_max_ohm": 3.83},
-        "10":  {"Ia_A": 100, "Zs_max_ohm": 2.30},
-        "16":  {"Ia_A": 160, "Zs_max_ohm": 1.44},
-        "20":  {"Ia_A": 200, "Zs_max_ohm": 1.15},
-        "25":  {"Ia_A": 250, "Zs_max_ohm": 0.92},
-        "32":  {"Ia_A": 320, "Zs_max_ohm": 0.72},
-        "40":  {"Ia_A": 400, "Zs_max_ohm": 0.575},
-        "50":  {"Ia_A": 500, "Zs_max_ohm": 0.46},
-        "63":  {"Ia_A": 630, "Zs_max_ohm": 0.365},
-        "80":  {"Ia_A": 800, "Zs_max_ohm": 0.288},
-        "100": {"Ia_A": 1000,"Zs_max_ohm": 0.230},
-        "125": {"Ia_A": 1250,"Zs_max_ohm": 0.184}
+        "6": {
+          "Ia_A": 60,
+          "Zs_max_ohm": 3.83
+        },
+        "10": {
+          "Ia_A": 100,
+          "Zs_max_ohm": 2.3
+        },
+        "16": {
+          "Ia_A": 160,
+          "Zs_max_ohm": 1.44
+        },
+        "20": {
+          "Ia_A": 200,
+          "Zs_max_ohm": 1.15
+        },
+        "25": {
+          "Ia_A": 250,
+          "Zs_max_ohm": 0.92
+        },
+        "32": {
+          "Ia_A": 320,
+          "Zs_max_ohm": 0.72
+        },
+        "40": {
+          "Ia_A": 400,
+          "Zs_max_ohm": 0.575
+        },
+        "50": {
+          "Ia_A": 500,
+          "Zs_max_ohm": 0.46
+        },
+        "63": {
+          "Ia_A": 630,
+          "Zs_max_ohm": 0.365
+        },
+        "80": {
+          "Ia_A": 800,
+          "Zs_max_ohm": 0.288
+        },
+        "100": {
+          "Ia_A": 1000,
+          "Zs_max_ohm": 0.23
+        },
+        "125": {
+          "Ia_A": 1250,
+          "Zs_max_ohm": 0.184
+        }
       }
     },
-
     "type_D": {
       "_description": "Type D: magnetic instantaneous trip at 10–20× In. High inrush applications: transformers, motors with star-delta starting, welding equipment, large UPS. Not suitable as the only overcurrent device on final circuits — paired with downstream protection for cables.",
-      "magnetic_trip_range": {"lower_Ia": "10 × In", "upper_Ia": "20 × In"},
+      "magnetic_trip_range": {
+        "lower_Ia": "10 × In",
+        "upper_Ia": "20 × In"
+      },
       "Ia_for_ADS_calculation": "20 × In",
       "Zs_max_formula": "Zs_max = U₀ / (20 × In)  [U₀ = 230V]",
-      "applications": ["Transformer primary circuits", "Large motor circuits (DOL starting)", "Welding power supplies", "X-ray equipment", "Large UPS and battery chargers"],
+      "applications": [
+        "Transformer primary circuits",
+        "Large motor circuits (DOL starting)",
+        "Welding power supplies",
+        "X-ray equipment",
+        "Large UPS and battery chargers"
+      ],
       "Zs_max_at_230V": {
-        "6":   {"Ia_A": 120, "Zs_max_ohm": 1.92},
-        "10":  {"Ia_A": 200, "Zs_max_ohm": 1.15},
-        "16":  {"Ia_A": 320, "Zs_max_ohm": 0.72},
-        "20":  {"Ia_A": 400, "Zs_max_ohm": 0.575},
-        "25":  {"Ia_A": 500, "Zs_max_ohm": 0.46},
-        "32":  {"Ia_A": 640, "Zs_max_ohm": 0.359},
-        "40":  {"Ia_A": 800, "Zs_max_ohm": 0.288},
-        "50":  {"Ia_A": 1000,"Zs_max_ohm": 0.230},
-        "63":  {"Ia_A": 1260,"Zs_max_ohm": 0.183},
-        "80":  {"Ia_A": 1600,"Zs_max_ohm": 0.144},
-        "100": {"Ia_A": 2000,"Zs_max_ohm": 0.115},
-        "125": {"Ia_A": 2500,"Zs_max_ohm": 0.092}
+        "6": {
+          "Ia_A": 120,
+          "Zs_max_ohm": 1.92
+        },
+        "10": {
+          "Ia_A": 200,
+          "Zs_max_ohm": 1.15
+        },
+        "16": {
+          "Ia_A": 320,
+          "Zs_max_ohm": 0.72
+        },
+        "20": {
+          "Ia_A": 400,
+          "Zs_max_ohm": 0.575
+        },
+        "25": {
+          "Ia_A": 500,
+          "Zs_max_ohm": 0.46
+        },
+        "32": {
+          "Ia_A": 640,
+          "Zs_max_ohm": 0.359
+        },
+        "40": {
+          "Ia_A": 800,
+          "Zs_max_ohm": 0.288
+        },
+        "50": {
+          "Ia_A": 1000,
+          "Zs_max_ohm": 0.23
+        },
+        "63": {
+          "Ia_A": 1260,
+          "Zs_max_ohm": 0.183
+        },
+        "80": {
+          "Ia_A": 1600,
+          "Zs_max_ohm": 0.144
+        },
+        "100": {
+          "Ia_A": 2000,
+          "Zs_max_ohm": 0.115
+        },
+        "125": {
+          "Ia_A": 2500,
+          "Zs_max_ohm": 0.092
+        }
       }
     }
   },
-
   "gG_fuse_characteristics": {
     "_title": "gG (General purpose) fuse — IEC 60269-1/2",
     "_standard": "IEC 60269-1:2006+AMD1:2009+AMD2:2014",
     "_description": "gG fuses are general-purpose current-limiting fuses for full-range protection of cables against overload and short circuit. They have inverse time-current characteristics. The 'g' prefix means full-range breaking capacity; the 'G' suffix means general purpose (as opposed to 'aM' for motor protection).",
-
     "conventional_values": {
       "I1_non_fusing": {
         "value": "1.25 × In",
@@ -109,41 +240,83 @@
         "_note": "Higher than MCB (1.45×) — gG fuses are more tolerant of sustained overloads. Cable Iz must satisfy: 1.6 × In ≤ 1.45 × Iz → Iz ≥ 1.10 × In (approximately)"
       }
     },
-
     "ADS_Zs_max_at_230V": {
       "_description": "Maximum permissible Zs at 230V U₀ for 0.4s disconnection time using gG fuses. Values derived from IEC 60269 time-current curves at t=0.4s (Ia is the operating current at that time).",
       "_note": "These values are approximate — verify against the specific manufacturer's time-current curve for critical installations.",
-      "6":   {"Ia_A_at_0_4s": 65,   "Zs_max_ohm": 3.54},
-      "10":  {"Ia_A_at_0_4s": 90,   "Zs_max_ohm": 2.56},
-      "16":  {"Ia_A_at_0_4s": 130,  "Zs_max_ohm": 1.77},
-      "20":  {"Ia_A_at_0_4s": 165,  "Zs_max_ohm": 1.39},
-      "25":  {"Ia_A_at_0_4s": 200,  "Zs_max_ohm": 1.15},
-      "32":  {"Ia_A_at_0_4s": 250,  "Zs_max_ohm": 0.92},
-      "40":  {"Ia_A_at_0_4s": 320,  "Zs_max_ohm": 0.72},
-      "50":  {"Ia_A_at_0_4s": 390,  "Zs_max_ohm": 0.59},
-      "63":  {"Ia_A_at_0_4s": 490,  "Zs_max_ohm": 0.47},
-      "80":  {"Ia_A_at_0_4s": 620,  "Zs_max_ohm": 0.37},
-      "100": {"Ia_A_at_0_4s": 780,  "Zs_max_ohm": 0.295},
-      "125": {"Ia_A_at_0_4s": 990,  "Zs_max_ohm": 0.232},
-      "160": {"Ia_A_at_0_4s": 1250, "Zs_max_ohm": 0.184},
-      "200": {"Ia_A_at_0_4s": 1550, "Zs_max_ohm": 0.148}
+      "6": {
+        "Ia_A_at_0_4s": 65,
+        "Zs_max_ohm": 3.54
+      },
+      "10": {
+        "Ia_A_at_0_4s": 90,
+        "Zs_max_ohm": 2.56
+      },
+      "16": {
+        "Ia_A_at_0_4s": 130,
+        "Zs_max_ohm": 1.77
+      },
+      "20": {
+        "Ia_A_at_0_4s": 165,
+        "Zs_max_ohm": 1.39
+      },
+      "25": {
+        "Ia_A_at_0_4s": 200,
+        "Zs_max_ohm": 1.15
+      },
+      "32": {
+        "Ia_A_at_0_4s": 250,
+        "Zs_max_ohm": 0.92
+      },
+      "40": {
+        "Ia_A_at_0_4s": 320,
+        "Zs_max_ohm": 0.72
+      },
+      "50": {
+        "Ia_A_at_0_4s": 390,
+        "Zs_max_ohm": 0.59
+      },
+      "63": {
+        "Ia_A_at_0_4s": 490,
+        "Zs_max_ohm": 0.47
+      },
+      "80": {
+        "Ia_A_at_0_4s": 620,
+        "Zs_max_ohm": 0.37
+      },
+      "100": {
+        "Ia_A_at_0_4s": 780,
+        "Zs_max_ohm": 0.295
+      },
+      "125": {
+        "Ia_A_at_0_4s": 990,
+        "Zs_max_ohm": 0.232
+      },
+      "160": {
+        "Ia_A_at_0_4s": 1250,
+        "Zs_max_ohm": 0.184
+      },
+      "200": {
+        "Ia_A_at_0_4s": 1550,
+        "Zs_max_ohm": 0.148
+      }
     }
   },
-
   "aM_fuse_characteristics": {
     "_title": "aM (Motor protection) fuse — IEC 60269-4",
     "_standard": "IEC 60269-4",
     "_description": "aM (partial range) fuses protect motors against short circuit only — they do NOT protect against overload. Must be paired with a thermal overload relay or motor protection relay for full protection. They have a high inrush tolerance and do not blow on motor starting currents.",
     "use_with": "Thermal overload relay (separate device) for overload protection",
     "I2_fusing_conventional": "Not rated for conventional overload — no standard I₂/I₁ ratio",
-    "typical_applications": ["Motor starter assemblies", "Contactor circuits", "DOL starters where separate overload protection is fitted"]
+    "typical_applications": [
+      "Motor starter assemblies",
+      "Contactor circuits",
+      "DOL starters where separate overload protection is fitted"
+    ]
   },
-
   "rcd_trip_characteristics": {
     "_title": "RCD / RCCB Residual Current Trip Times (IEC 61008-1, IEC 61009-1)",
     "_standard": "IEC 61008-1:2010+AMD1:2012+AMD2:2016 (RCCBs), IEC 61009-1:2010+AMD1:2012+AMD2:2016 (RCBOs)",
     "_note": "RCDs are classified by residual current waveform type and by time-delay class. The trip time is measured from the moment the residual current reaches IΔn.",
-
     "rcd_types_by_waveform": {
       "type_AC": {
         "description": "Detects sinusoidal AC residual current only",
@@ -165,20 +338,36 @@
         "note": "More expensive and larger than Type A — specify only where DC fault current is a realistic possibility"
       }
     },
-
     "trip_time_requirements": {
       "_reference": "IEC 61008-1 Table 3 and IEC 60364-4-41 Clause 415.1",
       "general_type": {
-        "at_IΔn": {"max_trip_time_ms": 300, "note": "Must not trip below 0.5×IΔn (non-operating current)"},
-        "at_2x_IΔn": {"max_trip_time_ms": 150},
-        "at_5x_IΔn": {"max_trip_time_ms": 40},
-        "at_500mA_residual": {"max_trip_time_ms": 40, "note": "For devices rated ≤30mA, 500mA test applies"}
+        "at_IΔn": {
+          "max_trip_time_ms": 300,
+          "note": "Must not trip below 0.5×IΔn (non-operating current)"
+        },
+        "at_2x_IΔn": {
+          "max_trip_time_ms": 150
+        },
+        "at_5x_IΔn": {
+          "max_trip_time_ms": 40
+        },
+        "at_500mA_residual": {
+          "max_trip_time_ms": 40,
+          "note": "For devices rated ≤30mA, 500mA test applies"
+        }
       },
       "S_type_time_delayed": {
         "_description": "Selective (S-type) RCDs for discrimination — installed at distribution board level upstream of socket-outlet RCDs",
-        "at_IΔn": {"min_non_trip_ms": 130, "max_trip_ms": 500},
-        "at_2x_IΔn": {"max_trip_ms": 200},
-        "at_5x_IΔn": {"max_trip_ms": 150},
+        "at_IΔn": {
+          "min_non_trip_ms": 130,
+          "max_trip_ms": 500
+        },
+        "at_2x_IΔn": {
+          "max_trip_ms": 200
+        },
+        "at_5x_IΔn": {
+          "max_trip_ms": 150
+        },
         "use": "Installed upstream of final circuit RCDs to prevent upstream tripping on a downstream fault"
       },
       "socket_outlet_RCD_IEC_requirement": {
@@ -188,16 +377,21 @@
         "note": "Socket outlets ≤20A in non-specialist locations require 30mA protection. Many countries mandate 30mA RCD protection on all final circuits."
       }
     },
-
-    "standard_IΔn_ratings_mA": [6, 10, 30, 100, 300, 500, 1000],
+    "standard_IΔn_ratings_mA": [
+      6,
+      10,
+      30,
+      100,
+      300,
+      500,
+      1000
+    ],
     "non_operating_current": "0.5 × IΔn (RCD must NOT trip below this value at any residual current)"
   },
-
   "selectivity_methods": {
     "_title": "Discrimination / Selectivity between overcurrent protective devices",
     "_reference": "IEC 60364-5-53:2019, Clause 536",
     "_note": "Selectivity (discrimination) means that on a fault, only the device directly protecting the faulted circuit operates — upstream devices remain closed. Total selectivity means the upstream device never operates for any fault on the downstream circuit.",
-
     "current_selectivity": {
       "description": "Upstream device has a higher rated current so its thermal trip region is above the downstream device's instantaneous trip region. Effective only for overload and modest fault currents.",
       "condition": "Instantaneous trip of downstream device < non-tripping region of upstream device at the same current",
@@ -218,14 +412,12 @@
       "when_applicable": "Only with electronic trip units in MCCBs and ACBs. Requires communication link.",
       "advantage": "Achieves total selectivity without energy penalty"
     },
-
     "rcd_selectivity": {
       "description": "Upstream S-type RCD (130–500ms minimum delay) coordinates with downstream general-type RCDs (≤300ms) and socket-outlet RCDs (≤40ms at IΔn).",
       "typical_arrangement": "Consumer unit: 100mA S-type RCD upstream. Final circuit MCBs: 30mA general-type RCBOs.",
       "design_check": "S-type minimum non-trip time (130ms) > downstream general type maximum trip time at IΔn (300ms)? Note: this creates an apparent overlap — resolved because the S-type is at a higher IΔn rating (typically 100mA vs 30mA final circuit) so they cannot both see the same fault level."
     }
   },
-
   "let_through_energy": {
     "_title": "I²t Let-Through Energy",
     "_reference": "IEC 60364-4-43, Clause 434.5 — adiabatic check for cables",

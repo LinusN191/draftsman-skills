@@ -1,9 +1,12 @@
 {
+  "clause_ref": "IEC-60364-5-52 2009:§522",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60364-5-52 / IEC 60529 — IP Code Requirements for Wiring Systems and Equipment",
   "_reference": "IEC 60364-5-52:2009+AMD1:2017, Clause 522 (External influences) and IEC 60529:2013 (Degrees of protection — IP code)",
   "_version": "1.0.0",
   "_note": "IP codes define the degree of protection provided by an enclosure. The first digit = protection against solid objects (dust/contact); the second digit = protection against water ingress. IK codes (IEC 62262) describe protection against mechanical impact and are separate from IP. Always specify both dimensions when selecting equipment for exposed locations.",
-
   "ip_code_explanation": {
     "_title": "Understanding the IP Code System",
     "_standard": "IEC 60529:2013",
@@ -17,55 +20,134 @@
       "_use": "Additional letters may be appended after the numeric code when supplementary information is needed, e.g. IP44C"
     }
   },
-
   "first_digit_solid_objects": {
     "_title": "First IP Digit — Protection against solid objects and access",
     "_standard": "IEC 60529 Table 2",
-    "0": {"description": "No protection", "test": "—"},
-    "1": {"description": "Protected against solid objects >50mm (e.g. back of hand — unintentional contact only, not deliberate intrusion)", "test": "50mm sphere cannot enter"},
-    "2": {"description": "Protected against solid objects >12.5mm (fingers)", "test": "12.5mm sphere cannot enter; 80mm sphere cannot fully enter"},
-    "3": {"description": "Protected against solid objects >2.5mm (tools, wires)", "test": "2.5mm probe cannot enter"},
-    "4": {"description": "Protected against solid objects >1mm (small tools, fine wires)", "test": "1.0mm probe cannot enter"},
-    "5": {"description": "Dust protected — some dust ingress permitted but sufficient to prevent harmful deposit", "test": "Dust chamber test, negative pressure; no harmful deposit"},
-    "6": {"description": "Dust tight — no dust ingress whatsoever", "test": "Total exclusion of dust"}
+    "0": {
+      "description": "No protection",
+      "test": "—"
+    },
+    "1": {
+      "description": "Protected against solid objects >50mm (e.g. back of hand — unintentional contact only, not deliberate intrusion)",
+      "test": "50mm sphere cannot enter"
+    },
+    "2": {
+      "description": "Protected against solid objects >12.5mm (fingers)",
+      "test": "12.5mm sphere cannot enter; 80mm sphere cannot fully enter"
+    },
+    "3": {
+      "description": "Protected against solid objects >2.5mm (tools, wires)",
+      "test": "2.5mm probe cannot enter"
+    },
+    "4": {
+      "description": "Protected against solid objects >1mm (small tools, fine wires)",
+      "test": "1.0mm probe cannot enter"
+    },
+    "5": {
+      "description": "Dust protected — some dust ingress permitted but sufficient to prevent harmful deposit",
+      "test": "Dust chamber test, negative pressure; no harmful deposit"
+    },
+    "6": {
+      "description": "Dust tight — no dust ingress whatsoever",
+      "test": "Total exclusion of dust"
+    }
   },
-
   "second_digit_water_ingress": {
     "_title": "Second IP Digit — Protection against water ingress",
     "_standard": "IEC 60529 Table 3",
-    "0": {"description": "No protection", "test": "—"},
-    "1": {"description": "Dripping water (vertical) — dripping water shall have no harmful effect", "test": "10 min at 1mm/min drip"},
-    "2": {"description": "Dripping water when tilted up to 15° from vertical", "test": "10 min drip, tilted 15°"},
-    "3": {"description": "Spraying water — water sprayed up to 60° from vertical shall have no harmful effect", "test": "Spray nozzle at 60° arc, 5 min"},
-    "4": {"description": "Splashing water — water splashing from any direction shall have no harmful effect", "test": "Oscillating water spray, all directions, 10 min"},
-    "5": {"description": "Water jets — low-pressure water jets from any direction shall have no harmful effect", "test": "6.3mm nozzle, 12.5 L/min at 3m distance"},
-    "6": {"description": "Powerful water jets — high-pressure water jets from any direction shall have no harmful effect", "test": "12.5mm nozzle, 100 L/min at 3m"},
-    "7": {"description": "Temporary immersion — immersion to 1m depth for up to 30 minutes shall have no harmful effect", "test": "0.15m above top of enclosure, 1m below water surface, 30 min"},
-    "8": {"description": "Continuous immersion — equipment suitable for continuous submersion under conditions specified by manufacturer (typically >1m)", "test": "Manufacturer-specified depth and time, agreed between manufacturer and user"},
-    "9K": {"description": "Powerful high-temperature water jets (additional K designation per IEC 60529 AMD 2:2013) — protection against close-range high pressure, high temperature spray", "test": "Steam cleaning jet, close range"}
+    "0": {
+      "description": "No protection",
+      "test": "—"
+    },
+    "1": {
+      "description": "Dripping water (vertical) — dripping water shall have no harmful effect",
+      "test": "10 min at 1mm/min drip"
+    },
+    "2": {
+      "description": "Dripping water when tilted up to 15° from vertical",
+      "test": "10 min drip, tilted 15°"
+    },
+    "3": {
+      "description": "Spraying water — water sprayed up to 60° from vertical shall have no harmful effect",
+      "test": "Spray nozzle at 60° arc, 5 min"
+    },
+    "4": {
+      "description": "Splashing water — water splashing from any direction shall have no harmful effect",
+      "test": "Oscillating water spray, all directions, 10 min"
+    },
+    "5": {
+      "description": "Water jets — low-pressure water jets from any direction shall have no harmful effect",
+      "test": "6.3mm nozzle, 12.5 L/min at 3m distance"
+    },
+    "6": {
+      "description": "Powerful water jets — high-pressure water jets from any direction shall have no harmful effect",
+      "test": "12.5mm nozzle, 100 L/min at 3m"
+    },
+    "7": {
+      "description": "Temporary immersion — immersion to 1m depth for up to 30 minutes shall have no harmful effect",
+      "test": "0.15m above top of enclosure, 1m below water surface, 30 min"
+    },
+    "8": {
+      "description": "Continuous immersion — equipment suitable for continuous submersion under conditions specified by manufacturer (typically >1m)",
+      "test": "Manufacturer-specified depth and time, agreed between manufacturer and user"
+    },
+    "9K": {
+      "description": "Powerful high-temperature water jets (additional K designation per IEC 60529 AMD 2:2013) — protection against close-range high pressure, high temperature spray",
+      "test": "Steam cleaning jet, close range"
+    }
   },
-
   "ik_mechanical_impact_codes": {
     "_title": "IK Code — Protection against mechanical impact (IEC 62262:2002)",
     "_note": "IK is separate from IP. An enclosure can be IP65 but IK03 — excellent water/dust sealing but easily damaged by impact. Specify IK where vandalism or mechanical risk exists.",
     "_standard": "IEC 62262:2002",
-    "IK00": {"impact_energy_J": "<0.15",  "description": "Not protected"},
-    "IK01": {"impact_energy_J": 0.15, "description": "Very light impact"},
-    "IK02": {"impact_energy_J": 0.2,  "description": "Light impact"},
-    "IK03": {"impact_energy_J": 0.35, "description": "Light impact"},
-    "IK04": {"impact_energy_J": 0.5,  "description": "Medium-light impact"},
-    "IK05": {"impact_energy_J": 0.7,  "description": "Medium impact"},
-    "IK06": {"impact_energy_J": 1.0,  "description": "Medium impact — general indoor use"},
-    "IK07": {"impact_energy_J": 2.0,  "description": "Medium-heavy — commercial, light industrial"},
-    "IK08": {"impact_energy_J": 5.0,  "description": "Heavy — industrial, public areas at risk of vandalism"},
-    "IK09": {"impact_energy_J": 10.0, "description": "Very heavy — heavy industrial, public infrastructure"},
-    "IK10": {"impact_energy_J": 20.0, "description": "Highest — extreme mechanical hazard environments"}
+    "IK00": {
+      "impact_energy_J": "<0.15",
+      "description": "Not protected"
+    },
+    "IK01": {
+      "impact_energy_J": 0.15,
+      "description": "Very light impact"
+    },
+    "IK02": {
+      "impact_energy_J": 0.2,
+      "description": "Light impact"
+    },
+    "IK03": {
+      "impact_energy_J": 0.35,
+      "description": "Light impact"
+    },
+    "IK04": {
+      "impact_energy_J": 0.5,
+      "description": "Medium-light impact"
+    },
+    "IK05": {
+      "impact_energy_J": 0.7,
+      "description": "Medium impact"
+    },
+    "IK06": {
+      "impact_energy_J": 1.0,
+      "description": "Medium impact — general indoor use"
+    },
+    "IK07": {
+      "impact_energy_J": 2.0,
+      "description": "Medium-heavy — commercial, light industrial"
+    },
+    "IK08": {
+      "impact_energy_J": 5.0,
+      "description": "Heavy — industrial, public areas at risk of vandalism"
+    },
+    "IK09": {
+      "impact_energy_J": 10.0,
+      "description": "Very heavy — heavy industrial, public infrastructure"
+    },
+    "IK10": {
+      "impact_energy_J": 20.0,
+      "description": "Highest — extreme mechanical hazard environments"
+    }
   },
-
   "minimum_ip_by_location": {
     "_reference": "IEC 60364-5-52:2009 Clause 522, IEC 60364-7 location-specific requirements",
     "_principle": "Select the minimum IP for the external influence classification. IEC 60364-5-51 uses the AE, AF, AG classification system for external influences; IP is the direct translation for AE (water) and AB/AC (solid objects) ratings.",
-
     "locations": {
       "dry_indoor_domestic": {
         "description": "Living rooms, offices, dry internal areas — domestic premises",
@@ -148,7 +230,6 @@
       }
     }
   },
-
   "common_under_specification_traps": [
     {
       "trap": "Using IP44 outdoor luminaires where pressure washing occurs",

@@ -1,14 +1,16 @@
 {
+  "clause_ref": "IEC-60364-5-52 2009:Annex-G",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60364-5-52 Annex G — Voltage Drop in Consumers' Installations",
   "_basis": "IEC 60364-5-52:2009+AMD1:2017 Annex G (informative) and IEC 60364-1 Clause 12.6",
   "_version": "1.0.0",
   "_note": "Annex G is INFORMATIVE — the limits are recommendations, not mandatory requirements. However, most national implementations (BS 7671, NF C 15-100, etc.) adopt these limits as mandatory. Always check the applicable national code for mandatory limits. For projects in IEC jurisdictions without a specific national code, apply the Annex G limits as good engineering practice.",
-
   "voltage_drop_limits": {
     "_reference": "IEC 60364-5-52 Annex G, Table G.52.1",
     "_measurement": "From the origin of the consumer's installation (service entrance) to the furthest point of use",
     "_standard_supply": "230V/400V, 50Hz",
-
     "lighting_circuits": {
       "limit_percent": 3,
       "limit_volts_230V_supply": 6.9,
@@ -18,18 +20,15 @@
       "limit_percent": 5,
       "limit_volts_230V_supply": 11.5
     },
-
     "where_supply_agrees": {
       "_note": "By agreement with the supply authority, higher voltage drops may be permitted for specific long circuits (rural supplies, large industrial premises). This must be documented and agreed in writing.",
       "higher_limit_example_agreed": "Up to 8% where documented, for very long circuits (> 200m) in industrial premises"
     },
-
     "origin_definition": {
       "note": "The 'origin of the installation' is the point of delivery from the supply network — the service termination, metering position, or main switch. Voltage drop IN the supply network (service cable from transformer to meter) is not included — that is the supply authority's responsibility.",
       "practical_start_point": "Main Distribution Board (MDB) or Consumer Unit (CU)"
     }
   },
-
   "voltage_drop_formula": {
     "_reference": "Annex G",
     "single_phase": {
@@ -50,67 +49,117 @@
     "resistive_vs_reactive": {
       "note_for_large_cables": "For cables ≥ 50mm², cable reactance (X ≈ 0.07–0.10 mΩ/m per conductor) contributes to voltage drop, particularly for inductive loads (power factor < 1). The formula above uses resistive mV/A/m only. For large cables at low power factor, add the reactive component: ΔU = Ib × L × (R cosφ + X sinφ) / 1000.",
       "typical_power_factors": {
-        "resistive_heating": 1.00,
+        "resistive_heating": 1.0,
         "incandescent_or_LED": 0.95,
-        "fluorescent_with_PFC": 0.90,
-        "small_motors": 0.80,
+        "fluorescent_with_PFC": 0.9,
+        "small_motors": 0.8,
         "large_motors_loaded": 0.85,
-        "motor_at_light_load": 0.60
+        "motor_at_light_load": 0.6
       }
     }
   },
-
   "mV_per_A_per_m_reference_table": {
     "_title": "Resistive mV/A/m values for copper conductors at operating temperature (two-conductor loop, single-phase)",
     "_basis": "Conductor resistance at maximum operating temperature (70°C for PVC, 90°C for XLPE). For three-phase, multiply by 0.866.",
     "_note": "Values in cable rating tables (part5-52-cable-ratings-copper.json) are the same. Reproduced here for quick reference.",
-
     "copper_PVC_70C": {
-      "1.5":  29.0, "2.5":  18.0, "4": 11.0,  "6": 7.3,
-      "10":    4.4, "16":    2.8, "25": 1.75, "35": 1.25,
-      "50":   0.93, "70":   0.63, "95": 0.47, "120": 0.38,
-      "150":  0.30, "185":  0.24, "240": 0.19, "300": 0.15,
-      "400": 0.116, "500": 0.094, "630": 0.076
+      "1.5": 29.0,
+      "2.5": 18.0,
+      "4": 11.0,
+      "6": 7.3,
+      "10": 4.4,
+      "16": 2.8,
+      "25": 1.75,
+      "35": 1.25,
+      "50": 0.93,
+      "70": 0.63,
+      "95": 0.47,
+      "120": 0.38,
+      "150": 0.3,
+      "185": 0.24,
+      "240": 0.19,
+      "300": 0.15,
+      "400": 0.116,
+      "500": 0.094,
+      "630": 0.076
     },
-
     "copper_XLPE_90C": {
-      "1.5":  31.0, "2.5":  19.0, "4": 12.0, "6": 7.8,
-      "10":    4.7, "16":    3.0, "25": 1.85, "35": 1.35,
-      "50":   0.99, "70":   0.67, "95": 0.50, "120": 0.41,
-      "150":  0.32, "185":  0.26, "240": 0.20, "300": 0.16,
-      "400": 0.123, "500": 0.100, "630": 0.079
+      "1.5": 31.0,
+      "2.5": 19.0,
+      "4": 12.0,
+      "6": 7.8,
+      "10": 4.7,
+      "16": 3.0,
+      "25": 1.85,
+      "35": 1.35,
+      "50": 0.99,
+      "70": 0.67,
+      "95": 0.5,
+      "120": 0.41,
+      "150": 0.32,
+      "185": 0.26,
+      "240": 0.2,
+      "300": 0.16,
+      "400": 0.123,
+      "500": 0.1,
+      "630": 0.079
     },
-
     "_three_phase_factor": "Multiply values above by 0.866 for balanced three-phase circuits"
   },
-
   "maximum_circuit_lengths_reference": {
     "_title": "Approximate maximum circuit length (metres) before 3% voltage drop is exceeded — at full rated current",
     "_basis": "L_max = (limit_V × 1000) / (mV/A/m × In), where limit = 6.9V for lighting (3%), 11.5V for power (5%)",
     "_note": "These are maximums at full device rating. Actual circuits often run at less than rated current — actual length can be longer. Use for quick feasibility checks only.",
-
     "single_phase_230V_lighting_3pct_6pt9V": {
-      "1.5mm2_copper_PVC_6A_MCB":   {"max_length_m": 39},
-      "1.5mm2_copper_PVC_10A_MCB":  {"max_length_m": 23},
-      "1.5mm2_copper_PVC_16A_MCB":  {"max_length_m": 15},
-      "2.5mm2_copper_PVC_16A_MCB":  {"max_length_m": 24},
-      "2.5mm2_copper_PVC_20A_MCB":  {"max_length_m": 19},
-      "4mm2_copper_PVC_20A_MCB":    {"max_length_m": 31},
-      "4mm2_copper_PVC_32A_MCB":    {"max_length_m": 20}
+      "1.5mm2_copper_PVC_6A_MCB": {
+        "max_length_m": 39
+      },
+      "1.5mm2_copper_PVC_10A_MCB": {
+        "max_length_m": 23
+      },
+      "1.5mm2_copper_PVC_16A_MCB": {
+        "max_length_m": 15
+      },
+      "2.5mm2_copper_PVC_16A_MCB": {
+        "max_length_m": 24
+      },
+      "2.5mm2_copper_PVC_20A_MCB": {
+        "max_length_m": 19
+      },
+      "4mm2_copper_PVC_20A_MCB": {
+        "max_length_m": 31
+      },
+      "4mm2_copper_PVC_32A_MCB": {
+        "max_length_m": 20
+      }
     },
-
     "single_phase_230V_power_5pct_11pt5V": {
-      "2.5mm2_copper_PVC_16A_MCB":  {"max_length_m": 40},
-      "2.5mm2_copper_PVC_20A_MCB":  {"max_length_m": 32},
-      "4mm2_copper_PVC_20A_MCB":    {"max_length_m": 52},
-      "4mm2_copper_PVC_32A_MCB":    {"max_length_m": 33},
-      "6mm2_copper_PVC_32A_MCB":    {"max_length_m": 49},
-      "10mm2_copper_PVC_40A_MCB":   {"max_length_m": 65},
-      "16mm2_copper_PVC_63A_MCB":   {"max_length_m": 65},
-      "25mm2_copper_XLPE_80A_MCB":  {"max_length_m": 78}
+      "2.5mm2_copper_PVC_16A_MCB": {
+        "max_length_m": 40
+      },
+      "2.5mm2_copper_PVC_20A_MCB": {
+        "max_length_m": 32
+      },
+      "4mm2_copper_PVC_20A_MCB": {
+        "max_length_m": 52
+      },
+      "4mm2_copper_PVC_32A_MCB": {
+        "max_length_m": 33
+      },
+      "6mm2_copper_PVC_32A_MCB": {
+        "max_length_m": 49
+      },
+      "10mm2_copper_PVC_40A_MCB": {
+        "max_length_m": 65
+      },
+      "16mm2_copper_PVC_63A_MCB": {
+        "max_length_m": 65
+      },
+      "25mm2_copper_XLPE_80A_MCB": {
+        "max_length_m": 78
+      }
     }
   },
-
   "worked_examples": {
     "example_1_lighting_circuit": {
       "_title": "Check voltage drop on 1.5mm² lighting circuit, 12A load, 35m run",
@@ -124,13 +173,12 @@
       "check": "FAILS — 12.18V > 6.9V",
       "action": "Increase to 2.5mm² (mV/A/m = 18): VD = (18 × 12 × 35) / 1000 = 7.56V (3.3%) — still marginal. Use 4mm² (mV/A/m = 11): VD = (11 × 12 × 35) / 1000 = 4.62V (2.0%) — PASSES."
     },
-
     "example_2_three_phase_submain": {
       "_title": "Three-phase 95mm² XLPE submain, 200A load, 80m to sub-distribution board",
       "conductor": "95mm² copper XLPE 3-phase",
       "Ib_A": 200,
       "L_m": 80,
-      "mVAm_2cond": 0.50,
+      "mVAm_2cond": 0.5,
       "mVAm_3phase": "0.50 × 0.866 = 0.433",
       "VD_V": "(0.433 × 200 × 80) / 1000 = 6.93V",
       "VD_percent": "(6.93 / 230) × 100 = 3.01%",
@@ -138,7 +186,6 @@
       "check": "PASSES — 3.01% < 5%",
       "residual_budget": "1.99% remaining for downstream final circuits"
     },
-
     "example_3_long_rural_circuit": {
       "_title": "Rural single-phase circuit, 16A MCB, 6mm² cable, 80m to outbuilding",
       "conductor": "6mm² copper PVC",
@@ -152,7 +199,6 @@
       "note": "For a lighting circuit this would fail (3% limit). Ensure the outbuilding lighting is fed from a separate lighting circuit, or use 10mm² for the combined run."
     }
   },
-
   "voltage_drop_at_motor_start": {
     "_note": "Motor starting current is typically 6–8× full load current. The voltage dip during starting is NOT a voltage drop check under Annex G — it is a transient that must be acceptable to other loads on the same circuit. Starting voltage dip should be limited to < 5% at motor terminals (where other sensitive loads are present). Calculate: ΔU_start = I_start × (R1 + R2) where R1 + R2 is the source impedance.",
     "impact_on_nearby_loads": "Voltage dips > 5% at supply terminals can cause lamp flicker, computer resets, and relay dropout. Where sensitive loads coexist with motors, use soft starters or VFDs to reduce starting current."

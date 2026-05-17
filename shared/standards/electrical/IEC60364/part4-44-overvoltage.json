@@ -1,38 +1,58 @@
 {
+  "clause_ref": "IEC-60364-4-44 2017:§443",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 60364-4-44:2007+AMD1:2015+AMD2:2018 — Protection against Overvoltage",
   "_basis": "IEC 60364-4-44 covering Sections 441 (supply disturbances), 442 (HV/LV faults), 443 (atmospheric and switching overvoltages), 444 (EMC)",
   "_version": "1.0.0",
   "_note": "AMD2:2018 significantly expanded the mandatory scope of SPD installation. SPDs are now required for all new installations unless a risk assessment (per IEC 62305-2) demonstrates they are not needed. In practice, SPDs should be specified on all new installations. This file covers Section 443 (SPDs for lightning and switching) as it applies most frequently in design.",
-
   "overvoltage_categories_IEC_60664_1": {
     "_reference": "IEC 60664-1 — Impulse withstand voltage categories",
     "_purpose": "Equipment is assigned a category based on its position in the installation — the category determines the rated impulse withstand voltage (Uw). SPDs must limit surges to below Uw of the protected equipment.",
-
     "category_IV": {
       "Uw_kV": 6,
       "description": "Equipment at the origin of the installation — energy meters, overhead line termination equipment, main switches. Must withstand the highest surges before any SPD protection.",
-      "examples": ["DNO electricity meter", "Service cutout / fuse", "Main isolator at intake"]
+      "examples": [
+        "DNO electricity meter",
+        "Service cutout / fuse",
+        "Main isolator at intake"
+      ]
     },
     "category_III": {
       "Uw_kV": 4,
       "description": "Fixed equipment in the fixed installation — distribution boards, circuit breakers, wiring systems. Must survive after Type 1 SPDs have acted.",
-      "examples": ["Distribution board busbars", "MCBs", "Fixed cable containment", "Switchsockets with disconnect"]
+      "examples": [
+        "Distribution board busbars",
+        "MCBs",
+        "Fixed cable containment",
+        "Switchsockets with disconnect"
+      ]
     },
     "category_II": {
       "Uw_kV": 2.5,
       "description": "Equipment connected at socket outlets or fixed equipment that uses socket/plug connection. This is the typical equipment withstand level.",
-      "examples": ["Domestic appliances", "Portable tools", "Luminaires with lampholders", "Class I or II equipment plugged in"]
+      "examples": [
+        "Domestic appliances",
+        "Portable tools",
+        "Luminaires with lampholders",
+        "Class I or II equipment plugged in"
+      ]
     },
     "category_I": {
       "Uw_kV": 1.5,
       "description": "Protected equipment — sensitive electronics, telecommunications, signal processing equipment. Requires the highest level of surge suppression.",
-      "examples": ["Server equipment", "Medical instruments", "Fire alarm control panels", "Building management system (BMS) controllers", "Variable speed drives (VSDs)"]
+      "examples": [
+        "Server equipment",
+        "Medical instruments",
+        "Fire alarm control panels",
+        "Building management system (BMS) controllers",
+        "Variable speed drives (VSDs)"
+      ]
     }
   },
-
   "SPD_types": {
     "_reference": "IEC 61643-11, IEC 61643-12, IEC 60364-4-44 Section 443",
-
     "type_1": {
       "also_known_as": "Class I (IEC 61643 test class)",
       "test_current_waveform": "10/350 μs — simulates direct lightning discharge",
@@ -48,7 +68,6 @@
       "protection_level_Up": "Typically 2.5–4 kV (must be < Uw of category III equipment = 4kV)",
       "coordination_note": "Type 1+2 combination devices are common — provide both direct lightning and induced surge protection at the main board"
     },
-
     "type_2": {
       "also_known_as": "Class II (IEC 61643 test class)",
       "test_current_waveform": "8/20 μs — simulates induced/conducted surges from nearby lightning",
@@ -64,7 +83,6 @@
       ],
       "protection_level_Up": "Typically 1.0–2.0 kV (should be < Uw of category II equipment = 2.5 kV)"
     },
-
     "type_3": {
       "also_known_as": "Class III (IEC 61643 test class)",
       "test_current_waveform": "1.2/50 μs voltage, 8/20 μs current combined wave",
@@ -72,16 +90,18 @@
       "installation_location": "In or adjacent to the protected equipment — UPS output, server rack PDU, sensitive instrument panel",
       "note": "Type 3 SPDs cannot be installed alone without Type 2 upstream — they have insufficient energy handling capacity. Must be a coordinated system.",
       "protection_level_Up": "Typically 0.5–1.0 kV (must be < Uw of category I equipment = 1.5 kV)",
-      "typical_forms": ["Plug-in surge protection (BS 1363 socket with SPD)", "DIN rail Type 3 module", "IEC socket outlet with SPD built in"]
+      "typical_forms": [
+        "Plug-in surge protection (BS 1363 socket with SPD)",
+        "DIN rail Type 3 module",
+        "IEC socket outlet with SPD built in"
+      ]
     },
-
     "type_1_plus_2_combination": {
       "description": "Single device performing the function of both Type 1 and Type 2. Convenient for main boards where both levels of protection are needed.",
       "advantage": "Single device, no coordination distance requirement between Type 1 and Type 2 stages.",
       "typical_application": "Main distribution board at service entrance, particularly for buildings with LPS or overhead supply."
     }
   },
-
   "SPD_selection_parameters": {
     "Uc_continuous_operating_voltage": {
       "definition": "The maximum AC RMS (or DC) voltage the SPD can be connected to continuously without damage or spurious operation.",
@@ -109,31 +129,26 @@
       "typical_product": "25–50 kA per pole for robust protection"
     }
   },
-
   "mandatory_installation_scope_AMD2_2018": {
     "_reference": "IEC 60364-4-44:2007+AMD2:2018 Clause 443.4",
     "_note": "AMD2:2018 changed the default from 'SPDs not required unless risk assessment shows otherwise' to 'SPDs required unless risk assessment shows they are not needed'.",
-
     "always_required": [
       "Buildings supplied by any overhead line sections (partial or full overhead from transformer to consumer)",
       "Buildings in rural areas where supply cables are overhead",
       "Buildings with an external LPS (Type 1 or Type 1+2 at main board)",
       "Installations containing Category I equipment (servers, medical instruments, sensitive controls)"
     ],
-
     "required_by_default_unless_risk_assessment_justifies_omission": [
       "All new residential installations",
       "All new commercial installations",
       "Extensions and rewires of existing residential",
       "Any installation in a country where IEC 60364-4-44 AMD2 has been adopted"
     ],
-
     "omission_criteria": {
       "when_risk_is_low": "Only where risk assessment per IEC 62305-2 demonstrates that the risk of loss without SPDs is below the tolerable risk level. This typically applies to: buildings fully supplied by underground cables with no overhead connection, in areas of very low lightning ground flash density (< 1 flash/km²/year), and where the consequence of loss is low (no critical equipment, no fire risk).",
       "practical_note": "In most real projects, the cost of SPDs is low relative to the cost of damage or loss. Do not omit SPDs to save money unless the risk calculation explicitly supports it."
     }
   },
-
   "installation_requirements": {
     "connection_leads": {
       "requirement": "SPD connection conductors (from busbar to SPD) must be as short as possible.",
@@ -141,18 +156,15 @@
       "maximum_total_lead_length": "Ideally ≤ 0.5m total (live + earth). Absolute maximum 1.0m total for Type 2. This is the total length of the connection path — not one conductor.",
       "practical_installation": "Mount SPD on DIN rail in the distribution board. Use short jumper leads. Route as directly as possible to earth bar."
     },
-
     "overcurrent_protection": {
       "requirement": "SPDs must be protected against the fault current that could result from a failed SPD (short-circuit mode failure).",
       "gG_fuse_or_MCB_sizing": "Per SPD manufacturer's instructions — typically 63A gG fuse or 63A Type B MCB per SPD module for the earth fault current path.",
       "note": "Some SPD products include built-in thermal disconnect — confirm with manufacturer whether additional protection is needed."
     },
-
     "earth_connection": {
       "requirement": "SPD earth terminal must connect to the installation earth (PE) at the board. For TN-C-S installations, connect to PEN at the MET or to PE bar at the DB.",
       "for_TT_installations": "Connect to the local earth bar — the SPD provides a low-impedance path from line to earth during surge, which also causes RCD operation. Use time-delayed (S-type) RCDs or select an SPD with separate PE connection to avoid RCD nuisance tripping."
     },
-
     "coordination_between_types": {
       "between_type_1_and_type_2": {
         "minimum_cable_distance": "If using separate Type 1 and Type 2 devices, minimum 10m of cable between them (or a decoupling inductor of ≥ 1.5 μH). Without this, the two devices do not coordinate — the Type 2 may fail from energy intended for Type 1.",
@@ -164,7 +176,6 @@
       }
     }
   },
-
   "special_applications": {
     "TT_systems_and_RCDs": {
       "issue": "SPD operation discharges current to earth, which appears as a residual current to the RCD, potentially causing nuisance tripping.",
@@ -182,7 +193,6 @@
       "recommendation": "SPD on the supply to EV charging point. EV onboard chargers contain sensitive electronics (Category I). Specify Type 2 at the charging circuit sub-board."
     }
   },
-
   "worked_example": {
     "_title": "SPD specification for a 3-phase commercial office building in Nigeria",
     "context": "5-storey office building, TN-C-S supply (underground cables from transformer), Lagos area, keraunic level ~50 days/year, no external LPS, building has servers and BMS",

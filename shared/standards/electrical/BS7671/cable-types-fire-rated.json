@@ -1,8 +1,11 @@
 {
+  "clause_ref": "BS7671 2018:Reg-422.2-fire-rated",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "Fire-Rated Cables for Life Safety Circuits",
   "_basis": "BS 7671:2018 Reg 422 (Fire-resistant cables), BS 5839-1 (Fire alarm), BS 5266-1 (Emergency lighting), BS 8519 (Selection and installation of fire-resistant cables for life safety)",
   "_note": "Life safety circuits MUST use fire-rated cable that maintains circuit integrity during a fire for a defined period. Standard cable melts and short-circuits — life safety systems then fail when needed most.",
-
   "life_safety_systems_requiring_fire_rated_cable": {
     "_reference": "BS 8519:2020 Annex A",
     "always_required": [
@@ -23,7 +26,6 @@
       "Security access control on escape routes (fail-safe should default to unlock)"
     ]
   },
-
   "fire_resistance_ratings": {
     "_reference": "IEC 60331 series, BS EN 50200, BS 8434",
     "iec_60331_11": {
@@ -52,15 +54,23 @@
       "harmonisation": "BS 8434 maps to BS EN 50200 directly."
     }
   },
-
   "cable_products": {
     "FP200_Gold": {
       "manufacturer": "Prysmian (registered trademark)",
       "construction": "Solid copper conductors, mica/glass tape barrier, LSZH insulation, aluminium foil screen, LSZH outer sheath, drain wire.",
       "fire_rating": "BS EN 50200 PH 30, BS 8434-1 PH 30 (60 min capability with appropriate clips per manufacturer)",
       "voltage_rating_V": "300/500",
-      "typical_sizes_mm2": [1.0, 1.5, 2.5, 4.0],
-      "core_counts": [2, 3, 4],
+      "typical_sizes_mm2": [
+        1.0,
+        1.5,
+        2.5,
+        4.0
+      ],
+      "core_counts": [
+        2,
+        3,
+        4
+      ],
       "typical_use": "Fire alarm wiring (BS 5839-1), emergency lighting (BS 5266-1), in buildings with up to 30 minute escape time.",
       "cost_relative": "Baseline (1.0)",
       "installation_notes": "Use metallic fire-rated clips per manufacturer. Standard plastic clips will fail in fire and cause cable collapse — system loss."
@@ -70,8 +80,23 @@
       "construction": "Stranded copper, mica tape, LSZH insulation, foil screen, LSZH outer sheath, drain wire.",
       "fire_rating": "BS 8434-1 PH 120 (with appropriate clips), IEC 60331-21",
       "voltage_rating_V": "300/500 or 600/1000",
-      "typical_sizes_mm2": [1.5, 2.5, 4, 6, 10, 16, 25, 35, 50],
-      "core_counts": [2, 3, 4, 5],
+      "typical_sizes_mm2": [
+        1.5,
+        2.5,
+        4,
+        6,
+        10,
+        16,
+        25,
+        35,
+        50
+      ],
+      "core_counts": [
+        2,
+        3,
+        4,
+        5
+      ],
       "typical_use": "Sprinkler pumps, smoke extract fans, firefighter lift, voice alarm spine, public address backbone — circuits requiring 120 min survival.",
       "cost_relative": "3.5 to 5.0×",
       "installation_notes": "Heavier than FP200, requires more robust support. Larger cores allow longer voltage-drop-limited runs."
@@ -81,8 +106,30 @@
       "construction": "Solid copper conductors, magnesium oxide insulation, seamless copper outer sheath (sometimes LSZH-overjacketed).",
       "fire_rating": "BS 6387 CWZ — survives 950°C for 3 hours with water and impact. The highest-rated commonly available cable.",
       "voltage_rating_V": "Light duty 500V, heavy duty 750V",
-      "typical_sizes_mm2": [1.0, 1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120],
-      "core_counts": [1, 2, 3, 4, 7, 12, 19],
+      "typical_sizes_mm2": [
+        1.0,
+        1.5,
+        2.5,
+        4,
+        6,
+        10,
+        16,
+        25,
+        35,
+        50,
+        70,
+        95,
+        120
+      ],
+      "core_counts": [
+        1,
+        2,
+        3,
+        4,
+        7,
+        12,
+        19
+      ],
       "typical_use": "Highest-risk applications — petrochemical, nuclear, military, deep tunnels, listed buildings where future re-cabling is impractical.",
       "cost_relative": "6 to 10×",
       "installation_notes": "Specialist termination required (sealing pots and glands). Brittle if bent below minimum radius. Long lifespan (50+ years) — often justifies cost in critical infrastructure."
@@ -94,7 +141,6 @@
       "_note": "Inclusion here to emphasise that this is NOT fire-rated and MUST NOT be used for life safety circuits even when the project is cost-pressured."
     }
   },
-
   "selection_by_application": {
     "_reference": "BS 8519:2020 Table 2 (recommendations)",
     "fire_alarm_BS5839_1": {
@@ -129,7 +175,6 @@
       "cable": "FP400 PLUS for spine, FP200 Gold for branch circuits"
     }
   },
-
   "installation_requirements": {
     "_reference": "BS 8519:2020, BS 7671:2018 Reg 521.10.202",
     "cable_supports": "Metallic fire-rated clips/saddles. Manufacturer-specified maximum spacing. Standard plastic clips FAIL in fire.",
@@ -141,7 +186,6 @@
       "implementation": "Essential bus is fed from generator and/or UPS via automatic transfer switch. SDB-EMRGY or similar designation."
     }
   },
-
   "common_pitfalls": [
     "Using FP200 Gold for circuits requiring PH 60 or PH 120 — non-compliant with fire strategy.",
     "Mixing standard cable with fire-rated cable in the same containment — standard cable melts and damages fire-rated cable's outer sheath.",

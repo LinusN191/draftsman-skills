@@ -1,4 +1,8 @@
 {
+  "clause_ref": "IEC-61439-1 2020:§9.4-Busbar-Derating",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "IEC 61439 — Busbar Derating and Fault-Current Force",
   "_iec_part": "1 (Annex E + Annex P)",
   "_version": "1.0.0",
@@ -10,17 +14,61 @@
     "_orientation": "Vertical, in ventilated enclosure",
     "_note": "Per single rectangular bar. Multi-bar arrangements derated for proximity per derating_for_multiple_bars below.",
     "table_A_per_csa": [
-      {"csa_mm2": 100,  "width_x_thickness_mm": "20 × 5",   "rated_A": 281},
-      {"csa_mm2": 150,  "width_x_thickness_mm": "30 × 5",   "rated_A": 393},
-      {"csa_mm2": 200,  "width_x_thickness_mm": "40 × 5",   "rated_A": 500},
-      {"csa_mm2": 250,  "width_x_thickness_mm": "50 × 5",   "rated_A": 595},
-      {"csa_mm2": 400,  "width_x_thickness_mm": "80 × 5",   "rated_A": 858},
-      {"csa_mm2": 500,  "width_x_thickness_mm": "100 × 5",  "rated_A": 1011},
-      {"csa_mm2": 600,  "width_x_thickness_mm": "60 × 10",  "rated_A": 1110},
-      {"csa_mm2": 800,  "width_x_thickness_mm": "80 × 10",  "rated_A": 1390},
-      {"csa_mm2": 1000, "width_x_thickness_mm": "100 × 10", "rated_A": 1640},
-      {"csa_mm2": 1600, "width_x_thickness_mm": "160 × 10", "rated_A": 2370},
-      {"csa_mm2": 2000, "width_x_thickness_mm": "200 × 10", "rated_A": 2810}
+      {
+        "csa_mm2": 100,
+        "width_x_thickness_mm": "20 × 5",
+        "rated_A": 281
+      },
+      {
+        "csa_mm2": 150,
+        "width_x_thickness_mm": "30 × 5",
+        "rated_A": 393
+      },
+      {
+        "csa_mm2": 200,
+        "width_x_thickness_mm": "40 × 5",
+        "rated_A": 500
+      },
+      {
+        "csa_mm2": 250,
+        "width_x_thickness_mm": "50 × 5",
+        "rated_A": 595
+      },
+      {
+        "csa_mm2": 400,
+        "width_x_thickness_mm": "80 × 5",
+        "rated_A": 858
+      },
+      {
+        "csa_mm2": 500,
+        "width_x_thickness_mm": "100 × 5",
+        "rated_A": 1011
+      },
+      {
+        "csa_mm2": 600,
+        "width_x_thickness_mm": "60 × 10",
+        "rated_A": 1110
+      },
+      {
+        "csa_mm2": 800,
+        "width_x_thickness_mm": "80 × 10",
+        "rated_A": 1390
+      },
+      {
+        "csa_mm2": 1000,
+        "width_x_thickness_mm": "100 × 10",
+        "rated_A": 1640
+      },
+      {
+        "csa_mm2": 1600,
+        "width_x_thickness_mm": "160 × 10",
+        "rated_A": 2370
+      },
+      {
+        "csa_mm2": 2000,
+        "width_x_thickness_mm": "200 × 10",
+        "rated_A": 2810
+      }
     ]
   },
   "current_carrying_capacity_aluminium": {
@@ -31,20 +79,52 @@
   "derating_for_ambient": {
     "_formula": "Kt = sqrt((max_rise_K + 35 − actual_ambient_C) / max_rise_K)",
     "_examples": [
-      {"ambient_C": 35, "rise_K": 55, "Kt": 1.0},
-      {"ambient_C": 40, "rise_K": 55, "Kt": 0.953},
-      {"ambient_C": 45, "rise_K": 55, "Kt": 0.905},
-      {"ambient_C": 50, "rise_K": 55, "Kt": 0.853},
-      {"ambient_C": 55, "rise_K": 55, "Kt": 0.798}
+      {
+        "ambient_C": 35,
+        "rise_K": 55,
+        "Kt": 1.0
+      },
+      {
+        "ambient_C": 40,
+        "rise_K": 55,
+        "Kt": 0.953
+      },
+      {
+        "ambient_C": 45,
+        "rise_K": 55,
+        "Kt": 0.905
+      },
+      {
+        "ambient_C": 50,
+        "rise_K": 55,
+        "Kt": 0.853
+      },
+      {
+        "ambient_C": 55,
+        "rise_K": 55,
+        "Kt": 0.798
+      }
     ]
   },
   "derating_for_multiple_bars_per_phase": {
     "_note": "Multiple bars per phase (parallel) experience proximity heating. Indicative derating factors:",
     "_factors": [
-      {"bars_per_phase": 1, "factor": 1.00},
-      {"bars_per_phase": 2, "factor": 0.85},
-      {"bars_per_phase": 3, "factor": 0.78},
-      {"bars_per_phase": 4, "factor": 0.72}
+      {
+        "bars_per_phase": 1,
+        "factor": 1.0
+      },
+      {
+        "bars_per_phase": 2,
+        "factor": 0.85
+      },
+      {
+        "bars_per_phase": 3,
+        "factor": 0.78
+      },
+      {
+        "bars_per_phase": 4,
+        "factor": 0.72
+      }
     ]
   },
   "fault_current_force": {
@@ -59,6 +139,6 @@
   },
   "neutral_and_pe_sizing": {
     "neutral_csa": "Min 50% of phase CSA for In ≤ 1600 A; 100% for harmonic-rich loads (THDi > 15 %). See IEC 60364-5-52 for harmonic derating.",
-    "pe_csa":      "Per IEC 60364-5-54 Table 54.1: PE = S phase for S ≤ 16 mm²; PE = 16 mm² for S = 16–35 mm²; PE = S/2 for S > 35 mm². Or as agreed with adiabatic equation k²S² ≥ I²t."
+    "pe_csa": "Per IEC 60364-5-54 Table 54.1: PE = S phase for S ≤ 16 mm²; PE = 16 mm² for S = 16–35 mm²; PE = S/2 for S > 35 mm². Or as agreed with adiabatic equation k²S² ≥ I²t."
   }
 }

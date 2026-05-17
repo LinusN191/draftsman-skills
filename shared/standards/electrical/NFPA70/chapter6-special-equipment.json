@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Chapter-6",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 Chapter 6 — Special Equipment",
   "_chapter": 6,
   "_version": "1.0.0",
@@ -11,14 +15,28 @@
       "article_number": 600,
       "article_title": "Electric Signs and Outline Lighting",
       "scope": "Electric signs (fixed and portable), outline lighting (including neon and skeleton tubing). Branch circuit dedicated (600.5(A)); GFCI for portable signs (600.10(C)); secondary wiring (600.32 — neon).",
-      "applies_to": ["electric_signs", "neon", "outline_lighting"],
+      "applies_to": [
+        "electric_signs",
+        "neon",
+        "outline_lighting"
+      ],
       "key_sections": [
-        {"section": "600.5", "title": "Branch Circuits", "summary": "Each commercial occupancy accessible to pedestrians and at least 20 A dedicated sign circuit"},
-        {"section": "600.7", "title": "Grounding and Bonding", "summary": "Sign and metal equipment must be grounded; bonding for neon/skeleton tubing through GTO cable"}
+        {
+          "section": "600.5",
+          "title": "Branch Circuits",
+          "summary": "Each commercial occupancy accessible to pedestrians and at least 20 A dedicated sign circuit"
+        },
+        {
+          "section": "600.7",
+          "title": "Grounding and Bonding",
+          "summary": "Sign and metal equipment must be grounded; bonding for neon/skeleton tubing through GTO cable"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Forgetting the 20 A dedicated sign branch circuit at each commercial occupancy entry"],
+      "common_errors": [
+        "Forgetting the 20 A dedicated sign branch circuit at each commercial occupancy entry"
+      ],
       "drawn_as": [],
       "related_iec_60364": [],
       "divergence_notes": "Art 600 is NEC-specific. IEC has no equivalent dedicated article — sign wiring handled via standard wiring methods + IEC 60598 for luminaires.",
@@ -33,21 +51,46 @@
       "article_number": 620,
       "article_title": "Elevators, Dumbwaiters, Escalators, Moving Walks, Platform Lifts, and Stairway Chairlifts",
       "scope": "Elevator/escalator branch circuits, disconnect (620.51), feeder, GFCI for machine room receptacles (620.85), MoR (machine room) circuits.",
-      "applies_to": ["elevators", "escalators", "lifts"],
+      "applies_to": [
+        "elevators",
+        "escalators",
+        "lifts"
+      ],
       "key_sections": [
-        {"section": "620.22", "title": "Branch Circuits for Other than Elevator Power", "summary": "Car lighting, car receptacles, machine room lighting and receptacles all on separate branch circuits (not on the elevator power circuit)"},
-        {"section": "620.51", "title": "Disconnecting Means", "summary": "Disconnect for each elevator within sight of the controller; lockable; identified"},
-        {"section": "620.85", "title": "Ground-Fault Circuit-Interrupter Protection for Personnel", "summary": "GFCI required for 125 V, 15- and 20-A receptacles in elevator pits, machine rooms, escalator wellways"}
+        {
+          "section": "620.22",
+          "title": "Branch Circuits for Other than Elevator Power",
+          "summary": "Car lighting, car receptacles, machine room lighting and receptacles all on separate branch circuits (not on the elevator power circuit)"
+        },
+        {
+          "section": "620.51",
+          "title": "Disconnecting Means",
+          "summary": "Disconnect for each elevator within sight of the controller; lockable; identified"
+        },
+        {
+          "section": "620.85",
+          "title": "Ground-Fault Circuit-Interrupter Protection for Personnel",
+          "summary": "GFCI required for 125 V, 15- and 20-A receptacles in elevator pits, machine rooms, escalator wellways"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Putting car lighting on the elevator power feeder — must be a separate branch circuit per 620.22"],
-      "drawn_as": ["MOTOR"],
-      "related_iec_60364": ["IEC 60364-7-708 (Caravan parks, camping sites and similar locations) — peripheral", "EN 81 series (Elevators) — primary reference outside NEC"],
+      "common_errors": [
+        "Putting car lighting on the elevator power feeder — must be a separate branch circuit per 620.22"
+      ],
+      "drawn_as": [
+        "MOTOR"
+      ],
+      "related_iec_60364": [
+        "IEC 60364-7-708 (Caravan parks, camping sites and similar locations) — peripheral",
+        "EN 81 series (Elevators) — primary reference outside NEC"
+      ],
       "divergence_notes": "NEC Art 620 is comprehensive for elevators; IEC defers to EN 81 series (lift equipment) for most elevator-specific rules.",
       "related_bs_7671": [],
       "usage_notes": "Coordinate with the elevator vendor's submittal — vendor specifies the controller's exact feeder and branch-circuit needs.",
-      "related_articles": ["ART_430"]
+      "related_articles": [
+        "ART_430"
+      ]
     },
     {
       "article_id": "ART_645",
@@ -56,20 +99,39 @@
       "article_number": 645,
       "article_title": "Information Technology Equipment",
       "scope": "IT rooms (data centres, server rooms, telecomm equipment rooms) meeting 645.4 conditions can use the optional rules of Art 645 — special wiring methods (under-floor wiring, abandoned cable), special disconnect requirements, optional zone-protection.",
-      "applies_to": ["data_centres", "server_rooms", "it_equipment_rooms"],
+      "applies_to": [
+        "data_centres",
+        "server_rooms",
+        "it_equipment_rooms"
+      ],
       "key_sections": [
-        {"section": "645.4", "title": "Special Requirements for Information Technology Equipment Room", "summary": "All five conditions must be met to use Art 645 (disconnecting means at exits, fire suppression, room construction, etc.)"},
-        {"section": "645.10","title": "Disconnecting Means", "summary": "Disconnect at each principal exit to shut down IT equipment power and HVAC simultaneously (the 'EPO' button)"}
+        {
+          "section": "645.4",
+          "title": "Special Requirements for Information Technology Equipment Room",
+          "summary": "All five conditions must be met to use Art 645 (disconnecting means at exits, fire suppression, room construction, etc.)"
+        },
+        {
+          "section": "645.10",
+          "title": "Disconnecting Means",
+          "summary": "Disconnect at each principal exit to shut down IT equipment power and HVAC simultaneously (the 'EPO' button)"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Trying to use Art 645 optional rules without meeting all five 645.4 conditions — invalidates the entire article's permissions"],
+      "common_errors": [
+        "Trying to use Art 645 optional rules without meeting all five 645.4 conditions — invalidates the entire article's permissions"
+      ],
       "drawn_as": [],
-      "related_iec_60364": ["IEC 60364-7-740 (data centres) — partial coverage"],
+      "related_iec_60364": [
+        "IEC 60364-7-740 (data centres) — partial coverage"
+      ],
       "divergence_notes": "Art 645's 'opt-in' approach is unique to NEC — meet the conditions and gain permission to use optional wiring methods. IEC handles data-centre power through TIA-942 and dedicated IEC 60364-7-740 (partial scope).",
       "related_bs_7671": [],
       "usage_notes": "Document the five 645.4 conditions explicitly on the design narrative if claiming Art 645 permissions.",
-      "related_articles": ["ART_725", "ART_770"]
+      "related_articles": [
+        "ART_725",
+        "ART_770"
+      ]
     },
     {
       "article_id": "ART_670",
@@ -78,20 +140,38 @@
       "article_number": 670,
       "article_title": "Industrial Machinery",
       "scope": "Industrial machines per NFPA 79 (Electrical Standard for Industrial Machinery). Disconnect, nameplate, SCCR, supply conductors.",
-      "applies_to": ["industrial_machinery", "manufacturing_equipment"],
+      "applies_to": [
+        "industrial_machinery",
+        "manufacturing_equipment"
+      ],
       "key_sections": [
-        {"section": "670.4", "title": "Nameplate Data", "summary": "Industrial machine nameplate must include: supply voltage, FLA, SCCR, max OCPD ahead of machine, etc."},
-        {"section": "670.5", "title": "Short-Circuit Current Rating", "summary": "Machine SCCR must equal or exceed available fault current at point of supply"}
+        {
+          "section": "670.4",
+          "title": "Nameplate Data",
+          "summary": "Industrial machine nameplate must include: supply voltage, FLA, SCCR, max OCPD ahead of machine, etc."
+        },
+        {
+          "section": "670.5",
+          "title": "Short-Circuit Current Rating",
+          "summary": "Machine SCCR must equal or exceed available fault current at point of supply"
+        }
       ],
       "tabulated_values": {},
       "tables_inline": {},
-      "common_errors": ["Specifying a machine with SCCR < available fault current — common failure on retrofits"],
+      "common_errors": [
+        "Specifying a machine with SCCR < available fault current — common failure on retrofits"
+      ],
       "drawn_as": [],
-      "related_iec_60364": ["IEC 60204-1 (Safety of machinery — Electrical equipment of machines) — primary IEC reference for industrial machinery"],
+      "related_iec_60364": [
+        "IEC 60204-1 (Safety of machinery — Electrical equipment of machines) — primary IEC reference for industrial machinery"
+      ],
       "divergence_notes": "Art 670 + NFPA 79 ≈ IEC 60204-1; conceptually aligned but specific values and certifications differ.",
       "related_bs_7671": [],
       "usage_notes": "Cross-reference NFPA 79 for machine-internal wiring; NEC 670 covers the supply side.",
-      "related_articles": ["ART_430", "ART_409"]
+      "related_articles": [
+        "ART_430",
+        "ART_409"
+      ]
     },
     {
       "article_number": 625,

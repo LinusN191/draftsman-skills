@@ -1,4 +1,8 @@
 {
+  "clause_ref": "NFPA70 2023:Articles-500-506",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
   "_title": "NFPA 70 Articles 500-506 — Hazardous (Classified) Locations",
   "_version": "1.0.0",
   "_note": "Bundle covering the Division system (legacy US — Arts 500-503) and the Zone system (IEC-aligned — Arts 505-506).",
@@ -10,17 +14,60 @@
       "article_number": 500,
       "article_title": "Hazardous (Classified) Locations — Classes I, II, III (Division and Zone)",
       "scope": "Classification of locations where flammable gases (Class I), combustible dusts (Class II), or ignitible fibers/flyings (Class III) are present. TWO classification systems: Division system (NEC legacy — Class × Division 1/2 × Group A-G) and Zone system (IEC-aligned — Class I × Zone 0/1/2). Article 504 covers intrinsically safe (IS) systems.",
-      "applies_to": ["hazardous_locations", "class_division", "class_zone", "intrinsically_safe", "explosionproof", "purge_pressurize"],
+      "applies_to": [
+        "hazardous_locations",
+        "class_division",
+        "class_zone",
+        "intrinsically_safe",
+        "explosionproof",
+        "purge_pressurize"
+      ],
       "key_sections": [
-        {"section": "500.5", "title": "Classifications of Locations", "summary": "Class I (gas/vapor): Division 1 (ignitible concentrations exist under normal conditions) and Division 2 (likely only under abnormal conditions). Class II (dust): Division 1/2 by similar logic. Class III (fibers): Division 1/2."},
-        {"section": "500.6", "title": "Material Groups (Gas/Dust Groups)", "summary": "Class I Groups A-D (Group A: acetylene; B: hydrogen; C: ethylene; D: propane/gasoline). Class II Groups E-G (E: metal dust; F: carbon dust; G: combustible dust like grain). IEC IIA/IIB/IIC equivalents for gases, IIIA/IIIB/IIIC for dusts"},
-        {"section": "500.8", "title": "Equipment Marking and Selection", "summary": "Equipment marked for the Class/Division/Group it's listed for. Equipment listed for Zone is generally accepted in Division locations of equivalent severity (with limits)"},
-        {"section": "501",   "title": "Class I Locations (Gas/Vapor)", "summary": "Wiring methods, sealing, equipment for Class I"},
-        {"section": "502",   "title": "Class II Locations (Combustible Dust)", "summary": "Wiring methods and equipment for Class II — dust-ignitionproof or dust-tight"},
-        {"section": "503",   "title": "Class III Locations (Ignitible Fibers/Flyings)", "summary": "Generally less restrictive than I/II — covers textile mills, grain processing"},
-        {"section": "504",   "title": "Intrinsically Safe Systems", "summary": "IS apparatus and associated apparatus per UL 913 / UL 60079-11. Loop calculation for entity parameters (Voc, Isc, Ca, La, Pi, Po, Ci, Li)"},
-        {"section": "505",   "title": "Class I, Zone 0, 1, and 2 Locations (IEC-aligned)", "summary": "Alternative to 501. Zone 0 (continuously present), Zone 1 (occasionally), Zone 2 (only under abnormal conditions). IIA/IIB/IIC gas grouping"},
-        {"section": "506",   "title": "Zone 20, 21, and 22 Locations (Combustible Dust)", "summary": "IEC-aligned dust classification. Zone 20 (dust cloud continuously), 21 (occasionally), 22 (abnormal only). IIIA/IIIB/IIIC dust grouping"}
+        {
+          "section": "500.5",
+          "title": "Classifications of Locations",
+          "summary": "Class I (gas/vapor): Division 1 (ignitible concentrations exist under normal conditions) and Division 2 (likely only under abnormal conditions). Class II (dust): Division 1/2 by similar logic. Class III (fibers): Division 1/2."
+        },
+        {
+          "section": "500.6",
+          "title": "Material Groups (Gas/Dust Groups)",
+          "summary": "Class I Groups A-D (Group A: acetylene; B: hydrogen; C: ethylene; D: propane/gasoline). Class II Groups E-G (E: metal dust; F: carbon dust; G: combustible dust like grain). IEC IIA/IIB/IIC equivalents for gases, IIIA/IIIB/IIIC for dusts"
+        },
+        {
+          "section": "500.8",
+          "title": "Equipment Marking and Selection",
+          "summary": "Equipment marked for the Class/Division/Group it's listed for. Equipment listed for Zone is generally accepted in Division locations of equivalent severity (with limits)"
+        },
+        {
+          "section": "501",
+          "title": "Class I Locations (Gas/Vapor)",
+          "summary": "Wiring methods, sealing, equipment for Class I"
+        },
+        {
+          "section": "502",
+          "title": "Class II Locations (Combustible Dust)",
+          "summary": "Wiring methods and equipment for Class II — dust-ignitionproof or dust-tight"
+        },
+        {
+          "section": "503",
+          "title": "Class III Locations (Ignitible Fibers/Flyings)",
+          "summary": "Generally less restrictive than I/II — covers textile mills, grain processing"
+        },
+        {
+          "section": "504",
+          "title": "Intrinsically Safe Systems",
+          "summary": "IS apparatus and associated apparatus per UL 913 / UL 60079-11. Loop calculation for entity parameters (Voc, Isc, Ca, La, Pi, Po, Ci, Li)"
+        },
+        {
+          "section": "505",
+          "title": "Class I, Zone 0, 1, and 2 Locations (IEC-aligned)",
+          "summary": "Alternative to 501. Zone 0 (continuously present), Zone 1 (occasionally), Zone 2 (only under abnormal conditions). IIA/IIB/IIC gas grouping"
+        },
+        {
+          "section": "506",
+          "title": "Zone 20, 21, and 22 Locations (Combustible Dust)",
+          "summary": "IEC-aligned dust classification. Zone 20 (dust cloud continuously), 21 (occasionally), 22 (abnormal only). IIIA/IIIB/IIIC dust grouping"
+        }
       ],
       "tabulated_values": {
         "class_division_zone_mapping": "see tables_inline + see hazardous-locations-classification.json for full matrix"
@@ -29,19 +76,51 @@
         "Class_vs_Division_vs_Zone_Quick_Reference": {
           "title": "Class/Division ↔ Class/Zone equivalence (severity-based)",
           "rows": [
-            {"class_division": "Class I Division 1", "class_zone": "Class I Zone 0 + Zone 1 combined", "severity_note": "Division 1 is more severe than Zone 1 alone (Division 1 ≈ Zone 0 + 1)"},
-            {"class_division": "Class I Division 2", "class_zone": "Class I Zone 2",                 "severity_note": "Direct equivalence"},
-            {"class_division": "Class II Division 1","class_zone": "Zone 20 + Zone 21 combined",   "severity_note": ""},
-            {"class_division": "Class II Division 2","class_zone": "Zone 22",                       "severity_note": ""}
+            {
+              "class_division": "Class I Division 1",
+              "class_zone": "Class I Zone 0 + Zone 1 combined",
+              "severity_note": "Division 1 is more severe than Zone 1 alone (Division 1 ≈ Zone 0 + 1)"
+            },
+            {
+              "class_division": "Class I Division 2",
+              "class_zone": "Class I Zone 2",
+              "severity_note": "Direct equivalence"
+            },
+            {
+              "class_division": "Class II Division 1",
+              "class_zone": "Zone 20 + Zone 21 combined",
+              "severity_note": ""
+            },
+            {
+              "class_division": "Class II Division 2",
+              "class_zone": "Zone 22",
+              "severity_note": ""
+            }
           ]
         },
         "Gas_Group_Mapping_NEC_vs_IEC": {
           "title": "Gas Group Equivalence",
           "rows": [
-            {"nec_group": "A (acetylene)", "iec_group": "IIC", "_note": "NEC Group A is more specific than IEC IIC; IIC covers acetylene + hydrogen + similar"},
-            {"nec_group": "B (hydrogen)",   "iec_group": "IIC", "_note": "Group B equipment can typically be used in IIC locations and vice versa with caveats"},
-            {"nec_group": "C (ethylene)",   "iec_group": "IIB", "_note": "Direct equivalence"},
-            {"nec_group": "D (propane, gasoline)", "iec_group": "IIA", "_note": "Direct equivalence"}
+            {
+              "nec_group": "A (acetylene)",
+              "iec_group": "IIC",
+              "_note": "NEC Group A is more specific than IEC IIC; IIC covers acetylene + hydrogen + similar"
+            },
+            {
+              "nec_group": "B (hydrogen)",
+              "iec_group": "IIC",
+              "_note": "Group B equipment can typically be used in IIC locations and vice versa with caveats"
+            },
+            {
+              "nec_group": "C (ethylene)",
+              "iec_group": "IIB",
+              "_note": "Direct equivalence"
+            },
+            {
+              "nec_group": "D (propane, gasoline)",
+              "iec_group": "IIA",
+              "_note": "Direct equivalence"
+            }
           ]
         }
       },
@@ -51,12 +130,24 @@
         "Omitting conduit seals where the boundary crosses from classified to unclassified — common 501.15 violation",
         "Using non-IS equipment in a Class I Div 1 location where the original design assumed an IS loop — IS calculation invalidated by component substitution"
       ],
-      "drawn_as": ["EXPLOSION_PROOF_LUMINAIRE", "EXPLOSION_PROOF_RECEPTACLE"],
-      "related_iec_60364": ["IEC 60079 series (Hazardous areas)", "IEC 60079-10-1 (Gas hazardous areas classification)", "IEC 60079-10-2 (Dust hazardous areas classification)", "IEC 60079-11 (Intrinsic safety)"],
+      "drawn_as": [
+        "EXPLOSION_PROOF_LUMINAIRE",
+        "EXPLOSION_PROOF_RECEPTACLE"
+      ],
+      "related_iec_60364": [
+        "IEC 60079 series (Hazardous areas)",
+        "IEC 60079-10-1 (Gas hazardous areas classification)",
+        "IEC 60079-10-2 (Dust hazardous areas classification)",
+        "IEC 60079-11 (Intrinsic safety)"
+      ],
       "divergence_notes": "NEC uses two parallel classification systems — Division (legacy US, Arts 500-503) and Zone (IEC-aligned, Arts 505-506). IEC 60079 uses Zone only. NEC Group A/B/C/D (gas) and E/F/G (dust) map approximately to IEC IIA/IIB/IIC and IIIA/IIIB/IIIC but with material-specific differences. See hazardous-locations-classification.json for the comprehensive conversion matrix.",
       "related_bs_7671": [],
       "usage_notes": "On a new design, ask the AHJ early which classification system is preferred — many jurisdictions accept either, but mixing systems within one project is problematic.",
-      "related_articles": ["ART_511", "ART_513", "ART_514"]
+      "related_articles": [
+        "ART_511",
+        "ART_513",
+        "ART_514"
+      ]
     }
   ]
 }
