@@ -1,0 +1,28 @@
+validator: jurisdiction_format_match
+version: 1.0.0
+description: |
+  Enforce jurisdiction → format mapping. RESTRICTED override is the only legitimate
+  cross-jurisdictional format; all other label-format combinations must match the
+  jurisdiction-format-selection rule.
+controlled_vocabulary:
+  formats: [ansi_z535_4, iso_7010, bs_5499, restricted_format]
+  signal_words: [DANGER, WARNING, CAUTION, NOTICE, RESTRICTED]
+checks:
+  - id: format_applied_in_vocabulary
+    description: "Every label's format_applied is in the controlled vocabulary"
+    expression: "for each label: label.format_applied in [ansi_z535_4, iso_7010, bs_5499, restricted_format]"
+    severity: error
+  - id: signal_word_in_vocabulary
+    description: "Every label's signal_word is in the controlled vocabulary"
+    expression: "for each label: label.signal_word in [DANGER, WARNING, CAUTION, NOTICE, RESTRICTED]"
+    severity: error
+  - id: jurisdiction_format_consistency
+    description: |
+      When format_applied is NOT restricted_format AND format_source is NOT engineer_override:
+      format_applied must match the jurisdiction's default (US → ansi_z535_4; EU/INT → iso_7010; GB → bs_5499).
+    expression: |
+      for each label where label.format_applied != 'restricted_format' AND label.format_source == 'auto_jurisdiction':
+        (jurisdiction == 'US' AND format_applied == 'ansi_z535_4') OR
+        (jurisdiction in ['EU', 'INT'] AND format_applied == 'iso_7010') OR
+        (jurisdiction == 'GB' AND format_applied == 'bs_5499')
+    severity: error

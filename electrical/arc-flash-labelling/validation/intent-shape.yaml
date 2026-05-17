@@ -1,0 +1,22 @@
+validator: intent_shape
+version: 1.0.0
+description: |
+  Emitted labels intent satisfies its own schema + has 1-to-1 mapping with IR labels[].
+checks:
+  - id: validates_against_schema
+    description: "Intent JSON validates against schemas/labels-intent.schema.json"
+    severity: error
+  - id: one_to_one_with_ir_labels
+    description: |
+      Every IR labels[] entry has exactly one matching intent.labels[] entry (by node_id).
+    expression: |
+      for each ir_label in IR.labels:
+        count(intent.labels where node_id == ir_label.node_id) == 1
+      AND for each intent_label in intent.labels:
+        exists ir_label in IR.labels where ir_label.node_id == intent_label.node_id
+    severity: error
+  - id: downstream_required_fields_present
+    description: |
+      Every intent.labels[] entry has all required fields: node_id, format_applied, signal_word, label_size_mm.
+    expression: "all required fields present and non-null on every entry"
+    severity: error

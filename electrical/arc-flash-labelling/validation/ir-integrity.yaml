@@ -1,0 +1,25 @@
+validator: ir_integrity
+version: 1.0.0
+description: |
+  Structural integrity of the labels IR. Catches duplicate node_ids, broken parent refs,
+  and unpopulated SVG content before downstream rendering.
+checks:
+  - id: unique_node_ids_in_labels
+    description: "Every labels[].node_id appears exactly once"
+    expression: "len(distinct(labels[].node_id)) == len(labels)"
+    severity: error
+  - id: svg_content_non_empty
+    description: "Every label's rendering.svg_content is non-empty + contains <svg> element"
+    expression: |
+      for each label:
+        label.rendering.svg_content is non-empty AND
+        '<svg' in label.rendering.svg_content AND
+        '</svg>' in label.rendering.svg_content
+    severity: error
+  - id: project_label_index_consistent_with_labels
+    description: |
+      project_label_index.summary_table has one row per labels[] entry.
+    expression: |
+      len(project_label_index.summary_table) == len(labels) AND
+      every summary_table.node_id exists in labels[].node_id
+    severity: error
