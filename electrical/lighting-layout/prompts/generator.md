@@ -721,6 +721,58 @@ to the ezdxf renderer. All dimensions in millimetres.
 
 ---
 
+## Tools Available at Runtime
+
+When the DraftsMan runtime calls you, two Python tools are exposed. Use them rather than calculating by hand:
+
+### `calc.lumen_grid_solver`
+Call this FIRST after you've established target lux, design lumens, UF, MF, and room dimensions. It returns a deterministic baseline grid (rows × cols, x/y positions in mm). After the call, you may nudge positions for entrance avoidance or ceiling-grid snapping — but the count and spacing come from the tool.
+
+### `calc.lumen_method_check`
+Call this AFTER you've finalised the luminaire count and positions. It returns `{achieved_lux, compliant, margin_pct, part_l_compliant}`. Cite the result in your rationale section under "Compliance". If `compliant: false`, you MUST add a non-compliance flag to `calculation_summary.non_compliance_flags`.
+
+Do not duplicate the math in chat narrative. Show the tool calls (the runtime will log them) and quote their outputs.
+
+## Required IR Output Block
+
+In addition to the root IR fields (`room`, `luminaires`, `circuits`, …), include an `intent` block at the top level of the IR matching the lighting-layout intent schema:
+
+```json
+"intent": {
+  "intent_version": "1.0.0",
+  "room_id": "<echo of room.id or fallback>",
+  "room_type": "<echo of room.room_type>",
+  "luminaire_summary": {
+    "luminaire_count": <integer>,
+    "luminaire_wattage_w_each": <integer>,
+    "luminaire_lumens_each": <integer>,
+    "lumen_type": "design",
+    "ip_rating": "<string>"
+  },
+  "circuits": [
+    {
+      "circuit_id": "<string>",
+      "voltage_class": "LV_power",
+      "load_w": <number>,
+      "luminaire_count": <integer>,
+      "mcb_rating_a_suggested": <one of 6,10,16,20,32>
+    }
+  ],
+  "emergency_lighting_present": <boolean>,
+  "controls_summary": {
+    "occupancy_sensing": <boolean>,
+    "daylight_linking": <boolean>,
+    "dimming_protocol": "<one of null|none|switched|0-10V|DALI|DALI-2>",
+    "part_l_assessed": <boolean>,
+    "part_l_compliant": <boolean>
+  }
+}
+```
+
+This block is consumed by downstream skills (db-layout, cable-containment) without their needing your full per-luminaire positions.
+
+---
+
 ## Step 14 (final) — Emit `rationale` block
 
 After computing the IR (rooms, luminaires, switches, circuits, controls,
