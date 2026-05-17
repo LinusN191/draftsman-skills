@@ -1,0 +1,42 @@
+eval_id: eval-04-missing-fault-data
+category: missing_input
+skill: arc-flash
+skill_version: 1.0.0
+description: |
+  No fault-level intent + no engineer-declared per-node Ibf. Skill must NOT invent
+  fault current — emits method_applied: pending + ARC_FLASH_PENDING flag + logs assumption.
+input:
+  jurisdiction: GB
+  project_supply: { voltage_v: 400, phases: three, frequency_hz: 50 }
+  consumed_intents:
+    fault_level: { present: false }
+  cascade_declared:
+    - id: "DB-X1"
+      parent_node_id: null
+      node_kind: final_circuit
+      designation: "Panel DB-X1 — fault data missing"
+      equipment: { type: "LV panelboard", current_type: ac, voltage_v: 400 }
+      fault_inputs: {}  # deliberately empty
+      ocpd_inputs: { ocpd_type: "MCCB_thermal_magnetic", t_clear_s: 0.2 }
+      geometry: { working_distance_mm: 455 }
+expected:
+  per_node:
+    - node_id: "DB-X1"
+      method_applied: "pending"
+      checks_tool_call_pending: true
+      incident_energy_cal_per_cm2: null
+      arc_flash_boundary_mm: null
+      ppe_category: null
+  compliance_summary:
+    assumptions_must_contain_text:
+      - "calc.arc_flash_incident_energy"
+      - "ibf_ka_max missing"
+  non_compliance_flags_must_include:
+    - code: "ARC_FLASH_PENDING"
+      severity: "warning"
+pass_criteria:
+  - "No invented Ibf; method_applied = pending"
+  - "Numeric outputs are null"
+  - "ARC_FLASH_PENDING flag emitted"
+  - "Assumption explicitly names the missing input"
+  - "Shock-approach still computed (doesn't depend on fault data) + label_recommended still set"

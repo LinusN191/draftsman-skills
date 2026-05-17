@@ -1,0 +1,35 @@
+eval_id: eval-05-jurisdiction-us-with-restricted
+category: jurisdiction_switch
+skill: arc-flash
+skill_version: 1.0.0
+description: |
+  US industrial cascade with one node having very high fault current + slow OCPD → IE > 40
+  cal/cm². Skill emits INCIDENT_ENERGY_GT_40_RESTRICTED error + ppe_category: null. Tests
+  the restricted-equipment path.
+input:
+  jurisdiction: US
+  project_supply: { voltage_v: 480, phases: three, frequency_hz: 60 }
+  cascade_declared:
+    - id: "MSB-RESTRICTED"
+      parent_node_id: null
+      node_kind: service_entrance
+      designation: "480V service entrance — high fault current + slow ACB"
+      equipment: { type: "metal-clad switchgear", current_type: ac, voltage_v: 480 }
+      fault_inputs: { ibf_ka_max: 65, x_over_r: 10 }
+      ocpd_inputs: { ocpd_type: "ACB_with_intentional_delay", t_clear_s: 0.5 }
+      geometry: { working_distance_mm: 455 }
+expected:
+  per_node:
+    - node_id: "MSB-RESTRICTED"
+      incident_energy_cal_per_cm2_gt: 40
+      ppe_category: null
+  non_compliance_flags_must_include:
+    - code: "INCIDENT_ENERGY_GT_40_RESTRICTED"
+      severity: "error"
+      message_contains: "specialised teams"
+pass_criteria:
+  - "IE > 40 cal/cm² computed"
+  - "ppe_category set to null (no Cat 5 in NFPA 70E)"
+  - "INCIDENT_ENERGY_GT_40_RESTRICTED flag at error severity"
+  - "Flag message recommends specialised-team handling"
+  - "shock_approach still populated (separate concern)"
