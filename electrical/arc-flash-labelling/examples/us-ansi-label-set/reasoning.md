@@ -18,7 +18,7 @@ The project jurisdiction is `US`. Per `rules/jurisdiction-format-selection.yaml`
 
 ### SERVICE-480V.PV-INV-1 (PV inverter)
 - IE: 7.0 cal/cm² → PPE Cat 2 → WARNING signal word
-- ANSI Z535.4 format with Safety Yellow (#FFB81C) signal-word panel
+- ANSI Z535.4 format with Safety Yellow (#F28900) signal-word panel
 - All NFPA 70E §130.5(H) required content populated
 - QR code: `https://safety.acme-engineering.com/projects/us-ind-af-labels-eg01/SERVICE-480V.PV-INV-1`
 
@@ -30,7 +30,7 @@ The project jurisdiction is `US`. Per `rules/jurisdiction-format-selection.yaml`
 
 ### DCFC-1.DC-OUT (DC fast charger output)
 - IE: 6.0 cal/cm² → PPE Cat 2 → WARNING signal word
-- ANSI Z535.4 format with Safety Yellow (#FFB81C) signal-word panel
+- ANSI Z535.4 format with Safety Yellow (#F28900) signal-word panel
 - All NFPA 70E §130.5(H) required content populated
 - QR code: `https://safety.acme-engineering.com/projects/us-ind-af-labels-eg01/DCFC-1.DC-OUT`
 

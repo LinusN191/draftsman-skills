@@ -15,10 +15,13 @@ override_priority:
 restricted_override:
   trigger: |
     incident_energy_cal_per_cm2 > 40
-    OR ppe_category is null AND incident_energy_cal_per_cm2 is not null
     OR engineer-declared restricted_per_node[node_id] == true
   applies: "restricted_format"
   rationale: "IE > 40 cal/cm² always uses RESTRICTED visual format regardless of regional convention"
+  data_quality_note: |
+    If ppe_category is null while incident_energy_cal_per_cm2 is non-null, this is a
+    data-quality error from upstream — FAIL validation with a clear error. Do NOT
+    silently emit RESTRICTED as a fallback; that would mask the upstream gap.
 record_field: format_source
 record_field_values:
   - auto_jurisdiction

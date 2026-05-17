@@ -37,7 +37,8 @@ Every `labels[].signal_word` is one of: `DANGER | WARNING | CAUTION | NOTICE | R
 Per node:
 - `ppe_category in [1, 2]` → `signal_word == WARNING`
 - `ppe_category in [3, 4]` → `signal_word == DANGER`
-- `incident_energy_cal_per_cm2 > 40` OR `ppe_category == null` → `signal_word == RESTRICTED`
+- `incident_energy_cal_per_cm2 > 40` → `signal_word == RESTRICTED`
+- `ppe_category == null` AND `incident_energy_cal_per_cm2 != null` AND IE ≤ 40 → FAIL (data-quality error; do not silently emit RESTRICTED)
 
 ### INV-05 — NFPA 70E §130.5(H) required fields populated
 For every `labels[]` entry, all required content fields are non-empty:

@@ -18,8 +18,8 @@ The project jurisdiction is `INT`. Per `rules/jurisdiction-format-selection.yaml
 - QR code: `https://safetydb.europower.de/labels/MSB-1`
 
 ### DB-L1 (Distribution Board Level 1 — 400V)
-- IE: 12.3 cal/cm² → PPE Cat 2 → WARNING signal word
-- ISO-7010 format with Safety Yellow (#FFB81C) signal-word panel
+- IE: 12.3 cal/cm² → PPE Cat 3 → DANGER signal word
+- ISO-7010 format with Safety Red (#E00034) signal-word panel
 - W012 arc-flash hazard symbol
 - All NFPA 70E §130.5(H) required content populated
 - QR code: `https://safetydb.europower.de/labels/DB-L1`
@@ -45,7 +45,7 @@ When IE > 40 cal/cm², energized work is **prohibited** per industry best practi
 ## SVG rendering + PDF/PNG deferment
 
 Per WI3, SVG generation is inline. The RESTRICTED label uses a distinct template (`templates/restricted-label.svg.template`) with:
-- Purple (#663399) signal-word banner
+- Purple (#64446E) signal-word banner
 - Diagonal stripe background (safety convention for forbidden zones)
 - Prohibition circle overlay (ISO 3864-1 prohibition symbol)
 - "DO NOT OPERATE" + "ENERGIZED WORK PROHIBITED" text

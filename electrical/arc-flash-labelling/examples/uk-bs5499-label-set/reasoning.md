@@ -20,7 +20,7 @@ BS-5499 combines ISO 7010 symbols with English signal-word panels, making it the
 
 ### DB-L1 (Distribution Board Level 1)
 - IE: 6.2 cal/cm² → PPE Cat 2 → WARNING signal word
-- BS-5499 format with Safety Yellow (#FFB81C) signal-word panel
+- BS-5499 format with Safety Yellow (#F28900) signal-word panel
 - All NFPA 70E §130.5(H) required content populated
 - No QR code (engineer discretion for this example)
 
