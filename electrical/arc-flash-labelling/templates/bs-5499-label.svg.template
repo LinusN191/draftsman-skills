@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="{{label_width_mm}}mm" height="{{label_height_mm}}mm" viewBox="0 0 {{label_width_mm}} {{label_height_mm}}" version="1.1">
+  <title>Arc-Flash Label per BS 5499 + ISO 7010 — {{equipment_id}}</title>
+  <desc>Arc-flash warning label for UK installation per BS 5499 (ISO 7010 base + English signal word) + NFPA 70E §130.5(H) content for {{equipment_id}}. HSG48 voluntary best practice.</desc>
+
+  <!-- English signal-word banner (BS 5499 supplementation) -->
+  <rect x="0" y="0" width="{{label_width_mm}}" height="{{signal_word_panel_height_mm}}" fill="#FFCA00" stroke="#000000" stroke-width="0.5"/>
+  <text x="{{label_width_mm_half}}" y="{{signal_word_y_mm}}" font-family="Arial, sans-serif" font-size="{{signal_word_font_size_mm}}" font-weight="bold" fill="#000000" text-anchor="middle">
+    {{signal_word}}
+  </text>
+
+  <!-- ISO 7010 W012 symbol -->
+  <g transform="translate({{w012_x_mm}}, {{w012_y_mm}})">
+    <polygon points="{{w012_size_mm_half}},2 {{w012_size_mm_minus_2}},{{w012_size_mm_minus_2}} 2,{{w012_size_mm_minus_2}}" fill="#FFCA00" stroke="#000000" stroke-width="1.2"/>
+    <path d="M {{w012_size_mm_quarter}} {{w012_lightning_y1}} L {{w012_size_mm_half}} {{w012_lightning_y2}} L {{w012_size_mm_3quarter}} {{w012_lightning_y1}} L {{w012_size_mm_half_plus2}} {{w012_lightning_y3}} L {{w012_size_mm_minus_quarter}} {{w012_lightning_y3}} L {{w012_size_mm_half}} {{w012_lightning_y4}} Z" fill="#000000"/>
+  </g>
+
+  <!-- Supplementary text panel + footer (identical to ISO 7010) -->
+  <text x="{{text_panel_x_mm}}" y="{{equipment_id_y_mm}}" font-family="Arial, sans-serif" font-size="{{equipment_id_font_size_mm}}" font-weight="bold" fill="#000000">
+    {{equipment_id}}
+  </text>
+  <text x="{{text_panel_x_mm}}" y="{{equipment_id_y_mm_plus_line}}" font-family="Arial, sans-serif" font-size="{{body_font_size_mm}}" fill="#000000">
+    {{nominal_voltage}}
+  </text>
+  <text x="{{text_panel_x_mm}}" y="{{equipment_id_y_mm_plus_2line}}" font-family="Arial, sans-serif" font-size="{{body_font_size_mm}}" fill="#000000">
+    Incident Energy: {{incident_energy_at_working_distance}}
+  </text>
+  <text x="{{text_panel_x_mm}}" y="{{equipment_id_y_mm_plus_3line}}" font-family="Arial, sans-serif" font-size="{{body_font_size_mm}}" fill="#000000">
+    Arc Flash Boundary: {{arc_flash_boundary}}
+  </text>
+  <text x="{{text_panel_x_mm}}" y="{{equipment_id_y_mm_plus_4line}}" font-family="Arial, sans-serif" font-size="{{body_font_size_mm}}" fill="#000000">
+    Limited Approach: {{shock_approach_limited_fixed}}
+  </text>
+  <text x="{{text_panel_x_mm}}" y="{{equipment_id_y_mm_plus_5line}}" font-family="Arial, sans-serif" font-size="{{body_font_size_mm}}" fill="#000000">
+    Restricted Approach: {{shock_approach_restricted}}
+  </text>
+  <text x="{{text_panel_x_mm}}" y="{{equipment_id_y_mm_plus_6line}}" font-family="Arial, sans-serif" font-size="{{body_font_size_mm}}" font-weight="bold" fill="#000000">
+    PPE Category: {{ppe_category_display}}
+  </text>
+  <text x="{{text_panel_x_mm}}" y="{{equipment_id_y_mm_plus_7line}}" font-family="Arial, sans-serif" font-size="{{footer_font_size_mm}}" fill="#000000">
+    {{ppe_clothing_description}}
+  </text>
+
+  <text x="2" y="{{footer_y_mm}}" font-family="Arial, sans-serif" font-size="{{footer_font_size_mm}}" fill="#000000">
+    Analysed: {{analysis_date}} | {{engineer}} — {{company_name}}
+  </text>
+  <text x="2" y="{{footer_y_mm_plus_line}}" font-family="Arial, sans-serif" font-size="{{footer_font_size_mm}}" fill="#666666">
+    HSG48 voluntary best practice; not statutory under UK law
+  </text>
+  {% if qr_code_url %}
+  <g transform="translate({{qr_x_mm}}, {{qr_y_mm}})">
+    <rect x="0" y="0" width="12" height="12" fill="#FFFFFF" stroke="#000000" stroke-width="0.3"/>
+    <text x="6" y="8" font-family="monospace" font-size="2" fill="#000000" text-anchor="middle">QR</text>
+  </g>
+  {% endif %}
+</svg>
