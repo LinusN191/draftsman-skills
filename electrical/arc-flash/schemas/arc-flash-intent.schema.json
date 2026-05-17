@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/arc-flash/schemas/arc-flash-intent.schema.json",
+  "title": "Arc-Flash Intent (downstream slim subset)",
+  "description": "Stable subset of the arc-flash IR consumed by future electrical/arc-flash-labelling skill. One entry per cascade node carrying everything needed to render an arc-flash label per ANSI Z535.4 + NFPA 70E §130.5(H). Forward-compat: optional fields may be added freely; required-field changes require a major intent_version bump.",
+  "type": "object",
+  "required": ["intent_kind", "version", "nodes"],
+  "additionalProperties": false,
+  "properties": {
+    "intent_kind": { "const": "arc-flash" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "produced_by_skill_version": { "type": "string" },
+    "tool_call_pending": { "type": "boolean", "description": "true if any node has method_applied: pending" },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["node_id", "designation", "equipment_type", "voltage_v", "working_distance_mm", "limited_approach_movable_mm", "limited_approach_fixed_mm", "restricted_approach_mm", "method_applied", "label_recommended", "produced_at"],
+        "additionalProperties": false,
+        "properties": {
+          "node_id": { "type": "string" },
+          "parent_node_id": { "type": ["string", "null"] },
+          "designation": { "type": "string" },
+          "equipment_type": { "type": "string" },
+          "current_type": { "enum": ["ac", "dc"] },
+          "voltage_v": { "type": "number" },
+          "incident_energy_cal_per_cm2": { "type": ["number", "null"] },
+          "arc_flash_boundary_mm": { "type": ["number", "null"] },
+          "working_distance_mm": { "type": "number" },
+          "limited_approach_movable_mm": { "type": ["number", "string"] },
+          "limited_approach_fixed_mm": { "type": ["number", "string"] },
+          "restricted_approach_mm": { "type": ["number", "string"] },
+          "ppe_category": { "type": ["integer", "null"], "minimum": 1, "maximum": 4 },
+          "method_applied": { "enum": ["ieee1584_2018", "ieee1584_2002", "lee_1982", "nfpa70e_table", "dc_doan", "pending"] },
+          "label_recommended": { "type": "boolean" },
+          "label_required_per": { "type": "string" },
+          "produced_at": { "type": "string", "format": "date" }
+        }
+      }
+    }
+  }
+}
