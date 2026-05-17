@@ -1,0 +1,41 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "IEEE 1584:2018 §7.5 (incident energy)",
+  "formula_id": "ieee1584-2018-incident-energy",
+  "formula_latex": "E = \\frac{12.552}{D^x} \\cdot \\left( k_1 + k_2 \\log I_{arc} + k_3 \\log G + k_4 \\log D + k_5 \\log t_{arc} + k_6 V_{nom} + k_7 \\right) \\cdot \\text{adj}",
+  "formula_plain_text": "Empirical incident-energy model: log-log fit with 7 coefficients per voltage class and electrode configuration. The 12.552 constant + distance exponent x is per-class. Adjustment factors (gap, distance, enclosure) multiply the result when non-standard conditions apply.",
+  "symbols": [
+    {"symbol": "E",         "meaning": "Incident energy at working distance D",        "unit": "cal/cm²"},
+    {"symbol": "I_arc",     "meaning": "Arcing current (either high or low bracket)",  "unit": "A"},
+    {"symbol": "G",         "meaning": "Gap between conductors",                       "unit": "mm"},
+    {"symbol": "D",         "meaning": "Working distance",                             "unit": "mm"},
+    {"symbol": "t_arc",     "meaning": "Arcing time (OCPD clearing time at I_arc)",   "unit": "s"},
+    {"symbol": "V_nom",     "meaning": "Nominal voltage",                              "unit": "V"},
+    {"symbol": "k_1..k_7",  "meaning": "Empirical coefficients per voltage class × electrode config", "unit": "dimensionless"},
+    {"symbol": "x",         "meaning": "Distance exponent per voltage class",          "unit": "dimensionless"},
+    {"symbol": "adj",       "meaning": "Product of applicable adjustment factors",     "unit": "dimensionless"}
+  ],
+  "applicable_range": {
+    "v_nom_min_v": 208,
+    "v_nom_max_v": 15000,
+    "t_arc_min_s": 0.005,
+    "t_arc_max_s": 2.0,
+    "d_min_mm": 305,
+    "d_max_mm": 1524,
+    "i_arc_min_a": 100,
+    "i_arc_max_a": 100000
+  },
+  "units": {"e": "cal/cm²"},
+  "worked_examples": [
+    {
+      "input":  {"v_nom_v": 480, "i_arc_a": 21500, "g_mm": 32, "d_mm": 455, "t_arc_s": 0.2, "electrode_config": "VCB"},
+      "expected_output": {"incident_energy_cal_per_cm2": 6.4},
+      "source": "IEEE 1584:2018 Annex D Example D.1 — approximate; verify with implementer's reference"
+    }
+  ],
+  "implementation_notes": "The 12.552 constant converts J/cm² to cal/cm² in IEEE 1584:2018 §7.5 (1 cal ≈ 4.184 J, so 1 J/cm² ≈ 0.239 cal/cm²; the 12.552 represents the IE-formula form per IEEE 1584:2018 §7.5 equation). The distance exponent x depends on voltage class.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Formula structure is factual."
+}

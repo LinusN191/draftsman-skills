@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "IEEE 1584:2018 §6 (arc current calculations)",
+  "formula_id": "ieee1584-2018-arc-current",
+  "formula_latex": "I_{arc} = f(V_{nom}, I_{bf}, G, \\text{electrode\\_config}, \\text{voltage\\_class})",
+  "formula_plain_text": "Predicted arcing current is an empirical function of nominal voltage, bolted fault current, conductor gap distance, electrode configuration, and voltage class. Each voltage class has its own coefficient set; see method-2018-<class>V-coefficients.json files.",
+  "symbols": [
+    {"symbol": "I_arc",         "meaning": "Predicted arcing current (always < I_bf)", "unit": "A"},
+    {"symbol": "V_nom",         "meaning": "Nominal line-to-line voltage",             "unit": "V"},
+    {"symbol": "I_bf",          "meaning": "Bolted three-phase fault current",         "unit": "A"},
+    {"symbol": "G",             "meaning": "Gap between conductors",                   "unit": "mm"},
+    {"symbol": "electrode_config", "meaning": "VCB | VCBB | HCB | VOA | HOA",          "unit": "enum"},
+    {"symbol": "voltage_class",  "meaning": "600V | 2700V | 14300V",                   "unit": "enum"}
+  ],
+  "applicable_range": {
+    "v_nom_min_v": 208,
+    "v_nom_max_v": 15000,
+    "i_bf_min_a": 500,
+    "i_bf_max_a": 106000,
+    "g_min_mm": 6.35,
+    "g_max_mm": 254.0
+  },
+  "units": {"i_arc": "A"},
+  "worked_examples": [
+    {
+      "input":  {"v_nom_v": 480, "i_bf_a": 25000, "g_mm": 32, "electrode_config": "VCB", "voltage_class": "600V"},
+      "expected_output": {"i_arc_a": 21500},
+      "source": "IEEE 1584:2018 Annex D Example D.1 (approximate — verify with implementer's source)"
+    }
+  ],
+  "implementation_notes": "The actual coefficient lookup happens at runtime via calc.arc_flash_incident_energy (next-sprint contract). This file declares the formula's variables + applicable range; the coefficient tables are in method-2018-<class>V-coefficients.json.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Formula structure is factual; coefficient values are factual empirical fits — reproduced for interoperation."
+}

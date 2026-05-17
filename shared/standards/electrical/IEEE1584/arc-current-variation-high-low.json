@@ -1,0 +1,30 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "IEEE 1584:2018 §10.2 (variation in arc current)",
+  "formula_id": "ieee1584-2018-arc-current-variation",
+  "formula_latex": "I_{arc,high} = 1.00 \\cdot I_{arc}, \\quad I_{arc,low} = 0.85 \\cdot I_{arc}",
+  "formula_plain_text": "To find worst-case incident energy, compute incident energy at both I_arc and 0.85×I_arc, then report the higher value. Low-current scenarios can produce higher incident energy when OCPDs are slower to trip at lower currents.",
+  "symbols": [
+    {"symbol": "I_arc",        "meaning": "Predicted arcing current (nominal)",   "unit": "A"},
+    {"symbol": "I_arc_high",   "meaning": "Upper bound (1.00 × I_arc)",           "unit": "A"},
+    {"symbol": "I_arc_low",    "meaning": "Lower bound (0.85 × I_arc)",           "unit": "A"}
+  ],
+  "applicable_range": {"i_arc_min_a": 100, "i_arc_max_a": 100000},
+  "units": {"i_arc_high": "A", "i_arc_low": "A"},
+  "coefficients": {
+    "high_multiplier": 1.00,
+    "low_multiplier":  0.85
+  },
+  "implementation_notes": "The 0.85 multiplier is fixed by IEEE 1584:2018 §10.2 regardless of voltage class or electrode config. Both scenarios MUST be computed and the worst incident energy reported.",
+  "worked_examples": [
+    {
+      "input":  {"i_arc_a": 21500},
+      "expected_output": {"i_arc_high_a": 21500.0, "i_arc_low_a": 18275.0},
+      "source": "Derived from §10.2 multipliers"
+    }
+  ],
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Multiplier values are factual constants."
+}

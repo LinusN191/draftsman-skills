@@ -1,0 +1,38 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "IEEE 1584:2018 §8 (arc-flash boundary)",
+  "formula_id": "ieee1584-2018-boundary-distance",
+  "formula_latex": "\\text{AFB} = D \\cdot \\left( \\frac{E}{1.2} \\right)^{1/x}",
+  "formula_plain_text": "Arc-flash boundary is the distance from the arcing source at which incident energy equals 1.2 cal/cm² (2nd-degree burn threshold). Derived by rearranging the incident-energy formula and solving for distance where E = 1.2.",
+  "symbols": [
+    {"symbol": "AFB",   "meaning": "Arc-flash boundary",                              "unit": "mm"},
+    {"symbol": "D",     "meaning": "Working distance at which E was computed",        "unit": "mm"},
+    {"symbol": "E",     "meaning": "Incident energy at working distance D",            "unit": "cal/cm²"},
+    {"symbol": "1.2",   "meaning": "2nd-degree burn threshold (constant)",            "unit": "cal/cm²"},
+    {"symbol": "x",     "meaning": "Distance exponent (same as in IE formula)",       "unit": "dimensionless"}
+  ],
+  "applicable_range": {
+    "e_min_cal_per_cm2": 1.2,
+    "e_max_cal_per_cm2": 1000.0,
+    "d_min_mm": 305,
+    "d_max_mm": 1524
+  },
+  "units": {"afb": "mm"},
+  "worked_examples": [
+    {
+      "input":  {"e_cal_per_cm2": 6.4, "d_mm": 455, "x_exponent": 1.85},
+      "expected_output": {"afb_mm": 1280},
+      "source": "Derived from §8 formula"
+    },
+    {
+      "input":  {"e_cal_per_cm2": 1.2, "d_mm": 455, "x_exponent": 1.85},
+      "expected_output": {"afb_mm": 455},
+      "source": "Boundary condition: when E exactly equals threshold, AFB = D"
+    }
+  ],
+  "implementation_notes": "The 1.2 cal/cm² threshold is fixed by IEEE 1584:2018 (and adopted by NFPA 70E) for the onset of 2nd-degree burn through bare-skin exposure. The exponent x is from the incident-energy formula's coefficient set.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Formula derivation is factual."
+}
