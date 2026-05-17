@@ -1,0 +1,33 @@
+{
+  "runner": "draftsman-eval",
+  "version": "1.0.0",
+  "skill": "arc-flash",
+  "skill_version": "1.0.0",
+  "description": "Eval runner config for electrical/arc-flash v1.0.0. Mirrors electrical/fault-level/evals/runner-config.json structure.",
+  "evals": [
+    "electrical/arc-flash/evals/eval-01-uk-lv-switchboard-happy-path.yaml",
+    "electrical/arc-flash/evals/eval-02-mv-cascade-with-drawout.yaml",
+    "electrical/arc-flash/evals/eval-03-coefficient-fallback-trap.yaml",
+    "electrical/arc-flash/evals/eval-04-missing-fault-data.yaml",
+    "electrical/arc-flash/evals/eval-05-jurisdiction-us-with-restricted.yaml",
+    "electrical/arc-flash/evals/eval-06-rationale-block.yaml",
+    "electrical/arc-flash/evals/eval-07-dc-pv-string.yaml",
+    "electrical/arc-flash/evals/eval-08-conservative-t-clear-default.yaml",
+    "electrical/arc-flash/evals/eval-09-shock-approach-out-of-range.yaml"
+  ],
+  "coverage": {
+    "wi5_categories": {
+      "happy_path": ["eval-01"],
+      "edge_case": ["eval-02"],
+      "validation_trap": ["eval-03"],
+      "missing_input": ["eval-04"],
+      "jurisdiction_switch": ["eval-05"],
+      "rationale_block": ["eval-06"]
+    },
+    "skill_specific": {
+      "dc_pv_string": ["eval-07"],
+      "conservative_default_behaviour": ["eval-08"],
+      "shock_approach_edge_case": ["eval-09"]
+    }
+  }
+}

@@ -1,0 +1,58 @@
+eval_id: eval-01-uk-lv-switchboard-happy-path
+category: happy_path
+skill: arc-flash
+skill_version: 1.0.0
+description: |
+  UK commercial 400V TPN main switchboard + 1 sub-DB. Standard VCB equipment, MCCB OCPD,
+  fault data from fault-level intent. IEEE 1584:2018 method fires (assuming coefficients
+  transcribed); otherwise fallback chain demotes to Lee 1982. Tests baseline cascade analysis.
+input:
+  jurisdiction: GB
+  project_supply:
+    voltage_v: 400
+    phases: three
+    frequency_hz: 50
+  consumed_intents:
+    fault_level: { present: true, source: "electrical/fault-level/1.0.0" }
+    db_layout_rollup: { present: true, source: "electrical/db-layout/1.0.0" }
+  cascade_declared:
+    - id: "MSB-1"
+      parent_node_id: null
+      node_kind: service_entrance
+      designation: "Main MSB 2500A incomer"
+      equipment: { type: "metal-clad LV switchgear", current_type: ac, voltage_v: 400 }
+      fault_inputs: { ibf_ka_max: 22.5, ibf_ka_min: 20.4, x_over_r: 7 }
+      ocpd_inputs: { ocpd_type: "ACB_electronic", t_clear_s: 0.3 }
+      geometry: { working_distance_mm: 455 }
+    - id: "MSB-1.DB-L1"
+      parent_node_id: "MSB-1"
+      node_kind: sub_feeder
+      designation: "DB-L1 incoming"
+      equipment: { type: "LV panelboard", current_type: ac, voltage_v: 400 }
+      fault_inputs: { ibf_ka_max: 18.0, ibf_ka_min: 16.5, x_over_r: 5 }
+      ocpd_inputs: { ocpd_type: "MCCB_thermal_magnetic", t_clear_s: 0.2 }
+      geometry: { working_distance_mm: 455 }
+expected:
+  cascade_node_count: 2
+  per_node:
+    - node_id: "MSB-1"
+      electrode_config: "VCB"
+      electrode_config_source: "auto_inferred_from_equipment_type"
+      method_applied_one_of: ["ieee1584_2018", "lee_1982"]
+      shock_approach_limited_movable_mm: 3050
+      shock_approach_limited_fixed_mm: 1070
+      shock_approach_restricted_mm: 305
+      shock_approach_source_contains: "151V to 750V"
+      label_recommended: true
+    - node_id: "MSB-1.DB-L1"
+      electrode_config: "VCB"
+      ppe_category_one_of: [1, 2, 3]
+      label_recommended: true
+  invariants_pass: ["INV-01","INV-02","INV-03","INV-04","INV-05","INV-08","INV-09","INV-10"]
+pass_criteria:
+  - "IR validates against schema"
+  - "Both nodes have method_applied from controlled vocabulary"
+  - "Both nodes auto-inferred to VCB electrode config"
+  - "Both nodes have shock-approach distances from Table 130.4(C)(a) row 151V-750V"
+  - "Both nodes label_recommended: true (LV switchgear + panelboard ≥240V)"
+  - "If method_applied == lee_1982: LEE_1982_FALLBACK_USED flag present"
