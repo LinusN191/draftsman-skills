@@ -1,0 +1,52 @@
+{
+  "id": "arc-flash-incident-energy",
+  "executor": "tool",
+  "tool_name": "calc.arc_flash_incident_energy",
+  "description": "Compute arc-flash incident energy, arc-flash boundary, and arcing current per IEEE 1584:2018 (preferred), IEEE 1584:2002 (legacy), Lee 1982 (theoretical fallback), NFPA 70E table method (lookup), or Doan + Stokes & Oppenlander (DC). Method is selected by caller via `method` input; `method=auto` triggers the full fallback chain.",
+  "version": "1.0.0",
+  "inputs": [
+    {"id": "method", "type": "enum", "values": ["auto", "ieee1584_2018", "ieee1584_2002", "lee_1982", "nfpa70e_table", "dc_doan"], "required": true, "description": "Method selection; `auto` runs the fallback chain"},
+    {"id": "current_type", "type": "enum", "values": ["ac", "dc"], "required": true, "description": "AC routes through IEEE 1584 / Lee / NFPA70E; DC routes through Doan + Stokes & Oppenlander"},
+    {"id": "voltage_v", "type": "number", "min": 50, "max": 15000, "required": true, "unit": "V"},
+    {"id": "bolted_fault_current_a", "type": "number", "min": 100, "max": 200000, "required": true, "unit": "A"},
+    {"id": "arcing_time_s", "type": "number", "min": 0.005, "max": 5.0, "required": true, "unit": "s"},
+    {"id": "working_distance_mm", "type": "number", "min": 100, "max": 2000, "required": true, "unit": "mm"},
+    {"id": "gap_mm", "type": "number", "min": 5, "max": 254, "required": false, "unit": "mm", "description": "Required for ieee1584_2018 + ieee1584_2002 + dc_doan; defaulted from gap-distance-table when omitted"},
+    {"id": "electrode_config", "type": "enum", "values": ["VCB", "VCBB", "HCB", "VOA", "HOA"], "required": false, "description": "Required for AC IEEE methods; null for DC"},
+    {"id": "enclosure_volume_mm3", "type": "number", "required": false, "description": "Required for ieee1584_2018 §10.5 enclosure-size adjustment"},
+    {"id": "equipment_type", "type": "string", "required": false, "description": "Required for nfpa70e_table method lookup"}
+  ],
+  "outputs": [
+    {"id": "applied_method", "type": "enum", "values": ["ieee1584_2018", "ieee1584_2002", "lee_1982", "nfpa70e_table", "dc_doan", "pending"], "description": "Which method actually produced the result"},
+    {"id": "method_fallback_trail", "type": "array", "description": "Full trail of methods tried with skipped/applied + reason"},
+    {"id": "arcing_current_a", "type": "number", "unit": "A", "nullable": true},
+    {"id": "incident_energy_cal_per_cm2", "type": "number", "unit": "cal/cm²", "nullable": true, "description": "Null when method=nfpa70e_table OR method=pending"},
+    {"id": "arc_flash_boundary_mm", "type": "number", "unit": "mm", "nullable": true},
+    {"id": "voltage_class_used", "type": "string", "description": "600V | 2700V | 14300V | intermediate | dc"},
+    {"id": "ppe_category_suggestion", "type": "integer", "min": 1, "max": 4, "nullable": true, "description": "From NFPA 70E Table 130.7(C)(15)(c) lookup based on IE; null when IE is null"}
+  ],
+  "references": [
+    "shared/standards/electrical/IEEE1584/method-2018-600V-coefficients.json",
+    "shared/standards/electrical/IEEE1584/method-2018-2700V-coefficients.json",
+    "shared/standards/electrical/IEEE1584/method-2018-14300V-coefficients.json",
+    "shared/standards/electrical/IEEE1584/intermediate-voltage-interpolation.json",
+    "shared/standards/electrical/IEEE1584/incident-energy-formula.json",
+    "shared/standards/electrical/IEEE1584/boundary-distance-formula.json",
+    "shared/standards/electrical/IEEE1584/arc-current-formula.json",
+    "shared/standards/electrical/IEEE1584/arc-current-variation-high-low.json",
+    "shared/standards/electrical/IEEE1584/method-2002-lee-formula.json",
+    "shared/standards/electrical/IEEE1584/method-2002-doughty-neal-formula.json",
+    "shared/standards/electrical/IEEE1584/adjustment-factor-non-standard-gap.json",
+    "shared/standards/electrical/IEEE1584/adjustment-factor-non-standard-distance.json",
+    "shared/standards/electrical/IEEE1584/adjustment-factor-enclosure-size.json",
+    "shared/standards/electrical/IEEE1584/equipment-classification.json",
+    "shared/standards/electrical/NFPA70E/annex-d-1-doan-method.json",
+    "shared/standards/electrical/NFPA70E/annex-d-2-stokes-oppenlander-method.json",
+    "shared/standards/electrical/NFPA70E/table-130-7-C-15-a-ac-tasks.json",
+    "shared/standards/electrical/NFPA70E/table-130-7-C-15-b-dc-tasks.json",
+    "shared/standards/electrical/NFPA70E/table-130-7-C-15-c-ppe-categories.json"
+  ],
+  "verification_status": "verified-against-source",
+  "implementation_note": "Contract only — runtime implementation deferred per WI3 until DraftsMan runtime ships. Consumer skills (electrical/arc-flash) carry tool_call_pending: true on every cascade node until then.",
+  "license_note": "Tool contract; no copyrighted standards content reproduced — references point to Phase A files that hold the factual coefficients."
+}

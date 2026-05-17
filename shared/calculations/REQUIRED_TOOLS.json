@@ -52,6 +52,13 @@
       "spec_summary": "Jurisdiction-gated cable Iz lookup (BS 7671 App 4, IEC 60364-5-52 Annex E, NEC Table 310.16) with Ca/Cg/Ci/Ch correction factors. Drives cable-sizing skill + db-layout OCPD coordination.",
       "owner": "draftsman-runtime",
       "since_version": "1.1.0"
+    },
+    {
+      "tool_name": "calc.arc_flash_incident_energy",
+      "registered_for": "shared/calculations/electrical/arc-flash-incident-energy.json",
+      "spec_summary": "IEEE 1584:2018 + IEEE 1584:2002 + Lee 1982 + NFPA 70E table method + DC Doan/Stokes & Oppenlander arc-flash incident energy + arc-flash boundary computation. Method fallback chain with auto-selection.",
+      "owner": "draftsman-runtime",
+      "since_version": "1.0.0"
     }
   ],
   "_inline_calculations_note": "Closed-form calcs run inline by the LLM (no tool needed). For reference: shared/calculations/lighting/lumen-method.json (N = E×A / Φ×UF×MF) — already shipped in lighting-layout v1.3.0 production.",
