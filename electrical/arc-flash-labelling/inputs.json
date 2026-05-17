@@ -1,0 +1,20 @@
+{
+  "$schema": "../../shared/schemas/core/inputs.schema.json",
+  "skill": "arc-flash-labelling",
+  "version": "1.0.0",
+  "description": "Discovery taxonomy — what the generator prompt asks for / extracts from upstream intents before rendering labels.",
+  "inputs": [
+    {"id": "jurisdiction",                 "type": "enum",   "values": ["GB","EU","INT","US"], "description": "Drives format selection (ANSI / ISO / BS)"},
+    {"id": "arc_flash_intent_present",     "type": "boolean","description": "true if upstream arc-flash intent supplies per-node label data"},
+    {"id": "arc_flash_intent_path",        "type": "string", "description": "Path to consumed arc-flash intent JSON (when intent present)"},
+    {"id": "company_name",                 "type": "string", "description": "Engineering company name; appears on every label footer"},
+    {"id": "qualified_person",             "type": "string", "description": "Qualified-person name + role for signature placeholder"},
+    {"id": "qr_code_base_url",             "type": "string", "description": "Optional project-scoped URL base; if present, labels carry <base>/<node_id> QR codes"},
+    {"id": "default_label_size_mm",        "type": "object", "description": "{width, height} in mm; default {100, 75}; per-label override allowed"},
+    {"id": "format_override_per_node",     "type": "array",  "description": "Optional per-node label-format override (skip auto-jurisdiction selection)"},
+    {"id": "ppe_description_override",     "type": "array",  "description": "Optional per-node PPE clothing description override (custom text per facility convention)"},
+    {"id": "branding_overlay_svg_path",    "type": "string", "description": "Optional company-logo SVG path (skipped if absent)"},
+    {"id": "label_recommendation_override","type": "array",  "description": "Optional per-node label_recommended override (e.g., engineer requests label for normally-exempt node)"},
+    {"id": "compliance_target_overrides",  "type": "object", "description": "Optional client-specification overrides (label-size standard, PPE language convention)"}
+  ]
+}
