@@ -40,7 +40,7 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | security | `electrical/security` | stub | BS EN 50131 | — | — |
 | data-telecom | `electrical/data-telecom` | stub | TIA-568, ISO/IEC 11801 | — | — |
 | arc-flash | `electrical/arc-flash` | **beta** | IEEE 1584:2018, NFPA 70E:2024, Lee 1982, Doan 2007, Stokes & Oppenlander 1991 | 9/3 ✓ | v1.0.0 Phase B. 14-step generator, IR + intent schemas, 12 deterministic checks, 9 evals (6 WI5 + 3 skill-specific), 3 worked examples (UK LV / INT MV / US PV+DCFC). 5-method fallback chain (2018→2002→Lee→table→pending; dc_doan for DC). Math deferred to calc.arc_flash_incident_energy runtime tool per WI3. Consumes fault-level + db-layout-rollup intents; emits arc-flash intent for future labelling skill. |
-| arc-flash-labelling | `electrical/arc-flash-labelling` | stub | ANSI Z535.4:2023, NFPA 70E §130.5(H) | — | Consumes arc-flash intent → produces printable PDF/SVG labels. Queued for after arc-flash skill + clause_ref retrofit micro-sprint. |
+| arc-flash-labelling | `electrical/arc-flash-labelling` | **beta** | ANSI Z535.4:2023, ISO 7010:2019, BS 5499, NFPA 70E:2024 §130.5(H) | 8/3 ✓ | v1.0.0 (unified Phase A+B). 12-step generator, IR + intent schemas, 9 deterministic checks, 8 evals (5 WI5 + 3 skill-specific), 3 worked examples (US ANSI / UK BS-5499 / INT ISO-7010 with RESTRICTED). Jurisdiction-aware format selection + RESTRICTED override for IE > 40. SVG inline rendered; PDF/PNG deferred to calc.render_label per WI3. New 3 standards layers shipped alongside (ANSI-Z535-4 production + ISO-7010 new + BS-5499 new). |
 
 ---
 
@@ -188,9 +188,9 @@ Tier 1 sequence (live):
 3. ✅ `electrical/cable-sizing` v1.0.0 beta (shipped 2026-05-16)
 4. ✅ Phase A: IEEE 1584 + NFPA 70E standards layers (shipped 2026-05-17)
 5. ✅ Phase B: `electrical/arc-flash` v1.0.0 beta (shipped 2026-05-17)
-6. 🔄 clause_ref retrofit for 93 pre-existing files (1.5 hr micro-sprint)
-7. `electrical/arc-flash-labelling` + ANSI Z535.4 promotion
-8. `electrical/earthing` v1.1 — TN-S + Zs table
+6. ✅ clause_ref retrofit for 93 pre-existing files (shipped 2026-05-17)
+7. ✅ `electrical/arc-flash-labelling` v1.0.0 beta + ANSI-Z535-4 + ISO-7010 + BS-5499 (shipped 2026-05-17)
+8. 🔄 `electrical/earthing` v1.1 — TN-S + Zs table
 9. `electrical/db-layout` v1.1 — DC distribution + Type B RCD
 10. `electrical/voltage-drop` (or fold into cable-sizing)
 11. `electrical/sld` v1.2 — eval split
