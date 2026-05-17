@@ -1,0 +1,121 @@
+{
+  "skill": "arc-flash",
+  "version": "1.0.0",
+  "discipline": "electrical",
+  "subdiscipline": "safety-analysis",
+  "description": "Per-node arc-flash analysis per IEEE 1584:2018 (primary) + fallback chain (IEEE 1584:2002 → Lee 1982 → NFPA 70E table method) + DC method (Doan + Stokes & Oppenlander). Produces incident energy, arc-flash boundary, shock-approach boundaries, and PPE category 1-4. Consumes fault-level + db-layout-rollup intents; emits arc-flash intent for downstream labelling skill. Unified AC/DC cascade with per-node current_type tag.",
+  "status": "beta",
+  "licence": "MIT",
+  "inputs_path": "inputs.json",
+  "inputs": [
+    "jurisdiction",
+    "project_supply",
+    "fault-data-from-intent-or-declared",
+    "equipment-data-from-intent-or-declared",
+    "current-type-per-node",
+    "electrode-config-overrides",
+    "t-clear-per-node",
+    "working-distance-overrides",
+    "gap-distance-overrides",
+    "method-force-per-node"
+  ],
+  "outputs": ["arc-flash-ir"],
+  "output_schema": "electrical/arc-flash/schemas/arc-flash-ir.schema.json",
+  "produces_intent": ["arc-flash"],
+  "produces_intent_schemas": {
+    "arc-flash": "electrical/arc-flash/schemas/arc-flash-intent.schema.json"
+  },
+  "consumes_intents": ["fault-level", "db-layout-rollup"],
+  "standards": [
+    "shared/standards/electrical/IEEE1584/method-2018-600V-coefficients.json",
+    "shared/standards/electrical/IEEE1584/method-2018-2700V-coefficients.json",
+    "shared/standards/electrical/IEEE1584/method-2018-14300V-coefficients.json",
+    "shared/standards/electrical/IEEE1584/intermediate-voltage-interpolation.json",
+    "shared/standards/electrical/IEEE1584/electrode-config-VCB-coefficients.json",
+    "shared/standards/electrical/IEEE1584/electrode-config-VCBB-coefficients.json",
+    "shared/standards/electrical/IEEE1584/electrode-config-HCB-coefficients.json",
+    "shared/standards/electrical/IEEE1584/electrode-config-VOA-coefficients.json",
+    "shared/standards/electrical/IEEE1584/electrode-config-HOA-coefficients.json",
+    "shared/standards/electrical/IEEE1584/arc-current-formula.json",
+    "shared/standards/electrical/IEEE1584/arc-current-variation-high-low.json",
+    "shared/standards/electrical/IEEE1584/incident-energy-formula.json",
+    "shared/standards/electrical/IEEE1584/boundary-distance-formula.json",
+    "shared/standards/electrical/IEEE1584/adjustment-factor-non-standard-gap.json",
+    "shared/standards/electrical/IEEE1584/adjustment-factor-non-standard-distance.json",
+    "shared/standards/electrical/IEEE1584/adjustment-factor-enclosure-size.json",
+    "shared/standards/electrical/IEEE1584/method-2002-lee-formula.json",
+    "shared/standards/electrical/IEEE1584/method-2002-doughty-neal-formula.json",
+    "shared/standards/electrical/IEEE1584/voltage-classes.json",
+    "shared/standards/electrical/IEEE1584/gap-distance-table.json",
+    "shared/standards/electrical/IEEE1584/working-distance-defaults.json",
+    "shared/standards/electrical/IEEE1584/equipment-classification.json",
+    "shared/standards/electrical/NFPA70E/section-130-4-shock-boundaries.json",
+    "shared/standards/electrical/NFPA70E/section-130-5-arc-flash-risk-assessment.json",
+    "shared/standards/electrical/NFPA70E/section-130-7-ppe.json",
+    "shared/standards/electrical/NFPA70E/table-130-4-C-a-AC-approach.json",
+    "shared/standards/electrical/NFPA70E/table-130-4-C-b-DC-approach.json",
+    "shared/standards/electrical/NFPA70E/table-130-5-G-equipment-table.json",
+    "shared/standards/electrical/NFPA70E/table-130-5-H-label-requirements.json",
+    "shared/standards/electrical/NFPA70E/table-130-7-C-15-a-ac-tasks.json",
+    "shared/standards/electrical/NFPA70E/table-130-7-C-15-b-dc-tasks.json",
+    "shared/standards/electrical/NFPA70E/table-130-7-C-15-c-ppe-categories.json",
+    "shared/standards/electrical/NFPA70E/table-130-7-C-16-ppe-required-items.json",
+    "shared/standards/electrical/NFPA70E/annex-d-1-doan-method.json",
+    "shared/standards/electrical/NFPA70E/annex-d-2-stokes-oppenlander-method.json",
+    "shared/standards/electrical/NFPA70E/article-130-overview.md"
+  ],
+  "calculations": [
+    "shared/calculations/electrical/arc-flash-incident-energy.json"
+  ],
+  "ontology": [
+    "electrical/arc-flash/ontology/method-types.json",
+    "electrical/arc-flash/ontology/current-types.json"
+  ],
+  "rules": [
+    "electrical/arc-flash/rules/method-fallback-chain.yaml",
+    "electrical/arc-flash/rules/electrode-config-inference.yaml",
+    "electrical/arc-flash/rules/t-clear-defaults.yaml",
+    "electrical/arc-flash/rules/ppe-category-mapping.yaml",
+    "electrical/arc-flash/rules/label-required-equipment.yaml"
+  ],
+  "constraints": [
+    "electrical/arc-flash/constraints/incident-energy-finite.yaml",
+    "electrical/arc-flash/constraints/boundary-distance-physical.yaml",
+    "electrical/arc-flash/constraints/ppe-category-monotonic.yaml",
+    "electrical/arc-flash/constraints/method-fallback-consistency.yaml"
+  ],
+  "validators": [
+    "electrical/arc-flash/validation/cascade-tree-integrity.yaml",
+    "electrical/arc-flash/validation/method-applied-from-vocabulary.yaml",
+    "electrical/arc-flash/validation/tool-call-resolved.yaml",
+    "electrical/arc-flash/validation/intent-shape.yaml"
+  ],
+  "prompts": {
+    "generator": "electrical/arc-flash/prompts/generator.md",
+    "validator": "electrical/arc-flash/prompts/validator.md",
+    "reviewer":  "electrical/arc-flash/prompts/reviewer.md"
+  },
+  "evals": [
+    "electrical/arc-flash/evals/eval-01-uk-lv-switchboard-happy-path.yaml",
+    "electrical/arc-flash/evals/eval-02-mv-cascade-with-drawout.yaml",
+    "electrical/arc-flash/evals/eval-03-coefficient-fallback-trap.yaml",
+    "electrical/arc-flash/evals/eval-04-missing-fault-data.yaml",
+    "electrical/arc-flash/evals/eval-05-jurisdiction-us-with-restricted.yaml",
+    "electrical/arc-flash/evals/eval-06-rationale-block.yaml",
+    "electrical/arc-flash/evals/eval-07-dc-pv-string.yaml",
+    "electrical/arc-flash/evals/eval-08-conservative-t-clear-default.yaml",
+    "electrical/arc-flash/evals/eval-09-shock-approach-out-of-range.yaml"
+  ],
+  "examples": [
+    "electrical/arc-flash/examples/uk-lv-switchgear/",
+    "electrical/arc-flash/examples/intl-mv-substation/",
+    "electrical/arc-flash/examples/us-pv-with-dcfc/"
+  ],
+  "compatible_runtimes": [
+    "DraftsMan >= 1.0",
+    "Claude Code",
+    "OpenClaw",
+    "any-llm-agent"
+  ],
+  "changelog": "electrical/arc-flash/CHANGELOG.md"
+}
