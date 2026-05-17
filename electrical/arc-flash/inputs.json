@@ -1,0 +1,24 @@
+{
+  "$schema": "../../shared/schemas/core/inputs.schema.json",
+  "skill": "arc-flash",
+  "version": "1.0.0",
+  "description": "Discovery taxonomy — what the generator prompt asks for / extracts from upstream intents before computing arc-flash.",
+  "inputs": [
+    {"id": "jurisdiction",                   "type": "enum",   "values": ["GB","EU","INT","US"], "description": "Standards family / regulatory framing"},
+    {"id": "project_supply",                 "type": "object", "description": "Voltage / phases / frequency from db-layout-rollup or engineer"},
+    {"id": "fault_data_from_intent",         "type": "boolean","description": "true if fault-level intent supplies per-node Ifault"},
+    {"id": "fault_data_declared",            "type": "array",  "description": "Per-node Ibf + X/R + Z (engineer fallback when intent absent)"},
+    {"id": "equipment_data_from_intent",     "type": "boolean","description": "true if db-layout-rollup supplies per-board equipment_type + ocpd_type"},
+    {"id": "equipment_data_declared",        "type": "array",  "description": "Per-node equipment_type + ocpd_type (engineer fallback)"},
+    {"id": "current_type_per_node",          "type": "array",  "description": "Optional per-node ac | dc override (default ac unless equipment_type matches dc patterns)"},
+    {"id": "electrode_config_overrides",     "type": "array",  "description": "Optional per-node VCB/VCBB/HCB/VOA/HOA override when auto-inference is wrong"},
+    {"id": "t_clear_per_node",               "type": "array",  "description": "Engineer-declared t_clear (s) per node; overrides ocpd-type default"},
+    {"id": "working_distance_overrides",     "type": "array",  "description": "Optional per-node working-distance override (default from Phase A working-distance-defaults.json)"},
+    {"id": "gap_distance_overrides",         "type": "array",  "description": "Optional per-node gap-distance override (default from Phase A gap-distance-table.json)"},
+    {"id": "enclosure_volume_overrides",     "type": "array",  "description": "Optional per-node enclosure-volume for §10.5 adjustment"},
+    {"id": "ppe_category_overrides",         "type": "array",  "description": "Optional per-node PPE category override (e.g. uprate for safety margin)"},
+    {"id": "method_force_per_node",          "type": "array",  "description": "Optional per-node method override (skip fallback chain) — for legacy-label reproduction"},
+    {"id": "label_skip_with_reason",         "type": "array",  "description": "Optional per-node label-skip declaration with justification (rare, requires explicit reason)"},
+    {"id": "compliance_target_overrides",    "type": "object", "description": "Optional client-specification overrides (e.g. tighter PPE thresholds)"}
+  ]
+}
