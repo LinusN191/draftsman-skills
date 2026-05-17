@@ -1,0 +1,31 @@
+eval_id: eval-04-missing-route-data
+category: missing_input
+skill: cable-sizing
+skill_version: 1.0.0
+description: |
+  Engineer omits length_m and installation_method for several circuits. Skill must NOT
+  invent values — must emit tool_call_pending and log the gap in assumptions.
+input:
+  jurisdiction: GB
+  project_supply: { voltage_v: 230, phases: single, frequency_hz: 50, earthing_system: TN-C-S }
+  circuits_declared:
+    - id: "DB.C01"
+      parent_node_id: null
+      node_kind: final_circuit
+      designation: "Power circuit — no route data"
+      load: { ib_a: 14, in_a: 16, load_type: power, phases: single }
+      route: {}  # deliberately empty
+expected:
+  per_node:
+    - node_id: "DB.C01"
+      checks_tool_call_pending: true
+      checks_iz_corrected_a: null
+      checks_vd_segment_pct: null
+  compliance_summary:
+    assumptions_must_contain_text: ["length_m missing", "installation_method missing"]
+  flags_must_include: ["TOOL-CALL-PENDING"]
+pass_criteria:
+  - "No invented length_m, no invented installation_method"
+  - "Node has checks.tool_call_pending: true"
+  - "Numeric checks fields are null where data is missing"
+  - "Assumptions list explicitly names the missing inputs"

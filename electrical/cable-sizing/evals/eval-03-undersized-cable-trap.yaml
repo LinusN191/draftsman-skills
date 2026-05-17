@@ -1,0 +1,33 @@
+eval_id: eval-03-undersized-cable-trap
+category: validation_trap
+skill: cable-sizing
+skill_version: 1.0.0
+description: |
+  Engineer pre-declares a cable size that fails Vd cumulative. Skill must detect,
+  flag, and propose the correct upsize — must NOT silently rubber-stamp.
+input:
+  jurisdiction: GB
+  project_supply: { voltage_v: 230, phases: single, frequency_hz: 50, earthing_system: TN-C-S }
+  circuits_declared:
+    - id: "DB-L1.C03"
+      parent_node_id: null
+      node_kind: final_circuit
+      designation: "Long lighting circuit — engineer pre-declared 1.5 mm²"
+      load: { ib_a: 5.5, in_a: 6, load_type: lighting, phases: single }
+      route: { length_m: 55, installation_method: B1, ambient_c: 30, grouping_count: 1 }
+      cable_type_preference: { phase_csa_mm2: 1.5, material: copper, insulation: pvc_70 }
+expected:
+  non_compliance_flags_must_include:
+    - severity: error
+      code_clause_contains: "App 12"
+      message_contains: "cumulative Vd"
+  per_node:
+    - node_id: "DB-L1.C03"
+      binding_constraint: "vd_cumulative"
+      selection_phase_csa_mm2_greater_than: 1.5
+      walk_up_trail_must_contain_rejection_at_csa: 1.5
+pass_criteria:
+  - "1.5 mm² engineer preference is REJECTED with explicit rationale"
+  - "Skill proposes a larger csa that satisfies Vd ≤ 3% for lighting"
+  - "Non-compliance flag emitted with severity: error referencing App 12"
+  - "No silent acceptance"
