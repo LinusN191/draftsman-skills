@@ -1,23 +1,101 @@
 {
   "skill": "arc-flash-labelling",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "discipline": "electrical",
   "subdiscipline": "safety-output",
-  "description": "Consume arc-flash intent and render printable arc-flash warning labels per ANSI Z535.4 + NFPA 70E §130.5(H). Outputs PDF/SVG labels + project-wide label index with QR codes.",
-  "status": "stub",
+  "description": "Consume arc-flash intent and render printable arc-flash warning labels per ANSI Z535.4 + ISO 7010 + BS 5499 (jurisdiction-aware) with NFPA 70E §130.5(H) required content. Produces per-equipment SVG labels inline; PDF/PNG rendering deferred to calc.render_label runtime tool per WI3.",
+  "status": "beta",
+  "licence": "MIT",
+  "inputs_path": "inputs.json",
+  "inputs": [
+    "jurisdiction",
+    "arc-flash-intent-from-disk-or-declared",
+    "company_name",
+    "qualified_person",
+    "qr_code_base_url",
+    "default_label_size_mm",
+    "format_override_per_node",
+    "ppe_description_override",
+    "branding_overlay_svg_path",
+    "label_recommendation_override"
+  ],
+  "outputs": ["labels-ir"],
+  "output_schema": "electrical/arc-flash-labelling/schemas/labels-ir.schema.json",
+  "produces_intent": ["labels"],
+  "produces_intent_schemas": {
+    "labels": "electrical/arc-flash-labelling/schemas/labels-intent.schema.json"
+  },
   "consumes_intents": ["arc-flash"],
-  "produces_intent": [],
-  "outputs": ["arc-flash-labels-pdf", "arc-flash-labels-svg", "project-label-index-pdf"],
-  "standards_planned": [
-    "shared/standards/electrical/ANSI-Z535-4/",
+  "standards": [
+    "shared/standards/electrical/ANSI-Z535-4/signal-words.json",
+    "shared/standards/electrical/ANSI-Z535-4/colour-spec.json",
+    "shared/standards/electrical/ANSI-Z535-4/symbol-library.json",
+    "shared/standards/electrical/ANSI-Z535-4/panel-format.json",
+    "shared/standards/electrical/ANSI-Z535-4/letter-height-requirements.json",
+    "shared/standards/electrical/ANSI-Z535-4/label-content-rules.json",
+    "shared/standards/electrical/ANSI-Z535-4/arc-flash-label-template.md",
+    "shared/standards/electrical/ISO-7010/warning-signs.json",
+    "shared/standards/electrical/ISO-7010/colour-spec.json",
+    "shared/standards/electrical/BS-5499/uk-conventions.md",
     "shared/standards/electrical/NFPA70E/section-130-5-arc-flash-risk-assessment.json",
     "shared/standards/electrical/NFPA70E/table-130-5-H-label-requirements.json",
+    "shared/standards/electrical/NFPA70E/table-130-7-C-15-c-ppe-categories.json",
     "shared/standards/electrical/NFPA70E/table-130-7-C-16-ppe-required-items.json"
   ],
-  "calculations": [],
-  "compatible_runtimes": ["DraftsMan >= 1.0", "Claude Code", "any-llm-agent"],
-  "blocked_by": [
-    "electrical/arc-flash (must ship first — provides the consumed intent)",
-    "shared/standards/electrical/ANSI-Z535-4/ (must promote stub → production for sign-format spec)"
-  ]
+  "calculations": [
+    "shared/calculations/electrical/render-label.json"
+  ],
+  "ontology": [
+    "electrical/arc-flash-labelling/ontology/label-formats.json",
+    "electrical/arc-flash-labelling/ontology/signal-words.json"
+  ],
+  "rules": [
+    "electrical/arc-flash-labelling/rules/jurisdiction-format-selection.yaml",
+    "electrical/arc-flash-labelling/rules/signal-word-policy.yaml",
+    "electrical/arc-flash-labelling/rules/label-content-population.yaml",
+    "electrical/arc-flash-labelling/rules/ppe-clothing-description.yaml"
+  ],
+  "constraints": [
+    "electrical/arc-flash-labelling/constraints/required-content-present.yaml",
+    "electrical/arc-flash-labelling/constraints/colour-spec-compliance.yaml",
+    "electrical/arc-flash-labelling/constraints/letter-height-legibility.yaml"
+  ],
+  "validators": [
+    "electrical/arc-flash-labelling/validation/ir-integrity.yaml",
+    "electrical/arc-flash-labelling/validation/jurisdiction-format-match.yaml",
+    "electrical/arc-flash-labelling/validation/intent-shape.yaml"
+  ],
+  "prompts": {
+    "generator": "electrical/arc-flash-labelling/prompts/generator.md",
+    "validator": "electrical/arc-flash-labelling/prompts/validator.md",
+    "reviewer":  "electrical/arc-flash-labelling/prompts/reviewer.md"
+  },
+  "templates": [
+    "electrical/arc-flash-labelling/templates/ansi-z535-4-label.svg.template",
+    "electrical/arc-flash-labelling/templates/iso-7010-label.svg.template",
+    "electrical/arc-flash-labelling/templates/bs-5499-label.svg.template",
+    "electrical/arc-flash-labelling/templates/restricted-label.svg.template"
+  ],
+  "evals": [
+    "electrical/arc-flash-labelling/evals/eval-01-us-mixed-cascade-ansi-labels.yaml",
+    "electrical/arc-flash-labelling/evals/eval-02-restricted-equipment-distinct-format.yaml",
+    "electrical/arc-flash-labelling/evals/eval-03-missing-arc-flash-data-skip.yaml",
+    "electrical/arc-flash-labelling/evals/eval-04-no-arc-flash-intent.yaml",
+    "electrical/arc-flash-labelling/evals/eval-05-jurisdiction-gb-bs5499.yaml",
+    "electrical/arc-flash-labelling/evals/eval-06-rationale-block.yaml",
+    "electrical/arc-flash-labelling/evals/eval-07-svg-template-population.yaml",
+    "electrical/arc-flash-labelling/evals/eval-08-qr-code-conditional-emission.yaml"
+  ],
+  "examples": [
+    "electrical/arc-flash-labelling/examples/us-ansi-label-set/",
+    "electrical/arc-flash-labelling/examples/uk-bs5499-label-set/",
+    "electrical/arc-flash-labelling/examples/intl-iso7010-label-set/"
+  ],
+  "compatible_runtimes": [
+    "DraftsMan >= 1.0",
+    "Claude Code",
+    "OpenClaw",
+    "any-llm-agent"
+  ],
+  "changelog": "electrical/arc-flash-labelling/CHANGELOG.md"
 }
