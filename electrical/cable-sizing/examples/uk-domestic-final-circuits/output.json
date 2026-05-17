@@ -1,0 +1,318 @@
+{
+  "drawing_type": "cable_sizing_study",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "uk-dom-cs-eg01",
+    "skill_version": "cable-sizing/1.0.0",
+    "produced_at": "2026-05-17T09:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "GB",
+  "project_supply": {
+    "voltage_v": 230,
+    "phases": "single",
+    "frequency_hz": 50,
+    "earthing_system": "TN-C-S"
+  },
+  "cascade": [
+    {
+      "node_id": "CU.C01",
+      "parent_node_id": null,
+      "node_kind": "final_circuit",
+      "designation": "Lighting upstairs",
+      "load": {
+        "ib_a": 4.2,
+        "in_a": 6,
+        "phases": "single",
+        "load_type": "lighting",
+        "pf": 1.0
+      },
+      "route": {
+        "length_m": 22,
+        "installation_method": "B1",
+        "ambient_c": 30,
+        "grouping_count": 1,
+        "in_thermal_insulation": false
+      },
+      "harmonic_content_pct": 0,
+      "selection": {
+        "phase_csa": 1.5,
+        "cpc_csa": 1.0,
+        "material": "copper",
+        "insulation": "pvc_70",
+        "cable_type": "pvc_singles",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa": 1.5,
+            "accepted": true,
+            "vd_segment_pct": 1.8,
+            "vd_cumulative_pct": 1.8
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 15.5,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 1.8,
+        "vd_cumulative_pct": 1.8,
+        "vd_pass": true,
+        "vd_limit_pct": 3.0,
+        "vd_limit_source": "BS 7671:2018 App 12 lighting circuits",
+        "cpc_adiabatic_pass": true,
+        "motor_starting_vd_pct": null,
+        "harmonic_ch_factor": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "CU.C02",
+      "parent_node_id": null,
+      "node_kind": "final_circuit",
+      "designation": "Lighting downstairs",
+      "load": {
+        "ib_a": 5.0,
+        "in_a": 6,
+        "phases": "single",
+        "load_type": "lighting",
+        "pf": 1.0
+      },
+      "route": {
+        "length_m": 18,
+        "installation_method": "B1",
+        "ambient_c": 30,
+        "grouping_count": 1,
+        "in_thermal_insulation": false
+      },
+      "harmonic_content_pct": 0,
+      "selection": {
+        "phase_csa": 1.5,
+        "cpc_csa": 1.0,
+        "material": "copper",
+        "insulation": "pvc_70",
+        "cable_type": "pvc_singles",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa": 1.5,
+            "accepted": true,
+            "vd_segment_pct": 1.7,
+            "vd_cumulative_pct": 1.7
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 15.5,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 1.7,
+        "vd_cumulative_pct": 1.7,
+        "vd_pass": true,
+        "vd_limit_pct": 3.0,
+        "vd_limit_source": "BS 7671:2018 App 12 lighting circuits",
+        "cpc_adiabatic_pass": true,
+        "motor_starting_vd_pct": null,
+        "harmonic_ch_factor": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "CU.C03",
+      "parent_node_id": null,
+      "node_kind": "final_circuit",
+      "designation": "Power ring kitchen",
+      "load": {
+        "ib_a": 26,
+        "in_a": 32,
+        "phases": "single",
+        "load_type": "power",
+        "pf": 0.95
+      },
+      "route": {
+        "length_m": 30,
+        "installation_method": "B1",
+        "ambient_c": 30,
+        "grouping_count": 1,
+        "in_thermal_insulation": false
+      },
+      "harmonic_content_pct": 0,
+      "selection": {
+        "phase_csa": 4,
+        "cpc_csa": 1.5,
+        "material": "copper",
+        "insulation": "pvc_70",
+        "cable_type": "pvc_singles",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa": 4,
+            "accepted": true,
+            "vd_segment_pct": 3.1,
+            "vd_cumulative_pct": 3.1
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 32.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 3.1,
+        "vd_cumulative_pct": 3.1,
+        "vd_pass": true,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "BS 7671:2018 App 12 power circuits",
+        "cpc_adiabatic_pass": true,
+        "motor_starting_vd_pct": null,
+        "harmonic_ch_factor": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "CU.C04",
+      "parent_node_id": null,
+      "node_kind": "final_circuit",
+      "designation": "Cooker radial",
+      "load": {
+        "ib_a": 28,
+        "in_a": 32,
+        "phases": "single",
+        "load_type": "power",
+        "pf": 1.0
+      },
+      "route": {
+        "length_m": 8,
+        "installation_method": "C",
+        "ambient_c": 30,
+        "grouping_count": 1,
+        "in_thermal_insulation": false
+      },
+      "harmonic_content_pct": 0,
+      "selection": {
+        "phase_csa": 6,
+        "cpc_csa": 2.5,
+        "material": "copper",
+        "insulation": "pvc_70",
+        "cable_type": "pvc_singles",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa": 6,
+            "accepted": true,
+            "vd_segment_pct": 0.6,
+            "vd_cumulative_pct": 0.6
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 47.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 0.6,
+        "vd_cumulative_pct": 0.6,
+        "vd_pass": true,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "BS 7671:2018 App 12 power circuits",
+        "cpc_adiabatic_pass": true,
+        "motor_starting_vd_pct": null,
+        "harmonic_ch_factor": null,
+        "tool_call_pending": true
+      }
+    }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "TN-C-S earthing system declared by engineer (no fault-level intent consumed)",
+      "tool_call_pending: true \u2014 calc.cable_ampacity + calc.voltage_drop + calc.cpc_adiabatic deferred until runtime ships"
+    ]
+  },
+  "drawn_as_symbols": [],
+  "flags": [
+    "TOOL-CALL-PENDING"
+  ],
+  "rationale": {
+    "chat_summary": "UK domestic 230V single-phase consumer unit, 4 final circuits. All sized at Iz-binding (no Vd or adiabatic upsize needed). PVC singles installation method B1. Vd well under App 12 limits (3% lighting / 5% power). tool_call_pending until runtime ships.",
+    "sections": [
+      {
+        "title": "Input Ingestion",
+        "summary": "No upstream intents consumed; engineer declared all 4 circuits + route data.",
+        "decisions": []
+      },
+      {
+        "title": "Cascade Topology",
+        "summary": "4 sibling final_circuit nodes under CU (no riser/feeder in domestic). Naming: CU.C01-C04.",
+        "decisions": []
+      },
+      {
+        "title": "Jurisdictional Defaults",
+        "summary": "GB \u2014 BS 7671:2018 App 4 + App 12. Vd: 3% lighting, 5% power. Correction factors Ca/Cg/Ci/Ch.",
+        "decisions": [
+          {
+            "label": "GB defaults applied",
+            "summary": "BS 7671 App 12 lighting/power limits",
+            "rule": "BS 7671:2018 App 12",
+            "code_clause": "BS 7671:2018 App 12"
+          }
+        ]
+      },
+      {
+        "title": "Source + Fault Context",
+        "summary": "No fault-level intent consumed; engineer did not declare per-node Ifault. CPC adiabatic check deferred to runtime tool with placeholder pass.",
+        "decisions": []
+      },
+      {
+        "title": "CSA Selection Walk-up Summary",
+        "summary": "All 4 circuits sized at Iz_vs_In binding (start csa accepted on first check).",
+        "decisions": [
+          {
+            "label": "C01/C02 lighting \u2192 1.5 mm\u00b2",
+            "summary": "In=6A fits 1.5 mm\u00b2 Iz=15.5A B1",
+            "rule": "BS 7671 Reg 433.1.1",
+            "code_clause": "BS 7671:2018 Reg 433.1.1",
+            "inputs": {
+              "in_a": 6,
+              "iz_a": 15.5
+            }
+          },
+          {
+            "label": "C03 power ring \u2192 4 mm\u00b2",
+            "summary": "In=32A fits 4 mm\u00b2 Iz=32A B1",
+            "rule": "BS 7671 Reg 433.1.1",
+            "code_clause": "BS 7671:2018 Reg 433.1.1",
+            "inputs": {
+              "in_a": 32,
+              "iz_a": 32
+            }
+          },
+          {
+            "label": "C04 cooker radial \u2192 6 mm\u00b2",
+            "summary": "In=32A fits 6 mm\u00b2 Iz=47A C",
+            "rule": "BS 7671 Reg 433.1.1",
+            "code_clause": "BS 7671:2018 Reg 433.1.1",
+            "inputs": {
+              "in_a": 32,
+              "iz_a": 47
+            }
+          }
+        ]
+      },
+      {
+        "title": "Special Checks",
+        "summary": "None triggered (no motor, no parallel, no harmonic loads).",
+        "decisions": []
+      },
+      {
+        "title": "Compliance + Selectivity",
+        "summary": "All circuits compliant. No non-compliance flags.",
+        "decisions": []
+      },
+      {
+        "title": "Assumptions + Tool-call Status",
+        "summary": "TN-C-S declared; calc tools deferred (tool_call_pending: true on all 4 nodes).",
+        "decisions": []
+      }
+    ]
+  }
+}
