@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "NFPA 70E:2024 Table 130.4(C)(b)",
+  "title": "DC Shock-Approach Boundaries by Voltage Class",
+  "description": "Limited Approach Boundary + Restricted Approach Boundary distances for DC voltage classes (e.g., PV strings, battery rooms, DCFC chargers).",
+  "column_definitions": [
+    {"key": "voltage_range",       "label": "Nominal voltage range (V, DC)",  "type": "string"},
+    {"key": "limited_movable_mm",  "label": "Limited Approach (movable)",     "type": "number", "unit": "mm"},
+    {"key": "limited_fixed_mm",    "label": "Limited Approach (fixed)",       "type": "number", "unit": "mm"},
+    {"key": "restricted_mm",       "label": "Restricted Approach Boundary",   "type": "number", "unit": "mm"}
+  ],
+  "rows": [
+    {"voltage_range": "less than 50V",       "limited_movable_mm": null,   "limited_fixed_mm": null,    "restricted_mm": null},
+    {"voltage_range": "50V to 300V",         "limited_movable_mm": 3050,   "limited_fixed_mm": 1070,    "restricted_mm": "avoid contact"},
+    {"voltage_range": "301V to 1 kV",        "limited_movable_mm": 3050,   "limited_fixed_mm": 1070,    "restricted_mm": 305},
+    {"voltage_range": "1.001 kV to 5 kV",    "limited_movable_mm": 3050,   "limited_fixed_mm": 1530,    "restricted_mm": 460}
+  ],
+  "notes": "DC has typically smaller approach distances than equivalent AC voltage class because DC arc-quenching is slower and contact-shock effects differ. PV systems (200-1000 V DC) are common.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Boundary values are factual thresholds."
+}

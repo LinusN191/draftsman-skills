@@ -1,0 +1,25 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "NFPA 70E:2024 Table 130.4(C)(a)",
+  "title": "AC Shock-Approach Boundaries by Voltage Class",
+  "description": "Limited Approach Boundary + Restricted Approach Boundary distances for AC voltage classes. Inside these distances, unqualified or under-PPE'd persons must not approach.",
+  "column_definitions": [
+    {"key": "voltage_range",       "label": "Nominal voltage range (V, AC)",  "type": "string"},
+    {"key": "limited_movable_mm",  "label": "Limited Approach (movable conductor)", "type": "number", "unit": "mm"},
+    {"key": "limited_fixed_mm",    "label": "Limited Approach (fixed conductor)",   "type": "number", "unit": "mm"},
+    {"key": "restricted_mm",       "label": "Restricted Approach Boundary",         "type": "number", "unit": "mm"}
+  ],
+  "rows": [
+    {"voltage_range": "less than 50V",        "limited_movable_mm": null,   "limited_fixed_mm": null,    "restricted_mm": null},
+    {"voltage_range": "50V to 150V",          "limited_movable_mm": 3050,   "limited_fixed_mm": 1070,    "restricted_mm": "avoid contact"},
+    {"voltage_range": "151V to 750V",         "limited_movable_mm": 3050,   "limited_fixed_mm": 1070,    "restricted_mm": 305},
+    {"voltage_range": "751V to 15 kV",        "limited_movable_mm": 3050,   "limited_fixed_mm": 1530,    "restricted_mm": 660},
+    {"voltage_range": "15.1 kV to 36 kV",     "limited_movable_mm": 3050,   "limited_fixed_mm": 1830,    "restricted_mm": 790},
+    {"voltage_range": "36.1 kV to 46 kV",     "limited_movable_mm": 3050,   "limited_fixed_mm": 2440,    "restricted_mm": 840}
+  ],
+  "notes": "Below 50V there's typically no shock hazard (below let-go threshold). Above 50V, two limited approach distances are given — one for movable conductors (e.g., overhead wires) and one for fixed (e.g., bus). Restricted Approach is always the tightest boundary; qualified person + PPE required to cross it.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Boundary values are factual thresholds; reproduced for interoperation."
+}
