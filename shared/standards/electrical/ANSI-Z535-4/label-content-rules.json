@@ -1,0 +1,22 @@
+{
+  "$schema": "../../../../schemas/core/standards-section.schema.json",
+  "clause_ref": "ANSI-Z535-4 2023:§5.2 + NFPA 70E 2024:§130.5(H)",
+  "section_title": "Arc-Flash Label Content Requirements",
+  "summary": "Required + optional content fields for arc-flash safety labels per the combined Z535.4 format + NFPA 70E §130.5(H) content requirements. Lists field order, formatting rules, and dependencies.",
+  "key_decisions": [
+    {"id": "required_fields", "description": "8 required fields per NFPA 70E §130.5(H): nominal voltage, AFB, IE OR PPE category, required PPE, date of analysis. Plus 3 implied: equipment ID, engineer attestation, shock-approach boundaries (recommended)."},
+    {"id": "field_ordering",  "description": "Signal word → equipment-ID → nominal voltage → IE @ working distance → AFB → shock-approach (limited movable + fixed + restricted) → PPE category + clothing → date + engineer + QR."},
+    {"id": "dual_units",      "description": "All distance fields show both metric (mm) and imperial (inches/feet) — common UK + EU + US convention. Format: '{mm} mm ({inches} in)'."},
+    {"id": "ppe_text_limit",  "description": "PPE clothing description capped at 200 characters per label; longer descriptions truncate + reference PPE catalogue in supporting documentation."},
+    {"id": "qr_code_optional","description": "QR code is OPTIONAL. Encodes project-scoped URL: <base_url>/<node_id>. Skipped if base_url not declared."}
+  ],
+  "cross_references": [
+    "NFPA 70E:2024 §130.5(H)",
+    "NFPA 70E:2024 Table 130.7(C)(15)(c) — PPE category mapping",
+    "NFPA 70E:2024 Table 130.7(C)(16) — PPE clothing per category"
+  ],
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Field requirements are factual per the cited clauses."
+}

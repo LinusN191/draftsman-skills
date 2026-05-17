@@ -1,0 +1,30 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "ANSI-Z535-4 2023:§6.4-Sign-Panel-Layout",
+  "title": "ANSI Z535.4 Sign-Panel Layout Rules",
+  "description": "Required layout structure for safety labels — panel proportions, ordering, and minimum dimensions.",
+  "column_definitions": [
+    {"key": "panel_type",          "label": "Panel type",                   "type": "string"},
+    {"key": "position",            "label": "Position",                     "type": "string"},
+    {"key": "min_height_pct",      "label": "Min height (% of total)",     "type": "number"},
+    {"key": "max_height_pct",      "label": "Max height (% of total)",     "type": "number"},
+    {"key": "required",            "label": "Required for arc-flash?",      "type": "boolean"},
+    {"key": "content",             "label": "Content rules",                "type": "string"}
+  ],
+  "rows": [
+    {"panel_type": "signal_word_panel", "position": "top",            "min_height_pct": 10, "max_height_pct": 25, "required": true,  "content": "Signal word (DANGER/WARNING/CAUTION/NOTICE) on coloured background per Z535.4 §6.2"},
+    {"panel_type": "symbol_panel",      "position": "left or top-left","min_height_pct": 15, "max_height_pct": 35, "required": true,  "content": "Hazard symbol (arc-flash for arc-flash labels) on white or signal-word colour"},
+    {"panel_type": "message_panel",     "position": "middle / center", "min_height_pct": 60, "max_height_pct": 80, "required": true,  "content": "Equipment ID + voltage + IE + AFB + shock-approach + PPE per NFPA 70E §130.5(H)"},
+    {"panel_type": "footer_panel",      "position": "bottom",         "min_height_pct": 5,  "max_height_pct": 15, "required": false, "content": "Date + engineer signature + optional QR code"}
+  ],
+  "minimum_label_dimensions_mm": {
+    "small_working_distance_under_1m":  {"width": 75, "height": 50},
+    "medium_working_distance_1_to_2m":  {"width": 100, "height": 75},
+    "large_working_distance_over_2m":   {"width": 150, "height": 100}
+  },
+  "notes": "Panel-height percentages sum to ≤100% with margins. Working-distance-dependent label sizing per Annex B legibility table.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Panel layout rules are factual."
+}

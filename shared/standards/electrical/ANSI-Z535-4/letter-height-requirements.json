@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "ANSI-Z535-4 2023:Annex-B-Legibility",
+  "title": "ANSI Z535.4 Letter Height Per Working Distance",
+  "description": "Minimum letter heights for legibility at the working distance the label is read from.",
+  "column_definitions": [
+    {"key": "working_distance_m",   "label": "Working distance (m)",       "type": "number"},
+    {"key": "signal_word_mm",        "label": "Signal word height (mm)",    "type": "number", "unit": "mm"},
+    {"key": "body_text_mm",          "label": "Body text height (mm)",      "type": "number", "unit": "mm"},
+    {"key": "equipment_id_mm",       "label": "Equipment ID height (mm)",   "type": "number", "unit": "mm"},
+    {"key": "footer_text_mm",        "label": "Footer text height (mm)",    "type": "number", "unit": "mm"}
+  ],
+  "rows": [
+    {"working_distance_m": 0.5, "signal_word_mm": 4,  "body_text_mm": 2,  "equipment_id_mm": 3,  "footer_text_mm": 1.5},
+    {"working_distance_m": 1.0, "signal_word_mm": 8,  "body_text_mm": 4,  "equipment_id_mm": 6,  "footer_text_mm": 3},
+    {"working_distance_m": 2.0, "signal_word_mm": 16, "body_text_mm": 8,  "equipment_id_mm": 12, "footer_text_mm": 6},
+    {"working_distance_m": 5.0, "signal_word_mm": 40, "body_text_mm": 20, "equipment_id_mm": 30, "footer_text_mm": 15}
+  ],
+  "rules": [
+    "Signal-word height is 1.5–2× body-text height",
+    "Equipment-ID height is 1.5× body-text height + bold",
+    "Footer-text height is 0.5–0.75× body-text height",
+    "All sizing scales linearly with working distance"
+  ],
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Legibility values derived from Z535.4 Annex B legibility table."
+}
