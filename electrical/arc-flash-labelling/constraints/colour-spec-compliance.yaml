@@ -1,0 +1,43 @@
+constraint: colour_spec_compliance
+version: 1.0.0
+description: |
+  Sanctioned colour palette per format standard. Signal-word colour matches format spec;
+  RESTRICTED uses distinct purple/black; all SVG colours from sanctioned palette.
+sanctioned_colours_by_format:
+  ansi_z535_4:
+    DANGER:  "#E00034 (Safety Red, PMS 199)"
+    WARNING: "#F28900 (Safety Orange, PMS 152)"
+    CAUTION: "#FFD600 (Safety Yellow, PMS 109)"
+    NOTICE:  "#0073CF (Safety Blue, PMS 285)"
+  iso_7010:
+    warning_yellow: "#FFCA00 (PMS 116)"
+    symbol_black:   "#000000"
+  bs_5499:
+    inherits_from: iso_7010
+  restricted_format:
+    banner_purple: "#64446E"
+    text_black:    "#000000"
+checks:
+  - id: signal_word_colour_matches_format
+    description: |
+      Signal-word panel colour matches the format-applied spec.
+      ANSI DANGER → Safety Red; ANSI WARNING → Safety Orange; ISO/BS warning → Yellow.
+    expression: |
+      for each label:
+        SVG signal-word panel fill matches the appropriate hex per format
+    severity: error
+  - id: restricted_uses_distinct_colour
+    description: |
+      RESTRICTED signal_word uses purple/black banner (not red/orange/yellow).
+    expression: |
+      for each label where signal_word == 'RESTRICTED':
+        SVG signal-word panel fill is from RESTRICTED palette (#64446E or #000000)
+    severity: warning
+  - id: all_svg_colours_from_palette
+    description: |
+      All <svg> fill + stroke attributes use sanctioned hex codes from the format's palette.
+      No off-palette colours (other than logo overlays from branding_overlay_svg).
+    expression: |
+      for each label:
+        every fill / stroke value in SVG is in sanctioned palette
+    severity: warning

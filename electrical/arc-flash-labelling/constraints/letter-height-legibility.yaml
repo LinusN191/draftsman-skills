@@ -1,0 +1,39 @@
+constraint: letter_height_legibility
+version: 1.0.0
+description: |
+  Minimum letter heights per ANSI Z535.4 Annex B legibility table at declared working distance.
+source: "ANSI Z535.4:2023 Annex B"
+working_distance_table:
+  - working_distance_m: 1.0
+    signal_word_min_mm: 8
+    body_text_min_mm:   4
+    equipment_id_min_mm: 6
+  - working_distance_m: 2.0
+    signal_word_min_mm: 16
+    body_text_min_mm:   8
+    equipment_id_min_mm: 12
+checks:
+  - id: signal_word_height_meets_minimum
+    description: |
+      Signal-word height (in SVG) ≥ Annex B minimum for declared working distance.
+      Working distance is from arc-flash intent's working_distance_mm field.
+    expression: |
+      for each label:
+        signal-word height in SVG (parse font-size or text-bounding-box) >=
+        ANSI Z535.4 Annex B value for working_distance_mm
+    severity: error
+  - id: body_text_height_meets_minimum
+    description: |
+      Body-text height ≥ Annex B minimum.
+    expression: |
+      for each label:
+        body-text font-size >= Annex B value
+    severity: warning
+  - id: equipment_id_is_bold_and_dedicated_panel
+    description: |
+      Equipment ID is bold weight + has dedicated panel area.
+    expression: |
+      for each label:
+        SVG contains element with font-weight: bold AND
+        equipment ID text is in a dedicated <g> or panel element
+    severity: warning

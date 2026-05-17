@@ -1,0 +1,39 @@
+constraint: required_content_present
+version: 1.0.0
+description: |
+  Every label entry has all NFPA 70E §130.5(H) required content fields populated.
+  When method_applied is RESTRICTED, PPE-category line uses RESTRICTED text (not "Category null").
+source: "NFPA 70E:2024 §130.5(H) — required label content"
+triggered_for: "every labels[] entry"
+checks:
+  - id: nfpa_70e_required_fields_populated
+    description: |
+      All 6 NFPA 70E required fields are populated (non-empty string):
+      header_line, equipment_id, nominal_voltage, incident_energy_at_working_distance OR ppe_category,
+      arc_flash_boundary, analysis_date
+    expression: |
+      for each label in labels:
+        label.label_content.header_line is non-empty AND
+        label.label_content.equipment_id is non-empty AND
+        label.label_content.nominal_voltage is non-empty AND
+        (label.label_content.incident_energy_at_working_distance is non-empty OR label.label_content.ppe_category is non-null) AND
+        label.label_content.arc_flash_boundary is non-empty AND
+        label.label_content.analysis_date is non-empty
+    severity: error
+  - id: restricted_uses_restricted_ppe_text
+    description: |
+      When signal_word == RESTRICTED: ppe_clothing_description uses the RESTRICTED text
+      (containing 'Energized work prohibited' or 'De-energise'), NOT 'Category null'.
+    expression: |
+      for each label where signal_word == 'RESTRICTED':
+        label.label_content.ppe_clothing_description matches /(prohibited|de-energise|specialised assessment)/i
+    severity: error
+  - id: label_size_meets_minimum
+    description: |
+      Label dimensions ≥ ANSI Z535.4 minimum for working distance.
+      Minimum 75 × 50 mm for working distance ≤ 1m.
+    expression: |
+      for each label:
+        label.rendering.label_size_mm.width >= 75 AND
+        label.rendering.label_size_mm.height >= 50
+    severity: error
