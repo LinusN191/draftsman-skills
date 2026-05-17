@@ -33,7 +33,7 @@
       "source": "IEEE 1584:2002 §C — approximate; verify when coefficients transcribed"
     }
   ],
-  "implementation_notes": "Used ONLY for legacy label reproduction. The 2018 method produces different (and considered more accurate) values for the same scenario. Never mix 2002 and 2018 results in the same study.",
+  "implementation_notes": "Used ONLY for legacy label reproduction. The 2018 method produces different (and considered more accurate) values for the same scenario. Never mix 2002 and 2018 results in the same study. Unit conversion required when called from a metric-units skill: D_inches = D_mm / 25.4; I_arc_kA = I_arc_A / 1000. The legacy 5.12 × 10⁵ constant is unit-dependent; do not modify without recalibrating coefficients.",
   "transcribed_at": "2026-05-17",
   "transcribed_by": "DraftsMan skills repo",
   "verification_status": "pending-verification",

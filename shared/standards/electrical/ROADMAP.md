@@ -181,7 +181,7 @@ Specialized domains and low-urgency updates:
 
 ## Next steps
 
-1. **Group A (Next 90 days):** Begin collecting standards documents and mapping clause structures for IEEE1584, NFPA70E, BSEN62305, NFPA780
-2. **Parallel skill development:** Start arc-flash and lightning-protection skill drafts while standards layers are being transcribed
+1. **Group A (Next 90 days):** ✅ IEEE1584 + NFPA70E shipped 2026-05-17. Proceed to BSEN62305, NFPA780, IEC62561.
+2. **Parallel skill development:** Start lightning-protection skill drafts while standards layers are being transcribed
 3. **Regular ROADMAP reviews:** Update status every two weeks as new layers are promoted or new skills are shipped
 4. **Skill-to-standard binding:** Ensure each shipped skill's `manifest.standards[]` array references this ROADMAP correctly

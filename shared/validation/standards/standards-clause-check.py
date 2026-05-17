@@ -21,6 +21,14 @@ CLAUSE_REF_PATTERN = re.compile(
     re.IGNORECASE,
 )
 
+# Layers that follow the clause_ref convention (added in 2026-05+ sprints)
+# Other layers (BS7671, IEC60364, IEC60617, IEC60909, IEC61439, NFPA70 etc.)
+# predate this convention and are tracked as cross-cutting tech debt to migrate.
+LAYERS_REQUIRING_CLAUSE_REF = {
+    "IEEE1584",
+    "NFPA70E",
+}
+
 
 def check_file(json_path: Path) -> list[str]:
     """Return list of violation messages for this file (empty list = pass)."""
@@ -54,6 +62,8 @@ def main() -> int:
     json_files = sorted(STANDARDS_ROOT.glob("*/*.json"))
     # Exclude meta.json files — they have their own schema and don't carry clause_ref.
     json_files = [p for p in json_files if p.name != "meta.json"]
+    # Only check layers that follow the clause_ref convention.
+    json_files = [p for p in json_files if p.parent.name in LAYERS_REQUIRING_CLAUSE_REF]
 
     print(f"Checking {len(json_files)} files for clause_ref integrity...")
 

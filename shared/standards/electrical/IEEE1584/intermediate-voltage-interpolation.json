@@ -24,12 +24,12 @@
     {
       "input":  {"v_intermediate_v": 1000, "e_lower_v600_cal_per_cm2": 6.4, "e_upper_v2700_cal_per_cm2": 8.5},
       "expected_output": {"e_intermediate_cal_per_cm2": 6.91},
-      "source": "IEEE 1584:2018 §7.4.4 — interpolation between 600V and 2700V class models for 1000V"
+      "source": "IEEE 1584:2018 §7.4.4 — interpolation between 600V and 2700V class models for 1000V (illustrative; depends on transcribed class-model coefficients, approximate within ±5%)"
     },
     {
       "input":  {"v_intermediate_v": 4160, "e_lower_v2700_cal_per_cm2": 8.5, "e_upper_v14300_cal_per_cm2": 12.0},
       "expected_output": {"e_intermediate_cal_per_cm2": 9.84},
-      "source": "IEEE 1584:2018 §7.4.4 — interpolation for 4160V system"
+      "source": "IEEE 1584:2018 §7.4.4 — interpolation for 4160V system (illustrative; depends on transcribed class-model coefficients, approximate within ±5%)"
     }
   ],
   "implementation_notes": "When skill encounters a system voltage NOT exactly at a class breakpoint, the calc tool computes IE at both bracketing class voltages (using each class's coefficient set + a normalised V) then applies this logarithmic interpolation. The interpolation uses log of voltage, not voltage directly — voltage classes span order-of-magnitude ranges so log scaling is essential.",
