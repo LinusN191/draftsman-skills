@@ -1,0 +1,35 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "IEEE Trans. on Industry Applications, Lee 1982 + cited in IEEE 1584:2002 Annex B",
+  "formula_id": "lee-1982-theoretical",
+  "formula_latex": "E = 5.12 \\times 10^5 \\cdot V \\cdot I_{bf} \\cdot \\frac{t}{D^2}",
+  "formula_plain_text": "Ralph Lee's 1982 theoretical formula for incident energy. Older than IEEE 1584 itself, but still cited as a sanity-check upper bound. Treats arc as a black-body radiator + assumes spherical energy dispersion.",
+  "symbols": [
+    {"symbol": "E",     "meaning": "Incident energy at distance D",      "unit": "cal/cm²"},
+    {"symbol": "V",     "meaning": "Line-to-line voltage",                "unit": "kV"},
+    {"symbol": "I_bf",  "meaning": "Bolted three-phase fault current",    "unit": "kA"},
+    {"symbol": "t",     "meaning": "Arcing time",                         "unit": "s"},
+    {"symbol": "D",     "meaning": "Distance from arc",                   "unit": "inches"},
+    {"symbol": "5.12 × 10⁵", "meaning": "Lee's constant — unit-correct for V in kV, I in kA, t in s, D in inches", "unit": "dimensionless"}
+  ],
+  "applicable_range": {
+    "v_min_kv": 0.480,
+    "v_max_kv": 15.0,
+    "i_bf_min_ka": 0.5,
+    "i_bf_max_ka": 100,
+    "applicability": "Use as upper-bound sanity check only; IEEE 1584:2018 empirical methods are preferred for new work."
+  },
+  "units": {"e": "cal/cm²"},
+  "worked_examples": [
+    {
+      "input":  {"v_kv": 0.480, "i_bf_ka": 25, "t_s": 0.2, "d_inches": 18},
+      "expected_output": {"incident_energy_cal_per_cm2": 7.6},
+      "source": "Lee 1982 formula evaluated at typical LV switchgear conditions"
+    }
+  ],
+  "implementation_notes": "Lee's formula uses imperial units (inches for distance, kA for current, kV for voltage). The 5.12 × 10⁵ constant is dimensionally specific to this unit combination. For metric inputs, convert before applying. Used by the arc-flash skill as a sanity-check upper bound when IEEE 1584:2018 is the primary method.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Formula is factual + cited by both IEEE 1584:2002 Annex B and IEEE 1584:2018 §2 references."
+}

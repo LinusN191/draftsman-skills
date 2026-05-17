@@ -1,0 +1,41 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "IEEE 1584:2002 (empirical method by Doughty, Neal, Floyd) — superseded by IEEE 1584:2018",
+  "formula_id": "ieee1584-2002-doughty-neal",
+  "formula_latex": "E = K \\cdot \\left( I_{arc}^{0.85} \\right) \\cdot \\frac{t}{D^x}",
+  "formula_plain_text": "IEEE 1584:2002 empirical formula by Doughty, Neal, Floyd. Single-formula model with constants K + x depending on equipment type (box vs open air) and voltage class (LV vs MV). Superseded by the 2018 three-class model but retained here for reproducing labels generated 2002–2018.",
+  "symbols": [
+    {"symbol": "E",     "meaning": "Incident energy at distance D",       "unit": "cal/cm²"},
+    {"symbol": "I_arc", "meaning": "Predicted arcing current",            "unit": "kA"},
+    {"symbol": "t",     "meaning": "Arcing time",                         "unit": "s"},
+    {"symbol": "D",     "meaning": "Working distance",                    "unit": "inches"},
+    {"symbol": "K",     "meaning": "Constant depending on equipment type",  "unit": "dimensionless"},
+    {"symbol": "x",     "meaning": "Distance exponent depending on type", "unit": "dimensionless"}
+  ],
+  "applicable_range": {
+    "v_min_v": 208,
+    "v_max_v": 15000,
+    "applicability": "Only for reproducing pre-2018 arc-flash labels. New studies should use IEEE 1584:2018 method."
+  },
+  "units": {"e": "cal/cm²"},
+  "coefficients": {
+    "box_vs_open_air": {
+      "box_LV_under_600V":  {"K": null, "x_distance_exponent": null, "_note": "Transcribe K + x from IEEE 1584:2002 Table 3 — LV box"},
+      "box_MV_over_600V":   {"K": null, "x_distance_exponent": null, "_note": "Transcribe from IEEE 1584:2002 Table 3 — MV box"},
+      "open_air_LV":        {"K": null, "x_distance_exponent": null},
+      "open_air_MV":        {"K": null, "x_distance_exponent": null}
+    }
+  },
+  "worked_examples": [
+    {
+      "input":  {"i_arc_ka": 21.5, "t_s": 0.2, "d_inches": 18, "equipment_type": "LV box", "v_nom_v": 480},
+      "expected_output": {"incident_energy_cal_per_cm2": 5.8},
+      "source": "IEEE 1584:2002 §C — approximate; verify when coefficients transcribed"
+    }
+  ],
+  "implementation_notes": "Used ONLY for legacy label reproduction. The 2018 method produces different (and considered more accurate) values for the same scenario. Never mix 2002 and 2018 results in the same study.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "pending-verification",
+  "license_note": "Formula structure factual; coefficient values from IEEE 1584:2002."
+}
