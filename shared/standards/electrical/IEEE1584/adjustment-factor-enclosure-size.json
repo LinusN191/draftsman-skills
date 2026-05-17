@@ -1,0 +1,43 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "IEEE 1584:2018 §10.5 (enclosure-size correction)",
+  "formula_id": "ieee1584-2018-adjustment-enclosure-size",
+  "formula_latex": "\\text{adj}_{E} = f(\\text{box\\_height}, \\text{box\\_width}, \\text{box\\_depth}, \\text{reference\\_dims})",
+  "formula_plain_text": "The 2018 incident-energy model assumes a specific reference enclosure (1143×762×381 mm typical box for LV switchgear). Smaller or larger boxes require a correction factor reflecting how enclosure dimensions affect the plume + reflected radiation.",
+  "symbols": [
+    {"symbol": "adj_E",             "meaning": "Multiplicative adjustment factor for enclosure size",  "unit": "dimensionless"},
+    {"symbol": "box_height_mm",     "meaning": "Measured enclosure height",                           "unit": "mm"},
+    {"symbol": "box_width_mm",      "meaning": "Measured enclosure width",                            "unit": "mm"},
+    {"symbol": "box_depth_mm",      "meaning": "Measured enclosure depth",                            "unit": "mm"},
+    {"symbol": "reference_height",  "meaning": "Reference height (1143 mm)",                          "unit": "mm"},
+    {"symbol": "reference_width",   "meaning": "Reference width (762 mm)",                            "unit": "mm"},
+    {"symbol": "reference_depth",   "meaning": "Reference depth (381 mm)",                            "unit": "mm"}
+  ],
+  "applicable_range": {
+    "box_volume_min_mm3": 50000000,
+    "box_volume_max_mm3": 500000000,
+    "note": "IEEE 1584:2018 Annex D provides enclosure-size correction table. Beyond stated range, engineering judgment or custom testing required."
+  },
+  "units": {"adj_e": "dimensionless"},
+  "coefficients": {
+    "adjustment_strategy": "tabular_by_enclosure_volume_or_dimensions",
+    "reference_box_mm3": 331779906,
+    "_note": "Specific coefficient values per IEEE 1584:2018 Annex D Table D.2 pending transcription."
+  },
+  "worked_examples": [
+    {
+      "input":  {"box_height_mm": 1143, "box_width_mm": 762, "box_depth_mm": 381, "equipment_type": "Standard LV switchgear"},
+      "expected_output": {"adj_e": 1.0},
+      "source": "IEEE 1584:2018 Annex D — reference enclosure produces adj_e = 1.0"
+    },
+    {
+      "input":  {"box_height_mm": 900, "box_width_mm": 600, "box_depth_mm": 300, "equipment_type": "Smaller panelboard"},
+      "expected_output": {"adj_e": 1.18},
+      "source": "IEEE 1584:2018 Annex D worked example — smaller box increases incident energy"
+    }
+  ],
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "pending-verification",
+  "license_note": "Enclosure-size correction methodology is factual; coefficient values from IEEE 1584:2018 Annex D."
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "IEEE 1584:2018 §10.3 (non-standard gap correction)",
+  "formula_id": "ieee1584-2018-adjustment-gap",
+  "formula_latex": "\\text{adj}_G = f(G_{actual}, G_{tabulated}, \\text{electrode\\_config}, \\text{voltage\\_class})",
+  "formula_plain_text": "When the actual gap between conductors differs from the tabulated default for the equipment type, the incident-energy result must be adjusted. The 2018 method provides correction formulas per electrode config and voltage class.",
+  "symbols": [
+    {"symbol": "adj_G",         "meaning": "Multiplicative adjustment factor",                  "unit": "dimensionless"},
+    {"symbol": "G_actual",      "meaning": "Measured gap at installed equipment",                "unit": "mm"},
+    {"symbol": "G_tabulated",   "meaning": "Default gap from Annex C Table A.1",                 "unit": "mm"}
+  ],
+  "applicable_range": {
+    "g_actual_min_mm": 6.35,
+    "g_actual_max_mm": 254.0,
+    "g_ratio_min": 0.25,
+    "g_ratio_max": 4.0,
+    "note": "Beyond ±4× the tabulated gap, IEEE 1584:2018 declares the model out of range."
+  },
+  "units": {"adj_g": "dimensionless"},
+  "coefficients": {
+    "adjustment_strategy": "per_voltage_class_and_electrode_config",
+    "values_per_voltage_class_per_config": {
+      "_note": "IEEE 1584:2018 §10.3 specifies per-class per-config gap-adjustment formulas. Coefficient values pending transcription from Table 8 (or equivalent in published references)."
+    }
+  },
+  "worked_examples": [
+    {
+      "input":  {"g_actual_mm": 50, "g_tabulated_mm": 32, "electrode_config": "VCB", "voltage_class": "600V"},
+      "expected_output": {"adj_g": 1.15},
+      "source": "IEEE 1584:2018 §10.3 worked example (approximate; verify when coefficients transcribed)"
+    }
+  ],
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "pending-verification",
+  "license_note": "Adjustment-formula structure is factual."
+}

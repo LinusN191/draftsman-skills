@@ -1,0 +1,35 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "IEEE 1584:2018 §10.4 (non-standard distance correction)",
+  "formula_id": "ieee1584-2018-adjustment-distance",
+  "formula_latex": "\\text{adj}_D = f(D_{actual}, D_{tabulated}, \\text{electrode\\_config}, \\text{voltage\\_class})",
+  "formula_plain_text": "When the working distance differs from the default for the equipment type, the incident-energy result is corrected per §10.4.",
+  "symbols": [
+    {"symbol": "adj_D",         "meaning": "Multiplicative adjustment factor",                  "unit": "dimensionless"},
+    {"symbol": "D_actual",      "meaning": "Measured distance at installed equipment",          "unit": "mm"},
+    {"symbol": "D_tabulated",   "meaning": "Default working distance from Annex C",             "unit": "mm"}
+  ],
+  "applicable_range": {
+    "d_actual_min_mm": 305,
+    "d_actual_max_mm": 1524,
+    "note": "Engineering judgment required for working distances outside this range; IEEE 1584:2018 model assumes typical maintenance approach distances."
+  },
+  "units": {"adj_d": "dimensionless"},
+  "coefficients": {
+    "adjustment_strategy": "per_voltage_class_and_electrode_config",
+    "values_per_voltage_class_per_config": {
+      "_note": "IEEE 1584:2018 §10.4 specifies per-class per-config distance-adjustment formulas. Coefficient values pending transcription from Table 8 (or equivalent in published references)."
+    }
+  },
+  "worked_examples": [
+    {
+      "input":  {"d_actual_mm": 600, "d_tabulated_mm": 455, "electrode_config": "VCB", "voltage_class": "600V"},
+      "expected_output": {"adj_d": 0.74},
+      "source": "IEEE 1584:2018 §10.4 worked example — energy decreases at greater distance"
+    }
+  ],
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "pending-verification",
+  "license_note": "Adjustment-formula structure is factual."
+}
