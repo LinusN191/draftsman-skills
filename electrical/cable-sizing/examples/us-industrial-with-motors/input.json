@@ -1,0 +1,13 @@
+{
+  "$schema": "../../schemas/inputs.schema.json",
+  "project_id": "us-ind-cs-eg03",
+  "jurisdiction": "US",
+  "project_supply": { "voltage_v": 480, "phases": "three", "frequency_hz": 60, "earthing_system": "NEC_grounded" },
+  "terminal_temp_rating_c": 75,
+  "consumed_intents_present": [],
+  "circuits_declared": [
+    { "id": "SERVICE",       "parent_node_id": null,         "node_kind": "service_entrance", "designation": "Service entrance 1200A — copper THWN-2 in cable tray", "load": { "ib_a": 1050, "in_a": 1200, "load_type": "mixed", "phases": "three" }, "route": { "length_m": 35, "installation_method": "NEC_cable_tray", "ambient_c": 30, "grouping_count": 1 }, "cable_type_preference": { "material": "copper", "insulation": "thwn_75" } },
+    { "id": "SERVICE.F01",   "parent_node_id": "SERVICE",    "node_kind": "feeder",           "designation": "Aluminium feeder to MCC — XHHW-2",                     "load": { "ib_a": 320,  "in_a": 400,  "load_type": "power", "phases": "three" }, "route": { "length_m": 45, "installation_method": "NEC_cable_tray", "ambient_c": 30, "grouping_count": 1 }, "cable_type_preference": { "material": "aluminium", "insulation": "xhhw2_90" } },
+    { "id": "MCC.M01",       "parent_node_id": "SERVICE.F01","node_kind": "final_circuit",    "designation": "500 hp chiller motor DOL",                              "load": { "ib_a": 590,  "in_a": 700,  "load_type": "motor", "phases": "three", "pf": 0.85, "locked_rotor_multiplier": 6.0 }, "route": { "length_m": 30, "installation_method": "NEC_conduit",     "ambient_c": 30, "grouping_count": 1 }, "cable_type_preference": { "material": "copper", "insulation": "thwn_75" } }
+  ]
+}
