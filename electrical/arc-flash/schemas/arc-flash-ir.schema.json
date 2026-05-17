@@ -1,0 +1,190 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/arc-flash/schemas/arc-flash-ir.schema.json",
+  "title": "Arc-Flash IR (project-scoped cascade)",
+  "description": "Project-scoped arc-flash analysis IR per IEEE 1584:2018 + NFPA 70E. Cascade tree mirrors fault-level; each node carries method-applied + method-fallback-trail + IE/AFB/PPE/shock-approach.",
+  "type": "object",
+  "required": ["drawing_type", "version", "meta", "jurisdiction", "project_supply", "cascade", "compliance_summary", "rationale"],
+  "additionalProperties": false,
+  "properties": {
+    "drawing_type": { "const": "arc_flash_study" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "meta": {
+      "type": "object",
+      "required": ["project_id", "skill_version", "produced_at"],
+      "additionalProperties": false,
+      "properties": {
+        "project_id": { "type": "string" },
+        "skill_version": { "type": "string" },
+        "produced_at": { "type": "string", "format": "date-time" },
+        "consumed_intents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["intent_type", "intent_version", "produced_by"],
+            "properties": {
+              "intent_type":    { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+              "intent_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+              "produced_by":    { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "jurisdiction": { "enum": ["GB", "EU", "INT", "US"] },
+    "project_supply": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "voltage_v": { "type": "integer" },
+        "phases": { "enum": ["single", "split", "three"] },
+        "frequency_hz": { "type": "integer", "enum": [50, 60] }
+      }
+    },
+    "cascade": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/CascadeNode" }
+    },
+    "compliance_summary": {
+      "type": "object",
+      "required": ["compliant", "non_compliance_flags", "assumptions"],
+      "additionalProperties": false,
+      "properties": {
+        "compliant": { "type": "boolean" },
+        "non_compliance_flags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["code", "message", "severity"],
+            "properties": {
+              "code": { "enum": ["ARC_FLASH_PENDING", "LEE_1982_FALLBACK_USED", "NFPA70E_TABLE_METHOD_USED", "INCIDENT_ENERGY_GT_40_RESTRICTED", "CONSERVATIVE_T_CLEAR_DEFAULT_USED", "SHOCK_APPROACH_BEYOND_TABLE_RANGE"] },
+              "message": { "type": "string" },
+              "severity": { "enum": ["error", "warning", "info"] },
+              "node_id": { "type": "string" }
+            }
+          }
+        },
+        "assumptions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "flags": { "type": "array", "items": { "type": "string" } },
+    "rationale": { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
+  },
+  "definitions": {
+    "CascadeNode": {
+      "type": "object",
+      "required": ["node_id", "node_kind", "designation", "equipment", "fault_inputs", "ocpd_inputs", "geometry", "arc_flash", "shock_approach", "label", "checks"],
+      "additionalProperties": false,
+      "properties": {
+        "node_id": { "type": "string", "pattern": "^[A-Z][A-Z0-9.\\-]{0,63}$" },
+        "parent_node_id": { "type": ["string", "null"] },
+        "node_kind": { "enum": ["service_entrance", "feeder", "sub_feeder", "final_circuit"] },
+        "designation": { "type": "string" },
+        "equipment": {
+          "type": "object",
+          "required": ["type", "current_type", "voltage_v"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "type": "string" },
+            "current_type": { "enum": ["ac", "dc"] },
+            "voltage_v": { "type": "number", "minimum": 50, "maximum": 15000 },
+            "voltage_class": { "enum": ["600V", "2700V", "14300V", "intermediate", "dc"] },
+            "electrode_config": { "enum": ["VCB", "VCBB", "HCB", "VOA", "HOA"], "nullable": true, "description": "null for DC nodes" },
+            "electrode_config_source": { "enum": ["auto_inferred_from_equipment_type", "engineer_override", "default_VCB", "not_applicable_dc"] }
+          }
+        },
+        "fault_inputs": {
+          "type": "object",
+          "required": ["ibf_ka_max"],
+          "additionalProperties": false,
+          "properties": {
+            "ibf_ka_max": { "type": "number", "minimum": 0 },
+            "ibf_ka_min": { "type": "number", "minimum": 0 },
+            "x_over_r": { "type": "number", "minimum": 0 },
+            "z_total_ohm": { "type": "number", "minimum": 0 }
+          }
+        },
+        "ocpd_inputs": {
+          "type": "object",
+          "required": ["t_clear_s", "t_clear_source"],
+          "additionalProperties": false,
+          "properties": {
+            "ocpd_type": { "type": "string" },
+            "t_clear_s": { "type": "number", "minimum": 0.001, "maximum": 5.0 },
+            "t_clear_source": { "enum": ["engineer_declared", "ocpd_type_default", "conservative_default"] }
+          }
+        },
+        "geometry": {
+          "type": "object",
+          "required": ["working_distance_mm"],
+          "additionalProperties": false,
+          "properties": {
+            "working_distance_mm": { "type": "number", "minimum": 100, "maximum": 2000 },
+            "gap_distance_mm": { "type": "number", "minimum": 5, "maximum": 254 },
+            "enclosure_volume_mm3": { "type": "number", "minimum": 0 }
+          }
+        },
+        "arc_flash": {
+          "type": "object",
+          "required": ["method_applied", "method_fallback_trail"],
+          "additionalProperties": false,
+          "properties": {
+            "method_applied": { "enum": ["ieee1584_2018", "ieee1584_2002", "lee_1982", "nfpa70e_table", "dc_doan", "pending"] },
+            "method_fallback_trail": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["method", "result", "reason"],
+                "properties": {
+                  "method": { "enum": ["ieee1584_2018", "ieee1584_2002", "lee_1982", "nfpa70e_table", "dc_doan"] },
+                  "result": { "enum": ["applied", "skipped"] },
+                  "reason": { "type": "string" }
+                }
+              }
+            },
+            "arcing_current_a": { "type": ["number", "null"] },
+            "incident_energy_cal_per_cm2": { "type": ["number", "null"], "minimum": 0 },
+            "arc_flash_boundary_mm": { "type": ["number", "null"], "minimum": 0 },
+            "ppe_category": { "type": ["integer", "null"], "minimum": 1, "maximum": 4 },
+            "ppe_category_source": { "enum": ["computed_from_E", "engineer_override", "nfpa70e_table_lookup", "null_when_pending"] }
+          }
+        },
+        "shock_approach": {
+          "type": "object",
+          "required": ["limited_approach_movable_mm", "limited_approach_fixed_mm", "restricted_approach_mm", "source"],
+          "additionalProperties": false,
+          "properties": {
+            "limited_approach_movable_mm": { "type": ["number", "string"], "description": "Number for direct distances; string when value is non-numeric (e.g. 'avoid contact' for <50V)" },
+            "limited_approach_fixed_mm": { "type": ["number", "string"] },
+            "restricted_approach_mm": { "type": ["number", "string"] },
+            "source": { "type": "string", "description": "Citation to NFPA 70E Table 130.4(C)(a) or (b) row" }
+          }
+        },
+        "label": {
+          "type": "object",
+          "required": ["label_recommended"],
+          "additionalProperties": false,
+          "properties": {
+            "label_recommended": { "type": "boolean" },
+            "label_required_per": { "type": "string" },
+            "engineer_can_skip_with_reason": { "type": "boolean" }
+          }
+        },
+        "checks": {
+          "type": "object",
+          "required": ["tool_call_pending"],
+          "additionalProperties": false,
+          "properties": {
+            "incident_energy_finite": { "type": "boolean" },
+            "boundary_ge_working_distance": { "type": "boolean" },
+            "ppe_category_consistent_with_E": { "type": "boolean" },
+            "method_fallback_consistent": { "type": "boolean" },
+            "tool_call_pending": { "type": "boolean" }
+          }
+        }
+      }
+    }
+  }
+}
