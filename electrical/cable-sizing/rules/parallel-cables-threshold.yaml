@@ -1,0 +1,24 @@
+rule: parallel_cables_threshold
+version: 1.0.0
+description: |
+  Engage parallel cables when single-cable selection at largest available csa fails Iz ≥ In.
+  Required: minimum csa per parallel + identical length / csa / material / installation /
+  route across all parallels (symmetrical impedance → balanced current sharing).
+engage_when: "single_cable.ladder_exhausted AND iz_corrected < in_a"
+minimum_csa_per_parallel:
+  iec_mm2: 50
+  nec_awg: "1/0"
+  source: "BS 7671:2018 Reg 523.7 / IEC 60364-5-52 §523.6 / NEC 2023 310.10(H)(1)"
+required_symmetry:
+  - same_length: "absolute, no tolerance"
+  - same_csa: "absolute, no mix"
+  - same_material: "absolute, no copper+aluminium mix"
+  - same_installation_method: "absolute, no clipped+conduit mix"
+  - same_route: "approximately — small geometric deviations acceptable if impedances within 10%"
+search:
+  starting_count: 2
+  step: 1
+  max_count: 6
+  beyond_max_action: "raise warning recommending bus duct / busway redesign instead of >6 parallel cables"
+binding_constraint_token: "parallel_required"
+ipk_note: "Peak short-circuit current divides equally across symmetric parallels — verify each parallel's csa against I²t/k separately"

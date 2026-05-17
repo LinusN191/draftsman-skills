@@ -1,0 +1,36 @@
+rule: voltage_drop_targets
+version: 1.0.0
+description: |
+  Vd cumulative limits by jurisdiction + load type. Engineer may override per circuit
+  when client spec is tighter (never looser). vd_cumulative_pct is summed up the parent
+  chain — not per-segment.
+defaults_by_jurisdiction:
+  GB:
+    lighting: 3.0
+    power: 5.0
+    motor_running: 5.0
+    source: "BS 7671:2018 Appendix 12"
+  EU:
+    lighting: 3.0
+    power: 5.0
+    motor_running: 5.0
+    source: "IEC 60364-5-52:2009 §G"
+  INT:
+    lighting: 3.0
+    power: 5.0
+    motor_running: 5.0
+    source: "IEC 60364-5-52:2009 §G"
+  US:
+    feeder_only: 3.0
+    feeder_plus_branch: 5.0
+    motor_running: 5.0
+    source: "NEC 2023 215.2(A)(1) Informational Note 2"
+override_policy:
+  engineer_may_tighten: true
+  engineer_may_loosen: false
+  per_circuit: true
+  fail_if_looser: "raise warning + adopt the standard limit; record engineer-requested value in assumptions"
+limit_source_field:
+  required: true
+  format: "<standard> <clause> <load_type>"
+  example: "BS 7671:2018 App 12 lighting circuits"
