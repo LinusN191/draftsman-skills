@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "IEEE 1584:2018 §7 + Table 1",
+  "title": "IEEE 1584:2018 Voltage Classes",
+  "description": "Three empirical-model voltage classes with their applicable nominal-voltage ranges.",
+  "column_definitions": [
+    {"key": "class_id",      "label": "Model class",          "type": "enum",    "values": ["600V", "2700V", "14300V"]},
+    {"key": "v_nom_min_v",   "label": "Minimum nominal V",     "type": "integer", "unit": "V"},
+    {"key": "v_nom_max_v",   "label": "Maximum nominal V",     "type": "integer", "unit": "V"},
+    {"key": "typical_v_nom", "label": "Typical nominal V used in tests","type": "integer", "unit": "V"},
+    {"key": "interpolation_note", "label": "Notes on intermediate voltages", "type": "string"}
+  ],
+  "rows": [
+    {"class_id": "600V",    "v_nom_min_v": 208,   "v_nom_max_v": 600,   "typical_v_nom": 480,   "interpolation_note": "Direct application within range. Interpolate to 2700V class above 600V."},
+    {"class_id": "2700V",   "v_nom_min_v": 601,   "v_nom_max_v": 2700,  "typical_v_nom": 2300,  "interpolation_note": "Direct application. Interpolate to 14300V class above 2700V. Common system voltage 4160V uses interpolation per §7.4."},
+    {"class_id": "14300V",  "v_nom_min_v": 2701,  "v_nom_max_v": 15000, "typical_v_nom": 14300, "interpolation_note": "Direct application across full MV range up to 15kV."}
+  ],
+  "notes": "Voltages outside 208V – 15 kV are out of IEEE 1584:2018 scope. For DC systems use NFPA70E Annex D (Doan + Stokes & Oppenlander).",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Voltage-class breakpoints are factual; numbers reproduced for reference + interoperation, not copyrighted expression."
+}

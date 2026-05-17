@@ -1,0 +1,51 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "IEEE 1584:2018 §5.1 + Annex C Table A.1",
+  "formula_id": "electrode-config-voa",
+  "formula_latex": "(definition file — coefficient set, not a standalone formula)",
+  "formula_plain_text": "Vertical electrodes in Open Air (no enclosure). Overhead service drops, exposed open-bus systems, certain outdoor switchgear.",
+  "symbols": [
+    {"symbol": "G_default_mm", "meaning": "Default gap between conductors for this config", "unit": "mm"},
+    {"symbol": "D_default_mm", "meaning": "Default working distance for this config",       "unit": "mm"},
+    {"symbol": "I_bf_min_a",   "meaning": "Minimum bolted fault current for empirical fit", "unit": "A"},
+    {"symbol": "I_bf_max_a",   "meaning": "Maximum bolted fault current for empirical fit", "unit": "A"}
+  ],
+  "applicable_range": {
+    "i_bf_min": 500,
+    "i_bf_max": 106000,
+    "g_min_mm": 9.5,
+    "g_max_mm": 152.4
+  },
+  "units": {
+    "default_gap": "mm",
+    "default_distance": "mm"
+  },
+  "coefficients": {
+    "default_gap_per_voltage_class_mm": {
+      "600V":  25.4,
+      "2700V": 76.0,
+      "14300V": 152.0
+    },
+    "default_working_distance_per_voltage_class_mm": {
+      "600V":  455.0,
+      "2700V": 910.0,
+      "14300V": 1015.0
+    },
+    "coefficients_per_voltage_class": {
+      "600V":  { "k1": null, "k2": null, "k3": null, "k4": null, "k5": null, "k6": null, "k7": null, "_note": "Transcribe from IEEE 1584:2018 Table 4 (600V model, VOA row) — pending verification" },
+      "2700V": { "k1": null, "k2": null, "k3": null, "k4": null, "k5": null, "k6": null, "k7": null, "_note": "Transcribe from IEEE 1584:2018 Table 5 (2700V model, VOA row) — pending verification" },
+      "14300V":{ "k1": null, "k2": null, "k3": null, "k4": null, "k5": null, "k6": null, "k7": null, "_note": "Transcribe from IEEE 1584:2018 Table 6 (14300V model, VOA row) — pending verification" }
+    }
+  },
+  "equipment_applicable": [
+    "overhead service drops",
+    "open-bus distribution",
+    "outdoor MV switchgear with no enclosure",
+    "exposed bus duct"
+  ],
+  "notes": "Open-air configurations have different incident energy characteristics than enclosed — energy disperses faster but at closer distances exposure can be higher.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "pending-verification",
+  "license_note": "Coefficient values are factual empirical fits from IEEE 1584:2018 — reproduced for reference + interoperation. Default gap + distance values are factual constants from Annex C."
+}
