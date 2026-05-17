@@ -1,0 +1,151 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/arc-flash-labelling/schemas/labels-ir.schema.json",
+  "title": "Arc-Flash Labels IR",
+  "description": "Project-scoped collection of per-equipment arc-flash labels per ANSI Z535.4 / ISO 7010 / BS 5499 + NFPA 70E §130.5(H). Each label carries inline SVG + content fields + rendering status. PDF/PNG rendering deferred to calc.render_label runtime tool per WI3.",
+  "type": "object",
+  "required": ["drawing_type", "version", "meta", "jurisdiction", "project_metadata", "labels", "project_label_index", "compliance_summary", "rationale"],
+  "additionalProperties": false,
+  "properties": {
+    "drawing_type": { "const": "arc_flash_labelling_study" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "meta": {
+      "type": "object",
+      "required": ["project_id", "skill_version", "produced_at"],
+      "additionalProperties": false,
+      "properties": {
+        "project_id":   { "type": "string" },
+        "skill_version":{ "type": "string" },
+        "produced_at":  { "type": "string", "format": "date-time" },
+        "consumed_intents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["intent_type", "intent_version", "produced_by"],
+            "properties": {
+              "intent_type":    { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+              "intent_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+              "produced_by":    { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "jurisdiction": { "enum": ["GB", "EU", "INT", "US"] },
+    "project_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "company_name":            { "type": "string" },
+        "qualified_person":         { "type": "string" },
+        "qr_code_base_url":         { "type": ["string", "null"] },
+        "default_label_size_mm":    { "type": "object", "properties": { "width": {"type": "number"}, "height": {"type": "number"} } },
+        "branding_overlay_svg":     { "type": ["string", "null"] }
+      }
+    },
+    "labels": {
+      "type": "array",
+      "minItems": 0,
+      "items": { "$ref": "#/definitions/LabelEntry" }
+    },
+    "project_label_index": {
+      "type": "object",
+      "required": ["summary_table", "schedule_pdf_content_pending"],
+      "additionalProperties": false,
+      "properties": {
+        "summary_table": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "node_id":         { "type": "string" },
+              "designation":     { "type": "string" },
+              "signal_word":     { "enum": ["DANGER", "WARNING", "CAUTION", "NOTICE", "RESTRICTED"] },
+              "ppe_category":    { "type": ["integer", "null"] },
+              "ie_cal_per_cm2":  { "type": ["number", "null"] },
+              "format_applied":  { "type": "string" }
+            }
+          }
+        },
+        "schedule_pdf_content_pending": { "type": "boolean" }
+      }
+    },
+    "compliance_summary": {
+      "type": "object",
+      "required": ["compliant", "non_compliance_flags", "assumptions"],
+      "additionalProperties": false,
+      "properties": {
+        "compliant":            { "type": "boolean" },
+        "non_compliance_flags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["code", "message", "severity"],
+            "properties": {
+              "code":      { "type": "string" },
+              "message":   { "type": "string" },
+              "severity":  { "enum": ["error", "warning", "info"] },
+              "node_id":   { "type": "string" }
+            }
+          }
+        },
+        "assumptions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "flags":      { "type": "array", "items": { "type": "string" } },
+    "rationale":  { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
+  },
+  "definitions": {
+    "LabelEntry": {
+      "type": "object",
+      "required": ["node_id", "designation", "format_applied", "signal_word", "label_content", "rendering"],
+      "additionalProperties": false,
+      "properties": {
+        "node_id":          { "type": "string", "pattern": "^[A-Z][A-Z0-9.\\-]{0,63}$" },
+        "designation":      { "type": "string" },
+        "format_applied":   { "enum": ["ansi_z535_4", "iso_7010", "bs_5499", "restricted_format"] },
+        "format_source":    { "enum": ["auto_jurisdiction", "engineer_override", "restricted_override"] },
+        "signal_word":      { "enum": ["DANGER", "WARNING", "CAUTION", "NOTICE", "RESTRICTED"] },
+        "label_content": {
+          "type": "object",
+          "required": ["header_line", "equipment_id", "nominal_voltage", "analysis_date"],
+          "additionalProperties": false,
+          "properties": {
+            "header_line":                          { "type": "string" },
+            "equipment_id":                         { "type": "string" },
+            "nominal_voltage":                      { "type": "string" },
+            "incident_energy_at_working_distance":  { "type": "string" },
+            "arc_flash_boundary":                   { "type": "string" },
+            "shock_approach": {
+              "type": "object",
+              "properties": {
+                "limited_movable":  { "type": "string" },
+                "limited_fixed":    { "type": "string" },
+                "restricted":       { "type": "string" }
+              }
+            },
+            "ppe_category":           { "type": ["integer", "null"] },
+            "ppe_clothing_description":{ "type": "string" },
+            "ppe_description_source":  { "enum": ["from_table_130_7_c_16", "engineer_override"] },
+            "analysis_date":          { "type": "string" },
+            "engineer":               { "type": "string" },
+            "company_name":           { "type": "string" },
+            "qr_code_url":            { "type": ["string", "null"] }
+          }
+        },
+        "rendering": {
+          "type": "object",
+          "required": ["label_size_mm", "svg_template_used", "svg_content", "tool_call_pending_for_pdf_png"],
+          "additionalProperties": false,
+          "properties": {
+            "label_size_mm":                  { "type": "object", "required": ["width", "height"], "properties": { "width": {"type": "number"}, "height": {"type": "number"} } },
+            "svg_template_used":              { "type": "string" },
+            "svg_content":                    { "type": "string", "minLength": 50 },
+            "tool_call_pending_for_pdf_png":  { "type": "boolean" }
+          }
+        }
+      }
+    }
+  }
+}
