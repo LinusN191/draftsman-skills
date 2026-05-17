@@ -12,6 +12,76 @@
     "application_point": "Apply diversity to determine Ib (design current) at each distribution level — from final circuits to submains to main intake.",
     "compound_application": "Diversity is applied at each cascade level. Total intake demand has diversity applied at submain level AND at intake level."
   },
+  "engine_lookup": {
+    "_purpose": "Flat key/value form for runtime engine consumption — same numbers as the prose fields below, machine-readable. Source of truth for calc.diversity_factor's GB/UK jurisdiction branch.",
+    "_reference": "IET On-Site Guide Appendix A — Table A1 (domestic); IET Guidance Note 1 Section 4 (blocks); BCO/IET Wiring Matters (commercial); HTM 06-01 (healthcare); IET Code of Practice for EV (4th Ed)",
+    "by_load_type": {
+      "lighting":                       {"diversity_pct": 66,  "first_n_a_at_100pct": null, "remainder_pct": null},
+      "socket_outlet_ring_main":        {"diversity_pct": null,"first_n_a_at_100pct": 30,   "remainder_pct": null, "_note": "Inherent diversity via 32A RFC design — count first 30A at 100%"},
+      "socket_outlet_radial_first":     {"diversity_pct": 100, "first_n_a_at_100pct": null, "remainder_pct": null},
+      "socket_outlet_radial_subsequent":{"diversity_pct": 40,  "first_n_a_at_100pct": null, "remainder_pct": null},
+      "cooker":                         {"diversity_pct": null,"first_n_a_at_100pct": 10,   "remainder_pct": 30,   "additional_a_per_socket": 5},
+      "instantaneous_water_heater":     {"diversity_pct": 100, "first_n_a_at_100pct": null, "remainder_pct": null},
+      "storage_water_heater":           {"diversity_pct": 100, "first_n_a_at_100pct": null, "remainder_pct": null},
+      "electric_shower":                {"diversity_pct": 100, "first_n_a_at_100pct": null, "remainder_pct": null},
+      "fixed_space_heating_first":      {"diversity_pct": 100, "first_n_a_at_100pct": null, "remainder_pct": null},
+      "fixed_space_heating_subsequent": {"diversity_pct": 75,  "first_n_a_at_100pct": null, "remainder_pct": null},
+      "office_small_power_workstation": {"diversity_pct": 66,  "load_w_per_workstation": 200},
+      "office_lighting":                {"diversity_pct": 100, "_note": "Installed capacity must support full operation; daylight/presence saves energy not demand"},
+      "office_hvac_vav":                {"diversity_pct": 85},
+      "office_lift_single":             {"diversity_pct": 100},
+      "office_lift_two":                {"diversity_pct": 80},
+      "office_lift_three_or_more":      {"diversity_pct": 70},
+      "industrial_motor_duty":          {"diversity_pct": 100, "_note": "Each motor at FLC; duty/standby pair counts only duty"},
+      "industrial_motor_n_plus_1":      {"diversity_pct": 100, "_note": "n × FLC; the +1 spare not coincident"},
+      "retail_lighting":                {"diversity_pct": 100},
+      "retail_small_power":             {"diversity_pct": 70},
+      "retail_refrigeration":           {"diversity_pct": 100},
+      "education_classroom_lighting":   {"diversity_pct": 100},
+      "education_ict_workstation":      {"diversity_pct": 75, "load_w_per_pupil": 100},
+      "education_kitchen":              {"diversity_pct": 60},
+      "healthcare_general_ward":        {"diversity_pct": 75, "load_kva_per_bed": 2},
+      "healthcare_operating_theatre":   {"diversity_pct": 100},
+      "ev_charging_domestic_single":    {"diversity_pct": 100},
+      "ev_rapid_dc":                    {"diversity_pct": 100, "_note": "High power short bursts; limited diversity"}
+    },
+    "by_occupancy": {
+      "dwelling_single":   {"applies_load_types": ["lighting","socket_outlet_ring_main","socket_outlet_radial_first","socket_outlet_radial_subsequent","cooker","instantaneous_water_heater","storage_water_heater","electric_shower","fixed_space_heating_first","fixed_space_heating_subsequent"], "future_expansion_pct_default": 25.0},
+      "dwelling_multi":    {"see_section": "block_of_flats_diversity", "future_expansion_pct_default": 25.0, "_note": "Apply per-dwelling diversity from block_of_flats_diversity.table, scaled by dwelling count"},
+      "office":            {"applies_load_types": ["office_small_power_workstation","office_lighting","office_hvac_vav","office_lift_single","office_lift_two","office_lift_three_or_more"], "design_density_w_per_m2_range": [65, 100], "future_expansion_pct_default": 25.0},
+      "industrial":        {"applies_load_types": ["industrial_motor_duty","industrial_motor_n_plus_1"], "future_expansion_pct_default": 30.0, "_note": "Substation-level diversity from measured history, not per-circuit"},
+      "retail_general":    {"applies_load_types": ["retail_lighting","retail_small_power","retail_refrigeration"], "future_expansion_pct_default": 20.0},
+      "retail_supermarket":{"applies_load_types": ["retail_refrigeration"], "refrigeration_pct_of_total_demand_range": [40, 60], "future_expansion_pct_default": 20.0},
+      "education":         {"applies_load_types": ["education_classroom_lighting","education_ict_workstation","education_kitchen"], "future_expansion_pct_default": 25.0},
+      "healthcare":        {"applies_load_types": ["healthcare_general_ward","healthcare_operating_theatre"], "future_expansion_pct_default": 30.0, "_note": "Life-safety + critical care never subject to diversity reduction"},
+      "ev_charging_commercial": {
+        "see_section": "ev_charging_diversity.commercial_workplace_chargers",
+        "table_by_charger_count": {
+          "5":  {"diversity_pct": 80},
+          "10": {"diversity_pct": 60},
+          "20": {"diversity_pct": 40},
+          "50": {"diversity_pct": 30}
+        },
+        "with_dlm": {"diversity_pct_source": "configured_dlm_ceiling"},
+        "without_dlm": {"diversity_pct": 100, "_note": "Sum of all chargers, no diversity"}
+      }
+    },
+    "block_of_flats_table_engine": {
+      "_reference": "IET Guidance Note 1, Section 4",
+      "rows": [
+        {"dwelling_count_from": 2,  "dwelling_count_to": 2,  "diversity_pct": 75},
+        {"dwelling_count_from": 3,  "dwelling_count_to": 3,  "diversity_pct": 70},
+        {"dwelling_count_from": 4,  "dwelling_count_to": 4,  "diversity_pct": 65},
+        {"dwelling_count_from": 5,  "dwelling_count_to": 5,  "diversity_pct": 60},
+        {"dwelling_count_from": 6,  "dwelling_count_to": 10, "diversity_pct": 55},
+        {"dwelling_count_from": 11, "dwelling_count_to": 20, "diversity_pct": 50},
+        {"dwelling_count_from": 21, "dwelling_count_to": 50, "diversity_pct": 45},
+        {"dwelling_count_from": 51, "dwelling_count_to": null,"diversity_pct": 40}
+      ]
+    },
+    "future_expansion_pct_default": 25.0,
+    "_reference_secondary": "IET On-Site Guide Appendix A — Table A1; IET Guidance Note 1 Section 4"
+  },
   "domestic_diversity_OSG": {
     "_reference": "IET On-Site Guide Appendix A — Table A1",
     "_note": "Applied to consumer unit (final distribution) for single dwelling. Different rules for blocks of dwellings.",
