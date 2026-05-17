@@ -1,0 +1,39 @@
+eval_id: eval-06-rationale-block
+category: rationale_block
+skill: cable-sizing
+skill_version: 1.0.0
+description: |
+  Verify the rationale block conforms to WI2: exactly 8 sections + chat_summary ≤ 200 words
+  + every decision cites a rule + code_clause. Reuses the eval-02 input as the scenario.
+input:
+  reuse_from: "electrical/cable-sizing/evals/eval-02-tpn-commercial-feeders-cumulative-vd.yaml"
+expected:
+  rationale:
+    chat_summary:
+      type: string
+      max_length_chars: 1200
+      max_words: 200
+    sections:
+      length: 8
+      titles_in_order:
+        - "Input Ingestion"
+        - "Cascade Topology"
+        - "Jurisdictional Defaults"
+        - "Source + Fault Context"
+        - "CSA Selection Walk-up Summary"
+        - "Special Checks"
+        - "Compliance + Selectivity"
+        - "Assumptions + Tool-call Status"
+      every_decision_has:
+        - label
+        - summary
+        - rule
+        - code_clause
+    walk_up_trail_per_node:
+      every_rejection_names_check: true
+      binding_constraint_consistent_with_walk_up_trail: true
+pass_criteria:
+  - "rationale.sections.length == 8 exactly"
+  - "Every section is non-empty (or explicitly says 'none triggered')"
+  - "Every decision cites a rule + clause"
+  - "chat_summary ≤ 200 words and frames cascade scale + binding constraints + flags"
