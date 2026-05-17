@@ -1,0 +1,28 @@
+{
+  "$schema": "../../../shared/schemas/core/ontology.schema.json",
+  "ontology": "current-types",
+  "version": "1.0.0",
+  "description": "Enumeration of current types (AC / DC) with applicable arc-flash methods + electrode-config applicability + shock-approach table reference.",
+  "entries": [
+    {
+      "id": "ac",
+      "label": "Alternating current",
+      "applicable_methods": ["ieee1584_2018", "ieee1584_2002", "lee_1982", "nfpa70e_table"],
+      "electrode_config_required": true,
+      "shock_approach_table": "NFPA 70E:2024 Table 130.4(C)(a)",
+      "voltage_range_v": [50, 15000],
+      "auto_inference_hint": "Default when equipment_type does not match DC patterns",
+      "common_equipment": ["LV switchgear", "MV switchgear", "panelboard", "MCC", "drawout breaker"]
+    },
+    {
+      "id": "dc",
+      "label": "Direct current",
+      "applicable_methods": ["dc_doan"],
+      "electrode_config_required": false,
+      "shock_approach_table": "NFPA 70E:2024 Table 130.4(C)(b)",
+      "voltage_range_v": [50, 1000],
+      "auto_inference_hint": "Auto-set when equipment_type matches: PV string, PV combiner, DC fast charger (DCFC), battery bank, battery room, BESS, telecom DC system",
+      "common_equipment": ["PV combiner box", "PV string", "DCFC unit", "battery bank", "BESS rack", "telecom 48V DC bus"]
+    }
+  ]
+}

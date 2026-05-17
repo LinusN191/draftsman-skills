@@ -1,0 +1,72 @@
+{
+  "$schema": "../../../shared/schemas/core/ontology.schema.json",
+  "ontology": "method-types",
+  "version": "1.0.0",
+  "description": "Enumeration of arc-flash calculation methods supported by the arc-flash skill. Each entry maps method id → applicability + bias + source standard.",
+  "entries": [
+    {
+      "id": "ieee1584_2018",
+      "label": "IEEE 1584:2018 (current empirical method)",
+      "source_standard": "IEEE 1584:2018",
+      "voltage_range_v": [208, 15000],
+      "current_type": "ac",
+      "bias": "most_realistic",
+      "applies_when": "Coefficients available for (voltage_class, electrode_config)",
+      "fallback_priority": 1
+    },
+    {
+      "id": "ieee1584_2002",
+      "label": "IEEE 1584:2002 (Doughty/Neal empirical)",
+      "source_standard": "IEEE 1584:2002",
+      "voltage_range_v": [208, 15000],
+      "current_type": "ac",
+      "bias": "slightly_conservative_vs_2018",
+      "applies_when": "Doughty/Neal coefficients transcribed",
+      "fallback_priority": 2,
+      "primary_use": "legacy_label_reproduction"
+    },
+    {
+      "id": "lee_1982",
+      "label": "Lee 1982 (theoretical upper bound)",
+      "source_standard": "Lee 1982 IEEE-IAS paper + IEEE 1584:2018 §2",
+      "voltage_range_v": [50, 15000],
+      "current_type": "ac",
+      "bias": "significantly_conservative_2_to_5x",
+      "applies_when": "Always available (no coefficients needed)",
+      "fallback_priority": 3,
+      "primary_use": "fallback_when_empirical_coefficients_pending_verification"
+    },
+    {
+      "id": "nfpa70e_table",
+      "label": "NFPA 70E Table Method (equipment-class lookup)",
+      "source_standard": "NFPA 70E:2024 Table 130.7(C)(15)(a)/(b)",
+      "voltage_range_v": [50, 15000],
+      "current_type": "ac_or_dc",
+      "bias": "most_conservative",
+      "applies_when": "equipment_type matches table-method ontology row",
+      "fallback_priority": 4,
+      "output_note": "Returns PPE category only — no incident energy or arc-flash boundary computed"
+    },
+    {
+      "id": "dc_doan",
+      "label": "Doan 2007 + Stokes & Oppenlander 1991 (DC method)",
+      "source_standard": "NFPA 70E:2024 Annex D §D.1 + §D.2",
+      "voltage_range_v": [50, 1000],
+      "current_type": "dc",
+      "bias": "realistic_for_dc",
+      "applies_when": "current_type == dc AND voltage_v <= 1000",
+      "fallback_priority": "exclusive_for_dc"
+    },
+    {
+      "id": "pending",
+      "label": "tool_call_pending (no method fired)",
+      "source_standard": "WI3 deferral pattern",
+      "voltage_range_v": "any",
+      "current_type": "any",
+      "bias": "no_output",
+      "applies_when": "Fallthrough — no method in chain applies",
+      "fallback_priority": "terminal_fallback",
+      "output_note": "All numeric outputs null; tool_call_pending: true; assumption logged"
+    }
+  ]
+}
