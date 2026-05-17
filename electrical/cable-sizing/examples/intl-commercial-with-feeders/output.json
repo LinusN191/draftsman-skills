@@ -1,0 +1,342 @@
+{
+  "drawing_type": "cable_sizing_study",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "intl-comm-cs-eg02",
+    "skill_version": "cable-sizing/1.0.0",
+    "produced_at": "2026-05-17T09:00:00Z",
+    "consumed_intents": [
+      {
+        "intent_type": "db-layout-rollup",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/1.0.0"
+      },
+      {
+        "intent_type": "fault-level",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/fault-level/1.0.0"
+      }
+    ]
+  },
+  "jurisdiction": "INT",
+  "project_supply": {
+    "voltage_v": 400,
+    "phases": "three",
+    "frequency_hz": 50,
+    "earthing_system": "TN-S"
+  },
+  "cascade": [
+    {
+      "node_id": "MSB-1",
+      "parent_node_id": null,
+      "node_kind": "service_entrance",
+      "designation": "Main MSB 2000A incomer",
+      "load": {
+        "ib_a": 1450,
+        "in_a": 2000,
+        "phases": "three_plus_n",
+        "load_type": "mixed",
+        "pf": 0.92
+      },
+      "route": {
+        "length_m": 12,
+        "installation_method": "F",
+        "ambient_c": 30,
+        "grouping_count": 1,
+        "in_thermal_insulation": false
+      },
+      "harmonic_content_pct": 0,
+      "fault_at_origin": {
+        "ifault_ka_max": 22.5,
+        "ifault_ka_min": 20.4,
+        "t_clear_s": 0.05
+      },
+      "selection": {
+        "phase_csa": 630,
+        "cpc_csa": 240,
+        "material": "copper",
+        "insulation": "xlpe_90",
+        "cable_type": "xlpe_singles",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa": 630,
+            "accepted": true,
+            "vd_segment_pct": 0.4,
+            "vd_cumulative_pct": 0.4
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 2010,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 0.4,
+        "vd_cumulative_pct": 0.4,
+        "vd_pass": true,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "IEC 60364-5-52:2009 \u00a7G mixed loads",
+        "cpc_adiabatic_pass": true,
+        "motor_starting_vd_pct": null,
+        "harmonic_ch_factor": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "MSB-1.F03",
+      "parent_node_id": "MSB-1",
+      "node_kind": "feeder",
+      "designation": "Riser feeder to Level 3 DB-L1",
+      "load": {
+        "ib_a": 180,
+        "in_a": 250,
+        "phases": "three_plus_n",
+        "load_type": "mixed",
+        "pf": 0.92
+      },
+      "route": {
+        "length_m": 65,
+        "installation_method": "E",
+        "ambient_c": 35,
+        "grouping_count": 2,
+        "in_thermal_insulation": false
+      },
+      "harmonic_content_pct": 0,
+      "fault_at_origin": {
+        "ifault_ka_max": 21.5,
+        "ifault_ka_min": 19.5,
+        "t_clear_s": 0.08
+      },
+      "selection": {
+        "phase_csa": 95,
+        "cpc_csa": 50,
+        "material": "copper",
+        "insulation": "xlpe_90",
+        "cable_type": "xlpe_singles",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa": 95,
+            "accepted": true,
+            "vd_segment_pct": 1.4,
+            "vd_cumulative_pct": 1.8
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 252,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 1.4,
+        "vd_cumulative_pct": 1.8,
+        "vd_pass": true,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "IEC 60364-5-52:2009 \u00a7G mixed loads",
+        "cpc_adiabatic_pass": true,
+        "motor_starting_vd_pct": null,
+        "harmonic_ch_factor": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "MSB-1.F03.DB-L1",
+      "parent_node_id": "MSB-1.F03",
+      "node_kind": "sub_feeder",
+      "designation": "DB-L1 incoming sub-feeder",
+      "load": {
+        "ib_a": 45,
+        "in_a": 63,
+        "phases": "three_plus_n",
+        "load_type": "mixed",
+        "pf": 0.92
+      },
+      "route": {
+        "length_m": 8,
+        "installation_method": "C",
+        "ambient_c": 30,
+        "grouping_count": 1,
+        "in_thermal_insulation": false
+      },
+      "harmonic_content_pct": 0,
+      "fault_at_origin": {
+        "ifault_ka_max": 18.2,
+        "ifault_ka_min": 16.5,
+        "t_clear_s": 0.1
+      },
+      "selection": {
+        "phase_csa": 16,
+        "cpc_csa": 6,
+        "material": "copper",
+        "insulation": "xlpe_90",
+        "cable_type": "xlpe_singles",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa": 16,
+            "accepted": true,
+            "vd_segment_pct": 0.3,
+            "vd_cumulative_pct": 2.1
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 68,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 0.3,
+        "vd_cumulative_pct": 2.1,
+        "vd_pass": true,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "IEC 60364-5-52:2009 \u00a7G mixed loads",
+        "cpc_adiabatic_pass": true,
+        "motor_starting_vd_pct": null,
+        "harmonic_ch_factor": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "MSB-1.F03.DB-L1.C07",
+      "parent_node_id": "MSB-1.F03.DB-L1",
+      "node_kind": "final_circuit",
+      "designation": "Lighting circuit L1-C07 long run",
+      "load": {
+        "ib_a": 8.5,
+        "in_a": 10,
+        "phases": "single",
+        "load_type": "lighting",
+        "pf": 1.0
+      },
+      "route": {
+        "length_m": 48,
+        "installation_method": "B1",
+        "ambient_c": 30,
+        "grouping_count": 2,
+        "in_thermal_insulation": false
+      },
+      "harmonic_content_pct": 0,
+      "fault_at_origin": {
+        "ifault_ka_max": 16.0,
+        "ifault_ka_min": 14.5,
+        "t_clear_s": 0.2
+      },
+      "selection": {
+        "phase_csa": 4,
+        "cpc_csa": 2.5,
+        "material": "copper",
+        "insulation": "xlpe_90",
+        "cable_type": "xlpe_singles",
+        "parallel_count": 1,
+        "binding_constraint": "vd_cumulative",
+        "walk_up_trail": [
+          {
+            "csa": 1.5,
+            "rejected_by": "vd_cumulative",
+            "vd_segment_pct": 2.2,
+            "vd_cumulative_pct": 4.3
+          },
+          {
+            "csa": 2.5,
+            "rejected_by": "vd_cumulative",
+            "vd_segment_pct": 1.3,
+            "vd_cumulative_pct": 3.4
+          },
+          {
+            "csa": 4,
+            "accepted": true,
+            "vd_segment_pct": 0.8,
+            "vd_cumulative_pct": 2.9
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 25,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 0.8,
+        "vd_cumulative_pct": 2.9,
+        "vd_pass": true,
+        "vd_limit_pct": 3.0,
+        "vd_limit_source": "IEC 60364-5-52:2009 \u00a7G lighting circuits",
+        "cpc_adiabatic_pass": true,
+        "motor_starting_vd_pct": null,
+        "harmonic_ch_factor": null,
+        "tool_call_pending": true
+      }
+    }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "db-layout-rollup intent consumed; per-circuit Ib/In/load_type/t_clear sourced from it",
+      "fault-level intent consumed; per-node ifault_ka_max/ifault_ka_min from it",
+      "tool_call_pending: true \u2014 calc.cable_ampacity + calc.voltage_drop + calc.cpc_adiabatic deferred until runtime"
+    ]
+  },
+  "drawn_as_symbols": [],
+  "flags": [
+    "TOOL-CALL-PENDING"
+  ],
+  "rationale": {
+    "chat_summary": "INT 400V TPN cascade, 4 nodes (MSB \u2192 riser \u2192 DB-L1 \u2192 C07). Lighting leaf C07 forces 2-step walk-up 1.5\u21922.5\u21924 mm\u00b2 (binding: vd_cumulative; 2.9% at 4 mm\u00b2 under 3% lighting limit per IEC 60364-5-52 \u00a7G). Feeders Iz-binding. tool_call_pending across cascade.",
+    "sections": [
+      {
+        "title": "Input Ingestion",
+        "summary": "db-layout-rollup + fault-level intents consumed; engineer added route data per segment.",
+        "decisions": []
+      },
+      {
+        "title": "Cascade Topology",
+        "summary": "4-node depth-3 cascade: service_entrance \u2192 feeder \u2192 sub_feeder \u2192 final_circuit.",
+        "decisions": []
+      },
+      {
+        "title": "Jurisdictional Defaults",
+        "summary": "INT (IEC 60364-5-52). Vd: 3% lighting / 5% mixed loads per \u00a7G. Iz tables from Annex E.",
+        "decisions": [
+          {
+            "label": "INT defaults applied",
+            "summary": "IEC 60364-5-52 \u00a7G + Annex E",
+            "rule": "IEC 60364-5-52:2009 \u00a7G",
+            "code_clause": "IEC 60364-5-52:2009 \u00a7G"
+          }
+        ]
+      },
+      {
+        "title": "Source + Fault Context",
+        "summary": "Ifault max ranges from 22.5 kA (MSB) down to 16.0 kA at C07. CPC adiabatic deferred to runtime tool.",
+        "decisions": []
+      },
+      {
+        "title": "CSA Selection Walk-up Summary",
+        "summary": "3 nodes Iz-binding (no upsize); 1 leaf node Vd_cumulative-binding (upsized 1.5\u21922.5\u21924 mm\u00b2).",
+        "decisions": [
+          {
+            "label": "C07 vd_cumulative walk-up",
+            "summary": "Cumulative Vd at parent = 2.1%; 1.5 mm\u00b2 adds 2.2% \u2192 4.3% > 3% lighting limit. Upsize to 4 mm\u00b2 gives 2.9% cumulative.",
+            "rule": "IEC 60364-5-52:2009 \u00a7G lighting circuits",
+            "code_clause": "IEC 60364-5-52:2009 \u00a7G",
+            "inputs": {
+              "vd_parent_pct": 2.1,
+              "vd_limit_pct": 3.0
+            }
+          }
+        ]
+      },
+      {
+        "title": "Special Checks",
+        "summary": "None triggered (no motor, no parallel, harmonic_content_pct = 0).",
+        "decisions": []
+      },
+      {
+        "title": "Compliance + Selectivity",
+        "summary": "All 4 nodes compliant. No non-compliance flags.",
+        "decisions": []
+      },
+      {
+        "title": "Assumptions + Tool-call Status",
+        "summary": "Both intents consumed; tool_call_pending: true on all 4 nodes pending runtime.",
+        "decisions": []
+      }
+    ]
+  }
+}
