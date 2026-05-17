@@ -1,0 +1,39 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "NFPA 70E:2024 Annex D §D.2 + Stokes & Oppenlander 1991 paper",
+  "formula_id": "stokes-oppenlander-1991-arc-voltage",
+  "formula_latex": "V_{arc} = (20 + 0.534 \\cdot G) \\cdot I_{arc}^{0.12}",
+  "formula_plain_text": "Stokes & Oppenlander 1991 empirical arc-voltage characteristic for DC. The arc voltage is a function of gap distance G (mm) and arcing current I_arc (A), with a fixed exponent 0.12 derived from their test data.",
+  "symbols": [
+    {"symbol": "V_arc",  "meaning": "DC arc voltage (input to Doan's P_max)", "unit": "V"},
+    {"symbol": "G",      "meaning": "Gap distance between conductors",         "unit": "mm"},
+    {"symbol": "I_arc",  "meaning": "Predicted DC arcing current",             "unit": "A"},
+    {"symbol": "20",     "meaning": "Empirical constant (intercept)",          "unit": "V"},
+    {"symbol": "0.534",  "meaning": "Gap multiplier coefficient",              "unit": "V/mm"},
+    {"symbol": "0.12",   "meaning": "Current-dependence exponent",             "unit": "dimensionless"}
+  ],
+  "applicable_range": {
+    "i_arc_min_a": 100,
+    "i_arc_max_a": 50000,
+    "g_min_mm": 5,
+    "g_max_mm": 100
+  },
+  "units": {"v_arc": "V"},
+  "coefficients": {
+    "intercept_v": 20,
+    "gap_multiplier_v_per_mm": 0.534,
+    "current_exponent": 0.12
+  },
+  "worked_examples": [
+    {
+      "input":  {"g_mm": 25, "i_arc_a": 5000},
+      "expected_output": {"v_arc_v": 95.0},
+      "source": "Stokes & Oppenlander 1991 typical battery-room arc"
+    }
+  ],
+  "implementation_notes": "This formula provides V_arc as the input to Doan's incident-energy formula. The 0.12 current exponent means V_arc rises slowly with current — consistent with DC arc behaviour where voltage stays roughly constant once the arc is established.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Formula is factual; published 1991 + cited by NFPA 70E Annex D."
+}

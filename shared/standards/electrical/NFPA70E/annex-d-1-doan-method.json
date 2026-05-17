@@ -1,0 +1,41 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "NFPA 70E:2024 Annex D §D.1 + Doan IEEE-IAS 2007 paper",
+  "formula_id": "doan-2007-dc-arc-flash",
+  "formula_latex": "E = \\frac{P_{max} \\cdot t_{arc} \\cdot 10^4}{4\\pi D^2} \\cdot \\text{adj}_{enclosure}",
+  "formula_plain_text": "Doan 2007 method for DC arc-flash incident energy. Maximum power transferred during arc is V_arc × I_arc; energy at distance D follows inverse-square law with enclosure correction (1.5× for enclosed, 1.0× for open air).",
+  "symbols": [
+    {"symbol": "E",            "meaning": "Incident energy at distance D",       "unit": "cal/cm²"},
+    {"symbol": "P_max",        "meaning": "Maximum arc power (V_arc × I_arc)",   "unit": "W"},
+    {"symbol": "V_arc",        "meaning": "Arc voltage (from Stokes & Oppenlander)", "unit": "V"},
+    {"symbol": "I_arc",        "meaning": "DC arcing current",                  "unit": "A"},
+    {"symbol": "t_arc",        "meaning": "Arcing time",                         "unit": "s"},
+    {"symbol": "D",            "meaning": "Distance from arc",                   "unit": "cm"},
+    {"symbol": "adj_enclosure","meaning": "Enclosure correction factor",         "unit": "dimensionless"}
+  ],
+  "applicable_range": {
+    "v_dc_min_v": 250,
+    "v_dc_max_v": 1000,
+    "i_arc_min_a": 100,
+    "i_arc_max_a": 50000,
+    "applicability": "DC systems: PV strings, EV DCFC chargers, battery rooms, industrial DC systems."
+  },
+  "units": {"e": "cal/cm²"},
+  "coefficients": {
+    "enclosure_factor_enclosed": 1.5,
+    "enclosure_factor_open_air": 1.0,
+    "constant_factor_10e4": "10⁴ unit-correction factor (W to specific units)"
+  },
+  "worked_examples": [
+    {
+      "input": {"v_dc_v": 600, "i_arc_a": 5000, "g_mm": 25, "t_arc_s": 0.2, "d_cm": 45.5, "enclosure": "enclosed"},
+      "expected_output": {"v_arc_v": 95.0, "p_max_w": 475000, "incident_energy_cal_per_cm2": 11.0},
+      "source": "Doan 2007 typical battery-room scenario"
+    }
+  ],
+  "implementation_notes": "V_arc is computed first via Stokes & Oppenlander (see annex-d-2 file). The 10⁴ factor and 4π denominator together convert SI units to cal/cm² at distance in cm. Working distance for DC is typically same as AC defaults (455 mm for ≤1 kV).",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Formula is factual; published in 2007 IEEE-IAS paper, cited by NFPA 70E Annex D."
+}
