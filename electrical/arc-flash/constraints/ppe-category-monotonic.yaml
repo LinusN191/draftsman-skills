@@ -1,0 +1,23 @@
+constraint: ppe_category_monotonic
+version: 1.0.0
+description: |
+  Across all cascade nodes where IE is numeric, PPE category must be monotonic with IE.
+  If IE_a < IE_b then PPE_a <= PPE_b. Catches lookup errors in the PPE-category-mapping
+  rule. Cross-node integrity check.
+triggered_for: "the cascade as a whole (not per-node)"
+checks:
+  - id: monotonic_pairwise
+    expression: |
+      for every pair (a, b) of nodes where both have numeric IE + numeric PPE:
+        if a.arc_flash.incident_energy_cal_per_cm2 < b.arc_flash.incident_energy_cal_per_cm2:
+          a.arc_flash.ppe_category <= b.arc_flash.ppe_category
+    severity: error
+    message: "PPE non-monotonic: node {a.node_id} (IE={a.IE}, Cat={a.cat}) vs {b.node_id} (IE={b.IE}, Cat={b.cat})"
+  - id: category_matches_mapping_rule
+    expression: |
+      for each node n where IE is numeric:
+        n.arc_flash.ppe_category matches the mapping rule per rules/ppe-category-mapping.yaml
+        (IE 1.2-4 = 1; 4-8 = 2; 8-25 = 3; 25-40 = 4; >40 = null + RESTRICTED flag)
+    severity: error
+    message: "PPE category {cat} at {node_id} doesn't match mapping for IE={IE}"
+source: "NFPA 70E:2024 Table 130.7(C)(15)(c) thresholds"

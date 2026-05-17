@@ -1,0 +1,26 @@
+constraint: method_fallback_consistency
+version: 1.0.0
+description: |
+  method_applied must equal the last 'applied' entry in method_fallback_trail. Catches
+  generator bugs where the trail and applied tag disagree.
+triggered_for: "every cascade node"
+checks:
+  - id: trail_last_applied_matches_method_applied
+    expression: |
+      for each node n:
+        let applied_entries = [e for e in n.arc_flash.method_fallback_trail if e.result == 'applied']
+        if applied_entries is empty:
+          n.arc_flash.method_applied == 'pending'
+        else:
+          applied_entries.length == 1 AND
+          applied_entries[0].method == n.arc_flash.method_applied
+    severity: error
+    message: "method_applied={method_applied} doesn't match last 'applied' entry in fallback trail at {node_id}"
+  - id: skipped_entries_have_reason
+    expression: |
+      for each node n:
+        for each entry in n.arc_flash.method_fallback_trail where entry.result == 'skipped':
+          entry.reason is non-empty
+    severity: error
+    message: "Skipped fallback entry without reason at {node_id} (method={entry.method})"
+source: "Audit requirement — every skipped fallback must explain why"

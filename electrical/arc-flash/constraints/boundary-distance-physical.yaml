@@ -1,0 +1,21 @@
+constraint: boundary_distance_physical
+version: 1.0.0
+description: |
+  Arc-flash boundary distance must be physical: AFB >= working_distance_mm (a worker
+  standing at working_distance must be at or inside the boundary). When E = 1.2 cal/cm²
+  exactly, AFB = working_distance.
+triggered_for: "every cascade node where arc_flash_boundary_mm is numeric (not null)"
+checks:
+  - id: afb_ge_working_distance
+    expression: |
+      for each node n where n.arc_flash.arc_flash_boundary_mm is numeric:
+        n.arc_flash.arc_flash_boundary_mm >= n.geometry.working_distance_mm
+    severity: error
+    message: "AFB ({afb_mm}mm) < working_distance ({working_distance_mm}mm) at {node_id} — unphysical"
+  - id: afb_equals_working_distance_at_threshold
+    expression: |
+      for each node n where 1.19 <= n.arc_flash.incident_energy_cal_per_cm2 <= 1.21:
+        abs(n.arc_flash.arc_flash_boundary_mm - n.geometry.working_distance_mm) <= 5  (mm tolerance)
+    severity: warning
+    message: "At E=1.2 cal/cm² (boundary threshold), AFB should equal working_distance ±5mm; got AFB={afb_mm}, D={working_distance_mm}"
+source: "IEEE 1584:2018 §8 — AFB = D × (E/1.2)^(1/x); at E=1.2, AFB=D"
