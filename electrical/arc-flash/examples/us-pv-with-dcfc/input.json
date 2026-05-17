@@ -1,0 +1,58 @@
+{
+  "project_id": "us-pv-dcfc-af-eg03",
+  "jurisdiction": "US",
+  "project_supply": { "voltage_v": 480, "phases": "three", "frequency_hz": 60 },
+  "consumed_intents_present": ["fault-level", "db-layout-rollup"],
+  "cascade_declared": [
+    {
+      "id": "SERVICE-480V",
+      "parent_node_id": null,
+      "node_kind": "service_entrance",
+      "designation": "Main service entrance 480V 1200A",
+      "equipment": { "type": "metal-clad switchgear", "current_type": "ac", "voltage_v": 480 },
+      "fault_inputs": { "ibf_ka_max": 25, "ibf_ka_min": 22, "x_over_r": 8 },
+      "ocpd_inputs": { "ocpd_type": "ACB_electronic", "t_clear_s": 0.3 },
+      "geometry": { "working_distance_mm": 455, "gap_distance_mm": 32 }
+    },
+    {
+      "id": "SERVICE-480V.PV-INV-1",
+      "parent_node_id": "SERVICE-480V",
+      "node_kind": "feeder",
+      "designation": "PV inverter 100 kW AC output 480V",
+      "equipment": { "type": "inverter output breaker", "current_type": "ac", "voltage_v": 480 },
+      "fault_inputs": { "ibf_ka_max": 12, "ibf_ka_min": 10, "x_over_r": 6 },
+      "ocpd_inputs": { "ocpd_type": "MCCB_electronic", "t_clear_s": 0.2 },
+      "geometry": { "working_distance_mm": 455, "gap_distance_mm": 32 }
+    },
+    {
+      "id": "PV-INV-1.DC-STR-1",
+      "parent_node_id": "SERVICE-480V.PV-INV-1",
+      "node_kind": "final_circuit",
+      "designation": "PV combiner 600V DC input (8-string 12.5 kWp)",
+      "equipment": { "type": "PV combiner box", "current_type": "dc", "voltage_v": 600 },
+      "fault_inputs": { "ibf_ka_max": 0.5, "ibf_ka_min": 0.45, "x_over_r": null },
+      "ocpd_inputs": { "ocpd_type": "DC_fuse_PV", "t_clear_s": 0.004 },
+      "geometry": { "working_distance_mm": 305, "gap_distance_mm": 16 }
+    },
+    {
+      "id": "SERVICE-480V.DCFC-1",
+      "parent_node_id": "SERVICE-480V",
+      "node_kind": "feeder",
+      "designation": "DC fast charger AC input 50 kW",
+      "equipment": { "type": "DCFC AC input breaker", "current_type": "ac", "voltage_v": 480 },
+      "fault_inputs": { "ibf_ka_max": 18, "ibf_ka_min": 16, "x_over_r": 7 },
+      "ocpd_inputs": { "ocpd_type": "MCCB_electronic", "t_clear_s": 0.2 },
+      "geometry": { "working_distance_mm": 455, "gap_distance_mm": 32 }
+    },
+    {
+      "id": "DCFC-1.DC-OUT",
+      "parent_node_id": "SERVICE-480V.DCFC-1",
+      "node_kind": "final_circuit",
+      "designation": "DCFC output 500V DC to vehicle connector",
+      "equipment": { "type": "DC fast charger output", "current_type": "dc", "voltage_v": 500 },
+      "fault_inputs": { "ibf_ka_max": 5.0, "ibf_ka_min": 4.5, "x_over_r": null },
+      "ocpd_inputs": { "ocpd_type": "DC_contactor", "t_clear_s": 0.02 },
+      "geometry": { "working_distance_mm": 300, "gap_distance_mm": 20 }
+    }
+  ]
+}
