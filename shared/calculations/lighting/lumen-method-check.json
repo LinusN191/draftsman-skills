@@ -1,0 +1,10 @@
+{
+  "$schema": "../../schemas/core/calculation.schema.json",
+  "id": "lumen-method-check",
+  "name": "Lumen Method Compliance Check",
+  "executor": "tool",
+  "tool_name": "calc.lumen_method_check",
+  "formula_reference": "CIBSE SLL Code for Lighting 2012; Approved Document L Table 6.1",
+  "implementation_note": "Deterministic Python: verifies achieved illuminance E = (N × Φ × UF × MF) / A against target lux; if total_load_w supplied, also runs Part L efficacy check (lm/W vs room_type target).",
+  "_human_reference": "lumen-method.json"
+}
