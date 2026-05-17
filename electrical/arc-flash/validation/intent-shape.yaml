@@ -1,0 +1,25 @@
+validator: intent_shape
+version: 1.0.0
+description: |
+  Emitted arc-flash intent satisfies its own schema AND covers the downstream consumer's
+  (arc-flash-labelling skill) required fields. 1-to-1 mapping with cascade nodes.
+checks:
+  - id: validates_against_schema
+    description: "Intent JSON validates against schemas/arc-flash-intent.schema.json"
+    severity: error
+  - id: one_to_one_with_cascade
+    description: "Every cascade node has exactly one matching intent.nodes[] entry (by node_id)"
+    expression: |
+      for each node n in cascade:
+        count(intent.nodes where node_id == n.node_id) == 1
+      AND for each entry in intent.nodes:
+        exists node n in cascade where n.node_id == entry.node_id
+    severity: error
+  - id: downstream_required_fields_present
+    description: |
+      Every intent.nodes[] entry has the required fields for the future arc-flash-labelling
+      consumer: node_id, designation, equipment_type, voltage_v, working_distance_mm,
+      limited_approach_movable_mm, limited_approach_fixed_mm, restricted_approach_mm,
+      method_applied, label_recommended, produced_at
+    expression: "all required fields present and non-null on every nodes[] entry"
+    severity: error

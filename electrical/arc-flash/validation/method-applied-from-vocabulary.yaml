@@ -1,0 +1,28 @@
+validator: method_applied_from_vocabulary
+version: 1.0.0
+description: |
+  Enforce the controlled method vocabulary across cascade nodes and the emitted intent.
+controlled_vocabulary:
+  - ieee1584_2018
+  - ieee1584_2002
+  - lee_1982
+  - nfpa70e_table
+  - dc_doan
+  - pending
+checks:
+  - id: method_applied_in_vocabulary
+    description: "Every node's arc_flash.method_applied is in the controlled vocabulary"
+    expression: "for each node n: n.arc_flash.method_applied in controlled_vocabulary"
+    severity: error
+  - id: dc_nodes_use_dc_method
+    description: "DC nodes use dc_doan or pending (never AC methods)"
+    expression: |
+      for each node n where n.equipment.current_type == 'dc':
+        n.arc_flash.method_applied in ['dc_doan', 'pending']
+    severity: error
+  - id: ac_nodes_dont_use_dc_method
+    description: "AC nodes never use dc_doan"
+    expression: |
+      for each node n where n.equipment.current_type == 'ac':
+        n.arc_flash.method_applied != 'dc_doan'
+    severity: error

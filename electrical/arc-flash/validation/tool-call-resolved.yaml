@@ -1,0 +1,29 @@
+validator: tool_call_resolved
+version: 1.0.0
+description: |
+  Tool-call status consistency across the IR. Same pattern as fault-level + cable-sizing:
+  WI3 deferral allows tool_call_pending: true with engineer-estimated placeholder values
+  visible in the IR. The validator only enforces that the boolean flag is well-formed.
+checks:
+  - id: tool_call_pending_is_boolean
+    description: "Every node has checks.tool_call_pending as a boolean"
+    expression: "for each node n: type(n.checks.tool_call_pending) == 'boolean'"
+    severity: error
+  - id: resolved_means_numeric_when_method_computes_ie
+    description: |
+      When tool_call_pending == false AND method_applied not in [pending, nfpa70e_table]:
+      incident_energy_cal_per_cm2 + arc_flash_boundary_mm + arcing_current_a are all numeric
+    expression: |
+      for each node n where n.checks.tool_call_pending == false AND n.arc_flash.method_applied not in ['pending', 'nfpa70e_table']:
+        n.arc_flash.incident_energy_cal_per_cm2 is numeric AND
+        n.arc_flash.arc_flash_boundary_mm is numeric AND
+        n.arc_flash.arcing_current_a is numeric
+    severity: error
+  - id: pending_flag_in_assumptions
+    description: |
+      If any node has method_applied == pending OR tool_call_pending == true,
+      compliance_summary.assumptions[] mentions calc.arc_flash_incident_energy
+    expression: |
+      if any node has method_applied == 'pending' OR checks.tool_call_pending == true then
+        compliance_summary.assumptions[] contains substring 'calc.arc_flash_incident_energy'
+    severity: error
