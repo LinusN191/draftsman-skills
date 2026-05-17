@@ -1,0 +1,21 @@
+validator: csa_on_standard_ladder
+version: 1.0.0
+description: "Every selected phase + CPC csa is on the standard ladder for the jurisdiction."
+ladder_iec_mm2: [1.0, 1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300, 400, 500, 630]
+ladder_nec_awg: ["14","12","10","8","6","4","3","2","1","1/0","2/0","3/0","4/0","250","300","350","400","500","600","750","1000"]
+checks:
+  - id: phase_csa_on_ladder
+    description: "selection.phase_csa is on the IEC mm² OR NEC AWG ladder per jurisdiction"
+    expression: |
+      for each node n:
+        if jurisdiction in [GB, EU, INT]: n.selection.phase_csa (mm²) in ladder_iec_mm2
+        if jurisdiction == US: n.selection.phase_csa (AWG/kcmil) in ladder_nec_awg
+    severity: error
+  - id: cpc_csa_on_ladder
+    description: "selection.cpc_csa is on the same ladder as phase_csa"
+    expression: "as phase_csa_on_ladder but for cpc_csa"
+    severity: error
+  - id: cpc_le_phase
+    description: "CPC csa is not larger than phase csa (warning if equal phases of small csa where Table 54.3 minimum forces same)"
+    expression: "selection.cpc_csa <= selection.phase_csa"
+    severity: warning

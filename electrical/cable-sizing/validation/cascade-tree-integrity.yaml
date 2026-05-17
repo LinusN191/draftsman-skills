@@ -1,0 +1,18 @@
+validator: cascade_tree_integrity
+version: 1.0.0
+description: |
+  Structural integrity checks over the cascade tree. Caught early these prevent
+  downstream consumers (intent emitters, validators) from blowing up on broken refs.
+checks:
+  - id: unique_node_ids
+    description: "Every cascade[].node_id appears exactly once in the array"
+    expression: "len(distinct(cascade[].node_id)) == len(cascade)"
+    severity: error
+  - id: parent_refs_resolve
+    description: "Every non-null parent_node_id points to a node in cascade"
+    expression: "for each node n where n.parent_node_id != null: exists m in cascade where m.node_id == n.parent_node_id"
+    severity: error
+  - id: no_cycles
+    description: "No cycles in parent-child graph; tree is a DAG with unique root(s)"
+    expression: "topological_sort(cascade) succeeds"
+    severity: error
