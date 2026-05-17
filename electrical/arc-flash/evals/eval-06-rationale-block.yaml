@@ -1,0 +1,32 @@
+eval_id: eval-06-rationale-block
+category: rationale_block
+skill: arc-flash
+skill_version: 1.0.0
+description: |
+  Verify the rationale block conforms to WI2: exactly 8 sections + chat_summary + every
+  decision cites a rule + clause. Reuses eval-01 scenario.
+input:
+  reuse_from: "electrical/arc-flash/evals/eval-01-uk-lv-switchboard-happy-path.yaml"
+expected:
+  rationale:
+    chat_summary:
+      type: string
+      max_length_chars: 1200
+      max_words: 200
+    sections:
+      length: 8
+      titles_in_order:
+        - "Input Ingestion"
+        - "Cascade Topology"
+        - "Jurisdictional Framing"
+        - "Method Selection Summary"
+        - "Per-node Arc-Flash Results"
+        - "Shock-Approach Boundaries"
+        - "Label Recommendations"
+        - "Compliance + Assumptions + Tool-call Status"
+      every_decision_has: [label, summary, rule, code_clause]
+pass_criteria:
+  - "rationale.sections.length == 8 exactly"
+  - "Every section is non-empty (or explicitly says 'none triggered')"
+  - "Every decision cites a rule + clause from IEEE 1584 or NFPA 70E"
+  - "chat_summary ≤ 200 words"

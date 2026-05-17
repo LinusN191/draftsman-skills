@@ -1,0 +1,47 @@
+eval_id: eval-07-dc-pv-string
+category: skill_specific
+subcategory: dc_pv_string
+skill: arc-flash
+skill_version: 1.0.0
+description: |
+  600V DC PV string with combiner box. current_type auto-inferred to dc from equipment_type.
+  dc_doan method fires. shock-approach from Table 130.4(C)(b) DC row. electrode_config null.
+input:
+  jurisdiction: US
+  project_supply: { voltage_v: 480, phases: three, frequency_hz: 60 }  # project-wide AC supply
+  cascade_declared:
+    - id: "PV-INV-1"
+      parent_node_id: null
+      node_kind: feeder
+      designation: "100kW PV inverter (AC side)"
+      equipment: { type: "LV switchgear", current_type: ac, voltage_v: 480 }
+      fault_inputs: { ibf_ka_max: 20 }
+      ocpd_inputs: { ocpd_type: "MCCB_electronic_LSI", t_clear_s: 0.1 }
+      geometry: { working_distance_mm: 455 }
+    - id: "PV-INV-1.DC-STR-1"
+      parent_node_id: "PV-INV-1"
+      node_kind: final_circuit
+      designation: "PV string 600V DC combiner box"
+      equipment: { type: "PV combiner box", current_type: dc, voltage_v: 600 }
+      fault_inputs: { ibf_ka_max: 0.5 }  # PV is current-limited
+      ocpd_inputs: { ocpd_type: "fuse_LV_general_purpose", t_clear_s: 0.2 }
+      geometry: { working_distance_mm: 455 }
+expected:
+  per_node:
+    - node_id: "PV-INV-1"
+      equipment_current_type: "ac"
+      method_applied_one_of: ["ieee1584_2018", "lee_1982"]
+      shock_approach_source_contains: "Table 130.4(C)(a)"
+    - node_id: "PV-INV-1.DC-STR-1"
+      equipment_current_type: "dc"
+      equipment_electrode_config: null
+      method_applied: "dc_doan"
+      shock_approach_source_contains: "Table 130.4(C)(b)"
+      shock_approach_source_contains_voltage_range: "301V to 1 kV"
+pass_criteria:
+  - "DC node auto-inferred current_type = dc from 'PV combiner box' equipment_type"
+  - "DC node has electrode_config: null"
+  - "DC node method_applied = dc_doan (NOT IEEE 1584)"
+  - "DC node shock-approach from Table 130.4(C)(b), not (a)"
+  - "AC node retains IEEE 1584 path"
+  - "Unified cascade tree with parent_node_id linking inverter to string"
