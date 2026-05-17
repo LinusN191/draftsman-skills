@@ -1,0 +1,24 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "NFPA 70E:2024 Table 130.7(C)(15)(c)",
+  "title": "PPE Category by Incident Energy",
+  "description": "Maps computed incident energy (from IEEE 1584:2018 analysis or NFPA 70E Annex D for DC) to required PPE category 1-4.",
+  "column_definitions": [
+    {"key": "category",         "label": "PPE Category",                       "type": "integer"},
+    {"key": "min_cal_per_cm2",  "label": "Minimum incident energy",             "type": "number", "unit": "cal/cm²"},
+    {"key": "max_cal_per_cm2",  "label": "Maximum incident energy",             "type": "number", "unit": "cal/cm²"},
+    {"key": "ar_clothing_atpv", "label": "Minimum AR clothing ATPV rating",    "type": "number", "unit": "cal/cm²"},
+    {"key": "summary",          "label": "Summary requirements",                "type": "string"}
+  ],
+  "rows": [
+    {"category": 1, "min_cal_per_cm2": 1.2,  "max_cal_per_cm2": 4.0,   "ar_clothing_atpv": 4.0,  "summary": "AR shirt + pants (or coverall) ≥4 cal/cm². Balaclava + face shield. Hard hat, safety glasses, leather gloves."},
+    {"category": 2, "min_cal_per_cm2": 4.0,  "max_cal_per_cm2": 8.0,   "ar_clothing_atpv": 8.0,  "summary": "AR clothing ≥8 cal/cm². AR hood + face shield (no balaclava alone). Hard hat, safety glasses, leather gloves."},
+    {"category": 3, "min_cal_per_cm2": 8.0,  "max_cal_per_cm2": 25.0,  "ar_clothing_atpv": 25.0, "summary": "AR suit + AR hood + AR gloves (or rubber + AR overgloves). Hard hat, safety glasses."},
+    {"category": 4, "min_cal_per_cm2": 25.0, "max_cal_per_cm2": 40.0,  "ar_clothing_atpv": 40.0, "summary": "AR suit + AR hood + AR gloves. Specialised arc-flash suit. Hard hat, safety glasses."}
+  ],
+  "notes": "Incident energy > 40 cal/cm²: equipment is RESTRICTED — energized work only by specialised teams per facility risk assessment. No 'Category 5' exists — NFPA 70E removed Cat 0 + Cat 5 in earlier revisions; current standard is 4 categories only.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "PPE thresholds are factual values used industry-wide."
+}

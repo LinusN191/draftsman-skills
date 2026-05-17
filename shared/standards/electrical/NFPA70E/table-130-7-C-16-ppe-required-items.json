@@ -1,0 +1,32 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "NFPA 70E:2024 Table 130.7(C)(16) — PPE Required by Category",
+  "title": "Specific PPE Items Required by Hazard Category",
+  "description": "Detailed breakdown of required, optional, and excluded PPE items for each arc-flash hazard category 1–4. Used to specify what must be worn for work in each category zone.",
+  "column_definitions": [
+    {"key": "ppe_item", "label": "PPE item", "type": "string"},
+    {"key": "category_1", "label": "Category 1 (1.2–4 cal/cm²)", "type": "enum", "values": ["required", "optional", "excluded"]},
+    {"key": "category_2", "label": "Category 2 (4–8 cal/cm²)", "type": "enum", "values": ["required", "optional", "excluded"]},
+    {"key": "category_3", "label": "Category 3 (8–25 cal/cm²)", "type": "enum", "values": ["required", "optional", "excluded"]},
+    {"key": "category_4", "label": "Category 4 (25–40 cal/cm²)", "type": "enum", "values": ["required", "optional", "excluded"]}
+  ],
+  "rows": [
+    {"ppe_item": "AR shirt + pants OR AR coverall (≥4 cal/cm² ATPV min)", "category_1": "required", "category_2": "required", "category_3": "required", "category_4": "required"},
+    {"ppe_item": "AR hood / balaclava (over head + neck)", "category_1": "optional", "category_2": "required", "category_3": "required", "category_4": "required"},
+    {"ppe_item": "AR face shield (clear or tinted, ≥2 mm polycarbonate)", "category_1": "required", "category_2": "required", "category_3": "required", "category_4": "required"},
+    {"ppe_item": "Safety glasses (under/behind face shield)", "category_1": "required", "category_2": "required", "category_3": "required", "category_4": "required"},
+    {"ppe_item": "Hard hat (non-melting, Class E per ANSI Z89.1)", "category_1": "required", "category_2": "required", "category_3": "required", "category_4": "required"},
+    {"ppe_item": "Leather gloves (for handling tools + work, ≥0.1 in thick)", "category_1": "required", "category_2": "required", "category_3": "optional", "category_4": "optional"},
+    {"ppe_item": "Rubber gloves + leather protectors (11 kV rated min, or AR overgloves)", "category_1": "optional", "category_2": "optional", "category_3": "required", "category_4": "required"},
+    {"ppe_item": "AR overjacket / oversleeves (optional layer, ≥8 cal/cm² ATPV)", "category_1": "excluded", "category_2": "optional", "category_3": "optional", "category_4": "optional"},
+    {"ppe_item": "Hearing protection (earplugs or earmuffs, ≥25 dB NRR)", "category_1": "optional", "category_2": "optional", "category_3": "required", "category_4": "required"},
+    {"ppe_item": "Voltage-rated insulated tools (for live work, 600V+ rated)", "category_1": "optional", "category_2": "optional", "category_3": "required", "category_4": "required"},
+    {"ppe_item": "Arc-rated footwear (≥2 in top height, optional backup)", "category_1": "excluded", "category_2": "excluded", "category_3": "optional", "category_4": "optional"},
+    {"ppe_item": "Class 0 insulated gloves (max 500V, for shock protection)", "category_1": "optional", "category_2": "optional", "category_3": "excluded", "category_4": "excluded"}
+  ],
+  "notes": "Items marked 'required' MUST be worn. Items marked 'optional' are recommended or may be required per facility SOP. Items marked 'excluded' must not be worn (e.g., synthetic materials in Category 4 due to arc ignition risk). All AR garments must be labeled with ATPV or Breakopen Arc Thermal Performance (BATP) rating. Hard hats and glasses must meet ANSI standards.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "pending-verification",
+  "license_note": "PPE item requirements derived from NFPA 70E:2024 public standard structure."
+}

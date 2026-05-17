@@ -1,0 +1,35 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "NFPA 70E:2024 Table 130.7(C)(15)(a) — AC Equipment",
+  "title": "PPE Category for Common AC Tasks (Table Method)",
+  "description": "Conservative PPE category assignment for common AC electrical tasks when no detailed incident-energy analysis is available. Based on equipment type, voltage, and typical clearing times. Use as a backstop when IEEE 1584 analysis is not performed.",
+  "column_definitions": [
+    {"key": "equipment_type", "label": "Equipment type", "type": "string"},
+    {"key": "task", "label": "Task description", "type": "string"},
+    {"key": "voltage_range", "label": "Voltage range", "type": "string"},
+    {"key": "max_clearing_time_s", "label": "Max clearing time (s)", "type": "number"},
+    {"key": "ppe_category", "label": "Required PPE category", "type": "integer"}
+  ],
+  "rows": [
+    {"equipment_type": "Panelboard (240V–480V)", "task": "Read meter / visual inspection (no contact)", "voltage_range": "240–480V", "max_clearing_time_s": 0.1, "ppe_category": 1},
+    {"equipment_type": "Panelboard (240V–480V)", "task": "Operate switch (covers in place)", "voltage_range": "240–480V", "max_clearing_time_s": 0.1, "ppe_category": 1},
+    {"equipment_type": "Panelboard (240V–480V)", "task": "Replace breaker (main breaker with 100+ A frame)", "voltage_range": "240–480V", "max_clearing_time_s": 0.1, "ppe_category": 2},
+    {"equipment_type": "Switchboard (480V–4160V)", "task": "Operate switch-disconnector (under load, motorized)", "voltage_range": "480V–4160V", "max_clearing_time_s": 0.05, "ppe_category": 2},
+    {"equipment_type": "Switchboard (480V–4160V)", "task": "Rack out drawout breaker", "voltage_range": "480V–4160V", "max_clearing_time_s": 0.05, "ppe_category": 3},
+    {"equipment_type": "Switchboard (480V–4160V)", "task": "Insert drawout breaker (with covers off)", "voltage_range": "480V–4160V", "max_clearing_time_s": 0.05, "ppe_category": 3},
+    {"equipment_type": "Motor control centre (MCC) (480V)", "task": "Remove/replace starter (with bus energized)", "voltage_range": "480V", "max_clearing_time_s": 0.1, "ppe_category": 2},
+    {"equipment_type": "Motor control centre (MCC) (480V)", "task": "Work inside enclosure (all covers off)", "voltage_range": "480V", "max_clearing_time_s": 0.1, "ppe_category": 3},
+    {"equipment_type": "Transformer (480V primary, <100 kVA)", "task": "Inspect cooling oil level (cover off, energized)", "voltage_range": "480V", "max_clearing_time_s": 0.1, "ppe_category": 2},
+    {"equipment_type": "Distribution (13 kV MV switchgear)", "task": "Operate isolator (motorised, under load)", "voltage_range": "13 kV", "max_clearing_time_s": 0.05, "ppe_category": 3},
+    {"equipment_type": "Distribution (13 kV MV switchgear)", "task": "Remove/insert cable terminator (without CSLV)", "voltage_range": "13 kV", "max_clearing_time_s": 0.05, "ppe_category": 4},
+    {"equipment_type": "Cable termination (600V–15 kV)", "task": "Examine terminator condition (energized, no contact)", "voltage_range": "600V–15 kV", "max_clearing_time_s": 0.05, "ppe_category": 2},
+    {"equipment_type": "Utility sub (primary switchgear >15 kV)", "task": "Remote switching operation (control house, not in switchgear)", "voltage_range": ">15 kV", "max_clearing_time_s": 0.05, "ppe_category": 2},
+    {"equipment_type": "Low-voltage distribution (240V–277V)", "task": "Work on circuit breaker terminals (live)", "voltage_range": "240–277V", "max_clearing_time_s": 0.1, "ppe_category": 1},
+    {"equipment_type": "Low-voltage distribution (240V–277V)", "task": "Work on busway connector (energized, no covers)", "voltage_range": "240–277V", "max_clearing_time_s": 0.1, "ppe_category": 2}
+  ],
+  "notes": "This table is a conservative estimate when detailed incident-energy analysis per IEEE 1584:2018 is not available. Actual PPE category should be determined by engineering calculation using IEEE 1584 for AC systems. Categories 1–4 correspond to incident energy bands per Table 130.7(C)(15)(c). Clearing time shown is assumed maximum; systems with faster protective devices (current-limiting fuses, solid-state fault mitigation) may qualify for lower categories per analysis.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "pending-verification",
+  "license_note": "Task and PPE category mapping derived from NFPA 70E:2024 public table structure."
+}

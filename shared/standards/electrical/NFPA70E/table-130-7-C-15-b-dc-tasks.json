@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "NFPA 70E:2024 Table 130.7(C)(15)(b) — DC Equipment; Reference: Annex D (Doan method + Stokes & Oppenlander)",
+  "title": "PPE Category for Common DC Tasks (Table Method)",
+  "description": "Conservative PPE category assignment for DC electrical tasks when no detailed incident-energy analysis per NFPA 70E Annex D (Doan method) is available. Covers battery rooms, DC fast-charging systems, and photovoltaic (PV) arrays. Incident energy for DC is typically lower than equivalent-voltage AC systems but arc duration can be longer.",
+  "column_definitions": [
+    {"key": "equipment_type", "label": "Equipment type", "type": "string"},
+    {"key": "task", "label": "Task description", "type": "string"},
+    {"key": "voltage_range_v", "label": "Voltage range (V)", "type": "string"},
+    {"key": "max_short_circuit_current_a", "label": "Max short-circuit current (A)", "type": "string"},
+    {"key": "ppe_category", "label": "Required PPE category", "type": "integer"}
+  ],
+  "rows": [
+    {"equipment_type": "Battery energy storage system (BESS, <600V DC)", "task": "Visual inspection of terminals (no contact, cover in place)", "voltage_range_v": "48–600V DC", "max_short_circuit_current_a": "<500 A", "ppe_category": 1},
+    {"equipment_type": "Battery energy storage system (BESS, <600V DC)", "task": "Remove/install connector or breaker (covers off, potential arc)", "voltage_range_v": "48–600V DC", "max_short_circuit_current_a": "<500 A", "ppe_category": 2},
+    {"equipment_type": "Battery energy storage system (BESS, <600V DC)", "task": "Work on cell interconnect (live, high-current path)", "voltage_range_v": "48–600V DC", "max_short_circuit_current_a": ">500 A", "ppe_category": 3},
+    {"equipment_type": "DC fast-charging system (DCFC, 200–1000V DC)", "task": "Service connector (de-energised, LOTO applied)", "voltage_range_v": "200–1000V DC", "max_short_circuit_current_a": "—", "ppe_category": 1},
+    {"equipment_type": "DC fast-charging system (DCFC, 200–1000V DC)", "task": "Access cabinet / replace filter (energized, no work inside)", "voltage_range_v": "200–1000V DC", "max_short_circuit_current_a": "250–400 A typical", "ppe_category": 2},
+    {"equipment_type": "DC fast-charging system (DCFC, 200–1000V DC)", "task": "Work on power-stage components or bus (energized)", "voltage_range_v": "200–1000V DC", "max_short_circuit_current_a": "250–400 A typical", "ppe_category": 3},
+    {"equipment_type": "Photovoltaic (PV) string / combiner (<600V DC, residential/commercial)", "task": "Perform IV curve test (probe insertion into combiner)", "voltage_range_v": "300–600V DC", "max_short_circuit_current_a": "<15 A per string", "ppe_category": 1},
+    {"equipment_type": "Photovoltaic (PV) string / combiner (<600V DC, residential/commercial)", "task": "Replace fuse / breaker (combiner de-energised via disconnect)", "voltage_range_v": "300–600V DC", "max_short_circuit_current_a": "<15 A per string", "ppe_category": 1},
+    {"equipment_type": "Photovoltaic (PV) string / combiner (<600V DC, residential/commercial)", "task": "Work on combiner main switch (energized, potential arc on open)", "voltage_range_v": "300–600V DC", "max_short_circuit_current_a": "<15 A per string", "ppe_category": 2},
+    {"equipment_type": "Telecom / datacentre backup battery (48V–375V DC)", "task": "Replace battery module (monitor disconnected, no LOTO)", "voltage_range_v": "48–375V DC", "max_short_circuit_current_a": "<300 A", "ppe_category": 1},
+    {"equipment_type": "Telecom / datacentre backup battery (48V–375V DC)", "task": "Service main disconnect (energized, high parallel current path)", "voltage_range_v": "48–375V DC", "max_short_circuit_current_a": ">300 A", "ppe_category": 2},
+    {"equipment_type": "Electric vehicle (EV) high-voltage battery (200–450V DC)", "task": "Service contactor / pre-charge resistor (LOTO + mechanical isolation applied)", "voltage_range_v": "200–450V DC", "max_short_circuit_current_a": "—", "ppe_category": 1},
+    {"equipment_type": "Electric vehicle (EV) high-voltage battery (200–450V DC)", "task": "Service battery pack connectors (energized, no LOTO)", "voltage_range_v": "200–450V DC", "max_short_circuit_current_a": "<500 A", "ppe_category": 2}
+  ],
+  "notes": "DC arc-flash analysis requires the Doan method (NFPA 70E Annex D.1) combined with Stokes & Oppenlander arc-voltage characteristics (Annex D.2). DC arcs tend to self-extinguish faster than AC due to commutation, but clearing times and arc voltages must be calculated, not assumed. Short-circuit current shown is the available fault current on the DC bus; DC source impedance is much lower than AC systems. This table is conservative; actual PPE category should be computed per Annex D when detailed system parameters are known.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "pending-verification",
+  "license_note": "DC task and PPE mapping derived from NFPA 70E:2024 public table structure and Annex D reference methods."
+}
