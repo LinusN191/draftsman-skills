@@ -1,0 +1,36 @@
+rule: ppe_category_mapping
+version: 1.0.0
+description: |
+  Map computed incident energy (cal/cm²) to PPE category 1-4 per NFPA 70E:2024
+  Table 130.7(C)(15)(c). Engineer may uprate (override to higher category) for safety
+  margin but never downgrade.
+source: "NFPA 70E:2024 Table 130.7(C)(15)(c)"
+mapping:
+  - if_incident_energy_cal_per_cm2_gte: 1.2
+    and_lt: 4.0
+    category: 1
+  - if_incident_energy_cal_per_cm2_gte: 4.0
+    and_lt: 8.0
+    category: 2
+  - if_incident_energy_cal_per_cm2_gte: 8.0
+    and_lt: 25.0
+    category: 3
+  - if_incident_energy_cal_per_cm2_gte: 25.0
+    and_lte: 40.0
+    category: 4
+  - if_incident_energy_cal_per_cm2_gt: 40.0
+    category: null
+    flag: INCIDENT_ENERGY_GT_40_RESTRICTED
+    severity: error
+    message: "IE > 40 cal/cm² — equipment restricted. Energized work only by specialised teams per facility risk assessment."
+  - if_incident_energy_cal_per_cm2_lt: 1.2
+    category: 0
+    note: "Below threshold for 2nd-degree burn; no AR clothing required per §130.7. Skill still emits Cat 1 minimum for any energized work per industry convention."
+engineer_override:
+  uprate_allowed: true
+  downrate_allowed: false
+  recorded_as: "ppe_category_source = engineer_override"
+table_method_path:
+  when_method_applied: nfpa70e_table
+  category_from: "NFPA 70E Table 130.7(C)(15)(a) for AC or 130.7(C)(15)(b) for DC"
+  recorded_as: "ppe_category_source = nfpa70e_table_lookup"

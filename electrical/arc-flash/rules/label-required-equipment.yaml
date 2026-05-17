@@ -1,0 +1,38 @@
+rule: label_required_equipment
+version: 1.0.0
+description: |
+  Set label.label_recommended per NFPA 70E:2024 §130.5(H). Required for switchgear,
+  switchboards, panelboards, MCCs, industrial control panels, meter sockets ≥240V.
+  Exempt for single-family residential service + equipment <240V where no examination work performed.
+source: "NFPA 70E:2024 §130.5(H) + Table 130.5(H)"
+label_recommended_when:
+  all_of:
+    - equipment_type in:
+        - "metal-clad switchgear"
+        - "LV switchgear"
+        - "MV switchgear"
+        - "switchboard"
+        - "LV panelboard"
+        - "load centre"
+        - "MCC"
+        - "Motor Control Centre"
+        - "industrial control panel"
+        - "meter socket enclosure"
+        - "drawout breaker"
+    - voltage_v >= 240
+exemptions:
+  - condition: "equipment_type == 'single-family residential service'"
+    label_recommended: false
+    rationale: "Residential exemption per §130.5(H)"
+  - condition: "voltage_v < 240 AND no examination work performed"
+    label_recommended: false
+    rationale: "Low-voltage exemption per §130.5(H)"
+jurisdictional_notes:
+  US: "Mandatory per OSHA + NFPA 70E §130.5(H). Required label content: nominal voltage, IE at working distance, AFB, PPE category, date of analysis."
+  GB: "Voluntary but recommended best practice (HSG48 + IET CoP). Rationale notes this."
+  EU: "Voluntary best practice. Rationale notes regional convention."
+  INT: "Follow IEEE 1584 / NFPA 70E as de facto international best practice."
+engineer_skip:
+  allowed: true
+  requires_justification: true
+  recorded_as: "label.engineer_can_skip_with_reason = true + assumption logged"

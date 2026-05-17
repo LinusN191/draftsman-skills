@@ -1,0 +1,31 @@
+rule: electrode_config_inference
+version: 1.0.0
+description: |
+  Auto-infer IEEE 1584 electrode configuration (VCB/VCBB/HCB/VOA/HOA) from db-layout-rollup
+  equipment_type via Phase A ontology (IEEE1584/equipment-classification.json).
+  Engineer override allowed per node; recorded in electrode_config_source.
+inference_table:
+  - if_equipment_type_matches: ["metal-clad switchgear", "LV switchgear", "MV switchgear", "LV panelboard", "load centre", "MCC", "Motor Control Centre", "industrial control panel", "meter socket enclosure"]
+    map_to: VCB
+    source_id: "IEEE 1584:2018 §5.1 + Annex C"
+  - if_equipment_type_matches: ["switchgear with arc-resistant barrier", "arc-quench switchgear", "LV switchgear with insulating barrier"]
+    map_to: VCBB
+    source_id: "IEEE 1584:2018 §5.1"
+  - if_equipment_type_matches: ["drawout breaker", "drawout switchgear", "racked-in switchgear", "horizontal-bus distribution"]
+    map_to: HCB
+    source_id: "IEEE 1584:2018 §5.1"
+  - if_equipment_type_matches: ["overhead service drop", "open-bus distribution", "outdoor MV switchgear no enclosure", "exposed bus duct"]
+    map_to: VOA
+    source_id: "IEEE 1584:2018 §5.1"
+  - if_equipment_type_matches: ["substation horizontal bus", "riser bus assembly", "horizontal exposed conductors"]
+    map_to: HOA
+    source_id: "IEEE 1584:2018 §5.1"
+fallback:
+  map_to: VCB
+  rationale: "VCB is the most common LV configuration; lowest-risk default for 'unknown enclosed equipment'"
+engineer_override:
+  allowed: true
+  recorded_as: "electrode_config_source = engineer_override"
+dc_handling:
+  applies: false
+  recorded_as: "electrode_config = null AND electrode_config_source = not_applicable_dc"

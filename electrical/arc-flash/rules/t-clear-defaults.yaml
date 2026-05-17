@@ -1,0 +1,27 @@
+rule: t_clear_defaults
+version: 1.0.0
+description: |
+  Default OCPD clearing time (s) at predicted I_arc, by OCPD type. Priority:
+  engineer_declared > ocpd_type_default > conservative 2.0s.
+  Source tracked in t_clear_source field of the IR.
+defaults_by_ocpd_type:
+  instantaneous_only_magnetic:      0.05
+  MCB_type_B_C_D:                   0.10
+  MCCB_thermal_magnetic:            0.20
+  MCCB_electronic_LSI:              0.10
+  ACB_electronic:                   0.30
+  ACB_with_intentional_delay:       0.50
+  fuse_HV_full_range:               0.05
+  fuse_LV_general_purpose:          0.20
+  no_curve_data_available:          2.0
+  unknown:                          2.0
+priority_order:
+  - engineer_declared
+  - ocpd_type_default
+  - conservative_default
+record_field: t_clear_source
+non_compliance_flags:
+  - code: CONSERVATIVE_T_CLEAR_DEFAULT_USED
+    severity: warning
+    trigger: "t_clear_source == 'conservative_default'"
+    message: "Conservative 2.0s default used for t_clear at node <node_id>. Refine via protection coordination study or declare ocpd_type."

@@ -1,0 +1,36 @@
+rule: method_fallback_chain
+version: 1.0.0
+description: |
+  Per-node method selection. DC nodes always route through dc_doan.
+  AC nodes try methods in order: ieee1584_2018 → ieee1584_2002 → lee_1982 → nfpa70e_table → pending.
+  Record method_fallback_trail with skipped/applied + reason for every method attempted.
+algorithm:
+  dc_path:
+    - condition: "current_type == 'dc' AND voltage_v <= 1000"
+      action: "method = dc_doan"
+    - condition: "current_type == 'dc' AND voltage_v > 1000"
+      action: "method = pending"
+      reason: "DC > 1000V out of Phase A scope"
+  ac_path_ordered:
+    - id: try_ieee1584_2018
+      condition: "coefficients available for (voltage_class, electrode_config) per IEEE1584/method-2018-<class>-coefficients.json"
+      on_success: "method = ieee1584_2018; trail = [{method: ieee1584_2018, result: applied, reason: 'coefficients available'}]"
+      on_skip:    "trail.append({method: ieee1584_2018, result: skipped, reason: 'coefficients pending-verification (null) for voltage_class=<X>, electrode_config=<Y>'})"
+    - id: try_ieee1584_2002
+      condition: "Doughty/Neal coefficients transcribed per IEEE1584/method-2002-doughty-neal-formula.json"
+      on_success: "method = ieee1584_2002"
+      on_skip:    "trail.append({method: ieee1584_2002, result: skipped, reason: 'Doughty/Neal coefficients pending-verification'})"
+    - id: try_lee_1982
+      condition: "50 V <= voltage_v <= 15000 V AND t_clear_s <= 5.0"
+      on_success: "method = lee_1982; emit non_compliance_flag LEE_1982_FALLBACK_USED"
+      on_skip:    "trail.append({method: lee_1982, result: skipped, reason: 'voltage or t_clear out of range'})"
+    - id: try_nfpa70e_table
+      condition: "equipment_type matches a row in NFPA70E/table-130-7-C-15-a-ac-tasks.json or 130-7-C-15-b-dc-tasks.json"
+      on_success: "method = nfpa70e_table; IE = null; AFB = null; PPE from table lookup; emit NFPA70E_TABLE_METHOD_USED"
+      on_skip:    "trail.append({method: nfpa70e_table, result: skipped, reason: 'equipment_type not in table-method ontology'})"
+    - id: pending
+      condition: "fallthrough"
+      on_apply: "method = pending; tool_call_pending = true; emit ARC_FLASH_PENDING"
+binding_method_record:
+  rule: "method_applied = last item in method_fallback_trail where result == 'applied'"
+  validator: "validation/method-applied-from-vocabulary.yaml + constraints/method-fallback-consistency.yaml"
