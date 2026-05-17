@@ -1,0 +1,25 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "ANSI-Z535-4 2023:§6.1-Signal-Words",
+  "title": "ANSI Z535.4 Signal Words",
+  "description": "The 4 ANSI signal words with severity, colour, and trigger conditions.",
+  "column_definitions": [
+    {"key": "signal_word",   "label": "Signal word",         "type": "enum", "values": ["DANGER", "WARNING", "CAUTION", "NOTICE", "RESTRICTED"]},
+    {"key": "severity",      "label": "Hazard severity",     "type": "string"},
+    {"key": "panel_colour",  "label": "Panel colour name",   "type": "string"},
+    {"key": "pantone_ref",   "label": "Pantone reference",   "type": "string"},
+    {"key": "use_case",      "label": "Arc-flash trigger",   "type": "string"}
+  ],
+  "rows": [
+    {"signal_word": "DANGER",     "severity": "Imminent hazard — death or serious injury if not avoided",         "panel_colour": "Safety Red",    "pantone_ref": "PMS 199",   "use_case": "PPE Cat 3 or 4 (incident energy 8 ≤ E ≤ 40 cal/cm²)"},
+    {"signal_word": "WARNING",    "severity": "Could result in death or serious injury",                            "panel_colour": "Safety Orange", "pantone_ref": "PMS 152",   "use_case": "PPE Cat 1 or 2 (incident energy 1.2 ≤ E < 8 cal/cm²)"},
+    {"signal_word": "CAUTION",    "severity": "Minor or moderate injury risk",                                      "panel_colour": "Safety Yellow", "pantone_ref": "PMS 109",   "use_case": "Below arc-flash threshold (rare for energized work labels)"},
+    {"signal_word": "NOTICE",     "severity": "Information; no injury risk",                                        "panel_colour": "Safety Blue",   "pantone_ref": "PMS 285",   "use_case": "Property/equipment-policy notices; not arc-flash"},
+    {"signal_word": "RESTRICTED", "severity": "Above NFPA 70E ceiling; energized work prohibited",                  "panel_colour": "Restricted",    "pantone_ref": "PMS Black + Purple", "use_case": "Incident energy > 40 cal/cm² — no standard PPE category"}
+  ],
+  "notes": "RESTRICTED is a DraftsMan extension; ANSI Z535.4 only defines the first 4. RESTRICTED uses distinct visual treatment to signal that no standard category applies.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Signal words + Pantone references are factual; severity descriptions paraphrased from Z535.4 §6.1."
+}

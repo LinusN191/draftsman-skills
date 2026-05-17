@@ -1,0 +1,24 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "ANSI-Z535-4 2023:§6.3-Symbols-and-Symbology",
+  "title": "ANSI Z535.4 Symbols Relevant to Arc-Flash Labels",
+  "description": "Standardised hazard + PPE symbols used on arc-flash safety labels.",
+  "column_definitions": [
+    {"key": "symbol_id",       "label": "Symbol ID",          "type": "string"},
+    {"key": "name",            "label": "Name",                "type": "string"},
+    {"key": "description",     "label": "Visual description",  "type": "string"},
+    {"key": "iso_7010_equiv",  "label": "ISO 7010 equivalent", "type": "string"},
+    {"key": "svg_reference",   "label": "SVG path / d-attribute reference", "type": "string"},
+    {"key": "use_case",        "label": "When used",           "type": "string"}
+  ],
+  "rows": [
+    {"symbol_id": "arc-flash-hazard", "name": "Arc Flash Hazard", "description": "Lightning bolt inside triangle (yellow background, black border)", "iso_7010_equiv": "W012",   "svg_reference": "templates/symbols/arc-flash.svg",      "use_case": "Always present on arc-flash labels"},
+    {"symbol_id": "electric-shock",   "name": "Electric Shock",   "description": "Lightning bolt (no triangle), bold",                                "iso_7010_equiv": "W012",   "svg_reference": "templates/symbols/electric-shock.svg","use_case": "Combined arc-flash + shock labels"},
+    {"symbol_id": "hazard-alert",     "name": "General Hazard",   "description": "Triangle with exclamation mark",                                    "iso_7010_equiv": "W001",   "svg_reference": "templates/symbols/hazard-alert.svg",  "use_case": "Generic hazard sub-warnings (rare for arc-flash)"},
+    {"symbol_id": "ppe-required",     "name": "PPE Required",     "description": "Square with PPE-category number (1/2/3/4) overlay",                 "iso_7010_equiv": "M-series (varies)", "svg_reference": "templates/symbols/ppe-cat-{N}.svg", "use_case": "PPE-category panel; one variant per category"}
+  ],
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Symbol descriptions are factual; SVG path references are repo-internal artefacts created in Task 21."
+}

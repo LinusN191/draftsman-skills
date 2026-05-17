@@ -1,0 +1,28 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "ANSI-Z535-4 2023:§6.2-Colour-Specification",
+  "title": "ANSI Z535.4 Safety Colour Specifications",
+  "description": "Pantone, CMYK, RGB, and hex equivalents for each Z535.4 safety colour.",
+  "column_definitions": [
+    {"key": "colour_name",     "label": "Colour name",          "type": "string"},
+    {"key": "pantone_uncoated","label": "Pantone uncoated",      "type": "string"},
+    {"key": "cmyk",            "label": "CMYK (% / % / % / %)",  "type": "string"},
+    {"key": "rgb",             "label": "RGB",                   "type": "string"},
+    {"key": "hex",             "label": "Hex code",              "type": "string"},
+    {"key": "use",             "label": "Used for",              "type": "string"}
+  ],
+  "rows": [
+    {"colour_name": "Safety Red",    "pantone_uncoated": "PMS 199 U", "cmyk": "0/100/72/0",  "rgb": "224/0/52",   "hex": "#E00034", "use": "DANGER signal-word panel background"},
+    {"colour_name": "Safety Orange", "pantone_uncoated": "PMS 152 U", "cmyk": "0/52/100/0",  "rgb": "242/137/0",  "hex": "#F28900", "use": "WARNING signal-word panel background"},
+    {"colour_name": "Safety Yellow", "pantone_uncoated": "PMS 109 U", "cmyk": "0/14/100/0",  "rgb": "255/214/0",  "hex": "#FFD600", "use": "CAUTION signal-word panel background"},
+    {"colour_name": "Safety Blue",   "pantone_uncoated": "PMS 285 U", "cmyk": "100/35/0/0",  "rgb": "0/115/207",  "hex": "#0073CF", "use": "NOTICE signal-word panel background"},
+    {"colour_name": "Safety Green",  "pantone_uncoated": "PMS 348 U", "cmyk": "100/0/85/24", "rgb": "0/130/53",   "hex": "#008235", "use": "Safe condition; not used for arc-flash"},
+    {"colour_name": "Safety White",  "pantone_uncoated": "n/a",       "cmyk": "0/0/0/0",     "rgb": "255/255/255","hex": "#FFFFFF", "use": "Signal-word panel text + symbol-panel background"},
+    {"colour_name": "Safety Black",  "pantone_uncoated": "Black 6 U", "cmyk": "0/0/0/100",   "rgb": "0/0/0",      "hex": "#000000", "use": "Body text + symbol fill + RESTRICTED border"},
+    {"colour_name": "Restricted",    "pantone_uncoated": "Purple 5215 U", "cmyk": "29/61/14/45", "rgb": "100/68/110", "hex": "#64446E", "use": "RESTRICTED banner (DraftsMan extension)"}
+  ],
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Pantone codes are factual references; CMYK/RGB/hex equivalents derived from public Pantone bridge data."
+}
