@@ -1,0 +1,31 @@
+eval_id: eval-06-rationale-block
+category: rationale_block
+skill: arc-flash-labelling
+skill_version: 1.0.0
+description: |
+  Verify rationale block conforms to WI2: exactly 8 sections + chat_summary ≤ 1200 chars
+  + every decision cites rule + clause. Reuses eval-01 scenario.
+input:
+  reuse_from: "electrical/arc-flash-labelling/evals/eval-01-us-mixed-cascade-ansi-labels.yaml"
+expected:
+  rationale:
+    chat_summary:
+      type: string
+      max_length_chars: 1200
+    sections:
+      length: 8
+      titles_in_order:
+        - "Input Ingestion"
+        - "Jurisdictional Format Distribution"
+        - "Signal-Word Distribution"
+        - "Content Population"
+        - "RESTRICTED Equipment"
+        - "Rendering Status"
+        - "Compliance + Assumptions"
+        - "Project Label Index"
+      every_decision_has: [label, summary, rule, code_clause]
+pass_criteria:
+  - "rationale.sections.length == 8"
+  - "Every section non-empty (or explicitly says 'none triggered')"
+  - "Every decision cites rule + clause from ANSI Z535.4 / ISO 7010 / BS 5499 / NFPA 70E"
+  - "chat_summary ≤ 1200 chars"

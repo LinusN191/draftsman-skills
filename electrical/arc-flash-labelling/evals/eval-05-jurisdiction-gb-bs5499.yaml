@@ -1,0 +1,36 @@
+eval_id: eval-05-jurisdiction-gb-bs5499
+category: jurisdiction_switch
+skill: arc-flash-labelling
+skill_version: 1.0.0
+description: |
+  UK 400V commercial project. Jurisdiction GB → BS-5499 format auto-selected
+  for all labels. English signal words present (BS 5499 supplementation).
+  Rationale notes HSG48 voluntary best-practice framing.
+input:
+  jurisdiction: GB
+  consumed_intents:
+    arc_flash: { present: true, fabricated_nodes: [
+      { node_id: "MSB-1", incident_energy_cal_per_cm2: 10, ppe_category: 3, label_recommended: true, voltage_v: 400, designation: "Main MSB 1600A" },
+      { node_id: "DB-L1", incident_energy_cal_per_cm2: 6, ppe_category: 2, label_recommended: true, voltage_v: 400, designation: "DB-L1" }
+    ]}
+  project_metadata:
+    company_name: "Acme UK Ltd"
+    qualified_person: "John Smith, CEng MIET"
+expected:
+  per_label:
+    - node_id: "MSB-1"
+      format_applied: "bs_5499"
+      format_source: "auto_jurisdiction"
+      signal_word: "DANGER"
+      svg_content_must_contain_text: ["DANGER", "MSB-1", "Category 3"]
+    - node_id: "DB-L1"
+      format_applied: "bs_5499"
+      signal_word: "WARNING"
+  rationale:
+    sections_count: 8
+    chat_summary_must_contain_text: ["BS 5499", "HSG48"]
+pass_criteria:
+  - "All labels use bs_5499 format (not ansi_z535_4 / iso_7010)"
+  - "ISO 7010 W012 symbol present in SVG"
+  - "English signal-word supplementation banner present"
+  - "Rationale section 3 (Jurisdictional Format) mentions HSG48 voluntary status"
