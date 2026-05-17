@@ -1,0 +1,27 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "NFPA 70E:2024 Table 130.5(H) + §130.5(H) requirements",
+  "title": "Arc-Flash Label Requirements by Equipment Type",
+  "description": "Equipment types where an arc-flash label is REQUIRED per NFPA 70E §130.5(H). Labels must include nominal voltage, incident energy at working distance, arc-flash boundary, required PPE category, date of analysis.",
+  "column_definitions": [
+    {"key": "equipment_type",   "label": "Equipment type",                     "type": "string"},
+    {"key": "label_required",   "label": "Label required?",                    "type": "boolean"},
+    {"key": "voltage_threshold","label": "Voltage threshold for label",        "type": "string"},
+    {"key": "exception_note",   "label": "Exception note (if any)",            "type": "string"}
+  ],
+  "rows": [
+    {"equipment_type": "Switchgear (LV + MV)",                  "label_required": true, "voltage_threshold": "240V and above",    "exception_note": "OSHA also enforces under 29 CFR 1910.335; labels typically required."},
+    {"equipment_type": "Switchboards",                          "label_required": true, "voltage_threshold": "240V and above",    "exception_note": "—"},
+    {"equipment_type": "Panelboards",                           "label_required": true, "voltage_threshold": "240V and above",    "exception_note": "Single-family dwelling panelboards may be exempt; verify per local AHJ."},
+    {"equipment_type": "Industrial control panels",             "label_required": true, "voltage_threshold": "240V and above",    "exception_note": "Includes UL 508A panels in industrial use."},
+    {"equipment_type": "Motor control centres (MCCs)",          "label_required": true, "voltage_threshold": "240V and above",    "exception_note": "—"},
+    {"equipment_type": "Meter socket enclosures",               "label_required": true, "voltage_threshold": "240V and above",    "exception_note": "Subject to local utility + AHJ requirements."},
+    {"equipment_type": "Single-family residential service",     "label_required": false, "voltage_threshold": "—",                "exception_note": "Residential exemption typically applies."},
+    {"equipment_type": "Equipment below 240V where no examination work is performed", "label_required": false, "voltage_threshold": "—", "exception_note": "Exempt per §130.5(H)."}
+  ],
+  "notes": "Where required, the label MUST contain: nominal voltage, incident energy (cal/cm²) at working distance, arc-flash boundary, required PPE category (or 'incident energy > 40 cal/cm², specialised PPE required'), and date of analysis.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Label requirements are factual."
+}

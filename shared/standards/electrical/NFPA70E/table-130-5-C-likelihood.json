@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "NFPA 70E:2024 Table 130.5(C) — Arc-Flash Hazard Analysis: Task Likelihood",
+  "title": "Task and Equipment Condition vs Arc-Flash Likelihood",
+  "description": "Assessment of whether an arc flash could occur when performing a given task under specific equipment conditions. Used to determine whether an arc-flash hazard exists for risk-assessment purposes.",
+  "column_definitions": [
+    {"key": "task_type", "label": "Task type", "type": "string"},
+    {"key": "equipment_condition", "label": "Equipment condition", "type": "string"},
+    {"key": "likelihood", "label": "Arc-flash could occur?", "type": "enum", "values": ["yes_arc_flash_could_occur", "no_arc_flash_unlikely"]}
+  ],
+  "rows": [
+    {"task_type": "Read meter / check readings", "equipment_condition": "Normal operation", "likelihood": "no_arc_flash_unlikely"},
+    {"task_type": "Read meter / check readings", "equipment_condition": "Deteriorated condition", "likelihood": "yes_arc_flash_could_occur"},
+    {"task_type": "Operate switch (covers in place, normal)", "equipment_condition": "Normal operation", "likelihood": "no_arc_flash_unlikely"},
+    {"task_type": "Operate switch (covers in place, normal)", "equipment_condition": "Covers loose or missing", "likelihood": "yes_arc_flash_could_occur"},
+    {"task_type": "Remove/replace overcurrent device", "equipment_condition": "Normal operation", "likelihood": "yes_arc_flash_could_occur"},
+    {"task_type": "Remove/replace overcurrent device", "equipment_condition": "Deteriorated condition", "likelihood": "yes_arc_flash_could_occur"},
+    {"task_type": "Rack out breaker (motor-operated)", "equipment_condition": "Normal operation", "likelihood": "no_arc_flash_unlikely"},
+    {"task_type": "Rack out breaker (manual, spring-driven)", "equipment_condition": "Normal operation", "likelihood": "yes_arc_flash_could_occur"},
+    {"task_type": "Insert/remove drawout breaker", "equipment_condition": "Normal operation", "likelihood": "yes_arc_flash_could_occur"},
+    {"task_type": "Insert/remove drawout breaker", "equipment_condition": "Deteriorated condition", "likelihood": "yes_arc_flash_could_occur"},
+    {"task_type": "Voltage testing (multimeter probe entry)", "equipment_condition": "Normal operation", "likelihood": "yes_arc_flash_could_occur"},
+    {"task_type": "Work on energized parts (live)", "equipment_condition": "Normal operation", "likelihood": "yes_arc_flash_could_occur"},
+    {"task_type": "Work near de-energized (no LOTO isolation)", "equipment_condition": "Normal operation", "likelihood": "no_arc_flash_unlikely"},
+    {"task_type": "Work near de-energized (no LOTO isolation)", "equipment_condition": "Uncovered/exposed parts", "likelihood": "yes_arc_flash_could_occur"},
+    {"task_type": "Routine maintenance (inspection only, no contact)", "equipment_condition": "Normal operation", "likelihood": "no_arc_flash_unlikely"}
+  ],
+  "notes": "This table is used to qualify whether an arc-flash hazard analysis is required for a given task. If 'yes_arc_flash_could_occur', then a full incident-energy analysis per IEEE 1584 (AC) or NFPA 70E Annex D (DC) and subsequent PPE categorization is required.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "pending-verification",
+  "license_note": "Task assessment logic derived from NFPA 70E:2024 public table structure."
+}
