@@ -1,0 +1,52 @@
+rule: label_content_population
+version: 1.0.0
+description: |
+  Map arc-flash intent fields → label_content fields with formatting (uppercase truncation,
+  dual-unit display, QR URL construction).
+source: "NFPA 70E:2024 §130.5(H) + ANSI Z535.4:2023 §5.2 content + format rules"
+field_mappings:
+  - source: arc-flash-intent.designation
+    target: label_content.header_line + label_content.equipment_id
+    format: "uppercase; truncate to 60 chars; append '...' if truncated"
+  - source: arc-flash-intent.voltage_v + arc-flash-intent.current_type
+    target: label_content.nominal_voltage
+    format: "{V} V {ac|dc}, {phases}-phase"
+  - source: arc-flash-intent.incident_energy_cal_per_cm2 + working_distance_mm
+    target: label_content.incident_energy_at_working_distance
+    format_when_numeric: "{E} cal/cm² @ {D}mm"
+    format_when_null: "Not computed — see analysis"
+  - source: arc-flash-intent.arc_flash_boundary_mm
+    target: label_content.arc_flash_boundary
+    format: "{mm} mm ({inches} in)"
+    note: "Dual-unit display (UK + EU + US convention)"
+  - source: arc-flash-intent.limited_approach_movable_mm
+    target: label_content.shock_approach.limited_movable
+    format: "{mm} mm ({feet}ft {inches}in)"
+    note: "When value is string (e.g. 'avoid contact'), render verbatim"
+  - source: arc-flash-intent.limited_approach_fixed_mm
+    target: label_content.shock_approach.limited_fixed
+    format: "same as limited_movable"
+  - source: arc-flash-intent.restricted_approach_mm
+    target: label_content.shock_approach.restricted
+    format: "same as limited_movable"
+  - source: arc-flash-intent.ppe_category
+    target: label_content.ppe_category
+    format_when_numeric: "Category {N}"
+    format_when_null: "Specialised PPE Required"
+  - source: lookup_ppe_clothing_description_per_category (rules/ppe-clothing-description.yaml)
+    target: label_content.ppe_clothing_description
+    format: "200-char cap; engineer override allowed"
+  - source: arc-flash-intent.produced_at
+    target: label_content.analysis_date
+    format: "YYYY-MM-DD"
+  - source: project_metadata.company_name + qualified_person
+    target: label_content.engineer + label_content.company_name
+    format: "literal copy"
+  - source: project_metadata.qr_code_base_url + node_id
+    target: label_content.qr_code_url
+    format: "{base_url}/{node_id}"
+    format_when_base_url_null: "null (omit QR from label)"
+hard_rules:
+  - "Never invent values not in arc-flash intent — when IE/AFB/PPE missing, use 'Not computed' placeholder"
+  - "Never emit a fake QR URL when base_url is null"
+  - "All distance fields use dual-unit format (metric + imperial)"

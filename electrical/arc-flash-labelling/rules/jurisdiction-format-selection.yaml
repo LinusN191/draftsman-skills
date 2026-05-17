@@ -1,0 +1,26 @@
+rule: jurisdiction_format_selection
+version: 1.0.0
+description: |
+  Per-node label format selection. Default routing by jurisdiction; RESTRICTED override
+  for IE > 40 cal/cm² supersedes all other selections (safety-critical).
+default_per_jurisdiction:
+  US:  ansi_z535_4
+  EU:  iso_7010
+  INT: iso_7010
+  GB:  bs_5499
+override_priority:
+  - restricted_override     # IE > 40 OR engineer-flagged RESTRICTED
+  - engineer_per_node       # format_override_per_node[node_id]
+  - jurisdiction_default    # from rules above
+restricted_override:
+  trigger: |
+    incident_energy_cal_per_cm2 > 40
+    OR ppe_category is null AND incident_energy_cal_per_cm2 is not null
+    OR engineer-declared restricted_per_node[node_id] == true
+  applies: "restricted_format"
+  rationale: "IE > 40 cal/cm² always uses RESTRICTED visual format regardless of regional convention"
+record_field: format_source
+record_field_values:
+  - auto_jurisdiction
+  - engineer_override
+  - restricted_override

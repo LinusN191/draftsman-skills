@@ -1,0 +1,25 @@
+rule: ppe_clothing_description
+version: 1.0.0
+description: |
+  Concise PPE clothing description per NFPA 70E Table 130.7(C)(16). Engineer override
+  allowed for facility-specific PPE catalogue references.
+source: "NFPA 70E:2024 Table 130.7(C)(16)"
+descriptions:
+  1: "AR shirt + trousers OR coverall (ATPV ≥4 cal/cm²); face shield + balaclava; safety glasses; hard hat; leather gloves."
+  2: "AR shirt + trousers OR coverall (ATPV ≥8 cal/cm²); AR hood; safety glasses; hard hat; rubber + leather gloves."
+  3: "AR suit + AR hood (ATPV ≥25 cal/cm²); AR gloves; hard hat; safety glasses; balaclava if hood doesn't include face cover."
+  4: "AR suit + AR hood (ATPV ≥40 cal/cm²); AR gloves; hard hat; safety glasses."
+  RESTRICTED: "Energized work prohibited. De-energise and LOTO before work. Specialised assessment required — contact facility safety engineering."
+character_limit_per_label: 200
+truncation_rule: "Cut at 200 chars + append '…' if longer; never truncate mid-word"
+engineer_override:
+  allowed: true
+  recorded_as: "ppe_description_source = engineer_override"
+  use_case: "Facility-specific PPE catalogue references (e.g., 'PPE Cat 3 per ABC Facility Manual §4.2')"
+jurisdictional_language_variants:
+  US: "Use NFPA 70E text verbatim (ATPV terminology)"
+  GB:
+    note: "BS 5499 layer references BS EN IEC 61482-2 for AR PPE certification"
+    engineer_override_recommended: true
+  EU: "Use NFPA 70E text by default; engineer override for BS EN IEC 61482-2 terminology"
+  INT: "Use NFPA 70E text by default"

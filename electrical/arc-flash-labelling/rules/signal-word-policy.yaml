@@ -1,0 +1,25 @@
+rule: signal_word_policy
+version: 1.0.0
+description: |
+  Map PPE category → ANSI Z535.4 signal word per severity model. IE > 40 triggers
+  RESTRICTED override (supersedes Cat-based mapping).
+source: "ANSI Z535.4:2023 §6.1 severity model + NFPA 70E:2024 Table 130.7(C)(15)(c) PPE categories"
+mapping:
+  - if_ppe_category_in: [1, 2]
+    signal_word: WARNING
+    rationale: "Could result in injury per Z535.4 §6.1.2"
+  - if_ppe_category_in: [3, 4]
+    signal_word: DANGER
+    rationale: "Imminent hazard / serious injury risk per Z535.4 §6.1.1"
+  - if_incident_energy_cal_per_cm2_gt: 40.0
+    signal_word: RESTRICTED
+    rationale: "Above NFPA 70E Cat 4 ceiling — no standard PPE; energized work prohibited"
+    overrides: ppe_category_based_signal_word
+  - if_label_recommended_is_false: true
+    signal_word: NONE
+    action: "skip — no label generated for this node"
+record_field: signal_word_source
+record_field_values:
+  - from_ppe_category
+  - restricted_override
+  - engineer_override
