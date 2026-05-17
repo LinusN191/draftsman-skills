@@ -59,6 +59,13 @@
       "spec_summary": "IEEE 1584:2018 + IEEE 1584:2002 + Lee 1982 + NFPA 70E table method + DC Doan/Stokes & Oppenlander arc-flash incident energy + arc-flash boundary computation. Method fallback chain with auto-selection.",
       "owner": "draftsman-runtime",
       "since_version": "1.0.0"
+    },
+    {
+      "tool_name": "calc.render_label",
+      "registered_for": "shared/calculations/electrical/render-label.json",
+      "spec_summary": "Convert SVG label markup (produced inline by arc-flash-labelling skill) to PDF or PNG bytes for physical label production. Drives downstream physical-label printing.",
+      "owner": "draftsman-runtime",
+      "since_version": "1.0.0"
     }
   ],
   "_inline_calculations_note": "Closed-form calcs run inline by the LLM (no tool needed). For reference: shared/calculations/lighting/lumen-method.json (N = E×A / Φ×UF×MF) — already shipped in lighting-layout v1.3.0 production.",

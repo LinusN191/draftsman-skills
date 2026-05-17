@@ -1,0 +1,25 @@
+{
+  "id": "render-label",
+  "executor": "tool",
+  "tool_name": "calc.render_label",
+  "description": "Convert SVG label markup to PDF or PNG bytes. The arc-flash-labelling skill produces SVG inline (LLM-readable + LLM-writable from template); rasterisation + PDF wrapping is deferred to the DraftsMan runtime per WI3. Required for physical label production (printing on adhesive label stock).",
+  "version": "1.0.0",
+  "inputs": [
+    {"id": "svg_content",  "type": "string",  "required": true, "description": "Valid SVG XML markup; populated label content (no template placeholders remaining)"},
+    {"id": "format",       "type": "enum",    "values": ["pdf", "png"], "required": true, "description": "Output rendering format"},
+    {"id": "size_mm",      "type": "object",  "required": true, "description": "{width: number, height: number} in millimetres"},
+    {"id": "dpi",          "type": "integer", "default": 300, "description": "Render resolution (PNG only; PDF uses vector)"}
+  ],
+  "outputs": [
+    {"id": "rendered_bytes",   "type": "binary",  "description": "PDF or PNG bytes ready for file write"},
+    {"id": "format_actual",    "type": "string",  "description": "Confirms which format was rendered"},
+    {"id": "byte_count",       "type": "integer", "description": "Size of rendered output"}
+  ],
+  "references": [
+    "shared/standards/electrical/ANSI-Z535-4/panel-format.json",
+    "shared/standards/electrical/ANSI-Z535-4/letter-height-requirements.json"
+  ],
+  "verification_status": "verified-against-source",
+  "implementation_note": "Contract only — runtime implementation deferred per WI3 until DraftsMan runtime ships. Until then, consumer skills emit `tool_call_pending_for_pdf_png: true` on every label entry. SVG content IS produced inline (LLM-writable), so engineers can preview labels in a browser without the runtime tool.",
+  "license_note": "Tool contract; no copyrighted standards content reproduced."
+}
