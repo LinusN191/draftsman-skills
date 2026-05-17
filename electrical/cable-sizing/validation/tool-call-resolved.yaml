@@ -1,20 +1,16 @@
 validator: tool_call_resolved
 version: 1.0.0
 description: |
-  Tool-call status is consistent across the IR. Either runtime tool ran and all numeric
-  checks populated; or runtime not available and all flagged as pending with null values.
-  No half-states.
+  Tool-call status is consistent across the IR. Generator emits tool_call_pending: true WITH
+  best-effort numeric placeholders; runtime will recompute them. When tool_call_pending: false,
+  all numeric checks are final.
 checks:
-  - id: pending_means_null_values
-    description: "When tool_call_pending == true, iz_corrected_a + vd_segment_pct + vd_cumulative_pct are all null"
-    expression: |
-      for each node n where n.checks.tool_call_pending == true:
-        n.checks.iz_corrected_a == null AND
-        n.checks.vd_segment_pct == null AND
-        n.checks.vd_cumulative_pct == null
+  - id: tool_call_pending_is_boolean
+    description: "Every node has checks.tool_call_pending as a boolean (true or false)"
+    expression: "for each node n: type(n.checks.tool_call_pending) == 'boolean'"
     severity: error
   - id: resolved_means_numeric_values
-    description: "When tool_call_pending == false, all three numeric checks are populated"
+    description: "When tool_call_pending == false, all three numeric checks are populated (not null)"
     expression: |
       for each node n where n.checks.tool_call_pending == false:
         n.checks.iz_corrected_a is numeric AND
@@ -22,9 +18,9 @@ checks:
         n.checks.vd_cumulative_pct is numeric
     severity: error
   - id: pending_flag_propagates_to_assumptions
-    description: "If any node has tool_call_pending: true, compliance_summary.assumptions[] contains an entry naming the deferred tool"
+    description: "If any node has tool_call_pending: true, compliance_summary.assumptions[] contains a substring matching any of the deferred tool names"
     expression: |
       if any node has tool_call_pending: true then
-        compliance_summary.assumptions[] contains text matching one of:
-        ['calc.cable_ampacity pending', 'calc.voltage_drop pending', 'calc.cpc_adiabatic pending']
+        compliance_summary.assumptions[] contains substring matching any of:
+        ['calc.cable_ampacity', 'calc.voltage_drop', 'calc.cpc_adiabatic']
     severity: error

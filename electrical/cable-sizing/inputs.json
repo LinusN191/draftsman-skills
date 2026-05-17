@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Discovery taxonomy — what the generator prompt asks for / extracts from upstream intents before sizing cables.",
   "inputs": [
-    {"id": "jurisdiction",                  "type": "enum", "values": ["GB","EU","INT","US","AU_NZ","CA"], "description": "Standards family — selects ampacity table + Vd targets"},
+    {"id": "jurisdiction",                  "type": "enum", "values": ["GB","EU","INT","US"], "description": "Standards family — selects ampacity table + Vd targets"},
     {"id": "project_supply",                "type": "object", "description": "Voltage / phases / frequency / earthing system from db-layout-rollup or engineer"},
     {"id": "circuits_from_intent",          "type": "boolean", "description": "true if db-layout-rollup intent supplies circuit list; false if engineer-declared"},
     {"id": "circuits_declared",             "type": "array",  "description": "Per-circuit Ib/In/load_type/phases (engineer fallback when intent absent)"},

@@ -1,0 +1,33 @@
+{
+  "runner": "draftsman-eval",
+  "version": "1.0.0",
+  "skill": "cable-sizing",
+  "skill_version": "1.0.0",
+  "description": "Eval runner config for electrical/cable-sizing v1.0.0. Mirrors electrical/fault-level/evals/runner-config.json structure.",
+  "evals": [
+    "electrical/cable-sizing/evals/eval-01-uk-domestic-final-circuits.yaml",
+    "electrical/cable-sizing/evals/eval-02-tpn-commercial-feeders-cumulative-vd.yaml",
+    "electrical/cable-sizing/evals/eval-03-undersized-cable-trap.yaml",
+    "electrical/cable-sizing/evals/eval-04-missing-route-data.yaml",
+    "electrical/cable-sizing/evals/eval-05-jurisdiction-us-with-awg.yaml",
+    "electrical/cable-sizing/evals/eval-06-rationale-block.yaml",
+    "electrical/cable-sizing/evals/eval-07-motor-starting-vd.yaml",
+    "electrical/cable-sizing/evals/eval-08-parallel-cables.yaml",
+    "electrical/cable-sizing/evals/eval-09-harmonic-derating-data-centre.yaml"
+  ],
+  "coverage": {
+    "wi5_categories": {
+      "happy_path": ["eval-01"],
+      "edge_case": ["eval-02"],
+      "validation_trap": ["eval-03"],
+      "missing_input": ["eval-04"],
+      "jurisdiction_switch": ["eval-05"],
+      "rationale_block": ["eval-06"]
+    },
+    "skill_specific": {
+      "motor_starting_vd": ["eval-07"],
+      "parallel_cables": ["eval-08"],
+      "harmonic_derating": ["eval-09"]
+    }
+  }
+}

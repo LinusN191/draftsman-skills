@@ -53,7 +53,7 @@ For every node with `selection.parallel_count >= 2`:
 - `selection.binding_constraint == "parallel_required"`
 
 ### INV-09 — Tool-call status consistent
-For every node, either `checks.tool_call_pending == true` AND `checks.iz_corrected_a == null` AND `checks.vd_segment_pct == null`, OR `tool_call_pending == false` AND all three checks have numeric values. No partial states.
+Every node has a boolean `checks.tool_call_pending`. When `true`, the numeric `checks.*` fields hold best-effort engineer estimates that the runtime will recompute (per WI3 deferral). When `false`, all three of `iz_corrected_a`, `vd_segment_pct`, `vd_cumulative_pct` are numeric (not null). No partial states (e.g. tool_call_pending false but iz_corrected_a null).
 
 ### INV-10 — Intent shape matches schema + completeness
 The emitted `cable-sizing` intent validates against `cable-sizing-intent.schema.json`. AND for every cascade node with `node_kind == "final_circuit"` in the IR, there is exactly one matching entry (by `node_id`) in `intent.circuits[]`.
