@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/arc-flash-labelling/schemas/labels-intent.schema.json",
+  "title": "Labels Intent (downstream slim subset)",
+  "description": "Slim subset of labels IR for facility-management / digital-twin consumers. Carries per-equipment label metadata (format + signal word + PPE category + size + QR URL) without the full rendered SVG content. Forward-compat: optional fields may be added; required-field changes require major intent_version bump.",
+  "type": "object",
+  "required": ["intent_kind", "version", "labels"],
+  "additionalProperties": false,
+  "properties": {
+    "intent_kind":             { "const": "labels" },
+    "version":                  { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "produced_by_skill_version":{ "type": "string" },
+    "labels": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": ["node_id", "format_applied", "signal_word", "label_size_mm"],
+        "additionalProperties": false,
+        "properties": {
+          "node_id":         { "type": "string" },
+          "designation":      { "type": "string" },
+          "format_applied":   { "enum": ["ansi_z535_4", "iso_7010", "bs_5499", "restricted_format"] },
+          "signal_word":      { "enum": ["DANGER", "WARNING", "CAUTION", "NOTICE", "RESTRICTED"] },
+          "ppe_category":     { "type": ["integer", "null"] },
+          "label_size_mm":    { "type": "object", "required": ["width", "height"], "properties": { "width": {"type": "number"}, "height": {"type": "number"} } },
+          "qr_code_url":      { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}
