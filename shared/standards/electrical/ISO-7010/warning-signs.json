@@ -1,0 +1,22 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "ISO-7010 2019:W-Series-Warning-Signs",
+  "title": "ISO 7010 W-Series Warning Signs Relevant to Arc-Flash Labels",
+  "description": "Selected W-series symbols used in electrical safety labelling. Primary symbol for arc-flash labels is W012.",
+  "column_definitions": [
+    {"key": "symbol_id",       "label": "Symbol ID",          "type": "string"},
+    {"key": "name",            "label": "Name",                "type": "string"},
+    {"key": "description",     "label": "Visual description",  "type": "string"},
+    {"key": "use_case",        "label": "Arc-flash use",       "type": "string"},
+    {"key": "svg_reference",   "label": "SVG path reference",  "type": "string"}
+  ],
+  "rows": [
+    {"symbol_id": "W012", "name": "Warning: Electricity",         "description": "Yellow equilateral triangle (point-up) with black border 3mm wide; black lightning bolt centred inside", "use_case": "Primary arc-flash hazard symbol",                "svg_reference": "templates/symbols/iso-w012.svg"},
+    {"symbol_id": "W026", "name": "Warning: Battery charging",     "description": "Yellow triangle; battery icon + lightning bolt",                                                       "use_case": "DC arc-flash / battery-room labels",              "svg_reference": "templates/symbols/iso-w026.svg"},
+    {"symbol_id": "W001", "name": "Warning: General",              "description": "Yellow triangle; exclamation mark",                                                                    "use_case": "Generic hazard (fallback if no specific symbol)", "svg_reference": "templates/symbols/iso-w001.svg"}
+  ],
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Symbol IDs + descriptions are factual references to ISO 7010 standard. Symbol SVG renderings are repo-internal artefacts created in Task 21."
+}
