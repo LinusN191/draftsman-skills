@@ -1,0 +1,33 @@
+eval_id: eval-08-parallel-cables
+category: skill_specific
+subcategory: parallel_cables
+skill: cable-sizing
+skill_version: 1.0.0
+description: |
+  1200A main feeder. Single-cable ladder exhausts at 630 mm² (Iz ~700-900A depending on
+  install method). Skill must engage parallel cables: 2 × 400 mm² or 2 × 500 mm² in
+  parallel to carry 1200A. Each parallel must meet IEC minimum 50 mm² + symmetry.
+input:
+  jurisdiction: GB
+  project_supply: { voltage_v: 400, phases: three, frequency_hz: 50, earthing_system: TN-S }
+  circuits_declared:
+    - id: "MSB.SERVICE"
+      parent_node_id: null
+      node_kind: service_entrance
+      designation: "Service entrance feeder 1200A"
+      load: { ib_a: 1050, in_a: 1200, load_type: power, phases: three }
+      route: { length_m: 35, installation_method: F, ambient_c: 30, grouping_count: 1 }
+      cable_type_preference: { material: copper, insulation: xlpe_90 }
+expected:
+  per_node:
+    - node_id: "MSB.SERVICE"
+      binding_constraint: "parallel_required"
+      selection_parallel_count: { type: integer, gte: 2, lte: 6 }
+      selection_phase_csa_mm2: { gte: 50 }
+      symmetry_assertion_in_rationale: true
+pass_criteria:
+  - "parallel_count >= 2"
+  - "Each parallel csa >= 50 mm² per BS 7671 Reg 523.7"
+  - "binding_constraint == 'parallel_required'"
+  - "Rationale explicitly asserts same length/csa/material/install across parallels"
+  - "If parallel_count > 6 → warning recommending bus duct redesign"

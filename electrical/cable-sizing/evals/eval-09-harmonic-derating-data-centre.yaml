@@ -1,0 +1,32 @@
+eval_id: eval-09-harmonic-derating-data-centre
+category: skill_specific
+subcategory: harmonic_derating
+skill: cable-sizing
+skill_version: 1.0.0
+description: |
+  Three-phase 4-wire IT load with 33% 3rd-harmonic content. Skill must apply Ch
+  correction factor AND size neutral conductor equal to phase per BS 7671 Reg 523.6.3.
+input:
+  jurisdiction: GB
+  project_supply: { voltage_v: 400, phases: three, frequency_hz: 50, earthing_system: TN-S }
+  circuits_declared:
+    - id: "DC.RACK01"
+      parent_node_id: null
+      node_kind: final_circuit
+      designation: "Data centre rack feeder 80A 4-wire — IT load with high h3"
+      load: { ib_a: 65, in_a: 80, load_type: it_load, phases: three_plus_n, pf: 0.95 }
+      route: { length_m: 25, installation_method: E, ambient_c: 35, grouping_count: 1 }
+      harmonic_content_pct: 33
+expected:
+  per_node:
+    - node_id: "DC.RACK01"
+      checks_harmonic_ch_factor: { type: number, lt: 1.0, gt: 0.0 }
+      binding_constraint_may_be: ["harmonic_derating", "iz_vs_in"]
+      neutral_sizing_rule_in_rationale: "BS 7671 Reg 523.6.3"
+      neutral_csa_equals_phase: true
+pass_criteria:
+  - "Ch factor < 1.0 applied (visible in checks.harmonic_ch_factor)"
+  - "Phase csa upsized to account for derated Iz"
+  - "Neutral csa = phase csa (3rd-harmonic > 33%)"
+  - "Rationale cites Reg 523.6.3 + App 4 §5.5"
+  - "If non-3-phase-4-wire OR harmonic_content_pct ≤ 15 → Ch factor must NOT appear"
