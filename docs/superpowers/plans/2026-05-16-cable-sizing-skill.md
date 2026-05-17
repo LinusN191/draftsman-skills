@@ -161,8 +161,7 @@ File: `electrical/cable-sizing/schemas/cable-sizing-ir.schema.json`
   "additionalProperties": false,
   "properties": {
     "drawing_type": { "const": "cable_sizing_study" },
-    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
-    "$schema": { "type": "string" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
     "meta": {
       "type": "object",
       "required": ["project_id", "skill_version", "produced_at"],
@@ -173,7 +172,15 @@ File: `electrical/cable-sizing/schemas/cable-sizing-ir.schema.json`
         "produced_at": { "type": "string", "format": "date-time" },
         "consumed_intents": {
           "type": "array",
-          "items": { "enum": ["db-layout-rollup", "fault-level"] }
+          "items": {
+            "type": "object",
+            "required": ["intent_type", "intent_version", "produced_by"],
+            "properties": {
+              "intent_type":    { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+              "intent_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+              "produced_by":    { "type": "string" }
+            }
+          }
         }
       }
     },
@@ -218,7 +225,7 @@ File: `electrical/cable-sizing/schemas/cable-sizing-ir.schema.json`
     },
     "drawn_as_symbols": { "type": "array", "items": { "type": "string" } },
     "flags": { "type": "array", "items": { "type": "string" } },
-    "rationale": { "$ref": "#/definitions/Rationale" }
+    "rationale": { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
   },
   "definitions": {
     "CascadeNode": {
@@ -312,43 +319,11 @@ File: `electrical/cable-sizing/schemas/cable-sizing-ir.schema.json`
         }
       }
     },
-    "Rationale": {
-      "type": "object",
-      "required": ["chat_summary", "sections"],
-      "properties": {
-        "chat_summary": { "type": "string", "maxLength": 1200 },
-        "sections": {
-          "type": "array",
-          "minItems": 8,
-          "maxItems": 8,
-          "items": {
-            "type": "object",
-            "required": ["title", "summary", "decisions"],
-            "properties": {
-              "title": { "type": "string" },
-              "summary": { "type": "string" },
-              "decisions": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "required": ["label", "summary", "rule", "code_clause"],
-                  "properties": {
-                    "label": { "type": "string" },
-                    "summary": { "type": "string" },
-                    "rule": { "type": "string" },
-                    "code_clause": { "type": "string" },
-                    "inputs": { "type": "object" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
   }
 }
 ```
+
+> **Note:** `rationale` references the shared schema at `shared/schemas/core/rationale.schema.json` (chat_summary maxLength 500, sections minItems 1). Cable-sizing's "8 sections" requirement lives at the generator-prompt + reviewer-D8 level — not the schema level.
 
 - [ ] **Step 2: Verify schema parses + is valid JSON Schema**
 
@@ -389,7 +364,7 @@ File: `electrical/cable-sizing/schemas/cable-sizing-intent.schema.json`
   "additionalProperties": false,
   "properties": {
     "intent_kind": { "const": "cable-sizing" },
-    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
     "circuits": {
       "type": "array",
       "minItems": 1,
@@ -2515,7 +2490,15 @@ git commit -m "feat(cable-sizing): example 1 — UK domestic 4 final circuits (I
   "$schema": "../../schemas/cable-sizing-ir.schema.json",
   "drawing_type": "cable_sizing_study",
   "version": "1.0.0",
-  "meta": { "project_id": "intl-comm-cs-eg02", "skill_version": "cable-sizing/1.0.0", "produced_at": "2026-05-17T09:00:00Z", "consumed_intents": ["db-layout-rollup", "fault-level"] },
+  "meta": {
+    "project_id": "intl-comm-cs-eg02",
+    "skill_version": "cable-sizing/1.0.0",
+    "produced_at": "2026-05-17T09:00:00Z",
+    "consumed_intents": [
+      { "intent_type": "db-layout-rollup", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/1.0.0" },
+      { "intent_type": "fault-level",      "intent_version": "1.0.0", "produced_by": "electrical/fault-level/1.0.0" }
+    ]
+  },
   "jurisdiction": "INT",
   "project_supply": { "voltage_v": 400, "phases": "three", "frequency_hz": 50, "earthing_system": "TN-S" },
   "cascade": [
@@ -2604,7 +2587,7 @@ git commit -m "feat(cable-sizing): example 1 — UK domestic 4 final circuits (I
   "drawn_as_symbols": [],
   "flags": ["TOOL-CALL-PENDING"],
   "rationale": {
-    "chat_summary": "INT commercial 400V TPN cascade. 4 nodes: MSB → riser feeder → DB-L1 → lighting C07. Final lighting circuit forces a 2-step walk-up from 1.5 mm² → 2.5 mm² → 4 mm² with binding_constraint = vd_cumulative (cumulative 2.9% at 4 mm² against 3% lighting limit per IEC 60364-5-52 §G). Feeders sized at Iz_vs_In. tool_call_pending across cascade.",
+    "chat_summary": "INT 400V TPN cascade, 4 nodes (MSB → riser → DB-L1 → C07). Lighting leaf C07 forces 2-step walk-up 1.5→2.5→4 mm² (binding: vd_cumulative; 2.9% at 4 mm² under 3% lighting limit per IEC 60364-5-52 §G). Feeders Iz-binding. tool_call_pending across cascade.",
     "sections": [
       { "title": "Input Ingestion",            "summary": "db-layout-rollup + fault-level intents consumed; engineer added route data per segment.", "decisions": [] },
       { "title": "Cascade Topology",            "summary": "4-node depth-3 cascade: service_entrance → feeder → sub_feeder → final_circuit.", "decisions": [] },
@@ -2816,7 +2799,7 @@ git commit -m "feat(cable-sizing): example 2 — INT 400V cascade with vd_cumula
   "drawn_as_symbols": [],
   "flags": ["TOOL-CALL-PENDING", "MOTOR_STARTING_VD_CLOSE_TO_LIMIT", "PARALLEL_CABLES"],
   "rationale": {
-    "chat_summary": "US 480V industrial 3-node cascade. Service entrance ladder exhausts at 1000 kcmil → 2×500 kcmil parallel (binding: parallel_required). Aluminium 600 kcmil feeder to MCC (Iz-binding). 500 hp motor: walk-up 500 → 600 → 750 kcmil driven by motor_starting_vd at 9.6% (within 10% limit but tight — info flag recommending soft-starter). Cumulative Vd hits 5.0% at motor terminals (NEC feeder+branch limit). tool_call_pending across cascade.",
+    "chat_summary": "US 480V industrial 3-node cascade. Service entrance: 2×500 kcmil parallel (binding: parallel_required). Aluminium 600 kcmil feeder (Iz-binding). 500 hp motor: walk-up 500→600→750 kcmil driven by motor_starting_vd at 9.6% (close to 10% — info flag recommending soft-starter). Cumulative Vd 5.0% at motor (NEC feeder+branch limit). tool_call_pending.",
     "sections": [
       { "title": "Input Ingestion",            "summary": "No upstream intents; engineer declared all 3 cascade nodes + route + motor LRA.", "decisions": [] },
       { "title": "Cascade Topology",            "summary": "Linear cascade SERVICE → SERVICE.F01 → MCC.M01. 3 nodes.", "decisions": [] },
