@@ -1,0 +1,40 @@
+eval_id: eval-01-us-mixed-cascade-ansi-labels
+category: happy_path
+skill: arc-flash-labelling
+skill_version: 1.0.0
+description: |
+  US 480V industrial cascade with 5 nodes mixing PPE Cat 1-3. ANSI Z535.4 auto-selected
+  via jurisdiction default. All NFPA 70E §130.5(H) required fields populated. Demonstrates
+  baseline happy-path label generation.
+input:
+  jurisdiction: US
+  consumed_intents:
+    arc_flash: { present: true, source: "electrical/arc-flash/examples/us-pv-with-dcfc/intent-out.json" }
+  project_metadata:
+    company_name: "Acme Engineering LLC"
+    qualified_person: "Sarah Chen, PE"
+    qr_code_base_url: "https://example.com/arc-flash/projects/us-ind"
+    default_label_size_mm: { width: 100, height: 75 }
+expected:
+  ir_structural:
+    labels_count: 4
+    flags_must_include: ["TOOL-CALL-PENDING-FOR-PDF-PNG"]
+    jurisdiction: US
+  per_label:
+    - node_id: "SERVICE-480V"
+      format_applied: "ansi_z535_4"
+      signal_word: "DANGER"
+      label_content_contains: ["480V", "12.0 cal/cm²", "Category 3"]
+    - node_id: "PV-INV-1"
+      format_applied: "ansi_z535_4"
+      signal_word_one_of: ["DANGER", "WARNING"]
+  rationale:
+    sections_count: 8
+    chat_summary_max_chars: 1200
+  invariants_pass: ["INV-01", "INV-02", "INV-03", "INV-04", "INV-05", "INV-06", "INV-07", "INV-08"]
+pass_criteria:
+  - "IR validates against schema"
+  - "4 labels produced (PV string skipped per label_recommended: false)"
+  - "All ANSI Z535.4 format auto-selected"
+  - "Every label has tool_call_pending_for_pdf_png: true"
+  - "SVG content non-empty + no template placeholders remaining"

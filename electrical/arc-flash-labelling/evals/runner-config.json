@@ -1,0 +1,31 @@
+{
+  "runner": "draftsman-eval",
+  "version": "1.0.0",
+  "skill": "arc-flash-labelling",
+  "skill_version": "1.0.0",
+  "description": "Eval runner config for electrical/arc-flash-labelling v1.0.0.",
+  "evals": [
+    "electrical/arc-flash-labelling/evals/eval-01-us-mixed-cascade-ansi-labels.yaml",
+    "electrical/arc-flash-labelling/evals/eval-02-restricted-equipment-distinct-format.yaml",
+    "electrical/arc-flash-labelling/evals/eval-03-missing-arc-flash-data-skip.yaml",
+    "electrical/arc-flash-labelling/evals/eval-04-no-arc-flash-intent.yaml",
+    "electrical/arc-flash-labelling/evals/eval-05-jurisdiction-gb-bs5499.yaml",
+    "electrical/arc-flash-labelling/evals/eval-06-rationale-block.yaml",
+    "electrical/arc-flash-labelling/evals/eval-07-svg-template-population.yaml",
+    "electrical/arc-flash-labelling/evals/eval-08-qr-code-conditional-emission.yaml"
+  ],
+  "coverage": {
+    "wi5_categories": {
+      "happy_path": ["eval-01"],
+      "edge_case": ["eval-02"],
+      "validation_trap": ["eval-03"],
+      "missing_input": ["eval-04"],
+      "jurisdiction_switch": ["eval-05"],
+      "rationale_block": ["eval-06"]
+    },
+    "skill_specific": {
+      "svg_template_population": ["eval-07"],
+      "qr_conditional_emission": ["eval-08"]
+    }
+  }
+}
