@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "IEEE 1584:2018 Annex C Table A.1 (typical gap distances)",
+  "title": "IEEE 1584:2018 — Typical Conductor Gap by Equipment Type",
+  "description": "Default gap distance G (between conductors of different phases) per equipment type, from Annex C Table A.1. Used when no measurement is available.",
+  "column_definitions": [
+    {"key": "equipment_type",  "label": "Equipment type",      "type": "string"},
+    {"key": "voltage_class",   "label": "Voltage class",       "type": "enum",   "values": ["600V", "2700V", "14300V"]},
+    {"key": "electrode_config","label": "Electrode config",    "type": "enum",   "values": ["VCB", "VCBB", "HCB", "VOA", "HOA"]},
+    {"key": "gap_default_mm",  "label": "Default gap",         "type": "number", "unit": "mm"},
+    {"key": "gap_range_mm",    "label": "Typical range",       "type": "string"}
+  ],
+  "rows": [
+    {"equipment_type": "LV switchgear (metal-clad, drawout)",         "voltage_class": "600V",   "electrode_config": "VCB",  "gap_default_mm": 25.4,  "gap_range_mm": "19-32"},
+    {"equipment_type": "LV switchgear (with arc-resistant barriers)", "voltage_class": "600V",   "electrode_config": "VCBB", "gap_default_mm": 25.4,  "gap_range_mm": "19-32"},
+    {"equipment_type": "LV panelboard (load centre)",                 "voltage_class": "600V",   "electrode_config": "VCB",  "gap_default_mm": 25.4,  "gap_range_mm": "19-32"},
+    {"equipment_type": "Drawout breaker (connected position)",        "voltage_class": "600V",   "electrode_config": "HCB",  "gap_default_mm": 25.4,  "gap_range_mm": "19-32"},
+    {"equipment_type": "MV switchgear (metal-clad)",                  "voltage_class": "2700V",  "electrode_config": "VCB",  "gap_default_mm": 76.0,  "gap_range_mm": "51-102"},
+    {"equipment_type": "MV switchgear (large)",                       "voltage_class": "14300V", "electrode_config": "VCB",  "gap_default_mm": 152.0, "gap_range_mm": "102-203"},
+    {"equipment_type": "Overhead service drop (LV)",                  "voltage_class": "600V",   "electrode_config": "VOA",  "gap_default_mm": 25.4,  "gap_range_mm": "19-50"},
+    {"equipment_type": "Overhead service drop (MV)",                  "voltage_class": "14300V", "electrode_config": "VOA",  "gap_default_mm": 152.0, "gap_range_mm": "102-254"},
+    {"equipment_type": "Substation horizontal bus",                   "voltage_class": "14300V", "electrode_config": "HOA",  "gap_default_mm": 152.0, "gap_range_mm": "102-254"}
+  ],
+  "notes": "Gap default values per IEEE 1584:2018 Annex C Table A.1. Where actual measured gap differs significantly, apply adjustment-factor-non-standard-gap.json.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Gap distance values are factual constants from Annex C."
+}

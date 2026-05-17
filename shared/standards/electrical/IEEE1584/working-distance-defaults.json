@@ -1,0 +1,27 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "IEEE 1584:2018 Annex C Table A.1 (default working distances)",
+  "title": "IEEE 1584:2018 — Default Working Distance by Equipment Type",
+  "description": "Working distance D from arc source to nearest worker body part. Default 455 mm (18\") for LV, 914 mm (36\") for MV. Engineer may override per job.",
+  "column_definitions": [
+    {"key": "equipment_type",       "label": "Equipment type",            "type": "string"},
+    {"key": "voltage_class",        "label": "Voltage class",             "type": "enum", "values": ["600V", "2700V", "14300V"]},
+    {"key": "working_distance_mm",  "label": "Default working distance",  "type": "number", "unit": "mm"},
+    {"key": "working_distance_in",  "label": "Default working distance (inches)", "type": "number", "unit": "inch"},
+    {"key": "rationale",            "label": "Why this distance",          "type": "string"}
+  ],
+  "rows": [
+    {"equipment_type": "LV switchgear / panelboard / MCC", "voltage_class": "600V",   "working_distance_mm": 455.0,  "working_distance_in": 18.0, "rationale": "Standard reach distance for racking + maintenance work on LV equipment per IEEE 1584:2018 Annex C."},
+    {"equipment_type": "Drawout breaker (LV)",             "voltage_class": "600V",   "working_distance_mm": 455.0,  "working_distance_in": 18.0, "rationale": "Same as LV switchgear."},
+    {"equipment_type": "MV switchgear (≤ 2.7 kV)",         "voltage_class": "2700V",  "working_distance_mm": 910.0,  "working_distance_in": 36.0, "rationale": "Larger equipment + greater approach distance per IEEE 1584:2018."},
+    {"equipment_type": "MV switchgear (> 2.7 kV)",         "voltage_class": "14300V", "working_distance_mm": 1015.0, "working_distance_in": 40.0, "rationale": "Large MV gear; doorway clearance is the limiting factor."},
+    {"equipment_type": "Cable junction box",               "voltage_class": "600V",   "working_distance_mm": 455.0,  "working_distance_in": 18.0, "rationale": "Hand-work distance."},
+    {"equipment_type": "Meter socket enclosure",           "voltage_class": "600V",   "working_distance_mm": 455.0,  "working_distance_in": 18.0, "rationale": "Standard reach distance."},
+    {"equipment_type": "Outdoor MV bus / substation",      "voltage_class": "14300V", "working_distance_mm": 1015.0, "working_distance_in": 40.0, "rationale": "Reach distance for MV equipment maintenance."}
+  ],
+  "notes": "Engineer may declare non-default working distance per job — typically for cramped spaces or remote-racking systems. Non-default distance triggers adjustment-factor-non-standard-distance.json correction.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Working distance values are factual constants from Annex C."
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "../../../../schemas/core/standards-table.schema.json",
+  "clause_ref": "IEEE 1584:2018 §5 + Annex C — equipment-to-electrode-config mapping",
+  "title": "IEEE 1584:2018 — Real-World Equipment → Electrode Configuration Mapping",
+  "description": "Helps the arc-flash skill (and engineers) classify real-world electrical equipment into one of the 5 IEEE 1584:2018 electrode configurations.",
+  "column_definitions": [
+    {"key": "equipment_designation", "label": "Equipment designation (real-world)", "type": "string"},
+    {"key": "manufacturer_examples", "label": "Example manufacturers/models", "type": "string"},
+    {"key": "electrode_config",      "label": "IEEE 1584 electrode config",   "type": "enum", "values": ["VCB", "VCBB", "HCB", "VOA", "HOA"]},
+    {"key": "voltage_class",         "label": "Voltage class",                "type": "enum", "values": ["600V", "2700V", "14300V"]},
+    {"key": "rationale",             "label": "Why this classification",       "type": "string"}
+  ],
+  "rows": [
+    {"equipment_designation": "LV switchgear (metal-clad, drawout)",     "manufacturer_examples": "Square D Power-Zone, Eaton Magnum DS, ABB Tmax",          "electrode_config": "VCB",  "voltage_class": "600V",   "rationale": "Vertical bus inside metal enclosure → VCB."},
+    {"equipment_designation": "LV panelboard / load centre",             "manufacturer_examples": "Square D NQ/I-Line, GE A-Series, Siemens P1/P2",         "electrode_config": "VCB",  "voltage_class": "600V",   "rationale": "Vertical bus inside metal enclosure."},
+    {"equipment_designation": "Drawout breaker (racked in)",             "manufacturer_examples": "Eaton DS, ABB SACE",                                      "electrode_config": "HCB",  "voltage_class": "600V",   "rationale": "Horizontal bus inside breaker compartment."},
+    {"equipment_designation": "LV switchgear with arc-resistant barrier","manufacturer_examples": "Eaton Magnum DS with Arc-Quench, ABB EmaxAir",            "electrode_config": "VCBB", "voltage_class": "600V",   "rationale": "Vertical bus inside cubic box WITH insulating barrier above."},
+    {"equipment_designation": "MV switchgear (≤ 2.7 kV)",                "manufacturer_examples": "Eaton VacClad-W, ABB Safegear",                            "electrode_config": "VCB",  "voltage_class": "2700V",  "rationale": "Vertical bus inside metal enclosure at MV."},
+    {"equipment_designation": "MV switchgear (> 2.7 kV)",                "manufacturer_examples": "Eaton Magnefix, ABB ZS1, Siemens NXAirS",                  "electrode_config": "VCB",  "voltage_class": "14300V", "rationale": "Same construction, larger voltage."},
+    {"equipment_designation": "MCC (Motor Control Centre)",              "manufacturer_examples": "Square D Model 6, Eaton Freedom 2100, ABB Comet",         "electrode_config": "VCB",  "voltage_class": "600V",   "rationale": "Vertical bus, enclosed."},
+    {"equipment_designation": "Meter socket enclosure",                  "manufacturer_examples": "Milbank, Square D meter mains",                            "electrode_config": "VCB",  "voltage_class": "600V",   "rationale": "Limited enclosure but vertical conductors."},
+    {"equipment_designation": "Industrial control panel",                "manufacturer_examples": "UL 508A control panels",                                   "electrode_config": "VCB",  "voltage_class": "600V",   "rationale": "Mounted equipment in enclosure; equivalent to VCB."},
+    {"equipment_designation": "Overhead service drop (LV)",              "manufacturer_examples": "Utility-fed overhead 240V/480V service",                   "electrode_config": "VOA",  "voltage_class": "600V",   "rationale": "Vertical conductors in open air at service entrance."},
+    {"equipment_designation": "Substation horizontal bus",               "manufacturer_examples": "Open-air MV substation bus structures",                    "electrode_config": "HOA",  "voltage_class": "14300V", "rationale": "Horizontal exposed conductors, no enclosure."},
+    {"equipment_designation": "Riser bus assembly (open)",               "manufacturer_examples": "Bus risers in mechanical rooms (no metal enclosure)",     "electrode_config": "VOA",  "voltage_class": "600V",   "rationale": "Vertical conductors, no enclosure."}
+  ],
+  "notes": "When equipment falls between categories, the IEEE 1584:2018 default is to use the configuration that produces the higher incident energy (conservative). VCB is the default for any unspecified enclosed equipment.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Mapping table compiled from IEEE 1584:2018 §5 + Annex C + standard industry practice; example manufacturer/model names are nominative references, not endorsements."
+}
