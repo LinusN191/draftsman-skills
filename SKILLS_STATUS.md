@@ -39,6 +39,7 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | public-address | `electrical/public-address` | stub | BS EN 60849, BS 5839-8 | — | — |
 | security | `electrical/security` | stub | BS EN 50131 | — | — |
 | data-telecom | `electrical/data-telecom` | stub | TIA-568, ISO/IEC 11801 | — | — |
+| arc-flash-labelling | `electrical/arc-flash-labelling` | stub | ANSI Z535.4:2023, NFPA 70E §130.5(H) | — | Consumes arc-flash intent → produces printable PDF/SVG labels. Queued for after arc-flash skill + clause_ref retrofit micro-sprint. |
 
 ---
 

@@ -23,6 +23,7 @@ Every standards layer the DraftsMan skills repo will ever reference, with curren
 | NFPA70 | NEC 2023 — National Electrical Code | NFPA | US | **production** | db-layout, earthing, fault-level, cable-sizing | — |
 | IEEE1584 | IEEE 1584:2018 Arc Flash Incident Energy & Boundary | IEEE | US/INT | **production** | electrical/arc-flash | HIGH (shipped 2026-05-17) |
 | NFPA70E | NFPA 70E Standard for Electrical Safety in the Workplace | NFPA | US | **production** | electrical/arc-flash | HIGH (shipped 2026-05-17) |
+| ANSI-Z535-4 | ANSI Z535.4:2023 Product Safety Signs and Labels | ANSI/NEMA | US (de facto INT) | **stub** | electrical/arc-flash-labelling (stub) | MEDIUM (queued after arc-flash skill + clause_ref retrofit) |
 | BSEN60947 | BS EN 60947 Low-Voltage Switchgear and Controlgear (Parts 1-7) | BSI/CEN | EU/GB | **stub** | electrical/breaker-sizing (stub), selectivity-study (stub) | MEDIUM |
 | IEC60079 | IEC 60079 Explosive Atmospheres (Multi-part: 0-20) | IEC | INT | **stub** | electrical/hazardous-locations (stub) | MEDIUM |
 | ERG5-5 | Engineering Recommendation G5/5 UK Harmonic Distortion Limits | ENA | GB | **stub** | electrical/power-quality-study (stub) | MEDIUM |

@@ -1,0 +1,23 @@
+{
+  "skill": "arc-flash-labelling",
+  "version": "0.1.0",
+  "discipline": "electrical",
+  "subdiscipline": "safety-output",
+  "description": "Consume arc-flash intent and render printable arc-flash warning labels per ANSI Z535.4 + NFPA 70E §130.5(H). Outputs PDF/SVG labels + project-wide label index with QR codes.",
+  "status": "stub",
+  "consumes_intents": ["arc-flash"],
+  "produces_intent": [],
+  "outputs": ["arc-flash-labels-pdf", "arc-flash-labels-svg", "project-label-index-pdf"],
+  "standards_planned": [
+    "shared/standards/electrical/ANSI-Z535-4/",
+    "shared/standards/electrical/NFPA70E/section-130-5-arc-flash-risk-assessment.json",
+    "shared/standards/electrical/NFPA70E/table-130-5-H-label-requirements.json",
+    "shared/standards/electrical/NFPA70E/table-130-7-C-16-ppe-required-items.json"
+  ],
+  "calculations": [],
+  "compatible_runtimes": ["DraftsMan >= 1.0", "Claude Code", "any-llm-agent"],
+  "blocked_by": [
+    "electrical/arc-flash (must ship first — provides the consumed intent)",
+    "shared/standards/electrical/ANSI-Z535-4/ (must promote stub → production for sign-format spec)"
+  ]
+}
