@@ -1,0 +1,56 @@
+eval_id: eval-01-uk-domestic-final-circuits
+category: happy_path
+skill: cable-sizing
+skill_version: 1.0.0
+description: |
+  UK domestic 230V single-phase consumer unit feeding standard final circuits.
+  Tests basic walk-the-ladder behaviour with simple Iz-binding selections.
+input:
+  jurisdiction: GB
+  project_supply:
+    voltage_v: 230
+    phases: single
+    frequency_hz: 50
+    earthing_system: TN-C-S
+  circuits_declared:
+    - id: "CU.C01"
+      designation: "Lighting ring upstairs"
+      load: { ib_a: 4.2, in_a: 6, load_type: lighting, phases: single, pf: 1.0 }
+      route: { length_m: 22, installation_method: B1, ambient_c: 30, grouping_count: 1, in_thermal_insulation: false }
+    - id: "CU.C02"
+      designation: "Lighting downstairs"
+      load: { ib_a: 5.0, in_a: 6, load_type: lighting, phases: single, pf: 1.0 }
+      route: { length_m: 18, installation_method: B1, ambient_c: 30, grouping_count: 1, in_thermal_insulation: false }
+    - id: "CU.C03"
+      designation: "Power ring kitchen"
+      load: { ib_a: 26, in_a: 32, load_type: power, phases: single, pf: 0.95 }
+      route: { length_m: 30, installation_method: B1, ambient_c: 30, grouping_count: 1, in_thermal_insulation: false }
+    - id: "CU.C04"
+      designation: "Cooker radial"
+      load: { ib_a: 28, in_a: 32, load_type: power, phases: single, pf: 1.0 }
+      route: { length_m: 8, installation_method: C, ambient_c: 30, grouping_count: 1, in_thermal_insulation: false }
+expected:
+  ir_structural:
+    cascade_node_count: 4
+    consumed_intents: []
+    flags_must_include: ["TOOL-CALL-PENDING"]
+    jurisdiction: GB
+  per_node:
+    - node_id: "CU.C01"
+      binding_constraint: "iz_vs_in"
+      phase_csa_mm2: 1.5
+      vd_limit_pct: 3.0
+      vd_limit_source_contains: "App 12"
+    - node_id: "CU.C03"
+      binding_constraint: "iz_vs_in"
+      phase_csa_mm2: 4
+      vd_limit_pct: 5.0
+  rationale:
+    sections_count: 8
+    chat_summary_max_chars: 1200
+  invariants_pass: ["INV-01","INV-02","INV-03","INV-04","INV-05","INV-06","INV-07","INV-09","INV-10"]
+pass_criteria:
+  - "IR validates against schema"
+  - "Every node has binding_constraint populated from controlled vocabulary"
+  - "Every node has tool_call_pending: true (no calc runtime yet)"
+  - "No invariant fails (motor INV-07 trivially passes — no motor circuits)"
