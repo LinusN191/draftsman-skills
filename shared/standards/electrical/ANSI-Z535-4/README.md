@@ -1,37 +1,33 @@
-# ANSI-Z535-4 — Product Safety Signs and Labels
+# ANSI-Z535-4 — ANSI Z535.4:2023 Product Safety Signs and Labels
 
-**Status:** `stub` — folder placeholder, no clauses transcribed yet
+**Status:** `production` — sign-format spec for arc-flash labels
 **Standard body:** ANSI / NEMA
-**Edition:** ANSI Z535.4:2023 (current)
-**Scope:** Format, colour, symbol, and content requirements for safety signs and labels affixed to products + equipment. The canonical sign-format spec referenced by NFPA 70E §130.5(H) for arc-flash labels.
-**Jurisdiction:** US (de facto international for industrial safety labels)
-**Cost-to-acquire:** ~$100-200 USD from ANSI
+**Edition:** 2023 (current)
+**Layer version:** 1.0.0
+**Scope:** Format, colour, symbol, panel-layout, and content requirements for product safety signs + labels. The canonical sign-format spec referenced by NFPA 70E §130.5(H) for arc-flash labels.
 
-## Related skills (will consume this layer)
+## What this layer contains
 
-- `electrical/arc-flash-labelling` (planned — stub) — primary consumer; renders arc-flash labels per Z535.4 format
+| Category | Files |
+|---|---|
+| Signal words | signal-words.json (DANGER / WARNING / CAUTION / NOTICE + colours + triggers) |
+| Colour spec | colour-spec.json (Pantone / CMYK / RGB / hex per safety colour) |
+| Symbol library | symbol-library.json (arc-flash, electric shock, hazard alert, PPE symbols) |
+| Panel format | panel-format.json (signal-word + message + symbol panel layout rules) |
+| Letter height | letter-height-requirements.json (legibility per working distance) |
+| Label content | label-content-rules.json (NFPA 70E §130.5(H) field requirements + ordering) |
+| Arc-flash template | arc-flash-label-template.md (canonical Z535.4 + NFPA 70E layout in prose) |
 
-## What this folder will contain (TODO when promoted stub → production)
+Total: 11 files in this layer.
 
-- `meta.json` (present — minimal frontmatter)
-- `README.md` (this file)
-- `terminology.md` — definitions (signal word, panel, symbol, hazard severity level)
-- `signal-words.json` — DANGER / WARNING / CAUTION / NOTICE definitions + colour codes
-- `colour-spec.json` — safety colours (red, orange, yellow, green) + Pantone references
-- `symbol-library.json` — standardised hazard symbols (electric shock, arc-flash, hot surface, etc.)
-- `panel-format.json` — sign-panel layout (signal-word panel, message panel, symbol panel)
-- `letter-height-requirements.json` — minimum legibility distances per text size
-- `label-content-rules.json` — required content + ordering on a label
-- `compliance-checklist.md` — when a label satisfies Z535.4
+## Related skills
 
-## Priority for next build cycle
+- `electrical/arc-flash-labelling` (planned v1.0.0 — this sprint) — primary consumer
 
-- [ ] Critical (top 5 next-to-build): false
-- [ ] Dependent skill is currently stub: true (arc-flash-labelling)
-- [ ] Dependent skill is currently beta needing v1.1: false
+## License + reuse
 
-Status: build when `electrical/arc-flash-labelling/` enters active development (~next-next sprint after arc-flash + clause_ref retrofit).
+Standards content is © ANSI/NEMA. This repo stores clause references + factual colour codes (Pantone refs are facts, not copyrighted expression) + brief paraphrase. Never full standard text.
 
-## License + reuse note
+## Versioning
 
-Standards content is copyright of ANSI/NEMA. This repo will store clause references + brief paraphrase only — never full standard text. Safety colours (red/orange/yellow/green Pantone codes) are factual; reproduced for interoperation.
+When ANSI Z535.4:2028 (estimated revision cycle) is published, bump `edition` + `layer_version` 2.0.0 in-place per repo policy.
