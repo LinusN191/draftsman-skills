@@ -21,8 +21,8 @@ Every standards layer the DraftsMan skills repo will ever reference, with curren
 | IEC60909 | IEC 60909 Short-Circuit Currents | IEC | INT | **production** | fault-level, db-layout (selectivity) | — |
 | IEC61439 | IEC 61439 LV Switchgear Assemblies | IEC | INT | **production** | db-layout | — |
 | NFPA70 | NEC 2023 — National Electrical Code | NFPA | US | **production** | db-layout, earthing, fault-level, cable-sizing | — |
-| IEEE1584 | IEEE 1584:2018 Arc Flash Incident Energy & Boundary | IEEE | US/INT | **stub** | electrical/arc-flash (stub) | HIGH (next build) |
-| NFPA70E | NFPA 70E Standard for Electrical Safety in the Workplace | NFPA | US | **stub** | electrical/arc-flash (stub) | HIGH |
+| IEEE1584 | IEEE 1584:2018 Arc Flash Incident Energy & Boundary | IEEE | US/INT | **production** | electrical/arc-flash | HIGH (shipped 2026-05-17) |
+| NFPA70E | NFPA 70E Standard for Electrical Safety in the Workplace | NFPA | US | **production** | electrical/arc-flash | HIGH (shipped 2026-05-17) |
 | BSEN60947 | BS EN 60947 Low-Voltage Switchgear and Controlgear (Parts 1-7) | BSI/CEN | EU/GB | **stub** | electrical/breaker-sizing (stub), selectivity-study (stub) | MEDIUM |
 | IEC60079 | IEC 60079 Explosive Atmospheres (Multi-part: 0-20) | IEC | INT | **stub** | electrical/hazardous-locations (stub) | MEDIUM |
 | ERG5-5 | Engineering Recommendation G5/5 UK Harmonic Distortion Limits | ENA | GB | **stub** | electrical/power-quality-study (stub) | MEDIUM |
@@ -94,7 +94,7 @@ Every standards layer the DraftsMan skills repo will ever reference, with curren
 
 ### Group A — Next 90 days
 Blocks immediate arc-flash and lightning-protection skills:
-- **IEEE1584** + **NFPA70E** (arc-flash incident energy calculation skill)
+- ✅ **IEEE1584** + **NFPA70E** (Phase A standards layers shipped 2026-05-17 — 28 files + 25 files, production v1.0.0)
 - **BSEN62305** + **NFPA780** + **IEC62561** (lightning-protection design skill)
 - **BSEN61643** (surge protective device selection skill)
 
