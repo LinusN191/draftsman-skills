@@ -8,8 +8,7 @@
   "additionalProperties": false,
   "properties": {
     "drawing_type": { "const": "cable_sizing_study" },
-    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
-    "$schema": { "type": "string" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
     "meta": {
       "type": "object",
       "required": ["project_id", "skill_version", "produced_at"],
@@ -20,7 +19,15 @@
         "produced_at": { "type": "string", "format": "date-time" },
         "consumed_intents": {
           "type": "array",
-          "items": { "enum": ["db-layout-rollup", "fault-level"] }
+          "items": {
+            "type": "object",
+            "required": ["intent_type", "intent_version", "produced_by"],
+            "properties": {
+              "intent_type":    { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+              "intent_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+              "produced_by":    { "type": "string" }
+            }
+          }
         }
       }
     },
@@ -65,7 +72,7 @@
     },
     "drawn_as_symbols": { "type": "array", "items": { "type": "string" } },
     "flags": { "type": "array", "items": { "type": "string" } },
-    "rationale": { "$ref": "#/definitions/Rationale" }
+    "rationale": { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
   },
   "definitions": {
     "CascadeNode": {
@@ -155,40 +162,6 @@
             "motor_starting_vd_pct": { "type": ["number", "null"] },
             "harmonic_ch_factor": { "type": ["number", "null"] },
             "tool_call_pending": { "type": "boolean" }
-          }
-        }
-      }
-    },
-    "Rationale": {
-      "type": "object",
-      "required": ["chat_summary", "sections"],
-      "properties": {
-        "chat_summary": { "type": "string", "maxLength": 1200 },
-        "sections": {
-          "type": "array",
-          "minItems": 8,
-          "maxItems": 8,
-          "items": {
-            "type": "object",
-            "required": ["title", "summary", "decisions"],
-            "properties": {
-              "title": { "type": "string" },
-              "summary": { "type": "string" },
-              "decisions": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "required": ["label", "summary", "rule", "code_clause"],
-                  "properties": {
-                    "label": { "type": "string" },
-                    "summary": { "type": "string" },
-                    "rule": { "type": "string" },
-                    "code_clause": { "type": "string" },
-                    "inputs": { "type": "object" }
-                  }
-                }
-              }
-            }
           }
         }
       }
