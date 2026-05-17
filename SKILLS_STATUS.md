@@ -100,7 +100,7 @@ Status codes: `production` | `beta` | `draft` | `stub`
 
 | Skill | Path | Status | Standards | Evals | Notes |
 |-------|------|--------|-----------|-------|-------|
-| cable-sizing | `electrical/cable-sizing` | stub | BS 7671:2018 App 4, IEC 60364-5-52, NEC Chapter 9 + 310.16 | — | next — Item 3 of Tier 1 sequence. Spec approved at `docs/superpowers/specs/2026-05-16-cable-sizing-skill-design.md`. |
+| cable-sizing | `electrical/cable-sizing` | **beta** | BS 7671:2018 App 4 + App 12 + Reg 433/434/521 + 543, IEC 60364-5-52 + 5-54, NEC 2023 Ch 9 + 310.16 + 215.2 + 220 + 240 + 250.122 + 310.10(H) + 430.6 + 110.14(C) | 9/3 ✓ | v1.0.0 IEC/BS/NEC cable selection. 14-step generator, IR + intent schemas, 12 deterministic checks, 9 evals (6 WI5 + 3 skill-specific), 3 worked examples (UK domestic / INT cascade with vd_cumulative / US industrial with parallel + motor-starting). Math deferred to calc.cable_ampacity + calc.voltage_drop + calc.cpc_adiabatic runtime tools per WI3. |
 | voltage-drop | `electrical/voltage-drop` | stub | BS 7671:2018 Appendix 12, IEC 60364-5-52 §G, NEC 215.2 IN | — | — |
 | load-schedule | `electrical/load-schedule` | stub | BS 7671:2018 App 1, NEC 220, IEC 60364-1 Annex C | — | — |
 | fault-level | `electrical/fault-level` | **beta** | IEC 60909-0:2016, BS 7671 Reg 434, IEC 60364-4-43, NEC 110.9 + 240.86, IEC 60617 | 9/3 ✓ | v1.0.0 IEC 60909 HV+LV cascade. 14-step generator, IR + intent schemas, 12 deterministic checks, 9 evals (all WI5 + 3 skill-specific), 3 worked examples (UK / INT+gen / US+motors). New IEC60909 standards layer (13 files) shipped alongside. Cascade math deferred to calc.iec60909_cascade runtime tool per WI3. |
@@ -167,12 +167,12 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | Status | Count |
 |--------|-------|
 | production | 1 |
-| beta | 4 |
+| beta | 5 |
 | draft | 0 |
-| stub | 70 |
+| stub | 69 |
 | **Total** | **75** |
 
-**Beta (4):** `electrical/sld`, `electrical/db-layout`, `electrical/earthing`, `electrical/fault-level`
+**Beta (5):** `electrical/sld`, `electrical/db-layout`, `electrical/earthing`, `electrical/fault-level`, `electrical/cable-sizing`
 **Production (1):** `electrical/lighting-layout`
 
 ---
@@ -183,7 +183,7 @@ Tier 1 sequence (live):
 
 1. ✅ Tighten calc contracts in `shared/calculations/electrical/` (shipped)
 2. ✅ `electrical/fault-level` v1.0.0 beta (shipped 2026-05-16)
-3. 🔄 `electrical/cable-sizing` — in progress (spec approved 2026-05-16)
+3. ✅ `electrical/cable-sizing` v1.0.0 beta (shipped 2026-05-17)
 4. `electrical/voltage-drop` — adjacent to cable-sizing
 5. `electrical/earthing` v1.1 — TN-S system support + Zs table
 6. `electrical/db-layout` v1.1 — DC distribution + Type B RCD
