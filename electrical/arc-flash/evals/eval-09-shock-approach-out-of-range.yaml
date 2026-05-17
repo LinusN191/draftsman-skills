@@ -1,0 +1,44 @@
+eval_id: eval-09-shock-approach-out-of-range
+category: skill_specific
+subcategory: shock_approach_edge_case
+skill: arc-flash
+skill_version: 1.0.0
+description: |
+  Voltage at 36 kV (in-range — last row of Table 130.4(C)(a)) vs 47 kV (out-of-range —
+  beyond 46 kV row). Verifies edge-case handling.
+input:
+  jurisdiction: US
+  project_supply: { voltage_v: 36000, phases: three, frequency_hz: 60 }
+  cascade_declared:
+    - id: "MV-36KV"
+      parent_node_id: null
+      node_kind: service_entrance
+      designation: "36 kV substation — within table range"
+      equipment: { type: "MV switchgear", current_type: ac, voltage_v: 36000 }
+      fault_inputs: { ibf_ka_max: 25 }
+      ocpd_inputs: { ocpd_type: "ACB_with_intentional_delay", t_clear_s: 0.5 }
+      geometry: { working_distance_mm: 914 }
+    - id: "MV-47KV"
+      parent_node_id: null
+      node_kind: service_entrance
+      designation: "47 kV substation — out-of-range"
+      equipment: { type: "MV switchgear", current_type: ac, voltage_v: 47000 }
+      fault_inputs: { ibf_ka_max: 25 }
+      ocpd_inputs: { ocpd_type: "ACB_with_intentional_delay", t_clear_s: 0.5 }
+      geometry: { working_distance_mm: 914 }
+expected:
+  per_node:
+    - node_id: "MV-36KV"
+      shock_approach_source_contains: "15.1 kV to 36 kV"
+      shock_approach_restricted_mm_one_of: [790, 840]
+    - node_id: "MV-47KV"
+      shock_approach_source_contains: "out_of_table_range"
+  non_compliance_flags_must_include:
+    - code: "SHOCK_APPROACH_BEYOND_TABLE_RANGE"
+      severity: "error"
+      node_id: "MV-47KV"
+pass_criteria:
+  - "36 kV node matches Table 130.4(C)(a) row '15.1 kV to 36 kV' or '36.1 kV to 46 kV'"
+  - "47 kV node triggers SHOCK_APPROACH_BEYOND_TABLE_RANGE error"
+  - "Skill doesn't silently extrapolate beyond table range"
+  - "Engineer must supply approach distances manually for >46 kV"

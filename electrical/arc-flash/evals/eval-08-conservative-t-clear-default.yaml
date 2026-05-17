@@ -1,0 +1,36 @@
+eval_id: eval-08-conservative-t-clear-default
+category: skill_specific
+subcategory: conservative_default_behaviour
+skill: arc-flash
+skill_version: 1.0.0
+description: |
+  No engineer-declared t_clear + no ocpd_type from db-layout-rollup. Conservative 2.0s
+  default kicks in. Skill emits CONSERVATIVE_T_CLEAR_DEFAULT_USED warning + still produces
+  useful IE numbers (just high).
+input:
+  jurisdiction: GB
+  project_supply: { voltage_v: 400, phases: three, frequency_hz: 50 }
+  cascade_declared:
+    - id: "DB-NO-OCPD-INFO"
+      parent_node_id: null
+      node_kind: final_circuit
+      designation: "Panel with no OCPD curve data"
+      equipment: { type: "LV panelboard", current_type: ac, voltage_v: 400 }
+      fault_inputs: { ibf_ka_max: 15 }
+      ocpd_inputs: {}  # no ocpd_type, no t_clear_s
+      geometry: { working_distance_mm: 455 }
+expected:
+  per_node:
+    - node_id: "DB-NO-OCPD-INFO"
+      ocpd_inputs_t_clear_s: 2.0
+      ocpd_inputs_t_clear_source: "conservative_default"
+  non_compliance_flags_must_include:
+    - code: "CONSERVATIVE_T_CLEAR_DEFAULT_USED"
+      severity: "warning"
+      message_contains: "Refine via protection coordination"
+pass_criteria:
+  - "t_clear_s = 2.0 (conservative default)"
+  - "t_clear_source = conservative_default"
+  - "CONSERVATIVE_T_CLEAR_DEFAULT_USED flag emitted at warning severity"
+  - "IE still computed (just high due to long arcing time)"
+  - "PPE category likely 3 or 4 due to high IE"
