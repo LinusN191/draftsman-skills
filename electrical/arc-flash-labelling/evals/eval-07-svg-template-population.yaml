@@ -1,0 +1,22 @@
+eval_id: eval-07-svg-template-population
+category: skill_specific
+subcategory: svg_template_population
+skill: arc-flash-labelling
+skill_version: 1.0.0
+description: |
+  Verify SVG content is fully populated: <svg> element present, expected template
+  markers (signal-word panel, equipment-id panel, etc.), no remaining {{...}} placeholders.
+input:
+  reuse_from: "electrical/arc-flash-labelling/evals/eval-01-us-mixed-cascade-ansi-labels.yaml"
+expected:
+  per_label_svg_validation:
+    - element_present: ["<svg", "</svg>"]
+    - no_remaining_placeholders: true   # NO {{...}} strings in svg_content
+    - has_signal_word_panel: true       # element with appropriate fill colour
+    - has_equipment_id_text: true       # contains the equipment_id value
+    - has_message_panel: true           # text elements for IE / AFB / shock / PPE
+pass_criteria:
+  - "Every label's svg_content starts with <svg and ends with </svg>"
+  - "No Jinja-style placeholders {{...}} remain anywhere in svg_content"
+  - "Every label's equipment_id appears as text in its SVG"
+  - "Every label's signal-word colour matches the format spec hex"

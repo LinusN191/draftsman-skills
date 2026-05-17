@@ -1,0 +1,41 @@
+eval_id: eval-08-qr-code-conditional-emission
+category: skill_specific
+subcategory: qr_conditional_emission
+skill: arc-flash-labelling
+skill_version: 1.0.0
+description: |
+  When qr_code_base_url is declared → ALL labels carry qr_code_url. When absent → NO
+  labels carry qr_code_url. Skill never invents fake URLs.
+input_a:
+  jurisdiction: US
+  consumed_intents:
+    arc_flash: { present: true, fabricated_nodes: [
+      { node_id: "MSB-1", incident_energy_cal_per_cm2: 8, ppe_category: 3, label_recommended: true, voltage_v: 480 }
+    ]}
+  project_metadata:
+    qr_code_base_url: "https://example.com/af/project-123"
+input_b:
+  jurisdiction: US
+  consumed_intents:
+    arc_flash: { present: true, fabricated_nodes: [
+      { node_id: "MSB-1", incident_energy_cal_per_cm2: 8, ppe_category: 3, label_recommended: true, voltage_v: 480 }
+    ]}
+  project_metadata:
+    qr_code_base_url: null
+expected_a:
+  per_label:
+    - node_id: "MSB-1"
+      label_content_qr_code_url: "https://example.com/af/project-123/MSB-1"
+      intent_qr_code_url: "https://example.com/af/project-123/MSB-1"
+      svg_content_must_contain_text: "QR"
+expected_b:
+  per_label:
+    - node_id: "MSB-1"
+      label_content_qr_code_url: null
+      intent_qr_code_url: null
+      svg_content_must_not_contain_text: "QR"
+pass_criteria:
+  - "Run A: every label has qr_code_url = <base_url>/<node_id>"
+  - "Run B: every label has qr_code_url = null"
+  - "Run B: no QR-code SVG element in svg_content"
+  - "Skill never invents fake URLs"
