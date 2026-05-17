@@ -1,0 +1,28 @@
+{
+  "project_id": "uk-lv-af-eg01",
+  "jurisdiction": "GB",
+  "project_supply": { "voltage_v": 400, "phases": "three", "frequency_hz": 50 },
+  "consumed_intents_present": ["fault-level", "db-layout-rollup"],
+  "cascade_declared": [
+    {
+      "id": "MSB-1",
+      "parent_node_id": null,
+      "node_kind": "service_entrance",
+      "designation": "Main switchboard 2500A incomer",
+      "equipment": { "type": "metal-clad LV switchgear", "current_type": "ac", "voltage_v": 400 },
+      "fault_inputs": { "ibf_ka_max": 22.5, "ibf_ka_min": 20.4, "x_over_r": 7 },
+      "ocpd_inputs": { "ocpd_type": "ACB_electronic", "t_clear_s": 0.3 },
+      "geometry": { "working_distance_mm": 455, "gap_distance_mm": 32 }
+    },
+    {
+      "id": "MSB-1.DB-L1",
+      "parent_node_id": "MSB-1",
+      "node_kind": "sub_feeder",
+      "designation": "DB-L1 incoming sub-feeder 200A",
+      "equipment": { "type": "LV panelboard", "current_type": "ac", "voltage_v": 400 },
+      "fault_inputs": { "ibf_ka_max": 18.0, "ibf_ka_min": 16.5, "x_over_r": 5 },
+      "ocpd_inputs": { "ocpd_type": "MCCB_thermal_magnetic", "t_clear_s": 0.2 },
+      "geometry": { "working_distance_mm": 455, "gap_distance_mm": 32 }
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "drawing_type": "arc_flash_study",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "uk-lv-af-eg01",
+    "skill_version": "arc-flash/1.0.0",
+    "produced_at": "2026-05-17T12:00:00Z",
+    "consumed_intents": [
+      {"intent_type": "fault-level", "intent_version": "1.0.0", "produced_by": "electrical/fault-level/1.0.0"},
+      {"intent_type": "db-layout-rollup", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/1.0.0"}
+    ]
+  },
+  "jurisdiction": "GB",
+  "project_supply": { "voltage_v": 400, "phases": "three", "frequency_hz": 50 },
+  "cascade": [
+    {
+      "node_id": "MSB-1",
+      "parent_node_id": null,
+      "node_kind": "service_entrance",
+      "designation": "Main switchboard 2500A incomer",
+      "equipment": {
+        "type": "metal-clad LV switchgear",
+        "current_type": "ac",
+        "voltage_v": 400,
+        "voltage_class": "600V",
+        "electrode_config": "VCB",
+        "electrode_config_source": "auto_inferred_from_equipment_type"
+      },
+      "fault_inputs": { "ibf_ka_max": 22.5, "ibf_ka_min": 20.4, "x_over_r": 7, "z_total_ohm": 0.0103 },
+      "ocpd_inputs": { "ocpd_type": "ACB_electronic", "t_clear_s": 0.3, "t_clear_source": "engineer_declared" },
+      "geometry": { "working_distance_mm": 455, "gap_distance_mm": 32 },
+      "arc_flash": {
+        "method_applied": "lee_1982",
+        "method_fallback_trail": [
+          {"method": "ieee1584_2018", "result": "skipped", "reason": "coefficients pending-verification for VCB 600V (k1-k7 null)"},
+          {"method": "ieee1584_2002", "result": "skipped", "reason": "Doughty/Neal coefficients pending-verification"},
+          {"method": "lee_1982", "result": "applied", "reason": "theoretical formula always available; V_nom 400V within 50-15000V range"}
+        ],
+        "arcing_current_a": 19500,
+        "incident_energy_cal_per_cm2": 9.8,
+        "arc_flash_boundary_mm": 1650,
+        "ppe_category": 3,
+        "ppe_category_source": "computed_from_E"
+      },
+      "shock_approach": {
+        "limited_approach_movable_mm": 3050,
+        "limited_approach_fixed_mm": 1070,
+        "restricted_approach_mm": 305,
+        "source": "NFPA 70E:2024 Table 130.4(C)(a) — 151V to 750V row"
+      },
+      "label": {
+        "label_recommended": true,
+        "label_required_per": "NFPA 70E:2024 §130.5(H) — metal-clad LV switchgear ≥240V (UK: voluntary best practice per HSG48)",
+        "engineer_can_skip_with_reason": false
+      },
+      "checks": {
+        "incident_energy_finite": true,
+        "boundary_ge_working_distance": true,
+        "ppe_category_consistent_with_E": true,
+        "method_fallback_consistent": true,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "MSB-1.DB-L1",
+      "parent_node_id": "MSB-1",
+      "node_kind": "sub_feeder",
+      "designation": "DB-L1 incoming sub-feeder 200A",
+      "equipment": {
+        "type": "LV panelboard",
+        "current_type": "ac",
+        "voltage_v": 400,
+        "voltage_class": "600V",
+        "electrode_config": "VCB",
+        "electrode_config_source": "auto_inferred_from_equipment_type"
+      },
+      "fault_inputs": { "ibf_ka_max": 18.0, "ibf_ka_min": 16.5, "x_over_r": 5 },
+      "ocpd_inputs": { "ocpd_type": "MCCB_thermal_magnetic", "t_clear_s": 0.2, "t_clear_source": "engineer_declared" },
+      "geometry": { "working_distance_mm": 455, "gap_distance_mm": 32 },
+      "arc_flash": {
+        "method_applied": "lee_1982",
+        "method_fallback_trail": [
+          {"method": "ieee1584_2018", "result": "skipped", "reason": "coefficients pending-verification for VCB 600V"},
+          {"method": "ieee1584_2002", "result": "skipped", "reason": "Doughty/Neal coefficients pending-verification"},
+          {"method": "lee_1982", "result": "applied", "reason": "theoretical formula always available"}
+        ],
+        "arcing_current_a": 15800,
+        "incident_energy_cal_per_cm2": 5.2,
+        "arc_flash_boundary_mm": 1050,
+        "ppe_category": 2,
+        "ppe_category_source": "computed_from_E"
+      },
+      "shock_approach": {
+        "limited_approach_movable_mm": 3050,
+        "limited_approach_fixed_mm": 1070,
+        "restricted_approach_mm": 305,
+        "source": "NFPA 70E:2024 Table 130.4(C)(a) — 151V to 750V row"
+      },
+      "label": {
+        "label_recommended": true,
+        "label_required_per": "NFPA 70E:2024 §130.5(H) — LV panelboard ≥240V (UK: voluntary best practice)",
+        "engineer_can_skip_with_reason": false
+      },
+      "checks": {
+        "incident_energy_finite": true,
+        "boundary_ge_working_distance": true,
+        "ppe_category_consistent_with_E": true,
+        "method_fallback_consistent": true,
+        "tool_call_pending": true
+      }
+    }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      { "code": "LEE_1982_FALLBACK_USED", "message": "Both cascade nodes fell back to Lee 1982 (conservative upper bound). Transcribe IEEE 1584:2018 Table 4 coefficients for VCB 600V class to get realistic IE values.", "severity": "info" }
+    ],
+    "assumptions": [
+      "fault-level intent consumed; per-node Ibf + X/R from it",
+      "db-layout-rollup intent consumed; equipment_type + ocpd_type from it; electrode_config auto-inferred to VCB for both nodes",
+      "t_clear_s engineer-declared (0.3s for ACB at MSB; 0.2s for MCCB at DB)",
+      "IE values are Lee 1982 conservative upper bounds — actual IE per IEEE 1584:2018 will be 2-5× lower when coefficients are transcribed",
+      "tool_call_pending: true on both nodes — calc.arc_flash_incident_energy contract shipped but runtime tool not yet implemented"
+    ]
+  },
+  "flags": ["TOOL-CALL-PENDING", "LEE_1982_FALLBACK_USED"],
+  "rationale": {
+    "chat_summary": "UK 400V TPN commercial: 2-node cascade (MSB → DB-L1). IEEE 1584:2018 coefficients pending-verification → fell back to Lee 1982 theoretical (conservative upper bound). MSB IE ≈ 9.8 cal/cm² → Cat 3; DB-L1 IE ≈ 5.2 → Cat 2. Both nodes auto-inferred to VCB. Shock-approach distances from Table 130.4(C)(a) 151V-750V row. Labels recommended (UK best practice). tool_call_pending across cascade.",
+    "sections": [
+      { "title": "Input Ingestion", "summary": "Both intents consumed; engineer declared t_clear per node.", "decisions": [] },
+      { "title": "Cascade Topology", "summary": "2-node depth-2 cascade: service_entrance → sub_feeder. All AC.", "decisions": [] },
+      { "title": "Jurisdictional Framing", "summary": "GB — voluntary best practice per HSG48 + IET CoP. Labels recommended, not statutory.", "decisions": [{ "label": "GB jurisdiction applied", "summary": "HSG48 + IET CoP best practice", "rule": "HSG48 + IET Code of Practice for In-Service Inspection", "code_clause": "HSG48 §3.2" }] },
+      { "title": "Method Selection Summary", "summary": "Both nodes fell back through IEEE 1584:2018 (skipped — coefficients pending) → IEEE 1584:2002 (skipped — pending) → Lee 1982 (applied). LEE_1982_FALLBACK_USED flag emitted info severity.", "decisions": [
+        { "label": "Lee 1982 fallback both nodes", "summary": "IEEE 1584:2018 + 2002 coefficients null. Lee theoretical applied as conservative upper bound.", "rule": "rules/method-fallback-chain.yaml", "code_clause": "Lee 1982 (cited by IEEE 1584:2018 §2 + IEEE 1584:2002 Annex B)" }
+      ] },
+      { "title": "Per-node Arc-Flash Results", "summary": "MSB: IE 9.8 → Cat 3 / AFB 1650mm. DB-L1: IE 5.2 → Cat 2 / AFB 1050mm.", "decisions": [
+        { "label": "MSB Cat 3", "summary": "IE 9.8 cal/cm² in 8-25 range", "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "code_clause": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "inputs": { "ie": 9.8, "category": 3 } },
+        { "label": "DB-L1 Cat 2", "summary": "IE 5.2 cal/cm² in 4-8 range", "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "code_clause": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "inputs": { "ie": 5.2, "category": 2 } }
+      ] },
+      { "title": "Shock-Approach Boundaries", "summary": "Both nodes: 400V → Table 130.4(C)(a) row '151V to 750V'. Limited movable 3050mm, fixed 1070mm; restricted 305mm.", "decisions": [] },
+      { "title": "Label Recommendations", "summary": "Both nodes label_recommended: true. UK regulatory context: HSG48 + IET CoP best practice (voluntary, not statutory like US NFPA 70E §130.5(H)).", "decisions": [] },
+      { "title": "Compliance + Assumptions + Tool-call Status", "summary": "Compliant. Lee fallback flagged info-severity. tool_call_pending on both nodes. IE will be re-computed (lower) when IEEE 1584:2018 coefficients transcribed.", "decisions": [] }
+    ]
+  }
+}

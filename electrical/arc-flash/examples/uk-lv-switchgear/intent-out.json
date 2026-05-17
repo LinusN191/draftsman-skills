@@ -1,0 +1,46 @@
+{
+  "intent_kind": "arc-flash",
+  "version": "1.0.0",
+  "produced_by_skill_version": "arc-flash/1.0.0",
+  "tool_call_pending": true,
+  "nodes": [
+    {
+      "node_id": "MSB-1",
+      "parent_node_id": null,
+      "designation": "Main switchboard 2500A incomer",
+      "equipment_type": "metal-clad LV switchgear",
+      "current_type": "ac",
+      "voltage_v": 400,
+      "incident_energy_cal_per_cm2": 9.8,
+      "arc_flash_boundary_mm": 1650,
+      "working_distance_mm": 455,
+      "limited_approach_movable_mm": 3050,
+      "limited_approach_fixed_mm": 1070,
+      "restricted_approach_mm": 305,
+      "ppe_category": 3,
+      "method_applied": "lee_1982",
+      "label_recommended": true,
+      "label_required_per": "NFPA 70E:2024 §130.5(H)",
+      "produced_at": "2026-05-17"
+    },
+    {
+      "node_id": "MSB-1.DB-L1",
+      "parent_node_id": "MSB-1",
+      "designation": "DB-L1 incoming sub-feeder 200A",
+      "equipment_type": "LV panelboard",
+      "current_type": "ac",
+      "voltage_v": 400,
+      "incident_energy_cal_per_cm2": 5.2,
+      "arc_flash_boundary_mm": 1050,
+      "working_distance_mm": 455,
+      "limited_approach_movable_mm": 3050,
+      "limited_approach_fixed_mm": 1070,
+      "restricted_approach_mm": 305,
+      "ppe_category": 2,
+      "method_applied": "lee_1982",
+      "label_recommended": true,
+      "label_required_per": "NFPA 70E:2024 §130.5(H)",
+      "produced_at": "2026-05-17"
+    }
+  ]
+}
