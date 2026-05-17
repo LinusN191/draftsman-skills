@@ -1,0 +1,25 @@
+eval_id: eval-04-no-arc-flash-intent
+category: missing_input
+skill: arc-flash-labelling
+skill_version: 1.0.0
+description: |
+  No upstream arc-flash intent. Skill produces empty labels[] + assumption log;
+  does NOT fabricate label content.
+input:
+  jurisdiction: US
+  consumed_intents:
+    arc_flash: { present: false }
+  project_metadata:
+    company_name: "Acme Engineering LLC"
+expected:
+  ir_structural:
+    labels_count: 0
+    flags_must_include: ["TOOL-CALL-PENDING-FOR-PDF-PNG"]
+  compliance_summary:
+    assumptions_must_contain_text: ["arc-flash intent absent"]
+  intent_validates_with_empty_labels: true
+pass_criteria:
+  - "labels[] is empty array (not absent, not fabricated)"
+  - "Assumption logged: 'arc-flash intent absent'"
+  - "tool_call_pending flag set"
+  - "Rationale block still has 8 sections (some marked 'none triggered')"

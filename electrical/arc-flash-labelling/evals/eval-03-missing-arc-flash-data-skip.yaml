@@ -1,0 +1,34 @@
+eval_id: eval-03-missing-arc-flash-data-skip
+category: validation_trap
+skill: arc-flash-labelling
+skill_version: 1.0.0
+description: |
+  Arc-flash intent has 3 nodes with label_recommended=true, but one has
+  incident_energy_cal_per_cm2 = null (arc-flash method was 'pending').
+  Skill must NOT fabricate IE value — uses "Not computed — see analysis" placeholder.
+input:
+  jurisdiction: US
+  consumed_intents:
+    arc_flash: { present: true, fabricated_nodes: [
+      { node_id: "MSB-1", incident_energy_cal_per_cm2: 8.5, ppe_category: 3, label_recommended: true, voltage_v: 480 },
+      { node_id: "MSB-2", incident_energy_cal_per_cm2: null, ppe_category: null, method_applied: "pending", label_recommended: true, voltage_v: 480 },
+      { node_id: "DB-L1", incident_energy_cal_per_cm2: 4.2, ppe_category: 2, label_recommended: true, voltage_v: 400 }
+    ]}
+expected:
+  per_label:
+    - node_id: "MSB-1"
+      label_content_contains: ["8.5 cal/cm²", "Category 3"]
+    - node_id: "MSB-2"
+      label_content_contains: ["Not computed", "see analysis"]
+      label_content_must_not_contain: ["8.5", "4.2", "0.0"]
+      ppe_category: null
+    - node_id: "DB-L1"
+      label_content_contains: ["4.2 cal/cm²", "Category 2"]
+  compliance_summary:
+    assumptions_must_contain_text: ["MSB-2", "Not computed"]
+pass_criteria:
+  - "No invented incident energy values for MSB-2"
+  - "MSB-2 label uses 'Not computed — see analysis' placeholder for IE field"
+  - "MSB-2 PPE category line is 'Specialised PPE Required' (null category)"
+  - "MSB-1 and DB-L1 labels generated normally"
+  - "Assumption logged about MSB-2 missing data"
