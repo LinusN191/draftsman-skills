@@ -5,6 +5,64 @@
   "verification_status": "verified-against-source",
   "_title": "NFPA 70 Article 220 — Branch-Circuit, Feeder, and Service Load Calculations",
   "_version": "1.0.0",
+  "engine_lookup": {
+    "_purpose": "Flat key/value form for runtime engine consumption — same numbers as the prose fields below, machine-readable. Source of truth for calc.diversity_factor's US jurisdiction branch.",
+    "_reference": "NEC 2023 (NFPA 70:2023) Article 220 §220.61 + §220.84(C)",
+    "section_220_61_step_rate_commercial": {
+      "_reference": "NEC 2023 Article 220.61 (feeders/services for general-purpose lighting in non-dwelling occupancies)",
+      "_note": "Stepped demand factor applied to total lighting + receptacle VA per non-dwelling feeder/service. Use the lower of standard (220.40) or optional methods, then apply this step rate per portion.",
+      "steps": [
+        {"portion_va_from": 0,      "portion_va_to": 3000,    "demand_factor_pct": 100},
+        {"portion_va_from": 3001,   "portion_va_to": 120000,  "demand_factor_pct": 35},
+        {"portion_va_from": 120001, "portion_va_to": null,    "demand_factor_pct": 25}
+      ]
+    },
+    "section_220_84_multi_family_dwelling": {
+      "_reference": "NEC 2023 Article 220.84(C) Table — Optional calc method for multifamily dwellings",
+      "_note": "Demand factor applied to total connected load (lighting + small-appliance + laundry + cooking + AC + other). Use only where all units are equipped with electric cooking, electric water heating OR space heating, and AC.",
+      "rows": [
+        {"dwelling_units_from": 3,  "dwelling_units_to": 5,    "demand_factor_pct": 45},
+        {"dwelling_units_from": 6,  "dwelling_units_to": 7,    "demand_factor_pct": 44},
+        {"dwelling_units_from": 8,  "dwelling_units_to": 10,   "demand_factor_pct": 43},
+        {"dwelling_units_from": 11, "dwelling_units_to": 15,   "demand_factor_pct": 40},
+        {"dwelling_units_from": 16, "dwelling_units_to": 20,   "demand_factor_pct": 38},
+        {"dwelling_units_from": 21, "dwelling_units_to": 25,   "demand_factor_pct": 35},
+        {"dwelling_units_from": 26, "dwelling_units_to": 30,   "demand_factor_pct": 33},
+        {"dwelling_units_from": 31, "dwelling_units_to": 40,   "demand_factor_pct": 31},
+        {"dwelling_units_from": 41, "dwelling_units_to": null, "demand_factor_pct": 28}
+      ]
+    },
+    "section_220_42_dwelling_lighting_step_rate": {
+      "_reference": "NEC 2023 Article 220.42 — Demand factors for dwelling unit general lighting (mirrors tables_inline)",
+      "steps": [
+        {"portion_va_from": 0,      "portion_va_to": 3000,   "demand_factor_pct": 100},
+        {"portion_va_from": 3001,   "portion_va_to": 120000, "demand_factor_pct": 35},
+        {"portion_va_from": 120001, "portion_va_to": null,   "demand_factor_pct": 25}
+      ]
+    },
+    "section_220_82_dwelling_optional": {
+      "_reference": "NEC 2023 Article 220.82 — Optional dwelling calculation",
+      "_method": "100% of first 10 kVA + 40% of remainder of general loads; add 100% of HVAC OR AC (whichever larger) per 220.82(C)",
+      "steps_general_loads": [
+        {"portion_kva_from": 0,  "portion_kva_to": 10,    "demand_factor_pct": 100},
+        {"portion_kva_from": 10, "portion_kva_to": null,  "demand_factor_pct": 40}
+      ],
+      "hvac_ac_demand_factor_pct": 100
+    },
+    "section_220_54_dryer_dwelling": {
+      "_reference": "NEC 2023 Article 220.54 — Household electric clothes dryers (mirrors tables_inline)",
+      "_unit_kva_per_dryer_minimum": 5,
+      "rows": [
+        {"dryers_from": 1,  "dryers_to": 4,    "demand_pct_of_5kva_per_dryer": 100},
+        {"dryers_from": 5,  "dryers_to": 5,    "demand_pct_of_5kva_per_dryer": 85},
+        {"dryers_from": 10, "dryers_to": 10,   "demand_pct_of_5kva_per_dryer": 50},
+        {"dryers_from": 20, "dryers_to": 20,   "demand_pct_of_5kva_per_dryer": 35},
+        {"dryers_from": 30, "dryers_to": null, "demand_pct_of_5kva_per_dryer": 25}
+      ]
+    },
+    "future_expansion_pct_default": 25.0,
+    "_reference_secondary": "NEC Handbook 2023 commentary on Article 220"
+  },
   "articles": [
     {
       "article_id": "ART_220",
