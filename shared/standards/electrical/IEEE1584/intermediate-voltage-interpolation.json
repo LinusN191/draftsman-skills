@@ -1,0 +1,40 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "IEEE 1584:2018 §7.4.4 (intermediate voltages)",
+  "formula_id": "ieee1584-2018-intermediate-voltage-interpolation",
+  "formula_latex": "E_{intermediate}(V) = E_{lower}(V_{lower}) + \\frac{\\log V - \\log V_{lower}}{\\log V_{upper} - \\log V_{lower}} \\cdot \\left( E_{upper}(V_{upper}) - E_{lower}(V_{lower}) \\right)",
+  "formula_plain_text": "For nominal voltages between two IEEE 1584:2018 voltage classes (e.g., 1000V, 4160V), compute incident energy at both bracketing class voltages then logarithmically interpolate based on log V_nom.",
+  "symbols": [
+    {"symbol": "V",           "meaning": "Intermediate nominal voltage",                     "unit": "V"},
+    {"symbol": "V_lower",     "meaning": "Upper bound of lower voltage class",               "unit": "V"},
+    {"symbol": "V_upper",     "meaning": "Lower bound of upper voltage class",               "unit": "V"},
+    {"symbol": "E_lower",     "meaning": "Incident energy at V_lower (using lower class model)", "unit": "cal/cm²"},
+    {"symbol": "E_upper",     "meaning": "Incident energy at V_upper (using upper class model)", "unit": "cal/cm²"}
+  ],
+  "applicable_range": {
+    "interpolation_zones": [
+      {"v_lower_v": 600,  "v_upper_v": 601,  "description": "600V → 2700V class boundary (negligible interpolation)"},
+      {"v_lower_v": 600,  "v_upper_v": 2700, "description": "Mid-LV/MV voltages 601V – 2699V (e.g., 1000V, 2300V)"},
+      {"v_lower_v": 2700, "v_upper_v": 2701, "description": "2700V → 14300V class boundary"},
+      {"v_lower_v": 2700, "v_upper_v": 15000,"description": "Mid-MV voltages 2701V – 14999V (e.g., 4160V, 11000V, 13800V)"}
+    ]
+  },
+  "units": {"e": "cal/cm²"},
+  "worked_examples": [
+    {
+      "input":  {"v_intermediate_v": 1000, "e_lower_v600_cal_per_cm2": 6.4, "e_upper_v2700_cal_per_cm2": 8.5},
+      "expected_output": {"e_intermediate_cal_per_cm2": 6.91},
+      "source": "IEEE 1584:2018 §7.4.4 — interpolation between 600V and 2700V class models for 1000V"
+    },
+    {
+      "input":  {"v_intermediate_v": 4160, "e_lower_v2700_cal_per_cm2": 8.5, "e_upper_v14300_cal_per_cm2": 12.0},
+      "expected_output": {"e_intermediate_cal_per_cm2": 9.84},
+      "source": "IEEE 1584:2018 §7.4.4 — interpolation for 4160V system"
+    }
+  ],
+  "implementation_notes": "When skill encounters a system voltage NOT exactly at a class breakpoint, the calc tool computes IE at both bracketing class voltages (using each class's coefficient set + a normalised V) then applies this logarithmic interpolation. The interpolation uses log of voltage, not voltage directly — voltage classes span order-of-magnitude ranges so log scaling is essential.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Interpolation formula is the standard log-log linear form; mathematical, not copyrighted expression."
+}
