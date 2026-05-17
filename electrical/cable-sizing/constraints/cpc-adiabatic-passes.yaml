@@ -1,0 +1,22 @@
+constraint: cpc_adiabatic_passes
+version: 1.0.0
+description: |
+  CPC cross-section must satisfy S = √(I²t)/k for the prospective earth-fault current at
+  the node origin (parent ifault_ka_max) and the OCPD's clearing time t at that current.
+triggered_for: "every cascade node with selection.cpc_csa populated"
+formula: "S_min = sqrt(I² × t) / k  where k is from BS 7671 Table 54.7 / IEC 60364-5-54 Table 54.2"
+checks:
+  - id: adiabatic_pass
+    expression: "selection.cpc_csa >= calc.cpc_adiabatic(fault_at_origin.ifault_ka_max, fault_at_origin.t_clear_s, ...).required_csa_mm2"
+    severity: error
+    message: "CPC {cpc_csa}mm² fails adiabatic at I={ifault_ka_max}kA, t={t_clear_s}s; upsize CPC or use larger phase csa."
+  - id: cpc_smaller_or_equal_phase
+    expression: "selection.cpc_csa <= selection.phase_csa"
+    severity: warning
+    message: "CPC csa ({cpc_csa}) larger than phase ({phase_csa}) at {node_id} — unusual; verify."
+  - id: nec_table_minimum
+    expression: "(jurisdiction != 'US') or (selection.cpc_csa >= nec_250_122_min(load.in_a))"
+    severity: error
+    message: "US: CPC csa {cpc_csa} below NEC 250.122 Table minimum for OCPD {in_a}A."
+source: "BS 7671:2018 Reg 543.1.3 + Table 54.7 / IEC 60364-5-54:2011 + Table 54.2 / NEC 2023 250.122"
+deferred_to_tool: "calc.cpc_adiabatic computes required_csa_mm2 + k_factor_used + selected_standard_csa"

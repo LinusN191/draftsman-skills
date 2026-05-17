@@ -1,0 +1,24 @@
+constraint: motor_starting_vd_limit
+version: 1.0.0
+description: |
+  Motor starting voltage drop check. Severity is WARNING, not error — engineer may resolve
+  with a soft-starter / VFD / star-delta starter rather than upsizing the cable.
+triggered_for: "cascade nodes where load.load_type == 'motor'"
+formula: "checks.motor_starting_vd_pct = checks.vd_segment_pct × load.locked_rotor_multiplier"
+default_lr_multipliers:
+  nema_design_b: 6.0
+  nema_design_c: 5.0
+  iec_aa: 7.0
+  iec_ab: 6.0
+limit_pct: 10.0
+checks:
+  - id: starting_vd_within_limit
+    expression: "checks.motor_starting_vd_pct <= 10.0"
+    severity: warning
+    message: "Motor starting Vd {motor_starting_vd_pct}% at {node_id} exceeds 10% — motor may fail to start under load. Consider soft-starter / VFD / star-delta / upsized cable."
+  - id: lr_multiplier_declared
+    expression: "load.locked_rotor_multiplier > 1.0"
+    severity: error
+    message: "Motor node {node_id} missing locked_rotor_multiplier — must declare LRA per NEMA/IEC class."
+source: "BS 7671:2018 §525.1 + Table 4Ab note 5 / IEC 60364-5-52:2009 §525.1 / NEC 2023 430.6(A)(1) + NEMA MG-1"
+fail_action_default: "warn; engineer decides if soft-starter required (cable upsize NOT forced)"

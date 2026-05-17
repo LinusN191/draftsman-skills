@@ -1,0 +1,19 @@
+constraint: vd_cumulative_within_limit
+version: 1.0.0
+description: |
+  Cumulative voltage drop (sum from source to circuit endpoint up the parent chain) must
+  stay within jurisdictional limits per load type. Per-segment Vd alone is misleading.
+triggered_for: "every cascade node where node_kind != 'service_entrance'"
+formula: "checks.vd_cumulative_pct = checks.vd_segment_pct + parent_node.checks.vd_cumulative_pct"
+limit_lookup_rule: "see electrical/cable-sizing/rules/voltage-drop-targets.yaml"
+checks:
+  - id: cumulative_le_limit
+    expression: "checks.vd_cumulative_pct <= checks.vd_limit_pct"
+    severity: error
+    message: "Cumulative Vd {vd_cumulative_pct}% exceeds {vd_limit_pct}% limit at node {node_id}; upsize cable or shorten run."
+  - id: limit_source_cited
+    expression: "checks.vd_limit_source is not empty"
+    severity: error
+    message: "Vd limit cited without standard/clause reference at node {node_id}."
+source: "BS 7671:2018 App 12 / IEC 60364-5-52:2009 §G / NEC 2023 215.2(A)(1) IN 2"
+deferred_to_tool: "calc.voltage_drop computes vd_segment_pct; cumulative summed by generator"
