@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../../schemas/core/standards-section.schema.json",
+  "clause_ref": "NFPA 70E:2024 §130.2",
+  "section_title": "Electrically Safe Work Condition",
+  "summary": "An electrically safe work condition (ESWC) is established when equipment is de-energized, verified, locked + tagged out, and tested for absence of voltage. Work on equipment that is NOT in an ESWC is energized work and requires a permit + PPE per §130.5.",
+  "key_decisions": [
+    {"id": "presume-energized",  "description": "All electrical work is presumed energized until ESWC is established + verified."},
+    {"id": "loto-required",      "description": "Establishing ESWC requires LOTO per §120 (mechanical isolation, lock + tag application)."},
+    {"id": "voltage-test",       "description": "Absence of voltage must be tested with a properly-rated meter before declaring ESWC."},
+    {"id": "energized-permit",   "description": "Work not in ESWC = energized work = requires signed energized work permit + arc-flash + shock risk assessments."}
+  ],
+  "cross_references": ["NFPA 70E:2024 §120 (LOTO)", "NFPA 70E:2024 §130.5", "NFPA 70E:2024 §130.4"],
+  "notes": "ESWC is the gold standard. The skill notes when ESWC eliminates the need for arc-flash PPE entirely (only verification work requires PPE then).",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Section structure summarised."
+}

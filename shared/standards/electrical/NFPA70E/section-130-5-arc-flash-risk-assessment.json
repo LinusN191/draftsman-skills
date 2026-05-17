@@ -1,0 +1,31 @@
+{
+  "$schema": "../../../../schemas/core/standards-section.schema.json",
+  "clause_ref": "NFPA 70E:2024 §130.5",
+  "section_title": "Arc Flash Risk Assessment",
+  "summary": "The structured process by which an electrical worker (or the work-planning engineer) determines whether arc-flash PPE is required and which category. Drives every arc-flash label + every energized work permit. 9 sub-steps from hazard identification through PPE selection.",
+  "key_decisions": [
+    {"id": "identify-hazards",          "description": "Identify whether arc-flash hazard could exist at the work location."},
+    {"id": "estimate-likelihood",       "description": "Use Table 130.5(C) to determine if the task could plausibly cause an arc-flash incident."},
+    {"id": "determine-pp-category",     "description": "Either (a) compute incident energy + look up category in Table 130.7(C)(15)(c), or (b) use the table method via Table 130.7(C)(15)(a)/(b) if no incident-energy analysis."},
+    {"id": "document-results",          "description": "Document the assessment process + results per §130.5(F)."},
+    {"id": "label-equipment",           "description": "Apply arc-flash label per Table 130.5(H) where mandatory."},
+    {"id": "select-ppe",                "description": "PPE category 1-4 (or specialised >40 cal/cm² treatment) determined."},
+    {"id": "issue-ewp-if-needed",       "description": "Energized Work Permit required when work above the threshold; signed by qualified supervisor."},
+    {"id": "verify-loto-if-deenergized","description": "If work is performed de-energized, verify Lockout/Tagout per §120."},
+    {"id": "execute-with-procedures",   "description": "Conduct work per the determined procedures + verified PPE."}
+  ],
+  "cross_references": [
+    "NFPA 70E:2024 Table 130.5(C)",
+    "NFPA 70E:2024 Table 130.5(G)",
+    "NFPA 70E:2024 Table 130.5(H)",
+    "NFPA 70E:2024 Table 130.7(C)(15)(a)",
+    "NFPA 70E:2024 Table 130.7(C)(15)(b)",
+    "NFPA 70E:2024 Table 130.7(C)(15)(c)",
+    "NFPA 70E:2024 §130.7"
+  ],
+  "notes": "This section is the heart of the standard. The arc-flash skill (next sprint) follows this 9-step decision flow when computing PPE recommendations.",
+  "transcribed_at": "2026-05-17",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "license_note": "Section structure summarised; full normative text is © NFPA."
+}
