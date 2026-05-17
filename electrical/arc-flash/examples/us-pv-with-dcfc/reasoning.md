@@ -37,7 +37,7 @@ All three AC nodes fall back to **Lee 1982** because IEEE 1584:2018 coefficients
 
 ### DCFC-1 (480V AC, VCB)
 - DCFC input: medium fault current (18 kA)
-- Lee 1982: IE ≈ 8 cal/cm² → **PPE Category 2** (boundary between Cat 1 and Cat 2)
+- Lee 1982: IE ≈ 8 cal/cm² → **PPE Category 3** (lower bound of Cat 3 per Table 130.7(C)(15)(c): 8 ≤ IE < 25)
 - AFB = 1250 mm
 - Same shock-approach row
 
@@ -93,9 +93,9 @@ The IEEE 1584 electrode concept (VCB, HCB, etc.) does not apply to DC. The IR an
 | Node Type | Table | Row | Limited Movable | Limited Fixed | Restricted |
 |-----------|-------|-----|-----------------|---------------|-----------|
 | **AC** (SERVICE, PV-INV, DCFC) | 130.4(C)(a) | 151V–750V | 3050 mm | 1070 mm | 305 mm |
-| **DC** (PV combiner, DCFC out) | 130.4(C)(b) | 301V–1 kV | null | 1070 mm | 305 mm |
+| **DC** (PV combiner, DCFC out) | 130.4(C)(b) | 301V–1 kV | 3050 mm | 1070 mm | 305 mm |
 
-DC safety boundaries do not include "limited approach movable" because DC arc hazard is different (arc sticks, doesn't release).
+DC safety boundaries include "limited approach movable" — the DC table 130.4(C)(b) row "301V to 1 kV" has the same numeric value (3050mm) as the equivalent AC row.
 
 ## Why both methods fall back on their respective chains
 

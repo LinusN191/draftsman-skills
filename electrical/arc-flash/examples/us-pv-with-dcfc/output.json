@@ -128,9 +128,7 @@
       "arc_flash": {
         "method_applied": "dc_doan",
         "method_fallback_trail": [
-          {"method": "ieee1584_2018", "result": "skipped", "reason": "AC method, current_type=dc"},
-          {"method": "ieee1584_2002", "result": "skipped", "reason": "AC method, current_type=dc"},
-          {"method": "dc_doan", "result": "applied", "reason": "DC-specific method per NFPA 70E Annex D for PV combiner (low fault current < 1 kA)"}
+          {"method": "dc_doan", "result": "applied", "reason": "DC path (current_type=dc, voltage_v <= 1000); IEEE 1584 not applicable to DC physics"}
         ],
         "arcing_current_a": 0.5,
         "incident_energy_cal_per_cm2": 2.0,
@@ -139,7 +137,7 @@
         "ppe_category_source": "computed_from_E"
       },
       "shock_approach": {
-        "limited_approach_movable_mm": null,
+        "limited_approach_movable_mm": 3050,
         "limited_approach_fixed_mm": 1070,
         "restricted_approach_mm": 305,
         "source": "NFPA 70E:2024 Table 130.4(C)(b) — 301V to 1 kV DC row"
@@ -183,7 +181,7 @@
         "arcing_current_a": 16000,
         "incident_energy_cal_per_cm2": 8.0,
         "arc_flash_boundary_mm": 1250,
-        "ppe_category": 2,
+        "ppe_category": 3,
         "ppe_category_source": "computed_from_E"
       },
       "shock_approach": {
@@ -224,9 +222,7 @@
       "arc_flash": {
         "method_applied": "dc_doan",
         "method_fallback_trail": [
-          {"method": "ieee1584_2018", "result": "skipped", "reason": "AC method, current_type=dc"},
-          {"method": "ieee1584_2002", "result": "skipped", "reason": "AC method, current_type=dc"},
-          {"method": "dc_doan", "result": "applied", "reason": "DC-specific method per NFPA 70E Annex D for DCFC output (5 kA, low impedance)"}
+          {"method": "dc_doan", "result": "applied", "reason": "DC path (current_type=dc, voltage_v <= 1000); IEEE 1584 not applicable to DC physics"}
         ],
         "arcing_current_a": 5.0,
         "incident_energy_cal_per_cm2": 6.0,
@@ -235,7 +231,7 @@
         "ppe_category_source": "computed_from_E"
       },
       "shock_approach": {
-        "limited_approach_movable_mm": null,
+        "limited_approach_movable_mm": 3050,
         "limited_approach_fixed_mm": 1070,
         "restricted_approach_mm": 305,
         "source": "NFPA 70E:2024 Table 130.4(C)(b) — 301V to 1 kV DC row"
@@ -293,7 +289,7 @@
       { "title": "Per-Node Arc-Flash Results", "summary": "SERVICE-480V: Lee 1982 → IE 12 cal/cm² (Cat 3) / AFB 1800mm. PV-INV-1: IE 7 (Cat 2) / AFB 1100mm. DCFC-1: IE 8 (Cat 2) / AFB 1250mm. PV-STR-1 (DC): dc_doan → IE 2 (Cat 1) / AFB 450mm (high impedance PV source). DCFC-OUT (DC): IE 6 (Cat 2) / AFB 850mm (lower impedance contactor).", "decisions": [
         { "label": "SERVICE Cat 3", "summary": "IE 12 in 8–25 range", "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "code_clause": "130.7(C)(15)(c)", "inputs": { "ie": 12.0, "category": 3 } },
         { "label": "PV-INV Cat 2", "summary": "IE 7 in 4–8 range", "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "code_clause": "130.7(C)(15)(c)", "inputs": { "ie": 7.0, "category": 2 } },
-        { "label": "DCFC-AC Cat 2", "summary": "IE 8 in 4–8 range (boundary)", "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "code_clause": "130.7(C)(15)(c)", "inputs": { "ie": 8.0, "category": 2 } },
+        { "label": "DCFC-AC Cat 3", "summary": "IE 8.0 in 8-25 range → Cat 3 (lower bound per Table 130.7(C)(15)(c))", "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "code_clause": "130.7(C)(15)(c)", "inputs": { "ie": 8.0, "category": 3 } },
         { "label": "PV-STR DC Cat 1", "summary": "IE 2 in 0.4–4 range; very low due to high source impedance", "rule": "NFPA 70E:2024 Annex D dc_doan", "code_clause": "Doan 2007", "inputs": { "ie": 2.0, "category": 1, "method": "dc_doan" } },
         { "label": "DCFC-OUT DC Cat 2", "summary": "IE 6 in 4–8 range; contactor arc duration 20 ms", "rule": "NFPA 70E:2024 Annex D dc_doan", "code_clause": "Doan 2007", "inputs": { "ie": 6.0, "category": 2, "method": "dc_doan" } }
       ] },
