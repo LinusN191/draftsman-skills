@@ -1,5 +1,7 @@
 # `draftsman-skills` Upstream Contributions — Work Spec
 
+**Status:** ✅ **COMPLETE** — closed out 2026-05-17. All 5 work items rolled into the sprint sequence that followed (fault-level, arc-flash, cable-sizing, arc-flash-labelling). See verification table at the bottom of this file.
+
 **Repo target:** https://github.com/LinusN191/draftsman-skills
 **Date:** 2026-05-14
 **Author:** Linus + Claude (DraftsMan runtime side)
@@ -906,3 +908,21 @@ invent new contract fields without an issue + decision in the spec.
 This spec is the source of truth for what upstream contributions look
 like. When it's outdated, update this file in the DraftsMan repo first,
 then implement.
+
+---
+
+## Completion verification — 2026-05-17
+
+All 5 work items landed during the sprint sequence that followed this spec's authoring. Verified against the current `main` branch.
+
+| WI | Title | Status | Evidence on disk |
+|----|-------|--------|------------------|
+| 1 | `inputs.json` per skill | ✅ done | `shared/schemas/core/inputs.schema.json`, `shared/validation/validators.json`, `electrical/lighting-layout/inputs.json`, manifest declares `inputs_path: "inputs.json"` |
+| 2 | Rationale block in IR | ✅ done | `shared/schemas/core/rationale.schema.json`, lighting-layout `eval-08-rationale-block.yaml`, all 3 lighting-layout example outputs carry `rationale` block, pattern adopted by every skill shipped since |
+| 3 | Calculation executor declarations | ✅ done | `shared/schemas/core/calculation.schema.json` with `executor: inline\|tool` + conditional validation; tool-mode calcs shipped for electrode-resistance, cpc-adiabatic, voltage-drop, fill-factor, cable-ampacity, iec60909-cascade, arc-flash-incident-energy, render-label, diversity-factor (9 total); `shared/calculations/REQUIRED_TOOLS.json` enumerates required Python implementations |
+| 4 | Cross-drawing intent declarations | ✅ done | `shared/schemas/core/intent.schema.json`, `ARCHITECTURE.md` §"Cross-drawing intents" (line 208+), `electrical/lighting-layout/schemas/lighting-layout-intent.schema.json`, every shipped skill declares `produces_intent` + `consumes_intents` in its manifest |
+| 5 | Standardized evals + runner-config | ✅ done | `shared/schemas/core/eval.schema.json`, `electrical/lighting-layout/evals/runner-config.json`, 8 evals all conforming to WI5 category schema, `SKILLS_STATUS.md` tracks "Evals: N/M" column, `CONTRIBUTING.md` §"Authoring evals" gives authoring guide |
+
+Six skills now in `beta` or `production` (lighting-layout, sld, db-layout, earthing, arc-flash, arc-flash-labelling), all following the WI1–WI5 patterns end-to-end.
+
+This spec is now retired. Future contract changes happen on `ARCHITECTURE.md` directly; new work items get their own spec files.
