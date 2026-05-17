@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/cable-sizing/schemas/cable-sizing-intent.schema.json",
+  "title": "Cable Sizing Intent (downstream slim subset)",
+  "description": "Stable subset of the cable-sizing IR consumed by cable-schedule (formal deliverable), riser (LV riser drawings), and cable-containment (tray/conduit fill). Forward-compat: optional fields may be added freely; required-field changes require a major intent_version bump.",
+  "type": "object",
+  "required": ["intent_kind", "version", "circuits"],
+  "additionalProperties": false,
+  "properties": {
+    "intent_kind": { "const": "cable-sizing" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "circuits": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["node_id", "designation", "phase_csa", "cpc_csa", "material", "insulation", "cable_type", "parallel_count", "length_m", "installation_method"],
+        "additionalProperties": false,
+        "properties": {
+          "node_id": { "type": "string" },
+          "parent_node_id": { "type": ["string", "null"] },
+          "designation": { "type": "string" },
+          "phase_csa": { "oneOf": [{ "type": "number" }, { "type": "string" }] },
+          "cpc_csa": { "oneOf": [{ "type": "number" }, { "type": "string" }] },
+          "material": { "enum": ["copper", "aluminium"] },
+          "insulation": { "enum": ["pvc_70", "xlpe_90", "epr_90", "thermosetting_90", "mineral_60", "mineral_105", "thwn_75", "thhn_90", "xhhw2_90"] },
+          "cable_type": { "type": "string" },
+          "parallel_count": { "type": "integer", "minimum": 1, "maximum": 6 },
+          "cable_od_mm": { "type": "number", "exclusiveMinimum": 0 },
+          "weight_kg_per_m": { "type": "number", "exclusiveMinimum": 0 },
+          "length_m": { "type": "number", "exclusiveMinimum": 0 },
+          "installation_method": { "type": "string" },
+          "phases": { "enum": ["single", "three", "three_plus_n"] },
+          "ib_a": { "type": "number", "minimum": 0 },
+          "in_a": { "type": "number", "minimum": 0 }
+        }
+      }
+    },
+    "produced_by_skill_version": { "type": "string" },
+    "tool_call_pending": { "type": "boolean", "description": "true if any cascade node was sized with deferred calc tools" }
+  }
+}
