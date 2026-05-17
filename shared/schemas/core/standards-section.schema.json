@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "shared/schemas/core/standards-section.schema.json",
+  "title": "Standards Section File",
+  "description": "Structured representation of a section/article from an electrical standard, summarising its content.",
+  "type": "object",
+  "required": ["clause_ref", "section_title", "summary", "key_decisions", "transcribed_at", "verification_status"],
+  "additionalProperties": false,
+  "properties": {
+    "clause_ref":           { "type": "string", "minLength": 5 },
+    "section_title":        { "type": "string", "minLength": 3 },
+    "summary":              { "type": "string", "minLength": 20 },
+    "key_decisions": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": ["id", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "id":          { "type": "string", "pattern": "^[a-z][a-z0-9_-]*$" },
+          "description": { "type": "string" },
+          "applies_to":  { "type": "string" }
+        }
+      }
+    },
+    "cross_references":     { "type": "array", "items": { "type": "string" } },
+    "notes":                { "type": "string" },
+    "transcribed_at":       { "type": "string", "format": "date" },
+    "transcribed_by":       { "type": "string" },
+    "verification_status":  { "enum": ["verified-against-source", "pending-verification", "deprecated"] },
+    "license_note":         { "type": "string" }
+  }
+}

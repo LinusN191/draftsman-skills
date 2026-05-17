@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "shared/schemas/core/standards-formula.schema.json",
+  "title": "Standards Formula File",
+  "description": "Structured representation of a formula transcribed from an electrical standard. Used by shared/standards/electrical/<STANDARD>/ formula files.",
+  "type": "object",
+  "required": ["clause_ref", "formula_id", "formula_latex", "symbols", "applicable_range", "units", "transcribed_at", "verification_status"],
+  "additionalProperties": false,
+  "properties": {
+    "clause_ref":           { "type": "string", "minLength": 5 },
+    "formula_id":           { "type": "string", "pattern": "^[a-z][a-z0-9_-]+$" },
+    "formula_latex":        { "type": "string", "minLength": 3 },
+    "formula_plain_text":   { "type": "string" },
+    "symbols": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["symbol", "meaning", "unit"],
+        "additionalProperties": false,
+        "properties": {
+          "symbol":  { "type": "string" },
+          "meaning": { "type": "string" },
+          "unit":    { "type": "string" }
+        }
+      }
+    },
+    "applicable_range": {
+      "type": "object",
+      "description": "Bounds within which the formula is valid",
+      "additionalProperties": true
+    },
+    "units": {
+      "type": "object",
+      "description": "Output units. Keys are output names.",
+      "additionalProperties": { "type": "string" }
+    },
+    "worked_examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["input", "expected_output", "source"],
+        "additionalProperties": false,
+        "properties": {
+          "input":           { "type": "object", "additionalProperties": true },
+          "expected_output": { "type": "object", "additionalProperties": true },
+          "source":          { "type": "string", "minLength": 5 }
+        }
+      }
+    },
+    "coefficients": {
+      "type": "object",
+      "description": "Empirical coefficients keyed by their identifier. Optional — only present when the formula has tabulated constants.",
+      "additionalProperties": true
+    },
+    "notes":                { "type": "string" },
+    "transcribed_at":       { "type": "string", "format": "date" },
+    "transcribed_by":       { "type": "string" },
+    "verification_status":  { "enum": ["verified-against-source", "pending-verification", "deprecated"] },
+    "license_note":         { "type": "string" }
+  }
+}
