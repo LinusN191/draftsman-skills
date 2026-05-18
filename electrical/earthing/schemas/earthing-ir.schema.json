@@ -42,8 +42,8 @@
       }
     },
     "jurisdiction": {
-      "enum": ["GB", "EU", "INT", "US"],
-      "description": "Selects which standards files were loaded at generation time"
+      "enum": ["GB", "EU", "INT", "KE", "US"],
+      "description": "Selects which standards files were loaded at generation time. KE (Kenya, KS 1700:2018) routes through BS 7671 Table 41.2 Zs_max + IEC 60364-5-52 cable impedance per KS 1700 Annex E."
     },
     "earthing_system": {
       "type": "object",
@@ -155,6 +155,46 @@
     "drawing_notes":     { "type": "array", "items": { "type": "string" } },
     "drawn_as_symbols":  { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" }, "description": "Roll-up of IEC 60617 symbol_ids — every entry must resolve in IEC60617/symbol-index.json" },
     "flags":             { "type": "array", "items": { "type": "string" } },
+    "tool_call_pending_for_zs": {
+      "type": "boolean",
+      "description": "WI3 deferral flag. True until calc.zs_loop_impedance runtime tool ships. When true, circuits[].zs_ohm and zs_max_ohm are LLM-computed estimates with disclaimer in flags. When false or absent, values are tool-computed."
+    },
+    "zs_calc_tool_input": {
+      "type": "object",
+      "description": "The payload that would be sent to calc.zs_loop_impedance once runtime ships. Captured at generation time so the runtime can replay deterministically without re-prompting the LLM.",
+      "required": ["jurisdiction", "supply", "circuits", "operating_temperature_c"],
+      "properties": {
+        "jurisdiction": { "enum": ["GB", "EU", "INT", "KE", "US"] },
+        "supply": {
+          "type": "object",
+          "required": ["ze_declared_ohm", "system_type", "voltage_phase_to_earth_v", "frequency_hz"],
+          "properties": {
+            "ze_declared_ohm":          { "type": "number", "minimum": 0 },
+            "system_type":              { "enum": ["TN-S", "TN-C-S", "TT"] },
+            "voltage_phase_to_earth_v": { "type": "integer", "enum": [120, 230, 240, 277] },
+            "frequency_hz":             { "type": "integer", "enum": [50, 60] }
+          }
+        },
+        "circuits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["circuit_id", "cable_material", "cable_insulation", "line_csa_mm2_or_awg", "cpc_csa_mm2_or_awg", "route_length_m", "device_type", "device_rating_a"],
+            "properties": {
+              "circuit_id":             { "type": "string" },
+              "cable_material":         { "enum": ["Cu", "Al"] },
+              "cable_insulation":       { "enum": ["PVC", "XLPE"] },
+              "line_csa_mm2_or_awg":    { "type": "string" },
+              "cpc_csa_mm2_or_awg":     { "type": "string" },
+              "route_length_m":         { "type": "number", "exclusiveMinimum": 0 },
+              "device_type":            { "enum": ["MCB_B", "MCB_C", "MCB_D", "BS_88_fuse", "RCBO", "GFCI"] },
+              "device_rating_a":        { "type": "integer", "minimum": 1 }
+            }
+          }
+        },
+        "operating_temperature_c":      { "type": "integer", "minimum": 20, "maximum": 120 }
+      }
+    },
     "rationale":         { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
   }
 }
