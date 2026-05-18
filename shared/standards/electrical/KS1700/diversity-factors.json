@@ -1,0 +1,256 @@
+{
+  "clause_ref": "KS 1700 2018:Appendix-1",
+  "transcribed_at": "2026-05-18",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-from-bs7671-derivative-needs-source-verification",
+  "_verification_note": "Drafted by structural derivation from BS 7671:2018+A2 (KS 1700:2018 adopts BS 7671 substantially per Annex E). Engineering values reproduced verbatim. Final verification against the published KS 1700:2018 PDF required.",
+  "_ks_adoption_pathway": "KS 1700:2018 Annex E — adopts BS 7671:2018+A2 Appendix 1 verbatim",
+  "_title": "KS 1700:2018 Appendix 1 — Diversity factors for maximum demand calculation",
+  "_basis": "IET On-Site Guide (OSG) Appendix A and IET Guidance Note 1. Used to calculate maximum demand (Ib) for cable sizing and consumer's main switch rating.",
+  "_note": "Diversity is not a regulatory requirement — it is engineering practice for sizing. The designer is responsible for selecting appropriate diversity. Conservative estimates avoid undersizing; aggressive diversity reduces capital cost but risks future overload.",
+  "principle": {
+    "definition": "Diversity acknowledges that not all loads operate simultaneously at full rated power. The maximum demand on the supply is less than the sum of all connected loads.",
+    "formula": "Maximum Demand = Σ (Connected Load × Diversity Factor)",
+    "application_point": "Apply diversity to determine Ib (design current) at each distribution level — from final circuits to submains to main intake.",
+    "compound_application": "Diversity is applied at each cascade level. Total intake demand has diversity applied at submain level AND at intake level."
+  },
+  "engine_lookup": {
+    "_purpose": "Flat key/value form for runtime engine consumption — same numbers as the prose fields below, machine-readable. Source of truth for calc.diversity_factor's GB/UK jurisdiction branch.",
+    "_reference": "IET On-Site Guide Appendix A — Table A1 (domestic); IET Guidance Note 1 Section 4 (blocks); BCO/IET Wiring Matters (commercial); HTM 06-01 (healthcare); IET Code of Practice for EV (4th Ed)",
+    "by_load_type": {
+      "lighting":                       {"diversity_pct": 66,  "first_n_a_at_100pct": null, "remainder_pct": null},
+      "socket_outlet_ring_main":        {"diversity_pct": null,"first_n_a_at_100pct": 30,   "remainder_pct": null, "_note": "Inherent diversity via 32A RFC design — count first 30A at 100%"},
+      "socket_outlet_radial_first":     {"diversity_pct": 100, "first_n_a_at_100pct": null, "remainder_pct": null},
+      "socket_outlet_radial_subsequent":{"diversity_pct": 40,  "first_n_a_at_100pct": null, "remainder_pct": null},
+      "cooker":                         {"diversity_pct": null,"first_n_a_at_100pct": 10,   "remainder_pct": 30,   "additional_a_per_socket": 5},
+      "instantaneous_water_heater":     {"diversity_pct": 100, "first_n_a_at_100pct": null, "remainder_pct": null},
+      "storage_water_heater":           {"diversity_pct": 100, "first_n_a_at_100pct": null, "remainder_pct": null},
+      "electric_shower":                {"diversity_pct": 100, "first_n_a_at_100pct": null, "remainder_pct": null},
+      "fixed_space_heating_first":      {"diversity_pct": 100, "first_n_a_at_100pct": null, "remainder_pct": null},
+      "fixed_space_heating_subsequent": {"diversity_pct": 75,  "first_n_a_at_100pct": null, "remainder_pct": null},
+      "office_small_power_workstation": {"diversity_pct": 66,  "load_w_per_workstation": 200},
+      "office_lighting":                {"diversity_pct": 100, "_note": "Installed capacity must support full operation; daylight/presence saves energy not demand"},
+      "office_hvac_vav":                {"diversity_pct": 85},
+      "office_lift_single":             {"diversity_pct": 100},
+      "office_lift_two":                {"diversity_pct": 80},
+      "office_lift_three_or_more":      {"diversity_pct": 70},
+      "industrial_motor_duty":          {"diversity_pct": 100, "_note": "Each motor at FLC; duty/standby pair counts only duty"},
+      "industrial_motor_n_plus_1":      {"diversity_pct": 100, "_note": "n × FLC; the +1 spare not coincident"},
+      "retail_lighting":                {"diversity_pct": 100},
+      "retail_small_power":             {"diversity_pct": 70},
+      "retail_refrigeration":           {"diversity_pct": 100},
+      "education_classroom_lighting":   {"diversity_pct": 100},
+      "education_ict_workstation":      {"diversity_pct": 75, "load_w_per_pupil": 100},
+      "education_kitchen":              {"diversity_pct": 60},
+      "healthcare_general_ward":        {"diversity_pct": 75, "load_kva_per_bed": 2},
+      "healthcare_operating_theatre":   {"diversity_pct": 100},
+      "ev_charging_domestic_single":    {"diversity_pct": 100},
+      "ev_rapid_dc":                    {"diversity_pct": 100, "_note": "High power short bursts; limited diversity"}
+    },
+    "by_occupancy": {
+      "dwelling_single":   {"applies_load_types": ["lighting","socket_outlet_ring_main","socket_outlet_radial_first","socket_outlet_radial_subsequent","cooker","instantaneous_water_heater","storage_water_heater","electric_shower","fixed_space_heating_first","fixed_space_heating_subsequent"], "future_expansion_pct_default": 25.0},
+      "dwelling_multi":    {"see_section": "block_of_flats_diversity", "future_expansion_pct_default": 25.0, "_note": "Apply per-dwelling diversity from block_of_flats_diversity.table, scaled by dwelling count"},
+      "office":            {"applies_load_types": ["office_small_power_workstation","office_lighting","office_hvac_vav","office_lift_single","office_lift_two","office_lift_three_or_more"], "design_density_w_per_m2_range": [65, 100], "future_expansion_pct_default": 25.0},
+      "industrial":        {"applies_load_types": ["industrial_motor_duty","industrial_motor_n_plus_1"], "future_expansion_pct_default": 30.0, "_note": "Substation-level diversity from measured history, not per-circuit"},
+      "retail_general":    {"applies_load_types": ["retail_lighting","retail_small_power","retail_refrigeration"], "future_expansion_pct_default": 20.0},
+      "retail_supermarket":{"applies_load_types": ["retail_refrigeration"], "refrigeration_pct_of_total_demand_range": [40, 60], "future_expansion_pct_default": 20.0},
+      "education":         {"applies_load_types": ["education_classroom_lighting","education_ict_workstation","education_kitchen"], "future_expansion_pct_default": 25.0},
+      "healthcare":        {"applies_load_types": ["healthcare_general_ward","healthcare_operating_theatre"], "future_expansion_pct_default": 30.0, "_note": "Life-safety + critical care never subject to diversity reduction"},
+      "ev_charging_commercial": {
+        "see_section": "ev_charging_diversity.commercial_workplace_chargers",
+        "table_by_charger_count": {
+          "5":  {"diversity_pct": 80},
+          "10": {"diversity_pct": 60},
+          "20": {"diversity_pct": 40},
+          "50": {"diversity_pct": 30}
+        },
+        "with_dlm": {"diversity_pct_source": "configured_dlm_ceiling"},
+        "without_dlm": {"diversity_pct": 100, "_note": "Sum of all chargers, no diversity"}
+      }
+    },
+    "block_of_flats_table_engine": {
+      "_reference": "IET Guidance Note 1, Section 4",
+      "rows": [
+        {"dwelling_count_from": 2,  "dwelling_count_to": 2,  "diversity_pct": 75},
+        {"dwelling_count_from": 3,  "dwelling_count_to": 3,  "diversity_pct": 70},
+        {"dwelling_count_from": 4,  "dwelling_count_to": 4,  "diversity_pct": 65},
+        {"dwelling_count_from": 5,  "dwelling_count_to": 5,  "diversity_pct": 60},
+        {"dwelling_count_from": 6,  "dwelling_count_to": 10, "diversity_pct": 55},
+        {"dwelling_count_from": 11, "dwelling_count_to": 20, "diversity_pct": 50},
+        {"dwelling_count_from": 21, "dwelling_count_to": 50, "diversity_pct": 45},
+        {"dwelling_count_from": 51, "dwelling_count_to": null,"diversity_pct": 40}
+      ]
+    },
+    "future_expansion_pct_default": 25.0,
+    "_reference_secondary": "IET On-Site Guide Appendix A — Table A1; IET Guidance Note 1 Section 4"
+  },
+  "domestic_diversity_OSG": {
+    "_reference": "IET On-Site Guide Appendix A — Table A1",
+    "_note": "Applied to consumer unit (final distribution) for single dwelling. Different rules for blocks of dwellings.",
+    "lighting": {
+      "diversity_percent": 66,
+      "formula": "66% of total connected lighting load",
+      "rationale": "Not all lighting on simultaneously even at peak."
+    },
+    "socket_outlet_ring_main": {
+      "_note": "BS 1363 socket ring final circuit (RFC) is itself protected at 32A — inherent diversity in the circuit design. Multiple sockets supply many appliances but ring is sized for 32A maximum.",
+      "diversity_per_RFC_A": 30
+    },
+    "socket_outlet_radial": {
+      "100_percent_first": "First circuit: 100% of rating",
+      "subsequent_circuits": "40% of rating each"
+    },
+    "cooker": {
+      "first_10A": "100%",
+      "remainder_percent": 30,
+      "socket_at_cooker_unit": "+ 5A if a socket is incorporated in the control unit",
+      "worked_example": "30A connected cooker, no socket: 10 + (30-10)×0.3 = 16A diversified"
+    },
+    "instantaneous_water_heater": {
+      "diversity_percent": 100,
+      "_note": "Treated at full load — high consumption when in use, no other simultaneous heaters typically."
+    },
+    "storage_water_heater": {
+      "diversity_percent": 100,
+      "_note": "Time-controlled, but assume full rating coincident with peak."
+    },
+    "electric_shower": {
+      "diversity_percent": 100,
+      "_note": "Treat as continuous load when in use. Critical to assume coincident with cooking peak."
+    },
+    "fixed_space_heating": {
+      "first_unit": "100%",
+      "subsequent_units_percent": 75
+    }
+  },
+  "block_of_flats_diversity": {
+    "_reference": "IET Guidance Note 1, Section 4",
+    "_note": "Applied to landlord submain serving multiple dwellings. Diversity increases with number of dwellings (more diversity, lower combined demand).",
+    "table": {
+      "2_dwellings_percent": 75,
+      "3_dwellings_percent": 70,
+      "4_dwellings_percent": 65,
+      "5_dwellings_percent": 60,
+      "6_to_10_dwellings_percent": 55,
+      "11_to_20_dwellings_percent": 50,
+      "21_to_50_dwellings_percent": 45,
+      "above_50_dwellings_percent": 40
+    },
+    "per_dwelling_assumption_kVA": "Typically 5 kVA per single-bed flat, 7-8 kVA per family-sized flat. Verify against actual EV charging and induction cooking load."
+  },
+  "commercial_office_diversity": {
+    "_reference": "BCO Specification, IET Wiring Matters",
+    "_note": "Office values are guidance — depend heavily on operational use. Use measured data from similar buildings where available.",
+    "small_power_per_workstation": {
+      "load_w": 200,
+      "typical_density_m2_per_workstation": "8 to 12",
+      "diversity_percent": 66,
+      "rationale": "Not all workstations active simultaneously. PC monitors variable, hot-desking patterns."
+    },
+    "lighting": {
+      "diversity_percent": "100 — assume full load on during occupied hours",
+      "_note": "Daylight harvesting and presence detection reduce energy consumption but the installed capacity must support full operation."
+    },
+    "hvac_per_floor_VAV": {
+      "diversity_percent": 85,
+      "_note": "Variable air volume systems — diversity arises from zone-by-zone load variation."
+    },
+    "lifts": {
+      "single_lift_percent": 100,
+      "two_lifts_percent": 80,
+      "three_or_more_percent": "Apply 0.7× to total rated load",
+      "_note": "Lifts have high inrush — consider both running diversity AND starting current for cable sizing."
+    },
+    "general_office_aggregate": {
+      "_basis": "Total floor area",
+      "design_density_W_per_m2": "65 to 100 typical (lighting + small power + IT)",
+      "_note": "Use lower values for tech-light occupancies (call centres), higher for design studios with high-spec workstations."
+    }
+  },
+  "industrial_diversity": {
+    "_note": "Industrial loads are highly site-specific. Process equipment is typically considered at 100% with separate analysis of run/spare arrangements.",
+    "rule_of_thumb": "Apply diversity at the SUBSTATION level based on demand history, not at individual circuit level. Each motor or process is sized at its own rating.",
+    "motor_loads": {
+      "single_motor": "100% of FLC at design point",
+      "duty_standby_pair": "100% of one motor (the duty one)",
+      "n_plus_1_redundancy": "n × FLC — the +1 is spare, not coincident",
+      "_note": "Inrush current is separate consideration — sized for steady state, but protective devices must accept starting transient."
+    }
+  },
+  "retail_diversity": {
+    "general_retail": {
+      "lighting_percent": 100,
+      "small_power_percent": 70,
+      "refrigeration_percent": 100,
+      "tills_per_unit_kVA": 0.5,
+      "_note": "Retail lighting often runs 100% during opening — diversity does not reduce installed capacity."
+    },
+    "food_retail_supermarket": {
+      "refrigeration_dominant": "Refrigeration represents 40-60% of total demand. Assume 100% diversity on refrigeration plant.",
+      "bakery_ovens": "Assume staggered operation — apply 70% diversity on multiple ovens"
+    }
+  },
+  "education_diversity": {
+    "_reference": "Building Bulletin 87",
+    "classroom_lighting": "100%",
+    "ICT_workstations_per_pupil_w": 100,
+    "ICT_diversity_percent": 75,
+    "kitchen_loads": "Apply 60% for primary cooking equipment (assumed staggered)",
+    "swimming_pool_filtration": "100% (continuous)"
+  },
+  "healthcare_diversity": {
+    "_reference": "HTM 06-01",
+    "general_wards_per_bed_kVA": 2,
+    "ward_diversity_percent": 75,
+    "operating_theatre_essential_kVA": "15 to 25 per theatre",
+    "operating_theatre_diversity": "100% — coincident operation possible",
+    "imaging_MRI": "Specialist supply — 60 to 120 kVA typically, dedicated transformer often required",
+    "specialist_areas": "Pathology, sterile services, kitchens all require dedicated load assessment"
+  },
+  "ev_charging_diversity": {
+    "_reference": "IET Code of Practice for EV Charging Equipment Installation (4th Ed)",
+    "domestic_single_charger": "100% of rated current — Mode 3 chargers typically 7.4 kW (32A)",
+    "commercial_workplace_chargers": {
+      "5_chargers_percent": 80,
+      "10_chargers_percent": 60,
+      "20_chargers_percent": 40,
+      "50_chargers_percent": 30,
+      "_note": "Diversity increases significantly with quantity due to staggered arrival/departure. Use DLM (Dynamic Load Management) to enforce diversity dynamically."
+    },
+    "rapid_DC_chargers": "100% — high power, used in short bursts. Limited diversity even with multiple units.",
+    "_note_DLM": "Dynamic Load Management systems actively limit total demand. With DLM, design Ib = configured DLM ceiling. Without DLM, design Ib = sum of all chargers (no diversity allowed)."
+  },
+  "compound_diversity_example": {
+    "description": "10-storey office, 1000m² per floor, calculate intake demand",
+    "per_floor_loads": {
+      "lighting_w_per_m2": 8,
+      "small_power_w_per_m2": 25,
+      "hvac_w_per_m2": 35,
+      "lighting_diversified_kw": "8 × 1000 × 1.0 / 1000 = 8 kW",
+      "small_power_diversified_kw": "25 × 1000 × 0.66 / 1000 = 16.5 kW",
+      "hvac_diversified_kw": "35 × 1000 × 0.85 / 1000 = 29.75 kW",
+      "floor_subtotal_kw": 54.25
+    },
+    "submain_per_floor": {
+      "demand_kw": 54.25,
+      "design_kw_for_sizing": "54.25 × 1.0 = 54.25 kW",
+      "Ib_3ph_400V_PF_0.95": "54.25 / (√3 × 0.4 × 0.95) = 82.4 A",
+      "select": "Use 100A submain breaker with 35mm² XLPE/SWA"
+    },
+    "intake_for_10_floors": {
+      "sum_of_floor_demands_kw": 542.5,
+      "intake_diversity": "Apply 80% — not every floor simultaneously peak",
+      "diversified_kw": "542.5 × 0.80 = 434 kW",
+      "common_services_kw": "75 (lifts, plantroom, landlord lighting)",
+      "total_intake_kva_with_PF_0.95": "509 / 0.95 = 536 kVA",
+      "select": "Order 800 kVA transformer with 25% growth headroom = 670 kVA design"
+    }
+  },
+  "design_judgement_warnings": [
+    "Diversity reduces capacity. Under-applied diversity = oversized, over-cost. Over-applied diversity = supply failures, expensive retrofit.",
+    "Modern offices have higher IT loads than OSG values suggest — multiple monitors, docking stations. Treat 200W/workstation as a floor.",
+    "EV charging is changing demand profiles drastically — without DLM, capacity must support sum of chargers.",
+    "When in doubt, design for the present plus 25-50% growth allowance. Building lives are 50+ years.",
+    "Validate against measured demand on completed projects — refine the firm's diversity library over time."
+  ]
+}
