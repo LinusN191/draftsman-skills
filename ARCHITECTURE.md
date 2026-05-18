@@ -301,6 +301,21 @@ producer schemas exist. Adding a new `consumes_intents` entry referencing a
 not-yet-authored producer is fine — the runtime treats the missing producer
 as an absent intent and the consumer skill flags the gap per its prompt.
 
+### Worked example pattern (since 2026-05-18)
+
+The `electrical/earthing` skill (v1.3+) consumes `db-layout` intents in all 4 worked examples. Each pair demonstrates the WI4 contract:
+
+| Downstream (earthing) | Upstream (db-layout) | Pattern |
+|---|---|---|
+| KE Nairobi industrial TN-S | KE Nairobi industrial 100A TPN | Same scenario; full circuit alignment (C01-C08); built in paired v1.3 sprint |
+| UK dwelling TN-C-S | UK domestic consumer unit | Domestic pairing; 6-circuit alignment (C01-C06) |
+| INT commercial earthing | INT commercial TPN MSB | Cross-domain pairing (previously rural TT consumer + commercial TPN producer; v1.3 re-anchored to commercial MSB scenario); 4-feeder alignment (F01-F04) |
+| US commercial NEC | US strip mall panelboard | NEC commercial pairing; 4-circuit alignment (C01-C04) with AWG cable conventions |
+
+The pattern is generalizable: any consumer skill that declares `consumes_intents` populates `meta.consumed_intents[]` + carries `consumed_intent_path` in input.json + aligns its derived fields to the upstream intent.
+
+Future consumers (cable-sizing, fault-level, arc-flash) will follow this pattern when their respective minor-version sprints add db-layout intent consumption.
+
 ## Contribution guide
 
 See `CONTRIBUTING.md` for how to add a new skill, update standards values,

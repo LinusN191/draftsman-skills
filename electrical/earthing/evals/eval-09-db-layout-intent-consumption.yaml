@@ -1,0 +1,50 @@
+name: eval-09-db-layout-intent-consumption
+skill: earthing
+description: |
+  Verifies the v1.3 cross-skill intent consumption pattern across all 4 worked examples.
+  Each earthing example carries consumed_intent_path in input.json + meta.consumed_intents
+  in output.json with db-layout provenance entry. Cross-file circuit_id consistency enforced:
+  earthing circuits MUST be a subset of upstream db-layout intent circuits.
+category: skill_specific
+input_fixtures:
+  - ../examples/ke-nairobi-industrial-tn-s/input.json
+  - ../examples/uk-dwelling-tn-cs/input.json
+  - ../examples/intl-rural-tt/input.json
+  - ../examples/us-commercial-nec/input.json
+expected_output_fixtures:
+  - ../examples/ke-nairobi-industrial-tn-s/output.json
+  - ../examples/uk-dwelling-tn-cs/output.json
+  - ../examples/intl-rural-tt/output.json
+  - ../examples/us-commercial-nec/output.json
+checks:
+  - assertion: All 4 earthing examples' input.json contains consumed_intent_path
+    description: "v1.3 declaration: every earthing example declares its upstream"
+    severity: critical
+  - assertion: All 4 earthing examples' output.meta.consumed_intents[0].intent_type == "db-layout"
+    description: "Provenance populated with db-layout entry"
+    severity: critical
+  - assertion: All 4 earthing examples' output.meta.consumed_intents[0].intent_version == "1.0.0"
+    description: "Intent schema version pinned to 1.0.0 (schema unchanged)"
+    severity: critical
+  - assertion: All 4 earthing examples' output.meta.consumed_intents[0].produced_by == "electrical/db-layout/v1.1.0"
+    description: "Producing skill version recorded"
+    severity: critical
+  - assertion: Every consumed_intent_path resolves to an existing file
+    description: "Path references valid file in repo"
+    severity: critical
+  - assertion: For KE pair, earthing.circuits[*].circuit_id is subset of db-layout.intent.circuits[*].id
+    description: "Cross-file circuit_id consistency for KE pair"
+    severity: critical
+  - assertion: For UK pair, earthing.circuits[*].circuit_id is subset of db-layout.intent.circuits[*].id
+    description: "Cross-file circuit_id consistency for UK pair"
+    severity: critical
+  - assertion: For INT pair, earthing.circuits[*].circuit_id is subset of db-layout.intent.circuits[*].id
+    description: "Cross-file circuit_id consistency for INT pair (cross-domain — accepts filtering)"
+    severity: critical
+  - assertion: For US pair, earthing.circuits[*].circuit_id is subset of db-layout.intent.circuits[*].id
+    description: "Cross-file circuit_id consistency for US pair"
+    severity: critical
+  - assertion: For each earthing.circuit, breaker_rating_a + breaker_curve match upstream db-layout values exactly
+    description: "Field-level alignment: earthing did not modify upstream-owned data"
+    severity: critical
+expected_flags: []
