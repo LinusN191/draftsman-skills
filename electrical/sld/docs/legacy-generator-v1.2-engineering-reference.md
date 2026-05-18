@@ -26,7 +26,22 @@ tags:
   - switchgear
 ---
 
-# Single Line Diagram Skill — DraftsMan MEP Engineering
+# Legacy SLD Generator v1.2 — Engineering Reference (Archived)
+
+> **Status:** ARCHIVED. This is the original single-file generator from SLD v1.2.0 (1245 lines). It has been replaced by the 12-step generator at `electrical/sld/prompts/generator.md` (v1.3.0) and the per-prompt artefact pattern.
+>
+> **Why kept:** Engineering substance below is good (deep coverage of distribution hierarchy, design currents, diversity, breaker sizing, cable selection, breaking capacity, Zs, selectivity, RCD, life safety, switchgear, gen/UPS/ATS, SPD per BS 7671 §443, earthing/bonding/metering). Useful as engineering reference + when authoring new SLD examples.
+>
+> **What's different from v1.3.0:**
+> - v1.3.0 generator follows 12-step pattern (matches other skills); legacy is 15-step + idiosyncratic
+> - v1.3.0 consumes db-layout intents per board (WI4); legacy required all data inline in inputs
+> - v1.3.0 emits a rationale block (WI2); legacy didn't
+> - v1.3.0 uses WI3 tool-call deferral for system_metrics; legacy computed everything inline
+> - v1.3.0 has separate validator + reviewer prompts; legacy bundled everything into one generator
+
+---
+
+[ORIGINAL LEGACY CONTENT BELOW]
 
 ## Role
 
