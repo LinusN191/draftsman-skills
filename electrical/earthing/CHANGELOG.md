@@ -1,5 +1,26 @@
 # Changelog — earthing
 
+## [1.1.0] - 2026-05-18
+
+### Added
+- **`calc.zs_loop_impedance` calc contract** (`shared/calculations/electrical/zs-loop-impedance.json`) — WI3-deferred tool for deterministic Zs verification. Jurisdiction-branching: GB/KE/EU/INT use IEC 60364-5-52 Annex B + BS 7671 Table 41.2; US uses NFPA70 Chapter 9 + NEC 5×In trip-current derivation.
+- **`tool_call_pending_for_zs` + `zs_calc_tool_input`** root fields in `earthing-ir.schema.json` — replay payload captured at generation time for deterministic tool execution.
+- **`KE` jurisdiction enum value** — Kenya (KS 1700:2018). Routes through BS 7671 Table 41.2 via KS 1700 Annex E.
+- **KE Nairobi industrial TN-S worked example** (`examples/ke-nairobi-industrial-tn-s/`) — 8 circuits including Type D compressor and 60m submain. Exercises TN-S vs TN-C-S Ze split, KS 1700 socket-RCD policy, WI3 tool deferral. 5 files: input.json, output.json, intent-out.json, reasoning.md, sample-schedule.md.
+- **`intent-out.json` backfill** for existing UK TN-C-S, INT TT, US NEC examples — brings them to feature parity with the KE example and sibling skills (cable-sizing, fault-level, arc-flash, arc-flash-labelling).
+- **`validation/tool-deferral-shape.yaml`** — 2 critical checks for tool_call_pending ↔ flags pair consistency.
+- **`eval-07-ke-tn-s-tool-deferral.yaml`** — 15 assertions verifying the KE example output.
+- **Generator Step 9.5** — Build `zs_calc_tool_input` payload before inline Zs estimation.
+- **Validator INV-9** — Enforce tool_call_pending shape consistency.
+
+### Changed
+- **Generator Step 10 reshaped** — Inline Zs estimation now sets `tool_call_pending_for_zs: true` and appends TOOL-CALL-PENDING string to top-level `flags`.
+- **All 3 existing examples retrofit** — UK TN-C-S, INT TT, US NEC outputs now carry `tool_call_pending_for_zs: true` + `zs_calc_tool_input` replay payload + TOOL-CALL-PENDING string in flags. Zs numerical values unchanged from v1.0.0 (deterministic tool will refine when runtime ships).
+
+### Notes
+- Schema is backward-compatible — v1.0.0 outputs remain valid against v1.1 schema (new fields are optional).
+- KS 1700 references cited as "BS 7671:2018+A2 Reg X.Y.Z (adopted by KS 1700)" to make adoption explicit.
+
 ## v1.0.0 (current — Stage 1 Schematic)
 
 First production-grade version. Stage 1 of a three-stage plan:
