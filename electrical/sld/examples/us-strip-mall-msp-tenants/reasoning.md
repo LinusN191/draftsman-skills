@@ -1,5 +1,14 @@
 # Reasoning — US Strip Mall MSP + Tenant Sub-Panels SLD
 
+## Multi-skill consumption (v1.4)
+
+> **v1.4 — multi-skill intent consumption:** This example consumes 3 upstream skill domains:
+> - **db-layout** (4 intents — MSP-A + 3 tenant/common sub-panels) — per-board detail (board IDs, incoming-supply summaries, circuit-level data)
+> - **earthing** (1 intent, system-wide) — at `electrical/earthing/examples/us-commercial-nec/intent-out.json` — NEC 2023 §250 bonding context, `system_type=TN-S` cross-check against SLD `supply_origin.system_type` (match, no INV-11 flag)
+> - **fault-level** (1 intent, system-wide) — at `electrical/fault-level/examples/us-strip-mall-retail/intent-out.json` — provides deterministic `peak_pfc_ka=23.78` kA at transformer secondary per IEC 60909-0:2016 cascade; NEC 2023 §110.9 AIC verification per breaker (MSP-A 25 kA AIC at 1.05× margin against 23.8 kA PFC)
+>
+> `meta.consumed_intents[]` grows from 4 entries (v1.3) to 6 entries (v1.4): 4 db-layout + 1 earthing + 1 fault-level.
+
 > **v1.3 — WI4 multi-board consumption:** This example's `distribution_hierarchy[]` is derived from 4 upstream db-layout intents (1 MSP-A + 3 sub-panels). The SLD skill adopts each board's `db_id` + incoming-supply summary verbatim and extends the picture with cascade structure, selectivity verification, system-wide metrics, SPD assessment, and surfaces multi-board compliance tensions. Board IDs match the upstream 1:1.
 
 ## Site context
