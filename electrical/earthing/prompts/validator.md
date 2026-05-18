@@ -54,11 +54,24 @@ Every `drawn_as_symbols[*].symbol_id` must exist in `shared/standards/electrical
 **INV-8: Rationale presence.**
 `rationale` block must exist at root and contain `chat_summary`, all 8 taxonomy keys, and `decisions` array with ≥3 entries.
 
-**INV-9: Standards citations.**
+**INV-9: Tool deferral shape (NEW in v1.1.0).**
+
+When `tool_call_pending_for_zs: true`:
+- `zs_calc_tool_input` MUST be present and well-formed per the schema in `electrical/earthing/schemas/earthing-ir.schema.json`
+- The top-level `flags` array MUST contain a string matching `^TOOL-CALL-PENDING:calc\.zs_loop_impedance`
+
+When `tool_call_pending_for_zs: false` or absent:
+- The TOOL-CALL-PENDING string MUST NOT be present in `flags`
+- `circuits[].zs_ohm` values must reflect tool output (not LLM estimates)
+
+Severity: CRITICAL. Mismatched pairs indicate an authoring error that breaks the runtime contract.
+
+**INV-10: Standards citations.**
 Every `compliance_summary.clauses_cited[]` entry must use exact clause format:
 - BS 7671: `"BS 7671:2018+A3 Reg N.N.N"` or `"BS 7671:2018+A3 Table N.N"`
 - IEC 60364: `"IEC 60364-N-NN:YYYY clause N.NN.N"`
 - NEC: `"NEC 2023 Art NNN.NN"` or `"NEC 2023 Table NNN.NN"`
+- KS 1700 (KE): `"KS 1700:2018 Annex E (adopts BS 7671 Table N.N)"` or BS 7671 clause format directly (KS 1700 adopts BS verbatim)
 
 ### 3. Intent extraction validation
 
@@ -79,4 +92,4 @@ Emit a single JSON object:
 }
 ```
 
-`valid: true` requires ALL of: schema pass, all 9 invariants pass, intent extraction valid.
+`valid: true` requires ALL of: schema pass, all 10 invariants pass, intent extraction valid.

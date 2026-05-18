@@ -247,7 +247,73 @@ Use the adiabatic variant (`bs7671_adiabatic_54.1` or `iec60364_adiabatic_543.1.
 
 ---
 
-## Step 9 — Zs verification at each circuit endpoint
+## Step 9.5 — Build the calc.zs_loop_impedance request payload (WI3 deferred)
+
+Assemble the `zs_calc_tool_input` object at the IR root. This is the snapshot the runtime tool will consume once shipped (per WI3 — see `shared/calculations/electrical/zs-loop-impedance.json` for the contract).
+
+Required structure:
+
+```json
+{
+  "zs_calc_tool_input": {
+    "jurisdiction": "<from inputs: GB | EU | INT | KE | US>",
+    "supply": {
+      "ze_declared_ohm": <from supply data>,
+      "system_type": "<TN-S | TN-C-S | TT>",
+      "voltage_phase_to_earth_v": <230 | 240 | 277 | 120>,
+      "frequency_hz": <50 | 60>
+    },
+    "circuits": [
+      {
+        "circuit_id": "C01",
+        "cable_material": "Cu | Al",
+        "cable_insulation": "PVC | XLPE",
+        "line_csa_mm2_or_awg": "<e.g. 2.5mm² or 12 AWG>",
+        "cpc_csa_mm2_or_awg": "<e.g. 1.5mm² or 12 AWG>",
+        "route_length_m": <float>,
+        "device_type": "MCB_B | MCB_C | MCB_D | BS_88_fuse | RCBO | GFCI",
+        "device_rating_a": <int>
+      }
+    ],
+    "operating_temperature_c": 70
+  }
+}
+```
+
+Notes:
+- `operating_temperature_c` defaults to 70 for PVC; use 90 for XLPE; default to 70 if mixed
+- KE jurisdiction routes through BS 7671 Table 41.2 (KS 1700 Annex E adopts it verbatim) + IEC 60364-5-52 Annex B for cable impedance
+- US routes through NFPA 70 Chapter 9 Table 9 + NEC 5×In trip-current derivation (no fixed Zs_max table)
+- Populate ALL circuits from the design; the tool processes the full batch in one call
+
+---
+
+## Step 9 — Compute Zs and verdict inline, with WI3 disclaimer
+
+> Numbering note: the v1.1.0 plan describes this step as "Step 10 — Compute Zs
+> and verdict inline, with WI3 disclaimer" because the plan author indexed CPC
+> sizing as Step 9. In this file, CPC sizing is Step 8, so the WI3-aware Zs
+> step retains the v1.0.0 number (Step 9). Subsequent steps — RCD (10),
+> Compliance (11), Rationale (12) — keep their original numbers, preserving
+> cross-references in `examples/*/reasoning.md`.
+
+Since `calc.zs_loop_impedance` is not yet runtime-shipped (WI3 deferral), compute Zs per circuit inline using rough R1+R2 estimates from the cable CSA + length. Apply the appropriate Zs_max lookup:
+
+- **GB / KE / EU / INT:** BS 7671:2018+A2 Table 41.2 (MCB) or Table 41.3 (BS 88 fuse) — KS 1700 Annex E adopts BS Table 41.2 verbatim, so KE uses the same values
+- **US:** Derive from NEC 5×In trip current (Type C) or 10×In (Type D) — there is no fixed Zs_max table
+
+Required actions every generation:
+
+1. Set `tool_call_pending_for_zs: true` at the IR root
+2. Populate each `circuits[].{zs_ohm, zs_max_ohm, zs_compliance, rcd_required}` field with your inline estimate (these become the LLM-computed disclaimer values)
+3. Append exactly this string to the top-level `flags` array:
+   `"TOOL-CALL-PENDING:calc.zs_loop_impedance — Zs values are LLM-estimates; deterministic refinement deferred per WI3."`
+
+When the runtime tool ships in v2.0.0:
+- This step (Step 9 in v1.1.0 file numbering / "Step 10" in plan numbering) becomes: invoke the tool with `zs_calc_tool_input`, populate `circuits[]` from the tool response, set `tool_call_pending_for_zs: false`, remove the TOOL-CALL-PENDING flag
+- Schema v2.0.0 will drop the deferral flags
+
+### Inline Zs computation reference (used while WI3 tool is deferred)
 
 For each circuit:
 
@@ -265,7 +331,7 @@ For a quick approximation, use:
 - For Al, use 35 mΩ·mm²/m
 
 Look up `zs_max_ohm` from the loaded standards file:
-- **GB**: `BS7671/reg411-disconnection-times.json` — Tables 41.1 (5 s) / 41.3 (0.4 s) by breaker type + rating + curve
+- **GB / KE**: `BS7671/reg411-disconnection-times.json` — Tables 41.1 (5 s) / 41.3 (0.4 s) by breaker type + rating + curve (KS 1700 Annex E adopts BS Table 41.2 verbatim)
 - **EU/INT**: `IEC60364/part4-41-electric-shock.json` — same logic, IEC clause references
 - **US**: NEC doesn't have a direct Zs_max table; use 250.4(A)(5) effective ground-fault path requirement → Zs ≤ 230 V / breaker rating for instantaneous magnetic trip
 
