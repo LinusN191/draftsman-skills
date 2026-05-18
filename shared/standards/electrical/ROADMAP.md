@@ -23,6 +23,7 @@ Every standards layer the DraftsMan skills repo will ever reference, with curren
 | NFPA70 | NEC 2023 — National Electrical Code | NFPA | US | **production** | db-layout, earthing, fault-level, cable-sizing | — |
 | IEEE1584 | IEEE 1584:2018 Arc Flash Incident Energy & Boundary | IEEE | US/INT | **production** | electrical/arc-flash | HIGH (shipped 2026-05-17) |
 | NFPA70E | NFPA 70E Standard for Electrical Safety in the Workplace | NFPA | US | **production** | electrical/arc-flash | HIGH (shipped 2026-05-17) |
+| KS1700 | KS 1700:2018 Code of Practice for Electrical Wiring of Buildings | KEBS | KE | **production (draft-from-bs7671)** | earthing | v1.2.0 |
 | ANSI-Z535-4 | ANSI Z535.4:2023 Product Safety Signs and Labels | ANSI/NEMA | US (de facto INT) | **production** | electrical/arc-flash-labelling | MEDIUM (shipped 2026-05-17, v1.0.0) |
 | ISO-7010 | ISO 7010:2019 Graphical Symbols — Safety Signs | ISO | INT | **production** | electrical/arc-flash-labelling | MEDIUM (shipped 2026-05-17, v1.0.0) |
 | BS-5499 | BS 5499:2013 Safety Signs (UK Convention) | BSI | GB | **production** | electrical/arc-flash-labelling | MEDIUM (shipped 2026-05-17, v1.0.0) |
