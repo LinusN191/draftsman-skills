@@ -1,0 +1,24 @@
+{
+  "intent_type": "sld",
+  "intent_version": "1.0.0",
+  "produced_by_skill_version": "sld/1.3.0",
+  "project_id": "uk-3storey-office-eg01",
+  "jurisdiction": "GB",
+  "supply_summary": {
+    "system_type": "TN-C-S",
+    "voltage_arrangement": "TPN_plus_E",
+    "main_switch_rating_a": 400
+  },
+  "board_count": 4,
+  "msb_board_id": "MSB-MAIN",
+  "boards": [
+    { "board_id": "MSB-MAIN", "role": "main_switchboard",       "consumed_db_layout_intent": "electrical/db-layout/examples/uk-commercial-msb-3storey/intent-out.json" },
+    { "board_id": "SDB-GF",   "role": "sub_distribution_board", "consumed_db_layout_intent": "electrical/db-layout/examples/uk-commercial-sdb-gf/intent-out.json" },
+    { "board_id": "SDB-L1",   "role": "sub_distribution_board", "consumed_db_layout_intent": "electrical/db-layout/examples/uk-commercial-sdb-l1/intent-out.json" },
+    { "board_id": "SDB-L2",   "role": "sub_distribution_board", "consumed_db_layout_intent": "electrical/db-layout/examples/uk-commercial-sdb-l2/intent-out.json" }
+  ],
+  "spd_assessment_verdict": "required_type_2",
+  "selectivity_overall_verdict": "fully_selective",
+  "compliant": true,
+  "produced_at": "2026-05-18T12:00:00Z"
+}

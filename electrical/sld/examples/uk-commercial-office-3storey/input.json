@@ -1,0 +1,28 @@
+{
+  "project_id": "uk-3storey-office-eg01",
+  "site_brief": "3-storey UK commercial office, 1200m² GIA, ~400m² per floor. Spec office for multi-tenant fit-out. TN-C-S 400V TPN supply from UK DNO with declared Ze=0.35Ω + PFC=9.8kA. Ground-floor plant room location for MSB. Single MSB feeds 3 per-floor sub-DBs.",
+  "jurisdiction": "GB",
+  "supply_brief": {
+    "supplier": "UK DNO (regional electricity board)",
+    "wayleave_or_account_reference": "UK-DNO-COMM-2026-EG01",
+    "system_type": "TN-C-S",
+    "voltage_nominal_v": 400,
+    "voltage_arrangement": "TPN_plus_E",
+    "frequency_hz": 50,
+    "ze_declared_ohm": 0.35,
+    "pfc_declared_ka": 9.8,
+    "main_switch_rating_a": 400,
+    "main_switch_breaking_capacity_ka": 36
+  },
+  "distribution_hierarchy_brief": [
+    { "board_id": "MSB-MAIN", "board_role": "main_switchboard",       "consumed_intent_path": "electrical/db-layout/examples/uk-commercial-msb-3storey/intent-out.json", "parent_board_id": null,       "fed_via_circuit_id": null,  "location": "ground-floor plant room" },
+    { "board_id": "SDB-GF",   "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/uk-commercial-sdb-gf/intent-out.json",     "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F01", "location": "ground-floor riser cupboard" },
+    { "board_id": "SDB-L1",   "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/uk-commercial-sdb-l1/intent-out.json",     "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F02", "location": "level-1 riser cupboard" },
+    { "board_id": "SDB-L2",   "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/uk-commercial-sdb-l2/intent-out.json",     "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F03", "location": "level-2 riser cupboard" }
+  ],
+  "spd_assessment_inputs": {
+    "location_type": "urban_commercial",
+    "lightning_risk": "moderate",
+    "life_safety_present": true
+  }
+}
