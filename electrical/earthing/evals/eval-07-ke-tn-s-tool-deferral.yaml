@@ -1,0 +1,54 @@
+name: eval-07-ke-tn-s-tool-deferral
+skill: earthing
+description: Verifies the Kenya TN-S worked example output. Exercises TN-S system_type branch, KE jurisdiction tag, WI3 tool deferral pattern (tool_call_pending_for_zs + zs_calc_tool_input + TOOL-CALL-PENDING flag string), Type D MCB Zs failure path, 60m submain RCD requirement, and KS 1700 RCD policy on socket circuits.
+category: skill_specific
+input_fixture: ../examples/ke-nairobi-industrial-tn-s/input.json
+expected_output_fixture: ../examples/ke-nairobi-industrial-tn-s/output.json
+checks:
+  - assertion: ir.jurisdiction == "KE"
+    description: "Jurisdiction tag is KE (Kenya)"
+    severity: critical
+  - assertion: ir.earthing_system.system_type == "TN-S"
+    description: "TN-S system branch exercised"
+    severity: critical
+  - assertion: ir.met.supply_bond_type == "tn_s_separate_pe"
+    description: "TN-S separate-Earth supply bond used (not PME)"
+    severity: critical
+  - assertion: ir.tool_call_pending_for_zs == true
+    description: "WI3 tool deferral flag set"
+    severity: critical
+  - assertion: ir.zs_calc_tool_input.jurisdiction == "KE"
+    description: "Replay payload tagged with KE jurisdiction"
+    severity: critical
+  - assertion: ir.zs_calc_tool_input.supply.system_type == "TN-S"
+    description: "Replay payload supply is TN-S"
+    severity: critical
+  - assertion: ir.zs_calc_tool_input.supply.ze_declared_ohm == 0.80
+    description: "Replay payload Ze matches KPLC-measured value"
+    severity: critical
+  - assertion: ir.zs_calc_tool_input.circuits.length == 8
+    description: "All 8 circuits captured in replay payload"
+    severity: critical
+  - assertion: ir.flags matches "^TOOL-CALL-PENDING:calc\\.zs_loop_impedance"
+    description: "TOOL-CALL-PENDING:calc.zs_loop_impedance disclaimer present in top-level flags"
+    severity: critical
+  - assertion: ir.circuits[?(@.circuit_id=='C07')].zs_compliance == "fail_needs_rcd"
+    description: "C07 compressor (Type D 25A) fails Zs_max — needs RCD additional protection"
+    severity: critical
+  - assertion: ir.circuits[?(@.circuit_id=='C07')].rcd_sensitivity_ma == 100
+    description: "C07 uses 100mA RCD (motor-leakage-tolerant)"
+    severity: warning
+  - assertion: ir.circuits[?(@.circuit_id=='C08')].zs_compliance == "fail_needs_rcd"
+    description: "C08 60m submain fails Zs_max"
+    severity: critical
+  - assertion: ir.circuits[?(@.circuit_id=='C08')].rcd_sensitivity_ma == 30
+    description: "C08 uses 30mA RCBO per KS 1700 §411.3.3 socket-circuit policy"
+    severity: critical
+  - assertion: ir.compliance_summary.compliant == true
+    description: "Overall compliant via RCD additional protection"
+    severity: critical
+  - assertion: ir.drawn_as_symbols contains "EARTH_PROTECTIVE"
+    description: "Earthing symbol roll-up includes EARTH_PROTECTIVE"
+    severity: warning
+expected_flags:
+  - "TOOL-CALL-PENDING:calc.zs_loop_impedance"
