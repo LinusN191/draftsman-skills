@@ -60,7 +60,23 @@
     ]
   },
   "drawn_as_symbols": ["EARTH_GENERAL", "EARTH_PROTECTIVE", "EARTH_ELECTRODE", "CONDUCTOR_PE", "JUNCTION_T", "BUSBAR"],
-  "flags": ["TOOL-CALL-PENDING"],
+  "flags": ["TOOL-CALL-PENDING", "TOOL-CALL-PENDING:calc.zs_loop_impedance — Zs values are LLM-estimates; deterministic refinement deferred per WI3."],
+  "tool_call_pending_for_zs": true,
+  "zs_calc_tool_input": {
+    "jurisdiction": "INT",
+    "supply": {
+      "ze_declared_ohm": 85.0,
+      "system_type": "TT",
+      "voltage_phase_to_earth_v": 230,
+      "frequency_hz": 50
+    },
+    "circuits": [
+      { "circuit_id": "C01", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 25, "device_type": "MCB_B", "device_rating_a": 10 },
+      { "circuit_id": "C02", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "2.5mm²", "route_length_m": 28, "device_type": "MCB_C", "device_rating_a": 16 },
+      { "circuit_id": "C03", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "4mm²", "cpc_csa_mm2_or_awg": "4mm²", "route_length_m": 35, "device_type": "MCB_C", "device_rating_a": 20 }
+    ],
+    "operating_temperature_c": 70
+  },
   "rationale": {
     "chat_summary": "TT earthing for a rural Tuscany cottage. No DNO earth available — two 1.5 m rods in parallel give a target Ra ≤ 100Ω. MET in NW intake cupboard; main 10 mm² bond to the LPG fuel pipe. Three circuits, all 30 mA RCBO-protected (IEC 60364 411.5.3). Soil 100 Ω·m assumed; tool-call pending for live Ra calc. Reply to refine, e.g. 'add a rod for ≤50Ω target'.",
     "sections": [
