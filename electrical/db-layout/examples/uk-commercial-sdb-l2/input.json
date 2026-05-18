@@ -1,0 +1,38 @@
+{
+  "project_id": "uk-3storey-office-eg01",
+  "board_brief": "Level-2 sub-DB (SDB-L2) for a 3-storey UK commercial office. 100A TPN intake fed from MSB-MAIN F03 (45m feeder run — longest run in cascade). 12 final circuits: lighting, sockets, HVAC FCUs, IT/data, AV. Located in level-2 electrical cupboard.",
+  "jurisdiction": "GB",
+  "standards_stack": {
+    "primary": "BS 7671:2018+A2:2022",
+    "assembly_type_testing": "BS EN 61439-3:2012 Distribution Board (DBO)"
+  },
+  "supply": {
+    "fed_from": "MSB-MAIN F03",
+    "system_type": "TN-C-S",
+    "voltage": "400V/230V 3-phase 4-wire 50 Hz",
+    "supply_rating_a": 100,
+    "phase_arrangement": "TPN_plus_E",
+    "feeder_route_length_m": 45
+  },
+  "board": {
+    "designation": "SDB-L2",
+    "location": "level-2 electrical cupboard",
+    "enclosure_rating": "IP4X (indoor)",
+    "busbar_rating_a": 125,
+    "scope": "single-board"
+  },
+  "circuits": [
+    { "circuit_id": "C01", "designation": "Lighting L2 — open office LED panels",      "phase": "L1",       "device": "10A MCB Type B", "cable": "1.5mm² T+E PVC Cu", "route_length_m": 26 },
+    { "circuit_id": "C02", "designation": "Lighting L2 — breakout area LED",            "phase": "L2",       "device": "6A MCB Type B",  "cable": "1.5mm² T+E PVC Cu", "route_length_m": 16 },
+    { "circuit_id": "C03", "designation": "Emergency lighting L2 (dedicated supply)",   "phase": "L3",       "device": "6A MCB Type B",  "cable": "1.5mm² T+E PVC Cu", "route_length_m": 22 },
+    { "circuit_id": "C04", "designation": "Sockets L2 — open office RFC",               "phase": "L1",       "device": "32A MCB Type B", "cable": "2.5mm² T+E PVC Cu", "route_length_m": 36 },
+    { "circuit_id": "C05", "designation": "Sockets L2 — meeting rooms RFC",             "phase": "L2",       "device": "32A MCB Type B", "cable": "2.5mm² T+E PVC Cu", "route_length_m": 28 },
+    { "circuit_id": "C06", "designation": "Sockets L2 — breakout area RFC",             "phase": "L3",       "device": "32A MCB Type B", "cable": "2.5mm² T+E PVC Cu", "route_length_m": 22 },
+    { "circuit_id": "C07", "designation": "Sockets L2 — printer corner radial",         "phase": "L1",       "device": "20A MCB Type B", "cable": "2.5mm² T+E PVC Cu", "route_length_m": 16 },
+    { "circuit_id": "C08", "designation": "Dedicated socket — A/V rack",                "phase": "L2",       "device": "16A MCB Type B", "cable": "2.5mm² T+E PVC Cu", "route_length_m": 14 },
+    { "circuit_id": "C09", "designation": "Dedicated socket — comms cabinet UPS feed",  "phase": "L3",       "device": "16A MCB Type B", "cable": "2.5mm² T+E PVC Cu", "route_length_m": 10 },
+    { "circuit_id": "C10", "designation": "HVAC FCU bank L2 (motor circuit)",           "phase": "L1+L2+L3", "device": "32A MCB Type C", "cable": "2.5mm² SY 5-core PVC Cu", "route_length_m": 24 },
+    { "circuit_id": "C11", "designation": "IT/data outlet ring — desks",                "phase": "L1",       "device": "32A MCB Type B", "cable": "2.5mm² T+E PVC Cu", "route_length_m": 34 },
+    { "circuit_id": "C12", "designation": "Audio-visual radial — meeting rooms",        "phase": "L2",       "device": "20A MCB Type B", "cable": "2.5mm² T+E PVC Cu", "route_length_m": 25 }
+  ]
+}
