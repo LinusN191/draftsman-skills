@@ -1,0 +1,31 @@
+name: eval-02-ke-msp-gh-cascade
+skill: sld
+description: KE Nairobi industrial MSB-GH cascade with KS 1700 direct citations (no BS 7671 annotation).
+category: happy_path
+input_fixture: ../examples/ke-nairobi-industrial-msb-gh/input.json
+expected_output_fixture: ../examples/ke-nairobi-industrial-msb-gh/output.json
+checks:
+  - assertion: jurisdiction == "KE"
+    description: Jurisdiction correctly routed to KE (Kenya).
+    severity: critical
+  - assertion: "supply_origin.system_type == 'TN-S'"
+    description: Supply origin correctly identified as TN-S (KPLC convention).
+    severity: critical
+  - assertion: "distribution_hierarchy.length == 2"
+    description: 2 boards present (MSP-100 root + GH-DB child).
+    severity: critical
+  - assertion: "selectivity_cascade.length == 1"
+    description: 1 cascade verdict present (N-1 for N=2 boards).
+    severity: critical
+  - assertion: "meta.consumed_intents.length == 2"
+    description: 2 db-layout intents consumed (one per board).
+    severity: critical
+  - assertion: "system_metrics.spd_assessment.spd_type == 'Type 1+2'"
+    description: SPD Type 1+2 required per KS 1700 industrial KPLC supply context.
+    severity: critical
+  - assertion: "All code_clause fields in rationale.sections[*].decisions[*] start with 'KS 1700:'"
+    description: All citations use KS 1700 direct form (no BS 7671 annotation).
+    severity: critical
+  - assertion: "No occurrence of '(adopted by KS 1700)' in any output field"
+    description: KS 1700 citations are direct, not parenthetical adoptions.
+    severity: critical

@@ -1,0 +1,37 @@
+name: eval-01-uk-3storey-happy-path
+skill: sld
+description: UK 3-storey commercial office happy path — verifies jurisdiction, multi-board cascade, selectivity, SPD, and tool deferral.
+category: happy_path
+input_fixture: ../examples/uk-commercial-office-3storey/input.json
+expected_output_fixture: ../examples/uk-commercial-office-3storey/output.json
+checks:
+  - assertion: jurisdiction == "GB"
+    description: Jurisdiction correctly routed to GB (UK).
+    severity: critical
+  - assertion: distribution_hierarchy.length == 4
+    description: 4 boards present (MSB + 3 SDBs).
+    severity: critical
+  - assertion: "meta.consumed_intents.length == 4"
+    description: 4 db-layout intents consumed (one per board).
+    severity: critical
+  - assertion: "selectivity_cascade.length == 3"
+    description: 3 cascade verdicts present (N-1 for N boards).
+    severity: critical
+  - assertion: "supply_origin.system_type == 'TN-C-S'"
+    description: Supply origin correctly identified as TN-C-S.
+    severity: critical
+  - assertion: "system_metrics.spd_assessment.spd_type == 'Type 2'"
+    description: SPD Type 2 required per BS 7671 Reg 443 for urban commercial.
+    severity: critical
+  - assertion: "system_metrics.spd_assessment.code_clause matches '^BS 7671:'"
+    description: SPD code_clause uses BS 7671 citation form.
+    severity: critical
+  - assertion: "system_metrics.tool_call_pending_for_system_metrics == true"
+    description: Tool deferral flag set per WI3.
+    severity: critical
+  - assertion: "compliance_summary.compliant == true"
+    description: Overall compliance is true.
+    severity: critical
+  - assertion: "flags contains 'TOOL-CALL-PENDING:sld_system_metrics'"
+    description: TOOL-CALL-PENDING string present in flags array.
+    severity: critical

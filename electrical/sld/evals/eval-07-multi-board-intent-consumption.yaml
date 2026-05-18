@@ -1,0 +1,34 @@
+name: eval-07-multi-board-intent-consumption
+skill: sld
+description: Skill-specific — verifies WI4 multi-board intent consumption pattern across all 4 SLD examples. Each example's meta.consumed_intents must have N+1 entries (one per board). Every distribution_hierarchy node must have consumed_intent_path that resolves to a real db-layout intent-out.json.
+category: skill_specific
+input_fixtures:
+  - ../examples/uk-commercial-office-3storey/output.json
+  - ../examples/ke-nairobi-industrial-msb-gh/output.json
+  - ../examples/intl-commercial-msb-4subdbs/output.json
+  - ../examples/us-strip-mall-msp-tenants/output.json
+checks:
+  - assertion: "All 4 outputs have meta.consumed_intents.length == distribution_hierarchy.length"
+    description: N+1 consumption pattern (one db-layout intent per board).
+    severity: critical
+  - assertion: "Every distribution_hierarchy[].consumed_intent_path resolves to a real file"
+    description: WI4 paths must exist on filesystem.
+    severity: critical
+  - assertion: "Exactly one root node per hierarchy (parent_board_id == null)"
+    description: Single MSB per cascade.
+    severity: critical
+  - assertion: "All non-root nodes have parent_board_id in {existing board_ids}"
+    description: No orphan parent pointers.
+    severity: critical
+  - assertion: "selectivity_cascade.length == distribution_hierarchy.length - 1 for all outputs"
+    description: N-1 cascade entries for N boards.
+    severity: critical
+  - assertion: "Every meta.consumed_intents entry has intent_type == 'db-layout'"
+    description: SLD v1.3 only consumes db-layout intents.
+    severity: critical
+  - assertion: "Every meta.consumed_intents entry has intent_version == '1.0.0'"
+    description: Schema version pinned.
+    severity: critical
+  - assertion: "Every meta.consumed_intents entry has produced_by == 'electrical/db-layout/v1.2.0'"
+    description: Producing skill version pinned to paired sprint.
+    severity: critical

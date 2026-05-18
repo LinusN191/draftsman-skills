@@ -1,0 +1,25 @@
+name: eval-06-rationale-block
+skill: sld
+description: WI2 rationale block coverage. Every SLD example output must have a complete rationale block with 8 sections (or ≥6) + chat_summary ≤ 500 chars + non-empty section content.
+category: rationale_block
+input_fixtures:
+  - ../examples/uk-commercial-office-3storey/output.json
+  - ../examples/ke-nairobi-industrial-msb-gh/output.json
+  - ../examples/intl-commercial-msb-4subdbs/output.json
+  - ../examples/us-strip-mall-msp-tenants/output.json
+checks:
+  - assertion: "rationale present in all 4 outputs"
+    description: WI2 requirement — every IR must have rationale block.
+    severity: critical
+  - assertion: "rationale.chat_summary length ≤ 500 for all outputs"
+    description: chat_summary must fit within reasonable summary bounds.
+    severity: critical
+  - assertion: "rationale.sections.length ≥ 6 for all outputs"
+    description: WI2 standard minimum 6-8 section coverage.
+    severity: warning
+  - assertion: "Every section in rationale.sections has non-empty title and summary"
+    description: All sections must have descriptive title and summary.
+    severity: critical
+  - assertion: "rationale.chat_summary is non-empty string for all outputs"
+    description: chat_summary must contain substantive content.
+    severity: critical

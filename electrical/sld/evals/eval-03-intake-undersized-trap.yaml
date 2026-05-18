@@ -1,0 +1,22 @@
+name: eval-03-intake-undersized-trap
+skill: sld
+description: Validation trap — when supply_origin.main_switch_rating_a is less than system_metrics.imax_total_a, IR must carry a non-compliance flag with severity critical. INV-5 enforces this.
+category: validation_trap
+input_fixture: null
+test_scenario:
+  supply_origin:
+    main_switch_rating_a: 200
+  system_metrics:
+    imax_total_a: 320
+expected_compliance:
+  compliant: false
+checks:
+  - assertion: "compliance_summary.non_compliance_flags has entry with severity == 'critical'"
+    description: When intake is undersized, critical flag must be raised.
+    severity: critical
+  - assertion: "compliance_summary.compliant == false"
+    description: Overall compliance is false when intake undersized.
+    severity: critical
+  - assertion: "At least one non_compliance_flags entry contains 'imax' or 'intake' or 'main_switch' in message"
+    description: Flag message references the undersized intake condition.
+    severity: warning

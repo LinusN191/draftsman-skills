@@ -1,0 +1,23 @@
+name: eval-05-non-selective-cascade
+skill: sld
+description: Edge case — cascade where parent breaker is not selective against child (ratio < 1.25:1). Verdict should be "non_selective" with _note rationale OR compliance_summary.assumption documenting the design tension + remediation options.
+category: edge_case
+input_fixture: null
+test_scenario:
+  selectivity_cascade:
+    - parent_circuit_id: "F01"
+      parent_breaker_rating_a: 100
+      child_breaker_rating_a: 80
+      verdict: "non_selective"
+expected_compliance:
+  compliant: true
+checks:
+  - assertion: "selectivity_cascade has entry with verdict == 'non_selective'"
+    description: Non-selective verdict must be explicit.
+    severity: critical
+  - assertion: "The non_selective entry has either _note field or matching compliance_summary.assumption entry"
+    description: Non-selective cases require documented rationale or assumption.
+    severity: critical
+  - assertion: "If _note present, it contains context on ratio or remediation"
+    description: Rationale documents the design trade-off.
+    severity: warning
