@@ -1,0 +1,49 @@
+{
+  "$schema": "../../shared/schemas/core/inputs.schema.json",
+  "skill": "fire-alarm",
+  "version": "0.2.0",
+  "items": [
+    {
+      "id": "room_dims_mm",
+      "label": "Room dimensions in mm (length × width)",
+      "answer_type": "tuple_int",
+      "required": true
+    },
+    {
+      "id": "ceiling_height_mm",
+      "label": "Ceiling height (mm)",
+      "answer_type": "int",
+      "required": true,
+      "default": 2800,
+      "validator": "in_range_2000_15000"
+    },
+    {
+      "id": "occupancy_category",
+      "label": "BS 5839 occupancy / building purpose",
+      "hint": "Drives detector spacing + alarm category selection per BS 5839-1 Table 2",
+      "answer_type": "enum",
+      "options": [
+        "domestic", "office", "retail", "hotel",
+        "school", "healthcare", "warehouse", "industrial"
+      ],
+      "required": true
+    },
+    {
+      "id": "alarm_category",
+      "label": "BS 5839 alarm system category",
+      "hint": "L1 = full coverage; L5 = local protection only. P1/P2 for property protection.",
+      "answer_type": "enum",
+      "options": ["L1", "L2", "L3", "L4", "L5", "P1", "P2", "M"],
+      "required": true,
+      "default": "L2"
+    },
+    {
+      "id": "detector_type_preference",
+      "label": "Preferred detector type",
+      "answer_type": "enum",
+      "options": ["smoke_optical", "smoke_ionisation", "heat_fixed", "heat_rate_of_rise", "multi_sensor", "auto"],
+      "required": false,
+      "default": "auto"
+    }
+  ]
+}
