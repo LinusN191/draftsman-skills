@@ -66,6 +66,13 @@
       "spec_summary": "Convert SVG label markup (produced inline by arc-flash-labelling skill) to PDF or PNG bytes for physical label production. Drives downstream physical-label printing.",
       "owner": "draftsman-runtime",
       "since_version": "1.0.0"
+    },
+    {
+      "tool_name": "calc.zs_loop_impedance",
+      "registered_for": "shared/calculations/electrical/zs-loop-impedance.json",
+      "spec_summary": "Earth fault loop impedance Zs per circuit. Reads IEC 60364-5-52 Annex B (or NFPA70 Ch9 for US) for cable R+X, BS 7671 Table 41.2 (or NEC 5×In derivation) for Zs_max, returns per-circuit verdict.",
+      "owner": "draftsman-runtime",
+      "since_version": "1.1.0"
     }
   ],
   "_inline_calculations_note": "Closed-form calcs run inline by the LLM (no tool needed). For reference: shared/calculations/lighting/lumen-method.json (N = E×A / Φ×UF×MF) — already shipped in lighting-layout v1.3.0 production.",
