@@ -1,0 +1,29 @@
+{
+  "intent_type": "earthing",
+  "intent_version": "1.0.0",
+  "produced_by_skill_version": "earthing/1.1.0",
+  "tool_call_pending": true,
+  "jurisdiction": "KE",
+  "system_type": "TN-S",
+  "ze_declared_ohm": 0.80,
+  "supply_bond_type": "tn_s_separate_pe",
+  "main_earthing_conductor_csa_mm2": 16,
+  "electrodes": [],
+  "main_bonding": [
+    { "id": "B1", "target": "metal_water_service", "csa_mm2": 10 },
+    { "id": "B2", "target": "metal_gas_service",   "csa_mm2": 10 },
+    { "id": "B3", "target": "structural_steel",    "csa_mm2": 6  }
+  ],
+  "circuits": [
+    { "circuit_id": "C01", "cpc_csa_mm2": 1.0, "device": "MCB_B_10A", "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C02", "cpc_csa_mm2": 1.0, "device": "MCB_B_6A",  "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C03", "cpc_csa_mm2": 1.5, "device": "MCB_B_32A", "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C04", "cpc_csa_mm2": 2.5, "device": "MCB_B_20A", "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C05", "cpc_csa_mm2": 2.5, "device": "MCB_C_20A", "zs_compliance": "pass",          "rcd_required": false },
+    { "circuit_id": "C06", "cpc_csa_mm2": 1.5, "device": "MCB_C_16A", "zs_compliance": "pass",          "rcd_required": false },
+    { "circuit_id": "C07", "cpc_csa_mm2": 4.0, "device": "MCB_D_25A", "zs_compliance": "fail_needs_rcd","rcd_required": true,  "rcd_sensitivity_ma": 100 },
+    { "circuit_id": "C08", "cpc_csa_mm2": 6.0, "device": "MCB_B_40A", "zs_compliance": "fail_needs_rcd","rcd_required": true,  "rcd_sensitivity_ma": 30 }
+  ],
+  "overall_compliant": true,
+  "produced_at": "2026-05-18"
+}
