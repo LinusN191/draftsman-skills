@@ -1,0 +1,27 @@
+# Earthing v1.1 — tool deferral shape consistency
+#
+# Verifies that the tool_call_pending_for_zs flag is consistent with the
+# TOOL-CALL-PENDING:calc.zs_loop_impedance string in the top-level flags array.
+#
+# Both must be present together, or both must be absent. Mismatched pairs
+# indicate an authoring error.
+
+name: tool-deferral-shape
+applies_to: electrical/earthing
+schema_version: 1.1.0
+
+checks:
+  - id: tool_deferral_pair_consistent
+    severity: critical
+    description: "When tool_call_pending_for_zs is true, zs_calc_tool_input + TOOL-CALL-PENDING flag must both be present"
+    rule: |
+      if ir.tool_call_pending_for_zs == true then
+        ir.zs_calc_tool_input must exist AND
+        ir.flags must include string matching ^TOOL-CALL-PENDING:calc\.zs_loop_impedance
+
+  - id: tool_deferral_no_orphan_flag
+    severity: critical
+    description: "TOOL-CALL-PENDING:calc.zs_loop_impedance flag must not appear without tool_call_pending_for_zs being true"
+    rule: |
+      if ir.flags includes string matching ^TOOL-CALL-PENDING:calc\.zs_loop_impedance then
+        ir.tool_call_pending_for_zs == true
