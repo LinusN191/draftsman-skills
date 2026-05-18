@@ -24,9 +24,9 @@ For MCB_D at 25A:
   Zs_max = 230 / (20 × 25) = 0.46 Ω
 ```
 
-This circuit's calculated Zs = 0.99Ω, which exceeds 0.46Ω. Without additional protection, the MCB would not trip within 5 seconds — non-compliant with BS 7671 Reg 411.4.5 (adopted by KS 1700).
+This circuit's calculated Zs = 0.99Ω, which exceeds 0.46Ω. Without additional protection, the MCB would not trip within 5 seconds — non-compliant with KS 1700:2018 §411.4.5 (Annex E adoption of BS 7671:2018+A2 Reg 411.4.5).
 
-The standard fix per BS 7671 Reg 411.4.5 is to add **RCD additional protection**. The 100mA RCD (rather than 30mA) is selected because:
+The standard fix per KS 1700:2018 §411.4.5 is to add **RCD additional protection**. The 100mA RCD (rather than 30mA) is selected because:
 - The compressor has a high earth leakage current at start-up (motor inrush + capacitive coupling in the SY cable)
 - 30mA RCDs nuisance-trip on this duty profile
 - 100mA RCD provides shock protection at fault levels without nuisance tripping during normal duty
@@ -58,12 +58,9 @@ This is why C01-C04 + C08 are all 30mA RCD-protected even when Zs alone wouldn't
 
 ## KS 1700 vs BS 7671
 
-KS 1700:2018 references BS 7671 extensively. The substantive sections (411 ADS, 415 supplementary bonding, 544 main bonding, Table 41.2 Zs_max, Table 54.7 CPC sizing) are adopted **verbatim** via KS 1700 Annex E. Where KS 1700 diverges from BS 7671:
-- §411.3.3 (socket-RCD) — adopted from BS 7671 AMD 2 ahead of UK retrofit
-- §722 (EV charging) — not yet in KS 1700; falls back to IEC 60364-7-722
-- §731-740 (special locations) — partial adoption; verify per-section before applying
+KS 1700:2018 references BS 7671 extensively. The substantive sections (411 ADS, 415 supplementary bonding, 544 main bonding, Table 41.2 Zs_max, Table 54.7 CPC sizing) are adopted **verbatim** via KS 1700 Annex E. The canonical clause-by-clause adoption map and the list of KS-specific deviations are now first-class KS1700 standards-layer artifacts — see `KS1700/annex-E-bs7671-adoption-table.json` for the adoption table and `KS1700/ks-unique-deviations.json` for the deviation index (covering items like the universal socket-RCD policy at §411.3.3 and the EV-charging routing at §722).
 
-Our citations use the form `"BS 7671:2018+A2 Reg X.Y.Z (adopted by KS 1700)"` to make the adoption explicit.
+In v1.2, our citations use the direct form `"KS 1700:2018 §X.Y.Z"` since KS 1700 is a first-class standards layer in this repo. Where transparency helps, the Annex E adoption is noted parenthetically: `"KS 1700:2018 §411.4 (Annex E: adopts BS 7671:2018+A2 Reg 411.4 verbatim)"`. The canonical KS↔BS adoption mapping lives in `KS1700/annex-E-bs7671-adoption-table.json`; KS-specific deviations live in `KS1700/ks-unique-deviations.json`.
 
 ## Why the Zs values are LLM-estimates
 

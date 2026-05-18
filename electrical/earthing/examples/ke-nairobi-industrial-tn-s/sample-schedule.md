@@ -4,7 +4,7 @@
 **Generated:** 2026-05-18
 **Jurisdiction:** KE (KS 1700:2018 + BS 7671:2018+A2)
 **Supply:** KPLC TN-S 415V/240V 50Hz, Ze = 0.80 Ω
-**Standards:** BS 7671 Table 41.2 (adopted by KS 1700 Annex E) for Zs_max; IEC 60364-5-52 Annex B for cable R+X
+**Standards:** KS 1700:2018 Annex E Table 41.2 (adopts BS 7671:2018+A2 Table 41.2 verbatim) for Zs_max; IEC 60364-5-52 Annex B for cable R+X
 **Tool status:** `calc.zs_loop_impedance` deferred per WI3 — values below are LLM-estimates
 
 ---
@@ -27,7 +27,7 @@
 - **Ib (design current)** is at full design load. Actual operating current will be lower under partial load.
 - **R1+R2** is the loop resistance of line + CPC at 70°C PVC operating temperature, per IEC 60364-5-52 Annex B.
 - **Zs_calc** = Ze (0.80 Ω) + R1+R2.
-- **Zs_max** from BS 7671 Table 41.2 (KS 1700 Annex E adopts verbatim). Table values already include the 0.8 temperature correction.
+- **Zs_max** from KS 1700:2018 Annex E Table 41.2 (adopts BS 7671:2018+A2 Table 41.2 verbatim). Table values already include the 0.8 temperature correction.
 - **Margin** = (Zs_max − Zs_calc) / Zs_max × 100. Positive = pass; negative = fail.
 - **Verdict** key:
   - `pass` — Zs ≤ Zs_max; protective device alone provides disconnection
