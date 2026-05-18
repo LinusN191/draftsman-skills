@@ -1,5 +1,15 @@
 # Changelog — db-layout
 
+## [1.1.0] - 2026-05-18
+
+### Added
+- **NEW KE Nairobi industrial 100A TPN example** (`examples/ke-nairobi-industrial-100A-tpn/`) — 5 files: input.json, output.json, intent-out.json, reasoning.md, sample-schedule.md. 8 circuits matching the KE earthing example 1:1 for cross-skill consumption demonstration.
+- **intent-out.json backfill for existing 3 examples** — uk-domestic-consumer-unit, intl-commercial-tpn-msb, us-strip-mall-panelboard. Brings all 4 db-layout examples to feature parity with arc-flash + arc-flash-labelling + earthing pattern.
+
+### Notes
+- intent-out.json schema field names differ from output.json IR field names (id vs circuit_id, breaker_rating_a vs ocpd.rating_a, etc.). The intent contract is at `electrical/db-layout/schemas/db-layout-intent.schema.json`.
+- Downstream consumer: `electrical/earthing` v1.3 (paired sprint, shipped 2026-05-18).
+
 ## v1.0.0 (current — Stage 1: Schedule + Schematic + Selectivity)
 
 First production-grade version. Stage 1 of a two-stage plan:
