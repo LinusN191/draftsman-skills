@@ -66,12 +66,29 @@ When `tool_call_pending_for_zs: false` or absent:
 
 Severity: CRITICAL. Mismatched pairs indicate an authoring error that breaks the runtime contract.
 
-**INV-10: Standards citations.**
+**INV-10: KE jurisdiction uses direct KS 1700 citations (NEW in v1.2.0).**
+
+When `ir.jurisdiction == "KE"`:
+
+- Every `code_clause` field in `rationale.sections[].decisions[]` MUST start with `"KS 1700:"` OR `"IEC 60364"` (for clauses KS Annex E §VIII routes to IEC, e.g. §722 EV charging)
+- Every `circuits[].cpc_sizing_clause` field MUST start with `"KS 1700:"` OR `"IEC 60364"`
+- No `code_clause` may contain `"(adopted by KS 1700)"` (the v1.1 annotation pattern is BANNED — direct citation only)
+- The earthing-system citation in `earthing_system.code_clause` MUST start with `"KS 1700:"`
+
+When `ir.jurisdiction != "KE"`:
+
+- The string `"KS 1700"` MUST NOT appear in any citation (no accidental cross-contamination)
+
+Severity: CRITICAL. Mismatched citation form indicates the v1.2 refactor was not applied correctly.
+
+Note: explicit cross-references for transparency are allowed (e.g., `"KS 1700:2018 §411.4 (Annex E: adopts BS 7671:2018+A2 Reg 411.4 verbatim)"`) where the form starts with `KS 1700:`. The string `"adopted by KS 1700"` as a TRAILING annotation suffix is what's banned (because it puts BS first and treats KS as derivative).
+
+**INV-11: Standards citations.**
 Every `compliance_summary.clauses_cited[]` entry must use exact clause format:
 - BS 7671: `"BS 7671:2018+A3 Reg N.N.N"` or `"BS 7671:2018+A3 Table N.N"`
 - IEC 60364: `"IEC 60364-N-NN:YYYY clause N.NN.N"`
 - NEC: `"NEC 2023 Art NNN.NN"` or `"NEC 2023 Table NNN.NN"`
-- KS 1700 (KE): `"KS 1700:2018 Annex E (adopts BS 7671 Table N.N)"` or BS 7671 clause format directly (KS 1700 adopts BS verbatim)
+- KS 1700 (KE): `"KS 1700:2018 §N.N.N"` or `"KS 1700:2018 Table N.N"` (direct citation per INV-10; explicit Annex E cross-reference suffix like `"... (Annex E: adopts BS 7671:2018+A2 Reg N.N.N verbatim)"` is permitted when leading with `KS 1700:`)
 
 ### 3. Intent extraction validation
 
@@ -92,4 +109,4 @@ Emit a single JSON object:
 }
 ```
 
-`valid: true` requires ALL of: schema pass, all 10 invariants pass, intent extraction valid.
+`valid: true` requires ALL of: schema pass, all 11 invariants pass, intent extraction valid.
