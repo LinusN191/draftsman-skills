@@ -20,7 +20,7 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | riser | `electrical/riser` | stub | BS 7671:2018 | — | — |
 | schematic | `electrical/schematic` | stub | BS EN 60617 | — | — |
 | small-power | `electrical/small-power` | stub | BS 7671:2018 | — | — |
-| earthing | `electrical/earthing` | **beta** | BS 7671:2018, IEC 60364, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 9/5 ✓ | v1.4.0 — 5 worked examples (added INT commercial + US commercial in v1.4 sprint); consumed by SLD v1.4 as system-wide earthing intent source. |
+| earthing | `electrical/earthing` | **beta** | BS 7671:2018, IEC 60364, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 9/5 ✓ | v1.4.0 — 5 worked examples (added uk-commercial-3storey in v1.4 sprint); consumed by SLD v1.4 as system-wide earthing intent source. |
 | emergency-lighting | `electrical/emergency-lighting` | stub | BS 5266-1, BS EN 1838 | — | — |
 | cable-schedule | `electrical/cable-schedule` | stub | BS 7671:2018 | — | — |
 | panel-schedule | `electrical/panel-schedule` | stub | BS 7671:2018, BS EN 61439 | — | — |
