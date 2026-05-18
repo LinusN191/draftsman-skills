@@ -75,38 +75,72 @@ If `input.jurisdiction` is missing or not in the supported set, STOP and emit `f
 
 ---
 
-## Step 0.5 — Resolve upstream intents (WI4 multi-board consumption)
+## Step 0.5 — Resolve upstream intents (WI4 multi-board + multi-skill consumption)
 
-**This is the key new step for SLD v1.3.0.** Where earthing v1.3 consumes ONE upstream db-layout intent, SLD consumes N+1 — one per board in the cascade.
+For each board declared in `input.distribution_hierarchy_brief[]`, AND for the system-wide earthing + fault-level intents (if `input.earthing_intent_path` AND `input.fault_level_intent_path` are present), resolve the upstream intent file and capture its declared values.
 
-`input.distribution_hierarchy_brief[]` carries N+1 entries, each with a `consumed_intent_path` pointing to that board's db-layout intent-out.json. For each entry:
+### A. Read each db-layout intent (one per board)
 
-1. **Read the file** at the path (relative to repo root). If the file does not exist, emit a critical flag `"INTENT-MISSING: <path>"` and STOP — the SLD cannot be authored without all upstream intents.
+For each `distribution_hierarchy_brief[i]`:
+1. Open the file at `consumed_intent_path` (relative to repo root)
+2. Confirm `intent_type == "db-layout"` (or pre-v1.1 examples where intent_type is absent — accept these as legacy)
+3. Capture: `board_id`, supply origin, circuit list with `ocpd` + `cable` + `load_kw` + `final_use`, `total_load_kva`
+4. These values drive the per-board entries in `distribution_hierarchy[]` and the per-board feeder rationale
 
-2. **Validate** the upstream payload against `electrical/db-layout/schemas/db-layout-intent.schema.json` (or trust upstream — these files are validated at the time the db-layout skill authors them).
+### B. Read the earthing intent (system-wide) — v1.4+
 
-3. **Extract** the following verbatim:
-   - `circuits[]` (full per-board final circuit list) — used in Step 6 selectivity check
-   - `incoming_supply.supply_rating_a` — used in Step 3 Imax_total computation
-   - `incoming_supply.main_switch` (breaker rating + breaking capacity) — used in Step 6 selectivity verdict
-   - `voltage_class` per circuit — used in Step 8 life-safety classification
-   - `breaker_rating_a` + `breaker_curve` per circuit — used in Step 6 selectivity ratio
+If `input.earthing_intent_path` is declared:
+1. Open the file at that path
+2. Confirm `intent_type == "earthing"` (top-level field — earthing intent schema permits this wrapper field)
+3. Capture **top-level `system_type`** (e.g., `"TN-C-S"`, `"TN-S"`, `"TT"`) → **cross-check against** `supply_origin.system_type` in the SLD output. They MUST match exactly. If they differ, surface as a compliance flag (see INV-11).
+4. Capture top-level `supply_bond_type` → echoed into SLD `supply_origin.supply_bond_type`
+5. Capture top-level `ze_declared_ohm` → echoed into SLD `supply_origin.ze_declared_ohm` (sanity check against input.supply_brief.ze_declared_ohm)
+6. Note `main_earthing_conductor_csa_mm2` and `main_bonding[]` — feeds into compliance_summary.assumptions narrative
 
-4. **Adopt verbatim** — do NOT re-author circuit details. The SLD operates one abstraction level up from db-layout: it references each board's circuits but does not modify them. Where the SLD's `selectivity_cascade[]` references a circuit by `parent_circuit_id`, that id MUST match an `id` field in the parent's consumed db-layout intent's `circuits[]`.
+### C. Read the fault-level intent (system-wide) — v1.4+
 
-5. **Populate** `output.meta.consumed_intents[]` with one entry per consumed intent:
-   ```json
-   {
-     "intent_type": "db-layout",
-     "intent_version": "1.0.0",
-     "produced_by": "electrical/db-layout/v1.2.0"
-   }
-   ```
-   The `consumed_intents[]` array length MUST equal `distribution_hierarchy[]` length (one intent per board, including the root MSB).
+If `input.fault_level_intent_path` is declared:
+1. Open the file at that path. Note that the fault-level intent does NOT include an `intent_type` field (its schema forbids it). Verify by presence of `project_id` + `source_summary` + `fault_currents`.
+2. Find the entry in `fault_currents[]` where `node_kind == "transformer_secondary"`. Take its `ifault_ka_max` as the **system peak PFC** value.
+3. Set `system_metrics.peak_pfc_ka` to that value (rounded to 1 decimal place). This **replaces** the v1.3 LLM inline estimate.
+4. Capture per-board cascade PFC (entries where `node_kind == "board_incoming"`) — per-board values inform breaking-capacity discussion in compliance_summary.
+5. Document the source: `compliance_summary.assumptions[]` gets an entry naming the fault-level intent path + the cascade method (IEC 60909 / IEEE 1584 / declared by utility).
 
-6. **Multi-board pairing** — when board roles cross discipline boundaries (e.g., a `fire_alarm_panel` consuming a db-layout intent generated for a generic sub-DB), document the partial alignment in `compliance_summary.assumptions[]` with a note such as `"Board <ID>: consumed db-layout intent treats this as generic sub-DB; SLD upgrades classification to fire_alarm_panel per input brief"`.
+### D. Populate `meta.consumed_intents[]` in order
 
-**Explicit rule:** Adopt upstream data verbatim. The SLD adds system-level analysis (cascade, SPD, life-safety, system metrics) on top of the per-board intents — it does not re-author them.
+For v1.4 examples (multi-skill), the order is:
+1. **N db-layout entries** — one per board in `distribution_hierarchy[]`, in parent-first cascade order (root MSB first, then each child in declaration order)
+2. **1 earthing entry** (if earthing_intent_path was declared)
+3. **1 fault-level entry** (if fault_level_intent_path was declared)
+
+Each entry has shape:
+
+```json
+{
+  "intent_type": "<db-layout|earthing|fault-level>",
+  "intent_version": "<from intent file>",
+  "produced_by": "electrical/<skill>/v<version>",
+  "path": "<the intent-out.json path>"
+}
+```
+
+Total length: `distribution_hierarchy.length + 2` for v1.4 multi-skill examples. For v1.3 backward-compatible examples (no earthing/fault-level paths), total length is `distribution_hierarchy.length`.
+
+### E. Cross-skill assumptions
+
+For each cross-skill input consumed, add a `compliance_summary.assumptions[]` entry naming:
+- The source skill name and version
+- The intent-out.json path
+- The specific field(s) consumed (e.g., "earthing intent's `system_type = TN-C-S` cross-checked against SLD supply_origin")
+- Any partial-alignment note (e.g., INT example's genset filtering — see special handling below)
+
+**Special handling — INT example genset filtering:** If the fault-level intent's `source_summary.type == "mixed"`, the SLD models utility-source PFC only (the worst case). Document this explicitly: `"Upstream fault-level intent models dual-source (utility + genset). SLD consumes the worst-case utility-source PFC; genset contribution documented separately in the fault-level skill but not modeled in SLD's distribution_hierarchy."`
+
+### Length invariant (v1.4)
+
+- v1.3 examples: `meta.consumed_intents.length == distribution_hierarchy.length`
+- v1.4 examples (both earthing + fault-level paths declared): `meta.consumed_intents.length == distribution_hierarchy.length + 2`
+- Mixed/transition examples are not supported in v1.4 — either both new paths or neither.
 
 ---
 
