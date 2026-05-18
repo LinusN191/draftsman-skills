@@ -14,7 +14,7 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | Skill | Path | Status | Standards | Evals | Notes |
 |-------|------|--------|-----------|-------|-------|
 | lighting-layout | `electrical/lighting-layout` | **production** | BS EN 12464-1:2021, Part L 2021 | 8/5 ✓ | Reference implementation. 8 evals (incl. rationale), 3 examples with rationale, full IR schema. |
-| sld | `electrical/sld` | **beta** | BS 7671:2018, BS EN 60617 | 8/3 ✓ | v1.1.0 prompts complete. 8 evals, 4 examples. Separate eval YAML files pending. |
+| sld | `electrical/sld` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 7/3 ✓ | v1.3.0 — full rebuild from legacy 1245-line generator into proven artefact pattern. 4 worked examples (UK + KE + INT + US) each consuming N+1 db-layout intents (WI4 multi-board cascade). Legacy archived as engineering reference. system_metrics deferred to calc.sld_system_metrics per WI3. |
 | db-layout | `electrical/db-layout` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 8/3 ✓ | v1.2.0 — 12 new cascade-supporting examples for SLD v1.3.0 (paired sprint). 16 worked examples total covering UK/KE/INT/US jurisdictions at MSB-rollup + single-board sub-DB scopes. |
 | cable-containment | `electrical/cable-containment` | stub | BS 7671:2018, BS 1192 | — | — |
 | riser | `electrical/riser` | stub | BS 7671:2018 | — | — |

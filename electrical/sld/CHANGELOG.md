@@ -1,5 +1,38 @@
 # Changelog — sld
 
+## [1.3.0] - 2026-05-18
+
+### Added
+- **Full rebuild to artefact pattern.** Manifest grows from sparse legacy form to full v1.3 structure: produces_intent + consumes_intents + 3 prompts + 4 rules + 3 constraints + 3 validators + 2 ontology + 7 evals + 4 examples + 6 standards layers.
+- **IR schema** (`sld-ir.schema.json`) — first-time SLD has a formal IR schema. Required fields: distribution_hierarchy (flat list with parent_board_id pointers), selectivity_cascade, system_metrics, supply_origin, jurisdiction (enum GB/EU/INT/KE/US), meta.consumed_intents.
+- **Intent schema** (`sld-intent.schema.json`) — slim downstream-consumable subset; strict additionalProperties:false; pinned intent_type const "sld".
+- **12-step generator prompt** (~535 lines) replacing legacy 1245-line monolith. Mirrors arc-flash + cable-sizing + fault-level + earthing pattern. Includes Step 0.5 multi-board WI4 consumption.
+- **Validator prompt** with 10 INV checks; **reviewer prompt** with 6 D-checks.
+- **17 deterministic checks** across 4 rules + 3 constraints + 3 validation YAMLs.
+- **4 worked examples**: UK 3-storey office (4-board cascade) + KE Nairobi industrial MSB-GH (2-board, KS 1700 jurisdiction) + INT commercial MSB + 4 sub-DBs (5-board, fire-alarm life-safety) + US strip mall MSP + tenants (4-board, NEC + AWG).
+- **7 evals**: 5 WI5 categories (happy_path × 2, validation_trap × 2, edge_case) + 2 skill-specific (rationale_block + multi-board WI4 consumption).
+- **2 ontology JSONs**: board-roles (7 roles) + distribution-types (5 topologies).
+- **3 docs**: engineering-philosophy.md + known-limitations.md + legacy-generator-v1.2-engineering-reference.md (archived 1245-line legacy generator).
+
+### Changed
+- **Legacy 1245-line generator archived** at `electrical/sld/docs/legacy-generator-v1.2-engineering-reference.md`. Engineering content preserved as reference; replaced by 12-step generator at `prompts/generator.md`.
+- **inputs.json refreshed** per WI1 — discovery questions include consumed_intent_path per board.
+- **README.md fully rewritten** (was stub-flagged).
+- **db-layout dependency** — consumes_intents now actively populated (was declared but unused in legacy v1.2).
+- **Status:** production → beta during rebuild; can promote back to production after eval runs in DraftsMan runtime.
+
+### Removed
+- `electrical/sld/evals/evals-combined.md` (atomized into 7 per-eval YAMLs)
+- `electrical/sld/examples/examples-combined.md` (atomized into 4 example folders)
+
+### Notes
+- **Paired with db-layout v1.2.0** which adds 12 new companion examples (60 files) supporting full cascade WI4 consumption.
+- **WI3 tool deferral** for system_metrics: `calc.sld_system_metrics` not yet runtime-shipped; system_metrics values are LLM-estimates with disclaimer in flags.
+- **No schema changes to db-layout** — db-layout intent shape unchanged.
+- **Future v1.4.0** will add earthing + fault-level intent consumption (memory queue: sld-deferred-followups).
+- **Future v1.5.0** will add drawing position layout (Stage 2).
+- **US example** carries deliberate NEC 695.4(A) teaching flag (fire pump on common-area panel) — `compliant: false` at IR level demonstrates how SLD records multi-board compliance tensions.
+
 ## v1.2.0 (current)
 - Add `inputs.json` carrying full discovery taxonomy (18 items including supply source, earthing, PSCC, transformer/generator/UPS, distribution-board struct_list, Form/IAC, SPD strategy)
 - Add `inputs_path: "inputs.json"` to manifest pointing at the new taxonomy

@@ -316,6 +316,23 @@ The pattern is generalizable: any consumer skill that declares `consumes_intents
 
 Future consumers (cable-sizing, fault-level, arc-flash) will follow this pattern when their respective minor-version sprints add db-layout intent consumption.
 
+### SLD multi-board generalization (since 2026-05-18, sld v1.3.0)
+
+The `electrical/sld` skill (v1.3+) generalizes the WI4 pattern from single-board (earthing v1.3 consuming one db-layout intent) to multi-board cascade (one db-layout intent per board in the distribution hierarchy).
+
+| Field | Single-board pattern (earthing v1.3) | Multi-board pattern (sld v1.3) |
+|---|---|---|
+| `meta.consumed_intents[]` length | 1 entry | N+1 entries (one per board) |
+| `consumed_intent_path` location | input.json root | distribution_hierarchy[].consumed_intent_path |
+| Cross-file alignment | circuits[] subset of upstream | board_id matches upstream db_id |
+
+Generalization template:
+- Each downstream consumer reads ALL upstream intent paths
+- Each consumer aggregates upstream data into a system-level view + adds its own discipline-specific fields
+- Provenance records (meta.consumed_intents) capture every upstream consumed
+
+Future skills (cable-containment, riser, panel-schedule rollup) follow this generalized multi-board pattern.
+
 ## Contribution guide
 
 See `CONTRIBUTING.md` for how to add a new skill, update standards values,
