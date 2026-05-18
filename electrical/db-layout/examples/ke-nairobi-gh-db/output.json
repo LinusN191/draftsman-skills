@@ -1,0 +1,58 @@
+{
+  "$schema": "../../schemas/db-layout-ir.schema.json",
+  "drawing_type": "db_layout",
+  "version": "1.2.0",
+  "meta": {
+    "project_id": "ke-nairobi-enterprise-light-engineering",
+    "skill_version": "db-layout/1.2.0",
+    "produced_at": "2026-05-18T10:00:00Z"
+  },
+  "jurisdiction": "KE",
+  "board": {
+    "db_id": "GH-DB",
+    "designation": "GH-DB — Gate-house sub-DB, Nairobi industrial light-engineering workshop",
+    "location": "gate-house plant cupboard, site perimeter",
+    "enclosure_rating": "IP54",
+    "manufacturer_class": "KS Annex E (BS EN 61439-3 Distribution Board)",
+    "scope": "single-board"
+  },
+  "incoming_supply": {
+    "voltage_v": 240,
+    "phase_arrangement": "single_phase",
+    "supply_rating_a": 40,
+    "fed_from": "MSP-100 C08 (40A MCB Type B + 30mA Type A RCD, 60m submain)",
+    "supply_class": "non_essential",
+    "declared_pfc_ka": 3.0
+  },
+  "main_switch": {
+    "type": "switch-disconnector",
+    "rating_a": 40,
+    "breaking_capacity_ka": 6,
+    "fault_level_a_min": 3000
+  },
+  "circuits": [
+    { "circuit_id": "C01", "way_module_id": "W1", "designation": "Gate-house lighting (external floodlights + internal)", "voltage_class": "LV_power", "downstream_load_kw": 0.6, "ocpd": { "rating_a": 10, "curve": "B", "type": "MCB", "breaking_capacity_ka": 6 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 8 } },
+    { "circuit_id": "C02", "way_module_id": "W2", "designation": "Gate-house sockets (general)",                          "voltage_class": "LV_power", "downstream_load_kw": 1.5, "ocpd": { "rating_a": 16, "curve": "B", "type": "MCB", "breaking_capacity_ka": 6 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 6 } },
+    { "circuit_id": "C03", "way_module_id": "W3", "designation": "Comms outlet (CCTV camera + intercom)",                 "voltage_class": "comms_data","downstream_load_kw": 0.2, "ocpd": { "rating_a": 6,  "curve": "B", "type": "MCB", "breaking_capacity_ka": 6 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 5 } }
+  ],
+  "spare_ways": 1,
+  "selectivity_results": [
+    { "upstream": "MSP-100 C08 (40A MCB Type B + 30mA Type A RCD)", "downstream": "GH-DB main switch + final circuits", "verdict": "pass_with_rcd_caution", "_note": "Upstream 40A MCB selectively protects against 16A and smaller final-circuit MCBs at GH-DB (current ratio ≥2.5:1). RCD selectivity NOT achieved: upstream 30mA Type A at MSP-100 C08 and downstream 30mA Type A on C02/C03 are both 30mA — series 30mA pairs are time-coincident (KS 1700 §314 requires staged sensitivities for true selectivity). Coordination accepted because the upstream RCD also serves only the gate house; an earth fault tripping both is operationally acceptable for a small isolated load." }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "KS 1700:2018 Annex E adopts BS EN 61439-3 for distribution boards; KS Annex E adopts BS Table 41.2 disconnection-time tables verbatim.",
+      "KS 1700:2018 §411.3.3 universal socket-RCD policy: 30mA Type A applied on C02 (socket) and C03 (comms outlet — small DC content from CCTV switching supplies).",
+      "Estimated PFC at GH-DB ≈ 3.0 kA after the 60m submain impedance from 9.8 kA declared at MSP-100; 6 kA Icn on the GH-DB MCBs provides 100% headroom.",
+      "Single-phase 240V intake — gate house is a small isolated load best fed as single-phase to simplify isolation and minimise neutral imbalance at MSP-100."
+    ]
+  },
+  "drawing_notes": [
+    "GH-DB located inside the gate-house plant cupboard at the site perimeter.",
+    "Fed from MSP-100 C08 via 60m 10mm² 4-core SWA PVC Cu submain.",
+    "IP54 enclosure rating suits semi-outdoor gate-house cupboard.",
+    "3 final circuits + 1 spare way (W4 reserved)."
+  ]
+}

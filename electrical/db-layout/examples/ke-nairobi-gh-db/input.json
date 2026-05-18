@@ -1,0 +1,30 @@
+{
+  "project_id": "ke-nairobi-enterprise-light-engineering",
+  "board_brief": "Gate-house sub-DB (GH-DB) for the Nairobi industrial light-engineering workshop. Single-phase 240V supply fed from MSP-100 C08 (40A MCB Type B + 30mA Type A RCD at MSP-100) via a 60m armoured submain run. 3 final circuits + 1 spare way. Located inside the gate-house plant cupboard at the site perimeter.",
+  "jurisdiction": "KE",
+  "standards_stack": {
+    "primary": "KS 1700:2018",
+    "assembly_type_testing": "KS Annex E (adoption of BS EN 61439-3 Distribution Board)"
+  },
+  "supply": {
+    "fed_from": "MSP-100 C08 (40A MCB Type B + 30mA Type A RCD)",
+    "system_type": "TN-S derived (KPLC supply at site via MSP-100)",
+    "voltage": "240V single-phase 50 Hz",
+    "supply_rating_a": 40,
+    "phase_arrangement": "single_phase",
+    "feeder_route_length_m": 60
+  },
+  "board": {
+    "designation": "GH-DB",
+    "location": "gate-house plant cupboard, site perimeter",
+    "enclosure_rating": "IP54 (semi-outdoor / gate-house cupboard)",
+    "busbar_rating_a": 63,
+    "scope": "single-board"
+  },
+  "circuits": [
+    { "circuit_id": "C01", "designation": "Gate-house lighting (external floodlights + internal)", "phase": "L", "device": "10A MCB Type B", "cable": "1.5mm² T+E PVC Cu", "route_length_m": 8 },
+    { "circuit_id": "C02", "designation": "Gate-house sockets (general)",                          "phase": "L", "device": "16A MCB Type B", "cable": "2.5mm² T+E PVC Cu", "route_length_m": 6 },
+    { "circuit_id": "C03", "designation": "Comms outlet (CCTV camera + intercom)",                "phase": "L", "device": "6A MCB Type B",  "cable": "1.5mm² T+E PVC Cu", "route_length_m": 5 },
+    { "circuit_id": "C04", "designation": "Spare way reserved",                                   "phase": "L", "device": "—",              "cable": "—",                  "route_length_m": 0 }
+  ]
+}
