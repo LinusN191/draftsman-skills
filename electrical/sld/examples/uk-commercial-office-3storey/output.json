@@ -4,13 +4,15 @@
   "version": "1.3.0",
   "meta": {
     "project_id": "uk-3storey-office-eg01",
-    "skill_version": "sld/1.3.0",
+    "skill_version": "sld/1.4.0",
     "produced_at": "2026-05-18T12:00:00Z",
     "consumed_intents": [
-      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" },
-      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" },
-      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" },
-      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" }
+      { "intent_type": "db-layout",    "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/uk-commercial-msb-3storey/intent-out.json" },
+      { "intent_type": "db-layout",    "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/uk-commercial-sdb-gf/intent-out.json" },
+      { "intent_type": "db-layout",    "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/uk-commercial-sdb-l1/intent-out.json" },
+      { "intent_type": "db-layout",    "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/uk-commercial-sdb-l2/intent-out.json" },
+      { "intent_type": "earthing",     "intent_version": "1.0.0", "produced_by": "electrical/earthing/v1.4.0",    "path": "electrical/earthing/examples/uk-commercial-3storey/intent-out.json" },
+      { "intent_type": "fault-level",  "intent_version": "1.0.0", "produced_by": "electrical/fault-level/v1.1.0", "path": "electrical/fault-level/examples/uk-commercial-3storey/intent-out.json" }
     ]
   },
   "jurisdiction": "GB",
@@ -39,7 +41,7 @@
   ],
   "system_metrics": {
     "imax_total_a": 146,
-    "peak_pfc_ka": 9.5,
+    "peak_pfc_ka": 9.8,
     "spd_assessment": {
       "required": true,
       "spd_type": "Type 2",
@@ -61,7 +63,10 @@
       "Imax computed as 86 kVA peak ÷ (√3 × 400V × 0.85) = ~146A — derived inline; deterministic refinement deferred per WI3 to calc.sld_system_metrics.",
       "Selectivity verified by IEC 60898 typical ratio (4:1); manufacturer table consultation recommended for tight design margins.",
       "Emergency lighting via local battery-pack luminaires per BS 5266 (not central inverter); no dedicated emergency-lighting feeder at MSB level.",
-      "Fire alarm system on local battery-backed FCU (not integrated into LV distribution at this scale)."
+      "Fire alarm system on local battery-backed FCU (not integrated into LV distribution at this scale).",
+      "Multi-skill intent consumption (v1.4): earthing intent at electrical/earthing/examples/uk-commercial-3storey/intent-out.json provides system_type=TN-C-S, ze_declared_ohm=0.35, supply_bond_type=tn_c_s_pen — cross-checked against SLD supply_origin per INV-11.",
+      "Multi-skill intent consumption (v1.4): fault-level intent at electrical/fault-level/examples/uk-commercial-3storey/intent-out.json provides system peak PFC 9.85 kA at transformer secondary per IEC 60909-0:2016 cascade — SLD system_metrics.peak_pfc_ka=9.8 sourced from this value (within ±0.5 kA INV-11 tolerance).",
+      "tool_call_pending_for_system_metrics: true — imax_total, SPD assessment, life-safety isolation remain LLM-estimated until calc.sld_system_metrics ships (WI3 deferral preserved)."
     ]
   },
   "drawing_notes": [

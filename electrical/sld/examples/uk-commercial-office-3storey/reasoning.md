@@ -2,6 +2,15 @@
 
 > **v1.3 — WI4 multi-board consumption:** This example's `distribution_hierarchy[]` is derived from 4 upstream db-layout intents (one per board). The SLD skill adopts each board's `db_id` + incoming-supply summary verbatim and extends the picture with cascade structure, selectivity verification, system-wide metrics, and SPD assessment. Board IDs match the upstream 1:1.
 
+## Multi-skill consumption (v1.4)
+
+> **v1.4 — multi-skill intent consumption:** This example consumes 3 upstream skill domains:
+> - **db-layout** (4 intents — one per board in the cascade) — per-board detail
+> - **earthing** (1 intent, system-wide) — at `electrical/earthing/examples/uk-commercial-3storey/intent-out.json` — provides `system_type=TN-C-S`, `supply_bond_type=tn_c_s_pen`, `ze_declared_ohm=0.35`; cross-checked against SLD `supply_origin` via INV-11
+> - **fault-level** (1 intent, system-wide) — at `electrical/fault-level/examples/uk-commercial-3storey/intent-out.json` — provides deterministic peak_pfc_ka=9.85 kA at transformer secondary per IEC 60909-0:2016 cascade; SLD's `system_metrics.peak_pfc_ka=9.8` is sourced from this value (was LLM-estimated 9.5 in v1.3)
+>
+> `meta.consumed_intents[]` grows from 4 entries (v1.3) to 6 entries (v1.4): 4 db-layout + 1 earthing + 1 fault-level. INV-11 enforces the count + ordering + cross-skill field equality.
+
 ## Site context
 
 Spec office on a typical UK suburban high-street, 3 storeys with one tenancy per floor, ~400m² per floor (1200m² GIA). Designed for multi-tenant fit-out — sub-DBs landed per floor in a riser cupboard so each tenant has a clear point of isolation, sub-metering, and future expansion without touching the MSB. Building age and risk profile sit comfortably inside the BCO Specification (Cat A) baseline.
