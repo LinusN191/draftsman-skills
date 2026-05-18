@@ -1,6 +1,6 @@
 {
   "skill": "sld",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "discipline": "electrical",
   "subdiscipline": "distribution",
   "status": "beta",
@@ -11,7 +11,7 @@
   "output_schema": "electrical/sld/schemas/sld-ir.schema.json",
   "produces_intent": "sld",
   "produces_intent_schema": "electrical/sld/schemas/sld-intent.schema.json",
-  "consumes_intents": ["db-layout"],
+  "consumes_intents": ["db-layout", "earthing", "fault-level"],
   "standards": [
     "shared/standards/electrical/BS7671/",
     "shared/standards/electrical/IEC60364/",
@@ -53,7 +53,8 @@
     "electrical/sld/evals/eval-04-missing-spd-assessment.yaml",
     "electrical/sld/evals/eval-05-non-selective-cascade.yaml",
     "electrical/sld/evals/eval-06-rationale-block.yaml",
-    "electrical/sld/evals/eval-07-multi-board-intent-consumption.yaml"
+    "electrical/sld/evals/eval-07-multi-board-intent-consumption.yaml",
+    "electrical/sld/evals/eval-08-multi-skill-intent-consumption.yaml"
   ],
   "examples": [
     "electrical/sld/examples/uk-commercial-office-3storey/",

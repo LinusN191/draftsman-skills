@@ -1,5 +1,31 @@
 # Changelog — sld
 
+## [1.4.0] - 2026-05-18
+
+### Added
+- **Multi-skill intent consumption**: SLD now consumes earthing + fault-level intents in addition to db-layout (one per board). `consumes_intents`: `["db-layout"]` → `["db-layout", "earthing", "fault-level"]`
+- **Generator Step 0.5 extended** with sections A/B/C/D/E for multi-skill resolution + cross-skill assumption population
+- **Validator INV-11**: 5 hard fails (count, exactly-one-earthing, exactly-one-fault-level, paths resolve) + 2 warning flags (system_type equality, peak_pfc_ka ±0.5 kA tolerance)
+- **New eval**: `eval-08-multi-skill-intent-consumption.yaml` (12 assertions covering structural shape + cross-file equality)
+
+### Changed
+- All 4 worked examples (UK 4-board + KE 2-board + INT 5-board + US 4-board) refreshed: `meta.consumed_intents[]` grows from N → N+2 entries (4→6, 2→4, 5→7, 4→6)
+- `system_metrics.peak_pfc_ka` now sourced from fault-level intent's transformer-secondary `ifault_ka_max` (was LLM-estimated in v1.3)
+- `input.json` per example gains 2 new top-level fields: `earthing_intent_path` + `fault_level_intent_path`
+
+### Engineering consequences surfaced by multi-skill consumption
+- KE example: deterministic PFC 10.22 kA exceeds MSP-100 Icu 10 kA → new non_compliance_flag with two resolution paths (uprate to 16 kA Icu OR document KPLC transformer-fuse cascade)
+- INT example: dual-source (utility + 800 kVA standby genset) — bespoke genset-filtering note documented; SLD models utility-source worst case only
+
+### Backward compatibility
+- v1.3 examples remain valid (INV-11 only fires when both new input paths are declared)
+- `tool_call_pending_for_system_metrics: true` preserved (only peak_pfc_ka refined; imax, SPD, life-safety isolation remain LLM-estimated until calc.sld_system_metrics ships)
+
+### Pattern parents
+- earthing v1.3 (shipped 2026-05-18) — single-board WI4 single-skill consumption
+- SLD v1.3 (shipped 2026-05-18) — multi-board WI4 single-skill consumption
+- This sprint: multi-board + multi-skill WI4 consumption
+
 ## [1.3.0] - 2026-05-18
 
 ### Added
