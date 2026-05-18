@@ -1,0 +1,29 @@
+{
+  "project_id": "intl-commercial-msb-4subdbs-eg03",
+  "site_brief": "Generic international IEC commercial building, 4-floor office with mechanical plant. Utility TN-C-S 400V TPN supply with declared Ze=0.30Ω + PFC=16kA. 800A MSB with 4 functionally-separated feeders: lighting (F01), small-power (F02), mechanical (F03), and fire alarm (F04). Fire-alarm panel demonstrates life-safety isolation pattern per IEC 60364-5-56.",
+  "jurisdiction": "INT",
+  "supply_brief": {
+    "supplier": "Utility (generic IEC jurisdiction)",
+    "wayleave_or_account_reference": "INT-COMM-2026-EG03",
+    "system_type": "TN-C-S",
+    "voltage_nominal_v": 400,
+    "voltage_arrangement": "TPN_plus_E",
+    "frequency_hz": 50,
+    "ze_declared_ohm": 0.30,
+    "pfc_declared_ka": 16.0,
+    "main_switch_rating_a": 800,
+    "main_switch_breaking_capacity_ka": 50
+  },
+  "distribution_hierarchy_brief": [
+    { "board_id": "MSB-MAIN", "board_role": "main_switchboard",       "consumed_intent_path": "electrical/db-layout/examples/intl-commercial-tpn-msb/intent-out.json", "parent_board_id": null,       "fed_via_circuit_id": null,  "location": "ground-floor plant room" },
+    { "board_id": "DB-L1",    "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/intl-dbl1-lighting/intent-out.json",      "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F01", "location": "ground-floor lighting riser" },
+    { "board_id": "DB-P1",    "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/intl-dbp1-power/intent-out.json",         "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F02", "location": "ground-floor power riser" },
+    { "board_id": "DB-M1",    "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/intl-dbm1-mechanical/intent-out.json",    "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F03", "location": "ground-floor mechanical riser" },
+    { "board_id": "DB-FA1",   "board_role": "fire_alarm_panel",       "consumed_intent_path": "electrical/db-layout/examples/intl-dbfa1-fire-alarm/intent-out.json",   "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F04", "location": "ground-floor fire-alarm room" }
+  ],
+  "spd_assessment_inputs": {
+    "location_type": "commercial",
+    "lightning_risk": "moderate",
+    "life_safety_present": true
+  }
+}

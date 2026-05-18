@@ -1,0 +1,106 @@
+{
+  "$schema": "../../schemas/sld-ir.schema.json",
+  "drawing_type": "single_line_diagram",
+  "version": "1.3.0",
+  "meta": {
+    "project_id": "intl-commercial-msb-4subdbs-eg03",
+    "skill_version": "sld/1.3.0",
+    "produced_at": "2026-05-18T13:00:00Z",
+    "consumed_intents": [
+      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" },
+      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" },
+      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" },
+      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" },
+      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" }
+    ]
+  },
+  "jurisdiction": "INT",
+  "supply_origin": {
+    "supplier": "Utility (generic IEC jurisdiction)",
+    "wayleave_or_account_reference": "INT-COMM-2026-EG03",
+    "system_type": "TN-C-S",
+    "voltage_nominal_v": 400,
+    "voltage_arrangement": "TPN_plus_E",
+    "frequency_hz": 50,
+    "ze_declared_ohm": 0.30,
+    "pfc_declared_ka": 16.0,
+    "main_switch_rating_a": 800,
+    "main_switch_breaking_capacity_ka": 50
+  },
+  "distribution_hierarchy": [
+    { "board_id": "MSB-MAIN", "board_role": "main_switchboard",       "consumed_intent_path": "electrical/db-layout/examples/intl-commercial-tpn-msb/intent-out.json", "parent_board_id": null,       "fed_via_circuit_id": null,  "location": "ground-floor plant room",         "enclosure_rating": "IP4X" },
+    { "board_id": "DB-L1",    "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/intl-dbl1-lighting/intent-out.json",      "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F01", "location": "ground-floor lighting riser",     "enclosure_rating": "IP4X" },
+    { "board_id": "DB-P1",    "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/intl-dbp1-power/intent-out.json",         "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F02", "location": "ground-floor power riser",        "enclosure_rating": "IP4X" },
+    { "board_id": "DB-M1",    "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/intl-dbm1-mechanical/intent-out.json",    "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F03", "location": "ground-floor mechanical riser",   "enclosure_rating": "IP4X" },
+    { "board_id": "DB-FA1",   "board_role": "fire_alarm_panel",       "consumed_intent_path": "electrical/db-layout/examples/intl-dbfa1-fire-alarm/intent-out.json",   "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F04", "location": "ground-floor fire-alarm room",    "enclosure_rating": "IP4X" }
+  ],
+  "selectivity_cascade": [
+    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F01", "child_board_id": "DB-L1",  "verdict": "selective",         "verification_method": "iec_60898_typical", "_note": "F01 800A Type D upstream / 250A downstream main = 3.2:1 ratio, above IEC 60898 typical 3:1 selectivity threshold." },
+    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F02", "child_board_id": "DB-P1",  "verdict": "partial_selective", "verification_method": "iec_60898_typical", "_note": "F02 800A Type D upstream / 400A downstream main = 2.0:1 ratio, BELOW the IEC 60898 typical 3:1 selectivity threshold. Manufacturer selectivity-table consultation required for design intent; in practice the short-time grading on modern MCCBs typically maintains discrimination at this ratio, but cannot be claimed without the device-pair-specific table." },
+    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F03", "child_board_id": "DB-M1",  "verdict": "selective",         "verification_method": "iec_60898_typical", "_note": "F03 800A Type D upstream / 250A downstream main = 3.2:1 ratio, above IEC 60898 typical threshold. Mechanical inrush (motor starts on M01/M03) handled by D-curve coordination." },
+    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F04", "child_board_id": "DB-FA1", "verdict": "selective",         "verification_method": "iec_60898_typical", "_note": "F04 800A Type D upstream / 63A Type C downstream main = 12.7:1 ratio, deeply selective. CRITICAL: F04 fire_alarm feeder has NO upstream RCD per IEC 60364-5-56 §560 — life-safety isolation maintained at MSB level; RCDs at MSB intake would trip the entire DB-FA1 panel on a single earth-fault and disable fire-alarm functionality." }
+  ],
+  "system_metrics": {
+    "imax_total_a": 170,
+    "peak_pfc_ka": 15.5,
+    "spd_assessment": {
+      "required": true,
+      "spd_type": "Type 2",
+      "code_clause": "IEC 60364-4-44:2007 §443",
+      "location_basis": "commercial 4-floor office with moderate lightning risk and life-safety present (DB-FA1 fire-alarm panel + occupied tenancies). Type 2 SPD at MSB intake per IEC 60364-4-44 §443.4 — sufficient for indoor commercial without site-LPS (would escalate to Type 1+2 if IEC 62305 LPS installed)."
+    },
+    "life_safety_isolation": {
+      "fire_alarm_dedicated_supply": true,
+      "emergency_lighting_dedicated_supply": false,
+      "ups_essential_loads_kva": 0
+    },
+    "tool_call_pending_for_system_metrics": true
+  },
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Diversity factor applied per sub-DB load class: lighting 0.95, small-power 0.85, mechanical 0.75, fire-alarm 1.0. Aggregate Imax_total = (19.3×0.95 + 47.5×0.85 + 50.0×0.75 + 3.0×1.0) kW ≈ 98.5 kW; Imax = 98,500 / (√3 × 400 × 0.85) ≈ 167A — rounded to 170A. Inline LLM derivation; deterministic refinement deferred per WI3 to calc.sld_system_metrics.",
+      "Sub-DB summed loads (19.3 + 47.5 + 50.0 + 3.0 = 119.8 kW total) are smaller than the MSB feeder rollups (F01=80kW + F02=150kW + F03=100kW + F04=12kW = 342kW). The feeder rollups in the MSB intent reflect rated headroom for spare-way / tenant fit-out; actual diversified Imax uses the sub-DB summed loads as the authoritative basis.",
+      "F02 cascade is 'partial_selective' (2:1 below 3:1 IEC 60898 typical) — documented in selectivity_cascade._note. NOT a compliance failure: the cascade verdict captures the engineering caveat, and the design relies on manufacturer selectivity tables (instantaneous + short-time grading on modern MCCB pairs typically holds at this ratio). If tighter discrimination is required, downstream main can be reduced to 315A (gives 2.5:1, still below 3:1) or upstream raised to 1250A.",
+      "DB-FA1 fire_alarm_panel dedicated supply confirmed: F04 has NO upstream RCD per IEC 60364-5-56 §560 (life-safety isolation). Final-circuit fire-alarm devices (FA01-FA06) inside DB-FA1 are also rcd_protected: false. PE-via-MET earth-fault clearance time relies on TN-C-S adiabatic + 5-second clearance per IEC 60364-4-41 §411.3.2.2 (verified by db-layout/v1.2.0 panel-level checks).",
+      "Peak PFC 15.5kA at MSB busbar is slightly under the declared 16.0kA — accounting for ~0.05Ω service-tail impedance added between DNO connection and MSB intake. Comfortably inside the 50kA Icu rating of the 800A main switch.",
+      "Emergency lighting via local battery-pack luminaires per IEC 60364-5-56 §560.7 (not central inverter); no dedicated emergency-lighting feeder at MSB level — DB-L1 L06 is the only `voltage_class: emergency_lighting` circuit and serves as a local sustained-supply distribution to battery-pack luminaires."
+    ]
+  },
+  "drawing_notes": [
+    "MSB-MAIN located in ground-floor plant room with 800A TPN intake from utility TN-C-S supply (Ze=0.30Ω, declared PFC=16kA).",
+    "4 functionally-separated feeders from MSB: F01 lighting (250A) + F02 small-power (400A) + F03 mechanical (250A) + F04 fire-alarm (63A).",
+    "Type 2 SPD assembly at MSB intake per IEC 60364-4-44 §443.",
+    "Final-circuit RCDs (30mA Type A) located at sub-DBs DB-L1/DB-P1/DB-M1 — preserves MSB-level selectivity.",
+    "DB-FA1 fire-alarm panel: NO upstream RCD per IEC 60364-5-56 §560. Earth-fault clearance by adiabatic 5s rule (IEC 60364-4-41 §411.3.2.2).",
+    "F02 cascade (800A/400A = 2:1) flagged 'partial_selective' — confirm with manufacturer selectivity table before final design freeze."
+  ],
+  "drawn_as_symbols": ["BUSBAR", "MCCB", "MCB", "RCD", "EARTH_GENERAL", "EARTH_PROTECTIVE", "CONDUCTOR_PE", "CONDUCTOR_PEN", "JUNCTION_T", "SPD_SYMBOL"],
+  "flags": ["TOOL-CALL-PENDING:sld_system_metrics — System metrics are LLM-estimates; deterministic refinement deferred per WI3."],
+  "rationale": {
+    "chat_summary": "Generic IEC commercial 4-floor office on TN-C-S 400V (Ze=0.30Ω, PFC=16kA). 800A MSB feeds 4 sub-DBs: DB-L1 lighting (F01 250A), DB-P1 small-power (F02 400A), DB-M1 mechanical (F03 250A), DB-FA1 fire-alarm (F04 63A). DB-FA1 demonstrates life-safety isolation per IEC 60364-5-56 §560 — no upstream RCD on F04. Imax_total ~170A; peak PFC 15.5kA. Type 2 SPD per IEC 60364-4-44 §443. Cascade is 'partially_selective' overall — F02 only 2:1 ratio, below 3:1 IEC typical (documented, not blocking). Reply to refine.",
+    "sections": [
+      { "title": "Supply Origin", "summary": "TN-C-S 400V TPN+E, declared Ze=0.30Ω + PFC=16kA. 800A MCCB main switch with 50kA Icu (IEC 60947-2). Generic IEC jurisdiction — citations use IEC 60364 form only.", "decisions": [
+        { "label": "TN-C-S supply confirmed", "summary": "PEN at service head, MET separation downstream of main switch.", "rule": "IEC 60364-4-41 §411.4 TN-C-S system definition", "code_clause": "IEC 60364-4-41:2005 §411.4", "inputs": { "ze_ohm_declared": 0.30, "pfc_ka_declared": 16.0 } }
+      ] },
+      { "title": "Distribution Hierarchy", "summary": "5-board cascade. MSB-MAIN feeds 4 functionally-separated sub-DBs via dedicated feeders (lighting, small-power, mechanical, fire-alarm). Functional separation is the dominant design driver — each load class isolates faults and simplifies fit-out per discipline.", "decisions": [
+        { "label": "Functional separation at MSB", "summary": "4 feeders by voltage_class / load discipline rather than per-floor. Fire-alarm gets dedicated feeder for life-safety isolation; mechanical kept separate to avoid motor inrush propagating to lighting.", "rule": "IEC 60364-5-51 §514 functional separation; IEC 60364-5-56 §560 life-safety", "code_clause": "IEC 60364-5-56:2009 §560", "inputs": { "board_count": 5, "feeder_count": 4 } }
+      ] },
+      { "title": "System Metrics", "summary": "Imax_total 170A (vs 800A intake = 21% utilisation, 79% headroom). Peak PFC 15.5kA (vs 50kA Icu — deeply comfortable). Substantial headroom typical for IEC commercial spec building with tenant fit-out variation.", "decisions": [
+        { "label": "Intake capacity verified", "summary": "main_switch_rating 800A >> imax_total 170A; breaking_capacity 50kA >> peak_pfc 15.5kA.", "rule": "IEC 60364-4-43 §433.1 + §434.5.1 Icu adequacy", "code_clause": "IEC 60364-4-43:2008 §433.1", "inputs": { "imax_total_a": 170, "main_switch_rating_a": 800, "headroom_pct": 79 } }
+      ] },
+      { "title": "Cascade Selectivity", "summary": "3 of 4 cascade pairs verified selective by IEC 60898 typical ratio. F02 (800A/400A = 2:1) flagged 'partial_selective' — below the 3:1 typical threshold but acceptable with manufacturer table consultation. F04 (12.7:1) is deeply selective — fire-alarm life-safety preserved.", "decisions": [
+        { "label": "F02 partial selectivity documented", "summary": "Verdict 'partial_selective' with note explaining ratio + remediation options (downsize child to 315A, upsize parent to 1250A, or accept with manufacturer selectivity-table confirmation).", "rule": "IEC 60947-2 selectivity table guidance", "code_clause": "IEC 60364-5-53:2002 §536", "inputs": { "f02_ratio": 2.0, "verdict": "partial_selective" } }
+      ] },
+      { "title": "SPD Assessment", "summary": "Type 2 SPD required at MSB intake per IEC 60364-4-44 §443. Commercial with moderate lightning risk + life-safety present — Type 2 baseline. Would escalate to Type 1+2 if site has IEC 62305 LPS.", "decisions": [
+        { "label": "Type 2 SPD at MSB", "summary": "IEC 60364-4-44 §443.4 baseline for indoor commercial without site-LPS.", "rule": "IEC 60364-4-44 §443 SPD policy lookup", "code_clause": "IEC 60364-4-44:2007 §443", "inputs": { "spd_type": "Type 2", "location_type": "commercial", "lightning_risk": "moderate" } }
+      ] },
+      { "title": "Life-Safety Isolation", "summary": "DB-FA1 fire_alarm_panel role establishes dedicated life-safety distribution. F04 (63A Type C) has NO upstream RCD per IEC 60364-5-56 §560 — a single earth fault must not trip the entire fire-alarm panel. Emergency lighting handled by local battery-pack luminaires (DB-L1 L06 sustained-supply feeder). UPS-essential loads kVA = 0 at this scale.", "decisions": [
+        { "label": "DB-FA1 dedicated supply", "summary": "fire_alarm_dedicated_supply: true. NO upstream RCD on F04. Final-circuit fire devices inside DB-FA1 also rcd_protected: false. Earth-fault clearance via TN-C-S adiabatic 5s.", "rule": "IEC 60364-5-56 §560 + IEC 60364-4-41 §411.3.2.2", "code_clause": "IEC 60364-5-56:2009 §560", "inputs": { "fire_alarm_dedicated_supply": true, "f04_upstream_rcd": false } }
+      ] },
+      { "title": "Compliance", "summary": "Compliant. No non-compliance flags. 6 assumptions documented (diversity factor structure, sub-DB-summed-load basis, F02 partial selectivity rationale, DB-FA1 dedicated supply confirmation, PFC service-tail correction, emergency lighting strategy).", "decisions": [] },
+      { "title": "Assumptions", "summary": "6 assumptions captured in compliance_summary covering diversity factor structure (lighting 0.95 / power 0.85 / mechanical 0.75 / fire 1.0), authoritative basis for Imax derivation, F02 cascade caveat, DB-FA1 dedicated-supply confirmation, peak PFC service-tail correction, and emergency lighting strategy.", "decisions": [] }
+    ]
+  }
+}
