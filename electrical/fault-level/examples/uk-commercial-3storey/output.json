@@ -49,7 +49,7 @@
     "assumptions": [
       "DNO declared Ze=0.35 Ω and PSCC=9.8 kA at MSB intake (TN-C-S) treated as binding boundary per BS 7671:2018+A2 Reg 313.1; HV-side modelling supplied for cascade audit only.",
       "Transformer X/R = 6 assumed for 800 kVA urban distribution unit per IEC 60909-1:2008 Table A.1.",
-      "Cable impedance per IEC 60364-5-52 Annex E: 95mm² Cu XLPE at 90°C operating temperature → R=0.000208 Ω/m, X=0.0000829 Ω/m.",
+      "Cable impedance per IEC 60364-5-52:2009 Annex E: 95mm² Cu XLPE at 90°C operating temperature → R=0.000208 Ω/m, X=0.0000829 Ω/m.",
       "Peak factor κ computed per IEC 60909-0:2016 Eq. 29: κ = 1.02 + 0.98·exp(-3/(X/R)). κ ≈ 1.61 at MSB busbar (X/R=6) and ≈ 1.30 at floor SDBs (X/R≈2.4) reflecting the resistive contribution of riser cables.",
       "Motor contribution disregarded: total connected motor load = 0 kW, IEC 60909-0:2016 §3.8 contribution threshold (ΣI_LR > 5% of Ik\") not met.",
       "Selectivity verification per BS 7671:2018+A2 Reg 434.5.1 (breaking capacity) and Reg 536.4 (discrimination between OCPDs).",
@@ -93,7 +93,7 @@
         "decisions": [
           {
             "label": "c_max = 1.10 HV",
-            "summary": "Voltage factor selected for Un=11 kV per IEC 60909 Table 1.",
+            "summary": "Voltage factor selected for Un=11 kV per IEC 60909-0:2016 Table 1.",
             "rule": "IEC 60909-0:2016 Table 1",
             "code_clause": "IEC 60909-0:2016 Table 1",
             "inputs": { "c_max_hv": 1.10, "c_min_hv": 1.00 }
@@ -128,11 +128,11 @@
       },
       {
         "title": "Per-node Ifault Computation",
-        "summary": "Ik\"max applied with c=1.05 per Table 1 (LV). Ik\"max range across cascade: HV-1 14.00 kA → TX-1 9.85 → MSB-MAIN 9.80 → MSB-MAIN.BUS 9.78 → SDB-GF 8.19 → SDB-L1 7.77 → SDB-L2 7.37 kA. Floor-riser cable impedance per IEC 60364-5-52 Annex E (95mm² Cu XLPE: R=0.208 mΩ/m, X=0.0829 mΩ/m). Peak factor κ from IEC 60909-0 Eq. 29.",
+        "summary": "Ik\"max applied with c=1.05 per Table 1 (LV). Ik\"max range across cascade: HV-1 14.00 kA → TX-1 9.85 → MSB-MAIN 9.80 → MSB-MAIN.BUS 9.78 → SDB-GF 8.19 → SDB-L1 7.77 → SDB-L2 7.37 kA. Floor-riser cable impedance per IEC 60364-5-52:2009 Annex E (95mm² Cu XLPE: R=0.208 mΩ/m, X=0.0829 mΩ/m). Peak factor κ from IEC 60909-0:2016 Eq. 29.",
         "decisions": [
           {
             "label": "c_max = 1.05 LV; c_min = 0.95 LV",
-            "summary": "Per IEC 60909-0 Table 1 for low-voltage networks ≤ 1 kV.",
+            "summary": "Per IEC 60909-0:2016 Table 1 for low-voltage networks ≤ 1 kV.",
             "rule": "IEC 60909-0:2016 Table 1",
             "code_clause": "IEC 60909-0:2016 Table 1",
             "inputs": { "c_max_lv": 1.05, "c_min_lv": 0.95 }

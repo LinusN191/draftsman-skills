@@ -94,13 +94,13 @@ the fault-level study must be re-run with the updated motor inventory: the §3.8
 check is then likely to engage, the cascade `Ik"max` values will rise (motor sub-transient
 adds to the utility contribution during the first 10–30 ms), and breaker breaking-capacity
 verification against the revised cascade must be repeated. A future engineer should treat
-the motor-load brief as a load-side input that re-opens the entire IEC 60909 assessment
+the motor-load brief as a load-side input that re-opens the entire IEC 60909-0:2016 assessment
 rather than a fixed assumption.
 
 ## Section 6 — Per-node Ifault Computation
 
 Per-node `Ik"max` is computed with the LV voltage factor `c_max = 1.05` per
-**IEC 60909-0:2016 Table 1**. Floor-riser cable impedance per **IEC 60364-5-52 Annex E**
+**IEC 60909-0:2016 Table 1**. Floor-riser cable impedance per **IEC 60364-5-52:2009 Annex E**
 for 95mm² Cu XLPE at 90 °C operating temperature is `R = 0.208 mΩ/m, X = 0.0829 mΩ/m`.
 
 Cumulative R and X are summed from the source down each branch; `Z_total = √(R² + X²)` and
@@ -109,7 +109,7 @@ Eq. 29**: `κ = 1.02 + 0.98·exp(-3/(X/R))`.
 
 | Node            | R (mΩ) | X (mΩ) | Z (mΩ) | X/R   | Ik"max (kA) | κ     | ipk (kA) |
 |-----------------|--------|--------|--------|-------|-------------|-------|----------|
-| TX-1            |  3.65  | 23.99  | 24.27  | 6.57  |  9.85       | 1.64  | 22.50    |
+| TX-1            |  3.65  | 23.99  | 24.27  | 6.00  |  9.85       | 1.64  | 22.50    |
 | MSB-MAIN        |  4.07  | 24.41  | 24.74  | 6.00  |  9.80       | 1.61  | 22.37    |
 | MSB-MAIN.BUS    |  4.09  | 24.43  | 24.77  | 5.98  |  9.78       | 1.61  | 22.32    |
 | SDB-GF (35 m)   | 11.37  | 27.33  | 29.60  | 2.40  |  8.19       | 1.30  | 15.08    |
@@ -145,7 +145,7 @@ assumptions:
    (BS 7671:2018+A2 Reg 313.1.1).
 2. Transformer X/R = 6 from **IEC 60909-1:2008 Table A.1** typical for 800 kVA urban
    distribution unit.
-3. Cable impedance from **IEC 60364-5-52 Annex E** at 90 °C operating temperature.
+3. Cable impedance from **IEC 60364-5-52:2009 Annex E** at 90 °C operating temperature.
 4. Peak factor κ per **IEC 60909-0:2016 Eq. 29** with R/X regenerated from each cumulative
    X/R rather than assumed.
 5. Selectivity verification per **BS 7671:2018+A2 Reg 434.5.1** + **Reg 536.4**.
