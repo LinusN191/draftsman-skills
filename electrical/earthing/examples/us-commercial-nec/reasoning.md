@@ -1,5 +1,7 @@
 # Reasoning — US Strip Mall NEC Earthing Schematic
 
+> **v1.1 retrofit (2026-05-17):** This example now declares `calc.zs_loop_impedance` tool deferral per WI3. The Zs values below are unchanged from v1.0.0 (LLM-computed inline); the deterministic tool will refine them when the DraftsMan runtime ships. The `zs_calc_tool_input` replay payload was added at the IR root so the tool can re-execute deterministically.
+
 ## Step 1 — Discovery
 db-layout intent only. Consumed.
 

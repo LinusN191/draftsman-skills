@@ -55,7 +55,24 @@
     ]
   },
   "drawn_as_symbols": ["EARTH_GENERAL", "EARTH_PROTECTIVE", "EARTH_ELECTRODE", "CONDUCTOR_PE", "JUNCTION_T", "BUSBAR"],
-  "flags": [],
+  "flags": ["TOOL-CALL-PENDING:calc.zs_loop_impedance — Zs values are LLM-estimates; deterministic refinement deferred per WI3."],
+  "tool_call_pending_for_zs": true,
+  "zs_calc_tool_input": {
+    "jurisdiction": "US",
+    "supply": {
+      "ze_declared_ohm": 0.20,
+      "system_type": "TN-S",
+      "voltage_phase_to_earth_v": 277,
+      "frequency_hz": 60
+    },
+    "circuits": [
+      { "circuit_id": "C01", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "12 AWG Cu", "cpc_csa_mm2_or_awg": "12 AWG Cu", "route_length_m": 25, "device_type": "MCB_C", "device_rating_a": 20 },
+      { "circuit_id": "C02", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "12 AWG Cu", "cpc_csa_mm2_or_awg": "12 AWG Cu", "route_length_m": 30, "device_type": "MCB_C", "device_rating_a": 20 },
+      { "circuit_id": "C03", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "10 AWG Cu", "cpc_csa_mm2_or_awg": "10 AWG Cu", "route_length_m": 18, "device_type": "MCB_C", "device_rating_a": 30 },
+      { "circuit_id": "C04", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "6 AWG Cu", "cpc_csa_mm2_or_awg": "10 AWG Cu", "route_length_m": 35, "device_type": "MCB_C", "device_rating_a": 60 }
+    ],
+    "operating_temperature_c": 75
+  },
   "rationale": {
     "chat_summary": "US strip-mall retail fit-out, 200A single-phase split service. NEC grounded system (TN-S equivalent) with main service panel grounding busbar. Grounding electrode system bonds UFER and structural steel per NEC 250.50/250.52. Main bonds at 4 AWG to water and structural steel, 6 AWG to gas. EGCs from Table 250.122 by OCPD: 12 AWG for 20A circuits, 10 AWG for 30A and 60A. No GFCI/AFCI for general retail. Reply to refine, e.g. 'add a kitchen — adds 210.8 GFCI requirements'.",
     "sections": [
