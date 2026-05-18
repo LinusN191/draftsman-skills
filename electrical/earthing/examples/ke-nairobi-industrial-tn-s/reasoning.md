@@ -1,5 +1,7 @@
 # Reasoning — KE Nairobi Industrial TN-S
 
+> **v1.3 — db-layout intent consumption:** This example's `circuits[]` is derived from the upstream db-layout intent at `electrical/db-layout/examples/ke-nairobi-industrial-100A-tpn/intent-out.json`. The earthing skill adopts the circuit list verbatim and extends each circuit with CPC sizing, Zs verification, and RCD specification. Circuit IDs match the upstream 1:1.
+
 ## Site context
 
 Light engineering workshop on Enterprise Road, Nairobi Industrial Area. 1980s build, KPLC supply via dedicated 11kV/415V substation 180m down the road. Three-phase 415V/240V 4-wire 50 Hz with 100A TPN main switch.
