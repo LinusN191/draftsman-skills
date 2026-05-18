@@ -1,0 +1,39 @@
+name: eval-08-ks1700-citation-consistency
+skill: earthing
+description: Verifies the KE example refactored to v1.2 citation form. Every code_clause + cpc_sizing_clause field starts with "KS 1700:" (or "IEC 60364" for Annex E routing). The v1.1 "(adopted by KS 1700)" annotation pattern is banned. Other examples (UK / INT / US) must not contain "KS 1700".
+category: skill_specific
+input_fixture: ../examples/ke-nairobi-industrial-tn-s/input.json
+expected_output_fixture: ../examples/ke-nairobi-industrial-tn-s/output.json
+checks:
+  - assertion: ir.jurisdiction == "KE"
+    description: "KE example jurisdiction tag (v1.2 first-class)"
+    severity: critical
+  - assertion: ir.earthing_system.code_clause matches "^KS 1700:"
+    description: "Earthing system code_clause starts with KS 1700:"
+    severity: critical
+  - assertion: ir.met.code_clause not matches "(adopted by KS 1700)"
+    description: "v1.1 annotation pattern banned in MET"
+    severity: critical
+  - assertion: ir.main_bonding[*].code_clause matches_all "^KS 1700:"
+    description: "All main_bonding code_clauses start with KS 1700:"
+    severity: critical
+  - assertion: ir.supplementary_bonding[*].code_clause matches_all "^KS 1700:"
+    description: "All supplementary_bonding code_clauses start with KS 1700:"
+    severity: critical
+  - assertion: ir.circuits[*].cpc_sizing_clause matches_all "^(KS 1700:|IEC 60364)"
+    description: "All circuit cpc_sizing_clause fields use KS or IEC form"
+    severity: critical
+  - assertion: ir.rationale.sections[*].decisions[*].code_clause matches_all "^(KS 1700:|IEC 60364|n/a)$"
+    description: "All rationale decision code_clauses use KS or IEC form (n/a allowed for tool deferral)"
+    severity: critical
+  - assertion: count(ir.rationale.sections[*].decisions[*].code_clause matches "(adopted by KS 1700)") == 0
+    description: "v1.1 annotation pattern banned everywhere in rationale"
+    severity: critical
+  - assertion: KS1700/annex-E-bs7671-adoption-table.json exists and parses
+    description: "KS Annex E adoption table file present and valid JSON"
+    severity: critical
+  - assertion: KS1700/ks-unique-deviations.json exists and parses
+    description: "KS unique deviations index file present and valid JSON"
+    severity: critical
+expected_flags:
+  - "TOOL-CALL-PENDING:calc.zs_loop_impedance"
