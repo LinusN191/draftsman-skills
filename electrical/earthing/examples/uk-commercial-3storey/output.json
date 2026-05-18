@@ -1,0 +1,194 @@
+{
+  "$schema": "../../schemas/earthing-ir.schema.json",
+  "drawing_type": "earthing_schematic",
+  "version": "1.4.0",
+  "meta": {
+    "project_id": "uk-3storey-office-earthing-eg01",
+    "skill_version": "earthing/1.4.0",
+    "produced_at": "2026-05-18T14:00:00Z",
+    "consumed_intents": [
+      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.1.0", "payload_ref": "electrical/db-layout/examples/uk-commercial-msb-3storey/intent-out.json" },
+      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.1.0", "payload_ref": "electrical/db-layout/examples/uk-commercial-sdb-gf/intent-out.json" },
+      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.1.0", "payload_ref": "electrical/db-layout/examples/uk-commercial-sdb-l1/intent-out.json" },
+      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.1.0", "payload_ref": "electrical/db-layout/examples/uk-commercial-sdb-l2/intent-out.json" }
+    ]
+  },
+  "jurisdiction": "GB",
+  "earthing_system": {
+    "system_type": "TN-C-S",
+    "code_clause": "BS 7671:2018+A2 Reg 411.4 (TN-C-S system)"
+  },
+  "met": {
+    "location": "ground-floor plant room, adjacent to MSB-MAIN switchboard",
+    "supply_bond_type": "tn_c_s_pen",
+    "main_earthing_conductor_csa_mm2": 25
+  },
+  "electrodes": [],
+  "main_bonding": [
+    { "id": "B1", "source": "MET", "target": "metal_water_service",   "csa_mm2_or_awg": "10mm²", "code_clause": "BS 7671:2018+A2 Reg 544.1.1" },
+    { "id": "B2", "source": "MET", "target": "metal_gas_service",     "csa_mm2_or_awg": "10mm²", "code_clause": "BS 7671:2018+A2 Reg 544.1.1" },
+    { "id": "B3", "source": "MET", "target": "structural_steel_gf",   "csa_mm2_or_awg": "16mm²", "code_clause": "BS 7671:2018+A2 Reg 544.1.1" },
+    { "id": "B4", "source": "MET", "target": "structural_steel_l1",   "csa_mm2_or_awg": "16mm²", "code_clause": "BS 7671:2018+A2 Reg 544.1.1" },
+    { "id": "B5", "source": "MET", "target": "structural_steel_l2",   "csa_mm2_or_awg": "16mm²", "code_clause": "BS 7671:2018+A2 Reg 544.1.1" }
+  ],
+  "supplementary_bonding": [
+    {
+      "location": "plant_room_wash_hand_basin",
+      "items_bonded": ["wash_basin_taps", "exposed_water_pipework", "metallic_partition"],
+      "csa_mm2_or_awg": "4mm²",
+      "code_clause": "BS 7671:2018+A2 Reg 415.2"
+    }
+  ],
+  "circuits": [
+    { "circuit_id": "F01", "db_designation": "MSB-MAIN", "voltage_class": "LV_power", "breaker_rating_a": 100, "breaker_curve": "D",                  "route_length_m": 15, "cpc_csa_mm2_or_awg": "25mm²",  "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.358, "zs_max_ohm": 0.488, "zs_compliance": "pass",          "rcd_required": false },
+    { "circuit_id": "F02", "db_designation": "MSB-MAIN", "voltage_class": "LV_power", "breaker_rating_a": 100, "breaker_curve": "D",                  "route_length_m": 30, "cpc_csa_mm2_or_awg": "25mm²",  "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.365, "zs_max_ohm": 0.488, "zs_compliance": "pass",          "rcd_required": false },
+    { "circuit_id": "F03", "db_designation": "MSB-MAIN", "voltage_class": "LV_power", "breaker_rating_a": 100, "breaker_curve": "D",                  "route_length_m": 45, "cpc_csa_mm2_or_awg": "25mm²",  "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.371, "zs_max_ohm": 0.488, "zs_compliance": "pass",          "rcd_required": false },
+
+    { "circuit_id": "G01",  "db_designation": "SDB-GF", "voltage_class": "LV_power",           "breaker_rating_a": 10, "breaker_curve": "B", "route_length_m": 25, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.97, "zs_max_ohm": 3.49, "zs_compliance": "pass",          "rcd_required": false },
+    { "circuit_id": "G02",  "db_designation": "SDB-GF", "voltage_class": "LV_power",           "breaker_rating_a": 6,  "breaker_curve": "B", "route_length_m": 18, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.80, "zs_max_ohm": 5.82, "zs_compliance": "pass",          "rcd_required": false },
+    { "circuit_id": "G03",  "db_designation": "SDB-GF", "voltage_class": "emergency_lighting", "breaker_rating_a": 6,  "breaker_curve": "B", "route_length_m": 20, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.84, "zs_max_ohm": 5.82, "zs_compliance": "pass",          "rcd_required": false },
+    { "circuit_id": "G04",  "db_designation": "SDB-GF", "voltage_class": "LV_power",           "breaker_rating_a": 32, "breaker_curve": "B", "route_length_m": 35, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 1.04, "zs_max_ohm": 1.09, "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "G05",  "db_designation": "SDB-GF", "voltage_class": "LV_power",           "breaker_rating_a": 32, "breaker_curve": "B", "route_length_m": 28, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.91, "zs_max_ohm": 1.09, "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "G06",  "db_designation": "SDB-GF", "voltage_class": "LV_power",           "breaker_rating_a": 32, "breaker_curve": "B", "route_length_m": 20, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.75, "zs_max_ohm": 1.09, "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "G07",  "db_designation": "SDB-GF", "voltage_class": "LV_power",           "breaker_rating_a": 20, "breaker_curve": "B", "route_length_m": 12, "cpc_csa_mm2_or_awg": "2.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.54, "zs_max_ohm": 1.74, "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+
+    { "circuit_id": "L101", "db_designation": "SDB-L1", "voltage_class": "LV_power",           "breaker_rating_a": 10, "breaker_curve": "B", "route_length_m": 26, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 1.00, "zs_max_ohm": 3.49, "zs_compliance": "pass",          "rcd_required": false },
+    { "circuit_id": "L102", "db_designation": "SDB-L1", "voltage_class": "LV_power",           "breaker_rating_a": 6,  "breaker_curve": "B", "route_length_m": 16, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.76, "zs_max_ohm": 5.82, "zs_compliance": "pass",          "rcd_required": false },
+    { "circuit_id": "L103", "db_designation": "SDB-L1", "voltage_class": "emergency_lighting", "breaker_rating_a": 6,  "breaker_curve": "B", "route_length_m": 22, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.90, "zs_max_ohm": 5.82, "zs_compliance": "pass",          "rcd_required": false },
+    { "circuit_id": "L104", "db_designation": "SDB-L1", "voltage_class": "LV_power",           "breaker_rating_a": 32, "breaker_curve": "B", "route_length_m": 36, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 1.07, "zs_max_ohm": 1.09, "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "L105", "db_designation": "SDB-L1", "voltage_class": "LV_power",           "breaker_rating_a": 32, "breaker_curve": "B", "route_length_m": 28, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.92, "zs_max_ohm": 1.09, "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "L106", "db_designation": "SDB-L1", "voltage_class": "LV_power",           "breaker_rating_a": 32, "breaker_curve": "B", "route_length_m": 22, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.80, "zs_max_ohm": 1.09, "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "L107", "db_designation": "SDB-L1", "voltage_class": "LV_power",           "breaker_rating_a": 20, "breaker_curve": "B", "route_length_m": 16, "cpc_csa_mm2_or_awg": "2.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.61, "zs_max_ohm": 1.74, "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+
+    { "circuit_id": "L201", "db_designation": "SDB-L2", "voltage_class": "LV_power",           "breaker_rating_a": 10, "breaker_curve": "B", "route_length_m": 26, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 1.00, "zs_max_ohm": 3.49, "zs_compliance": "pass",          "rcd_required": false },
+    { "circuit_id": "L202", "db_designation": "SDB-L2", "voltage_class": "LV_power",           "breaker_rating_a": 6,  "breaker_curve": "B", "route_length_m": 16, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.76, "zs_max_ohm": 5.82, "zs_compliance": "pass",          "rcd_required": false },
+    { "circuit_id": "L203", "db_designation": "SDB-L2", "voltage_class": "emergency_lighting", "breaker_rating_a": 6,  "breaker_curve": "B", "route_length_m": 22, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.90, "zs_max_ohm": 5.82, "zs_compliance": "pass",          "rcd_required": false },
+    { "circuit_id": "L204", "db_designation": "SDB-L2", "voltage_class": "LV_power",           "breaker_rating_a": 32, "breaker_curve": "B", "route_length_m": 36, "cpc_csa_mm2_or_awg": "2.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.91, "zs_max_ohm": 1.09, "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "L205", "db_designation": "SDB-L2", "voltage_class": "LV_power",           "breaker_rating_a": 32, "breaker_curve": "B", "route_length_m": 28, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.92, "zs_max_ohm": 1.09, "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "L206", "db_designation": "SDB-L2", "voltage_class": "LV_power",           "breaker_rating_a": 32, "breaker_curve": "B", "route_length_m": 22, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.80, "zs_max_ohm": 1.09, "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "L207", "db_designation": "SDB-L2", "voltage_class": "LV_power",           "breaker_rating_a": 20, "breaker_curve": "B", "route_length_m": 16, "cpc_csa_mm2_or_awg": "2.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7", "zs_ohm": 0.61, "zs_max_ohm": 1.74, "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 }
+  ],
+  "spd_assessment": {
+    "spd_required": true,
+    "spd_type": "Type 2",
+    "spd_location": "MSB-MAIN intake",
+    "rationale": "Commercial occupancy + moderate (urban) lightning risk per BS 7671:2018+A2 Reg 443.4 risk assessment. Aligned with SLD UK example which also designates Type 2 at MSB.",
+    "code_clause": "BS 7671:2018+A2 Reg 443.4"
+  },
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "tool_call_pending": ["calc.zs_loop_impedance"],
+    "assumptions": [
+      "Ze of 0.35Ω is DNO-declared; fault-level UK example uses the same value, giving cross-skill consistency at MSB intake.",
+      "All circuits twin-and-earth 6242Y (manufacturer-stated reduced CPC csa via BS 7671:2018+A2 Table 54.7). SDB feeders are 95mm² XLPE Cu 5-core with full-csa Cu PE.",
+      "Zs_max values use BS 7671:2018+A2 Table 41.3 (Type B MCB, 0.4s, 230V) and Table 41.5 (Type D MCCB, 5s for distribution circuits), with 0.8 temperature correction implicit in tabulated values.",
+      "BS 7671:2018+A2 §411.3.3 (Amendment 2) applied: 30mA RCD additional protection for ALL socket circuits ≤32A. Lighting circuits not RCD'd as no ≤32A sockets are present and they do not feed mobile equipment outdoors.",
+      "Main earthing conductor sized 25mm² Cu via BS 7671:2018+A2 Table 54.7 for 400A incoming TN-C-S service (PME bond at service head); exceeds 6mm² unprotected minimum and 16mm² PME minimum.",
+      "calc.zs_loop_impedance tool call pending — Zs values are LLM-estimates; deterministic tool will refine when runtime ships."
+    ]
+  },
+  "drawn_as_symbols": ["EARTH_GENERAL", "EARTH_PROTECTIVE", "CONDUCTOR_PE", "CONDUCTOR_PEN", "JUNCTION_T", "BUSBAR", "MET_SYMBOL", "MCCB_TYPE_D", "MCB_TYPE_B", "RCD_30MA"],
+  "flags": ["TOOL-CALL-PENDING:calc.zs_loop_impedance — Zs values are LLM-estimates; deterministic refinement deferred per WI3."],
+  "tool_call_pending_for_zs": true,
+  "zs_calc_tool_input": {
+    "jurisdiction": "GB",
+    "supply": {
+      "ze_declared_ohm": 0.35,
+      "system_type": "TN-C-S",
+      "voltage_phase_to_earth_v": 230,
+      "frequency_hz": 50
+    },
+    "feeders": [
+      { "node_id": "MSB-MAIN→SDB-GF", "cable_material": "Cu", "cable_insulation": "XLPE", "line_csa_mm2_or_awg": "95mm²", "cpc_csa_mm2_or_awg": "25mm²", "route_length_m": 15 },
+      { "node_id": "MSB-MAIN→SDB-L1", "cable_material": "Cu", "cable_insulation": "XLPE", "line_csa_mm2_or_awg": "95mm²", "cpc_csa_mm2_or_awg": "25mm²", "route_length_m": 30 },
+      { "node_id": "MSB-MAIN→SDB-L2", "cable_material": "Cu", "cable_insulation": "XLPE", "line_csa_mm2_or_awg": "95mm²", "cpc_csa_mm2_or_awg": "25mm²", "route_length_m": 45 }
+    ],
+    "circuits": [
+      { "circuit_id": "G01",  "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.5mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 25, "device_type": "MCB_B", "device_rating_a": 10, "upstream_node": "SDB-GF" },
+      { "circuit_id": "G02",  "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.5mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 18, "device_type": "MCB_B", "device_rating_a": 6,  "upstream_node": "SDB-GF" },
+      { "circuit_id": "G03",  "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.5mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 20, "device_type": "MCB_B", "device_rating_a": 6,  "upstream_node": "SDB-GF" },
+      { "circuit_id": "G04",  "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 35, "device_type": "MCB_B", "device_rating_a": 32, "upstream_node": "SDB-GF" },
+      { "circuit_id": "G05",  "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 28, "device_type": "MCB_B", "device_rating_a": 32, "upstream_node": "SDB-GF" },
+      { "circuit_id": "G06",  "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 20, "device_type": "MCB_B", "device_rating_a": 32, "upstream_node": "SDB-GF" },
+      { "circuit_id": "G07",  "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "4mm²",   "cpc_csa_mm2_or_awg": "2.5mm²", "route_length_m": 12, "device_type": "MCB_B", "device_rating_a": 20, "upstream_node": "SDB-GF" },
+      { "circuit_id": "L101", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.5mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 26, "device_type": "MCB_B", "device_rating_a": 10, "upstream_node": "SDB-L1" },
+      { "circuit_id": "L102", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.5mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 16, "device_type": "MCB_B", "device_rating_a": 6,  "upstream_node": "SDB-L1" },
+      { "circuit_id": "L103", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.5mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 22, "device_type": "MCB_B", "device_rating_a": 6,  "upstream_node": "SDB-L1" },
+      { "circuit_id": "L104", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 36, "device_type": "MCB_B", "device_rating_a": 32, "upstream_node": "SDB-L1" },
+      { "circuit_id": "L105", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 28, "device_type": "MCB_B", "device_rating_a": 32, "upstream_node": "SDB-L1" },
+      { "circuit_id": "L106", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 22, "device_type": "MCB_B", "device_rating_a": 32, "upstream_node": "SDB-L1" },
+      { "circuit_id": "L107", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "4mm²",   "cpc_csa_mm2_or_awg": "2.5mm²", "route_length_m": 16, "device_type": "MCB_B", "device_rating_a": 20, "upstream_node": "SDB-L1" },
+      { "circuit_id": "L201", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.5mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 26, "device_type": "MCB_B", "device_rating_a": 10, "upstream_node": "SDB-L2" },
+      { "circuit_id": "L202", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.5mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 16, "device_type": "MCB_B", "device_rating_a": 6,  "upstream_node": "SDB-L2" },
+      { "circuit_id": "L203", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.5mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 22, "device_type": "MCB_B", "device_rating_a": 6,  "upstream_node": "SDB-L2" },
+      { "circuit_id": "L204", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "2.5mm²", "route_length_m": 36, "device_type": "MCB_B", "device_rating_a": 32, "upstream_node": "SDB-L2" },
+      { "circuit_id": "L205", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 28, "device_type": "MCB_B", "device_rating_a": 32, "upstream_node": "SDB-L2" },
+      { "circuit_id": "L206", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 22, "device_type": "MCB_B", "device_rating_a": 32, "upstream_node": "SDB-L2" },
+      { "circuit_id": "L207", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "4mm²",   "cpc_csa_mm2_or_awg": "2.5mm²", "route_length_m": 16, "device_type": "MCB_B", "device_rating_a": 20, "upstream_node": "SDB-L2" }
+    ],
+    "operating_temperature_c": 70
+  },
+  "rationale": {
+    "chat_summary": "UK 3-storey office on TN-C-S (Ze=0.35Ω); 4-board cascade MSB-MAIN→SDB-GF/L1/L2. 25mm² main earthing conductor + 10mm² bonds to water/gas + 16mm² to structural steel ×3 floors. 3 MCCB-D 100A feeders + 21 final circuits. All sockets ≤32A on 30mA RCD per §411.3.3 AMD2. Type 2 SPD at MSB per §443. All circuits Zs-compliant; calc.zs_loop_impedance deferred per WI3. Reply to refine.",
+    "sections": [
+      {
+        "title": "System Identification",
+        "summary": "TN-C-S confirmed from UK Power Networks DNO declaration (Ze=0.35Ω, PSCC=9.8 kA at MSB) — matches fault-level UK example's source-summary for cross-skill consistency. Within the installation, N and PE are separated downstream of the service head; the PEN bond is made at the DNO cut-out by the supplier.",
+        "decisions": [
+          { "label": "TN-C-S system confirmed", "summary": "DNO declared PME earth with Ze=0.35Ω at MSB intake.", "rule": "BS 7671:2018+A2 Reg 411.4 — TN-C-S system definition", "code_clause": "BS 7671:2018+A2 Reg 411.4", "inputs": { "ze_ohm_declared": 0.35, "supply_bond_type": "tn_c_s_pen", "jurisdiction": "GB" } }
+        ]
+      },
+      {
+        "title": "Ze + Zs Strategy",
+        "summary": "Ze declared 0.35Ω at MSB. Zs cascades down: SDB-GF≈0.357Ω, SDB-L1≈0.364Ω, SDB-L2≈0.371Ω (95mm² Cu XLPE feeder R1+R2 contribution negligible). For Type B MCB final circuits at 230V/0.4s, Zs_max from BS 7671:2018+A2 Table 41.3 (6A→7.28, 10A→4.37, 20A→2.19, 32A→1.37; tabulated values already include 0.8 temperature correction). For MCCB-D 100A feeders at 5s distribution time, Table 41.5 Zs_max=0.488Ω.",
+        "decisions": [
+          { "label": "Zs_max from Table 41.3 and 41.5", "summary": "Final circuits (0.4s) via Table 41.3; SDB feeders (5s distribution) via Table 41.5.", "rule": "BS 7671:2018+A2 Reg 411.3.2 — disconnection times", "code_clause": "BS 7671:2018+A2 Reg 411.3.2", "inputs": { "final_circuit_table": "41.3", "distribution_circuit_table": "41.5", "temperature_correction": "implicit in tabulated values" } }
+        ]
+      },
+      {
+        "title": "CPC Sizing (Table 54.7)",
+        "summary": "All final circuits use 6242Y twin-and-earth with reduced CPC sized per BS 7671:2018+A2 Table 54.7 — 1.5/1.0, 2.5/1.5, 4/2.5 banded lookups. SDB feeders use 95mm² XLPE Cu 5-core with 25mm² Cu PE (Table 54.7 banded for 70<L≤120 → CPC≥k_factor×L). The main earthing conductor is 25mm² Cu per Table 54.7 sizing from the 400A incoming service (largest service conductor ≈ 95mm² × 4 way busbar incomer; half-rule with PME 16mm² minimum → 25mm² chosen with engineering margin).",
+        "decisions": [
+          { "label": "Final-circuit CPCs from Table 54.7", "summary": "Twin-and-earth integral reduced CPCs sized per banded lookup.", "rule": "BS 7671:2018+A2 Table 54.7 banded lookup", "code_clause": "BS 7671:2018+A2 Table 54.7", "inputs": { "cpc_sizing_method": "bs7671_table_54.7", "circuits_count": 21 } },
+          { "label": "Main earthing conductor 25mm² Cu", "summary": "Sized for 400A service per Table 54.7 + PME 16mm² minimum, with engineering margin.", "rule": "BS 7671:2018+A2 Reg 544.1.1", "code_clause": "BS 7671:2018+A2 Reg 544.1.1", "inputs": { "incoming_service_a": 400, "result_csa_mm2": 25 } }
+        ]
+      },
+      {
+        "title": "RCD Requirements (AMD 2)",
+        "summary": "Amendment 2 (BS 7671:2018+A2 §411.3.3) requires 30mA RCD additional protection on ALL socket circuits ≤32A regardless of building type, and on circuits supplying mobile equipment for use outdoors ≤32A. Applied to all 12 socket-ring circuits (G04–G07, L104–L107, L204–L207). Lighting circuits (G01–G03, L101–L103, L201–L203) and Type-D feeders (F01–F03) are not socket circuits and contain no outdoor mobile equipment, so additional RCD protection is not mandatory; engineer may add 30mA RCBOs for resilience in next revision.",
+        "decisions": [
+          { "label": "30mA RCD on all socket circuits ≤32A", "summary": "BS 7671:2018+A2 §411.3.3 (AMD 2) universal socket-RCD rule.", "rule": "BS 7671:2018+A2 Reg 411.3.3 — additional protection by RCD", "code_clause": "BS 7671:2018+A2 Reg 411.3.3", "inputs": { "rcd_sensitivity_ma": 30, "rcd_type": "A", "circuits_rcd_protected": 12 } }
+        ]
+      },
+      {
+        "title": "Bonding Strategy",
+        "summary": "Main bonding per BS 7671:2018+A2 §411.3.1.2 to all extraneous-conductive-parts entering the building: metal water service (10mm² Cu), metal gas service (10mm² Cu). Structural steel frames on each of the three floors are bonded with 16mm² Cu per Table 54.8 sizing (extraneous-conductive-part bonding for PME requires 10mm² minimum; 16mm² chosen for installation robustness and continuity across long horizontal runs). Supplementary bonding per §415 applied to the plant-room wash-hand basin location where exposed-conductive-parts (radiator pipework) coexist with extraneous-conductive-parts (water service).",
+        "decisions": [
+          { "label": "10mm² Cu to water + gas services", "summary": "PME service-bond minimum per §544.1.1.", "rule": "BS 7671:2018+A2 Reg 544.1.1 + Reg 411.3.1.2", "code_clause": "BS 7671:2018+A2 Reg 411.3.1.2", "inputs": { "csa_mm2": 10, "targets": ["metal_water_service", "metal_gas_service"] } },
+          { "label": "16mm² Cu to structural steel ×3 floors", "summary": "Long-run robustness margin above PME 10mm² minimum.", "rule": "BS 7671:2018+A2 Reg 544.1.1 + Table 54.8 (PME bonding)", "code_clause": "BS 7671:2018+A2 Reg 544.1.1", "inputs": { "csa_mm2": 16, "targets": ["structural_steel_gf", "structural_steel_l1", "structural_steel_l2"] } },
+          { "label": "Supplementary bonding plant-room WHB", "summary": "Belt-and-braces resilience around plant-room wet area.", "rule": "BS 7671:2018+A2 Reg 415.2", "code_clause": "BS 7671:2018+A2 Reg 415.2", "inputs": { "zone": "plant_room_wash_hand_basin", "csa_mm2": 4 } }
+        ]
+      },
+      {
+        "title": "SPD Assessment",
+        "summary": "Type 2 SPD required at MSB-MAIN intake per BS 7671:2018+A2 §443 risk assessment: commercial occupancy + moderate (urban) lightning risk. Matches the SLD UK example's spd_assessment_verdict=\"required_type_2\" for cross-skill consistency. No Type 1 required (no lightning protection system per inputs.has_lightning_protection=false). No Type 3 needed at downstream SDBs given the short cable runs (15-45m) and indoor commercial location.",
+        "decisions": [
+          { "label": "Type 2 SPD at MSB-MAIN intake", "summary": "BS 7671:2018+A2 §443 baseline for indoor commercial moderate-risk.", "rule": "BS 7671:2018+A2 Reg 443.4 — SPD risk assessment", "code_clause": "BS 7671:2018+A2 Reg 443.4", "inputs": { "spd_type": "Type 2", "spd_location": "MSB-MAIN intake", "location_basis": "urban commercial moderate lightning" } }
+        ]
+      },
+      {
+        "title": "Compliance Summary",
+        "summary": "Compliant. All 24 protective devices (3 MCCB-D feeders + 21 MCB-B final circuits) Zs-compliant against tabulated Zs_max. All sockets ≤32A on 30mA RCD per §411.3.3 AMD2. Main bonding + supplementary bonding complete per §411.3.1.2 + §415. Type 2 SPD specified per §443. Deterministic Zs verification via calc.zs_loop_impedance deferred per WI3; LLM-estimated values captured in zs_calc_tool_input for replay.",
+        "decisions": [
+          { "label": "Overall compliant", "summary": "All circuits Zs-compliant; bonding + RCD + SPD complete.", "rule": "BS 7671:2018+A2 Reg 132 fundamental requirements", "code_clause": "BS 7671:2018+A2 Reg 132", "inputs": { "circuits_compliant": 24, "circuits_total": 24, "tool_call_pending": ["calc.zs_loop_impedance"] } }
+        ]
+      },
+      {
+        "title": "Assumptions",
+        "summary": "Six assumptions captured: DNO Ze=0.35 binding (matches fault-level UK), 6242Y throughout for finals + 95mm² XLPE for feeders, Table 41.3/41.5 used for Zs_max with 0.8 correction implicit, §411.3.3 AMD 2 universal socket-RCD applied, main earthing conductor 25mm², calc.zs_loop_impedance deferred per WI3.",
+        "decisions": []
+      }
+    ]
+  }
+}

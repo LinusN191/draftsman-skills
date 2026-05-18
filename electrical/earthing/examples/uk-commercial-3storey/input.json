@@ -1,0 +1,77 @@
+{
+  "$schema": "../../inputs.json",
+  "project_meta": {
+    "project_id": "uk-3storey-office-earthing-eg01",
+    "name": "London 3-Storey Commercial Office — Earthing",
+    "client": "Commercial tenant",
+    "designer": "DraftsMan Skills demo",
+    "date": "2026-05-18",
+    "revision": "P01"
+  },
+  "jurisdiction": "GB",
+  "site_brief": "Three-storey commercial office (1200 m² GIA, central London) on a UK DNO TN-C-S 400V TPN supply (Ze=0.35Ω, PSCC=9.8 kA at MSB). Four-board cascade — MSB-MAIN in ground-floor plant room plus one SDB per storey (GF, L1, L2). Earthing design per BS 7671:2018+A2 §544 (conductor sizing) and §411 (ADS), pairing with the SLD and fault-level UK examples for cross-skill consistency.",
+  "earthing_system": "TN-C-S",
+  "supply_voltage_v": "400",
+  "supply_phase": "three_phase_tpn",
+  "ze_ohm_declared": 0.35,
+  "ze_ohm_source": "DNO declared (UK Power Networks) — same Ze used by fault-level UK example",
+  "building_type": "commercial_office",
+  "has_lightning_protection": false,
+  "system_brief": {
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.35,
+    "met_location": "ground-floor plant room — MET adjacent to main switchboard MSB-MAIN",
+    "supply_main_switch_rating_a": 400
+  },
+  "extraneous_parts": [
+    { "type": "metal_water_service",  "location_descriptor": "incoming cold water service, plant room riser" },
+    { "type": "metal_gas_service",    "location_descriptor": "incoming natural gas service, plant room external wall" },
+    { "type": "structural_steel",     "location_descriptor": "ground-floor structural steel frame (perimeter column grid)" },
+    { "type": "structural_steel",     "location_descriptor": "level-1 structural steel frame (perimeter column grid)" },
+    { "type": "structural_steel",     "location_descriptor": "level-2 structural steel frame (perimeter column grid)" }
+  ],
+  "extraneous_parts_brief": [
+    { "id": "X1", "type": "metal_water_service" },
+    { "id": "X2", "type": "metal_gas_service" },
+    { "id": "X3", "type": "structural_steel_gf" },
+    { "id": "X4", "type": "structural_steel_l1" },
+    { "id": "X5", "type": "structural_steel_l2" }
+  ],
+  "ground_conditions": "urban infill — clay substrate, no rod electrode planned (DNO PME earth adequate)",
+  "met_location": "ground-floor plant room, adjacent to MSB-MAIN switchboard, accessible for inspection",
+  "supplementary_bonding_required_locations": ["plant_room_wash_hand_basin"],
+  "life_safety_bonded_assets": ["fire_alarm_panel_earth_bus", "lift_machine_room_steelwork"],
+  "rcd_type_default": "A",
+  "circuits_brief": [
+    { "circuit_id": "F01", "board": "MSB-MAIN", "device": "MCCB_D_100A", "designation": "Feeder to SDB-GF",                 "length_m": 15 },
+    { "circuit_id": "F02", "board": "MSB-MAIN", "device": "MCCB_D_100A", "designation": "Feeder to SDB-L1",                 "length_m": 30 },
+    { "circuit_id": "F03", "board": "MSB-MAIN", "device": "MCCB_D_100A", "designation": "Feeder to SDB-L2",                 "length_m": 45 },
+    { "circuit_id": "G01", "board": "SDB-GF",   "device": "MCB_B_10A",   "designation": "GF general lighting",              "length_m": 25 },
+    { "circuit_id": "G02", "board": "SDB-GF",   "device": "MCB_B_6A",    "designation": "GF feature/accent lighting",       "length_m": 18 },
+    { "circuit_id": "G03", "board": "SDB-GF",   "device": "MCB_B_6A",    "designation": "GF emergency lighting",            "length_m": 20 },
+    { "circuit_id": "G04", "board": "SDB-GF",   "device": "MCB_B_32A",   "designation": "GF socket ring A (open-plan E)",   "length_m": 35 },
+    { "circuit_id": "G05", "board": "SDB-GF",   "device": "MCB_B_32A",   "designation": "GF socket ring B (open-plan W)",   "length_m": 28 },
+    { "circuit_id": "G06", "board": "SDB-GF",   "device": "MCB_B_32A",   "designation": "GF socket ring C (reception)",     "length_m": 20 },
+    { "circuit_id": "G07", "board": "SDB-GF",   "device": "MCB_B_20A",   "designation": "GF hand-dryer + WC FCU radial",    "length_m": 12 },
+    { "circuit_id": "L101", "board": "SDB-L1",  "device": "MCB_B_10A",   "designation": "L1 general lighting",              "length_m": 26 },
+    { "circuit_id": "L102", "board": "SDB-L1",  "device": "MCB_B_6A",    "designation": "L1 feature/accent lighting",       "length_m": 16 },
+    { "circuit_id": "L103", "board": "SDB-L1",  "device": "MCB_B_6A",    "designation": "L1 emergency lighting",            "length_m": 22 },
+    { "circuit_id": "L104", "board": "SDB-L1",  "device": "MCB_B_32A",   "designation": "L1 socket ring A (open-plan E)",   "length_m": 36 },
+    { "circuit_id": "L105", "board": "SDB-L1",  "device": "MCB_B_32A",   "designation": "L1 socket ring B (open-plan W)",   "length_m": 28 },
+    { "circuit_id": "L106", "board": "SDB-L1",  "device": "MCB_B_32A",   "designation": "L1 socket ring C (meeting rooms)", "length_m": 22 },
+    { "circuit_id": "L107", "board": "SDB-L1",  "device": "MCB_B_20A",   "designation": "L1 hand-dryer + WC FCU radial",    "length_m": 16 },
+    { "circuit_id": "L201", "board": "SDB-L2",  "device": "MCB_B_10A",   "designation": "L2 general lighting",              "length_m": 26 },
+    { "circuit_id": "L202", "board": "SDB-L2",  "device": "MCB_B_6A",    "designation": "L2 feature/accent lighting",       "length_m": 16 },
+    { "circuit_id": "L203", "board": "SDB-L2",  "device": "MCB_B_6A",    "designation": "L2 emergency lighting",            "length_m": 22 },
+    { "circuit_id": "L204", "board": "SDB-L2",  "device": "MCB_B_32A",   "designation": "L2 socket ring A (open-plan E)",   "length_m": 36 },
+    { "circuit_id": "L205", "board": "SDB-L2",  "device": "MCB_B_32A",   "designation": "L2 socket ring B (open-plan W)",   "length_m": 28 },
+    { "circuit_id": "L206", "board": "SDB-L2",  "device": "MCB_B_32A",   "designation": "L2 socket ring C (collab zone)",   "length_m": 22 },
+    { "circuit_id": "L207", "board": "SDB-L2",  "device": "MCB_B_20A",   "designation": "L2 hand-dryer + WC FCU radial",    "length_m": 16 }
+  ],
+  "consumed_intents": [
+    { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.1.0", "payload_ref": "electrical/db-layout/examples/uk-commercial-msb-3storey/intent-out.json" },
+    { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.1.0", "payload_ref": "electrical/db-layout/examples/uk-commercial-sdb-gf/intent-out.json" },
+    { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.1.0", "payload_ref": "electrical/db-layout/examples/uk-commercial-sdb-l1/intent-out.json" },
+    { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.1.0", "payload_ref": "electrical/db-layout/examples/uk-commercial-sdb-l2/intent-out.json" }
+  ]
+}
