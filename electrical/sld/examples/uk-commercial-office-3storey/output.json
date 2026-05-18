@@ -86,8 +86,8 @@
       { "title": "Distribution Hierarchy", "summary": "4-board radial cascade. MSB-MAIN feeds SDB-GF (F01, 15m), SDB-L1 (F02, 30m), SDB-L2 (F03, 45m). Spec office topology typical for UK 3-storey.", "decisions": [
         { "label": "Single MSB + per-floor sub-DB", "summary": "Standard UK commercial topology; preserves selectivity and simplifies tenant fit-out.", "rule": "Industry convention; BCO Specification", "code_clause": "n/a (engineering convention)", "inputs": { "board_count": 4 } }
       ] },
-      { "title": "System Metrics", "summary": "Imax_total 146A (vs 400A main = 36% utilisation, 63% headroom). Peak PFC 9.5kA (vs 36kA Icu — comfortable). Headroom appropriate for tenant fit-out variation.", "decisions": [
-        { "label": "Intake capacity verified", "summary": "main_switch_rating 400A ≥ imax_total 146A; breaking_capacity 36kA ≥ peak_pfc 9.5kA.", "rule": "BS 7671 Fundamental Rule (Reg 433.1.1)", "code_clause": "BS 7671:2018+A2 Reg 433.1.1", "inputs": { "imax_total_a": 146, "main_switch_rating_a": 400 } }
+      { "title": "System Metrics", "summary": "Imax_total 146A (vs 400A main = 36% utilisation, 63% headroom). Peak PFC 9.8kA (vs 36kA Icu — comfortable). Headroom appropriate for tenant fit-out variation.", "decisions": [
+        { "label": "Intake capacity verified", "summary": "main_switch_rating 400A ≥ imax_total 146A; breaking_capacity 36kA ≥ peak_pfc 9.8kA.", "rule": "BS 7671 Fundamental Rule (Reg 433.1.1)", "code_clause": "BS 7671:2018+A2 Reg 433.1.1", "inputs": { "imax_total_a": 146, "main_switch_rating_a": 400 } }
       ] },
       { "title": "Cascade Selectivity", "summary": "All 3 parent→child links verified selective: 400A MCCB Type D upstream / 100A MCCB downstream gives 4:1 ratio (exceeds BS EN 60947-2 typical selectivity threshold).", "decisions": [
         { "label": "4:1 selectivity verified", "summary": "400A/100A ratio exceeds 3:1 BS EN 60947-2 typical; verification_method 'iec_60898_typical'.", "rule": "BS EN 60947-2 selectivity table guidance", "code_clause": "BS 7671:2018+A2 Reg 536", "inputs": { "ratio": 4.0, "verdict": "selective" } }

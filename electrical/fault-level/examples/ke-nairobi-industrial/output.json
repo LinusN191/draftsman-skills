@@ -30,14 +30,14 @@
   ],
   "cascade": [
     { "node_id": "HV-1",        "parent_node_id": null,           "node_kind": "hv_source",              "designation": "11 kV KPLC primary",                       "ifault_ka_max": 13.00, "ifault_ka_min": 11.82, "ipk_ka": 28.64, "x_over_r_at_node": 5.00, "z_total_ohm": 0.5374,  "tool_call_pending": true },
-    { "node_id": "TX-1",        "parent_node_id": "HV-1",         "node_kind": "transformer_secondary", "designation": "500 kVA KPLC TX 415V TPN LV terminals",   "ifault_ka_max": 9.98,  "ifault_ka_min": 9.03,  "ipk_ka": 21.98, "x_over_r_at_node": 4.98, "z_total_ohm": 0.02520, "tool_call_pending": true },
+    { "node_id": "TX-1",        "parent_node_id": "HV-1",         "node_kind": "transformer_secondary", "designation": "500 kVA KPLC TX 415V TPN LV terminals",   "ifault_ka_max": 10.22, "ifault_ka_min": 9.24,  "ipk_ka": 22.51, "x_over_r_at_node": 5.00, "z_total_ohm": 0.02463, "tool_call_pending": true },
     { "node_id": "MSP-100",     "parent_node_id": "TX-1",         "node_kind": "board_incoming",         "designation": "Main switch-panel 100A incoming",         "feeder": { "length_m": 3,  "csa_mm2_or_awg": "70mm²", "material": "copper", "insulation": "xlpe_90" }, "z_addition_ohm": { "r": 0.00101, "x": 0.00026 }, "ifault_ka_max": 9.80, "ifault_ka_min": 8.87, "ipk_ka": 20.76, "x_over_r_at_node": 4.18, "z_total_ohm": 0.02567, "tool_call_pending": true },
-    { "node_id": "MSP-100.BUS", "parent_node_id": "MSP-100",     "node_kind": "board_busbar",           "designation": "MSP-100 busbar 100A",                      "ifault_ka_max": 9.72,  "ifault_ka_min": 8.80,  "ipk_ka": 20.66, "x_over_r_at_node": 4.13, "z_total_ohm": 0.02587, "tool_call_pending": true },
-    { "node_id": "GH-DB",       "parent_node_id": "MSP-100.BUS", "node_kind": "board_incoming",         "designation": "Glasshouse/workshop DB incoming",         "feeder": { "length_m": 60, "csa_mm2_or_awg": "95mm²", "material": "copper", "insulation": "xlpe_90" }, "z_addition_ohm": { "r": 0.01248, "x": 0.00497 }, "ifault_ka_max": 7.11, "ifault_ka_min": 6.43, "ipk_ka": 11.81, "x_over_r_at_node": 1.62, "z_total_ohm": 0.03538, "tool_call_pending": true }
+    { "node_id": "MSP-100.BUS", "parent_node_id": "MSP-100",     "node_kind": "board_busbar",           "designation": "MSP-100 busbar 100A",                      "ifault_ka_max": 9.78,  "ifault_ka_min": 8.85,  "ipk_ka": 20.66, "x_over_r_at_node": 4.13, "z_total_ohm": 0.02587, "tool_call_pending": true },
+    { "node_id": "GH-DB",       "parent_node_id": "MSP-100.BUS", "node_kind": "board_incoming",         "designation": "Glasshouse/workshop DB incoming",         "feeder": { "length_m": 60, "csa_mm2_or_awg": "95mm²", "material": "copper", "insulation": "xlpe_90" }, "z_addition_ohm": { "r": 0.01248, "x": 0.00497 }, "ifault_ka_max": 7.24, "ifault_ka_min": 6.55, "ipk_ka": 11.98, "x_over_r_at_node": 1.60, "z_total_ohm": 0.03477, "tool_call_pending": true }
   ],
   "selectivity_implications": [
     { "breaker_id": "MSP-MCCB-100A",   "breaker_rating_a": 100, "breaker_icn_ka": 25, "ifault_at_breaker_ka": 9.80, "adequate": true, "recommendation": "MCCB 100A Icu 25 kA — adequate against 9.80 kA at MSP-100 intake (2.6× margin). Verify Ics ≥ 75% Icu at full rating; KS 1700:2018 §434.5 (routes to BS 7671:2018+A2 §434.5.1 for short-circuit breaking capacity)." },
-    { "breaker_id": "GH-DB-MCCB-63A",  "breaker_rating_a": 63,  "breaker_icn_ka": 10, "ifault_at_breaker_ka": 7.11, "adequate": true, "recommendation": "MCCB 63A Icu 10 kA — adequate against 7.11 kA at GH-DB incoming (1.41× margin — marginal). Consider upgrading to Icu 15 kA for prudent design margin; cascade discrimination with upstream MSP MCCB verified by 60m × 95mm² submain impedance step (25.87 → 35.38 mΩ)." }
+    { "breaker_id": "GH-DB-MCCB-63A",  "breaker_rating_a": 63,  "breaker_icn_ka": 10, "ifault_at_breaker_ka": 7.24, "adequate": true, "recommendation": "MCCB 63A Icu 10 kA — adequate against 7.24 kA at GH-DB incoming (1.38× margin — marginal). Consider upgrading to Icu 15 kA for prudent design margin; cascade discrimination with upstream MSP MCCB verified by 60m × 95mm² submain impedance step (25.87 → 34.77 mΩ)." }
   ],
   "compliance_summary": {
     "compliant": true,
@@ -145,7 +145,7 @@
       },
       {
         "title": "Selectivity Implications",
-        "summary": "MSP-100 MCCB 100A Icu 25 kA verified against 9.80 kA cascade (2.6× margin). GH-DB MCCB 63A Icu 10 kA verified against 7.24 kA (1.38× margin — marginal; recommend Icu 15 kA upgrade for design prudence). All comply with KS 1700:2018 §434.5 (routes to BS 7671:2018+A2 §434.5.1). Cascade discrimination supported by the 60m submain impedance step (25.21 → 34.77 mΩ) per KS 1700:2018 §536.4.",
+        "summary": "MSP-100 MCCB 100A Icu 25 kA verified against 9.80 kA cascade (2.6× margin). GH-DB MCCB 63A Icu 10 kA verified against 7.24 kA (1.38× margin — marginal; recommend Icu 15 kA upgrade for design prudence). All comply with KS 1700:2018 §434.5 (routes to BS 7671:2018+A2 §434.5.1). Cascade discrimination supported by the 60m submain impedance step (25.87 → 34.77 mΩ) per KS 1700:2018 §536.4.",
         "decisions": [
           {
             "label": "Breaking-capacity verification",

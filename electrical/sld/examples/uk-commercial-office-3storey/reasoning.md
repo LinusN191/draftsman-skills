@@ -53,7 +53,7 @@ Calling Imax = **146A** at the MSB intake (incl. 0.85 power factor for inductive
 Imax = 86,000 × 0.85 / (√3 × 400 × 0.85) ≈ 146A
 ```
 
-Peak PFC at the MSB busbar is dominated by the source impedance (Ze=0.35Ω + service-cable contribution). Estimated **9.5kA** — slightly under the declared 9.8kA because the service cable resistance lifts impedance from the strict Ze case.
+Peak PFC at the MSB busbar is dominated by the source impedance (Ze=0.35Ω + service-cable contribution). Estimated **9.8kA** — sourced from the fault-level intent at `electrical/fault-level/examples/uk-commercial-3storey/intent-out.json` (transformer-secondary Ik"max 9.85 kA, within ±0.5 kA INV-11 tolerance).
 
 Both numbers are LLM estimates and the IR flags `tool_call_pending_for_system_metrics: true`. Per WI3, the SLD skill defers deterministic refinement to the `calc.sld_system_metrics` tool — the IR provides the engineering reasoning; the runtime computes the final values.
 
