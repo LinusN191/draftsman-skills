@@ -15,7 +15,7 @@ Status codes: `production` | `beta` | `draft` | `stub`
 |-------|------|--------|-----------|-------|-------|
 | lighting-layout | `electrical/lighting-layout` | **production** | BS EN 12464-1:2021, Part L 2021 | 8/5 ✓ | Reference implementation. 8 evals (incl. rationale), 3 examples with rationale, full IR schema. |
 | sld | `electrical/sld` | **beta** | BS 7671:2018, BS EN 60617 | 8/3 ✓ | v1.1.0 prompts complete. 8 evals, 4 examples. Separate eval YAML files pending. |
-| db-layout | `electrical/db-layout` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), IEC 60617 | 8/3 ✓ | v1.1.0 — adds KE Nairobi industrial 100A TPN example (paired with earthing v1.3) + intent-out.json backfill for 3 existing examples. 4 worked examples total. |
+| db-layout | `electrical/db-layout` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 8/3 ✓ | v1.2.0 — 12 new cascade-supporting examples for SLD v1.3.0 (paired sprint). 16 worked examples total covering UK/KE/INT/US jurisdictions at MSB-rollup + single-board sub-DB scopes. |
 | cable-containment | `electrical/cable-containment` | stub | BS 7671:2018, BS 1192 | — | — |
 | riser | `electrical/riser` | stub | BS 7671:2018 | — | — |
 | schematic | `electrical/schematic` | stub | BS EN 60617 | — | — |

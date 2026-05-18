@@ -1,5 +1,19 @@
 # Changelog — db-layout
 
+## [1.2.0] - 2026-05-18
+
+### Added
+- **12 new cascade-supporting examples** to enable full WI4 multi-board intent consumption in SLD v1.3.0:
+  - UK: 4 new (MSB-rollup + 3 sub-DBs SDB-GF/L1/L2)
+  - KE: 1 new (gate-house DB downstream of MSP-100 C08)
+  - INT: 4 new (DB-L1 lighting + DB-P1 power + DB-M1 mechanical + DB-FA1 fire alarm; all downstream of existing intl-commercial-tpn-msb F01-F04)
+  - US: 3 new (TSP-A + TSP-B tenant sub-panels + CA-P common area; all downstream of existing us-strip-mall-panelboard)
+
+### Notes
+- All new examples follow the 5-file pattern (input + output + intent-out + reasoning + sample-schedule) established in v1.1.
+- intent-out.json strict schema validation enforced (additionalProperties: false; no wrapper fields).
+- Downstream consumer: SLD v1.3.0 (paired sprint).
+
 ## [1.1.0] - 2026-05-18
 
 ### Added
