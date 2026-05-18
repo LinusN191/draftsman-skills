@@ -1,5 +1,25 @@
 # Changelog — earthing
 
+## [1.4.0] - 2026-05-18
+
+### Added
+- New example: `uk-commercial-3storey` — UK 3-storey commercial office TN-C-S, 4-board cascade
+  - Ze=0.35Ω, MET in ground-floor plant room
+  - 24 circuits (3 MCCB-D 100A feeders + 21 MCB-B final circuits)
+  - 15 circuits RCD-protected per BS 7671:2018+A2 §411.3.3 AMD 2 (sockets ≤32A + mobile equipment outdoors)
+  - 5 main bonding entries (water + gas + structural steel × 3 floors per §411.3.1.2)
+  - Type 2 SPD per §443 (commercial moderate lightning)
+  - Consumes 4 db-layout intents (one per board) per WI4 cascade pattern
+
+### Changed
+- Examples count: 4 → 5
+
+### Why this sprint
+Pairs with SLD v1.4 multi-skill intent consumption sprint. SLD UK example consumes this earthing intent to verify `supply_origin.system_type` cross-skill consistency (INV-11). Also pairs with fault-level uk-commercial-3storey for cross-skill Ze + system_type alignment.
+
+### Pattern parent
+- earthing v1.3 (shipped 2026-05-18) — single-board WI4 consumption; v1.4 adds commercial multi-board scenario without changing the consumption pattern
+
 ## [1.3.0] - 2026-05-18
 
 ### Added
