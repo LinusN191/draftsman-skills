@@ -1,0 +1,28 @@
+{
+  "project_id": "us-strip-mall-msp-tenants-eg04",
+  "site_brief": "US strip-mall retail building, 2 tenant suites + common area + exterior parking. Utility TN-S 208Y/120V 3-phase 4-wire supply with declared Ze=0.10Ω + PFC=22kA. 200A MSP-A main service panelboard feeds 3 sub-panels: TSP-A (Suite 100 apparel retail, 100A), TSP-B (Suite 200 food-service retail, 100A), CA-P (common area + exterior, 60A). CA-P carries fire-pump motor on C05 — deliberate NEC 695.4(A) teaching scenario.",
+  "jurisdiction": "US",
+  "supply_brief": {
+    "supplier": "US utility (generic IOU)",
+    "wayleave_or_account_reference": "US-STRIP-2026-EG04",
+    "system_type": "TN-S",
+    "voltage_nominal_v": 208,
+    "voltage_arrangement": "TPN_plus_E",
+    "frequency_hz": 60,
+    "ze_declared_ohm": 0.10,
+    "pfc_declared_ka": 22.0,
+    "main_switch_rating_a": 200,
+    "main_switch_breaking_capacity_ka": 25
+  },
+  "distribution_hierarchy_brief": [
+    { "board_id": "MSP-A", "board_role": "main_switchboard",       "consumed_intent_path": "electrical/db-layout/examples/us-strip-mall-panelboard/intent-out.json",   "parent_board_id": null,    "fed_via_circuit_id": null,  "location": "service-entry room, north exterior wall" },
+    { "board_id": "TSP-A", "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/us-strip-mall-tsp-a/intent-out.json",        "parent_board_id": "MSP-A", "fed_via_circuit_id": "T01", "location": "Suite 100 (apparel retail), back-of-house" },
+    { "board_id": "TSP-B", "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/us-strip-mall-tsp-b/intent-out.json",        "parent_board_id": "MSP-A", "fed_via_circuit_id": "T02", "location": "Suite 200 (food-service retail), back-of-house" },
+    { "board_id": "CA-P", "board_role": "sub_distribution_board",  "consumed_intent_path": "electrical/db-layout/examples/us-strip-mall-common-area/intent-out.json", "parent_board_id": "MSP-A", "fed_via_circuit_id": "T03", "location": "common-area utility closet (parking-lot + exterior load)" }
+  ],
+  "spd_assessment_inputs": {
+    "location_type": "commercial_retail",
+    "lightning_risk": "moderate",
+    "life_safety_present": true
+  }
+}
