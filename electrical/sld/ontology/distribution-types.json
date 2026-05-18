@@ -1,0 +1,78 @@
+{
+  "_title": "SLD distribution topology ontology",
+  "_version": "1.0.0",
+  "_purpose": "Topology types used in supply_origin.voltage_arrangement field + drawing_notes guidance. Defines the physical distribution strategy (single feeder, looped supply, split-phase, etc.).",
+  "distribution_types": [
+    {
+      "id": "radial",
+      "label": "Radial",
+      "description": "Each board fed from one upstream feeder. No alternative path. Simplest topology; single point of failure per feeder.",
+      "availability": "single-path",
+      "selectivity_concern": "Each stage must be selectively coordinated; partial selectivity acceptable if breaker ratings constrain room",
+      "common_jurisdictions": ["GB", "EU", "INT", "KE", "US"],
+      "typical_use_cases": [
+        "Small commercial offices (≤400A MSB)",
+        "Residential buildings (radial per floor)",
+        "Industrial sites without redundancy requirement"
+      ],
+      "standards": ["BS 7671:2018 Reg 311", "IEC 61439-1:2020 Clause 7.1", "NEC 2023 Article 240"]
+    },
+    {
+      "id": "ring",
+      "label": "Ring",
+      "description": "Boards connected in a closed loop; each board fed from two directions (upstream and downstream feeder). Rare in modern practice; legacy method in some UK installations.",
+      "availability": "dual-path",
+      "selectivity_concern": "Requires special switchgear to isolate loop sections; risk of back-feed if not carefully controlled",
+      "common_jurisdictions": ["GB"],
+      "limitations": [
+        "Rarely used in new installations",
+        "Legacy UK TN-C-S designs only",
+        "Requires complex RCD coordination to prevent unintended disconnection"
+      ],
+      "standards": ["BS 7671:2018 Reg 311 (historical reference; not recommended)", "BS 1363 (UK ring main circuits for outlets, not applicable to distribution boards)"]
+    },
+    {
+      "id": "split_phase",
+      "label": "Split-Phase (US 120/240V)",
+      "description": "US residential and small commercial convention. Single-phase supply with center tap (neutral) providing 120V to neutral or 240V phase-to-phase. Not a topology in the sense of ring/radial, but a voltage arrangement.",
+      "availability": "single-source",
+      "selectivity_concern": "N/A (no tiered distribution; all circuits directly from service panel)",
+      "common_jurisdictions": ["US"],
+      "typical_use_cases": [
+        "Residential dwellings (single family / multi-unit)",
+        "Small retail / office ≤200A main breaker"
+      ],
+      "standards": ["NEC 2023 Article 230 (service entrance)", "NEC 2023 Article 210 (branch circuits)"]
+    },
+    {
+      "id": "tpn",
+      "label": "Three-Phase Plus Neutral (TPN)",
+      "description": "3-phase + N. Most common commercial/industrial supply globally. Voltage typically 400V 3-ph (50Hz EU/KE) or 480V 3-ph (60Hz US). TN-S, TN-C-S, or TT subtypes per earthing system.",
+      "availability": "single-source",
+      "voltage_typical": ["400V 50Hz (EU, KE)", "480V 60Hz (US)", "415V 50Hz (India, Middle East)"],
+      "selectivity_concern": "Each stage must be selectively coordinated; critical in multi-floor/zoned buildings",
+      "common_jurisdictions": ["GB", "EU", "INT", "KE", "US"],
+      "typical_use_cases": [
+        "Commercial buildings (office, retail, hotel)",
+        "Industrial plants, data centres",
+        "Any site with motor loads ≥15kW"
+      ],
+      "standards": ["BS 7671:2018 Reg 311", "IEC 60364-3-31 (TPN voltage supply)", "NEC 2023 Article 250 (grounding)"]
+    },
+    {
+      "id": "tpn_plus_e",
+      "label": "Three-Phase Plus Neutral + Separate Earth (TPN+E)",
+      "description": "TPN with separate Earth conductor at intake. TN-S subtype in the earthing system taxonomy. Distinct PE from N throughout (not combined as TN-C-S).",
+      "availability": "single-source",
+      "voltage_typical": ["400V 50Hz with 4+E = 5-core cable"],
+      "selectivity_concern": "Same as TPN; separate E allows independent PE sizing per BS 7430",
+      "common_jurisdictions": ["GB (older)", "KE (older industrial)", "EU (legacy systems)"],
+      "typical_use_cases": [
+        "Older UK industrial substations (pre-1990s)",
+        "Industrial estates in East Africa where separate E was installed for safety margin",
+        "Retrofit earthing upgrades (converting TN-C-S to TN-S)"
+      ],
+      "standards": ["BS 7671:2018 Reg 411 (TN-S earthing system; allows separate PE)", "IEC 60364-4-41 Clause 411.4 (TN-S definition)"]
+    }
+  ]
+}

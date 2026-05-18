@@ -1,0 +1,70 @@
+{
+  "_title": "SLD board roles ontology",
+  "_version": "1.0.0",
+  "_purpose": "Enum of board roles used in SLD distribution_hierarchy[].board_role field. Schema-aligned with sld-ir.schema.json.",
+  "board_roles": [
+    {
+      "id": "main_switchboard",
+      "label": "Main Switchboard (MSB)",
+      "description": "Top-level board fed directly from the utility intake. Distributes to sub-DBs. The single root of the distribution hierarchy (parent_board_id == null).",
+      "typical_intake_a_range": [100, 4000],
+      "jurisdiction_common": ["GB", "EU", "INT", "KE", "US"],
+      "standards": ["BS 7671:2018 Reg 311", "IEC 61439-1:2020 Clause 7.1", "NEC 230"]
+    },
+    {
+      "id": "sub_distribution_board",
+      "label": "Sub-Distribution Board (SDB)",
+      "description": "Intermediate board fed from MSB or another upstream board. Distributes to final circuits or further sub-boards. Typical for multi-floor or zoned buildings.",
+      "typical_intake_a_range": [40, 400],
+      "jurisdiction_common": ["GB", "EU", "INT", "KE"],
+      "standards": ["BS 7671:2018 Reg 311", "IEC 61439-1:2020 Clause 7.1"]
+    },
+    {
+      "id": "panel",
+      "label": "Panel (US convention)",
+      "description": "US/NEC equivalent of sub-distribution board. Single-board scope; serves final circuits in a defined area (tenant, floor, zone). Fed from MSB or higher-level panel.",
+      "typical_intake_a_range": [60, 400],
+      "jurisdiction_common": ["US"],
+      "standards": ["NEC 2023 Article 240, 408", "UL 891 (industrial control panels)", "UL 3414 (service/distribution boards)"]
+    },
+    {
+      "id": "sub_panel",
+      "label": "Sub-Panel (US convention)",
+      "description": "US/NEC equivalent of a downstream sub-DB. Fed from a main panel; serves tenant or zone loads. Secondary distribution point in multi-level schemes.",
+      "typical_intake_a_range": [40, 200],
+      "jurisdiction_common": ["US"],
+      "standards": ["NEC 2023 Article 408 (sub-panel interconnection)", "NEC 230.71 (service disconnects); sub-panel main switch is not a service disconnect"]
+    },
+    {
+      "id": "fire_alarm_panel",
+      "label": "Fire Alarm Panel",
+      "description": "Dedicated life-safety panel for fire alarm detection and notification circuits. No upstream RCD per IEC 60364-5-56 §560 / BS 7671 §560 / KS 1700 §560 / NEC 760.",
+      "typical_intake_a_range": [16, 100],
+      "voltage_class": "fire_alarm",
+      "rcd_upstream": false,
+      "jurisdiction_common": ["GB", "EU", "INT", "KE", "US"],
+      "standards": ["BS 7671:2018 Reg 560.7", "IEC 60364-5-56 Clause 560", "KS 1700:2018 Reg 560", "NEC 2023 Article 760 (fire alarm circuits)"]
+    },
+    {
+      "id": "life_safety_panel",
+      "label": "Life-Safety Panel (emergency lighting / fire pump / smoke control)",
+      "description": "Dedicated panel for emergency lighting, fire pump, or smoke control. Requires dedicated supply (mains or battery-backed per BS 5266 / IEC 60364-5-56 / NEC 700/695).",
+      "typical_intake_a_range": [16, 200],
+      "load_class": "life_safety",
+      "supply_dedicated": true,
+      "jurisdiction_common": ["GB", "EU", "INT", "KE", "US"],
+      "standards": ["BS 5266-1:2016 Clause 10.5", "IEC 60364-5-56 Clause 560.9", "NEC 2023 Article 700 (emergency lighting), Article 695 (fire pump)"]
+    },
+    {
+      "id": "ups_distribution",
+      "label": "UPS Distribution Panel",
+      "description": "Downstream of UPS output. Serves uninterruptible loads (typically IT / process / data / critical manufacturing). May have dedicated grounding and isolation from mains return path.",
+      "typical_intake_a_range": [16, 400],
+      "upstream_device_type": "UPS inverter",
+      "load_class": "essential",
+      "rcd_upstream": false,
+      "jurisdiction_common": ["GB", "EU", "INT", "KE", "US"],
+      "standards": ["IEC 60364-5-56 Clause 551 (uninterruptible power supplies)", "BS 7909 (temporary installations)", "NEC 700.12 (emergency system protection)"]
+    }
+  ]
+}
