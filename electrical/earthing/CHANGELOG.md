@@ -1,5 +1,23 @@
 # Changelog — earthing
 
+## [1.3.0] - 2026-05-18
+
+### Added
+- **Cross-skill intent consumption demonstrated end-to-end** across all 4 worked examples (KE, UK, INT, US). Each `input.json` now carries `consumed_intent_path` referencing a paired `db-layout/examples/<X>/intent-out.json`. Each `output.json` populates `meta.consumed_intents[]` with the db-layout provenance.
+- **Generator prompt Step 0.5** (Resolve upstream intents) — instructs LLM to adopt upstream circuits[] verbatim (circuit_id, breaker_rating, breaker_curve, voltage_class, route_length) and add earthing-specific fields per circuit.
+- **eval-09-db-layout-intent-consumption.yaml** — 10 assertions verifying cross-file circuit_id consistency + field-level alignment across all 4 example pairs.
+- **ARCHITECTURE.md "Worked example pattern" subsection** under Cross-drawing intents — documents the 4 pairs + generalization for future consumer skills.
+
+### Changed
+- **All 4 earthing example output.json files refreshed** — circuits[] realigned to upstream db-layout circuit_ids. `meta.skill_version` bumped to `earthing/1.3.0`. Earthing-specific fields (CPC, Zs, RCD) preserved from v1.2.
+- **INT example re-anchored** — previously modeled rural TT installation (3 LV circuits + electrode array); v1.3 re-anchors to commercial TPN MSB scenario (4 feeders F01-F04) to align with the paired db-layout intent. Rural TT remains a valid engineering scenario but is no longer represented by this example.
+- **db-layout dependency bumped** — produced_by string carries `electrical/db-layout/v1.1.0` (the paired skill version released in the same sprint).
+
+### Notes
+- No schema changes — `meta.consumed_intents[]` was already supported in the earthing IR schema; this sprint simply populates it.
+- `intent_version: 1.0.0` is the intent **schema** version (not bumped this sprint since the db-layout intent contract is unchanged); `produced_by` carries the **skill** version (1.1.0 for db-layout post-sprint).
+- Future consumer skills (cable-sizing, fault-level, arc-flash) will follow this pattern in their respective minor-version sprints.
+
 ## [1.2.0] - 2026-05-18
 
 ### Added
