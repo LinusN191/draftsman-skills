@@ -1,0 +1,63 @@
+{
+  "$schema": "../../inputs.json",
+  "project_meta": {
+    "project_id": "ke-nairobi-industrial-fl-eg01",
+    "name": "Nairobi Industrial Workshop Fault-Level Study",
+    "client": "Industrial tenant",
+    "designer": "DraftsMan Skills demo",
+    "date": "2026-05-18",
+    "revision": "P01"
+  },
+  "jurisdiction": "INT",
+  "site_brief": "Single-storey light-industrial workshop on the outskirts of Nairobi served from KPLC 11kV/415V network. TN-S earthing, single-source utility supply through a 500 kVA pole-mount transformer feeding a Main Switch-Panel (MSP-100) which feeds a workshop/glasshouse DB (GH-DB) over a 60m armoured submain. Motor load comprises a 11 kW lathe, 4 kW pillar drill, and 22 kW air compressor — total 37 kW. KS 1700:2018 is the primary jurisdictional standard; KS 1700:2018 §312 routes to BS 7671:2018+A2 §313.1 for short-circuit interrupting verification.",
+  "supply_voltage_v": "415",
+  "hv_side_present": true,
+  "hv_voltage_kv": "11",
+  "hv_pscc_at_primary_ka": 13,
+  "hv_network_arrangement": "radial",
+  "hv_x_over_r": 5,
+  "primary_transformer_kva": 500,
+  "primary_transformer_zpu_pct": 4.75,
+  "primary_transformer_xover_r": 5,
+  "supply_brief": {
+    "hv_side": {
+      "voltage_kv": 11,
+      "network_arrangement": "radial",
+      "declared_pscc_at_primary_ka": 13,
+      "x_over_r_at_primary": 5
+    },
+    "lv_source": {
+      "type": "utility_transformer",
+      "kva": 500,
+      "voltage_v": 415,
+      "z_percent": 4.75,
+      "x_over_r": 5,
+      "near_or_far_from_generator": "far"
+    }
+  },
+  "kplc_declared_at_msp": {
+    "Ze_ohm": 0.80,
+    "pscc_ka": 9.8,
+    "earthing_system": "TN-S"
+  },
+  "standby_generator_present": false,
+  "ups_present": false,
+  "motor_load_brief": {
+    "total_motor_kw": 37,
+    "largest_motor_kw": 22,
+    "motors": [
+      { "id": "lathe",      "kw": 11 },
+      { "id": "drill",      "kw": 4  },
+      { "id": "compressor", "kw": 22 }
+    ]
+  },
+  "motor_load_kw": 37,
+  "cascade_topology_source": "engineer_declared",
+  "cascade_brief": [
+    { "node_id": "HV-1",        "parent_node_id": null,           "node_kind": "hv_source",              "designation": "11 kV KPLC primary radial supply" },
+    { "node_id": "TX-1",        "parent_node_id": "HV-1",         "node_kind": "transformer_secondary", "designation": "500 kVA KPLC pole-mount TX 415V TPN LV terminals" },
+    { "node_id": "MSP-100",     "parent_node_id": "TX-1",         "node_kind": "board_incoming",         "designation": "Main switch-panel 100A incoming",          "feeder": { "length_m": 3,  "csa_mm2_or_awg": "70mm²", "material": "copper", "insulation": "xlpe_90" } },
+    { "node_id": "MSP-100.BUS", "parent_node_id": "MSP-100",     "node_kind": "board_busbar",           "designation": "MSP-100 busbar 100A" },
+    { "node_id": "GH-DB",       "parent_node_id": "MSP-100.BUS", "node_kind": "board_incoming",         "designation": "Glasshouse/workshop DB incoming",          "feeder": { "length_m": 60, "csa_mm2_or_awg": "95mm²", "material": "copper", "insulation": "xlpe_90" } }
+  ]
+}
