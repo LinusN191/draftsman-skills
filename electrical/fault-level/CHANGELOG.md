@@ -1,5 +1,26 @@
 # Changelog — fault-level
 
+## [1.1.0] - 2026-05-18
+
+### Added
+- 3 new examples (pairs with SLD v1.4 multi-skill consumption sprint):
+  - `uk-commercial-3storey` — 4-board UK cascade, TN-C-S 400V, BS 7671:2018+A2 + IEC 60909-0:2016
+  - `ke-nairobi-industrial` — 2-board KE cascade, KPLC TN-S 415V, KS 1700:2018 direct citation form + IEC 60909-0:2016 §3.8.1 motor threshold (strict-rule exclusion documented)
+  - `us-strip-mall-retail` — 4-tenant US cascade, 208Y/120V PoCo, NEC 2023 §110.9 AIC verification
+
+### Changed
+- All 6 fault-level examples now ship with `intent-out.json` conforming to `fault-level-intent.schema.json` (strict `additionalProperties: false`)
+- 3 pre-existing examples (uk-domestic-single-source, intl-commercial-with-genset, us-industrial-with-motors) backfilled with intent-out.json — completes the WI4 producer contract
+
+### Engineering details
+- κ recomputed per cascade node per IEC 60909-0:2016 Eq 29: `κ = 1.02 + 0.98·exp(-3/(X/R))` — not frozen at upstream value
+- Cable impedance from IEC 60364-5-52:2009 Annex E (IEC examples) and NEC 2023 Chapter 9 Table 9 (US example)
+
+### Pattern parent
+- db-layout v1.1 intent-out backfill (shipped 2026-05-17) — same backfill convention applied
+
+---
+
 ## v1.0.0 (current — IEC 60909 HV+LV cascade)
 
 First production-grade version. Single-stage skill (no sub-stages planned at v1).
