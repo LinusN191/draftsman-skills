@@ -1,0 +1,35 @@
+{
+  "project_id": "intl-comm-tpn-eg02",
+  "board_brief": "Mechanical/HVAC sub-DB (DB-M1) for a generic IEC commercial 3-storey office. 250A TPN intake fed from MSB-MAIN F03 (250A MCCB Type D). 8 mechanical circuits: 3-phase AHU supply + extract fans, chilled-water pump, kitchen extract, FCU control supply, condensate pump. Located in rooftop plantroom adjacent to AHU plant.",
+  "jurisdiction": "INT",
+  "standards_stack": {
+    "primary": "IEC 60364 (HD 60364 series)",
+    "assembly_type_testing": "IEC 61439-3:2012 Distribution Board",
+    "motor_protection": "IEC 60947-4-1 motor protection devices"
+  },
+  "supply": {
+    "fed_from": "MSB-MAIN F03 250A MCCB Type D",
+    "system_type": "TN-S (utility transformer earthed; building distribution TN-S)",
+    "voltage": "400V/230V 3-phase 4-wire 50 Hz",
+    "supply_rating_a": 250,
+    "phase_arrangement": "TPN_plus_E",
+    "feeder_route_length_m": 45
+  },
+  "board": {
+    "designation": "DB-M1",
+    "location": "rooftop plantroom adjacent to AHU plant",
+    "enclosure_rating": "IP54 (plantroom — dust/moisture exposure)",
+    "busbar_rating_a": 250,
+    "scope": "single-board"
+  },
+  "circuits": [
+    { "circuit_id": "M01", "designation": "AHU-1 supply fan motor (3-ph 11kW)",      "phase": "TPN", "device": "32A MCB Type D", "cable": "6mm² SY 5-core PVC Cu",   "route_length_m": 25, "downstream_load_kw": 11 },
+    { "circuit_id": "M02", "designation": "AHU-1 extract fan motor (3-ph 7.5kW)",    "phase": "TPN", "device": "25A MCB Type D", "cable": "4mm² SY 5-core PVC Cu",   "route_length_m": 25, "downstream_load_kw": 7.5 },
+    { "circuit_id": "M03", "designation": "AHU-2 supply fan motor (3-ph 11kW)",      "phase": "TPN", "device": "32A MCB Type D", "cable": "6mm² SY 5-core PVC Cu",   "route_length_m": 35, "downstream_load_kw": 11 },
+    { "circuit_id": "M04", "designation": "AHU-2 extract fan motor (3-ph 7.5kW)",    "phase": "TPN", "device": "25A MCB Type D", "cable": "4mm² SY 5-core PVC Cu",   "route_length_m": 35, "downstream_load_kw": 7.5 },
+    { "circuit_id": "M05", "designation": "Chilled water pump (3-ph 5.5kW)",         "phase": "TPN", "device": "20A MCB Type C", "cable": "2.5mm² SY 5-core PVC Cu", "route_length_m": 20, "downstream_load_kw": 5.5 },
+    { "circuit_id": "M06", "designation": "Kitchen extract fan (3-ph 4kW)",          "phase": "TPN", "device": "16A MCB Type C", "cable": "2.5mm² SY 5-core PVC Cu", "route_length_m": 45, "downstream_load_kw": 4 },
+    { "circuit_id": "M07", "designation": "FCU control panel feed (BMS supply)",     "phase": "L1",  "device": "16A MCB Type B", "cable": "2.5mm² PVC Cu",           "route_length_m": 30, "downstream_load_kw": 2 },
+    { "circuit_id": "M08", "designation": "Condensate pump (single-ph 1.5kW)",       "phase": "L2",  "device": "10A MCB Type C", "cable": "1.5mm² PVC Cu",           "route_length_m": 18, "downstream_load_kw": 1.5 }
+  ]
+}

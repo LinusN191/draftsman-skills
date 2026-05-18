@@ -1,0 +1,69 @@
+{
+  "$schema": "../../schemas/db-layout-ir.schema.json",
+  "drawing_type": "db_layout",
+  "version": "1.2.0",
+  "meta": {
+    "project_id": "intl-comm-tpn-eg02",
+    "skill_version": "db-layout/1.2.0",
+    "produced_at": "2026-05-18T10:00:00Z"
+  },
+  "jurisdiction": "INT",
+  "board": {
+    "db_id": "DB-M1",
+    "designation": "DB-M1 — Mechanical/HVAC sub-DB, IEC commercial 3-storey office",
+    "location": "rooftop plantroom adjacent to AHU plant",
+    "enclosure_rating": "IP54",
+    "manufacturer_class": "IEC 61439-3 Distribution Board",
+    "scope": "single-board"
+  },
+  "incoming_supply": {
+    "voltage_v": 400,
+    "phase_arrangement": "TPN_plus_E",
+    "supply_rating_a": 250,
+    "fed_from": "MSB-MAIN F03 (250A MCCB Type D, 45m feeder)",
+    "supply_class": "non_essential",
+    "declared_pfc_ka": 14.0
+  },
+  "main_switch": {
+    "type": "switch-disconnector",
+    "rating_a": 250,
+    "breaking_capacity_ka": 25,
+    "fault_level_a_min": 14000
+  },
+  "circuits": [
+    { "circuit_id": "M01", "way_module_id": "W1", "designation": "AHU-1 supply fan motor (3-ph 11kW)",   "voltage_class": "LV_power", "downstream_load_kw": 11.0, "ocpd": { "rating_a": 32, "curve": "D", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "6mm²",   "cores": 5, "length_m": 25 } },
+    { "circuit_id": "M02", "way_module_id": "W2", "designation": "AHU-1 extract fan motor (3-ph 7.5kW)", "voltage_class": "LV_power", "downstream_load_kw": 7.5,  "ocpd": { "rating_a": 25, "curve": "D", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "4mm²",   "cores": 5, "length_m": 25 } },
+    { "circuit_id": "M03", "way_module_id": "W3", "designation": "AHU-2 supply fan motor (3-ph 11kW)",   "voltage_class": "LV_power", "downstream_load_kw": 11.0, "ocpd": { "rating_a": 32, "curve": "D", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "6mm²",   "cores": 5, "length_m": 35 } },
+    { "circuit_id": "M04", "way_module_id": "W4", "designation": "AHU-2 extract fan motor (3-ph 7.5kW)", "voltage_class": "LV_power", "downstream_load_kw": 7.5,  "ocpd": { "rating_a": 25, "curve": "D", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "4mm²",   "cores": 5, "length_m": 35 } },
+    { "circuit_id": "M05", "way_module_id": "W5", "designation": "Chilled water pump (3-ph 5.5kW)",      "voltage_class": "LV_power", "downstream_load_kw": 5.5,  "ocpd": { "rating_a": 20, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 5, "length_m": 20 } },
+    { "circuit_id": "M06", "way_module_id": "W6", "designation": "Kitchen extract fan (3-ph 4kW)",       "voltage_class": "LV_power", "downstream_load_kw": 4.0,  "ocpd": { "rating_a": 16, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 5, "length_m": 45 } },
+    { "circuit_id": "M07", "way_module_id": "W7", "designation": "FCU control panel feed (BMS supply)",   "voltage_class": "ELV_control", "downstream_load_kw": 2.0, "ocpd": { "rating_a": 16, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 30 } },
+    { "circuit_id": "M08", "way_module_id": "W8", "designation": "Condensate pump (single-ph 1.5kW)",     "voltage_class": "LV_power",    "downstream_load_kw": 1.5, "ocpd": { "rating_a": 10, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 18 } }
+  ],
+  "spare_ways": 4,
+  "selectivity_results": [
+    { "upstream": "MSB-MAIN F03 (250A MCCB Type D)", "downstream": "DB-M1 main switch + all motor circuits", "verdict": "pass", "_note": "250A Type D MCCB upstream selective against ≤32A Type B/C/D MCBs at DB-M1 (≥7.8:1 current ratio + curve coordination; manufacturer cascade table confirms selectivity to 25 kA per IEC 60364-5-53:2002 Clause 536)." }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "IEC 61439-3 Distribution Board (DBO) used for the mechanical sub-DB; IP54 chosen for plantroom dust/moisture exposure.",
+      "M01-M06 are 3-phase motor circuits — IEC 60364-4-41 Clause 411.3.3 socket-RCD policy does NOT apply (fixed equipment, no accessible socket).",
+      "Motor protection: each motor has a local motor starter/MCC (DOL or VSD) per IEC 60947-4-1 providing thermal overload protection and lock-out isolation. Upstream MCB at DB-M1 provides short-circuit protection only.",
+      "Type D MCB curve selected for AHU + extract fan circuits (M01-M04) — handles direct-on-line motor starting inrush (≈6-8× FLC for ≈100ms).",
+      "Type C MCB for chilled-water pump (M05) and kitchen extract fan (M06) — softer inrush profile suits Type C.",
+      "M07 FCU control panel feed is ELV-class downstream (24V control), but the upstream 230V supply is a small socket-equivalent circuit — 30mA Type A RCD applied.",
+      "M08 condensate pump is single-phase, accessible for maintenance — 30mA Type A RCD applied for additional protection per IEC 60364-4-41 Clause 411.3.3 socket-equivalence reasoning.",
+      "Estimated PFC at DB-M1 ≈ 14 kA after 45m 50mm² SWA feeder impedance from 25 kA at MSB-MAIN.",
+      "10 kA Icn MCBs with cascade backup from upstream 250A MCCB Icu ≥ 25 kA per IEC 60364-5-53 Clause 536.4."
+    ]
+  },
+  "drawing_notes": [
+    "DB-M1 located in rooftop plantroom adjacent to AHU plant.",
+    "Fed from MSB-MAIN F03 via 45m 50mm² 5-core SWA XLPE Cu feeder.",
+    "8 final circuits + 4 spare ways (W9-W12 reserved — future VRF expansion, additional FCU bank).",
+    "Each motor circuit terminates at a local motor starter/VSD with IEC 60947-4-1 thermal overload protection.",
+    "IP54 enclosure for plantroom environment (dust, moisture, oil mist exposure)."
+  ]
+}
