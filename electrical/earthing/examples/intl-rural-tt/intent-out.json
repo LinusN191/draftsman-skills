@@ -1,24 +1,24 @@
 {
   "intent_type": "earthing",
   "intent_version": "1.0.0",
-  "produced_by_skill_version": "earthing/1.1.0",
+  "produced_by_skill_version": "earthing/1.3.0",
   "tool_call_pending": true,
   "jurisdiction": "INT",
-  "system_type": "TT",
-  "ze_declared_ohm": 85.0,
-  "supply_bond_type": "consumer_electrode_only",
-  "main_earthing_conductor_csa_mm2": 10,
-  "electrodes": [
-    { "id": "E1", "electrode_type": "rod", "length_mm": 1500, "diameter_mm": 16, "burial_depth_mm": 600, "soil_resistivity_ohm_m": 100, "ra_ohm_specified": 100 },
-    { "id": "E2", "electrode_type": "rod", "length_mm": 1500, "diameter_mm": 16, "burial_depth_mm": 600, "soil_resistivity_ohm_m": 100, "ra_ohm_specified": 100 }
-  ],
+  "system_type": "TN-C-S",
+  "ze_declared_ohm": 0.30,
+  "supply_bond_type": "utility_pen_bond",
+  "main_earthing_conductor_csa_mm2": 70,
+  "electrodes": [],
   "main_bonding": [
-    { "id": "B1", "target": "fuel_pipe_external", "csa_mm2": 10 }
+    { "id": "B1", "target": "water_pipe",        "csa_mm2": 35 },
+    { "id": "B2", "target": "gas_pipe",          "csa_mm2": 35 },
+    { "id": "B3", "target": "structural_steel",  "csa_mm2": 25 }
   ],
   "circuits": [
-    { "circuit_id": "C01", "cpc_csa_mm2": 1.5, "device": "MCB_B_10A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "C02", "cpc_csa_mm2": 2.5, "device": "MCB_C_16A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "C03", "cpc_csa_mm2": 4.0, "device": "MCB_C_20A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 }
+    { "circuit_id": "F01", "cpc_csa_mm2":  70.0, "device": "MCCB_D_250A", "zs_compliance": "pass_via_downstream_selectivity", "rcd_required": false },
+    { "circuit_id": "F02", "cpc_csa_mm2": 120.0, "device": "MCCB_D_400A", "zs_compliance": "pass_via_downstream_selectivity", "rcd_required": false },
+    { "circuit_id": "F03", "cpc_csa_mm2":  70.0, "device": "MCCB_D_250A", "zs_compliance": "pass_via_downstream_selectivity", "rcd_required": false },
+    { "circuit_id": "F04", "cpc_csa_mm2":  16.0, "device": "MCB_C_63A",   "zs_compliance": "ads_exempt_life_safety",          "rcd_required": false }
   ],
   "overall_compliant": true,
   "produced_at": "2026-05-18"

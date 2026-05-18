@@ -2,6 +2,19 @@
 
 > **v1.3 — WI4 multi-board consumption:** This example's `distribution_hierarchy[]` is derived from 5 upstream db-layout intents (one MSB + 4 sub-DBs). The SLD skill adopts each board's `db_id` + incoming-supply summary verbatim and extends the picture with cascade structure, selectivity verification, system-wide metrics, SPD assessment, and life-safety isolation accounting. Board IDs match the upstream 1:1.
 
+## Multi-skill consumption (v1.4)
+
+> **v1.4 — multi-skill intent consumption:** This example consumes 3 upstream skill domains:
+> - **db-layout** (5 intents — MSB + 4 sub-DBs) — per-board detail
+> - **earthing** (1 intent, system-wide) — at `electrical/earthing/examples/intl-rural-tt/intent-out.json` (re-anchored to commercial TPN MSB in earthing v1.3 — folder name preserves history, content reflects TN-C-S commercial scope) — provides `system_type=TN-C-S`, `supply_bond_type=utility_pen_bond`, `ze_declared_ohm=0.30`; cross-checked against SLD `supply_origin` via INV-11
+> - **fault-level** (1 intent, system-wide) — at `electrical/fault-level/examples/intl-commercial-with-genset/intent-out.json` — provides deterministic peak_pfc_ka at transformer secondary per IEC 60909-0:2016 cascade. Transformer-secondary `ifault_ka_max = 22.5 kA` → SLD `system_metrics.peak_pfc_ka = 22.5` (was LLM-estimated 15.5 in v1.3)
+>
+> **Genset-source filtering (bespoke v1.4 handling):** The fault-level intent models a 1600 kVA utility + 800 kVA standby genset (`source_summary.type == "mixed"`). SLD's `distribution_hierarchy` does NOT include genset topology — that is a fault-level domain concern, not an SLD one. SLD's `system_metrics.peak_pfc_ka` is sourced from the **utility-source worst-case** PFC at transformer secondary (worst case for breaker rating verification per IEC 60909-0:2016 §3.5). Engineers consulting this SLD MUST cross-reference the fault-level skill's full IR for genset-mode settings — particularly for protection coordination during genset-only operation when Ik" can be substantially LOWER, potentially falling below selectivity thresholds that hold under utility-source conditions.
+>
+> The PFC shift 15.5 → 22.5 kA does NOT trigger a non_compliance_flag: the 800A main switch has 50 kA Icu (IEC 60947-2), so 55% headroom remains. The downstream sub-DB Icu ratings (each 10–16 kA typical for MCCB at this scale) have not been re-verified against the cascade-reduced PFC in this v1.4 refresh — that step is part of the deferred WI3 sld_system_metrics tool.
+>
+> `meta.consumed_intents[]` grows from 5 entries (v1.3) to 7 entries (v1.4): 5 db-layout + 1 earthing + 1 fault-level. INV-11 enforces the count + ordering + cross-skill field equality (`supply_origin.system_type == earthing.system_type`, `system_metrics.peak_pfc_ka ≈ fault-level TX-1 ifault_ka_max` within ±0.5 kA tolerance).
+
 ## Site context
 
 Generic IEC commercial 4-floor office with mechanical plant. The brief is intentionally jurisdiction-neutral — the SLD here is the "international" reference example and ALL citations use the IEC 60364 family directly (no BS / KS / NEC cross-contamination). Treat it as the baseline IEC commercial pattern that local-jurisdiction examples (UK BS 7671, KE KS 1700, US NEC) layer on top of.

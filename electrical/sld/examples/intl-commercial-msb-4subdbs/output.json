@@ -4,14 +4,16 @@
   "version": "1.3.0",
   "meta": {
     "project_id": "intl-commercial-msb-4subdbs-eg03",
-    "skill_version": "sld/1.3.0",
+    "skill_version": "sld/1.4.0",
     "produced_at": "2026-05-18T13:00:00Z",
     "consumed_intents": [
-      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" },
-      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" },
-      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" },
-      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" },
-      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" }
+      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/intl-commercial-tpn-msb/intent-out.json" },
+      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/intl-dbl1-lighting/intent-out.json" },
+      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/intl-dbp1-power/intent-out.json" },
+      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/intl-dbm1-mechanical/intent-out.json" },
+      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/intl-dbfa1-fire-alarm/intent-out.json" },
+      { "intent_type": "earthing",    "intent_version": "1.0.0", "produced_by": "electrical/earthing/v1.4.0",    "path": "electrical/earthing/examples/intl-rural-tt/intent-out.json" },
+      { "intent_type": "fault-level", "intent_version": "1.0.0", "produced_by": "electrical/fault-level/v1.1.0", "path": "electrical/fault-level/examples/intl-commercial-with-genset/intent-out.json" }
     ]
   },
   "jurisdiction": "INT",
@@ -42,7 +44,7 @@
   ],
   "system_metrics": {
     "imax_total_a": 170,
-    "peak_pfc_ka": 15.5,
+    "peak_pfc_ka": 22.5,
     "spd_assessment": {
       "required": true,
       "spd_type": "Type 2",
@@ -64,12 +66,15 @@
       "Sub-DB summed loads (19.3 + 47.5 + 50.0 + 3.0 = 119.8 kW total) are smaller than the MSB feeder rollups (F01=80kW + F02=150kW + F03=100kW + F04=12kW = 342kW). The feeder rollups in the MSB intent reflect rated headroom for spare-way / tenant fit-out; actual diversified Imax uses the sub-DB summed loads as the authoritative basis.",
       "F02 cascade is 'partial_selective' (2:1 below 3:1 IEC 60898 typical) — documented in selectivity_cascade._note. NOT a compliance failure: the cascade verdict captures the engineering caveat, and the design relies on manufacturer selectivity tables (instantaneous + short-time grading on modern MCCB pairs typically holds at this ratio). If tighter discrimination is required, downstream main can be reduced to 315A (gives 2.5:1, still below 3:1) or upstream raised to 1250A.",
       "DB-FA1 fire_alarm_panel dedicated supply confirmed: F04 has NO upstream RCD per IEC 60364-5-56 §560 (life-safety isolation). Final-circuit fire-alarm devices (FA01-FA06) inside DB-FA1 are also rcd_protected: false. PE-via-MET earth-fault clearance time relies on TN-C-S adiabatic + 5-second clearance per IEC 60364-4-41 §411.3.2.2 (verified by db-layout/v1.2.0 panel-level checks).",
-      "Peak PFC 15.5kA at MSB busbar is slightly under the declared 16.0kA — accounting for ~0.05Ω service-tail impedance added between DNO connection and MSB intake. Comfortably inside the 50kA Icu rating of the 800A main switch.",
-      "Emergency lighting via local battery-pack luminaires per IEC 60364-5-56 §560.7 (not central inverter); no dedicated emergency-lighting feeder at MSB level — DB-L1 L06 is the only `voltage_class: emergency_lighting` circuit and serves as a local sustained-supply distribution to battery-pack luminaires."
+      "Peak PFC 22.5kA at MSB busbar is sourced from the fault-level intent's utility-source worst-case transformer-secondary value (TX-1 ifault_ka_max = 22.5 kA per IEC 60909-0:2016 cascade) — supersedes prior LLM estimate of 15.5kA which inferred from declared 16kA service tail. Still comfortably inside the 50kA Icu rating of the 800A main switch (55% headroom).",
+      "Emergency lighting via local battery-pack luminaires per IEC 60364-5-56 §560.7 (not central inverter); no dedicated emergency-lighting feeder at MSB level — DB-L1 L06 is the only `voltage_class: emergency_lighting` circuit and serves as a local sustained-supply distribution to battery-pack luminaires.",
+      "Multi-skill intent consumption (v1.4): earthing intent at electrical/earthing/examples/intl-rural-tt/intent-out.json (re-anchored to commercial TPN MSB in earthing v1.3) provides system_type=TN-C-S, ze_declared_ohm=0.30, supply_bond_type=utility_pen_bond — cross-checked against SLD supply_origin per INV-11.",
+      "Multi-skill intent consumption (v1.4): fault-level intent at electrical/fault-level/examples/intl-commercial-with-genset/intent-out.json models DUAL-SOURCE (utility 1600 kVA + 800 kVA standby genset, source_summary.type='mixed'). SLD consumes the worst-case utility-source PFC at transformer secondary; genset contribution is documented separately in the fault-level skill's full IR but NOT modeled in SLD's distribution_hierarchy. SLD's peak_pfc_ka reflects utility-source only — verify genset-mode protection settings via the fault-level skill's IR before commissioning (genset-only operation typically lowers Ik\" and can fall below selectivity thresholds).",
+      "tool_call_pending_for_system_metrics: true — imax_total, SPD assessment, life-safety isolation remain LLM-estimated until calc.sld_system_metrics ships (WI3 deferral preserved)."
     ]
   },
   "drawing_notes": [
-    "MSB-MAIN located in ground-floor plant room with 800A TPN intake from utility TN-C-S supply (Ze=0.30Ω, declared PFC=16kA).",
+    "MSB-MAIN located in ground-floor plant room with 800A TPN intake from utility TN-C-S supply (Ze=0.30Ω, peak PFC 22.5kA from fault-level intent — utility-source worst case per IEC 60909-0:2016).",
     "4 functionally-separated feeders from MSB: F01 lighting (250A) + F02 small-power (400A) + F03 mechanical (250A) + F04 fire-alarm (63A).",
     "Type 2 SPD assembly at MSB intake per IEC 60364-4-44 §443.",
     "Final-circuit RCDs (30mA Type A) located at sub-DBs DB-L1/DB-P1/DB-M1 — preserves MSB-level selectivity.",
@@ -79,7 +84,7 @@
   "drawn_as_symbols": ["BUSBAR", "MCCB", "MCB", "RCD", "EARTH_GENERAL", "EARTH_PROTECTIVE", "CONDUCTOR_PE", "CONDUCTOR_PEN", "JUNCTION_T", "SPD_SYMBOL"],
   "flags": ["TOOL-CALL-PENDING:sld_system_metrics — System metrics are LLM-estimates; deterministic refinement deferred per WI3."],
   "rationale": {
-    "chat_summary": "Generic IEC commercial 4-floor office on TN-C-S 400V (Ze=0.30Ω, PFC=16kA). 800A MSB feeds 4 sub-DBs: DB-L1 lighting (F01 250A), DB-P1 power (F02 400A), DB-M1 mechanical (F03 250A), DB-FA1 fire-alarm (F04 63A). DB-FA1 demonstrates life-safety isolation per IEC 60364-5-56 §560 — no upstream RCD on F04. Imax_total ~170A; peak PFC 15.5kA. Type 2 SPD per IEC 60364-4-44 §443. Cascade 'partially_selective' — F02 2:1 < 3:1 IEC typical (documented).",
+    "chat_summary": "Generic IEC commercial 4-floor office on TN-C-S 400V (Ze=0.30Ω). 800A MSB feeds 4 sub-DBs: DB-L1 lighting (F01), DB-P1 power (F02), DB-M1 mechanical (F03), DB-FA1 fire-alarm (F04). v1.4 multi-skill: earthing+fault-level intents consumed. Peak PFC 22.5kA from fault-level IEC 60909 (utility-source worst case; genset-mode filtered — see assumption). 50kA Icu = 55% headroom. F02 cascade 2:1 partial_selective. DB-FA1 §560 life-safety isolation. Type 2 SPD §443.",
     "sections": [
       { "title": "Supply Origin", "summary": "TN-C-S 400V TPN+E, declared Ze=0.30Ω + PFC=16kA. 800A MCCB main switch with 50kA Icu (IEC 60947-2). Generic IEC jurisdiction — citations use IEC 60364 form only.", "decisions": [
         { "label": "TN-C-S supply confirmed", "summary": "PEN at service head, MET separation downstream of main switch.", "rule": "IEC 60364-4-41 §411.4 TN-C-S system definition", "code_clause": "IEC 60364-4-41:2005 §411.4", "inputs": { "ze_ohm_declared": 0.30, "pfc_ka_declared": 16.0 } }
@@ -87,8 +92,8 @@
       { "title": "Distribution Hierarchy", "summary": "5-board cascade. MSB-MAIN feeds 4 functionally-separated sub-DBs via dedicated feeders (lighting, small-power, mechanical, fire-alarm). Functional separation is the dominant design driver — each load class isolates faults and simplifies fit-out per discipline.", "decisions": [
         { "label": "Functional separation at MSB", "summary": "4 feeders by voltage_class / load discipline rather than per-floor. Fire-alarm gets dedicated feeder for life-safety isolation; mechanical kept separate to avoid motor inrush propagating to lighting.", "rule": "IEC 60364-5-51 §514 functional separation; IEC 60364-5-56 §560 life-safety", "code_clause": "IEC 60364-5-56:2009 §560", "inputs": { "board_count": 5, "feeder_count": 4 } }
       ] },
-      { "title": "System Metrics", "summary": "Imax_total 170A (vs 800A intake = 21% utilisation, 79% headroom). Peak PFC 15.5kA (vs 50kA Icu — deeply comfortable). Substantial headroom typical for IEC commercial spec building with tenant fit-out variation.", "decisions": [
-        { "label": "Intake capacity verified", "summary": "main_switch_rating 800A >> imax_total 170A; breaking_capacity 50kA >> peak_pfc 15.5kA.", "rule": "IEC 60364-4-43 §433.1 + §434.5.1 Icu adequacy", "code_clause": "IEC 60364-4-43:2008 §433.1", "inputs": { "imax_total_a": 170, "main_switch_rating_a": 800, "headroom_pct": 79 } }
+      { "title": "System Metrics", "summary": "Imax_total 170A (vs 800A intake = 21% utilisation, 79% headroom). Peak PFC 22.5kA from fault-level intent (utility-source worst case at TX-1 secondary per IEC 60909-0:2016 cascade — supersedes v1.3 LLM estimate of 15.5kA). Still 55% Icu headroom (50kA breaker vs 22.5kA peak PFC). Genset-mode PFC is documented separately in the fault-level skill IR — see compliance_summary assumption.", "decisions": [
+        { "label": "Intake capacity verified", "summary": "main_switch_rating 800A >> imax_total 170A; breaking_capacity 50kA >> peak_pfc 22.5kA (utility-source). 55% Icu headroom remains comfortable.", "rule": "IEC 60364-4-43 §433.1 + §434.5.1 Icu adequacy", "code_clause": "IEC 60364-4-43:2008 §433.1", "inputs": { "imax_total_a": 170, "main_switch_rating_a": 800, "peak_pfc_ka": 22.5, "icu_ka": 50, "icu_headroom_pct": 55 } }
       ] },
       { "title": "Cascade Selectivity", "summary": "3 of 4 cascade pairs verified selective by IEC 60898 typical ratio. F02 (800A/400A = 2:1) flagged 'partial_selective' — below the 3:1 typical threshold but acceptable with manufacturer table consultation. F04 (12.7:1) is deeply selective — fire-alarm life-safety preserved.", "decisions": [
         { "label": "F02 partial selectivity documented", "summary": "Verdict 'partial_selective' with note explaining ratio + remediation options (downsize child to 315A, upsize parent to 1250A, or accept with manufacturer selectivity-table confirmation).", "rule": "IEC 60947-2 selectivity table guidance", "code_clause": "IEC 60364-5-53:2002 §536", "inputs": { "f02_ratio": 2.0, "verdict": "partial_selective" } }
@@ -99,8 +104,8 @@
       { "title": "Life-Safety Isolation", "summary": "DB-FA1 fire_alarm_panel role establishes dedicated life-safety distribution. F04 (63A Type C) has NO upstream RCD per IEC 60364-5-56 §560 — a single earth fault must not trip the entire fire-alarm panel. Emergency lighting handled by local battery-pack luminaires (DB-L1 L06 sustained-supply feeder). UPS-essential loads kVA = 0 at this scale.", "decisions": [
         { "label": "DB-FA1 dedicated supply", "summary": "fire_alarm_dedicated_supply: true. NO upstream RCD on F04. Final-circuit fire devices inside DB-FA1 also rcd_protected: false. Earth-fault clearance via TN-C-S adiabatic 5s.", "rule": "IEC 60364-5-56 §560 + IEC 60364-4-41 §411.3.2.2", "code_clause": "IEC 60364-5-56:2009 §560", "inputs": { "fire_alarm_dedicated_supply": true, "f04_upstream_rcd": false } }
       ] },
-      { "title": "Compliance", "summary": "Compliant. No non-compliance flags. 6 assumptions documented (diversity factor structure, sub-DB-summed-load basis, F02 partial selectivity rationale, DB-FA1 dedicated supply confirmation, PFC service-tail correction, emergency lighting strategy).", "decisions": [] },
-      { "title": "Assumptions", "summary": "6 assumptions captured in compliance_summary covering diversity factor structure (lighting 0.95 / power 0.85 / mechanical 0.75 / fire 1.0), authoritative basis for Imax derivation, F02 cascade caveat, DB-FA1 dedicated-supply confirmation, peak PFC service-tail correction, and emergency lighting strategy.", "decisions": [] }
+      { "title": "Compliance", "summary": "Compliant. No non-compliance flags. 9 assumptions documented covering diversity factor structure, sub-DB-summed-load basis, F02 partial selectivity rationale, DB-FA1 dedicated supply confirmation, peak PFC sourced from fault-level intent, emergency lighting strategy, earthing intent cross-check (INV-11), fault-level intent provenance with genset filtering note, and WI3 tool deferral.", "decisions": [] },
+      { "title": "Assumptions", "summary": "9 assumptions captured in compliance_summary covering diversity factor structure (lighting 0.95 / power 0.85 / mechanical 0.75 / fire 1.0), authoritative basis for Imax derivation, F02 cascade caveat, DB-FA1 dedicated-supply confirmation, peak PFC sourced from fault-level intent (utility-source worst case, genset filtered), emergency lighting strategy, multi-skill earthing+fault-level INV-11 cross-checks, and WI3 system-metrics tool deferral.", "decisions": [] }
     ]
   }
 }
