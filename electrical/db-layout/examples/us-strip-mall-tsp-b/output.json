@@ -1,0 +1,90 @@
+{
+  "$schema": "../../schemas/db-layout-ir.schema.json",
+  "drawing_type": "db_layout_schedule_and_schematic",
+  "version": "1.2.0",
+  "meta": {
+    "project_id": "us-stripmall-tsp-b-eg05",
+    "skill_version": "db-layout/1.2.0",
+    "produced_at": "2026-05-18T12:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "US",
+  "board": {
+    "db_id": "TSP-B",
+    "designation": "100A Tenant Sub-Panel — Suite 200 (food-service retail)",
+    "location": "Suite 200 service closet (back-of-house)",
+    "enclosure_form_nec_type": "NEMA_1",
+    "ip_rating": "IP2X",
+    "ways_total": 30,
+    "ways_used": 9,
+    "ways_spare": 21
+  },
+  "incoming": {
+    "voltage_v": 208,
+    "phase_arrangement": "TPN",
+    "supply_rating_a": 100,
+    "fed_from": "MSP-A breaker (Suite 200 100A 2-pole)",
+    "supply_class": "non_essential",
+    "ze_ohm_at_origin": 0.10
+  },
+  "busbar": {
+    "rating_a": 100,
+    "icw_ka_1s": 10,
+    "ipk_withstand_ka": 22,
+    "ipk_ka": 15
+  },
+  "circuits": [
+    { "circuit_id": "C01", "way_module_id": "W1", "designation": "Sales floor lighting (LED)",                            "voltage_class": "LV_power",          "downstream_load_kw": 1.6, "ocpd": { "rating_a": 20, "type": "MCB", "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG Cu", "cores": 3, "length_m": 30 } },
+    { "circuit_id": "C02", "way_module_id": "W2", "designation": "Counter + customer area receptacles",                   "voltage_class": "LV_power",          "downstream_load_kw": 1.5, "ocpd": { "rating_a": 20, "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG Cu", "cores": 3, "length_m": 25 } },
+    { "circuit_id": "C03", "way_module_id": "W3", "designation": "Display refrigeration unit 1 dedicated (motor)",        "voltage_class": "LV_power",          "downstream_load_kw": 2.2, "ocpd": { "rating_a": 20, "type": "MCB", "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG Cu", "cores": 3, "length_m": 18 } },
+    { "circuit_id": "C04", "way_module_id": "W4", "designation": "Display refrigeration unit 2 dedicated (motor)",        "voltage_class": "LV_power",          "downstream_load_kw": 2.2, "ocpd": { "rating_a": 20, "type": "MCB", "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG Cu", "cores": 3, "length_m": 18 } },
+    { "circuit_id": "C05", "way_module_id": "W5", "designation": "Walk-in cooler condensing unit (motor)",                "voltage_class": "LV_power",          "downstream_load_kw": 4.5, "ocpd": { "rating_a": 30, "type": "MCB", "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "10 AWG Cu", "cores": 3, "length_m": 12 } },
+    { "circuit_id": "C06", "way_module_id": "W6", "designation": "POS register dedicated",                                "voltage_class": "LV_power",          "downstream_load_kw": 1.0, "ocpd": { "rating_a": 20, "type": "MCB", "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG Cu", "cores": 3, "length_m": 15 } },
+    { "circuit_id": "C07", "way_module_id": "W7", "designation": "Prep area receptacles + small appliance branch",        "voltage_class": "LV_power",          "downstream_load_kw": 1.8, "ocpd": { "rating_a": 20, "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG Cu", "cores": 3, "length_m": 20 } },
+    { "circuit_id": "C08", "way_module_id": "W8", "designation": "Suite HVAC RTU control circuit",                        "voltage_class": "LV_power",          "downstream_load_kw": 1.0, "ocpd": { "rating_a": 15, "type": "MCB", "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "14 AWG Cu", "cores": 3, "length_m": 28 } },
+    { "circuit_id": "C09", "way_module_id": "W9", "designation": "Suite emergency lighting circuit (life-safety)",        "voltage_class": "emergency_lighting", "downstream_load_kw": 0.8, "ocpd": { "rating_a": 20, "type": "MCB", "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG Cu", "cores": 3, "length_m": 25 } }
+  ],
+  "selectivity_results": [
+    { "upstream_id": "MSP-A", "downstream_id": "C01", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 240.4" },
+    { "upstream_id": "MSP-A", "downstream_id": "C02", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 240.4" },
+    { "upstream_id": "MSP-A", "downstream_id": "C03", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 240.4" },
+    { "upstream_id": "MSP-A", "downstream_id": "C04", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 240.4" },
+    { "upstream_id": "MSP-A", "downstream_id": "C05", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 240.4" },
+    { "upstream_id": "MSP-A", "downstream_id": "C06", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 240.4" },
+    { "upstream_id": "MSP-A", "downstream_id": "C07", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 240.4" },
+    { "upstream_id": "MSP-A", "downstream_id": "C08", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 240.4" },
+    { "upstream_id": "MSP-A", "downstream_id": "C09", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 240.4" }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      { "message": "GFCI required by NEC 210.8(B) on counter/customer-area + prep-area receptacles (C02, C07). 10mA Class A GFCI per UL 943. Display refrigeration motor circuits (C03, C04, C05) and POS dedicated (C06) protected by feeder-side GFEP at the upstream cooler controller per NEC 426/427 hardline cold-line practice; not on the panelboard GFCI. Verify with AHJ at tenant fit-out commissioning.", "code_clause": "NEC 2023 Article 210.8(B)", "severity": "info" }
+    ],
+    "assumptions": [
+      "Diversity factor 0.8 applied to combined tenant load per NEC 220.61 commercial retail / food-service.",
+      "Selectivity verification deferred (tool_call_pending) per WI3 — fault-level intent absent, engineer Ifault not declared.",
+      "Cable ampacity check assumes NEC Table 310.16 (THWN-2 in conduit, 30°C ambient): 14 AWG Cu = 20 A; 12 AWG Cu = 25 A; 10 AWG Cu = 35 A. All In ≤ Iz.",
+      "EGC sizing per NEC 250.122 — 12 AWG Cu EGC for 20A circuits, 10 AWG Cu EGC for 30A walk-in cooler, 14 AWG Cu EGC for 15A HVAC control.",
+      "Type D curve MCBs on C03/C04/C05 motor-load refrigeration circuits per NEC 430 — accommodate compressor LRA (locked-rotor amperes) inrush without nuisance trip.",
+      "GFCI 10mA Class A on C02 (counter/customer) + C07 (prep area receptacles) per NEC 210.8(B). C06 POS dedicated exempt per NEC 210.8(B) exception (dedicated electronic data-processing equipment).",
+      "Display refrigeration C03/C04 dedicated motor circuits per NEC 422.16(B) — not on receptacle GFCI; cord-and-plug-connected commercial refrigeration equipment has its own UL listing.",
+      "C09 suite emergency lighting circuit has NO GFCI per NEC 700.6 / NFPA 101 life-safety availability principle."
+    ]
+  },
+  "drawn_as_symbols": ["BUSBAR", "MAIN_SWITCH", "MCB", "GFCI", "EARTH_GENERAL"],
+  "flags": ["TOOL-CALL-PENDING"],
+  "rationale": {
+    "chat_summary": "100A 208Y/120V 3-phase NEMA Type 1 tenant sub-panel for Suite 200 specialty food-service retail tenant (cheese + deli). 9 circuits sized per NEC Table 310.16 (10 AWG / 12 AWG / 14 AWG). Type D MCBs on motor refrigeration circuits (C03/C04 display reefer, C05 walk-in cooler) per NEC 430. GFCI per NEC 210.8(B) on counter + prep receptacles. Emergency lighting C09 exempt per NEC 700.6. Selectivity deferred (tool_call_pending). Reply to refine, e.g. 'add prep-area three-compartment sink GFCI' or 'add ice machine dedicated circuit'.",
+    "sections": [
+      { "title": "Board Classification", "summary": "US NEMA Type 1 panelboard, 100A, 30-way tenant sub-panel for food-service retail. Per NEC Article 408 — maximum 42 overcurrent devices per panelboard section.", "decisions": [ { "label": "NEMA Type 1 enclosure", "summary": "Indoor general purpose; tenant service closet.", "rule": "NEMA 250 Type 1 selection for indoor", "code_clause": "NEC 2023 Article 408.3", "inputs": { "board_type": "panelboard_nema", "nec_type": "NEMA_1" } } ] },
+      { "title": "Incoming Supply", "summary": "208Y/120V 3-phase 4-wire 60 Hz, 100A 2-pole feeder from MSP-A. Tenant sub-feeder Ze 0.10Ω.", "decisions": [ { "label": "100A 2-pole feeder", "summary": "Standard US tenant sub-panel rating, matched to upstream MSP-A breaker.", "rule": "NEC tenant feeder sizing per NEC 220 load calculation", "code_clause": "NEC 2023 Article 220.61", "inputs": { "supply_rating_a": 100 } } ] },
+      { "title": "Busbar Sizing", "summary": "100A busbar matches feeder rating, IcW 10 kA. Sum of loads 16.6 kW (~48A diversified at 208V 3-phase). 100A busbar has 50% headroom — appropriate for food-service tenant.", "decisions": [ { "label": "100A busbar IcW 10 kA", "summary": "Sized to match feeder OCPD at MSP-A.", "rule": "NEC 408 panelboard rating", "code_clause": "NEC 2023 Article 408.30", "inputs": { "busbar_a": 100, "icw_ka_1s": 10 } } ] },
+      { "title": "Way Assignment", "summary": "9 ways used (9 × single-pole MCBs W1-W9), 21 ways spare. Heavier motor + refrigeration loading vs apparel tenant (TSP-A).", "decisions": [] },
+      { "title": "OCPD Selection", "summary": "Branch circuits sized per NEC 240. 20A circuits on 12 AWG (25A ampacity). 30A walk-in cooler on 10 AWG (35A ampacity). 15A HVAC control on 14 AWG (20A ampacity). All In ≤ Iz pass.", "decisions": [ { "label": "Type D MCB on motor refrigeration circuits", "summary": "C03 (display reefer 1), C04 (display reefer 2), C05 (walk-in condensing) — Type D handles compressor LRA inrush.", "rule": "NEC 430 motor branch-circuit protection", "code_clause": "NEC 2023 Article 430.52", "inputs": { "curve": "D", "motor_circuits": ["C03", "C04", "C05"] } } ] },
+      { "title": "RCD Strategy", "summary": "NEC 210.8(B) commercial GFCI applies. 10mA Class A GFCI on C02 (counter/customer recpts) + C07 (prep area receptacles). Motor refrigeration C03/C04/C05 not on receptacle GFCI (dedicated cord-and-plug or hard-wired equipment per NEC 422.16(B)). C06 POS dedicated exempt per 210.8(B) exception. C09 emergency lighting NO GFCI per NEC 700.6.", "decisions": [ { "label": "GFCI per NEC 210.8(B)", "summary": "Counter + prep receptacles GFCI; motor circuits dedicated.", "rule": "NEC 210.8(B) commercial GFCI + NEC 422.16(B) + NEC 700.6", "code_clause": "NEC 2023 Article 210.8(B)", "inputs": { "circuits_with_gfci": ["C02", "C07"] } } ] },
+      { "title": "Cable Selection", "summary": "THWN-2 copper conductors in EMT conduit per NEC Table 310.16. 10 AWG for the 30A walk-in cooler dedicated circuit (12m run — short enough to ignore voltage-drop concerns).", "decisions": [] },
+      { "title": "Selectivity Verification", "summary": "9 cascade pairs (MSP-A → C01..C09) emitted as tool_call_pending. fault-level intent absent; engineer Ifault not declared.", "decisions": [ { "label": "All cascades tool_call_pending", "summary": "Per WI3 deferral pattern.", "rule": "NEC 240.4 protection of conductors + 240.86 series ratings", "code_clause": "NEC 2023 Article 240.4", "inputs": { "tool_call_pending": true } } ] },
+      { "title": "Compliance", "summary": "Compliant. One INFO flag for AHJ GFCI scope verification at tenant fit-out commissioning + one TOOL-CALL-PENDING flag for deferred selectivity.", "decisions": [] }
+    ]
+  }
+}
