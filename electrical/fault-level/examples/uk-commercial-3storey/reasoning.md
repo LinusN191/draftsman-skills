@@ -70,10 +70,32 @@ busbar trunking between the TX vault and the MSB cubicle.
 
 ## Section 5 — Motor Contribution Assessment
 
-Connected motor load is zero kW. **IEC 60909-0:2016 §3.8** requires asynchronous-motor
-contribution to be added only when the sum of locked-rotor currents at the fault location
-exceeds 5 % of the unmotorised `Ik"`. With no motors, the threshold is not met. No motor
-source is added to `sources[]` and no decrement profile is required.
+Connected motor load is zero kW for this study. The building is a commercial office with
+small-power, lighting, and HVAC-only loads — there are no industrial process motors, no
+lift motors at fault-study scale, and no large standalone pumps connected to the LV cascade.
+Distributed fan-coil-unit motors embedded in the HVAC system are not modelled at the
+SLD / fault-level layer; they are small fractional-kW devices whose locked-rotor
+contribution is negligible relative to the utility infeed and is conventionally absorbed
+into the load-side branch impedance rather than enumerated as discrete sources.
+
+The relevant trigger is **IEC 60909-0:2016 §3.8** (motor contribution to short-circuit
+current). Per §3.8.1, asynchronous-motor sub-transient contribution must be included in
+the cascade when the sum of rated motor currents at the fault location is comparable
+to — typically taken as ≥ 1 % of — the initial symmetrical short-circuit current `Ik"`
+calculated **without** motor contribution. In this study the LHS (Σ I_rM) is exactly zero,
+which is unambiguously below the §3.8.1 threshold at every node. Motor contribution is
+therefore explicitly excluded from the cascade, no motor source is added to `sources[]`,
+and no asynchronous-motor decrement profile is generated.
+
+This decision is captured in `input.json` as `motor_load_brief: { total_motor_kw: 0,
+largest_motor_kw: 0 }`. If the building is later refit with significant electrically-driven
+mechanical plant — chiller compressors, large AHU fans, a fire-pump driver, lift winders —
+the fault-level study must be re-run with the updated motor inventory: the §3.8.1 threshold
+check is then likely to engage, the cascade `Ik"max` values will rise (motor sub-transient
+adds to the utility contribution during the first 10–30 ms), and breaker breaking-capacity
+verification against the revised cascade must be repeated. A future engineer should treat
+the motor-load brief as a load-side input that re-opens the entire IEC 60909 assessment
+rather than a fixed assumption.
 
 ## Section 6 — Per-node Ifault Computation
 
@@ -120,7 +142,7 @@ The cascade complies with **BS 7671:2018+A2** and **IEC 60909-0:2016**. Explicit
 assumptions:
 
 1. DNO declared `Ze = 0.35 Ω, PSCC = 9.8 kA` at MSB intake is binding
-   (BS 7671 Reg 313.1.1).
+   (BS 7671:2018+A2 Reg 313.1.1).
 2. Transformer X/R = 6 from **IEC 60909-1:2008 Table A.1** typical for 800 kVA urban
    distribution unit.
 3. Cable impedance from **IEC 60364-5-52 Annex E** at 90 °C operating temperature.

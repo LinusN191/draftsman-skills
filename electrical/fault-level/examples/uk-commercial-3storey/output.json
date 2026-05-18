@@ -102,11 +102,11 @@
       },
       {
         "title": "Transformer + Source Impedances",
-        "summary": "Z_TX = 0.05 × 400²/800000 = 10.0 mΩ at LV with R_TX=1.64 mΩ, X_TX=9.86 mΩ at X/R=6. DNO-declared 9.8 kA at MSB intake is binding (BS 7671 Reg 313.1) and implies the upstream HV network adds further impedance beyond the isolated TX value; the cascade is anchored to the DNO declaration and TX-1 back-calculated accordingly.",
+        "summary": "Z_TX = 0.05 × 400²/800000 = 10.0 mΩ at LV with R_TX=1.64 mΩ, X_TX=9.86 mΩ at X/R=6. DNO-declared 9.8 kA at MSB intake is binding (BS 7671:2018+A2 Reg 313.1) and implies the upstream HV network adds further impedance beyond the isolated TX value; the cascade is anchored to the DNO declaration and TX-1 back-calculated accordingly.",
         "decisions": [
           {
             "label": "DNO declaration is binding",
-            "summary": "BS 7671 Reg 313.1 requires using DNO-declared values for design. The isolated TX calculation would yield ≈22.75 kA at LV terminals into an infinite source; the binding 9.8 kA at MSB-MAIN reflects the actual upstream network including HV feeder impedance and transformer.",
+            "summary": "BS 7671:2018+A2 Reg 313.1 requires using DNO-declared values for design. The isolated TX calculation would yield ≈22.75 kA at LV terminals into an infinite source; the binding 9.8 kA at MSB-MAIN reflects the actual upstream network including HV feeder impedance and transformer.",
             "rule": "BS 7671:2018+A2 Reg 313.1.1 — Maximum prospective fault current to be ascertained",
             "code_clause": "BS 7671:2018+A2 Reg 313.1",
             "inputs": { "dno_pscc_ka": 9.8, "dno_ze_ohm": 0.35 }
@@ -148,7 +148,7 @@
       },
       {
         "title": "Selectivity Implications",
-        "summary": "MSB ACB 630A Icu 36 kA verified against 9.80 kA cascade (3.7× margin). Each SDB MCCB 160A Icu 25 kA verified against 7.37–8.19 kA (≥3.0× margin). All comply with BS 7671 Reg 434.5.1. Cascade selectivity is supported by the impedance drop across floor risers — see Reg 536.4 for discrimination assessment.",
+        "summary": "MSB ACB 630A Icu 36 kA verified against 9.80 kA cascade (3.7× margin). Each SDB MCCB 160A Icu 25 kA verified against 7.37–8.19 kA (≥3.0× margin). All comply with BS 7671:2018+A2 Reg 434.5.1. Cascade selectivity is supported by the impedance drop across floor risers — see Reg 536.4 for discrimination assessment.",
         "decisions": [
           {
             "label": "Breaking-capacity verification",
