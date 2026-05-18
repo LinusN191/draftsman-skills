@@ -1,6 +1,6 @@
 {
   "skill": "earthing",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "discipline": "electrical",
   "subdiscipline": "earthing",
   "description": "Produces earthing single-line schematic IR for LV installations. Covers TN-C-S + TT systems across GB (BS 7671), EU/INT (IEC 60364), and US (NFPA 70) jurisdictions. Sizes CPC/EGC by jurisdiction-appropriate table, verifies Zs against disconnection-time tables, flags RCD requirements, emits structured rationale per WI2.",
@@ -37,7 +37,8 @@
   ],
   "calculations": [
     "shared/calculations/electrical/electrode-resistance.json",
-    "shared/calculations/electrical/cpc-adiabatic.json"
+    "shared/calculations/electrical/cpc-adiabatic.json",
+    "shared/calculations/electrical/zs-loop-impedance.json"
   ],
   "ontology": [
     "electrical/earthing/ontology/earthing-system-types.json"
@@ -53,7 +54,8 @@
   "validators": [
     "electrical/earthing/validation/zs-compliance.yaml",
     "electrical/earthing/validation/bonding-completeness.yaml",
-    "electrical/earthing/validation/cpc-sizing.yaml"
+    "electrical/earthing/validation/cpc-sizing.yaml",
+    "electrical/earthing/validation/tool-deferral-shape.yaml"
   ],
   "prompts": {
     "generator": "electrical/earthing/prompts/generator.md",
@@ -66,12 +68,14 @@
     "electrical/earthing/evals/eval-03-cpc-undersized-trap.yaml",
     "electrical/earthing/evals/eval-04-missing-soil-resistivity.yaml",
     "electrical/earthing/evals/eval-05-jurisdiction-us-nec.yaml",
-    "electrical/earthing/evals/eval-06-rationale-block.yaml"
+    "electrical/earthing/evals/eval-06-rationale-block.yaml",
+    "electrical/earthing/evals/eval-07-ke-tn-s-tool-deferral.yaml"
   ],
   "examples": [
     "electrical/earthing/examples/uk-dwelling-tn-cs/",
     "electrical/earthing/examples/intl-rural-tt/",
-    "electrical/earthing/examples/us-commercial-nec/"
+    "electrical/earthing/examples/us-commercial-nec/",
+    "electrical/earthing/examples/ke-nairobi-industrial-tn-s/"
   ],
   "compatible_runtimes": [
     "DraftsMan >= 1.0",
