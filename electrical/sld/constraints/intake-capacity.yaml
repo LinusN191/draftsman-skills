@@ -1,0 +1,35 @@
+constraint_set: intake-capacity
+version: 1.0.0
+
+# Verification that the supply intake (main switch rating and breaking capacity)
+# is sized for the total building demand and maximum fault level at the point
+# of common coupling. Both ampere rating (Imax) and breaking capacity (PFC)
+# must not be exceeded.
+
+checks:
+  - id: main-switch-rating-vs-imax
+    severity: critical
+    description: "Main switchboard main switch continuous rating must not be exceeded by total site demand current"
+    rule: |
+      supply_origin.main_switch_rating_a >= system_metrics.imax_total_a
+
+      Where:
+        supply_origin.main_switch_rating_a = continuous ampere rating of the main switch at MSB (per IEC 61439-1)
+        system_metrics.imax_total_a = largest instantaneous load current demand (including motor inrush, if present, per IEC 60909 or load schedule)
+
+      If imax_total_a exceeds main_switch_rating_a, the MSB is undersized for the building load.
+    reference: "IEC 61439-1:2020 Clause 7.1 (main switch rated current); BS 7671:2018 Reg 434 (overcurrent selection)"
+
+  - id: breaking-capacity-vs-pfc
+    severity: critical
+    description: "Main switchboard main switch breaking capacity must be adequate for the maximum prospective fault current at the supply intake"
+    rule: |
+      supply_origin.main_switch_breaking_capacity_ka >= system_metrics.peak_pfc_ka
+
+      Where:
+        supply_origin.main_switch_breaking_capacity_ka = ultimate breaking capacity Icu (per IEC 60947-2) or AIC (per UL 489)
+        system_metrics.peak_pfc_ka = calculated or site-measured prospective short-circuit current at the main switch terminals
+
+      If peak_pfc_ka exceeds breaking capacity, the main switch cannot safely interrupt the fault current,
+      creating risk of arc explosion, fire, or unintended device damage.
+    reference: "IEC 60947-2:2019 Clause 7.3 (Icu and Ics definition); BS 7671:2018 Reg 434.5.2 (breaking capacity verification)"

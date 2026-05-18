@@ -1,0 +1,89 @@
+rule_set: spd-policy
+version: 1.0.0
+applies_to: electrical/sld
+
+# Surge Protection Device (SPD) type selection by jurisdiction and board location.
+# Implements Type 1 / Type 2 / Type 3 tiering per BS 7671, IEC 60364-4-44, KS 1700, and NEC.
+
+rules:
+  # === GB/BS 7671 Regime ===
+  - id: gb-type2-default-indoor
+    when: "jurisdiction == GB AND building_type in [commercial, industrial] AND location == 'indoor_main_switchboard'"
+    then: "SPD type must be Type 2 (per BS 7671 §443.2.1, Figure 443A)"
+    rationale: |
+      Type 2 (commonly called 'Tnom 6kV / Tmax 10kV' for LV) provides protection against
+      most induced surges. Type 1 is only where direct lightning strike risk exists.
+    code_clause: "BS 7671:2018 Regulation 443.2.1 and Figure 443A"
+    severity: critical
+
+  - id: gb-type1-lightning-protection
+    when: "jurisdiction == GB AND building_has_lightning_conductor == true"
+    then: "SPD type must include Type 1 (combined Type 1+2 in a single device or series configuration)"
+    rationale: "Type 1 mandatory where building exterior is exposed to direct or sideflash lightning per BS 7671 §443.2.4."
+    code_clause: "BS 7671:2018 Regulation 443.2.4 (direct lightning protection integration)"
+    severity: critical
+
+  - id: gb-type3-final-circuits
+    when: "jurisdiction == GB AND location == 'final_circuit' AND distance_from_main_m >= 10"
+    then: "SPD type may be Type 3 if load device has inherent surge rating AND downstream RCD present"
+    rationale: "Type 3 at socket outlets is permitted only where equipment is inherently protected and RCD isolation prevents transient risk."
+    code_clause: "BS 7671:2018 Regulation 443.3 (Type 3 SPD location and conditions)"
+    severity: warning
+
+  # === EU / IEC 60364-4-44 Regime ===
+  - id: eu-type2-default
+    when: "jurisdiction in [EU, INT] AND location == 'main_switchboard'"
+    then: "SPD type must be Type 2 (per IEC 60364-4-44 Clause 443.2)"
+    rationale: "IEC philosophy mirrors BS 7671. Type 2 at MSB is the standard approach in EU."
+    code_clause: "IEC 60364-4-44:2019 Clause 443.2 (SPD type selection)"
+    severity: critical
+
+  - id: eu-type1-lightning-direct
+    when: "jurisdiction in [EU, INT] AND external_lightning_protection == 'LPZ_0'"
+    then: "SPD type must be Type 1 or combined Type 1+2"
+    rationale: "LPZ (Lightning Protection Zone) 0 is exposed; Type 1 required per IEC 62305-3 + IEC 60364-4-44."
+    code_clause: "IEC 62305-3:2010 + IEC 60364-4-44:2019 Clause 443.2"
+    severity: critical
+
+  # === KE / KS 1700 Regime ===
+  - id: ke-ks1700-type1-type2-kplc
+    when: "jurisdiction == KE AND supply_origin == 'KPLC_utility' AND location == 'main_switchboard'"
+    then: "SPD type must be Type 1+2 (combined or series). Type 2 alone is insufficient for KPLC overhead/atmospheric exposure."
+    rationale: |
+      Kenya's KPLC distribution network is vulnerable to atmospheric overvoltage due to overhead lines in tropical storm region.
+      KS 1700 Regulation 443 adopts BS 7671 §443 philosophy but with more aggressive Type 1+2 requirement as standard practice.
+    code_clause: "KS 1700:2018 Regulation 443.2 (adopted from BS 7671, enhanced for East African atmospheric risk)"
+    severity: critical
+
+  - id: ke-ks1700-supplementary-type3-industrial
+    when: "jurisdiction == KE AND building_type == 'industrial' AND presence_of_pv_panels == true"
+    then: |
+      SPD Type 2 at MSB (mandatory) + Type 3 at PV DC side and AC sub-boards recommended
+      (per KS 1700 Annex E §VIII guidance, aligning with IEC 60364 practice for renewable integration)
+    rationale: "Industrial PV sites in Kenya benefit from tiered SPD as per IEC 60364-5-61 (renewable integration)."
+    code_clause: "KS 1700:2018 Annex E §VIII (PV integration); IEC 60364-5-61 Clause 712 (tiered SPD for renewables)"
+    severity: warning
+
+  # === US / NEC Regime ===
+  - id: us-nec-type1-service-entrance
+    when: "jurisdiction == US AND location == 'service_entrance' AND building_type in [residential, commercial_small]"
+    then: "SPD type must be Type 1 (often called 'utility-interactive' or 'service-entrance surge protective device' per UL 1449)"
+    rationale: |
+      NEC 2023 Section 230.67 requires SPD at service entrance for new residential/commercial installations.
+      US practice calls this Type 1 (close to utility, absorbs large transients from external faults).
+    code_clause: "NEC 2023 Section 230.67 (service entrance SPD requirement)"
+    severity: critical
+
+  - id: us-nec-type2-branch-panel
+    when: "jurisdiction == US AND location == 'branch_panel' AND distance_from_service_m >= 30"
+    then: "SPD type should be Type 2 (branch-panel protector, also called 'point-of-use SPD')"
+    rationale: "Type 2 at sub-panels and distribution nodes reduces let-through voltage for sensitive equipment per UL 1449."
+    code_clause: "NEC 2023 Section 285.23 (branch circuit protectors); UL 1449 Type 2 definition"
+    severity: warning
+
+  - id: us-nec-no-type3-residential
+    when: "jurisdiction == US AND building_type == 'residential'"
+    then: "SPD type must NOT be Type 3 alone. Minimum Type 2 at branch panels, Type 1 at service."
+    rationale: "US residential standard practice avoids Type 3 (outlet-level SPD) due to maintenance/testing burden. Whole-site approach preferred."
+    code_clause: "NEC 2023 Article 285 (SPD application rules)"
+    severity: critical

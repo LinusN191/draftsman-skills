@@ -1,0 +1,44 @@
+constraint_set: selectivity-cascade
+version: 1.0.0
+
+# Verification that every parent→child feeder relationship in the distribution
+# hierarchy has a recorded protection-coordination verdict from the selectivity
+# analysis. Selectivity ensures upstream breaker clears faults without nuisance
+# tripping downstream protection.
+
+checks:
+  - id: every-parent-child-has-verdict
+    severity: critical
+    description: "Each distribution_hierarchy parent→child relationship must have a corresponding selectivity_cascade verdict entry"
+    rule: |
+      For each edge (parent_board_id → board_id) in distribution_hierarchy:
+        There must exist a selectivity_cascade[i] entry with:
+          - parent_board_id == parent board's board_id
+          - child_board_id == child board's board_id
+        If any parent→child edge lacks a verdict, validation fails.
+    reference: "IEC 60947-2:2019 Clause 8.3.5 (co-ordination and selectivity); BS 7671:2018 Reg 533 (protection selectivity)"
+
+  - id: verdict-from-enum
+    severity: critical
+    description: "Each selectivity_cascade verdict must be one of the defined coordination states"
+    rule: |
+      For each selectivity_cascade[i]:
+        verdict field must be one of:
+          - "selective"              (upstream breaker clears before downstream operates)
+          - "partial_selective"      (selective within defined fault range; non-selective above some Ik threshold)
+          - "non_selective"          (upstream and downstream breakers operate in parallel; co-ordination undefined)
+        Invalid verdict values indicate incomplete analysis or schema mismatch.
+    reference: "IEC 60947-2:2019 Clause 8.3.5; BS 7671:2018 Regulation 533"
+
+  - id: non-selective-has-rationale
+    severity: warning
+    description: "Non-selective coordination verdicts must include documented reason"
+    rule: |
+      For each selectivity_cascade[i] where verdict == "non_selective":
+        Either:
+        A. A _note field exists explaining why selectivity cannot be achieved
+           (e.g., "breaker ratings constrained by load; selectivity margin insufficient")
+        OR:
+        B. The parent IR object has compliance_summary.assumption containing an entry
+           approving the non-selective state (e.g., "single small board; non-selective acceptable")
+    reference: "IEC 60947-2:2019 Annex D (selectivity design methodology)"

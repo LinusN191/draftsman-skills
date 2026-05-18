@@ -1,0 +1,42 @@
+# SLD v1.3 — tool deferral shape consistency
+#
+# Verifies that the tool_call_pending_for_system_metrics flag is consistent with the
+# TOOL-CALL-PENDING:sld_system_metrics string in the top-level flags array.
+#
+# Both must be present together, or both must be absent. Mismatched pairs
+# indicate an authoring error.
+
+name: tool-deferral-shape
+applies_to: electrical/sld
+schema_version: 1.3.0
+
+checks:
+  - id: tool_deferral_pair_consistent
+    severity: critical
+    description: "When tool_call_pending_for_system_metrics is true, the deferral flag must appear in flags array"
+    rule: |
+      if ir.tool_call_pending_for_system_metrics == true then
+        ir.system_metrics_calc_tool_input must exist (for replay) AND
+        ir.flags must include string matching: ^TOOL-CALL-PENDING:sld_system_metrics
+
+      If tool_call_pending_for_system_metrics is false, neither the flag nor the tool input
+      should be present (or they should be ignored).
+
+  - id: tool_deferral_no_orphan_flag
+    severity: critical
+    description: "TOOL-CALL-PENDING:sld_system_metrics flag must not appear without tool_call_pending_for_system_metrics being true"
+    rule: |
+      if ir.flags includes string matching: ^TOOL-CALL-PENDING:sld_system_metrics then
+        ir.tool_call_pending_for_system_metrics == true
+
+      An orphaned flag without the boolean setter indicates a partial edit or merge error.
+
+  - id: tool_deferral_no_orphan_boolean
+    severity: critical
+    description: "tool_call_pending_for_system_metrics == true must not exist without the corresponding flag"
+    rule: |
+      if ir.tool_call_pending_for_system_metrics == true then
+        ir.flags must contain ^TOOL-CALL-PENDING:sld_system_metrics
+
+      A true boolean without the flag means a tool call is deferred but not marked in the flags array,
+      preventing the runtime from routing to calc.sld_system_metrics.

@@ -1,0 +1,42 @@
+constraint_set: intent-shape
+version: 1.0.0
+
+# Alignment between IR distribution_hierarchy and intent output structure.
+# Ensures that the intent-out.json (consumed by db-layout) accurately reflects
+# the SLD topology computed by the skill.
+
+checks:
+  - id: board-count-matches-hierarchy
+    severity: critical
+    description: "Intent output board count must equal the number of boards in the SLD IR"
+    rule: |
+      intent-out.board_count == length(ir.distribution_hierarchy)
+
+      The intent object summarises SLD topology. Any mismatch indicates a transformation bug
+      (e.g., a board was dropped during serialisation or an extra board was synthesised).
+    reference: "Internal contract: SLD skill → db-layout skill intent envelope"
+
+  - id: msb-id-matches-root
+    severity: critical
+    description: "Intent root board ID must match the SLD IR root node"
+    rule: |
+      intent-out.msb_board_id == ir.distribution_hierarchy[root_node].board_id
+
+      Where root_node = the single node with parent_board_id == null
+
+      The Main Switchboard (MSB) is the authority point for the hierarchy.
+      A mismatch means the intent references a different MSB than the IR, breaking downstream design.
+    reference: "Internal contract: SLD skill → db-layout skill intent envelope"
+
+  - id: boards-array-aligned
+    severity: critical
+    description: "Intent output boards array must have one entry per SLD IR distribution_hierarchy entry"
+    rule: |
+      For each ir.distribution_hierarchy[i]:
+        There must exist an intent-out.boards[j] with:
+          - board_id == ir.distribution_hierarchy[i].board_id
+          - board_role == ir.distribution_hierarchy[i].board_role
+        (1:1 mapping, same count, same order or at minimum same set)
+
+      If any IR board lacks an intent entry, db-layout cannot reference it.
+    reference: "Internal contract: SLD skill → db-layout skill intent envelope"

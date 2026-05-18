@@ -1,0 +1,49 @@
+rule_set: distribution-hierarchy
+version: 1.0.0
+applies_to: electrical/sld
+
+# Validation of parent-child board relationships, board role enums, and
+# special-purpose board routing constraints. Used by generator.md Step 2.
+
+rules:
+  - id: single-root
+    when: "distribution_hierarchy array is populated"
+    then: "exactly one node has parent_board_id == null"
+    rationale: "A single root (Main Switchboard) is required. Multiple roots or no root indicates incomplete or malformed hierarchy."
+    code_clause: "BS 7671:2018 Regulation 311 (main switchboard location and protection)"
+    severity: critical
+
+  - id: parent-pointers-resolve
+    when: "any node in distribution_hierarchy has parent_board_id != null"
+    then: "that parent_board_id value must exist as a board_id in distribution_hierarchy"
+    rationale: "A child board's parent pointer must reference a board that exists in the array. Dangling pointers cause undefined topology."
+    code_clause: "BS 7671:2018 Regulation 311 (hierarchical distribution)"
+    severity: critical
+
+  - id: board-role-enum
+    when: "each node in distribution_hierarchy is evaluated"
+    then: "board_role must be one of: [main_switchboard, sub_distribution_board, panel, sub_panel, fire_alarm_panel, life_safety_panel, ups_distribution]"
+    rationale: "Board roles are discrete types with distinct design constraints. Invalid roles indicate schema mismatch or typo."
+    code_clause: "IEC 61439-1:2020 Clause 7.1 (switchgear assembly types)"
+    severity: critical
+
+  - id: fire-alarm-feeder-class
+    when: "a node has board_role == fire_alarm_panel"
+    then: "the parent board's corresponding outgoing circuit (to this fire_alarm_panel) must have voltage_class == 'fire_alarm'"
+    rationale: "Fire alarm supplies must be routed on dedicated circuits per BS 7671 §560.7 and IEC 60364-5-56 §560."
+    code_clause: "BS 7671:2018 Regulation 560.7 (fire alarm circuit isolation)"
+    severity: critical
+
+  - id: ups-distribution-isolation
+    when: "a node has board_role == ups_distribution"
+    then: "all child boards in distribution_hierarchy supplied by this UPS board must have load_class in [essential, life_safety, data_center, it_process]"
+    rationale: "UPS supplies uninterruptible loads. Mixing with non-critical loads violates UPS duty cycle and availability contracts."
+    code_clause: "IEC 60364-5-56 Clause 551 (uninterruptible power supplies)"
+    severity: warning
+
+  - id: no-recursive-cycles
+    when: "distribution_hierarchy is processed for parent-child links"
+    then: "following parent_board_id pointers from any node shall not return to the starting node"
+    rationale: "Parent-child relationships form a tree (directed acyclic graph). Cycles create ambiguous authority and undefined protection coordination."
+    code_clause: "IEC 61439-1:2020 Clause 7.1 (single-board vs. multi-board control schemes)"
+    severity: critical

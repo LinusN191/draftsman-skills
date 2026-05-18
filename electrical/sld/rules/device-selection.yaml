@@ -1,0 +1,64 @@
+rule_set: device-selection
+version: 1.0.0
+applies_to: electrical/sld
+
+# Device type and rating selection rules for circuit breakers and RCDs.
+# Used by generator.md Step 3 (device sizing) and WI3 fault-level integration.
+
+rules:
+  - id: mccb-for-large-feeders
+    when: "a feeder circuit breaker rating is ≥ 100A"
+    then: "device_type must be 'MCCB' (Molded Case Circuit Breaker per IEC 60947-2)"
+    rationale: |
+      MCCBs provide better selectivity, adjustable trip settings, and modular contact systems
+      for high-current feeders. MCBs (IEC 60898-1) are limited to ≤63A in GB/EU practice.
+    code_clause: "IEC 60947-2:2019 Clause 8.1 (MCCB definition and ratings)"
+    severity: critical
+
+  - id: type-curve-load-match
+    when: "a circuit breaker trip-curve type is selected"
+    then: |
+      Type B → use only for non-reactive general loads (incandescent, resistive)
+      Type C → use for normal commercial + light transformer/motor inrush (≤5 × In typical)
+      Type D → use for high-inrush motors, soft-start, high transformer impedance (≤10 × In typical)
+    rationale: "Trip curve selectivity prevents nuisance tripping on transient inrush yet maintains fault protection."
+    code_clause: "IEC 60898-1:2016 Clause 5 (trip curves Type B, C, D characteristics)"
+    severity: critical
+
+  - id: breaking-capacity-fault-match
+    when: "a circuit breaker device is rated at a site with calculated PFC at its busbars"
+    then: "device breaking_capacity_ka (Icn or Icu per IEC 60947-2) must be ≥ PFC value"
+    rationale: |
+      A breaker rated below the site fault level cannot safely interrupt a fault.
+      This is a critical safety and operational requirement.
+    code_clause: "IEC 60947-2:2019 Clause 7.3 (rated short-circuit capacity Icn/Icu)"
+    severity: critical
+
+  - id: us-aic-convention
+    when: "jurisdiction == US"
+    then: |
+      Circuit breaker short-circuit rating must be expressed as AIC (Amperes Interrupting Capacity)
+      per UL 489 (household breakers) or UL 1066 (industrial). Do not cite IEC Icu/Ics values directly.
+    rationale: "US electrical codes (NEC 2023 Article 240, UL standards) use AIC; IEC equivalence is by conversion only."
+    code_clause: "NEC 2023 Section 240.83(C) (breaker rating marking and UL listing)"
+    severity: critical
+
+  - id: gb-eu-icu-convention
+    when: "jurisdiction in [GB, EU, INT, KE]"
+    then: |
+      Circuit breaker short-circuit rating must be expressed as Icu (ultimate breaking capacity)
+      per IEC 60947-2. Alternate Ics (service breaking capacity) may be noted if load-shedding is verified.
+    rationale: "IEC 60947-2 is the primary standard; Icu is the fail-safe rating."
+    code_clause: "IEC 60947-2:2019 Clause 7.3 (Icu and Ics definition)"
+    severity: critical
+
+  - id: rcd-type-selection
+    when: "an RCD (residual current device) is specified in a circuit"
+    then: |
+      Type AC: general purpose (non-pulsating DC unidirectional faults only)
+      Type A: includes pulsating DC (welding, EV chargers, power electronics)
+      Type F: selective + high-frequency immunity (kitchen, industrial EMI)
+      Type B (Hi-Type): includes smooth DC (solar inverters, data centre UPS)
+    rationale: "RCD type must match the fault signature expected in the circuit to avoid nuisance trips."
+    code_clause: "IEC 60755:2008 (RCD types AC, A, F, B); BS 7671:2018 Reg 411.3 (RCD selection guidance)"
+    severity: warning

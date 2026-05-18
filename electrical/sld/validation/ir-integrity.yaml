@@ -1,0 +1,38 @@
+# SLD v1.3 — IR structural integrity validation
+#
+# Verifies that the distribution_hierarchy array forms a valid tree structure
+# and that consumed intent paths exist at validation time.
+
+name: ir-integrity
+applies_to: electrical/sld
+schema_version: 1.3.0
+
+checks:
+  - id: root-exists
+    severity: critical
+    description: "Exactly one distribution_hierarchy node must have parent_board_id == null (the MSB)"
+    rule: |
+      count(ir.distribution_hierarchy where parent_board_id == null) == 1
+
+      A tree requires exactly one root. Zero roots means no top-level authority.
+      Multiple roots means multiple independent hierarchies (invalid SLD).
+    reference: "IEC 61439-1:2020 Clause 7.1 (single-board vs. multi-board schemes)"
+
+  - id: non-root-has-parent
+    severity: critical
+    description: "Every non-root board must have a parent_board_id that exists in the hierarchy"
+    rule: |
+      For each ir.distribution_hierarchy[i] where parent_board_id != null:
+        parent_board_id must equal the board_id of some ir.distribution_hierarchy[j]
+
+      Any orphaned parent reference breaks the graph.
+    reference: "IEC 61439-1:2020 Clause 7.1 (distribution hierarchy formation)"
+
+  - id: consumed-intent-paths-exist
+    severity: warning
+    description: "Validate that each consumed_intent_path resolves to an actual file on disk"
+    rule: |
+      For each ir.consumed_intent_path[i]:
+        The file at that path must exist and be readable
+        If a file is missing, the skill has consumed a non-existent intent (likely authorisation or sequencing error)
+    reference: "SLD upstream contract: db-layout intent shape per intent-shape.yaml"

@@ -1,0 +1,92 @@
+rule_set: life-safety-isolation
+version: 1.0.0
+applies_to: electrical/sld
+
+# Circuit isolation and supply dedication rules for life-safety loads.
+# Implements BS 7671 §560, IEC 60364-5-56 §560, KS 1700 §560, and NEC Article 700/750.
+
+rules:
+  - id: fire-alarm-dedicated-supply
+    when: "a circuit or sub-board is classified as fire_alarm_panel or has voltage_class == 'fire_alarm'"
+    then: |
+      The supply to this circuit must:
+      1. Come from a dedicated feeder (not shared with any other load)
+      2. Have no RCD/GFCI upstream of the final device
+      3. Not pass through any automatic isolation device (contactor, etc.) serving other circuits
+    rationale: |
+      Fire alarm circuits must operate independently. Shared supply or upstream RCD means
+      a fault in another circuit can de-energise life-safety detection. IEC 60364-5-56 §560.5
+      explicitly forbids RCDs on fire circuits to prevent nuisance disconnection.
+    code_clause: "BS 7671:2018 Regulation 560.7 (fire alarm circuits — dedicated supply, no RCD)"
+    severity: critical
+
+  - id: emergency-lighting-dedicated
+    when: "a circuit is classified as emergency_lighting OR voltage_class == 'emergency_lighting'"
+    then: |
+      The supply must be:
+      1. A dedicated feeder from the MSB or from a battery-backed emergency inverter
+      2. Independent of any load-shedding system serving non-emergency circuits
+      3. Monitored for undervoltage per BS 5266 or equivalent
+    rationale: |
+      Emergency lighting must remain powered during mains failure. Shared supply creates
+      risk of failure cascade. Dedicated supply or battery backing is mandatory.
+    code_clause: "BS 5266-1:2016 Clause 10.5 (dedicated supply or battery-backed); IEC 60364-5-56 Clause 560.9"
+    severity: critical
+
+  - id: ups-essential-supplies
+    when: "a board or circuit is downstream of a UPS output (board_role == ups_distribution)"
+    then: |
+      Supplies to essential/critical loads must:
+      1. Draw from the UPS output panel only (not from utility bypass)
+      2. Have no RCD upstream of the UPS (to avoid disconnection during brief transients)
+      3. Be load-classified as 'essential', 'life_safety', 'data_center', or 'it_process'
+    rationale: |
+      UPS supplies uninterruptible power. RCD upstream causes nuisance disconnection on load-side
+      faults during UPS switchover. UPS input protection is typically hardwired; output circuits
+      assume UPS filtering and isolation are in place.
+    code_clause: "IEC 60364-5-56 Clause 551.7 (UPS circuits and isolation); NEC 700.12 (emergency supply protection)"
+    severity: critical
+
+  - id: mixed-board-isolation
+    when: "a sub-board carries both life-safety and non-life-safety circuits"
+    then: |
+      EITHER:
+      A. Physical separation: life-safety circuits mounted in a separate sub-board fed from
+         a dedicated parent feeder with its own protection
+      OR:
+      B. Electrical isolation: all life-safety circuits occupy a dedicated section of busbars
+         with no upstream RCD (fire/emergency), and a separate main switch controls the
+         non-life-safety section
+    rationale: |
+      Mixed boards create risk that a fault in a non-critical circuit can remove life-safety supply.
+      Physical separation (option A) is preferred. If option B, the RCD placement must protect only
+      non-life-safety circuits.
+    code_clause: "BS 7671:2018 Regulation 560 (life-safety circuit separation); IEC 60364-5-56 Clause 560"
+    severity: critical
+
+  - id: fire-pump-motor-supply
+    when: "a circuit supplies a fire pump motor OR voltage_class == 'fire_pump'"
+    then: |
+      Supply must:
+      1. Be fed from MSB (or equivalent top-level source)
+      2. Have no RCD, circuit breaker with no automatic time-delay overload (applies thermal overload per NEC 430.32)
+      3. Be a dedicated feeder with no other loads
+      4. Be protected by a breaker sized per motor full-load current (FLC) + 125%, with short-circuit rating ≥ site PFC
+    rationale: |
+      Fire pump motors must start reliably even under voltage sag. RCD is forbidden (disconnect risk).
+      Thermal overload (not magnetic) accommodates motor starting current. Dedicated supply ensures availability.
+    code_clause: "NEC 2023 Article 695 (fire pump motors); BS 5306-1 (fire pump electrical supplies); IEC 60364-5-56 Clause 560.8"
+    severity: critical
+
+  - id: smoke-control-damper-supply
+    when: "a circuit supplies smoke control damper motors OR voltage_class == 'smoke_control'"
+    then: |
+      Supply must:
+      1. Be dedicated (no other loads)
+      2. Remain powered during building evacuation (mains failure + battery backup OR UPS)
+      3. Maintain voltage within ±10% for damper motor starting per design
+    rationale: |
+      Smoke control systems prevent fire spread during egress. Supply loss means system failure.
+      Voltage margin ensures motor torque during low-voltage condition.
+    code_clause: "NFPA 101 Life Safety Code (smoke control), adopted in NEC; BS 7671 Regulation 560.9 (emergency circuits)"
+    severity: warning
