@@ -1,0 +1,38 @@
+{
+  "project_id": "intl-comm-tpn-eg02",
+  "board_brief": "Small-power sub-DB (DB-P1) for a generic IEC commercial 3-storey office. 400A TPN intake fed from MSB-MAIN F02 (400A MCCB Type D). 12 final circuits: office socket ring mains, meeting-room radials, kitchen, IT/data outlet rings, AV, cleaner sockets. Located in level-1 electrical riser cupboard.",
+  "jurisdiction": "INT",
+  "standards_stack": {
+    "primary": "IEC 60364 (HD 60364 series)",
+    "assembly_type_testing": "IEC 61439-3:2012 Distribution Board"
+  },
+  "supply": {
+    "fed_from": "MSB-MAIN F02 400A MCCB Type D",
+    "system_type": "TN-S (utility transformer earthed; building distribution TN-S)",
+    "voltage": "400V/230V 3-phase 4-wire 50 Hz",
+    "supply_rating_a": 400,
+    "phase_arrangement": "TPN_plus_E",
+    "feeder_route_length_m": 40
+  },
+  "board": {
+    "designation": "DB-P1",
+    "location": "level-1 electrical riser cupboard",
+    "enclosure_rating": "IP4X (indoor)",
+    "busbar_rating_a": 400,
+    "scope": "single-board"
+  },
+  "circuits": [
+    { "circuit_id": "P01", "designation": "Socket ring main GF — open office",    "phase": "L1", "device": "32A MCB Type B", "cable": "2.5mm² PVC Cu", "route_length_m": 50 },
+    { "circuit_id": "P02", "designation": "Socket ring main L1 — open office",    "phase": "L2", "device": "32A MCB Type B", "cable": "2.5mm² PVC Cu", "route_length_m": 75 },
+    { "circuit_id": "P03", "designation": "Socket ring main L2 — open office",    "phase": "L3", "device": "32A MCB Type B", "cable": "2.5mm² PVC Cu", "route_length_m": 95 },
+    { "circuit_id": "P04", "designation": "Socket radials GF — meeting rooms",    "phase": "L1", "device": "20A MCB Type B", "cable": "2.5mm² PVC Cu", "route_length_m": 30 },
+    { "circuit_id": "P05", "designation": "Socket radials L1 — meeting rooms",    "phase": "L2", "device": "20A MCB Type B", "cable": "2.5mm² PVC Cu", "route_length_m": 55 },
+    { "circuit_id": "P06", "designation": "Dedicated outlets — photocopier room", "phase": "L3", "device": "16A MCB Type B", "cable": "2.5mm² PVC Cu", "route_length_m": 25 },
+    { "circuit_id": "P07", "designation": "Kitchen socket radial",                "phase": "L1", "device": "20A MCB Type B", "cable": "2.5mm² PVC Cu", "route_length_m": 35 },
+    { "circuit_id": "P08", "designation": "IT/data ring main — desks GF",         "phase": "L2", "device": "32A MCB Type B", "cable": "2.5mm² PVC Cu", "route_length_m": 60 },
+    { "circuit_id": "P09", "designation": "IT/data ring main — desks L1",         "phase": "L3", "device": "32A MCB Type B", "cable": "2.5mm² PVC Cu", "route_length_m": 80 },
+    { "circuit_id": "P10", "designation": "IT/data ring main — desks L2",         "phase": "L1", "device": "32A MCB Type B", "cable": "2.5mm² PVC Cu", "route_length_m": 100 },
+    { "circuit_id": "P11", "designation": "AV outlets — meeting rooms",           "phase": "L2", "device": "20A MCB Type B", "cable": "2.5mm² PVC Cu", "route_length_m": 50 },
+    { "circuit_id": "P12", "designation": "Cleaner sockets — corridors",          "phase": "L3", "device": "20A MCB Type B", "cable": "2.5mm² PVC Cu", "route_length_m": 40 }
+  ]
+}

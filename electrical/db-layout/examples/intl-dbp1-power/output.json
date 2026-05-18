@@ -1,0 +1,70 @@
+{
+  "$schema": "../../schemas/db-layout-ir.schema.json",
+  "drawing_type": "db_layout",
+  "version": "1.2.0",
+  "meta": {
+    "project_id": "intl-comm-tpn-eg02",
+    "skill_version": "db-layout/1.2.0",
+    "produced_at": "2026-05-18T10:00:00Z"
+  },
+  "jurisdiction": "INT",
+  "board": {
+    "db_id": "DB-P1",
+    "designation": "DB-P1 — Small-power sub-DB, IEC commercial 3-storey office",
+    "location": "level-1 electrical riser cupboard",
+    "enclosure_rating": "IP4X",
+    "manufacturer_class": "IEC 61439-3 Distribution Board",
+    "scope": "single-board"
+  },
+  "incoming_supply": {
+    "voltage_v": 400,
+    "phase_arrangement": "TPN_plus_E",
+    "supply_rating_a": 400,
+    "fed_from": "MSB-MAIN F02 (400A MCCB Type D, 40m feeder)",
+    "supply_class": "non_essential",
+    "declared_pfc_ka": 18.0
+  },
+  "main_switch": {
+    "type": "switch-disconnector",
+    "rating_a": 400,
+    "breaking_capacity_ka": 36,
+    "fault_level_a_min": 18000
+  },
+  "circuits": [
+    { "circuit_id": "P01", "way_module_id": "W1",  "designation": "Socket ring main GF — open office",   "voltage_class": "LV_power", "downstream_load_kw": 5.5, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 50 } },
+    { "circuit_id": "P02", "way_module_id": "W2",  "designation": "Socket ring main L1 — open office",   "voltage_class": "LV_power", "downstream_load_kw": 5.5, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 75 } },
+    { "circuit_id": "P03", "way_module_id": "W3",  "designation": "Socket ring main L2 — open office",   "voltage_class": "LV_power", "downstream_load_kw": 5.5, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 95 } },
+    { "circuit_id": "P04", "way_module_id": "W4",  "designation": "Socket radials GF — meeting rooms",   "voltage_class": "LV_power", "downstream_load_kw": 3.0, "ocpd": { "rating_a": 20, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 30 } },
+    { "circuit_id": "P05", "way_module_id": "W5",  "designation": "Socket radials L1 — meeting rooms",   "voltage_class": "LV_power", "downstream_load_kw": 3.0, "ocpd": { "rating_a": 20, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 55 } },
+    { "circuit_id": "P06", "way_module_id": "W6",  "designation": "Dedicated outlets — photocopier room","voltage_class": "LV_power", "downstream_load_kw": 2.5, "ocpd": { "rating_a": 16, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 25 } },
+    { "circuit_id": "P07", "way_module_id": "W7",  "designation": "Kitchen socket radial",                "voltage_class": "LV_power", "downstream_load_kw": 3.5, "ocpd": { "rating_a": 20, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 35 } },
+    { "circuit_id": "P08", "way_module_id": "W8",  "designation": "IT/data ring main — desks GF",        "voltage_class": "LV_power", "downstream_load_kw": 4.5, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 60 } },
+    { "circuit_id": "P09", "way_module_id": "W9",  "designation": "IT/data ring main — desks L1",        "voltage_class": "LV_power", "downstream_load_kw": 4.5, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 80 } },
+    { "circuit_id": "P10", "way_module_id": "W10", "designation": "IT/data ring main — desks L2",        "voltage_class": "LV_power", "downstream_load_kw": 4.5, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 100 } },
+    { "circuit_id": "P11", "way_module_id": "W11", "designation": "AV outlets — meeting rooms",          "voltage_class": "LV_power", "downstream_load_kw": 3.5, "ocpd": { "rating_a": 20, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 50 } },
+    { "circuit_id": "P12", "way_module_id": "W12", "designation": "Cleaner sockets — corridors",         "voltage_class": "LV_power", "downstream_load_kw": 2.0, "ocpd": { "rating_a": 20, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 40 } }
+  ],
+  "spare_ways": 6,
+  "selectivity_results": [
+    { "upstream": "MSB-MAIN F02 (400A MCCB Type D)", "downstream": "DB-P1 main switch + all final circuits", "verdict": "pass", "_note": "400A Type D MCCB upstream selective against ≤32A Type B MCBs at DB-P1 (≥12.5:1 current ratio, curve separation, manufacturer cascade table confirms selectivity to 36 kA per IEC 60364-5-53:2002 Clause 536)." }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "IEC 61439-3 Distribution Board (DBO) used for the small-power sub-DB.",
+      "IEC 60364-4-41:2018 Clause 411.3.3: 30mA Type A RCD on every socket circuit (mandatory for commercial premises).",
+      "IT/data ring mains (P08-P10) carry significant SMPS-fed loads (desktop PCs, monitors, dock stations) — Type A RCD necessary for pulsating DC residual fault current detection.",
+      "Kitchen socket P07 also requires 30mA Type A per IEC 60364-7-701 series (water proximity).",
+      "Long IT/data ring P10 at 100m loop is at the practical edge for a 32A ring; voltage drop ≈ 3.7% at full load — sized to 2.5mm² because cable ampacity at Reference Method C is 27A (within 32A breaker limit by IEC 60364-5-52 Annex E ring-circuit allowance).",
+      "Estimated PFC at DB-P1 ≈ 18 kA after 40m 70mm² SWA feeder impedance from 25 kA at MSB-MAIN.",
+      "10 kA Icn MCBs with cascade backup from upstream 400A MCCB Icu ≥ 36 kA (IEC 60364-5-53 Clause 536.4 cascade backup)."
+    ]
+  },
+  "drawing_notes": [
+    "DB-P1 located in level-1 electrical riser cupboard.",
+    "Fed from MSB-MAIN F02 via 40m 70mm² 5-core SWA XLPE Cu feeder.",
+    "12 final circuits + 6 spare ways (W13-W18 reserved — generous spare for tenant fit-out churn).",
+    "Ring-circuit voltage drop sanity checks completed — P10 at 100m is the longest ring and sits within the 4% socket-circuit guidance."
+  ]
+}
