@@ -1,0 +1,28 @@
+{
+  "intent_type": "earthing",
+  "intent_version": "1.0.0",
+  "produced_by_skill_version": "earthing/1.1.0",
+  "tool_call_pending": true,
+  "jurisdiction": "US",
+  "system_type": "TN-S",
+  "ze_declared_ohm": 0.20,
+  "supply_bond_type": "tn_s_separate_pe",
+  "main_earthing_conductor_csa_mm2_or_awg": "4 AWG Cu",
+  "electrodes": [
+    { "id": "E1", "electrode_type": "ufer", "ra_ohm_specified": 25 },
+    { "id": "E2", "electrode_type": "structural_metal", "ra_ohm_specified": 25 }
+  ],
+  "main_bonding": [
+    { "id": "B1", "target": "water_pipe", "csa_mm2_or_awg": "4 AWG Cu" },
+    { "id": "B2", "target": "gas_pipe", "csa_mm2_or_awg": "6 AWG Cu" },
+    { "id": "B3", "target": "structural_steel", "csa_mm2_or_awg": "4 AWG Cu" }
+  ],
+  "circuits": [
+    { "circuit_id": "C01", "cpc_csa_mm2_or_awg": "12 AWG Cu", "device": "MCB_C_20A", "zs_compliance": "pass", "rcd_required": false },
+    { "circuit_id": "C02", "cpc_csa_mm2_or_awg": "12 AWG Cu", "device": "MCB_C_20A", "zs_compliance": "pass", "rcd_required": false },
+    { "circuit_id": "C03", "cpc_csa_mm2_or_awg": "10 AWG Cu", "device": "MCB_C_30A", "zs_compliance": "pass", "rcd_required": false },
+    { "circuit_id": "C04", "cpc_csa_mm2_or_awg": "10 AWG Cu", "device": "MCB_C_60A", "zs_compliance": "pass", "rcd_required": false }
+  ],
+  "overall_compliant": true,
+  "produced_at": "2026-05-18"
+}
