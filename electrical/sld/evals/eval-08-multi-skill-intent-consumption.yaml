@@ -1,0 +1,72 @@
+name: eval-08-multi-skill-intent-consumption
+skill: sld
+description: |
+  Verifies v1.4 multi-skill intent consumption: each SLD example's meta.consumed_intents
+  has length == distribution_hierarchy.length + 2 (N db-layout + 1 earthing + 1 fault-level),
+  cross-skill paths resolve, and cross-skill field equality holds (system_type + peak_pfc_ka
+  within ±0.5 kA of fault-level intent's transformer_secondary node).
+category: skill_specific
+input_fixtures:
+  - ../examples/uk-commercial-office-3storey/output.json
+  - ../examples/ke-nairobi-industrial-msb-gh/output.json
+  - ../examples/intl-commercial-msb-4subdbs/output.json
+  - ../examples/us-strip-mall-msp-tenants/output.json
+checks:
+  - assertion: "meta.consumed_intents.length == distribution_hierarchy.length + 2"
+    description: N db-layout + 1 earthing + 1 fault-level — length invariant for multi-skill consumption.
+    severity: critical
+
+  - assertion: "sum(1 for i in meta.consumed_intents if i.intent_type == 'earthing') == 1"
+    description: Exactly 1 consumed_intents entry has intent_type == 'earthing'.
+    severity: critical
+
+  - assertion: "sum(1 for i in meta.consumed_intents if i.intent_type == 'fault-level') == 1"
+    description: Exactly 1 consumed_intents entry has intent_type == 'fault-level'.
+    severity: critical
+
+  - assertion: "meta.consumed_intents[-2].intent_type == 'earthing' and meta.consumed_intents[-1].intent_type == 'fault-level'"
+    description: |
+      Ordering: db-layout entries first (contiguous), then earthing, then fault-level.
+      Last 2 entries are the system-wide intents in order.
+    severity: critical
+
+  - assertion: "input.earthing_intent_path startswith 'electrical/earthing/examples/' and input.earthing_intent_path endswith '/intent-out.json'"
+    description: input.earthing_intent_path is present and references electrical/earthing/examples/.
+    severity: critical
+
+  - assertion: "input.fault_level_intent_path startswith 'electrical/fault-level/examples/' and input.fault_level_intent_path endswith '/intent-out.json'"
+    description: input.fault_level_intent_path is present and references electrical/fault-level/examples/.
+    severity: critical
+
+  - assertion: "load(input.earthing_intent_path).system_type == supply_origin.system_type"
+    description: |
+      SLD supply_origin.system_type equals earthing intent's top-level system_type field
+      (loads earthing intent-out.json and compares).
+    severity: warning
+
+  - assertion: "abs(system_metrics.peak_pfc_ka - next(fc for fc in load(input.fault_level_intent_path).fault_currents if fc.node_kind == 'transformer_secondary').ifault_ka_max) <= 0.5"
+    description: |
+      SLD system_metrics.peak_pfc_ka within ±0.5 kA of fault-level intent's
+      fault_currents[] entry where node_kind == 'transformer_secondary' → ifault_ka_max.
+    severity: warning
+
+  - assertion: "meta.skill_version startswith 'sld/1.4'"
+    description: meta.skill_version starts with 'sld/1.4'.
+    severity: critical
+
+  - assertion: "'earthing intent' in ' '.join(compliance_summary.assumptions) and 'fault-level intent' in ' '.join(compliance_summary.assumptions)"
+    description: |
+      compliance_summary.assumptions[] contains at least 2 entries referencing
+      earthing + fault-level provenance.
+    severity: critical
+
+  - assertion: "any('genset' in a.lower() for a in compliance_summary.assumptions) if meta.project_id.startswith('intl') or meta.project_id.startswith('INT') else True"
+    description: |
+      INT-specific: intl-commercial-msb-4subdbs assumptions[] contains genset filtering note.
+    severity: warning
+
+  - assertion: "all(load(i.path) is not None and 'project_id' in load(i.path) for i in meta.consumed_intents if i.intent_type == 'db-layout')"
+    description: |
+      For each consumed_intents entry with intent_type == 'db-layout', the referenced
+      file exists on disk and is valid JSON with a project_id field.
+    severity: critical
