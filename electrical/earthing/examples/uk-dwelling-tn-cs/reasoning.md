@@ -1,5 +1,7 @@
 # Reasoning — UK Dwelling TN-C-S Earthing Schematic
 
+> **v1.3 — db-layout intent consumption:** This example's `circuits[]` is derived from the upstream db-layout intent at `electrical/db-layout/examples/uk-domestic-consumer-unit/intent-out.json`. The earthing skill adopts the circuit list verbatim and extends each circuit with CPC sizing, Zs verification, and RCD specification. Circuit IDs match the upstream 1:1.
+
 > **v1.1 retrofit (2026-05-17):** This example now declares `calc.zs_loop_impedance` tool deferral per WI3. The Zs values below are unchanged from v1.0.0 (LLM-computed inline); the deterministic tool will refine them when the DraftsMan runtime ships. The `zs_calc_tool_input` replay payload was added at the IR root so the tool can re-execute deterministically.
 
 ## Step 1 — Discovery check
