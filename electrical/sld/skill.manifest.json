@@ -1,20 +1,71 @@
 {
   "skill": "sld",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "discipline": "electrical",
   "subdiscipline": "distribution",
-  "description": "LV single line diagrams from supply intake through MSB to sub-boards. Calculates maximum demand, sizes protective devices, checks PSCC/Zs, identifies life safety circuits, assesses SPD requirements.",
-  "status": "production",
+  "status": "beta",
   "licence": "MIT",
-  "inputs_path": "inputs.json",
-  "inputs": ["supply-data", "load-schedule", "distribution-hierarchy", "earthing-system", "cable-lengths"],
+  "description": "LV single line diagram — system-wide distribution from supply origin through MSB to sub-boards. Consumes db-layout intents for each board in the cascade. Computes Imax/PFC/SPD/life-safety system metrics. Verifies cascade selectivity. Stage 1 = logical topology only (drawing positions deferred to v1.5.0).",
+  "inputs_path": "electrical/sld/inputs.json",
   "outputs": ["sld-ir"],
-  "output_schema": "shared/schemas/electrical/sld-ir.schema.json",
+  "output_schema": "electrical/sld/schemas/sld-ir.schema.json",
+  "produces_intent": "sld",
+  "produces_intent_schema": "electrical/sld/schemas/sld-intent.schema.json",
+  "consumes_intents": ["db-layout"],
   "standards": [
     "shared/standards/electrical/BS7671/",
+    "shared/standards/electrical/IEC60364/",
     "shared/standards/electrical/IEC61439/",
-    "shared/standards/electrical/IEC60617/"
+    "shared/standards/electrical/IEC60617/",
+    "shared/standards/electrical/NFPA70/",
+    "shared/standards/electrical/KS1700/"
   ],
-  "compatible_runtimes": ["DraftsMan >= 1.0", "Claude Code", "OpenClaw"],
+  "calculations": [],
+  "ontology": [
+    "electrical/sld/ontology/board-roles.json",
+    "electrical/sld/ontology/distribution-types.json"
+  ],
+  "rules": [
+    "electrical/sld/rules/distribution-hierarchy.yaml",
+    "electrical/sld/rules/device-selection.yaml",
+    "electrical/sld/rules/spd-policy.yaml",
+    "electrical/sld/rules/life-safety-isolation.yaml"
+  ],
+  "constraints": [
+    "electrical/sld/constraints/selectivity-cascade.yaml",
+    "electrical/sld/constraints/intake-capacity.yaml",
+    "electrical/sld/constraints/intent-shape.yaml"
+  ],
+  "validators": [
+    "electrical/sld/validation/ir-integrity.yaml",
+    "electrical/sld/validation/jurisdiction-routing.yaml",
+    "electrical/sld/validation/tool-deferral-shape.yaml"
+  ],
+  "prompts": {
+    "generator": "electrical/sld/prompts/generator.md",
+    "validator": "electrical/sld/prompts/validator.md",
+    "reviewer":  "electrical/sld/prompts/reviewer.md"
+  },
+  "evals": [
+    "electrical/sld/evals/eval-01-uk-3storey-happy-path.yaml",
+    "electrical/sld/evals/eval-02-ke-msp-gh-cascade.yaml",
+    "electrical/sld/evals/eval-03-intake-undersized-trap.yaml",
+    "electrical/sld/evals/eval-04-missing-spd-assessment.yaml",
+    "electrical/sld/evals/eval-05-non-selective-cascade.yaml",
+    "electrical/sld/evals/eval-06-rationale-block.yaml",
+    "electrical/sld/evals/eval-07-multi-board-intent-consumption.yaml"
+  ],
+  "examples": [
+    "electrical/sld/examples/uk-commercial-office-3storey/",
+    "electrical/sld/examples/ke-nairobi-industrial-msb-gh/",
+    "electrical/sld/examples/intl-commercial-msb-4subdbs/",
+    "electrical/sld/examples/us-strip-mall-msp-tenants/"
+  ],
+  "compatible_runtimes": [
+    "DraftsMan >= 1.0",
+    "Claude Code",
+    "OpenClaw",
+    "any-llm-agent"
+  ],
   "changelog": "electrical/sld/CHANGELOG.md"
 }
