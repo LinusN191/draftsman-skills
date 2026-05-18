@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/sld/schemas/sld-ir.schema.json",
+  "title": "SLD IR (System-wide LV distribution)",
+  "description": "Intermediate Representation for the SLD skill v1.3.0. Captures the cascade from utility supply through MSB to sub-DBs. Each board node has a consumed_intent_path pointing to its db-layout intent-out.json.",
+  "type": "object",
+  "required": [
+    "drawing_type",
+    "version",
+    "meta",
+    "jurisdiction",
+    "supply_origin",
+    "distribution_hierarchy",
+    "selectivity_cascade",
+    "system_metrics",
+    "compliance_summary",
+    "rationale"
+  ],
+  "properties": {
+    "drawing_type": { "const": "single_line_diagram" },
+    "version":      { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "meta": {
+      "type": "object",
+      "required": ["project_id", "skill_version", "produced_at", "consumed_intents"],
+      "properties": {
+        "project_id":    { "type": "string" },
+        "skill_version": { "type": "string" },
+        "produced_at":   { "type": "string", "format": "date-time" },
+        "consumed_intents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["intent_type", "intent_version", "produced_by"],
+            "properties": {
+              "intent_type":    { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+              "intent_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+              "produced_by":    { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "jurisdiction": {
+      "enum": ["GB", "EU", "INT", "KE", "US"]
+    },
+    "supply_origin": {
+      "type": "object",
+      "required": ["supplier", "system_type", "voltage_nominal_v", "voltage_arrangement", "frequency_hz", "ze_declared_ohm", "pfc_declared_ka", "main_switch_rating_a", "main_switch_breaking_capacity_ka"],
+      "properties": {
+        "supplier":                       { "type": "string" },
+        "wayleave_or_account_reference":  { "type": "string" },
+        "system_type":                    { "enum": ["TN-S", "TN-C-S", "TT"] },
+        "voltage_nominal_v":              { "type": "integer", "enum": [120, 208, 230, 240, 277, 400, 415, 480] },
+        "voltage_arrangement":            { "enum": ["single_phase", "single_phase_split", "TPN", "TPN_plus_E"] },
+        "frequency_hz":                   { "type": "integer", "enum": [50, 60] },
+        "ze_declared_ohm":                { "type": "number", "minimum": 0 },
+        "pfc_declared_ka":                { "type": "number", "minimum": 0 },
+        "main_switch_rating_a":           { "type": "integer", "minimum": 6 },
+        "main_switch_breaking_capacity_ka": { "type": "number", "minimum": 0 }
+      }
+    },
+    "distribution_hierarchy": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["board_id", "board_role", "consumed_intent_path"],
+        "properties": {
+          "board_id":             { "type": "string", "pattern": "^[A-Z][A-Z0-9-]+$" },
+          "board_role":           { "enum": ["main_switchboard", "sub_distribution_board", "panel", "sub_panel", "fire_alarm_panel", "life_safety_panel", "ups_distribution"] },
+          "consumed_intent_path": { "type": "string" },
+          "parent_board_id":      { "type": ["string", "null"] },
+          "fed_via_circuit_id":   { "type": ["string", "null"] },
+          "location":             { "type": "string" },
+          "enclosure_rating":     { "type": "string" }
+        }
+      }
+    },
+    "selectivity_cascade": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["parent_board_id", "parent_circuit_id", "child_board_id", "verdict", "verification_method"],
+        "properties": {
+          "parent_board_id":      { "type": "string" },
+          "parent_circuit_id":    { "type": "string" },
+          "child_board_id":       { "type": "string" },
+          "verdict":              { "enum": ["selective", "partial_selective", "non_selective"] },
+          "verification_method":  { "enum": ["manufacturer_table", "iec_60898_typical", "manual_review"] },
+          "_note":                { "type": "string" }
+        }
+      }
+    },
+    "system_metrics": {
+      "type": "object",
+      "required": ["imax_total_a", "peak_pfc_ka", "spd_assessment", "life_safety_isolation", "tool_call_pending_for_system_metrics"],
+      "properties": {
+        "imax_total_a":  { "type": "number", "minimum": 0 },
+        "peak_pfc_ka":   { "type": "number", "minimum": 0 },
+        "spd_assessment": {
+          "type": "object",
+          "required": ["required", "spd_type", "code_clause", "location_basis"],
+          "properties": {
+            "required":       { "type": "boolean" },
+            "spd_type":       { "enum": ["Type 1", "Type 2", "Type 1+2", "Type 3", "not_required"] },
+            "code_clause":    { "type": "string" },
+            "location_basis": { "type": "string" }
+          }
+        },
+        "life_safety_isolation": {
+          "type": "object",
+          "properties": {
+            "fire_alarm_dedicated_supply":          { "type": "boolean" },
+            "emergency_lighting_dedicated_supply":  { "type": "boolean" },
+            "ups_essential_loads_kva":              { "type": "number", "minimum": 0 }
+          }
+        },
+        "tool_call_pending_for_system_metrics":     { "type": "boolean" }
+      }
+    },
+    "compliance_summary": {
+      "type": "object",
+      "required": ["compliant", "non_compliance_flags", "assumptions"],
+      "properties": {
+        "compliant":            { "type": "boolean" },
+        "non_compliance_flags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message":     { "type": "string" },
+              "code_clause": { "type": "string" },
+              "severity":    { "enum": ["critical", "warning", "info"] }
+            }
+          }
+        },
+        "assumptions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "drawing_notes":     { "type": "array", "items": { "type": "string" } },
+    "drawn_as_symbols":  { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" } },
+    "flags":             { "type": "array", "items": { "type": "string" } },
+    "rationale":         { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
+  }
+}

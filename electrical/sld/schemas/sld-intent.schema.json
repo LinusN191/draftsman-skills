@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/sld/schemas/sld-intent.schema.json",
+  "title": "SLD Intent (slim downstream-consumable subset)",
+  "description": "Slim payload published by SLD for downstream consumers (riser, cable-containment, maintenance docs, panel-schedule rollup).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["intent_type", "intent_version", "produced_by_skill_version", "project_id", "jurisdiction", "supply_summary", "board_count", "msb_board_id", "boards", "spd_assessment_verdict", "selectivity_overall_verdict", "compliant", "produced_at"],
+  "properties": {
+    "intent_type":                { "const": "sld" },
+    "intent_version":             { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "produced_by_skill_version":  { "type": "string" },
+    "project_id":                 { "type": "string" },
+    "jurisdiction":               { "enum": ["GB", "EU", "INT", "KE", "US"] },
+    "supply_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system_type", "voltage_arrangement", "main_switch_rating_a"],
+      "properties": {
+        "system_type":          { "enum": ["TN-S", "TN-C-S", "TT"] },
+        "voltage_arrangement":  { "type": "string" },
+        "main_switch_rating_a": { "type": "integer" }
+      }
+    },
+    "board_count":      { "type": "integer", "minimum": 1 },
+    "msb_board_id":     { "type": "string" },
+    "boards": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["board_id", "role"],
+        "properties": {
+          "board_id":                  { "type": "string" },
+          "role":                      { "type": "string" },
+          "consumed_db_layout_intent": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "spd_assessment_verdict":       { "enum": ["required_type_1_2", "required_type_2", "required_type_3", "not_required"] },
+    "selectivity_overall_verdict":  { "enum": ["fully_selective", "partially_selective", "non_selective"] },
+    "compliant":                    { "type": "boolean" },
+    "produced_at":                  { "type": "string", "format": "date-time" }
+  }
+}
