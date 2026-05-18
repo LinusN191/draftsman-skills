@@ -1,0 +1,35 @@
+{
+  "project_id": "ke-nairobi-enterprise-light-engineering",
+  "board_brief": "Main switchboard (MSP-100) for Nairobi Industrial Area light engineering workshop. 100A TPN intake from KPLC 415V 50Hz supply. Mixed workshop + office mezzanine loads including 3-phase machine tools (lathe + drill + compressor). IP55 enclosure for industrial environment.",
+  "jurisdiction": "KE",
+  "standards_stack": {
+    "primary": "KS 1700:2018 (Code of Practice for Electrical Wiring of Buildings — KEBS)",
+    "annex_e_adoption_pathway": "KS 1700:2018 Annex E adopts BS 7671:2018+A2 substantially; see KS1700/annex-E-bs7671-adoption-table.json",
+    "iec_routing": "Equipment markings: KS §531 accepts both BS EN 60898 and IEC 60898"
+  },
+  "supply": {
+    "dno": "KPLC (Kenya Power & Lighting Company)",
+    "wayleave_reference": "KPLC-NRB-IND-2143",
+    "system_type": "TN-S",
+    "voltage": "415V/240V 3-phase 4-wire 50 Hz",
+    "supply_rating_a": 100,
+    "phase_arrangement": "TPN_plus_E"
+  },
+  "board": {
+    "designation": "MSP-100",
+    "location": "main switchroom adjacent to KPLC intake",
+    "enclosure_rating": "IP55",
+    "busbar_rating_a": 125,
+    "manufacturer_preference": "MEM/Schneider/ABB (KEBS-certified)"
+  },
+  "circuits": [
+    { "circuit_id": "C01", "designation": "Lighting workshop (LED highbays, 8 × 150W)", "phase": "L1",       "device": "10A MCB Type B",  "cable": "1.5mm² T+E PVC Cu",      "route_length_m": 35 },
+    { "circuit_id": "C02", "designation": "Lighting office mezzanine + stairwell",      "phase": "L2",       "device": "6A MCB Type B",   "cable": "1.5mm² T+E PVC Cu",      "route_length_m": 22 },
+    { "circuit_id": "C03", "designation": "Socket ring main workshop",                  "phase": "L3",       "device": "32A MCB Type B",  "cable": "2.5mm² T+E PVC Cu",      "route_length_m": 28 },
+    { "circuit_id": "C04", "designation": "Socket radials office",                      "phase": "L1",       "device": "20A MCB Type B",  "cable": "2.5mm² T+E PVC Cu",      "route_length_m": 18 },
+    { "circuit_id": "C05", "designation": "Lathe 3-ph 5.5kW",                           "phase": "L1+L2+L3", "device": "20A MCB Type C",  "cable": "2.5mm² SY 4-core PVC Cu","route_length_m": 15 },
+    { "circuit_id": "C06", "designation": "Pillar drill 3-ph 2.2kW",                    "phase": "L1+L2+L3", "device": "16A MCB Type C",  "cable": "1.5mm² SY 4-core PVC Cu","route_length_m": 12 },
+    { "circuit_id": "C07", "designation": "Compressor 3-ph 7.5kW",                      "phase": "L1+L2+L3", "device": "25A MCB Type D",  "cable": "4mm² SY 4-core PVC Cu",  "route_length_m": 25 },
+    { "circuit_id": "C08", "designation": "Submain to gate house",                      "phase": "L1+N+CPC", "device": "40A MCB Type B",  "cable": "10mm² SWA PVC Cu",       "route_length_m": 60 }
+  ]
+}
