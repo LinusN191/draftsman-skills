@@ -54,7 +54,26 @@
     ]
   },
   "drawn_as_symbols": ["EARTH_GENERAL", "EARTH_PROTECTIVE", "CONDUCTOR_PE", "CONDUCTOR_PEN", "JUNCTION_T", "BUSBAR"],
-  "flags": [],
+  "flags": ["TOOL-CALL-PENDING:calc.zs_loop_impedance — Zs values are LLM-estimates; deterministic refinement deferred per WI3."],
+  "tool_call_pending_for_zs": true,
+  "zs_calc_tool_input": {
+    "jurisdiction": "GB",
+    "supply": {
+      "ze_declared_ohm": 0.35,
+      "system_type": "TN-C-S",
+      "voltage_phase_to_earth_v": 230,
+      "frequency_hz": 50
+    },
+    "circuits": [
+      { "circuit_id": "C01", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.0mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 18, "device_type": "MCB_B", "device_rating_a": 6 },
+      { "circuit_id": "C02", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.0mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 22, "device_type": "MCB_B", "device_rating_a": 6 },
+      { "circuit_id": "C03", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 38, "device_type": "MCB_B", "device_rating_a": 32 },
+      { "circuit_id": "C04", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 42, "device_type": "MCB_B", "device_rating_a": 32 },
+      { "circuit_id": "C05", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "4mm²", "cpc_csa_mm2_or_awg": "2.5mm²", "route_length_m": 14, "device_type": "MCB_B", "device_rating_a": 32 },
+      { "circuit_id": "C06", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "6mm²", "cpc_csa_mm2_or_awg": "4mm²", "route_length_m": 16, "device_type": "MCB_B", "device_rating_a": 40 }
+    ],
+    "operating_temperature_c": 70
+  },
   "rationale": {
     "chat_summary": "TN-C-S earthing for a 3-bed UK semi on PME supply (Ze=0.35Ω). MET in hallway cupboard with 10mm² bonds to water and gas and 6mm² to loft structural steel. Six final circuits, all with CPCs sized per BS 7671 Table 54.7 and protected by the 30mA main RCD. Bathroom has supplementary 4mm² bonding. All circuits Zs-compliant with margin. Reply to refine, e.g. 'add solar PV'.",
     "sections": [
