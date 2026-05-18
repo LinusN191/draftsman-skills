@@ -1,0 +1,35 @@
+{
+  "project_id": "intl-comm-tpn-eg02",
+  "board_brief": "Fire alarm panel sub-DB (DB-FA1) for a generic IEC commercial 3-storey office. 63A TPN intake fed from MSB-MAIN F04 (63A MCB Type C). NO upstream RCD per IEC 60364-5-56 §560 life-safety exemption. 6 circuits: FA panel power supply + 3 zone detector loops + sounder/strobe + battery charger. Located adjacent to building main entrance / FA installer access point.",
+  "jurisdiction": "INT",
+  "standards_stack": {
+    "primary": "IEC 60364 (HD 60364 series)",
+    "life_safety_supplementary": "IEC 60364-5-56:2018 (life-safety/standby supply systems)",
+    "fire_alarm_system_standard": "IEC 62820 (building intercom + fire alarm systems) + ISO 7240-2 control & indicating equipment",
+    "assembly_type_testing": "IEC 61439-3:2012 Distribution Board"
+  },
+  "supply": {
+    "fed_from": "MSB-MAIN F04 63A MCB Type C (NO upstream RCD per IEC 60364-5-56 §560)",
+    "system_type": "TN-S (utility transformer earthed; building distribution TN-S)",
+    "voltage": "400V/230V 3-phase 4-wire 50 Hz",
+    "supply_rating_a": 63,
+    "phase_arrangement": "TPN_plus_E",
+    "feeder_route_length_m": 60
+  },
+  "board": {
+    "designation": "DB-FA1",
+    "location": "adjacent to building main entrance — FA installer/serviceman access point",
+    "enclosure_rating": "IP4X (indoor)",
+    "busbar_rating_a": 63,
+    "scope": "single-board",
+    "role": "fire_alarm_panel"
+  },
+  "circuits": [
+    { "circuit_id": "FA01", "designation": "Fire alarm panel power supply",         "phase": "L1", "device": "6A MCB Type C",  "cable": "1.5mm² FP200 LSZH Cu",      "route_length_m": 5 },
+    { "circuit_id": "FA02", "designation": "Zone loop 1 (GF detectors)",            "phase": "L2", "device": "6A MCB Type C",  "cable": "1.5mm² FP200 LSZH Cu",      "route_length_m": 40 },
+    { "circuit_id": "FA03", "designation": "Zone loop 2 (L1 detectors)",            "phase": "L3", "device": "6A MCB Type C",  "cable": "1.5mm² FP200 LSZH Cu",      "route_length_m": 60 },
+    { "circuit_id": "FA04", "designation": "Zone loop 3 (L2 detectors)",            "phase": "L1", "device": "6A MCB Type C",  "cable": "1.5mm² FP200 LSZH Cu",      "route_length_m": 80 },
+    { "circuit_id": "FA05", "designation": "Sounder/strobe circuit (all floors)",   "phase": "L2", "device": "10A MCB Type C", "cable": "2.5mm² FP200 LSZH Cu",      "route_length_m": 70 },
+    { "circuit_id": "FA06", "designation": "Battery charger / standby supply",      "phase": "L3", "device": "6A MCB Type C",  "cable": "1.5mm² FP200 LSZH Cu",      "route_length_m": 3 }
+  ]
+}
