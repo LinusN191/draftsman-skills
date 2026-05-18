@@ -14,13 +14,13 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | Skill | Path | Status | Standards | Evals | Notes |
 |-------|------|--------|-----------|-------|-------|
 | lighting-layout | `electrical/lighting-layout` | **production** | BS EN 12464-1:2021, Part L 2021 | 8/5 ✓ | Reference implementation. 8 evals (incl. rationale), 3 examples with rationale, full IR schema. |
-| sld | `electrical/sld` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 7/3 ✓ | v1.3.0 — full rebuild from legacy 1245-line generator into proven artefact pattern. 4 worked examples (UK + KE + INT + US) each consuming N+1 db-layout intents (WI4 multi-board cascade). Legacy archived as engineering reference. system_metrics deferred to calc.sld_system_metrics per WI3. |
+| sld | `electrical/sld` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 8/3 ✓ | v1.4.0 — multi-skill intent consumption (earthing + fault-level added alongside db-layout). 4 worked examples each consuming N+2 intents. peak_pfc_ka now sourced from fault-level intent (IEC 60909 deterministic). INV-11 validator added. |
 | db-layout | `electrical/db-layout` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 8/3 ✓ | v1.2.0 — 12 new cascade-supporting examples for SLD v1.3.0 (paired sprint). 16 worked examples total covering UK/KE/INT/US jurisdictions at MSB-rollup + single-board sub-DB scopes. |
 | cable-containment | `electrical/cable-containment` | stub | BS 7671:2018, BS 1192 | — | — |
 | riser | `electrical/riser` | stub | BS 7671:2018 | — | — |
 | schematic | `electrical/schematic` | stub | BS EN 60617 | — | — |
 | small-power | `electrical/small-power` | stub | BS 7671:2018 | — | — |
-| earthing | `electrical/earthing` | **beta** | BS 7671:2018, IEC 60364, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 9/3 ✓ | v1.3.0 — db-layout intent consumption across all 4 worked examples (WI4 pattern). eval-09 verifies cross-file circuit_id consistency. ARCHITECTURE.md §"Worked example pattern" subsection added. |
+| earthing | `electrical/earthing` | **beta** | BS 7671:2018, IEC 60364, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 9/5 ✓ | v1.4.0 — 5 worked examples (added INT commercial + US commercial in v1.4 sprint); consumed by SLD v1.4 as system-wide earthing intent source. |
 | emergency-lighting | `electrical/emergency-lighting` | stub | BS 5266-1, BS EN 1838 | — | — |
 | cable-schedule | `electrical/cable-schedule` | stub | BS 7671:2018 | — | — |
 | panel-schedule | `electrical/panel-schedule` | stub | BS 7671:2018, BS EN 61439 | — | — |
@@ -105,7 +105,7 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | cable-sizing | `electrical/cable-sizing` | **beta** | BS 7671:2018 App 4 + App 12 + Reg 433/434/521 + 543, IEC 60364-5-52 + 5-54, NEC 2023 Ch 9 + 310.16 + 215.2 + 220 + 240 + 250.122 + 310.10(H) + 430.6 + 110.14(C) | 9/3 ✓ | v1.0.0 IEC/BS/NEC cable selection. 14-step generator, IR + intent schemas, 12 deterministic checks, 9 evals (6 WI5 + 3 skill-specific), 3 worked examples (UK domestic / INT cascade with vd_cumulative / US industrial with parallel + motor-starting). Math deferred to calc.cable_ampacity + calc.voltage_drop + calc.cpc_adiabatic runtime tools per WI3. |
 | voltage-drop | `electrical/voltage-drop` | stub | BS 7671:2018 Appendix 12, IEC 60364-5-52 §G, NEC 215.2 IN | — | — |
 | load-schedule | `electrical/load-schedule` | stub | BS 7671:2018 App 1, NEC 220, IEC 60364-1 Annex C | — | — |
-| fault-level | `electrical/fault-level` | **beta** | IEC 60909-0:2016, BS 7671 Reg 434, IEC 60364-4-43, NEC 110.9 + 240.86, IEC 60617 | 9/3 ✓ | v1.0.0 IEC 60909 HV+LV cascade. 14-step generator, IR + intent schemas, 12 deterministic checks, 9 evals (all WI5 + 3 skill-specific), 3 worked examples (UK / INT+gen / US+motors). New IEC60909 standards layer (13 files) shipped alongside. Cascade math deferred to calc.iec60909_cascade runtime tool per WI3. |
+| fault-level | `electrical/fault-level` | **beta** | IEC 60909-0:2016, BS 7671 Reg 434, IEC 60364-4-43, NEC 110.9 + 240.86, IEC 60617 | 9/6 ✓ | v1.1.0 — 6 worked examples (3 original + 3 new in v1.4 sprint); all examples now ship with intent-out.json; consumed by SLD v1.4 as system-wide peak_pfc_ka source (IEC 60909 deterministic cascade). |
 | generator-sizing | `electrical/generator-sizing` | stub | BS ISO 8528 | — | — |
 | power-factor | `electrical/power-factor` | stub | BS EN 60831 | — | — |
 | arc-flash | `electrical/arc-flash` | stub | IEEE 1584, BS EN 50110 | — | — |

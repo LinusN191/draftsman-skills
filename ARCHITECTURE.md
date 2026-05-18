@@ -333,6 +333,28 @@ Generalization template:
 
 Future skills (cable-containment, riser, panel-schedule rollup) follow this generalized multi-board pattern.
 
+### SLD multi-skill intent consumption (v1.4+)
+
+SLD v1.4 generalizes the WI4 cross-drawing intent pattern from single-skill (v1.3 db-layout only) to multi-skill: each SLD example now consumes 3 upstream skill domains.
+
+| Source skill | Count per SLD example | Content consumed |
+|---|---|---|
+| db-layout | N entries (one per board) | per-board OCPD + cable + load + supply_origin |
+| earthing | 1 entry (system-wide) | system_type, ze_declared_ohm, supply_bond_type |
+| fault-level | 1 entry (system-wide) | peak_pfc_ka at transformer secondary |
+
+**Length invariant:** `meta.consumed_intents.length == distribution_hierarchy.length + 2`
+
+**Cross-skill consistency (INV-11):**
+- SLD `supply_origin.system_type` MUST equal earthing intent's top-level `system_type` field
+- SLD `system_metrics.peak_pfc_ka` MUST be within ±0.5 kA of fault-level intent's `fault_currents[]` entry where `node_kind == "transformer_secondary"` → `ifault_ka_max`
+
+**Engineering benefit:** `peak_pfc_ka` was an LLM inline estimate in v1.3. In v1.4 it sources from deterministic IEC 60909-0:2016 cascade computation (via fault-level intent). This is the first concrete demonstration of multi-skill provenance feeding engineering precision — sometimes flipping compliance verdicts (e.g., KE example's 10.22 kA deterministic PFC vs 10 kA Icu).
+
+**Backward compatibility:** v1.3 examples remain valid. INV-11 only fires when both `earthing_intent_path` AND `fault_level_intent_path` are declared in input.
+
+**Pattern parents:** earthing v1.3 (single-board WI4 single-skill); SLD v1.3 (multi-board WI4 single-skill); this sprint = multi-board + multi-skill.
+
 ## Contribution guide
 
 See `CONTRIBUTING.md` for how to add a new skill, update standards values,
