@@ -260,7 +260,49 @@ Emit a single JSON object:
 
 `valid: true` requires ALL of:
 - Schema validation passes
-- All 10 INV checks pass
+- All 11 INV checks pass (INV-11 only when both intent paths are present)
 - Intent extraction validates against `sld-intent.schema.json`
+
+---
+
+## INV-11: Multi-skill intent consumption shape (v1.4+)
+
+**When this check fires:** Only when both `input.earthing_intent_path` AND `input.fault_level_intent_path` are present (backward-compatible — v1.3 examples skip INV-11 entirely).
+
+**Field-name reference (verified against live schemas + working intent files):**
+- Earthing intent: top-level `system_type` field (NOT nested `earthing_system.system_type`)
+- Fault-level intent: peak PFC = `fault_currents[]` entry where `node_kind == "transformer_secondary"` → `ifault_ka_max`
+- Fault-level intent schema forbids `intent_type` field; earthing intent schema permits it
+
+**Checks (1-5 are hard fails; 6-7 emit warning flags):**
+
+1. `output.meta.consumed_intents.length == output.distribution_hierarchy.length + 2`
+   - Fail message: `"INV-11: meta.consumed_intents length (<M>) does not match distribution_hierarchy length + 2 (<N>+2=<E>) — v1.4 multi-skill examples must declare N db-layout + 1 earthing + 1 fault-level intent entries"`
+
+2. Exactly 1 entry in `meta.consumed_intents[]` has `intent_type == "earthing"`
+   - Fail message: `"INV-11: meta.consumed_intents has <N> entries with intent_type='earthing'; expected exactly 1 for v1.4 multi-skill examples"`
+
+3. Exactly 1 entry in `meta.consumed_intents[]` has `intent_type == "fault-level"`
+   - Fail message: `"INV-11: meta.consumed_intents has <N> entries with intent_type='fault-level'; expected exactly 1 for v1.4 multi-skill examples"`
+
+4. `input.earthing_intent_path` resolves to an existing file (relative to repo root)
+   - Fail message: `"INV-11: earthing_intent_path=<PATH> does not resolve to an existing file"`
+
+5. `input.fault_level_intent_path` resolves to an existing file
+   - Fail message: `"INV-11: fault_level_intent_path=<PATH> does not resolve to an existing file"`
+
+6. **(Warning)** SLD `supply_origin.system_type` equals earthing intent's top-level `system_type` (string equality)
+   - Warning message: `"INV-11: cross-skill mismatch — SLD supply_origin.system_type=<S1> but earthing intent system_type=<S2>. Engineer override is valid for cross-skill design tensions but should be documented in compliance_summary.assumptions."`
+
+7. **(Warning)** SLD `system_metrics.peak_pfc_ka` is within ±0.5 kA of the fault-level intent's `fault_currents[]` entry where `node_kind == "transformer_secondary"` → `ifault_ka_max`
+   - Warning message: `"INV-11: cross-skill peak_pfc mismatch — SLD system_metrics.peak_pfc_ka=<P1> but fault-level intent declares <P2> (Δ=<DELTA>kA > 0.5kA tolerance)"`
+
+### Backward compatibility
+
+If `earthing_intent_path` is absent OR `fault_level_intent_path` is absent, skip INV-11 entirely. v1.3 examples (which lack both fields) remain valid under v1.4 validation rules.
+
+### Special case — INT example genset filtering
+
+If the fault-level intent's `source_summary.type == "mixed"` (utility + genset dual-source), the SLD models utility-source PFC only. Check 7 tolerance still applies but the engineer must document the genset filtering in `compliance_summary.assumptions[]`. Absence of such documentation while mixed-source is detected = warning flag `"INV-11-genset-filtering-undocumented"`.
 
 `stage` records where validation stopped (or `"passed"` for full success).
