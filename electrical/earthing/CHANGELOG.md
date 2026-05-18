@@ -1,5 +1,30 @@
 # Changelog — earthing
 
+## [1.2.0] - 2026-05-18
+
+### Added
+- **KS 1700:2018 standalone standards layer** at `shared/standards/electrical/KS1700/` (28 files at parity with BS7671/). KS 1700 becomes a first-class standards body in this repo alongside BS 7671 / IEC 60364 / NFPA 70.
+- **Two KS-unique files**: `KS1700/annex-E-bs7671-adoption-table.json` (clause-by-clause KS↔BS adoption map with 31 rows) and `KS1700/ks-unique-deviations.json` (6-deviation index — socket-RCD universality, climate ambient, EV §722 absence, coastal IP65, KEBS certification, EPRA inspection regime).
+- **`local-codes/Kenya/` refresh** — rewrite from 1-line stub to country-context content (README + country-meta.json + adoption-pathway.md).
+- **`ROADMAP.md`** — KS 1700 row added to standards layer table.
+- **Validator INV-10** — KE example code_clause fields MUST start with `"KS 1700:"` (or `"IEC 60364"` for Annex E routing).
+- **Eval-08-ks1700-citation-consistency.yaml** — 10 assertions verifying the citation refactor.
+
+### Changed
+- **Generator prompt** — KE jurisdiction routing updated: KS 1700 as primary standards source (with IEC 60364 fallback for clauses KS Annex E §VIII routes to IEC). Citation form `"KS 1700:2018 §X.Y.Z"` replaces `"BS 7671:... (adopted by KS 1700)"`. The v1.1 annotation pattern is now BANNED.
+- **Validator prompt** — INV-10 enforces direct KS citation form.
+- **KE example output.json** — every `code_clause` + `cpc_sizing_clause` refactored to direct KS 1700 form. KS deviation citations (§411.3.3) note the deviation explicitly.
+- **KE example reasoning.md** — "KS 1700 vs BS 7671" subsection shortened; points at canonical KS1700/ks-unique-deviations.json + KS1700/annex-E-bs7671-adoption-table.json.
+- **KE example sample-schedule.md** — footer + Notes citations switched to direct KS form.
+- **KE example input.json** — standards_stack restructured (primary + annex_e_adoption_pathway + iec_routing + ks_unique_deviations).
+- **Manifest version** 1.1.0 → 1.2.0; standards array gains 8 KS1700/ entries.
+
+### Notes
+- KS 1700:2018 PDF is not in repo at the time of authoring. Every KS1700/ file is marked `verification_status: "draft-from-bs7671-derivative-needs-source-verification"`. Engineering content is structurally correct; precise clause numbering and KS-specific tolerance values should be verified against the official KEBS publication before downstream skills rely on tight tolerances. A future micro-sprint will promote verification status.
+- Existing 3 examples (UK / INT / US) unchanged — they don't carry KE jurisdiction.
+- IR schema unchanged (KS 1700 layer is consumed at generation time; no schema break).
+- Template for future African codes: NIS 197 (Nigeria), SANS 10142 (South Africa) — each becomes a future sprint following this v1.2 pattern.
+
 ## [1.1.0] - 2026-05-18
 
 ### Added

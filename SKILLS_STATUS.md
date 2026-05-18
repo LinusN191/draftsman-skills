@@ -20,7 +20,7 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | riser | `electrical/riser` | stub | BS 7671:2018 | — | — |
 | schematic | `electrical/schematic` | stub | BS EN 60617 | — | — |
 | small-power | `electrical/small-power` | stub | BS 7671:2018 | — | — |
-| earthing | `electrical/earthing` | **beta** | BS 7671:2018, IEC 60364, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 7/3 ✓ | v1.1.0 — adds KE TN-S Nairobi worked example + calc.zs_loop_impedance contract (WI3 deferred). 4 worked examples (UK TN-C-S, INT TT, US NEC, KE TN-S), 7 evals (6 WI5 + 1 skill-specific WI3+KE proof). Schema backward-compatible. intent-out.json now present in all 4 examples. |
+| earthing | `electrical/earthing` | **beta** | BS 7671:2018, IEC 60364, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 8/3 ✓ | v1.2.0 — KS 1700 standalone standards layer (28 files) + citation refactor from inline annotation to direct KS reference. Eval-08 verifies citation form. KS 1700 layer marked verification_status: "draft-from-bs7671-derivative-needs-source-verification" until KS PDF in repo. 4 worked examples (UK TN-C-S, INT TT, US NEC, KE TN-S), 8 evals (6 WI5 + 2 skill-specific WI3+KE+KS1700 proof). Schema backward-compatible. intent-out.json present in all 4 examples. |
 | emergency-lighting | `electrical/emergency-lighting` | stub | BS 5266-1, BS EN 1838 | — | — |
 | cable-schedule | `electrical/cable-schedule` | stub | BS 7671:2018 | — | — |
 | panel-schedule | `electrical/panel-schedule` | stub | BS 7671:2018, BS EN 61439 | — | — |
@@ -179,6 +179,19 @@ Status codes: `production` | `beta` | `draft` | `stub`
 
 ---
 
+## Standards layers (canonical content)
+
+| Layer | Body | Status | Version | Jurisdiction | Verification |
+|---|---|---|---|---|---|
+| BS7671 | IET / BSI | production | 1.x | GB | verified-against-source |
+| IEC60364 | IEC | production | 1.x | EU / INT | verified-against-source (most files; part5-52-cable-impedance.json marked draft) |
+| NFPA70 | NFPA | production | 1.x | US | verified-against-source |
+| KS1700 | KEBS | production | 1.0.0 | KE | draft-from-bs7671-derivative-needs-source-verification (new in earthing v1.2 — 2026-05-18) |
+
+Skills consume one or more layers per their jurisdiction routing. See each skill's `skill.manifest.json` `standards` array for specific files referenced.
+
+---
+
 ## Roadmap — next skills to promote
 
 Tier 1 sequence (live):
@@ -190,8 +203,9 @@ Tier 1 sequence (live):
 5. ✅ Phase B: `electrical/arc-flash` v1.0.0 beta (shipped 2026-05-17)
 6. ✅ clause_ref retrofit for 93 pre-existing files (shipped 2026-05-17)
 7. ✅ `electrical/arc-flash-labelling` v1.0.0 beta + ANSI-Z535-4 + ISO-7010 + BS-5499 (shipped 2026-05-17)
-8. 🔄 `electrical/earthing` v1.1 — TN-S + Zs table
-9. `electrical/db-layout` v1.1 — DC distribution + Type B RCD
+8. ✅ `electrical/earthing` v1.1.0 — TN-S + Zs table + KE example (shipped 2026-05-17)
+9. ✅ `electrical/earthing` v1.2.0 — KS 1700 standards layer + citation refactor (shipped 2026-05-18)
+10. `electrical/db-layout` v1.1 — DC distribution + Type B RCD
 10. `electrical/voltage-drop` (or fold into cable-sizing)
 11. `electrical/sld` v1.2 — eval split
 

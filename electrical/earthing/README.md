@@ -1,7 +1,7 @@
 # `earthing` — Electrical Earthing Schematic Generator
 
 **Status:** `beta`
-**Version:** `1.1.0`
+**Version:** `1.2.0`
 **Drawing type:** `earthing_schematic`
 **Reference:** `electrical/lighting-layout` (production skill — same pattern)
 
@@ -28,7 +28,7 @@ This is **stage 1** of the earthing skill — schematic only. Plan-view and decl
 | GB | BS 7671:2018+A3 Reg 411 family, Tables 54.7/54.8 | Table 54.7 or adiabatic 54.1 | TT only |
 | EU | IEC 60364-4-41, IEC 60364-5-54 | Table 54.2 or adiabatic 543.1.2 | TT only |
 | INT | IEC 60364-4-41, IEC 60364-5-54 | Table 54.2 or adiabatic 543.1.2 | TT only |
-| KE | KS 1700:2018 (adopts BS 7671 + IEC 60364) | Table 41.2 (BS 7671) or adiabatic | KS 1700 socket-RCD policy |
+| **KE** | **KS 1700:2018 (primary) + IEC 60364 (fallback per KS Annex E §VIII)** | **Table 41.2 (BS 7671) or adiabatic** | **KS 1700 socket-RCD policy** |
 | US | NEC 2023 Article 250 | Table 250.122 (by OCPD rating) | NEC GFCI rules per 210.8 |
 
 ## Cross-drawing intent contract
@@ -78,7 +78,8 @@ electrical/earthing/
 │   ├── eval-04-missing-soil-resistivity.yaml
 │   ├── eval-05-jurisdiction-us-nec.yaml
 │   ├── eval-06-rationale-block.yaml
-│   └── eval-07-ke-tn-s-tool-deferral.yaml
+│   ├── eval-07-ke-tn-s-tool-deferral.yaml
+│   └── eval-08-ks1700-citation-consistency.yaml
 └── examples/
     ├── uk-dwelling-tn-cs/         (input.json, reasoning.md, output.json, intent-out.json)
     ├── intl-rural-tt/             (input.json, reasoning.md, output.json, intent-out.json)
@@ -97,8 +98,9 @@ electrical/earthing/
 | eval-05-jurisdiction-us-nec | jurisdiction_switch | NEC terminology, Table 250.122, no BS 7671 citations |
 | eval-06-rationale-block | rationale_block | 9-section taxonomy + clause-cited decisions per WI2 |
 | eval-07-ke-tn-s-tool-deferral | skill_specific | KE TN-S + WI3 tool deferral (15 assertions) |
+| eval-08-ks1700-citation-consistency | skill_specific | KE example v1.2 refactor: direct KS citations, no "(adopted by)" pattern, KS-unique files validate |
 
-7 evals: 6 WI5 categories + 1 skill-specific. See `evals/runner-config.json` for scoring thresholds.
+8 evals: 6 WI5 categories + 2 skill-specific. See `evals/runner-config.json` for scoring thresholds.
 
 ## Tool calls awaiting runtime
 
