@@ -1,0 +1,65 @@
+{
+  "clause_ref": "KS 1700 2018:KS-Unique-Deviations",
+  "transcribed_at": "2026-05-18",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-from-bs7671-derivative-needs-source-verification",
+  "_verification_note": "Canonical index of KS 1700:2018 deviations from BS 7671:2018+A2 baseline. Each deviation cross-references the per-clause file where the deviation content lives. Verify against published KS 1700:2018 PDF.",
+  "_title": "KS 1700:2018 — Deviations from BS 7671:2018+A2 baseline",
+  "_purpose": "Single source of truth for engineers asking 'where does KS 1700 differ from BS 7671?'. Each row documents one deviation with rationale + engineering impact + applicable clauses.",
+  "deviations": [
+    {
+      "id": "socket-rcd-universal",
+      "ks_clause": "§411.3.3",
+      "summary": "30mA RCD additional protection mandatory on all socket circuits ≤32A regardless of Zs compliance",
+      "diverges_from": "BS 7671:2018 pre-AMD2 socket-RCD selective rule (BS 7671 AMD 2 (2022) brought BS into alignment)",
+      "rationale": "Kenya climate (humidity, particularly coastal) plus end-user risk profile justify universal socket-RCD; aligned with BS AMD 2 (2022) but applied from initial KS publication in 2018",
+      "engineering_impact": "Every Kenya design with socket circuits ≤32A must include 30mA RCD; engineers should NOT omit RCD even where Zs compliance is achieved",
+      "per_clause_file": "reg411-rcd-requirements.json"
+    },
+    {
+      "id": "climate-adjusted-ambient-temperature",
+      "ks_clause": "§522.1 (informative) + Annex G",
+      "summary": "Ambient design temperature baselines per Kenya climate zone (highland 25°C indoor / coastal 35°C / inland tropical 30°C / arid northern 35°C)",
+      "diverges_from": "BS 7671 Appendix 4 standard 30°C indoor baseline",
+      "rationale": "Coastal humidity + inland highland diurnal range + arid northern climate require zone-specific baselines for accurate cable ampacity design",
+      "engineering_impact": "Cable ampacity derating coefficient Ca applied per zone; effective cable size larger than BS-baseline calculation in coastal + arid zones; smaller in highland zone",
+      "per_clause_file": "reg521-installation-methods.json + appendix4-correction-factors.json"
+    },
+    {
+      "id": "no-722-ev-charging-native-clause",
+      "ks_clause": "§Annex E §VIII (routing)",
+      "summary": "KS 1700:2018 has no native §722 EV charging clause; KS Annex E §VIII directs to IEC 60364-7-722:2018",
+      "diverges_from": "BS 7671:2018+A2 Part 7 §722 (added by BS AMD 2 in 2022)",
+      "rationale": "KS 1700:2018 first edition predates BS 7671 AMD 2 (2022); EV charging is in scope for the next KS revision (estimated 2024 cycle)",
+      "engineering_impact": "EV installations in Kenya apply IEC 60364-7-722 directly + KS 1700 §411/§544/§415 baseline; future KS revision will incorporate native §722",
+      "per_clause_file": "part7-special-locations.json"
+    },
+    {
+      "id": "coastal-outdoor-ip65-minimum",
+      "ks_clause": "§522 (informative note)",
+      "summary": "Outdoor installations in Kenya coastal zone (within 10km of Indian Ocean) and lakeshore zones require IP65 minimum",
+      "diverges_from": "BS 7671 §522 silent on Kenya-specific coastal humidity",
+      "rationale": "High humidity + salt-laden air on Kenya coast (Mombasa, Kilifi, Kwale, Lamu) accelerate corrosion of enclosures below IP65",
+      "engineering_impact": "Outdoor equipment in coastal counties specified at IP65 minimum; informally enforced by EPRA inspections",
+      "per_clause_file": "reg522-ip-ratings.json"
+    },
+    {
+      "id": "kebs-certification-mandatory",
+      "ks_clause": "§531 + §Annex H",
+      "summary": "All consumer-side electrical equipment sold in Kenya must carry KEBS certification mark",
+      "diverges_from": "BS 7671 silent on consumer-protection certification mandate",
+      "rationale": "Kenyan Standards Act Cap 496 mandates KEBS Mark for sale of regulated products; consumer protection",
+      "engineering_impact": "Engineers should specify KEBS-certified equipment; reject deliveries of unmarked devices",
+      "per_clause_file": "protective-device-types.md"
+    },
+    {
+      "id": "epra-inspection-regime",
+      "ks_clause": "§Part 6 + §Annex D",
+      "summary": "Mandatory periodic inspection of installations: ≤5 years commercial/industrial, ≤10 years domestic, by EPRA-registered electrical contractor",
+      "diverges_from": "BS 7671 recommends periodic inspection but no statutory mandate (UK BS 7671 is consumer-protection guidance only)",
+      "rationale": "Kenya Electricity Act provides statutory mandate for periodic inspection regime; EPRA enforces",
+      "engineering_impact": "Initial verification certificate + scheduled periodic inspection required; engineer/contractor must be EPRA-registered",
+      "per_clause_file": "inspection-and-testing.md"
+    }
+  ]
+}
