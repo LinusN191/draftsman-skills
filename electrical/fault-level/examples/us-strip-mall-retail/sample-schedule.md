@@ -10,7 +10,7 @@
 
 | Node     | Designation                                            | Ik"max (kA) | Ik"min (kA) | ipk (kA) | X/R   | Z_total (mΩ) |
 |----------|--------------------------------------------------------|-------------|-------------|----------|-------|--------------|
-| HV-1     | 13.2 kV PoCo primary radial supply                     | 28.00       | 25.45       | 65.67    | 7.00  | 299 400      |
+| HV-1     | 13.2 kV PoCo primary radial supply                     | 28.00       | 25.45       | 65.67    | 7.00  |   299.4      |
 | TX-1     | 300 kVA PoCo TX 208Y/120V LV terminals                 | 23.78       | 21.52       | 56.96    | 8.00  |   5.302      |
 | MSP      | Main service panel 600 A incoming (10 ft × 350 kcmil)  | 22.00       | 19.90       | 52.69    | 8.00  |   5.732      |
 | MSP.BUS  | MSP busbar 600 A                                       | 21.58       | 19.52       | 50.77    | 7.14  |   5.844      |
@@ -26,8 +26,7 @@
 - Cable impedance per NEC 2023 Chapter 9 Table 9 (Cu, PVC raceway, 75 °C):
   350 kcmil R = 0.041 Ω/1000 ft, X = 0.037 Ω/1000 ft; 250 kcmil R = 0.054 Ω/1000 ft,
   X = 0.038 Ω/1000 ft; 4/0 AWG R = 0.063 Ω/1000 ft, X = 0.040 Ω/1000 ft.
-- HV `Z_total` quoted at HV side in mΩ (≈299 400 mΩ = 0.299 Ω); referred to LV ≈ 74 µΩ —
-  negligible against TX impedance.
+- HV `Z_total` quoted at HV side in mΩ (≈299.4 mΩ = 0.299 Ω); referred to LV ≈ 74 µΩ — negligible against TX impedance.
 
 ## Motor Contribution — IEC 60909-0:2016 §3.8.1 Threshold Check
 
