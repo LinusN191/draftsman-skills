@@ -1,0 +1,25 @@
+{
+  "intent_type": "earthing",
+  "intent_version": "1.0.0",
+  "produced_by_skill_version": "earthing/1.1.0",
+  "tool_call_pending": true,
+  "jurisdiction": "INT",
+  "system_type": "TT",
+  "ze_declared_ohm": 85.0,
+  "supply_bond_type": "consumer_electrode_only",
+  "main_earthing_conductor_csa_mm2": 10,
+  "electrodes": [
+    { "id": "E1", "electrode_type": "rod", "length_mm": 1500, "diameter_mm": 16, "burial_depth_mm": 600, "soil_resistivity_ohm_m": 100, "ra_ohm_specified": 100 },
+    { "id": "E2", "electrode_type": "rod", "length_mm": 1500, "diameter_mm": 16, "burial_depth_mm": 600, "soil_resistivity_ohm_m": 100, "ra_ohm_specified": 100 }
+  ],
+  "main_bonding": [
+    { "id": "B1", "target": "fuel_pipe_external", "csa_mm2": 10 }
+  ],
+  "circuits": [
+    { "circuit_id": "C01", "cpc_csa_mm2": 1.5, "device": "MCB_B_10A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C02", "cpc_csa_mm2": 2.5, "device": "MCB_C_16A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C03", "cpc_csa_mm2": 4.0, "device": "MCB_C_20A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 }
+  ],
+  "overall_compliant": true,
+  "produced_at": "2026-05-18"
+}
