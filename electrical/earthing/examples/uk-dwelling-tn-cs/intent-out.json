@@ -1,0 +1,27 @@
+{
+  "intent_type": "earthing",
+  "intent_version": "1.0.0",
+  "produced_by_skill_version": "earthing/1.1.0",
+  "tool_call_pending": true,
+  "jurisdiction": "GB",
+  "system_type": "TN-C-S",
+  "ze_declared_ohm": 0.35,
+  "supply_bond_type": "dno_pme_bond",
+  "main_earthing_conductor_csa_mm2": 16,
+  "electrodes": [],
+  "main_bonding": [
+    { "id": "B1", "target": "water_pipe", "csa_mm2": 10 },
+    { "id": "B2", "target": "gas_pipe", "csa_mm2": 10 },
+    { "id": "B3", "target": "structural_steel", "csa_mm2": 6 }
+  ],
+  "circuits": [
+    { "circuit_id": "C01", "cpc_csa_mm2": 1.5, "device": "MCB_B_6A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C02", "cpc_csa_mm2": 1.5, "device": "MCB_B_6A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C03", "cpc_csa_mm2": 1.5, "device": "MCB_B_32A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C04", "cpc_csa_mm2": 1.5, "device": "MCB_B_32A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C05", "cpc_csa_mm2": 2.5, "device": "MCB_B_32A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C06", "cpc_csa_mm2": 4.0, "device": "MCB_B_40A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 }
+  ],
+  "overall_compliant": true,
+  "produced_at": "2026-05-18"
+}
