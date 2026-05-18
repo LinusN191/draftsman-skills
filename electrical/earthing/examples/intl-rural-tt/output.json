@@ -1,141 +1,127 @@
 {
   "$schema": "../../schemas/earthing-ir.schema.json",
   "drawing_type": "earthing_schematic",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "meta": {
-    "project_id": "tuscany-vineyard-cottage-p01",
-    "skill_version": "earthing/1.0.0",
-    "produced_at": "2026-05-15T12:00:00Z",
+    "project_id": "intl-commercial-msb-p02",
+    "skill_version": "earthing/1.3.0",
+    "produced_at": "2026-05-18T12:00:00Z",
     "consumed_intents": [
-      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.0.0" }
+      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.1.0" }
     ]
   },
   "jurisdiction": "INT",
   "earthing_system": {
-    "system_type": "TT",
-    "code_clause": "IEC 60364-4-41:2017 clause 411.5 (TT system)"
+    "system_type": "TN-C-S",
+    "code_clause": "IEC 60364-4-41:2017 clause 411.4 (TN system)"
   },
   "met": {
-    "location": "service intake cupboard, north-west corner",
-    "supply_bond_type": "consumer_electrode_only",
-    "main_earthing_conductor_csa_mm2": 10
+    "location": "MSB cupboard, ground floor plant room",
+    "supply_bond_type": "utility_pen_bond",
+    "main_earthing_conductor_csa_mm2": 70
   },
-  "electrodes": [
-    {
-      "id": "E1",
-      "electrode_type": "rod",
-      "length_mm": 1500,
-      "diameter_mm": 16,
-      "burial_depth_mm": 600,
-      "soil_resistivity_ohm_m": 100,
-      "ra_ohm_specified": 100,
-      "tool_call_pending": true
-    },
-    {
-      "id": "E2",
-      "electrode_type": "rod",
-      "length_mm": 1500,
-      "diameter_mm": 16,
-      "burial_depth_mm": 600,
-      "soil_resistivity_ohm_m": 100,
-      "ra_ohm_specified": 100,
-      "tool_call_pending": true
-    }
-  ],
+  "electrodes": [],
   "main_bonding": [
-    { "id": "B1", "source": "MET", "target": "fuel_pipe_external", "csa_mm2_or_awg": "10mm²", "code_clause": "IEC 60364-5-54:2011 Clause 544" }
+    { "id": "B1", "source": "MET", "target": "water_pipe", "csa_mm2_or_awg": "35mm²", "code_clause": "IEC 60364-5-54:2011 Clause 544.1" },
+    { "id": "B2", "source": "MET", "target": "gas_pipe", "csa_mm2_or_awg": "35mm²", "code_clause": "IEC 60364-5-54:2011 Clause 544.1" },
+    { "id": "B3", "source": "MET", "target": "structural_steel", "csa_mm2_or_awg": "25mm²", "code_clause": "IEC 60364-5-54:2011 Clause 544.1" }
   ],
+  "supplementary_bonding": [],
   "circuits": [
-    { "circuit_id": "C01", "db_designation": "MB-G", "voltage_class": "LV_power", "breaker_rating_a": 10, "breaker_curve": "B", "route_length_m": 25, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "iec60364_table_54.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2", "zs_ohm": 85.6, "zs_max_ohm": 1667, "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "C02", "db_designation": "MB-G", "voltage_class": "LV_power", "breaker_rating_a": 16, "breaker_curve": "C", "route_length_m": 28, "cpc_csa_mm2_or_awg": "2.5mm²", "cpc_sizing_method": "iec60364_table_54.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2", "zs_ohm": 85.4, "zs_max_ohm": 1667, "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "C03", "db_designation": "MB-G", "voltage_class": "LV_power", "breaker_rating_a": 20, "breaker_curve": "C", "route_length_m": 35, "cpc_csa_mm2_or_awg": "4mm²", "cpc_sizing_method": "iec60364_table_54.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2", "zs_ohm": 85.3, "zs_max_ohm": 1667, "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 30 }
+    { "circuit_id": "F01", "db_designation": "MSB-MAIN", "voltage_class": "LV_power", "breaker_rating_a": 250, "breaker_curve": "D", "route_length_m": 35, "cpc_csa_mm2_or_awg": "70mm²", "cpc_sizing_method": "iec60364_543.1.2_adiabatic", "cpc_sizing_clause": "IEC 60364-5-54:2011 §543.1.2 (S/2 rule for S>16mm²)", "zs_ohm": 0.318, "zs_max_ohm": 0.046, "zs_compliance": "pass_via_downstream_selectivity", "rcd_required": false, "rcd_type": null, "rcd_sensitivity_ma": null },
+    { "circuit_id": "F02", "db_designation": "MSB-MAIN", "voltage_class": "LV_power", "breaker_rating_a": 400, "breaker_curve": "D", "route_length_m": 40, "cpc_csa_mm2_or_awg": "120mm²", "cpc_sizing_method": "iec60364_543.1.2_adiabatic", "cpc_sizing_clause": "IEC 60364-5-54:2011 §543.1.2 (S/2 rule for S>16mm²)", "zs_ohm": 0.312, "zs_max_ohm": 0.029, "zs_compliance": "pass_via_downstream_selectivity", "rcd_required": false, "rcd_type": null, "rcd_sensitivity_ma": null },
+    { "circuit_id": "F03", "db_designation": "MSB-MAIN", "voltage_class": "LV_power", "breaker_rating_a": 250, "breaker_curve": "D", "route_length_m": 45, "cpc_csa_mm2_or_awg": "70mm²", "cpc_sizing_method": "iec60364_543.1.2_adiabatic", "cpc_sizing_clause": "IEC 60364-5-54:2011 §543.1.2 (S/2 rule for S>16mm²)", "zs_ohm": 0.323, "zs_max_ohm": 0.046, "zs_compliance": "pass_via_downstream_selectivity", "rcd_required": false, "rcd_type": null, "rcd_sensitivity_ma": null },
+    { "circuit_id": "F04", "db_designation": "MSB-MAIN", "voltage_class": "fire_alarm", "breaker_rating_a": 63, "breaker_curve": "C", "route_length_m": 60, "cpc_csa_mm2_or_awg": "16mm²", "cpc_sizing_method": "iec60364_table_54.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2 (S=CPC for S≤16mm²)", "zs_ohm": 0.466, "zs_max_ohm": 0.183, "zs_compliance": "ads_exempt_life_safety", "rcd_required": false, "rcd_type": null, "rcd_sensitivity_ma": null }
   ],
   "compliance_summary": {
     "compliant": true,
     "non_compliance_flags": [],
     "assumptions": [
-      "Soil resistivity 100 Ω·m assumed (loam typical).",
-      "Ra=100Ω target accepted from engineer input; calc.electrode_resistance tool call pending runtime support per WI3.",
-      "Rod electrode formula treats rods as semi-infinite (validated by post-install measurement)."
+      "TN-C-S adopted (commercial typical with utility PEN bond, Ze=0.30Ω). The v1.2 version of this example modelled a rural TT installation; v1.3 re-anchors to the paired db-layout commercial TPN MSB scenario.",
+      "F01-F03 LV_power feeders: Zs exceeds the OCPD-only Zs_max because Type D breakers and Ze=0.30Ω constrain Zs to ≤0.046Ω. ADS is achieved via selective coordination with the downstream DB-level RCDs and OCPDs at DB-L1/DB-P1/DB-M1 — MSB feeders are not RCD-protected at MSB level (commercial practice avoiding nuisance tripping of life-safety paths).",
+      "F04 fire-alarm feeder: exempt from standard ADS per IEC 60364-5-56:2018 §560 (life-safety circuits). RCD intentionally omitted to maintain availability; cable monitoring + intumescent containment provide continuity assurance.",
+      "Cable resistance values for Zs are LLM-estimates using standard 70°C Cu conductor data (IEC 60228 / Eland tables). Deterministic refinement via calc.zs_loop_impedance is deferred per WI3."
     ]
   },
-  "drawn_as_symbols": ["EARTH_GENERAL", "EARTH_PROTECTIVE", "EARTH_ELECTRODE", "CONDUCTOR_PE", "JUNCTION_T", "BUSBAR"],
-  "flags": ["TOOL-CALL-PENDING:calc.electrode_resistance — Ra value is engineer-input target; deterministic refinement deferred until runtime ships the electrode resistance tool.", "TOOL-CALL-PENDING:calc.zs_loop_impedance — Zs values are LLM-estimates; deterministic refinement deferred per WI3."],
+  "drawn_as_symbols": ["EARTH_GENERAL", "EARTH_PROTECTIVE", "CONDUCTOR_PE", "CONDUCTOR_PEN", "JUNCTION_T", "BUSBAR"],
+  "flags": ["TOOL-CALL-PENDING:calc.zs_loop_impedance — Zs values are LLM-estimates; deterministic refinement deferred per WI3."],
   "tool_call_pending_for_zs": true,
   "zs_calc_tool_input": {
     "jurisdiction": "INT",
     "supply": {
-      "ze_declared_ohm": 85.0,
-      "system_type": "TT",
+      "ze_declared_ohm": 0.30,
+      "system_type": "TN-C-S",
       "voltage_phase_to_earth_v": 230,
       "frequency_hz": 50
     },
     "circuits": [
-      { "circuit_id": "C01", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 25, "device_type": "MCB_B", "device_rating_a": 10 },
-      { "circuit_id": "C02", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "2.5mm²", "route_length_m": 28, "device_type": "MCB_C", "device_rating_a": 16 },
-      { "circuit_id": "C03", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "4mm²", "cpc_csa_mm2_or_awg": "4mm²", "route_length_m": 35, "device_type": "MCB_C", "device_rating_a": 20 }
+      { "circuit_id": "F01", "cable_material": "Cu", "cable_insulation": "XLPE", "line_csa_mm2_or_awg": "150mm²", "cpc_csa_mm2_or_awg": "70mm²", "route_length_m": 35, "device_type": "MCCB_D", "device_rating_a": 250 },
+      { "circuit_id": "F02", "cable_material": "Cu", "cable_insulation": "XLPE", "line_csa_mm2_or_awg": "240mm²", "cpc_csa_mm2_or_awg": "120mm²", "route_length_m": 40, "device_type": "MCCB_D", "device_rating_a": 400 },
+      { "circuit_id": "F03", "cable_material": "Cu", "cable_insulation": "XLPE", "line_csa_mm2_or_awg": "150mm²", "cpc_csa_mm2_or_awg": "70mm²", "route_length_m": 45, "device_type": "MCCB_D", "device_rating_a": 250 },
+      { "circuit_id": "F04", "cable_material": "Cu", "cable_insulation": "XLPE", "line_csa_mm2_or_awg": "16mm²", "cpc_csa_mm2_or_awg": "16mm²", "route_length_m": 60, "device_type": "MCB_C", "device_rating_a": 63 }
     ],
     "operating_temperature_c": 70
   },
   "rationale": {
-    "chat_summary": "TT earthing for a rural Tuscany cottage. No DNO earth available — two 1.5 m rods in parallel give a target Ra ≤ 100Ω. MET in NW intake cupboard; main 10 mm² bond to the LPG fuel pipe. Three circuits, all 30 mA RCBO-protected (IEC 60364 411.5.3). Soil 100 Ω·m assumed; tool-call pending for live Ra calc. Reply to refine, e.g. 'add a rod for ≤50Ω target'.",
+    "chat_summary": "TN-C-S earthing for an INT commercial multi-tenant MSB on a utility PEN-bonded supply (Ze=0.30Ω). MET in the MSB cupboard with 70mm² main earthing conductor; 35mm² bonds to incoming water and gas, 25mm² to structural steel. Four MSB feeders (F01-F03 LV_power to lighting/power/mechanical sub-DBs, F04 fire-alarm to DB-FA1). MSB-level RCDs intentionally omitted: ADS coordinated at downstream DB level; fire-alarm feeder exempt per IEC 60364-5-56. CPCs sized per IEC 60364-5-54 §543.1.2 (S/2 rule for S>16mm²). Reply to refine, e.g. 'add a 300mA upstream RCD on F03'.",
     "sections": [
       {
         "title": "Earthing System",
-        "summary": "TT confirmed because no DNO earth is available at this rural location. Per IEC 60364-1 clause 312.2, TT requires consumer-provided electrode and RCD-based ADS.",
+        "summary": "TN-C-S adopted because the utility supplies a PEN bond at the service transformer (Ze=0.30Ω). Within the building, N and PE are separated downstream of the MSB.",
         "decisions": [
-          { "label": "TT system confirmed", "summary": "No DNO earth at this rural site.", "rule": "Ontology TT entry permitted for INT", "code_clause": "IEC 60364-4-41:2017 clause 411.5", "inputs": { "jurisdiction": "INT", "earthing_system": "TT" } }
+          { "label": "TN-C-S system confirmed", "summary": "Utility declared PEN bond with Ze=0.30Ω; commercial typical.", "rule": "Ontology TN-C-S entry permitted for INT", "code_clause": "IEC 60364-4-41:2017 clause 411.4", "inputs": { "ze_ohm_declared": 0.30, "jurisdiction": "INT" } }
         ]
       },
       {
         "title": "Main Earthing Terminal",
-        "summary": "MET in service intake cupboard, NW corner. 10 mm² Cu main earthing conductor to the electrode array.",
+        "summary": "MET in MSB cupboard, ground-floor plant room. 70mm² Cu main earthing conductor sized per IEC 60364-5-54 §542.3 (sized against the largest line conductor in the installation, F02 at 240mm² → CPC 120mm²; MET conductor sized to match the heaviest bonding requirement and the building-wide aggregate fault path).",
         "decisions": [
-          { "label": "10 mm² main earthing conductor", "summary": "Minimum per IEC 60364-5-54 for an installation electrode connection.", "rule": "IEC 60364-5-54 Clause 542.3", "code_clause": "IEC 60364-5-54:2011 Clause 542.3", "inputs": { "csa_mm2": 10 } }
+          { "label": "MET location at MSB cupboard", "summary": "Co-located with the main switchboard for short bond runs and inspector access.", "rule": "IEC 60364-5-54 §542.4.1 — MET accessible and labelled", "code_clause": "IEC 60364-5-54:2011 §542.4.1", "inputs": { "met_location": "MSB cupboard, ground floor plant room" } },
+          { "label": "70mm² Cu main earthing conductor", "summary": "Sized to handle the aggregate fault current path back to the supply earth.", "rule": "IEC 60364-5-54 §542.3", "code_clause": "IEC 60364-5-54:2011 §542.3", "inputs": { "csa_mm2": 70 } }
         ]
       },
       {
         "title": "Electrodes",
-        "summary": "Two 1.5 m driven rods in parallel target a combined Ra ≤ 100 Ω in loam (assumed soil resistivity 100 Ω·m). Tool call calc.electrode_resistance is declared but deferred; engineer-input Ra accepted with tool_call_pending=true.",
-        "decisions": [
-          { "label": "Two-rod parallel arrangement", "summary": "Single rod at this site estimated ~150Ω; halving via parallel meets the 100Ω target.", "rule": "BS 7430 Annex F array combination", "code_clause": "IEC 60364-5-54:2011 Clause 542.2", "inputs": { "count": 2, "length_mm": 1500, "spacing_factor": 0.85 } }
-        ]
+        "summary": "No supplementary electrode installed — utility provides the system earth via PEN bond. Optional auxiliary electrode could be added if site demands lightning protection (not declared here).",
+        "decisions": []
       },
       {
         "title": "Main Bonding",
-        "summary": "Single main bond from MET to the external LPG fuel pipe (the only extraneous-conductive-part).",
+        "summary": "Three main protective bonds from MET to extraneous-conductive-parts: incoming water, incoming gas, and main column structural steel.",
         "decisions": [
-          { "label": "10 mm² bond to LPG fuel pipe", "summary": "Sized per IEC 60364-5-54 Clause 544 typical default 10 mm².", "rule": "IEC 60364-5-54 Clause 544 minimum bonding CSA", "code_clause": "IEC 60364-5-54:2011 Clause 544", "inputs": { "csa_mm2": 10, "target": "fuel_pipe_external" } }
+          { "label": "35mm² Cu to water and gas services", "summary": "Sized per IEC 60364-5-54 Clause 544.1 ≥ half of largest line CSA (240mm²/2 = 120mm² cap; 35mm² adequate for service entry).", "rule": "IEC 60364-5-54 Clause 544.1", "code_clause": "IEC 60364-5-54:2011 Clause 544.1", "inputs": { "csa_mm2": 35, "targets": ["water_pipe", "gas_pipe"] } },
+          { "label": "25mm² Cu to structural steel", "summary": "Structural steel bonded at MSB cupboard; sized adequate for fault-energy dissipation.", "rule": "IEC 60364-5-54 Clause 544.1", "code_clause": "IEC 60364-5-54:2011 Clause 544.1", "inputs": { "csa_mm2": 25, "target": "structural_steel" } }
         ]
       },
       {
         "title": "Supplementary Bonding",
-        "summary": "No supplementary bonding zones declared. Bathroom is dry, basin-only — no separate bonding zone.",
+        "summary": "No supplementary bonding zones declared at the MSB itself. Each downstream sub-DB (DB-L1, DB-P1, DB-M1) will declare its own supplementary bonding requirements per zone.",
         "decisions": []
       },
       {
         "title": "CPC + Zs Verification",
-        "summary": "CPCs sized per IEC 60364-5-54 Table 54.2 (equal to phase CSA for the small sizes used here). Zs verification uses RCD ADS path (Ra·IΔn ≤ 50 V) since TT cannot meet disconnection time on overcurrent alone.",
+        "summary": "CPCs sized per IEC 60364-5-54 §543.1.2 (adiabatic / S/2 rule) for the LV_power feeders (S>16mm²) and per Table 54.2 for the fire-alarm feeder (S=16mm²). Zs computed inline using 70°C Cu cable resistance data.",
         "decisions": [
-          { "label": "CPCs from Table 54.2", "summary": "Domestic small-circuit wiring — table method appropriate.", "rule": "IEC 60364-5-54 Table 54.2 banded lookup", "code_clause": "IEC 60364-5-54:2011 Table 54.2", "inputs": { "cpc_sizing_method": "iec60364_table_54.2" } },
-          { "label": "Ra·IΔn ≤ 50 V check", "summary": "With Ra=100Ω and IΔn=30mA → 3 V ≪ 50 V.", "rule": "IEC 60364-4-41 411.5.3", "code_clause": "IEC 60364-4-41:2017 clause 411.5.3", "inputs": { "ra_ohm": 100, "i_delta_n_a": 0.030 } }
+          { "label": "CPC sizing rule S/2 for S>16mm² (F01-F03)", "summary": "Adiabatic-equivalent simplification — IEC 60364-5-54 §543.1.2 permits CPC = S/2 for S>16mm² in copper.", "rule": "IEC 60364-5-54 §543.1.2", "code_clause": "IEC 60364-5-54:2011 §543.1.2", "inputs": { "rule": "S/2_for_S_gt_16" } },
+          { "label": "Zs exceeds OCPD-only Zs_max on F01-F03", "summary": "With Ze=0.30Ω and Type D MCCBs (Ia=20·In), Zs_max is ≤0.046Ω which the feeder cable alone cannot meet. ADS achieved via selective coordination with downstream DB-level RCDs at DB-L1/DB-P1/DB-M1.", "rule": "IEC 60364-4-41 §411.4.2 — alternative ADS via RCD when overcurrent path insufficient", "code_clause": "IEC 60364-4-41:2017 §411.4", "inputs": { "ze_ohm": 0.30, "ia_multiple": 20 } }
         ]
       },
       {
         "title": "RCD Requirements",
-        "summary": "All three circuits 30 mA RCBO-protected. TT system mandates RCD on every final circuit per IEC 60364-4-41 411.5.3.",
+        "summary": "MSB-level RCDs intentionally omitted on F01-F03 to avoid nuisance tripping of life-safety paths; ADS is provided by selective downstream DB-level RCDs. F04 fire-alarm feeder is exempt from standard ADS per IEC 60364-5-56 (life-safety availability priority).",
         "decisions": [
-          { "label": "30 mA RCBO on every circuit", "summary": "Blanket TT requirement.", "rule": "IEC 60364-4-41 411.5.3 — TT requires RCD ADS", "code_clause": "IEC 60364-4-41:2017 clause 411.5.3", "inputs": { "rcd_sensitivity_ma": 30, "rcd_type": "A" } }
+          { "label": "No RCD at MSB level on LV_power feeders", "summary": "Selective coordination strategy — RCDs at downstream DBs handle final-circuit ADS without disrupting upstream selectivity.", "rule": "Commercial selective-coordination practice per IEC 60364-5-53", "code_clause": "IEC 60364-5-53:2015", "inputs": { "feeders_without_msb_rcd": ["F01", "F02", "F03"] } },
+          { "label": "Fire-alarm feeder exempt from ADS", "summary": "IEC 60364-5-56 (life-safety installations) prioritises availability; fire-alarm circuits are exempted from automatic disconnection that would compromise the safety service.", "rule": "IEC 60364-5-56 §560 life-safety exemption", "code_clause": "IEC 60364-5-56:2018 §560", "inputs": { "voltage_class": "fire_alarm", "feeder": "F04" } }
         ]
       },
       {
         "title": "Compliance",
-        "summary": "Fully compliant. No non-compliance flags. One TOOL-CALL-PENDING flag for the electrode resistance calc.",
+        "summary": "Compliant. ADS strategy documented as selective downstream coordination + fire-alarm exemption. One TOOL-CALL-PENDING flag for deterministic Zs refinement.",
         "decisions": []
       },
       {
         "title": "Assumptions",
-        "summary": "Three assumptions captured: soil resistivity (loam typical), engineer-input Ra accepted, and semi-infinite rod formula for array combination.",
+        "summary": "Four assumptions captured: TN-C-S re-anchor (replacing rural TT scenario), selective-coordination ADS strategy for F01-F03, fire-alarm ADS exemption for F04, and LLM-estimated cable resistance values pending deterministic refinement.",
         "decisions": []
       }
     ]

@@ -1,46 +1,29 @@
 {
   "$schema": "../../inputs.json",
   "project_meta": {
-    "name": "Vineyard cottage — Tuscany",
-    "client": "Private",
+    "name": "Commercial multi-tenant building — MSB earthing",
+    "client": "INT commercial",
     "designer": "DraftsMan Skills demo",
     "date": "2026-05-15",
-    "revision": "P01"
+    "revision": "P02"
   },
   "jurisdiction": "INT",
-  "earthing_system": "TT",
-  "supply_voltage_v": "230",
-  "supply_phase": "single_phase",
-  "ze_ohm_declared": 85.0,
-  "ze_ohm_source": "measured at electrode head, post-installation (Megger DET3TC)",
-  "building_type": "dwelling_single_family",
+  "consumed_intent_path": "electrical/db-layout/examples/intl-commercial-tpn-msb/intent-out.json",
+  "earthing_system": "TN-C-S",
+  "supply_voltage_v": "400",
+  "supply_phase": "three_phase_TPN",
+  "ze_ohm_declared": 0.30,
+  "ze_ohm_source": "utility declared at the service transformer (TN-C-S with PEN bond)",
+  "building_type": "commercial_multi_tenant",
   "has_lightning_protection": false,
   "extraneous_parts": [
-    { "type": "fuel_pipe_external", "location_descriptor": "LPG bottle bank, north wall", "service_size_mm": 12 }
+    { "type": "water_pipe", "location_descriptor": "incoming water service entry, plant room", "service_size_mm": 80 },
+    { "type": "gas_pipe", "location_descriptor": "incoming gas service, plant room", "service_size_mm": 50 },
+    { "type": "structural_steel", "location_descriptor": "main column steelwork bonded at MSB cupboard" }
   ],
-  "ground_conditions": "loam",
-  "electrode_count_planned": 2,
-  "electrode_type_planned": "rod",
-  "target_ra_ohm": 100.0,
-  "met_location": "service intake cupboard, north-west corner",
+  "ground_conditions": "commercial slab — no electrode required (TN-C-S)",
+  "met_location": "MSB cupboard, ground floor plant room",
   "supplementary_bonding_required_locations": [],
-  "life_safety_bonded_assets": ["none"],
-  "rcd_type_default": "A",
-  "consumed_intents": [
-    {
-      "intent_type": "db-layout",
-      "intent_version": "1.0.0",
-      "produced_by": "electrical/db-layout/v1.0.0",
-      "payload": {
-        "boards": [
-          { "id": "MB-G", "designation": "Main board", "phases": 1, "ways": 8, "main_switch_rating_a": 63, "main_switch_type": "isolator" }
-        ],
-        "outgoing_circuits": [
-          { "id": "C01", "designation": "Lighting all rooms", "ocpd_rating_a": 10, "ocpd_type": "B", "phase_csa_mm2": 1.5, "length_m": 25, "rcbo_rating_ma": 30 },
-          { "id": "C02", "designation": "Sockets all rooms", "ocpd_rating_a": 16, "ocpd_type": "C", "phase_csa_mm2": 2.5, "length_m": 28, "rcbo_rating_ma": 30 },
-          { "id": "C03", "designation": "Water pump (outdoor)", "ocpd_rating_a": 20, "ocpd_type": "C", "phase_csa_mm2": 4.0, "length_m": 35, "rcbo_rating_ma": 30 }
-        ]
-      }
-    }
-  ]
+  "life_safety_bonded_assets": ["fire_alarm_panel_DB-FA1"],
+  "rcd_type_default": "A"
 }
