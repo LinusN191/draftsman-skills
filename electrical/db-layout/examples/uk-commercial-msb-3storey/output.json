@@ -1,0 +1,56 @@
+{
+  "$schema": "../../schemas/db-layout-ir.schema.json",
+  "drawing_type": "db_layout",
+  "version": "1.2.0",
+  "meta": {
+    "project_id": "uk-3storey-office-eg01",
+    "skill_version": "db-layout/1.2.0",
+    "produced_at": "2026-05-18T10:00:00Z"
+  },
+  "jurisdiction": "GB",
+  "board": {
+    "db_id": "MSB-MAIN",
+    "designation": "MSB-MAIN — Main switchboard, UK 3-storey office",
+    "location": "ground-floor plant room",
+    "enclosure_rating": "IP4X",
+    "manufacturer_class": "BS EN 61439-1 Type-Tested Assembly (TTA)",
+    "scope": "rollup"
+  },
+  "incoming_supply": {
+    "voltage_v": 400,
+    "phase_arrangement": "TPN_plus_E",
+    "supply_rating_a": 400,
+    "fed_from": "UK DNO TN-C-S 400V TPN",
+    "supply_class": "non_essential",
+    "declared_pfc_ka": 9.8
+  },
+  "main_switch": {
+    "type": "MCCB",
+    "rating_a": 400,
+    "breaking_capacity_ka": 36,
+    "fault_level_a_min": 9800
+  },
+  "circuits": [
+    { "circuit_id": "F01", "way_module_id": "W1-W3",  "designation": "Feeder to SDB-GF",       "voltage_class": "LV_power", "downstream_load_kw": 30,   "ocpd": { "rating_a": 100, "curve": "D", "type": "MCCB", "breaking_capacity_ka": 36 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "35mm²", "cores": 5, "length_m": 15 } },
+    { "circuit_id": "F02", "way_module_id": "W4-W6",  "designation": "Feeder to SDB-L1",       "voltage_class": "LV_power", "downstream_load_kw": 28,   "ocpd": { "rating_a": 100, "curve": "D", "type": "MCCB", "breaking_capacity_ka": 36 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "35mm²", "cores": 5, "length_m": 30 } },
+    { "circuit_id": "F03", "way_module_id": "W7-W9",  "designation": "Feeder to SDB-L2",       "voltage_class": "LV_power", "downstream_load_kw": 28,   "ocpd": { "rating_a": 100, "curve": "D", "type": "MCCB", "breaking_capacity_ka": 36 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "35mm²", "cores": 5, "length_m": 45 } }
+  ],
+  "spare_ways": 3,
+  "selectivity_results": [
+    { "upstream": "main_switch_400A", "downstream": "F01_F03", "verdict": "pass", "_note": "400A main MCCB selective against 100A feeder MCCBs by 4:1 ratio + breaking capacity matched (36kA)" }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "BS EN 61439-1 Type-Tested Assembly used for the MSB.",
+      "DNO declared PFC of 9.8kA at intake; MCCBs selected with 36kA Icu (BS EN 60947-2).",
+      "Final-circuit RCDs applied at sub-DBs (SDB-GF/L1/L2), not at MSB feeder level — preserves selectivity."
+    ]
+  },
+  "drawing_notes": [
+    "MSB-MAIN located in ground-floor plant room.",
+    "Three feeders to per-floor sub-DBs (SDB-GF, SDB-L1, SDB-L2).",
+    "Spare ways: 3 (W10-W12 reserved for future expansion)."
+  ]
+}

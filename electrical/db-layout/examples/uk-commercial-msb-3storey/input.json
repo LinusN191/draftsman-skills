@@ -1,0 +1,30 @@
+{
+  "project_id": "uk-3storey-office-eg01",
+  "board_brief": "Main switchboard (MSB-MAIN) for a 3-storey UK commercial office, 1200m² GIA. 400A intake from DNO TN-C-S supply. Three feeders to per-floor sub-DBs. Ground-floor plant room location.",
+  "jurisdiction": "GB",
+  "standards_stack": {
+    "primary": "BS 7671:2018+A2:2022",
+    "assembly_type_testing": "BS EN 61439-1:2021 Type-Tested Assembly (TTA)"
+  },
+  "supply": {
+    "dno": "UK DNO (regional electricity board)",
+    "system_type": "TN-C-S",
+    "voltage": "400V/230V 3-phase 4-wire 50 Hz",
+    "supply_rating_a": 400,
+    "phase_arrangement": "TPN_plus_E",
+    "ze_declared_ohm": 0.35,
+    "pfc_declared_ka": 9.8
+  },
+  "board": {
+    "designation": "MSB-MAIN",
+    "location": "ground-floor plant room",
+    "enclosure_rating": "IP4X (indoor)",
+    "busbar_rating_a": 400,
+    "scope": "rollup"
+  },
+  "feeders": [
+    { "circuit_id": "F01", "designation": "Feeder to SDB-GF (ground-floor sub-DB)", "phase": "TPN", "device": "100A MCCB Type D", "cable": "35mm² SWA XLPE Cu",  "route_length_m": 15 },
+    { "circuit_id": "F02", "designation": "Feeder to SDB-L1 (level-1 sub-DB)",      "phase": "TPN", "device": "100A MCCB Type D", "cable": "35mm² SWA XLPE Cu",  "route_length_m": 30 },
+    { "circuit_id": "F03", "designation": "Feeder to SDB-L2 (level-2 sub-DB)",      "phase": "TPN", "device": "100A MCCB Type D", "cable": "35mm² SWA XLPE Cu",  "route_length_m": 45 }
+  ]
+}
