@@ -22,6 +22,42 @@ geometric coordinates — stage 1 carries topology only.
 
 ---
 
+## Step 0.5 — Resolve upstream intents (if `consumed_intent_path` declared)
+
+If the input.json carries `consumed_intent_path` pointing to a producer skill's intent-out.json (e.g., a db-layout intent), this step adopts the upstream data as the basis for your IR.
+
+**Required actions:**
+
+1. Read the file at `input.consumed_intent_path` (relative path from repo root)
+2. Adopt the upstream `circuits[]` as the basis for your IR's `circuits[]`:
+   - Use upstream `id` → your `circuit_id`
+   - Use upstream `breaker_rating_a` verbatim → your `circuits[].breaker_rating_a`
+   - Use upstream `breaker_curve` verbatim → your `circuits[].breaker_curve`
+   - Use upstream `voltage_class` verbatim → your `circuits[].voltage_class`
+   - Use upstream `approximate_route_length_m` → your `circuits[].route_length_m`
+   - Do NOT re-author these fields — they come from db-layout
+3. Filter the upstream circuits if any are out-of-scope for earthing (e.g., ELV_control, comms_data, fire_alarm — only LV_power + emergency_lighting in scope by default). Filtering MUST be documented in `compliance_summary.assumptions[]` with a note like `"Circuit <ID> filtered from upstream db-layout intent — voltage_class=<X> out of scope for earthing"`
+4. Populate `output.meta.consumed_intents[]` with:
+   ```json
+   {
+     "intent_type": "db-layout",
+     "intent_version": "1.0.0",
+     "produced_by": "electrical/db-layout/v1.1.0"
+   }
+   ```
+   (intent_version is the schema version; produced_by carries the producing skill version)
+5. Extend each retained circuit with earthing-specific fields in Steps 6-10 below: CPC sizing, Zs verification, RCD specification
+
+**If `consumed_intent_path` is NOT present:**
+- Author circuits from the input.json brief as before (v1.0-1.2 behaviour)
+- Leave `meta.consumed_intents` as an empty array
+
+**Cross-domain pairing handling:**
+- If the upstream intent's `scope: "rollup"` (db-layout feeders to downstream boards) and your earthing is at-installation level: only the feeders that terminate at YOUR scope are in your circuits[]. Document the partial alignment in `reasoning.md`.
+- If the engineering domains differ substantially (e.g., earthing example is rural TT while upstream is commercial TPN): adopt the upstream circuit_ids for the subset that applies + document filtering rationale.
+
+---
+
 ## Step 1 — Discovery check
 
 Verify all required inputs from `inputs.json` are present.
