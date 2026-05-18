@@ -1,0 +1,163 @@
+{
+  "$schema": "../../schemas/earthing-ir.schema.json",
+  "drawing_type": "earthing_schematic",
+  "version": "1.1.0",
+  "meta": {
+    "project_id": "ke-nairobi-enterprise-light-engineering",
+    "skill_version": "earthing/1.1.0",
+    "produced_at": "2026-05-18T10:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "KE",
+  "earthing_system": {
+    "system_type": "TN-S",
+    "code_clause": "KS 1700:2018 §411.4 (TN-S system; adopts BS 7671:2018+A2 Reg 411.4)"
+  },
+  "met": {
+    "location": "main switchroom adjacent to KPLC intake, ground floor",
+    "supply_bond_type": "tn_s_separate_pe",
+    "main_earthing_conductor_csa_mm2": 16
+  },
+  "electrodes": [],
+  "main_bonding": [
+    { "id": "B1", "source": "MET", "target": "metal_water_service",  "csa_mm2_or_awg": "10mm²", "code_clause": "BS 7671:2018+A2 Reg 544.1.1 (adopted by KS 1700)" },
+    { "id": "B2", "source": "MET", "target": "metal_gas_service",    "csa_mm2_or_awg": "10mm²", "code_clause": "BS 7671:2018+A2 Reg 544.1.1 (adopted by KS 1700)" },
+    { "id": "B3", "source": "MET", "target": "structural_steel",     "csa_mm2_or_awg": "6mm²",  "code_clause": "BS 7671:2018+A2 Reg 544.1.1 (adopted by KS 1700)" }
+  ],
+  "supplementary_bonding": [
+    {
+      "location": "other",
+      "items_bonded": ["wash_room_taps", "wash_room_metal_partition"],
+      "csa_mm2_or_awg": "4mm²",
+      "code_clause": "BS 7671:2018+A2 Reg 415.2 (adopted by KS 1700 §415)"
+    }
+  ],
+  "circuits": [
+    { "circuit_id": "C01", "db_designation": "MSP-100", "voltage_class": "LV_power", "breaker_rating_a": 10, "breaker_curve": "B", "route_length_m": 35, "cpc_csa_mm2_or_awg": "1.0mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7 (adopted by KS 1700)", "zs_ohm": 1.45, "zs_max_ohm": 4.6,  "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C02", "db_designation": "MSP-100", "voltage_class": "LV_power", "breaker_rating_a": 6,  "breaker_curve": "B", "route_length_m": 22, "cpc_csa_mm2_or_awg": "1.0mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7 (adopted by KS 1700)", "zs_ohm": 1.21, "zs_max_ohm": 7.67, "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C03", "db_designation": "MSP-100", "voltage_class": "LV_power", "breaker_rating_a": 32, "breaker_curve": "B", "route_length_m": 28, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7 (adopted by KS 1700)", "zs_ohm": 1.34, "zs_max_ohm": 1.44, "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C04", "db_designation": "MSP-100", "voltage_class": "LV_power", "breaker_rating_a": 20, "breaker_curve": "B", "route_length_m": 18, "cpc_csa_mm2_or_awg": "2.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7 (adopted by KS 1700)", "zs_ohm": 1.04, "zs_max_ohm": 2.3,  "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 },
+    { "circuit_id": "C05", "db_designation": "MSP-100", "voltage_class": "LV_power", "breaker_rating_a": 20, "breaker_curve": "C", "route_length_m": 15, "cpc_csa_mm2_or_awg": "2.5mm²", "cpc_sizing_method": "iec60364_table_54.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2", "zs_ohm": 0.99, "zs_max_ohm": 1.15, "zs_compliance": "pass", "rcd_required": false },
+    { "circuit_id": "C06", "db_designation": "MSP-100", "voltage_class": "LV_power", "breaker_rating_a": 16, "breaker_curve": "C", "route_length_m": 12, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "iec60364_table_54.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2", "zs_ohm": 1.01, "zs_max_ohm": 1.44, "zs_compliance": "pass", "rcd_required": false },
+    { "circuit_id": "C07", "db_designation": "MSP-100", "voltage_class": "LV_power", "breaker_rating_a": 25, "breaker_curve": "D", "route_length_m": 25, "cpc_csa_mm2_or_awg": "4mm²", "cpc_sizing_method": "iec60364_table_54.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2", "zs_ohm": 0.99, "zs_max_ohm": 0.46, "zs_compliance": "fail_needs_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 100 },
+    { "circuit_id": "C08", "db_designation": "MSP-100", "voltage_class": "LV_power", "breaker_rating_a": 40, "breaker_curve": "B", "route_length_m": 60, "cpc_csa_mm2_or_awg": "6mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A2 Table 54.7 (adopted by KS 1700)", "zs_ohm": 1.40, "zs_max_ohm": 1.15, "zs_compliance": "fail_needs_rcd", "rcd_required": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30 }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      { "message": "C07 compressor: Zs(0.99Ω) > Zs_max(0.46Ω) for Type D 25A — requires 100mA RCD to achieve disconnection time; without RCD this circuit would not meet 5s clearance.", "code_clause": "BS 7671:2018+A2 Reg 411.4.5 (adopted by KS 1700)", "severity": "warning" },
+      { "message": "C08 60m submain: Zs(1.40Ω) > Zs_max(1.15Ω) for Type B 40A — requires 30mA RCBO to achieve 0.4s disconnection time on a final circuit ≤32A would normally apply, but as a submain feeding sockets in the gate house, RCD additional protection still required per KS 1700 §411.3.3.", "code_clause": "BS 7671:2018+A2 Reg 411.3.3 (adopted by KS 1700)", "severity": "warning" }
+    ],
+    "assumptions": [
+      "Ze of 0.80Ω is KPLC-measured (2026-03-12); originally 0.65Ω at 1987 commissioning. Design ceiling assumes Ze ≤ 0.80Ω; supply degradation beyond this requires recalc.",
+      "Cable impedance estimates use IEC 60364-5-52 Annex B values at 70°C PVC; XLPE not present in this design.",
+      "KS 1700:2018 references BS 7671:2018+A2 verbatim for Table 41.2 Zs_max and Reg 411 disconnection times; cited as 'BS 7671 (adopted by KS 1700)' throughout.",
+      "calc.zs_loop_impedance tool call pending — Zs values are LLM-estimates; deterministic tool will refine when runtime ships."
+    ]
+  },
+  "drawn_as_symbols": ["EARTH_GENERAL", "EARTH_PROTECTIVE", "CONDUCTOR_PE", "JUNCTION_T", "BUSBAR", "MET_SYMBOL", "MCB_TYPE_D"],
+  "flags": ["TOOL-CALL-PENDING:calc.zs_loop_impedance — Zs values are LLM-estimates; deterministic refinement deferred per WI3."],
+  "tool_call_pending_for_zs": true,
+  "zs_calc_tool_input": {
+    "jurisdiction": "KE",
+    "supply": {
+      "ze_declared_ohm": 0.80,
+      "system_type": "TN-S",
+      "voltage_phase_to_earth_v": 240,
+      "frequency_hz": 50
+    },
+    "circuits": [
+      { "circuit_id": "C01", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.5mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 35, "device_type": "MCB_B", "device_rating_a": 10 },
+      { "circuit_id": "C02", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.5mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 22, "device_type": "MCB_B", "device_rating_a": 6  },
+      { "circuit_id": "C03", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 28, "device_type": "MCB_B", "device_rating_a": 32 },
+      { "circuit_id": "C04", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "2.5mm²", "route_length_m": 18, "device_type": "MCB_B", "device_rating_a": 20 },
+      { "circuit_id": "C05", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "2.5mm²", "route_length_m": 15, "device_type": "MCB_C", "device_rating_a": 20 },
+      { "circuit_id": "C06", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 12, "device_type": "MCB_C", "device_rating_a": 16 },
+      { "circuit_id": "C07", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "4mm²",   "cpc_csa_mm2_or_awg": "4mm²",   "route_length_m": 25, "device_type": "MCB_D", "device_rating_a": 25 },
+      { "circuit_id": "C08", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "10mm²",  "cpc_csa_mm2_or_awg": "6mm²",   "route_length_m": 60, "device_type": "MCB_B", "device_rating_a": 40 }
+    ],
+    "operating_temperature_c": 70
+  },
+  "rationale": {
+    "chat_summary": "Nairobi light-engineering workshop on KPLC TN-S (Ze=0.80Ω). 8 circuits: workshop+office lighting+sockets, 3-ph machine tools, 60m submain. C07 compressor (Type D 25A) needs 100mA RCD because Type-D trip multiplier (20×In) demands lower Zs_max than design Zs. C08 submain needs 30mA RCBO per KS 1700 §411.3.3. All else Zs-compliant. calc.zs_loop_impedance deferred per WI3.",
+    "sections": [
+      {
+        "title": "Earthing System",
+        "summary": "TN-S confirmed from KPLC supply (separate-Earth cable, Ze=0.80Ω measured 2026-03-12). KS 1700:2018 §411.4 adopts BS 7671:2018+A2 Reg 411.4 verbatim for TN-S installations.",
+        "decisions": [
+          { "label": "TN-S system confirmed", "summary": "KPLC supply delivers a separate-Earth conductor from the 11kV/415V substation 180m away. No PME bond at intake.", "rule": "Ontology TN-S entry permitted for KE under KS 1700", "code_clause": "BS 7671:2018+A2 Reg 411.4 (adopted by KS 1700 §411.4)", "inputs": { "ze_ohm_declared": 0.80, "ze_provenance": "KPLC-measured 2026-03-12", "jurisdiction": "KE" } }
+        ]
+      },
+      {
+        "title": "Main Earthing Terminal",
+        "summary": "MET in main switchroom adjacent to KPLC intake. Supply bond type 'tn_s_separate_pe' — Earth conductor terminated at the MET via the KPLC separate-Earth cable. Main earthing conductor 16mm² Cu.",
+        "decisions": [
+          { "label": "MET co-located with intake", "summary": "Accessible for inspection per BS 7671 542.4.1 (KS 1700 adopts).", "rule": "BS 7671 Reg 542.4.1 — MET accessible and labelled", "code_clause": "BS 7671:2018+A2 Reg 542.4.1", "inputs": { "met_location": "main switchroom adjacent to KPLC intake" } },
+          { "label": "16mm² main earthing conductor", "summary": "Sized per Reg 544.1.1 from largest service conductor (25mm² → 16mm²); unprotected run between intake and MET ≥10mm². 16mm² satisfies both rules.", "rule": "BS 7671 Reg 544.1.1 sizing (KS 1700 adopts)", "code_clause": "BS 7671:2018+A2 Reg 544.1.1", "inputs": { "service_csa_mm2": 25, "result_csa_mm2": 16 } }
+        ]
+      },
+      {
+        "title": "Electrodes",
+        "summary": "No supplementary electrode installed. KPLC TN-S supply provides the Earth reference. Recommendation: install a local rod electrode at the MET as a future-proofing measure against supply degradation (Ze rose from 0.65Ω to 0.80Ω over 39 years).",
+        "decisions": [
+          { "label": "No site electrode installed", "summary": "TN-S supply provides adequate Ze. Local electrode would not improve Zs significantly with Ze already declared.", "rule": "Engineering judgement — supply Ze adequate", "code_clause": "BS 7671:2018+A2 Reg 542.2 (electrodes optional on TN-S)", "inputs": { "ze_ohm": 0.80, "site_electrode_added": false } }
+        ]
+      },
+      {
+        "title": "Main Bonding",
+        "summary": "Three main protective bonds from MET to all extraneous-conductive-parts: water service entry (10mm²), gas service entry (10mm²), structural steel columns (6mm²).",
+        "decisions": [
+          { "label": "10mm² Cu to water and gas services", "summary": "Service-entry bonds at TN-S minimum CSA per BS 7671 544.1.1.", "rule": "BS 7671 Reg 544.1.1 (KS 1700 adopts)", "code_clause": "BS 7671:2018+A2 Reg 544.1.1", "inputs": { "csa_mm2": 10, "targets": ["metal_water_service", "metal_gas_service"] } },
+          { "label": "6mm² Cu to structural steel", "summary": "Half-of-largest-PE rule with 6mm² minimum applied.", "rule": "BS 7671 Reg 544.1.1", "code_clause": "BS 7671:2018+A2 Reg 544.1.1", "inputs": { "csa_mm2": 6, "target": "structural_steel" } }
+        ]
+      },
+      {
+        "title": "Supplementary Bonding",
+        "summary": "Wash room with metal taps and partition — 4mm² supplementary bonding per BS 7671 Section 701 (KS 1700 §415).",
+        "decisions": [
+          { "label": "4mm² supplementary bonding wash room", "summary": "Belt-and-braces resilience for metallic plumbing + partition.", "rule": "BS 7671 Reg 415.2 (KS 1700 §415)", "code_clause": "BS 7671:2018+A2 Reg 415.2", "inputs": { "zone": "wash_room", "csa_mm2": 4 } }
+        ]
+      },
+      {
+        "title": "CPC Sizing",
+        "summary": "Mixed CPC sizing methods. T+E twin-and-earth cables (C01-C04, C08) use BS 7671 Table 54.7 reduced-CPC values. SY 4-core cables (C05-C07) use IEC 60364-5-54 Table 54.2 separate-PE sizing.",
+        "decisions": [
+          { "label": "T+E CPCs from BS 7671 Table 54.7", "summary": "Manufacturer-supplied integral CPCs sized per banded lookup.", "rule": "BS 7671 Table 54.7", "code_clause": "BS 7671:2018+A2 Table 54.7", "inputs": { "circuits": ["C01", "C02", "C03", "C04", "C08"] } },
+          { "label": "SY-cable CPCs from IEC 60364 Table 54.2", "summary": "Separate-PE conductor in flexible SY cable; sized at full CSA of line conductor.", "rule": "IEC 60364-5-54 Table 54.2 — PE = line CSA up to 16mm²", "code_clause": "IEC 60364-5-54:2011 Table 54.2", "inputs": { "circuits": ["C05", "C06", "C07"] } }
+        ]
+      },
+      {
+        "title": "Zs Verification (LLM-estimated; tool deferred)",
+        "summary": "Zs = Ze + (R1+R2) computed inline per circuit. Zs_max from BS 7671 Table 41.2 (KS 1700 Annex E adopts verbatim). Verdict: 6 circuits pass; C07 (compressor Type D) fails Zs_max — needs 100mA RCD; C08 (60m submain) fails by 0.25Ω — needs 30mA RCBO.",
+        "decisions": [
+          { "label": "C07 compressor needs 100mA RCD", "summary": "Type D 25A demands Zs_max=0.46Ω (Ia=20×In). Calculated Zs=0.99Ω exceeds. RCD additional protection brings disconnection time within 5s.", "rule": "BS 7671 Reg 411.4.5 — RCD additional protection where Zs exceeds Zs_max", "code_clause": "BS 7671:2018+A2 Reg 411.4.5 (adopted by KS 1700)", "inputs": { "zs_ohm": 0.99, "zs_max_ohm": 0.46, "device_type": "MCB_D", "device_rating_a": 25, "rcd_sensitivity_ma": 100 } },
+          { "label": "C08 submain needs 30mA RCBO", "summary": "60m run × 6mm² CPC pushes Zs to 1.40Ω; Type B 40A Zs_max is 1.15Ω. 30mA RCBO required.", "rule": "BS 7671 Reg 411.3.3 — RCD on final socket-feeding circuits + 411.4.5 ADS", "code_clause": "BS 7671:2018+A2 Reg 411.3.3 + Reg 411.4.5", "inputs": { "zs_ohm": 1.40, "zs_max_ohm": 1.15, "device_type": "MCB_B", "device_rating_a": 40, "rcd_sensitivity_ma": 30 } }
+        ]
+      },
+      {
+        "title": "RCD Policy (KE-specific)",
+        "summary": "KS 1700 §411.3.3 mandates 30mA RCD on all socket circuits ≤32A regardless of Zs compliance (mirrors BS 7671 AMD 2 socket-RCD rule). Applied to C01-C04 + C08; not required for C05-C07 (no sockets, dedicated motor circuits).",
+        "decisions": [
+          { "label": "30mA RCD on all socket circuits", "summary": "KS 1700 mandates regardless of Zs result.", "rule": "KS 1700:2018 §411.3.3 (mirrors BS 7671 AMD 2)", "code_clause": "BS 7671:2018+A2 Reg 411.3.3 (adopted by KS 1700)", "inputs": { "circuits_rcd_protected": ["C01", "C02", "C03", "C04", "C08"], "rcd_sensitivity_ma": 30 } }
+        ]
+      },
+      {
+        "title": "Compliance",
+        "summary": "Compliant via RCD additional protection on C07 + C08. 2 WARNING flags emitted (informational; both resolved by the RCD policy applied).",
+        "decisions": []
+      },
+      {
+        "title": "Tool Deferral (WI3)",
+        "summary": "calc.zs_loop_impedance not yet runtime-shipped. Zs values above are LLM-estimates; the deterministic tool will refine when the runtime ships. zs_calc_tool_input replay payload captured at IR root for deterministic re-execution.",
+        "decisions": [
+          { "label": "Tool deferral flag set", "summary": "tool_call_pending_for_zs=true; top-level flags contains TOOL-CALL-PENDING string.", "rule": "WI3 deferred-execution pattern", "code_clause": "n/a", "inputs": { "tool_call_pending_for_zs": true, "replay_payload_captured": true } }
+        ]
+      },
+      {
+        "title": "Assumptions",
+        "summary": "Four assumptions captured: KPLC-measured Ze (2026-03-12), IEC 60364 Annex B cable impedance values used at 70°C PVC, KS 1700 adoption of BS 7671 Table 41.2, tool-call deferral per WI3.",
+        "decisions": []
+      }
+    ]
+  }
+}
