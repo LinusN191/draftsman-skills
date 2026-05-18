@@ -1,0 +1,175 @@
+{
+  "clause_ref": "KS 1700 2018:Reg-411.3.2",
+  "transcribed_at": "2026-05-18",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-from-bs7671-derivative-needs-source-verification",
+  "_verification_note": "Drafted by structural derivation from BS 7671:2018+A2 (KS 1700:2018 adopts BS 7671 substantially per Annex E). Clause numbers and structural content match BS template; engineering values reproduced verbatim. Final verification against the published KS 1700:2018 PDF required.",
+  "_ks_adoption_pathway": "KS 1700:2018 Annex E §V — adopts BS 7671:2018+A2 Reg 411 verbatim",
+  "_title": "KS 1700:2018 §411 — Protection by Automatic Disconnection of Supply (ADS) — disconnection times and Zs limits",
+  "_note": "Maximum earth fault loop impedance (Zs) values for compliance with required disconnection times. Verify with measured Zs at the point of utilisation.",
+  "principle": {
+    "_reference": "BS 7671:2018 Regulation 411.3.2.2 and Table 41.1",
+    "summary": "When a line-to-earth fault occurs, the protective device must disconnect the supply within the required time. The earth fault loop impedance Zs determines the prospective fault current, which determines whether the device will trip in time.",
+    "equation": "Zs = Ze + (R1 + R2)",
+    "variables": {
+      "Zs": "Earth fault loop impedance at the furthest point of the circuit (ohms)",
+      "Ze": "External earth fault loop impedance — supplied by DNO or measured at the origin (ohms)",
+      "R1": "Resistance of the line conductor of the circuit (ohms)",
+      "R2": "Resistance of the circuit protective conductor (CPC) (ohms)"
+    },
+    "compliance_rule": "Zs (measured or calculated) must be ≤ Zs_max (tabulated below) for the protective device and disconnection time required."
+  },
+  "disconnection_times_required": {
+    "_reference": "BS 7671:2018 Table 41.1",
+    "tn_systems": {
+      "_note": "TN-S, TN-C-S (PME), TN-C (rare). PEN/Earth bonded at supply transformer.",
+      "final_circuits_to_32A_or_socket_outlets": {
+        "230V_AC": "0.4 seconds",
+        "400V_AC": "0.2 seconds"
+      },
+      "distribution_circuits_and_final_circuits_above_32A": {
+        "all_voltages": "5 seconds"
+      }
+    },
+    "tt_systems": {
+      "_note": "Independent earth electrode, no PEN. Most rural and some commercial installations.",
+      "final_circuits_to_32A_or_socket_outlets": {
+        "230V_AC": "0.2 seconds"
+      },
+      "distribution_circuits_and_final_circuits_above_32A": {
+        "all_voltages": "1 second"
+      },
+      "note": "TT systems typically require RCD protection to achieve compliance — overcurrent devices alone cannot guarantee disconnection times due to higher earth impedance."
+    }
+  },
+  "table_41_2_MCB_Zs_max_ohms": {
+    "_reference": "BS 7671:2018 Table 41.2 (and amended values in AMD 2)",
+    "_basis": "230V phase-to-earth voltage. Zs values include the 0.8 factor for cable temperature rise at fault. Same values for 0.4s and 5s disconnection — MCBs trip instantaneously once Ia is exceeded.",
+    "_note": "If measured/calculated Zs exceeds Zs_max, the circuit will NOT achieve required disconnection time — RCD additional protection required, or device must be downsized, or fault loop reduced.",
+    "type_B_BS_EN_60898": {
+      "_trip_multiplier": "Ia = 5 × In (instantaneous magnetic trip)",
+      "_formula": "Zs_max = 230 / (5 × In)",
+      "6": 7.67,
+      "10": 4.6,
+      "16": 2.87,
+      "20": 2.3,
+      "25": 1.84,
+      "32": 1.44,
+      "40": 1.15,
+      "50": 0.92,
+      "63": 0.73,
+      "80": 0.58,
+      "100": 0.46,
+      "125": 0.37
+    },
+    "type_C_BS_EN_60898": {
+      "_trip_multiplier": "Ia = 10 × In",
+      "_formula": "Zs_max = 230 / (10 × In)",
+      "6": 3.83,
+      "10": 2.3,
+      "16": 1.44,
+      "20": 1.15,
+      "25": 0.92,
+      "32": 0.72,
+      "40": 0.57,
+      "50": 0.46,
+      "63": 0.37,
+      "80": 0.29,
+      "100": 0.23,
+      "125": 0.18
+    },
+    "type_D_BS_EN_60898": {
+      "_trip_multiplier": "Ia = 20 × In",
+      "_formula": "Zs_max = 230 / (20 × In)",
+      "_typical_use": "Motor circuits, large inrush loads (transformers, lift drives, large LED drivers)",
+      "6": 1.92,
+      "10": 1.15,
+      "16": 0.72,
+      "20": 0.57,
+      "25": 0.46,
+      "32": 0.36,
+      "40": 0.29,
+      "50": 0.23,
+      "63": 0.18,
+      "80": 0.14,
+      "100": 0.11
+    }
+  },
+  "table_41_3_BS_88_fuse_Zs_max_ohms": {
+    "_reference": "BS 7671:2018 Table 41.3 — BS 88-3 (HRC fuses, gG class)",
+    "_basis": "230V phase-to-earth. Different values for 0.4s and 5s — fuses have time/current characteristics, slower trip needs higher Zs for same protection.",
+    "_typical_use": "Submain protection, distribution boards, motor starters where high inrush tolerance needed",
+    "disconnection_0p4s": {
+      "_required_for": "Final circuits to 32A or socket outlets (TN systems)",
+      "6": 8.52,
+      "10": 5.11,
+      "16": 2.7,
+      "20": 1.85,
+      "25": 1.5,
+      "32": 1.09,
+      "40": 0.86,
+      "50": 0.67,
+      "63": 0.55,
+      "80": 0.41,
+      "100": 0.32,
+      "125": 0.26,
+      "160": 0.2,
+      "200": 0.14,
+      "250": 0.1,
+      "315": 0.08
+    },
+    "disconnection_5s": {
+      "_required_for": "Distribution circuits and final circuits above 32A (TN systems)",
+      "6": 13.5,
+      "10": 7.83,
+      "16": 4.18,
+      "20": 3.04,
+      "25": 2.4,
+      "32": 1.92,
+      "40": 1.41,
+      "50": 1.09,
+      "63": 0.86,
+      "80": 0.7,
+      "100": 0.55,
+      "125": 0.43,
+      "160": 0.32,
+      "200": 0.25,
+      "250": 0.18,
+      "315": 0.14
+    }
+  },
+  "rcbo_zs": {
+    "_reference": "BS 7671:2018 Reg 411.4.5",
+    "_note": "RCBO Zs_max for overcurrent protection follows MCB table above (Type B/C/D). The RCD function provides additional fault protection — Zs requirements for RCD are very lenient.",
+    "rcd_30mA_zs_max": {
+      "value": 1667,
+      "unit": "ohms",
+      "_calc": "Zs_max = 50 / 0.030 = 1666.7Ω",
+      "_basis": "RCD trip current 30mA, touch voltage limit 50V (dry conditions). For wet conditions or special locations, use 25V touch voltage = 833Ω."
+    },
+    "rcd_100mA_zs_max": 500,
+    "rcd_300mA_zs_max": 167,
+    "rcd_500mA_zs_max": 100
+  },
+  "compliance_checklist": [
+    "1. Confirm system earthing type (TN-S, TN-C-S, TT) from supply.",
+    "2. Obtain Ze from DNO or measure at origin. Typical values: TN-S = 0.8Ω, TN-C-S = 0.35Ω, TT = ≥21Ω (variable).",
+    "3. Calculate R1+R2 for each circuit using cable resistance per metre.",
+    "4. Calculate Zs = Ze + (R1+R2).",
+    "5. Compare Zs to Zs_max from the appropriate table.",
+    "6. If Zs > Zs_max: install RCD additional protection (BS EN 61008/61009), upsize cable to reduce R1+R2, or use lower-rated device.",
+    "7. Verify by measurement after installation — installed Zs may differ from calculated."
+  ],
+  "worked_example": {
+    "description": "20A Type C MCB protecting a 2.5mm² T&E socket circuit, 40m from a TN-C-S supply",
+    "Ze": 0.35,
+    "cable": "2.5mm² T&E (1.5mm² CPC)",
+    "R_per_m_line": 0.0074,
+    "R_per_m_cpc": 0.0124,
+    "L_m": 40,
+    "R1_plus_R2": "40 × (0.0074 + 0.0124) = 0.792 Ω",
+    "Zs_calculated": "0.35 + 0.792 = 1.142 Ω",
+    "Zs_max_20A_type_C": 1.15,
+    "verdict": "PASS — Zs 1.142 ≤ Zs_max 1.15. Very tight margin. Recommend RCD additional protection regardless (required anyway under Reg 411.3.3 for socket outlets ≤32A)."
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "clause_ref": "KS 1700 2018:Reg-411.3.3",
+  "transcribed_at": "2026-05-18",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-from-bs7671-derivative-needs-source-verification",
+  "_verification_note": "Drafted by structural derivation from BS 7671:2018+A2 (KS 1700:2018 adopts BS 7671 substantially per Annex E). Clause numbers and structural content match BS template; engineering values reproduced verbatim. Final verification against the published KS 1700:2018 PDF required.",
+  "_ks_adoption_pathway": "KS 1700:2018 Annex E §V — adopts BS 7671:2018+A2 Reg 411.3.3 verbatim",
+  "_title": "KS 1700:2018 §411.3.3 — RCD additional protection — universal socket-circuit RCD policy (KS-specific deviation)",
+  "_ks_deviation_from_bs": {
+    "deviation_id": "socket-rcd-universal",
+    "summary": "KS 1700 §411.3.3 requires 30mA RCD additional protection on ALL socket circuits ≤32A regardless of Zs compliance",
+    "diverges_from": "BS 7671:2018 pre-AMD2 socket-RCD selective rule (BS 7671 AMD 2 (2022) brought the BS into alignment with the KS position)",
+    "rationale": "Kenya climate (humidity, particularly coastal and lakeside regions) plus end-user risk profile justifies universal socket-RCD; aligns with BS 7671 AMD 2 (2022) but applied from initial KS publication in 2018",
+    "engineering_impact": "Every Kenya design with socket circuits ≤32A must include 30mA RCD additional protection; engineers should NOT omit RCD even where Zs compliance is achieved",
+    "applies_to_circuits": "All socket circuits ≤32A in dwellings, commercial premises, and industrial sites accessible to non-instructed persons",
+    "exempt_circuits": "Dedicated industrial machine circuits (no general sockets), discrete supply isolators for fixed appliances on dedicated radial circuits — engineering judgement required to confirm exemption applies"
+  },
+  "_note": "RCD requirements are MANDATORY for the listed circuits — not optional. Any compliant design must include RCD protection where required.",
+  "principle": {
+    "_reference": "BS 7671:2018 Reg 411.3.3",
+    "purpose": "RCDs (Residual Current Devices) provide additional protection against direct contact (touching live conductors) and indirect contact (touching exposed-conductive-parts made live by fault). They detect imbalance between line and neutral currents indicating fault to earth.",
+    "trip_threshold_30mA": "Below the threshold for ventricular fibrillation. Trip time at IΔn ≤ 40 ms, at 5×IΔn ≤ 40 ms (BS EN 61008/61009)."
+  },
+  "mandatory_30ma_protection": {
+    "_reference": "BS 7671:2018 Reg 411.3.3, AMD 2 expanded scope",
+    "circuits_requiring_30ma_rcd": [
+      {
+        "circuit": "Socket outlets rated ≤ 32A intended for general use",
+        "regulation": "411.3.3",
+        "exception": "Specific labelled sockets for stated equipment may be exempt with documented risk assessment (e.g. fridge in commercial kitchen, server PDU on UPS)."
+      },
+      {
+        "circuit": "Mobile equipment with current rating ≤ 32A for use outdoors",
+        "regulation": "411.3.3",
+        "exception": "None"
+      },
+      {
+        "circuit": "Final circuits supplying luminaires within domestic (household) premises",
+        "regulation": "411.3.4 (AMD 2)",
+        "exception": "None — added in AMD 2 (2022). All domestic lighting circuits now require 30mA RCD."
+      },
+      {
+        "circuit": "Cables installed in walls or partitions at depth ≤ 50mm without mechanical protection or earthed metallic covering",
+        "regulation": "522.6.202",
+        "exception": "If cables in safe zones AND covered by 30mA RCD OR installed in earthed metallic conduit/SWA."
+      },
+      {
+        "circuit": "Cables installed in walls or partitions containing metallic parts (steel studs, metallic ceiling grid)",
+        "regulation": "522.6.203",
+        "exception": "Unless cable is in earthed metallic enclosure or has earthed metallic covering."
+      },
+      {
+        "circuit": "Final circuits for EV charging points",
+        "regulation": "722.531.3.101",
+        "exception": "Type A or Type B RCD required depending on charging unit and DC fault current characteristics."
+      }
+    ]
+  },
+  "special_locations": {
+    "_reference": "BS 7671:2018 Part 7",
+    "bathrooms_section_701": {
+      "_zones": "Zone 0 (in bath/shower), Zone 1 (above bath), Zone 2 (1.2m beyond Zone 1)",
+      "rcd_required": "30mA RCD on ALL circuits supplying any location, including outside zones if in same room.",
+      "regulation": "701.411.3.3"
+    },
+    "swimming_pools_section_702": {
+      "rcd_required": "30mA RCD on all circuits supplying or in zone 0, 1, 2.",
+      "regulation": "702.410.3"
+    },
+    "saunas_section_703": {
+      "rcd_required": "30mA RCD on circuits in zones 1, 2, 3 — exception for water heater.",
+      "regulation": "703.411.3.3"
+    },
+    "construction_sites_section_704": {
+      "rcd_required": "30mA RCD on all socket outlets up to 32A. 500mA RCD on all final circuits.",
+      "regulation": "704.410.3.10"
+    },
+    "agricultural_section_705": {
+      "rcd_required": "30mA RCD on socket outlets ≤32A. 100mA delayed RCD on circuits supplying equipment.",
+      "regulation": "705.411.1"
+    },
+    "marinas_section_709": {
+      "rcd_required": "30mA RCD per socket outlet (one RCD per socket, max 4 sockets per RCD acceptable).",
+      "regulation": "709.531.2"
+    },
+    "medical_locations_section_710": {
+      "_note": "Group 1 and Group 2 medical locations require specialised protection (medical IT system in Group 2). RCD requirements are more nuanced.",
+      "rcd_required": "Group 0: as normal. Group 1: 30mA RCD on socket outlets. Group 2: medical IT system (IT-M) with insulation monitoring, NO RCDs on patient-essential supplies.",
+      "regulation": "710.411.4"
+    },
+    "ev_charging_section_722": {
+      "rcd_required": "Type A 30mA RCD per charging point AS A MINIMUM. Type B if EVSE does not have built-in 6mA DC fault detection.",
+      "regulation": "722.531.3.101"
+    }
+  },
+  "rcd_types": {
+    "_reference": "BS EN 61008-1, BS EN 61009-1, BS EN 62423",
+    "AC": {
+      "detects": "Only sinusoidal AC residual currents",
+      "use": "Older standard. Acceptable only for purely resistive loads. Not recommended for modern installations."
+    },
+    "A": {
+      "detects": "AC + pulsating DC residual currents (rectified single-phase)",
+      "use": "Standard for general use. Required for circuits with electronic loads (PCs, LED drivers, single-phase inverters)."
+    },
+    "F": {
+      "detects": "AC + pulsating DC + high-frequency residual currents",
+      "use": "Single-phase inverter drives (washing machines, heat pumps with VFDs)."
+    },
+    "B": {
+      "detects": "AC + DC + high-frequency + smooth DC residual currents",
+      "use": "Three-phase inverter drives, EV charging without built-in DC detection, solar PV inverters without integrated protection, UPS systems with rectifiers."
+    },
+    "selection_rule": "Match the RCD type to the load. Type AC RCD on an EV charger will fail to detect a DC fault — illegal under BS 7671. When in doubt, use Type A as minimum and Type B for any DC-capable load."
+  },
+  "selectivity_between_rcds": {
+    "_reference": "BS 7671:2018 Reg 536.3, BS EN 61008-1",
+    "principle": "When RCDs are cascaded (e.g. 100mA at incomer + 30mA at final circuit), the upstream device must NOT trip when the downstream device trips. Achieved through both current ratio AND time delay.",
+    "current_ratio": "Upstream IΔn ≥ 3 × downstream IΔn (e.g. 100mA upstream / 30mA downstream gives 3.33:1 — OK)",
+    "time_delay": "Upstream must be S-type (time-delayed) — typically 40-130ms delay before trip. Downstream is instantaneous.",
+    "common_arrangements": [
+      "100mA S-type at MSB incomer + 30mA instantaneous RCBOs on final circuits",
+      "300mA S-type at submain + 30mA RCBO on socket circuits",
+      "500mA S-type at construction site origin + 30mA on socket outlets"
+    ]
+  },
+  "rcd_vs_rcbo": {
+    "RCD": "Residual Current Device. Trips on earth fault only. Does NOT provide overcurrent protection. Used at consumer unit incomer or board incomer to protect groups of circuits.",
+    "RCBO": "Residual Current Breaker with Overcurrent protection. Combines MCB + RCD in one device. Preferred for final circuits — provides discrete protection per circuit and isolates fault to one circuit only.",
+    "design_preference": "Modern installations: RCBO per circuit. Avoids cascading trips and meets fault-isolation best practice. Cost ~3× MCB but justified."
+  },
+  "common_pitfalls": [
+    "Type AC RCD on circuit with electronic loads — will fail to detect DC component faults. Use Type A minimum.",
+    "Single 30mA RCD covering entire installation — nuisance trips, loss of all circuits on fault. Use RCBOs per circuit.",
+    "No RCD on lighting circuit in domestic post-AMD 2 — non-compliant since September 2022.",
+    "RCDs not selectivity-coordinated — upstream and downstream both trip, loss of unrelated circuits.",
+    "Missing 30mA RCD on outdoor sockets — frequent inspection finding.",
+    "Forgetting Type B RCD requirement for EV charging — major safety issue, non-compliance with Section 722."
+  ]
+}

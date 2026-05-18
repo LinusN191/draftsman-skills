@@ -1,0 +1,214 @@
+{
+  "clause_ref": "KS 1700 2018:Reg-433.1.1",
+  "transcribed_at": "2026-05-18",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-from-bs7671-derivative-needs-source-verification",
+  "_verification_note": "Drafted by structural derivation from BS 7671:2018+A2 (KS 1700:2018 adopts BS 7671 substantially per Annex E). Clause numbers and structural content match BS template; engineering values reproduced verbatim. Final verification against the published KS 1700:2018 PDF required.",
+  "_ks_adoption_pathway": "KS 1700:2018 Annex E §V — adopts BS 7671:2018+A2 Reg 433 verbatim",
+  "_title": "KS 1700:2018 §433 — Overcurrent protection coordination — Fundamental Rule",
+  "_note": "The Fundamental Rule of cable sizing. Every circuit must satisfy this rule. If any of the three conditions fail, the circuit is non-compliant.",
+  "fundamental_rule": {
+    "_reference": "BS 7671:2018 Reg 433.1.1",
+    "statement": "Protection against overload shall be such that: the protective device characteristics ensure both that (i) the protective device is suitable to operate at the load current of the circuit, and (ii) the cable can carry the let-through current of the protective device without overheating.",
+    "expressed_as": "Ib ≤ In ≤ Iz   AND   I2 ≤ 1.45 × Iz",
+    "variables": {
+      "Ib": {
+        "name": "Design current of the circuit",
+        "units": "A",
+        "description": "Maximum load expected on the circuit, after diversity is applied. Calculated from connected load and use pattern."
+      },
+      "In": {
+        "name": "Nominal current of the protective device",
+        "units": "A",
+        "description": "Rated current of the MCB, fuse, RCBO, MCCB, or ACB. Standard sizes: 6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630, 800, 1000, 1250 A."
+      },
+      "Iz": {
+        "name": "Continuous current-carrying capacity of the cable",
+        "units": "A",
+        "description": "Tabulated rating from Appendix 4 (see appendix4-cable-ratings.json), AFTER all correction factors applied (see appendix4-correction-factors.json). Iz = Iz_tabulated × Ca × Cg × Ci × Cd."
+      },
+      "I2": {
+        "name": "Current ensuring effective operation of the protective device",
+        "units": "A",
+        "description": "For MCBs (BS EN 60898): I2 = 1.45 × In (already satisfies the 1.45×Iz condition when In ≤ Iz). For HRC fuses (BS 88): I2 = 1.6 × In (must be separately checked against 1.45×Iz)."
+      }
+    }
+  },
+  "the_three_conditions": {
+    "condition_1": {
+      "rule": "Ib ≤ In",
+      "meaning": "The device must be rated for at least the design current. If the load is 35A and the breaker is 32A, the breaker will trip on normal load — unacceptable.",
+      "failure_mode": "Nuisance tripping, loss of supply, breaker damage from repeated operation."
+    },
+    "condition_2": {
+      "rule": "In ≤ Iz",
+      "meaning": "The cable must be able to carry the rated current of the device continuously without overheating. If the breaker is 40A but the cable is only rated 32A, the cable will overheat at the device's rated current.",
+      "failure_mode": "Cable insulation degradation, accelerated ageing, fire risk."
+    },
+    "condition_3": {
+      "rule": "I2 ≤ 1.45 × Iz",
+      "meaning": "The device's conventional tripping current must not exceed 1.45× the cable's rating. This ensures the device will trip BEFORE the cable reaches its thermal limit under overload.",
+      "automatically_satisfied_for": "MCBs and RCBOs to BS EN 60898 — I2 = 1.45 × In, so condition simplifies to In ≤ Iz (already condition 2).",
+      "must_be_checked_for": "HRC fuses to BS 88-3 — I2 = 1.6 × In, so we need 1.6 × In ≤ 1.45 × Iz, i.e. In ≤ 0.906 × Iz. In practice, select fuse such that In × 1.1 ≤ Iz."
+    }
+  },
+  "device_characteristics": {
+    "_reference": "BS EN 60898 (MCBs), BS EN 61009-1 (RCBOs), BS 88-3 (HRC fuses), BS EN 60947-2 (MCCBs)",
+    "MCB_BS_EN_60898": {
+      "I2_factor": 1.45,
+      "I2_test_time": "1 hour (for In ≤ 63A), 2 hours (for In > 63A)",
+      "I1_factor": 1.13,
+      "I1_test_definition": "Does NOT trip within conventional time at 1.13 × In",
+      "note": "Conventional non-tripping current 1.13×In, conventional tripping current 1.45×In. Tested per BS EN 60898."
+    },
+    "RCBO_BS_EN_61009": {
+      "I2_factor": 1.45,
+      "note": "Same overcurrent characteristics as MCB. Plus RCD function."
+    },
+    "fuse_BS_88_3": {
+      "I2_factor": 1.6,
+      "I2_test_time": "1 hour (for In ≤ 16A), increasing for larger sizes",
+      "note": "Higher I2 factor than MCBs because fuses have steeper time/current characteristic — they trip very fast on heavy faults but slower on small overloads."
+    },
+    "MCCB_BS_EN_60947_2": {
+      "I2_factor": "varies by manufacturer — typically 1.3 to 1.45",
+      "note": "Industrial moulded case circuit breakers. Adjustable trip units allow tuning In within the frame size. Refer to manufacturer's published curves."
+    }
+  },
+  "standard_device_sizes": {
+    "_reference": "BS EN 60898 Table 3, BS 88-3",
+    "MCB_ratings_A": [
+      6,
+      10,
+      13,
+      16,
+      20,
+      25,
+      32,
+      40,
+      50,
+      63,
+      80,
+      100,
+      125
+    ],
+    "MCCB_typical_ratings_A": [
+      16,
+      25,
+      32,
+      40,
+      50,
+      63,
+      80,
+      100,
+      125,
+      160,
+      200,
+      250,
+      315,
+      400,
+      500,
+      630,
+      800,
+      1000,
+      1250,
+      1600,
+      2000,
+      2500,
+      3200
+    ],
+    "BS_88_3_fuse_ratings_A": [
+      2,
+      4,
+      6,
+      10,
+      16,
+      20,
+      25,
+      32,
+      40,
+      50,
+      63,
+      80,
+      100,
+      125,
+      160,
+      200,
+      250,
+      315,
+      355,
+      400,
+      500,
+      630,
+      800,
+      1000,
+      1250
+    ]
+  },
+  "diversity_and_design_current_Ib": {
+    "_reference": "IET On-Site Guide Appendix A, BS 7671:2018 (no specific clause — engineering judgement)",
+    "principle": "Ib is the maximum sustained current after applying diversity. For domestic and small commercial, use OSG diversity factors. For large commercial, perform load schedule with engineer's judgement.",
+    "common_factors": {
+      "domestic_ring_socket_circuit": "Treat as 30A maximum (the BS 1363 socket's diversity is inherent in the 30A circuit design — ring fed by 32A MCB).",
+      "office_socket_per_workstation_w": 200,
+      "office_socket_diversity": 0.66,
+      "commercial_lighting": "Use full connected load (no diversity)",
+      "domestic_lighting_diversity": 0.66,
+      "domestic_cooker_diversity": "First 10A + 30% of remainder + 5A if socket fitted to control unit"
+    },
+    "note": "Diversity factors are guidance, not absolute. The engineer is responsible for correct Ib determination. See diversity-factors.json for full table."
+  },
+  "selection_sequence": {
+    "1": "Calculate Ib (design current) from connected load × diversity",
+    "2": "Select device rating In such that In ≥ Ib (round up to next standard size)",
+    "3": "Determine installation method (see reg521-installation-methods.json)",
+    "4": "Look up Iz_tabulated from appendix4-cable-ratings.json for that method and proposed cable size",
+    "5": "Apply correction factors: Iz_corrected = Iz_tabulated × Ca × Cg × Ci × Cd",
+    "6": "Check In ≤ Iz_corrected. If FAIL: upsize cable or improve installation conditions.",
+    "7": "For HRC fuses only: also check 1.6 × In ≤ 1.45 × Iz_corrected",
+    "8": "Calculate voltage drop using appendix12-voltage-drop.json. Check Vd ≤ 3% (lighting) or 5% (other).",
+    "9": "Calculate Zs = Ze + (R1 + R2). Check Zs ≤ Zs_max from reg411-disconnection-times.json.",
+    "10": "Check fault current capability of the device against PSCC (prospective short-circuit current).",
+    "11": "Check adiabatic equation per reg434-fault-current.json — cable must survive fault current for the disconnection time."
+  },
+  "worked_example": {
+    "description": "20-luminaire LED lighting circuit, 36W each, 230V single-phase, Method B2, 30m run, 35°C ambient, grouped with 2 other circuits in same trunking, no insulation",
+    "step_1_Ib": {
+      "connected_load_W": "20 × 36 = 720 W",
+      "Ib_A": "720 / 230 = 3.13 A",
+      "with_inrush_allowance": "Use 5A nominal for sizing"
+    },
+    "step_2_In": {
+      "smallest_practical": "6A",
+      "selected": "10A MCB Type B — gives margin for future additions and avoids nuisance trip from LED inrush"
+    },
+    "step_3_installation": "Method B2 (multi-core T&E in trunking)",
+    "step_4_Iz_tabulated": {
+      "cable": "1.5mm² T&E",
+      "Iz_tab_A": 16.5
+    },
+    "step_5_corrections": {
+      "Ca_35C": 0.96,
+      "Cg_3_circuits": 0.7,
+      "Ci": 1.0,
+      "Cd": 1.0,
+      "Iz_corrected_A": "16.5 × 0.96 × 0.70 × 1.00 × 1.00 = 11.09 A"
+    },
+    "step_6_check_In_le_Iz": "10A ≤ 11.09A ✓ PASS",
+    "step_8_voltage_drop": {
+      "mVAm": 29,
+      "Vd_V": "(29 × 3.13 × 30) / 1000 = 2.72 V",
+      "Vd_percent": "1.18%",
+      "verdict": "Within 3% lighting limit ✓"
+    },
+    "verdict": "Compliant. 1.5mm² T&E with 10A Type B MCB, Method B2 installation. Just."
+  },
+  "common_failures": [
+    "Selecting In > Iz — most common error. Cable overheats at rated current.",
+    "Ignoring grouping factor — designer assumes one circuit per conduit but multiple circuits share the same trunking.",
+    "Using initial luminaire wattage without ballast losses — under-sizing Ib.",
+    "Forgetting motor inrush — Type B trips on inrush, requires Type C/D or soft-start.",
+    "Not checking I2 ≤ 1.45 × Iz for fuses — common with submains protected by HRC.",
+    "Tabulated Iz used without corrections — derating ignored gives non-compliant design."
+  ]
+}
