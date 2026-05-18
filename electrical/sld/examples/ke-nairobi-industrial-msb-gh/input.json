@@ -1,0 +1,26 @@
+{
+  "project_id": "ke-nairobi-enterprise-light-engineering-msb-gh",
+  "site_brief": "Light engineering workshop on Enterprise Road, Nairobi Industrial Area. 1980s build. KPLC TN-S 415V/240V supply via dedicated 11kV/415V substation 180m away. 100A TPN main switch at MSP-100 in main switchroom. C08 submain runs 60m to gate-house DB (GH-DB). Same site as the KE earthing example.",
+  "jurisdiction": "KE",
+  "supply_brief": {
+    "supplier": "KPLC (Kenya Power & Lighting Company)",
+    "wayleave_or_account_reference": "KPLC-NRB-IND-2143",
+    "system_type": "TN-S",
+    "voltage_nominal_v": 415,
+    "voltage_arrangement": "TPN_plus_E",
+    "frequency_hz": 50,
+    "ze_declared_ohm": 0.80,
+    "pfc_declared_ka": 9.8,
+    "main_switch_rating_a": 100,
+    "main_switch_breaking_capacity_ka": 10
+  },
+  "distribution_hierarchy_brief": [
+    { "board_id": "MSP-100", "board_role": "main_switchboard",       "consumed_intent_path": "electrical/db-layout/examples/ke-nairobi-industrial-100A-tpn/intent-out.json", "parent_board_id": null,      "fed_via_circuit_id": null,  "location": "main switchroom adjacent to KPLC intake" },
+    { "board_id": "GH-DB",   "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/ke-nairobi-gh-db/intent-out.json",            "parent_board_id": "MSP-100", "fed_via_circuit_id": "C08", "location": "gate-house perimeter, 60m from MSP-100" }
+  ],
+  "spd_assessment_inputs": {
+    "location_type": "industrial_overhead_exposed",
+    "lightning_risk": "high",
+    "life_safety_present": false
+  }
+}
