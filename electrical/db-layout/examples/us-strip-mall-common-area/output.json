@@ -1,0 +1,86 @@
+{
+  "$schema": "../../schemas/db-layout-ir.schema.json",
+  "drawing_type": "db_layout_schedule_and_schematic",
+  "version": "1.2.0",
+  "meta": {
+    "project_id": "us-stripmall-cap-eg06",
+    "skill_version": "db-layout/1.2.0",
+    "produced_at": "2026-05-18T12:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "US",
+  "board": {
+    "db_id": "CA-P",
+    "designation": "60A Common-Area + Exterior Lighting Panel — Sunset Plaza",
+    "location": "landlord service room (back-of-house)",
+    "enclosure_form_nec_type": "NEMA_1",
+    "ip_rating": "IP2X",
+    "ways_total": 20,
+    "ways_used": 7,
+    "ways_spare": 13
+  },
+  "incoming": {
+    "voltage_v": 208,
+    "phase_arrangement": "TPN",
+    "supply_rating_a": 60,
+    "fed_from": "MSP-A breaker (Common-area 60A 2-pole)",
+    "supply_class": "non_essential",
+    "ze_ohm_at_origin": 0.12
+  },
+  "busbar": {
+    "rating_a": 60,
+    "icw_ka_1s": 10,
+    "ipk_withstand_ka": 22,
+    "ipk_ka": 15
+  },
+  "circuits": [
+    { "circuit_id": "C01", "way_module_id": "W1",    "designation": "Parking lot lighting (LED pole-mounted, 240V branch)",   "voltage_class": "LV_power",          "downstream_load_kw": 3.5,  "ocpd": { "rating_a": 30, "type": "MCB",  "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "10 AWG Cu", "cores": 3, "length_m": 60 } },
+    { "circuit_id": "C02", "way_module_id": "W2",    "designation": "Façade + signage lighting",                              "voltage_class": "LV_power",          "downstream_load_kw": 1.8,  "ocpd": { "rating_a": 20, "type": "MCB",  "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG Cu", "cores": 3, "length_m": 40 } },
+    { "circuit_id": "C03", "way_module_id": "W3",    "designation": "Common area corridor lighting (always-on egress)",       "voltage_class": "emergency_lighting", "downstream_load_kw": 1.2,  "ocpd": { "rating_a": 20, "type": "MCB",  "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG Cu", "cores": 3, "length_m": 35 } },
+    { "circuit_id": "C04", "way_module_id": "W4",    "designation": "Common area receptacles (janitor + outdoor maintenance)", "voltage_class": "LV_power",          "downstream_load_kw": 1.5,  "ocpd": { "rating_a": 20, "type": "MCB",  "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG Cu", "cores": 3, "length_m": 30 } },
+    { "circuit_id": "C05", "way_module_id": "W5-W6", "designation": "Fire pump controller dedicated tap (life-safety, NEC 695.4)", "voltage_class": "LV_power",      "downstream_load_kw": 11.0, "ocpd": { "rating_a": 60, "type": "MCCB", "breaking_capacity_ka": 22 }, "cable": { "csa_mm2_or_awg": "6 AWG Cu",  "cores": 4, "length_m": 18 } },
+    { "circuit_id": "C06", "way_module_id": "W7",    "designation": "Site security cameras + intercom",                       "voltage_class": "LV_power",          "downstream_load_kw": 0.6,  "ocpd": { "rating_a": 15, "type": "MCB",  "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "14 AWG Cu", "cores": 3, "length_m": 50 } }
+  ],
+  "selectivity_results": [
+    { "upstream_id": "MSP-A", "downstream_id": "C01", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 240.4" },
+    { "upstream_id": "MSP-A", "downstream_id": "C02", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 240.4" },
+    { "upstream_id": "MSP-A", "downstream_id": "C03", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 240.4" },
+    { "upstream_id": "MSP-A", "downstream_id": "C04", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 240.4" },
+    { "upstream_id": "MSP-A", "downstream_id": "C05", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 695.4" },
+    { "upstream_id": "MSP-A", "downstream_id": "C06", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Article 240.4" }
+  ],
+  "compliance_summary": {
+    "compliant": false,
+    "non_compliance_flags": [
+      { "message": "NEC 695.4(A) requires the fire pump to be supplied by an independent source — a dedicated direct connection to the utility service, a dedicated on-site generator, or a dedicated feeder tap upstream of the MSP main service disconnect. Routing C05 fire pump branch through the CA-P common-area panelboard does NOT comply with NEC 695.4. RECOMMENDATION: re-route C05 as a dedicated tap from upstream of MSP-A main service disconnect, with its own fire pump controller per NEC 695.6 + dedicated transfer-switch arrangement. The 60A MCCB + 6 AWG Cu feeder remain correct sizing per NEC 695.7 voltage-drop requirements.", "code_clause": "NEC 2023 Article 695.4(A)", "severity": "critical" },
+      { "message": "Bus rating concern: 60A intake busbar + 60A C05 fire pump branch leaves no headroom for other circuits when fire pump is at LRA. NEC 408.30 requires busbar rating ≥ sum of supply OCPDs. After C05 re-routing per the 695.4 flag above, CA-P busbar 60A is appropriate for the remaining ~7 kW common-area load.", "code_clause": "NEC 2023 Article 408.30", "severity": "high" },
+      { "message": "GFCI 10mA Class A applied to common-area receptacles C04 per NEC 210.8(B)(7) outdoor + 210.8(B)(8) janitor/utility — outdoor maintenance receptacles are within scope.", "code_clause": "NEC 2023 Article 210.8(B)", "severity": "info" }
+    ],
+    "assumptions": [
+      "Diversity factor 0.9 applied per NEC 220.61 (common-area lighting + receptacles minimal diversity due to coincident operation).",
+      "Selectivity verification deferred (tool_call_pending) per WI3 — fault-level intent absent and engineer Ifault not declared.",
+      "Cable ampacity check assumes NEC Table 310.16 (THWN-2 in conduit, 30°C ambient): 14 AWG Cu = 20A; 12 AWG Cu = 25A; 10 AWG Cu = 35A; 6 AWG Cu = 65A. All In ≤ Iz.",
+      "EGC sizing per NEC 250.122 matched to OCPD ratings.",
+      "C01 parking lot lighting wired as 240V branch (line-to-line at 208V Y-connected supply) to handle the ~17A draw across 60m run with voltage-drop margin.",
+      "C03 corridor lighting treated as emergency_lighting voltage_class per NEC 700.6 — life-safety egress always-on lighting; NO GFCI per NEC 700.6.",
+      "C05 fire pump: 60A MCCB with 22 kA breaking capacity per NEC 695.4(B) requirement to coordinate with fire-pump locked-rotor current (cannot trip on motor inrush). Cable 6 AWG Cu 4-core for 3-phase + EGC.",
+      "C06 site security cameras + intercom intentionally NOT classified as emergency_lighting — security is non-life-safety; the security system has its own UPS backup at the equipment cabinet."
+    ]
+  },
+  "drawn_as_symbols": ["BUSBAR", "MAIN_SWITCH", "MCB", "MCCB", "GFCI", "EARTH_GENERAL"],
+  "flags": ["TOOL-CALL-PENDING", "CRITICAL-NON-COMPLIANCE-NEC-695.4"],
+  "rationale": {
+    "chat_summary": "60A 208Y/120V 3-phase NEMA Type 1 common-area + exterior lighting panel for Sunset Plaza. 6 circuits: parking lot LED (30A 240V), façade signage, corridor egress lighting (emergency_lighting class), common-area receptacles with GFCI, fire pump controller (NEC 695 life-safety), site security. CRITICAL FLAG: C05 fire pump as a branch off CA-P violates NEC 695.4 — fire pump requires dedicated independent source. Engineer should re-route C05 as a dedicated tap upstream of MSP-A main service disconnect.",
+    "sections": [
+      { "title": "Board Classification", "summary": "US NEMA Type 1 panelboard, 60A, 20-way common-area panel.", "decisions": [ { "label": "NEMA Type 1 enclosure", "summary": "Indoor general purpose; landlord service room.", "rule": "NEMA 250 Type 1 selection for indoor", "code_clause": "NEC 2023 Article 408.3", "inputs": { "board_type": "panelboard_nema", "nec_type": "NEMA_1" } } ] },
+      { "title": "Incoming Supply", "summary": "208Y/120V 3-phase 4-wire, 60A 2-pole feeder from MSP-A. Common-area + exterior lighting + landlord-managed loads. Ze 0.12Ω.", "decisions": [ { "label": "60A 2-pole feeder", "summary": "Smaller than tenant feeders — common-area load is light vs tenant retail load.", "rule": "NEC tenant feeder sizing per NEC 220 load calculation", "code_clause": "NEC 2023 Article 220.61", "inputs": { "supply_rating_a": 60 } } ] },
+      { "title": "Busbar Sizing", "summary": "60A busbar matches feeder rating, IcW 10 kA. Common-area load (excluding fire pump after re-routing) ≈ 7 kW ~ 20A diversified. After NEC 695.4 corrective re-route of C05, 60A busbar has 65% headroom.", "decisions": [ { "label": "60A busbar IcW 10 kA", "summary": "Sized to match feeder OCPD at MSP-A.", "rule": "NEC 408 panelboard rating", "code_clause": "NEC 2023 Article 408.30", "inputs": { "busbar_a": 60, "icw_ka_1s": 10 } } ] },
+      { "title": "Way Assignment", "summary": "7 ways used: 5 × single-pole MCBs (W1-W4, W7) + 1 × 2-pole MCCB (W5-W6) for fire pump. 13 ways spare.", "decisions": [] },
+      { "title": "OCPD Selection", "summary": "Branch circuits sized per NEC 240. Parking lot 30A on 10 AWG (35A ampacity). Common-area 20A on 12 AWG (25A). Security 15A on 14 AWG (20A). Fire pump 60A on 6 AWG (65A ampacity). All In ≤ Iz pass.", "decisions": [ { "label": "60A Type D MCCB on fire pump", "summary": "C05 fire pump motor needs Type D curve + 22 kA Icu MCCB. NEC 695.5 prohibits any OCPD that would trip on motor inrush — coordinate with manufacturer.", "rule": "NEC 695 fire pump OCPD coordination", "code_clause": "NEC 2023 Article 695.5", "inputs": { "curve": "D", "icu_ka": 22 } } ] },
+      { "title": "RCD Strategy", "summary": "NEC 210.8(B) commercial GFCI applied to C04 common-area receptacles (janitor + outdoor maintenance — outdoor + readily accessible). C01 + C02 lighting circuits no GFCI (lighting, no receptacle). C03 corridor lighting NO GFCI per NEC 700.6 life-safety. C05 fire pump NO GFCI per NEC 695 life-safety (would defeat purpose). C06 security intentionally NOT life-safety class — no GFCI required.", "decisions": [ { "label": "GFCI on C04 only", "summary": "Only readily-accessible outdoor / janitor receptacles are within NEC 210.8(B) scope.", "rule": "NEC 210.8(B) commercial GFCI + NEC 700.6 + NEC 695 exemptions", "code_clause": "NEC 2023 Article 210.8(B)", "inputs": { "circuits_with_gfci": ["C04"] } } ] },
+      { "title": "Cable Selection", "summary": "THWN-2 copper in EMT conduit. 6 AWG Cu 4-core for fire pump (3-phase + EGC) handles LRA per NEC 695.7. 10 AWG for parking lot 30A run at 60m — voltage drop within NEC 215.2(A)(1) 3% recommendation.", "decisions": [] },
+      { "title": "Selectivity Verification", "summary": "6 cascade pairs (MSP-A → C01..C06) emitted as tool_call_pending. fault-level intent absent; engineer Ifault not declared. C05 fire pump cascade pair has special significance — NEC 695 requires the fire-pump OCPD to NOT trip during a fault upstream until the motor de-energizes (NEC 695.5(C)).", "decisions": [ { "label": "All cascades tool_call_pending", "summary": "Per WI3 deferral pattern.", "rule": "NEC 240.4 + NEC 695.5(C)", "code_clause": "NEC 2023 Article 240.4", "inputs": { "tool_call_pending": true } } ] },
+      { "title": "Compliance", "summary": "NON-COMPLIANT as drawn. CRITICAL: C05 fire pump branch from common-area panelboard violates NEC 695.4(A) (dedicated independent source required). HIGH: 60A intake + 60A fire pump branch leaves no busbar headroom for other circuits at LRA. INFO: GFCI scope on C04 per NEC 210.8(B). Engineer must re-route C05 before construction.", "decisions": [] }
+    ]
+  }
+}

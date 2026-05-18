@@ -1,0 +1,32 @@
+{
+  "$schema": "../../inputs.json",
+  "project_meta": {
+    "project_id": "us-stripmall-cap-eg06",
+    "name": "Sunset Plaza — Common-area + exterior lighting panel (CA-P)",
+    "client": "Landlord (strip-mall operator)",
+    "designer": "DraftsMan Skills demo",
+    "date": "2026-05-18",
+    "revision": "P01"
+  },
+  "jurisdiction": "US",
+  "board_type": "panelboard_nema",
+  "db_designation": "CA-P",
+  "location": "landlord service room (back-of-house)",
+  "fed_from": "MSP-A breaker (Common-area 60A 2-pole)",
+  "supply_voltage_v": "208",
+  "phase_arrangement": "TPN",
+  "supply_rating_a": 60,
+  "ze_ohm_at_origin": 0.12,
+  "ways_total": 20,
+  "ip_rating": "NEMA_1",
+  "diversity_factor_main": 0.9,
+  "rcd_type_default": "A",
+  "circuits_declared": [
+    { "id": "C01", "designation": "Parking lot lighting (LED pole-mounted, 240V branch)",     "ocpd_rating_a": 30, "ocpd_type": "MCB",  "phase_csa_awg": "10 AWG Cu", "length_m": 60, "load_kw": 3.5 },
+    { "id": "C02", "designation": "Façade + signage lighting",                                 "ocpd_rating_a": 20, "ocpd_type": "MCB",  "phase_csa_awg": "12 AWG Cu", "length_m": 40, "load_kw": 1.8 },
+    { "id": "C03", "designation": "Common area corridor lighting (always-on egress)",          "ocpd_rating_a": 20, "ocpd_type": "MCB",  "phase_csa_awg": "12 AWG Cu", "length_m": 35, "load_kw": 1.2 },
+    { "id": "C04", "designation": "Common area receptacles (janitor + outdoor maintenance)",   "ocpd_rating_a": 20, "ocpd_type": "MCB",  "phase_csa_awg": "12 AWG Cu", "length_m": 30, "load_kw": 1.5 },
+    { "id": "C05", "designation": "Fire pump controller dedicated tap (life-safety, NEC 695.4)", "ocpd_rating_a": 60, "ocpd_type": "MCCB", "phase_csa_awg": "6 AWG Cu", "length_m": 18, "load_kw": 11.0 },
+    { "id": "C06", "designation": "Site security cameras + intercom",                          "ocpd_rating_a": 15, "ocpd_type": "MCB",  "phase_csa_awg": "14 AWG Cu", "length_m": 50, "load_kw": 0.6 }
+  ]
+}
