@@ -12,7 +12,7 @@ Project: `uk-3storey-office-eg01`  •  Jurisdiction: GB  •  System: TN-C-S 40
 **System metrics:**
 
 - Imax_total: **146A** (diversity 0.85 applied) — 36% of intake capacity
-- Peak PFC: **9.5kA** — comfortably inside 36kA Icu
+- Peak PFC: **9.8kA** (sourced from fault-level intent v1.4 — was 9.5kA LLM-estimated in v1.3) — comfortably inside 36kA Icu
 - SPD at MSB intake: **Type 2** per BS 7671:2018+A2 Reg 443
 - Cascade selectivity: **fully_selective** — 4:1 ratio (400A / 100A) exceeds BS EN 60947-2 typical threshold (~3:1)
 
