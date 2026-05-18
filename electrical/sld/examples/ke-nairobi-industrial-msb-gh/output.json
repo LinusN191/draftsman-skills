@@ -4,11 +4,13 @@
   "version": "1.3.0",
   "meta": {
     "project_id": "ke-nairobi-enterprise-light-engineering-msb-gh",
-    "skill_version": "sld/1.3.0",
+    "skill_version": "sld/1.4.0",
     "produced_at": "2026-05-18T12:00:00Z",
     "consumed_intents": [
-      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" },
-      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0" }
+      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",  "path": "electrical/db-layout/examples/ke-nairobi-industrial-100A-tpn/intent-out.json" },
+      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",  "path": "electrical/db-layout/examples/ke-nairobi-gh-db/intent-out.json" },
+      { "intent_type": "earthing",    "intent_version": "1.0.0", "produced_by": "electrical/earthing/v1.4.0",   "path": "electrical/earthing/examples/ke-nairobi-industrial-tn-s/intent-out.json" },
+      { "intent_type": "fault-level", "intent_version": "1.0.0", "produced_by": "electrical/fault-level/v1.1.0", "path": "electrical/fault-level/examples/ke-nairobi-industrial/intent-out.json" }
     ]
   },
   "jurisdiction": "KE",
@@ -33,7 +35,7 @@
   ],
   "system_metrics": {
     "imax_total_a": 41,
-    "peak_pfc_ka": 9.5,
+    "peak_pfc_ka": 10.2,
     "spd_assessment": {
       "required": true,
       "spd_type": "Type 1+2",
@@ -50,27 +52,32 @@
   "compliance_summary": {
     "compliant": false,
     "non_compliance_flags": [
-      { "message": "MSP-100 C08 -> GH-DB cascade is only partially selective: 40A/16A overcurrent ratio (2.5:1) is below 3:1 BS EN 60898 typical, and 30mA-on-30mA RCDs are non-selective by design. Recommend upstream Type S 100mA delayed RCD at C08 OR remove GH-DB 30mA RCDs and rely on upstream additional protection.", "code_clause": "KS 1700:2018 §536 (selectivity) + KS 1700:2018 §411.3.3 (universal socket-RCD)", "severity": "warning" }
+      { "message": "MSP-100 C08 -> GH-DB cascade is only partially selective: 40A/16A overcurrent ratio (2.5:1) is below 3:1 BS EN 60898 typical, and 30mA-on-30mA RCDs are non-selective by design. Recommend upstream Type S 100mA delayed RCD at C08 OR remove GH-DB 30mA RCDs and rely on upstream additional protection.", "code_clause": "KS 1700:2018 §536 (selectivity) + KS 1700:2018 §411.3.3 (universal socket-RCD)", "severity": "warning" },
+      { "message": "MSP-100 main switch Icu (10kA) is 0.2kA below the deterministic peak PFC (10.2kA from fault-level intent IEC 60909-0:2016 cascade). KS 1700:2018 §434.5.1 → BS 7671:2018+A2 §434.5.1 requires Icu ≥ prospective Isc. Recommend uprating main switch to 16kA Icu, or document cascade protection by upstream KPLC transformer fuse with explicit let-through energy analysis.", "code_clause": "KS 1700:2018 §434.5.1", "severity": "warning" }
     ],
     "assumptions": [
       "Diversity factor 0.75 applied to MSP-100 mixed industrial load (workshop machine tools + office + compressor + gate-house submain). Imax_total = 33.2 kW × 0.75 / (√3 × 415V × 0.85) ≈ 41A — inline derivation; deterministic refinement deferred per WI3 to calc.sld_system_metrics.",
-      "Peak PFC at MSP-100 busbar taken as 9.5kA (slightly under declared 9.8kA accounting for service-tail impedance). At GH-DB after 60m of 10mm² SWA the PFC drops to ~3.5kA — within typical 6kA Icu domestic-board rating.",
+      "Peak PFC at MSP-100 busbar sourced from fault-level intent (transformer secondary ifault_ka_max = 10.22 kA per IEC 60909-0:2016 cascade) — supersedes prior LLM estimate of 9.5kA. At GH-DB after 60m of 10mm² SWA the PFC drops to ~3.5kA — within typical 6kA Icu domestic-board rating.",
       "Selectivity verified by manual_review (not IEC typical ratio) because the ratio (2.5:1) falls below the typical threshold and the RCD interaction needs explicit engineering judgement.",
       "SPD Type 1+2 selected because KPLC supplies in industrial Nairobi typically have exposed overhead sections vulnerable to direct lightning strike — KS 1700:2018 §443 + KS-unique deviations index recommends combined Type 1+2 for such exposure profiles.",
       "Gate-house DB final circuits include sockets (C02) and comms/data (C03). KS 1700:2018 §411.3.3 universal socket-RCD applies — additional protection is required somewhere in the chain (either upstream at C08 or locally at GH-DB). Current GH-DB design has local RCDs creating the selectivity problem flagged above.",
-      "No dedicated life-safety distribution at this scale. Workshop emergency lighting via local battery-pack luminaires; no central fire alarm system in this industrial occupancy."
+      "No dedicated life-safety distribution at this scale. Workshop emergency lighting via local battery-pack luminaires; no central fire alarm system in this industrial occupancy.",
+      "Multi-skill intent consumption (v1.4): earthing intent at electrical/earthing/examples/ke-nairobi-industrial-tn-s/intent-out.json provides system_type=TN-S, ze_declared_ohm=0.80, supply_bond_type=tn_s_separate_pe — cross-checked against SLD supply_origin per INV-11.",
+      "Multi-skill intent consumption (v1.4): fault-level intent at electrical/fault-level/examples/ke-nairobi-industrial/intent-out.json provides system peak PFC per IEC 60909-0:2016 cascade. KS 1700:2018 §312 routes to BS 7671:2018+A2 §313.1 for short-circuit interrupting verification (direct citation form per Kenya jurisdictional policy).",
+      "tool_call_pending_for_system_metrics: true — imax_total, SPD assessment, life-safety isolation remain LLM-estimated until calc.sld_system_metrics ships."
     ]
   },
   "drawing_notes": [
     "MSP-100 located in main switchroom adjacent to KPLC intake with 100A TPN main switch (BS EN 60947-3 shrouded busbars, 10kA Icu).",
     "GH-DB at gate-house perimeter, fed via 60m run of 10mm² 4-core SWA on outdoor cable tray + buried section.",
     "Combined Type 1+2 SPD at MSP-100 intake per KS 1700:2018 §443 — covers direct strike + induced transient.",
-    "Selectivity flag: C08 -> GH-DB only partially selective; engineering note in compliance_summary recommends 100mA Type S delayed RCD upstream OR removal of local 30mA RCDs at GH-DB."
+    "Selectivity flag: C08 -> GH-DB only partially selective; engineering note in compliance_summary recommends 100mA Type S delayed RCD upstream OR removal of local 30mA RCDs at GH-DB.",
+    "Icu flag: peak PFC 10.2kA (from fault-level intent IEC 60909-0:2016) exceeds 10kA Icu of MSP-100 main switch by 0.2kA. Engineering note recommends uprating to 16kA Icu or cascade-protection documentation per KS 1700:2018 §434.5.1 → BS 7671:2018+A2 §434.5.1."
   ],
   "drawn_as_symbols": ["BUSBAR", "MCB", "RCD", "RCBO", "EARTH_GENERAL", "EARTH_PROTECTIVE", "CONDUCTOR_PE", "JUNCTION_T", "SPD_SYMBOL"],
   "flags": ["TOOL-CALL-PENDING:sld_system_metrics — System metrics are LLM-estimates; deterministic refinement deferred per WI3."],
   "rationale": {
-    "chat_summary": "KE light-engineering workshop on KPLC TN-S 415V (Ze=0.80Ω). 100A MSP-100 feeds 60m submain to gate-house GH-DB at 40A Type B + 30mA RCD. Imax_total ~41A (diversity 0.75); peak PFC 9.5kA. Type 1+2 SPD per KS 1700:2018 §443. Cascade is partial_selective only: 40A/16A ratio 2.5:1 + 30mA-on-30mA RCDs non-selective. Recommend upstream 100mA Type S or local RCD removal. Reply to refine.",
+    "chat_summary": "KE light-engineering workshop on KPLC TN-S 415V (Ze=0.80Ω). 100A MSP-100 feeds 60m submain to gate-house GH-DB at 40A Type B + 30mA RCD. v1.4 multi-skill: earthing+fault-level intents consumed. Peak PFC 10.2kA (from fault-level IEC 60909) exceeds 10kA Icu by 0.2kA — flag Icu uprate or cascade protection. Cascade partial_selective (40A/16A ratio 2.5:1 + 30mA-on-30mA non-selective). Type 1+2 SPD per KS 1700:2018 §443. KS§312→BS 7671§313.1 routing. Reply to refine.",
     "sections": [
       { "title": "Supply Origin", "summary": "KPLC TN-S 415V/240V TPN supply, wayleave KPLC-NRB-IND-2143. Declared Ze=0.80Ω (measured 2026-03-12 by KPLC) + PFC=9.8kA. 100A main switch with 10kA Icu (BS EN 60947-3 shrouded busbars).", "decisions": [
         { "label": "KPLC TN-S confirmed", "summary": "Separate-Earth cable from 11kV/415V substation 180m away. No PEN at intake. Older industrial-area supply (1987 commissioning).", "rule": "KS 1700:2018 §411.4 TN-S system definition", "code_clause": "KS 1700:2018 §411.4", "inputs": { "ze_ohm_declared": 0.80, "pfc_ka_declared": 9.8, "connection_year": 1987 } }
@@ -78,8 +85,8 @@
       { "title": "Distribution Hierarchy", "summary": "2-board cascade. MSP-100 in main switchroom feeds GH-DB at gate-house perimeter via 60m run on C08 (10mm² 4-core SWA, 40A Type B + 30mA Type A RCD).", "decisions": [
         { "label": "Single MSB + remote GH-DB", "summary": "Gate house is 60m from main switchroom — too far for direct final circuits. Sub-DB sized for 40A intake (3 final circuits + 1 spare way).", "rule": "Engineering convention; voltage drop limit ≤4% on submain", "code_clause": "KS 1700:2018 §525", "inputs": { "board_count": 2, "submain_length_m": 60 } }
       ] },
-      { "title": "System Metrics", "summary": "Imax_total 41A (vs 100A intake = 41% utilisation, 59% headroom). Peak PFC 9.5kA at MSP-100 busbar (vs 10kA Icu — tight but acceptable). At GH-DB after 60m the PFC drops to ~3.5kA which is comfortable for the 6kA Icu domestic-board rating.", "decisions": [
-        { "label": "Intake capacity verified", "summary": "main_switch_rating 100A >= imax_total 41A; breaking_capacity 10kA ≈ peak_pfc 9.5kA — within 5% margin (acceptable for industrial KE practice).", "rule": "KS 1700:2018 §433.1.1 + §434.5.1 Icu adequacy", "code_clause": "KS 1700:2018 §433.1.1", "inputs": { "imax_total_a": 41, "main_switch_rating_a": 100, "icu_margin_pct": 5 } }
+      { "title": "System Metrics", "summary": "Imax_total 41A (vs 100A intake = 41% utilisation, 59% headroom). Peak PFC 10.2kA at MSP-100 busbar (sourced from fault-level intent, IEC 60909-0:2016 transformer secondary cascade) — this exceeds the 10kA Icu of the main switch by 0.2kA. KS 1700:2018 §434.5.1 → BS 7671:2018+A2 §434.5.1 requires Icu ≥ prospective Isc; the marginal exceedance is flagged in compliance_summary for the design team to address (typical fixes: uprate main switch to 16kA Icu, or rely on cascade protection from KPLC upstream transformer fuse). At GH-DB after 60m the PFC drops to ~3.5kA which is comfortable for the 6kA Icu domestic-board rating.", "decisions": [
+        { "label": "Icu adequacy flagged", "summary": "main_switch_rating 100A >= imax_total 41A (intake capacity OK). breaking_capacity 10kA < peak_pfc 10.2kA — fails Icu adequacy by 0.2kA. Compliance flag raised; engineering team to uprate to 16kA Icu or document cascade protection from KPLC transformer fuse per KS 1700:2018 §434.5.1.", "rule": "KS 1700:2018 §434.5.1 → BS 7671:2018+A2 §434.5.1 Icu adequacy (Kenya direct citation routing per KS 1700:2018 §312)", "code_clause": "KS 1700:2018 §434.5.1", "inputs": { "imax_total_a": 41, "main_switch_rating_a": 100, "peak_pfc_ka": 10.2, "icu_ka": 10, "icu_shortfall_ka": 0.2 } }
       ] },
       { "title": "Cascade Selectivity", "summary": "MSP-100 C08 -> GH-DB cascade is partial_selective only. Overcurrent: 40A Type B / 16A Type B = 2.5:1, below the 3:1 BS EN 60898 typical threshold. RCDs: 30mA upstream + 30mA downstream are non-selective by design (both trip on any downstream earth fault, taking out the whole gate-house plus upstream RCD).", "decisions": [
         { "label": "Partial selectivity flagged", "summary": "Verdict 'partial_selective' with verification_method 'manual_review'. Engineering recommendation captured in compliance_summary: upgrade upstream to 100mA Type S delayed RCD OR remove GH-DB 30mA RCDs.", "rule": "KS 1700:2018 §536 selectivity + BS EN 60898 typical ratio", "code_clause": "KS 1700:2018 §536", "inputs": { "ratio": 2.5, "verdict": "partial_selective", "rcd_interaction": "non_selective_30mA_on_30mA" } }
@@ -88,10 +95,11 @@
         { "label": "Type 1+2 SPD at MSP-100", "summary": "KS 1700:2018 §443 + KS-unique deviations baseline for industrial sites with overhead supply exposure.", "rule": "KS 1700:2018 §443 SPD policy + KS-deviation index for industrial overhead exposure", "code_clause": "KS 1700:2018 §443", "inputs": { "spd_type": "Type 1+2", "location_type": "industrial_overhead_exposed", "lightning_risk": "high" } }
       ] },
       { "title": "Life-Safety Isolation", "summary": "No dedicated fire-alarm / emergency-lighting / UPS distribution at this scale. Industrial workshop occupancy — local battery-pack emergency lighting only, no central fire alarm.", "decisions": [] },
-      { "title": "Compliance", "summary": "Non-compliant pending resolution of the C08 -> GH-DB selectivity flag. 1 warning recorded. 6 assumptions documented (diversity factor, PFC at GH-DB, selectivity method, SPD selection rationale, KS §411.3.3 socket-RCD, life-safety strategy).", "decisions": [
-        { "label": "Non-compliance: cascade selectivity", "summary": "C08 -> GH-DB is partial_selective only. Two compliant resolutions recommended in non_compliance_flags. Site cannot energise GH-DB at full design intent until either upstream Type S RCD installed or GH-DB local RCDs removed.", "rule": "KS 1700:2018 §536 (selectivity) + §411.3.3 (universal socket-RCD)", "code_clause": "KS 1700:2018 §536", "inputs": { "severity": "warning", "resolutions_offered": 2 } }
+      { "title": "Compliance", "summary": "Non-compliant pending resolution of (1) the C08 -> GH-DB selectivity flag and (2) the MSP-100 Icu shortfall (10kA Icu vs 10.2kA peak PFC from fault-level intent). 2 warnings recorded. 9 assumptions documented (diversity factor, PFC sourcing, selectivity method, SPD selection rationale, KS §411.3.3 socket-RCD, life-safety strategy, earthing multi-skill consumption, fault-level multi-skill consumption + KS§312 routing, tool-call-pending flag).", "decisions": [
+        { "label": "Non-compliance: cascade selectivity", "summary": "C08 -> GH-DB is partial_selective only. Two compliant resolutions recommended in non_compliance_flags. Site cannot energise GH-DB at full design intent until either upstream Type S RCD installed or GH-DB local RCDs removed.", "rule": "KS 1700:2018 §536 (selectivity) + §411.3.3 (universal socket-RCD)", "code_clause": "KS 1700:2018 §536", "inputs": { "severity": "warning", "resolutions_offered": 2 } },
+        { "label": "Non-compliance: Icu adequacy", "summary": "MSP-100 main switch breaking capacity (10kA Icu) is 0.2kA below the deterministic peak PFC (10.2kA) sourced from fault-level intent per IEC 60909-0:2016. Compliant resolutions: uprate to 16kA Icu, or document cascade protection from KPLC transformer fuse with let-through energy analysis. KS§312 routes to BS 7671§434.5.1 for the technical requirement.", "rule": "KS 1700:2018 §434.5.1 → BS 7671:2018+A2 §434.5.1 (Kenya direct citation routing per KS§312)", "code_clause": "KS 1700:2018 §434.5.1", "inputs": { "severity": "warning", "peak_pfc_ka": 10.2, "icu_ka": 10, "shortfall_ka": 0.2 } }
       ] },
-      { "title": "Assumptions", "summary": "6 assumptions captured in compliance_summary covering diversity factor, PFC at GH-DB after 60m, selectivity verification method, SPD Type 1+2 selection rationale, KS 1700 §411.3.3 universal socket-RCD interpretation, and life-safety strategy.", "decisions": [] }
+      { "title": "Assumptions", "summary": "9 assumptions captured in compliance_summary covering diversity factor, PFC sourcing from fault-level intent, selectivity verification method, SPD Type 1+2 selection rationale, KS 1700 §411.3.3 universal socket-RCD interpretation, life-safety strategy, earthing multi-skill consumption + INV-11 cross-check, fault-level multi-skill consumption + KS§312→BS 7671§313.1 routing, and tool-call-pending status.", "decisions": [] }
     ]
   }
 }

@@ -2,6 +2,19 @@
 
 > **v1.3 — WI4 multi-board consumption:** This example consumes 2 db-layout intents — the existing MSP-100 (8 final circuits including the gate-house submain at C08) and the new gate-house GH-DB (3 final circuits fed via C08). Board IDs match the upstream 1:1. Same site as the KE earthing example, viewed through the SLD-skill lens.
 
+## Multi-skill consumption (v1.4)
+
+> **v1.4 — multi-skill intent consumption:** This example consumes 3 upstream skill domains:
+> - **db-layout** (2 intents — MSP-100 + GH-DB) — per-board detail
+> - **earthing** (1 intent, system-wide) — at `electrical/earthing/examples/ke-nairobi-industrial-tn-s/intent-out.json` — provides `system_type=TN-S` (KPLC), `supply_bond_type=tn_s_separate_pe`, `ze_declared_ohm=0.80`; cross-checked against SLD `supply_origin` via INV-11
+> - **fault-level** (1 intent, system-wide) — at `electrical/fault-level/examples/ke-nairobi-industrial/intent-out.json` — provides deterministic peak_pfc_ka per IEC 60909-0:2016 cascade with motor §3.8.1 threshold check (strict-rule motor exclusion documented in fault-level reasoning). Transformer-secondary `ifault_ka_max = 10.22 kA` → SLD `system_metrics.peak_pfc_ka = 10.2` (was LLM-estimated 9.5 in v1.3)
+>
+> The shift from 9.5 → 10.2 kA flips the MSP-100 Icu adequacy verdict: 10kA Icu < 10.2kA peak PFC by 0.2kA. A second non_compliance_flag (Icu shortfall) is now recorded alongside the v1.3 selectivity flag. Engineering team options: uprate main switch to 16kA Icu, or document cascade protection from the KPLC 11kV/415V transformer fuse with let-through energy analysis.
+>
+> KS 1700:2018 §312 routes to BS 7671:2018+A2 §313.1 for short-circuit interrupting verification — Kenya direct citation form per jurisdictional policy. The same routing applies to §434.5.1 for Icu adequacy.
+>
+> `meta.consumed_intents[]` grows from 2 entries (v1.3) to 4 entries (v1.4): 2 db-layout + 1 earthing + 1 fault-level. INV-11 enforces the count + ordering + cross-skill field equality.
+
 ## Site context
 
 Light engineering workshop on Enterprise Road, Nairobi Industrial Area. 1980s build. KPLC supply via dedicated 11kV/415V substation 180m down the road, terminating in a 100A TPN main switch at MSP-100 in the workshop's main switchroom. The gate house at the perimeter (60m away) has its own sub-DB (`GH-DB`) for security lighting, gate-controller power, and a small comms cabinet. The 60m submain (C08 in the MSP-100 schedule) is 10mm² 4-core SWA on outdoor cable tray, transitioning to buried duct under the access road.
