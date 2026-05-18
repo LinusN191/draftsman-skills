@@ -1,0 +1,49 @@
+{
+  "$schema": "../../schemas/core/calculation.schema.json",
+  "id": "iec-bs-zs-loop-impedance",
+  "name": "Earth Fault Loop Impedance Verification (BS 7671 / IEC 60364 / NEC)",
+  "executor": "tool",
+  "tool_name": "calc.zs_loop_impedance",
+  "formula_reference": "BS 7671:2018+A2:2022 Reg 411.3.2 + Table 41.2; IEC 60364-5-52:2009 Annex B (cable R+X); NFPA 70 Chapter 9 Table 9 (US cable R+X)",
+  "implementation_note": "Computes Zs = Ze + (R1+R2) per circuit using per-CSA AC R+X from the jurisdiction-appropriate impedance table, then looks up Zs_max from BS 7671 Table 41.2 (BS/KE/EU/INT) or derives from NEC 5×In trip current (US). Returns a per-circuit verdict (pass / fail_needs_rcd / fail_oversize_cpc / pass_with_rcd). Inline LLM math diverges from the deterministic Python by ±15-25% due to imprecise per-CSA cable resistance estimates — this calc must NEVER be inline once the runtime tool ships.",
+  "inputs": [
+    {"id": "jurisdiction",                "type": "enum",  "values": ["GB", "EU", "INT", "KE", "US"], "description": "Selects impedance table (IEC part5-52 for non-US; NFPA70 Ch9 for US) and Zs_max source (BS Table 41.2 for non-US; NEC 5×In ratio for US)"},
+    {"id": "supply",                      "type": "object", "description": "Service entry data: ze_declared_ohm, system_type (TN-S | TN-C-S | TT), voltage_phase_to_earth_v, frequency_hz"},
+    {"id": "circuits",                    "type": "array",  "description": "Per-circuit data: circuit_id, cable_material (Cu|Al), cable_insulation (PVC|XLPE), line_csa_mm2_or_awg, cpc_csa_mm2_or_awg, route_length_m, device_type (MCB_B|MCB_C|MCB_D|BS_88_fuse|RCBO|GFCI), device_rating_a"},
+    {"id": "operating_temperature_c",     "type": "int",    "default": 70, "description": "Conductor operating temperature for R uplift; 70°C for PVC, 90°C for XLPE; defaults to 70 if mixed"}
+  ],
+  "output": {
+    "tool_version":      {"unit": "string",  "description": "Semver of the tool implementation"},
+    "computed_at":       {"unit": "ISO-8601","description": "Timestamp when the tool produced this result"},
+    "sources":           {"unit": "array",   "description": "Standards file paths consulted by the tool"},
+    "results":           {"unit": "array",   "description": "Per-circuit verdict array — see runtime_contract"},
+    "overall_compliant": {"unit": "boolean", "description": "True if every circuit verdict is pass or pass_with_rcd"}
+  },
+  "runtime_contract": {
+    "request":  "{ tool_name: 'calc.zs_loop_impedance', inputs: { jurisdiction, supply, circuits, operating_temperature_c } }",
+    "response": "{ ok: true, result: { tool_version, computed_at, sources, results: [{ circuit_id, r1_per_km_ohm, r2_per_km_ohm, r1_plus_r2_ohm, zs_calc_ohm, zs_max_ohm, zs_max_source, margin_pct, verdict, rcd_required }], overall_compliant }, error?: string }"
+  },
+  "jurisdiction_branching": {
+    "GB_KE_EU_INT": {
+      "impedance_table": "shared/standards/electrical/IEC60364/part5-52-cable-impedance.json",
+      "zs_max_table":   "shared/standards/electrical/BS7671/reg411-disconnection-times.json (table_41_2_MCB_Zs_max_ohms + table_41_3_BS_88_fuse_Zs_max_ohms)",
+      "ks_1700_note":   "KS 1700:2018 Annex E reproduces BS 7671 Table 41.2 verbatim — KE routes through the BS table"
+    },
+    "US": {
+      "impedance_table": "shared/standards/electrical/NFPA70/chapter9-tables.json::Table_9_Alternating_Current_Resistance_and_Reactance_for_600V_Cables",
+      "zs_max_derivation": "NEC has no fixed Zs_max table — verdict computed from instantaneous trip current Ia = 5×In (Type C) or 10×In (Type D) with 277V phase-to-ground or 120V/240V depending on system"
+    }
+  },
+  "adverse_condition_factor": "BS 7671 Section 411.3.2 implies a 0.8 factor on Zs_max already baked into Table 41.2 values (cable temperature rise at fault). Tool does NOT re-apply.",
+  "verdict_logic": {
+    "pass":               "zs_calc <= zs_max (no RCD required by Zs)",
+    "fail_needs_rcd":     "zs_calc > zs_max — RCD required to achieve required disconnection time",
+    "fail_oversize_cpc":  "zs_calc > zs_max even with RCD threshold — must oversize CPC",
+    "pass_with_rcd":      "zs_calc <= zs_max but RCD additionally required (e.g. socket circuit ≤32A per BS 7671 411.3.3 / KS 1700 411.3.3)"
+  },
+  "_consuming_skills": [
+    "electrical/earthing (primary, since v1.1.0)",
+    "electrical/db-layout (selectivity verification, future)",
+    "electrical/cable-sizing (Zs as design constraint, future)"
+  ]
+}
