@@ -1,0 +1,34 @@
+{
+  "project_id": "intl-comm-tpn-eg02",
+  "board_brief": "Lighting sub-DB (DB-L1) for a generic IEC commercial 3-storey office building. 250A TPN intake fed from MSB-MAIN F01 (250A MCCB Type D). 8 final lighting circuits covering open-office zones, meeting rooms, external/façade, emergency, and decorative lighting. Located in level-1 electrical riser cupboard.",
+  "jurisdiction": "INT",
+  "standards_stack": {
+    "primary": "IEC 60364 (HD 60364 series)",
+    "assembly_type_testing": "IEC 61439-3:2012 Distribution Board"
+  },
+  "supply": {
+    "fed_from": "MSB-MAIN F01 250A MCCB Type D",
+    "system_type": "TN-S (utility transformer earthed; building distribution TN-S)",
+    "voltage": "400V/230V 3-phase 4-wire 50 Hz",
+    "supply_rating_a": 250,
+    "phase_arrangement": "TPN_plus_E",
+    "feeder_route_length_m": 35
+  },
+  "board": {
+    "designation": "DB-L1",
+    "location": "level-1 electrical riser cupboard",
+    "enclosure_rating": "IP4X (indoor)",
+    "busbar_rating_a": 250,
+    "scope": "single-board"
+  },
+  "circuits": [
+    { "circuit_id": "L01", "designation": "Lighting Zone 1 — open office GF",         "phase": "L1",        "device": "16A MCB Type C", "cable": "2.5mm² PVC Cu",         "route_length_m": 40 },
+    { "circuit_id": "L02", "designation": "Lighting Zone 2 — open office L1",         "phase": "L2",        "device": "16A MCB Type C", "cable": "2.5mm² PVC Cu",         "route_length_m": 60 },
+    { "circuit_id": "L03", "designation": "Lighting Zone 3 — open office L2",         "phase": "L3",        "device": "16A MCB Type C", "cable": "2.5mm² PVC Cu",         "route_length_m": 80 },
+    { "circuit_id": "L04", "designation": "Lighting — meeting rooms common",          "phase": "L1",        "device": "10A MCB Type B", "cable": "1.5mm² PVC Cu",         "route_length_m": 45 },
+    { "circuit_id": "L05", "designation": "External lighting (parking + façade)",     "phase": "L2",        "device": "20A MCB Type C", "cable": "4mm² SWA XLPE Cu",      "route_length_m": 90 },
+    { "circuit_id": "L06", "designation": "Emergency lighting (battery-backed)",      "phase": "L3",        "device": "10A MCB Type B", "cable": "1.5mm² FP200 LSZH Cu",  "route_length_m": 55 },
+    { "circuit_id": "L07", "designation": "Decorative lighting (lobby + meeting)",    "phase": "L1",        "device": "10A MCB Type B", "cable": "1.5mm² PVC Cu",         "route_length_m": 35 },
+    { "circuit_id": "L08", "designation": "Spare way reserved",                        "phase": "L",         "device": "—",              "cable": "—",                     "route_length_m": 0 }
+  ]
+}
