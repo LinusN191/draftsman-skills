@@ -1,0 +1,60 @@
+{
+  "$schema": "../../inputs.json",
+  "project_meta": {
+    "project_id": "us-strip-mall-fl-eg01",
+    "name": "US 4-Tenant Retail Strip Mall Fault-Level Study",
+    "client": "Retail property owner",
+    "designer": "DraftsMan Skills demo",
+    "date": "2026-05-18",
+    "revision": "P01"
+  },
+  "jurisdiction": "US",
+  "site_brief": "Single-storey 4-tenant retail strip mall served from the local utility (PoCo) 13.2 kV radial primary through a 300 kVA pad-mount transformer (208Y/120V TPN, dry-type Zpu=5.75%). The Main Service Panel (MSP, 600 A) feeds three sub-panels: tenant-A sub-panel TSP-A (200 A, 80 ft), tenant-B sub-panel TSP-B (200 A, 100 ft) and a common-areas panel CA-P (100 A, 120 ft). SCCR (Short-Circuit Current Rating) verification per NEC 2023 Article 110.9 + Article 110.10 + §408.36 is the binding code chain for breaker interrupting capacity.",
+  "supply_voltage_v": "208",
+  "hv_side_present": true,
+  "hv_voltage_kv": "13.2",
+  "hv_pscc_at_primary_ka": 28,
+  "hv_network_arrangement": "radial",
+  "hv_x_over_r": 7,
+  "primary_transformer_kva": 300,
+  "primary_transformer_zpu_pct": 5.75,
+  "primary_transformer_xover_r": 8,
+  "supply_brief": {
+    "hv_side": {
+      "voltage_kv": 13.2,
+      "network_arrangement": "radial",
+      "declared_pscc_at_primary_ka": 28,
+      "x_over_r_at_primary": 7
+    },
+    "lv_source": {
+      "type": "utility_transformer",
+      "kva": 300,
+      "voltage_v": 208,
+      "z_percent": 5.75,
+      "x_over_r": 8,
+      "near_or_far_from_generator": "far"
+    }
+  },
+  "poco_declared_at_msp": {
+    "pfc_ka": 22.0,
+    "grounding_system": "TN-S (NEC §250 main bonding jumper)"
+  },
+  "standby_generator_present": false,
+  "ups_present": false,
+  "motor_load_brief": {
+    "total_motor_kw": 0,
+    "largest_motor_kw": 0,
+    "motors": []
+  },
+  "motor_load_kw": 0,
+  "cascade_topology_source": "engineer_declared",
+  "cascade_brief": [
+    { "node_id": "HV-1",    "parent_node_id": null,      "node_kind": "hv_source",              "designation": "13.2 kV PoCo primary radial supply" },
+    { "node_id": "TX-1",    "parent_node_id": "HV-1",    "node_kind": "transformer_secondary", "designation": "300 kVA PoCo pad-mount TX 208Y/120V TPN LV terminals" },
+    { "node_id": "MSP",     "parent_node_id": "TX-1",    "node_kind": "board_incoming",         "designation": "Main service panel 600A incoming",         "feeder": { "length_m": 3.05,  "csa_mm2_or_awg": "350 kcmil", "material": "copper", "insulation": "thwn_75" } },
+    { "node_id": "MSP.BUS", "parent_node_id": "MSP",     "node_kind": "board_busbar",           "designation": "MSP busbar 600A" },
+    { "node_id": "TSP-A",   "parent_node_id": "MSP.BUS", "node_kind": "board_incoming",         "designation": "Tenant A sub-panel 200A (80 ft × 250 kcmil)", "feeder": { "length_m": 24.4, "csa_mm2_or_awg": "250 kcmil", "material": "copper", "insulation": "thwn_75" } },
+    { "node_id": "TSP-B",   "parent_node_id": "MSP.BUS", "node_kind": "board_incoming",         "designation": "Tenant B sub-panel 200A (100 ft × 250 kcmil)","feeder": { "length_m": 30.5, "csa_mm2_or_awg": "250 kcmil", "material": "copper", "insulation": "thwn_75" } },
+    { "node_id": "CA-P",    "parent_node_id": "MSP.BUS", "node_kind": "board_incoming",         "designation": "Common-areas panel 100A (120 ft × 4/0 AWG)", "feeder": { "length_m": 36.6, "csa_mm2_or_awg": "4/0 AWG",   "material": "copper", "insulation": "thwn_75" } }
+  ]
+}
