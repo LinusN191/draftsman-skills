@@ -1,0 +1,76 @@
+# Socket symbols for small-power skill
+# Symbol IDs are referenced in drawn_as_symbols[] in the IR + by the runtime renderer
+
+symbols:
+  - id: BS1363_2gang_switched
+    description: BS 1363 13A double-gang switched socket (UK standard)
+    jurisdiction: [GB, KE]
+    dxf_block: SKT_BS1363_2G
+    layer_reference: E-POWR-LV-GEN  # BS 1192 layer
+    snap_offset_mm: {x: 0, y: 0}
+
+  - id: BS1363_1gang_switched
+    description: BS 1363 13A single-gang switched socket
+    jurisdiction: [GB, KE]
+    dxf_block: SKT_BS1363_1G
+    layer_reference: E-POWR-LV-GEN
+
+  - id: BS1363_FCU
+    description: BS 1363 13A switched/unswitched fused connection unit
+    jurisdiction: [GB, KE]
+    dxf_block: FCU_BS1363
+    layer_reference: E-POWR-LV-GEN
+
+  - id: BS_EN_61558_2_5_SSU
+    description: Shaver supply unit (isolating transformer)
+    jurisdiction: [GB, KE, INT, EU]
+    dxf_block: SSU_SHAVER
+    layer_reference: E-POWR-LV-EMER
+
+  - id: Schuko_CEE_7_4_2gang
+    description: Schuko CEE 7/4 16A double-gang (European standard)
+    jurisdiction: [INT, EU]
+    dxf_block: SKT_SCHUKO_2G
+    layer_reference: E-POWR-GEN  # ISO 19650 generic INT layer
+
+  - id: Schuko_CEE_7_4_1gang
+    description: Schuko CEE 7/4 16A single-gang
+    jurisdiction: [INT, EU]
+    dxf_block: SKT_SCHUKO_1G
+    layer_reference: E-POWR-GEN
+
+  - id: NEMA_5_15_duplex
+    description: US NEMA 5-15 15A duplex receptacle
+    jurisdiction: [US]
+    dxf_block: SKT_NEMA515_DUPLEX
+    layer_reference: E-POWR-NORM  # AIA layer
+
+  - id: NEMA_5_15_TR_duplex
+    description: US NEMA 5-15 tamper-resistant duplex per NEC 406.12
+    jurisdiction: [US]
+    dxf_block: SKT_NEMA515_TR
+    layer_reference: E-POWR-NORM
+
+  - id: NEMA_5_20_duplex
+    description: US NEMA 5-20 20A duplex
+    jurisdiction: [US]
+    dxf_block: SKT_NEMA520_DUPLEX
+    layer_reference: E-POWR-NORM
+
+  - id: NEMA_5_20_TR_duplex
+    description: US NEMA 5-20 tamper-resistant duplex
+    jurisdiction: [US]
+    dxf_block: SKT_NEMA520_TR
+    layer_reference: E-POWR-NORM
+
+  - id: NEMA_5_GFCI_TR_duplex
+    description: US NEMA 5-15/5-20 GFCI tamper-resistant duplex per NEC 210.8 + 406.12
+    jurisdiction: [US]
+    dxf_block: SKT_GFCI_TR
+    layer_reference: E-POWR-NORM
+
+  - id: socket_outdoor_IP65
+    description: IP65-rated outdoor socket (jurisdiction-specific outer enclosure varies)
+    jurisdiction: [GB, KE, INT, EU, US]
+    dxf_block: SKT_OUTDOOR_IP65
+    layer_reference: E-POWR-LV-EMER

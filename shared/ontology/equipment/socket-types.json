@@ -1,0 +1,32 @@
+{
+  "_title": "Socket Outlet Types — Multi-Jurisdiction Reference",
+  "_purpose": "Engine-lookupable ontology of socket types consumed by small-power, riser, cable-containment, schematic skills",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "socket_types": {
+    "BS1363_2gang_switched":      {"description": "UK BS 1363 13A double-gang switched socket", "jurisdiction": ["GB", "KE"], "rating_a": 13, "voltage_v": 230, "standard": "BS 1363:1995 + A4:2018"},
+    "BS1363_1gang_switched":      {"description": "UK BS 1363 13A single-gang switched socket", "jurisdiction": ["GB", "KE"], "rating_a": 13, "voltage_v": 230, "standard": "BS 1363:1995 + A4:2018"},
+    "BS1363_FCU_switched":        {"description": "UK BS 1363 13A switched fused connection unit (FCU) with 3A or 13A fuse", "jurisdiction": ["GB", "KE"], "rating_a": 13, "voltage_v": 230, "standard": "BS 1363:1995 + A4:2018"},
+    "BS1363_FCU_unswitched":      {"description": "UK BS 1363 13A unswitched fused connection unit", "jurisdiction": ["GB", "KE"], "rating_a": 13, "voltage_v": 230, "standard": "BS 1363:1995 + A4:2018"},
+    "BS_EN_61558_2_5_SSU":        {"description": "Shaver supply unit (isolating transformer) for bathroom zone 2/3", "jurisdiction": ["GB", "KE", "INT", "EU"], "rating_a": 1, "voltage_v": 230, "standard": "BS EN 61558-2-5:2010"},
+    "Schuko_CEE_7_4_2gang":       {"description": "European Schuko CEE 7/4 16A double-gang socket", "jurisdiction": ["INT", "EU"], "rating_a": 16, "voltage_v": 230, "standard": "CEE 7/4"},
+    "Schuko_CEE_7_4_1gang":       {"description": "European Schuko CEE 7/4 16A single-gang socket", "jurisdiction": ["INT", "EU"], "rating_a": 16, "voltage_v": 230, "standard": "CEE 7/4"},
+    "NEMA_5_15_duplex":           {"description": "US NEMA 5-15 15A 125V duplex receptacle", "jurisdiction": ["US"], "rating_a": 15, "voltage_v": 125, "standard": "NEMA WD-1"},
+    "NEMA_5_15_TR_duplex":        {"description": "US NEMA 5-15 15A tamper-resistant duplex per NEC 406.12", "jurisdiction": ["US"], "rating_a": 15, "voltage_v": 125, "standard": "NEMA WD-1 + NEC 406.12"},
+    "NEMA_5_20_duplex":           {"description": "US NEMA 5-20 20A 125V duplex receptacle", "jurisdiction": ["US"], "rating_a": 20, "voltage_v": 125, "standard": "NEMA WD-1"},
+    "NEMA_5_20_TR_duplex":        {"description": "US NEMA 5-20 20A tamper-resistant duplex per NEC 406.12", "jurisdiction": ["US"], "rating_a": 20, "voltage_v": 125, "standard": "NEMA WD-1 + NEC 406.12"},
+    "NEMA_5_15_GFCI_TR_duplex":   {"description": "US NEMA 5-15 15A tamper-resistant GFCI duplex (point-of-use)", "jurisdiction": ["US"], "rating_a": 15, "voltage_v": 125, "standard": "NEC 210.8 + 406.12"},
+    "NEMA_5_20_GFCI_TR_duplex":   {"description": "US NEMA 5-20 20A tamper-resistant GFCI duplex (point-of-use)", "jurisdiction": ["US"], "rating_a": 20, "voltage_v": 125, "standard": "NEC 210.8 + 406.12"}
+  },
+  "engine_lookup": {
+    "_purpose": "Flat lookup by socket type → jurisdiction + rating",
+    "by_type": {
+      "BS1363_2gang_switched":  {"jurisdiction_set": ["GB", "KE"], "rating_a": 13, "voltage_v": 230},
+      "Schuko_CEE_7_4_2gang":   {"jurisdiction_set": ["INT", "EU"], "rating_a": 16, "voltage_v": 230},
+      "NEMA_5_15_duplex":       {"jurisdiction_set": ["US"], "rating_a": 15, "voltage_v": 125},
+      "NEMA_5_20_duplex":       {"jurisdiction_set": ["US"], "rating_a": 20, "voltage_v": 125}
+    }
+  },
+  "_cross_refs": []
+}
