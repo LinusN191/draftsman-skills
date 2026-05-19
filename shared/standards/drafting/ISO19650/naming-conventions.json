@@ -1,0 +1,22 @@
+{
+  "clause_ref": "ISO 19650-2:2018 §5.1.2 + §5.1.7 (Container naming + revision conventions)",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "_title": "ISO 19650 Naming Conventions",
+  "_source": "ISO 19650-2:2018 §5.1.2 (container naming); §5.1.7 (revision conventions)",
+  "_note": "Information container naming is largely aligned with BS 1192:2007+A2:2016 §7. See BS1192/file-naming.json for the full token breakdown.",
+  "naming_format": "<Project>-<Originator>-<Volume>-<Level>-<Type>-<Role>-<Number>",
+  "extended_with_status_and_revision": "<basename>_<Status>_<Revision>",
+  "extended_example": "ABC-XYZ-Z1-04-DR-E-0001_S2_P03",
+  "tokens_summary": "See BS1192/file-naming.json for full token-by-token breakdown",
+  "revision_conventions": {
+    "format": "<Prefix><NN>",
+    "regimes": {
+      "P": "Preliminary (P01, P02, ...)",
+      "C": "Contract / Published (C01, C02, ...)"
+    },
+    "transition_rule": "P-regime increments until status reaches S7; then transition to C-regime starting at C01"
+  },
+  "_cross_refs": ["BS1192"]
+}

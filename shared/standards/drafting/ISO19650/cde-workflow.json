@@ -1,0 +1,26 @@
+{
+  "clause_ref": "ISO 19650-1:2018 §3.3 + ISO 19650-2:2018 §5 (CDE workflow)",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "_title": "Common Data Environment (CDE) Workflow",
+  "_source": "ISO 19650-1:2018 §3.3.15 (CDE definition); ISO 19650-2:2018 §5.7 (CDE workflow)",
+  "_note": "The CDE is the agreed source of information for the project, used to collect, manage and disseminate information. Information containers flow through 4 states.",
+  "states": {
+    "WIP":       { "name": "Work in Progress", "description": "Pre-shared workspace; each task team has its own WIP area", "access": "Task team only", "approval_required": false },
+    "Shared":    { "name": "Shared", "description": "Reviewed and approved within task team; shared with other task teams for coordination/review", "access": "Project team (all task teams)", "approval_required": "Task team internal review" },
+    "Published": { "name": "Published", "description": "Authorized for use by all project parties for the intended purpose", "access": "All project parties", "approval_required": "Lead appointed party / Information Manager authorization" },
+    "Archive":   { "name": "Archive", "description": "Superseded versions; retained for record", "access": "Read-only", "approval_required": false }
+  },
+  "transitions": {
+    "WIP_to_Shared":       { "trigger": "Task team internal check + suitability status assigned (S1/S2/S3)", "actor": "Task team" },
+    "Shared_to_Shared":    { "trigger": "Status increment (e.g., S1→S3) after review/comment cycle", "actor": "Task team + reviewer" },
+    "Shared_to_Published": { "trigger": "Status reaches S7 (Suitable for use) + lead appointed party authorization", "actor": "Information Manager / Lead appointed party" },
+    "Published_to_Archive":{ "trigger": "Superseded by newer Published version", "actor": "System (automated)" }
+  },
+  "engine_lookup": {
+    "_purpose": "Flat key/value form for runtime engine consumption",
+    "by_state": ["WIP", "Shared", "Published", "Archive"]
+  },
+  "_cross_refs": ["BS1192"]
+}
