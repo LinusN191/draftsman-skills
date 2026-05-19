@@ -1,0 +1,546 @@
+{
+  "drawing_type": "small_power_layout",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "intl-open-plan-floor-eg01",
+    "skill_version": "1.0.0",
+    "produced_at": "2026-05-19T00:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "INT",
+  "supply_origin": {
+    "voltage_v": 400,
+    "phase_arrangement": "TPN_plus_E",
+    "system_type": "TN-S",
+    "ze_declared_ohm": 0.25,
+    "psc_declared_ka": 10.0
+  },
+  "parent_db": {
+    "designation": "DB-FLOOR-01",
+    "pfc_at_busbar_ka": 10.0
+  },
+  "circuits": [
+    {
+      "circuit_id": "C01",
+      "designation": "Workstation power 1 (zones 1-12) — Schuko radial",
+      "topology": "radial",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "MCB",
+        "curve": "C",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² Cu PVC",
+        "cores": 3,
+        "length_m_total": 30.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 3.0,
+      "diversified_max_load_a": 10.0,
+      "rooms_covered": ["workstation-zone-1"]
+    },
+    {
+      "circuit_id": "C02",
+      "designation": "Workstation power 2 (zones 13-24) — Schuko radial",
+      "topology": "radial",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "MCB",
+        "curve": "C",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² Cu PVC",
+        "cores": 3,
+        "length_m_total": 30.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 3.0,
+      "diversified_max_load_a": 10.0,
+      "rooms_covered": ["workstation-zone-2"]
+    },
+    {
+      "circuit_id": "C03",
+      "designation": "Meeting room 1 power + AV — Schuko radial",
+      "topology": "radial",
+      "ocpd": {
+        "rating_a": 16,
+        "type": "MCB",
+        "curve": "C",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² Cu PVC",
+        "cores": 3,
+        "length_m_total": 18.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 1.5,
+      "diversified_max_load_a": 6.5,
+      "rooms_covered": ["meeting-room-1"]
+    },
+    {
+      "circuit_id": "C04",
+      "designation": "Meeting room 2 power + AV — Schuko radial",
+      "topology": "radial",
+      "ocpd": {
+        "rating_a": 16,
+        "type": "MCB",
+        "curve": "C",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² Cu PVC",
+        "cores": 3,
+        "length_m_total": 20.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 1.5,
+      "diversified_max_load_a": 6.5,
+      "rooms_covered": ["meeting-room-2"]
+    },
+    {
+      "circuit_id": "C05",
+      "designation": "Kitchenette appliances — Schuko worktop radial + FCU",
+      "topology": "radial",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "MCB",
+        "curve": "C",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² Cu PVC",
+        "cores": 3,
+        "length_m_total": 14.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 2.5,
+      "diversified_max_load_a": 11.0,
+      "rooms_covered": ["kitchenette"]
+    },
+    {
+      "circuit_id": "C06",
+      "designation": "Server cabinet small-power (UPS-fed; Type B RCD per IEC 60364-5-53:2002+A2:2015 §531.3.3 — matches db-layout intl-dbcomms-data shipped policy)",
+      "topology": "dedicated_radial",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "MCB",
+        "curve": "C",
+        "rcd_type": "B",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² Cu PVC",
+        "cores": 3,
+        "length_m_total": 12.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_b_30ma_per_§531_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 2.0,
+      "diversified_max_load_a": 9.0,
+      "rooms_covered": ["server-room"]
+    },
+    {
+      "circuit_id": "C07",
+      "designation": "Toilet shaver supply (BS EN 61558-2-5 SSU) — dedicated radial",
+      "topology": "dedicated_radial",
+      "ocpd": {
+        "rating_a": 6,
+        "type": "MCB",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm² Cu PVC",
+        "cores": 3,
+        "length_m_total": 16.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 0.1,
+      "diversified_max_load_a": 0.4,
+      "rooms_covered": ["toilet"]
+    },
+    {
+      "circuit_id": "C08",
+      "designation": "Outdoor IP65 sockets (smoking + bin store) — Schuko radial",
+      "topology": "radial",
+      "ocpd": {
+        "rating_a": 16,
+        "type": "MCB",
+        "curve": "C",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² Cu PVC",
+        "cores": 3,
+        "length_m_total": 28.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 0.4,
+      "diversified_max_load_a": 1.7,
+      "rooms_covered": ["outdoor-smoking", "outdoor-bin"]
+    }
+  ],
+  "rooms": [
+    {
+      "room_id": "workstation-zone-1",
+      "room_type": "office_open_plan",
+      "dimensions_m": {"length": 12.0, "width": 8.0, "height": 2.8},
+      "special_location": null,
+      "sockets": [
+        {"id": "ws-z1-S01", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C01"},
+        {"id": "ws-z1-S02", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C01"},
+        {"id": "ws-z1-S03", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C01"},
+        {"id": "ws-z1-S04", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C01"},
+        {"id": "ws-z1-S05", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C01"},
+        {"id": "ws-z1-S06", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C01"},
+        {"id": "ws-z1-S07", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C01"},
+        {"id": "ws-z1-S08", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C01"},
+        {"id": "ws-z1-S09", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C01"},
+        {"id": "ws-z1-S10", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C01"},
+        {"id": "ws-z1-S11", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C01"},
+        {"id": "ws-z1-S12", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C01"}
+      ]
+    },
+    {
+      "room_id": "workstation-zone-2",
+      "room_type": "office_open_plan",
+      "dimensions_m": {"length": 12.0, "width": 8.0, "height": 2.8},
+      "special_location": null,
+      "sockets": [
+        {"id": "ws-z2-S01", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C02"},
+        {"id": "ws-z2-S02", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C02"},
+        {"id": "ws-z2-S03", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C02"},
+        {"id": "ws-z2-S04", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C02"},
+        {"id": "ws-z2-S05", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C02"},
+        {"id": "ws-z2-S06", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C02"},
+        {"id": "ws-z2-S07", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C02"},
+        {"id": "ws-z2-S08", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C02"},
+        {"id": "ws-z2-S09", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C02"},
+        {"id": "ws-z2-S10", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C02"},
+        {"id": "ws-z2-S11", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C02"},
+        {"id": "ws-z2-S12", "type": "CEE_7_3_Schuko_double_16A", "mount": "floor", "height_mm": 0, "circuit_id": "C02"}
+      ]
+    },
+    {
+      "room_id": "meeting-room-1",
+      "room_type": "meeting_room",
+      "dimensions_m": {"length": 5.0, "width": 4.0, "height": 2.8},
+      "special_location": null,
+      "sockets": [
+        {"id": "mr1-S01", "type": "CEE_7_3_Schuko_double_16A", "mount": "wall", "height_mm": 300, "circuit_id": "C03"},
+        {"id": "mr1-S02", "type": "CEE_7_3_Schuko_double_16A", "mount": "wall", "height_mm": 300, "circuit_id": "C03"},
+        {"id": "mr1-S03", "type": "CEE_7_3_Schuko_double_16A", "mount": "wall", "height_mm": 1200, "circuit_id": "C03"}
+      ]
+    },
+    {
+      "room_id": "meeting-room-2",
+      "room_type": "meeting_room",
+      "dimensions_m": {"length": 5.0, "width": 4.0, "height": 2.8},
+      "special_location": null,
+      "sockets": [
+        {"id": "mr2-S01", "type": "CEE_7_3_Schuko_double_16A", "mount": "wall", "height_mm": 300, "circuit_id": "C04"},
+        {"id": "mr2-S02", "type": "CEE_7_3_Schuko_double_16A", "mount": "wall", "height_mm": 300, "circuit_id": "C04"},
+        {"id": "mr2-S03", "type": "CEE_7_3_Schuko_double_16A", "mount": "wall", "height_mm": 1200, "circuit_id": "C04"}
+      ]
+    },
+    {
+      "room_id": "kitchenette",
+      "room_type": "kitchenette_commercial",
+      "dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.8},
+      "special_location": null,
+      "sockets": [
+        {"id": "kit-S01", "type": "CEE_7_3_Schuko_double_16A", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C05"},
+        {"id": "kit-S02", "type": "CEE_7_3_Schuko_double_16A", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C05"},
+        {"id": "kit-S03", "type": "CEE_7_3_Schuko_double_16A", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C05"},
+        {"id": "kit-S04", "type": "switched_connection_unit_16A_BS_EN_60669", "mount": "wall", "height_mm": 300, "circuit_id": "C05", "fed_by_spur": true, "spur_purpose": "under-counter fridge fixed feed", "spur_load_kw": 0.2}
+      ]
+    },
+    {
+      "room_id": "server-room",
+      "room_type": "server_room",
+      "dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.8},
+      "special_location": null,
+      "sockets": [
+        {"id": "srv-S01", "type": "CEE_7_3_Schuko_double_16A", "mount": "wall", "height_mm": 600, "circuit_id": "C06"},
+        {"id": "srv-S02", "type": "CEE_7_3_Schuko_double_16A", "mount": "wall", "height_mm": 600, "circuit_id": "C06"}
+      ]
+    },
+    {
+      "room_id": "toilet",
+      "room_type": "toilet_commercial",
+      "dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.8},
+      "special_location": "bathroom_zone_3",
+      "sockets": [
+        {"id": "wc-S01", "type": "BS_EN_61558_2_5_shaver_supply_unit", "mount": "wall", "height_mm": 1400, "circuit_id": "C07"}
+      ]
+    },
+    {
+      "room_id": "outdoor-smoking",
+      "room_type": "external_amenity",
+      "dimensions_m": {"length": 3.0, "width": 2.0, "height": 0.0},
+      "special_location": "outdoor",
+      "sockets": [
+        {"id": "od-smk-S01", "type": "CEE_7_3_Schuko_IP65_16A", "mount": "external_wall", "height_mm": 1200, "circuit_id": "C08", "ip_rating": "IP65"}
+      ]
+    },
+    {
+      "room_id": "outdoor-bin",
+      "room_type": "external_amenity",
+      "dimensions_m": {"length": 3.0, "width": 2.0, "height": 0.0},
+      "special_location": "outdoor",
+      "sockets": [
+        {"id": "od-bin-S01", "type": "CEE_7_3_Schuko_IP65_16A", "mount": "external_wall", "height_mm": 1200, "circuit_id": "C08", "ip_rating": "IP65"}
+      ]
+    }
+  ],
+  "drawing_layout": {
+    "sheet_size": "A1",
+    "drawing_standard": "ISO 19650:2018 + BS 1192:2007+A2:2016 (INT)",
+    "drawing_scale": "1:100"
+  },
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      {
+        "message": "C06 server-room small-power applies Type B 30 mA RCD per IEC 60364-5-53:2002+A2:2015 §531.3.3 — UPS rectifier front-ends and SMPS-fed IT loads produce smooth DC residual currents that blind Type A/F RCDs. This mirrors the db-layout intl-dbcomms-data shipped policy at db-layout v1.3.0+ (cross-skill alignment documented even though small-power v1.0 is a leaf skill with no upstream intent consumption).",
+        "code_clause": "IEC 60364-5-53:2002+A2:2015 §531.3.3",
+        "severity": "info"
+      },
+      {
+        "message": "Toilet classified bathroom_zone_3 per IEC 60364-7-701:2019 §701.512. Only the BS EN 61558-2-5 shaver supply unit (SSU) is installed; no general-purpose Schuko sockets within 3 m of zone 1 boundary. INV-05 satisfied.",
+        "code_clause": "IEC 60364-7-701:2019 §701.512",
+        "severity": "info"
+      },
+      {
+        "message": "Outdoor sockets (C08) installed with IP65 enclosure per BS EN 60529 / IEC 60364-5-53:2002+A2:2015 §512.2 for external exposure to rain and dust. All Type A 30 mA RCD protection per §411.3.3.",
+        "code_clause": "BS EN 60529 + IEC 60364-5-53:2002+A2:2015 §512.2",
+        "severity": "info"
+      },
+      {
+        "message": "All eight circuits configured as radial (none ring) per INT engineering convention — IEC 60364 does not include a BS 7671-style ring final circuit construct. INV-04 (ring restricted to GB/KE) satisfied trivially.",
+        "code_clause": "IEC 60364-4-43:2017",
+        "severity": "info"
+      },
+      {
+        "message": "Zs verification deferred to calc.zs_loop_impedance per WI3. Per-circuit tool_call_pending_for_zs_verification=true; loop impedance to be confirmed at install per IEC 60364-4-41:2017 §411.4.5 and §612.6.3.",
+        "code_clause": "IEC 60364-4-41:2017 §411.4.5",
+        "severity": "info"
+      }
+    ],
+    "assumptions": [
+      "Utility-declared Ze=0.25 Ω at the parent DB DB-FLOOR-01 earthing terminal; not yet site-measured (verification per IEC 60364-6:2016 Chapter 6).",
+      "Utility-declared PSCC=10 kA at DB-FLOOR-01 busbar; all MCBs selected with 10 kA Icu per IEC 60898-1 product range to satisfy IEC 60364-4-43:2017 §434.5.1.",
+      "All eight circuits configured radial; IEC 60364 does not provide a ring-final equivalent to BS 7671 §433.1.5 — radial is the INT default.",
+      "Diversity per IEC 60364-1:2005 §132.12 design margin estimates; workstation positions ~125 W coincident at ~70% utilisation; kitchenette ~11 A simultaneous (kettle + microwave non-coincident + fridge); meeting-room AV ~6.5 A.",
+      "Toilet bathroom_zone_3 holds only the shaver SSU per IEC 60364-7-701:2019 §701.512; no general Schuko outlets in the toilet.",
+      "Outdoor sockets enclosure IP65 per BS EN 60529 with weatherproof flap; Type A 30 mA RCD; cable routes assumed Reference Method per IEC 60364-5-52:2009+A1:2019 Annex A.",
+      "C06 server-room small-power applies Type B RCD per IEC 60364-5-53:2002+A2:2015 §531.3.3 — engineer mirrors the db-layout intl-dbcomms-data shipped policy without v1.0 multi-skill intent consumption (cross-skill alignment via convention; small-power v1.0 is a leaf skill).",
+      "Drafting follows ISO 19650:2018 + BS 1192:2007+A2:2016 as the INT convention for layered electrical drawings; a future drafting-standards deferred sprint will revisit ISO-only layer naming (AIA / ISO 5457 / ISO 5455)."
+    ]
+  },
+  "flags": [
+    "TOOL-CALL-PENDING:calc.zs_loop_impedance",
+    "TOOL-CALL-PENDING:calc.diversity_factor",
+    "CROSS-SKILL-ALIGNMENT:db-layout/intl-dbcomms-data/Type-B-RCD"
+  ],
+  "drawing_notes": [
+    "All workstation Schuko sockets are floor-box mounted (mount=floor, 0 mm AFFL) — typical INT open-plan office practice with raised access floor or floor cores; each floor box hosts 2× Schuko + data; 12 boxes per zone.",
+    "Meeting-room low-level sockets at 300 mm AFFL on wall; AV socket on rear wall at 1200 mm AFFL for ceiling-projector / wall-display feed.",
+    "Kitchenette worktop sockets at 1100 mm AFFL (150 mm above 950 mm worktop); under-counter fridge fed via 16 A FCU at 300 mm AFFL on C05.",
+    "Server-room small-power sockets at 600 mm AFFL on wall behind rack; UPS-fed; Type B 30 mA RCD on circuit C06 per IEC 60364-5-53:2002+A2:2015 §531.3.3.",
+    "Toilet bathroom_zone_3 SSU (BS EN 61558-2-5) at 1400 mm AFFL on wall — no general Schuko within 3 m of zone 1 per IEC 60364-7-701:2019 §701.512.",
+    "Outdoor sockets in IP65 weatherproof enclosure (BS EN 60529) at 1200 mm AFFL on external wall — smoking shelter and bin store.",
+    "Layer naming follows ISO 19650:2018 federation pattern + BS 1192:2007+A2:2016 discipline-element-modifier: E-POW-OUTLET-L01, E-POW-CIRCUIT-L01, E-POW-ZONE-BATH, E-POW-DB-L01."
+  ],
+  "rationale": {
+    "chat_summary": "INT 350 m² commercial open-plan office floor. 400V TPN+E TN-S, Ze=0.25Ω, PSCC=10kA. 8 radial circuits per IEC 60364-4-41:2017 §411.3.3. C01-C02 workstation 20A; C03-C04 meeting rooms 16A; C05 kitchenette 20A; C06 server-room UPS-fed with Type B 30mA RCD per IEC 60364-5-53:2002+A2:2015 §531.3.3 (matches db-layout intl-dbcomms-data); C07 toilet shaver SSU 6A; C08 outdoor IP65 16A. ISO 19650:2018 layer naming. calc.zs_loop_impedance pending.",
+    "sections": [
+      {
+        "title": "Jurisdiction + Supply",
+        "summary": "INT jurisdiction; IEC 60364 series is the primary code. Utility TN-S 400V TPN+E supply with declared Ze=0.25 Ω and PSCC=10.0 kA at the DB-FLOOR-01 busbar. IEC 60364-4-43:2017 §434.5.1 sets the short-circuit verification rule — all MCBs Icu ≥ 10 kA via the IEC 60898-1 product range.",
+        "decisions": [
+          {
+            "label": "TN-S supply confirmed",
+            "summary": "Utility provides dedicated PE conductor separate from N at the parent DB earthing terminal; no PEN combination on site.",
+            "rule": "TN-S earthing arrangement per IEC 60364-1:2005 §312",
+            "code_clause": "IEC 60364-1:2005 §312"
+          },
+          {
+            "label": "PSCC 10 kA → all MCBs ≥ 10 kA Icu",
+            "summary": "Declared 10 kA at the DB-FLOOR-01 busbar; every MCB must have a breaking capacity ≥ 10 kA per IEC 60364-4-43:2017 §434.5.1; product compliance via IEC 60898-1.",
+            "rule": "OCPD breaking capacity ≥ prospective fault current",
+            "code_clause": "IEC 60364-4-43:2017 §434.5.1"
+          }
+        ]
+      },
+      {
+        "title": "Circuit Topology",
+        "summary": "Eight final circuits, all radial (none ring). C01-C02 cover the two workstation zones; C03-C04 cover the two meeting rooms; C05 kitchenette; C06 dedicated_radial for the server cabinet UPS-fed small-power (Type B isolation); C07 dedicated_radial for the toilet shaver SSU; C08 outdoor IP65. IEC 60364 has no ring-final equivalent to BS 7671 §433.1.5, so radial is the INT default.",
+        "decisions": [
+          {
+            "label": "Radial-only topology",
+            "summary": "INT engineering convention uses radial finals throughout; INV-04 (ring restricted to GB/KE) satisfied trivially. Selectivity at DB-FLOOR-01 is cleaner with per-circuit MCBs.",
+            "rule": "Radial final circuit per IEC 60364-4-43:2017",
+            "code_clause": "IEC 60364-4-43:2017"
+          },
+          {
+            "label": "Dedicated radials for C06 (server) and C07 (SSU)",
+            "summary": "Server cabinet small-power isolated on its own MCB (Type B RCD upstream) for IT-load discrimination; toilet shaver SSU isolated on a 6 A radial to limit fault energy in the Part 7-701 zone.",
+            "rule": "Dedicated final circuit for isolated SELV/SSU and IT loads",
+            "code_clause": "IEC 60364-7-701:2019 §701.512 (SSU); IEC 60364-5-53:2002+A2:2015 §531.3.3 (Type B IT load)"
+          }
+        ]
+      },
+      {
+        "title": "Special Locations",
+        "summary": "Two classes of special location appear in this design: (a) the toilet, classified bathroom_zone_3 per IEC 60364-7-701:2019 §701.512 — only the BS EN 61558-2-5 SSU is installed; (b) outdoor sockets on C08 with IP65 enclosure per BS EN 60529 + IEC 60364-5-53:2002+A2:2015 §512.2 for rain and dust exposure. No bathroom_zone_1 or _2 sockets exist on this floor.",
+        "decisions": [
+          {
+            "label": "Toilet zone 3 — SSU only",
+            "summary": "Toilet (3.0×2.5 m) sits entirely within 3 m of any hypothetical zone 1 boundary; only the SSU is installed (explicitly excepted by §701.512). INV-05 satisfied.",
+            "rule": "Shaver supply exception for bathroom zone 3",
+            "code_clause": "IEC 60364-7-701:2019 §701.512"
+          },
+          {
+            "label": "Outdoor sockets IP65 weatherproof",
+            "summary": "Smoking shelter and bin-store sockets exposed to rain — IP65 enclosure with flap closure per BS EN 60529; Type A 30 mA RCD per §411.3.3.",
+            "rule": "IP rating for external installations",
+            "code_clause": "BS EN 60529 + IEC 60364-5-53:2002+A2:2015 §512.2"
+          }
+        ]
+      },
+      {
+        "title": "RCD Posture",
+        "summary": "Seven of eight circuits use Type A 30 mA RCD per IEC 60364-4-41:2017 §411.3.3 (socket outlets ≤ 32 A). C06 server-room uses Type B 30 mA per IEC 60364-5-53:2002+A2:2015 §531.3.3 — UPS rectifier front-ends + SMPS IT loads produce smooth DC residuals that blind Type A/F. Mirrors db-layout intl-dbcomms-data shipped policy (cross-skill alignment by convention; small-power v1.0 is a leaf skill).",
+        "decisions": [
+          {
+            "label": "Type A 30 mA on 7 circuits",
+            "summary": "C01-C05, C07, C08 — workstation/meeting-room/kitchenette/SSU/outdoor loads can produce pulsating-DC residuals; Type A is the IEC 60364 baseline for general socket-outlet circuits ≤ 32 A.",
+            "rule": "Additional protection by 30 mA RCD for socket outlets",
+            "code_clause": "IEC 60364-4-41:2017 §411.3.3"
+          },
+          {
+            "label": "Type B 30 mA on C06 (server-room)",
+            "summary": "UPS-fed IT loads (PoE+ injectors, SMPS-fed servers, UPS rectifier front-end) inject smooth DC into the protective conductor and would blind a Type A RCD — Type B (DC-sensitive) is mandatory per §531.3.3. This matches the db-layout intl-dbcomms-data shipped form exactly.",
+            "rule": "RCD type selection for IT loads with DC leakage",
+            "code_clause": "IEC 60364-5-53:2002+A2:2015 §531.3.3"
+          }
+        ]
+      },
+      {
+        "title": "OCPD + Cable",
+        "summary": "C01/C02/C05/C06: 20 A MCB C + 2.5 mm² Cu PVC. C03/C04/C08: 16 A MCB C + 2.5 mm² Cu PVC. C07: 6 A MCB B + 1.5 mm² Cu PVC. All MCBs Icu 10 kA per IEC 60364-4-43:2017 §434.5.1 + IEC 60898-1. Curve C on Schuko circuits handles SMPS/AV/kitchen inrush; Curve B on C07 SSU gives best Zs margin against small isolating-transformer load.",
+        "decisions": [
+          {
+            "label": "20 A radial sized 2.5 mm² Cu PVC",
+            "summary": "2.5 mm² Cu PVC gives ~24 A current-carrying capacity in Reference Method per IEC 60364-5-52:2009+A1:2019 Annex A — adequate headroom against a 20 A MCB at the radial lengths quoted (≤ 30 m).",
+            "rule": "Cable sizing per IEC 60364-5-52:2009+A1:2019",
+            "code_clause": "IEC 60364-5-52:2009+A1:2019 Annex A"
+          },
+          {
+            "label": "All MCBs 10 kA Icu",
+            "summary": "PSCC = 10 kA at DB-FLOOR-01 busbar; MCBs must meet ≥ 10 kA Icu per IEC 60364-4-43:2017 §434.5.1 and IEC 60898-1.",
+            "rule": "Breaking capacity ≥ prospective fault current",
+            "code_clause": "IEC 60364-4-43:2017 §434.5.1"
+          },
+          {
+            "label": "Curve C for Schuko circuits, Curve B for SSU",
+            "summary": "Type C (5-10×In) covers SMPS / AV / kitchen-appliance inrush without nuisance trip; Type B (3-5×In) on C07 gives best Zs disconnection margin against the tiny SSU load.",
+            "rule": "MCB curve selection for load profile",
+            "code_clause": "IEC 60898-1"
+          }
+        ]
+      },
+      {
+        "title": "Diversity + Zs",
+        "summary": "Diversity per IEC 60364-1:2005 §132.12 estimates: workstation zones ~10 A; meeting rooms ~6.5 A; kitchenette ~11 A (kettle + microwave non-coincident + fridge); server-room ~9 A; outdoor ~1.7 A. Zs verification deferred to calc.zs_loop_impedance per WI3 — every circuit has tool_call_pending_for_zs_verification=true; flags[] carries the TOOL-CALL-PENDING marker.",
+        "decisions": [
+          {
+            "label": "Kitchenette diversified to 11 A",
+            "summary": "Kettle 2 kW + microwave 0.8 kW (non-coincident) + fridge 0.2 kW; worst-case ~2.6 kW at 230 V single-phase = 11.3 A against 20 A MCB.",
+            "rule": "Diversity per IEC 60364-1:2005 §132.12",
+            "code_clause": "IEC 60364-1:2005 §132.12",
+            "inputs": {"nameplate_total_kw": 2.5, "diversified_a": 11.0}
+          },
+          {
+            "label": "Zs deferred to calc.zs_loop_impedance",
+            "summary": "Loop impedance Zs = Ze + (R1+R2) computed by the calc skill; all eight circuits flagged TOOL-CALL-PENDING. INV-08 satisfied.",
+            "rule": "WI3 — deferred tool-call pattern",
+            "code_clause": "IEC 60364-4-41:2017 §411.4.5 + §612.6.3"
+          }
+        ]
+      },
+      {
+        "title": "Compliance + Assumptions",
+        "summary": "compliant=true. Five info flags: (a) C06 Type B RCD + cross-skill alignment with db-layout intl-dbcomms-data, (b) toilet bathroom_zone_3 SSU-only, (c) outdoor IP65, (d) radial-only topology, (e) deferred Zs verification. Eight assumptions documented; utility-declared Ze and PSCC to be verified at first energisation per IEC 60364-6:2016.",
+        "decisions": [
+          {
+            "label": "Cross-skill alignment with db-layout (Type B RCD)",
+            "summary": "Although small-power v1.0 is a leaf skill (no upstream intent consumption), the engineer mirrors the db-layout intl-dbcomms-data shipped Type B policy by convention. Citation form `IEC 60364-5-53:2002+A2:2015 §531.3.3` is exactly identical to db-layout shipped output.",
+            "rule": "Cross-skill consistency for IT-load RCD policy",
+            "code_clause": "IEC 60364-5-53:2002+A2:2015 §531.3.3"
+          },
+          {
+            "label": "Ze and PSCC declared, not measured",
+            "summary": "Utility-declared values used for design; on-site verification at first energisation per IEC 60364-6:2016 Chapter 6.",
+            "rule": "Initial verification requirements",
+            "code_clause": "IEC 60364-6:2016"
+          }
+        ]
+      },
+      {
+        "title": "Drafting References",
+        "summary": "Single A1 sheet at 1:100 metric scale; 350 m² floor plate fits with circuit schedule and notes. Layer naming follows ISO 19650:2018 federation pattern + BS 1192:2007+A2:2016 discipline-element-modifier convention — the INT industry default for layered electrical drawings. A future drafting-standards deferred sprint will revisit ISO-only layer naming (AIA / ISO 5457 / ISO 5455).",
+        "decisions": [
+          {
+            "label": "A1 @ 1:100 single-sheet output",
+            "summary": "350 m² floor plate fits comfortably on one A1 sheet at 1:100 with panel schedule, notes block, and the Part 7-701 zone overlay.",
+            "rule": "ISO 19650:2018 federation pattern + BS 1192:2007+A2:2016 layered drawing conventions",
+            "code_clause": "ISO 19650:2018 + BS 1192:2007+A2:2016"
+          }
+        ]
+      }
+    ]
+  }
+}

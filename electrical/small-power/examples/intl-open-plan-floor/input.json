@@ -1,0 +1,33 @@
+{
+  "project_id": "intl-open-plan-floor-eg01",
+  "jurisdiction": "INT",
+  "site_brief": "350 m² commercial open-plan office floor. 400V TPN+E supply per IEC 60364-4-41:2017. 24 workstation positions + 2 meeting rooms + kitchenette + server cabinet area + toilet block + outdoor sockets. Server cabinet small-power is UPS-fed with Type B 30mA RCD per IEC 60364-5-53:2002+A2:2015 §531.3.3 (matches db-layout intl-dbcomms-data shipped policy for IT equipment with DC leakage components).",
+  "supply": {
+    "voltage_v": 400,
+    "phase_arrangement": "TPN_plus_E",
+    "system_type": "TN-S",
+    "ze_declared_ohm": 0.25,
+    "psc_declared_ka": 10.0
+  },
+  "parent_db": {
+    "designation": "DB-FLOOR-01",
+    "pfc_at_busbar_ka": 10.0
+  },
+  "room_briefs": [
+    {"room_id": "workstation-zone-1", "room_type": "office_open_plan", "dimensions_m": {"length": 12.0, "width": 8.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 3.0, "socket_count_target": 12},
+    {"room_id": "workstation-zone-2", "room_type": "office_open_plan", "dimensions_m": {"length": 12.0, "width": 8.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 3.0, "socket_count_target": 12},
+    {"room_id": "meeting-room-1",      "room_type": "meeting_room",     "dimensions_m": {"length": 5.0, "width": 4.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 1.5, "socket_count_target": 3},
+    {"room_id": "meeting-room-2",      "room_type": "meeting_room",     "dimensions_m": {"length": 5.0, "width": 4.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 1.5, "socket_count_target": 3},
+    {"room_id": "kitchenette",         "room_type": "kitchenette_commercial", "dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 2.5, "socket_count_target": 4},
+    {"room_id": "server-room",         "room_type": "server_room",      "dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 2.0, "socket_count_target": 2},
+    {"room_id": "toilet",              "room_type": "toilet_commercial","dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.8}, "special_location": "bathroom_zone_3", "anticipated_loads_kw": 0.1, "socket_count_target": 1},
+    {"room_id": "outdoor-smoking",     "room_type": "external_amenity", "dimensions_m": {"length": 3.0, "width": 2.0, "height": 0.0}, "special_location": "outdoor", "anticipated_loads_kw": 0.2, "socket_count_target": 1},
+    {"room_id": "outdoor-bin",         "room_type": "external_amenity", "dimensions_m": {"length": 3.0, "width": 2.0, "height": 0.0}, "special_location": "outdoor", "anticipated_loads_kw": 0.2, "socket_count_target": 1}
+  ],
+  "design_intent": {
+    "preferred_topology": "radial",
+    "drawing_standard": "ISO 19650:2018 + BS 1192:2007+A2:2016 (INT)",
+    "sheet_size": "A1",
+    "drawing_scale": "1:100"
+  }
+}
