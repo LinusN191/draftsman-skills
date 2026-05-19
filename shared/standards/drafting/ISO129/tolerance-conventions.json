@@ -1,0 +1,22 @@
+{
+  "clause_ref": "ISO 129-1:2018 §7 (Tolerances) + ISO 2768 (cross-reference)",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "_title": "ISO 129 Tolerance Conventions",
+  "_source": "ISO 129-1:2018 §7; ISO 2768-1:1989 (general tolerances)",
+  "_note": "Tolerances may be expressed numerically (±) or by class designator (ISO 2768 fine/medium/coarse/very coarse).",
+  "tolerance_types": {
+    "linear_numerical":      { "format": "50 ± 0.1 mm", "use": "Specific dimensions" },
+    "linear_class":          { "format": "ISO 2768-m (medium)", "use": "General linear tolerances per ISO 2768-1" },
+    "angular":               { "format": "30° ± 0°30'", "use": "Angular dimensions" },
+    "geometric_tolerance":   { "format": "Geometric symbol (e.g., flatness 0.1, perpendicularity 0.05 A)", "use": "Form, orientation, location, runout" }
+  },
+  "iso_2768_classes": {
+    "f": { "name": "Fine",        "linear_tolerance_mm_at_30_to_120mm": "±0.3", "_note": "Tightest" },
+    "m": { "name": "Medium",      "linear_tolerance_mm_at_30_to_120mm": "±0.5", "_note": "General-purpose default" },
+    "c": { "name": "Coarse",      "linear_tolerance_mm_at_30_to_120mm": "±0.8", "_note": "Less critical" },
+    "v": { "name": "Very coarse", "linear_tolerance_mm_at_30_to_120mm": "±1.5", "_note": "Rough work" }
+  },
+  "_cross_refs": []
+}

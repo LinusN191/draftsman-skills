@@ -1,0 +1,36 @@
+{
+  "clause_ref": "ISO 129-1:2018 §5 (Methods of dimensioning)",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "_title": "ISO 129 Dimensioning Rules",
+  "_source": "ISO 129-1:2018 §5 + §6",
+  "_note": "Three primary dimensioning methods: chained (running dimensions from common datum), parallel (each from a common datum), and running (cumulative from datum). Leaders connect dimension text to features; arrowheads indicate dimension line termination.",
+  "methods": {
+    "chained": {
+      "description": "Sequential dimensions, each starting where the previous ended",
+      "use": "Long objects with similar features at regular intervals; tolerances accumulate",
+      "tolerance_behavior": "Tolerances ACCUMULATE along the chain"
+    },
+    "parallel": {
+      "description": "Each dimension from a common datum (origin)",
+      "use": "When tolerance from one datum is critical; tolerances do NOT accumulate",
+      "tolerance_behavior": "Tolerances are independent (no accumulation)"
+    },
+    "running": {
+      "description": "Cumulative dimensions from a single datum on one line",
+      "use": "Compact representation when many dimensions reference one datum",
+      "tolerance_behavior": "Tolerances are independent (compact form of parallel)"
+    }
+  },
+  "leaders_and_arrowheads": {
+    "leader_line": "Solid thin line connecting dimension text to feature",
+    "arrowhead_form": "Filled triangle (15° to 30° included angle) terminating dimension line at the feature edge",
+    "extension_lines": "Solid thin lines extending from feature edges to dimension line, with small gap from feature"
+  },
+  "engine_lookup": {
+    "_purpose": "Flat key/value form for runtime engine consumption",
+    "methods_list": ["chained", "parallel", "running"]
+  },
+  "_cross_refs": ["ISO128"]
+}
