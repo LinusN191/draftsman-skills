@@ -1,0 +1,46 @@
+{
+  "skill": "small-power",
+  "input_groups": [
+    {
+      "group": "jurisdiction-and-supply",
+      "fields": [
+        {"name": "jurisdiction",                "type": "enum",   "values": ["GB", "EU", "INT", "KE", "US"], "required": true},
+        {"name": "supply_voltage_v",            "type": "integer", "enum": [120, 208, 230, 240, 400, 415, 480], "required": true},
+        {"name": "supply_phase_arrangement",    "type": "enum",   "values": ["single_phase", "single_phase_split", "TPN", "TPN_plus_E"], "required": true},
+        {"name": "supply_system_type",          "type": "enum",   "values": ["TN-S", "TN-C-S", "TT"], "required": true,
+         "description": "Earthing system. Engineer-declared in v1.0 (v1.1+ will consume from earthing intent)."},
+        {"name": "supply_ze_declared_ohm",      "type": "float", "required": true,
+         "description": "Earth fault loop impedance at the consumer's origin (Ze). Engineer-declared."},
+        {"name": "supply_psc_declared_ka",      "type": "float", "required": true,
+         "description": "Prospective short-circuit current at the supply origin (PSCC). Engineer-declared (v1.1+ will consume from fault-level intent)."}
+      ]
+    },
+    {
+      "group": "parent-db-context",
+      "fields": [
+        {"name": "parent_db_designation",       "type": "string", "required": true,
+         "description": "Parent distribution board designation (e.g. 'CU-MAIN', 'DB-P1'). Engineer-declared string reference. No db-layout intent consumption in v1.0."},
+        {"name": "parent_db_pfc_ka",            "type": "float", "required": true,
+         "description": "Available PFC at the parent DB busbar. Used to verify breaker breaking capacity (Icu)."}
+      ]
+    },
+    {
+      "group": "rooms",
+      "fields": [
+        {"name": "room_briefs",                 "type": "array",  "required": true,
+         "description": "Array of {room_id, room_type, dimensions_m, special_location, anticipated_loads, socket_count_target}. See room-types ontology for room_type enum."}
+      ]
+    },
+    {
+      "group": "design-intent",
+      "fields": [
+        {"name": "preferred_topology",          "type": "enum",   "values": ["ring", "radial", "auto_by_jurisdiction"], "default": "auto_by_jurisdiction",
+         "description": "GB: auto picks ring for domestic + radial for commercial. Other jurisdictions: always radial. Engineer override permitted."},
+        {"name": "drawing_standard",            "type": "string",
+         "description": "Drafting standard reference. Defaults per jurisdiction (GB/KE: BS 1192:2007+A2:2016; INT: ISO 19650:2018; US: AIA CAD Layer Guidelines 2007)."},
+        {"name": "sheet_size",                  "type": "enum",   "values": ["A0", "A1", "A2", "A3", "Arch_E", "Arch_D", "Arch_C"], "default_by_jurisdiction": {"GB": "A1", "KE": "A1", "INT": "A1", "US": "Arch_D"}},
+        {"name": "drawing_scale",               "type": "string", "default_by_jurisdiction": {"GB": "1:50", "KE": "1:50", "INT": "1:100", "US": "1/4\"=1'"}}
+      ]
+    }
+  ]
+}

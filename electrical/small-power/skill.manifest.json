@@ -1,11 +1,49 @@
 {
   "skill": "small-power",
-  "version": "0.1.0",
-  "status": "stub",
+  "version": "1.0.0",
   "discipline": "electrical",
-  "description": "Socket outlet and FCU layouts with load zoning and circuit assignment",
-  "standards": [],
-  "inputs": [],
-  "outputs": [],
-  "compatible_runtimes": ["DraftsMan >= 1.0", "Claude Code", "OpenClaw"]
+  "subdiscipline": "small-power",
+  "description": "Socket outlet layouts for general-purpose power circuits per BS 7671:2018+A2:2022 / IEC 60364 / KS 1700:2018 / NEC 2023 Article 210. Produces circuit topology (ring/radial/dedicated_radial), per-room socket placement, RCD posture, and circuit-to-room cross-references as structured IR. Hybrid model: circuits[] (with topology + ocpd + cable + RCD) + rooms[] (with sockets[] cross-referencing circuit_ids). Leaf skill v1.0 — produces small-power intent for downstream db-layout consumption; multi-skill consumption (earthing + fault-level) deferred to v1.1+.",
+  "status": "beta",
+  "licence": "MIT",
+  "inputs_path": "inputs.json",
+  "inputs": [
+    "jurisdiction",
+    "parent-db-designation",
+    "room-briefs",
+    "supply-context",
+    "design-intent"
+  ],
+  "outputs": ["small-power-ir"],
+  "output_schema": "electrical/small-power/schemas/small-power-ir.schema.json",
+  "produces_intent": "small-power",
+  "produces_intent_schema": "electrical/small-power/schemas/small-power-intent.schema.json",
+  "consumes_intents": [],
+  "standards": [
+    "shared/standards/electrical/BS7671/part7-special-locations.json",
+    "shared/standards/electrical/BS7671/reg411-disconnection-times.json",
+    "shared/standards/electrical/BS7671/reg411-rcd-requirements.json",
+    "shared/standards/electrical/BS7671/diversity-factors.json",
+    "shared/standards/electrical/IEC60364/part7-special-locations.json",
+    "shared/standards/electrical/KS1700/part7-special-locations.json",
+    "shared/standards/electrical/NFPA70/part7-special-locations.json",
+    "shared/standards/drafting/BS1192/cad-layers.json",
+    "shared/standards/drafting/AIA/cad-layers.json",
+    "shared/standards/drafting/ISO19650/cad-layers.json",
+    "shared/standards/drafting/ISO5457/sheet-sizes.json",
+    "shared/standards/drafting/ISO5455/scales.json",
+    "shared/standards/drafting/ISO7200/title-block-fields.json"
+  ],
+  "ontology": [
+    "shared/ontology/equipment/socket-types.json",
+    "shared/ontology/room-types/office.json",
+    "shared/ontology/room-types/healthcare.json"
+  ],
+  "symbols": [
+    "shared/symbols/electrical/sockets/"
+  ],
+  "calculations": [
+    "shared/calculations/electrical/diversity-factor.json",
+    "shared/calculations/electrical/zs-loop-impedance.json"
+  ]
 }
