@@ -109,5 +109,22 @@
       ] },
       { "title": "Assumptions", "summary": "9 assumptions captured covering diversity factor, MSP-A upstream voltage-arrangement mismatch (db-layout intent shows 240V single-phase split; SLD applies 208Y/120V per task brief), NEC selectivity-scope rationale, Type 1+2 SPD per NEC 285, fault-level-derived PFC + AIC verification, life-safety strategy, v1.4 multi-skill earthing+fault-level intent consumption, and tool_call_pending_for_system_metrics deferral preservation.", "decisions": [] }
     ]
+  },
+  "drawing_layout": {
+    "sheets": [
+      {
+        "sheet_id": "sheet_1",
+        "sheet_size": "Arch_D",
+        "drawing_standard": "AIA CAD Layer Guidelines 2007",
+        "drawing_scale": "NTS",
+        "split_rationale": "Single sheet — 4 boards (within ≤8 threshold), retail strip mall with no life-safety isolation requirement"
+      }
+    ],
+    "boards": {
+      "MSP-A": { "sheet_id": "sheet_1", "tree_layer": 0, "layout_group": "main",          "routing_intent": "direct_from_msb", "layout_intent_note": "Main service panel 200A — PoCo intake, root of tenant cascade" },
+      "TSP-A": { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "general_power", "routing_intent": "via_main_spine",  "layout_intent_note": "Tenant A sub-panel 100A — Suite 100 apparel retail" },
+      "TSP-B": { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "general_power", "routing_intent": "via_main_spine",  "layout_intent_note": "Tenant B sub-panel 100A — Suite 200 food-service retail" },
+      "CA-P":  { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "general_power", "routing_intent": "via_main_spine",  "layout_intent_note": "Common-area panel 60A — shared lighting + parking + signage (fire-pump branch flagged for NEC 695.4(A) remediation)" }
+    }
   }
 }

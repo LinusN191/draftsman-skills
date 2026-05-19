@@ -9,6 +9,17 @@
 >
 > `meta.consumed_intents[]` grows from 4 entries (v1.3) to 6 entries (v1.4): 4 db-layout + 1 earthing + 1 fault-level.
 
+## Drawing layout (v1.5)
+
+> **v1.5 — drawing layout (spatial-intent layer):**
+>
+> - **1 sheet** (Arch_D ANSI, AIA CAD Layer Guidelines 2007, NTS scale)
+> - **layout_groups:** `main` (MSP-A) + `general_power` × 3 (TSP-A, TSP-B, CA-P)
+> - **routing_intent:** all tenant subs `via_main_spine` (gear-room to in-tenant cable runs)
+> - **No multi-sheet split:** 4 boards ≤ 8 threshold; no NEC 517 healthcare or NFPA 72 fire-alarm boards
+>
+> CAD layer names resolved at render time from `shared/standards/drafting/AIA/cad-layers.json` (US uses AIA CAD Layer Guidelines).
+
 > **v1.3 — WI4 multi-board consumption:** This example's `distribution_hierarchy[]` is derived from 4 upstream db-layout intents (1 MSP-A + 3 sub-panels). The SLD skill adopts each board's `db_id` + incoming-supply summary verbatim and extends the picture with cascade structure, selectivity verification, system-wide metrics, SPD assessment, and surfaces multi-board compliance tensions. Board IDs match the upstream 1:1.
 
 ## Site context
