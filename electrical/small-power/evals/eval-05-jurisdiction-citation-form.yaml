@@ -1,0 +1,33 @@
+name: eval-05-jurisdiction-citation-form
+skill: electrical/small-power
+description: |
+  D-3 citation form rigour. UK leads with BS 7671:2018+A2:2022. KE leads with
+  KS 1700:2018. INT leads with IEC 60364-X-XX. US leads with NEC 2023. The forbidden
+  annotation form "BS 7671 (adopted by KS 1700)" must not appear anywhere.
+category: jurisdiction_switch
+input_fixtures:
+  - ../examples/uk-3bed-dwelling/output.json
+  - ../examples/ke-nairobi-small-office/output.json
+  - ../examples/intl-open-plan-floor/output.json
+  - ../examples/us-residential-dwelling/output.json
+
+checks:
+  - assertion: "'BS 7671:2018+A2:2022' in output.rationale.chat_summary or output.jurisdiction != 'GB'"
+    description: GB chat_summary references BS 7671:2018+A2:2022 (year qualifier)
+    severity: critical
+
+  - assertion: "'KS 1700' in output.rationale.chat_summary or output.jurisdiction != 'KE'"
+    description: KE chat_summary references KS 1700:2018
+    severity: critical
+
+  - assertion: "'IEC 60364' in output.rationale.chat_summary or output.jurisdiction != 'INT'"
+    description: INT chat_summary references IEC 60364
+    severity: critical
+
+  - assertion: "'NEC' in output.rationale.chat_summary or output.jurisdiction != 'US'"
+    description: US chat_summary references NEC
+    severity: critical
+
+  - assertion: "'adopted by KS 1700' not in output.rationale.chat_summary"
+    description: Forbidden annotation form "adopted by KS 1700" never appears in chat_summary
+    severity: critical

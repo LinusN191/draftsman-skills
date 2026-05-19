@@ -1,0 +1,22 @@
+name: eval-08-cross-room-ring-integrity
+skill: electrical/small-power
+description: |
+  Ring final circuits typically span multiple rooms (kitchen + utility + dining +
+  lounge for UK ground floor). Verifies cross-room ring representation: circuits[].rooms_covered
+  has ≥2 entries for ring topology, and sockets in those rooms reference the ring circuit.
+category: skill_specific
+input_fixtures:
+  - ../examples/uk-3bed-dwelling/output.json
+
+checks:
+  - assertion: "all(len(c.rooms_covered) >= 2 for c in output.circuits if c.topology == 'ring')"
+    description: Every ring circuit covers ≥2 rooms (cross-room ring representation)
+    severity: critical
+
+  - assertion: "next((c for c in output.circuits if c.circuit_id == 'C01'), {'rooms_covered': []}).rooms_covered.__contains__('kitchen')"
+    description: UK C01 ground-floor ring covers the kitchen
+    severity: critical
+
+  - assertion: "next((c for c in output.circuits if c.circuit_id == 'C01'), {'rooms_covered': []}).rooms_covered.__contains__('lounge')"
+    description: UK C01 ground-floor ring covers the lounge
+    severity: critical

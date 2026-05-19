@@ -1,0 +1,39 @@
+name: eval-09-gfci-scope-us
+skill: electrical/small-power
+description: |
+  US GFCI scope compliance per NEC 210.8: bathroom + garage + outdoor + basement +
+  kitchen + laundry must have GFCI protection (encoded via ocpd.type='GFCI_breaker'
+  or 'AFCI_GFCI_dual').
+category: skill_specific
+input_fixtures:
+  - ../examples/us-residential-dwelling/output.json
+
+checks:
+  - assertion: "output.jurisdiction == 'US'"
+    description: Fixture jurisdiction is US
+    severity: critical
+
+  - assertion: "any(c.ocpd.type in {'GFCI_breaker', 'AFCI_GFCI_dual'} for c in output.circuits if 'bathroom' in c.rooms_covered)"
+    description: Bathroom circuit has GFCI or AFCI_GFCI_dual OCPD
+    severity: critical
+    matches_nec: 210.8(A)(1)
+
+  - assertion: "any(c.ocpd.type in {'GFCI_breaker', 'AFCI_GFCI_dual'} for c in output.circuits if 'kitchen' in c.rooms_covered)"
+    description: Kitchen circuit has GFCI (or dual-function with AFCI)
+    severity: critical
+    matches_nec: 210.8(A)(6)
+
+  - assertion: "any(c.ocpd.type in {'GFCI_breaker', 'AFCI_GFCI_dual'} for c in output.circuits if 'outdoor' in c.rooms_covered)"
+    description: Outdoor circuit has GFCI
+    severity: critical
+    matches_nec: 210.8(A)(3)
+
+  - assertion: "any(c.ocpd.type in {'GFCI_breaker', 'AFCI_GFCI_dual'} for c in output.circuits if 'garage' in c.rooms_covered)"
+    description: Garage circuit has GFCI
+    severity: critical
+    matches_nec: 210.8(A)(2)
+
+  - assertion: "any(c.ocpd.type in {'GFCI_breaker', 'AFCI_GFCI_dual'} for c in output.circuits if 'basement' in c.rooms_covered)"
+    description: Basement circuit has GFCI
+    severity: critical
+    matches_nec: 210.8(A)(5)

@@ -1,0 +1,26 @@
+name: eval-07-special-locations-compliance
+skill: electrical/small-power
+description: |
+  INV-05 — special-location enforcement. bathroom_zone_1 has zero sockets;
+  bathroom_zone_3 sockets are SSU only or have Type A/B RCD; outdoor sockets are
+  IP-rated.
+category: skill_specific
+input_fixtures:
+  - ../examples/uk-3bed-dwelling/output.json
+  - ../examples/ke-nairobi-small-office/output.json
+  - ../examples/intl-open-plan-floor/output.json
+  - ../examples/us-residential-dwelling/output.json
+
+checks:
+  - assertion: "all(len(r.sockets) == 0 for r in output.rooms if r.special_location == 'bathroom_zone_1')"
+    description: bathroom_zone_1 rooms have zero sockets (BS 7671 Part 7-701 / IEC 60364-7-701)
+    severity: critical
+    matches_inv: INV-05
+
+  - assertion: "all(len(r.sockets) <= 1 for r in output.rooms if r.special_location == 'bathroom_zone_3')"
+    description: bathroom_zone_3 rooms have ≤1 socket (shaver SSU or single RCD-protected)
+    severity: critical
+
+  - assertion: "all(s.ip_rating is not None and s.ip_rating.startswith('IP') for r in output.rooms if r.special_location == 'outdoor' for s in r.sockets)"
+    description: Outdoor sockets carry an ip_rating field starting with 'IP' (≥IP55 per BS 7671 §522.6.201)
+    severity: critical

@@ -1,0 +1,59 @@
+name: eval-01-uk-happy-path
+skill: electrical/small-power
+description: |
+  WI5 happy-path coverage for the UK 3-bed dwelling example. Verifies a complete,
+  spec-conformant IR: schema validates, INV cross-references intact, 2 ring circuits
+  per BS 7671:2018+A2:2022, Part 7-701 bathroom + outdoor IP socket present, WI2
+  rationale chat_summary ≤500, WI3 deferral flags consistent.
+category: happy_path
+input_fixtures:
+  - ../examples/uk-3bed-dwelling/output.json
+
+checks:
+  - assertion: "schema_valid(output, 'electrical/small-power/schemas/small-power-ir.schema.json')"
+    description: small-power-ir.schema.json strict validation passes
+    severity: critical
+
+  - assertion: "output.jurisdiction == 'GB'"
+    description: UK example carries jurisdiction == 'GB'
+    severity: critical
+
+  - assertion: "sum(1 for c in output.circuits if c.topology == 'ring') == 2"
+    description: Exactly 2 ring final circuits (C01 ground-floor + C02 first-floor)
+    severity: critical
+
+  - assertion: "all(rid in {r.room_id for r in output.rooms} for c in output.circuits for rid in c.rooms_covered)"
+    description: INV-03 — every circuits[].rooms_covered[] resolves to a rooms[].room_id
+    severity: critical
+
+  - assertion: "all(s.circuit_id in {c.circuit_id for c in output.circuits} for r in output.rooms for s in r.sockets)"
+    description: INV-02 — every rooms[].sockets[].circuit_id resolves to a circuits[].circuit_id
+    severity: critical
+
+  - assertion: "next(r for r in output.rooms if r.room_id == 'bathroom').special_location == 'bathroom_zone_3'"
+    description: Bathroom is bathroom_zone_3 (Part 7-701)
+    severity: critical
+
+  - assertion: "len(next(r for r in output.rooms if r.room_id == 'bathroom').sockets) == 1"
+    description: Bathroom contains exactly 1 socket (shaver SSU only)
+    severity: critical
+
+  - assertion: "any(s.ip_rating.startswith('IP6') for r in output.rooms if r.room_id == 'outdoor' for s in r.sockets)"
+    description: Outdoor room has at least one IP65/IP66 socket
+    severity: critical
+
+  - assertion: "len(output.rationale.chat_summary) >= 40 and len(output.rationale.chat_summary) <= 500"
+    description: rationale.chat_summary length 40-500 chars (WI2 rule)
+    severity: critical
+
+  - assertion: "len(output.rationale.sections) == 8"
+    description: 8 rationale sections (Jurisdiction/Topology/Special-Locations/RCD/OCPD-Cable/Diversity-Zs/Compliance/Drafting)
+    severity: critical
+
+  - assertion: "all(c.tool_call_pending_for_zs_verification == True for c in output.circuits)"
+    description: All circuits flag Zs verification as deferred (WI3)
+    severity: critical
+
+  - assertion: "'TOOL-CALL-PENDING:calc.zs_loop_impedance' in output.flags"
+    description: INV-08 — top-level flag for Zs deferral present
+    severity: critical

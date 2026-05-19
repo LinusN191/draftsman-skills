@@ -1,0 +1,22 @@
+name: eval-02-no-rcd-exception
+skill: electrical/small-power
+description: |
+  Synthetic fixture trap — circuit with rcd_posture=no_rcd_with_documented_§411_exception
+  MUST have non-empty rcd_exception_citation. Used to verify INV-06 rule 3.
+category: validation_trap
+input_fixtures:
+  - ../examples/us-residential-dwelling/output.json  # C03 AFCI-only uses no_rcd exception with citation
+
+checks:
+  - assertion: "all(c.rcd_exception_citation is not None and len(c.rcd_exception_citation) > 20 for c in output.circuits if c.rcd_posture == 'no_rcd_with_documented_§411_exception')"
+    description: Every no_rcd_with_documented_§411_exception circuit carries a citation ≥20 chars
+    severity: critical
+    matches_inv: INV-06
+
+  - assertion: "next((c.rcd_exception_citation for c in output.circuits if c.circuit_id == 'C03'), '') != ''"
+    description: US C03 AFCI-only circuit has populated rcd_exception_citation
+    severity: critical
+
+  - assertion: "'NEC' in next((c.rcd_exception_citation for c in output.circuits if c.circuit_id == 'C03'), '')"
+    description: US C03 citation references NEC (US jurisdiction)
+    severity: critical

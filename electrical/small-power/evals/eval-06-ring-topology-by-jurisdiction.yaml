@@ -1,0 +1,22 @@
+name: eval-06-ring-topology-by-jurisdiction
+skill: electrical/small-power
+description: |
+  INV-04 — ring topology only valid for jurisdiction in {GB, KE}. Verifies that ring
+  circuits NEVER appear in INT or US examples, and that GB+KE example IRs may carry
+  ring topology when engineering practice indicates.
+category: skill_specific
+input_fixtures:
+  - ../examples/uk-3bed-dwelling/output.json
+  - ../examples/ke-nairobi-small-office/output.json
+  - ../examples/intl-open-plan-floor/output.json
+  - ../examples/us-residential-dwelling/output.json
+
+checks:
+  - assertion: "all(c.topology in {'radial', 'dedicated_radial'} for c in output.circuits) if output.jurisdiction in {'INT', 'US', 'EU'} else True"
+    description: Non-GB/KE examples carry NO ring topology
+    severity: critical
+    matches_inv: INV-04
+
+  - assertion: "(sum(1 for c in output.circuits if c.topology == 'ring') >= 1) if output.jurisdiction == 'GB' else True"
+    description: GB example carries at least 1 ring circuit (engineering practice for domestic)
+    severity: warning

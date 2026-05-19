@@ -1,0 +1,18 @@
+name: eval-03-validation-trap-ring-in-us
+skill: electrical/small-power
+description: |
+  Synthetic fixture — if any US circuit has topology=ring, INV-04 must hard-fail.
+  Verifies the validator does NOT silently accept ring topology in non-GB/KE jurisdictions.
+category: validation_trap
+input_fixtures:
+  - ../examples/us-residential-dwelling/output.json
+
+checks:
+  - assertion: "all(c.topology != 'ring' for c in output.circuits) if output.jurisdiction not in {'GB', 'KE'} else True"
+    description: Non-GB/KE example has zero ring circuits
+    severity: critical
+    matches_inv: INV-04
+
+  - assertion: "output.jurisdiction == 'US'"
+    description: Fixture jurisdiction is US
+    severity: critical
