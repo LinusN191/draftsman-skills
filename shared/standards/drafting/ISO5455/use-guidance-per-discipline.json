@@ -1,0 +1,47 @@
+{
+  "clause_ref": "ISO 5455:1979 + engineering practice across disciplines",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-pending-verification",
+  "_title": "ISO 5455 Scale Selection Guidance per Drawing Type",
+  "_source": "ISO 5455:1979 + AEC industry practice (RIBA Plan of Work, CIBSE Guide A scale recommendations, ASHRAE drafting standards)",
+  "_note": "Recommended scales by drawing type. Engineering judgment may override for unusual project geometries.",
+  "by_drawing_type": {
+    "site_plan":              { "recommended_scales": ["1:500", "1:1000", "1:200"], "rationale": "Show building location + surroundings + utilities" },
+    "floor_plan_general":     { "recommended_scales": ["1:100", "1:200"], "rationale": "General arrangement; rooms + corridors readable" },
+    "floor_plan_detail":      { "recommended_scales": ["1:50", "1:25"], "rationale": "Detailed room layout + furniture/equipment placement" },
+    "sld_single_line":        { "recommended_scales": ["NTS"], "rationale": "Schematic — physical scale not meaningful" },
+    "schematic_general":      { "recommended_scales": ["NTS"], "rationale": "Logical relationships only" },
+    "section_general":        { "recommended_scales": ["1:50", "1:100"], "rationale": "Vertical relationships + finished floor levels" },
+    "detail_general":         { "recommended_scales": ["1:5", "1:10", "1:20"], "rationale": "Joint/junction detail" },
+    "lighting_layout":        { "recommended_scales": ["1:50", "1:100"], "rationale": "Luminaire spacing + room coverage" },
+    "small_power_layout":     { "recommended_scales": ["1:50", "1:100"], "rationale": "Socket positions + circuit routes" },
+    "containment_routing":    { "recommended_scales": ["1:50", "1:100"], "rationale": "Tray/conduit/trunking paths" },
+    "riser_diagram":          { "recommended_scales": ["NTS"], "rationale": "Logical floor-to-floor distribution; physical scale not meaningful" },
+    "fire_alarm_layout":      { "recommended_scales": ["1:100", "1:200"], "rationale": "Zone boundaries + device locations" },
+    "elevation_general":      { "recommended_scales": ["1:50", "1:100"], "rationale": "External or internal vertical view" },
+    "panel_schedule_face":    { "recommended_scales": ["1:5", "1:10"], "rationale": "Panel face dimensions readable; can be NTS if accompanied by dimensioning" },
+    "earthing_layout":        { "recommended_scales": ["1:50", "1:100", "1:200"], "rationale": "Earth-conductor routes + electrode positions" }
+  },
+  "engine_lookup": {
+    "_purpose": "Flat key/value form for runtime engine consumption — recommended primary scale per drawing type",
+    "by_drawing_type_primary": {
+      "site_plan": "1:500",
+      "floor_plan_general": "1:100",
+      "floor_plan_detail": "1:50",
+      "sld_single_line": "NTS",
+      "schematic_general": "NTS",
+      "section_general": "1:100",
+      "detail_general": "1:10",
+      "lighting_layout": "1:100",
+      "small_power_layout": "1:100",
+      "containment_routing": "1:100",
+      "riser_diagram": "NTS",
+      "fire_alarm_layout": "1:100",
+      "elevation_general": "1:100",
+      "panel_schedule_face": "1:10",
+      "earthing_layout": "1:100"
+    }
+  },
+  "_cross_refs": []
+}
