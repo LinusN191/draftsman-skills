@@ -1,5 +1,34 @@
 # Reasoning — INT Commercial MSB + 4 Sub-DBs SLD
 
+## Drawing layout (v1.5 — MULTI-SHEET demonstration fixture)
+
+> **v1.5 — drawing layout with multi-sheet split:** This example is the canonical multi-sheet demonstration. The cascade grew from 5 boards (v1.4) to 9 boards (v1.5) by adding 4 sub-DBs (DB-EM + DB-COMMS + DB-UPS + DB-GENSET-XCV) as MSB-MAIN children via F05-F08.
+>
+> **Multi-sheet split triggers (both fire):**
+> 1. **Hard count rule:** 9 boards > 8 threshold
+> 2. **Functional isolation rule:** `fire_alarm_life_safety` (DB-FA1) coexists with `general_power` (DB-P1) and `lighting` (DB-L1) — life-safety isolation per BS 9999 §6.4 / IEC 60364-5-56:2018 §560 / NFPA 72 §10.6 mandates separate sheets
+>
+> **Sheet 1 — General power + mechanical (4 boards):**
+> - MSB-MAIN (main, ground-floor plant room) — tree_layer 0
+> - DB-L1 (lighting, via_main_spine)
+> - DB-P1 (general_power, via_main_spine)
+> - DB-M1 (mechanical, via_main_spine)
+>
+> **Sheet 2 — Life-safety + comms + emergency (5 boards):**
+> - DB-FA1 (fire_alarm_life_safety, dedicated riser)
+> - DB-EM (emergency_power, EM lighting central battery — BS EN 50171 3hr backup)
+> - DB-UPS (emergency_power, 10 kVA UPS-backed critical loads, 30-min ride-through)
+> - DB-COMMS (comms, MDF — Type B RCD upstream per IEC 60364-5-53:2002+A2:2015 §531.3.3 / BS EN 50173)
+> - DB-GENSET-XCV (emergency_power, ATS standby genset — IEC 60364-5-56:2018 §552 utility-priority)
+>
+> Both sheets: A1 ISO, ISO 19650:2018 + BS 1192:2007+A2:2016 generic INT, NTS scale.
+>
+> **Cross-skill values preserved from v1.4:** `supply_origin.system_type=TN-C-S` (matches earthing intent, INV-11 check 6), `system_metrics.peak_pfc_ka=22.5 kA` (sourced from fault-level intent TX-1 transformer-secondary `ifault_ka_max`, INV-11 check 7 within ±0.5 kA tolerance) — INV-11 cross-skill checks still pass after the cascade grew from 5 to 9 boards. Peak PFC is a property of the utility supply, NOT of the cascade structure, so adding sub-DBs downstream does not shift it.
+>
+> **`meta.consumed_intents[]` grew 7 → 11:** 4 new db-layout intents (v1.3.0) added BEFORE the earthing + fault-level entries to preserve the v1.4 ordering rule (all db-layout first, then earthing, then fault-level). INV-11 cross-skill check on consumed_intents count + ordering still passes.
+>
+> **F05-F08 brief-authoritative caveat:** The 4 new feeders are asserted by `distribution_hierarchy_brief` and are NOT yet present in the upstream MSB intent at v1.3.0 (which carries F01-F04 only). The brief is authoritative at this growth-example tier; a v1.6 refresh of the MSB db-layout intent will reconcile by adding F05-F08 to the MSB panel schedule. Each new sub-DB's `incoming_supply.fed_from` documents its expected MSB feeder, so the downstream reconciliation is mechanical.
+
 > **v1.3 — WI4 multi-board consumption:** This example's `distribution_hierarchy[]` is derived from 5 upstream db-layout intents (one MSB + 4 sub-DBs). The SLD skill adopts each board's `db_id` + incoming-supply summary verbatim and extends the picture with cascade structure, selectivity verification, system-wide metrics, SPD assessment, and life-safety isolation accounting. Board IDs match the upstream 1:1.
 
 ## Multi-skill consumption (v1.4)

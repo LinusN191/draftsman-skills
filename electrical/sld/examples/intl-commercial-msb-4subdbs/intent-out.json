@@ -1,7 +1,7 @@
 {
   "intent_type": "sld",
   "intent_version": "1.0.0",
-  "produced_by_skill_version": "sld/1.3.0",
+  "produced_by_skill_version": "sld/1.5.0",
   "project_id": "intl-commercial-msb-4subdbs-eg03",
   "jurisdiction": "INT",
   "supply_summary": {
@@ -9,17 +9,22 @@
     "voltage_arrangement": "TPN_plus_E",
     "main_switch_rating_a": 800
   },
-  "board_count": 5,
+  "board_count": 9,
+  "sheet_count": 2,
   "msb_board_id": "MSB-MAIN",
   "boards": [
-    { "board_id": "MSB-MAIN", "role": "main_switchboard",       "consumed_db_layout_intent": "electrical/db-layout/examples/intl-commercial-tpn-msb/intent-out.json" },
-    { "board_id": "DB-L1",    "role": "sub_distribution_board", "consumed_db_layout_intent": "electrical/db-layout/examples/intl-dbl1-lighting/intent-out.json" },
-    { "board_id": "DB-P1",    "role": "sub_distribution_board", "consumed_db_layout_intent": "electrical/db-layout/examples/intl-dbp1-power/intent-out.json" },
-    { "board_id": "DB-M1",    "role": "sub_distribution_board", "consumed_db_layout_intent": "electrical/db-layout/examples/intl-dbm1-mechanical/intent-out.json" },
-    { "board_id": "DB-FA1",   "role": "fire_alarm_panel",       "consumed_db_layout_intent": "electrical/db-layout/examples/intl-dbfa1-fire-alarm/intent-out.json" }
+    { "board_id": "MSB-MAIN",      "role": "main_switchboard",          "consumed_db_layout_intent": "electrical/db-layout/examples/intl-commercial-tpn-msb/intent-out.json" },
+    { "board_id": "DB-L1",         "role": "sub_distribution_board",    "consumed_db_layout_intent": "electrical/db-layout/examples/intl-dbl1-lighting/intent-out.json" },
+    { "board_id": "DB-P1",         "role": "sub_distribution_board",    "consumed_db_layout_intent": "electrical/db-layout/examples/intl-dbp1-power/intent-out.json" },
+    { "board_id": "DB-M1",         "role": "sub_distribution_board",    "consumed_db_layout_intent": "electrical/db-layout/examples/intl-dbm1-mechanical/intent-out.json" },
+    { "board_id": "DB-FA1",        "role": "fire_alarm_panel",          "consumed_db_layout_intent": "electrical/db-layout/examples/intl-dbfa1-fire-alarm/intent-out.json" },
+    { "board_id": "DB-EM",         "role": "emergency_lighting_panel",  "consumed_db_layout_intent": "electrical/db-layout/examples/intl-dbem-emergency-lighting/intent-out.json" },
+    { "board_id": "DB-COMMS",      "role": "comms_data_panel",          "consumed_db_layout_intent": "electrical/db-layout/examples/intl-dbcomms-data/intent-out.json" },
+    { "board_id": "DB-UPS",        "role": "ups_backed_critical_panel", "consumed_db_layout_intent": "electrical/db-layout/examples/intl-dbups-backed/intent-out.json" },
+    { "board_id": "DB-GENSET-XCV", "role": "ats_changeover_panel",      "consumed_db_layout_intent": "electrical/db-layout/examples/intl-dbgenset-changeover/intent-out.json" }
   ],
   "spd_assessment_verdict": "required_type_2",
   "selectivity_overall_verdict": "partially_selective",
   "compliant": true,
-  "produced_at": "2026-05-18T13:00:00Z"
+  "produced_at": "2026-05-19T11:00:00Z"
 }
