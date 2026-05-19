@@ -87,12 +87,13 @@ INV-04: circuit <CIRCUIT_ID> has topology=ring but jurisdiction is <JURISDICTION
 
 ## INV-05: Special-location enforcement
 
-**Rule:** Special-location rooms must obey their jurisdictional Part 7 rules. Four sub-rules:
+**Rule:** Special-location rooms must obey their jurisdictional Part 7 rules. Five sub-rules (four enforced; wet_area is engineer-judgement):
 
 1. **`bathroom_zone_1`** — `sockets[]` MUST be empty. Even shaver supplies (BS EN 61558-2-5) are forbidden in zone 1 per BS 7671 Part 7-701 §701.512 and IEC 60364-7-701 §701.512.
 2. **`bathroom_zone_2`** — every socket MUST be of a `type` matching the shaver-supply convention (e.g. `bs_en_61558_2_5_shaver` or per the ontology). No general-purpose BS 1363 / Schuko / NEMA sockets permitted in zone 2.
 3. **`bathroom_zone_3`** — every socket MUST be fed by a circuit whose `rcd_posture` is either `type_a_30ma_per_§411_3_3` or `type_b_30ma_per_§531_3_3`. The `no_rcd_with_documented_§411_exception` value is NOT permitted in a bathroom — RCD protection is mandatory regardless of any §411 exception elsewhere on the system.
 4. **`outdoor`** — every socket MUST carry an explicit `ip_rating` field of `IP55` or higher (numerical comparison on both digits). BS 7671 §522.6.201 + IEC 60364-5-51 §512.2.1 set the minimum for an exposed outdoor socket.
+5. **`wet_area`** — No hard rule. Engineer applies judgement (BS 7671 §522.3 for wet commercial environments). INV-05 does not block `valid: true` for `wet_area` rooms.
 
 **Severity:** Hard fail.
 
@@ -235,7 +236,7 @@ Emit a single JSON object:
 `valid: true` requires ALL of:
 
 - Schema validation passes
-- INV-01 through INV-09 all pass (no hard fails)
+- INV-01 through INV-09 all pass (no hard fails); INV-10 is warning-only and does not block valid: true
 - Intent extraction validates against `small-power-intent.schema.json`
 
 Warnings from INV-06 (unjustified Type B) and INV-10 (drafting standard mismatch) do not block `valid: true` but appear in `warnings[]` for engineer review.

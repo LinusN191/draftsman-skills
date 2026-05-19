@@ -209,7 +209,7 @@ Mount heights (default — engineer override permitted with documented reason):
 
 | Mount type | Default height (mm AFF) | Source |
 |---|---|---|
-| `wall` | 1100 (GB/KE), 450 (INT/EU), 450 (US — 18") | IET OSG App A / IEC 60364-5-53 / NEC 406.5(G) |
+| `wall` | 1100 (GB/KE), 450 (INT/EU), 450 (US — 18") | IET OSG App A (GB/KE); industry convention (INT/EU + US ADA — not NEC-mandated) |
 | `above_worktop` | 1200 (above 900 mm worktop) | IET OSG App A |
 | `floor` (workstation feed) | 0 (floor box) | n/a |
 | `kitchen_island` | 100–150 below worktop edge | IET OSG App A |
