@@ -141,6 +141,45 @@
     "drawing_notes":     { "type": "array", "items": { "type": "string" } },
     "drawn_as_symbols":  { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" } },
     "flags":             { "type": "array", "items": { "type": "string" } },
-    "rationale":         { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
+    "rationale":         { "$ref": "../../../shared/schemas/core/rationale.schema.json" },
+    "drawing_layout": {
+      "type": "object",
+      "description": "OPTIONAL spatial-intent layer (v1.5+). Functional grouping + CAD layer enum + multi-sheet split judgment. No x/y coordinates — runtime renderer computes geometry.",
+      "required": ["sheets", "boards"],
+      "additionalProperties": false,
+      "properties": {
+        "sheets": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["sheet_id", "sheet_size", "drawing_standard", "drawing_scale"],
+            "additionalProperties": false,
+            "properties": {
+              "sheet_id":         { "type": "string", "pattern": "^sheet_[a-z0-9_]+$" },
+              "sheet_size":       { "enum": ["A0", "A1", "A2", "A3", "Arch_E", "Arch_D", "Arch_C"] },
+              "drawing_standard": { "type": "string" },
+              "drawing_scale":    { "type": "string" },
+              "split_rationale":  { "type": "string", "maxLength": 200 }
+            }
+          }
+        },
+        "boards": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["sheet_id", "tree_layer", "layout_group", "routing_intent", "layout_intent_note"],
+            "additionalProperties": false,
+            "properties": {
+              "sheet_id":           { "type": "string", "pattern": "^sheet_[a-z0-9_]+$" },
+              "tree_layer":         { "type": "integer", "minimum": 0 },
+              "layout_group":       { "enum": ["main", "general_power", "lighting", "mechanical", "fire_alarm_life_safety", "emergency_power", "comms", "other"] },
+              "routing_intent":     { "enum": ["via_main_spine", "via_dedicated_riser", "via_shared_tray", "direct_from_msb", "via_genset_changeover"] },
+              "layout_intent_note": { "type": "string", "maxLength": 200 }
+            }
+          }
+        }
+      }
+    }
   }
 }
