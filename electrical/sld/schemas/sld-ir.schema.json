@@ -144,7 +144,7 @@
     "rationale":         { "$ref": "../../../shared/schemas/core/rationale.schema.json" },
     "drawing_layout": {
       "type": "object",
-      "description": "OPTIONAL spatial-intent layer (v1.5+). Functional grouping + CAD layer enum + multi-sheet split judgment. No x/y coordinates — runtime renderer computes geometry.",
+      "description": "OPTIONAL spatial-intent layer (v1.5+). Functional grouping (layout_group enum) + routing intent + multi-sheet split judgment. CAD layer names resolved at render time via shared/standards/drafting/<jurisdiction>/cad-layers.json. No x/y coordinates — runtime renderer computes geometry.",
       "required": ["sheets", "boards"],
       "additionalProperties": false,
       "properties": {
@@ -166,6 +166,7 @@
         },
         "boards": {
           "type": "object",
+          "minProperties": 1,
           "additionalProperties": {
             "type": "object",
             "required": ["sheet_id", "tree_layer", "layout_group", "routing_intent", "layout_intent_note"],
