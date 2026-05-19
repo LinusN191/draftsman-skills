@@ -1,0 +1,39 @@
+{
+  "project_id": "intl-comm-tpn-eg02",
+  "board_brief": "LV data/comms distribution sub-DB (DB-COMMS) for a generic IEC commercial 3-storey office. 32A TPN intake fed from MSB-MAIN F06 (32A MCB Type C, 50m feeder) with Type B RCD upstream per IEC 60364-5-53:2002+A2:2015 §531.3.3 for IT equipment with DC leakage components, and BS EN 50173:2018 EMC/leakage compliance. 7 circuits: 24-port main comms rack + 3 floor-IDF cabinets (GF/L1/L2) + 2 PoE+ injectors (Wi-Fi APs + security cameras) + 1 UPS bypass loop feed. Located in ground-floor main comms room (MDF).",
+  "jurisdiction": "INT",
+  "standards_stack": {
+    "primary": "IEC 60364 (HD 60364 series)",
+    "it_load_rcd_standard": "IEC 60364-5-53:2002+A2:2015 §531.3.3 (Type B RCD selection for loads with DC leakage components)",
+    "structured_cabling_standard": "BS EN 50173-1:2018 + BS EN 50173-2:2018 (information technology generic cabling systems — EMC/leakage)",
+    "poe_standard": "IEEE 802.3bt-2018 (PoE+/PoE++ Type 3 and Type 4)",
+    "ups_bypass_standard": "IEC 62040-1:2017 §5.2.4 (UPS bypass and isolation design)",
+    "cascade_selectivity_standard": "IEC 60898-1 (cascade) + IEC 60364-5-53:2002 §536 (selectivity verification)",
+    "assembly_type_testing": "IEC 61439-3:2012 Distribution Board"
+  },
+  "supply": {
+    "fed_from": "MSB-MAIN F06 32A MCB Type C with Type B RCD upstream per IEC 60364-5-53:2002+A2:2015 §531.3.3 / BS EN 50173:2018 EMC/leakage",
+    "system_type": "TN-S (utility transformer earthed; building distribution TN-S)",
+    "voltage": "400V/230V 3-phase 4-wire 50 Hz",
+    "supply_rating_a": 32,
+    "phase_arrangement": "TPN_plus_E",
+    "feeder_route_length_m": 50
+  },
+  "board": {
+    "designation": "DB-COMMS",
+    "location": "ground-floor main comms room (MDF), adjacent to MSB-MAIN",
+    "enclosure_rating": "IP4X (indoor)",
+    "busbar_rating_a": 32,
+    "scope": "single-board",
+    "role": "comms_data_panel"
+  },
+  "circuits": [
+    { "circuit_id": "C01", "designation": "Main comms rack 24-port + PoE switch", "phase": "L1", "device": "16A MCB Type C", "cable": "4mm² LSZH Cu",   "route_length_m": 5  },
+    { "circuit_id": "C02", "designation": "GF IDF cabinet + wall plates",         "phase": "L2", "device": "10A MCB Type C", "cable": "2.5mm² LSZH Cu", "route_length_m": 30 },
+    { "circuit_id": "C03", "designation": "L1 IDF cabinet + wall plates",         "phase": "L3", "device": "10A MCB Type C", "cable": "2.5mm² LSZH Cu", "route_length_m": 40 },
+    { "circuit_id": "C04", "designation": "L2 IDF cabinet + wall plates",         "phase": "L1", "device": "10A MCB Type C", "cable": "2.5mm² LSZH Cu", "route_length_m": 50 },
+    { "circuit_id": "C05", "designation": "PoE+ AP injector (Wi-Fi mesh)",        "phase": "L2", "device": "6A MCB Type C",  "cable": "1.5mm² LSZH Cu", "route_length_m": 15 },
+    { "circuit_id": "C06", "designation": "PoE+ camera injector (security)",      "phase": "L3", "device": "6A MCB Type C",  "cable": "1.5mm² LSZH Cu", "route_length_m": 20 },
+    { "circuit_id": "C07", "designation": "UPS bypass loop feed (10 kVA)",        "phase": "L1", "device": "10A MCB Type C", "cable": "2.5mm² LSZH Cu", "route_length_m": 3  }
+  ]
+}

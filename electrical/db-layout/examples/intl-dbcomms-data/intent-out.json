@@ -1,0 +1,20 @@
+{
+  "db_id": "DB-COMMS",
+  "incoming_supply": {
+    "voltage_v": 400,
+    "phase_arrangement": "TPN_plus_E",
+    "supply_rating_a": 32,
+    "fed_from": "MSB-MAIN F06 (32A MCB Type C, 50m feeder, Type B RCD upstream per IEC 60364-5-53:2002+A2:2015 §531.3.3 / BS EN 50173:2018 EMC/leakage)",
+    "supply_class": "essential"
+  },
+  "circuits": [
+    { "id": "C01", "module_id": "W1", "breaker_rating_a": 16, "breaker_curve": "C", "rcd_protected": true,  "rcd_type": "B", "rcd_sensitivity_ma": 30, "cable_csa_mm2": 4,   "cable_cores": 3, "voltage_class": "comms_data", "downstream_load_kw": 2.5, "approximate_route_length_m": 5  },
+    { "id": "C02", "module_id": "W2", "breaker_rating_a": 10, "breaker_curve": "C", "rcd_protected": true,  "rcd_type": "B", "rcd_sensitivity_ma": 30, "cable_csa_mm2": 2.5, "cable_cores": 3, "voltage_class": "comms_data", "downstream_load_kw": 1.5, "approximate_route_length_m": 30 },
+    { "id": "C03", "module_id": "W3", "breaker_rating_a": 10, "breaker_curve": "C", "rcd_protected": true,  "rcd_type": "B", "rcd_sensitivity_ma": 30, "cable_csa_mm2": 2.5, "cable_cores": 3, "voltage_class": "comms_data", "downstream_load_kw": 1.5, "approximate_route_length_m": 40 },
+    { "id": "C04", "module_id": "W4", "breaker_rating_a": 10, "breaker_curve": "C", "rcd_protected": true,  "rcd_type": "B", "rcd_sensitivity_ma": 30, "cable_csa_mm2": 2.5, "cable_cores": 3, "voltage_class": "comms_data", "downstream_load_kw": 1.5, "approximate_route_length_m": 50 },
+    { "id": "C05", "module_id": "W5", "breaker_rating_a": 6,  "breaker_curve": "C", "rcd_protected": true,  "rcd_type": "B", "rcd_sensitivity_ma": 30, "cable_csa_mm2": 1.5, "cable_cores": 3, "voltage_class": "comms_data", "downstream_load_kw": 0.8, "approximate_route_length_m": 15 },
+    { "id": "C06", "module_id": "W6", "breaker_rating_a": 6,  "breaker_curve": "C", "rcd_protected": true,  "rcd_type": "B", "rcd_sensitivity_ma": 30, "cable_csa_mm2": 1.5, "cable_cores": 3, "voltage_class": "comms_data", "downstream_load_kw": 0.8, "approximate_route_length_m": 20 },
+    { "id": "C07", "module_id": "W7", "breaker_rating_a": 10, "breaker_curve": "C", "rcd_protected": false,                                            "cable_csa_mm2": 2.5, "cable_cores": 3, "voltage_class": "comms_data", "downstream_load_kw": 1.0, "approximate_route_length_m": 3  }
+  ],
+  "spare_ways": 3
+}
