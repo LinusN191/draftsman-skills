@@ -1,0 +1,43 @@
+{
+  "clause_ref": "ISO 5457:1999/A1:2010 §5 — Layout of drawing sheets",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-pending-verification",
+  "_title": "ISO 5457 Drawing Area Rules — margins, binding edge, grid references",
+  "_source": "ISO 5457:1999/A1:2010 §5 + Figures 1-5",
+  "_units": "millimetres",
+  "_note": "The drawing area is the trimmed sheet minus the borders. The left margin (25 mm) is the filing/binding edge; other margins are 10 mm. Grid references divide the drawing area into a coordinate system for navigation.",
+  "margins": {
+    "left_filing_edge_mm": 25,
+    "right_mm": 10,
+    "top_mm": 10,
+    "bottom_mm": 10,
+    "_note": "All sheet sizes (A0-A4) use these same margin widths"
+  },
+  "binding_edge": {
+    "position": "left",
+    "width_mm": 25,
+    "_purpose": "Allows binding/filing without obscuring drawing content"
+  },
+  "grid_references": {
+    "_purpose": "Subdivide the drawing area into a coordinate grid for navigation (e.g., 'Detail at B-3')",
+    "by_sheet_size": {
+      "A0": { "horizontal_divisions": 24, "vertical_divisions": 16, "_note": "Letters A-P on vertical edges, numbers 1-24 on horizontal edges" },
+      "A1": { "horizontal_divisions": 16, "vertical_divisions": 12 },
+      "A2": { "horizontal_divisions": 12, "vertical_divisions": 8 },
+      "A3": { "horizontal_divisions": 8,  "vertical_divisions": 6 },
+      "A4": { "horizontal_divisions": 6,  "vertical_divisions": 4 }
+    }
+  },
+  "engine_lookup": {
+    "_purpose": "Flat key/value form for runtime engine consumption",
+    "by_sheet_size": {
+      "A0": { "h_div": 24, "v_div": 16 },
+      "A1": { "h_div": 16, "v_div": 12 },
+      "A2": { "h_div": 12, "v_div": 8 },
+      "A3": { "h_div": 8,  "v_div": 6 },
+      "A4": { "h_div": 6,  "v_div": 4 }
+    }
+  },
+  "_cross_refs": ["ISO7200"]
+}
