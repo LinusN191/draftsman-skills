@@ -1,0 +1,47 @@
+{
+  "clause_ref": "NEC 2023 Article 210.8 — GFCI Protection of Personnel + Article 406.12 — Tamper-Resistant Receptacles",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-pending-verification",
+  "_title": "NEC 2023 US Special Locations — GFCI Scope",
+  "_source": "NFPA 70 (NEC) 2023 Article 210.8 + Article 406.12",
+  "_note": "US NEC uses GFCI (Ground Fault Circuit Interrupter) for personnel protection in specific locations rather than the IEC/BS 7671 RCD + special-location-zone model. NEC 210.8 enumerates locations requiring GFCI receptacles or GFCI circuit protection. NEC 210.12 adds AFCI requirements. NEC 406.12 requires tamper-resistant receptacles in dwelling units.",
+  "gfci_required_locations": {
+    "210_8_A_1_bathrooms":         { "description": "Bathrooms (all dwelling-unit bathroom receptacles)", "scope": "dwelling_unit", "rating_a": [15, 20] },
+    "210_8_A_2_garages_accessory": { "description": "Garages and accessory buildings (not used for habitation)", "scope": "dwelling_unit", "rating_a": [15, 20] },
+    "210_8_A_3_outdoor":           { "description": "Outdoor receptacles", "scope": "dwelling_unit + commercial", "rating_a": [15, 20] },
+    "210_8_A_4_crawl_spaces":      { "description": "Crawl spaces — at or below grade", "scope": "dwelling_unit", "rating_a": [15, 20] },
+    "210_8_A_5_basements":         { "description": "Unfinished basements (not living areas)", "scope": "dwelling_unit", "rating_a": [15, 20] },
+    "210_8_A_6_kitchens":          { "description": "Kitchens — all 15A/20A 125V receptacles serving countertop surfaces + within 6 ft of sink", "scope": "dwelling_unit", "rating_a": [15, 20] },
+    "210_8_A_7_sinks":             { "description": "Sinks — receptacles within 6 ft of outside edge of sink", "scope": "dwelling_unit", "rating_a": [15, 20] },
+    "210_8_A_8_boathouses":        { "description": "Boathouses", "scope": "dwelling_unit", "rating_a": [15, 20] },
+    "210_8_A_9_bathtubs_showers":  { "description": "Bathtubs and shower stalls — within 6 ft", "scope": "dwelling_unit", "rating_a": [15, 20] },
+    "210_8_A_10_laundry_areas":    { "description": "Laundry areas (all 125V outlets)", "scope": "dwelling_unit", "rating_a": [15, 20] }
+  },
+  "afci_required_locations_210_12": {
+    "210_12_A_dwelling_branch_circuits": { "description": "All 120V 15A/20A branch circuits supplying outlets/devices in dwelling unit kitchens, family rooms, dining rooms, living rooms, parlors, libraries, dens, bedrooms, sunrooms, recreation rooms, closets, hallways, laundry areas, similar rooms or areas", "scope": "dwelling_unit", "rating_a": [15, 20] },
+    "210_12_B_kitchen_dining":            { "description": "Kitchen branch circuits — must be both AFCI AND GFCI per 210.8(A)(6)", "scope": "dwelling_unit", "rating_a": [15, 20] }
+  },
+  "tamper_resistant_receptacles_406_12": {
+    "_purpose": "All 15A/20A 125V receptacles in dwelling units MUST be tamper-resistant per NEC 406.12",
+    "applies_to": "dwelling_unit",
+    "rating_a": [15, 20]
+  },
+  "engine_lookup": {
+    "_purpose": "Flat key/value lookup for runtime engine consumption",
+    "by_location": {
+      "bathroom":     { "gfci": true,  "afci": false, "tamper_resistant": true,  "nec_clause": "210.8(A)(1) + 406.12" },
+      "garage":       { "gfci": true,  "afci": false, "tamper_resistant": true,  "nec_clause": "210.8(A)(2) + 406.12" },
+      "outdoor":      { "gfci": true,  "afci": false, "tamper_resistant": true,  "nec_clause": "210.8(A)(3) + 406.12" },
+      "crawl_space":  { "gfci": true,  "afci": false, "tamper_resistant": true,  "nec_clause": "210.8(A)(4) + 406.12" },
+      "basement":     { "gfci": true,  "afci": false, "tamper_resistant": true,  "nec_clause": "210.8(A)(5) + 406.12" },
+      "kitchen":      { "gfci": true,  "afci": true,  "tamper_resistant": true,  "nec_clause": "210.8(A)(6) + 210.12(B) + 406.12" },
+      "bedroom":      { "gfci": false, "afci": true,  "tamper_resistant": true,  "nec_clause": "210.12(A) + 406.12" },
+      "living_room":  { "gfci": false, "afci": true,  "tamper_resistant": true,  "nec_clause": "210.12(A) + 406.12" },
+      "dining_room":  { "gfci": false, "afci": true,  "tamper_resistant": true,  "nec_clause": "210.12(A) + 406.12" },
+      "hallway":      { "gfci": false, "afci": true,  "tamper_resistant": true,  "nec_clause": "210.12(A) + 406.12" },
+      "laundry":      { "gfci": true,  "afci": true,  "tamper_resistant": true,  "nec_clause": "210.8(A)(10) + 210.12(A) + 406.12" }
+    }
+  },
+  "_cross_refs": ["BS7671", "IEC60364"]
+}
