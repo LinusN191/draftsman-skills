@@ -11,6 +11,17 @@
 >
 > `meta.consumed_intents[]` grows from 4 entries (v1.3) to 6 entries (v1.4): 4 db-layout + 1 earthing + 1 fault-level. INV-11 enforces the count + ordering + cross-skill field equality.
 
+## Drawing layout (v1.5)
+
+> **v1.5 — drawing layout (spatial-intent layer):** This example carries a `drawing_layout` block declaring the engineering intent for how the runtime renderer should produce the SLD drawing.
+>
+> - **1 sheet** (A1 ISO, BS 1192:2007+A2:2016 layer naming, NTS scale)
+> - **layout_groups:** `main` (MSB-MAIN) + `general_power` × 3 (SDB-GF, SDB-L1, SDB-L2)
+> - **routing_intent:** all SDBs `via_main_spine` (shared vertical riser to plant room)
+> - **No multi-sheet split:** 4 boards ≤ 8 threshold AND no `fire_alarm_life_safety` coexisting with `general_power`
+>
+> CAD layer names are NOT in the IR — the runtime renderer looks them up from `shared/standards/drafting/BS1192/cad-layers.json` keyed by jurisdiction.
+
 ## Site context
 
 Spec office on a typical UK suburban high-street, 3 storeys with one tenancy per floor, ~400m² per floor (1200m² GIA). Designed for multi-tenant fit-out — sub-DBs landed per floor in a riser cupboard so each tenant has a clear point of isolation, sub-metering, and future expansion without touching the MSB. Building age and risk profile sit comfortably inside the BCO Specification (Cat A) baseline.

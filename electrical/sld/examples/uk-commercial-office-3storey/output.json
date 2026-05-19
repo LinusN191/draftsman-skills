@@ -99,5 +99,22 @@
       { "title": "Compliance", "summary": "Compliant. No non-compliance flags. 5 assumptions documented (diversity factor, Imax derivation, selectivity verification method, emergency lighting strategy, fire alarm strategy).", "decisions": [] },
       { "title": "Assumptions", "summary": "5 assumptions captured in compliance_summary covering diversity factor, Imax derivation, selectivity method, emergency lighting via local battery packs, fire alarm via local battery FCU.", "decisions": [] }
     ]
+  },
+  "drawing_layout": {
+    "sheets": [
+      {
+        "sheet_id": "sheet_1",
+        "sheet_size": "A1",
+        "drawing_standard": "BS 1192:2007+A2:2016",
+        "drawing_scale": "NTS",
+        "split_rationale": "Single sheet — 4 boards (within ≤8 threshold) with no fire_alarm/general_power coexistence"
+      }
+    ],
+    "boards": {
+      "MSB-MAIN": { "sheet_id": "sheet_1", "tree_layer": 0, "layout_group": "main",          "routing_intent": "direct_from_msb", "layout_intent_note": "Main switchboard at DNO intake — ground-floor plant room, root of distribution tree" },
+      "SDB-GF":   { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "general_power", "routing_intent": "via_main_spine",  "layout_intent_note": "Ground-floor general power + lighting via main vertical riser" },
+      "SDB-L1":   { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "general_power", "routing_intent": "via_main_spine",  "layout_intent_note": "Level 1 general power via shared main riser" },
+      "SDB-L2":   { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "general_power", "routing_intent": "via_main_spine",  "layout_intent_note": "Level 2 general power via shared main riser" }
+    }
   }
 }
