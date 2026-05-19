@@ -1,0 +1,59 @@
+{
+  "clause_ref": "BS 1192:2007+A2:2016 §6 Layer Naming Convention",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-pending-verification",
+  "_title": "BS 1192 Layer Naming Convention (Role-Discipline-Number-Type)",
+  "_source": "BS 1192:2007+A2:2016 §6, referencing ISO 13567",
+  "_note": "Layer name format: <Role>-<Discipline>-<Number>-<Type>. Role indicates who produces it; Discipline + Number identify the element; Type indicates the graphical representation.",
+  "format": "<Role>-<Discipline>-<Number>-<Type>",
+  "format_example": "M-E-LITE-EM (Model layer, Electrical discipline, Lighting elements, Emergency-power modifier)",
+  "tokens": {
+    "role": {
+      "_purpose": "Indicates the layer's origin/purpose within the CDE",
+      "codes": {
+        "M": "Model — graphical elements forming the building/asset model",
+        "D": "Drafting — annotation and detailing not in the model",
+        "G": "Grid — reference grids",
+        "T": "Text — text-only layers",
+        "S": "Section — section/elevation markers"
+      }
+    },
+    "discipline": {
+      "_purpose": "Discipline ownership",
+      "codes": {
+        "A": "Architecture",
+        "C": "Civil",
+        "E": "Electrical",
+        "F": "Fire safety",
+        "I": "Interior",
+        "L": "Landscape",
+        "M": "Mechanical",
+        "P": "Plumbing",
+        "Q": "Quantity surveying",
+        "S": "Structural",
+        "T": "Telecommunications",
+        "V": "Vertical transportation",
+        "W": "Water",
+        "X": "Cross-discipline / other"
+      }
+    },
+    "element_number": {
+      "_purpose": "Element family identifier (3-4 char abbreviation)",
+      "_note": "Element codes are discipline-specific. For Electrical discipline, see cad-layers.json layout_group→CAD-layer-code mapping which gives the canonical Electrical element set (POWR, LITE, COMM, FIRE, etc.)"
+    },
+    "type_modifier": {
+      "_purpose": "Sub-type or modifier indicating graphical representation or status",
+      "common_codes": {
+        "MAIN": "Main / primary",
+        "EXIS": "Existing",
+        "NEWW": "New work",
+        "DEMO": "Demolition",
+        "EMER": "Emergency",
+        "GEN":  "General",
+        "TEMP": "Temporary"
+      }
+    }
+  },
+  "_cross_refs": ["BS5536"]
+}

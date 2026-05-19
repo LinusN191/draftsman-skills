@@ -1,0 +1,21 @@
+{
+  "clause_ref": "BS 1192:2007+A2:2016 §7 File Naming Convention",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "_title": "BS 1192 File Naming Convention",
+  "_source": "BS 1192:2007+A2:2016 §7.4 (aligned with ISO 19650-2:2018 §5.1.2)",
+  "_note": "File naming format: <Project>-<Originator>-<Volume>-<Level>-<Type>-<Role>-<Number>. All tokens separated by hyphen. No spaces in any token.",
+  "format": "<Project>-<Originator>-<Volume>-<Level>-<Type>-<Role>-<Number>",
+  "format_example": "ABC-XYZ-Z1-04-DR-E-0001 (Project ABC, Originator XYZ, Volume Z1, Level 04, Drawing, Electrical, Number 0001)",
+  "tokens": {
+    "project": { "_purpose": "Project identifier (2-6 alphanumeric chars)", "format": "alphanumeric, 2-6 chars", "example": "ABC" },
+    "originator": { "_purpose": "Producing organization code", "format": "alphanumeric, 2-6 chars", "example": "XYZ" },
+    "volume": { "_purpose": "Functional breakdown / spatial volume", "format": "Z[0-9] | M[0-9] | B[0-9] etc.", "common_codes": { "ZZ": "All volumes / project-wide", "Z1": "Volume 1", "M1": "Mechanical zone 1", "B1": "Block 1" } },
+    "level": { "_purpose": "Floor or level identifier", "format": "2-digit numeric or alpha", "common_codes": { "ZZ": "All levels", "00": "Ground", "01": "Level 1", "B1": "Basement 1", "RF": "Roof" } },
+    "type": { "_purpose": "Document/file type", "common_codes": { "DR": "Drawing", "MD": "Model", "SH": "Schedule", "SP": "Specification", "RP": "Report", "DT": "Database", "CR": "Correspondence" } },
+    "role": { "_purpose": "Single-character discipline code — see project-codes.json", "format": "single alpha char" },
+    "number": { "_purpose": "Sequential identifier within Type+Role", "format": "4-digit zero-padded numeric", "example": "0001" }
+  },
+  "_cross_refs": ["ISO19650"]
+}
