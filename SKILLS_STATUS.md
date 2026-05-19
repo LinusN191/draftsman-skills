@@ -19,7 +19,7 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | cable-containment | `electrical/cable-containment` | stub | BS 7671:2018, BS 1192 | — | — |
 | riser | `electrical/riser` | stub | BS 7671:2018 | — | — |
 | schematic | `electrical/schematic` | stub | BS EN 60617 | — | — |
-| small-power | `electrical/small-power` | stub | BS 7671:2018 | — | — |
+| small-power | `electrical/small-power` | **beta** | BS 7671:2018+A2:2022, IEC 60364-4-41/-5-53/-7-701, KS 1700:2018, NEC 2023 Article 210, BS 1363, NEMA WD-1, BS EN 61558-2-5, BS EN 60529 | 9/4 ✓ | v1.0.0 beta — Leaf skill (consumes_intents: []) matching lighting-layout v1.3 pattern. Hybrid IR: circuits[] (3 topology enum: ring/radial/dedicated_radial) + rooms[] (with sockets[] cross-referencing circuit_ids). 3 design enums (topology + special_location + rcd_posture). 4 jurisdictional examples (UK + KE + INT + US). 12-step generator + 10 INV validator + 6 D-check reviewer. 9 evals (5 WI5 categories + 4 skill-specific). Consumes existing calc.diversity_factor + calc.zs_loop_impedance contracts (REUSED). 1 NEW standards file: shared/standards/electrical/NFPA70/part7-special-locations.json. INT example C06 server-room mirrors db-layout intl-dbcomms-data Type B 30mA RCD policy (cross-skill alignment without v1.0 multi-skill consumption). |
 | earthing | `electrical/earthing` | **beta** | BS 7671:2018, IEC 60364, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 9/5 ✓ | v1.4.0 — 5 worked examples (added uk-commercial-3storey in v1.4 sprint); consumed by SLD v1.4 as system-wide earthing intent source. |
 | emergency-lighting | `electrical/emergency-lighting` | stub | BS 5266-1, BS EN 1838 | — | — |
 | cable-schedule | `electrical/cable-schedule` | stub | BS 7671:2018 | — | — |
@@ -169,12 +169,12 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | Status | Count |
 |--------|-------|
 | production | 1 |
-| beta | 6 |
+| beta | 8 |
 | draft | 0 |
-| stub | 69 |
+| stub | 67 |
 | **Total** | **76** |
 
-**Beta (6):** `electrical/sld`, `electrical/db-layout`, `electrical/earthing`, `electrical/fault-level`, `electrical/cable-sizing`, `electrical/arc-flash`
+**Beta (8):** `electrical/sld`, `electrical/db-layout`, `electrical/earthing`, `electrical/fault-level`, `electrical/cable-sizing`, `electrical/arc-flash`, `electrical/arc-flash-labelling`, `electrical/small-power`
 **Production (1):** `electrical/lighting-layout`
 
 ---

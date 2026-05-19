@@ -416,6 +416,48 @@ v1.6 expanded `shared/standards/drafting/` from 3 minimal cad-layers.json files 
 
 **Pattern parent:** `shared/standards/electrical/BS7671/` (17 JSONs + 10 markdowns).
 
+### small-power skill (v1.0+)
+
+v1.0 ships as a leaf skill (no cross-skill intent consumption) matching the lighting-layout v1.3 production pattern. Produces a small-power intent for downstream db-layout consumption. Hybrid IR: `circuits[]` (with topology enum: ring | radial | dedicated_radial) + `rooms[]` (with sockets[] cross-referencing circuit_ids). Supports cross-room rings naturally (e.g., UK ground-floor ring covering kitchen + utility + dining + lounge).
+
+**3 design enums:**
+
+| Enum | Values | Purpose |
+|---|---|---|
+| `topology` | `ring`, `radial`, `dedicated_radial` | Circuit topology — ring only allowed in GB+KE per INV-04 |
+| `special_location` | `null`, `bathroom_zone_1`, `bathroom_zone_2`, `bathroom_zone_3`, `outdoor`, `wet_area` | Room special-location flag — drives RCD requirements per BS 7671 Part 7-701 / IEC 60364-7-701 / NEC 210.8 |
+| `rcd_posture` | `type_a_30ma_per_§411_3_3`, `type_b_30ma_per_§531_3_3`, `no_rcd_with_documented_§411_exception` | RCD strategy per circuit — default Type A 30mA; Type B for IT loads with DC leakage components per IEC 60364-5-53 §531.3.3; explicit-citation exception for documented edge cases |
+
+**Calc tool consumption (existing contracts reused — NOT created):**
+
+- `calc.diversity_factor` — shared/calculations/electrical/diversity-factor.json (handles all 5 jurisdictions: IET OSG App A / NEC 220.40 / IEC 60364-1 §132.12)
+- `calc.zs_loop_impedance` — shared/calculations/electrical/zs-loop-impedance.json (ring + radial Zs verification; small-power added to _consuming_skills[] in Task 3)
+
+WI3 deferral: every circuit carries `tool_call_pending_for_zs_verification: true` + the IR-level `flags[]` contains `TOOL-CALL-PENDING:calc.zs_loop_impedance`. Matches SLD v1.3 + earthing v1.1 precedent.
+
+**Standards consumption:**
+
+- BS 7671:2018+A2:2022 Part 7-701, §411.3.3, §433.1.5 (existing)
+- IEC 60364-4-41:2017, -5-53:2002+A2:2015, -7-701:2019 (existing)
+- KS 1700:2018 §313 routing + §701 (existing)
+- NEC 2023 Article 210 (NEW — small-power adds shared/standards/electrical/NFPA70/part7-special-locations.json with NEC 210.8 GFCI scope + 210.12 AFCI scope + 406.12 tamper-resistant)
+- Drafting standards v1.6 layer (sheet template + scale + layer naming per jurisdiction: BS 1192 for GB/KE; ISO 19650 for INT; AIA CAD Layer Guidelines for US)
+
+**Cross-skill alignment (v1.0 leaf shape):**
+
+INT example C06 (server-room small-power) manually mirrors the Type B 30mA RCD policy from db-layout's shipped `intl-dbcomms-data` example. Engineer mirrors the policy as input rather than consuming via intent (v1.0 ships as leaf). v1.1+ will migrate to consume earthing + fault-level intents for automatic cross-skill alignment, per SLD v1.3→v1.4 precedent.
+
+**4 jurisdictional examples:**
+
+| Folder | Scenario | Topology | Special note |
+|---|---|---|---|
+| `uk-3bed-dwelling/` | 3-bed dwelling, ~100 m² | 2 rings + 3 dedicated radials | Bathroom Part 7-701 zone 3, outdoor IP65 |
+| `ke-nairobi-small-office/` | 80 m² Nairobi office | 4 radials (no ring — KE commercial practice) | KS 1700:2018 §313 + §701 routing; KPLC TN-S 415V |
+| `intl-open-plan-floor/` | 350 m² commercial floor | 8 radials | C06 server-room Type B 30mA RCD per IEC 60364-5-53:2002+A2:2015 §531.3.3 (matches db-layout intl-dbcomms-data) |
+| `us-residential-dwelling/` | ~160 m² single-family | 8 branch circuits | NEC 210.8 GFCI + 210.12 AFCI + 406.12 tamper-resistant + 120/240V split-phase |
+
+**Deferred to v1.1+:** multi-skill intent consumption (consume earthing + fault-level intents); INV-N cross-skill consistency checks. **Deferred to ev-charging skill:** BS 7671 Part 7-722 / NEC 625 EV charging circuits.
+
 ## Contribution guide
 
 See `CONTRIBUTING.md` for how to add a new skill, update standards values,
