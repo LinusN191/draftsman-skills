@@ -26,7 +26,7 @@
 
 - lighting-layout v1.3 (production) — gold-standard layout skill; full folder scaffolding template
 - SLD v1.5 — drafting standards consumption + multi-skill migration precedent
-- earthing v1.3 — 4-jurisdiction example pattern + KS 1700 routing convention
+- earthing v1.4 — 4-jurisdiction example pattern + KS 1700 routing convention
 - db-layout v1.3 — future consumer of small-power intent; intl-dbcomms-data Type B RCD precedent
 - arc-flash-labelling — validator (~17 INV) + reviewer (6 D) pattern
 - drafting standards v1.6 — sheet template + scale + layer naming
