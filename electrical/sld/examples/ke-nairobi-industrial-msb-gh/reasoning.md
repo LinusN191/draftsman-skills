@@ -15,6 +15,17 @@
 >
 > `meta.consumed_intents[]` grows from 2 entries (v1.3) to 4 entries (v1.4): 2 db-layout + 1 earthing + 1 fault-level. INV-11 enforces the count + ordering + cross-skill field equality.
 
+## Drawing layout (v1.5)
+
+> **v1.5 — drawing layout (spatial-intent layer):**
+>
+> - **1 sheet** (A1 ISO, KS 1700:2018 §313 routing to BS 1192:2007+A2:2016, NTS scale)
+> - **layout_groups:** `main` (MSP-100) + `mechanical` (GH-DB for industrial loads)
+> - **routing_intent:** GH-DB `via_main_spine` (60m submain from MSP)
+> - **No multi-sheet split:** 2 boards ≤ 8 threshold, no fire_alarm_life_safety boards
+>
+> CAD layer names resolved at render time from `shared/standards/drafting/BS1192/cad-layers.json` (Kenya jurisdiction routes through BS 1192 via KS 1700:2018 §313 chain).
+
 ## Site context
 
 Light engineering workshop on Enterprise Road, Nairobi Industrial Area. 1980s build. KPLC supply via dedicated 11kV/415V substation 180m down the road, terminating in a 100A TPN main switch at MSP-100 in the workshop's main switchroom. The gate house at the perimeter (60m away) has its own sub-DB (`GH-DB`) for security lighting, gate-controller power, and a small comms cabinet. The 60m submain (C08 in the MSP-100 schedule) is 10mm² 4-core SWA on outdoor cable tray, transitioning to buried duct under the access road.

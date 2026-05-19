@@ -101,5 +101,20 @@
       ] },
       { "title": "Assumptions", "summary": "9 assumptions captured in compliance_summary covering diversity factor, PFC sourcing from fault-level intent, selectivity verification method, SPD Type 1+2 selection rationale, KS 1700 §411.3.3 universal socket-RCD interpretation, life-safety strategy, earthing multi-skill consumption + INV-11 cross-check, fault-level multi-skill consumption + KS§312→BS 7671§313.1 routing, and tool-call-pending status.", "decisions": [] }
     ]
+  },
+  "drawing_layout": {
+    "sheets": [
+      {
+        "sheet_id": "sheet_1",
+        "sheet_size": "A1",
+        "drawing_standard": "KS 1700:2018 §313 routes to BS 1192:2007+A2:2016",
+        "drawing_scale": "NTS",
+        "split_rationale": "Single sheet — 2 boards (within ≤8 threshold), industrial workshop with no life-safety isolation requirement at this scale"
+      }
+    ],
+    "boards": {
+      "MSP-100":  { "sheet_id": "sheet_1", "tree_layer": 0, "layout_group": "main",       "routing_intent": "direct_from_msb", "layout_intent_note": "Main switch-panel 100A — KPLC intake, root of industrial cascade" },
+      "GH-DB":    { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "mechanical", "routing_intent": "via_main_spine",  "layout_intent_note": "Workshop/glasshouse DB feeding industrial loads (lathe + drill + compressor) via 60m submain" }
+    }
   }
 }
