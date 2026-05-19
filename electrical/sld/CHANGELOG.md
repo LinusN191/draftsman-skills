@@ -1,5 +1,36 @@
 # Changelog — sld
 
+## [1.5.0] - 2026-05-19
+
+### Added
+- **Drawing layout (spatial-intent layer)**: NEW optional top-level `drawing_layout` block on SLD IR with 3 enums + sheets[] + boards{}. Skills emit functional grouping + CAD layer enum + multi-sheet split judgment; runtime renderer (separate project) consumes intent + IR + symbol library → produces SVG/DXF/PDF. NO x/y coordinates in skill output.
+- **3 jurisdiction CAD layer lookup tables** in `shared/standards/drafting/` (BS1192 for GB/KE-via-routing, AIA for US, ISO19650 for INT/EU)
+- **Generator Step 13** — Author drawing_layout block (post-IR, hybrid multi-sheet split rule)
+- **Validator INV-12 + INV-13 + INV-14** (drawing_layout shape + jurisdictional sheet size + split logic)
+- **2 new evals**: eval-09 (drawing_layout schema conformance, 8 assertions), eval-10 (multi-sheet split logic, 6 assertions)
+- **INT example grown 5 → 9 boards / 1 → 2 sheets** to demonstrate multi-sheet capability (added DB-EM + DB-COMMS + DB-UPS + DB-GENSET-XCV)
+
+### Changed
+- All 4 SLD examples now ship drawing_layout (3 single-sheet: UK + KE + US; 1 multi-sheet: INT)
+- INT consumed_intents count: 7 → 11 (4 new db-layout entries for the new sub-DBs)
+- INT distribution_hierarchy: 5 → 9 boards; selectivity_cascade: 4 → 8 entries
+
+### Cross-skill invariants preserved
+- INV-11 (v1.4) still holds for all 4 examples — system_type cross-skill equality + peak_pfc_ka within ±0.5 kA tolerance unchanged
+
+### Multi-sheet split rule (hybrid)
+- ≤8 boards single-sheet UNLESS fire_alarm_life_safety + general_power coexist
+- Life-safety coexistence forces split per BS 9999 §6.4 / IEC 60364-5-56:2018 §560 / NFPA 72 §10.6
+
+### Backward compatibility
+- v1.3 / v1.4 examples remain valid (drawing_layout is OPTIONAL in schema)
+
+### Pattern parents
+- SLD v1.4 (shipped 2026-05-18) — multi-skill consumption + INV-11
+- arc-flash-labelling (shipped 2026-05-17) — jurisdiction-aware lookup tables in shared/standards/
+- db-layout v1.2 — intl-dbfa1-fire-alarm structural template reused for 4 new INT sub-DBs (paired v1.3 sprint)
+- [[runtime-project-boundary]] memory — drawing_layout = intent (skill), not geometry (runtime)
+
 ## [1.4.0] - 2026-05-18
 
 ### Added

@@ -1,11 +1,12 @@
 {
   "skill": "sld",
-  "version": "1.4.0",
+  "version": "1.5.0",
+  "last_updated": "2026-05-19",
   "discipline": "electrical",
   "subdiscipline": "distribution",
   "status": "beta",
   "licence": "MIT",
-  "description": "LV single line diagram — system-wide distribution from supply origin through MSB to sub-boards. Consumes db-layout intents for each board in the cascade. Computes Imax/PFC/SPD/life-safety system metrics. Verifies cascade selectivity. Stage 1 = logical topology only (drawing positions deferred to v1.5.0).",
+  "description": "LV single line diagram — system-wide distribution from supply origin through MSB to sub-boards. Consumes db-layout + earthing + fault-level intents. Computes Imax/PFC/SPD/life-safety system metrics. Verifies cascade selectivity. v1.5 adds optional drawing_layout (spatial-intent layer) with functional grouping, routing intent, CAD layer enums, and hybrid multi-sheet split rule.",
   "inputs_path": "electrical/sld/inputs.json",
   "outputs": ["sld-ir"],
   "output_schema": "electrical/sld/schemas/sld-ir.schema.json",
@@ -54,7 +55,9 @@
     "electrical/sld/evals/eval-05-non-selective-cascade.yaml",
     "electrical/sld/evals/eval-06-rationale-block.yaml",
     "electrical/sld/evals/eval-07-multi-board-intent-consumption.yaml",
-    "electrical/sld/evals/eval-08-multi-skill-intent-consumption.yaml"
+    "electrical/sld/evals/eval-08-multi-skill-intent-consumption.yaml",
+    "electrical/sld/evals/eval-09-drawing-layout-schema-conformance.yaml",
+    "electrical/sld/evals/eval-10-multi-sheet-split-logic.yaml"
   ],
   "examples": [
     "electrical/sld/examples/uk-commercial-office-3storey/",
