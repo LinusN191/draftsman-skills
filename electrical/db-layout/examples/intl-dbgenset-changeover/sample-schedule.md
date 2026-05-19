@@ -23,7 +23,7 @@
 
 | Upstream | Downstream | Worst-case ratio | Fault level | Verdict | Source |
 |---|---|---|---|---|---|
-| MSB-MAIN F08 (63A MCCB Type D) → ATS → DB-GENSET-XCV main switch | 6A-32A Type C MCBs at DB-GENSET-XCV | 63:32 = ~2:1 (G02/G04) | 9.0 kA utility-mode / ~4.0 kA genset-mode | info — MCCB-MCB cascade with class differential | engineer_declared per MCCB-MCB manufacturer cascade chart (IEC 60898-1 + IEC 60947-2 + IEC 60364-5-53:2002 §536; dual-mode per IEC 60909-0:2016 §3.5 + §3.5.1) |
+| MSB-MAIN F08 (63A MCCB Type D) → ATS → DB-GENSET-XCV main switch | 6A-32A Type C MCBs at DB-GENSET-XCV | 63:32 = ~2:1 (G02/G04) | 9.0 kA utility-mode / ~1.0 kA genset-mode subtransient Ik" (sustained Ik ~0.4 kA after AVR settles) | info — MCCB-MCB cascade with class differential | engineer_declared per MCCB-MCB manufacturer cascade chart (IEC 60898-1 + IEC 60947-2 + IEC 60364-5-53:2002 §536; dual-mode per IEC 60909-0:2016 §3.5 + §3.5.1 + IEC 60909-1:2002 Table A.1) |
 
 ---
 
@@ -42,7 +42,7 @@
 - ALL Type C MCBs on ATS-output side (Ia = 10×In) — handles SMPS cluster inrush at the four downstream sub-DB rectifier charge paths + motor inrush at G05 + block-load step on ATS transfer
 - Upstream MSB-MAIN F08 = 63A MCCB Type D (Ia = 10-20×In) — Type D selected to tolerate the genset block-load transfer transient travelling upstream through the briefly-closed utility contactor during ATS transfer
 - 10 kA Icn MCBs cover the 9.0 kA utility-mode declared PFC at the ATS output per IEC 60909-0:2016 §3.5 (utility-side 22.5 kA reduced by 60m × 16mm² feeder impedance)
-- Genset-mode declared PFC ~4.0 kA per IEC 60909-0:2016 §3.5.1 equivalent voltage source method on 80 kVA Xd" ≈ 0.12 pu — significantly lower than utility-mode; well within 10 kA Icn
+- Genset-mode declared subtransient Ik" ~1.0 kA per IEC 60909-0:2016 §3.5.1 equivalent voltage source method on 80 kVA (In ≈ 115.5 A, Xd" ≈ 0.12 pu per IEC 60909-1:2002 Table A.1, E" ≈ 1.05 pu → Ik" ≈ 1.01 kA, peak ip ≈ 2.57 kA at κ ≈ 1.8); sustained Ik ≈ 0.4 kA (3-5× In after AVR field forcing settles ~5 s post-fault) — both modes significantly lower than utility-mode; well within 10 kA Icn
 - **One-tier RCD posture — only G05 is RCD-protected:**
   - G01 (ATS controller) RCD-free — supervisory ELV_control per §514.5
   - G02 (EM lighting feed) RCD-free — safety-services emergency feed per §560.7
@@ -51,7 +51,7 @@
   - G05 (day tank + cooling fan) Type A 30 mA per §411.3.3 — exterior-route + fuel-handling + motor-windings justify shock protection
 - **4-pole transfer ATS** (L1+L2+L3+N switched together) per IEC 60364-5-56:2018 §552 — genset operates as separately derived TN-S system in genset-mode with separate neutral-earth bonding contact; prevents parallel-neutral fault paths to utility transformer
 - **Split-location enclosure:** ATS controller + utility-source breaker in IP4X indoor plant room; genset-source contactor + transfer cabling in IP54 external genset enclosure; sealed wall penetration per IEC 60364-5-52 §522.8.3
-- Selectivity: MCCB-upstream-of-MCB cascade at G02/G04 (63:32 = ~2:1) — AT IEC 60898 same-curve minimum BUT benefits from MCCB-class cross-discrimination per IEC 60947-2 (Type D magnetic 10-20×In vs Type C 5-10×In). **Fault-level skill must verify at BOTH 9.0 kA utility-mode and ~4.0 kA genset-mode + time-domain ATS transfer-dwell analysis per IEC 60909-1:2002**
+- Selectivity: MCCB-upstream-of-MCB cascade at G02/G04 (63:32 = ~2:1) — AT IEC 60898 same-curve minimum BUT benefits from MCCB-class cross-discrimination per IEC 60947-2 (Type D magnetic 10-20×In vs Type C 5-10×In). **Fault-level skill must verify at BOTH 9.0 kA utility-mode and ~1.0 kA genset-mode subtransient Ik" (sustained Ik ~0.4 kA after AVR settles) + time-domain ATS transfer-dwell analysis per IEC 60909-1:2002**
 - INFO flag: cascade verification at G02/G04 — MCCB-MCB manufacturer chart confirmation required at full coordination study
 - Voltage drop sanity: G02 EM lighting feed (80m, 32A, 6mm² Cu) ≈ 1.8% — within 5% IEC 60364-5-52 limit; G03 fire alarm feed (60m, 20A, 4mm² Cu) ≈ 1.5%; G04 UPS bypass (40m, 32A, 6mm² Cu) ≈ 0.9%; G01/G05 negligible
 - 3 spare ways (W6-W8) for future safety-services feeds (CCTV/security/access-control), genset block heater (cold-climate retrofit), or genset-room utility lighting/maintenance socket

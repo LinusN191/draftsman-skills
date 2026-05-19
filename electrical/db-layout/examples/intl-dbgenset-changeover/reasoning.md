@@ -67,15 +67,16 @@ The mitigation in this design is layered:
 
 **Utility-mode declared PFC: 9.0 kA at the ATS output** — derived from upstream MSB-MAIN F08 declared 22.5 kA, reduced by the 60m × 16mm² Cu XLPE feeder impedance (R+jX ≈ 0.27 Ω) per IEC 60909-0:2016 §3.5. Comfortably within the 10 kA Icn of standard IEC 60898 Type C MCBs.
 
-**Genset-mode declared PFC: ~4.0 kA at the ATS output** — derived from genset subtransient impedance per IEC 60909-0:2016 §3.5.1 equivalent voltage source method:
+**Genset-mode declared subtransient Ik": ~1.0 kA at the ATS output** — derived from genset subtransient impedance per IEC 60909-0:2016 §3.5.1 equivalent voltage source method:
 
-```
-Ik" = c × Un / (√3 × Xd")
-    = c × 400 / (√3 × Xd" × Un / S_n)
-    = 1.05 × 400 / (√3 × 0.12 × 400 × 400 / 80000)
-    ≈ 1.05 × 80000 / (√3 × 0.12 × 400)
-    ≈ 4000 A  (with Xd" ≈ 0.12 pu typical 4-pole synchronous)
-```
+- In (full-load) = 80,000 / (√3 × 400) ≈ 115.5 A
+- Xd" ≈ 0.12 pu (typical 4-pole salient-pole synchronous machine per IEC 60909-1:2002 Table A.1)
+- E" ≈ 1.05 pu (IEC 60909-0:2016 §3.5.1)
+- **Subtransient Ik" = In × E"/Xd" ≈ 115.5 × (1.05 / 0.12) ≈ 1.01 kA**
+- Peak asymmetric ip ≈ κ × √2 × Ik" with κ ≈ 1.8 (low X/R ratio at genset terminals) → ip ≈ 2.57 kA
+- Sustained Ik (after AVR field forcing settles, ~5 s post-fault) ≈ 0.4 kA (3-5× In) — this is what some references call "3-4× rated current", but it is sustained Ik, NOT subtransient Ik"
+
+The earlier "3.5-4.5 kA" figure conflated sustained Ik with subtransient Ik" — these are physically different quantities with different roles in selectivity studies.
 
 Significantly lower than utility-mode. The fault-level skill must verify BOTH regimes against the manufacturer cascade table — neither alone is sufficient because cascade behaviour during the transfer event itself (when the ATS is briefly in dwell with no source) is a third regime that requires time-domain modelling per IEC 60909-1:2002.
 
@@ -174,13 +175,13 @@ Upstream MSB-MAIN F08 = 63A MCCB Type D (utility-side). ATS sits in series betwe
 
 The G02/G04 ratio is the cascade-critical case and the reason for the INFO selectivity flag. Same-curve C-to-C at ~2:1 is at the documented minimum; MCCB-to-MCB at ~2:1 with class differential is acceptable per typical manufacturer tables but engineer-declared (not standard-guaranteed). The mitigation is:
 
-1. **Manufacturer-specific MCCB-MCB cascade chart at 9.0 kA utility-mode + ~4.0 kA genset-mode.** Engineer to verify against the actual MCCB + MCB types installed.
+1. **Manufacturer-specific MCCB-MCB cascade chart at 9.0 kA utility-mode + ~1.0 kA genset-mode subtransient Ik" (sustained Ik ~0.4 kA after AVR settles).** Engineer to verify against the actual MCCB + MCB types installed.
 2. **Time-domain transfer analysis.** During the 6-10 s transfer window, the ATS is briefly in dwell (no source) — cascade behaviour cannot be analysed in steady-state alone; fault-level skill must model the transfer sequence per IEC 60909-1:2002.
 
 The example flags this as INFO (not non-compliance) and defers the resolution to the fault-level skill. The fault-level skill must:
 
 - Verify the 9.0 kA utility-mode PFC against the upstream MSB-MAIN F08 declared 22.5 kA + 60m feeder impedance
-- Verify the ~4.0 kA genset-mode PFC against the 80 kVA genset Xd" ≈ 0.12 pu equivalent voltage source method per IEC 60909-0:2016 §3.5.1
+- Verify the ~1.0 kA genset-mode subtransient Ik" (and ~0.4 kA sustained Ik after AVR settles) against the 80 kVA genset Xd" ≈ 0.12 pu, E" ≈ 1.05 pu equivalent voltage source method per IEC 60909-0:2016 §3.5.1 + IEC 60909-1:2002 Table A.1
 - Confirm cascade behaviour at BOTH regimes + during the ATS transfer dwell window
 - Confirm the MCCB-MCB cascade table grants time-current selectivity at 63:32 = 2:1 with Type D upstream / Type C downstream
 
@@ -224,7 +225,7 @@ This board's intent-out.json is consumed by:
 
 - `electrical/sld/examples/intl-commercial-msb-4subdbs/` (SLD multi-board cascade — DB-GENSET-XCV will appear as feeder F08 of MSB-MAIN in the Phase B multi-sheet INT rebuild, with the ATS_BLOCK + GENSET_BLOCK symbols drawn upstream)
 - (Future) `electrical/cable-sizing/` — verify 6mm² 4-core, 4mm² 4-core, 2.5mm² 3-core, 1.5mm² 3-core cables against IEC 60364-5-52 ampacity + voltage-drop on the ATS-output side; verify upstream 16mm² 4-core utility feeder + 25mm² 4-core genset-side tie
-- (Future) `electrical/fault-level/` — **DUAL-MODE cascade study REQUIRED at G02/G04 (63:32 = ~2:1)** + 9.0 kA utility-mode PFC + ~4.0 kA genset-mode PFC + ATS transfer-dwell time-domain analysis per IEC 60909-1:2002
+- (Future) `electrical/fault-level/` — **DUAL-MODE cascade study REQUIRED at G02/G04 (63:32 = ~2:1)** + 9.0 kA utility-mode PFC + ~1.0 kA genset-mode subtransient Ik" (sustained Ik ~0.4 kA after AVR settles) + ATS transfer-dwell time-domain analysis per IEC 60909-1:2002
 - (Future) `electrical/earthing/` — verify TN-S bonding on utility side AND genset-side neutral-earth bonding contact at ATS per IEC 60364-5-56:2018 §552; equipotential bonding of genset frame + day-tank + fuel-system per BS 7430:2011
 - (Future) `electrical/generator-sizing/` — **the ENTIRE DB-GENSET-XCV connected load (≈30 kVA continuous + transient peaks) is the genset's primary sizing input** + block-load step capability + cold-start transfer-time validation per ISO 8528-5:2018 G3 + ISO 8528-12:1997 Class A2
 - (Future) `electrical/riser/` — ATS-fed essential bus segregation from utility AC on shared trays; labelling discipline at every cable break (especially through-floor risers); genset-side tie cable separately routed from utility-side feeder
