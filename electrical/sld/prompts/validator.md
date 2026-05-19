@@ -306,3 +306,62 @@ If `earthing_intent_path` is absent OR `fault_level_intent_path` is absent, skip
 If the fault-level intent's `source_summary.type == "mixed"` (utility + genset dual-source), the SLD models utility-source PFC only. Check 7 tolerance still applies but the engineer must document the genset filtering in `compliance_summary.assumptions[]`. Absence of such documentation while mixed-source is detected = warning flag `"INV-11-genset-filtering-undocumented"`.
 
 `stage` records where validation stopped (or `"passed"` for full success).
+
+## INV-12: drawing_layout shape conformance (v1.5+)
+
+**When this check fires:** Only when `output.drawing_layout` is present (backward-compatible — v1.3/v1.4 examples without drawing_layout skip INV-12 entirely).
+
+**Checks (all hard fails):**
+
+1. All `drawing_layout.boards.<id>` keys match a `distribution_hierarchy[].board_id` (no orphan board entries)
+   - Fail: `"INV-12: drawing_layout.boards has key <ID> but no board with that board_id in distribution_hierarchy"`
+
+2. All boards in `distribution_hierarchy` appear as keys in `drawing_layout.boards` (no missing entries)
+   - Fail: `"INV-12: board <ID> is in distribution_hierarchy but missing from drawing_layout.boards"`
+
+3. All `boards[*].sheet_id` reference an existing `sheets[].sheet_id` (no dangling refs)
+   - Fail: `"INV-12: board <BID> declares sheet_id=<SID> but no sheet with that sheet_id in sheets[]"`
+
+4. All `tree_layer` values are ≥0
+   - Fail: `"INV-12: board <BID> tree_layer=<N> must be ≥ 0"`
+
+5. All `layout_group` values are in {`main`, `general_power`, `lighting`, `mechanical`, `fire_alarm_life_safety`, `emergency_power`, `comms`, `other`}
+   - Fail: `"INV-12: board <BID> layout_group=<G> is not a valid enum value"`
+
+6. All `routing_intent` values are in {`via_main_spine`, `via_dedicated_riser`, `via_shared_tray`, `direct_from_msb`, `via_genset_changeover`}
+   - Fail: `"INV-12: board <BID> routing_intent=<R> is not a valid enum value"`
+
+7. All `sheet_size` values are in {`A0`, `A1`, `A2`, `A3`, `Arch_E`, `Arch_D`, `Arch_C`}
+   - Fail: `"INV-12: sheet <SID> sheet_size=<S> is not a valid enum value"`
+
+## INV-13: Jurisdictional sheet size (warning, not hard fail)
+
+**When this check fires:** Only when `output.drawing_layout` is present.
+
+**Checks:**
+
+- jurisdiction ∈ {`GB`, `EU`, `INT`, `KE`} → `sheets[*].sheet_size` MUST be ISO (`A0`/`A1`/`A2`/`A3`)
+- jurisdiction == `US` → `sheets[*].sheet_size` MUST be ANSI (`Arch_E`/`Arch_D`/`Arch_C`)
+
+**Severity:** WARNING (not hard fail). Engineer override valid if drawing exports both ISO and ANSI formats.
+
+- Warning: `"INV-13: jurisdiction=<J> typically uses <EXPECTED_FAMILY> sheet sizes; sheet <SID> uses <ACTUAL_SIZE>. Override valid if export covers both formats."`
+
+## INV-14: Multi-sheet split logic conformance (v1.5+)
+
+**When this check fires:** Only when `output.drawing_layout` is present.
+
+**Checks:**
+
+1. **Single-sheet rule:** if `len(distribution_hierarchy) ≤ 8` AND no `fire_alarm_life_safety` + `general_power` coexistence → MUST be exactly 1 sheet
+   - Hard fail: `"INV-14: <N> boards (≤8) with no life-safety isolation requirement — drawing_layout MUST have exactly 1 sheet, found <M>"`
+
+2. **Multi-sheet rule (count):** if `len(distribution_hierarchy) > 8` → MUST be ≥2 sheets
+   - Hard fail: `"INV-14: <N> boards (>8) — drawing_layout MUST have ≥2 sheets, found <M>"`
+
+3. **Life-safety isolation rule:** if any board has `layout_group == "fire_alarm_life_safety"` AND any board has `layout_group == "general_power"` → those boards MUST be on different sheets
+   - Hard fail: `"INV-14:life-safety-coexistence — fire_alarm_life_safety board <FAID> shares sheet <SID> with general_power board <GPID>. Required isolation per BS 9999 §6.4 / IEC 60364-5-56:2018 §560 / NFPA 72 §10.6"`
+
+### Backward compatibility
+
+If `drawing_layout` is absent, skip INV-12, INV-13, and INV-14 entirely. v1.3/v1.4 examples remain valid under v1.5 validation rules.
