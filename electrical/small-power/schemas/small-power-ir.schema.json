@@ -41,8 +41,8 @@
         "voltage_v":          { "type": "integer", "enum": [120, 208, 230, 240, 400, 415, 480] },
         "phase_arrangement":  { "enum": ["single_phase", "single_phase_split", "TPN", "TPN_plus_E"] },
         "system_type":        { "enum": ["TN-S", "TN-C-S", "TT"] },
-        "ze_declared_ohm":    { "type": "number", "minimum": 0 },
-        "psc_declared_ka":    { "type": "number", "minimum": 0 }
+        "ze_declared_ohm":    { "type": "number", "exclusiveMinimum": 0 },
+        "psc_declared_ka":    { "type": "number", "exclusiveMinimum": 0 }
       }
     },
     "parent_db": {
@@ -172,6 +172,7 @@
           "items": {
             "type": "object",
             "required": ["message"],
+            "additionalProperties": false,
             "properties": {
               "message":     { "type": "string" },
               "code_clause": { "type": "string" },
