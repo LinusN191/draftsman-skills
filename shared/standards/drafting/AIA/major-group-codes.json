@@ -1,0 +1,36 @@
+{
+  "clause_ref": "AIA CAD Layer Guidelines 2007 — Major Group Field",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-pending-verification",
+  "_title": "AIA Major Group Codes — Electrical discipline (focus) + other disciplines (listed)",
+  "_source": "AIA CAD Layer Guidelines 2007 — Major Group Field",
+  "_scope_note": "Per spec §2: ELECTRICAL major-group set is populated exhaustively; other disciplines list common values only.",
+  "electrical_major_groups": {
+    "POWR": { "name": "Power",                "description": "Normal power distribution" },
+    "LITE": { "name": "Lighting",             "description": "Lighting systems" },
+    "COMM": { "name": "Communications",       "description": "Telecom + data" },
+    "FIRE": { "name": "Fire alarm",           "description": "Fire alarm + life safety" },
+    "SOUN": { "name": "Sound systems",        "description": "PA, intercom, mass notification" },
+    "VIDE": { "name": "Video systems",        "description": "CCTV, video conferencing" },
+    "SECU": { "name": "Security systems",     "description": "Access control + intrusion" },
+    "AUTO": { "name": "Automation",           "description": "Building automation / BMS" },
+    "NURS": { "name": "Nurse call",           "description": "Healthcare nurse call systems" },
+    "TVAN": { "name": "TV distribution",      "description": "MATV/SMATV, broadcast" },
+    "GROU": { "name": "Grounding",            "description": "Earthing/bonding systems" },
+    "INST": { "name": "Instrumentation",      "description": "Industrial instrumentation" }
+  },
+  "other_disciplines_common": {
+    "_note": "Common values only. Full taxonomy deferred to per-discipline skill consumption sprints.",
+    "A": { "WALL": "Walls", "DOOR": "Doors", "WIND": "Windows", "ANNO": "Annotation", "GLAZ": "Glazing", "FNSH": "Finishes" },
+    "S": { "BEAM": "Beams", "COLS": "Columns", "FNDN": "Foundation", "FLOR": "Floor systems", "WALL": "Walls" },
+    "M": { "DUCT": "Ductwork", "EQPM": "Equipment", "PIPE": "Piping", "HVAC": "HVAC general" },
+    "P": { "DOMW": "Domestic water", "STRM": "Storm drainage", "SANI": "Sanitary drainage", "GAS":  "Gas piping" }
+  },
+  "engine_lookup": {
+    "_purpose": "Flat key/value form for runtime engine consumption — electrical major group set",
+    "_reference": "AIA CAD Layer Guidelines 2007 — Major Group Field (Electrical)",
+    "electrical_codes": ["POWR", "LITE", "COMM", "FIRE", "SOUN", "VIDE", "SECU", "AUTO", "NURS", "TVAN", "GROU", "INST"]
+  },
+  "_cross_refs": []
+}

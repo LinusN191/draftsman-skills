@@ -1,0 +1,27 @@
+{
+  "clause_ref": "AIA CAD Layer Guidelines 2007 — Layer Naming Convention",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-pending-verification",
+  "_title": "AIA Layer Naming Convention (Discipline-MajorGroup-MinorGroup-Modifier-Status)",
+  "_source": "AIA CAD Layer Guidelines 2007 (NCS 5.0)",
+  "format": "<Discipline>-<MajorGroup>-<MinorGroup>-<Modifier>-<Status>",
+  "format_examples": [
+    "E-POWR (minimum — Electrical Power)",
+    "E-POWR-NORM (with minor group)",
+    "E-POWR-NORM-MAIN (with modifier)",
+    "E-POWR-NORM-MAIN-N (with status — New)"
+  ],
+  "token_separators": {
+    "primary": "-",
+    "_note": "All tokens separated by single hyphen; no spaces within tokens"
+  },
+  "token_constraints": {
+    "discipline_designator": { "length": 1, "format": "single uppercase alpha", "see": "discipline-designators.json" },
+    "major_group":           { "length": 4, "format": "4-char uppercase alpha", "see": "major-group-codes.json" },
+    "minor_group":           { "length": 4, "format": "4-char uppercase alpha, optional" },
+    "modifier":              { "length": 4, "format": "4-char uppercase alpha, optional" },
+    "status":                { "length": 1, "format": "single uppercase alpha", "see": "status-codes.json", "optional": true }
+  },
+  "_cross_refs": []
+}

@@ -1,0 +1,29 @@
+{
+  "_title": "AIA CAD Layer Guidelines 2007 — National CAD Standard (NCS) Version 5",
+  "_publisher": "American Institute of Architects (AIA)",
+  "_edition": "AIA CAD Layer Guidelines 2007 (incorporated into National CAD Standard Version 5)",
+  "_publication_date": "2007-01-01",
+  "current_version": "NCS 5.0 (2007) — successor of AIA CAD Layer Guidelines",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-pending-verification",
+  "note": "Used widely across US AEC industry. National CAD Standard (NCS) is the umbrella; AIA CAD Layer Guidelines is the layer-naming component.",
+  "scope": "US CAD layer naming + status codes + discipline designators.",
+  "format": "<Discipline>-<MajorGroup>-<MinorGroup>-<Modifier>-<Status>",
+  "format_example": "E-POWR-NORM-MAIN-N (Electrical, Power major, Normal minor, Main modifier, New status)",
+  "structure": {
+    "discipline_designator": "Single character — see discipline-designators.json",
+    "major_group": "4 characters — element category, see major-group-codes.json",
+    "minor_group_optional": "4 characters — sub-category",
+    "modifier_optional": "4 characters — additional qualification",
+    "status_optional": "1 character — see status-codes.json"
+  },
+  "key_references_in_this_folder": {
+    "layer-naming.json": "Full Discipline-MajorGroup-MinorGroup-Modifier-Status taxonomy",
+    "status-codes.json": "N=New, E=Existing, D=Demo, F=Future, R=Relocated, X=NotInContract",
+    "discipline-designators.json": "16 discipline single-character codes",
+    "major-group-codes.json": "Electrical major group set (focus); other disciplines listed but not exhaustively populated per spec scope",
+    "cad-layers.json": "Skills-layer abstract layout_group → AIA concrete CAD layer code mapping"
+  },
+  "_cross_refs": []
+}
