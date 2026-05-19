@@ -1,4 +1,4 @@
-# SLD — Validator Prompt (v1.3.0)
+# SLD — Validator Prompt (v1.5.0)
 
 You are validating an SLD IR document produced by the `electrical/sld` skill generator.
 

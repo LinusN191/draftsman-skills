@@ -10,7 +10,7 @@
   - `intl-dbgenset-changeover` — ATS + 80 kVA standby genset per IEC 60364-5-56:2018 §552 + ISO 8528-12:1997 + NFPA 110-2022 + BS EN 50171:2001+A1:2022 §6.3. 5 circuits, 63A intake, utility-priority mode, dual-mode PFC (utility 9 kA + genset 4 kA)
 
 ### Changed
-- Examples count: 17 → 21 (5 INT examples now: MSB + 8 sub-DBs total — 4 existing + 4 new)
+- Examples count: 16 → 20 (5 INT examples now: MSB + 8 sub-DBs total — 4 existing + 4 new)
 
 ### Why this sprint
 Pairs with SLD v1.5 drawing-layout sprint. SLD INT example grows 5→9 boards to demonstrate multi-sheet split logic (life-safety isolation per BS 9999 §6.4 / IEC 60364-5-56:2018 §560 / NFPA 72 §10.6).

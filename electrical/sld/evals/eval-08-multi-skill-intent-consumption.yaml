@@ -57,8 +57,8 @@ checks:
       intent_type == 'fault-level' and loads it.
     severity: warning
 
-  - assertion: "meta.skill_version startswith 'sld/1.4'"
-    description: meta.skill_version starts with 'sld/1.4'.
+  - assertion: "meta.skill_version startswith 'sld/1.5'"
+    description: meta.skill_version starts with 'sld/1.5'.
     severity: critical
 
   - assertion: "'earthing intent' in ' '.join(compliance_summary.assumptions) and 'fault-level intent' in ' '.join(compliance_summary.assumptions)"

@@ -1,4 +1,4 @@
-# SLD Generator Prompt (v1.3.0)
+# SLD Generator Prompt (v1.5.0)
 
 ## Role
 
