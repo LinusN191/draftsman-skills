@@ -1,5 +1,23 @@
 # Changelog — db-layout
 
+## [1.3.0] - 2026-05-19
+
+### Added
+- 4 new INT db-layout examples (pair with SLD v1.5 multi-sheet INT growth):
+  - `intl-dbem-emergency-lighting` — EM lighting central battery per IEC 60364-5-56:2018 §560.7 + BS EN 50171:2001+A1:2022 + IEC 60598-2-22:2014+A2:2020. 8 circuits, 40A intake, NO upstream RCD (life-safety exemption)
+  - `intl-dbcomms-data` — LV data/comms with Type B RCD per IEC 60364-5-53:2002+A2:2015 §531.3.3 + BS EN 50173:2018 EMC + IEEE 802.3bt-2018 PoE+. 7 circuits, 32A intake
+  - `intl-dbups-backed` — 10 kVA online UPS critical loads per IEC 62040-1:2017 + IEEE 446-1995. 6 circuits, 50A intake, three-tier RCD strategy (Type B on IT / Type A on workstations / bypass RCD-free)
+  - `intl-dbgenset-changeover` — ATS + 80 kVA standby genset per IEC 60364-5-56:2018 §552 + ISO 8528-12:1997 + NFPA 110-2022 + BS EN 50171:2001+A1:2022 §6.3. 5 circuits, 63A intake, utility-priority mode, dual-mode PFC (utility 9 kA + genset 4 kA)
+
+### Changed
+- Examples count: 17 → 21 (5 INT examples now: MSB + 8 sub-DBs total — 4 existing + 4 new)
+
+### Why this sprint
+Pairs with SLD v1.5 drawing-layout sprint. SLD INT example grows 5→9 boards to demonstrate multi-sheet split logic (life-safety isolation per BS 9999 §6.4 / IEC 60364-5-56:2018 §560 / NFPA 72 §10.6).
+
+### Pattern parent
+- db-layout v1.2 (shipped 2026-05-18) — `intl-dbfa1-fire-alarm` structural template reused for the 4 new examples
+
 ## [1.2.0] - 2026-05-18
 
 ### Added
