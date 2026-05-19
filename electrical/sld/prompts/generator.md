@@ -567,3 +567,82 @@ Emit a separate intent-out JSON document per Step 11 (slim subset).
 **Do not re-author per-board final circuits.** Adopt them from the upstream db-layout intents per Step 0.5 — the SLD operates one abstraction level up.
 
 **Do not skip the rationale.** It is the engineer's audit trail.
+
+## Step 13 — Author drawing_layout block (v1.5+)
+
+drawing_layout is the SPATIAL-INTENT layer. The runtime renderer consumes it (with the IR + symbol library) to produce SVG/DXF/PDF. Skills do not compute x/y coordinates — that's runtime work per [[runtime-project-boundary]].
+
+### 13.A — Determine sheet count (hybrid split rule)
+
+Apply both checks:
+
+if total_boards ≤ 8 AND no (`fire_alarm_life_safety` AND `general_power` coexisting):
+  → single sheet
+
+else (any condition triggers split):
+  → 2 sheets minimum:
+    - Sheet 1 = main + general_power + mechanical + lighting
+    - Sheet 2 = fire_alarm_life_safety + emergency_power + comms
+
+### 13.B — Per sheet, populate
+
+- `sheet_id`: kebab-case identifier (`sheet_1`, `sheet_2`, …)
+- `sheet_size`: jurisdiction default
+  - GB / INT / KE → `A1` (ISO 5457)
+  - US → `Arch_D` (AIA)
+- `drawing_standard`: jurisdiction default
+  - GB → `BS 1192:2007+A2:2016`
+  - US → `AIA CAD Layer Guidelines 2007`
+  - INT → `ISO 19650:2018 + BS 1192:2007+A2:2016 (generic INT)`
+  - KE → `KS 1700:2018 §313 routes to BS 1192:2007+A2:2016`
+- `drawing_scale`: `NTS` (SLDs are not-to-scale by convention)
+- `split_rationale`: 1-sentence string explaining why these boards on this sheet (≤200 chars)
+
+### 13.C — Per board, populate
+
+- `sheet_id` (cross-reference to sheets[].sheet_id)
+- `tree_layer`: 0 = root MSB; 1 = first-tier SDBs; 2 = sub-sub-DBs
+- `layout_group`: pick from enum per decision table
+- `routing_intent`: pick from enum based on how feeder physically reaches this board
+- `layout_intent_note`: ≤200 chars engineer-reviewable rationale
+
+Decision table for layout_group:
+
+| Board role | layout_group |
+|---|---|
+| Root MSB | `main` |
+| Lighting-only DB | `lighting` |
+| General sockets / small-power DB | `general_power` |
+| HVAC / mechanical DB | `mechanical` |
+| Fire alarm DB | `fire_alarm_life_safety` |
+| EM lighting central battery / UPS-backed / genset-fed | `emergency_power` |
+| LV data / comms / IDF | `comms` |
+| Anything else (rare) | `other` |
+
+routing_intent enum reference:
+
+| Value | When to pick |
+|---|---|
+| `direct_from_msb` | Root MSB itself (no upstream) |
+| `via_main_spine` | Fed via the building's main shared vertical riser |
+| `via_dedicated_riser` | Fed via its own dedicated riser (life-safety, comms, EM) |
+| `via_shared_tray` | Fed via horizontal tray-shared with adjacent sub-DBs |
+| `via_genset_changeover` | Fed via ATS / genset transfer switch |
+
+### 13.D — Life-safety isolation enforcement (SLD-internal — INV-14 hard fail)
+
+Enforced from SLD-internal `layout_group` enum (no cross-skill earthing dependency in v1.5):
+
+If any board has `layout_group == "fire_alarm_life_safety"` AND any board has `layout_group == "general_power"`:
+  → those boards MUST be on different sheets per BS 9999 §6.4 / IEC 60364-5-56:2018 §560 / NFPA 72 §10.6
+  → if same sheet, emit compliance flag `INV-14:life-safety-coexistence`
+
+Future v1.6+ may add cross-skill earthing-intent flag checks (`supplementary_bonding_required`).
+
+### 13.E — Drop drawing_layout entirely if scenario doesn't warrant it
+
+drawing_layout is OPTIONAL. Drop it when:
+- The example is a single-board scope (no cascade to layout)
+- The scenario explicitly does not have a drawing component (e.g., reasoning-only example)
+
+If included, all required fields per the schema must be populated (no partial drawing_layout).
