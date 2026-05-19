@@ -1,0 +1,31 @@
+{
+  "clause_ref": "ISO 128-21:2020 + ISO 128-23:1999 — Line types for technical drawings",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "_title": "ISO 128 Line Types",
+  "_source": "ISO 128-21:2020 + ISO 128-23:1999",
+  "_note": "Line types indicate the graphical representation convention. Each type combines with a line width to encode meaning.",
+  "line_types": {
+    "continuous":           { "description": "Solid unbroken line", "use": "Visible outlines, dimension lines, hatching" },
+    "dashed":               { "description": "Short dashes with regular gaps", "use": "Hidden detail (features behind visible surfaces)" },
+    "dot-dash":             { "description": "Alternating long dashes and dots", "use": "Centerlines + axes" },
+    "dot-dot-dash":         { "description": "Alternating long dashes and pairs of dots", "use": "Adjacent parts, alternative positions" },
+    "continuous_thin_wavy": { "description": "Wavy solid line", "use": "Break lines (short break)" },
+    "continuous_thin_zigzag":{ "description": "Zigzag solid line", "use": "Long break lines" }
+  },
+  "engine_lookup": {
+    "_purpose": "Flat key/value form for runtime engine consumption",
+    "by_use": {
+      "visible_outline": "continuous",
+      "dimension_line": "continuous",
+      "hatching": "continuous",
+      "hidden_detail": "dashed",
+      "centreline": "dot-dash",
+      "section_plane": "dot-dash",
+      "break_short": "continuous_thin_wavy",
+      "break_long": "continuous_thin_zigzag"
+    }
+  },
+  "_cross_refs": ["BS5536"]
+}
