@@ -1,0 +1,37 @@
+{
+  "clause_ref": "ISO 7200:2004 — Technical product documentation — Data fields in title blocks and document headers",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-pending-verification",
+  "_title": "ISO 7200 Title Block Data Fields",
+  "_source": "ISO 7200:2004 §4 (Data fields) + §5 (Identification zone)",
+  "_note": "ISO 7200 distinguishes between MANDATORY fields (must appear in identification zone) and OPTIONAL fields (may appear in adjacent zones). The identification zone is typically the lower-right corner of the trimmed sheet area.",
+  "fields": {
+    "mandatory": {
+      "identification_number":  { "purpose": "Unique drawing identifier", "format": "Project-specific (often follows ISO 19650 / BS 1192 naming)", "example": "ABC-XYZ-Z1-04-DR-E-0001" },
+      "title_subtitle":         { "purpose": "Drawing title (and subtitle if needed)", "format": "free text, max 2 lines typical" },
+      "issuing_organization":   { "purpose": "Producing organization name + logo", "format": "free text + image" },
+      "approval_date":          { "purpose": "Date of approval (suitable for use)", "format": "ISO 8601 (YYYY-MM-DD)" }
+    },
+    "optional_recommended": {
+      "scale":                  { "purpose": "Drawing scale", "format": "ISO 5455 standard scale or NTS" },
+      "sheet_number":           { "purpose": "Sheet N of M", "format": "N/M" },
+      "paper_size":             { "purpose": "Sheet size", "format": "ISO 5457 (A0-A4) or ANSI (Arch_A-Arch_E)" },
+      "language":               { "purpose": "Drawing language", "format": "ISO 639-1 two-letter code (e.g., en, fr, de)" },
+      "designer":               { "purpose": "Person who designed", "format": "free text" },
+      "drawer":                 { "purpose": "Person who drafted", "format": "free text" },
+      "checker":                { "purpose": "Person who checked", "format": "free text" },
+      "approver":               { "purpose": "Person who approved", "format": "free text" },
+      "revision":               { "purpose": "Current revision identifier", "format": "ISO 19650 / BS 1192 (P01-P99, C01-C99)" },
+      "revision_history":       { "purpose": "Table of past revisions", "format": "table: revision | date | description | author" },
+      "project_reference":      { "purpose": "Cross-reference to project", "format": "free text" },
+      "copyright_notice":       { "purpose": "Copyright statement", "format": "free text" }
+    }
+  },
+  "engine_lookup": {
+    "_purpose": "Flat key/value form for runtime engine consumption — mandatory fields list",
+    "_reference": "ISO 7200:2004 §4",
+    "mandatory_fields": ["identification_number", "title_subtitle", "issuing_organization", "approval_date"]
+  },
+  "_cross_refs": ["ISO5457", "ISO5455", "BS1192", "ISO19650"]
+}

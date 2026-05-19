@@ -1,0 +1,35 @@
+{
+  "clause_ref": "ISO 7200:2004 §5 — Identification Zone Layout",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "draft-pending-verification",
+  "_title": "ISO 7200 Title Block Layout Conventions",
+  "_source": "ISO 7200:2004 §5 + Figures 1-3",
+  "_units": "millimetres",
+  "_note": "The identification zone (containing mandatory fields) is positioned in the lower-right corner of the trimmed drawing area. Maximum width 180 mm regardless of sheet size; height varies (100-297 mm per ISO 5457 §4).",
+  "identification_zone": {
+    "position": "lower-right of trimmed drawing area",
+    "max_width_mm": 180,
+    "height_by_sheet_size_mm": {
+      "A0": 297,
+      "A1": 297,
+      "A2": 200,
+      "A3": 150,
+      "A4": 100
+    },
+    "mandatory_field_arrangement": "Mandatory fields stacked vertically within the identification zone; identification_number in lower-right corner; title_subtitle above; issuing_organization above title; approval_date in date field"
+  },
+  "adjacent_zones": {
+    "description": "Optional fields may occupy zones above or to the left of the identification zone, within the title block region per ISO 5457",
+    "common_layout": "Revision history table above identification zone; scale/sheet-number/paper-size in a strip immediately above identification zone"
+  },
+  "engine_lookup": {
+    "_purpose": "Flat key/value form for runtime engine consumption — identification zone dimensions by sheet size",
+    "by_sheet_size_id_zone_height_mm": {
+      "A0": 297, "A1": 297, "A2": 200, "A3": 150, "A4": 100
+    },
+    "id_zone_max_width_mm": 180,
+    "id_zone_position": "lower-right"
+  },
+  "_cross_refs": ["ISO5457"]
+}
