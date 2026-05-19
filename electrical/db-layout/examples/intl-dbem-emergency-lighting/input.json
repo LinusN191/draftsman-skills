@@ -1,0 +1,38 @@
+{
+  "project_id": "intl-comm-tpn-eg02",
+  "board_brief": "Emergency lighting central battery sub-DB (DB-EM) for a generic IEC commercial 3-storey office. 40A TPN intake fed from MSB-MAIN F05 (40A MCB Type C). NO upstream RCD per IEC 60364-5-56:2018 §560.7 life-safety exemption. 8 circuits: 6 EM lighting zones (3 corridors GF/L1/L2 + 3 stairwell/exit-sign zones) + EM panel battery charger + monitoring/test circuit. Central battery rated 3-hour autonomy per BS EN 50171 with luminaires per IEC 60598-2-22. Located in ground-floor EM equipment room.",
+  "jurisdiction": "INT",
+  "standards_stack": {
+    "primary": "IEC 60364 (HD 60364 series)",
+    "life_safety_supplementary": "IEC 60364-5-56:2018 (life-safety/standby supply systems)",
+    "central_battery_standard": "BS EN 50171:2001+A1:2022 (central power supply systems for emergency lighting)",
+    "luminaire_standard": "IEC 60598-2-22:2014+A2:2020 (luminaires for emergency lighting)",
+    "assembly_type_testing": "IEC 61439-3:2012 Distribution Board"
+  },
+  "supply": {
+    "fed_from": "MSB-MAIN F05 40A MCB Type C (NO upstream RCD per IEC 60364-5-56:2018 §560.7)",
+    "system_type": "TN-S (utility transformer earthed; building distribution TN-S)",
+    "voltage": "400V/230V 3-phase 4-wire 50 Hz",
+    "supply_rating_a": 40,
+    "phase_arrangement": "TPN_plus_E",
+    "feeder_route_length_m": 80
+  },
+  "board": {
+    "designation": "DB-EM",
+    "location": "ground-floor EM equipment room (adjacent to MSB-MAIN)",
+    "enclosure_rating": "IP4X (indoor)",
+    "busbar_rating_a": 40,
+    "scope": "single-board",
+    "role": "emergency_lighting_panel"
+  },
+  "circuits": [
+    { "circuit_id": "EM01", "designation": "GF corridor + escape route luminaires", "phase": "L1", "device": "10A MCB Type C", "cable": "1.5mm² FP200 LSZH Cu", "route_length_m": 35 },
+    { "circuit_id": "EM02", "designation": "GF stairwell + exit signs",            "phase": "L2", "device": "6A MCB Type C",  "cable": "1.5mm² FP200 LSZH Cu", "route_length_m": 25 },
+    { "circuit_id": "EM03", "designation": "L1 corridor + escape route",           "phase": "L3", "device": "10A MCB Type C", "cable": "1.5mm² FP200 LSZH Cu", "route_length_m": 45 },
+    { "circuit_id": "EM04", "designation": "L1 stairwell + exit signs",            "phase": "L1", "device": "6A MCB Type C",  "cable": "1.5mm² FP200 LSZH Cu", "route_length_m": 35 },
+    { "circuit_id": "EM05", "designation": "L2 corridor + escape route",           "phase": "L2", "device": "10A MCB Type C", "cable": "1.5mm² FP200 LSZH Cu", "route_length_m": 55 },
+    { "circuit_id": "EM06", "designation": "L2 stairwell + exit signs",            "phase": "L3", "device": "6A MCB Type C",  "cable": "1.5mm² FP200 LSZH Cu", "route_length_m": 45 },
+    { "circuit_id": "EM07", "designation": "EM panel battery charger",             "phase": "L1", "device": "16A MCB Type C", "cable": "2.5mm² FP200 LSZH Cu", "route_length_m": 2  },
+    { "circuit_id": "EM08", "designation": "EM panel monitoring + test circuit",   "phase": "L2", "device": "6A MCB Type C",  "cable": "1.5mm² FP200 LSZH Cu", "route_length_m": 2  }
+  ]
+}
