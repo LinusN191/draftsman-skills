@@ -382,6 +382,40 @@ SLD v1.5 adds the spatial-intent layer to the SLD IR — engineering layout judg
 
 **Validator INV-12 + INV-13 + INV-14** enforce schema conformance + jurisdictional sheet sizes + split logic. Backward-compatible: v1.3 / v1.4 examples without drawing_layout skip these checks entirely.
 
+### Drafting standards layer (v1.6+)
+
+v1.6 expanded `shared/standards/drafting/` from 3 minimal cad-layers.json files (8-entry enum each, shipped in SLD v1.5) to a full 10-standard layer at electrical-standards depth (mirrors `shared/standards/electrical/BS7671/` pattern). Skills emit drafting-standard references (e.g., `drawing_standard: "BS 1192:2007+A2:2016"`); runtime renderer and future skills query the lookup tables. No executable code in this repo per [[runtime-project-boundary]].
+
+**10 standards covered:**
+
+| Standard | Folder | Primary use |
+|---|---|---|
+| BS 1192:2007+A2:2016 | `BS1192/` | UK information management + layer naming + file naming + revision conventions |
+| ISO 19650:2018 (Parts 1-5) | `ISO19650/` | International CDE workflows + security + federated information management |
+| AIA CAD Layer Guidelines 2007 | `AIA/` | US layer naming + status codes + discipline designators |
+| ISO 5457:1999/A1:2010 | `ISO5457/` | Sheet sizes A0-A4 + drawing area + title block region |
+| ISO 5455:1979 | `ISO5455/` | Standard scales + use guidance per discipline |
+| ISO 7200:2004 | `ISO7200/` | Title block data fields (mandatory + optional) |
+| ISO 128 (multi-part) | `ISO128/` | Line widths + line types |
+| ISO 129-1:2018 | `ISO129/` | Dimensioning rules + tolerances + symbols |
+| ISO 9431:1990 | `ISO9431/` | Drawing fold procedures |
+| BS 5536:1978 | `BS5536/` | UK reading of ISO 128 line conventions |
+
+**Top-level discovery file:** `shared/standards/drafting/meta.json` indexes all 10 standards + maps 5 jurisdictions (GB/KE/US/INT/EU) to primary standards.
+
+**Engine-lookupable convention:** Each data JSON ships `{clause_ref, transcribed_at, transcribed_by, verification_status, _title, _source, _note, _cross_refs, <primary_key>: {...}, engine_lookup: {...}}` shape consistent with `shared/standards/electrical/BS7671/` files. The `engine_lookup` wrapper provides a flat key/value form for runtime engine consumption.
+
+**Verification status enum (per file):**
+- `verified-against-source` — author confirmed values against the purchased standard
+- `draft-pending-verification` — drafted from secondary source; engineer review needed
+- `draft-from-secondary-needs-second-source-pair` — single secondary source only; second-source check pending
+
+**Cross-references:** Each meta.json declares a `_cross_refs[]` array (one-direction only — referenced-from, not referenced-to) to neighbouring standards.
+
+**Skill / runtime boundary preserved:** drafting standards are contract data only. Renderer + lookups live in the separate runtime project per [[runtime-project-boundary]].
+
+**Pattern parent:** `shared/standards/electrical/BS7671/` (17 JSONs + 10 markdowns).
+
 ## Contribution guide
 
 See `CONTRIBUTING.md` for how to add a new skill, update standards values,

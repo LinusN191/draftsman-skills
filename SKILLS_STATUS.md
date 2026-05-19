@@ -15,7 +15,7 @@ Status codes: `production` | `beta` | `draft` | `stub`
 |-------|------|--------|-----------|-------|-------|
 | lighting-layout | `electrical/lighting-layout` | **production** | BS EN 12464-1:2021, Part L 2021 | 8/5 ✓ | Reference implementation. 8 evals (incl. rationale), 3 examples with rationale, full IR schema. |
 | sld | `electrical/sld` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 10/3 ✓ | v1.5.0 — drawing_layout spatial-intent layer (optional block: 3 enums + sheets[] + boards{}). Generator Step 13 + INV-12/13/14. Hybrid multi-sheet split rule (≤8 boards single-sheet unless fire_alarm_life_safety + general_power coexist). INT example grown to 9 boards / 2 sheets. CAD layer lookup tables in shared/standards/drafting/. |
-| db-layout | `electrical/db-layout` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 8/3 ✓ | v1.3.0 — 4 new INT sub-DB examples (DB-EM + DB-COMMS + DB-UPS + DB-GENSET-XCV) paired with SLD v1.5 sprint. 20 worked examples total covering UK/KE/INT/US jurisdictions. |
+| db-layout | `electrical/db-layout` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 8/3 ✓ | v1.3.1 — genset Ik" precision fix per IEC 60909-0:2016 §3.5.1 (patch). v1.3.0 — 4 new INT sub-DB examples (DB-EM + DB-COMMS + DB-UPS + DB-GENSET-XCV) paired with SLD v1.5 sprint. 20 worked examples total covering UK/KE/INT/US jurisdictions. |
 | cable-containment | `electrical/cable-containment` | stub | BS 7671:2018, BS 1192 | — | — |
 | riser | `electrical/riser` | stub | BS 7671:2018 | — | — |
 | schematic | `electrical/schematic` | stub | BS EN 60617 | — | — |
@@ -181,6 +181,8 @@ Status codes: `production` | `beta` | `draft` | `stub`
 
 ## Standards layers (canonical content)
 
+### Electrical standards
+
 | Layer | Body | Status | Version | Jurisdiction | Verification |
 |---|---|---|---|---|---|
 | BS7671 | IET / BSI | production | 1.x | GB | verified-against-source |
@@ -189,6 +191,25 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | KS1700 | KEBS | production | 1.0.0 | KE | draft-from-bs7671-derivative-needs-source-verification (new in earthing v1.2 — 2026-05-18) |
 
 Skills consume one or more layers per their jurisdiction routing. See each skill's `skill.manifest.json` `standards` array for specific files referenced.
+
+### Drafting standards (`shared/standards/drafting/`)
+
+Shipped in v1.6 (2026-05-19). 61 files across 10 standards folders + top-level `meta.json`. Mirrors `shared/standards/electrical/BS7671/` depth. Companion to SLD v1.5+, db-layout, lighting-layout, riser, schematic, small-power, cable-containment (future consumers).
+
+| Standard | Folder | Files | Jurisdiction | Status |
+|---|---|---|---|---|
+| BS 1192:2007+A2:2016 | `BS1192/` | — | GB / KE | draft-pending-verification |
+| ISO 19650:2018 (Parts 1-5) | `ISO19650/` | — | INT / EU | draft-pending-verification |
+| AIA CAD Layer Guidelines 2007 | `AIA/` | — | US | draft-pending-verification |
+| ISO 5457:1999/A1:2010 | `ISO5457/` | — | INT | draft-pending-verification |
+| ISO 5455:1979 | `ISO5455/` | — | INT | draft-pending-verification |
+| ISO 7200:2004 | `ISO7200/` | — | INT | draft-pending-verification |
+| ISO 128 (multi-part) | `ISO128/` | — | INT | draft-pending-verification |
+| ISO 129-1:2018 | `ISO129/` | — | INT | draft-pending-verification |
+| ISO 9431:1990 | `ISO9431/` | — | INT | draft-pending-verification |
+| BS 5536:1978 | `BS5536/` | — | GB | draft-pending-verification |
+
+Top-level discovery: `shared/standards/drafting/meta.json` — indexes all 10 standards + maps 5 jurisdictions (GB/KE/US/INT/EU) to primary standards. See `ARCHITECTURE.md §Drafting standards layer (v1.6+)` for full shape description.
 
 ---
 
