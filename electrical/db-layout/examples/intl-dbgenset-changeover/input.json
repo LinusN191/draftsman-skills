@@ -1,0 +1,39 @@
+{
+  "project_id": "intl-comm-tpn-eg02",
+  "board_brief": "Standby-genset changeover sub-DB (DB-GENSET-XCV) for a generic IEC commercial 3-storey office. 63A TPN intake fed from MSB-MAIN F08 (63A MCCB Type D, 60m feeder) AND from standby genset 80 kVA via ATS (utility-priority mode; genset auto-start on utility loss per IEC 60364-5-56:2018 §552). 5 circuits: ATS controller + 4 downstream emergency feeds — EM lighting changeover feed to DB-EM, fire alarm changeover feed to DB-FA1, UPS bypass mains backup to DB-UPS, and genset day tank + cooling fan. Located in external genset enclosure with ATS in ground-floor plant room.",
+  "jurisdiction": "INT",
+  "standards_stack": {
+    "primary": "IEC 60364 (HD 60364 series)",
+    "ats_standard": "IEC 60364-5-56:2018 §552 (automatic transfer switching and changeover sources of supply) + §556 (safety services general) + §551 (low-voltage generating sets)",
+    "genset_transfer_standard": "ISO 8528-12:1997 (Reciprocating internal combustion engine driven alternating current generating sets — Part 12: Emergency power supply to safety services)",
+    "emergency_power_practice": "NFPA 110-2022 (Standard for Emergency and Standby Power Systems — Type 10 transfer time classification; AHJ-cross-referenced where US-aligned)",
+    "transfer_time_standard": "BS EN 50171:2001+A1:2022 §6.3 (Central power supply systems for emergency lighting — transfer time requirements)",
+    "ups_bypass_standard": "IEC 62040-1:2017 §5.2.4 (UPS bypass design — fault-current flow requirement)",
+    "fault_current_calc": "IEC 60909-0:2016 §3.5 (calculation of short-circuit currents in three-phase a.c. systems — utility-side worst case) and §3.5.1 (generator-mode equivalent voltage source — lower Ik in genset mode)",
+    "assembly_type_testing": "IEC 61439-3:2012 Distribution Board (ATS-integrated panel)"
+  },
+  "supply": {
+    "fed_from": "MSB-MAIN F08 63A MCCB Type D (utility) AND standby genset 80 kVA via ATS (utility-priority mode)",
+    "system_type": "TN-S (utility transformer earthed; building distribution TN-S; genset neutral switched at ATS per IEC 60364-5-56:2018 §552 4-pole transfer + bonded to building TN-S earth in genset-mode via the ATS neutral bonding contact)",
+    "voltage": "400V/230V 3-phase 4-wire 50 Hz (both utility and genset modes)",
+    "supply_rating_a": 63,
+    "phase_arrangement": "TPN_plus_E",
+    "feeder_route_length_m": 60,
+    "transfer_time_design_intent_s": "6-10 (medium-genset typical; AHJ to confirm against BS EN 50171:2001+A1:2022 §6.3 vs NFPA 110-2022 Type 10 vs IEC 60364-5-56:2018 §556+§551)"
+  },
+  "board": {
+    "designation": "DB-GENSET-XCV",
+    "location": "external genset enclosure with ATS in ground-floor plant room",
+    "enclosure_rating": "IP4X (indoor ATS section) + IP54 (external genset enclosure section)",
+    "busbar_rating_a": 63,
+    "scope": "single-board",
+    "role": "ats_changeover_panel"
+  },
+  "circuits": [
+    { "circuit_id": "G01", "designation": "ATS controller + signaling (24 VDC supervisory)", "phase": "ELV control",     "device": "6A MCB Type C",  "cable": "1.5mm² LSZH Cu", "route_length_m": 2  },
+    { "circuit_id": "G02", "designation": "EM lighting changeover feed to DB-EM",            "phase": "L1+L2+L3+N",      "device": "32A MCB Type C", "cable": "6mm² LSZH Cu",   "route_length_m": 80 },
+    { "circuit_id": "G03", "designation": "Fire alarm changeover feed to DB-FA1",            "phase": "L1+L2+L3+N",      "device": "20A MCB Type C", "cable": "4mm² LSZH Cu",   "route_length_m": 60 },
+    { "circuit_id": "G04", "designation": "UPS bypass mains backup to DB-UPS",               "phase": "L1+L2+L3+N",      "device": "32A MCB Type C", "cable": "6mm² LSZH Cu",   "route_length_m": 40 },
+    { "circuit_id": "G05", "designation": "Genset day tank + cooling fan",                   "phase": "L1",              "device": "10A MCB Type C", "cable": "2.5mm² LSZH Cu", "route_length_m": 5  }
+  ]
+}
