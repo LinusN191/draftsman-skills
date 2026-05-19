@@ -355,6 +355,33 @@ SLD v1.4 generalizes the WI4 cross-drawing intent pattern from single-skill (v1.
 
 **Pattern parents:** earthing v1.3 (single-board WI4 single-skill); SLD v1.3 (multi-board WI4 single-skill); this sprint = multi-board + multi-skill.
 
+### Drawing layout (v1.5+)
+
+SLD v1.5 adds the spatial-intent layer to the SLD IR — engineering layout judgment that the runtime renderer consumes to produce drawings. **Skills emit intent; runtime computes geometry.** See [[runtime-project-boundary]].
+
+**Schema:** OPTIONAL top-level `drawing_layout` block with 3 enums:
+
+| Enum | Values | Purpose |
+|---|---|---|
+| `layout_group` | main, general_power, lighting, mechanical, fire_alarm_life_safety, emergency_power, comms, other | Functional grouping → CAD layer assignment |
+| `routing_intent` | via_main_spine, via_dedicated_riser, via_shared_tray, direct_from_msb, via_genset_changeover | How the feeder reaches each board |
+| `sheet_size` | A0, A1, A2, A3, Arch_E, Arch_D, Arch_C | Jurisdictional drawing-sheet template |
+
+**CAD layer naming via jurisdiction-aware lookup tables** (`shared/standards/drafting/<jurisdiction>/cad-layers.json`):
+
+| Jurisdiction | Lookup table |
+|---|---|
+| GB | `BS1192/cad-layers.json` (BS 1192:2007+A2:2016) |
+| KE | `BS1192/cad-layers.json` (KS 1700:2018 §313 routes to BS 1192) |
+| US | `AIA/cad-layers.json` (AIA CAD Layer Guidelines 2007) |
+| INT / EU | `ISO19650/cad-layers.json` (ISO 19650:2018 + BS 1192 generic) |
+
+**Multi-sheet split rule (hybrid):** ≤8 boards single-sheet UNLESS `fire_alarm_life_safety` + `general_power` boards coexist (life-safety isolation per BS 9999 §6.4 / IEC 60364-5-56:2018 §560 / NFPA 72 §10.6 → mandatory split).
+
+**Skill / runtime boundary preserved:** v1.5 does NOT produce x/y coordinates. Runtime renderer in the separate project takes intent + IR + symbol library → SVG/DXF/PDF.
+
+**Validator INV-12 + INV-13 + INV-14** enforce schema conformance + jurisdictional sheet sizes + split logic. Backward-compatible: v1.3 / v1.4 examples without drawing_layout skip these checks entirely.
+
 ## Contribution guide
 
 See `CONTRIBUTING.md` for how to add a new skill, update standards values,

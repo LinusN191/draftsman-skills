@@ -14,8 +14,8 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | Skill | Path | Status | Standards | Evals | Notes |
 |-------|------|--------|-----------|-------|-------|
 | lighting-layout | `electrical/lighting-layout` | **production** | BS EN 12464-1:2021, Part L 2021 | 8/5 ✓ | Reference implementation. 8 evals (incl. rationale), 3 examples with rationale, full IR schema. |
-| sld | `electrical/sld` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 8/3 ✓ | v1.4.0 — multi-skill intent consumption (earthing + fault-level added alongside db-layout). 4 worked examples each consuming N+2 intents. peak_pfc_ka now sourced from fault-level intent (IEC 60909 deterministic). INV-11 validator added. |
-| db-layout | `electrical/db-layout` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 8/3 ✓ | v1.2.0 — 12 new cascade-supporting examples for SLD v1.3.0 (paired sprint). 16 worked examples total covering UK/KE/INT/US jurisdictions at MSB-rollup + single-board sub-DB scopes. |
+| sld | `electrical/sld` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 10/3 ✓ | v1.5.0 — drawing_layout spatial-intent layer (optional block: 3 enums + sheets[] + boards{}). Generator Step 13 + INV-12/13/14. Hybrid multi-sheet split rule (≤8 boards single-sheet unless fire_alarm_life_safety + general_power coexist). INT example grown to 9 boards / 2 sheets. CAD layer lookup tables in shared/standards/drafting/. |
+| db-layout | `electrical/db-layout` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 8/3 ✓ | v1.3.0 — 4 new INT sub-DB examples (DB-EM + DB-COMMS + DB-UPS + DB-GENSET-XCV) paired with SLD v1.5 sprint. 20 worked examples total covering UK/KE/INT/US jurisdictions. |
 | cable-containment | `electrical/cable-containment` | stub | BS 7671:2018, BS 1192 | — | — |
 | riser | `electrical/riser` | stub | BS 7671:2018 | — | — |
 | schematic | `electrical/schematic` | stub | BS EN 60617 | — | — |
