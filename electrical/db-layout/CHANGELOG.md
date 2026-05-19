@@ -1,5 +1,19 @@
 # Changelog — db-layout
 
+## [1.3.1] - 2026-05-19
+
+### Fixed
+- **intl-dbgenset-changeover example**: Genset-mode Ik" precision corrected. Previous text conflated sustained Ik (3-5× In after AVR field forcing settles, ~5 s post-fault) with subtransient Ik" (within first cycle). Per IEC 60909-0:2016 §3.5.1 equivalent voltage source method, an 80 kVA, 400 V TPN, salient-pole synchronous genset with Xd" = 0.12 pu, E" = 1.05 pu yields subtransient Ik" ≈ 1.0 kA (peak ip ≈ 2.5 kA, κ ≈ 1.8). Sustained Ik ≈ 0.4 kA. The earlier "~3.5-4.5 kA" figure was sustained Ik mistakenly labelled as subtransient Ik".
+
+### Unchanged
+- No schema changes
+- No new examples
+- intent-out.json contracts unchanged (db-layout intent shape has no Ik"/PFC fields)
+- SLD v1.5 INT example consuming this db-layout intent is unaffected (consumes intent shape, not prose)
+
+### Why this patch
+Per SLD v1.5 final code-review MEDIUM-2 deferred fix (commit 432050a-review). Deferred to v1.6 sprint per user direction 2026-05-19.
+
 ## [1.3.0] - 2026-05-19
 
 ### Added
