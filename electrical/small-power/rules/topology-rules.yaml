@@ -1,0 +1,94 @@
+# Circuit topology rules for small-power per jurisdiction
+# Consumed by validator (INV-04 checks) and engineer reasoning
+
+rules:
+  - id: TOP-01
+    jurisdiction: [GB, KE]
+    standard_reference: "IET On-Site Guide §8.4.4 (8th Edition)"
+    rule_text: >
+      A ring final circuit may not serve a floor area greater than 100 m². The floor
+      area is calculated as the sum of the floor dimensions for all rooms declared in
+      circuits[].rooms_covered. If the area exceeds 100 m², the ring must be split
+      into two or more rings, each within the 100 m² limit, or replaced with radial
+      circuits.
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: TOP-02
+    jurisdiction: [GB, KE]
+    standard_reference: "IET On-Site Guide §8.4.4 (8th Edition)"
+    rule_text: >
+      The total number of non-fused spur connections on any one leg of a ring final
+      circuit must not exceed 2. A spur is defined as a branch cable connected at one
+      point to the ring conductors. Fused connection units (FCUs) may feed additional
+      loads beyond the spur limit but must be individually fused at ≤13 A.
+    applies_to: circuits
+    enforcement: warning
+
+  - id: TOP-03
+    jurisdiction: [all]
+    standard_reference: "IET On-Site Guide §8.4.4 (GB/KE) / IEC 60364-1:2005 (INT/EU) / NEC 2023 (US)"
+    rule_text: >
+      The ring topology is only a valid selection for jurisdictions in {GB, KE}.
+      KE is included because KS 1700:2018 §313 adopts BS 7671:2018+A2:2022 by
+      reference, which in turn recognises ring final circuits. For INT, EU, and US
+      jurisdictions, declaring topology=ring is a hard fail; the engineer must
+      select radial or dedicated_radial.
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: TOP-04
+    jurisdiction: [KE]
+    standard_reference: "KS 1700:2018 §313 + local engineering practice"
+    rule_text: >
+      At commercial scale (floor area ≥80 m²), Kenyan engineering practice generally
+      favours radial topology over ring final circuits because of the easier
+      verification of Zs values, simpler extension, and reduced risk of shared-neutral
+      problems in open-plan offices. Ring topology remains technically compliant; this
+      rule raises an informational note to prompt the engineer's judgment.
+    applies_to: circuits
+    enforcement: info
+
+  - id: TOP-05
+    jurisdiction: [GB, KE]
+    standard_reference: "BS 7671:2018+A2:2022 §433.1.4 + IET On-Site Guide §8.4.5"
+    rule_text: >
+      Cooker and range circuits must use dedicated_radial topology. The cooker circuit
+      must not be shared with any socket-outlet circuit. A cooker control unit with an
+      integral 13 A socket is permitted on the same circuit as the cooker, but no
+      additional socket outlets may be connected to that circuit.
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: TOP-06
+    jurisdiction: [GB, KE]
+    standard_reference: "BS 7671:2018+A2:2022 §Section 554 (fixed water heaters)"
+    rule_text: >
+      Fixed water heaters and immersion heaters must be supplied by a dedicated_radial
+      circuit. The circuit must be permanently connected (no plug/socket connection for
+      heaters rated >3 kW). The isolator must be accessible to the user.
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: TOP-07
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 210 (branch circuits)"
+    rule_text: >
+      NEC does not recognise ring final circuits. All branch circuits must be radial
+      (single-end-fed) or dedicated_radial. Declaring topology=ring for a US
+      jurisdiction is a hard fail. Multi-wire branch circuits (shared neutral) are
+      permitted per NEC 2023 Article 210.4 but require a 2-pole or 3-pole OCPD with
+      simultaneous disconnect.
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: TOP-08
+    jurisdiction: [INT, EU]
+    standard_reference: "IEC 60364-1:2005 §131 (fundamental principles)"
+    rule_text: >
+      IEC 60364 series and European national standards derived from it (e.g., NF C 15-100,
+      VDE 0100, CENELEC HD 60364) recognise only radial branch circuit topology.
+      Ring final circuits are a UK/Commonwealth-specific arrangement not present in
+      IEC 60364. Declaring topology=ring for INT or EU jurisdictions is a hard fail.
+    applies_to: circuits
+    enforcement: hard_fail

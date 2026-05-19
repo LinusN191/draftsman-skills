@@ -1,0 +1,78 @@
+# Diversity factor and maximum demand rules for small-power per jurisdiction
+# Consumed by validator (INV-07 checks) and engineer reasoning
+
+rules:
+  - id: DIV-01
+    jurisdiction: [GB]
+    standard_reference: "IET On-Site Guide (8th Edition) Appendix A, Table A1"
+    rule_text: >
+      For socket-outlet circuits in domestic and light-commercial applications,
+      apply 40% diversity factor to the total connected load. Diversity is applied
+      to the socket-outlet load only; fixed loads (e.g., immersion heaters, cookers)
+      are assessed separately using their own diversity factors. The diversified
+      demand used to size cables and OCPDs must not exceed the OCPD rating.
+      Formula: diversified_demand_A = (total_socket_VA × 0.40) / Vn
+    applies_to: circuits
+    enforcement: info
+
+  - id: DIV-02
+    jurisdiction: [GB]
+    standard_reference: "IET On-Site Guide (8th Edition) Appendix A, Table A1"
+    rule_text: >
+      Cooker diversity: first 10 A + 30% of remainder of the total connected cooker
+      current + 5 A for any socket outlet in a cooker control unit. The total
+      diversified cooker demand is used to size the dedicated cooker radial circuit.
+      Example: 45 A cooker + socket → 10 + (35 × 0.30) + 5 = 25.5 A diversified.
+    applies_to: circuits
+    enforcement: info
+
+  - id: DIV-03
+    jurisdiction: [KE]
+    standard_reference: "IET On-Site Guide (8th Edition) Appendix A, Table A1 (via KS 1700:2018 §313 → BS 7671:2018+A2:2022)"
+    rule_text: >
+      KS 1700:2018 adopts BS 7671:2018+A2:2022 by reference (KS 1700:2018 §313).
+      The IET On-Site Guide Appendix A diversity factors are the standard engineer
+      reference for Kenyan projects. Apply the same 40% socket diversity and
+      cooker diversity formula as for GB. Design records should cite KS 1700:2018 §313
+      as the primary clause and IET OSG Appendix A as the technical source.
+    applies_to: circuits
+    enforcement: info
+
+  - id: DIV-04
+    jurisdiction: [INT, EU]
+    standard_reference: "IEC 60364-1:2005 §132.12 (design margin and diversity)"
+    rule_text: >
+      IEC 60364 does not prescribe fixed diversity factors. The standard requires the
+      design to account for normal operating loads with an appropriate design margin.
+      Engineer must document the diversity basis used (e.g., installation type,
+      occupancy pattern, load profiling). For light commercial use without metered
+      data, a 40–50% diversity factor on socket-outlet circuits is a common
+      engineering approximation; this must be stated in the design record.
+    applies_to: circuits
+    enforcement: info
+
+  - id: DIV-05
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 220.40 (optional feeder calculation)"
+    rule_text: >
+      For feeder and service load calculations in dwelling units, NEC 2023 Article
+      220.40 optional method applies: first 3 kVA at 100%; next 117 kVA at 35%;
+      remainder at 25%. Small-appliance branch circuit load is calculated at 1500 VA
+      per circuit (NEC 2023 Article 220.52(A)). Branch circuit sizing itself must
+      accommodate the connected load without diversity; diversity is applied at feeder
+      and service sizing level only.
+    applies_to: circuits
+    enforcement: info
+
+  - id: DIV-06
+    jurisdiction: [all]
+    standard_reference: "BS 7671:2018+A2:2022 §433.1 / IEC 60364-4-43:2008 §433.1 / NEC 2023 Article 210.19"
+    rule_text: >
+      The diversified maximum load declared on a circuit must be less than the OCPD
+      rating for that circuit. A circuit whose diversified_max_load_a equals or exceeds
+      its OCPD rating_a is a hard fail regardless of jurisdiction. This check is
+      enforced as INV-07 in the validator. The declared diversified load must be
+      consistent with the diversity calculation methodology documented in DIV-01
+      through DIV-05 for the applicable jurisdiction.
+    applies_to: circuits
+    enforcement: hard_fail

@@ -1,0 +1,89 @@
+# Electrical engineering constraints for small-power IR
+# Hard-fail invariants checked by validator
+
+constraints:
+  - id: ELEC-01
+    description: Diversified max load must be less than circuit OCPD rating
+    rule: "for each circuit: circuit.diversified_max_load_a < circuit.ocpd.rating_a"
+    enforcement: hard_fail
+    matches_inv: INV-07
+    fail_message: >
+      INV-07: circuit {circuit_id} has diversified_max_load_a ({diversified_max_load_a} A)
+      >= OCPD rating ({ocpd_rating_a} A). Reduce connected load or upsize the OCPD and cable.
+    rationale: >
+      Per BS 7671:2018+A2:2022 §433.1 / IEC 60364-4-43:2008 §433.1 / NEC 2023 Article 210.19.
+      The OCPD must protect the cable, not the load. The diversified load must not
+      equal or exceed the OCPD rating; the cable ampacity is independently verified by
+      the cable-sizing skill (separate tool call, not enforced here in v1.0).
+
+  - id: ELEC-02
+    description: OCPD breaking capacity must be >= parent DB prospective fault current (10% margin recommended)
+    rule: "for each circuit: circuit.ocpd.breaking_capacity_ka >= parent_db.pfc_at_busbar_ka × 0.9"
+    enforcement: warning
+    matches_inv: null
+    fail_message: >
+      ELEC-02: circuit {circuit_id} OCPD breaking capacity ({breaking_capacity_ka} kA) may be
+      insufficient for the parent DB PFC ({pfc_at_busbar_ka} kA). Verify OCPD interrupting
+      rating per BS 7671:2018+A2:2022 §434.5.1 or NEC 2023 Article 110.9.
+    rationale: >
+      Per BS 7671:2018+A2:2022 §434.5.1 / IEC 60364-4-43 §434.3 / NEC 2023 Article 110.9:
+      the OCPD interrupting rating must equal or exceed the available fault current at the
+      device line terminals. The 10% engineering margin is a best-practice buffer, not a
+      code minimum. If the margin cannot be demonstrated, a full Zs verification via
+      the fault-level skill is required.
+
+  - id: ELEC-03
+    description: Cable core count must be appropriate for circuit phase configuration
+    rule: >
+      circuit.cable.cores >= 2 for phase_config in {single_phase, single_phase_split};
+      circuit.cable.cores >= 4 for phase_config in {TPN, TPN_plus_E}
+    enforcement: hard_fail
+    matches_inv: null
+    fail_message: >
+      ELEC-03: circuit {circuit_id} has cable.cores={cable_cores} but phase_config={phase_config}
+      requires >= {required_cores} cores. Check cable specification.
+    rationale: >
+      Single-phase circuits require a minimum of 2 cores (line + neutral); protective
+      conductor may be separate (e.g., SWA armour or separate CPC) but must be present.
+      TPN (three-phase + neutral) circuits require 4 cores minimum; TPN_plus_E requires 5.
+      This check flags obvious cable specification mismatches before drawing production.
+
+  - id: ELEC-04
+    description: Cable CSA must be sized for the OCPD rating per applicable jurisdiction tables
+    rule: >
+      csa_mm2 per BS 7671:2018+A2:2022 Appendix 4, Table 4A1–4B1 (GB/KE);
+      per IEC 60364-5-52:2009+A1:2017 (INT/EU);
+      per NEC 2023 Table 310.16 (US)
+    enforcement: warning
+    matches_inv: null
+    fail_message: >
+      ELEC-04: circuit {circuit_id} cable CSA ({csa_mm2} mm²) may be undersized for
+      OCPD rating ({ocpd_rating_a} A). Verify against {jurisdiction} ampacity tables.
+      Full verification deferred to calc.cable_sizing skill.
+    rationale: >
+      Detailed cable ampacity verification (accounting for grouping, ambient temperature,
+      installation method, and thermal insulation) is deferred to the cable-sizing skill
+      (separate tool call). The v1.0 small-power skill accepts engineer-declared CSA values
+      and raises a warning if the declared CSA appears inconsistent with the OCPD rating
+      using simplified reference tables. This is a sanity check, not a full BS 7671:2018+A2:2022
+      Appendix 4 calculation.
+
+  - id: ELEC-05
+    description: Zs verification tool-call-pending flag must be consistently declared
+    rule: >
+      all(c.tool_call_pending_for_zs_verification == True for c in circuits)
+      AND 'TOOL-CALL-PENDING:calc.zs_loop_impedance' in ir.flags
+    enforcement: hard_fail
+    matches_inv: INV-08
+    fail_message: >
+      INV-08: Zs verification flag mismatch. Either one or more circuits are missing
+      tool_call_pending_for_zs_verification=true, or the IR-level flag
+      'TOOL-CALL-PENDING:calc.zs_loop_impedance' is absent. Both must be present before
+      the IR is released to drawing production.
+    rationale: >
+      Per BS 7671:2018+A2:2022 §411.4.4 / IEC 60364-4-41:2017 §411.4.4, automatic
+      disconnection under earth fault must be verified by calculating Zs (total loop
+      impedance) and confirming that Ia × Zs ≤ Uo (50V for AC TN systems). The small-power
+      skill does not perform this calculation; it flags the requirement so the runtime
+      executor triggers the calc.zs_loop_impedance tool call. An IR without these flags
+      has not completed the safety verification chain and must not proceed to drawing output.

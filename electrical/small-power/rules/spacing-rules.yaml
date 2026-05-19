@@ -1,0 +1,103 @@
+# Socket-outlet spacing and mounting height rules for small-power per jurisdiction
+# Consumed by validator (layout checks) and engineer reasoning
+
+rules:
+  - id: SPC-01
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 210.52(A)(1)"
+    rule_text: >
+      In dwelling unit habitable rooms, receptacles must be placed so that no point
+      along the floor line of any wall is more than 6 ft (1.83 m) measured
+      horizontally from a receptacle outlet. Any wall space 2 ft (0.61 m) or more
+      in width must be treated as a measurable wall section. Doorways, fireplaces,
+      and fixed cabinets are excluded from the measurement but do not reset the
+      6-ft interval.
+    applies_to: sockets
+    enforcement: hard_fail
+
+  - id: SPC-02
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 210.52(A)(2)"
+    rule_text: >
+      Any wall panel or wall segment 2 ft (0.61 m) wide or wider must have at
+      least one receptacle. This rule closes the gap where a room has a wide wall
+      section that could otherwise be 12 ft from the nearest receptacle on
+      adjacent walls and still pass the 6-ft rule. Engineer must verify each
+      discrete wall segment, not just the room perimeter.
+    applies_to: sockets
+    enforcement: warning
+
+  - id: SPC-03
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 210.52(C)(1)"
+    rule_text: >
+      Kitchen countertop receptacles must be placed so that no point along the
+      countertop is more than 4 ft (1.22 m) measured horizontally from a receptacle.
+      Each countertop space 12 inches (305 mm) or wider must have at least one
+      receptacle. Island and peninsular countertop surfaces 24 in × 12 in (610 mm ×
+      305 mm) or larger must have at least one receptacle (NEC 2023 Article 210.52(C)(2)).
+    applies_to: sockets
+    enforcement: hard_fail
+
+  - id: SPC-04
+    jurisdiction: [GB, KE]
+    standard_reference: "IET On-Site Guide (8th Edition) §8.4 / NHBC Standards / Part M Approved Document"
+    rule_text: >
+      Workstation socket-outlets (at desk or bench height) should be mounted at
+      450 mm above finished floor level (AFFL). This is a conventional installation
+      height from IET OSG §8.4 and NHBC housing standards. It is not a statutory
+      minimum but represents best-practice positioning for sitting desk use and
+      meets Part M accessibility requirements where applicable.
+    applies_to: sockets
+    enforcement: info
+
+  - id: SPC-05
+    jurisdiction: [GB, KE]
+    standard_reference: "IET On-Site Guide (8th Edition) §8.4"
+    rule_text: >
+      General-purpose wall socket-outlets (not at a dedicated workstation) should
+      be mounted at 1100 mm AFFL. This height is a BSI / IET best-practice
+      convention to avoid bending for general users, and is in common use in UK
+      commercial and light-industrial fit-outs. It also satisfies the accessible
+      threshold in Approved Document Part M (2015) §3.22 (400 mm to 1200 mm).
+    applies_to: sockets
+    enforcement: info
+
+  - id: SPC-06
+    jurisdiction: [GB, KE]
+    standard_reference: "IET On-Site Guide (8th Edition) §8.4 + BS 1553-1:1977 (kitchen conventions)"
+    rule_text: >
+      Socket-outlets above kitchen worktops should be mounted at 1150 mm AFFL
+      (approximately 150 mm above the 1000 mm standard worktop height). This avoids
+      conflict with splashback tiles, provides clearance from the worktop surface,
+      and keeps the outlet accessible without reaching over hot surfaces.
+      Minimum 300 mm horizontal clearance from a sink should be maintained unless
+      the socket-outlet is shaver supply unit type.
+    applies_to: sockets
+    enforcement: info
+
+  - id: SPC-07
+    jurisdiction: [INT, EU]
+    standard_reference: "IEC 60364-7-702:2010 (commercial/industrial convention) + national standards"
+    rule_text: >
+      In continental European (Schuko CEE 7/4 and CEE 7/5) installations, floor
+      boxes and wall outlets at workstations are commonly positioned at 300 mm AFFL.
+      This is a convention based on compatibility with furniture systems (under-desk
+      floor box standard). National standards vary: FR NF C 15-100 §771.53.2 mandates
+      ≥5 cm from floor for new residential work. Engineer must state the applicable
+      national standard when a specific height is required for compliance.
+    applies_to: sockets
+    enforcement: info
+
+  - id: SPC-08
+    jurisdiction: [GB]
+    standard_reference: "Approved Document Part M (2015) §3.22"
+    rule_text: >
+      In dwellings covered by Approved Document Part M (new dwellings and material
+      change of use), socket-outlets must be installed within the access zone of
+      400 mm to 1200 mm AFFL. For visitable dwellings (Category 2 and 3), all
+      socket-outlets in principal storey habitable rooms must satisfy this height
+      range. Non-compliance raises a warning; engineer must confirm whether Part M
+      Category 2 or 3 applies to the project.
+    applies_to: sockets
+    enforcement: warning

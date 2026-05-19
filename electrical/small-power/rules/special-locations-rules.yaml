@@ -1,0 +1,120 @@
+# Special-location rules for small-power per jurisdiction
+# Consumed by validator (INV-05 checks) and engineer reasoning
+
+rules:
+  - id: SPL-01
+    jurisdiction: [GB, KE]
+    standard_reference: "BS 7671:2018+A2:2022 Part 7-701 §701.512.3"
+    rule_text: >
+      No socket-outlets (including SELV socket-outlets) are permitted in bathroom
+      Zone 1 (directly above and around the bath or shower, 0.6 m horizontal from
+      bath rim / shower tray edge, from floor to 2.25 m height). The only
+      electrical equipment permitted in Zone 1 is fixed equipment specifically
+      designed for use in that zone (e.g., whirlpool bath motors, shower units).
+    applies_to: rooms
+    enforcement: hard_fail
+
+  - id: SPL-02
+    jurisdiction: [GB, KE]
+    standard_reference: "BS 7671:2018+A2:2022 Part 7-701 §701.512.3"
+    rule_text: >
+      In bathroom Zone 2 (0 m to 0.6 m horizontal from Zone 1 boundary, floor to
+      2.25 m height), only shaver supply units conforming to BS EN 61558-2-5 are
+      permitted. General socket-outlets are not permitted in Zone 2. Any other
+      fixed equipment must be rated for the zone and installed to IP44 minimum.
+    applies_to: rooms
+    enforcement: hard_fail
+
+  - id: SPL-03
+    jurisdiction: [GB, KE]
+    standard_reference: "BS 7671:2018+A2:2022 Part 7-701 §701.512"
+    rule_text: >
+      In bathroom Zone 3 (outside Zone 2 to 2.4 m from Zone 1 boundary, floor
+      to 2.25 m height — where zone 3 is defined in the installed edition;
+      note Zone 3 was removed in 17th Edition but retained by engineering
+      convention for conservatism), socket-outlets are permitted only if protected
+      by a 30 mA Type A RCD. IP2X minimum required for the socket-outlet itself.
+    applies_to: rooms
+    enforcement: hard_fail
+
+  - id: SPL-04
+    jurisdiction: [GB, KE]
+    standard_reference: "BS 7671:2018+A2:2022 §522.6.201"
+    rule_text: >
+      Socket-outlets installed in outdoor locations (permanently exposed to weather,
+      including covered outdoor areas without walls) must have an IP rating ≥IP55
+      when in normal use (cover open or absent). The circuit must be protected by
+      a 30 mA Type A RCD. IP44 is the minimum for outdoor locations sheltered from
+      rain with covers closed; IP55 applies when covers open during use.
+    applies_to: sockets
+    enforcement: hard_fail
+
+  - id: SPL-05
+    jurisdiction: [INT, EU]
+    standard_reference: "IEC 60364-7-701:2019 §701.512.3"
+    rule_text: >
+      No socket-outlets (including SELV) permitted in bathroom Zone 1 (0–0.6 m
+      horizontal from bath rim or shower tray edge, floor to 2.25 m). Only fixed
+      equipment designed for Zone 1 is permitted. Clause mirrors BS 7671:2018+A2:2022
+      Part 7-701 §701.512.3 as both derive from CENELEC HD 60364-7-701.
+    applies_to: rooms
+    enforcement: hard_fail
+
+  - id: SPL-06
+    jurisdiction: [INT, EU]
+    standard_reference: "IEC 60364-7-701:2019 §701.512.3"
+    rule_text: >
+      In bathroom Zone 2, only shaver supply units (isolating transformer per
+      IEC 61558-2-5) are permitted as socket-outlet type equipment. General socket-
+      outlets are prohibited. Fixed equipment must be rated for Zone 2 and carry
+      a minimum IP44 rating.
+    applies_to: rooms
+    enforcement: hard_fail
+
+  - id: SPL-07
+    jurisdiction: [INT, EU]
+    standard_reference: "IEC 60364-7-701:2019 §701.512 + IEC 60364-4-41:2017 §411.3.3"
+    rule_text: >
+      Outside Zone 2 (beyond 0.6 m from Zone 1 boundary), socket-outlets are
+      permitted if protected by a 30 mA RCD. National deviations apply (e.g.,
+      French NF C 15-100 mandates specific placement heights); engineer must
+      declare the applicable national standard in the design record when deviating
+      from base IEC 60364 guidance.
+    applies_to: rooms
+    enforcement: hard_fail
+
+  - id: SPL-08
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 210.8(A)(1)"
+    rule_text: >
+      All 15 A and 20 A, 125V receptacles in bathrooms of dwelling units must be
+      GFCI protected. The circuit must be a dedicated 20 A bathroom branch circuit
+      unless the dwelling unit has only a single bathroom, in which case sharing
+      with other bathroom outlets is permitted (NEC 2023 Article 210.11(C)(3)).
+      The GFCI device must be accessible.
+    applies_to: rooms
+    enforcement: hard_fail
+
+  - id: SPL-09
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 210.8(A)(6)"
+    rule_text: >
+      All receptacles serving kitchen countertop surfaces in dwelling units must
+      be GFCI protected. Two or more 20 A small-appliance branch circuits are
+      required (NEC 2023 Article 210.52(B)(1)). No single 15 A or 20 A outlet
+      may serve countertop surfaces unless GFCI protected at the circuit origin
+      or with a GFCI outlet as the first device in the branch.
+    applies_to: sockets
+    enforcement: hard_fail
+
+  - id: SPL-10
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 210.8(A)(3)"
+    rule_text: >
+      All 15 A and 20 A, 125V receptacles installed outdoors (on the exterior of
+      a dwelling unit or commercial building, or in covered outdoor areas) must be
+      GFCI protected and installed in weatherproof enclosures rated for the
+      in-use condition (NEC 2023 Article 406.9(B)(1) — in-use covers required
+      where receptacle is exposed to weather while in use).
+    applies_to: sockets
+    enforcement: hard_fail

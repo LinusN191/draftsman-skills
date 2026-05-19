@@ -1,0 +1,103 @@
+# RCD / GFCI / AFCI rules for small-power per jurisdiction
+# Consumed by validator (INV-06 checks) and engineer reasoning
+
+rules:
+  - id: RCD-01
+    jurisdiction: [GB, KE]
+    standard_reference: "BS 7671:2018+A2:2022 §411.3.3"
+    rule_text: >
+      All socket-outlet circuits rated ≤32 A must be protected by a 30 mA Type A RCD.
+      No exemption is permitted unless rcd_exception_citation is non-empty and the exemption
+      is one of the categories listed in §411.3.3 (e.g., maintained supply in supervised
+      installations with documented risk assessment).
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: RCD-02
+    jurisdiction: [INT, EU]
+    standard_reference: "IEC 60364-4-41:2017 §411.3.3"
+    rule_text: >
+      Socket-outlet circuits rated ≤20 A intended for general use by ordinary persons
+      must be protected by a 30 mA RCD (Type A minimum). Type F or Type B required
+      where significant DC leakage components exist.
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: RCD-03
+    jurisdiction: [KE]
+    standard_reference: "KS 1700:2018 §411.3.3 (routes to BS 7671:2018+A2:2022 §411.3.3)"
+    rule_text: >
+      KS 1700:2018 adopts BS 7671:2018+A2:2022 §411.3.3 by reference. Engineer should
+      cite the KS clause as primary reference and the BS 7671 clause as the technical
+      substantiation. Both citations must appear in the design record.
+    applies_to: circuits
+    enforcement: info
+
+  - id: RCD-04
+    jurisdiction: [GB, KE, INT, EU]
+    standard_reference: "IEC 60364-5-53:2002+A2:2015 §531.3.3"
+    rule_text: >
+      Type B 30 mA RCD required for circuits feeding equipment with significant DC leakage
+      components (e.g., UPS systems, variable-speed drives, EV chargers). Type A RCDs
+      may fail to trip on smooth DC fault currents. If a Type A device is declared on a
+      UPS-fed or VSD-fed circuit without Type B justification, a warning is raised.
+    applies_to: circuits
+    enforcement: warning
+
+  - id: RCD-05
+    jurisdiction: [all]
+    standard_reference: "BS 7671:2018+A2:2022 §411.3.3 / IEC 60364-4-41:2017 §411.3.3 / NEC 2023 Article 210.8"
+    rule_text: >
+      If a circuit is declared with rcd_protection: false (or no_rcd: true), the field
+      rcd_exception_citation must be non-empty. An absent or null citation is a hard fail.
+      The engineer must state the specific regulation clause that permits omission.
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: RCD-06
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 210.8"
+    rule_text: >
+      GFCI protection (Class A, 6 mA trip threshold) required for all 125V through 250V
+      15 A and 20 A receptacles in the following locations: bathrooms, garages, outdoors,
+      crawl spaces, unfinished basements, kitchen countertops within 6 ft of a sink,
+      boathouses, bathtubs/shower stalls, sinks (not in kitchens or bathrooms).
+      Scope expands with each NEC cycle — verify against the adopted local edition.
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: RCD-07
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 210.12(A)"
+    rule_text: >
+      AFCI protection required for all 120V, 15 A and 20 A branch circuits supplying
+      outlets in dwelling unit bedrooms, living rooms, parlors, libraries, dens,
+      bedrooms, sunrooms, recreation rooms, closets, hallways, laundry areas, and
+      similar rooms/areas. Combination-type AFCI breaker at the origin satisfies the
+      requirement. Listed AFCI outlet as the first device in the branch circuit is an
+      approved alternative where a panel-mount breaker is impractical.
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: RCD-08
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 210.8(A)(6) + Article 210.12(B)"
+    rule_text: >
+      Kitchen branch circuits in dwelling units require both GFCI (Article 210.8(A)(6))
+      for countertop receptacles and AFCI (Article 210.12(B)) for the branch circuit.
+      A dual-function AFCI/GFCI combination breaker satisfies both requirements
+      simultaneously. Engineer must confirm the declared device type covers both.
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: RCD-09
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 406.12"
+    rule_text: >
+      All 15 A and 20 A, 125V and 250V receptacles in dwelling units must be tamper-
+      resistant (TR) type. Exceptions: receptacles ≥8 ft (2.44 m) above the floor;
+      receptacles part of luminaires or appliances; single or locking-type non-grounding
+      receptacles installed for replacement of non-grounding type. Engineer must flag
+      TR=true on all socket objects in dwelling unit rooms unless an exception applies.
+    applies_to: sockets
+    enforcement: hard_fail

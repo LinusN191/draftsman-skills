@@ -1,0 +1,78 @@
+# Cross-reference validation rules for small-power IR
+# Matches validator INV-02 + INV-03
+
+validations:
+  - id: XREF-01
+    description: Every rooms[].sockets[].circuit_id must resolve to a circuits[].circuit_id
+    rule: >
+      for each room r in rooms:
+        for each socket s in r.sockets:
+          assert s.circuit_id in {c.circuit_id for c in circuits}
+    enforcement: hard_fail
+    matches_inv: INV-02
+    fail_message: >
+      INV-02: orphan socket → circuit reference. Socket {socket_id} in room {room_id}
+      references circuit_id '{circuit_id}' which is not present in circuits[].
+      Add the circuit definition or correct the circuit_id on the socket.
+    rationale: >
+      Every socket declared in the room schedule must map to a defined circuit. An
+      orphan reference means the drawing would show a socket with no circuit to connect
+      to — a guaranteed coordination error between the layout drawing and the circuit
+      schedule. This is caught before drawing production to avoid rework.
+
+  - id: XREF-02
+    description: Every circuits[].rooms_covered[] entry must resolve to a rooms[].room_id
+    rule: >
+      for each circuit c in circuits:
+        for each rid in c.rooms_covered:
+          assert rid in {r.room_id for r in rooms}
+    enforcement: hard_fail
+    matches_inv: INV-03
+    fail_message: >
+      INV-03: orphan rooms_covered reference. Circuit {circuit_id} lists room_id '{room_id}'
+      in rooms_covered which is not present in rooms[]. Remove the stale reference or
+      add the missing room definition.
+    rationale: >
+      A circuit that claims to cover a room not in the room schedule will produce an
+      inconsistent DB schedule and cable schedule. This check mirrors INV-02 from the
+      opposite direction — circuits referencing rooms rather than sockets referencing
+      circuits.
+
+  - id: XREF-03
+    description: >
+      Bidirectional consistency — every room that has sockets on circuit C should
+      appear in C.rooms_covered
+    rule: >
+      for each room r in rooms:
+        circuit_ids_serving_r = {s.circuit_id for s in r.sockets}
+        for cid in circuit_ids_serving_r:
+          c = next(c for c in circuits if c.circuit_id == cid)
+          assert r.room_id in c.rooms_covered
+    enforcement: warning
+    matches_inv: null
+    fail_message: >
+      XREF-03: bidirectional mismatch. Room {room_id} has sockets on circuit {circuit_id}
+      but {room_id} is not listed in circuit {circuit_id}.rooms_covered.
+      This asymmetry suggests the rooms_covered list is incomplete. Update rooms_covered
+      or verify the socket circuit_id assignment is correct.
+    rationale: >
+      XREF-01 and XREF-02 catch hard orphan references. XREF-03 catches the softer case
+      where both sides of the reference exist but the mapping is asymmetric. Asymmetry
+      is not always wrong (e.g., a circuit covers a room but has no sockets declared yet
+      in the IR for that room) but is worth flagging as a warning to prompt the engineer
+      to confirm the design intent before drawing production.
+
+  - id: XREF-04
+    description: Every db_id on a circuit must resolve to a declared distribution_board
+    rule: >
+      for each circuit c in circuits:
+        assert c.db_id in {db.db_id for db in distribution_boards}
+    enforcement: hard_fail
+    matches_inv: null
+    fail_message: >
+      XREF-04: circuit {circuit_id} references db_id '{db_id}' which is not declared
+      in distribution_boards[]. Add the DB definition or correct the db_id on the circuit.
+    rationale: >
+      A circuit must originate from a declared distribution board. An orphan db_id
+      reference would leave the circuit without a feed source on the SLD and DB schedule,
+      making the design incomplete. Caught here before the SLD skill consumes the IR.

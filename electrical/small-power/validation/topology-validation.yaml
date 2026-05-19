@@ -1,0 +1,101 @@
+# Topology validation rules for small-power IR
+# Matches validator INV-04
+
+validations:
+  - id: TOPO-01
+    description: Ring final circuit only allowed for jurisdiction in {GB, KE}
+    rule: >
+      for each circuit c in circuits:
+        if c.topology == 'ring':
+          assert jurisdiction in {'GB', 'KE'}
+    enforcement: hard_fail
+    matches_inv: INV-04
+    fail_message: >
+      INV-04: circuit {circuit_id} has topology=ring but jurisdiction is '{jurisdiction}'.
+      Ring final circuits are only valid for GB and KE (KE via KS 1700:2018 §313 routing
+      to BS 7671:2018+A2:2022). For INT/EU/US jurisdictions, use radial or
+      dedicated_radial topology.
+    rationale: >
+      Ring final circuits are a BS 7671 / UK wiring practice. IEC 60364 series
+      (INT/EU) and NEC (US) have no equivalent concept. Permitting ring topology
+      outside GB/KE would produce design documentation that contradicts the applicable
+      standard, invalidating the installation inspection and test certificates.
+
+  - id: TOPO-02
+    description: Ring final circuit total covered floor area must not exceed 100 m²
+    rule: >
+      for each circuit c in circuits where c.topology == 'ring':
+        covered_rooms = [r for r in rooms if r.room_id in c.rooms_covered]
+        sum_floor_m2 = sum(r.dimensions_m.length * r.dimensions_m.width
+                          for r in covered_rooms)
+        assert sum_floor_m2 <= 100
+    enforcement: hard_fail
+    matches_inv: INV-04
+    fail_message: >
+      INV-04: ring circuit {circuit_id} covers {sum_floor_m2:.1f} m² floor area which
+      exceeds the 100 m² limit (IET On-Site Guide §8.4.4). Split into two or more ring
+      circuits or convert to radial circuits.
+    rationale: >
+      IET On-Site Guide §8.4.4 limits ring final circuits to 100 m² for thermal and
+      earth-loop-impedance reasons. A larger ring will produce higher Zs values at the
+      extremities, which may fail the disconnection time requirement of BS 7671:2018+A2:2022
+      §411.4.4. The floor area check is a proxy — full Zs verification is flagged
+      separately via INV-08 and the tool-call-pending mechanism.
+
+  - id: TOPO-03
+    description: Ring final circuit max 2 non-fused spurs per leg (engineer-declared)
+    rule: >
+      for each ring circuit c in circuits where c.topology == 'ring':
+        spur_count = count(s for s in all_sockets_on_circuit(c) if s.fed_by_spur == True)
+        warn_if spur_count > 2
+    enforcement: warning
+    matches_inv: null
+    fail_message: >
+      TOPO-03: ring circuit {circuit_id} has {spur_count} spur connections declared.
+      IET On-Site Guide §8.4.4 recommends no more than 2 non-fused spurs per ring circuit
+      (the recommendation applies per leg but is commonly applied to the total count as
+      a conservative check). Verify that spur cables are sized appropriately and that
+      Zs at spur ends is verified.
+    rationale: >
+      Spur connections increase the effective Zs at the spur end and reduce the
+      available fault current for disconnection. The IET OSG limit of 2 spurs is a
+      best-practice cap, not a statutory maximum, making a warning appropriate. Automatic
+      enforcement of per-leg spur counting requires leg modelling not available in v1.0 IR.
+
+  - id: TOPO-04
+    description: Fixed single-load circuits should use dedicated_radial topology
+    rule: >
+      for each circuit c in circuits:
+        if c.load_type in {'cooker', 'range', 'immersion_heater', 'water_heater',
+                           'EVSE', 'EV_charger', 'air_handling_unit', 'air_conditioning_unit'}:
+          assert c.topology == 'dedicated_radial'
+    enforcement: hard_fail
+    matches_inv: INV-04
+    fail_message: >
+      INV-04: circuit {circuit_id} serves load_type '{load_type}' but topology is
+      '{topology}'. Fixed single-load circuits (cookers, immersion heaters, EVSE, etc.)
+      must use dedicated_radial topology per BS 7671:2018+A2:2022 §433.1.4 (GB/KE) /
+      NEC 2023 Article 422.12 (US).
+    rationale: >
+      Fixed appliance loads with high connected ratings require dedicated circuits to
+      prevent overloading of shared circuits and to simplify isolation for maintenance.
+      BS 7671:2018+A2:2022 §433.1.4 requires circuits feeding fixed cooking appliances
+      to be rated for the full connected load. NEC 2023 Article 422.12 requires
+      individual branch circuits for fixed appliances rated ≥½ the branch circuit rating.
+
+  - id: TOPO-05
+    description: Circuits with topology=radial must have a single supply-end OCPD
+    rule: >
+      for each circuit c in circuits where c.topology in {'radial', 'dedicated_radial'}:
+        assert c.ocpd is not None
+        assert c.ocpd.pole_count >= 1
+    enforcement: hard_fail
+    matches_inv: null
+    fail_message: >
+      TOPO-05: radial/dedicated_radial circuit {circuit_id} has no OCPD declared.
+      Every radial circuit must have a defined overcurrent protective device at the
+      supply end. Declare ocpd.type, ocpd.rating_a, and ocpd.pole_count.
+    rationale: >
+      A radial circuit without an OCPD is not a complete design — there is no protection
+      for the cable in the event of an overload or fault. This check catches omissions
+      in the IR before the circuit reaches the DB schedule or SLD skill.
