@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/small-power/schemas/small-power-intent.schema.json",
+  "title": "Small Power Intent (Downstream-Facing)",
+  "description": "Stable subset of the small-power IR. Consumed by db-layout (parent DB feeder sizing), schematic (layout reference), cable-containment (route hints). Forward-compat: optional fields may be added; required-field changes require a major intent_version bump.",
+  "type": "object",
+  "required": ["project_id", "parent_db_designation", "circuits"],
+  "additionalProperties": false,
+  "properties": {
+    "project_id":         { "type": "string" },
+    "intent_version":     { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "parent_db_designation": { "type": "string" },
+    "circuits": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["circuit_id", "topology", "breaker_rating_a", "breaker_type", "diversified_max_load_a", "rooms_covered"],
+        "additionalProperties": false,
+        "properties": {
+          "circuit_id":             { "type": "string" },
+          "designation":            { "type": "string" },
+          "topology":               { "enum": ["ring", "radial", "dedicated_radial"] },
+          "breaker_rating_a":       { "type": "integer", "minimum": 1, "maximum": 100 },
+          "breaker_type":           { "enum": ["MCB", "RCBO", "GFCI_breaker", "AFCI_breaker", "AFCI_GFCI_dual"] },
+          "breaker_curve":          { "enum": ["B", "C", "D"] },
+          "rcd_type":               { "enum": ["A", "B", "F", "GFCI"] },
+          "rcd_sensitivity_ma":     { "type": "integer", "enum": [10, 30, 100, 300] },
+          "cable_csa_mm2_or_awg":   { "type": "string" },
+          "estimated_max_load_kw":  { "type": "number", "minimum": 0 },
+          "diversified_max_load_a": { "type": "number", "minimum": 0 },
+          "rooms_covered":          { "type": "array", "minItems": 1, "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

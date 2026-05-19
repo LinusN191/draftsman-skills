@@ -1,0 +1,189 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/small-power/schemas/small-power-ir.schema.json",
+  "title": "Small Power IR (Socket Outlet Layout)",
+  "description": "Intermediate Representation for the small-power skill v1.0. Hybrid model: circuits[] (with topology + ocpd + cable + RCD posture) + rooms[] (with sockets[] cross-referencing circuit_ids). Leaf skill v1.0 — no cross-skill intent consumption.",
+  "type": "object",
+  "required": [
+    "drawing_type",
+    "version",
+    "meta",
+    "jurisdiction",
+    "supply_origin",
+    "parent_db",
+    "circuits",
+    "rooms",
+    "drawing_layout",
+    "compliance_summary",
+    "rationale"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "drawing_type": { "const": "small_power_layout" },
+    "version":      { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "meta": {
+      "type": "object",
+      "required": ["project_id", "skill_version", "produced_at"],
+      "additionalProperties": false,
+      "properties": {
+        "project_id":    { "type": "string" },
+        "skill_version": { "type": "string" },
+        "produced_at":   { "type": "string", "format": "date-time" },
+        "consumed_intents": { "type": "array", "items": { "type": "object" }, "default": [] }
+      }
+    },
+    "jurisdiction": { "enum": ["GB", "EU", "INT", "KE", "US"] },
+    "supply_origin": {
+      "type": "object",
+      "required": ["voltage_v", "phase_arrangement", "system_type", "ze_declared_ohm", "psc_declared_ka"],
+      "additionalProperties": false,
+      "properties": {
+        "voltage_v":          { "type": "integer", "enum": [120, 208, 230, 240, 400, 415, 480] },
+        "phase_arrangement":  { "enum": ["single_phase", "single_phase_split", "TPN", "TPN_plus_E"] },
+        "system_type":        { "enum": ["TN-S", "TN-C-S", "TT"] },
+        "ze_declared_ohm":    { "type": "number", "minimum": 0 },
+        "psc_declared_ka":    { "type": "number", "minimum": 0 }
+      }
+    },
+    "parent_db": {
+      "type": "object",
+      "required": ["designation", "pfc_at_busbar_ka"],
+      "additionalProperties": false,
+      "properties": {
+        "designation":      { "type": "string" },
+        "pfc_at_busbar_ka": { "type": "number", "minimum": 0 }
+      }
+    },
+    "circuits": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["circuit_id", "designation", "topology", "ocpd", "cable", "rcd_posture", "estimated_max_load_kw", "diversified_max_load_a", "rooms_covered"],
+        "additionalProperties": false,
+        "properties": {
+          "circuit_id":  { "type": "string", "pattern": "^C[0-9]{2}$" },
+          "designation": { "type": "string" },
+          "topology":    { "enum": ["ring", "radial", "dedicated_radial"] },
+          "ocpd": {
+            "type": "object",
+            "required": ["rating_a", "type"],
+            "additionalProperties": false,
+            "properties": {
+              "rating_a":              { "type": "integer", "minimum": 1, "maximum": 100 },
+              "type":                  { "enum": ["MCB", "RCBO", "GFCI_breaker", "AFCI_breaker", "AFCI_GFCI_dual"] },
+              "curve":                 { "enum": ["B", "C", "D"] },
+              "rcd_type":              { "enum": ["A", "B", "F", "GFCI"] },
+              "rcd_sensitivity_ma":    { "type": "integer", "enum": [10, 30, 100, 300] },
+              "breaking_capacity_ka":  { "type": "number", "minimum": 1 }
+            }
+          },
+          "cable": {
+            "type": "object",
+            "required": ["csa_mm2_or_awg", "cores", "length_m_total", "material", "insulation"],
+            "additionalProperties": false,
+            "properties": {
+              "csa_mm2_or_awg":  { "type": "string" },
+              "cores":           { "type": "integer", "minimum": 2, "maximum": 5 },
+              "length_m_total":  { "type": "number", "minimum": 0 },
+              "material":        { "enum": ["copper", "aluminium"] },
+              "insulation":      { "enum": ["PVC_70", "XLPE_90", "EPR"] }
+            }
+          },
+          "rcd_posture": {
+            "enum": [
+              "type_a_30ma_per_§411_3_3",
+              "type_b_30ma_per_§531_3_3",
+              "no_rcd_with_documented_§411_exception"
+            ]
+          },
+          "rcd_exception_citation": { "type": "string", "description": "Required when rcd_posture is no_rcd_with_documented_§411_exception" },
+          "verified_zs_ohm":         { "type": "number", "minimum": 0 },
+          "tool_call_pending_for_zs_verification": { "type": "boolean", "default": true },
+          "estimated_max_load_kw":   { "type": "number", "minimum": 0 },
+          "diversified_max_load_a":  { "type": "number", "minimum": 0 },
+          "rooms_covered":           { "type": "array", "minItems": 1, "items": { "type": "string" } }
+        }
+      }
+    },
+    "rooms": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["room_id", "room_type", "dimensions_m", "special_location", "sockets"],
+        "additionalProperties": false,
+        "properties": {
+          "room_id":   { "type": "string" },
+          "room_type": { "type": "string", "description": "Reference to shared/ontology/room-types/*.json or socket-types.json ontology" },
+          "dimensions_m": {
+            "type": "object",
+            "required": ["length", "width", "height"],
+            "additionalProperties": false,
+            "properties": {
+              "length": { "type": "number", "minimum": 0 },
+              "width":  { "type": "number", "minimum": 0 },
+              "height": { "type": "number", "minimum": 0 }
+            }
+          },
+          "special_location": {
+            "enum": [null, "bathroom_zone_1", "bathroom_zone_2", "bathroom_zone_3", "outdoor", "wet_area"]
+          },
+          "sockets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "type", "mount", "circuit_id"],
+              "additionalProperties": false,
+              "properties": {
+                "id":             { "type": "string" },
+                "type":           { "type": "string", "description": "Reference to shared/ontology/equipment/socket-types.json key" },
+                "mount":          { "enum": ["wall", "above_worktop", "floor", "ceiling", "external_wall", "kitchen_island"] },
+                "height_mm":      { "type": "integer", "minimum": 0, "maximum": 2500 },
+                "circuit_id":     { "type": "string", "pattern": "^C[0-9]{2}$" },
+                "fed_by_spur":    { "type": "boolean", "default": false },
+                "spur_load_kw":   { "type": "number", "minimum": 0 },
+                "spur_purpose":   { "type": "string" },
+                "ip_rating":      { "type": "string", "pattern": "^IP[0-9X][0-9X]$" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "drawing_layout": {
+      "type": "object",
+      "required": ["sheet_size", "drawing_standard", "drawing_scale"],
+      "additionalProperties": false,
+      "properties": {
+        "sheet_size":       { "enum": ["A0", "A1", "A2", "A3", "Arch_E", "Arch_D", "Arch_C"] },
+        "drawing_standard": { "type": "string" },
+        "drawing_scale":    { "type": "string" }
+      }
+    },
+    "compliance_summary": {
+      "type": "object",
+      "required": ["compliant", "non_compliance_flags", "assumptions"],
+      "additionalProperties": false,
+      "properties": {
+        "compliant":            { "type": "boolean" },
+        "non_compliance_flags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message":     { "type": "string" },
+              "code_clause": { "type": "string" },
+              "severity":    { "enum": ["critical", "warning", "info"] }
+            }
+          }
+        },
+        "assumptions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "flags": { "type": "array", "items": { "type": "string" } },
+    "drawing_notes": { "type": "array", "items": { "type": "string" } },
+    "rationale": { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
+  }
+}
