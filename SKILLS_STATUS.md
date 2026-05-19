@@ -198,16 +198,16 @@ Shipped in v1.6 (2026-05-19). 61 files across 10 standards folders + top-level `
 
 | Standard | Folder | Files | Jurisdiction | Status |
 |---|---|---|---|---|
-| BS 1192:2007+A2:2016 | `BS1192/` | — | GB / KE | draft-pending-verification |
-| ISO 19650:2018 (Parts 1-5) | `ISO19650/` | — | INT / EU | draft-pending-verification |
-| AIA CAD Layer Guidelines 2007 | `AIA/` | — | US | draft-pending-verification |
-| ISO 5457:1999/A1:2010 | `ISO5457/` | — | INT | draft-pending-verification |
-| ISO 5455:1979 | `ISO5455/` | — | INT | draft-pending-verification |
-| ISO 7200:2004 | `ISO7200/` | — | INT | draft-pending-verification |
-| ISO 128 (multi-part) | `ISO128/` | — | INT | draft-pending-verification |
-| ISO 129-1:2018 | `ISO129/` | — | INT | draft-pending-verification |
-| ISO 9431:1990 | `ISO9431/` | — | INT | draft-pending-verification |
-| BS 5536:1978 | `BS5536/` | — | GB | draft-pending-verification |
+| BS 1192:2007+A2:2016 | `BS1192/` | — | GB / KE | mixed ✻ (4 verified, 2 draft-pending) |
+| ISO 19650:2018 (Parts 1-5) | `ISO19650/` | — | INT / EU | mixed ✻ (4 verified, 6 draft-pending) |
+| AIA CAD Layer Guidelines 2007 | `AIA/` | — | US | mixed ✻ (1 verified, 4 draft-pending) |
+| ISO 5457:1999/A1:2010 | `ISO5457/` | — | INT | mixed ✻ (1 verified, 3 draft-pending) |
+| ISO 5455:1979 | `ISO5455/` | — | INT | mixed ✻ (2 verified, 1 draft-pending) |
+| ISO 7200:2004 | `ISO7200/` | — | INT | draft-pending ⚠ (0 verified, 3 draft-pending) |
+| ISO 128 (multi-part) | `ISO128/` | — | INT | verified ✓ (all 3 verified-against-source) |
+| ISO 129-1:2018 | `ISO129/` | — | INT | verified ✓ (all 4 verified-against-source) |
+| ISO 9431:1990 | `ISO9431/` | — | INT | draft-pending ⚠ (0 verified, 2 draft-pending) |
+| BS 5536:1978 | `BS5536/` | — | GB | mixed ✻ (1 verified, 2 draft-pending) |
 
 Top-level discovery: `shared/standards/drafting/meta.json` — indexes all 10 standards + maps 5 jurisdictions (GB/KE/US/INT/EU) to primary standards. See `ARCHITECTURE.md §Drafting standards layer (v1.6+)` for full shape description.
 
