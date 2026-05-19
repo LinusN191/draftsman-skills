@@ -1,0 +1,63 @@
+{
+  "project_id": "ke-nairobi-office-eg01",
+  "intent_version": "1.0.0",
+  "parent_db_designation": "DB-OFFICE-01",
+  "circuits": [
+    {
+      "circuit_id": "C01",
+      "designation": "Workstations 1-2 + reception radial",
+      "topology": "radial",
+      "breaker_rating_a": 20,
+      "breaker_type": "MCB",
+      "breaker_curve": "B",
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2_or_awg": "2.5mm² T+E",
+      "estimated_max_load_kw": 1.8,
+      "diversified_max_load_a": 5.5,
+      "rooms_covered": ["workstation-1", "workstation-2", "reception"]
+    },
+    {
+      "circuit_id": "C02",
+      "designation": "Workstations 3-4 radial",
+      "topology": "radial",
+      "breaker_rating_a": 20,
+      "breaker_type": "MCB",
+      "breaker_curve": "B",
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2_or_awg": "2.5mm² T+E",
+      "estimated_max_load_kw": 1.0,
+      "diversified_max_load_a": 3.5,
+      "rooms_covered": ["workstation-3", "workstation-4"]
+    },
+    {
+      "circuit_id": "C03",
+      "designation": "Kitchenette radial (BS 1363 + FCU)",
+      "topology": "radial",
+      "breaker_rating_a": 20,
+      "breaker_type": "MCB",
+      "breaker_curve": "B",
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2_or_awg": "2.5mm² T+E",
+      "estimated_max_load_kw": 2.0,
+      "diversified_max_load_a": 8.0,
+      "rooms_covered": ["kitchenette"]
+    },
+    {
+      "circuit_id": "C04",
+      "designation": "Toilet shaver supply (BS EN 61558-2-5)",
+      "topology": "dedicated_radial",
+      "breaker_rating_a": 6,
+      "breaker_type": "MCB",
+      "breaker_curve": "B",
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2_or_awg": "1.5mm² T+E",
+      "estimated_max_load_kw": 0.1,
+      "diversified_max_load_a": 0.4,
+      "rooms_covered": ["toilet"]
+    }
+  ]
+}
