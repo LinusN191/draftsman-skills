@@ -1,0 +1,34 @@
+{
+  "project_id": "us-residential-dwelling-eg01",
+  "jurisdiction": "US",
+  "site_brief": "Single-family residential dwelling, ~160 m² (1700 ft²), 1-storey, NEC 2023 compliant. 120/240V split-phase supply (center-tapped from utility transformer). Panelboard with 8 branch circuits servicing kitchen + living + bedrooms + bathroom + garage + outdoor + basement + laundry.",
+  "supply": {
+    "voltage_v": 240,
+    "phase_arrangement": "single_phase_split",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.25,
+    "psc_declared_ka": 10.0
+  },
+  "parent_db": {
+    "designation": "MAIN-PANEL",
+    "pfc_at_busbar_ka": 10.0
+  },
+  "room_briefs": [
+    {"room_id": "kitchen",     "room_type": "kitchen_domestic_us",   "dimensions_m": {"length": 4.5, "width": 3.5, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 4.5, "socket_count_target": 6},
+    {"room_id": "living-room", "room_type": "living_room_domestic",  "dimensions_m": {"length": 5.5, "width": 4.5, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 1.2, "socket_count_target": 6},
+    {"room_id": "bedroom-1",   "room_type": "bedroom_domestic",      "dimensions_m": {"length": 4.0, "width": 3.5, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 0.8, "socket_count_target": 4},
+    {"room_id": "bedroom-2",   "room_type": "bedroom_domestic",      "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 0.6, "socket_count_target": 3},
+    {"room_id": "hallway",     "room_type": "hallway_domestic",      "dimensions_m": {"length": 6.0, "width": 1.2, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 0.2, "socket_count_target": 2},
+    {"room_id": "bathroom",    "room_type": "bathroom_domestic_us",  "dimensions_m": {"length": 2.5, "width": 2.0, "height": 2.4}, "special_location": "bathroom_zone_3", "anticipated_loads_kw": 0.8, "socket_count_target": 1},
+    {"room_id": "garage",      "room_type": "garage_attached",       "dimensions_m": {"length": 6.0, "width": 5.5, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 1.0, "socket_count_target": 3},
+    {"room_id": "outdoor",     "room_type": "exterior_us",           "dimensions_m": {"length": 5.0, "width": 4.0, "height": 0.0}, "special_location": "outdoor", "anticipated_loads_kw": 0.5, "socket_count_target": 2},
+    {"room_id": "basement",    "room_type": "basement_us",           "dimensions_m": {"length": 8.0, "width": 6.0, "height": 2.1}, "special_location": null, "anticipated_loads_kw": 1.5, "socket_count_target": 3},
+    {"room_id": "laundry",     "room_type": "laundry_domestic_us",   "dimensions_m": {"length": 2.5, "width": 2.5, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 1.5, "socket_count_target": 1}
+  ],
+  "design_intent": {
+    "preferred_topology": "radial",
+    "drawing_standard": "AIA CAD Layer Guidelines 2007",
+    "sheet_size": "Arch_D",
+    "drawing_scale": "1/4\"=1'"
+  }
+}

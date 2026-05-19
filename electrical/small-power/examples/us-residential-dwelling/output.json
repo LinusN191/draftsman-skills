@@ -1,0 +1,566 @@
+{
+  "drawing_type": "small_power_layout",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "us-residential-dwelling-eg01",
+    "skill_version": "1.0.0",
+    "produced_at": "2026-05-19T00:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "US",
+  "supply_origin": {
+    "voltage_v": 240,
+    "phase_arrangement": "single_phase_split",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.25,
+    "psc_declared_ka": 10.0
+  },
+  "parent_db": {
+    "designation": "MAIN-PANEL",
+    "pfc_at_busbar_ka": 10.0
+  },
+  "circuits": [
+    {
+      "circuit_id": "C01",
+      "designation": "Kitchen small appliance branch 1 (NEC 2023 Article 210.8(A)(6) + 210.12(B))",
+      "topology": "radial",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "AFCI_GFCI_dual",
+        "curve": "C",
+        "rcd_type": "GFCI",
+        "rcd_sensitivity_ma": 10,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "12 AWG",
+        "cores": 3,
+        "length_m_total": 14.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 2.5,
+      "diversified_max_load_a": 12.0,
+      "rooms_covered": ["kitchen"]
+    },
+    {
+      "circuit_id": "C02",
+      "designation": "Kitchen small appliance branch 2 (NEC 2023 Article 210.8(A)(6) + 210.12(B))",
+      "topology": "radial",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "AFCI_GFCI_dual",
+        "curve": "C",
+        "rcd_type": "GFCI",
+        "rcd_sensitivity_ma": 10,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "12 AWG",
+        "cores": 3,
+        "length_m_total": 14.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 2.0,
+      "diversified_max_load_a": 10.0,
+      "rooms_covered": ["kitchen"]
+    },
+    {
+      "circuit_id": "C03",
+      "designation": "General receptacles — living + bedrooms + hallway (NEC 2023 Article 210.12(A) AFCI)",
+      "topology": "radial",
+      "ocpd": {
+        "rating_a": 15,
+        "type": "AFCI_breaker",
+        "curve": "C",
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "14 AWG",
+        "cores": 3,
+        "length_m_total": 38.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "no_rcd_with_documented_§411_exception",
+      "rcd_exception_citation": "AFCI-only circuit per NEC 2023 Article 210.12(A); no GFCI required for general receptacles outside NEC 210.8 scope (US AFCI ≠ IEC §411.3.3 Type A RCD). US AFCI provides combination arc-fault protection per UL 1699 and is functionally distinct from IEC residual-current devices.",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 1.4,
+      "diversified_max_load_a": 5.0,
+      "rooms_covered": ["living-room", "bedroom-1", "bedroom-2", "hallway"]
+    },
+    {
+      "circuit_id": "C04",
+      "designation": "Bathroom GFCI (NEC 2023 Article 210.8(A)(1) + 210.11(C)(3))",
+      "topology": "dedicated_radial",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "GFCI_breaker",
+        "curve": "C",
+        "rcd_type": "GFCI",
+        "rcd_sensitivity_ma": 10,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "12 AWG",
+        "cores": 3,
+        "length_m_total": 9.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 0.8,
+      "diversified_max_load_a": 3.5,
+      "rooms_covered": ["bathroom"]
+    },
+    {
+      "circuit_id": "C05",
+      "designation": "Garage GFCI (NEC 2023 Article 210.8(A)(2))",
+      "topology": "radial",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "GFCI_breaker",
+        "curve": "C",
+        "rcd_type": "GFCI",
+        "rcd_sensitivity_ma": 10,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "12 AWG",
+        "cores": 3,
+        "length_m_total": 16.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 1.0,
+      "diversified_max_load_a": 4.5,
+      "rooms_covered": ["garage"]
+    },
+    {
+      "circuit_id": "C06",
+      "designation": "Outdoor GFCI (NEC 2023 Article 210.8(A)(3))",
+      "topology": "radial",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "GFCI_breaker",
+        "curve": "C",
+        "rcd_type": "GFCI",
+        "rcd_sensitivity_ma": 10,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "12 AWG",
+        "cores": 3,
+        "length_m_total": 18.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 0.5,
+      "diversified_max_load_a": 2.0,
+      "rooms_covered": ["outdoor"]
+    },
+    {
+      "circuit_id": "C07",
+      "designation": "Basement GFCI (NEC 2023 Article 210.8(A)(5))",
+      "topology": "radial",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "GFCI_breaker",
+        "curve": "C",
+        "rcd_type": "GFCI",
+        "rcd_sensitivity_ma": 10,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "12 AWG",
+        "cores": 3,
+        "length_m_total": 20.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 1.5,
+      "diversified_max_load_a": 6.5,
+      "rooms_covered": ["basement"]
+    },
+    {
+      "circuit_id": "C08",
+      "designation": "Laundry dedicated radial (NEC 2023 Article 210.11(C)(2) + 210.8(A)(10) GFCI)",
+      "topology": "dedicated_radial",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "GFCI_breaker",
+        "curve": "C",
+        "rcd_type": "GFCI",
+        "rcd_sensitivity_ma": 10,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "12 AWG",
+        "cores": 3,
+        "length_m_total": 11.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 1.5,
+      "diversified_max_load_a": 6.5,
+      "rooms_covered": ["laundry"]
+    }
+  ],
+  "rooms": [
+    {
+      "room_id": "kitchen",
+      "room_type": "kitchen_domestic_us",
+      "dimensions_m": {"length": 4.5, "width": 3.5, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "kitchen-R01", "type": "NEMA_5_20_tamper_resistant", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C01"},
+        {"id": "kitchen-R02", "type": "NEMA_5_20_tamper_resistant", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C01"},
+        {"id": "kitchen-R03", "type": "NEMA_5_20_tamper_resistant", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C01"},
+        {"id": "kitchen-R04", "type": "NEMA_5_20_tamper_resistant", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C02"},
+        {"id": "kitchen-R05", "type": "NEMA_5_20_tamper_resistant", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C02"},
+        {"id": "kitchen-R06", "type": "NEMA_5_20_tamper_resistant", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C02"}
+      ]
+    },
+    {
+      "room_id": "living-room",
+      "room_type": "living_room_domestic",
+      "dimensions_m": {"length": 5.5, "width": 4.5, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "living-R01", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
+        {"id": "living-R02", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
+        {"id": "living-R03", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
+        {"id": "living-R04", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
+        {"id": "living-R05", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
+        {"id": "living-R06", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"}
+      ]
+    },
+    {
+      "room_id": "bedroom-1",
+      "room_type": "bedroom_domestic",
+      "dimensions_m": {"length": 4.0, "width": 3.5, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "bedroom-1-R01", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
+        {"id": "bedroom-1-R02", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
+        {"id": "bedroom-1-R03", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
+        {"id": "bedroom-1-R04", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"}
+      ]
+    },
+    {
+      "room_id": "bedroom-2",
+      "room_type": "bedroom_domestic",
+      "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "bedroom-2-R01", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
+        {"id": "bedroom-2-R02", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
+        {"id": "bedroom-2-R03", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"}
+      ]
+    },
+    {
+      "room_id": "hallway",
+      "room_type": "hallway_domestic",
+      "dimensions_m": {"length": 6.0, "width": 1.2, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "hallway-R01", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
+        {"id": "hallway-R02", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"}
+      ]
+    },
+    {
+      "room_id": "bathroom",
+      "room_type": "bathroom_domestic_us",
+      "dimensions_m": {"length": 2.5, "width": 2.0, "height": 2.4},
+      "special_location": "bathroom_zone_3",
+      "sockets": [
+        {"id": "bathroom-R01", "type": "NEMA_5_20_tamper_resistant_GFCI", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C04"}
+      ]
+    },
+    {
+      "room_id": "garage",
+      "room_type": "garage_attached",
+      "dimensions_m": {"length": 6.0, "width": 5.5, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "garage-R01", "type": "NEMA_5_20_tamper_resistant", "mount": "wall", "height_mm": 1100, "circuit_id": "C05"},
+        {"id": "garage-R02", "type": "NEMA_5_20_tamper_resistant", "mount": "wall", "height_mm": 1100, "circuit_id": "C05"},
+        {"id": "garage-R03", "type": "NEMA_5_20_tamper_resistant", "mount": "wall", "height_mm": 1100, "circuit_id": "C05"}
+      ]
+    },
+    {
+      "room_id": "outdoor",
+      "room_type": "exterior_us",
+      "dimensions_m": {"length": 5.0, "width": 4.0, "height": 0.0},
+      "special_location": "outdoor",
+      "sockets": [
+        {"id": "outdoor-R01", "type": "NEMA_5_20_tamper_resistant_weather_resistant", "mount": "external_wall", "height_mm": 1100, "circuit_id": "C06", "ip_rating": "IP66"},
+        {"id": "outdoor-R02", "type": "NEMA_5_20_tamper_resistant_weather_resistant", "mount": "external_wall", "height_mm": 1100, "circuit_id": "C06", "ip_rating": "IP66"}
+      ]
+    },
+    {
+      "room_id": "basement",
+      "room_type": "basement_us",
+      "dimensions_m": {"length": 8.0, "width": 6.0, "height": 2.1},
+      "special_location": null,
+      "sockets": [
+        {"id": "basement-R01", "type": "NEMA_5_20_tamper_resistant", "mount": "wall", "height_mm": 1100, "circuit_id": "C07"},
+        {"id": "basement-R02", "type": "NEMA_5_20_tamper_resistant", "mount": "wall", "height_mm": 1100, "circuit_id": "C07"},
+        {"id": "basement-R03", "type": "NEMA_5_20_tamper_resistant", "mount": "wall", "height_mm": 1100, "circuit_id": "C07"}
+      ]
+    },
+    {
+      "room_id": "laundry",
+      "room_type": "laundry_domestic_us",
+      "dimensions_m": {"length": 2.5, "width": 2.5, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "laundry-R01", "type": "NEMA_5_20_tamper_resistant", "mount": "wall", "height_mm": 1100, "circuit_id": "C08"}
+      ]
+    }
+  ],
+  "drawing_layout": {
+    "sheet_size": "Arch_D",
+    "drawing_standard": "AIA CAD Layer Guidelines 2007",
+    "drawing_scale": "1/4\"=1'"
+  },
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      {
+        "message": "Schema special_location enum lacks US-specific categories (garage, basement, laundry). Garage GFCI applies per NEC 2023 Article 210.8(A)(2); basement GFCI per 210.8(A)(5); laundry GFCI per 210.8(A)(10). Documented as info-level; bathroom mapped to bathroom_zone_3 and outdoor maps natively.",
+        "code_clause": "NEC 2023 Article 210.8(A)",
+        "severity": "info"
+      },
+      {
+        "message": "Schema rcd_posture enum is IEC-derived (Type A 30 mA per §411.3.3). US implementation uses GFCI (4-6 mA personnel-protection trip per UL 943) and AFCI (combination arc-fault per UL 1699). Pragmatic mapping: GFCI circuits → type_a_30ma_per_§411_3_3 with rcd_type=GFCI + rcd_sensitivity_ma=10 (smallest enum value, since 4-6 mA is not a schema option); C03 AFCI-only → no_rcd_with_documented_§411_exception with full citation. Schema gap noted for future runtime.",
+        "code_clause": "NEC 2023 Article 210.8 (GFCI) + Article 210.12 (AFCI)",
+        "severity": "info"
+      },
+      {
+        "message": "All receptacles in dwelling units must be listed tamper-resistant per NEC 2023 Article 406.12. All 31 receptacles in this design are NEMA 5-15 TR or NEMA 5-20 TR; outdoor receptacles are additionally listed weather-resistant per NEC 406.9(B) and installed in in-use covers.",
+        "code_clause": "NEC 2023 Article 406.12 + 406.9(B)",
+        "severity": "info"
+      },
+      {
+        "message": "Zs / loop-impedance verification deferred to calc.zs_loop_impedance per WI3. Per-circuit tool_call_pending_for_zs_verification=true; ground-fault loop impedance to be confirmed at install per NEC 2023 Article 250.4(A)(5) and NEC 110.10 (interrupting rating + impedance compatible with available fault current).",
+        "code_clause": "NEC 2023 Article 250.4(A)(5) + 110.10",
+        "severity": "info"
+      }
+    ],
+    "assumptions": [
+      "Utility-declared Ze=0.25 Ω at the service entrance neutral-ground bond; not yet site-measured.",
+      "Utility-declared PSCC=10 kA at MAIN-PANEL busbar; all branch breakers selected with 10 kA AIC (interrupting rating) per NEC 2023 Article 110.9 + UL 489.",
+      "120/240 V split-phase nominal (center-tapped single-phase from utility transformer). Line-to-line=240 V, line-to-neutral=120 V. All 120 V branch circuits in this design draw between one ungrounded conductor and neutral.",
+      "System type TN-C-S in schema enum is the closest analogue to a US service: the service-entrance neutral is bonded to ground at the main panel (main bonding jumper per NEC 250.24(B)); downstream branch circuits use separate equipment grounding conductor (EGC) — functionally TN-S downstream of the main bonding jumper.",
+      "NM-B cable (Type NM-B, 12 AWG and 14 AWG with bare copper EGC) assumed for branch wiring per NEC 2023 Article 334. PVC_70 insulation in the schema encodes the THHN/THWN-equivalent 70 °C rating typical for 14/12 AWG NM-B.",
+      "Diversity per NEC 2023 Article 220.40-220.55 dwelling-unit calculation; small-appliance branches per 220.52(A) (1500 VA each, 2 minimum); laundry branch per 220.52(B) (1500 VA).",
+      "Outdoor receptacles installed in extra-duty in-use covers per NEC 406.9(B)(1) and rated IP66 in the schema (closest IP analogue to UL 514D + NEMA 3R weather-resistant rating).",
+      "All branch breakers AFCI / GFCI / dual-function devices listed and recognized under UL 489 (interrupting rating), UL 943 (GFCI), and UL 1699 (AFCI) as applicable.",
+      "Drafting follows AIA CAD Layer Guidelines 2007 (US AEC convention) for layered electrical drawings; sheet Arch_D at 1/4\"=1' imperial scale is industry-standard for single-family residential floor plans."
+    ]
+  },
+  "flags": [
+    "TOOL-CALL-PENDING:calc.zs_loop_impedance",
+    "TOOL-CALL-PENDING:calc.diversity_factor"
+  ],
+  "drawing_notes": [
+    "All receptacles NEMA 5-15 or NEMA 5-20 duplex tamper-resistant (TR) per NEC 2023 Article 406.12.",
+    "Kitchen countertop receptacles at 1100 mm AFF (~43\" — ~6\" above standard 36\" countertop) split between C01 (3) and C02 (3); both circuits AFCI+GFCI dual-function breakers per NEC 210.8(A)(6) + 210.12(B).",
+    "General-purpose living/bedroom/hallway receptacles at 450 mm AFF (~18\") on a 15A AFCI branch (C03) per NEC 210.12(A); no GFCI required outside NEC 210.8 scope.",
+    "Bathroom receptacle at 1100 mm AFF above counter on dedicated 20A GFCI branch (C04) per NEC 210.8(A)(1) + 210.11(C)(3). Tamper-resistant + GFCI receptacle.",
+    "Garage GFCI receptacles (3 × NEMA 5-20 TR) on C05 per NEC 210.8(A)(2); workshop / overhead-door wall locations at 1100 mm AFF.",
+    "Outdoor receptacles (2 × NEMA 5-20 TR-WR weather-resistant) at 1100 mm AFF on external wall on C06 per NEC 210.8(A)(3); extra-duty in-use covers per NEC 406.9(B)(1).",
+    "Basement GFCI receptacles (3 × NEMA 5-20 TR) on C07 per NEC 210.8(A)(5); 1100 mm AFF on wall.",
+    "Laundry dedicated branch (C08) per NEC 210.11(C)(2); 20A GFCI breaker per NEC 210.8(A)(10) (laundry area within 6 ft of laundry tubs / washing machines).",
+    "Drawing follows AIA CAD Layer Guidelines 2007 (US AEC convention): Discipline-MajorGroup-MinorGroup layer naming (e.g., E-POWR-RECP for receptacles, E-POWR-CIRC for circuits, E-POWR-PANL for panelboards)."
+  ],
+  "rationale": {
+    "chat_summary": "US single-family residence (~160 m² / 1700 ft²) on NEC 2023. 120/240V split-phase TN-C-S supply, Ze=0.25Ω, PSCC=10kA. 8 branch circuits via MAIN-PANEL. C01+C02 kitchen 20A AFCI+GFCI dual per NEC 210.8(A)(6)+210.12(B); C03 general 15A AFCI per 210.12(A); C04-C07 GFCI 20A per 210.8 (bathroom/garage/outdoor/basement); C08 laundry 20A per 210.11(C)(2). All receptacles tamper-resistant per NEC 406.12. NEMA 5-15/5-20 duplex. calc.zs_loop_impedance pending.",
+    "sections": [
+      {
+        "title": "Jurisdiction + Supply",
+        "summary": "US jurisdiction, NEC 2023 (NFPA 70) primary code. 120/240 V split-phase TN-C-S service: center-tapped single-phase from utility transformer with main bonding jumper at MAIN-PANEL per NEC 250.24(B). Declared Ze=0.25 Ω and PSCC=10 kA at the service-entrance busbar. All branch breakers AIC ≥ 10 kA per NEC 110.9.",
+        "decisions": [
+          {
+            "label": "Split-phase service confirmed",
+            "summary": "Utility transformer center-tap neutral bonded to ground at the service disconnect (main bonding jumper); downstream branch circuits use a separate EGC — functionally TN-S downstream of the bond.",
+            "rule": "Grounding electrode + main bonding jumper per NEC 250.24",
+            "code_clause": "NEC 2023 Article 250.24(B)"
+          },
+          {
+            "label": "PSCC 10 kA → all breakers ≥ 10 kA AIC",
+            "summary": "Declared 10 kA at MAIN-PANEL busbar; every branch breaker must have an interrupting rating ≥ 10 kA per NEC 110.9; UL 489 listing required.",
+            "rule": "Interrupting rating ≥ available fault current",
+            "code_clause": "NEC 2023 Article 110.9 + UL 489"
+          }
+        ]
+      },
+      {
+        "title": "Circuit Topology",
+        "summary": "All 8 branch circuits radial (US NEC has no ring-final-circuit construct; INV-04 satisfied trivially). Two kitchen small-appliance branches (C01/C02) per NEC 210.52(B); one general AFCI branch (C03) feeding living/bedrooms/hallway; five location-specific GFCI/AFCI branches (C04 bathroom, C05 garage, C06 outdoor, C07 basement, C08 laundry — laundry per 210.11(C)(2) requires a dedicated branch).",
+        "decisions": [
+          {
+            "label": "Radial-only topology (US jurisdiction)",
+            "summary": "NEC 2023 does not provide a ring-final equivalent to BS 7671 §433.1.5. All branch circuits are radial-fed from the main panel via individual single-pole 120 V breakers.",
+            "rule": "Branch-circuit configuration per NEC Article 210",
+            "code_clause": "NEC 2023 Article 210"
+          },
+          {
+            "label": "Two kitchen small-appliance branches mandatory",
+            "summary": "NEC 2023 Article 210.52(B)(1) requires at least two 20 A small-appliance branch circuits to serve countertop receptacles; this design provides exactly two (C01/C02) with 3 countertop receptacles each.",
+            "rule": "Kitchen small-appliance branch-circuit requirement",
+            "code_clause": "NEC 2023 Article 210.52(B)(1)"
+          },
+          {
+            "label": "Laundry on dedicated radial",
+            "summary": "NEC 2023 Article 210.11(C)(2) requires an individual 20 A branch circuit for laundry receptacles with no other outlets. C08 satisfies this with a single 20 A GFCI breaker.",
+            "rule": "Dedicated laundry branch circuit",
+            "code_clause": "NEC 2023 Article 210.11(C)(2)"
+          }
+        ]
+      },
+      {
+        "title": "Special Locations",
+        "summary": "US NEC frames GFCI by location category in 210.8(A): bathrooms, garages, outdoors, basements, kitchens, laundry. AFCI per 210.12(A)/(B). Schema special_location enum is IEC-derived and doesn't encode US categories directly. Mapping: bathroom→bathroom_zone_3 (most permissive), outdoor→outdoor (native), and garage/basement/laundry→null with info-level flags documenting per-location NEC clauses.",
+        "decisions": [
+          {
+            "label": "Bathroom → bathroom_zone_3 schema mapping",
+            "summary": "US NEC treats the entire bathroom as a GFCI zone (210.8(A)(1)) — there is no IEC-style zone 0/1/2/3 subdivision. The schema bathroom_zone_3 enum is the most permissive analogue; documented as info-flag.",
+            "rule": "Bathroom GFCI per NEC; schema mapping by convention",
+            "code_clause": "NEC 2023 Article 210.8(A)(1)"
+          },
+          {
+            "label": "Outdoor → outdoor (native enum)",
+            "summary": "NEC 210.8(A)(3) outdoor receptacle GFCI requirement maps cleanly to the schema outdoor enum; in-use covers per NEC 406.9(B)(1) and weather-resistant receptacles per NEC 406.9(B)(2).",
+            "rule": "Outdoor GFCI + weather-resistant + in-use cover",
+            "code_clause": "NEC 2023 Article 210.8(A)(3) + 406.9(B)"
+          },
+          {
+            "label": "Garage / basement / laundry → null + info-flag",
+            "summary": "Schema lacks enums for garage/basement/laundry. GFCI requirements still apply per NEC 210.8(A)(2)/(5)/(10) and are documented in non_compliance_flags as info-level; runtime gap noted for schema v1.1.",
+            "rule": "NEC GFCI scope vs schema enum",
+            "code_clause": "NEC 2023 Article 210.8(A)(2) + 210.8(A)(5) + 210.8(A)(10)"
+          }
+        ]
+      },
+      {
+        "title": "RCD Posture (US: GFCI + AFCI)",
+        "summary": "Schema rcd_posture is IEC-derived. US uses GFCI (4-6 mA per UL 943) and AFCI (UL 1699) — distinct from IEC RCDs. Pragmatic mapping: 7 GFCI / dual-function circuits (C01, C02, C04-C08) → type_a_30ma_per_§411_3_3 with rcd_type=GFCI + rcd_sensitivity_ma=10. C03 (AFCI only) → no_rcd_with_documented_§411_exception with citation. Schema gap flagged info-level for future v1.1.",
+        "decisions": [
+          {
+            "label": "AFCI+GFCI dual-function on kitchen branches (C01/C02)",
+            "summary": "Kitchen countertop receptacles fall under both NEC 210.8(A)(6) (GFCI) and 210.12(B) (AFCI combination protection for kitchens/laundry as of NEC 2014+). Combination dual-function breakers per UL 489 + UL 943 + UL 1699 satisfy both.",
+            "rule": "Combination AFCI+GFCI breakers for kitchen branches",
+            "code_clause": "NEC 2023 Article 210.8(A)(6) + 210.12(B)"
+          },
+          {
+            "label": "AFCI-only on general dwelling branch (C03)",
+            "summary": "Living rooms / bedrooms / hallway are outside NEC 210.8 GFCI scope but fall under NEC 210.12(A) AFCI protection (all 15/20 A 120 V branch circuits supplying receptacle outlets in dwelling units). AFCI breaker per UL 1699.",
+            "rule": "AFCI protection for general dwelling branches",
+            "code_clause": "NEC 2023 Article 210.12(A)"
+          },
+          {
+            "label": "GFCI-only on location-specific branches (C04-C08)",
+            "summary": "Bathroom (210.8(A)(1)), garage (210.8(A)(2)), outdoor (210.8(A)(3)), basement (210.8(A)(5)), laundry (210.8(A)(10)) — all require GFCI; AFCI not mandated for these locations in NEC 2023 (except 210.12(B) overlap for laundry — engineer specifies GFCI-only per scope; combination would be optional best-practice).",
+            "rule": "Location-specific GFCI protection",
+            "code_clause": "NEC 2023 Article 210.8(A)(1)/(2)/(3)/(5)/(10)"
+          },
+          {
+            "label": "Schema enum pragmatic mapping for GFCI",
+            "summary": "GFCI (4-6 mA UL 943) maps to type_a_30ma_per_§411_3_3 + rcd_sensitivity_ma=10 (smallest enum) as the least-bad fit. Documented in compliance_summary as schema gap.",
+            "rule": "Pragmatic schema mapping for US GFCI",
+            "code_clause": "UL 943 + NEC 2023 Article 210.8"
+          }
+        ]
+      },
+      {
+        "title": "OCPD + Cable",
+        "summary": "C01/C02: 20 A AFCI+GFCI dual + 12 AWG NM-B. C03: 15 A AFCI + 14 AWG NM-B. C04-C08: 20 A GFCI + 12 AWG NM-B. All breakers 10 kA AIC (UL 489) matching the 10 kA PSCC. Curve C closest schema enum to US thermal-magnetic residential breakers (5-10× instantaneous). NM-B cable per NEC 2023 Article 334; PVC_70 encodes the 70 °C THHN/THWN equivalent.",
+        "decisions": [
+          {
+            "label": "12 AWG NM-B for 20 A branches",
+            "summary": "NEC 2023 Table 310.16 + 240.4(D)(5): 12 AWG copper has 25 A ampacity at 60 °C column, but the 240.4(D)(5) small-conductor limit caps 12 AWG at 20 A — exactly matching the branch breaker.",
+            "rule": "Small-conductor 20 A limit on 12 AWG copper",
+            "code_clause": "NEC 2023 Article 240.4(D)(5) + Table 310.16"
+          },
+          {
+            "label": "14 AWG NM-B for 15 A branch (C03)",
+            "summary": "NEC 240.4(D)(3) limits 14 AWG copper to 15 A; C03 uses 14 AWG with a 15 A AFCI breaker.",
+            "rule": "Small-conductor 15 A limit on 14 AWG copper",
+            "code_clause": "NEC 2023 Article 240.4(D)(3)"
+          },
+          {
+            "label": "All breakers 10 kA AIC",
+            "summary": "PSCC=10 kA at MAIN-PANEL → branch breakers AIC ≥ 10 kA per NEC 110.9; UL 489-listed product range covers AFCI / GFCI / dual-function 10 kA devices.",
+            "rule": "Interrupting rating ≥ available fault current",
+            "code_clause": "NEC 2023 Article 110.9 + UL 489"
+          }
+        ]
+      },
+      {
+        "title": "Diversity + Zs",
+        "summary": "Diversity per NEC 2023 Article 220.40-220.55. Small-appliance per 220.52(A) (1500 VA × 2 = 3000 VA); laundry per 220.52(B) (1500 VA); general-receptacle (C03) into 3 VA/ft² per 220.42, diversified per 220.42(A) (first 3000 VA @ 100%, balance @ 35%). Zs verification deferred to calc.zs_loop_impedance per WI3; all circuits flagged TOOL-CALL-PENDING.",
+        "decisions": [
+          {
+            "label": "Kitchen diversified to 12 A + 10 A on two branches",
+            "summary": "NEC 220.52(A) sets the minimum at 1500 VA per branch (12.5 A at 120 V); engineer specifies 12 A + 10 A as design-stage estimates with the 20 A breakers giving comfortable headroom against simultaneous countertop appliance use.",
+            "rule": "Kitchen small-appliance branch load per NEC 220.52(A)",
+            "code_clause": "NEC 2023 Article 220.52(A)",
+            "inputs": {"nameplate_va_per_branch": 1500, "diversified_a_branch_1": 12.0, "diversified_a_branch_2": 10.0}
+          },
+          {
+            "label": "Zs deferred to calc.zs_loop_impedance",
+            "summary": "Ground-fault loop impedance Zs = Ze + (R1+R2) for verification of NEC 250.4(A)(5) effective-ground-fault-path requirement is computed by the calc skill; all 8 circuits flagged TOOL-CALL-PENDING. INV-08 satisfied.",
+            "rule": "WI3 — deferred tool-call pattern",
+            "code_clause": "NEC 2023 Article 250.4(A)(5) + 110.10"
+          }
+        ]
+      },
+      {
+        "title": "Compliance + Assumptions",
+        "summary": "compliant=true. Four info flags: (a) schema special_location enum gap for US categories; (b) rcd_posture pragmatic mapping (US ≠ IEC §411); (c) NEC 406.12 tamper-resistant on all 31 receptacles; (d) Zs verification deferred per WI3. Nine assumptions; utility-declared Ze=0.25 Ω and PSCC=10 kA to be verified at first energization per NEC 110.24 field-marking.",
+        "decisions": [
+          {
+            "label": "All receptacles tamper-resistant",
+            "summary": "NEC 2023 Article 406.12 requires all 15 A and 20 A 125 V receptacles in dwelling units to be listed tamper-resistant. All 31 receptacles in this design encode tamper_resistant in the socket type string.",
+            "rule": "Tamper-resistant receptacles in dwelling units",
+            "code_clause": "NEC 2023 Article 406.12"
+          },
+          {
+            "label": "Ze and PSCC declared, not measured",
+            "summary": "Utility-declared values used for design; on-site verification at first energization per NEC 110.24 (field marking) and 250.66 (grounding electrode conductor sizing).",
+            "rule": "Initial verification + fault-current field marking",
+            "code_clause": "NEC 2023 Article 110.24"
+          }
+        ]
+      },
+      {
+        "title": "Drafting References",
+        "summary": "Single Arch_D sheet (24\"×36\") at 1/4\"=1' imperial scale per AIA CAD Layer Guidelines 2007 (US AEC convention). Layer naming Discipline-MajorGroup-MinorGroup (e.g., E-POWR-RECP for receptacles, E-POWR-CIRC for circuits, E-POWR-PANL for panelboards). 1700 ft² single-story plate fits on Arch_D with panel schedule, GFCI/AFCI legend, and notes.",
+        "decisions": [
+          {
+            "label": "Arch_D @ 1/4\"=1' single-sheet output",
+            "summary": "US standard residential drawing sheet is Arch_D (24\"×36\") at quarter-inch scale; one sheet fits the entire single-story dwelling with panel schedule and notes.",
+            "rule": "AIA CAD Layer Guidelines 2007 drawing conventions",
+            "code_clause": "AIA CAD Layer Guidelines 2007"
+          }
+        ]
+      }
+    ]
+  }
+}
