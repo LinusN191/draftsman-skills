@@ -16,7 +16,7 @@ Total sockets: 33 across 5 circuits
 | C01 | utility | utility-S01 | BS 1363 double 13A switched | above_worktop | 1150 | Type A 30 mA RCBO B 32 A | Worktop above utility counter |
 | C01 | utility | utility-S02 | BS 1363 double 13A switched | wall | 450 | Type A 30 mA RCBO B 32 A | Low-level — tumble dryer feed |
 | C01 | utility | utility-S03 | BS 1363 double 13A switched | wall | 450 | Type A 30 mA RCBO B 32 A | Low-level — washing machine feed |
-| C04 | utility | utility-S04 | BS 1363 FCU 20A (immersion) | wall | 1350 | Type A 30 mA RCBO B 16 A | Immersion-heater FCU; dedicated radial endpoint (C04) |
+| C04 | utility | utility-S04 | 20A DP switched connection unit (BS EN 60669-2-1) | wall | 1350 | Type A 30 mA RCBO B 16 A | Immersion-heater connection unit; dedicated radial endpoint (C04) |
 | C01 | dining | dining-S01 | BS 1363 double 13A switched | wall | 450 | Type A 30 mA RCBO B 32 A | General-purpose, side wall |
 | C01 | dining | dining-S02 | BS 1363 double 13A switched | wall | 450 | Type A 30 mA RCBO B 32 A | General-purpose, end wall |
 | C01 | dining | dining-S03 | BS 1363 double 13A switched | wall | 450 | Type A 30 mA RCBO B 32 A | General-purpose, side wall |

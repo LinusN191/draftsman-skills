@@ -105,7 +105,7 @@ All cables are copper, PVC-insulated (PVC_70), and assumed to follow Reference M
 For the cooker:
 - Nameplate: 7 kW hob+oven ≈ 30 A at 230 V.
 - Diversity formula (IET OSG Appendix A): 10 A + 30% × (30-10) + 5 A for the socket on the CCU = 10 + 6 + 5 = **21 A**.
-- Design value 25 A → comfortably within 32 A breaker, with margin for the small CCU socket.
+- Design value 25 A → 4 A design headroom above the 21 A formula result, giving comfortable margin within the 32 A OCPD.
 
 For the rings, domestic usage profile rarely loads more than ~16 A on a ground-floor ring (kettle + microwave coincident) or ~6.5 A on a first-floor ring (a couple of phone chargers, a bedside lamp and an electric blanket). These diversified figures are the ones the `db-layout` skill should consume when sizing the consumer-unit feeder.
 

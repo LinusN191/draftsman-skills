@@ -171,7 +171,7 @@
         {"id": "utility-S01", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
         {"id": "utility-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
         {"id": "utility-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
-        {"id": "utility-S04", "type": "BS_1363_fused_connection_unit_20A", "mount": "wall", "height_mm": 1350, "circuit_id": "C04", "spur_purpose": "immersion heater fixed feed"}
+        {"id": "utility-S04", "type": "switched_connection_unit_20A_BS_EN_60669", "mount": "wall", "height_mm": 1350, "circuit_id": "C04", "spur_purpose": "immersion heater fixed feed"}
       ]
     },
     {
@@ -332,7 +332,7 @@
             "label": "Cooker on dedicated 32A radial",
             "summary": "7 kW hob+oven exceeds typical ring contribution under diversity; sized 6mm² T+E to a 45A CCU per IET OSG Table A1.",
             "rule": "IET OSG Appendix A cooker diversity (10A + 30% remainder + 5A for socket on CCU)",
-            "code_clause": "IET On-Site Guide §A1"
+            "code_clause": "IET On-Site Guide Appendix A, Table A1"
           }
         ]
       },
@@ -392,7 +392,7 @@
             "label": "Cooker diversified to 25A",
             "summary": "30A nameplate → 10A + 30% × (30-10) + 5A (CCU socket) = 21A; rounded to 25A for design margin on 32A breaker.",
             "rule": "IET OSG Appendix A cooker diversity",
-            "code_clause": "IET On-Site Guide §A1",
+            "code_clause": "IET On-Site Guide Appendix A, Table A1",
             "inputs": {"nameplate_a": 30, "diversity_formula": "10 + 0.30*(In-10) + 5"}
           },
           {
