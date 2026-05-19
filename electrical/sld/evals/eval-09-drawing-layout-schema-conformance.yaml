@@ -1,0 +1,55 @@
+name: eval-09-drawing-layout-schema-conformance
+skill: sld
+description: |
+  Verifies v1.5 drawing_layout schema conformance: all required fields present,
+  enums validate, board ↔ sheet refs intact, and all 4 v1.5 examples have the
+  block populated.
+category: skill_specific
+
+input_fixtures:
+  - ../examples/uk-commercial-office-3storey/output.json
+  - ../examples/ke-nairobi-industrial-msb-gh/output.json
+  - ../examples/intl-commercial-msb-4subdbs/output.json
+  - ../examples/us-strip-mall-msp-tenants/output.json
+
+checks:
+  - assertion: "output.drawing_layout is not None"
+    description: drawing_layout block exists on all 4 v1.5 examples.
+    severity: critical
+
+  - assertion: "len(output.drawing_layout.sheets) >= 1"
+    description: drawing_layout.sheets has length >= 1.
+    severity: critical
+
+  - assertion: |
+      hierarchy_ids = {b.board_id for b in output.distribution_hierarchy};
+      layout_ids = set(output.drawing_layout.boards.keys());
+      hierarchy_ids == layout_ids
+    description: Every board in distribution_hierarchy appears as a key in drawing_layout.boards.
+    severity: critical
+
+  - assertion: |
+      sheet_ids = {s.sheet_id for s in output.drawing_layout.sheets};
+      all(b.sheet_id in sheet_ids for b in output.drawing_layout.boards.values())
+    description: Every boards[*].sheet_id references an existing sheet.
+    severity: critical
+
+  - assertion: |
+      valid = {'main', 'general_power', 'lighting', 'mechanical', 'fire_alarm_life_safety', 'emergency_power', 'comms', 'other'};
+      all(b.layout_group in valid for b in output.drawing_layout.boards.values())
+    description: All layout_group values are in the v1.5 enum.
+    severity: critical
+
+  - assertion: |
+      valid = {'via_main_spine', 'via_dedicated_riser', 'via_shared_tray', 'direct_from_msb', 'via_genset_changeover'};
+      all(b.routing_intent in valid for b in output.drawing_layout.boards.values())
+    description: All routing_intent values are in the v1.5 enum.
+    severity: critical
+
+  - assertion: "all(b.tree_layer >= 0 for b in output.drawing_layout.boards.values())"
+    description: All tree_layer values are >= 0.
+    severity: critical
+
+  - assertion: "all(len(b.layout_intent_note) <= 200 for b in output.drawing_layout.boards.values())"
+    description: All layout_intent_note strings are <= 200 chars.
+    severity: warning
