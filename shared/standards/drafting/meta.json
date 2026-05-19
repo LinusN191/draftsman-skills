@@ -1,0 +1,27 @@
+{
+  "_title": "Drafting Standards Layer",
+  "_purpose": "Engine-lookupable drafting conventions consumed by SLD, db-layout, lighting-layout, riser, schematic, small-power, cable-containment skills",
+  "transcribed_at": "2026-05-19",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "standards": {
+    "BS1192":   { "title": "BS 1192:2007+A2:2016 — Collaborative production of architectural, engineering and construction information", "publisher": "BSI", "scope": "UK information management + layer naming + file naming + revision conventions", "folder": "BS1192/" },
+    "ISO19650": { "title": "ISO 19650:2018 (Parts 1-5) — Organization and digitization of information about buildings", "publisher": "ISO", "scope": "International CDE workflows, federated information management, security", "folder": "ISO19650/" },
+    "AIA":      { "title": "AIA CAD Layer Guidelines 2007", "publisher": "American Institute of Architects", "scope": "US layer naming + status codes", "folder": "AIA/" },
+    "ISO5457":  { "title": "ISO 5457:1999/A1:2010 — Technical product documentation — Sizes and layout of drawing sheets", "publisher": "ISO", "scope": "Sheet sizes A0-A4 + drawing area + title block region", "folder": "ISO5457/" },
+    "ISO5455":  { "title": "ISO 5455:1979 — Technical drawings — Scales", "publisher": "ISO", "scope": "Standard drawing scales + use guidance", "folder": "ISO5455/" },
+    "ISO7200":  { "title": "ISO 7200:2004 — Technical product documentation — Data fields in title blocks and document headers", "publisher": "ISO", "scope": "Title block field definitions + mandatory/optional", "folder": "ISO7200/" },
+    "ISO128":   { "title": "ISO 128 (multiple parts) — Technical drawings — General principles of presentation", "publisher": "ISO", "scope": "Line widths + line types", "folder": "ISO128/" },
+    "ISO129":   { "title": "ISO 129-1:2018 — Technical product documentation — Presentation of dimensions and tolerances", "publisher": "ISO", "scope": "Dimensioning rules", "folder": "ISO129/" },
+    "ISO9431":  { "title": "ISO 9431:1990 — Construction drawings — Spaces for drawing and for text, and title blocks on drawing sheets", "publisher": "ISO", "scope": "Drawing folds + space allocation", "folder": "ISO9431/" },
+    "BS5536":   { "title": "BS 5536:1978 — Recommendations for preparation of technical drawings and diagrams for acceptance purposes", "publisher": "BSI", "scope": "UK reading of ISO 128 line conventions", "folder": "BS5536/" }
+  },
+  "jurisdiction_to_primary_standards": {
+    "GB":  ["BS1192", "BS5536", "ISO5457", "ISO5455", "ISO7200", "ISO128", "ISO129", "ISO9431"],
+    "KE":  ["BS1192", "ISO5457", "ISO5455", "ISO7200", "ISO128", "ISO129"],
+    "US":  ["AIA", "ISO5457", "ISO5455", "ISO7200"],
+    "INT": ["ISO19650", "BS1192", "ISO5457", "ISO5455", "ISO7200", "ISO128", "ISO129", "ISO9431"],
+    "EU":  ["ISO19650", "ISO5457", "ISO5455", "ISO7200", "ISO128", "ISO129"]
+  },
+  "_note": "Skills query this index file as the discovery entry point. Per-standard data lives in the named folder. Jurisdiction-to-primary-standards mapping tells the runtime which standards to consult for a given example's jurisdiction."
+}
