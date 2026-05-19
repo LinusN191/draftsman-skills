@@ -28,7 +28,7 @@ The supply is a **KPLC TN-S 415V TPN+E** distribution (three-phase 400/415 V + n
 | External earth-loop impedance Ze | 0.45 Ω | KPLC declaration |
 | Prospective short-circuit current PSCC | 9.0 kA | KPLC declaration |
 
-These are **declared** values, not measured. Per KS 1700:2018 routing to BS 7671 Chapter 64 they must be verified at first energisation. The design margin assumes the declared values hold.
+These are **declared** values, not measured. Per KS 1700:2018 routing to BS 7671:2018+A2:2022 Chapter 64 they must be verified at first energisation. The design margin assumes the declared values hold.
 
 KS 1700:2018 §313 routes explicitly to BS 7671:2018+A2:2022 §313.1 for the short-circuit verification rule (the consumer's installed protective device must have a breaking capacity at least equal to the prospective short-circuit current at that point). Because PSCC = 9.0 kA at the busbar, every MCB installed on `DB-OFFICE-01` must therefore have an Icu ≥ 9 kA. The selected products are 9 kA Icu MCBs sourced from the BS EN 60898-1 product range — the routing chain `KS 1700:2018 §434 → BS 7671:2018+A2:2022 §434.5.1 → IEC 60898-1` is the auditable basis.
 
@@ -77,9 +77,9 @@ Every circuit uses **30 mA Type A** residual-current protection. The implementat
 
 KS 1700:2018 §411.3.3 routes to BS 7671:2018+A2:2022 §411.3.3 for the additional-protection-by-RCD rule on socket outlets with rated current ≤ 32 A. The IR records `rcd_posture: "type_a_30ma_per_§411_3_3"` on every circuit.
 
-**Why Type A, not Type AC?** Type A is sensitive to both AC and pulsating-DC residual currents and is the modern default for installations with electronics — office equipment (laptop PSUs, monitor EMI filters, LED drivers, small kitchen appliances) frequently injects pulsating-DC into the protective conductor. KS 1700:2018 routing to BS 7671 §411.3.3 + IET On-Site Guide §5.3 makes Type A the post-Amendment-2 default for general-purpose socket circuits. Type AC is not recommended for new installations.
+**Why Type A, not Type AC?** Type A is sensitive to both AC and pulsating-DC residual currents and is the modern default for installations with electronics — office equipment (laptop PSUs, monitor EMI filters, LED drivers, small kitchen appliances) frequently injects pulsating-DC into the protective conductor. KS 1700:2018 routing to BS 7671:2018+A2:2022 §411.3.3 + IET On-Site Guide §5.3 makes Type A the post-Amendment-2 default for general-purpose socket circuits. Type AC is not recommended for new installations.
 
-**Why not Type B?** Type B adds sensitivity to *smooth* DC residual currents and is required where the equipment downstream can introduce smooth DC into the supply — typically EV charge points (BS 7671 §722.531.3.101) or transformerless single-phase PV inverters. Neither applies to this office fit-out, so Type B is not required and no `rcd_exception_citation` is documented.
+**Why not Type B?** Type B adds sensitivity to *smooth* DC residual currents and is required where the equipment downstream can introduce smooth DC into the supply — typically EV charge points (BS 7671:2018+A2:2022 §722.531.3.101) or transformerless single-phase PV inverters. Neither applies to this office fit-out, so Type B is not required and no `rcd_exception_citation` is documented.
 
 The 6 A SSU circuit (C04) is itself an isolating transformer that breaks the protective conductor path to its secondary — but §411.3.3 still applies to the SSU **primary** connection (it is a "socket outlet" under BS 7671's definition), so the C04 MCB still sits under the 30 mA Type A RCD coverage. No exception is sought.
 
@@ -122,7 +122,7 @@ The downstream `db-layout` skill should consume the `diversified_max_load_a` val
 
 **Zs verification** is deferred to the `calc.zs_loop_impedance` skill per work-item WI3 (the deferred-tool-call pattern in the small-power v1.0 spec). Every circuit therefore carries `tool_call_pending_for_zs_verification: true`, and the IR-level `flags[]` array contains `TOOL-CALL-PENDING:calc.zs_loop_impedance`. INV-08 (Zs deferral consistency) is satisfied: every circuit's pending flag aligns with the top-level flag.
 
-The Zs ceiling per KS 1700:2018 §411.4.5 routing to BS 7671 Table 41.3 for a 20 A Type B MCB with 0.4 s disconnection time, with the BS 7671 Cmin = 0.95 correction factor, is approximately:
+The Zs ceiling per KS 1700:2018 §411.4.5 routing to BS 7671:2018+A2:2022 Table 41.3 for a 20 A Type B MCB with 0.4 s disconnection time, with the BS 7671 Cmin = 0.95 correction factor, is approximately:
 
 ```
 Zs(max) ≤ (Cmin × U0) / (5 × In) = (0.95 × 240) / (5 × 20) = 2.28 Ω
@@ -138,8 +138,8 @@ A second deferred tool call, `TOOL-CALL-PENDING:calc.diversity_factor`, lets the
 
 `compliance_summary.compliant = true`. Three info-severity entries record design intent without flagging non-compliance:
 
-1. **Toilet bathroom_zone_3 — SSU only.** Documented for clarity. KS 1700:2018 §701 routes to BS 7671 Part 7-701; only the BS EN 61558-2-5 SSU is installed in the toilet, satisfying §701.512.3.
-2. **Radial-only topology.** Although KS 1700:2018 §433 routes to BS 7671 §433.1.5 permitting ring finals in KE, this design uses radials throughout per commercial engineering practice. Documented for downstream skills.
+1. **Toilet bathroom_zone_3 — SSU only.** Documented for clarity. KS 1700:2018 §701 routes to BS 7671:2018+A2:2022 Part 7-701; only the BS EN 61558-2-5 SSU is installed in the toilet, satisfying §701.512.3.
+2. **Radial-only topology.** Although KS 1700:2018 §433 routes to BS 7671:2018+A2:2022 §433.1.5 permitting ring finals in KE, this design uses radials throughout per commercial engineering practice. Documented for downstream skills.
 3. **Zs deferred to calc.** Per WI3, the loop-impedance check is the responsibility of the `calc.zs_loop_impedance` skill.
 
 `compliance_summary.assumptions[]` records seven engineering assumptions:

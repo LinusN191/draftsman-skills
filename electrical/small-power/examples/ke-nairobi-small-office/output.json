@@ -208,7 +208,7 @@
         "severity": "info"
       },
       {
-        "message": "All four circuits configured as radial (none ring) per Kenyan commercial engineering practice. KS 1700:2018 §433 routes to BS 7671 §433.1.5 for ring final permission; design opts for radial-only to favour selectivity and maintenance access in tenant fit-out.",
+        "message": "All four circuits configured as radial (none ring) per Kenyan commercial engineering practice. KS 1700:2018 §433 routes to BS 7671:2018+A2:2022 §433.1.5 for ring final permission; design opts for radial-only to favour selectivity and maintenance access in tenant fit-out.",
         "code_clause": "KS 1700:2018 §433",
         "severity": "info"
       },
@@ -220,11 +220,11 @@
     ],
     "assumptions": [
       "KPLC declared Ze=0.45Ω at the parent DB earthing terminal; not yet measured on site.",
-      "KPLC declared PSCC=9kA at DB-OFFICE-01 busbar; all MCBs selected with 9kA Icu per KS 1700:2018 §434 (routes to BS 7671 §434.5.1) and IEC 60898-1 product range.",
+      "KPLC declared PSCC=9kA at DB-OFFICE-01 busbar; all MCBs selected with 9kA Icu per KS 1700:2018 §434 (routes to BS 7671:2018+A2:2022 §434.5.1) and IEC 60898-1 product range.",
       "All four circuits radial per Kenyan commercial engineering practice; ring final circuits are permitted under KS 1700:2018 §433 routing but not used at this scale.",
       "Diversity factors per KS 1700:2018 routing to BS 7671 + IET On-Site Guide Appendix A (workstations ~150 W per position; kitchenette diversified ~8 A simultaneous).",
-      "Toilet bathroom_zone_3 holds only shaver SSU; no general-purpose 13A sockets per KS 1700:2018 §701 (routes to BS 7671 Part 7-701).",
-      "Cable routes assumed Reference Method 100/101 (concealed in stud/dropper) per KS 1700:2018 §523 routing to BS 7671 Appendix 4; final route delegated to cable-containment skill.",
+      "Toilet bathroom_zone_3 holds only shaver SSU; no general-purpose 13A sockets per KS 1700:2018 §701 (routes to BS 7671:2018+A2:2022 Part 7-701).",
+      "Cable routes assumed Reference Method 100/101 (concealed in stud/dropper) per KS 1700:2018 §523 routing to BS 7671:2018+A2:2022 Appendix 4; final route delegated to cable-containment skill.",
       "Drafting follows BS 1192:2007+A2:2016 as the de facto Kenyan design industry convention for layered electrical drawings; a future drafting-standards layer will revisit."
     ]
   },
@@ -235,7 +235,7 @@
   "drawing_notes": [
     "All workstation/reception sockets BS 1363 double 13A switched at 300 mm AFFL — low-mount under-desk position typical for KE commercial office fit-out.",
     "Kitchenette worktop sockets at 1100 mm AFFL (150 mm above 950 mm worktop); under-counter fridge fed via 13A FCU on C03 at 300 mm AFFL.",
-    "Toilet bathroom_zone_3 SSU per KS 1700:2018 §701 (routes to BS 7671 Part 7-701) — no general 13A outlets in toilet.",
+    "Toilet bathroom_zone_3 SSU per KS 1700:2018 §701 (routes to BS 7671:2018+A2:2022 Part 7-701) — no general 13A outlets in toilet.",
     "Layer naming per BS 1192:2007+A2:2016 (E-POW-OUTLET-GF for ground floor power outlets, E-POW-CIRCUIT-GF for circuit identification)."
   ],
   "rationale": {
@@ -261,7 +261,7 @@
       },
       {
         "title": "Circuit Topology",
-        "summary": "Four radial circuits (none ring): C01+C02 cover workstations and reception, C03 covers kitchenette, C04 is a dedicated radial for the toilet shaver SSU. KS 1700:2018 §433 routes to BS 7671 §433.1.5 permitting ring final circuits, but KE commercial engineering practice favours radial at this scale for selectivity.",
+        "summary": "Four radial circuits (none ring): C01+C02 cover workstations and reception, C03 covers kitchenette, C04 is a dedicated radial for the toilet shaver SSU. KS 1700:2018 §433 routes to BS 7671:2018+A2:2022 §433.1.5 permitting ring final circuits, but KE commercial engineering practice favours radial at this scale for selectivity.",
         "decisions": [
           {
             "label": "Radial-only topology selected",
@@ -279,7 +279,7 @@
       },
       {
         "title": "Special Locations",
-        "summary": "The toilet is the only special-location room. KS 1700:2018 §701 routes to BS 7671 Part 7-701 (locations containing a bath/shower). Toilet classified `bathroom_zone_3`. Because §701.512.3 prohibits general 13 A sockets within 3 m of zone 1, only a BS EN 61558-2-5 shaver supply unit is installed (explicitly excepted by §701.512.3).",
+        "summary": "The toilet is the only special-location room. KS 1700:2018 §701 routes to BS 7671:2018+A2:2022 Part 7-701 (locations containing a bath/shower). Toilet classified `bathroom_zone_3`. Because §701.512.3 prohibits general 13 A sockets within 3 m of zone 1, only a BS EN 61558-2-5 shaver supply unit is installed (explicitly excepted by §701.512.3).",
         "decisions": [
           {
             "label": "Toilet zone 3 — SSU only",
@@ -291,7 +291,7 @@
       },
       {
         "title": "RCD Posture",
-        "summary": "All four circuits use Type A 30 mA RCD protection (board-level upstream of the MCBs at DB-OFFICE-01). KS 1700:2018 §411.3.3 routes to BS 7671 §411.3.3 for additional protection on socket outlets ≤32 A. Type A covers pulsating-DC residuals from office IT. No EV/PV loads ⇒ no Type B requirement and no §411 exception.",
+        "summary": "All four circuits use Type A 30 mA RCD protection (board-level upstream of the MCBs at DB-OFFICE-01). KS 1700:2018 §411.3.3 routes to BS 7671:2018+A2:2022 §411.3.3 for additional protection on socket outlets ≤32 A. Type A covers pulsating-DC residuals from office IT. No EV/PV loads ⇒ no Type B requirement and no §411 exception.",
         "decisions": [
           {
             "label": "Type A 30 mA across all circuits",
@@ -303,12 +303,12 @@
       },
       {
         "title": "OCPD + Cable",
-        "summary": "C01-C03: 20 A MCB Type B + 2.5 mm² Cu PVC T+E radial. C04: 6 A MCB Type B + 1.5 mm² T+E. All MCBs Icu 9 kA matching declared PSCC (KS 1700:2018 §434 routes to BS 7671 §434.5.1). Curve B universal — office loads no inrush, Type B 3-5× In gives best Zs margin per KS 1700:2018 §411.4.5.",
+        "summary": "C01-C03: 20 A MCB Type B + 2.5 mm² Cu PVC T+E radial. C04: 6 A MCB Type B + 1.5 mm² T+E. All MCBs Icu 9 kA matching declared PSCC (KS 1700:2018 §434 routes to BS 7671:2018+A2:2022 §434.5.1). Curve B universal — office loads no inrush, Type B 3-5× In gives best Zs margin per KS 1700:2018 §411.4.5.",
         "decisions": [
           {
             "label": "20 A radial sized 2.5 mm² Cu T+E",
             "summary": "20 A Type B MCB + 2.5 mm² T+E in Reference Method 100/101 provides adequate ampacity (~27 A) and Zs headroom at workstation/kitchenette radial lengths ≤ 18 m.",
-            "rule": "Cable sizing per KS 1700:2018 §523 routes to BS 7671 Appendix 4",
+            "rule": "Cable sizing per KS 1700:2018 §523 routes to BS 7671:2018+A2:2022 Appendix 4",
             "code_clause": "KS 1700:2018 §523"
           },
           {
@@ -344,7 +344,7 @@
         "decisions": [
           {
             "label": "Ze and PSCC declared, not measured",
-            "summary": "KPLC declared values used for design; on-site verification at first energisation required per KS 1700:2018 routing to BS 7671 Chapter 64.",
+            "summary": "KPLC declared values used for design; on-site verification at first energisation required per KS 1700:2018 routing to BS 7671:2018+A2:2022 Chapter 64.",
             "rule": "Initial verification requirements",
             "code_clause": "KS 1700:2018 §612 routes to BS 7671:2018+A2:2022 Chapter 64"
           }

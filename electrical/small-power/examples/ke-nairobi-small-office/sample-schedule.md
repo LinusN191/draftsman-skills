@@ -20,7 +20,7 @@ Total sockets: 15 across 4 circuits
 | C03 | kitchenette | kitchenette-S02 | BS 1363 double 13A switched | above_worktop | 1100 | Type A 30 mA / 20 A MCB B | Worktop — microwave |
 | C03 | kitchenette | kitchenette-S03 | BS 1363 double 13A switched | above_worktop | 1100 | Type A 30 mA / 20 A MCB B | Worktop — flexible (coffee / toaster) |
 | C03 | kitchenette | kitchenette-S04 | 13A switched fused connection unit (BS EN 60669-2-1) | wall | 300 | Type A 30 mA / 20 A MCB B | Under-counter fridge — fixed-feed FCU |
-| C04 | toilet | toilet-S01 | BS EN 61558-2-5 shaver supply unit | wall | 1400 | Type A 30 mA / 6 A MCB B | Zone 3 only; isolating transformer; no general 13 A sockets in toilet (KS 1700:2018 §701 routes to BS 7671 Part 7-701) |
+| C04 | toilet | toilet-S01 | BS EN 61558-2-5 shaver supply unit | wall | 1400 | Type A 30 mA / 6 A MCB B | Zone 3 only; isolating transformer; no general 13 A sockets in toilet (KS 1700:2018 §701 routes to BS 7671:2018+A2:2022 Part 7-701) |
 
 ## Circuit summary
 
@@ -36,8 +36,8 @@ Total sockets: 15 across 4 circuits
 - All workstation/reception sockets BS 1363 double 13 A switched (KE commercial idiom — UK plug standard widely adopted) at 300 mm AFFL for under-desk routing.
 - Kitchenette worktop sockets at 1100 mm AFFL (150 mm above 950 mm worktop); under-counter fridge fed via 13 A FCU at 300 mm AFFL.
 - Toilet is classified `bathroom_zone_3` per KS 1700:2018 §701 (routes to BS 7671:2018+A2:2022 Part 7-701); only the BS EN 61558-2-5 shaver supply unit is installed (no general 13 A sockets within 3 m of zone 1 per §701.512.3).
-- All four circuits are radial — KS 1700:2018 §433 routes to BS 7671 §433.1.5 permitting ring finals, but KE commercial engineering practice favours radial at tenant fit-out scale (selectivity + maintenance access).
-- All MCBs are 9 kA Icu to match the declared KPLC PSCC at the parent DB busbar via the KS 1700:2018 §434 → BS 7671 §434.5.1 routing chain.
-- RCD protection is board-level Type A 30 mA at DB-OFFICE-01 (covers all 4 final circuits) per KS 1700:2018 §411.3.3 (routes to BS 7671 §411.3.3).
+- All four circuits are radial — KS 1700:2018 §433 routes to BS 7671:2018+A2:2022 §433.1.5 permitting ring finals, but KE commercial engineering practice favours radial at tenant fit-out scale (selectivity + maintenance access).
+- All MCBs are 9 kA Icu to match the declared KPLC PSCC at the parent DB busbar via the KS 1700:2018 §434 → BS 7671:2018+A2:2022 §434.5.1 routing chain.
+- RCD protection is board-level Type A 30 mA at DB-OFFICE-01 (covers all 4 final circuits) per KS 1700:2018 §411.3.3 (routes to BS 7671:2018+A2:2022 §411.3.3).
 - All circuits carry `tool_call_pending_for_zs_verification: true`; loop-impedance Zs delegated to `calc.zs_loop_impedance` per WI3.
 - Cable lengths quoted are *total radial length* and assume Reference Method 100/101 (concealed in stud / ceiling void); final route by `cable-containment` skill.
