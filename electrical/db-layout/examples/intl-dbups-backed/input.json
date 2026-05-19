@@ -1,0 +1,38 @@
+{
+  "project_id": "intl-comm-tpn-eg02",
+  "board_brief": "UPS-backed critical-loads sub-DB (DB-UPS) for a generic IEC commercial 3-storey office. 50A TPN intake fed from MSB-MAIN F07 (50A MCB Type C, 40m feeder) → 10 kVA online double-conversion UPS → DB-UPS (UPS-output side). 30-min ride-through autonomy per IEC 62040-1:2017. 6 circuits: 6 kVA server rack + 2 critical-workstation rings (admin + clinical) + lab benches + BMS controller/alarm panel + UPS bypass loop. Located in ground-floor server/UPS room.",
+  "jurisdiction": "INT",
+  "standards_stack": {
+    "primary": "IEC 60364 (HD 60364 series)",
+    "ups_standard": "IEC 62040-1:2017 (UPS general and safety requirements — including §5.2.4 bypass design and Annex E fault current contribution on UPS-output side)",
+    "it_load_rcd_standard": "IEC 60364-5-53:2002+A2:2015 §531.3.3 (Type B RCD selection for IT/server loads with DC leakage components)",
+    "shock_protection_standard": "IEC 60364-4-41 §411.3.3 (30 mA RCD on socket circuits ≤32A for additional protection)",
+    "critical_power_practice": "IEEE 446-1995 (Emerald Book — recommended practice for emergency and standby power systems for industrial and commercial applications)",
+    "cascade_selectivity_standard": "IEC 60898-1 (cascade) + IEC 60364-5-53:2002 §536 (selectivity verification)",
+    "assembly_type_testing": "IEC 61439-3:2012 Distribution Board"
+  },
+  "supply": {
+    "fed_from": "MSB-MAIN F07 50A MCB Type C → 10 kVA online double-conversion UPS → DB-UPS (UPS-output side)",
+    "system_type": "TN-S (utility transformer earthed; building distribution TN-S; UPS output bonded to building TN-S earth)",
+    "voltage": "400V/230V 3-phase 4-wire 50 Hz (UPS output)",
+    "supply_rating_a": 50,
+    "phase_arrangement": "TPN_plus_E",
+    "feeder_route_length_m": 40
+  },
+  "board": {
+    "designation": "DB-UPS",
+    "location": "ground-floor server/UPS room",
+    "enclosure_rating": "IP4X (indoor)",
+    "busbar_rating_a": 50,
+    "scope": "single-board",
+    "role": "ups_backed_critical_panel"
+  },
+  "circuits": [
+    { "circuit_id": "U01", "designation": "Server rack 6 kVA (UPS output)",        "phase": "L1+L2+L3", "device": "32A MCB Type C", "cable": "6mm² LSZH Cu",   "route_length_m": 8  },
+    { "circuit_id": "U02", "designation": "Critical workstations ring (admin)",    "phase": "L1",       "device": "16A MCB Type C", "cable": "2.5mm² LSZH Cu", "route_length_m": 30 },
+    { "circuit_id": "U03", "designation": "Critical workstations ring (clinical)", "phase": "L2",       "device": "16A MCB Type C", "cable": "2.5mm² LSZH Cu", "route_length_m": 35 },
+    { "circuit_id": "U04", "designation": "Lab benches power (essential)",         "phase": "L3",       "device": "10A MCB Type C", "cable": "2.5mm² LSZH Cu", "route_length_m": 25 },
+    { "circuit_id": "U05", "designation": "BMS controller + alarm panel",          "phase": "L1",       "device": "6A MCB Type C",  "cable": "1.5mm² LSZH Cu", "route_length_m": 15 },
+    { "circuit_id": "U06", "designation": "UPS bypass (maintenance loop)",         "phase": "L1+L2+L3", "device": "32A MCB Type C", "cable": "6mm² LSZH Cu",   "route_length_m": 2  }
+  ]
+}
