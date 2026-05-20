@@ -231,6 +231,5 @@ Tier 1 sequence (live):
 11. `electrical/sld` v1.2 — eval split
 
 Tier 2 (next):
-- `electrical/small-power` — high-demand skill, BS 7671 socket-outlet layouts
 - `electrical/emergency-lighting` — depends on lighting-layout patterns
 - `documents/cable-schedule` — consumes `cable-sizing` intent
