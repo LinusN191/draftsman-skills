@@ -1,105 +1,46 @@
-# `cable-sizing` — Per-Circuit Cable Selection (IEC 60364 / BS 7671 / NEC)
+# cable-sizing Skill v1.0
 
-**Status:** `beta`
-**Version:** `1.0.0`
-**Drawing type:** `cable_sizing_study`
-**Reference:** `electrical/lighting-layout` (production reference) + `electrical/earthing` (sibling beta) + `electrical/db-layout` (sibling beta) + `electrical/fault-level` (sibling beta — directly consumed)
+Per-circuit cable selection for every cable run in a project's distribution cascade. Walks the standard csa ladder from below, accepts the smallest size that simultaneously satisfies `Iz ≥ In`, cumulative `Vd ≤ limit`, and the CPC adiabatic equation. Records the binding constraint and walk-up trail per node so tender reviewers can verify every selection without rerunning the calc.
 
 ## What this skill produces
 
-A project-scoped cable-sizing IR per BS 7671 App 4 (GB) / IEC 60364-5-52 (EU/INT) / NEC Chapter 9 + 310.16 (US) capturing:
+For a given project cascade + consumed intents + engineer route data, the skill emits:
 
-- Cascade tree from service entrance → feeders → sub-feeders → final circuits
-- Per-node selection: `phase_csa`, `cpc_csa`, `material`, `insulation`, `cable_type`, `parallel_count`
-- Named `binding_constraint` per node (which check forced the csa walk-up)
-- Walk-up trail showing rejected sizes + reasons
-- Cumulative Vd up the parent chain (source → endpoint)
-- Motor-starting Vd for motor circuits (warning, not error, when > 10%)
-- CPC adiabatic check at parent ifault + OCPD t_clear
-- Parallel cables when single-cable ladder exhausts
-- Harmonic derating + neutral sizing for 3-phase 4-wire IT loads
-- 8-section rationale block per WI2 + chat_summary
+- **Per-cascade-node selection:** phase_csa + cpc_csa + insulation + cable_type + parallel_count + material
+- **Binding constraint name** per node (`iz_vs_in` / `vd_cumulative` / `motor_starting_vd` / `cpc_adiabatic` / `parallel_required` / `harmonic_derating`)
+- **Walk-up trail** — every csa tried and the reason it was rejected
+- **All 4 engineering checks** — cumulative Vd, motor-starting Vd, parallel cables, harmonic derating
+- **Rationale block** — 8-section narrative + chat_summary ≤500 chars
 
-**Plus a `cable-sizing` intent** (slim downstream subset) emitted alongside — consumed by:
-- `cable-schedule` (formal tabulated deliverable)
-- `riser` (LV riser diagrams, floor-by-floor with parent_node_id chain)
-- `cable-containment` (tray/conduit fill — uses `cable_od_mm` + `weight_kg_per_m` + `parallel_count`)
+## Architecture: multi-skill consumer
+
+- `consumes_intents: ["db-layout-rollup", "fault-level"]` — pulls topology + Ib + In + load_type from db-layout-rollup; pulls Ik" + X/R + Z from fault-level
+- `produces_intent: "cable-sizing"` — consumed by 4 downstream skills (cable-schedule + riser + cable-containment + small-power v1.1)
+- Hybrid input mode: when intents are absent, engineer declares circuits + per-node fault data inline
+- WI3 tool-call deferral on `calc.cable_ampacity` / `calc.voltage_drop` / `calc.cpc_adiabatic` until runtime ships them
 
 ## Jurisdictions supported
 
-| Jurisdiction | Ampacity tables | Vd source | Cable types |
-|---|---|---|---|
-| GB | BS 7671 App 4 Tables 4D1A–4F | App 12 + App 4 §6 | PVC singles / XLPE / MICC / SWA / FP200 / CWZ |
-| EU | IEC 60364-5-52 Annex E | IEC 60364-5-52 §G | PVC / XLPE / EPR / SWA |
-| INT | IEC 60364-5-52 Annex E | IEC 60364-5-52 §G | Same as EU |
-| US | NEC 310.16 + Chapter 9 Table 9 + 310.15(B) | NEC 215.2(A)(1) IN | THWN-2 / THHN / XHHW-2 + 110.14(C) terminal cap |
+- **GB** — BS 7671:2018+A2:2022 App 4 (ampacity) + App 12 (Vd) + Reg 433 + Reg 543
+- **KE** — KS 1700:2018 §313 routing to BS 7671:2018+A2:2022 (KE engineering practice)
+- **INT/EU** — IEC 60364-5-52 (ampacity + Vd) + Part 5-54 (earthing)
+- **US** — NEC 2023 Chapter 9 Table 9 + 310.16 + 240.4(B) + 250.122 + 220.40
 
-## Cross-drawing intent contract
+## Examples
 
-| Direction | Intent | Purpose |
-|---|---|---|
-| Produces | `cable-sizing` | Per-circuit selection — consumed by cable-schedule, riser, cable-containment |
-| Consumes | `db-layout-rollup` | Per-circuit Ib/In/load_type/t_clear (preferred over engineer-declared) |
-| Consumes | `fault-level` | Per-node Ifault for CPC adiabatic check (preferred over engineer-declared) |
-
-## File structure
-
-```
-electrical/cable-sizing/
-├── README.md
-├── CHANGELOG.md
-├── skill.manifest.json
-├── inputs.json
-├── prompts/        (generator 14-step / validator 10 INV / reviewer 8 D)
-├── schemas/        (IR + intent)
-├── rules/          (5 YAMLs: walk-up, Vd targets, correction stack, parallels, harmonic)
-├── constraints/    (4 YAMLs: Iz/In/Ib, Vd cumulative, CPC adiabatic, motor starting)
-├── validation/     (4 YAMLs, 12 checks)
-├── ontology/       (cable-types + installation-methods)
-├── docs/           (engineering-philosophy + known-limitations)
-├── evals/          (runner-config + 9 evals)
-└── examples/       (UK domestic / INT commercial with feeders / US industrial with motors)
-```
-
-## Eval coverage matrix
-
-| Eval ID | Category | Tests |
-|---|---|---|
-| eval-01-uk-domestic-final-circuits | happy_path | 230V UK domestic, 4 final circuits all Iz-binding |
-| eval-02-tpn-commercial-feeders-cumulative-vd | edge_case | 400V TPN cascade, vd_cumulative-binding at deep leaf |
-| eval-03-undersized-cable-trap | validation_trap | Engineer pre-declares 1.5 mm² where Vd forces 4 mm² — must flag |
-| eval-04-missing-route-data | missing_input | No length / install method → tool_call_pending, no invention |
-| eval-05-jurisdiction-us-with-awg | jurisdiction_switch | US 480V aluminium feeder, NEC AWG ladder, terminal-temp cap |
-| eval-06-rationale-block | rationale_block | 8 sections + chat_summary + walk_up_trail audit |
-| eval-07-motor-starting-vd | skill_specific | 30 kW chiller motor — vd_starting check + warning logic |
-| eval-08-parallel-cables | skill_specific | 1200A feeder — 2 × 500 kcmil parallel (binding: parallel_required) |
-| eval-09-harmonic-derating-data-centre | skill_specific | IT load 33% h3 — Ch < 1.0 + neutral = phase |
-
-All 6 WI5 categories + 3 skill-specific.
-
-## Tool calls awaiting runtime
-
-| Tool name | Purpose |
+| Folder | Scenario |
 |---|---|
-| `calc.cable_ampacity` | Iz lookup with correction factors. Contract at `shared/calculations/electrical/cable-ampacity.json`. Status: tool_call_pending until DraftsMan runtime ships. |
-| `calc.voltage_drop` | mV/A/m × Ib × L with PF + temp correction. Contract at `shared/calculations/electrical/voltage-drop.json`. Status: tool_call_pending. |
-| `calc.cpc_adiabatic` | S = √(I²t)/k for CPC sizing. Contract at `shared/calculations/electrical/cpc-adiabatic.json`. Status: tool_call_pending. |
+| `examples/uk-domestic-final-circuits/` | UK 230V single-phase domestic, copper PVC, 1.5-10 mm², lighting + power radial + 32A ring. Vd binding on lighting circuits. |
+| `examples/ke-nairobi-commercial-with-msb/` | KE 415V TPN KPLC TN-S, 60-200 m² Nairobi commercial office. MSB → sub-DB → final circuits cascade. KS 1700:2018 §313 routing form. |
+| `examples/intl-commercial-with-feeders/` | INT 400V TPN: TX → MSB → riser → DB-L1 → final circuits. Cumulative Vd, XLPE feeders, copper. |
+| `examples/us-industrial-with-motors/` | US 480V industrial: aluminium feeder + AWG sizing + 500 hp motor with starting-Vd check + parallel cables for 1200A service entrance. |
 
-## Known limitations
+## Out of scope (v1.0)
 
-See `docs/known-limitations.md`. v1.0.0 does NOT cover:
-- DC circuit sizing (PV, EV DCFC, battery) → future `dc-cable-sizing` sibling
-- Arc-flash incident-energy boundary marking → `arc-flash` sibling
-- IEC 60287 advanced thermal modelling for buried groups
-- Communications + data cables (Cat6, fibre) → `electrical/data-telecom`
-- Time-graded protection coordination → `db-layout` v1.1 + future `protection-coordination`
+- DC circuit sizing (PV strings, EV DCFC, battery interconnects) — future `dc-cable-sizing` sibling
+- IEC 60287 thermal modelling beyond standard tables (very large buried cable groups)
+- Arc-flash incident-energy boundary marking — `arc-flash` sibling
+- Communications / data cables (Cat6, fibre) — different standards family
+- Time-graded protection curve coordination — handled by `db-layout` + future `protection-coordination`
 
-## Versioning
-
-- Minor bumps (1.x.0): new jurisdictions / cable types / evals / examples
-- Major bump (2.0.0): reserved for DC scope OR breaking IR schema change
-- Patch bumps (1.0.x): rules / constraints / validation bug fixes
-
-## License
-
-See repository root `LICENSE`.
+See `CHANGELOG.md` for version history and `docs/engineering-philosophy.md` for the walk-the-ladder rationale.

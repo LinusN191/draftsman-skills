@@ -1,24 +1,53 @@
 {
-  "$schema": "../../shared/schemas/core/inputs.schema.json",
   "skill": "cable-sizing",
-  "version": "1.0.0",
-  "description": "Discovery taxonomy — what the generator prompt asks for / extracts from upstream intents before sizing cables.",
-  "inputs": [
-    {"id": "jurisdiction",                  "type": "enum", "values": ["GB","EU","INT","US"], "description": "Standards family — selects ampacity table + Vd targets"},
-    {"id": "project_supply",                "type": "object", "description": "Voltage / phases / frequency / earthing system from db-layout-rollup or engineer"},
-    {"id": "circuits_from_intent",          "type": "boolean", "description": "true if db-layout-rollup intent supplies circuit list; false if engineer-declared"},
-    {"id": "circuits_declared",             "type": "array",  "description": "Per-circuit Ib/In/load_type/phases (engineer fallback when intent absent)"},
-    {"id": "fault_data_from_intent",        "type": "boolean", "description": "true if fault-level intent supplies Ifault per node"},
-    {"id": "fault_data_declared",           "type": "array",  "description": "Per-node Ifault + X/R + t_clear (engineer fallback)"},
-    {"id": "route_data_per_segment",        "type": "array",  "description": "REQUIRED engineer overlay: length_m + installation_method per cable segment"},
-    {"id": "ambient_overlay",               "type": "array",  "description": "Optional per-segment ambient °C override (default 30)"},
-    {"id": "grouping_per_segment",          "type": "array",  "description": "Optional per-segment current-carrying conductor count (default 1)"},
-    {"id": "thermal_insulation_segments",   "type": "array",  "description": "Optional list of segments routed through thermal insulation"},
-    {"id": "harmonic_content_per_circuit",  "type": "array",  "description": "Optional per-circuit harmonic_content_pct (default 0, must declare for IT/VFD/LED ≥10kW)"},
-    {"id": "vd_target_overrides",           "type": "array",  "description": "Optional per-circuit Vd-limit override (e.g. tighter client spec)"},
-    {"id": "cable_type_preferences",        "type": "array",  "description": "Optional per-segment preference (PVC singles / SWA / XLPE / FP200 / MICC / THWN-2 etc.)"},
-    {"id": "terminal_temp_rating_c",        "type": "number", "description": "US-only: terminal temperature rating (60/75/90°C) per NEC 110.14(C)"},
-    {"id": "motor_lr_multipliers",          "type": "object", "description": "Optional motor LRA multipliers if non-default (NEMA Design B=6, C=5, IEC AA=7, AB=6)"},
-    {"id": "compliance_target_overrides",   "type": "object", "description": "Optional client-specification overrides for Vd/Iz margin"}
+  "input_groups": [
+    {
+      "group": "jurisdiction",
+      "fields": [
+        {"name": "jurisdiction", "type": "enum", "values": ["GB", "EU", "INT", "KE", "US"], "required": true}
+      ]
+    },
+    {
+      "group": "consumed-intents",
+      "fields": [
+        {"name": "db_layout_rollup_intent_path", "type": "string", "required": false,
+         "description": "Path to upstream db-layout-rollup intent JSON. When present, used for cascade topology + Ib + In + load_type + selectivity status per circuit. When absent, engineer must declare all circuits inline."},
+        {"name": "fault_level_intent_path", "type": "string", "required": false,
+         "description": "Path to upstream fault-level intent JSON. When present, used for per-node Ik\"max + Ik\"min + X/R + Z. When absent, engineer must declare per-node Ifault."}
+      ]
+    },
+    {
+      "group": "engineer-declared-fallbacks",
+      "fields": [
+        {"name": "circuits_declared", "type": "array", "required": false,
+         "description": "Used only when db-layout-rollup intent is absent. Array of {node_id, parent_node_id, designation, load: {ib_a, in_a, phases, load_type, pf}}."},
+        {"name": "t_clear_declared_per_node", "type": "object", "required": false,
+         "description": "Engineer-declared OCPD clearing times per node when not provided by db-layout-rollup selectivity output. Keys = node_id, values = seconds."}
+      ]
+    },
+    {
+      "group": "route-data-per-segment",
+      "fields": [
+        {"name": "length_m", "type": "number", "required": true, "description": "Cable run length per cascade node (m)."},
+        {"name": "installation_method", "type": "enum",
+         "values": ["A1","A2","B1","B2","C","D1","D2","E","F","G","nec_conduit","nec_cable_tray","nec_direct_burial","nec_free_air"],
+         "required": true},
+        {"name": "ambient_c", "type": "integer", "default": 30, "description": "Ambient temperature (°C) at the cable run."},
+        {"name": "grouping_count", "type": "integer", "default": 1, "description": "Number of loaded circuits in proximity (Cg derating input)."},
+        {"name": "in_thermal_insulation", "type": "boolean", "default": false},
+        {"name": "harmonic_content_pct", "type": "number", "default": 0, "description": "Triplen harmonic content as % of fundamental on the neutral conductor; triggers Ch derating when > 15%."},
+        {"name": "terminal_temp_rating_c", "type": "integer", "default": 75, "description": "US jurisdiction only — terminal temp per NEC 110.14(C). Caps ampacity column selection."},
+        {"name": "cable_type_preference", "type": "enum",
+         "values": ["pvc_singles","xlpe","epr","mineral_micc","swa","fp200","cwz","thwn_2","thhn","xhhw_2"],
+         "default_by_context": "pvc_singles for domestic; xlpe for commercial feeders"}
+      ]
+    },
+    {
+      "group": "design-intent-overrides",
+      "fields": [
+        {"name": "vd_target_overrides", "type": "object", "required": false,
+         "description": "Per-circuit Vd limit override when client spec is tighter than jurisdictional default. Keys = node_id, values = limit %."}
+      ]
+    }
   ]
 }
