@@ -1,22 +1,34 @@
 {
-  "$schema": "../../../shared/schemas/core/ontology.schema.json",
-  "ontology": "installation-methods",
-  "version": "1.0.0",
-  "description": "Enumeration of cable installation methods per IEC 60364-5-52 Annex A / BS 7671 App 4 Table 4A2 + NEC Chapter 9 / 392 categories.",
-  "entries": [
-    { "id": "A1", "label": "Insulated conductors in thermally insulated wall (conduit)", "iec_family": "IEC", "source": "BS 7671 App 4 Table 4A2" },
-    { "id": "A2", "label": "Multi-core cable in thermally insulated wall (conduit)", "iec_family": "IEC", "source": "BS 7671 App 4 Table 4A2" },
-    { "id": "B1", "label": "Insulated conductors in conduit on a wall", "iec_family": "IEC", "source": "BS 7671 App 4 Table 4A2" },
-    { "id": "B2", "label": "Multi-core cable in conduit on a wall", "iec_family": "IEC", "source": "BS 7671 App 4 Table 4A2" },
-    { "id": "C",  "label": "Cable clipped direct to wall / surface", "iec_family": "IEC", "source": "BS 7671 App 4 Table 4A2" },
-    { "id": "D1", "label": "Cable in ducts in ground", "iec_family": "IEC", "source": "BS 7671 App 4 Table 4A2" },
-    { "id": "D2", "label": "Cable direct buried in ground", "iec_family": "IEC", "source": "BS 7671 App 4 Table 4A2" },
-    { "id": "E",  "label": "Multi-core cable in free air (perforated tray, ladder, brackets)", "iec_family": "IEC", "source": "BS 7671 App 4 Table 4A2" },
-    { "id": "F",  "label": "Single-core cables touching in free air", "iec_family": "IEC", "source": "BS 7671 App 4 Table 4A2" },
-    { "id": "G",  "label": "Single-core cables spaced ≥1 diameter in free air", "iec_family": "IEC", "source": "BS 7671 App 4 Table 4A2" },
-    { "id": "NEC_conduit",        "label": "NEC raceway/conduit (EMT, RMC, PVC etc.)",      "iec_family": "NEC", "source": "NEC 2023 Chapter 9 + 358/344/352" },
-    { "id": "NEC_cable_tray",     "label": "NEC cable tray (ladder, ventilated, solid)",     "iec_family": "NEC", "source": "NEC 2023 Article 392" },
-    { "id": "NEC_direct_burial",  "label": "NEC direct burial (Type USE / USE-2 / UF)",      "iec_family": "NEC", "source": "NEC 2023 Article 340" },
-    { "id": "NEC_free_air",       "label": "NEC free air / messenger / open wiring",         "iec_family": "NEC", "source": "NEC 2023 Article 310.15(B) free-air ampacity" }
-  ]
+  "_title": "Cable Installation Methods — Multi-Jurisdiction Reference",
+  "_purpose": "Engine-lookupable ontology of installation methods consumed by cable-sizing for ampacity table column selection",
+  "transcribed_at": "2026-05-20",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "installation_methods": {
+    "A1": {"description": "Insulated conductors in conduit in thermally insulated wall", "jurisdiction": ["GB","KE","INT","EU"], "standard": "BS 7671:2018+A2:2022 Reg 521 / IEC 60364-5-52 §521"},
+    "A2": {"description": "Multicore cable in conduit in thermally insulated wall", "jurisdiction": ["GB","KE","INT","EU"], "standard": "BS 7671:2018+A2:2022 Reg 521"},
+    "B1": {"description": "Insulated conductors in conduit on a wall", "jurisdiction": ["GB","KE","INT","EU"], "standard": "BS 7671:2018+A2:2022 Reg 521"},
+    "B2": {"description": "Multicore cable in conduit on a wall", "jurisdiction": ["GB","KE","INT","EU"], "standard": "BS 7671:2018+A2:2022 Reg 521"},
+    "C":  {"description": "Single layer multicore cables clipped direct to a wall", "jurisdiction": ["GB","KE","INT","EU"], "standard": "BS 7671:2018+A2:2022 Reg 521"},
+    "D1": {"description": "Multicore cable in conduit, buried in the ground", "jurisdiction": ["GB","KE","INT","EU"], "standard": "BS 7671:2018+A2:2022 Reg 521"},
+    "D2": {"description": "Multicore cable buried direct in the ground", "jurisdiction": ["GB","KE","INT","EU"], "standard": "BS 7671:2018+A2:2022 Reg 521"},
+    "E":  {"description": "Multicore cable in free air (on cable tray or perforated tray)", "jurisdiction": ["GB","KE","INT","EU"], "standard": "BS 7671:2018+A2:2022 Reg 521"},
+    "F":  {"description": "Single-core cables in free air (touching)", "jurisdiction": ["GB","KE","INT","EU"], "standard": "BS 7671:2018+A2:2022 Reg 521"},
+    "G":  {"description": "Single-core cables in free air (spaced)", "jurisdiction": ["GB","KE","INT","EU"], "standard": "BS 7671:2018+A2:2022 Reg 521"},
+    "nec_conduit":         {"description": "Conductors in conduit (raceway)", "jurisdiction": ["US"], "standard": "NEC 2023 Article 310.16 + Chapter 9 Table 1"},
+    "nec_cable_tray":      {"description": "Cables in cable tray", "jurisdiction": ["US"], "standard": "NEC 2023 Article 392"},
+    "nec_direct_burial":   {"description": "Direct-buried cable (Type USE / UF)", "jurisdiction": ["US"], "standard": "NEC 2023 Article 340 + 339"},
+    "nec_free_air":        {"description": "Conductors in free air (single conductors, exposed)", "jurisdiction": ["US"], "standard": "NEC 2023 Article 310.17"}
+  },
+  "engine_lookup": {
+    "_purpose": "Method → ampacity-table-column lookup by jurisdiction",
+    "by_method": {
+      "B1": {"bs7671_app4_column": "Table 4D1A method B1", "iec_table": "Table B.52.4 method B1"},
+      "C":  {"bs7671_app4_column": "Table 4D2A method C",  "iec_table": "Table B.52.4 method C"},
+      "E":  {"bs7671_app4_column": "Table 4D1A method E",  "iec_table": "Table B.52.4 method E"},
+      "nec_conduit":    {"nec_table": "Table 310.16 raceway"},
+      "nec_cable_tray": {"nec_table": "Article 392 free-air ampacity"}
+    }
+  },
+  "_cross_refs": []
 }

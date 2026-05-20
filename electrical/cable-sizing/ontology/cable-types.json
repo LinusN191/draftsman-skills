@@ -1,84 +1,30 @@
 {
-  "$schema": "../../../shared/schemas/core/ontology.schema.json",
-  "ontology": "cable-types",
-  "version": "1.0.0",
-  "description": "Enumeration of cable construction types referenced by the cable-sizing skill. Maps friendly id → standards-family ampacity table column + canonical cable physical data lookup.",
-  "entries": [
-    {
-      "id": "pvc_singles",
-      "label": "PVC-insulated singles (T&E or singles in conduit)",
-      "insulation": "pvc_70",
-      "construction": "single-core or T&E twin+earth",
-      "typical_jurisdiction": ["GB", "EU", "INT"],
-      "ampacity_table": "BS 7671 App 4 Table 4D1A (singles) / Table 4D2A (T&E)"
-    },
-    {
-      "id": "xlpe_singles",
-      "label": "XLPE-insulated singles",
-      "insulation": "xlpe_90",
-      "construction": "single-core LSZH or PVC sheath",
-      "typical_jurisdiction": ["GB", "EU", "INT"],
-      "ampacity_table": "BS 7671 App 4 Table 4E1A / IEC 60364-5-52 Annex E Method E"
-    },
-    {
-      "id": "swa_cable",
-      "label": "Steel-wire-armoured (SWA)",
-      "insulation": "xlpe_90",
-      "construction": "single-core or multi-core, galvanised steel wire armour",
-      "typical_jurisdiction": ["GB", "EU", "INT"],
-      "ampacity_table": "BS 7671 App 4 Table 4E4A (multi-core SWA) / Table 4D4A (single-core SWA)",
-      "notes": "Armour may be used as CPC per BS 7671 Reg 543.2.4"
-    },
-    {
-      "id": "micc",
-      "label": "Mineral-insulated copper-clad (MICC / Pyro)",
-      "insulation": "mineral_60",
-      "construction": "copper conductors, MgO insulation, copper sheath",
-      "typical_jurisdiction": ["GB", "EU"],
-      "ampacity_table": "BS 7671 App 4 Table 4G1A (60°C bare) / 4G2A (105°C with LSF sheath)"
-    },
-    {
-      "id": "fp200_gold",
-      "label": "FP200 Gold fire-resistant",
-      "insulation": "thermosetting_90",
-      "construction": "BS 7846 F2 fire-resistant copper conductors, mica + glass tape",
-      "typical_jurisdiction": ["GB"],
-      "ampacity_table": "BS 7671 App 4 Table 4E1A column 4 (single-core in air)",
-      "fire_rating": "BS 8434-2 / BS EN 50200 PH 30/60/120"
-    },
-    {
-      "id": "cwz_lsf",
-      "label": "CWZ LSF fire-resistant",
-      "insulation": "thermosetting_90",
-      "construction": "copper conductors, ceramic-forming silicone, LSF sheath",
-      "typical_jurisdiction": ["GB"],
-      "ampacity_table": "BS 7671 App 4 Table 4E1A column 4",
-      "fire_rating": "BS 8434-2 / BS EN 50200 PH 30/60/120"
-    },
-    {
-      "id": "thwn2",
-      "label": "THWN-2 (NEC nylon-jacket thermoplastic)",
-      "insulation": "thwn_75",
-      "construction": "single-core copper or aluminium, 75°C wet / 90°C dry rating",
-      "typical_jurisdiction": ["US"],
-      "ampacity_table": "NEC Table 310.16 75°C copper / 75°C aluminium column"
-    },
-    {
-      "id": "thhn",
-      "label": "THHN (NEC nylon-jacket high-temp)",
-      "insulation": "thhn_90",
-      "construction": "single-core, 90°C dry only",
-      "typical_jurisdiction": ["US"],
-      "ampacity_table": "NEC Table 310.16 90°C column (capped by terminal rating)",
-      "notes": "Ampacity capped by terminal rating per NEC 110.14(C)"
-    },
-    {
-      "id": "xhhw2",
-      "label": "XHHW-2 (NEC cross-linked polyethylene)",
-      "insulation": "xhhw2_90",
-      "construction": "single-core, 90°C wet+dry",
-      "typical_jurisdiction": ["US"],
-      "ampacity_table": "NEC Table 310.16 90°C column (capped by terminal rating)"
+  "_title": "Cable Types — Multi-Jurisdiction Reference",
+  "_purpose": "Engine-lookupable ontology of cable types consumed by cable-sizing, cable-schedule, riser, cable-containment skills",
+  "transcribed_at": "2026-05-20",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "verified-against-source",
+  "cable_types": {
+    "pvc_singles":     {"description": "PVC insulated singles drawn into conduit/trunking", "jurisdiction": ["GB","KE","INT","EU"], "operating_temp_c": 70, "insulation_standard": "BS 6004 / IEC 60227", "max_csa_mm2": 400},
+    "pvc_multicore":   {"description": "PVC insulated multicore cable (T+E / NYM)", "jurisdiction": ["GB","KE","INT","EU"], "operating_temp_c": 70, "insulation_standard": "BS 6004 / IEC 60227"},
+    "xlpe_swa":        {"description": "XLPE insulated steel-wire-armoured cable", "jurisdiction": ["GB","KE","INT","EU"], "operating_temp_c": 90, "insulation_standard": "BS 5467 / IEC 60502-1"},
+    "xlpe_lszh":       {"description": "XLPE insulated LSZH cable", "jurisdiction": ["GB","KE","INT","EU"], "operating_temp_c": 90, "insulation_standard": "BS 7211 / IEC 60332-1"},
+    "epr_swa":         {"description": "EPR insulated steel-wire-armoured cable (offshore/marine grade)", "jurisdiction": ["GB","KE","INT","EU"], "operating_temp_c": 90, "insulation_standard": "BS 6883 / IEC 60092-353"},
+    "mineral_micc":    {"description": "Mineral-insulated copper-covered cable (Pyro)", "jurisdiction": ["GB","KE","INT","EU"], "operating_temp_c": 90, "insulation_standard": "BS EN 60702"},
+    "fp200_lszh":      {"description": "Fire-rated 2-hour cable (FP200 family)", "jurisdiction": ["GB","KE"], "operating_temp_c": 90, "insulation_standard": "BS EN 50200"},
+    "cwz_glass_mica":  {"description": "Fire-rated 3-hour CWZ-class cable", "jurisdiction": ["GB","KE"], "operating_temp_c": 90, "insulation_standard": "BS 6387"},
+    "thwn_2":          {"description": "Thermoplastic heat-resistant water-resistant, 90°C wet/dry", "jurisdiction": ["US"], "operating_temp_c": 90, "insulation_standard": "UL 83"},
+    "thhn":            {"description": "Thermoplastic heat-resistant nylon, 90°C dry / 75°C wet", "jurisdiction": ["US"], "operating_temp_c": 90, "insulation_standard": "UL 83"},
+    "xhhw_2":          {"description": "Cross-linked polyethylene high heat resistant water resistant, 90°C wet/dry", "jurisdiction": ["US"], "operating_temp_c": 90, "insulation_standard": "UL 44"}
+  },
+  "engine_lookup": {
+    "_purpose": "Flat lookup by cable_type → operating_temp + jurisdiction set",
+    "by_type": {
+      "pvc_singles":   {"operating_temp_c": 70, "jurisdiction_set": ["GB","KE","INT","EU"]},
+      "xlpe_swa":      {"operating_temp_c": 90, "jurisdiction_set": ["GB","KE","INT","EU"]},
+      "thwn_2":        {"operating_temp_c": 90, "jurisdiction_set": ["US"]},
+      "xhhw_2":        {"operating_temp_c": 90, "jurisdiction_set": ["US"]}
     }
-  ]
+  },
+  "_cross_refs": []
 }
