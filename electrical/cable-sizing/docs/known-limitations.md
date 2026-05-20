@@ -1,36 +1,37 @@
-# Known Limitations — Cable Sizing v1.0.0
+# Known Limitations — cable-sizing v1.0
 
-What v1.0.0 does NOT cover. These are deliberate scope boundaries, not bugs.
+This document inventories what v1.0 does NOT cover, with the rationale for each deferral and the future-skill or roadmap item that will address it.
 
-## Out of scope (v1.0.0)
+## DC scope deferred
 
-| Topic | Why not | Where it goes |
-|---|---|---|
-| DC circuit sizing (PV strings, EV DCFC, battery interconnects) | Different standards family (IEC 62548, NEC Art 690/706); different fault-current behaviour | Future `dc-cable-sizing` sibling skill |
-| Arc-flash incident-energy + boundary marking | IEEE 1584 / NFPA 70E method is orthogonal to ampacity; different audience | Future `arc-flash` sibling skill |
-| IEC 60287 advanced thermal modelling for buried groups | v1.0.0 uses the standard tables (BS 7671 App 4 / IEC 60364-5-52 Annex E / NEC Ch 9); buried-group thermal modelling is for utility-scale work | Either ship a separate `cable-thermal` calc tool or accept that very large buried groups need a specialist |
-| Communications + data cables (Cat6, fibre) | TIA-568 / ISO/IEC 11801 — completely different standards family | `electrical/data-telecom` (separate skill) |
-| Time-graded protection coordination | OCPD curve coordination — runs on top of fault-level data, not cable sizing | `electrical/db-layout` v1.1 + future `protection-coordination` |
-| Cable joint / termination resistance | Specialist topic; rarely changes the csa selection | Out of scope indefinitely |
-| Underground buried direct-vs-duct thermal interaction | Uses standard installation method D1/D2 ratings only | Specialist thermal study if very large |
+v1.0 covers AC cable sizing only. DC sizing for PV strings, EV DCFC charge points, and battery interconnects requires different equations (single-conductor Vd, different fault analysis, no power-factor) and different standards (IEC 62548 for PV, NEC 690 for US PV, IEC 61851 for EV).
 
-## Inputs the skill cannot derive (require engineer)
+**Roadmap:** future `dc-cable-sizing` sibling skill. v2.0 of cable-sizing reserved for the DC extension OR a breaking IR schema change.
 
-These cannot come from any upstream intent and must be declared per segment:
+## IEC 60287 advanced thermal modelling deferred
 
-- `length_m` — physical cable run length
-- `installation_method` (A1-G / NEC categories)
-- `ambient_c` if non-default
-- `grouping_count` if non-1
-- `in_thermal_insulation` if true
-- `harmonic_content_pct` for IT / VFD / LED-heavy loads
-- `terminal_temp_rating_c` for US jurisdiction (60/75/90°C)
-- `locked_rotor_multiplier` per motor (NEMA class B/C, IEC class AA/AB)
+v1.0 uses standard ampacity tables (BS 7671 App 4 / IEC 60364-5-52 Annex B / NEC Chapter 9) which encapsulate the thermal model. Very large buried cable groups (>3 circuits in same trench, soil thermal resistivity ≠ 1.0 K·m/W, non-standard depth) need IEC 60287 first-principles calculation.
 
-If any are missing for a node, the generator sets `tool_call_pending: true` on that node
-and emits an assumption — it never invents a number.
+**Roadmap:** v1.x or a sibling skill once a real engineering need surfaces.
 
-## Forward-compatibility caveats
+## Arc-flash incident-energy boundary marking deferred
 
-- The emitted `cable-sizing` intent's `circuits[].phase_csa` / `cpc_csa` use `oneOf [number, string]` to accommodate IEC mm² (number) + NEC AWG (string like "1/0"). Downstream consumers must handle both.
-- `cable_od_mm` and `weight_kg_per_m` are looked up at intent-emission time from `shared/standards/electrical/<juris>/cable-types-overview.md` / `chapter9-tables.json`. If a non-standard cable type is selected, these may be `null` and the consumer must look up.
+Arc-flash is conceptually adjacent (both consume fault-level intent) but distinct in math (IEEE 1584:2018 / NFPA 70E:2024). The `arc-flash` skill is already shipped (v1.0 beta) as a separate skill consuming the same fault-level intent.
+
+**Status:** see `electrical/arc-flash/` and `electrical/arc-flash-labelling/`.
+
+## Communications + data cables (Cat6, fibre) excluded
+
+Cat5e/Cat6/Cat6a/Cat7 + multi-mode fibre + OPGW are a different standards family (BS EN 50173 / TIA-568 / ISO/IEC 11801) with different metrics (insertion loss, return loss, NEXT, polarisation mode dispersion) — not Iz/Vd/adiabatic.
+
+**Roadmap:** future `data-telecom-cabling` skill. Not in current pipeline.
+
+## Time-graded protection curve coordination deferred
+
+OCPD selectivity (time-current curve coordination, Type 1/2/3 selectivity per IEC 60947-2) is handled upstream by `db-layout` which emits `selectivity_pending` flags in its rollup intent. cable-sizing consumes the resulting `t_clear` per node from db-layout-rollup; it does NOT run the curve-coordination math itself.
+
+**Roadmap:** future `protection-coordination` skill or extension of `db-layout`.
+
+## v1.0 single-stage only
+
+The skill produces one IR per project in a single pass. v1.1+ may introduce iterative passes (e.g., re-resolve after engineer overrides one circuit, propagate cumulative-Vd cascade effects upstream). For v1.0 the engineer reruns the skill end-to-end.
