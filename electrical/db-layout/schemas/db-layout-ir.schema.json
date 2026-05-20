@@ -10,8 +10,9 @@
     "meta",
     "jurisdiction",
     "board",
-    "incoming",
-    "busbar",
+    "incoming_supply",
+    "main_switch",
+    "spare_ways",
     "circuits",
     "selectivity_results",
     "compliance_summary",
@@ -59,28 +60,31 @@
         "ways_spare":               { "type": "integer", "minimum": 0 }
       }
     },
-    "incoming": {
+    "incoming_supply": {
       "type": "object",
-      "required": ["voltage_v", "phase_arrangement", "supply_rating_a"],
+      "required": ["voltage_v", "phase_arrangement", "supply_rating_a", "fed_from", "supply_class", "declared_pfc_ka"],
+      "additionalProperties": false,
       "properties": {
-        "voltage_v":          { "type": "integer", "enum": [120, 208, 230, 240, 400, 415, 480] },
+        "voltage_v":          { "type": "integer", "enum": [120, 208, 230, 240, 277, 400, 415, 480] },
         "phase_arrangement":  { "enum": ["single_phase", "single_phase_split", "TPN", "TPN_plus_E"] },
-        "supply_rating_a":    { "type": "integer", "minimum": 6, "maximum": 6300 },
+        "supply_rating_a":    { "type": "number", "exclusiveMinimum": 0 },
         "fed_from":           { "type": "string" },
-        "supply_class":       { "enum": ["essential", "non_essential", "ups", "ups_plus_essential"] },
-        "ze_ohm_at_origin":   { "type": "number", "minimum": 0 }
+        "supply_class":       { "enum": ["essential", "non_essential", "life_safety", "ups_backed", "genset_backed"] },
+        "declared_pfc_ka":    { "type": "number", "minimum": 0 }
       }
     },
-    "busbar": {
+    "main_switch": {
       "type": "object",
-      "required": ["rating_a"],
+      "required": ["type", "rating_a", "breaking_capacity_ka"],
+      "additionalProperties": false,
       "properties": {
-        "rating_a":          { "type": "integer", "minimum": 16, "maximum": 6300 },
-        "icw_ka_1s":         { "type": "number", "minimum": 0, "description": "Assembly's rated short-time withstand current (RMS, 1 s) per IEC 61439-1 clause 5.3.6" },
-        "ipk_withstand_ka":  { "type": "number", "minimum": 0, "description": "Assembly's rated peak withstand current per IEC 61439-1 clause 5.3.7 (must be >= prospective ipk_ka)" },
-        "ipk_ka":            { "type": "number", "minimum": 0, "description": "Prospective peak fault current at the busbar (computed: ~ sqrt(2) × Ifault × n where n is the peak factor by X/R)" }
+        "type":                 { "enum": ["switch-disconnector", "MCCB", "isolator", "RCCB", "RCBO", "main_switch_fused"] },
+        "rating_a":             { "type": "number", "exclusiveMinimum": 0 },
+        "breaking_capacity_ka": { "type": "number", "exclusiveMinimum": 0 },
+        "fault_level_a_min":    { "type": "number", "minimum": 0 }
       }
     },
+    "spare_ways": { "type": "integer", "minimum": 0 },
     "circuits": {
       "type": "array",
       "items": {
@@ -157,7 +161,7 @@
       }
     },
     "drawing_notes":     { "type": "array", "items": { "type": "string" } },
-    "drawn_as_symbols":  { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" }, "description": "IEC 60617 symbol_id roll-up — each entry must resolve in symbol-index.json" },
+    "drawn_as_symbols":  { "type": "array", "items": { "oneOf": [ { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" }, { "type": "object" } ] }, "description": "IEC 60617 symbol_id roll-up — each entry must resolve in symbol-index.json (string form) or be a richer object form for jurisdictions with extra symbol metadata" },
     "flags":             { "type": "array", "items": { "type": "string" } },
     "rationale":         { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
   }

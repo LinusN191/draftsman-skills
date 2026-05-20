@@ -19,20 +19,21 @@
     "ways_used": 12,
     "ways_spare": 8
   },
-  "incoming": {
+  "incoming_supply": {
     "voltage_v": 400,
     "phase_arrangement": "TPN",
     "supply_rating_a": 800,
     "fed_from": "MAIN",
     "supply_class": "non_essential",
-    "ze_ohm_at_origin": 0.05
+    "declared_pfc_ka": 55
   },
-  "busbar": {
+  "main_switch": {
+    "type": "MCCB",
     "rating_a": 800,
-    "icw_ka_1s": 36,
-    "ipk_withstand_ka": 80,
-    "ipk_ka": 55
+    "breaking_capacity_ka": 80,
+    "fault_level_a_min": 55000
   },
+  "spare_ways": 8,
   "circuits": [
     { "circuit_id": "F01", "way_module_id": "W1-W3", "designation": "Feeder to Lighting DB-L1", "voltage_class": "LV_power", "downstream_load_kw": 80, "ocpd": { "rating_a": 250, "curve": "D", "type": "MCCB", "breaking_capacity_ka": 36 }, "cable": { "csa_mm2_or_awg": "150mm²", "cores": 5, "length_m": 35 } },
     { "circuit_id": "F02", "way_module_id": "W4-W6", "designation": "Feeder to Small-Power DB-P1", "voltage_class": "LV_power", "downstream_load_kw": 150, "ocpd": { "rating_a": 400, "curve": "D", "type": "MCCB", "breaking_capacity_ka": 36 }, "cable": { "csa_mm2_or_awg": "240mm²", "cores": 5, "length_m": 40 } },

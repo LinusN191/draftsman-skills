@@ -19,20 +19,21 @@
     "ways_used": 9,
     "ways_spare": 21
   },
-  "incoming": {
+  "incoming_supply": {
     "voltage_v": 208,
     "phase_arrangement": "TPN",
     "supply_rating_a": 100,
     "fed_from": "MSP-A breaker (Suite 200 100A 2-pole)",
     "supply_class": "non_essential",
-    "ze_ohm_at_origin": 0.10
+    "declared_pfc_ka": 15
   },
-  "busbar": {
+  "main_switch": {
+    "type": "switch-disconnector",
     "rating_a": 100,
-    "icw_ka_1s": 10,
-    "ipk_withstand_ka": 22,
-    "ipk_ka": 15
+    "breaking_capacity_ka": 22,
+    "fault_level_a_min": 15000
   },
+  "spare_ways": 21,
   "circuits": [
     { "circuit_id": "C01", "way_module_id": "W1", "designation": "Sales floor lighting (LED)",                            "voltage_class": "LV_power",          "downstream_load_kw": 1.6, "ocpd": { "rating_a": 20, "type": "MCB", "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG Cu", "cores": 3, "length_m": 30 } },
     { "circuit_id": "C02", "way_module_id": "W2", "designation": "Counter + customer area receptacles",                   "voltage_class": "LV_power",          "downstream_load_kw": 1.5, "ocpd": { "rating_a": 20, "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG Cu", "cores": 3, "length_m": 25 } },

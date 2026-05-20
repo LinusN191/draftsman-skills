@@ -19,20 +19,21 @@
     "ways_used": 6,
     "ways_spare": 6
   },
-  "incoming": {
+  "incoming_supply": {
     "voltage_v": 230,
     "phase_arrangement": "single_phase",
     "supply_rating_a": 100,
     "fed_from": "MAIN",
     "supply_class": "non_essential",
-    "ze_ohm_at_origin": 0.35
+    "declared_pfc_ka": 7.5
   },
-  "busbar": {
+  "main_switch": {
+    "type": "switch-disconnector",
     "rating_a": 100,
-    "icw_ka_1s": 6,
-    "ipk_withstand_ka": 12,
-    "ipk_ka": 7.5
+    "breaking_capacity_ka": 12,
+    "fault_level_a_min": 7500
   },
+  "spare_ways": 6,
   "circuits": [
     { "circuit_id": "C01", "way_module_id": "W1", "designation": "Ground floor lighting", "voltage_class": "LV_power", "downstream_load_kw": 0.8, "ocpd": { "rating_a": 6, "curve": "B", "type": "MCB", "breaking_capacity_ka": 6 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 18 } },
     { "circuit_id": "C02", "way_module_id": "W2", "designation": "First floor lighting", "voltage_class": "LV_power", "downstream_load_kw": 0.7, "ocpd": { "rating_a": 6, "curve": "B", "type": "MCB", "breaking_capacity_ka": 6 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 22 } },

@@ -19,20 +19,21 @@
     "ways_used": 7,
     "ways_spare": 13
   },
-  "incoming": {
+  "incoming_supply": {
     "voltage_v": 208,
     "phase_arrangement": "TPN",
     "supply_rating_a": 60,
     "fed_from": "MSP-A breaker (Common-area 60A 2-pole)",
     "supply_class": "non_essential",
-    "ze_ohm_at_origin": 0.12
+    "declared_pfc_ka": 15
   },
-  "busbar": {
+  "main_switch": {
+    "type": "switch-disconnector",
     "rating_a": 60,
-    "icw_ka_1s": 10,
-    "ipk_withstand_ka": 22,
-    "ipk_ka": 15
+    "breaking_capacity_ka": 22,
+    "fault_level_a_min": 15000
   },
+  "spare_ways": 13,
   "circuits": [
     { "circuit_id": "C01", "way_module_id": "W1",    "designation": "Parking lot lighting (LED pole-mounted, 240V branch)",   "voltage_class": "LV_power",          "downstream_load_kw": 3.5,  "ocpd": { "rating_a": 30, "type": "MCB",  "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "10 AWG Cu", "cores": 3, "length_m": 60 } },
     { "circuit_id": "C02", "way_module_id": "W2",    "designation": "Façade + signage lighting",                              "voltage_class": "LV_power",          "downstream_load_kw": 1.8,  "ocpd": { "rating_a": 20, "type": "MCB",  "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG Cu", "cores": 3, "length_m": 40 } },
@@ -53,7 +54,7 @@
     "compliant": false,
     "non_compliance_flags": [
       { "message": "NEC 695.4(A) requires the fire pump to be supplied by an independent source — a dedicated direct connection to the utility service, a dedicated on-site generator, or a dedicated feeder tap upstream of the MSP main service disconnect. Routing C05 fire pump branch through the CA-P common-area panelboard does NOT comply with NEC 695.4. RECOMMENDATION: re-route C05 as a dedicated tap from upstream of MSP-A main service disconnect, with its own fire pump controller per NEC 695.6 + dedicated transfer-switch arrangement. The 60A MCCB + 6 AWG Cu feeder remain correct sizing per NEC 695.7 voltage-drop requirements.", "code_clause": "NEC 2023 Article 695.4(A)", "severity": "critical" },
-      { "message": "Bus rating concern: 60A intake busbar + 60A C05 fire pump branch leaves no headroom for other circuits when fire pump is at LRA. NEC 408.30 requires busbar rating ≥ sum of supply OCPDs. After C05 re-routing per the 695.4 flag above, CA-P busbar 60A is appropriate for the remaining ~7 kW common-area load.", "code_clause": "NEC 2023 Article 408.30", "severity": "high" },
+      { "message": "Bus rating concern: 60A intake busbar + 60A C05 fire pump branch leaves no headroom for other circuits when fire pump is at LRA. NEC 408.30 requires busbar rating ≥ sum of supply OCPDs. After C05 re-routing per the 695.4 flag above, CA-P busbar 60A is appropriate for the remaining ~7 kW common-area load.", "code_clause": "NEC 2023 Article 408.30", "severity": "warning" },
       { "message": "GFCI 10mA Class A applied to common-area receptacles C04 per NEC 210.8(B)(7) outdoor + 210.8(B)(8) janitor/utility — outdoor maintenance receptacles are within scope.", "code_clause": "NEC 2023 Article 210.8(B)", "severity": "info" }
     ],
     "assumptions": [

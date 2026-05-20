@@ -19,20 +19,21 @@
     "ways_used": 5,
     "ways_spare": 19
   },
-  "incoming": {
+  "incoming_supply": {
     "voltage_v": 240,
     "phase_arrangement": "single_phase_split",
     "supply_rating_a": 200,
     "fed_from": "MAIN",
     "supply_class": "non_essential",
-    "ze_ohm_at_origin": 0.20
+    "declared_pfc_ka": 15
   },
-  "busbar": {
+  "main_switch": {
+    "type": "switch-disconnector",
     "rating_a": 200,
-    "icw_ka_1s": 10,
-    "ipk_withstand_ka": 22,
-    "ipk_ka": 15
+    "breaking_capacity_ka": 22,
+    "fault_level_a_min": 15000
   },
+  "spare_ways": 19,
   "circuits": [
     { "circuit_id": "C01", "way_module_id": "W1", "designation": "General lighting", "voltage_class": "LV_power", "downstream_load_kw": 1.5, "ocpd": { "rating_a": 20, "type": "MCB", "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG", "cores": 3, "length_m": 25 } },
     { "circuit_id": "C02", "way_module_id": "W2", "designation": "General receptacles", "voltage_class": "LV_power", "downstream_load_kw": 1.5, "ocpd": { "rating_a": 20, "type": "MCB", "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG", "cores": 3, "length_m": 30 } },

@@ -1,6 +1,6 @@
 {
   "$schema": "../../schemas/db-layout-ir.schema.json",
-  "drawing_type": "db_layout",
+  "drawing_type": "db_layout_schedule_and_schematic",
   "version": "1.2.0",
   "meta": {
     "project_id": "intl-comm-tpn-eg02",
@@ -29,8 +29,7 @@
     "type": "switch-disconnector",
     "rating_a": 63,
     "breaking_capacity_ka": 10,
-    "fault_level_a_min": 9000,
-    "_note": "Integrated with ATS — utility/genset transfer via mechanical interlock per IEC 60364-5-56:2018 §552 (4-pole transfer, neutral switched)"
+    "fault_level_a_min": 9000
   },
   "circuits": [
     { "circuit_id": "G01", "way_module_id": "W1", "designation": "ATS controller + signaling (24 VDC supervisory)", "voltage_class": "ELV_control", "downstream_load_kw": 0.5,  "ocpd": { "rating_a": 6,  "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false                                              }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 2  } },
