@@ -115,8 +115,8 @@ or supply system.
 ## How You Think Before Acting
 
 Show all working in the chat before emitting JSON. Engineers review the
-reasoning. Do not emit IR without first walking through Steps 1–12, then
-emit the rationale block per Step 13.
+reasoning. Do not emit IR without first walking through Steps 1–13, then
+emit the rationale block per Step 14.
 
 ### Step 1 — Determine jurisdiction + supply context
 
@@ -331,7 +331,46 @@ source, Zs verification basis, anticipated load estimates).
 Set `compliance_summary.compliant: false` only when at least one
 `critical` flag is present.
 
-### Step 12 — Build the intent-out
+### Step 12 — Resolve Zs from cable-sizing intent (v1.1, hybrid)
+
+If the skill's input declares a consumed `cable-sizing` intent path, resolve every circuit's `verified_zs_ohm` using the intent. This is v1.1 hybrid behaviour: optional consumption, with v1.0 deferral fallback when intent is absent.
+
+**12.1 Detect intent presence.** Check `meta.consumed_intents[]` for an entry with `intent_type == "cable-sizing"`. If absent:
+- Leave `verified_zs_ohm` absent on every circuit
+- Keep `tool_call_pending_for_zs_verification: true` on every circuit
+- Keep `TOOL-CALL-PENDING:calc.zs_loop_impedance` in `flags[]`
+- Skip 12.2 / 12.3 / 12.4
+- Document in rationale §6 (Diversity + Zs): "Zs deferred per WI3 — no cable-sizing intent consumed"
+
+**12.2 Load the intent.** Read the cable-sizing intent JSON from the path declared in the runtime's consumed-intent contract. The intent shape is defined by `electrical/cable-sizing/schemas/cable-sizing-intent.schema.json` — it carries `circuits[]` with per-circuit `node_id`, `length_m`, `r1_plus_r2_milliohm_per_m_at_operating_temp`, and `reactance_milliohm_per_m`.
+
+**12.3 Resolve per-circuit Zs.** For each small-power `circuit` `c`:
+
+1. **Determine lookup key:**
+   - If `c.cable_sizing_node_id` is set, use it as the lookup key (explicit override)
+   - Else compose `lookup_key = f"{parent_db.designation}.{circuit_id}"` (implicit default — e.g., `"CU-MAIN.C01"`)
+2. **Find matching cable-sizing circuit:** Search `cable_sizing_intent.circuits[]` for the entry where `node_id == lookup_key`.
+3. **If found:**
+   - Read `length_m`, `r1_plus_r2_milliohm_per_m_at_operating_temp`, `reactance_milliohm_per_m` from that intent circuit
+   - Compute `Zs_segment_ohm = (r1_plus_r2 / 1000) × length + (reactance / 1000) × length` (mΩ/m → Ω/m)
+   - Compute `verified_zs_ohm = supply_origin.ze_declared_ohm + Zs_segment_ohm`
+   - Set `c.verified_zs_ohm` to the computed value
+   - Set `c.tool_call_pending_for_zs_verification: false`
+4. **If NOT found:** Hard fail — emit a non_compliance_flag with severity=critical naming the unresolved `lookup_key` and the source (explicit or implicit). Do NOT silently fall back to deferral mode. The validator's INV-11 will catch this and block `valid: true`.
+
+**12.4 Drop the pending flag if ALL circuits resolved.** If all circuits in step 12.3 successfully resolved without hard-fail, remove `TOOL-CALL-PENDING:calc.zs_loop_impedance` from `flags[]`. If any circuit hard-failed, the flag stays (since the deferral is not actually resolved for that circuit).
+
+**12.5 Record consumed_intent in meta.** Append to `meta.consumed_intents[]`:
+```json
+{
+  "intent_type": "cable-sizing",
+  "intent_version": "1.0.0",
+  "produced_by": "electrical/cable-sizing"
+}
+```
+(`intent_version` reflects the actual cable-sizing intent semver read from its `intent_version` field; default `"1.0.0"` if absent in the source intent.)
+
+### Step 13 — Build the intent-out
 
 Project the IR down to the intent shape declared by
 `small-power-intent.schema.json`. The intent is the **slim subset**
@@ -436,7 +475,7 @@ the engineer estimate is replaced by the deterministic calc output.
 
 ---
 
-## Step 13 (final) — Emit `rationale` block (WI2)
+## Step 14 (final) — Emit `rationale` block (WI2)
 
 After computing the IR (supply, parent_db, circuits, rooms, drawing_layout,
 compliance_summary), populate a `rationale` block at the IR root. Conforms
@@ -453,7 +492,7 @@ The rationale is the engineer's audit trail. **Do not skip this block.**
 | 3 | Special Locations | Bathroom zones / outdoor / wet_area handling; Part 7-701 routing |
 | 4 | RCD Posture | Type A 30 mA default; Type B exceptions; no-RCD exceptions with citation |
 | 5 | OCPD + Cable | Breaker rating + curve + breaking capacity per circuit; cable csa + material |
-| 6 | Diversity + Zs | `diversified_max_load_a` source per circuit; `tool_call_pending_for_zs_verification` consistency |
+| 6 | Diversity + Zs | `diversified_max_load_a` source per circuit; Zs resolution provenance — when cable-sizing intent is consumed (v1.1 hybrid mode), `verified_zs_ohm` is computed per circuit from `Ze + r1+r2 × length + reactance × length` and `tool_call_pending_for_zs_verification` is flipped to false; when intent absent, the v1.0 deferral pattern holds and `TOOL-CALL-PENDING:calc.zs_loop_impedance` remains in `flags[]` |
 | 7 | Compliance + Assumptions | `non_compliance_flags[]` summary + engineer assumptions |
 | 8 | Drafting References | sheet template + scale + layer naming per jurisdiction |
 
