@@ -29,7 +29,20 @@
         "project_id":    { "type": "string" },
         "skill_version": { "type": "string" },
         "produced_at":   { "type": "string", "format": "date-time" },
-        "consumed_intents": { "type": "array", "items": { "type": "object" }, "default": [] }
+        "consumed_intents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["intent_type", "intent_version", "produced_by"],
+            "additionalProperties": false,
+            "properties": {
+              "intent_type":    { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+              "intent_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+              "produced_by":    { "type": "string" }
+            }
+          },
+          "default": []
+        }
       }
     },
     "jurisdiction": { "enum": ["GB", "EU", "INT", "KE", "US"] },
@@ -63,6 +76,11 @@
         "additionalProperties": false,
         "properties": {
           "circuit_id":  { "type": "string", "pattern": "^C[0-9]{2}$" },
+          "cable_sizing_node_id": {
+            "type": "string",
+            "pattern": "^[A-Z0-9][A-Za-z0-9._-]*$",
+            "description": "Optional explicit reference to a cable-sizing intent circuits[].node_id when consuming cable-sizing intent. When absent, v1.1 falls back to implicit composition f\"{parent_db.designation}.{circuit_id}\"."
+          },
           "designation": { "type": "string" },
           "topology":    { "enum": ["ring", "radial", "dedicated_radial"] },
           "ocpd": {
