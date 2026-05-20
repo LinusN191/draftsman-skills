@@ -10,7 +10,7 @@
 - **4 extra engineering checks**: cumulative Vd, motor-starting Vd, parallel cables, harmonic derating.
 - **WI3 tool-call deferral**: `tool_call_pending: true` per cascade node until runtime ships `calc.cable_ampacity` / `calc.voltage_drop` / `calc.cpc_adiabatic`. All 3 calc contracts exist on disk (REUSED, not created).
 - **Output intent (4 downstream consumers)**: `cable-schedule` (full per-circuit set) + `riser` (feeder + parent_node_id) + `cable-containment` (cable_od_mm + weight_kg_per_m + parallel_count) + `small-power v1.1` (Zs-resolution helper fields).
-- **Zs-resolution helper fields per refresh 2026-05-20**: `r1_plus_r2_milliohm_per_m_at_operating_temp` + `reactance_milliohm_per_m` on every emitted circuit. Lookups from BS 7671 App 4 Tables 4F1-4F3 / IEC 60364-5-52 Table B.52.5 / NEC Chapter 9 Table 9.
+- **Zs-resolution helper fields per refresh 2026-05-20**: `r1_plus_r2_milliohm_per_m_at_operating_temp` + `reactance_milliohm_per_m` on every emitted circuit. Lookups from BS 7671:2018+A2:2022 App 4 Tables 4F1-4F3 / IEC 60364-5-52 Table B.52.5 / NEC 2023 Chapter 9 Table 9.
 - **4 jurisdictional examples**: UK domestic + KE Nairobi commercial + INT commercial with feeders + US industrial with motors.
 - **3 prompts**: generator (14-step) + validator (10 INV) + reviewer (8 D).
 - **9 evals**: 6 WI5 categories + 3 skill-specific (motor-starting-vd, parallel-cables, harmonic-derating).

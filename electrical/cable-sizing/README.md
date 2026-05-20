@@ -1,4 +1,4 @@
-# cable-sizing Skill v1.0
+# cable-sizing Skill v1.0.0
 
 Per-circuit cable selection for every cable run in a project's distribution cascade. Walks the standard csa ladder from below, accepts the smallest size that simultaneously satisfies `Iz ≥ In`, cumulative `Vd ≤ limit`, and the CPC adiabatic equation. Records the binding constraint and walk-up trail per node so tender reviewers can verify every selection without rerunning the calc.
 
