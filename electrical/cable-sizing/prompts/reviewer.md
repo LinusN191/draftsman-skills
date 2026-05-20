@@ -196,7 +196,7 @@ that meets the trigger, and only where it meets the trigger?
 - `selection.binding_constraint` references `harmonic_derating` where the
   derating was the controlling factor in csa selection.
 - Reference cited:
-  - **GB / KE:** `BS 7671:2018+A2:2022 App 4 §5.5` (or Annex G).
+  - **GB / KE:** `BS 7671:2018+A2:2022 App 4 §5.5`.
   - **INT / EU:** `IEC 60364-5-52:2009 Annex E §E.5`.
   - **US:** `NEC 2023 Article 310.15(E)` (neutral-carrying conductor
     counted in fill; harmonic-rich loads).

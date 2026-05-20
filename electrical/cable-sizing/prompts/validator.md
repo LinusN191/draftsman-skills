@@ -46,7 +46,7 @@ All severities are **HARD FAIL** for v1.0 — any failure blocks `valid: true`.
 
 ---
 
-## INV-01: node_id format
+### INV-01: node_id format
 
 **Rule:** Every cascade node has a valid `node_id` matching the pattern
 `^[A-Z0-9][A-Za-z0-9._-]*$`. Path segments separated by `.` denote board
@@ -64,7 +64,7 @@ use only [A-Za-z0-9._-] thereafter
 
 ---
 
-## INV-02: parent_node_id resolves
+### INV-02: parent_node_id resolves
 
 **Rule:** Every non-root cascade node has `parent_node_id` resolvable to
 another `node_id` in the same `cascade[]` array. No dangling pointers, no
@@ -85,7 +85,7 @@ INV-02: Cycle detected in cascade tree: <ID_A> → <ID_B> → ... → <ID_A>
 
 ---
 
-## INV-03: csa on ladder
+### INV-03: csa on ladder
 
 **Rule:** Every `selection.phase_csa` and `selection.cpc_csa` is on the
 standard ladder for the jurisdiction.
@@ -110,7 +110,7 @@ INV-03: Node <NODE_ID> selection.phase_csa=<VALUE> is not on the
 
 ---
 
-## INV-04: Iz ≥ In
+### INV-04: Iz ≥ In
 
 **Rule:** Every `checks.iz_corrected_a ≥ load.in_a` (the OCPD rating, not
 the design current Ib). This is the overload-protection invariant per:
@@ -133,7 +133,7 @@ Iz must be ≥ In per BS 7671 Reg 433.1 / IEC 60364-4-43 §433.1 / NEC 240.4(B)
 
 ---
 
-## INV-05: Cumulative Vd ≤ limit
+### INV-05: Cumulative Vd ≤ limit
 
 **Rule:** Every `checks.vd_cumulative_pct ≤ checks.vd_limit_pct` for the
 load type per jurisdiction.
@@ -158,7 +158,7 @@ INV-05: Node <NODE_ID> vd_cumulative_pct=<X>% exceeds vd_limit_pct=<Y>%
 
 ---
 
-## INV-06: CPC adiabatic
+### INV-06: CPC adiabatic
 
 **Rule:** For every node, EITHER `checks.cpc_adiabatic_pass == true` OR
 `selection.binding_constraint == "cpc_adiabatic"` (indicating the phase
@@ -181,7 +181,7 @@ adiabatic OR the phase must be upsized with binding_constraint set to
 
 ---
 
-## INV-07: Motor checks present
+### INV-07: Motor checks present
 
 **Rule:** Motor nodes (`load.load_type == "motor"`) MUST have
 `checks.motor_starting_vd_pct` populated as a non-null number AND
@@ -209,7 +209,7 @@ MUST carry null for this field
 
 ---
 
-## INV-08: Parallel cable rules
+### INV-08: Parallel cable rules
 
 **Rule:** For every node with `selection.parallel_count >= 2`:
 
@@ -235,7 +235,7 @@ NEC 310.10(H)(1): ≥ 1/0 AWG)
 
 ---
 
-## INV-09: Tool-call consistency
+### INV-09: Tool-call consistency
 
 **Rule:** Every node carries `checks.tool_call_pending`. The truth-table
 shape:
@@ -264,7 +264,7 @@ or runtime calc outputs) regardless of tool_call_pending value
 
 ---
 
-## INV-10: Emitted intent conforms
+### INV-10: Emitted intent conforms
 
 **Rule:**
 

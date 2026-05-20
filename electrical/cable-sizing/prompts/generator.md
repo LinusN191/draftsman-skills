@@ -62,15 +62,15 @@ use the v1.1 annotation form `"adopted by KS 1700"` — it is banned in v1.2+.
 | BS 7671:2018+A2:2022 | Appendix 4 Tables 4F1–4F3 | R + X per metre at operating temp (Zs helper source) |
 | BS 7671:2018+A2:2022 | Appendix 4 §5.1 | Cg grouping correction |
 | BS 7671:2018+A2:2022 | Appendix 4 §5.2 | Ca ambient correction |
-| BS 7671:2018+A2:2022 | Appendix 4 §5.5 + Annex G | Ch harmonic neutral derating (triplen > 15%) |
+| BS 7671:2018+A2:2022 | Appendix 4 §5.5 | Ch harmonic neutral derating (triplen > 15%) |
 | BS 7671:2018+A2:2022 | Appendix 12 | Voltage drop limits — 3% lighting / 5% power |
 | BS 7671:2018+A2:2022 | Reg 433.1 | In ≤ Iz overload protection |
 | BS 7671:2018+A2:2022 | Reg 434.5.2 | Adiabatic equation S² = I²t/k² |
 | BS 7671:2018+A2:2022 | Reg 543.1.3 + Table 54.7 | CPC sizing via adiabatic |
-| BS 7671:2018+A2:2022 | Reg 521 | Installation methods A1/A2/B1/B2/C/D/E/F/G |
+| BS 7671:2018+A2:2022 | Reg 521 | Installation methods A1/A2/B1/B2/C/D1/D2/E/F/G |
 | IEC 60364-5-52:2009 | Annex B Tables B.52.2–B.52.4 | Reference Iz per installation method |
 | IEC 60364-5-52:2009 | Annex B Table B.52.5 | R + X per metre (Zs helper source — INT/EU) |
-| IEC 60364-5-52:2009 | Annex F | Cg + Ca correction factor tables |
+| IEC 60364-5-52:2009 | Annex B Tables B.52.14–B.52.17 | Cg + Ca correction factor tables |
 | IEC 60364-5-52:2009 | Annex G | Voltage drop limits — 3% lighting / 5% power |
 | IEC 60364-5-52:2009 | §523.6 | Parallel cables — each ≥ 50 mm² + symmetric routes |
 | IEC 60364-5-52:2009 | Annex E §E.5 | Harmonic neutral derating |
@@ -120,7 +120,7 @@ The runtime supplies the five input groups declared in
 ### Group 4 — Route data per segment (always required)
 
 - `length_m` — cable run length per cascade node (m).
-- `installation_method` — enum from `A1`..`G` (IEC) or `nec_conduit` /
+- `installation_method` — enum from `A1`, `A2`, `B1`, `B2`, `C`, `D1`, `D2`, `E`, `F`, `G` (IEC) or `nec_conduit` /
   `nec_cable_tray` / `nec_direct_burial` / `nec_free_air` (US).
 - `ambient_c` — ambient temperature (°C) at the cable run (default 30).
 - `grouping_count` — number of loaded circuits in proximity (default 1).
@@ -184,7 +184,7 @@ Read `jurisdiction`. This fixes:
 | Csa ladder | IEC mm² ladder | IEC mm² ladder | AWG / kcmil ladder |
 | Vd limits | App 12 — 3% lighting / 5% power | Annex G — 3% lighting / 5% power | 215.2(A)(1) IN 2 — feeder 3% / total 5% |
 | CPC source | Reg 543 + Table 54.7 | IEC 60364-5-54 §543 | NEC 250.122 |
-| Correction factors | App 4 §5 | Annex F | 310.15(B)(1)(2) + 310.15(B)(3)(a)(c) |
+| Correction factors | App 4 §5 | Annex B (B.52.14–B.52.17) | 310.15(B)(1)(2) + 310.15(B)(3)(a)(c) |
 
 For KE: cite KS 1700 with explicit routing — e.g. `KS 1700:2018 §313 routes
 to BS 7671:2018+A2:2022 App 4 §5.1`. NEVER use the banned annotation form
@@ -283,7 +283,7 @@ For the candidate csa (output of Step 7):
 
 ```
 vd_segment_pct = (Ib × length_m × (r_cosφ + x_sinφ) × phase_factor) /
-                 (voltage_v × 10) × 100
+                 (voltage_v × 1000) × 100
 ```
 
 where `phase_factor = 2` for single-phase, `√3` for three-phase, `r` and
