@@ -6,6 +6,9 @@
   "tool_name": "calc.voltage_drop",
   "formula_reference": "BS 7671:2018+A3 Appendix 4, Tables 4Ab–4F; Appendix 12; IEC 60364-5-52 Annex G",
   "implementation_note": "Voltage drop = mV/A/m × design_current × length / 1000. The mV/A/m value depends on conductor size, insulation, installation method, and circuit type — requires a table lookup against Appendix 4 Tables 4D1A–4F. Loaded circuits also need power-factor and temperature corrections per Appendix 4 §6. Inline LLM math reliably picks the wrong column (PVC vs XLPE, ref method, single-phase vs 3-phase) on 15–20% of representative cases. Must be tool-executed.",
+  "_consuming_skills": [
+    "electrical/cable-sizing (primary, since v1.0.0)"
+  ],
   "inputs": [
     {"id": "csa_mm2",            "unit": "mm²",          "type": "float", "description": "Phase conductor csa"},
     {"id": "conductor_material", "type": "enum", "values": ["copper", "aluminium"]},
