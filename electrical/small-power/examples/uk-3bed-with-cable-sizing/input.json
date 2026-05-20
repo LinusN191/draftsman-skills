@@ -1,0 +1,35 @@
+{
+  "project_id": "uk-3bed-with-cable-sizing-eg01",
+  "jurisdiction": "GB",
+  "site_brief": "Same UK 3-bed dwelling scenario as uk-3bed-dwelling, but with cable-sizing intent now consumed in v1.1 hybrid mode. Demonstrates Zs resolution from cable-sizing intent's r1_plus_r2 + reactance + length per circuit, replacing the v1.0 calc.zs_loop_impedance deferral.",
+  "supply": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.35,
+    "psc_declared_ka": 6.0
+  },
+  "parent_db": {
+    "designation": "CU-MAIN",
+    "pfc_at_busbar_ka": 6.0
+  },
+  "room_briefs": [
+    {"room_id": "kitchen",   "room_type": "kitchen_domestic", "dimensions_m": {"length": 4.5, "width": 3.5, "height": 2.4}, "special_location": null,             "anticipated_loads_kw": 4.5, "socket_count_target": 6},
+    {"room_id": "utility",   "room_type": "utility_domestic", "dimensions_m": {"length": 2.5, "width": 2.0, "height": 2.4}, "special_location": null,             "anticipated_loads_kw": 3.0, "socket_count_target": 3},
+    {"room_id": "dining",    "room_type": "dining_domestic",  "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4}, "special_location": null,             "anticipated_loads_kw": 1.0, "socket_count_target": 4},
+    {"room_id": "lounge",    "room_type": "lounge_domestic",  "dimensions_m": {"length": 5.0, "width": 4.0, "height": 2.4}, "special_location": null,             "anticipated_loads_kw": 1.5, "socket_count_target": 6},
+    {"room_id": "bedroom-1", "room_type": "bedroom_domestic", "dimensions_m": {"length": 4.0, "width": 3.5, "height": 2.4}, "special_location": null,             "anticipated_loads_kw": 0.8, "socket_count_target": 4},
+    {"room_id": "bedroom-2", "room_type": "bedroom_domestic", "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4}, "special_location": null,             "anticipated_loads_kw": 0.6, "socket_count_target": 3},
+    {"room_id": "bedroom-3", "room_type": "bedroom_domestic", "dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.4}, "special_location": null,             "anticipated_loads_kw": 0.6, "socket_count_target": 3},
+    {"room_id": "bathroom",  "room_type": "bathroom_domestic","dimensions_m": {"length": 2.5, "width": 2.0, "height": 2.4}, "special_location": "bathroom_zone_3","anticipated_loads_kw": 0.5, "socket_count_target": 1}
+  ],
+  "design_intent": {
+    "preferred_topology": "auto_by_jurisdiction",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "sheet_size": "A1",
+    "drawing_scale": "1:50"
+  },
+  "consumed_intents_paths": {
+    "cable-sizing": "electrical/small-power/examples/uk-3bed-with-cable-sizing/consumed-cable-sizing-intent.json"
+  }
+}
