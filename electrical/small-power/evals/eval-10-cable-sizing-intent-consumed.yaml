@@ -1,0 +1,36 @@
+name: eval-10-cable-sizing-intent-consumed
+skill: electrical/small-power
+description: |
+  Skill-specific: v1.1 cable-sizing intent consumption. Verifies that the new
+  uk-3bed-with-cable-sizing example resolves verified_zs_ohm on every circuit
+  AND flips tool_call_pending_for_zs_verification to false AND drops the
+  TOOL-CALL-PENDING:calc.zs_loop_impedance flag.
+category: skill_specific
+input_fixtures:
+  - ../examples/uk-3bed-with-cable-sizing/output.json
+
+checks:
+  - assertion: "any(i.intent_type == 'cable-sizing' for i in output.meta.consumed_intents)"
+    description: meta.consumed_intents[] includes a cable-sizing entry
+    severity: critical
+    matches_inv: INV-11
+
+  - assertion: "all(c.get('verified_zs_ohm') is not None and c['verified_zs_ohm'] > 0 for c in output.circuits)"
+    description: Every circuit has verified_zs_ohm populated and positive
+    severity: critical
+
+  - assertion: "all(c['tool_call_pending_for_zs_verification'] == False for c in output.circuits)"
+    description: Every circuit has tool_call_pending_for_zs_verification == false
+    severity: critical
+
+  - assertion: "'TOOL-CALL-PENDING:calc.zs_loop_impedance' not in output.flags"
+    description: TOOL-CALL-PENDING:calc.zs_loop_impedance flag dropped (Zs resolved by intent)
+    severity: critical
+
+  - assertion: "all(c['verified_zs_ohm'] < 1.5 for c in output.circuits)"
+    description: All circuits within UK Type-B MCB 32A Zs_max=1.44Ω per BS 7671:2018+A2:2022 Table 41.3 (sanity check; specific OCPD-aware checks left to validator INV-08)
+    severity: critical
+
+  - assertion: "next((i.intent_version for i in output.meta.consumed_intents if i.intent_type == 'cable-sizing'), None) == '1.0.0'"
+    description: cable-sizing intent version is 1.0.0 (matches consumed-cable-sizing-intent.json declared semver)
+    severity: critical
