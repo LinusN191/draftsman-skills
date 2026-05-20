@@ -1,42 +1,52 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "electrical/cable-sizing/schemas/cable-sizing-intent.schema.json",
-  "title": "Cable Sizing Intent (downstream slim subset)",
-  "description": "Stable subset of the cable-sizing IR consumed by cable-schedule (formal deliverable), riser (LV riser drawings), and cable-containment (tray/conduit fill). Forward-compat: optional fields may be added freely; required-field changes require a major intent_version bump.",
+  "title": "Cable-Sizing Intent (Downstream-Facing)",
+  "description": "Stable subset of the cable-sizing IR. Consumed by cable-schedule (tabulated deliverable), riser (parent-child rendering), cable-containment (tray/conduit fill), and small-power v1.1 (Zs resolution via table lookup). Union superset of all 4 consumers' field sets. Forward-compat: optional fields may be added; required-field changes require a major intent_version bump.",
   "type": "object",
-  "required": ["intent_kind", "version", "circuits"],
+  "required": ["project_id", "circuits"],
   "additionalProperties": false,
   "properties": {
-    "intent_kind": { "const": "cable-sizing" },
-    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "project_id":     { "type": "string" },
+    "intent_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
     "circuits": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["node_id", "designation", "phase_csa", "cpc_csa", "material", "insulation", "cable_type", "parallel_count", "length_m", "installation_method"],
+        "required": [
+          "node_id",
+          "designation",
+          "phase_csa_mm2_or_awg",
+          "cpc_csa_mm2_or_awg",
+          "material",
+          "insulation",
+          "cable_type",
+          "parallel_count",
+          "length_m",
+          "installation_method",
+          "r1_plus_r2_milliohm_per_m_at_operating_temp",
+          "reactance_milliohm_per_m"
+        ],
         "additionalProperties": false,
         "properties": {
-          "node_id": { "type": "string" },
-          "parent_node_id": { "type": ["string", "null"] },
-          "designation": { "type": "string" },
-          "phase_csa": { "oneOf": [{ "type": "number" }, { "type": "string" }] },
-          "cpc_csa": { "oneOf": [{ "type": "number" }, { "type": "string" }] },
-          "material": { "enum": ["copper", "aluminium"] },
-          "insulation": { "enum": ["pvc_70", "xlpe_90", "epr_90", "thermosetting_90", "mineral_60", "mineral_105", "thwn_75", "thhn_90", "xhhw2_90"] },
-          "cable_type": { "type": "string" },
-          "parallel_count": { "type": "integer", "minimum": 1, "maximum": 6 },
-          "cable_od_mm": { "type": "number", "exclusiveMinimum": 0 },
-          "weight_kg_per_m": { "type": "number", "exclusiveMinimum": 0 },
-          "length_m": { "type": "number", "exclusiveMinimum": 0 },
-          "installation_method": { "type": "string" },
-          "phases": { "enum": ["single", "three", "three_plus_n"] },
-          "ib_a": { "type": "number", "minimum": 0 },
-          "in_a": { "type": "number", "minimum": 0 }
+          "node_id":                                       { "type": "string", "pattern": "^[A-Z0-9][A-Za-z0-9._-]*$" },
+          "parent_node_id":                                { "type": "string" },
+          "designation":                                   { "type": "string" },
+          "phase_csa_mm2_or_awg":                          { "type": "string" },
+          "cpc_csa_mm2_or_awg":                            { "type": "string" },
+          "material":                                      { "enum": ["copper", "aluminium"] },
+          "insulation":                                    { "enum": ["pvc_70", "xlpe_90", "epr_90", "mineral_micc_90", "fp200_90", "cwz_90", "thwn_2_90", "thhn_90", "xhhw_2_90"] },
+          "cable_type":                                    { "enum": ["pvc_singles", "pvc_multicore", "xlpe_swa", "xlpe_lszh", "epr_swa", "mineral_micc", "fp200_lszh", "cwz_glass_mica", "thwn_2", "thhn", "xhhw_2"] },
+          "parallel_count":                                { "type": "integer", "minimum": 1, "maximum": 6 },
+          "cable_od_mm":                                   { "type": "number", "exclusiveMinimum": 0 },
+          "weight_kg_per_m":                               { "type": "number", "exclusiveMinimum": 0 },
+          "length_m":                                      { "type": "number", "exclusiveMinimum": 0 },
+          "installation_method":                           { "enum": ["A1","A2","B1","B2","C","D1","D2","E","F","G","nec_conduit","nec_cable_tray","nec_direct_burial","nec_free_air"] },
+          "r1_plus_r2_milliohm_per_m_at_operating_temp":   { "type": "number", "exclusiveMinimum": 0, "description": "Combined phase + CPC resistance per metre at the cable's operating temperature (PVC 70°C / XLPE 90°C / NEC 90°C). Source: BS 7671:2018+A2:2022 App 4 Tables 4F1-4F3 / IEC 60364-5-52 Table B.52.5 / NEC 2023 Chapter 9 Table 9." },
+          "reactance_milliohm_per_m":                      { "type": "number", "minimum": 0, "description": "Cable reactance per metre. Same source tables. Negligible (<0.1 mΩ/m) for ≤16 mm²; material above 25 mm²." }
         }
       }
-    },
-    "produced_by_skill_version": { "type": "string" },
-    "tool_call_pending": { "type": "boolean", "description": "true if any cascade node was sized with deferred calc tools" }
+    }
   }
 }
