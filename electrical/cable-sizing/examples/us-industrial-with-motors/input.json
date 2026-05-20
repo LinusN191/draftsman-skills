@@ -1,13 +1,69 @@
 {
-  "$schema": "../../schemas/inputs.schema.json",
-  "project_id": "us-ind-cs-eg03",
+  "project_id": "us-industrial-eg01",
   "jurisdiction": "US",
-  "project_supply": { "voltage_v": 480, "phases": "three", "frequency_hz": 60, "earthing_system": "NEC_grounded" },
-  "terminal_temp_rating_c": 75,
-  "consumed_intents_present": [],
+  "site_brief": "US 480V 3-phase industrial facility per NEC 2023. 1200A service entrance (NEMA Cu THWN-2 parallel) → MCC-1 with aluminium feeder + 500 hp motor M01 (NEMA Design B, parallel feeder, motor-starting Vd check) + 200 hp pump M02 + 20A receptacle branch. Demonstrates AWG/kcmil sizing + NEC 110.14(C) terminal temperature limitation + Article 310.10(H)(1) parallel ≥1/0 AWG + NEMA MG-1 motor LRA logic. All citations lead with NEC 2023 Article form.",
+  "supply": {
+    "voltage_v": 480,
+    "phase_arrangement": "TPN",
+    "system_type": "TN-C-S"
+  },
   "circuits_declared": [
-    { "id": "SERVICE",       "parent_node_id": null,         "node_kind": "service_entrance", "designation": "Service entrance 1200A — copper THWN-2 in cable tray", "load": { "ib_a": 1050, "in_a": 1200, "load_type": "mixed", "phases": "three" }, "route": { "length_m": 35, "installation_method": "NEC_cable_tray", "ambient_c": 30, "grouping_count": 1 }, "cable_type_preference": { "material": "copper", "insulation": "thwn_75" } },
-    { "id": "SERVICE.F01",   "parent_node_id": "SERVICE",    "node_kind": "feeder",           "designation": "Aluminium feeder to MCC — XHHW-2",                     "load": { "ib_a": 320,  "in_a": 400,  "load_type": "power", "phases": "three" }, "route": { "length_m": 45, "installation_method": "NEC_cable_tray", "ambient_c": 30, "grouping_count": 1 }, "cable_type_preference": { "material": "aluminium", "insulation": "xhhw2_90" } },
-    { "id": "MCC.M01",       "parent_node_id": "SERVICE.F01","node_kind": "final_circuit",    "designation": "500 hp chiller motor DOL",                              "load": { "ib_a": 590,  "in_a": 700,  "load_type": "motor", "phases": "three", "pf": 0.85, "locked_rotor_multiplier": 6.0 }, "route": { "length_m": 30, "installation_method": "NEC_conduit",     "ambient_c": 30, "grouping_count": 1 }, "cable_type_preference": { "material": "copper", "insulation": "thwn_75" } }
-  ]
+    {
+      "node_id": "SERVICE.1200A",
+      "node_kind": "service_entrance",
+      "designation": "1200A 480V 3-phase service entrance",
+      "load": {"ib_a": 950, "in_a": 1200, "phases": "three_phase_3wire", "load_type": "mixed", "pf": 0.85},
+      "route": {"length_m": 3, "installation_method": "nec_cable_tray", "ambient_c": 30, "grouping_count": 1, "terminal_temp_rating_c": 75},
+      "harmonic_content_pct": 0,
+      "parent_node_ifault_ka": 35.0,
+      "t_clear_s": 0.05
+    },
+    {
+      "node_id": "MCC-1.F01",
+      "parent_node_id": "SERVICE.1200A",
+      "node_kind": "feeder",
+      "designation": "Feeder service entrance → MCC-1",
+      "load": {"ib_a": 320, "in_a": 400, "phases": "three_phase_3wire", "load_type": "mixed", "pf": 0.85},
+      "route": {"length_m": 30, "installation_method": "nec_cable_tray", "ambient_c": 30, "grouping_count": 1, "terminal_temp_rating_c": 75},
+      "harmonic_content_pct": 0,
+      "parent_node_ifault_ka": 32.0,
+      "t_clear_s": 0.05
+    },
+    {
+      "node_id": "MCC-1.M01",
+      "parent_node_id": "MCC-1.F01",
+      "node_kind": "final_circuit",
+      "designation": "500 hp DOL motor M01",
+      "load": {"ib_a": 590, "in_a": 700, "phases": "three_phase_3wire", "load_type": "motor", "pf": 0.85, "load_class_motor": {"rated_kw": 373, "lra_factor": 6.0, "design_code": "NEMA_B"}},
+      "route": {"length_m": 25, "installation_method": "nec_conduit", "ambient_c": 30, "grouping_count": 1, "terminal_temp_rating_c": 75},
+      "harmonic_content_pct": 0,
+      "parent_node_ifault_ka": 28.0,
+      "t_clear_s": 0.1
+    },
+    {
+      "node_id": "MCC-1.M02",
+      "parent_node_id": "MCC-1.F01",
+      "node_kind": "final_circuit",
+      "designation": "200 hp pump motor M02",
+      "load": {"ib_a": 240, "in_a": 300, "phases": "three_phase_3wire", "load_type": "motor", "pf": 0.85, "load_class_motor": {"rated_kw": 149, "lra_factor": 6.0, "design_code": "NEMA_B"}},
+      "route": {"length_m": 18, "installation_method": "nec_conduit", "ambient_c": 30, "grouping_count": 1, "terminal_temp_rating_c": 75},
+      "harmonic_content_pct": 0,
+      "parent_node_ifault_ka": 29.0,
+      "t_clear_s": 0.1
+    },
+    {
+      "node_id": "MCC-1.F02.B01",
+      "parent_node_id": "MCC-1.F01",
+      "node_kind": "final_circuit",
+      "designation": "20A 120V receptacle branch",
+      "load": {"ib_a": 16, "in_a": 20, "phases": "single", "load_type": "power_general", "pf": 1.0},
+      "route": {"length_m": 22, "installation_method": "nec_conduit", "ambient_c": 30, "grouping_count": 1, "terminal_temp_rating_c": 75},
+      "harmonic_content_pct": 0,
+      "parent_node_ifault_ka": 10.0,
+      "t_clear_s": 0.4
+    }
+  ],
+  "design_intent": {
+    "cable_type_preference": "thwn_2"
+  }
 }
