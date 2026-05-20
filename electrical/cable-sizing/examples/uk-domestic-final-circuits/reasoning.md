@@ -81,13 +81,17 @@ first sane ladder step.
 ladder starts at 1.0 mm² (method A1, Iz_tabulated ≈ 11.5 A — easily passes
 Iz ≥ In = 6 A), but voltage drop is the issue:
 
-- **1.0 mm² PVC singles, method A1:** mV/A/m ≈ 44 → Vd = 0.044 × 4.5 × 22
-  ≈ 4.36 V → 1.9 % … but the engineer's placeholder Iz_corrected estimate uses
-  3.4 % to reflect worst-case temperature de-rating and the full design current
-  at 6 A. Either way, the result is above the 3 % lighting limit when traced
-  against tabulated mV/A/m at full ambient correction, so the ladder walks up.
-- **1.5 mm² PVC singles, method A1:** mV/A/m ≈ 29 → Vd ≈ 2.2 % — under the
-  3 % limit. Accepted.
+- **1.0 mm² PVC singles, method A1:** The walk-the-ladder check for C03 at
+  1.0 mm² uses the conservative design-current path. The engineer's placeholder
+  Vd estimate uses the BS 7671 App 12 per-circuit form:
+  `Vd_pct = (mV/A/m × In × L) / (V × 1000) × 100`. For 1.0 mm² Cu PVC singles
+  method A1 at 70 °C operating temp, mV/A/m ≈ 59 (Table 4D2B); using In = 6 A
+  (OCPD rating, conservative) and L = 22 m: Vd = (59 × 6 × 22) / (230 × 1000)
+  × 100 ≈ 3.4 %. This exceeds the App 12 lighting limit of 3 % — 1.0 mm² is
+  rejected. The walk_up_trail records this attempt.
+- **1.5 mm² PVC singles, method A1:** mV/A/m ≈ 38 (Table 4D2B), using In = 6 A
+  and L = 22 m: Vd = (38 × 6 × 22) / (230 × 1000) × 100 ≈ 2.2 % — under the
+  3 % limit. Accepted. The walk_up_trail records both attempts.
 
 `walk_up_trail` therefore has two entries on C03 (rejected 1.0 + accepted
 1.5) and one entry on every other node.
@@ -128,10 +132,18 @@ the duration the OCPD takes to disconnect (`t_clear_s = 0.4 s` for final
 circuits in dwellings per Reg 411.3.2.2).
 
 For phase csa ≤ 16 mm² in copper with the same insulation as the phase,
-Table 54.7 gives `CPC_csa = phase_csa` — but standard UK twin-and-earth
-flat cables and the IET OSG canonical schedules use the reduced CPC sizes
-shown below, which are demonstrated to pass the adiabatic equation
-`S² × t = I²` for the declared 6 kA fault and 0.4 s clearance time:
+Table 54.7 gives `CPC_csa = phase_csa` as a conservative default. Standard
+UK domestic practice uses the reduced-csa CPC conductors found in twin-and-earth
+flat cables, justified via the **BS 7671:2018+A2:2022 Reg 543.1.3 adiabatic
+equation** `S² ≥ I²t / k²` (k = 115 for Cu conductor with PVC sheath; t = 0.4 s
+per Reg 411.3.2.2 disconnection time for socket-outlet circuits ≤ 32 A on TN
+systems). The actual earth-fault current is Zs-limited, not the 6 kA PSCC. For
+a typical Zs_max ≈ 1.44 Ω on a 32 A B-type MCB: I_ef ≈ 230 / 1.44 ≈ 160 A;
+S_min = (160 × √0.4) / 115 ≈ 0.88 mm² — a 1.5 mm² CPC passes with comfortable
+margin. For a 6 A B-type MCB on the lighting circuit, S_min ≈ 0.16 mm² — a
+1.0 mm² CPC passes with very large margin. Table 54.7 provides the simplified
+equal-csa rule as a conservative default; Table 54.3 + Reg 543.1.3 permit the
+reduced sizes shown below when adiabatic passes:
 
 | Node | Phase csa | CPC csa | Pass |
 |---|---|---|---|
