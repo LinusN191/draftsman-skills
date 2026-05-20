@@ -1,36 +1,38 @@
-rule: correction_factor_stack
-version: 1.0.0
-description: |
-  Order of correction factor application + interactions between factors. Wrong application
-  order or compounding mistakes are the dominant Iz failure mode (15-20% of inline LLM math).
-  All factor lookups deferred to calc.cable_ampacity tool; this rule describes the contract.
-stack:
-  - factor: Ca
-    name: ambient_temperature
-    applies_when: "ambient_c != 30"
-    source: "BS 7671:2018 App 4 Tables 4B1/4B2 / IEC 60364-5-52 Table A.52.14 / NEC 310.15(B)(2)(a)"
-  - factor: Cg
-    name: grouping
-    applies_when: "grouping_count > 1 OR multiple_circuits_same_containment"
-    source: "BS 7671:2018 App 4 Tables 4C1-4C5 / IEC 60364-5-52 Tables E.52.17-21 / NEC 310.15(C)"
-  - factor: Ci
-    name: thermal_insulation
-    applies_when: "in_thermal_insulation == true"
-    source: "BS 7671:2018 Reg 523.7 Table 52.2 / IEC 60364-5-52 §523.7"
-  - factor: Ch
-    name: harmonic_derating
-    applies_when: "harmonic_content_pct > 15 AND circuit_type == 'three_phase_four_wire'"
-    source: "BS 7671:2018 App 4 §5.5 / IEC 60364-5-52 Annex E §E.5 / NEC 310.15(E)"
-combination_rule:
-  iec_default: "Iz_corrected = Iz_tabulated × Ca × Cg × Ci × Ch (multiplicative)"
-  larger_of_overrides:
-    - condition: "Ci AND Cg both apply for the same cable section"
-      action: "use the LARGER reduction (smaller factor), not their product, per BS 7671 App 4 Note to Table 4C1"
-nec_specifics:
-  terminal_temp_cap:
-    description: "After Ca × Cg, cap Iz by terminal_temp_rating_c per NEC 110.14(C)"
-    rule: |
-      terminals_60c: Iz_corrected = min(Iz_corrected, ampacity_60c_column)
-      terminals_75c: Iz_corrected = min(Iz_corrected, ampacity_75c_column)
-      terminals_90c: Iz_corrected = min(Iz_corrected, ampacity_90c_column)
-    source: "NEC 2023 110.14(C)"
+# Correction factor stack rules for cable-sizing
+# Consumed by generator (Step 6) + calc.cable_ampacity
+
+rules:
+  - id: CF-01
+    jurisdiction: [all]
+    standard_reference: "BS 7671:2018+A2:2022 App 4 / IEC 60364-5-52 Annex B / NEC 2023 Article 310.15"
+    rule_text: "Stack order: Ca × Cg × Ci × Ch — applied multiplicatively to Iz_tabulated"
+    applies_to: cascade_node
+    enforcement: algorithm_step
+
+  - id: CF-02
+    jurisdiction: [GB, KE, INT, EU]
+    standard_reference: "BS 7671:2018+A2:2022 App 4 §4 / IEC 60364-5-52:2009 Annex B Table B.52.14"
+    rule_text: "Ca (ambient correction) per declared ambient_c"
+    applies_to: cascade_node
+    enforcement: algorithm_step
+
+  - id: CF-03
+    jurisdiction: [GB, KE, INT, EU]
+    standard_reference: "BS 7671:2018+A2:2022 App 4 Table 4C / IEC 60364-5-52:2009 Annex B Table B.52.17"
+    rule_text: "Cg (grouping correction) per declared grouping_count"
+    applies_to: cascade_node
+    enforcement: algorithm_step
+
+  - id: CF-04
+    jurisdiction: [GB, KE, INT, EU]
+    standard_reference: "BS 7671:2018+A2:2022 App 4 §4"
+    rule_text: "Ci = 0.5 when in_thermal_insulation == true"
+    applies_to: cascade_node
+    enforcement: algorithm_step
+
+  - id: CF-05
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 310.15(B)(1) + (B)(3)(a)"
+    rule_text: "US correction = Ca × Cg (separate ambient and grouping multipliers)"
+    applies_to: cascade_node
+    enforcement: algorithm_step

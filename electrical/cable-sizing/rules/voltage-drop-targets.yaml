@@ -1,36 +1,45 @@
-rule: voltage_drop_targets
-version: 1.0.0
-description: |
-  Vd cumulative limits by jurisdiction + load type. Engineer may override per circuit
-  when client spec is tighter (never looser). vd_cumulative_pct is summed up the parent
-  chain — not per-segment.
-defaults_by_jurisdiction:
-  GB:
-    lighting: 3.0
-    power: 5.0
-    motor_running: 5.0
-    source: "BS 7671:2018 Appendix 12"
-  EU:
-    lighting: 3.0
-    power: 5.0
-    motor_running: 5.0
-    source: "IEC 60364-5-52:2009 §G"
-  INT:
-    lighting: 3.0
-    power: 5.0
-    motor_running: 5.0
-    source: "IEC 60364-5-52:2009 §G"
-  US:
-    feeder_only: 3.0
-    feeder_plus_branch: 5.0
-    motor_running: 5.0
-    source: "NEC 2023 215.2(A)(1) Informational Note 2"
-override_policy:
-  engineer_may_tighten: true
-  engineer_may_loosen: false
-  per_circuit: true
-  fail_if_looser: "raise warning + adopt the standard limit; record engineer-requested value in assumptions"
-limit_source_field:
-  required: true
-  format: "<standard> <clause> <load_type>"
-  example: "BS 7671:2018 App 12 lighting circuits"
+# Voltage drop targets per jurisdiction
+# Consumed by generator (Step 8) + validator (INV-05)
+
+rules:
+  - id: VD-01
+    jurisdiction: [GB]
+    standard_reference: "BS 7671:2018+A2:2022 Appendix 12"
+    rule_text: "Lighting circuits Vd ≤ 3% of nominal voltage"
+    applies_to: cascade_node
+    enforcement: hard_fail
+
+  - id: VD-02
+    jurisdiction: [GB]
+    standard_reference: "BS 7671:2018+A2:2022 Appendix 12"
+    rule_text: "Power circuits Vd ≤ 5% of nominal voltage"
+    applies_to: cascade_node
+    enforcement: hard_fail
+
+  - id: VD-03
+    jurisdiction: [KE]
+    standard_reference: "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 Appendix 12"
+    rule_text: "KE limits follow BS 7671 routing — lighting ≤ 3%, power ≤ 5%"
+    applies_to: cascade_node
+    enforcement: hard_fail
+
+  - id: VD-04
+    jurisdiction: [INT, EU]
+    standard_reference: "IEC 60364-5-52:2009 §G"
+    rule_text: "INT/EU: lighting ≤ 3%, power ≤ 5%"
+    applies_to: cascade_node
+    enforcement: hard_fail
+
+  - id: VD-05
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 215.2(A)(1) Informational Note 2"
+    rule_text: "US feeder-only ≤ 3%, combined feeder+branch ≤ 5%"
+    applies_to: cascade_node
+    enforcement: hard_fail
+
+  - id: VD-06
+    jurisdiction: [all]
+    standard_reference: "Engineer override"
+    rule_text: "vd_target_overrides[node_id] takes precedence when client spec is tighter than jurisdictional default"
+    applies_to: cascade_node
+    enforcement: algorithm_step

@@ -1,18 +1,28 @@
-validator: cascade_tree_integrity
-version: 1.0.0
-description: |
-  Structural integrity checks over the cascade tree. Caught early these prevent
-  downstream consumers (intent emitters, validators) from blowing up on broken refs.
-checks:
-  - id: unique_node_ids
-    description: "Every cascade[].node_id appears exactly once in the array"
-    expression: "len(distinct(cascade[].node_id)) == len(cascade)"
-    severity: error
-  - id: parent_refs_resolve
-    description: "Every non-null parent_node_id points to a node in cascade"
-    expression: "for each node n where n.parent_node_id != null: exists m in cascade where m.node_id == n.parent_node_id"
-    severity: error
-  - id: no_cycles
-    description: "No cycles in parent-child graph; tree is a DAG with unique root(s)"
-    expression: "topological_sort(cascade) succeeds"
-    severity: error
+# Cascade tree integrity validation
+# Checked by validator (cascade structural integrity)
+
+validations:
+  - id: TREE-01
+    description: "All node_ids unique"
+    rule: "len({n.node_id for n in cascade}) == len(cascade)"
+    enforcement: hard_fail
+    fail_message: "TREE-01: duplicate node_id detected — every cascade node must have a unique node_id"
+
+  - id: TREE-02
+    description: "Every non-root node's parent_node_id resolves to another node_id in cascade"
+    rule: "for each non-root node: node.parent_node_id in {n.node_id for n in cascade}"
+    enforcement: hard_fail
+    matches_inv: INV-02
+    fail_message: "TREE-02: orphan parent_node_id — node {node_id} references parent {parent_node_id} not present in cascade"
+
+  - id: TREE-03
+    description: "No cycles in parent chain"
+    rule: "for each node: parent_node_id chain is acyclic (no node is its own ancestor)"
+    enforcement: hard_fail
+    fail_message: "TREE-03: cycle detected in cascade — node {node_id} appears in its own ancestor chain"
+
+  - id: TREE-04
+    description: "Exactly one or more root nodes (no parent_node_id field or null)"
+    rule: "at least one node has no parent_node_id (root)"
+    enforcement: hard_fail
+    fail_message: "TREE-04: no root node found — cascade requires at least one node without parent_node_id"

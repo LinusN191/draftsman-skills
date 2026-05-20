@@ -1,35 +1,38 @@
-rule: harmonic_derating_trigger
-version: 1.0.0
-description: |
-  Apply harmonic derating + neutral oversizing when 3rd-harmonic content exceeds 15% on
-  three-phase four-wire circuits. Engineer must declare harmonic_content_pct for known
-  problem loads.
-trigger:
-  all_of:
-    - "harmonic_content_pct > 15"
-    - "circuit_type == 'three_phase_four_wire'"
-behaviour_by_jurisdiction:
-  GB:
-    ch_lookup: "BS 7671:2018 Appendix 4 §5.5 Table 4Ab"
-    neutral_sizing:
-      h3_above_15_below_33: "neutral csa = phase csa (standard 4-wire)"
-      h3_above_33: "neutral csa = phase csa AND derate phase per Ch (Reg 523.6.3)"
-  EU:
-    ch_lookup: "IEC 60364-5-52:2009 Annex E §E.5"
-    neutral_sizing: "same as GB"
-  INT:
-    ch_lookup: "IEC 60364-5-52:2009 Annex E §E.5"
-    neutral_sizing: "same as GB"
-  US:
-    ch_lookup: "NEC 2023 310.15(E) + Informational Note Table 310.15(B)(4)(a)"
-    neutral_sizing:
-      h3_above_15_below_50: "neutral csa = phase csa"
-      h3_above_50: "neutral counted as current-carrying conductor for Cg per NEC 310.15(E)(3); full neutral per NEC 220.61(C)(2)"
-engineer_must_declare_for:
-  - "IT loads, server rooms, data centres"
-  - "LED lighting installations >10 kW aggregate"
-  - "VFD-fed motors (especially 6-pulse drives)"
-  - "UPS rectifier input feeders"
-  - "Welding equipment"
-default_harmonic_content_pct: 0
-binding_constraint_token: "harmonic_derating"
+# Harmonic derating trigger rules
+# Consumed by generator (Step 12) + validator INV-09/reviewer D-7
+
+rules:
+  - id: HARM-01
+    jurisdiction: [all]
+    standard_reference: "BS 7671 App 4 §5.5 / IEC 60364-5-52 Annex E / NEC 310.15(E)"
+    rule_text: "Trigger when harmonic_content_pct > 15 AND load.phases == 'three_phase_4wire'"
+    applies_to: cascade_node
+    enforcement: algorithm_step
+
+  - id: HARM-02
+    jurisdiction: [GB]
+    standard_reference: "BS 7671:2018+A2:2022 App 4 §5.5 Table 4Ab"
+    rule_text: "Ch lookup GB per Table 4Ab — derating depends on h3 content"
+    applies_to: cascade_node
+    enforcement: algorithm_step
+
+  - id: HARM-03
+    jurisdiction: [INT, EU]
+    standard_reference: "IEC 60364-5-52:2009 Annex E §E.5"
+    rule_text: "Ch lookup INT/EU per Annex E §E.5"
+    applies_to: cascade_node
+    enforcement: algorithm_step
+
+  - id: HARM-04
+    jurisdiction: [GB, KE, INT, EU]
+    standard_reference: "BS 7671:2018+A2:2022 Reg 523.6.3 / IEC 60364-5-52:2009 §523.6.3"
+    rule_text: "Neutral conductor upsized to phase csa when h3 > 33%"
+    applies_to: cascade_node
+    enforcement: hard_fail
+
+  - id: HARM-05
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 310.15(E) + Article 220.61(C)(2)"
+    rule_text: "Ch lookup US per Article 310.15(E); neutral upsized to phase csa when h3 > 50% per Article 220.61(C)(2)"
+    applies_to: cascade_node
+    enforcement: hard_fail

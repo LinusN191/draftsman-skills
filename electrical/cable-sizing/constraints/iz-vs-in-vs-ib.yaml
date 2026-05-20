@@ -1,22 +1,10 @@
-constraint: iz_vs_in_vs_ib
-version: 1.0.0
-description: |
-  Ib (design current) ≤ In (OCPD rating) ≤ Iz (corrected cable ampacity). Foundational
-  overcurrent-protection coordination rule. Failure means the cable can't carry the load
-  and/or the breaker won't trip before cable damage.
-triggered_for: "every cascade node with selection completed"
-checks:
-  - id: ib_le_in
-    expression: "load.ib_a <= load.in_a"
-    severity: error
-    message: "Ib ({ib_a}A) exceeds In ({in_a}A) — load larger than protective device rating; respec breaker."
-  - id: in_le_iz
-    expression: "load.in_a <= checks.iz_corrected_a"
-    severity: error
-    message: "In ({in_a}A) exceeds Iz_corrected ({iz_corrected_a}A) — cable cannot carry sustained load at its rating; upsize csa."
-  - id: positive_headroom
-    expression: "checks.iz_corrected_a > load.in_a * 1.00"
-    severity: info
-    message: "Marginal headroom: Iz_corrected only {iz_corrected_a}A vs In {in_a}A — verify no concurrent thermal stress."
-source: "BS 7671:2018 Reg 433.1.1 / IEC 60364-4-43 §433.1 / NEC 240.4(B)"
-deferred_to_tool: "calc.cable_ampacity computes iz_corrected_a; checks run on the result"
+# Iz vs In vs Ib constraints for cable-sizing IR
+# Hard checks enforced by validator INV-04
+
+constraints:
+  - id: IZ-01
+    description: "Ib ≤ In ≤ Iz on every cascade node"
+    rule: "for each node: node.load.ib_a ≤ node.load.in_a ≤ node.checks.iz_corrected_a"
+    enforcement: hard_fail
+    matches_inv: INV-04
+    standards: ["BS 7671:2018+A2:2022 Reg 433.1", "IEC 60364-4-43:2017 §433.1", "NEC 2023 Article 240.4(B)"]

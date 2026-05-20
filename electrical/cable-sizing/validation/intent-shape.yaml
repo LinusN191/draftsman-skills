@@ -1,22 +1,26 @@
-validator: intent_shape
-version: 1.0.0
-description: |
-  Emitted cable-sizing intent satisfies its own schema AND covers the downstream
-  consumers' (cable-schedule, riser, cable-containment) required fields.
-checks:
-  - id: validates_against_schema
-    description: "intent JSON validates against schemas/cable-sizing-intent.schema.json"
-    severity: error
-  - id: every_final_circuit_present
-    description: "Every cascade node with node_kind == 'final_circuit' has exactly one matching intent.circuits[] entry by node_id"
-    expression: |
-      for each node n in cascade where n.node_kind == 'final_circuit':
-        count(intent.circuits where node_id == n.node_id) == 1
-    severity: error
-  - id: downstream_required_fields_present
-    description: |
-      Forward-compat: each intent.circuits[] entry contains every field declared 'required' by
-      cable-schedule / riser / cable-containment consumed_intent shapes. Currently:
-      {node_id, designation, phase_csa, cpc_csa, material, insulation, cable_type, parallel_count, length_m, installation_method}.
-    expression: "every required field present and non-null on every circuit entry"
-    severity: error
+# Intent shape validation per refresh §2 (extended for Zs helper fields)
+# Checked by validator INV-10
+
+validations:
+  - id: INT-01
+    description: "Emitted cable-sizing intent validates against cable-sizing-intent.schema.json"
+    rule: "JSONSchema.validate(intent, cable-sizing-intent.schema.json)"
+    enforcement: hard_fail
+    matches_inv: INV-10
+
+  - id: INT-02
+    description: "Every final-circuit cascade node appears in intent.circuits[]"
+    rule: "{node.node_id for node in cascade if node.node_kind == 'final_circuit'} ⊆ {c.node_id for c in intent.circuits}"
+    enforcement: hard_fail
+    matches_inv: INV-10
+    fail_message: "INT-02: final-circuit cascade node {node_id} missing from intent.circuits[]"
+
+  - id: INT-03
+    description: "Every intent.circuits[] entry has Zs-resolution helper fields populated (per refresh §1)"
+    rule: |
+      for each c in intent.circuits:
+        c.r1_plus_r2_milliohm_per_m_at_operating_temp > 0
+        AND c.reactance_milliohm_per_m >= 0
+    enforcement: hard_fail
+    matches_inv: INV-10
+    fail_message: "INT-03: intent circuit {node_id} missing or invalid r1_plus_r2 / reactance Zs helper fields"
