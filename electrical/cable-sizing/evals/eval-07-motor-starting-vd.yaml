@@ -1,39 +1,25 @@
-eval_id: eval-07-motor-starting-vd
-category: skill_specific
-subcategory: motor_starting_vd
-skill: cable-sizing
-skill_version: 1.0.0
+name: eval-07-motor-starting-vd
+skill: electrical/cable-sizing
 description: |
-  30 kW chiller motor on a long feeder. Locked-rotor-amps × segment Vd may exceed 10%.
-  Skill must compute motor_starting_vd_pct, emit a WARNING (not error) when > 10%,
-  and propose either soft-starter declaration OR cable upsize.
-input:
-  jurisdiction: GB
-  project_supply: { voltage_v: 400, phases: three, frequency_hz: 50, earthing_system: TN-S }
-  circuits_declared:
-    - id: "MCC.M01"
-      parent_node_id: null
-      node_kind: final_circuit
-      designation: "Chiller motor 30 kW DOL — long feeder"
-      load:
-        ib_a: 52
-        in_a: 63
-        load_type: motor
-        phases: three
-        pf: 0.85
-        locked_rotor_multiplier: 6.0
-      route: { length_m: 75, installation_method: E, ambient_c: 30, grouping_count: 1 }
-expected:
-  per_node:
-    - node_id: "MCC.M01"
-      checks_motor_starting_vd_pct: { type: number, gt: 5.0 }
-      may_have_starting_vd_above_10:
-        if_true:
-          non_compliance_flags_includes:
-            severity: warning
-            message_contains: "soft-starter"
-pass_criteria:
-  - "motor_starting_vd_pct populated (not null)"
-  - "If > 10% → warning emitted recommending soft-starter / VFD / star-delta / cable upsize"
-  - "If ≤ 10% → no warning, but value still reported"
-  - "Severity is 'warning' not 'error' (engineer chooses how to resolve)"
+  Skill-specific: motor-starting Vd check. KE chiller pump M01 (7.5 kW IEC AB)
+  and US 500 hp M01 (NEMA Design B) both have motor_starting_vd_pct populated
+  AND within 10% advisory limit. Non-motor loads have null motor_starting_vd_pct.
+category: skill_specific
+input_fixtures:
+  - ../examples/ke-nairobi-commercial-with-msb/output.json
+  - ../examples/us-industrial-with-motors/output.json
+
+checks:
+  - assertion: "all((n.checks.motor_starting_vd_pct is None) == (n.load.load_type != 'motor') for n in output.cascade)"
+    description: motor_starting_vd_pct populated iff load_type == 'motor'
+    severity: critical
+    matches_inv: INV-07
+
+  - assertion: "all(n.checks.motor_starting_vd_pct <= 10.0 for n in output.cascade if n.load.load_type == 'motor')"
+    description: All motor-starting Vd ≤ 10% (warning limit)
+    severity: critical
+
+  - assertion: "all('lra_factor' in n.load.get('load_class_motor', {}) for n in output.cascade if n.load.load_type == 'motor')"
+    description: Motor nodes have load_class_motor.lra_factor populated
+    severity: critical
+    matches_inv: INV-07

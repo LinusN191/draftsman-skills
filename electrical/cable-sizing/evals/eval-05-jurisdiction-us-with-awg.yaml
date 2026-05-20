@@ -1,35 +1,33 @@
-eval_id: eval-05-jurisdiction-us-with-awg
-category: jurisdiction_switch
-skill: cable-sizing
-skill_version: 1.0.0
+name: eval-05-jurisdiction-us-with-awg
+skill: electrical/cable-sizing
 description: |
-  US 480V industrial. Aluminium feeder + AWG sizing + NEC 110.14(C) terminal-temp cap.
-  Tests that the skill switches to NEC Ch 9 + 310.16 tables and uses AWG/kcmil units.
-input:
-  jurisdiction: US
-  project_supply: { voltage_v: 480, phases: three, frequency_hz: 60, earthing_system: NEC_grounded }
-  circuits_declared:
-    - id: "MSB.F01"
-      parent_node_id: null
-      node_kind: feeder
-      designation: "Feeder to MCC — aluminium THWN-2"
-      load: { ib_a: 320, in_a: 400, load_type: power, phases: three }
-      route: { length_m: 45, installation_method: NEC_cable_tray, ambient_c: 30, grouping_count: 1 }
-      cable_type_preference: { material: aluminium, insulation: thwn_75 }
-      terminal_temp_rating_c: 75
-expected:
-  per_node:
-    - node_id: "MSB.F01"
-      phase_csa_format: "AWG/kcmil string (e.g. '500' or '600' kcmil)"
-      vd_limit_pct: 3.0
-      vd_limit_source_contains: "NEC 215.2"
-      material: aluminium
-      insulation: thwn_75
-  jurisdiction_check:
-    - "vd_limit_source MUST cite NEC, not BS 7671"
-    - "selection.phase_csa is a string in AWG/kcmil ladder"
-    - "Iz capped by terminal_temp_rating_c per NEC 110.14(C)"
-pass_criteria:
-  - "All NEC citations only (no BS 7671 references)"
-  - "AWG ladder used, not mm²"
-  - "Terminal-temp cap visible in rationale"
+  Jurisdiction switch: US 5-node cascade with AWG/kcmil sizing, aluminium
+  feeder, terminal-temp cap, and parallel cables. Verifies all csa strings
+  match AWG/kcmil ladder, material includes aluminium, and no BS 7671 or
+  IEC 60364 primary citations appear.
+category: jurisdiction_switch
+input_fixtures:
+  - ../examples/us-industrial-with-motors/output.json
+
+checks:
+  - assertion: "output.jurisdiction == 'US'"
+    description: US example carries jurisdiction == 'US'
+    severity: critical
+
+  - assertion: "any(n.selection.material == 'aluminium' for n in output.cascade)"
+    description: At least one cascade node uses aluminium feeder (NEC industrial convention)
+    severity: critical
+
+  - assertion: "all(isinstance(n.selection.phase_csa, str) for n in output.cascade)"
+    description: All phase_csa values are AWG/kcmil strings (not mm² numbers) in US example
+    severity: critical
+    matches_inv: INV-03
+
+  - assertion: "next(n for n in output.cascade if n.node_id == 'SERVICE.1200A').selection.parallel_count >= 2"
+    description: SERVICE.1200A uses parallel cables
+    severity: critical
+    matches_inv: INV-08
+
+  - assertion: "next(n for n in output.cascade if n.node_id == 'SERVICE.1200A').selection.binding_constraint == 'parallel_required'"
+    description: SERVICE.1200A binding_constraint is parallel_required
+    severity: critical

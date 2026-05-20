@@ -1,0 +1,50 @@
+name: eval-01-uk-domestic-happy-path
+skill: electrical/cable-sizing
+description: |
+  WI5 happy-path coverage for the UK domestic example. Verifies a complete,
+  spec-conformant IR: schema validates, all 10 INV pass, 5 cascade nodes,
+  C03 lighting Vd-cumulative binding, every node tool_call_pending: true.
+category: happy_path
+input_fixtures:
+  - ../examples/uk-domestic-final-circuits/output.json
+
+checks:
+  - assertion: "schema_valid(output, 'electrical/cable-sizing/schemas/cable-sizing-ir.schema.json')"
+    description: cable-sizing-ir.schema.json strict validation passes
+    severity: critical
+
+  - assertion: "output.jurisdiction == 'GB'"
+    description: UK example carries jurisdiction == 'GB'
+    severity: critical
+
+  - assertion: "len(output.cascade) == 5"
+    description: Five cascade nodes in UK domestic example
+    severity: critical
+
+  - assertion: "next(n for n in output.cascade if n.node_id == 'CU-MAIN.C03').selection.binding_constraint == 'vd_cumulative'"
+    description: C03 lighting circuit binds on vd_cumulative
+    severity: critical
+    matches_inv: INV-05
+
+  - assertion: "all(n.checks.tool_call_pending == True for n in output.cascade)"
+    description: Every cascade node has tool_call_pending true (WI3 deferral)
+    severity: critical
+    matches_inv: INV-09
+
+  - assertion: "all(n.checks.iz_corrected_a >= n.load.in_a for n in output.cascade)"
+    description: Iz ≥ In for every node (INV-04)
+    severity: critical
+    matches_inv: INV-04
+
+  - assertion: "all(n.checks.vd_cumulative_pct <= n.checks.vd_limit_pct for n in output.cascade)"
+    description: Cumulative Vd ≤ limit for every node (INV-05)
+    severity: critical
+    matches_inv: INV-05
+
+  - assertion: "40 <= len(output.rationale.chat_summary) <= 500"
+    description: chat_summary 40-500 chars (WI2 + rationale schema)
+    severity: critical
+
+  - assertion: "len(output.rationale.sections) == 8"
+    description: 8 rationale sections
+    severity: critical

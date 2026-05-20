@@ -1,39 +1,29 @@
-eval_id: eval-06-rationale-block
-category: rationale_block
-skill: cable-sizing
-skill_version: 1.0.0
+name: eval-06-rationale-block
+skill: electrical/cable-sizing
 description: |
-  Verify the rationale block conforms to WI2: exactly 8 sections + chat_summary ≤ 200 words
-  + every decision cites a rule + code_clause. Reuses the eval-02 input as the scenario.
-input:
-  reuse_from: "electrical/cable-sizing/evals/eval-02-tpn-commercial-feeders-cumulative-vd.yaml"
-expected:
-  rationale:
-    chat_summary:
-      type: string
-      max_length_chars: 1200
-      max_words: 200
-    sections:
-      length: 8
-      titles_in_order:
-        - "Input Ingestion"
-        - "Cascade Topology"
-        - "Jurisdictional Defaults"
-        - "Source + Fault Context"
-        - "CSA Selection Walk-up Summary"
-        - "Special Checks"
-        - "Compliance + Selectivity"
-        - "Assumptions + Tool-call Status"
-      every_decision_has:
-        - label
-        - summary
-        - rule
-        - code_clause
-    walk_up_trail_per_node:
-      every_rejection_names_check: true
-      binding_constraint_consistent_with_walk_up_trail: true
-pass_criteria:
-  - "rationale.sections.length == 8 exactly"
-  - "Every section is non-empty (or explicitly says 'none triggered')"
-  - "Every decision cites a rule + clause"
-  - "chat_summary ≤ 200 words and frames cascade scale + binding constraints + flags"
+  Rationale block compliance across all 4 jurisdictional examples. Verifies
+  WI2 contract: 8-section structure, chat_summary 40-500 chars, all section
+  summaries ≤400 chars (rationale schema enforces).
+category: rationale_block
+input_fixtures:
+  - ../examples/uk-domestic-final-circuits/output.json
+  - ../examples/ke-nairobi-commercial-with-msb/output.json
+  - ../examples/intl-commercial-with-feeders/output.json
+  - ../examples/us-industrial-with-motors/output.json
+
+checks:
+  - assertion: "len(output.rationale.sections) == 8"
+    description: All examples have 8 rationale sections
+    severity: critical
+
+  - assertion: "40 <= len(output.rationale.chat_summary) <= 500"
+    description: chat_summary 40-500 chars on every example
+    severity: critical
+
+  - assertion: "all(len(s.summary) <= 400 for s in output.rationale.sections)"
+    description: Every section.summary ≤ 400 chars (rationale schema cap)
+    severity: critical
+
+  - assertion: "[s.title for s in output.rationale.sections] == ['Project Supply + Jurisdiction', 'Cascade Tree + Topology', 'Walk-the-Ladder Approach + Binding Constraints', 'Cumulative Voltage Drop', 'CPC Adiabatic Sizing', 'Motor Starting + Parallel Cables + Harmonic Derating', 'Compliance + Assumptions + Tool-Call Pending', 'Cross-Skill Contract']"
+    description: 8 section titles match exact order
+    severity: critical
