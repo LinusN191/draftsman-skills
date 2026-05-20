@@ -29,7 +29,7 @@ IR emits `earthing_system: { system_type: "TN-C-S", code_clause: "IEC 60364-4-41
 
 ## Step 4 — MET location
 MSB cupboard, ground-floor plant room — co-located with the main switchboard for short bond runs.
-- `supply_bond_type: "utility_pen_bond"` (TN-C-S → PEN bonded at service transformer).
+- `supply_bond_type: "consumer_electrode_only"` — schema canonical value for a non-DNO, non-TN-S supply bond; used here for the INT TN-C-S scenario where the utility PEN bond is external to the installation and the schema's three-value taxonomy (`dno_pme_bond` / `consumer_electrode_only` / `tn_s_separate_pe`) maps this case to `consumer_electrode_only` as the closest non-GB, non-TN-S option.
 - Main earthing conductor 70 mm² Cu sized per IEC 60364-5-54 §542.3 against the heaviest fault-path requirement (F02 240mm² line → 120mm² CPC).
 
 ## Step 5 — Electrode arrangement
