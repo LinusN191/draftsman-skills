@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/schematic/schemas/schematic-intent.schema.json",
+  "title": "Schematic Intent (v1.0)",
+  "description": "Terminal intent emitted by the schematic skill for downstream consumption (future tender-report / om-manual). Carries summary of schematic_type, sheet identification, jurisdiction, and high-level item count for cross-document reference.",
+  "type": "object",
+  "required": ["intent_type", "intent_version", "jurisdiction", "schematic_type", "sheet_id", "summary"],
+  "additionalProperties": false,
+  "properties": {
+    "intent_type":    { "const": "schematic" },
+    "intent_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "jurisdiction":   { "enum": ["GB", "EU", "INT", "US", "KE"] },
+    "schematic_type": {
+      "enum": [
+        "control_motor_starter",
+        "control_changeover",
+        "control_sequence",
+        "protection_overcurrent",
+        "protection_differential",
+        "protection_motor",
+        "protection_busbar"
+      ]
+    },
+    "sheet_id":   { "type": "string" },
+    "summary": {
+      "type": "object",
+      "required": ["item_count", "connection_count"],
+      "additionalProperties": false,
+      "properties": {
+        "item_count":        { "type": "integer", "minimum": 1 },
+        "connection_count":  { "type": "integer", "minimum": 0 },
+        "protection_settings_count": { "type": "integer", "minimum": 0 },
+        "ansi_codes_present": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

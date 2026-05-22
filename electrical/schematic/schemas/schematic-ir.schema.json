@@ -1,0 +1,168 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/schematic/schemas/schematic-ir.schema.json",
+  "title": "Schematic IR (v1.0)",
+  "description": "Intermediate Representation for the schematic skill. One IR document per schematic sheet. Carries items[] (devices), connections[] (wires), labels[], protection_settings[] (protection only) or sequence_of_operation (control only), and rationale.",
+  "type": "object",
+  "required": [
+    "drawing_type",
+    "version",
+    "meta",
+    "jurisdiction",
+    "schematic_type",
+    "sheet",
+    "items",
+    "connections",
+    "labels",
+    "compliance_summary",
+    "rationale"
+  ],
+  "properties": {
+    "drawing_type": { "const": "schematic" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "meta": {
+      "type": "object",
+      "required": ["project_id", "skill_version", "produced_at"],
+      "additionalProperties": false,
+      "properties": {
+        "project_id":    { "type": "string" },
+        "skill_version": { "type": "string" },
+        "produced_at":   { "type": "string", "format": "date-time" },
+        "consumed_intents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["intent_type", "intent_version", "produced_by"],
+            "additionalProperties": false,
+            "properties": {
+              "intent_type":    { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+              "intent_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+              "produced_by":    { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "jurisdiction": { "enum": ["GB", "EU", "INT", "US", "KE"] },
+    "schematic_type": {
+      "enum": [
+        "control_motor_starter",
+        "control_changeover",
+        "control_sequence",
+        "protection_overcurrent",
+        "protection_differential",
+        "protection_motor",
+        "protection_busbar"
+      ]
+    },
+    "sheet": {
+      "type": "object",
+      "required": ["sheet_id", "title", "page_of"],
+      "additionalProperties": false,
+      "properties": {
+        "sheet_id": { "type": "string", "pattern": "^[A-Z][A-Z0-9-]{0,15}$" },
+        "title": { "type": "string" },
+        "page_of": { "type": "string", "pattern": "^\\d+/\\d+$" }
+      }
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["item_id", "device_class", "bs_en_60617_ref"],
+        "additionalProperties": false,
+        "properties": {
+          "item_id":   { "type": "string", "pattern": "^[A-Z][A-Z0-9_-]{1,15}$" },
+          "device_class": {
+            "enum": [
+              "contactor", "overload", "isolator", "motor", "thermistor", "ptc",
+              "idmt_relay", "instantaneous_relay", "differential_relay", "ref_relay",
+              "distance_relay", "lockout_relay", "uv_relay", "ov_relay",
+              "breaker", "ct", "vt",
+              "terminal", "wire_reference", "lamp", "push_button", "selector_switch",
+              "timer", "counter", "latch", "logic_gate", "signal_converter"
+            ]
+          },
+          "bs_en_60617_ref":  { "type": "string" },
+          "ieee_std_315_ref": { "type": "string" },
+          "rating":           { "type": "string" },
+          "ansi_function_code": { "type": "string", "pattern": "^[0-9]{1,3}[A-Z]?(T|B|N|G)?$" }
+        }
+      }
+    },
+    "connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["wire_id", "from_item", "to_item", "function"],
+        "additionalProperties": false,
+        "properties": {
+          "wire_id":         { "type": "string", "pattern": "^W[0-9]+$" },
+          "from_item":       { "type": "string" },
+          "from_terminal":   { "type": "string" },
+          "to_item":         { "type": "string" },
+          "to_terminal":     { "type": "string" },
+          "conductor_csa_mm2": { "type": "number" },
+          "voltage_class":   { "enum": ["control_LV", "aux_DC", "aux_AC", "power_LV", "power_HV"] },
+          "function":        { "type": "string" }
+        }
+      }
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["anchor_item", "text", "kind"],
+        "additionalProperties": false,
+        "properties": {
+          "anchor_item": { "type": "string" },
+          "text":        { "type": "string" },
+          "kind":        { "enum": ["device_tag", "sequence_note", "terminal_number", "wire_number"] }
+        }
+      }
+    },
+    "protection_settings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["ansi_code", "device_id"],
+        "additionalProperties": false,
+        "properties": {
+          "ansi_code": { "type": "string", "pattern": "^[0-9]{1,3}[A-Z]?(T|B|N|G)?$" },
+          "device_id": { "type": "string" },
+          "set_value": { "type": ["number", "string"] },
+          "set_unit":  { "type": "string" },
+          "time_curve": { "type": "string" },
+          "ct_ratio":  { "type": "string" },
+          "tool_call_pending": { "type": "boolean" }
+        }
+      }
+    },
+    "sequence_of_operation": { "type": "string" },
+    "compliance_summary": {
+      "type": "object",
+      "required": ["compliant"],
+      "additionalProperties": false,
+      "properties": {
+        "compliant":             { "type": "boolean" },
+        "non_compliance_flags":  { "type": "array", "items": { "type": "object" } },
+        "assumptions":           { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "drawn_as_symbols": { "type": "array", "items": { "type": "object" } },
+    "flags": { "type": "array", "items": { "type": "object" } },
+    "rationale": { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
+  },
+  "additionalProperties": false,
+  "oneOf": [
+    {
+      "properties": { "schematic_type": { "pattern": "^control_" } },
+      "required": ["sequence_of_operation"]
+    },
+    {
+      "properties": { "schematic_type": { "pattern": "^protection_" } },
+      "required": ["protection_settings"]
+    }
+  ]
+}
