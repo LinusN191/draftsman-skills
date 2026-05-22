@@ -17,7 +17,8 @@
     "ip_rating": "IP2X",
     "ways_total": 24,
     "ways_used": 5,
-    "ways_spare": 19
+    "ways_spare": 19,
+    "board_kind": "main_switchboard"
   },
   "incoming_supply": {
     "voltage_v": 240,
@@ -35,21 +36,113 @@
   },
   "spare_ways": 19,
   "circuits": [
-    { "circuit_id": "C01", "way_module_id": "W1", "designation": "General lighting", "voltage_class": "LV_power", "downstream_load_kw": 1.5, "ocpd": { "rating_a": 20, "type": "MCB", "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG", "cores": 3, "length_m": 25 } },
-    { "circuit_id": "C02", "way_module_id": "W2", "designation": "General receptacles", "voltage_class": "LV_power", "downstream_load_kw": 1.5, "ocpd": { "rating_a": 20, "type": "MCB", "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "12 AWG", "cores": 3, "length_m": 30 } },
-    { "circuit_id": "C03", "way_module_id": "W3", "designation": "Reach-in cooler dedicated", "voltage_class": "LV_power", "downstream_load_kw": 3, "ocpd": { "rating_a": 30, "type": "MCB", "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "10 AWG", "cores": 3, "length_m": 18 } },
-    { "circuit_id": "C04", "way_module_id": "W4-W5", "designation": "RTU HVAC unit", "voltage_class": "LV_power", "downstream_load_kw": 11, "ocpd": { "rating_a": 60, "type": "MCCB", "breaking_capacity_ka": 10 }, "cable": { "csa_mm2_or_awg": "6 AWG", "cores": 4, "length_m": 35 } }
+    {
+      "circuit_id": "C01",
+      "way_module_id": "W1",
+      "designation": "General lighting",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 1.5,
+      "ocpd": {
+        "rating_a": 20,
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "cable": {
+        "csa_mm2_or_awg": "12 AWG",
+        "cores": 3,
+        "length_m": 25
+      }
+    },
+    {
+      "circuit_id": "C02",
+      "way_module_id": "W2",
+      "designation": "General receptacles",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 1.5,
+      "ocpd": {
+        "rating_a": 20,
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "cable": {
+        "csa_mm2_or_awg": "12 AWG",
+        "cores": 3,
+        "length_m": 30
+      }
+    },
+    {
+      "circuit_id": "C03",
+      "way_module_id": "W3",
+      "designation": "Reach-in cooler dedicated",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 3,
+      "ocpd": {
+        "rating_a": 30,
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "cable": {
+        "csa_mm2_or_awg": "10 AWG",
+        "cores": 3,
+        "length_m": 18
+      }
+    },
+    {
+      "circuit_id": "C04",
+      "way_module_id": "W4-W5",
+      "designation": "RTU HVAC unit",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 11,
+      "ocpd": {
+        "rating_a": 60,
+        "type": "MCCB",
+        "breaking_capacity_ka": 10
+      },
+      "cable": {
+        "csa_mm2_or_awg": "6 AWG",
+        "cores": 4,
+        "length_m": 35
+      }
+    }
   ],
   "selectivity_results": [
-    { "upstream_id": "MAIN", "downstream_id": "C01", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Art 240.4" },
-    { "upstream_id": "MAIN", "downstream_id": "C02", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Art 240.4" },
-    { "upstream_id": "MAIN", "downstream_id": "C03", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Art 240.4" },
-    { "upstream_id": "MAIN", "downstream_id": "C04", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "NEC 2023 Art 240.4" }
+    {
+      "upstream_id": "MAIN",
+      "downstream_id": "C01",
+      "source": "tool_call_pending",
+      "tool_call_pending": true,
+      "code_clause": "NEC 2023 Art 240.4"
+    },
+    {
+      "upstream_id": "MAIN",
+      "downstream_id": "C02",
+      "source": "tool_call_pending",
+      "tool_call_pending": true,
+      "code_clause": "NEC 2023 Art 240.4"
+    },
+    {
+      "upstream_id": "MAIN",
+      "downstream_id": "C03",
+      "source": "tool_call_pending",
+      "tool_call_pending": true,
+      "code_clause": "NEC 2023 Art 240.4"
+    },
+    {
+      "upstream_id": "MAIN",
+      "downstream_id": "C04",
+      "source": "tool_call_pending",
+      "tool_call_pending": true,
+      "code_clause": "NEC 2023 Art 240.4"
+    }
   ],
   "compliance_summary": {
     "compliant": true,
     "non_compliance_flags": [
-      { "message": "GFCI not required for this layout per NEC 210.8 (verify with AHJ if any receptacle within 6 ft of a sink during tenant fit-out).", "code_clause": "NEC 2023 Art 210.8", "severity": "info" }
+      {
+        "message": "GFCI not required for this layout per NEC 210.8 (verify with AHJ if any receptacle within 6 ft of a sink during tenant fit-out).",
+        "code_clause": "NEC 2023 Art 210.8",
+        "severity": "info"
+      }
     ],
     "assumptions": [
       "Diversity factor 0.8 (commercial retail per NEC 220.61).",
@@ -57,20 +150,116 @@
       "Cable ampacity check assumes NEC Table 310.16 (THWN-2 in conduit, 30°C ambient)."
     ]
   },
-  "drawn_as_symbols": ["BUSBAR", "MAIN_SWITCH", "MCB", "MCCB", "EARTH_GENERAL"],
-  "flags": ["TOOL-CALL-PENDING"],
+  "drawn_as_symbols": [
+    "BUSBAR",
+    "MAIN_SWITCH",
+    "MCB",
+    "MCCB",
+    "EARTH_GENERAL"
+  ],
+  "flags": [
+    "TOOL-CALL-PENDING"
+  ],
   "rationale": {
     "chat_summary": "200A 120/240V split-phase NEMA Type 1 panelboard for a US retail tenant fit-out. 4 circuits sized per NEC Table 310.16 (12 AWG / 10 AWG / 10 AWG / 6 AWG). GFCI not required for this back-of-house layout. Selectivity deferred (tool_call_pending) until fault-level skill ships. Reply to refine, e.g. 'add tenant kitchen'.",
     "sections": [
-      { "title": "Board Classification", "summary": "US NEMA Type 1 panelboard, 200A, 24-way. Per NEC Article 408 — maximum 42 overcurrent devices per panelboard section (well within limit).", "decisions": [ { "label": "NEMA Type 1 enclosure", "summary": "Indoor general purpose; suitable for retail service room.", "rule": "NEMA 250 Type 1 selection for indoor", "code_clause": "NEC 2023 Art 408.3", "inputs": { "board_type": "panelboard_nema", "nec_type": "NEMA_1" } } ] },
-      { "title": "Incoming Supply", "summary": "240V single-phase split (120/240V three-wire), 200A main breaker. POCO-declared Ze 0.20Ω.", "decisions": [ { "label": "200A main breaker", "summary": "Standard US single-phase split-phase service rating for small retail.", "rule": "NEC service rating selection", "code_clause": "NEC 2023 Art 230.79", "inputs": { "supply_rating_a": 200 } } ] },
-      { "title": "Busbar Sizing", "summary": "200A busbar matches main rating, IcW 10 kA. Sum 71A diversified to 57A — 200A busbar has 70% headroom for expansion.", "decisions": [ { "label": "200A busbar IcW 10 kA", "summary": "Sized to match main breaker rating.", "rule": "NEC 408 panelboard rating", "code_clause": "NEC 2023 Art 408.30", "inputs": { "busbar_a": 200, "icw_ka_1s": 10 } } ] },
-      { "title": "Way Assignment", "summary": "5 ways used (3 × single-pole MCBs W1-W3, 1 × 2-pole MCCB W4-W5), 19 ways spare.", "decisions": [] },
-      { "title": "OCPD Selection", "summary": "Branch circuits sized per NEC 240. C01/C02 (20A) on 12 AWG (25A ampacity). C03 (30A) on 10 AWG (35A). C04 (60A RTU) on 6 AWG (65A). All In ≤ Iz pass per NEC Table 310.16.", "decisions": [ { "label": "Thermal-magnetic MCBs/MCCB per NEC 240", "summary": "Standard US OCPD types for branch circuits.", "rule": "NEC ampacity table coordination", "code_clause": "NEC 2023 Art 240.4", "inputs": { "ampacity_table": "310.16" } } ] },
-      { "title": "RCD Strategy", "summary": "GFCI not required for this back-of-house retail layout per NEC 210.8. AFCI per NEC 210.12 applies to dwelling-unit branch circuits — not this retail fit-out.", "decisions": [] },
-      { "title": "Cable Selection", "summary": "THWN-2 copper conductors in EMT conduit. NEC Table 310.16 ampacities at 30°C ambient.", "decisions": [] },
-      { "title": "Selectivity Verification", "summary": "4 cascade pairs (MAIN → C01..C04) emitted as tool_call_pending. fault-level intent absent; engineer Ifault not declared. Will re-emit once fault-level skill ships.", "decisions": [ { "label": "All cascades tool_call_pending", "summary": "Per WI3 deferral pattern.", "rule": "NEC 240.4 protection of conductors + 240.86 series ratings", "code_clause": "NEC 2023 Art 240.4", "inputs": { "tool_call_pending": true } } ] },
-      { "title": "Compliance", "summary": "Compliant. One INFO flag for AHJ GFCI verification + one TOOL-CALL-PENDING flag for deferred selectivity.", "decisions": [] }
+      {
+        "title": "Board Classification",
+        "summary": "US NEMA Type 1 panelboard, 200A, 24-way. Per NEC Article 408 — maximum 42 overcurrent devices per panelboard section (well within limit).",
+        "decisions": [
+          {
+            "label": "NEMA Type 1 enclosure",
+            "summary": "Indoor general purpose; suitable for retail service room.",
+            "rule": "NEMA 250 Type 1 selection for indoor",
+            "code_clause": "NEC 2023 Art 408.3",
+            "inputs": {
+              "board_type": "panelboard_nema",
+              "nec_type": "NEMA_1"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Incoming Supply",
+        "summary": "240V single-phase split (120/240V three-wire), 200A main breaker. POCO-declared Ze 0.20Ω.",
+        "decisions": [
+          {
+            "label": "200A main breaker",
+            "summary": "Standard US single-phase split-phase service rating for small retail.",
+            "rule": "NEC service rating selection",
+            "code_clause": "NEC 2023 Art 230.79",
+            "inputs": {
+              "supply_rating_a": 200
+            }
+          }
+        ]
+      },
+      {
+        "title": "Busbar Sizing",
+        "summary": "200A busbar matches main rating, IcW 10 kA. Sum 71A diversified to 57A — 200A busbar has 70% headroom for expansion.",
+        "decisions": [
+          {
+            "label": "200A busbar IcW 10 kA",
+            "summary": "Sized to match main breaker rating.",
+            "rule": "NEC 408 panelboard rating",
+            "code_clause": "NEC 2023 Art 408.30",
+            "inputs": {
+              "busbar_a": 200,
+              "icw_ka_1s": 10
+            }
+          }
+        ]
+      },
+      {
+        "title": "Way Assignment",
+        "summary": "5 ways used (3 × single-pole MCBs W1-W3, 1 × 2-pole MCCB W4-W5), 19 ways spare.",
+        "decisions": []
+      },
+      {
+        "title": "OCPD Selection",
+        "summary": "Branch circuits sized per NEC 240. C01/C02 (20A) on 12 AWG (25A ampacity). C03 (30A) on 10 AWG (35A). C04 (60A RTU) on 6 AWG (65A). All In ≤ Iz pass per NEC Table 310.16.",
+        "decisions": [
+          {
+            "label": "Thermal-magnetic MCBs/MCCB per NEC 240",
+            "summary": "Standard US OCPD types for branch circuits.",
+            "rule": "NEC ampacity table coordination",
+            "code_clause": "NEC 2023 Art 240.4",
+            "inputs": {
+              "ampacity_table": "310.16"
+            }
+          }
+        ]
+      },
+      {
+        "title": "RCD Strategy",
+        "summary": "GFCI not required for this back-of-house retail layout per NEC 210.8. AFCI per NEC 210.12 applies to dwelling-unit branch circuits — not this retail fit-out.",
+        "decisions": []
+      },
+      {
+        "title": "Cable Selection",
+        "summary": "THWN-2 copper conductors in EMT conduit. NEC Table 310.16 ampacities at 30°C ambient.",
+        "decisions": []
+      },
+      {
+        "title": "Selectivity Verification",
+        "summary": "4 cascade pairs (MAIN → C01..C04) emitted as tool_call_pending. fault-level intent absent; engineer Ifault not declared. Will re-emit once fault-level skill ships.",
+        "decisions": [
+          {
+            "label": "All cascades tool_call_pending",
+            "summary": "Per WI3 deferral pattern.",
+            "rule": "NEC 240.4 protection of conductors + 240.86 series ratings",
+            "code_clause": "NEC 2023 Art 240.4",
+            "inputs": {
+              "tool_call_pending": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Compliance",
+        "summary": "Compliant. One INFO flag for AHJ GFCI verification + one TOOL-CALL-PENDING flag for deferred selectivity.",
+        "decisions": []
+      }
     ]
   }
 }

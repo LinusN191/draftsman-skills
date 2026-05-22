@@ -14,7 +14,8 @@
     "location": "gate-house plant cupboard, site perimeter",
     "enclosure_rating": "IP54",
     "manufacturer_class": "KS Annex E (BS EN 61439-3 Distribution Board)",
-    "scope": "single-board"
+    "scope": "single-board",
+    "board_kind": "specialty_board"
   },
   "incoming_supply": {
     "voltage_v": 240,
@@ -31,13 +32,82 @@
     "fault_level_a_min": 3000
   },
   "circuits": [
-    { "circuit_id": "C01", "way_module_id": "W1", "designation": "Gate-house lighting (external floodlights + internal)", "voltage_class": "LV_power", "downstream_load_kw": 0.6, "ocpd": { "rating_a": 10, "curve": "B", "type": "MCB", "breaking_capacity_ka": 6 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 8 } },
-    { "circuit_id": "C02", "way_module_id": "W2", "designation": "Gate-house sockets (general)",                          "voltage_class": "LV_power", "downstream_load_kw": 1.5, "ocpd": { "rating_a": 16, "curve": "B", "type": "MCB", "breaking_capacity_ka": 6 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 6 } },
-    { "circuit_id": "C03", "way_module_id": "W3", "designation": "Comms outlet (CCTV camera + intercom)",                 "voltage_class": "comms_data","downstream_load_kw": 0.2, "ocpd": { "rating_a": 6,  "curve": "B", "type": "MCB", "breaking_capacity_ka": 6 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 5 } }
+    {
+      "circuit_id": "C01",
+      "way_module_id": "W1",
+      "designation": "Gate-house lighting (external floodlights + internal)",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 0.6,
+      "ocpd": {
+        "rating_a": 10,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 6
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 8
+      }
+    },
+    {
+      "circuit_id": "C02",
+      "way_module_id": "W2",
+      "designation": "Gate-house sockets (general)",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 1.5,
+      "ocpd": {
+        "rating_a": 16,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 6
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 6
+      }
+    },
+    {
+      "circuit_id": "C03",
+      "way_module_id": "W3",
+      "designation": "Comms outlet (CCTV camera + intercom)",
+      "voltage_class": "comms_data",
+      "downstream_load_kw": 0.2,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 6
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 5
+      }
+    }
   ],
   "spare_ways": 1,
   "selectivity_results": [
-    { "upstream": "MSP-100 C08 (40A MCB Type B + 30mA Type A RCD)", "downstream": "GH-DB main switch + final circuits", "verdict": "pass_with_rcd_caution", "_note": "Upstream 40A MCB selectively protects against 16A and smaller final-circuit MCBs at GH-DB (current ratio ≥2.5:1). RCD selectivity NOT achieved: upstream 30mA Type A at MSP-100 C08 and downstream 30mA Type A on C02/C03 are both 30mA — series 30mA pairs are time-coincident (KS 1700 §314 requires staged sensitivities for true selectivity). Coordination accepted because the upstream RCD also serves only the gate house; an earth fault tripping both is operationally acceptable for a small isolated load." }
+    {
+      "upstream": "MSP-100 C08 (40A MCB Type B + 30mA Type A RCD)",
+      "downstream": "GH-DB main switch + final circuits",
+      "verdict": "pass_with_rcd_caution",
+      "_note": "Upstream 40A MCB selectively protects against 16A and smaller final-circuit MCBs at GH-DB (current ratio ≥2.5:1). RCD selectivity NOT achieved: upstream 30mA Type A at MSP-100 C08 and downstream 30mA Type A on C02/C03 are both 30mA — series 30mA pairs are time-coincident (KS 1700 §314 requires staged sensitivities for true selectivity). Coordination accepted because the upstream RCD also serves only the gate house; an earth fault tripping both is operationally acceptable for a small isolated load."
+    }
   ],
   "compliance_summary": {
     "compliant": true,

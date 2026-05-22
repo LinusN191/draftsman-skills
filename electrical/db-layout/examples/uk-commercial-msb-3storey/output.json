@@ -14,7 +14,8 @@
     "location": "ground-floor plant room",
     "enclosure_rating": "IP4X",
     "manufacturer_class": "BS EN 61439-1 Type-Tested Assembly (TTA)",
-    "scope": "rollup"
+    "scope": "rollup",
+    "board_kind": "specialty_board"
   },
   "incoming_supply": {
     "voltage_v": 400,
@@ -31,13 +32,78 @@
     "fault_level_a_min": 9800
   },
   "circuits": [
-    { "circuit_id": "F01", "way_module_id": "W1-W3",  "designation": "Feeder to SDB-GF",       "voltage_class": "LV_power", "downstream_load_kw": 30,   "ocpd": { "rating_a": 100, "curve": "D", "type": "MCCB", "breaking_capacity_ka": 36 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "35mm²", "cores": 5, "length_m": 15 } },
-    { "circuit_id": "F02", "way_module_id": "W4-W6",  "designation": "Feeder to SDB-L1",       "voltage_class": "LV_power", "downstream_load_kw": 28,   "ocpd": { "rating_a": 100, "curve": "D", "type": "MCCB", "breaking_capacity_ka": 36 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "35mm²", "cores": 5, "length_m": 30 } },
-    { "circuit_id": "F03", "way_module_id": "W7-W9",  "designation": "Feeder to SDB-L2",       "voltage_class": "LV_power", "downstream_load_kw": 28,   "ocpd": { "rating_a": 100, "curve": "D", "type": "MCCB", "breaking_capacity_ka": 36 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "35mm²", "cores": 5, "length_m": 45 } }
+    {
+      "circuit_id": "F01",
+      "way_module_id": "W1-W3",
+      "designation": "Feeder to SDB-GF",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 30,
+      "ocpd": {
+        "rating_a": 100,
+        "curve": "D",
+        "type": "MCCB",
+        "breaking_capacity_ka": 36
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "35mm²",
+        "cores": 5,
+        "length_m": 15
+      }
+    },
+    {
+      "circuit_id": "F02",
+      "way_module_id": "W4-W6",
+      "designation": "Feeder to SDB-L1",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 28,
+      "ocpd": {
+        "rating_a": 100,
+        "curve": "D",
+        "type": "MCCB",
+        "breaking_capacity_ka": 36
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "35mm²",
+        "cores": 5,
+        "length_m": 30
+      }
+    },
+    {
+      "circuit_id": "F03",
+      "way_module_id": "W7-W9",
+      "designation": "Feeder to SDB-L2",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 28,
+      "ocpd": {
+        "rating_a": 100,
+        "curve": "D",
+        "type": "MCCB",
+        "breaking_capacity_ka": 36
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "35mm²",
+        "cores": 5,
+        "length_m": 45
+      }
+    }
   ],
   "spare_ways": 3,
   "selectivity_results": [
-    { "upstream": "main_switch_400A", "downstream": "F01_F03", "verdict": "pass", "_note": "400A main MCCB selective against 100A feeder MCCBs by 4:1 ratio + breaking capacity matched (36kA)" }
+    {
+      "upstream": "main_switch_400A",
+      "downstream": "F01_F03",
+      "verdict": "pass",
+      "_note": "400A main MCCB selective against 100A feeder MCCBs by 4:1 ratio + breaking capacity matched (36kA)"
+    }
   ],
   "compliance_summary": {
     "compliant": true,

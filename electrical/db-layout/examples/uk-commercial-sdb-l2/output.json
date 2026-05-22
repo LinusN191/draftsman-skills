@@ -14,7 +14,8 @@
     "location": "level-2 electrical cupboard",
     "enclosure_rating": "IP4X",
     "manufacturer_class": "BS EN 61439-3 Distribution Board (DBO)",
-    "scope": "single-board"
+    "scope": "single-board",
+    "board_kind": "specialty_board"
   },
   "incoming_supply": {
     "voltage_v": 400,
@@ -31,22 +32,283 @@
     "fault_level_a_min": 3500
   },
   "circuits": [
-    { "circuit_id": "C01", "way_module_id": "W1",  "designation": "Lighting L2 — open office LED panels",  "voltage_class": "LV_power",          "downstream_load_kw": 2.0, "ocpd": { "rating_a": 10, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 26 } },
-    { "circuit_id": "C02", "way_module_id": "W2",  "designation": "Lighting L2 — breakout area LED",       "voltage_class": "LV_power",          "downstream_load_kw": 1.0, "ocpd": { "rating_a": 6,  "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 16 } },
-    { "circuit_id": "C03", "way_module_id": "W3",  "designation": "Emergency lighting L2",                 "voltage_class": "emergency_lighting","downstream_load_kw": 0.8, "ocpd": { "rating_a": 6,  "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 22 } },
-    { "circuit_id": "C04", "way_module_id": "W4",  "designation": "Sockets L2 — open office RFC",          "voltage_class": "LV_power",          "downstream_load_kw": 6.0, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 36 } },
-    { "circuit_id": "C05", "way_module_id": "W5",  "designation": "Sockets L2 — meeting rooms RFC",        "voltage_class": "LV_power",          "downstream_load_kw": 4.5, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 28 } },
-    { "circuit_id": "C06", "way_module_id": "W6",  "designation": "Sockets L2 — breakout area RFC",        "voltage_class": "LV_power",          "downstream_load_kw": 3.5, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 22 } },
-    { "circuit_id": "C07", "way_module_id": "W7",  "designation": "Sockets L2 — printer corner radial",    "voltage_class": "LV_power",          "downstream_load_kw": 2.5, "ocpd": { "rating_a": 20, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 16 } },
-    { "circuit_id": "C08", "way_module_id": "W8",  "designation": "Dedicated socket — A/V rack",           "voltage_class": "LV_power",          "downstream_load_kw": 1.8, "ocpd": { "rating_a": 16, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 14 } },
-    { "circuit_id": "C09", "way_module_id": "W9",  "designation": "Dedicated socket — comms cabinet UPS",  "voltage_class": "LV_power",          "downstream_load_kw": 2.0, "ocpd": { "rating_a": 16, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 10 } },
-    { "circuit_id": "C10", "way_module_id": "W10", "designation": "HVAC FCU bank L2",                      "voltage_class": "LV_power",          "downstream_load_kw": 6.0, "ocpd": { "rating_a": 32, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 5, "length_m": 24 } },
-    { "circuit_id": "C11", "way_module_id": "W11", "designation": "IT/data outlet ring — desks",           "voltage_class": "LV_power",          "downstream_load_kw": 4.0, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 34 } },
-    { "circuit_id": "C12", "way_module_id": "W12", "designation": "Audio-visual radial — meeting rooms",   "voltage_class": "LV_power",          "downstream_load_kw": 2.5, "ocpd": { "rating_a": 20, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 25 } }
+    {
+      "circuit_id": "C01",
+      "way_module_id": "W1",
+      "designation": "Lighting L2 — open office LED panels",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 2.0,
+      "ocpd": {
+        "rating_a": 10,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 26
+      }
+    },
+    {
+      "circuit_id": "C02",
+      "way_module_id": "W2",
+      "designation": "Lighting L2 — breakout area LED",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 1.0,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 16
+      }
+    },
+    {
+      "circuit_id": "C03",
+      "way_module_id": "W3",
+      "designation": "Emergency lighting L2",
+      "voltage_class": "emergency_lighting",
+      "downstream_load_kw": 0.8,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 22
+      }
+    },
+    {
+      "circuit_id": "C04",
+      "way_module_id": "W4",
+      "designation": "Sockets L2 — open office RFC",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 6.0,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 36
+      }
+    },
+    {
+      "circuit_id": "C05",
+      "way_module_id": "W5",
+      "designation": "Sockets L2 — meeting rooms RFC",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 4.5,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 28
+      }
+    },
+    {
+      "circuit_id": "C06",
+      "way_module_id": "W6",
+      "designation": "Sockets L2 — breakout area RFC",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 3.5,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 22
+      }
+    },
+    {
+      "circuit_id": "C07",
+      "way_module_id": "W7",
+      "designation": "Sockets L2 — printer corner radial",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 2.5,
+      "ocpd": {
+        "rating_a": 20,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 16
+      }
+    },
+    {
+      "circuit_id": "C08",
+      "way_module_id": "W8",
+      "designation": "Dedicated socket — A/V rack",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 1.8,
+      "ocpd": {
+        "rating_a": 16,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 14
+      }
+    },
+    {
+      "circuit_id": "C09",
+      "way_module_id": "W9",
+      "designation": "Dedicated socket — comms cabinet UPS",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 2.0,
+      "ocpd": {
+        "rating_a": 16,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 10
+      }
+    },
+    {
+      "circuit_id": "C10",
+      "way_module_id": "W10",
+      "designation": "HVAC FCU bank L2",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 6.0,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 5,
+        "length_m": 24
+      }
+    },
+    {
+      "circuit_id": "C11",
+      "way_module_id": "W11",
+      "designation": "IT/data outlet ring — desks",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 4.0,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 34
+      }
+    },
+    {
+      "circuit_id": "C12",
+      "way_module_id": "W12",
+      "designation": "Audio-visual radial — meeting rooms",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 2.5,
+      "ocpd": {
+        "rating_a": 20,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 25
+      }
+    }
   ],
   "spare_ways": 4,
   "selectivity_results": [
-    { "upstream": "MSB-MAIN F03 (100A MCCB Type D)", "downstream": "SDB-L2 main switch + all final circuits", "verdict": "pass", "_note": "100A MCCB Type D upstream selective against all SDB-L2 final-circuit MCBs (≤32A); 3.1:1 ratio + curve separation gives time-current selectivity per BS 7671 §536." }
+    {
+      "upstream": "MSB-MAIN F03 (100A MCCB Type D)",
+      "downstream": "SDB-L2 main switch + all final circuits",
+      "verdict": "pass",
+      "_note": "100A MCCB Type D upstream selective against all SDB-L2 final-circuit MCBs (≤32A); 3.1:1 ratio + curve separation gives time-current selectivity per BS 7671 §536."
+    }
   ],
   "compliance_summary": {
     "compliant": true,

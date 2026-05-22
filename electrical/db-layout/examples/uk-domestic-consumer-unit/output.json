@@ -17,7 +17,8 @@
     "ip_rating": "IP2X",
     "ways_total": 12,
     "ways_used": 6,
-    "ways_spare": 6
+    "ways_spare": 6,
+    "board_kind": "main_switchboard"
   },
   "incoming_supply": {
     "voltage_v": 230,
@@ -35,20 +36,188 @@
   },
   "spare_ways": 6,
   "circuits": [
-    { "circuit_id": "C01", "way_module_id": "W1", "designation": "Ground floor lighting", "voltage_class": "LV_power", "downstream_load_kw": 0.8, "ocpd": { "rating_a": 6, "curve": "B", "type": "MCB", "breaking_capacity_ka": 6 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 18 } },
-    { "circuit_id": "C02", "way_module_id": "W2", "designation": "First floor lighting", "voltage_class": "LV_power", "downstream_load_kw": 0.7, "ocpd": { "rating_a": 6, "curve": "B", "type": "MCB", "breaking_capacity_ka": 6 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 22 } },
-    { "circuit_id": "C03", "way_module_id": "W3", "designation": "Ground floor sockets ring", "voltage_class": "LV_power", "downstream_load_kw": 5.0, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 6 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 38 } },
-    { "circuit_id": "C04", "way_module_id": "W4", "designation": "First floor sockets ring", "voltage_class": "LV_power", "downstream_load_kw": 4.0, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 6 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 42 } },
-    { "circuit_id": "C05", "way_module_id": "W5", "designation": "Cooker radial", "voltage_class": "LV_power", "downstream_load_kw": 7.5, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 6 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "6mm²", "cores": 3, "length_m": 14 } },
-    { "circuit_id": "C06", "way_module_id": "W6", "designation": "Bathroom shower", "voltage_class": "LV_power", "downstream_load_kw": 9.0, "ocpd": { "rating_a": 40, "curve": "B", "type": "MCB", "breaking_capacity_ka": 6 }, "rcd": { "required": true, "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "10mm²", "cores": 3, "length_m": 16 } }
+    {
+      "circuit_id": "C01",
+      "way_module_id": "W1",
+      "designation": "Ground floor lighting",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 0.8,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 6
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 18
+      }
+    },
+    {
+      "circuit_id": "C02",
+      "way_module_id": "W2",
+      "designation": "First floor lighting",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 0.7,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 6
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 22
+      }
+    },
+    {
+      "circuit_id": "C03",
+      "way_module_id": "W3",
+      "designation": "Ground floor sockets ring",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 5.0,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 6
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 38
+      }
+    },
+    {
+      "circuit_id": "C04",
+      "way_module_id": "W4",
+      "designation": "First floor sockets ring",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 4.0,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 6
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 42
+      }
+    },
+    {
+      "circuit_id": "C05",
+      "way_module_id": "W5",
+      "designation": "Cooker radial",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 7.5,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 6
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "6mm²",
+        "cores": 3,
+        "length_m": 14
+      }
+    },
+    {
+      "circuit_id": "C06",
+      "way_module_id": "W6",
+      "designation": "Bathroom shower",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 9.0,
+      "ocpd": {
+        "rating_a": 40,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 6
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "10mm²",
+        "cores": 3,
+        "length_m": 16
+      }
+    }
   ],
   "selectivity_results": [
-    { "upstream_id": "MAIN", "downstream_id": "C01", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "BS 7671:2018+A3 Reg 536" },
-    { "upstream_id": "MAIN", "downstream_id": "C02", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "BS 7671:2018+A3 Reg 536" },
-    { "upstream_id": "MAIN", "downstream_id": "C03", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "BS 7671:2018+A3 Reg 536" },
-    { "upstream_id": "MAIN", "downstream_id": "C04", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "BS 7671:2018+A3 Reg 536" },
-    { "upstream_id": "MAIN", "downstream_id": "C05", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "BS 7671:2018+A3 Reg 536" },
-    { "upstream_id": "MAIN", "downstream_id": "C06", "source": "tool_call_pending", "tool_call_pending": true, "code_clause": "BS 7671:2018+A3 Reg 536" }
+    {
+      "upstream_id": "MAIN",
+      "downstream_id": "C01",
+      "source": "tool_call_pending",
+      "tool_call_pending": true,
+      "code_clause": "BS 7671:2018+A3 Reg 536"
+    },
+    {
+      "upstream_id": "MAIN",
+      "downstream_id": "C02",
+      "source": "tool_call_pending",
+      "tool_call_pending": true,
+      "code_clause": "BS 7671:2018+A3 Reg 536"
+    },
+    {
+      "upstream_id": "MAIN",
+      "downstream_id": "C03",
+      "source": "tool_call_pending",
+      "tool_call_pending": true,
+      "code_clause": "BS 7671:2018+A3 Reg 536"
+    },
+    {
+      "upstream_id": "MAIN",
+      "downstream_id": "C04",
+      "source": "tool_call_pending",
+      "tool_call_pending": true,
+      "code_clause": "BS 7671:2018+A3 Reg 536"
+    },
+    {
+      "upstream_id": "MAIN",
+      "downstream_id": "C05",
+      "source": "tool_call_pending",
+      "tool_call_pending": true,
+      "code_clause": "BS 7671:2018+A3 Reg 536"
+    },
+    {
+      "upstream_id": "MAIN",
+      "downstream_id": "C06",
+      "source": "tool_call_pending",
+      "tool_call_pending": true,
+      "code_clause": "BS 7671:2018+A3 Reg 536"
+    }
   ],
   "compliance_summary": {
     "compliant": true,
@@ -59,20 +228,128 @@
       "Cable ampacity check assumes BS 7671 Appendix 4 Reference Method C (clipped direct)."
     ]
   },
-  "drawn_as_symbols": ["BUSBAR", "MAIN_SWITCH", "RCD_GROUP", "MCB", "EARTH_GENERAL"],
-  "flags": ["TOOL-CALL-PENDING"],
+  "drawn_as_symbols": [
+    "BUSBAR",
+    "MAIN_SWITCH",
+    "RCD_GROUP",
+    "MCB",
+    "EARTH_GENERAL"
+  ],
+  "flags": [
+    "TOOL-CALL-PENDING"
+  ],
   "rationale": {
     "chat_summary": "100A TN-C-S consumer unit for a UK 3-bed semi, 12-way Form 1 Hager-style enclosure. 6 final circuits — Type B MCBs grouped behind a main 30mA RCD. Busbar 100A IcW 6kA accommodates 47A diversified load. Selectivity verification pending fault-level intent — emitted as tool_call_pending per WI3. Reply to refine, e.g. 'switch to per-circuit RCBOs' or 'add EV charger'.",
     "sections": [
-      { "title": "Board Classification", "summary": "UK domestic consumer unit, IEC 61439-3 DBO Form 1, IP2X for indoor cupboard installation.", "decisions": [ { "label": "Form 1 enclosure", "summary": "Standard for domestic CUs — no separation between busbar and functional units required at this rating.", "rule": "IEC 61439-3 DBO assembly", "code_clause": "IEC 61439-3:2012 clause 7.1", "inputs": { "board_type": "consumer_unit", "form": "1" } } ] },
-      { "title": "Incoming Supply", "summary": "230V single-phase 100A main switch from PME supply (Ze 0.35Ω declared).", "decisions": [ { "label": "100A main switch", "summary": "Standard UK domestic main switch rating.", "rule": "DNO service rating", "code_clause": "BS 7671:2018+A3 Reg 132.16", "inputs": { "supply_rating_a": 100 } } ] },
-      { "title": "Busbar Sizing", "summary": "100A busbar, IcW 6kA. Sum of way loads ~117A → 47A diversified at 0.4 → 100A busbar adequate with headroom.", "decisions": [ { "label": "100A busbar adequate", "summary": "47A diversified load × 1.5 future expansion factor fits 100A.", "rule": "IEC 61439-1 rated current of assembly", "code_clause": "IEC 61439-3:2012 clause 5.3", "inputs": { "busbar_a": 100, "diversified_a": 47 } } ] },
-      { "title": "Way Assignment", "summary": "6 ways used (W1–W6), 6 ways spare. Meets engineer-specified minimum 2.", "decisions": [] },
-      { "title": "OCPD Selection", "summary": "All MCBs Type B (domestic standard). In ≤ Iz verified for every circuit. Icn 6kA exceeds prospective fault current.", "decisions": [ { "label": "Type B curve for all circuits", "summary": "Domestic loads (lighting, sockets, cooker, shower) have no significant inrush.", "rule": "BS 7671 Appendix 3 — Type B for general lighting/socket loads", "code_clause": "BS 7671:2018+A3 Appendix 3", "inputs": { "curve": "B" } } ] },
-      { "title": "RCD Strategy", "summary": "Type B MCBs grouped behind a single 30mA main RCD (typical UK domestic CU topology). All 6 final circuits gain RCD protection via the upstream main RCD — satisfies BS 7671 411.3.3 (sockets ≤32A in domestic) + Section 701 (bathroom shower). For better resilience, per-circuit RCBOs would isolate single-circuit faults; the engineer can opt to upgrade.", "decisions": [ { "label": "Grouped 30mA Type A main RCD", "summary": "Type A handles AC + pulsating DC residual — covers modern electronics. Grouped (vs RCBO-per-circuit) is the cheaper standard CU arrangement.", "rule": "BS 7671 Reg 411.3.3", "code_clause": "BS 7671:2018+A3 Reg 411.3.3", "inputs": { "rcd_type": "A", "sensitivity_ma": 30, "rcd_arrangement": "main_rcd_grouped" } } ] },
-      { "title": "Cable Selection", "summary": "Cables provided in inputs (twin-and-earth 6242Y typical). All sizes pass In ≤ Iz check at Reference Method C.", "decisions": [] },
-      { "title": "Selectivity Verification", "summary": "6 cascade pairs (MAIN → each MCB) emitted as tool_call_pending. fault-level intent absent; engineer Ifault not declared. Will re-emit once fault-level skill ships.", "decisions": [ { "label": "All cascades tool_call_pending", "summary": "Per WI3 deferral pattern.", "rule": "BS 7671 Reg 536 / IEC 60364-5-53", "code_clause": "BS 7671:2018+A3 Reg 536", "inputs": { "tool_call_pending": true } } ] },
-      { "title": "Compliance", "summary": "Compliant. One TOOL-CALL-PENDING flag for deferred selectivity.", "decisions": [] }
+      {
+        "title": "Board Classification",
+        "summary": "UK domestic consumer unit, IEC 61439-3 DBO Form 1, IP2X for indoor cupboard installation.",
+        "decisions": [
+          {
+            "label": "Form 1 enclosure",
+            "summary": "Standard for domestic CUs — no separation between busbar and functional units required at this rating.",
+            "rule": "IEC 61439-3 DBO assembly",
+            "code_clause": "IEC 61439-3:2012 clause 7.1",
+            "inputs": {
+              "board_type": "consumer_unit",
+              "form": "1"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Incoming Supply",
+        "summary": "230V single-phase 100A main switch from PME supply (Ze 0.35Ω declared).",
+        "decisions": [
+          {
+            "label": "100A main switch",
+            "summary": "Standard UK domestic main switch rating.",
+            "rule": "DNO service rating",
+            "code_clause": "BS 7671:2018+A3 Reg 132.16",
+            "inputs": {
+              "supply_rating_a": 100
+            }
+          }
+        ]
+      },
+      {
+        "title": "Busbar Sizing",
+        "summary": "100A busbar, IcW 6kA. Sum of way loads ~117A → 47A diversified at 0.4 → 100A busbar adequate with headroom.",
+        "decisions": [
+          {
+            "label": "100A busbar adequate",
+            "summary": "47A diversified load × 1.5 future expansion factor fits 100A.",
+            "rule": "IEC 61439-1 rated current of assembly",
+            "code_clause": "IEC 61439-3:2012 clause 5.3",
+            "inputs": {
+              "busbar_a": 100,
+              "diversified_a": 47
+            }
+          }
+        ]
+      },
+      {
+        "title": "Way Assignment",
+        "summary": "6 ways used (W1–W6), 6 ways spare. Meets engineer-specified minimum 2.",
+        "decisions": []
+      },
+      {
+        "title": "OCPD Selection",
+        "summary": "All MCBs Type B (domestic standard). In ≤ Iz verified for every circuit. Icn 6kA exceeds prospective fault current.",
+        "decisions": [
+          {
+            "label": "Type B curve for all circuits",
+            "summary": "Domestic loads (lighting, sockets, cooker, shower) have no significant inrush.",
+            "rule": "BS 7671 Appendix 3 — Type B for general lighting/socket loads",
+            "code_clause": "BS 7671:2018+A3 Appendix 3",
+            "inputs": {
+              "curve": "B"
+            }
+          }
+        ]
+      },
+      {
+        "title": "RCD Strategy",
+        "summary": "Type B MCBs grouped behind a single 30mA main RCD (typical UK domestic CU topology). All 6 final circuits gain RCD protection via the upstream main RCD — satisfies BS 7671 411.3.3 (sockets ≤32A in domestic) + Section 701 (bathroom shower). For better resilience, per-circuit RCBOs would isolate single-circuit faults; the engineer can opt to upgrade.",
+        "decisions": [
+          {
+            "label": "Grouped 30mA Type A main RCD",
+            "summary": "Type A handles AC + pulsating DC residual — covers modern electronics. Grouped (vs RCBO-per-circuit) is the cheaper standard CU arrangement.",
+            "rule": "BS 7671 Reg 411.3.3",
+            "code_clause": "BS 7671:2018+A3 Reg 411.3.3",
+            "inputs": {
+              "rcd_type": "A",
+              "sensitivity_ma": 30,
+              "rcd_arrangement": "main_rcd_grouped"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Cable Selection",
+        "summary": "Cables provided in inputs (twin-and-earth 6242Y typical). All sizes pass In ≤ Iz check at Reference Method C.",
+        "decisions": []
+      },
+      {
+        "title": "Selectivity Verification",
+        "summary": "6 cascade pairs (MAIN → each MCB) emitted as tool_call_pending. fault-level intent absent; engineer Ifault not declared. Will re-emit once fault-level skill ships.",
+        "decisions": [
+          {
+            "label": "All cascades tool_call_pending",
+            "summary": "Per WI3 deferral pattern.",
+            "rule": "BS 7671 Reg 536 / IEC 60364-5-53",
+            "code_clause": "BS 7671:2018+A3 Reg 536",
+            "inputs": {
+              "tool_call_pending": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Compliance",
+        "summary": "Compliant. One TOOL-CALL-PENDING flag for deferred selectivity.",
+        "decisions": []
+      }
     ]
   }
 }

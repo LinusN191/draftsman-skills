@@ -15,7 +15,8 @@
     "enclosure_rating": "IP4X",
     "manufacturer_class": "IEC 61439-3 Distribution Board",
     "scope": "single-board",
-    "role": "comms_data_panel"
+    "role": "comms_data_panel",
+    "board_kind": "specialty_board"
   },
   "incoming_supply": {
     "voltage_v": 400,
@@ -32,23 +33,190 @@
     "fault_level_a_min": 8000
   },
   "circuits": [
-    { "circuit_id": "C01", "way_module_id": "W1", "designation": "Main comms rack 24-port + PoE switch", "voltage_class": "comms_data", "downstream_load_kw": 2.5, "ocpd": { "rating_a": 16, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "B", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "4mm²",   "cores": 3, "length_m": 5  } },
-    { "circuit_id": "C02", "way_module_id": "W2", "designation": "GF IDF cabinet + wall plates",         "voltage_class": "comms_data", "downstream_load_kw": 1.5, "ocpd": { "rating_a": 10, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "B", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 30 } },
-    { "circuit_id": "C03", "way_module_id": "W3", "designation": "L1 IDF cabinet + wall plates",         "voltage_class": "comms_data", "downstream_load_kw": 1.5, "ocpd": { "rating_a": 10, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "B", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 40 } },
-    { "circuit_id": "C04", "way_module_id": "W4", "designation": "L2 IDF cabinet + wall plates",         "voltage_class": "comms_data", "downstream_load_kw": 1.5, "ocpd": { "rating_a": 10, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "B", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 50 } },
-    { "circuit_id": "C05", "way_module_id": "W5", "designation": "PoE+ AP injector (Wi-Fi mesh)",        "voltage_class": "comms_data", "downstream_load_kw": 0.8, "ocpd": { "rating_a": 6,  "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "B", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 15 } },
-    { "circuit_id": "C06", "way_module_id": "W6", "designation": "PoE+ camera injector (security)",      "voltage_class": "comms_data", "downstream_load_kw": 0.8, "ocpd": { "rating_a": 6,  "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "B", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 20 } },
-    { "circuit_id": "C07", "way_module_id": "W7", "designation": "UPS bypass loop feed (10 kVA)",        "voltage_class": "comms_data", "downstream_load_kw": 1.0, "ocpd": { "rating_a": 10, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false                                             }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 3  } }
+    {
+      "circuit_id": "C01",
+      "way_module_id": "W1",
+      "designation": "Main comms rack 24-port + PoE switch",
+      "voltage_class": "comms_data",
+      "downstream_load_kw": 2.5,
+      "ocpd": {
+        "rating_a": 16,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "B",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "4mm²",
+        "cores": 3,
+        "length_m": 5
+      }
+    },
+    {
+      "circuit_id": "C02",
+      "way_module_id": "W2",
+      "designation": "GF IDF cabinet + wall plates",
+      "voltage_class": "comms_data",
+      "downstream_load_kw": 1.5,
+      "ocpd": {
+        "rating_a": 10,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "B",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 30
+      }
+    },
+    {
+      "circuit_id": "C03",
+      "way_module_id": "W3",
+      "designation": "L1 IDF cabinet + wall plates",
+      "voltage_class": "comms_data",
+      "downstream_load_kw": 1.5,
+      "ocpd": {
+        "rating_a": 10,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "B",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 40
+      }
+    },
+    {
+      "circuit_id": "C04",
+      "way_module_id": "W4",
+      "designation": "L2 IDF cabinet + wall plates",
+      "voltage_class": "comms_data",
+      "downstream_load_kw": 1.5,
+      "ocpd": {
+        "rating_a": 10,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "B",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 50
+      }
+    },
+    {
+      "circuit_id": "C05",
+      "way_module_id": "W5",
+      "designation": "PoE+ AP injector (Wi-Fi mesh)",
+      "voltage_class": "comms_data",
+      "downstream_load_kw": 0.8,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "B",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 15
+      }
+    },
+    {
+      "circuit_id": "C06",
+      "way_module_id": "W6",
+      "designation": "PoE+ camera injector (security)",
+      "voltage_class": "comms_data",
+      "downstream_load_kw": 0.8,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "B",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 20
+      }
+    },
+    {
+      "circuit_id": "C07",
+      "way_module_id": "W7",
+      "designation": "UPS bypass loop feed (10 kVA)",
+      "voltage_class": "comms_data",
+      "downstream_load_kw": 1.0,
+      "ocpd": {
+        "rating_a": 10,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 3
+      }
+    }
   ],
   "spare_ways": 3,
   "selectivity_results": [
-    { "upstream": "MSB-MAIN F06 (32A MCB Type C)", "downstream": "DB-COMMS main switch + all comms circuits", "verdict": "pass", "_note": "32A Type C MCB upstream cascading to 6-16A Type C MCBs at DB-COMMS. Worst-case ratio at C01 (16A) = 32:16 = 2:1 — sits at the minimum threshold for IEC 60898 same-curve cascade selectivity at 8 kA fault level. C02-C04 (10A) operate at 3.2:1 and C05-C06 (6A) at 5.3:1 with comfortable margin. Engineer-declared per manufacturer cascade table at 8 kA (IEC 60364-5-53:2002 §536); fault-level skill to confirm full coordination study." }
+    {
+      "upstream_id": "MSB-MAIN-F06",
+      "downstream_id": "DB-COMMS",
+      "selective_to_fault_ka": 8.0,
+      "source": "engineer_declared",
+      "tool_call_pending": false,
+      "code_clause": "IEC 60364-5-53:2002 §536 — 32A Type C MCB upstream cascading to 6-16A Type C MCBs at DB-COMMS. Worst-case ratio at C01 (16A) = 32:16 = 2:1 — sits at the minimum threshold for IEC 60898 same-curve cascade selectivity at 8 kA fault level. C02-C04 (10A) operate at 3.2:1 and C05-C06 (6A) at 5.3:1 with comfortable margin. Engineer-declared per manufacturer cascade table at 8 kA; fault-level skill to confirm full coordination study."
+    }
   ],
   "compliance_summary": {
     "compliant": true,
     "non_compliance_flags": [
-      { "message": "DB-COMMS carries IT equipment loads with DC leakage components (PoE+ injectors, SMPS-fed switches, UPS rectifier front-ends) — IEC 60364-5-53:2002+A2:2015 §531.3.3 requires Type B RCD (DC-sensitive) on circuits feeding such loads to detect smooth DC residual currents that Type A/F RCDs cannot. Type B RCD installed upstream at MSB-MAIN F06 + on every comms final circuit except C07 (UPS bypass, deliberate exemption per IEC 62040-1:2017 §5.2.4 — bypass paths must allow fault current to flow upstream for proper isolation). Engineer to verify Type B sensitivity coordination at commissioning.", "code_clause": "IEC 60364-5-53:2002+A2:2015 §531.3.3 + IEC 62040-1:2017 §5.2.4", "severity": "info" },
-      { "message": "Worst-case cascade ratio at C01 (32A:16A = 2:1) sits at the minimum IEC 60898 same-curve cascade threshold for selectivity at 8 kA. Manufacturer cascade-table verification required at full fault level — flagged for fault-level skill coordination study at engineering hand-off.", "code_clause": "IEC 60898-1 + IEC 60364-5-53:2002 §536", "severity": "info" }
+      {
+        "message": "DB-COMMS carries IT equipment loads with DC leakage components (PoE+ injectors, SMPS-fed switches, UPS rectifier front-ends) — IEC 60364-5-53:2002+A2:2015 §531.3.3 requires Type B RCD (DC-sensitive) on circuits feeding such loads to detect smooth DC residual currents that Type A/F RCDs cannot. Type B RCD installed upstream at MSB-MAIN F06 + on every comms final circuit except C07 (UPS bypass, deliberate exemption per IEC 62040-1:2017 §5.2.4 — bypass paths must allow fault current to flow upstream for proper isolation). Engineer to verify Type B sensitivity coordination at commissioning.",
+        "code_clause": "IEC 60364-5-53:2002+A2:2015 §531.3.3 + IEC 62040-1:2017 §5.2.4",
+        "severity": "info"
+      },
+      {
+        "message": "Worst-case cascade ratio at C01 (32A:16A = 2:1) sits at the minimum IEC 60898 same-curve cascade threshold for selectivity at 8 kA. Manufacturer cascade-table verification required at full fault level — flagged for fault-level skill coordination study at engineering hand-off.",
+        "code_clause": "IEC 60898-1 + IEC 60364-5-53:2002 §536",
+        "severity": "info"
+      }
     ],
     "assumptions": [
       "DB-COMMS is the dedicated LV data/comms sub-DB — `role: comms_data_panel` flagged in the board block.",
@@ -73,7 +241,12 @@
     "PoE+ injectors (C05, C06) feed Cat 6A structured cabling per BS EN 50173-1:2018 — IEEE 802.3bt-2018 Type 3/Type 4 capability with 30-90W per port.",
     "Cable-containment routing must maintain BS EN 50174-2:2018 segregation distance from LV power cables (typical ≥150 mm separation for unshielded paths)."
   ],
-  "drawn_as_symbols": ["MCB", "RCBO", "SWITCH_DISCONNECTOR", "COMMS_RACK"],
+  "drawn_as_symbols": [
+    "MCB",
+    "RCBO",
+    "SWITCH_DISCONNECTOR",
+    "COMMS_RACK"
+  ],
   "flags": [],
   "rationale": {
     "chat_summary": "DB-COMMS: 32A TPN data/comms sub-DB, 7 circuits (24-port main rack + 3 floor IDFs + 2 PoE+ injectors + UPS bypass), fed from MSB-MAIN F06 with Type B RCD upstream per IEC 60364-5-53:2002 §531.3.3 (IT DC leakage) and BS EN 50173:2018 EMC. Type B RCD on every final circuit except C07 (UPS bypass, IEC 62040-1 exemption). All Type C MCBs, LSZH Cu cabling. Cascade ratio 2:1 at C01 — engineer-declared per manufacturer table.",
@@ -82,50 +255,120 @@
         "title": "Board Identification",
         "summary": "DB-COMMS is the dedicated LV data/comms sub-DB for the IEC 3-storey commercial office, located in the ground-floor main comms room (MDF). Role flagged as `comms_data_panel` so downstream SLD, riser, and cable-containment skills recognise it as an IT distribution and apply BS EN 50174-2:2018 segregation rules.",
         "decisions": [
-          { "label": "Board role flagged as comms_data_panel", "summary": "Signals IT-cabling segregation requirement to downstream skills (riser, cable-containment, segregation-distance).", "rule": "db-layout role taxonomy", "code_clause": "BS EN 50174-2:2018" },
-          { "label": "Location: ground-floor MDF (main distribution frame)", "summary": "Co-located with the 24-port main rack and adjacent to MSB-MAIN to minimise feeder length and keep structured-cabling backbone short.", "rule": "BS EN 50173-1:2018 §4.4 cabling-subsystem topology", "code_clause": "BS EN 50173-1:2018 §4.4" }
+          {
+            "label": "Board role flagged as comms_data_panel",
+            "summary": "Signals IT-cabling segregation requirement to downstream skills (riser, cable-containment, segregation-distance).",
+            "rule": "db-layout role taxonomy",
+            "code_clause": "BS EN 50174-2:2018"
+          },
+          {
+            "label": "Location: ground-floor MDF (main distribution frame)",
+            "summary": "Co-located with the 24-port main rack and adjacent to MSB-MAIN to minimise feeder length and keep structured-cabling backbone short.",
+            "rule": "BS EN 50173-1:2018 §4.4 cabling-subsystem topology",
+            "code_clause": "BS EN 50173-1:2018 §4.4"
+          }
         ]
       },
       {
         "title": "Incoming Supply",
         "summary": "32A TPN intake fed from MSB-MAIN F06 via 50m 10mm² Cu XLPE submain. PFC attenuated from ~22.5 kA at MSB-MAIN to ~8.0 kA at DB-COMMS by the submain impedance — within 10 kA Icn of standard MCBs. Upstream Type B RCD per IEC 60364-5-53:2002+A2:2015 §531.3.3 for IT-load DC leakage protection.",
         "decisions": [
-          { "label": "Supply class: essential", "summary": "DB-COMMS feeds the IT infrastructure backbone — outage disrupts the entire office data path; classified essential for resilience planning even though not life-safety in the §560 sense.", "rule": "db-layout supply_class taxonomy", "code_clause": "BS EN 50600-2-2:2019 (IT infrastructure availability)" },
-          { "label": "Type B RCD upstream at MSB-MAIN F06", "summary": "IT loads with PoE+/SMPS/UPS rectifier front-ends can produce smooth DC residual currents that blind Type A/F RCDs — Type B (DC-sensitive) required per §531.3.3.", "rule": "RCD type selection for IT loads", "code_clause": "IEC 60364-5-53:2002+A2:2015 §531.3.3" },
-          { "label": "Declared PFC 8.0 kA after 50m submain", "summary": "Cable-Z attenuated from 22.5 kA at MSB-MAIN; covered by standard 10 kA Icn MCBs without cascade backup.", "rule": "IEC 60909 series impedance addition", "code_clause": "IEC 60909-0" }
+          {
+            "label": "Supply class: essential",
+            "summary": "DB-COMMS feeds the IT infrastructure backbone — outage disrupts the entire office data path; classified essential for resilience planning even though not life-safety in the §560 sense.",
+            "rule": "db-layout supply_class taxonomy",
+            "code_clause": "BS EN 50600-2-2:2019 (IT infrastructure availability)"
+          },
+          {
+            "label": "Type B RCD upstream at MSB-MAIN F06",
+            "summary": "IT loads with PoE+/SMPS/UPS rectifier front-ends can produce smooth DC residual currents that blind Type A/F RCDs — Type B (DC-sensitive) required per §531.3.3.",
+            "rule": "RCD type selection for IT loads",
+            "code_clause": "IEC 60364-5-53:2002+A2:2015 §531.3.3"
+          },
+          {
+            "label": "Declared PFC 8.0 kA after 50m submain",
+            "summary": "Cable-Z attenuated from 22.5 kA at MSB-MAIN; covered by standard 10 kA Icn MCBs without cascade backup.",
+            "rule": "IEC 60909 series impedance addition",
+            "code_clause": "IEC 60909-0"
+          }
         ]
       },
       {
         "title": "Circuit Breakdown",
         "summary": "7 final circuits arranged as 1 main comms rack (C01, 16A) + 3 floor IDF cabinets (C02-C04, 10A each) + 2 PoE+ injectors (C05-C06, 6A each) + 1 UPS bypass (C07, 10A). C01 is sized for the 24-port managed-switch boot inrush + PoE budget + dual PSU. Floor IDFs handle 12-port edge switches + 24× wall-plate runs per cabinet. PoE+ injectors deliver IEEE 802.3bt-2018 Type 3 (30W) per port to Wi-Fi APs and security cameras. C07 is the UPS bypass loop — RCD-free per IEC 62040-1:2017 §5.2.4.",
         "decisions": [
-          { "label": "All Type C MCBs", "summary": "Handles SMPS inrush of comms switches + PoE injector energisation + UPS rectifier transient; Type B would risk nuisance trip during multi-PSU power-up.", "rule": "MCB curve selection for SMPS/electronic loads", "code_clause": "IEC 60898-1" },
-          { "label": "16A for main rack; 10A for floor IDFs + UPS bypass; 6A for PoE+ injectors", "summary": "Sized to nameplate steady-state plus 25-30% headroom for boot inrush.", "rule": "IEC 60364-4-43 overcurrent protection coordination", "code_clause": "IEC 60364-4-43" },
-          { "label": "1.5/2.5/4mm² LSZH Cu cabling", "summary": "LSZH for low toxic emission in occupied office spaces; sized for sub-1% voltage drop across the worst-case 50m run at C04.", "rule": "Cable selection for IT distribution", "code_clause": "IEC 60364-5-52 + BS EN 50173-1:2018" }
+          {
+            "label": "All Type C MCBs",
+            "summary": "Handles SMPS inrush of comms switches + PoE injector energisation + UPS rectifier transient; Type B would risk nuisance trip during multi-PSU power-up.",
+            "rule": "MCB curve selection for SMPS/electronic loads",
+            "code_clause": "IEC 60898-1"
+          },
+          {
+            "label": "16A for main rack; 10A for floor IDFs + UPS bypass; 6A for PoE+ injectors",
+            "summary": "Sized to nameplate steady-state plus 25-30% headroom for boot inrush.",
+            "rule": "IEC 60364-4-43 overcurrent protection coordination",
+            "code_clause": "IEC 60364-4-43"
+          },
+          {
+            "label": "1.5/2.5/4mm² LSZH Cu cabling",
+            "summary": "LSZH for low toxic emission in occupied office spaces; sized for sub-1% voltage drop across the worst-case 50m run at C04.",
+            "rule": "Cable selection for IT distribution",
+            "code_clause": "IEC 60364-5-52 + BS EN 50173-1:2018"
+          }
         ]
       },
       {
         "title": "Selectivity Analysis",
         "summary": "Upstream MSB-MAIN F06 = 32A Type C MCB. Downstream MCBs at DB-COMMS are 6-16A Type C. Worst-case ratio at C01 (16A main rack) = 32:16 = 2:1 — sits at the minimum threshold for IEC 60898 same-curve cascade selectivity at 8 kA fault level. Remaining circuits operate at 3.2:1 (C02-C04, C07) and 5.3:1 (C05-C06) with comfortable margin. Verdict pass — engineer-declared per manufacturer cascade table; fault-level skill to confirm full coordination study.",
         "decisions": [
-          { "label": "32A:16A worst-case ratio = 2:1 at C01", "summary": "Sits at minimum same-curve cascade threshold; cascade-critical — manufacturer cascade table confirms selectivity to 8 kA.", "rule": "IEC 60898 cascade selectivity table", "code_clause": "IEC 60364-5-53:2002 §536" },
-          { "label": "Engineer-declared per manufacturer table", "summary": "Same-curve Type C cascade at 2:1 requires manufacturer-specific confirmation; deferred to fault-level skill for full coordination study.", "rule": "Selectivity verification source = engineer_declared", "code_clause": "IEC 60364-5-53:2002 §536" }
+          {
+            "label": "32A:16A worst-case ratio = 2:1 at C01",
+            "summary": "Sits at minimum same-curve cascade threshold; cascade-critical — manufacturer cascade table confirms selectivity to 8 kA.",
+            "rule": "IEC 60898 cascade selectivity table",
+            "code_clause": "IEC 60364-5-53:2002 §536"
+          },
+          {
+            "label": "Engineer-declared per manufacturer table",
+            "summary": "Same-curve Type C cascade at 2:1 requires manufacturer-specific confirmation; deferred to fault-level skill for full coordination study.",
+            "rule": "Selectivity verification source = engineer_declared",
+            "code_clause": "IEC 60364-5-53:2002 §536"
+          }
         ]
       },
       {
         "title": "Compliance Assessment",
         "summary": "DB-COMMS is compliant against IEC 60364 series (general LV distribution), IEC 60364-5-53:2002+A2:2015 §531.3.3 (Type B RCD for IT loads), BS EN 50173-1/2:2018 (structured cabling), IEEE 802.3bt-2018 (PoE+), and IEC 62040-1:2017 §5.2.4 (UPS bypass design). Two INFO flags: (1) Type B RCD sensitivity coordination to be verified at commissioning; (2) cascade ratio at C01 sits at minimum threshold — fault-level skill to confirm.",
         "decisions": [
-          { "label": "Type B RCD on all comms final circuits except C07", "summary": "Required by §531.3.3 for IT loads with DC leakage; C07 UPS bypass exempted per IEC 62040-1:2017 §5.2.4.", "rule": "RCD type selection for IT loads", "code_clause": "IEC 60364-5-53:2002+A2:2015 §531.3.3" },
-          { "label": "BS EN 50173 EMC/leakage compliance", "summary": "Upstream Type B RCD also covers accumulated DC leakage from multiple SMPS loads in the comms ecosystem.", "rule": "Structured cabling EMC compliance", "code_clause": "BS EN 50173-1:2018" },
-          { "label": "INFO flag — manufacturer cascade verification at C01", "summary": "Not a non-compliance; design flag noting 2:1 ratio at minimum threshold requires fault-level skill confirmation.", "rule": "Compliance flag taxonomy (severity=info)", "code_clause": "IEC 60898-1 + IEC 60364-5-53:2002 §536" }
+          {
+            "label": "Type B RCD on all comms final circuits except C07",
+            "summary": "Required by §531.3.3 for IT loads with DC leakage; C07 UPS bypass exempted per IEC 62040-1:2017 §5.2.4.",
+            "rule": "RCD type selection for IT loads",
+            "code_clause": "IEC 60364-5-53:2002+A2:2015 §531.3.3"
+          },
+          {
+            "label": "BS EN 50173 EMC/leakage compliance",
+            "summary": "Upstream Type B RCD also covers accumulated DC leakage from multiple SMPS loads in the comms ecosystem.",
+            "rule": "Structured cabling EMC compliance",
+            "code_clause": "BS EN 50173-1:2018"
+          },
+          {
+            "label": "INFO flag — manufacturer cascade verification at C01",
+            "summary": "Not a non-compliance; design flag noting 2:1 ratio at minimum threshold requires fault-level skill confirmation.",
+            "rule": "Compliance flag taxonomy (severity=info)",
+            "code_clause": "IEC 60898-1 + IEC 60364-5-53:2002 §536"
+          }
         ]
       },
       {
         "title": "Schedule Notes",
         "summary": "Schedule emitted as 7-row table with 3 spare ways (W8-W10) for future expansion. Spare-way reservation aligns with typical comms growth: additional floor IDFs, AV equipment rack, KVM/server-room sub-feed, or addressable rack-environmental monitoring. Type B RCD flagged on every row except C07 (UPS bypass exemption).",
         "decisions": [
-          { "label": "3 spare ways reserved", "summary": "Typical comms expansion: additional IDFs, AV rack, KVM/server sub-feed, or environmental monitoring.", "rule": "Spare-way provisioning best practice", "code_clause": "IEC 60364-1:2005 §132.12 (design margin)" }
+          {
+            "label": "3 spare ways reserved",
+            "summary": "Typical comms expansion: additional IDFs, AV rack, KVM/server sub-feed, or environmental monitoring.",
+            "rule": "Spare-way provisioning best practice",
+            "code_clause": "IEC 60364-1:2005 §132.12 (design margin)"
+          }
         ]
       }
     ]

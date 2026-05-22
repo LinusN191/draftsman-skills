@@ -15,7 +15,8 @@
     "enclosure_rating": "IP4X",
     "manufacturer_class": "IEC 61439-3 Distribution Board",
     "scope": "single-board",
-    "role": "fire_alarm_panel"
+    "role": "fire_alarm_panel",
+    "board_kind": "specialty_board"
   },
   "incoming_supply": {
     "voltage_v": 400,
@@ -32,21 +33,150 @@
     "fault_level_a_min": 9000
   },
   "circuits": [
-    { "circuit_id": "FA01", "way_module_id": "W1", "designation": "Fire alarm panel power supply",          "voltage_class": "fire_alarm", "downstream_load_kw": 0.5, "ocpd": { "rating_a": 6,  "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 5 } },
-    { "circuit_id": "FA02", "way_module_id": "W2", "designation": "Zone loop 1 (GF detectors)",             "voltage_class": "fire_alarm", "downstream_load_kw": 0.2, "ocpd": { "rating_a": 6,  "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 40 } },
-    { "circuit_id": "FA03", "way_module_id": "W3", "designation": "Zone loop 2 (L1 detectors)",             "voltage_class": "fire_alarm", "downstream_load_kw": 0.2, "ocpd": { "rating_a": 6,  "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 60 } },
-    { "circuit_id": "FA04", "way_module_id": "W4", "designation": "Zone loop 3 (L2 detectors)",             "voltage_class": "fire_alarm", "downstream_load_kw": 0.2, "ocpd": { "rating_a": 6,  "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 80 } },
-    { "circuit_id": "FA05", "way_module_id": "W5", "designation": "Sounder/strobe circuit (all floors)",    "voltage_class": "fire_alarm", "downstream_load_kw": 1.5, "ocpd": { "rating_a": 10, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 70 } },
-    { "circuit_id": "FA06", "way_module_id": "W6", "designation": "Battery charger / standby supply",       "voltage_class": "fire_alarm", "downstream_load_kw": 0.4, "ocpd": { "rating_a": 6,  "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 3 } }
+    {
+      "circuit_id": "FA01",
+      "way_module_id": "W1",
+      "designation": "Fire alarm panel power supply",
+      "voltage_class": "fire_alarm",
+      "downstream_load_kw": 0.5,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 5
+      }
+    },
+    {
+      "circuit_id": "FA02",
+      "way_module_id": "W2",
+      "designation": "Zone loop 1 (GF detectors)",
+      "voltage_class": "fire_alarm",
+      "downstream_load_kw": 0.2,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 40
+      }
+    },
+    {
+      "circuit_id": "FA03",
+      "way_module_id": "W3",
+      "designation": "Zone loop 2 (L1 detectors)",
+      "voltage_class": "fire_alarm",
+      "downstream_load_kw": 0.2,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 60
+      }
+    },
+    {
+      "circuit_id": "FA04",
+      "way_module_id": "W4",
+      "designation": "Zone loop 3 (L2 detectors)",
+      "voltage_class": "fire_alarm",
+      "downstream_load_kw": 0.2,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 80
+      }
+    },
+    {
+      "circuit_id": "FA05",
+      "way_module_id": "W5",
+      "designation": "Sounder/strobe circuit (all floors)",
+      "voltage_class": "fire_alarm",
+      "downstream_load_kw": 1.5,
+      "ocpd": {
+        "rating_a": 10,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 70
+      }
+    },
+    {
+      "circuit_id": "FA06",
+      "way_module_id": "W6",
+      "designation": "Battery charger / standby supply",
+      "voltage_class": "fire_alarm",
+      "downstream_load_kw": 0.4,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 3
+      }
+    }
   ],
   "spare_ways": 2,
   "selectivity_results": [
-    { "upstream": "MSB-MAIN F04 (63A MCB Type C)", "downstream": "DB-FA1 main switch + all FA circuits", "verdict": "pass", "_note": "63A Type C MCB upstream selective against ≤10A Type C MCBs at DB-FA1 (6.3:1 current ratio + same-curve coordination supports time-current selectivity per IEC 60898 cascade table). Engineer-declared per manufacturer cascade table at 9 kA fault level (IEC 60364-5-53 Clause 536)." }
+    {
+      "upstream": "MSB-MAIN F04 (63A MCB Type C)",
+      "downstream": "DB-FA1 main switch + all FA circuits",
+      "verdict": "pass",
+      "_note": "63A Type C MCB upstream selective against ≤10A Type C MCBs at DB-FA1 (6.3:1 current ratio + same-curve coordination supports time-current selectivity per IEC 60898 cascade table). Engineer-declared per manufacturer cascade table at 9 kA fault level (IEC 60364-5-53 Clause 536)."
+    }
   ],
   "compliance_summary": {
     "compliant": true,
     "non_compliance_flags": [
-      { "message": "DB-FA1 carries life-safety load — IEC 60364-5-56:2018 §560 recommends a secondary supply path via ATS. Current design relies on the integral panel battery for primary backup; ATS to a generator or alternative supply should be considered if the panel battery capacity does not meet the AHJ-required survival duration (typically 24h standby + 30 min alarm).", "code_clause": "IEC 60364-5-56:2018 §560.7.1", "severity": "info" }
+      {
+        "message": "DB-FA1 carries life-safety load — IEC 60364-5-56:2018 §560 recommends a secondary supply path via ATS. Current design relies on the integral panel battery for primary backup; ATS to a generator or alternative supply should be considered if the panel battery capacity does not meet the AHJ-required survival duration (typically 24h standby + 30 min alarm).",
+        "code_clause": "IEC 60364-5-56:2018 §560.7.1",
+        "severity": "info"
+      }
     ],
     "assumptions": [
       "DB-FA1 is the fire alarm panel sub-DB — `role: fire_alarm_panel` flagged in the board block.",

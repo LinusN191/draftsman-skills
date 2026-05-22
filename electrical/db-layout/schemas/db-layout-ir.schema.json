@@ -47,18 +47,33 @@
     },
     "board": {
       "type": "object",
-      "required": ["db_id", "designation", "location", "ways_total"],
+      "required": ["db_id", "designation", "location", "board_kind"],
       "properties": {
         "db_id":                    { "type": "string", "pattern": "^[A-Z][A-Z0-9-]{1,15}$" },
         "designation":              { "type": "string" },
         "location":                 { "type": "string" },
+        "board_kind":               { "enum": ["main_switchboard", "specialty_board"] },
         "enclosure_form_iec61439":  { "enum": ["1", "2a", "2b", "3a", "3b", "4a", "4b"] },
         "enclosure_form_nec_type":  { "enum": ["NEMA_1", "NEMA_3R", "NEMA_4", "NEMA_4X", "NEMA_12"] },
         "ip_rating":                { "type": "string", "pattern": "^IP[0-9X]{2,3}$" },
         "ways_total":               { "type": "integer", "minimum": 1, "maximum": 200 },
         "ways_used":                { "type": "integer", "minimum": 0 },
-        "ways_spare":               { "type": "integer", "minimum": 0 }
-      }
+        "ways_spare":               { "type": "integer", "minimum": 0 },
+        "enclosure_rating":         { "type": "string" },
+        "manufacturer_class":       { "type": "string" },
+        "scope":                    { "type": "string" },
+        "role":                     { "type": "string" }
+      },
+      "oneOf": [
+        {
+          "properties": { "board_kind": { "const": "main_switchboard" } },
+          "required": ["ways_total", "ways_used", "ways_spare"]
+        },
+        {
+          "properties": { "board_kind": { "const": "specialty_board" } },
+          "required": ["enclosure_rating", "manufacturer_class", "scope", "role"]
+        }
+      ]
     },
     "incoming_supply": {
       "type": "object",
@@ -69,7 +84,7 @@
         "phase_arrangement":  { "enum": ["single_phase", "single_phase_split", "TPN", "TPN_plus_E"] },
         "supply_rating_a":    { "type": "number", "exclusiveMinimum": 0 },
         "fed_from":           { "type": "string" },
-        "supply_class":       { "enum": ["essential", "non_essential", "life_safety", "ups_backed", "genset_backed"] },
+        "supply_class":       { "enum": ["essential", "non_essential", "life_safety", "ups_backed", "ups_plus_essential", "genset_backed"] },
         "declared_pfc_ka":    { "type": "number", "minimum": 0 }
       }
     },
