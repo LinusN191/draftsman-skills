@@ -7,8 +7,9 @@ You are NOT validating schema — that has already been done. You are reviewing 
 ## Input
 - IR JSON document
 - Inputs JSON (engineer's brief)
-- For UK projects: the relevant BS 7671:2018+A3 regulations
-- For international projects: IEC 60364-4-41 and -5-54
+- For GB projects: the relevant BS 7671:2018+A2:2022 regulations
+- For KE projects: KS 1700:2018 §411 + §544 + Annex E §VIII (which routes specific clauses to BS 7671 / IEC 60364). KE citations MUST lead with `KS 1700:2018 §X.Y.Z` directly — the banned trailing annotation `(adopted by KS 1700)` must NOT appear in any `code_clause`. KS 1700 universal socket-RCD policy (§411.3.3) is a KS-deviation from BS — flag if missed.
+- For international (EU / INT) projects: IEC 60364-4-41 and -5-54
 - For US projects: NEC 2023 Article 250
 
 ## Review dimensions
@@ -53,6 +54,14 @@ Is the rationale's `chat_summary` a faithful one-paragraph explanation a buildin
 
 ### D8: Standards citation accuracy
 For each clause cited in `compliance_summary.clauses_cited`, does the clause actually support the decision the IR claims it supports? (Read the clause from the loaded standards file before answering.)
+
+Per-jurisdiction citation-form requirements (must match the validator's INV-10 + INV-11 rules):
+- GB → `BS 7671:2018+A2:2022 Reg X.Y.Z` (or `Table N.N`)
+- KE → `KS 1700:2018 §X.Y.Z` direct form; Annex E routing-note suffix `(Annex E: adopts BS 7671:2018+A2 Reg X.Y.Z verbatim)` is permitted when leading with `KS 1700:`. The trailing annotation `BS 7671 ... (adopted by KS 1700)` is BANNED — fail D8 if encountered.
+- EU / INT → `IEC 60364-X-XX:YYYY Clause X.Y.Z`
+- US → `NEC 2023 Article XXX.X` or `NFPA 70:2023 Article XXX.X`
+
+`KS 1700` MUST NOT appear when `jurisdiction != "KE"`. `BS 7671` MUST NOT appear as a primary citation in INT/EU/US examples.
 
 ## Output
 

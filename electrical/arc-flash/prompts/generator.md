@@ -24,9 +24,11 @@ Extract per-node `ibf_ka_max`, `ibf_ka_min`, `ipk_ka`, `x_over_r_ratio`, `z_tota
 Extract per-board (or per-circuit): `equipment_type`, `ocpd_type`, `voltage_v`, `phases`, `location`. If intent absent: engineer fallback.
 
 ### Step 3 — Determine jurisdiction
-Read `jurisdiction` from inputs. Load applicable regulatory framing:
-- **US:** NFPA 70E §130.5(H) labels mandatory; PPE category enforcement strict
-- **GB / EU / INT:** Best-practice (HSG48 + IET CoP); labels recommended but voluntary
+Read `jurisdiction` from inputs (one of `GB / EU / INT / KE / US`). Load applicable regulatory framing:
+- **US:** NFPA 70E §130.5(H) labels mandatory; PPE category enforcement strict; cite as `NFPA 70E:2024 §130.X` or `NEC 2023 Article XXX`
+- **GB:** Best-practice (HSG48 + IET CoP); labels recommended but voluntary; cite as `BS 7671:2018+A2 Reg X.Y.Z` and `IEEE 1584:2018 §X` for the analytical method
+- **EU / INT:** Best-practice (national equivalents to HSG48); cite as `IEC 60364-X-XX:YYYY Clause X.Y.Z` and `IEEE 1584:2018 §X`
+- **KE:** Best-practice (KS 1700:2018 §VIII Annex E adopts BS 7671 chain); cite as `KS 1700:2018 §X.Y.Z` (direct form; never use the banned `(adopted by KS 1700)` annotation pattern) — for arc-flash specifically, the analytical method citation remains `IEEE 1584:2018 §X` since KS 1700 does not codify arc-flash methodology; labels follow the BS/IEC voluntary-recommended pattern
 
 ### Step 4 — Build cascade tree
 Construct the cascade tree using `node_id` paths from the fault-level intent. Naming pattern matches fault-level (e.g., `MSB-1.F03.DB-L1`). Root nodes have `parent_node_id: null` and `node_kind: "service_entrance"`.
