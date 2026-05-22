@@ -1,0 +1,498 @@
+{
+  "drawing_type": "schematic",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "ke-nairobi-workshop-motor-starter",
+    "skill_version": "schematic/1.0.0",
+    "produced_at": "2026-05-22T10:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "KE",
+  "schematic_type": "control_motor_starter",
+  "sheet": {
+    "sheet_id": "SHT-001",
+    "title": "DOL Starter — Workshop Grinder M1 (11 kW)",
+    "page_of": "1/1"
+  },
+  "items": [
+    {
+      "item_id": "Q1",
+      "device_class": "isolator",
+      "bs_en_60617_ref": "ISOLATOR_3POLE",
+      "rating": "32A 3-pole, manual lockable"
+    },
+    {
+      "item_id": "K1",
+      "device_class": "contactor",
+      "bs_en_60617_ref": "CONTACTOR_3POLE",
+      "rating": "32A AC-3, coil 230 VAC"
+    },
+    {
+      "item_id": "K1-AUX",
+      "device_class": "contactor",
+      "bs_en_60617_ref": "CONTACTOR_1NO",
+      "rating": "Auxiliary NO 13-14 hold contact (mechanically linked to K1)"
+    },
+    {
+      "item_id": "F1",
+      "device_class": "overload",
+      "bs_en_60617_ref": "OVERLOAD_THERMAL",
+      "rating": "Class 10, 16-24 A range, set 21 A (motor FLA)"
+    },
+    {
+      "item_id": "M1",
+      "device_class": "motor",
+      "bs_en_60617_ref": "MOTOR_3PHASE",
+      "rating": "11 kW / 415 V / 21 A FLA / 3-phase induction"
+    },
+    {
+      "item_id": "S1",
+      "device_class": "push_button",
+      "bs_en_60617_ref": "PUSHBUTTON_NO",
+      "rating": "START — green flush actuator, NO contact 13-14"
+    },
+    {
+      "item_id": "S2",
+      "device_class": "push_button",
+      "bs_en_60617_ref": "PUSHBUTTON_NO",
+      "rating": "STOP — red mushroom actuator, NC contact 21-22 wired in coil-break path"
+    },
+    {
+      "item_id": "H1",
+      "device_class": "lamp",
+      "bs_en_60617_ref": "LAMP_GREEN",
+      "rating": "RUN indication, 230 VAC, 22 mm lens"
+    },
+    {
+      "item_id": "X1",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "Incoming power terminal block L1/L2/L3, 16 mm² DIN-rail"
+    },
+    {
+      "item_id": "X2",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "Motor-tail outgoing terminal block U/V/W, 6 mm² DIN-rail"
+    },
+    {
+      "item_id": "X3",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "Control-supply terminal block L/N 230 VAC, 2.5 mm² DIN-rail"
+    }
+  ],
+  "connections": [
+    {
+      "wire_id": "W1",
+      "from_item": "X1",
+      "from_terminal": "L1",
+      "to_item": "Q1",
+      "to_terminal": "1",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Incoming L1 to isolator pole 1"
+    },
+    {
+      "wire_id": "W2",
+      "from_item": "X1",
+      "from_terminal": "L2",
+      "to_item": "Q1",
+      "to_terminal": "3",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Incoming L2 to isolator pole 2"
+    },
+    {
+      "wire_id": "W3",
+      "from_item": "X1",
+      "from_terminal": "L3",
+      "to_item": "Q1",
+      "to_terminal": "5",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Incoming L3 to isolator pole 3"
+    },
+    {
+      "wire_id": "W4",
+      "from_item": "Q1",
+      "from_terminal": "2",
+      "to_item": "K1",
+      "to_terminal": "1",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Isolated L1 to contactor main pole 1"
+    },
+    {
+      "wire_id": "W5",
+      "from_item": "Q1",
+      "from_terminal": "4",
+      "to_item": "K1",
+      "to_terminal": "3",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Isolated L2 to contactor main pole 2"
+    },
+    {
+      "wire_id": "W6",
+      "from_item": "Q1",
+      "from_terminal": "6",
+      "to_item": "K1",
+      "to_terminal": "5",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Isolated L3 to contactor main pole 3"
+    },
+    {
+      "wire_id": "W7",
+      "from_item": "K1",
+      "from_terminal": "2",
+      "to_item": "F1",
+      "to_terminal": "1",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Contactor pole 1 to overload thermal element phase L1"
+    },
+    {
+      "wire_id": "W8",
+      "from_item": "K1",
+      "from_terminal": "4",
+      "to_item": "F1",
+      "to_terminal": "3",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Contactor pole 2 to overload thermal element phase L2"
+    },
+    {
+      "wire_id": "W9",
+      "from_item": "K1",
+      "from_terminal": "6",
+      "to_item": "F1",
+      "to_terminal": "5",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Contactor pole 3 to overload thermal element phase L3"
+    },
+    {
+      "wire_id": "W10",
+      "from_item": "F1",
+      "from_terminal": "2",
+      "to_item": "X2",
+      "to_terminal": "U",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Overload outgoing L1 to motor terminal U via outgoing tail"
+    },
+    {
+      "wire_id": "W11",
+      "from_item": "F1",
+      "from_terminal": "4",
+      "to_item": "X2",
+      "to_terminal": "V",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Overload outgoing L2 to motor terminal V via outgoing tail"
+    },
+    {
+      "wire_id": "W12",
+      "from_item": "F1",
+      "from_terminal": "6",
+      "to_item": "X2",
+      "to_terminal": "W",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Overload outgoing L3 to motor terminal W via outgoing tail"
+    },
+    {
+      "wire_id": "W13",
+      "from_item": "X2",
+      "from_terminal": "U",
+      "to_item": "M1",
+      "to_terminal": "U",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Motor-tail U to motor M1 terminal U"
+    },
+    {
+      "wire_id": "W14",
+      "from_item": "X2",
+      "from_terminal": "V",
+      "to_item": "M1",
+      "to_terminal": "V",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Motor-tail V to motor M1 terminal V"
+    },
+    {
+      "wire_id": "W15",
+      "from_item": "X2",
+      "from_terminal": "W",
+      "to_item": "M1",
+      "to_terminal": "W",
+      "conductor_csa_mm2": 6,
+      "voltage_class": "power_LV",
+      "function": "Motor-tail W to motor M1 terminal W"
+    },
+    {
+      "wire_id": "W16",
+      "from_item": "X3",
+      "from_terminal": "L",
+      "to_item": "F1",
+      "to_terminal": "95",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "Control-supply L to overload trip-contact 95 (NC, opens on trip)"
+    },
+    {
+      "wire_id": "W17",
+      "from_item": "F1",
+      "from_terminal": "96",
+      "to_item": "S2",
+      "to_terminal": "21",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "Overload 96 to STOP push-button NC contact terminal 21"
+    },
+    {
+      "wire_id": "W18",
+      "from_item": "S2",
+      "from_terminal": "22",
+      "to_item": "S1",
+      "to_terminal": "13",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "STOP 22 to START push-button NO terminal 13"
+    },
+    {
+      "wire_id": "W19",
+      "from_item": "S1",
+      "from_terminal": "14",
+      "to_item": "K1",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "START 14 to contactor K1 coil A1 (energise path)"
+    },
+    {
+      "wire_id": "W20",
+      "from_item": "K1",
+      "from_terminal": "A2",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "K1 coil A2 to control neutral N"
+    },
+    {
+      "wire_id": "W21",
+      "from_item": "S2",
+      "from_terminal": "22",
+      "to_item": "K1-AUX",
+      "to_terminal": "13",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "Hold-in path: STOP 22 to K1-AUX terminal 13 (parallels START)"
+    },
+    {
+      "wire_id": "W22",
+      "from_item": "K1-AUX",
+      "from_terminal": "14",
+      "to_item": "K1",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "K1-AUX 14 holds coil A1 energised after START release"
+    },
+    {
+      "wire_id": "W23",
+      "from_item": "K1-AUX",
+      "from_terminal": "14",
+      "to_item": "H1",
+      "to_terminal": "X1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_AC",
+      "function": "K1-AUX 14 also drives green RUN lamp H1 X1"
+    },
+    {
+      "wire_id": "W24",
+      "from_item": "H1",
+      "from_terminal": "X2",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_AC",
+      "function": "Lamp H1 X2 returns to control neutral N"
+    }
+  ],
+  "labels": [
+    {"anchor_item": "Q1", "text": "Q1 — Isolator 32A 3P", "kind": "device_tag"},
+    {"anchor_item": "K1", "text": "K1 — Main Contactor 32A AC-3", "kind": "device_tag"},
+    {"anchor_item": "K1-AUX", "text": "K1-13/14 — Auxiliary Hold NO", "kind": "device_tag"},
+    {"anchor_item": "F1", "text": "F1 — Overload Class 10, set 21A", "kind": "device_tag"},
+    {"anchor_item": "M1", "text": "M1 — 11 kW Grinder 415V 21A", "kind": "device_tag"},
+    {"anchor_item": "S1", "text": "S1 — START (green)", "kind": "device_tag"},
+    {"anchor_item": "S2", "text": "S2 — STOP (red mushroom)", "kind": "device_tag"},
+    {"anchor_item": "H1", "text": "H1 — RUN (green)", "kind": "device_tag"},
+    {"anchor_item": "X1", "text": "X1 — Power IN L1/L2/L3", "kind": "device_tag"},
+    {"anchor_item": "X2", "text": "X2 — Motor OUT U/V/W", "kind": "device_tag"},
+    {"anchor_item": "X3", "text": "X3 — Control L/N 230 VAC", "kind": "device_tag"},
+    {"anchor_item": "K1", "text": "A1 / A2", "kind": "terminal_number"},
+    {"anchor_item": "F1", "text": "95 / 96 (trip contact NC)", "kind": "terminal_number"},
+    {"anchor_item": "S1", "text": "13 / 14", "kind": "terminal_number"},
+    {"anchor_item": "S2", "text": "21 / 22", "kind": "terminal_number"},
+    {"anchor_item": "K1-AUX", "text": "K1 hold parallels S1 — release-safe once K1 picks", "kind": "sequence_note"}
+  ],
+  "sequence_of_operation": "START sequence: Operator presses S1 (momentary NO 13-14 closes) → control-supply L flows X3 → F1 95-96 (NC, closed because no trip) → S2 21-22 (NC, closed because not pressed) → S1 13-14 (closed) → K1 coil A1-A2 energises → K1 main poles 1/2 + 3/4 + 5/6 close → motor M1 receives 415 V 3-phase via F1 thermal element → motor accelerates from 147 A inrush down to 21 A FLA in ~4 s. K1-AUX 13-14 (mechanically linked NO) closes simultaneously and provides hold-in current bypassing S1, so K1 stays energised after S1 release. K1-AUX also energises H1 green RUN lamp via X3-N. STOP sequence: Operator presses S2 → S2 21-22 opens (NC break) → coil A1-A2 path interrupted → K1 drops out → main poles open → motor coasts to stop → K1-AUX 13-14 opens → H1 extinguishes. TRIP sequence: Motor thermal overload (sustained current > 24 A) heats F1 bimetal → F1 95-96 opens (NC break) → coil path interrupted → identical drop-out as STOP. Restart requires manual F1 reset before S1 will re-energise.",
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "KS 1700:2018 Annex E §VIII adopts BS EN 60617 verbatim for graphical symbols and BS EN 60947-4-1 for contactor utilisation categories AC-3 (squirrel-cage motor switching).",
+      "Type D MCB upstream (32 A) covers motor inrush 147 A within instantaneous trip band 10-20×In = 320-640 A per BS EN 60898-1:2019; 147 A inrush sits below the 10×In magnetic threshold so the upstream MCB will NOT nuisance-trip on start.",
+      "Overload Class 10 appropriate for 4 s start time: Class 10 tolerates locked-rotor current for ~10 s at 7.2×Ie — motor pulls 147 A (7×FLA) for 4 s, well inside the Class 10 thermal envelope.",
+      "Workshop ambient assumed ≤40 °C nominal; overload setting 21 A matches motor FLA at the IEC reference ambient — no ambient derating applied because the workshop is mechanically ventilated.",
+      "Leaf-mode execution; no db-layout-rollup, fault-level, or earthing intents available in this project — upstream OCPD context, prospective fault current, and PE bonding all engineer-declared via inputs.json."
+    ]
+  },
+  "rationale": {
+    "chat_summary": "DOL motor starter for 11 kW workshop grinder M1, KE jurisdiction (Nairobi industrial). K1 32A AC-3 contactor + F1 Class 10 thermal overload set 21 A (motor FLA) + Q1 32A 3P manual isolator; upstream 32A Type D MCB declared by engineer covers the 147 A inrush. Leaf-mode execution — no db-layout-rollup / fault-level / earthing intents in this project. Reply to refine (e.g. add anti-condensation heater or local emergency stop).",
+    "sections": [
+      {
+        "title": "Schematic Identification",
+        "summary": "control_motor_starter (DOL topology) on sheet SHT-001 for a Nairobi industrial light-engineering workshop. Subject is M1, an 11 kW / 415 V / 21 A FLA 3-phase squirrel-cage induction motor driving a tool-room grinder. Leaf-mode execution: no upstream skills produced intents this schematic could consume, so all upstream context (32 A Type D MCB, supply class, earthing system) is engineer-declared via inputs.json and recorded in compliance_summary.assumptions[]. KE jurisdiction applies KS 1700:2018 with Annex E §VIII routing to BS EN 60617 (symbols) and BS EN 60947-4-1 (contactor categories).",
+        "decisions": [
+          {
+            "label": "DOL topology for 11 kW grinder",
+            "summary": "11 kW sits at the practical upper edge of DOL — inrush (~7×FLA = 147 A) is acceptable on an industrial 32 A Type D circuit, and DOL is the lowest-cost / lowest-component-count starter for a workshop tool that does not require torque ramping.",
+            "rule": "Starter-topology selection by motor rating and load profile",
+            "code_clause": "KS 1700:2018 § 552 (Annex E §VIII: adopts BS 7671:2018+A2:2022 § 552 verbatim)"
+          },
+          {
+            "label": "Leaf-mode execution declared",
+            "summary": "No db-layout-rollup / fault-level / earthing intents present; upstream context engineer-declared.",
+            "rule": "Schematic skill leaf-mode fallback per generator prompt Step 11"
+          }
+        ]
+      },
+      {
+        "title": "Source Context",
+        "summary": "Engineer-declared upstream: 32 A Type D MCB on a workshop sub-DB (DB-WS), 415 V 3-phase TN-S supply, 21 A motor FLA, 147 A locked-rotor inrush. Type D curve selected upstream because the 147 A inrush ÷ 32 A rating = 4.6×In, which would routinely nuisance-trip a Type B (3-5×In magnetic) or a Type C at the lower end of its 5-10×In band but sits well inside the Type D 10-20×In instantaneous band. No db-layout-rollup intent was available, so the upstream rating is captured as an inputs.json assumption rather than a consumed value.",
+        "decisions": [
+          {
+            "label": "Type D upstream MCB matches motor inrush profile",
+            "summary": "147 A inrush / 32 A In = 4.6×In — below Type D's 10×In magnetic threshold so no nuisance trip; above Type B/C bands which would trip.",
+            "rule": "MCB curve selection for motor circuits",
+            "code_clause": "BS EN 60898-1:2019 + KS 1700:2018 § 552 (Annex E §VIII: adopts BS 7671:2018+A2:2022 § 552 verbatim)",
+            "inputs": {
+              "motor_inrush_a": 147,
+              "upstream_mcb_rating_a": 32,
+              "inrush_ratio": 4.6,
+              "type_d_magnetic_band_x_in": "10-20"
+            }
+          },
+          {
+            "label": "415 V 3-phase TN-S engineer-declared",
+            "summary": "No earthing intent consumed — TN-S is the dominant Kenyan utility arrangement for industrial premises with a dedicated PE conductor from the substation.",
+            "rule": "Earthing-system declaration in leaf-mode",
+            "code_clause": "KS 1700:2018 § 312 (Annex E §VIII: adopts BS 7671:2018+A2:2022 § 312 verbatim)"
+          }
+        ]
+      },
+      {
+        "title": "Items Breakdown",
+        "summary": "11 devices placed: Q1 (32A 3-pole manual lockable isolator for safe maintenance isolation), K1 (32A AC-3 contactor — AC-3 is the canonical utilisation category for squirrel-cage motor switching), K1-AUX (mechanically linked NO 13/14 auxiliary for hold-in), F1 (Class 10 thermal overload set at 21 A motor FLA), M1 (the 11 kW 3-phase induction motor), S1 (green NO START), S2 (red mushroom STOP wired through NC contact 21-22), H1 (green RUN indicator lamp), plus three terminal rails X1/X2/X3 segregating incoming power, motor-tail outgoing power, and 230 VAC control supply. The S2 push-button physically uses the NO actuator from the symbol library but is wired as a coil-break (NC) — labelled explicitly as 21-22 contact terminals in the label set.",
+        "decisions": [
+          {
+            "label": "K1 32A AC-3 contactor for 11 kW motor",
+            "summary": "AC-3 utilisation category covers squirrel-cage motor starting + running + occasional inching at full load.",
+            "rule": "Contactor utilisation category selection",
+            "code_clause": "BS EN 60947-4-1 § 4.4.2 (AC-3 squirrel-cage motor switching)",
+            "inputs": {
+              "motor_rating_kw": 11,
+              "motor_fla_a": 21,
+              "contactor_rated_ie_a": 32,
+              "utilisation_category": "AC-3"
+            }
+          },
+          {
+            "label": "F1 Class 10 thermal overload set 21 A",
+            "summary": "Class 10 tolerates locked-rotor current ~10 s at 7.2×Ie — workshop grinder pulls 147 A (7×FLA) for ~4 s start, well inside Class 10 envelope. Setpoint 21 A matches motor FLA at IEC reference ambient.",
+            "rule": "Overload class selection by start-time",
+            "code_clause": "BS EN 60947-4-1 § 4.7 (overload relay classes) + IEC 60947-4-1 Table 2",
+            "inputs": {
+              "motor_start_time_s": 4,
+              "overload_class": "10",
+              "set_value_a": 21,
+              "locked_rotor_tolerance_s": 10
+            }
+          },
+          {
+            "label": "Q1 manual lockable isolator for maintenance",
+            "summary": "Workshop maintenance regime requires safe-isolation point local to the motor — lockable handle satisfies the safe-isolation requirement without depending on remote DB isolation.",
+            "rule": "Isolation requirement for motor circuits",
+            "code_clause": "KS 1700:2018 § 537.2 (Annex E §VIII: adopts BS 7671:2018+A2:2022 § 537.2 verbatim)"
+          }
+        ]
+      },
+      {
+        "title": "Connection Topology",
+        "summary": "Three logical circuits across 24 connections. Power (W1-W15, power_LV, 6 mm² Cu): X1 → Q1 → K1 main poles → F1 thermal → X2 → M1, full 3-phase 415 V path. Control (W16-W22, control_LV, 1.5 mm² Cu, 230 VAC from one phase + N at X3): L → F1 95/96 (NC trip, opens on overload) → S2 21/22 (NC, opens on STOP) → S1 13/14 (NO, closes on START) → K1 A1 → A2 → N. Hold-in: K1-AUX 13/14 (NO, mechanically linked) parallels S1, so the coil stays energised after S1 release. Auxiliary (W23-W24, aux_AC): K1-AUX 14 drives H1 RUN lamp X1, H1 X2 returns to N. Canonical 3-wire control — any series break (F1 trip OR S2 press OR control loss) drops K1 out, fail-safe.",
+        "decisions": [
+          {
+            "label": "3-wire hold-in via K1-AUX parallel to S1",
+            "summary": "Canonical fail-safe control wiring — momentary START, latched until any series break.",
+            "rule": "3-wire start-stop control topology",
+            "code_clause": "BS EN 60204-1 § 9.2.5.3 (start/stop control circuits)"
+          },
+          {
+            "label": "Series break path F1 → S2 → S1/K1-AUX → K1 coil",
+            "summary": "Overload OR Stop OR control-supply loss all drop K1 out — single failure mode in any series element is fail-safe.",
+            "rule": "Fail-safe series control",
+            "code_clause": "BS EN 60204-1 § 9.2.5.4"
+          }
+        ]
+      },
+      {
+        "title": "Compliance Assessment",
+        "summary": "Compliant against KS 1700:2018 § 552 (motor switching) routed via Annex E §VIII to BS 7671:2018+A2:2022 § 552, BS EN 60947-4-1 (LV switchgear — contactors & motor-starters), BS EN 60898-1:2019 (MCBs upstream), BS EN 60204-1 (machinery safety — control circuits), and IEC 60364-5-55 (electrical equipment — operating). No CRITICAL or HIGH flags. Five assumptions documented in compliance_summary.assumptions[]: Annex E §VIII routing, Type D inrush coverage, Class 10 thermal envelope, 40 °C ambient, and the explicit leaf-mode declaration.",
+        "decisions": [
+          {
+            "label": "KS 1700:2018 + Annex E §VIII routing form",
+            "summary": "Every protection-related clause cites KS 1700:2018 with explicit `(Annex E §VIII: adopts BS 7671:2018+A2:2022 § X.Y.Z verbatim)` routing — per Sprint 3-W2b citation discipline.",
+            "rule": "KE jurisdiction citation discipline",
+            "code_clause": "KS 1700:2018 § 313 (Annex E scope)"
+          },
+          {
+            "label": "BS EN 60947-4-1 for contactor + overload",
+            "summary": "Jurisdiction-agnostic standard for LV switchgear and controlgear; cited directly without routing.",
+            "rule": "Contactor and overload assembly standard",
+            "code_clause": "BS EN 60947-4-1"
+          }
+        ]
+      },
+      {
+        "title": "Schedule Notes",
+        "summary": "Leaf-mode execution explicit — no db-layout-rollup / fault-level / earthing intents available, so upstream OCPD (32 A Type D), prospective fault current, and earthing system (TN-S) are engineer-declared via inputs.json and re-stated in compliance_summary.assumptions[]. Workshop-environment: ambient ≤40 °C with mechanical ventilation, no per-circuit derating; 6 mm² Cu power conductors sized against the 32 A upstream at IEC reference ambient (formal cable sizing belongs to cable-sizing skill). Motor-inrush coordination verified: 147 A is 4.6×In on the upstream 32 A Type D, well below the 10×In magnetic threshold per BS EN 60898-1:2019 Type D characteristic. Anti-condensation heater not specified — workshop heated, motor in dry environment.",
+        "decisions": [
+          {
+            "label": "Leaf-mode execution explicit",
+            "summary": "No upstream intents — all upstream context engineer-declared via inputs.json.",
+            "rule": "Schematic leaf-mode disclosure per generator prompt Step 11"
+          },
+          {
+            "label": "Motor-inrush coordination 4.6×In on 32A Type D",
+            "summary": "147 A inrush ÷ 32 A In = 4.6×In — well below Type D 10×In threshold, no nuisance trip.",
+            "rule": "Motor-circuit MCB coordination",
+            "code_clause": "BS EN 60898-1:2019",
+            "inputs": {
+              "motor_inrush_a": 147,
+              "upstream_in_a": 32,
+              "inrush_ratio": 4.6,
+              "type_d_magnetic_x_in": "10-20"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

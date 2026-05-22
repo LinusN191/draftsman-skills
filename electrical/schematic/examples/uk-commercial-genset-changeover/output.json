@@ -1,0 +1,347 @@
+{
+  "drawing_type": "schematic",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "uk-commercial-genset-changeover",
+    "skill_version": "schematic/1.0.0",
+    "produced_at": "2026-05-22T10:00:00Z",
+    "consumed_intents": [
+      {
+        "intent_type": "db-layout-rollup",
+        "intent_version": "1.3.1",
+        "produced_by": "db-layout"
+      }
+    ]
+  },
+  "jurisdiction": "GB",
+  "schematic_type": "control_changeover",
+  "sheet": {
+    "sheet_id": "SHT-002",
+    "title": "ATS Changeover — 400A Mains / 250 kVA Standby Genset to MSB",
+    "page_of": "1/1"
+  },
+  "items": [
+    {
+      "item_id": "Q1",
+      "device_class": "breaker",
+      "bs_en_60617_ref": "BREAKER_52",
+      "rating": "400 A 4-pole ACB mains incomer, 50 kA Icu",
+      "ansi_function_code": "52"
+    },
+    {
+      "item_id": "Q2",
+      "device_class": "breaker",
+      "bs_en_60617_ref": "BREAKER_52",
+      "rating": "400 A 4-pole ACB genset incomer, 50 kA Icu",
+      "ansi_function_code": "52"
+    },
+    {
+      "item_id": "K1",
+      "device_class": "contactor",
+      "bs_en_60617_ref": "CONTACTOR_4POLE",
+      "rating": "400 A AC-1 4-pole mains contactor, coil 230 VAC"
+    },
+    {
+      "item_id": "K2",
+      "device_class": "contactor",
+      "bs_en_60617_ref": "CONTACTOR_4POLE",
+      "rating": "400 A AC-1 4-pole genset contactor, coil 230 VAC, mechanically interlocked with K1"
+    },
+    {
+      "item_id": "K3",
+      "device_class": "uv_relay",
+      "bs_en_60617_ref": "UNDERVOLTAGE_RELAY_27",
+      "rating": "Mains-fail detection — 3-phase UV relay, pickup 0.85×Un = 340 V, drop-out 0.7×Un, 27 ANSI",
+      "ansi_function_code": "27"
+    },
+    {
+      "item_id": "KT1",
+      "device_class": "timer",
+      "bs_en_60617_ref": "TIMER_ON_DELAY",
+      "rating": "Mains-fail confirm delay 0.5 s on-delay (prevents nuisance transfer on dips)"
+    },
+    {
+      "item_id": "KT2",
+      "device_class": "timer",
+      "bs_en_60617_ref": "TIMER_ON_DELAY",
+      "rating": "Genset warm-up + transfer delay 10 s on-delay (matches genset start-time-to-stable)"
+    },
+    {
+      "item_id": "KT3",
+      "device_class": "timer",
+      "bs_en_60617_ref": "TIMER_OFF_DELAY",
+      "rating": "Mains-restore retransfer hysteresis 60 s off-delay (mains must be stable for 60 s before retransfer)"
+    },
+    {
+      "item_id": "S1",
+      "device_class": "push_button",
+      "bs_en_60617_ref": "PUSHBUTTON_NO",
+      "rating": "TEST — manual genset start (black flush actuator, NO contact 13-14)"
+    },
+    {
+      "item_id": "S2",
+      "device_class": "push_button",
+      "bs_en_60617_ref": "PUSHBUTTON_NO",
+      "rating": "RESET — clear latched fault (yellow flush actuator, NO contact 13-14)"
+    },
+    {
+      "item_id": "H1",
+      "device_class": "lamp",
+      "bs_en_60617_ref": "LAMP_GREEN",
+      "rating": "MAINS ON — green, 230 VAC"
+    },
+    {
+      "item_id": "H2",
+      "device_class": "lamp",
+      "bs_en_60617_ref": "LAMP_AMBER",
+      "rating": "GENSET ON — amber, 230 VAC"
+    },
+    {
+      "item_id": "H3",
+      "device_class": "lamp",
+      "bs_en_60617_ref": "LAMP_RED",
+      "rating": "FAULT — red, 230 VAC (genset fail-to-start latch)"
+    },
+    {
+      "item_id": "X1",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "Mains incoming terminal block L1/L2/L3/N, 240 mm² DIN-rail"
+    },
+    {
+      "item_id": "X2",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "Genset incoming terminal block L1/L2/L3/N, 240 mm² DIN-rail"
+    },
+    {
+      "item_id": "X3",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "Outgoing common bus to MSB L1/L2/L3/N, 240 mm² DIN-rail"
+    },
+    {
+      "item_id": "X4",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "Control supply L/N 230 VAC + genset start command 24 VDC"
+    }
+  ],
+  "connections": [
+    {"wire_id": "W1", "from_item": "X1", "from_terminal": "L1", "to_item": "Q1", "to_terminal": "1", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Mains L1 to mains incomer breaker pole 1"},
+    {"wire_id": "W2", "from_item": "X1", "from_terminal": "L2", "to_item": "Q1", "to_terminal": "3", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Mains L2 to Q1 pole 2"},
+    {"wire_id": "W3", "from_item": "X1", "from_terminal": "L3", "to_item": "Q1", "to_terminal": "5", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Mains L3 to Q1 pole 3"},
+    {"wire_id": "W4", "from_item": "X1", "from_terminal": "N", "to_item": "Q1", "to_terminal": "7", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Mains N to Q1 pole 4 (4-pole switching)"},
+    {"wire_id": "W5", "from_item": "Q1", "from_terminal": "2", "to_item": "K1", "to_terminal": "1", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Mains-side breaker output L1 to mains contactor K1 pole 1"},
+    {"wire_id": "W6", "from_item": "Q1", "from_terminal": "4", "to_item": "K1", "to_terminal": "3", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Q1 pole 2 to K1 pole 2"},
+    {"wire_id": "W7", "from_item": "Q1", "from_terminal": "6", "to_item": "K1", "to_terminal": "5", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Q1 pole 3 to K1 pole 3"},
+    {"wire_id": "W8", "from_item": "Q1", "from_terminal": "8", "to_item": "K1", "to_terminal": "7", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Q1 N pole to K1 pole 4 (neutral)"},
+    {"wire_id": "W9", "from_item": "X2", "from_terminal": "L1", "to_item": "Q2", "to_terminal": "1", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Genset L1 to genset incomer breaker pole 1"},
+    {"wire_id": "W10", "from_item": "X2", "from_terminal": "L2", "to_item": "Q2", "to_terminal": "3", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Genset L2 to Q2 pole 2"},
+    {"wire_id": "W11", "from_item": "X2", "from_terminal": "L3", "to_item": "Q2", "to_terminal": "5", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Genset L3 to Q2 pole 3"},
+    {"wire_id": "W12", "from_item": "X2", "from_terminal": "N", "to_item": "Q2", "to_terminal": "7", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Genset N to Q2 pole 4 (segregated genset neutral — TN-S separation)"},
+    {"wire_id": "W13", "from_item": "Q2", "from_terminal": "2", "to_item": "K2", "to_terminal": "1", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Q2 output L1 to genset contactor K2 pole 1"},
+    {"wire_id": "W14", "from_item": "Q2", "from_terminal": "4", "to_item": "K2", "to_terminal": "3", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Q2 pole 2 to K2 pole 2"},
+    {"wire_id": "W15", "from_item": "Q2", "from_terminal": "6", "to_item": "K2", "to_terminal": "5", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Q2 pole 3 to K2 pole 3"},
+    {"wire_id": "W16", "from_item": "Q2", "from_terminal": "8", "to_item": "K2", "to_terminal": "7", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Q2 N pole to K2 pole 4 (genset neutral switched separately)"},
+    {"wire_id": "W17", "from_item": "K1", "from_terminal": "2", "to_item": "X3", "to_terminal": "L1", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K1 output L1 to common outgoing bus to MSB"},
+    {"wire_id": "W18", "from_item": "K1", "from_terminal": "4", "to_item": "X3", "to_terminal": "L2", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K1 output L2 to common bus L2"},
+    {"wire_id": "W19", "from_item": "K1", "from_terminal": "6", "to_item": "X3", "to_terminal": "L3", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K1 output L3 to common bus L3"},
+    {"wire_id": "W20", "from_item": "K1", "from_terminal": "8", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K1 output N to common bus N"},
+    {"wire_id": "W21", "from_item": "K2", "from_terminal": "2", "to_item": "X3", "to_terminal": "L1", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K2 output L1 to common bus L1 (K1/K2 interlocked — never simultaneous)"},
+    {"wire_id": "W22", "from_item": "K2", "from_terminal": "4", "to_item": "X3", "to_terminal": "L2", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K2 output L2 to common bus L2"},
+    {"wire_id": "W23", "from_item": "K2", "from_terminal": "6", "to_item": "X3", "to_terminal": "L3", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K2 output L3 to common bus L3"},
+    {"wire_id": "W24", "from_item": "K2", "from_terminal": "8", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K2 output N to common bus N"},
+    {"wire_id": "W25", "from_item": "X1", "from_terminal": "L1", "to_item": "K3", "to_terminal": "L1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "Mains-fail UV relay K3 sense input L1"},
+    {"wire_id": "W26", "from_item": "X1", "from_terminal": "L2", "to_item": "K3", "to_terminal": "L2", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K3 sense input L2"},
+    {"wire_id": "W27", "from_item": "X1", "from_terminal": "L3", "to_item": "K3", "to_terminal": "L3", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K3 sense input L3"},
+    {"wire_id": "W28", "from_item": "X1", "from_terminal": "N", "to_item": "K3", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K3 sense neutral reference"},
+    {"wire_id": "W29", "from_item": "K3", "from_terminal": "11", "to_item": "KT1", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K3 mains-fail output (NC, opens on mains-OK) energises KT1 on-delay timer"},
+    {"wire_id": "W30", "from_item": "KT1", "from_terminal": "A2", "to_item": "X4", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "KT1 coil return to control N"},
+    {"wire_id": "W31", "from_item": "KT1", "from_terminal": "15", "to_item": "X4", "to_terminal": "GEN-START", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "KT1 output (after 0.5 s confirm) → 24 VDC genset start signal to genset controller"},
+    {"wire_id": "W32", "from_item": "KT1", "from_terminal": "15", "to_item": "KT2", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "KT1 output also energises KT2 (10 s warm-up timer)"},
+    {"wire_id": "W33", "from_item": "KT2", "from_terminal": "A2", "to_item": "X4", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "KT2 coil return to N"},
+    {"wire_id": "W34", "from_item": "KT2", "from_terminal": "15", "to_item": "K1", "to_terminal": "A2", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "KT2 timed-out output opens K1 mains-contactor coil break path"},
+    {"wire_id": "W35", "from_item": "KT2", "from_terminal": "18", "to_item": "K2", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "KT2 NO contact (after 10 s) energises K2 genset contactor"},
+    {"wire_id": "W36", "from_item": "K2", "from_terminal": "A2", "to_item": "X4", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K2 coil return to N"},
+    {"wire_id": "W37", "from_item": "K3", "from_terminal": "14", "to_item": "KT3", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K3 mains-OK output (NO, closes on mains restored) → KT3 retransfer hysteresis timer"},
+    {"wire_id": "W38", "from_item": "KT3", "from_terminal": "A2", "to_item": "X4", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "KT3 coil return to N"},
+    {"wire_id": "W39", "from_item": "KT3", "from_terminal": "15", "to_item": "K1", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "KT3 timed-out (60 s mains-stable) re-energises K1 mains contactor"},
+    {"wire_id": "W40", "from_item": "K1", "from_terminal": "A2", "to_item": "X4", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K1 coil return to N"},
+    {"wire_id": "W41", "from_item": "K1", "from_terminal": "13", "to_item": "H1", "to_terminal": "X1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_AC", "function": "K1 NO auxiliary 13-14 drives H1 MAINS ON green lamp"},
+    {"wire_id": "W42", "from_item": "H1", "from_terminal": "X2", "to_item": "X4", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "aux_AC", "function": "H1 lamp return to N"},
+    {"wire_id": "W43", "from_item": "K2", "from_terminal": "13", "to_item": "H2", "to_terminal": "X1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_AC", "function": "K2 NO auxiliary 13-14 drives H2 GENSET ON amber lamp"},
+    {"wire_id": "W44", "from_item": "H2", "from_terminal": "X2", "to_item": "X4", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "aux_AC", "function": "H2 lamp return to N"},
+    {"wire_id": "W45", "from_item": "S1", "from_terminal": "14", "to_item": "X4", "to_terminal": "GEN-START", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "S1 TEST push-button parallels KT1 start signal — manual genset exercise"},
+    {"wire_id": "W46", "from_item": "S2", "from_terminal": "14", "to_item": "H3", "to_terminal": "X2", "conductor_csa_mm2": 1.5, "voltage_class": "aux_AC", "function": "S2 RESET clears H3 FAULT lamp latch (fault contact wired upstream of S2)"}
+  ],
+  "labels": [
+    {"anchor_item": "Q1", "text": "Q1 — 400A Mains ACB (52)", "kind": "device_tag"},
+    {"anchor_item": "Q2", "text": "Q2 — 400A Genset ACB (52)", "kind": "device_tag"},
+    {"anchor_item": "K1", "text": "K1 — 400A 4P Mains Contactor", "kind": "device_tag"},
+    {"anchor_item": "K2", "text": "K2 — 400A 4P Genset Contactor (interlocked with K1)", "kind": "device_tag"},
+    {"anchor_item": "K3", "text": "K3 — Mains-Fail UV Relay (ANSI 27)", "kind": "device_tag"},
+    {"anchor_item": "KT1", "text": "KT1 — 0.5s Confirm Delay (on-delay)", "kind": "device_tag"},
+    {"anchor_item": "KT2", "text": "KT2 — 10s Genset Warm-Up (on-delay)", "kind": "device_tag"},
+    {"anchor_item": "KT3", "text": "KT3 — 60s Retransfer Hysteresis (off-delay)", "kind": "device_tag"},
+    {"anchor_item": "S1", "text": "S1 — TEST (manual genset start)", "kind": "device_tag"},
+    {"anchor_item": "S2", "text": "S2 — RESET (clear latched fault)", "kind": "device_tag"},
+    {"anchor_item": "H1", "text": "H1 — MAINS ON (green)", "kind": "device_tag"},
+    {"anchor_item": "H2", "text": "H2 — GENSET ON (amber)", "kind": "device_tag"},
+    {"anchor_item": "H3", "text": "H3 — FAULT (red)", "kind": "device_tag"},
+    {"anchor_item": "K1", "text": "A1 / A2", "kind": "terminal_number"},
+    {"anchor_item": "K2", "text": "A1 / A2", "kind": "terminal_number"},
+    {"anchor_item": "K3", "text": "11/14 (mains-OK NO) / 11/12 (mains-fail NC)", "kind": "terminal_number"},
+    {"anchor_item": "K1", "text": "K1/K2 mechanical interlock — both contactors cannot close simultaneously", "kind": "sequence_note"},
+    {"anchor_item": "K2", "text": "Genset neutral switched separately from mains neutral (4-pole) — preserves TN-S separation between sources", "kind": "sequence_note"}
+  ],
+  "sequence_of_operation": "STEADY-STATE MAINS-OK: K3 senses 3-phase mains via X1, internal contacts 11/12 open (no mains-fail) and 11/14 closed (mains-OK). K1 mains contactor energised (held by KT3 timed-out path), K2 genset contactor de-energised. MSB drinks from common bus X3 fed by K1. H1 MAINS ON green lit. MAINS-FAIL DETECT: any phase or all phases drop below K3 pickup (0.85×Un = 340 V). K3 11/12 closes, K3 11/14 opens, KT3 retransfer timer de-energises. KT1 on-delay (0.5 s) starts — short confirm window rejects momentary dips. CONFIRM + GENSET START: at t = 0.5 s KT1 times out → KT1 15 closes → 24 VDC GEN-START signal to genset controller via X4 → genset crank/run sequence begins. Simultaneously KT2 (10 s on-delay) starts, modelling the worst-case genset start-to-stable interval. TRANSFER: at t = 10.5 s KT2 times out → KT2 15 opens K1 coil path (K1 drops out) → mechanical interlock allows K2 to close → KT2 18 closes → K2 coil energises → K2 main poles close → load on common bus X3 now fed from genset. H1 extinguishes, H2 GENSET ON amber lit. Total dead-time on the bus: ~50 ms contactor mechanical time. MAINS-RESTORE DETECT: mains voltage returns, K3 11/14 closes, K3 11/12 opens → KT3 (60 s off-delay) starts. The 60 s window confirms mains is stable and not just briefly recovered. RETRANSFER: at t = mains-restore + 60 s KT3 times out → KT3 15 closes K1 coil path → K2 drops out (KT2 path no longer asserted, K2 coil released as KT2 18 also reverts when mains-fail clears) → mechanical interlock releases → K1 picks up → load back on mains. H2 extinguishes, H1 lit. GENSET COOL-DOWN: handled by genset controller's own cool-down timer (typically 5 minutes after off-load); not part of this changeover scheme. TEST MODE: S1 momentarily provides manual GEN-START signal (parallels KT1 output) for periodic exercise without simulating mains-fail. FAULT LATCH: any persistent genset failure (fail-to-start, low oil pressure, high coolant temp) latches H3 FAULT red via genset controller alarm contact; S2 RESET clears the latch.",
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "BS 7671:2018+A2:2022 § 560 (safety services) applies to the ATS as a switching scheme between the public mains and a private standby generator; § 537 covers isolation and switching, § 314.1 covers division of installations into circuits.",
+      "Upstream rating consumed from db-layout-rollup (MSB main switch 400 A) — see meta.consumed_intents[].",
+      "K1/K2 are AC-1 utilisation category contactors selected for steady-state currents — ACB feeder breakers Q1/Q2 deliver overcurrent and short-circuit protection; contactor short-time withstand verified against the 16 kA declared fault level at the changeover incoming point.",
+      "Mains-fail confirm 0.5 s rejects momentary dips and starts/stop ratings; transfer time 10 s aligns with the declared genset start-time-to-stable of 10 s; retransfer 60 s prevents flicker-trip on partially-restored mains.",
+      "4-pole switching mandated: TN-S earthing system has segregated genset neutral, and 4-pole break is required when the genset has a separately-derived neutral-earth bond on its alternator star point to avoid parallel neutral-paths under retransfer.",
+      "No fault-level intent consumed; the 16 kA prospective fault current at the ATS incoming is engineer-declared via inputs.json.",
+      "No earthing intent consumed; the TN-S earthing system + genset star-point bond strategy is engineer-declared via inputs.json."
+    ]
+  },
+  "rationale": {
+    "chat_summary": "ATS changeover scheme for UK commercial premises: 400 A mains incomer + 250 kVA standby diesel genset to MSB. K1/K2 4-pole AC-1 contactors with mechanical interlock; K3 UV relay (ANSI 27) for mains-fail detection; KT1 0.5 s confirm + KT2 10 s genset warm-up + KT3 60 s retransfer hysteresis. Consumes db-layout-rollup (MSB main switch 400 A). Reply to refine (e.g. add load-shedding contactor for non-essential circuits).",
+    "sections": [
+      {
+        "title": "Schematic Identification",
+        "summary": "control_changeover (ATS_4P topology) on sheet SHT-002 for a UK commercial premises. The schematic governs source-switching between a 400 A 3-phase mains incomer and a 250 kVA standby diesel generator (360 A FLA) feeding a common outgoing bus to the MSB. 4-pole switching is selected over 3-pole because the genset alternator has a separately-derived neutral-earth star-point bond; under retransfer a 3-pole break would leave a parallel neutral path between the mains and genset earthing systems. The schematic consumes one intent: db-layout-rollup from the parent db-layout skill, supplying the MSB main switch rating (400 A) which sizes the contactor + breaker selection.",
+        "decisions": [
+          {
+            "label": "ATS topology, 4-pole switching",
+            "summary": "Standby genset has separately-derived neutral — 4-pole break prevents parallel neutral path under retransfer.",
+            "rule": "Source-switching topology by neutral-bond strategy",
+            "code_clause": "BS 7671:2018+A2:2022 § 560.6 (safety services switching) + BS 7671:2018+A2:2022 § 551.4 (generator parallel operation exclusions)"
+          },
+          {
+            "label": "Upstream rating consumed from db-layout-rollup",
+            "summary": "MSB main switch rating 400 A from db-layout-rollup sizes K1/K2 contactor selection.",
+            "rule": "Hybrid-mode intent consumption",
+            "inputs": {
+              "intent_type": "db-layout-rollup",
+              "msb_main_switch_a": 400
+            }
+          }
+        ]
+      },
+      {
+        "title": "Source Context",
+        "summary": "Mains source: 400 V 3-phase + N, 400 A nominal, 16 kA prospective fault current at the ATS incoming (engineer-declared — no fault-level intent), TN-S earthing system. Genset source: 250 kVA / 400 V / 360 A FLA diesel set with engine-start time-to-stable of 10 s (manufacturer datasheet typical for a 250 kVA Stage V engine). The genset has a separately-derived neutral-earth bond at its alternator star point, which establishes a parallel local earthing system during genset operation and mandates 4-pole switching at the ATS. db-layout-rollup intent supplied the MSB main switch rating (400 A) that drives K1/K2 + Q1/Q2 sizing.",
+        "decisions": [
+          {
+            "label": "16 kA prospective fault current at incoming engineer-declared",
+            "summary": "No fault-level intent — value engineer-declared, K1/K2 short-time withstand verified against 16 kA.",
+            "rule": "Partial-intent disclosure: fault-level absent",
+            "code_clause": "BS 7671:2018+A2:2022 § 434"
+          },
+          {
+            "label": "Genset star-point neutral bond engineer-declared",
+            "summary": "No earthing intent — TN-S + genset separately-derived neutral declared in inputs.json.",
+            "rule": "Partial-intent disclosure: earthing absent",
+            "code_clause": "BS 7671:2018+A2:2022 § 551.4.3.2.1"
+          }
+        ]
+      },
+      {
+        "title": "Items Breakdown",
+        "summary": "17 devices placed across power, control, and indication. Power: Q1 + Q2 (400 A 4-pole ACB incoming breakers, 50 kA Icu covering the 16 kA prospective fault with healthy headroom), K1 + K2 (400 A 4-pole AC-1 contactors, mechanically interlocked — the canonical ATS arrangement). Control: K3 (3-phase UV relay ANSI 27 for mains-fail detect, pickup 0.85×Un = 340 V), KT1 (0.5 s on-delay confirm timer to reject dips), KT2 (10 s on-delay matched to genset start-to-stable), KT3 (60 s off-delay retransfer hysteresis). Indication: H1 green MAINS ON + H2 amber GENSET ON + H3 red FAULT. Push-buttons: S1 TEST (manual genset exercise), S2 RESET (clear fault latch). 4 terminal rails X1-X4 segregate mains-in / genset-in / common-out / control-supply.",
+        "decisions": [
+          {
+            "label": "K1/K2 AC-1 contactors with mechanical interlock",
+            "summary": "AC-1 is correct for switching steady-state distribution currents — ACB Q1/Q2 deliver fault clearance; mechanical interlock guarantees the K1/K2 NO/NO pair cannot close simultaneously.",
+            "rule": "Contactor utilisation category + interlock requirement for ATS",
+            "code_clause": "BS EN 60947-4-1 § 4.4.2 (AC-1) + BS EN 60947-6-1 § 6 (transfer switching equipment)"
+          },
+          {
+            "label": "K3 ANSI 27 UV relay for mains-fail detect",
+            "summary": "Pickup 0.85×Un / drop-out 0.7×Un follows BS 7671:2018+A2:2022 § 445 undervoltage protection bands; KT1 0.5 s confirm rejects momentary supply dips.",
+            "rule": "Mains-fail detect threshold band",
+            "code_clause": "BS 7671:2018+A2:2022 § 445.1 + IEC 60255-127 (UV relays)"
+          },
+          {
+            "label": "Q1/Q2 ACBs 400 A / 50 kA Icu",
+            "summary": "50 kA Icu provides >3× headroom over the 16 kA prospective fault — meets BS 7671:2018+A2:2022 § 434.5.1 breaking-capacity requirement with margin.",
+            "rule": "Breaking-capacity selection",
+            "code_clause": "BS 7671:2018+A2:2022 § 434.5.1",
+            "inputs": {
+              "pfc_ka": 16,
+              "icu_ka": 50,
+              "headroom_x": 3.1
+            }
+          }
+        ]
+      },
+      {
+        "title": "Connection Topology",
+        "summary": "Power: 2 parallel 4-pole 240 mm² paths (W1-W24) — mains X1 → Q1 → K1 → X3 and genset X2 → Q2 → K2 → X3. K1/K2 outputs paralleled onto common bus X3 with mechanical interlock guaranteeing mutual exclusivity. Control: K3 senses 3-phase mains (W25-W28); K3 11/12 NC drives KT1 on mains-fail; KT1 15 gates the 24 VDC GEN-START to the genset controller (W31) AND energises KT2 (W32). KT2 15 opens K1 coil (W34), KT2 18 energises K2 (W35). On mains-restore, K3 11/14 energises KT3 (W37); KT3 15 re-energises K1 (W39) after 60 s stable confirm. Indication: K1 aux drives H1, K2 aux drives H2. 4-pole switching of neutral (W4/W8/W12/W16/W20/W24) prevents parallel N path between mains TN-S and genset star-point bond.",
+        "decisions": [
+          {
+            "label": "K1/K2 outputs paralleled with mechanical interlock",
+            "summary": "Both K1 and K2 outputs land on common bus X3 — interlock prevents back-feed.",
+            "rule": "ATS interlock topology",
+            "code_clause": "BS EN 60947-6-1 § 6.2.5 (electrical and mechanical interlock)"
+          },
+          {
+            "label": "4-pole neutral switching across both sources",
+            "summary": "W4/W8/W12/W16/W20/W24 carry switched neutral — prevents parallel N path under retransfer between mains TN-S and genset separately-derived neutral.",
+            "rule": "Neutral-switching for separately-derived sources",
+            "code_clause": "BS 7671:2018+A2:2022 § 551.4.3.2.1"
+          }
+        ]
+      },
+      {
+        "title": "Compliance Assessment",
+        "summary": "Compliant against BS 7671:2018+A2:2022 § 560 (safety services), § 537 (isolation and switching), § 551.4 (generator parallel operation exclusions), § 445 (undervoltage protection), § 434.5.1 (breaking capacity), BS EN 60947-4-1 (contactors), BS EN 60947-6-1 (transfer switching equipment), BS EN 61082-1:2014 (documentation), and IEC 60255-127 (UV relays). No CRITICAL or HIGH flags. Two partial-intent assumptions documented: fault-level (16 kA engineer-declared) and earthing (TN-S + genset star-point engineer-declared) — both flagged in compliance_summary.assumptions[].",
+        "decisions": [
+          {
+            "label": "BS 7671:2018+A2:2022 primary citation form",
+            "summary": "Operative regulation cited (e.g. § 560.6, not § 560 alone); amendment +A2:2022 included per Sprint 3-W2c citation discipline.",
+            "rule": "GB jurisdiction citation discipline"
+          },
+          {
+            "label": "BS EN 60947-6-1 for ATS-specific compliance",
+            "summary": "BS EN 60947-6-1 is the dedicated standard for transfer switching equipment (TSE) — cited directly for K1/K2 + mechanical interlock requirements.",
+            "rule": "ATS-specific standard"
+          }
+        ]
+      },
+      {
+        "title": "Schedule Notes",
+        "summary": "Hybrid-mode: db-layout-rollup consumed (MSB main switch 400 A); fault-level + earthing absent — values engineer-declared in inputs.json and re-stated in compliance_summary.assumptions[]. Genset cool-down (typically 5 min after off-load) is handled by the genset controller's own logic, not by this changeover. Load-shedding contactor for non-essentials is not specified — the 250 kVA set is sized for full MSB load, but a future revision dropping genset size would add a non-essential shed contactor in series with K2 output, gated by genset-load-monitor. Fault latch H3 RED is driven by the genset controller's alarm contact (fail-to-start, low oil, high coolant) via X4-FAULT; S2 RESET clears the latch.",
+        "decisions": [
+          {
+            "label": "Hybrid-mode: db-layout-rollup consumed, fault-level + earthing absent",
+            "summary": "One intent consumed; two partial-intent assumptions disclosed.",
+            "rule": "Hybrid-mode disclosure per generator prompt Step 11"
+          }
+        ]
+      },
+      {
+        "title": "Cross-Skill Cascade Verification",
+        "summary": "db-layout-rollup → schematic: MSB main switch rating (400 A) drives the K1/K2 contactor + Q1/Q2 breaker selection on this schematic. Cascade is self-consistent: 400 A MSB main switch ↔ 400 A K1/K2 AC-1 contactors ↔ 400 A 50 kA Q1/Q2 ACBs ↔ 240 mm² Cu busbar conductor (12 connections W1-W24). Fault-level intent not consumed — when a future revision adds fault-level, the schematic should be regenerated to cross-check Q1/Q2 Icu against the cascade-computed value rather than the engineer-declared 16 kA.",
+        "decisions": [
+          {
+            "label": "MSB main switch 400 A from db-layout-rollup → K1/K2 sizing",
+            "summary": "Single-intent cascade self-consistent at 400 A across the ATS.",
+            "rule": "Cross-skill cascade verification",
+            "inputs": {
+              "intent_type": "db-layout-rollup",
+              "msb_main_switch_a": 400,
+              "contactor_in_a": 400,
+              "breaker_in_a": 400
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

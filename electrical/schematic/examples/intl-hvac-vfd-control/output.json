@@ -1,0 +1,321 @@
+{
+  "drawing_type": "schematic",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "intl-hvac-vfd-control",
+    "skill_version": "schematic/1.0.0",
+    "produced_at": "2026-05-22T10:00:00Z",
+    "consumed_intents": [
+      {
+        "intent_type": "db-layout-rollup",
+        "intent_version": "1.3.1",
+        "produced_by": "db-layout"
+      },
+      {
+        "intent_type": "fault-level",
+        "intent_version": "1.0.0",
+        "produced_by": "fault-level"
+      }
+    ]
+  },
+  "jurisdiction": "INT",
+  "schematic_type": "control_sequence",
+  "sheet": {
+    "sheet_id": "SHT-003",
+    "title": "VFD Soft-Start Sequence — 22 kW HVAC Chilled-Water Pump P1",
+    "page_of": "1/1"
+  },
+  "items": [
+    {
+      "item_id": "Q1",
+      "device_class": "isolator",
+      "bs_en_60617_ref": "ISOLATOR_3POLE",
+      "rating": "63 A 3-pole manual lockable isolator (upstream of VFD)"
+    },
+    {
+      "item_id": "K1",
+      "device_class": "contactor",
+      "bs_en_60617_ref": "CONTACTOR_3POLE",
+      "rating": "63 A AC-1 line contactor (VFD line-side, NEVER switches under load)"
+    },
+    {
+      "item_id": "K1-AUX",
+      "device_class": "contactor",
+      "bs_en_60617_ref": "CONTACTOR_1NO",
+      "rating": "K1 NO aux 13-14 hold contact"
+    },
+    {
+      "item_id": "F1",
+      "device_class": "overload",
+      "bs_en_60617_ref": "OVERLOAD_THERMAL",
+      "rating": "Class 10A thermal — VFD-internal overload (handled by VFD I²t algorithm, sketched as F1 symbol for completeness)"
+    },
+    {
+      "item_id": "VFD1",
+      "device_class": "signal_converter",
+      "bs_en_60617_ref": "SIGNAL_CONVERTER",
+      "rating": "Variable Frequency Drive — 22 kW 50 A continuous, 4-20 mA speed-ref input + 24 VDC run-permissive + at-speed digital output (signal_converter device_class captures the analogue-control I/O block per generator prompt v1.0 enum policy)"
+    },
+    {
+      "item_id": "M1",
+      "device_class": "motor",
+      "bs_en_60617_ref": "MOTOR_3PHASE",
+      "rating": "22 kW / 400 V / 42 A FLA / 3-phase induction (chilled-water pump P1)"
+    },
+    {
+      "item_id": "KT1",
+      "device_class": "timer",
+      "bs_en_60617_ref": "TIMER_ON_DELAY",
+      "rating": "Soft-start ramp 3 s on-delay (0 Hz → 50 Hz over 3 s)"
+    },
+    {
+      "item_id": "S1",
+      "device_class": "push_button",
+      "bs_en_60617_ref": "PUSHBUTTON_NO",
+      "rating": "START — green flush actuator, NO 13-14"
+    },
+    {
+      "item_id": "S2",
+      "device_class": "push_button",
+      "bs_en_60617_ref": "PUSHBUTTON_NO",
+      "rating": "STOP — red flush actuator, NC 21-22 in coil-break path"
+    },
+    {
+      "item_id": "H1",
+      "device_class": "lamp",
+      "bs_en_60617_ref": "LAMP_GREEN",
+      "rating": "RUN — green, 24 VDC (VFD at-speed)"
+    },
+    {
+      "item_id": "H2",
+      "device_class": "lamp",
+      "bs_en_60617_ref": "LAMP_AMBER",
+      "rating": "RAMPING — amber, 24 VDC (VFD accelerating 0 → 50 Hz)"
+    },
+    {
+      "item_id": "H3",
+      "device_class": "lamp",
+      "bs_en_60617_ref": "LAMP_RED",
+      "rating": "FAULT — red, 24 VDC (VFD trip latched)"
+    },
+    {
+      "item_id": "X1",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "Incoming power terminal block L1/L2/L3 + PE, 16 mm² DIN-rail"
+    },
+    {
+      "item_id": "X2",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "Motor-tail outgoing terminal block U/V/W + PE, 10 mm² DIN-rail (VFD-output side, must be screened cable to motor)"
+    },
+    {
+      "item_id": "X3",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "Control supply L/N 230 VAC + 24 VDC + BMS I/O (4-20 mA speed-ref + alarm out)"
+    }
+  ],
+  "connections": [
+    {"wire_id": "W1", "from_item": "X1", "from_terminal": "L1", "to_item": "Q1", "to_terminal": "1", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "Incoming L1 to isolator pole 1"},
+    {"wire_id": "W2", "from_item": "X1", "from_terminal": "L2", "to_item": "Q1", "to_terminal": "3", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "Incoming L2 to isolator pole 2"},
+    {"wire_id": "W3", "from_item": "X1", "from_terminal": "L3", "to_item": "Q1", "to_terminal": "5", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "Incoming L3 to isolator pole 3"},
+    {"wire_id": "W4", "from_item": "Q1", "from_terminal": "2", "to_item": "K1", "to_terminal": "1", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "Isolated L1 to line contactor pole 1"},
+    {"wire_id": "W5", "from_item": "Q1", "from_terminal": "4", "to_item": "K1", "to_terminal": "3", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "Isolated L2 to K1 pole 2"},
+    {"wire_id": "W6", "from_item": "Q1", "from_terminal": "6", "to_item": "K1", "to_terminal": "5", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "Isolated L3 to K1 pole 3"},
+    {"wire_id": "W7", "from_item": "K1", "from_terminal": "2", "to_item": "VFD1", "to_terminal": "L1", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "K1 output L1 to VFD line input L1"},
+    {"wire_id": "W8", "from_item": "K1", "from_terminal": "4", "to_item": "VFD1", "to_terminal": "L2", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "K1 output L2 to VFD line input L2"},
+    {"wire_id": "W9", "from_item": "K1", "from_terminal": "6", "to_item": "VFD1", "to_terminal": "L3", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "K1 output L3 to VFD line input L3"},
+    {"wire_id": "W10", "from_item": "VFD1", "from_terminal": "U", "to_item": "X2", "to_terminal": "U", "conductor_csa_mm2": 10, "voltage_class": "power_LV", "function": "VFD output U to motor-tail terminal U (screened cable required)"},
+    {"wire_id": "W11", "from_item": "VFD1", "from_terminal": "V", "to_item": "X2", "to_terminal": "V", "conductor_csa_mm2": 10, "voltage_class": "power_LV", "function": "VFD output V to motor-tail terminal V"},
+    {"wire_id": "W12", "from_item": "VFD1", "from_terminal": "W", "to_item": "X2", "to_terminal": "W", "conductor_csa_mm2": 10, "voltage_class": "power_LV", "function": "VFD output W to motor-tail terminal W"},
+    {"wire_id": "W13", "from_item": "X2", "from_terminal": "U", "to_item": "M1", "to_terminal": "U", "conductor_csa_mm2": 10, "voltage_class": "power_LV", "function": "Motor-tail U to motor M1 terminal U"},
+    {"wire_id": "W14", "from_item": "X2", "from_terminal": "V", "to_item": "M1", "to_terminal": "V", "conductor_csa_mm2": 10, "voltage_class": "power_LV", "function": "Motor-tail V to M1 terminal V"},
+    {"wire_id": "W15", "from_item": "X2", "from_terminal": "W", "to_item": "M1", "to_terminal": "W", "conductor_csa_mm2": 10, "voltage_class": "power_LV", "function": "Motor-tail W to M1 terminal W"},
+    {"wire_id": "W16", "from_item": "X3", "from_terminal": "L", "to_item": "S2", "to_terminal": "21", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "Control L to STOP NC contact 21"},
+    {"wire_id": "W17", "from_item": "S2", "from_terminal": "22", "to_item": "S1", "to_terminal": "13", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "STOP 22 to START NO 13"},
+    {"wire_id": "W18", "from_item": "S1", "from_terminal": "14", "to_item": "K1", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "START 14 to K1 coil A1 (line-contactor energise)"},
+    {"wire_id": "W19", "from_item": "K1", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K1 coil A2 return to control N"},
+    {"wire_id": "W20", "from_item": "S2", "from_terminal": "22", "to_item": "K1-AUX", "to_terminal": "13", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "Hold-in: STOP 22 to K1-AUX 13"},
+    {"wire_id": "W21", "from_item": "K1-AUX", "from_terminal": "14", "to_item": "K1", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K1-AUX 14 holds K1 coil after S1 release"},
+    {"wire_id": "W22", "from_item": "K1-AUX", "from_terminal": "14", "to_item": "VFD1", "to_terminal": "RUN-PERMIT", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "K1-AUX also drives VFD run-permissive 24 VDC input (line contactor proven closed)"},
+    {"wire_id": "W23", "from_item": "VFD1", "from_terminal": "RUN-PERMIT", "to_item": "KT1", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Run-permissive also starts soft-start ramp timer KT1"},
+    {"wire_id": "W24", "from_item": "KT1", "from_terminal": "A2", "to_item": "X3", "to_terminal": "DC-COM", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "KT1 coil return to 24 VDC common"},
+    {"wire_id": "W25", "from_item": "F1", "from_terminal": "95", "to_item": "K1", "to_terminal": "A2", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "F1 95-96 NC trip-contact in K1 coil-break path (overload trip drops K1)"},
+    {"wire_id": "W26", "from_item": "F1", "from_terminal": "96", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "F1 96 return to N (closes the F1-in-coil-break loop)"},
+    {"wire_id": "W27", "from_item": "X3", "from_terminal": "BMS-SPEED-REF+", "to_item": "VFD1", "to_terminal": "AI1+", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "BMS 4-20 mA speed-reference + into VFD analogue input AI1"},
+    {"wire_id": "W28", "from_item": "X3", "from_terminal": "BMS-SPEED-REF-", "to_item": "VFD1", "to_terminal": "AI1-", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "BMS speed-reference return"},
+    {"wire_id": "W29", "from_item": "VFD1", "from_terminal": "DO-RAMPING", "to_item": "H2", "to_terminal": "X1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "VFD digital output RAMPING (24 VDC during 0-3 s acceleration) drives H2 amber lamp"},
+    {"wire_id": "W30", "from_item": "H2", "from_terminal": "X2", "to_item": "X3", "to_terminal": "DC-COM", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "H2 return to 24 VDC common"},
+    {"wire_id": "W31", "from_item": "VFD1", "from_terminal": "DO-AT-SPEED", "to_item": "H1", "to_terminal": "X1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "VFD digital output AT-SPEED (24 VDC at ≥95% of speed-ref) drives H1 green RUN lamp"},
+    {"wire_id": "W32", "from_item": "H1", "from_terminal": "X2", "to_item": "X3", "to_terminal": "DC-COM", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "H1 return to 24 VDC common"},
+    {"wire_id": "W33", "from_item": "VFD1", "from_terminal": "DO-FAULT", "to_item": "H3", "to_terminal": "X1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "VFD fault digital output drives H3 red lamp"},
+    {"wire_id": "W34", "from_item": "H3", "from_terminal": "X2", "to_item": "X3", "to_terminal": "DC-COM", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "H3 return to 24 VDC common"}
+  ],
+  "labels": [
+    {"anchor_item": "Q1", "text": "Q1 — 63A Isolator", "kind": "device_tag"},
+    {"anchor_item": "K1", "text": "K1 — 63A AC-1 Line Contactor", "kind": "device_tag"},
+    {"anchor_item": "K1-AUX", "text": "K1-AUX 13/14 — Hold-In + Run-Permit", "kind": "device_tag"},
+    {"anchor_item": "F1", "text": "F1 — VFD-Internal I²t Overload (Class 10A)", "kind": "device_tag"},
+    {"anchor_item": "VFD1", "text": "VFD1 — 22 kW 50A VFD", "kind": "device_tag"},
+    {"anchor_item": "M1", "text": "M1 — 22 kW CHW Pump P1", "kind": "device_tag"},
+    {"anchor_item": "KT1", "text": "KT1 — 3s Soft-Start Ramp (on-delay)", "kind": "device_tag"},
+    {"anchor_item": "S1", "text": "S1 — START (green)", "kind": "device_tag"},
+    {"anchor_item": "S2", "text": "S2 — STOP (red)", "kind": "device_tag"},
+    {"anchor_item": "H1", "text": "H1 — RUN (green, AT-SPEED)", "kind": "device_tag"},
+    {"anchor_item": "H2", "text": "H2 — RAMPING (amber, 0-3s)", "kind": "device_tag"},
+    {"anchor_item": "H3", "text": "H3 — FAULT (red, VFD trip)", "kind": "device_tag"},
+    {"anchor_item": "VFD1", "text": "VFD modelled as signal_converter device_class — captures analogue + digital I/O block per generator prompt v1.0 enum", "kind": "sequence_note"},
+    {"anchor_item": "VFD1", "text": "AI1+ / AI1- (BMS speed-ref) / RUN-PERMIT / DO-RAMPING / DO-AT-SPEED / DO-FAULT", "kind": "terminal_number"},
+    {"anchor_item": "K1", "text": "Line contactor K1 NEVER switches under load — only isolates the VFD line side. Motor torque is built/released by VFD output, not by K1.", "kind": "sequence_note"},
+    {"anchor_item": "X2", "text": "Screened cable mandatory between VFD output and motor — limits dV/dt-driven common-mode currents and meets IEC 61800-3 EMC", "kind": "sequence_note"}
+  ],
+  "sequence_of_operation": "ENABLE: Operator presses S1 → S2 22 (NC, closed) + S1 14 (NO, closed) energise K1 coil A1-A2 → K1 closes line poles + K1-AUX 13/14 closes → K1-AUX provides hold-in + drives VFD RUN-PERMIT input 24 VDC. STATE 1 SOFT-START RAMP (t = 0 → 3 s): RUN-PERMIT energises KT1 (3 s on-delay). VFD begins frequency ramp from 0 Hz to BMS-commanded reference frequency (typically 50 Hz, but driven by BMS 4-20 mA via AI1) over 3 s. Motor M1 current ramps gradually from 0 A to 42 A FLA instead of seeing inrush 7×FLA. VFD asserts DO-RAMPING 24 VDC → H2 amber lit. STATE 2 RUN-PERMISSIVE (t = 3 s): KT1 times out (informational — the actual at-speed signal is VFD-internal). VFD reaches ≥95% of reference frequency → VFD asserts DO-AT-SPEED 24 VDC → H1 green lit, H2 extinguishes. VFD now in closed-loop speed control, tracking BMS 4-20 mA reference. STATE 3 STEADY-STATE (t = 3 s + ∞): VFD modulates motor frequency continuously per BMS-commanded reference. Motor current tracks pump load curve (typically 0.6-1.0×FLA on a part-load CHW pump). STOP RAMP-DOWN: Operator presses S2 → S2 21-22 opens → K1 coil drops → K1-AUX 13/14 opens → VFD RUN-PERMIT 24 VDC removed → VFD begins controlled deceleration (manufacturer-default 5 s decel) → at 0 Hz VFD coasts. K1 main poles open at the line side (no current at this point because VFD has internally crow-barred output). FAULT: VFD-internal overload (I²t algorithm sketched as F1 thermal symbol for completeness) OR over-voltage OR over-current OR PTC sensor OR communication-loss latches VFD trip → DO-FAULT 24 VDC → H3 red lit. F1 95-96 NC opens K1 coil-break path → K1 drops out → motor coasts. Reset requires VFD HMI fault clear before re-START.",
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "VFD modelled with device_class signal_converter — the v1.0 schematic IR enum has no dedicated 'vfd' or 'inverter' class; signal_converter is the closest fit per the generator prompt v1.0 enum-mapping policy and captures the VFD's analogue + digital I/O block.",
+      "IEC 60364-5-55 § 559 governs electrical equipment for variable-speed drives; IEC 60364-4-43 § 433 governs overload protection (handled by VFD I²t, not by external thermal); IEC 61800-3 governs EMC compliance for power drive systems and mandates screened motor cables.",
+      "Upstream rating consumed from db-layout-rollup (DB-MECH 63 A circuit) and prospective fault current consumed from fault-level (8.2 kA at DB-MECH outgoing) — both intents recorded in meta.consumed_intents[].",
+      "Soft-start ramp 3 s selected for HVAC chilled-water pump — long enough to avoid water-hammer in the chilled-water loop, short enough to not stall on pump curve start-up torque demand.",
+      "No earthing intent consumed; TT or TN-C-S assumed engineer-declared via inputs.json — VFD requires PE conductor connected to drive enclosure earthing terminal for safe operation, irrespective of earthing system.",
+      "F1 overload symbol is drawn on the schematic for documentation completeness but the actual thermal-overload function is performed by the VFD's internal I²t algorithm — the F1 95-96 contact represents the VFD's overload-trip auxiliary output."
+    ]
+  },
+  "rationale": {
+    "chat_summary": "VFD soft-start sequence for a 22 kW HVAC chilled-water pump P1, IEC/INT jurisdiction. VFD1 (signal_converter device_class per v1.0 enum) ramps 0→50 Hz over 3 s via KT1 + BMS 4-20 mA speed-ref; K1 line contactor + Q1 isolator + VFD-internal Class 10A I²t overload + 3 indicator lamps (H1 AT-SPEED green, H2 RAMPING amber, H3 FAULT red). Consumes db-layout-rollup + fault-level. Reply to refine (e.g. add BMS-trip-on-comms-loss).",
+    "sections": [
+      {
+        "title": "Schematic Identification",
+        "summary": "control_sequence (VFD_soft_start topology) on sheet SHT-003 for an IEC/INT-jurisdiction commercial HVAC project. Subject is P1, a 22 kW / 400 V / 42 A FLA chilled-water pump driven by a VFD-controlled 3-phase induction motor. The schematic consumes two intents: db-layout-rollup (DB-MECH 63 A outgoing circuit) and fault-level (8.2 kA prospective at DB-MECH outgoing). No earthing intent available — TT or TN-C-S assumed and disclosed in compliance_summary.assumptions[]. The VFD itself is modelled with device_class signal_converter, the closest fit in the v1.0 IR enum which has no dedicated vfd/inverter class.",
+        "decisions": [
+          {
+            "label": "VFD soft-start topology for 22 kW HVAC pump",
+            "summary": "Soft-start ramp 0→50 Hz over 3 s avoids the 7×FLA inrush and water-hammer associated with DOL on a chilled-water loop.",
+            "rule": "Starter-topology selection by load profile",
+            "code_clause": "IEC 60364-5-55 § 559 (electrical equipment for variable-speed drives)"
+          },
+          {
+            "label": "VFD modelled as signal_converter device_class",
+            "summary": "v1.0 IR enum has no vfd/inverter class — signal_converter captures the analogue + digital I/O block; the documentation choice is disclosed in labels[] and assumptions[].",
+            "rule": "Out-of-enum device class mapping per generator prompt"
+          }
+        ]
+      },
+      {
+        "title": "Source Context",
+        "summary": "Upstream: DB-MECH outgoing 63 A 3-phase circuit, 400 V supply, 8.2 kA prospective fault current. db-layout-rollup intent supplied the 63 A circuit rating that drives Q1/K1 selection at 63 A; fault-level intent supplied the 8.2 kA pfc that confirms the VFD's declared 50 kA SCCR (short-circuit current rating per IEC 61439-2 Annex 101) provides >6× headroom. The VFD line-side line contactor K1 is AC-1 utilisation (steady-state switching only) because the motor torque is built and released by the VFD output, never by K1 itself — K1 never switches under load.",
+        "decisions": [
+          {
+            "label": "Upstream 63 A consumed from db-layout-rollup",
+            "summary": "DB-MECH outgoing 63 A circuit sizes Q1/K1 selection.",
+            "rule": "Hybrid-mode intent consumption",
+            "inputs": {
+              "intent_type": "db-layout-rollup",
+              "outgoing_circuit_a": 63
+            }
+          },
+          {
+            "label": "Prospective fault 8.2 kA consumed from fault-level",
+            "summary": "VFD declared SCCR 50 kA covers 8.2 kA with >6× headroom; line contactor K1 short-time withstand also exceeds 8.2 kA.",
+            "rule": "Hybrid-mode intent consumption — fault coordination",
+            "code_clause": "IEC 60364-4-43 § 434.5 + IEC 61439-2 Annex 101 (SCCR)",
+            "inputs": {
+              "intent_type": "fault-level",
+              "ifault_ka": 8.2,
+              "vfd_sccr_ka": 50,
+              "headroom_x": 6.1
+            }
+          }
+        ]
+      },
+      {
+        "title": "Items Breakdown",
+        "summary": "15 devices placed. Power: Q1 (63 A 3-pole manual lockable isolator), K1 (63 A AC-1 line contactor + K1-AUX hold), F1 (Class 10A thermal — actually VFD-internal I²t with the symbol drawn for documentation completeness), VFD1 (22 kW 50 A drive), M1 (22 kW 42 A pump motor). Control: KT1 (3 s soft-start ramp on-delay), S1 START, S2 STOP. Indication: H1 green (AT-SPEED), H2 amber (RAMPING 0-3 s), H3 red (FAULT). 3 terminal rails X1/X2/X3 segregate incoming power, screened motor-cable outgoing power, and the mixed control supply (230 VAC + 24 VDC + BMS 4-20 mA I/O).",
+        "decisions": [
+          {
+            "label": "K1 AC-1 line contactor (NEVER switches under load)",
+            "summary": "Motor torque is built/released by the VFD output, not by K1 — K1 is therefore correctly sized for AC-1 (steady-state) and not AC-3 (motor switching).",
+            "rule": "Contactor utilisation category for VFD line-side",
+            "code_clause": "IEC 60947-4-1 § 4.4.2 (AC-1) + IEC 60947-4-2 (semiconductor controllers — line contactor not switching under load)"
+          },
+          {
+            "label": "F1 symbol drawn but function is VFD-internal I²t",
+            "summary": "F1 95-96 NC contact represents the VFD's overload-trip auxiliary output; the actual thermal model lives in the VFD firmware.",
+            "rule": "Schematic-completeness documentation of VFD-integrated functions"
+          },
+          {
+            "label": "Screened cable mandatory VFD → motor (X2 → M1)",
+            "summary": "IEC 61800-3 mandates screened motor cables to manage common-mode currents driven by VFD dV/dt PWM switching.",
+            "rule": "EMC requirement for power drive systems",
+            "code_clause": "IEC 61800-3 (EMC for adjustable-speed electrical power drive systems)"
+          }
+        ]
+      },
+      {
+        "title": "Connection Topology",
+        "summary": "Power (W1-W15, power_LV, 16 mm² Cu line + 10 mm² Cu screened motor cable): X1 → Q1 → K1 → VFD1 → X2 → M1. Note that the conductor csa drops from 16 to 10 mm² between VFD input and motor — sized against VFD continuous output (50 A) rather than the line-side rating (63 A). Control (W16-W21, control_LV, 1.5 mm² Cu, 230 VAC): canonical 3-wire S2-NC → S1-NO → K1 coil with K1-AUX hold. Auxiliary 24 VDC (W22-W34, aux_DC, 1.5 mm² Cu): K1-AUX 14 asserts VFD RUN-PERMIT + KT1 ramp timer; BMS 4-20 mA speed-ref on AI1; VFD digital outputs DO-RAMPING/DO-AT-SPEED/DO-FAULT drive the three indicator lamps via X3 24 VDC common. The F1 95-96 path (W25-W26) loops the VFD-internal overload trip back into the K1 coil-break path so that a VFD-detected overload also drops the upstream line contactor.",
+        "decisions": [
+          {
+            "label": "VFD output cable smaller than line-side cable",
+            "summary": "Motor cable sized for VFD continuous output 50 A — line side carries the same active power at slightly higher (~10%) rms due to VFD harmonics, hence 16 mm² line / 10 mm² output.",
+            "rule": "Conductor sizing for VFD-driven motor circuits",
+            "code_clause": "IEC 60364-4-43 § 433.1.2 + IEC 60364-5-52 (conductors and cables)"
+          },
+          {
+            "label": "VFD-internal overload loops back to K1 coil",
+            "summary": "F1 95-96 NC in K1 coil-break path — VFD-detected overload drops both VFD and line contactor; coil-break placed in series with S2-NC for canonical fail-safe.",
+            "rule": "Overload coordination across drive boundary"
+          }
+        ]
+      },
+      {
+        "title": "Compliance Assessment",
+        "summary": "Compliant against IEC 60364-5-55 § 559 (variable-speed drives), IEC 60364-4-43 § 433 (overload protection), IEC 60364-5-52 (conductors), IEC 60947-4-1 (LV switchgear — contactors), IEC 60947-4-2 (semiconductor motor controllers), IEC 61800-3 (EMC for power drive systems), IEC 61439-2 Annex 101 (SCCR for type-tested assemblies), and BS EN 60617 IEC 617-12 (symbols for logic and switching functions). No CRITICAL or HIGH flags. Six assumptions documented including the signal_converter device-class mapping choice and the F1 representational drawing.",
+        "decisions": [
+          {
+            "label": "IEC-jurisdiction primary citation form",
+            "summary": "No BS 7671 or NEC references appear — citations are IEC throughout, per jurisdiction routing.",
+            "rule": "INT jurisdiction citation discipline"
+          },
+          {
+            "label": "IEC 60947-4-2 for VFD line contactor",
+            "summary": "Semiconductor controller standard distinguishes line-contactor + overload duty when the actual motor switching is done by the semiconductor stack (VFD).",
+            "rule": "Standard selection for VFD-driven schemes"
+          }
+        ]
+      },
+      {
+        "title": "Schedule Notes",
+        "summary": "Hybrid-mode: db-layout-rollup + fault-level consumed; earthing intent absent (TT or TN-C-S engineer-declared in inputs.json). VFD soft-start ramp 3 s selected for the chilled-water loop — long enough to avoid water-hammer, short enough to not stall the pump under start-up torque demand. BMS speed-reference is a 4-20 mA loop on AI1 (4 mA = 0 Hz, 20 mA = 50 Hz) — typical BMS speed control via a Modbus-RTU or BACnet bridge that converts the BMS frequency command to the analogue signal. Screened cable between VFD and motor (X2 → M1) is non-negotiable per IEC 61800-3 — unscreened cable drives common-mode bearing currents and external EMC nuisance on nearby instrumentation.",
+        "decisions": [
+          {
+            "label": "Hybrid-mode: 2 intents consumed, 1 absent",
+            "summary": "db-layout-rollup + fault-level consumed; earthing engineer-declared.",
+            "rule": "Hybrid-mode disclosure per generator prompt Step 11"
+          }
+        ]
+      },
+      {
+        "title": "Cross-Skill Cascade Verification",
+        "summary": "db-layout-rollup → schematic: DB-MECH 63 A outgoing circuit rating drives Q1/K1 selection at 63 A AC-1. fault-level → schematic: 8.2 kA prospective fault at DB-MECH outgoing verifies VFD declared SCCR 50 kA (>6× headroom) and K1 short-time withstand. Cascade is self-consistent: 63 A db-layout circuit ↔ 63 A Q1 ↔ 63 A K1 ↔ 50 A VFD continuous ↔ 42 A motor FLA. The conductor csa step from 16 to 10 mm² between line and motor reflects the rms-current step from line-side (~50 A worst-case with harmonics) to VFD-output (50 A continuous). When earthing intent is added in a future revision, the VFD enclosure PE bond and motor PE conductor + screened-cable termination should be re-verified.",
+        "decisions": [
+          {
+            "label": "Two-intent cascade verified",
+            "summary": "63 A circuit ↔ 50 A VFD ↔ 42 A motor; 8.2 kA fault ↔ 50 kA SCCR.",
+            "rule": "Cross-skill cascade verification",
+            "inputs": {
+              "circuit_a": 63,
+              "vfd_continuous_a": 50,
+              "motor_fla_a": 42,
+              "fault_ka": 8.2,
+              "vfd_sccr_ka": 50
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

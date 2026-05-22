@@ -1,0 +1,343 @@
+{
+  "drawing_type": "schematic",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "us-industrial-star-delta",
+    "skill_version": "schematic/1.0.0",
+    "produced_at": "2026-05-22T10:00:00Z",
+    "consumed_intents": [
+      {
+        "intent_type": "db-layout-rollup",
+        "intent_version": "1.3.1",
+        "produced_by": "db-layout"
+      }
+    ]
+  },
+  "jurisdiction": "US",
+  "schematic_type": "control_motor_starter",
+  "sheet": {
+    "sheet_id": "SHT-004",
+    "title": "Star-Delta (Wye-Delta) Starter — 15 HP Industrial Conveyor Motor M1",
+    "page_of": "1/1"
+  },
+  "items": [
+    {
+      "item_id": "Q1",
+      "device_class": "isolator",
+      "bs_en_60617_ref": "ISOLATOR_3POLE",
+      "rating": "30 A 3-pole disconnect switch (heavy-duty industrial), lockable"
+    },
+    {
+      "item_id": "K1",
+      "device_class": "contactor",
+      "bs_en_60617_ref": "CONTACTOR_3POLE",
+      "ieee_std_315_ref": "IEEE Std 315 §22.1.1 (3-pole contactor)",
+      "rating": "30 A NEMA Size 1 main contactor — IEC AC-3 equivalent, coil 120 VAC"
+    },
+    {
+      "item_id": "K1-AUX",
+      "device_class": "contactor",
+      "bs_en_60617_ref": "CONTACTOR_1NO",
+      "ieee_std_315_ref": "IEEE Std 315 §22.1.2 (1NO aux contact)",
+      "rating": "K1 NO aux hold contact (mechanically linked)"
+    },
+    {
+      "item_id": "K2",
+      "device_class": "contactor",
+      "bs_en_60617_ref": "CONTACTOR_3POLE",
+      "ieee_std_315_ref": "IEEE Std 315 §22.1.1",
+      "rating": "30 A NEMA Size 1 STAR (wye) contactor — closes during start, shorts motor windings into wye"
+    },
+    {
+      "item_id": "K3",
+      "device_class": "contactor",
+      "bs_en_60617_ref": "CONTACTOR_3POLE",
+      "ieee_std_315_ref": "IEEE Std 315 §22.1.1",
+      "rating": "30 A NEMA Size 1 DELTA contactor — closes after transition, reconnects windings for run"
+    },
+    {
+      "item_id": "K2-NC-K3",
+      "device_class": "contactor",
+      "bs_en_60617_ref": "CONTACTOR_1NC",
+      "ieee_std_315_ref": "IEEE Std 315 §22.1.3 (1NC aux contact)",
+      "rating": "K2 NC aux electrical interlock — opens when K2 picks, blocks K3 coil"
+    },
+    {
+      "item_id": "K3-NC-K2",
+      "device_class": "contactor",
+      "bs_en_60617_ref": "CONTACTOR_1NC",
+      "ieee_std_315_ref": "IEEE Std 315 §22.1.3",
+      "rating": "K3 NC aux electrical interlock — opens when K3 picks, blocks K2 coil (cross-interlock)"
+    },
+    {
+      "item_id": "F1",
+      "device_class": "overload",
+      "bs_en_60617_ref": "OVERLOAD_THERMAL",
+      "rating": "Class 10 thermal — wired in motor-phase circuit, set 21 A motor FLA"
+    },
+    {
+      "item_id": "M1",
+      "device_class": "motor",
+      "bs_en_60617_ref": "MOTOR_3PHASE",
+      "ieee_std_315_ref": "IEEE Std 315 §11.5.1 (3-phase induction motor)",
+      "rating": "15 HP / 460 V / 21 A FLA / 3-phase induction motor (6-lead delta-wound for star-delta starting)"
+    },
+    {
+      "item_id": "KT1",
+      "device_class": "timer",
+      "bs_en_60617_ref": "TIMER_ON_DELAY",
+      "rating": "Transition timer 7 s on-delay (star → delta transition)"
+    },
+    {
+      "item_id": "S1",
+      "device_class": "push_button",
+      "bs_en_60617_ref": "PUSHBUTTON_NO",
+      "rating": "START — green flush actuator, NO 13-14"
+    },
+    {
+      "item_id": "S2",
+      "device_class": "push_button",
+      "bs_en_60617_ref": "PUSHBUTTON_NO",
+      "rating": "STOP — red mushroom actuator, NC 21-22 in coil-break path"
+    },
+    {
+      "item_id": "H1",
+      "device_class": "lamp",
+      "bs_en_60617_ref": "LAMP_GREEN",
+      "rating": "RUN — green, 120 VAC (K3 delta-mode aux)"
+    },
+    {
+      "item_id": "H2",
+      "device_class": "lamp",
+      "bs_en_60617_ref": "LAMP_AMBER",
+      "rating": "STARTING — amber, 120 VAC (K2 star-mode aux)"
+    },
+    {
+      "item_id": "X1",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "Incoming power terminal block L1/L2/L3, 6 AWG / 13 mm² DIN-rail"
+    },
+    {
+      "item_id": "X2",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "Motor outgoing terminal block U1/V1/W1 + U2/V2/W2 (six-lead motor) + PE, 10 AWG / 5.3 mm²"
+    },
+    {
+      "item_id": "X3",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "Control supply L/N 120 VAC, 14 AWG / 2 mm² DIN-rail"
+    }
+  ],
+  "connections": [
+    {"wire_id": "W1", "from_item": "X1", "from_terminal": "L1", "to_item": "Q1", "to_terminal": "1", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "Incoming L1 to disconnect switch pole 1"},
+    {"wire_id": "W2", "from_item": "X1", "from_terminal": "L2", "to_item": "Q1", "to_terminal": "3", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "Incoming L2 to Q1 pole 2"},
+    {"wire_id": "W3", "from_item": "X1", "from_terminal": "L3", "to_item": "Q1", "to_terminal": "5", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "Incoming L3 to Q1 pole 3"},
+    {"wire_id": "W4", "from_item": "Q1", "from_terminal": "2", "to_item": "K1", "to_terminal": "1", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "Disconnected L1 to MAIN contactor K1 pole 1"},
+    {"wire_id": "W5", "from_item": "Q1", "from_terminal": "4", "to_item": "K1", "to_terminal": "3", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "Q1 to K1 pole 2"},
+    {"wire_id": "W6", "from_item": "Q1", "from_terminal": "6", "to_item": "K1", "to_terminal": "5", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "Q1 to K1 pole 3"},
+    {"wire_id": "W7", "from_item": "K1", "from_terminal": "2", "to_item": "F1", "to_terminal": "1", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "K1 output L1 to overload F1 phase L1"},
+    {"wire_id": "W8", "from_item": "K1", "from_terminal": "4", "to_item": "F1", "to_terminal": "3", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "K1 L2 to F1 phase L2"},
+    {"wire_id": "W9", "from_item": "K1", "from_terminal": "6", "to_item": "F1", "to_terminal": "5", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "K1 L3 to F1 phase L3"},
+    {"wire_id": "W10", "from_item": "F1", "from_terminal": "2", "to_item": "X2", "to_terminal": "U1", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "F1 output L1 → motor lead U1 (winding 1 start end)"},
+    {"wire_id": "W11", "from_item": "F1", "from_terminal": "4", "to_item": "X2", "to_terminal": "V1", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "F1 output L2 → motor lead V1"},
+    {"wire_id": "W12", "from_item": "F1", "from_terminal": "6", "to_item": "X2", "to_terminal": "W1", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "F1 output L3 → motor lead W1"},
+    {"wire_id": "W13", "from_item": "K2", "from_terminal": "2", "to_item": "X2", "to_terminal": "U2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "STAR contactor K2 output → motor lead U2 (winding 1 finish end) — K2 closes wye-point during start"},
+    {"wire_id": "W14", "from_item": "K2", "from_terminal": "4", "to_item": "X2", "to_terminal": "V2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "K2 → motor lead V2"},
+    {"wire_id": "W15", "from_item": "K2", "from_terminal": "6", "to_item": "X2", "to_terminal": "W2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "K2 → motor lead W2 (forms wye point at K2 common when K2 closes)"},
+    {"wire_id": "W16", "from_item": "K2", "from_terminal": "1", "to_item": "K2", "to_terminal": "3", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "K2 internal star-point bond pole 1 to pole 2 (wye-point common)"},
+    {"wire_id": "W17", "from_item": "K2", "from_terminal": "3", "to_item": "K2", "to_terminal": "5", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "K2 internal star-point bond pole 2 to pole 3"},
+    {"wire_id": "W18", "from_item": "K3", "from_terminal": "2", "to_item": "X2", "to_terminal": "U2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "DELTA contactor K3 output → motor lead U2 (parallel with K2 lead U2)"},
+    {"wire_id": "W19", "from_item": "K3", "from_terminal": "4", "to_item": "X2", "to_terminal": "V2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "K3 → motor lead V2"},
+    {"wire_id": "W20", "from_item": "K3", "from_terminal": "6", "to_item": "X2", "to_terminal": "W2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "K3 → motor lead W2"},
+    {"wire_id": "W21", "from_item": "K1", "from_terminal": "2", "to_item": "K3", "to_terminal": "1", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "K1 L1 cross-tied to K3 input pole 1 (delta closure: L1→U2 path)"},
+    {"wire_id": "W22", "from_item": "K1", "from_terminal": "4", "to_item": "K3", "to_terminal": "3", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "K1 L2 cross-tied to K3 input pole 2 (delta closure: L2→V2)"},
+    {"wire_id": "W23", "from_item": "K1", "from_terminal": "6", "to_item": "K3", "to_terminal": "5", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "K1 L3 cross-tied to K3 input pole 3 (delta closure: L3→W2)"},
+    {"wire_id": "W24", "from_item": "X2", "from_terminal": "U1", "to_item": "M1", "to_terminal": "U1", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "Motor lead U1 to motor terminal U1"},
+    {"wire_id": "W25", "from_item": "X2", "from_terminal": "V1", "to_item": "M1", "to_terminal": "V1", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "Motor lead V1 to motor terminal V1"},
+    {"wire_id": "W26", "from_item": "X2", "from_terminal": "W1", "to_item": "M1", "to_terminal": "W1", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "Motor lead W1 to motor terminal W1"},
+    {"wire_id": "W27", "from_item": "X2", "from_terminal": "U2", "to_item": "M1", "to_terminal": "U2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "Motor lead U2 to motor terminal U2"},
+    {"wire_id": "W28", "from_item": "X2", "from_terminal": "V2", "to_item": "M1", "to_terminal": "V2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "Motor lead V2 to motor terminal V2"},
+    {"wire_id": "W29", "from_item": "X2", "from_terminal": "W2", "to_item": "M1", "to_terminal": "W2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "Motor lead W2 to motor terminal W2"},
+    {"wire_id": "W30", "from_item": "X3", "from_terminal": "L", "to_item": "F1", "to_terminal": "95", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "Control L 120 VAC to F1 trip NC 95"},
+    {"wire_id": "W31", "from_item": "F1", "from_terminal": "96", "to_item": "S2", "to_terminal": "21", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "F1 96 to STOP NC 21"},
+    {"wire_id": "W32", "from_item": "S2", "from_terminal": "22", "to_item": "S1", "to_terminal": "13", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "STOP 22 to START NO 13"},
+    {"wire_id": "W33", "from_item": "S1", "from_terminal": "14", "to_item": "K1", "to_terminal": "A1", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "START 14 to K1 main coil A1"},
+    {"wire_id": "W34", "from_item": "K1", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K1 coil A2 to N"},
+    {"wire_id": "W35", "from_item": "S2", "from_terminal": "22", "to_item": "K1-AUX", "to_terminal": "13", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "STOP 22 to K1-AUX 13 (hold-in branch)"},
+    {"wire_id": "W36", "from_item": "K1-AUX", "from_terminal": "14", "to_item": "K1", "to_terminal": "A1", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K1-AUX 14 holds K1 coil after S1 release"},
+    {"wire_id": "W37", "from_item": "K1-AUX", "from_terminal": "14", "to_item": "K3-NC-K2", "to_terminal": "21", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K1 main proven → K3 cross-interlock NC 21 (K3 not picked, so closed)"},
+    {"wire_id": "W38", "from_item": "K3-NC-K2", "from_terminal": "22", "to_item": "K2", "to_terminal": "A1", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K3-NC-K2 22 to STAR contactor K2 coil A1 (energise wye)"},
+    {"wire_id": "W39", "from_item": "K2", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K2 coil return to N"},
+    {"wire_id": "W40", "from_item": "K1-AUX", "from_terminal": "14", "to_item": "KT1", "to_terminal": "A1", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K1 main proven → KT1 7s transition timer energised"},
+    {"wire_id": "W41", "from_item": "KT1", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "KT1 coil return to N"},
+    {"wire_id": "W42", "from_item": "KT1", "from_terminal": "15", "to_item": "K2", "to_terminal": "A2", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "KT1 timed-out NC opens K2 coil-break path → K2 drops out at t = 7 s"},
+    {"wire_id": "W43", "from_item": "KT1", "from_terminal": "18", "to_item": "K2-NC-K3", "to_terminal": "21", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "KT1 timed-out NO → K2-NC-K3 cross-interlock NC 21 (K2 dropped, so K2-NC-K3 has closed back NC)"},
+    {"wire_id": "W44", "from_item": "K2-NC-K3", "from_terminal": "22", "to_item": "K3", "to_terminal": "A1", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K2-NC-K3 22 to DELTA contactor K3 coil A1 — energise delta"},
+    {"wire_id": "W45", "from_item": "K3", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K3 coil return to N"},
+    {"wire_id": "W46", "from_item": "K2", "from_terminal": "13", "to_item": "H2", "to_terminal": "X1", "conductor_csa_mm2": 2, "voltage_class": "aux_AC", "function": "K2 NO aux 13-14 drives H2 STARTING amber lamp"},
+    {"wire_id": "W47", "from_item": "H2", "from_terminal": "X2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 2, "voltage_class": "aux_AC", "function": "H2 return to N"},
+    {"wire_id": "W48", "from_item": "K3", "from_terminal": "13", "to_item": "H1", "to_terminal": "X1", "conductor_csa_mm2": 2, "voltage_class": "aux_AC", "function": "K3 NO aux 13-14 drives H1 RUN green lamp"},
+    {"wire_id": "W49", "from_item": "H1", "from_terminal": "X2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 2, "voltage_class": "aux_AC", "function": "H1 return to N"}
+  ],
+  "labels": [
+    {"anchor_item": "Q1", "text": "Q1 — 30 A 3-pole Disconnect", "kind": "device_tag"},
+    {"anchor_item": "K1", "text": "K1 — NEMA Size 1 MAIN Contactor", "kind": "device_tag"},
+    {"anchor_item": "K1-AUX", "text": "K1-AUX 13/14 — Hold-In", "kind": "device_tag"},
+    {"anchor_item": "K2", "text": "K2 — NEMA Size 1 STAR (Wye) Contactor", "kind": "device_tag"},
+    {"anchor_item": "K3", "text": "K3 — NEMA Size 1 DELTA Contactor", "kind": "device_tag"},
+    {"anchor_item": "K2-NC-K3", "text": "K2 NC-aux → K3 cross-interlock", "kind": "device_tag"},
+    {"anchor_item": "K3-NC-K2", "text": "K3 NC-aux → K2 cross-interlock", "kind": "device_tag"},
+    {"anchor_item": "F1", "text": "F1 — Class 10 Overload, set 21 A", "kind": "device_tag"},
+    {"anchor_item": "M1", "text": "M1 — 15 HP 460V 21A 6-Lead Delta-Wound", "kind": "device_tag"},
+    {"anchor_item": "KT1", "text": "KT1 — 7s Transition Timer (on-delay)", "kind": "device_tag"},
+    {"anchor_item": "S1", "text": "S1 — START (green)", "kind": "device_tag"},
+    {"anchor_item": "S2", "text": "S2 — STOP (red mushroom)", "kind": "device_tag"},
+    {"anchor_item": "H1", "text": "H1 — RUN (green, delta mode)", "kind": "device_tag"},
+    {"anchor_item": "H2", "text": "H2 — STARTING (amber, star mode)", "kind": "device_tag"},
+    {"anchor_item": "K1", "text": "K1/K2/K3 use IEEE Std 315 §22.1.1 contactor symbol (US convention) alongside BS EN 60617 IEC 617-7", "kind": "sequence_note"},
+    {"anchor_item": "K2", "text": "K2 (star) and K3 (delta) electrically cross-interlocked AND mechanically interlocked — cannot close simultaneously", "kind": "sequence_note"},
+    {"anchor_item": "KT1", "text": "Open-transition star-delta: K2 drops fully before K3 picks, brief dead-time on motor — acceptable for conveyor load, not for high-inertia loads", "kind": "sequence_note"}
+  ],
+  "sequence_of_operation": "START STAR PHASE (t = 0): Operator presses S1 → F1 95-96 NC closed + S2 21-22 NC closed + S1 13-14 closes → K1 main coil energises → K1 main poles close (3-phase reaches F1 then motor U1/V1/W1 leads). Simultaneously K1-AUX 13-14 closes providing hold-in + drives two parallel control paths: (a) energises K2 STAR contactor coil via K3-NC-K2 cross-interlock (K3 not yet picked, so K3-NC-K2 path is closed) — K2 closes and shorts motor leads U2/V2/W2 into a common wye-point, motor windings now configured in wye (each winding sees 460/√3 = 266 V phase voltage); (b) energises KT1 7 s on-delay timer. Motor accelerates in wye configuration drawing reduced starting current (~33% of DOL inrush) for 7 s. K2 NO aux 13-14 drives H2 STARTING amber lamp. TRANSITION (t = 7 s): KT1 times out → KT1 15 NC opens K2 coil-break path → K2 drops out (motor disconnected from wye-point common; motor now coasts briefly with windings open at U2/V2/W2 end). Critical: K2-NC-K3 cross-interlock contact has been open during the wye phase (K2 was picked) — when K2 drops, K2-NC-K3 closes NC, and the KT1 timed-out NO contact 18 simultaneously energises K3 DELTA contactor coil via the now-closed K2-NC-K3 path. K3 picks → K3 main poles close → motor leads U2/V2/W2 reconnected to L2/L3/L1 (cross-tied delta) → motor windings now in delta (each winding sees full 460 V line voltage). K3 NO aux 13-14 drives H1 RUN green lamp; H2 STARTING extinguishes. RUN STEADY-STATE: Motor in delta configuration draws full 21 A FLA at rated torque. K1 + K3 + F1 in series carry motor current; K2 dropped and isolated. STOP: Operator presses S2 → S2 21-22 opens → K1 + KT1 + K3 (and K2 if still picked) all drop together → motor coasts. TRIP: F1 thermal overload (sustained > 24 A) opens 95-96 → identical drop-out as STOP.",
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "NEC 2023 Article 430 covers motors, motor circuits, and controllers — including reduced-voltage starting (e.g. star-delta / wye-delta) which is explicitly identified as an alternative to DOL for inrush reduction.",
+      "Article 430 Part IV (motor branch-circuit short-circuit and ground-fault protection) — upstream 30 A inverse-time breaker complies with Article 430 Table requirements for a 21 A FLA 460 V motor at 250% FLA = 52.5 A maximum, 30 A is conservative below that ceiling.",
+      "IEEE Std 315 is the US symbol cross-reference standard — schematic uses both BS EN 60617 (primary) and IEEE Std 315 (cross-reference in ieee_std_315_ref where applicable) per US documentation practice.",
+      "UL 508A applies to industrial control panel construction where this schematic is assembled — covers SCCR (short-circuit current rating), enclosure rating, marking, and terminal-block torque values.",
+      "Open-transition star-delta is appropriate for a conveyor (low-to-moderate inertia, no critical dead-time constraint); for a high-inertia load (centrifugal compressor, fan with large flywheel) a closed-transition with transition resistor would be required to avoid the brief open-circuit during K2 drop / K3 pick.",
+      "Upstream rating consumed from db-layout-rollup (panelboard PNL-A 30 A circuit) — recorded in meta.consumed_intents[].",
+      "No fault-level intent consumed; the prospective fault current at PNL-A engineer-declared via inputs.json.",
+      "No earthing intent consumed; US grounding (separately-derived TN-S equivalent — service entrance bonding per NEC 2023 Article 250) engineer-declared via inputs.json."
+    ]
+  },
+  "rationale": {
+    "chat_summary": "Open-transition star-delta (wye-delta) starter for 15 HP / 460 V / 21 A FLA industrial conveyor motor M1, US jurisdiction (NEC 2023). K1 main + K2 star + K3 delta NEMA Size 1 contactors with mechanical + electrical cross-interlock; KT1 7 s on-delay transition. K1-AUX hold; F1 Class 10 overload; 2 indicator lamps. Consumes db-layout-rollup (PNL-A 30 A). Reply to refine (e.g. add closed-transition resistor for high-inertia load).",
+    "sections": [
+      {
+        "title": "Schematic Identification",
+        "summary": "control_motor_starter (star-delta / wye-delta sub-topology) on sheet SHT-004 for a US industrial conveyor application. Subject is M1, a 15 HP / 460 V / 21 A FLA 6-lead delta-wound 3-phase induction motor driving an industrial conveyor. Open-transition star-delta is the reduced-voltage starting method chosen — it cuts starting current to ~33% of DOL inrush by configuring the motor in wye (winding-line voltage = Vline/√3) during the start interval, then reconnecting to delta (winding-line voltage = Vline) for full-voltage steady-state running. The schematic uses both BS EN 60617 IEC 617-7 (primary symbol system) and IEEE Std 315 (US cross-reference, populated in ieee_std_315_ref fields). One intent consumed: db-layout-rollup → PNL-A 30 A circuit.",
+        "decisions": [
+          {
+            "label": "Open-transition star-delta for 15 HP conveyor",
+            "summary": "Conveyor is low-to-moderate inertia — brief open-transition dead-time (~30-50 ms) is acceptable; closed-transition resistor unnecessary.",
+            "rule": "Star-delta sub-topology selection by load inertia",
+            "code_clause": "NEC 2023 Article 430 (motors, motor circuits, and controllers — reduced-voltage starting)"
+          },
+          {
+            "label": "Dual-symbol convention BS EN 60617 + IEEE Std 315",
+            "summary": "US industrial schematics commonly cross-reference both BS EN 60617 (international) and IEEE Std 315 (US) — ieee_std_315_ref populated where applicable.",
+            "rule": "US-jurisdiction documentation convention"
+          },
+          {
+            "label": "Upstream rating consumed from db-layout-rollup",
+            "summary": "PNL-A 30 A circuit rating from db-layout-rollup drives Q1/K1/K2/K3 selection.",
+            "rule": "Hybrid-mode intent consumption",
+            "inputs": {
+              "intent_type": "db-layout-rollup",
+              "circuit_a": 30
+            }
+          }
+        ]
+      },
+      {
+        "title": "Source Context",
+        "summary": "Upstream: PNL-A 30 A 3-phase circuit, 460 V 3-phase + N supply, US-style separately-derived (TN-S equivalent) grounding with service-entrance N-G bond per NEC 2023 Article 250. db-layout-rollup intent supplied the 30 A circuit rating. Motor FLA 21 A × 250% = 52.5 A maximum branch-circuit short-circuit protection per NEC 2023 Article 430 Part IV — the engineer-declared 30 A inverse-time breaker is conservative below the 52.5 A ceiling and matches the available frame size on a NEMA Size 1 starter. No fault-level intent consumed — prospective fault current engineer-declared in inputs.json; no earthing intent — US grounding strategy engineer-declared.",
+        "decisions": [
+          {
+            "label": "30 A upstream below Article 430 Part IV 250% ceiling",
+            "summary": "21 A FLA × 250% = 52.5 A ceiling; 30 A engineer-declared sits well below for headroom + matches NEMA Size 1 frame.",
+            "rule": "NEC motor branch-circuit protection",
+            "code_clause": "NEC 2023 Article 430 (motor branch-circuit short-circuit and ground-fault protection)",
+            "inputs": {
+              "motor_fla_a": 21,
+              "max_breaker_a_per_article_430": 52.5,
+              "selected_breaker_a": 30
+            }
+          },
+          {
+            "label": "Two-intent absence disclosed",
+            "summary": "fault-level + earthing not consumed; values engineer-declared and re-stated in compliance_summary.assumptions[].",
+            "rule": "Partial-intent disclosure per generator prompt Step 11"
+          }
+        ]
+      },
+      {
+        "title": "Items Breakdown",
+        "summary": "17 devices placed. Power: Q1 (30 A 3-pole disconnect), K1 (NEMA Size 1 main contactor) + K1-AUX (hold), K2 (NEMA Size 1 star contactor — closes wye-point at U2/V2/W2), K3 (NEMA Size 1 delta contactor — reconnects U2/V2/W2 to cross-tied L2/L3/L1 for delta-mode), K2-NC-K3 + K3-NC-K2 (cross-interlock NC auxiliaries), F1 (Class 10 thermal set 21 A), M1 (15 HP 6-lead delta-wound motor). Control: KT1 (7 s on-delay transition timer), S1 START, S2 STOP. Indication: H1 green (RUN / delta) + H2 amber (STARTING / star). 3 terminal rails X1/X2/X3 segregate incoming power, six-lead motor outgoing power (12 motor leads total including PE), and 120 VAC control supply.",
+        "decisions": [
+          {
+            "label": "NEMA Size 1 contactors for 15 HP motor at 460 V",
+            "summary": "NEMA Size 1 is rated 27 A and 7.5-15 HP at 460 V — exactly fits this motor; corresponds approximately to IEC AC-3 30 A rating used elsewhere.",
+            "rule": "NEMA contactor sizing",
+            "code_clause": "NEMA ICS 2 + UL 508A (control panel SCCR)"
+          },
+          {
+            "label": "K2/K3 cross-interlock (electrical + mechanical)",
+            "summary": "K2 NC-aux blocks K3 coil while K2 is picked; K3 NC-aux blocks K2 coil while K3 is picked; mechanical interlock between K2 and K3 backs up the electrical interlock — physically impossible to close both simultaneously.",
+            "rule": "Star-delta interlock topology"
+          },
+          {
+            "label": "F1 Class 10 set 21 A FLA",
+            "summary": "Star starting reduces motor current ~3× during the 7 s star phase — Class 10 envelope (10 s at 7.2×Ie) easily covers the reduced-current start; 21 A setpoint matches motor FLA at full delta-mode running.",
+            "rule": "Overload setpoint at motor FLA",
+            "code_clause": "NEC 2023 Article 430 (motor overload protection)"
+          }
+        ]
+      },
+      {
+        "title": "Connection Topology",
+        "summary": "Power (W1-W29, power_LV, 6 AWG line / 10 AWG motor cable): X1 → Q1 → K1 → F1 → X2 U1/V1/W1 → M1 winding-start ends. Star phase: K2 inputs paralleled via internal star-point bond (W16-W17) closes the wye common at motor U2/V2/W2 ends. Delta phase: K3 inputs cross-tied to K1 outputs (W21-W23: K1-L1 → K3-1, K1-L2 → K3-2, K1-L3 → K3-3) such that K3 output reconnects U2/V2/W2 to L2/L3/L1 (delta closure). Control (W30-W45, control_LV, 14 AWG 120 VAC): canonical S2-NC → S1-NO → K1 coil with K1-AUX hold; K1 main proven drives both K2 coil (via K3-NC-K2 cross-interlock) and KT1 timer. After 7 s KT1 NC opens K2, KT1 NO + K2-NC-K3 cross-interlock energises K3. Indication (W46-W49, aux_AC): K2 NO aux → H2 STARTING amber, K3 NO aux → H1 RUN green.",
+        "decisions": [
+          {
+            "label": "K3 inputs cross-tied to K1 line phases for delta closure",
+            "summary": "W21-W23 deliberately tie K3-1/3/5 to K1-L1/L2/L3 so K3 output to motor U2/V2/W2 wires the delta: L1-U1-W2-L3 + L2-V1-U2-L1 + L3-W1-V2-L2.",
+            "rule": "Star-delta delta-closure topology"
+          },
+          {
+            "label": "Open-transition: K2 drops fully before K3 picks",
+            "summary": "KT1 NC opens K2 then KT1 NO + K2-NC-K3 path picks K3 — mechanical drop-out time ~30-50 ms = brief motor coast; acceptable for conveyor inertia.",
+            "rule": "Open-transition sequence (vs closed-transition with bridging resistor)"
+          }
+        ]
+      },
+      {
+        "title": "Compliance Assessment",
+        "summary": "Compliant against NEC 2023 Article 430 (motor branch-circuit + overload + reduced-voltage starting), NEC 2023 Article 250 (grounding and bonding — service entrance N-G bond declared), UL 508A (industrial control panel construction + SCCR), IEEE Std 315 (US symbol cross-reference), and BS EN 60617 IEC 617-7 (primary symbol system, jurisdiction-agnostic). NEMA ICS 2 governs contactor sizing. No CRITICAL or HIGH flags. Eight assumptions documented including the open-transition vs closed-transition load-inertia caveat and the two-intent partial absences.",
+        "decisions": [
+          {
+            "label": "US-jurisdiction primary citation form",
+            "summary": "NEC Article-level references throughout; no BS 7671 or KS 1700 appears. Article 430 referenced at the Article level rather than sub-clause where the precise sub-clause cannot be cross-verified — per generator prompt under-cite policy.",
+            "rule": "US jurisdiction citation discipline"
+          },
+          {
+            "label": "Dual-standard symbol convention",
+            "summary": "BS EN 60617 IEC 617-7 (primary) + IEEE Std 315 (US cross-reference) — standard US industrial-schematic convention.",
+            "rule": "US documentation symbol convention"
+          }
+        ]
+      },
+      {
+        "title": "Schedule Notes",
+        "summary": "Hybrid-mode: db-layout-rollup consumed (PNL-A 30 A); fault-level + earthing absent. Open-transition was selected because the conveyor is low-to-moderate inertia and the 30-50 ms K2-drop / K3-pick dead-time is acceptable. For a high-inertia load (75 HP centrifugal compressor or large flywheel) the dead-time causes inrush on K3 close as the motor decelerates during the dead window — closed-transition with a bridging resistor + 4th contactor K4 is required. Motor wiring requires 6 separately-terminated leads (U1/V1/W1 + U2/V2/W2) — not 3-lead delta. A 9-lead dual-voltage motor or 3-lead delta breaks the starter: motor PO must call out 6-lead delta-wound construction.",
+        "decisions": [
+          {
+            "label": "Hybrid-mode: 1 intent consumed, 2 absent",
+            "summary": "db-layout-rollup consumed; fault-level + earthing engineer-declared.",
+            "rule": "Hybrid-mode disclosure per generator prompt Step 11"
+          },
+          {
+            "label": "6-lead delta-wound motor required",
+            "summary": "Motor MUST be 6-lead delta-wound — purchase order specification critical.",
+            "rule": "Motor compatibility with star-delta starting"
+          }
+        ]
+      }
+    ]
+  }
+}
