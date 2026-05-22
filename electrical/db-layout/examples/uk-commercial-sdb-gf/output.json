@@ -363,9 +363,9 @@
         "decisions": [
           {
             "label": "100A TPN+E intake from MSB-MAIN F01 (15m feeder)",
-            "summary": "Floor maximum demand ~28 kVA after BS 7671 § 311 + IET OSG Appendix A diversity sits within the 100A intake; matches the F01 feeder rating.",
+            "summary": "Floor maximum demand ~28 kVA after BS 7671 § 311.1 + IET OSG Appendix A diversity sits within the 100A intake; matches the F01 feeder rating.",
             "rule": "Sub-DB sizing from floor maximum demand + diversity",
-            "code_clause": "BS 7671:2018+A2:2022 § 311 + IET On-Site Guide Appendix A",
+            "code_clause": "BS 7671:2018+A2:2022 § 311.1 + IET On-Site Guide Appendix A",
             "inputs": {
               "intake_rating_a": 100,
               "feeder_length_m": 15,
@@ -437,7 +437,7 @@
       },
       {
         "title": "Compliance Assessment",
-        "summary": "SDB-GF compliant against BS 7671:2018+A2:2022 (protection § 411 / § 415 / § 434 / § 536, emergency-lighting § 560, cable-sizing Appendix 4, voltage-drop Appendix 12), BS EN 61439-3:2012 (DBO assembly construction), BS EN 60898-1:2019 (final-circuit MCBs), and BS EN 61009-1:2012 where socket-circuit RCBOs are used. No CRITICAL or HIGH flags raised. The 15m feeder is the shortest of the three SDB cascades — voltage-drop margin is generous.",
+        "summary": "SDB-GF compliant against BS 7671:2018+A2:2022 (protection § 411 / § 415 / § 434 / § 536, emergency-lighting § 560, cable-sizing Appendix 4, voltage-drop Appendix 12), BS EN 61439-3:2012 (DBO assembly construction), BS EN 60898-1:2019 (final-circuit MCBs), and BS EN 61009-1:2012+A12:2014 where socket-circuit RCBOs are used. No CRITICAL or HIGH flags raised. The 15m feeder is the shortest of the three SDB cascades — voltage-drop margin is generous.",
         "decisions": [
           {
             "label": "BS 7671:2018+A2:2022 + BS EN 61439-3 citation discipline",
@@ -467,6 +467,16 @@
             "summary": "Final-circuit voltage drops at 32A 2.5mm² Cu on RFC runs ≤35m sit within the 3% lighting / 5% other limits per BS 7671 § 525.1; downstream cable-sizing skill should confirm with actual load currents.",
             "rule": "Final-circuit voltage-drop check",
             "code_clause": "BS 7671:2018+A2:2022 § 525.1 + Appendix 12"
+          },
+          {
+            "label": "main_switch.breaking_capacity_ka carries Icw not Icu",
+            "summary": "BS EN 60947-3 switch-disconnectors do not break fault current; the breaking_capacity_ka IR field carries the device's short-time withstand (Icw) rating. Equipment manufacturer's catalogue confirms 10 kA Icw / 1 s.",
+            "rule": "BS EN 60947-3 switch-disconnector IR field semantics",
+            "code_clause": "BS EN 60947-3:2020 (switch-disconnector device class)",
+            "inputs": {
+              "main_switch_type": "switch-disconnector",
+              "icw_rating_ka_at_1s": 10
+            }
           }
         ]
       }

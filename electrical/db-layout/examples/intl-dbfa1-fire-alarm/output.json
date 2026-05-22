@@ -200,7 +200,7 @@
     "ALL final-circuit cables FP200 LSZH for fire survival per IEC 60331 / IEC 60364-5-56 cable-survival category."
   ],
   "rationale": {
-    "chat_summary": "DB-FA1: 63A TPN+E fire-alarm sub-DB for the IEC 3-storey commercial office, 6 final circuits (panel power + 3 zone loops + sounder/strobe + battery charger), fed from MSB-MAIN F04 with NO upstream RCD per IEC 60364-5-56 § 560.7. All Type C MCBs and FP200 LSZH fire-rated cables; panel design per IEC 62820. INFO flag: AHJ-required survival duration and secondary supply (ATS to genset) to be verified against the panel battery commissioning certificate at handover.",
+    "chat_summary": "DB-FA1: 63A TPN+E fire-alarm sub-DB for the IEC 3-storey commercial office, 6 final circuits (panel power + 3 zone loops + sounder/strobe + battery charger), fed from MSB-MAIN F04 with NO upstream RCD per IEC 60364-5-56 § 560.7.2. All Type C MCBs and FP200 LSZH fire-rated cables; panel design per IEC 62820. INFO flag: AHJ-required survival duration and secondary supply (ATS to genset) to be verified against the panel battery commissioning certificate at handover.",
     "sections": [
       {
         "title": "Board Identification",
@@ -222,7 +222,7 @@
       },
       {
         "title": "Incoming Supply",
-        "summary": "63A TPN+E intake at 400 V fed from MSB-MAIN F04 via a 60 m 16 mm² 5-core SWA XLPE Cu feeder. Declared PFC at DB-FA1 is 9.0 kA — attenuated from the MSB-MAIN bus PFC by the 60 m feeder impedance — well within the 10 kA Icn of standard MCBs. The 63A rating reflects the bounded life-safety load (≈3 kW total final-circuit demand + battery-charge boost transient) and intentionally provides margin for future addressable-loop expansion. Critically, there is NO upstream RCD at MSB-MAIN F04 per IEC 60364-5-56 § 560.7 — earth-fault trip would defeat fire alarm continuity, which is forbidden on safety services. Main switch is a 63A 4-pole switch-disconnector per IEC 60947-3 for emergency manual isolation only.",
+        "summary": "63A TPN+E intake at 400 V fed from MSB-MAIN F04 via a 60 m 16 mm² 5-core SWA XLPE Cu feeder. Declared PFC at DB-FA1 is 9.0 kA — attenuated from the MSB-MAIN bus PFC by the 60 m feeder impedance — well within the 10 kA Icn of standard MCBs. The 63A rating reflects the bounded life-safety load (≈3 kW total final-circuit demand + battery-charge boost transient) and intentionally provides margin for future addressable-loop expansion. Critically, there is NO upstream RCD at MSB-MAIN F04 per IEC 60364-5-56 § 560.7.2 — earth-fault trip would defeat fire alarm continuity, which is forbidden on safety services. Main switch is a 63A 4-pole switch-disconnector per IEC 60947-3 for emergency manual isolation only.",
         "decisions": [
           {
             "label": "63A TPN+E intake sized for bounded life-safety load",
@@ -235,7 +235,7 @@
             "label": "NO upstream RCD on the FA feeder",
             "summary": "MSB-MAIN F04 omits RCD protection because an earth-fault trip on the FA feeder would defeat fire-detection continuity during a fire event (cable insulation degradation can produce earth-fault leakage that does NOT compromise the alarm function itself).",
             "rule": "Safety services must remain energised during the foreseeable fire event — earth-fault auto-disconnection is incompatible with the availability requirement.",
-            "code_clause": "IEC 60364-5-56 § 560.7"
+            "code_clause": "IEC 60364-5-56 § 560.7.2"
           },
           {
             "label": "Declared PFC 9.0 kA at DB-FA1",
@@ -271,7 +271,7 @@
             "label": "NO RCD on any DB-FA1 circuit",
             "summary": "Earth-fault auto-disconnection is omitted across the entire DB-FA1 chain — RCD trip would defeat alarm continuity. ADS achieved by overcurrent protection only.",
             "rule": "Life-safety circuits must remain energised during the foreseeable fire — RCD protection is incompatible with the availability requirement.",
-            "code_clause": "IEC 60364-5-56 § 560.7"
+            "code_clause": "IEC 60364-5-56 § 560.7.2"
           }
         ]
       },
@@ -287,7 +287,7 @@
           },
           {
             "label": "Engineer-declared per manufacturer cascade table",
-            "summary": "Selectivity declared by engineer at the 9 kA fault level pending formal coordination study from the fault-level skill.",
+            "summary": "Selectivity declared by engineer at the 9 kA fault level pending formal coordination study from the fault-level skill. 6.3:1 same-curve Type C cascade ratio; FA panel + sounder loops fed from F04 incomer.",
             "rule": "Engineer declaration is acceptable per IEC 60364-5-53 § 536 when grounded in a manufacturer cascade table; formal IEC 60909-0 + tool calc to be appended at the runtime layer.",
             "code_clause": "IEC 60364-5-53 § 536"
           }
@@ -295,13 +295,13 @@
       },
       {
         "title": "Compliance Assessment",
-        "summary": "DB-FA1 compliant against IEC 60364-5-56 § 560 (safety services), IEC 60364-4-41 § 411 (ADS by overcurrent — no RCD on the FA chain), IEC 61439-3 (DBO assembly), and IEC 62820 (FA detection panel + zone topology). The deliberate absence of RCD on the entire DB-FA1 chain is the critical engineering point: an earth-fault trip on the FA feeder would defeat alarm continuity during a fire event, explicitly forbidden under IEC 60364-5-56 § 560.7. Protection achieved by overcurrent device only; residual shock risk acceptable in a controlled-access enclosure. One INFO flag: AHJ-required survival duration (typically 24 h standby + 30 min alarm) + secondary supply path to be verified at handover.",
+        "summary": "DB-FA1 compliant against IEC 60364-5-56 § 560 (safety services), IEC 60364-4-41 § 411 (ADS by overcurrent — no RCD on the FA chain), IEC 61439-3 (DBO assembly), and IEC 62820 (FA detection panel + zone topology). The deliberate absence of RCD on the entire DB-FA1 chain is the critical engineering point: an earth-fault trip on the FA feeder would defeat alarm continuity during a fire event, explicitly forbidden under IEC 60364-5-56 § 560.7.1 (safety service independence) and § 560.7.2 (protection coordination). Protection achieved by overcurrent device only; residual shock risk acceptable in a controlled-access enclosure. One INFO flag: AHJ-required survival duration (typically 24 h standby + 30 min alarm) + secondary supply path to be verified at handover.",
         "decisions": [
           {
             "label": "ADS by overcurrent protection only — NO RCD justified",
             "summary": "Life-safety exemption — earth-fault trip would defeat alarm continuity; ADS achieved by MCB overcurrent operation within the prescribed disconnection time at the fault level.",
-            "rule": "IEC 60364-5-56 § 560.7 permits omission of additional 30 mA RCD on safety services because the availability requirement (continued operation during the fire event) overrides the supplementary-protection rationale that applies to general circuits.",
-            "code_clause": "IEC 60364-5-56 § 560.7 + IEC 60364-4-41 § 411.3.3"
+            "rule": "IEC 60364-5-56 § 560.7.2 permits omission of additional 30 mA RCD on safety services because the availability requirement (continued operation during the fire event) overrides the supplementary-protection rationale that applies to general circuits.",
+            "code_clause": "IEC 60364-5-56 § 560.7.2 + IEC 60364-4-41 § 411.3.3"
           },
           {
             "label": "IEC 62820 fire detection panel governs panel design",

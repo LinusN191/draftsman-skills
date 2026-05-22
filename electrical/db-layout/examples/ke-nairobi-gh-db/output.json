@@ -24,7 +24,7 @@
     "supply_rating_a": 40,
     "fed_from": "MSP-100 C08 (40A MCB Type B + 30mA Type A RCD, 60m submain)",
     "supply_class": "non_essential",
-    "declared_pfc_ka": 3.0
+    "declared_pfc_ka": 1.0
   },
   "main_switch": {
     "type": "switch-disconnector",
@@ -81,7 +81,7 @@
       "circuit_id": "C03",
       "way_module_id": "W3",
       "designation": "Comms outlet (CCTV camera + intercom)",
-      "voltage_class": "comms_data",
+      "voltage_class": "LV_power",
       "downstream_load_kw": 0.2,
       "ocpd": {
         "rating_a": 6,
@@ -106,10 +106,10 @@
     {
       "upstream_id": "MSP-100-C08",
       "downstream_id": "GH-DB",
-      "selective_to_fault_ka": 3.0,
+      "selective_to_fault_ka": 1.0,
       "source": "engineer_declared",
       "tool_call_pending": false,
-      "code_clause": "KS 1700:2018 § 536 (route to BS 7671 via §313) — 40A Type B upstream cascading to 6-16A Type B at GH-DB (current ratio ≥2.5:1) satisfies same-curve cascade selectivity at 3.0 kA local PFC. RCD selectivity caveat: upstream 30mA Type A at MSP-100 C08 and downstream 30mA Type A on C02/C03 share sensitivity — KS 1700:2018 §314 (route to BS 7671 §314.1) requires staged sensitivities for full RCD selectivity. Coincident tripping accepted by design because the upstream RCD exclusively serves the gate-house submain; an earth fault tripping both is operationally acceptable for the isolated perimeter load and avoids inventing a 100mA upstream RCD that the existing MSP-100 schedule does not carry."
+      "code_clause": "KS 1700:2018 § 536 (route to BS 7671 via §313) — 40A Type B upstream cascading to 6-16A Type B at GH-DB (current ratio ≥2.5:1) satisfies same-curve cascade selectivity at 1.0 kA local PFC. RCD selectivity caveat: upstream 30mA Type A at MSP-100 C08 and downstream 30mA Type A on C02/C03 share sensitivity — KS 1700:2018 §314 (route to BS 7671 §314.1) requires staged sensitivities for full RCD selectivity. Coincident tripping accepted by design because the upstream RCD exclusively serves the gate-house submain; an earth fault tripping both is operationally acceptable for the isolated perimeter load and avoids inventing a 100mA upstream RCD that the existing MSP-100 schedule does not carry."
     }
   ],
   "compliance_summary": {
@@ -118,7 +118,7 @@
     "assumptions": [
       "KS 1700:2018 Annex E adopts BS EN 61439-3 for distribution boards; KS Annex E adopts BS Table 41.2 disconnection-time tables verbatim.",
       "KS 1700:2018 §411.3.3 universal socket-RCD policy: 30mA Type A applied on C02 (socket) and C03 (comms outlet — small DC content from CCTV switching supplies).",
-      "Estimated PFC at GH-DB ≈ 3.0 kA after the 60m submain impedance from 9.8 kA declared at MSP-100; 6 kA Icn on the GH-DB MCBs provides 100% headroom.",
+      "Conservative PFC at GH-DB ≈ 1.0 kA after the 60m 10mm² Cu SWA submain impedance (loop Z ≈ 0.24 Ω) from 9.8 kA declared at MSP-100; 6 kA Icn on the GH-DB MCBs provides >5x headroom.",
       "Single-phase 240V intake — gate house is a small isolated load best fed as single-phase to simplify isolation and minimise neutral imbalance at MSP-100."
     ]
   },
@@ -129,7 +129,7 @@
     "3 final circuits + 1 spare way (W4 reserved)."
   ],
   "rationale": {
-    "chat_summary": "GH-DB: 40A single-phase 240V gate-house sub-DB, 3 circuits (gate lighting + sockets + CCTV/intercom), fed from MSP-100 C08 via 60m SWA submain. KS Annex E (BS EN 61439-3) IP54 enclosure suits semi-outdoor perimeter cupboard. 30mA Type A RCD on C02/C03 per KS 1700:2018 §411.3.3 socket policy. Selectivity to MSP-100 cascade verified at 2.5:1 ratio; coincident-RCD caveat accepted because upstream 30mA serves only this gate-house submain.",
+    "chat_summary": "GH-DB: 40A single-phase 240V gate-house sub-DB, 3 circuits (gate lighting + sockets + CCTV/intercom), fed from MSP-100 C08 via 60m 10mm² Cu SWA submain. KS Annex E (BS EN 61439-3) IP54 enclosure suits semi-outdoor perimeter cupboard. 30mA Type A RCD on C02/C03 per KS 1700:2018 §411.3.3 socket policy. Conservative 1.0 kA local PFC after submain attenuation (loop Z ≈ 0.24 Ω) from 9.8 kA at MSP-100; 6 kA Icn MCBs provide >5x headroom. Selectivity to MSP-100 cascade verified at 2.5:1 ratio; coincident-RCD caveat accepted because upstream 30mA serves only this gate-house submain.",
     "sections": [
       {
         "title": "Board Identification",
@@ -150,7 +150,7 @@
       },
       {
         "title": "Incoming Supply",
-        "summary": "40A single-phase 240V intake fed from MSP-100 C08 via 60m 10mm² 4-core SWA PVC Cu submain. Single-phase chosen because the gate-house load is small (~2.3 kW total) and isolated — TPN would force neutral imbalance management at MSP-100 with no engineering benefit. Submain impedance attenuates PFC from 9.8 kA at MSP-100 to ≈3.0 kA at GH-DB; comfortably within the 6 kA Icn of the downstream MCBs. Upstream 30mA Type A RCD at MSP-100 C08 protects the submain itself per KS 1700:2018 §411.3.3.",
+        "summary": "40A single-phase 240V intake fed from MSP-100 C08 via 60m 10mm² 4-core SWA PVC Cu submain. Single-phase chosen because the gate-house load is small (~2.3 kW total) and isolated — TPN would force neutral imbalance management at MSP-100 with no engineering benefit. Submain impedance (loop Z ≈ 0.24 Ω for 60m 10mm² Cu SWA) conservatively attenuates PFC from 9.8 kA at MSP-100 to ≈1.0 kA at GH-DB; well within the 6 kA Icn of the downstream MCBs with >5x headroom. Upstream 30mA Type A RCD at MSP-100 C08 protects the submain itself per KS 1700:2018 §411.3.3.",
         "decisions": [
           {
             "label": "Single-phase 240V intake",
@@ -158,15 +158,18 @@
             "rule": "Phase selection by load size and topology"
           },
           {
-            "label": "Declared PFC 3.0 kA after 60m submain",
-            "summary": "Attenuation from 9.8 kA at MSP-100 via 10mm² Cu SWA impedance; covered by 6 kA Icn MCBs at GH-DB with 100% headroom.",
+            "label": "Declared PFC 1.0 kA conservative estimate after 60m submain",
+            "summary": "Conservative attenuation from 9.8 kA at MSP-100 via 10mm² Cu SWA submain impedance (loop Z ≈ 0.24 Ω); covered by 6 kA Icn MCBs at GH-DB with >5x headroom.",
             "rule": "Cable-Z series impedance addition",
             "code_clause": "KS 1700:2018 Appendix 4 (route to BS 7671 Appendix 4) + IEC 60909-0",
             "inputs": {
               "upstream_pfc_ka": 9.8,
               "submain_length_m": 60,
               "submain_csa_mm2": 10,
-              "declared_pfc_ka": 3.0
+              "submain_material": "Cu_SWA",
+              "loop_z_estimate_ohm": 0.24,
+              "ipsc_at_source_ka": 9.8,
+              "declared_pfc_ka": 1.0
             }
           },
           {
@@ -185,7 +188,7 @@
             "label": "Type B MCBs throughout",
             "summary": "Lighting (LED/incandescent), general sockets, and small CCTV/intercom loads have no specialist inrush — Type B is the lowest-cost compliant curve.",
             "rule": "MCB curve selection by load type",
-            "code_clause": "BS EN 60898-1:2019 + KS 1700:2018 § 432"
+            "code_clause": "BS EN 60898-1:2019"
           },
           {
             "label": "30mA Type A RCD on C02 (socket) and C03 (CCTV/intercom)",
@@ -195,19 +198,19 @@
           },
           {
             "label": "No RCD on C01 gate-house lighting",
-            "summary": "Fixed lighting outside socket-RCD scope; final-circuit MCB provides overcurrent and short-circuit protection.",
+            "summary": "Fixed external floodlights — outdoor luminaires considered under § 714 (outdoor lighting installations). Class II construction OR luminaires not within touch reach satisfies § 714 without forcing 30mA RCD; final-circuit MCB provides overcurrent and short-circuit protection.",
             "rule": "RCD scope for fixed lighting",
-            "code_clause": "KS 1700:2018 § 411.3.3 (route to BS 7671 via §313)"
+            "code_clause": "KS 1700:2018 § 411.3.3 + § 714 (route to BS 7671 § 411.3.3 + § 714)"
           }
         ]
       },
       {
         "title": "Selectivity Analysis",
-        "summary": "Upstream MSP-100 C08 = 40A Type B MCB + 30mA Type A RCD. Downstream MCBs at GH-DB are 6-16A Type B. Cascade ratio ≥2.5:1 satisfies same-curve cascade selectivity at the 3.0 kA local PFC per KS 1700:2018 §536. RCD coordination caveat: the upstream 30mA Type A at MSP-100 C08 shares sensitivity with the downstream 30mA Type A at C02/C03 — series 30mA pairs are time-coincident and KS 1700:2018 §314 requires staged sensitivities for true RCD selectivity. Coincident tripping accepted by design because the upstream RCD exclusively serves the gate-house submain; an earth fault tripping both is operationally acceptable for an isolated perimeter load.",
+        "summary": "Upstream MSP-100 C08 = 40A Type B MCB + 30mA Type A RCD. Downstream MCBs at GH-DB are 6-16A Type B. Cascade ratio ≥2.5:1 satisfies same-curve cascade selectivity at the 1.0 kA local PFC per KS 1700:2018 §536. RCD coordination caveat: the upstream 30mA Type A at MSP-100 C08 shares sensitivity with the downstream 30mA Type A at C02/C03 — series 30mA pairs are time-coincident and KS 1700:2018 §314 requires staged sensitivities for true RCD selectivity. Coincident tripping accepted by design because the upstream RCD exclusively serves the gate-house submain; an earth fault tripping both is operationally acceptable for an isolated perimeter load.",
         "decisions": [
           {
             "label": "MCB cascade selectivity at 2.5:1 ratio",
-            "summary": "40A:16A worst-case ratio satisfies IEC 60898 same-curve cascade threshold (≥2:1) at 3.0 kA local PFC.",
+            "summary": "40A:16A worst-case ratio satisfies IEC 60898 same-curve cascade threshold (≥2:1) at 1.0 kA local PFC.",
             "rule": "MCB same-curve cascade selectivity",
             "code_clause": "KS 1700:2018 § 536 (route to BS 7671 via §313) + BS EN 60898-1:2019"
           },

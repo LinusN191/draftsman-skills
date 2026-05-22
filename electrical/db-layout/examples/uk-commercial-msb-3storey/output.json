@@ -164,9 +164,9 @@
         "decisions": [
           {
             "label": "400A TPN+E intake from DNO TN-C-S (PME)",
-            "summary": "Office maximum demand ~86 kVA after BS 7671 § 311 + IET OSG Appendix A diversity sits comfortably within the 400A intake; TN-C-S is the UK DNO default for new commercial connections.",
+            "summary": "Office maximum demand ~86 kVA after BS 7671 § 311.1 + IET OSG Appendix A diversity sits comfortably within the 400A intake; TN-C-S is the UK DNO default for new commercial connections.",
             "rule": "Intake sizing from maximum demand + diversity",
-            "code_clause": "BS 7671:2018+A2:2022 § 311 + IET On-Site Guide Appendix A",
+            "code_clause": "BS 7671:2018+A2:2022 § 311.1 + IET On-Site Guide Appendix A",
             "inputs": {
               "intake_rating_a": 400,
               "connected_load_kw_sum": 86,
@@ -210,7 +210,7 @@
           },
           {
             "label": "35mm² 5-core SWA on all feeders",
-            "summary": "Uniform cable size simplifies procurement and reflects the 100A feeder OCPD; 5-core delivers TPN+E topology. Voltage-drop check on F03 (45m, longest run) deferred to cable-sizing skill — at 100A and 35mm² Cu, indicative drop sits around 2.0–2.5% which is within BS 7671 Appendix 12 limits but close enough that the cable-sizing skill must confirm with the actual load current.",
+            "summary": "Uniform cable size simplifies procurement and reflects the 100A feeder OCPD; 5-core delivers TPN+E topology. Voltage-drop check on F03 (45m, longest run) deferred to cable-sizing skill — at 100A and 35mm² Cu (1.10 mV/A/m line-line), indicative drop is ≈ 1.24% / 4.95V on 400V line-line, within BS 7671 Appendix 12 limits but close enough that the cable-sizing skill must confirm with the actual load current.",
             "rule": "Feeder cable selection — uniform sizing across cascade",
             "code_clause": "BS 7671:2018+A2:2022 Appendix 4 (current ratings) + Appendix 12 (voltage drop)"
           }
@@ -236,7 +236,7 @@
       },
       {
         "title": "Compliance Assessment",
-        "summary": "MSB-MAIN compliant against BS 7671:2018+A2:2022 (intake protection § 411 / § 434, cable-sizing Appendix 4, voltage-drop Appendix 12, selectivity § 536), BS EN 61439-1:2021 + BS EN 61439-2:2021 (PSC TTA assembly construction), and BS EN 60947-2:2017 (MCCBs throughout). No CRITICAL or HIGH flags. One INFO note: voltage drop on the 45m F03 feeder is close enough to the BS 7671 Appendix 12 limit that the downstream cable-sizing skill should confirm with the actual computed load current rather than the rated 100A.",
+        "summary": "MSB-MAIN compliant against BS 7671:2018+A2:2022 (intake protection § 411 / § 434, cable-sizing Appendix 4, voltage-drop Appendix 12, selectivity § 536), BS EN 61439-1:2021 + BS EN 61439-2:2021 (PSC TTA assembly construction), and BS EN 60947-2:2017 (MCCBs throughout). No CRITICAL or HIGH flags. One INFO note: voltage drop on the 45m F03 feeder (≈ 1.24% / 4.95V on 400V line-line at rated 100A) is close enough to the BS 7671 Appendix 12 limit that the downstream cable-sizing skill should confirm with the actual computed load current rather than the rated 100A.",
         "decisions": [
           {
             "label": "BS 7671:2018+A2:2022 + BS EN 61439-2 citation discipline",

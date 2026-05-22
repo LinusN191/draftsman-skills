@@ -364,9 +364,9 @@
         "decisions": [
           {
             "label": "100A TPN+E intake from MSB-MAIN F03 (45m feeder — longest in cascade)",
-            "summary": "Floor maximum demand ~26 kVA after BS 7671 § 311 + IET OSG Appendix A diversity sits within the 100A intake; F03 length is the longest of three feeders and drives the voltage-drop + Zs constraints in the cascade.",
+            "summary": "Floor maximum demand ~26 kVA after BS 7671 § 311.1 + IET OSG Appendix A diversity sits within the 100A intake; F03 length is the longest of three feeders and drives the voltage-drop + Zs constraints in the cascade.",
             "rule": "Sub-DB sizing from floor maximum demand + diversity",
-            "code_clause": "BS 7671:2018+A2:2022 § 311 + IET On-Site Guide Appendix A",
+            "code_clause": "BS 7671:2018+A2:2022 § 311.1 + IET On-Site Guide Appendix A",
             "inputs": {
               "intake_rating_a": 100,
               "feeder_length_m": 45,
@@ -438,7 +438,7 @@
       },
       {
         "title": "Compliance Assessment",
-        "summary": "SDB-L2 compliant against BS 7671:2018+A2:2022 (protection § 411 / § 415 / § 434 / § 536, emergency-lighting § 560, cable-sizing Appendix 4, voltage-drop Appendix 12), BS EN 61439-3:2012 (DBO assembly), BS EN 60898-1:2019 (MCBs), BS EN 61009-1:2012 (RCBOs). No CRITICAL or HIGH flags. INFO note: voltage drop on the 45m F03 feeder at the rated 100A is approximately 2.0-2.5%, which combined with downstream radial drops on the longer L2 final-circuits puts the cumulative drop close to the BS 7671 § 525.1 5% socket limit — final cable-sizing tool-call required to confirm against actual computed load currents rather than the rated current.",
+        "summary": "SDB-L2 compliant against BS 7671:2018+A2:2022 (protection § 411 / § 415 / § 434 / § 536, emergency-lighting § 560, cable-sizing Appendix 4, voltage-drop Appendix 12), BS EN 61439-3:2012 (DBO assembly), BS EN 60898-1:2019 (MCBs), BS EN 61009-1:2012+A12:2014 (RCBOs). No CRITICAL or HIGH flags. INFO note: voltage drop on the 45m F03 feeder at the rated 100A is ≈ 1.24% / 4.95V on 400V line-line, which combined with downstream radial drops on the longer L2 final-circuits puts the cumulative drop close to the BS 7671 § 525.1 5% socket limit — final cable-sizing tool-call required to confirm against actual computed load currents rather than the rated current.",
         "decisions": [
           {
             "label": "Voltage-drop INFO flag — cumulative drop near § 525.1 limit",
@@ -467,6 +467,16 @@
             "label": "Cascade-end (binding-leg) status flagged",
             "summary": "L2 is the binding leg of the cascade — feeder length drives the cascade voltage-drop + Zs constraints; flagged downstream via selectivity_results tool_call_pending and drawing_notes so cable-sizing + fault-level skills see the constraint without re-deriving it.",
             "rule": "Cross-skill cascade-state propagation"
+          },
+          {
+            "label": "main_switch.breaking_capacity_ka carries Icw not Icu",
+            "summary": "BS EN 60947-3 switch-disconnectors do not break fault current; the breaking_capacity_ka IR field carries the device's short-time withstand (Icw) rating. Equipment manufacturer's catalogue confirms 10 kA Icw / 1 s.",
+            "rule": "BS EN 60947-3 switch-disconnector IR field semantics",
+            "code_clause": "BS EN 60947-3:2020 (switch-disconnector device class)",
+            "inputs": {
+              "main_switch_type": "switch-disconnector",
+              "icw_rating_ka_at_1s": 10
+            }
           }
         ]
       }

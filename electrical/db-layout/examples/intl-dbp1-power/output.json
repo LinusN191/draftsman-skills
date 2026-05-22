@@ -328,8 +328,8 @@
       "IEC 61439-3 Distribution Board (DBO) used for the small-power sub-DB.",
       "IEC 60364-4-41:2018 Clause 411.3.3: 30mA Type A RCD on every socket circuit (mandatory for commercial premises).",
       "IT/data ring mains (P08-P10) carry significant SMPS-fed loads (desktop PCs, monitors, dock stations) — Type A RCD necessary for pulsating DC residual fault current detection.",
-      "Kitchen socket P07 also requires 30mA Type A per IEC 60364-7-701 series (water proximity).",
-      "Long IT/data ring P10 at 100m loop is at the practical edge for a 32A ring; voltage drop ≈ 3.7% at full load — sized to 2.5mm² because cable ampacity at Reference Method C is 27A (within 32A breaker limit by IEC 60364-5-52 Annex E ring-circuit allowance).",
+      "Commercial kitchen socket P07 requires 30mA Type A RCD per universal IEC 60364-4-41 § 411.3.3 socket-circuit policy. IEC 60364-7-701 (bathrooms and shower locations) does NOT apply — commercial kitchens are not Part 7-701 special locations.",
+      "Long IT/data ring P10 at 100m loop is at the practical edge for a 32A ring; voltage drop ≈ 6% at full load (centre-loaded ring assumption, 18 mV/A/m for 2.5mm² Cu, computed 6.3% on 230V phase — single-phase socket ring) — sized to 2.5mm² because cable ampacity at Reference Method C is 27A (within 32A breaker limit by IEC 60364-5-52 Annex E ring-circuit allowance).",
       "Estimated PFC at DB-P1 ≈ 18 kA after 40m 70mm² SWA feeder impedance from 25 kA at MSB-MAIN.",
       "10 kA Icn MCBs with cascade backup from upstream 400A MCCB Icu ≥ 36 kA (IEC 60364-5-53 Clause 536.4 cascade backup)."
     ]
@@ -338,7 +338,7 @@
     "DB-P1 located in level-1 electrical riser cupboard.",
     "Fed from MSB-MAIN F02 via 40m 70mm² 5-core SWA XLPE Cu feeder.",
     "12 final circuits + 6 spare ways (W13-W18 reserved — generous spare for tenant fit-out churn).",
-    "Ring-circuit voltage drop sanity checks completed — P10 at 100m is the longest ring and sits within the 4% socket-circuit guidance."
+    "Ring-circuit voltage drop sanity checks completed — P10 at 100m is the longest ring; conservative centre-loaded estimate ≈6% (6.3% on 230V phase — single-phase socket ring) exceeds the 4% socket-circuit guidance and must be confirmed by the cable-sizing skill with actual load distribution."
   ],
   "rationale": {
     "chat_summary": "DB-P1: 400A TPN+E small-power sub-DB for the IEC 3-storey office, 12 circuits (3 office socket rings + 2 meeting radials + photocopier + kitchen + 3 IT/data rings + AV + cleaner), fed from MSB-MAIN F02. 30 mA Type A RCD on every socket circuit per IEC 60364-4-41 § 411.3.3 — Type A for IT/data SMPS leakage. Cascade selectivity to F02 verified at 12.5:1 worst-case at the 18 kA PFC. P10 IT/data ring at 100 m at the edge of the 32A envelope.",
@@ -388,7 +388,7 @@
       },
       {
         "title": "Circuit Breakdown",
-        "summary": "12 circuits: P01-P03 office socket rings GF/L1/L2 (32A Type B), P04/P05 meeting radials (20A Type B), P06 photocopier (16A Type B), P07 kitchen radial (20A Type B), P08-P10 IT/data desk rings GF/L1/L2 (32A Type B), P11 AV (20A Type B), P12 cleaner sockets (20A Type B). EVERY socket circuit has 30 mA Type A RCD per IEC 60364-4-41 § 411.3.3 — Type A chosen for IT/data SMPS pulsating-DC leakage detection. Type B throughout for tightest Zs response (no motor-grade inrush). No bathroom circuits → IEC 60364-7-701 not invoked; kitchen P07 RCD under § 411.3.3 universal policy. P10 100 m ring at edge of 32A envelope (≈3.7 % VD) — flagged for cable-sizing.",
+        "summary": "12 circuits: P01-P03 office socket rings GF/L1/L2 (32A Type B), P04/P05 meeting radials (20A Type B), P06 photocopier (16A Type B), P07 kitchen radial (20A Type B), P08-P10 IT/data desk rings GF/L1/L2 (32A Type B), P11 AV (20A Type B), P12 cleaner sockets (20A Type B). EVERY socket circuit has 30 mA Type A RCD per IEC 60364-4-41 § 411.3.3 — Type A chosen for IT/data SMPS pulsating-DC leakage detection. Type B throughout for tightest Zs response (no motor-grade inrush). No bathroom circuits → IEC 60364-7-701 not invoked; kitchen P07 RCD under § 411.3.3 universal policy. P10 100 m ring at edge of 32A envelope (≈6% VD at full load, centre-loaded ring assumption) — flagged for cable-sizing.",
         "decisions": [
           {
             "label": "30 mA Type A RCD on every socket circuit",
@@ -416,9 +416,15 @@
           },
           {
             "label": "P10 IT/data ring at 100 m at the practical edge of the 32A envelope",
-            "summary": "P10 ring loop length is the longest at ≈100 m; voltage drop ≈3.7 % at full load — within the 4 % socket-circuit guidance but flagged for cable-sizing skill confirmation.",
+            "summary": "P10 ring loop length is the longest at ≈100 m; voltage drop ≈6% at full load (centre-loaded ring assumption — conservative basis treating the worst-case socket as mid-ring). The centre-loaded assumption is the engineering-conservative basis for this figure; actual drop at an end-of-ring socket under typical distributed loading will be lower and must be confirmed by the cable-sizing skill.",
             "rule": "Voltage drop on socket circuits per IEC 60364-5-52 Annex B target ≤4 %; long rings require explicit check rather than reliance on default tabulated values.",
-            "code_clause": "IEC 60364-5-52 § 525 + Annex B"
+            "code_clause": "IEC 60364-5-52 § 525 + Annex B",
+            "inputs": {
+              "ring_length_m": 100,
+              "assumed_load_distribution": "centre-loaded",
+              "iec_mv_per_a_per_m_2p5mm2_cu": 18,
+              "computed_vd_percent_at_230v_phase": 6.3
+            }
           }
         ]
       },
@@ -434,7 +440,7 @@
           },
           {
             "label": "Engineer-declared per manufacturer cascade table",
-            "summary": "Selectivity declared by engineer at the 18 kA fault level pending formal coordination study from the fault-level skill.",
+            "summary": "Selectivity declared by engineer at the 18 kA fault level pending formal coordination study from the fault-level skill. 12.5:1 MCCB-to-MCB cross-curve cascade ratio; ring + radial circuits fed from F02.",
             "rule": "Engineer declaration is acceptable per IEC 60364-5-53 § 536 when grounded in a manufacturer cascade table; formal IEC 60909-0 + tool calc to be appended at the runtime layer.",
             "code_clause": "IEC 60364-5-53 § 536"
           }
@@ -466,7 +472,7 @@
       },
       {
         "title": "Schedule Notes",
-        "summary": "Schedule emitted as 12-row table with 6 spare ways (W13-W18) reserved as generous margin for tenant fit-out churn — the typical growth pattern for commercial small-power distribution where tenant changes drive most reconfiguration work. RCD column populated as 30 mA Type A on every row. P10's voltage-drop calculation (≈3.7 % at 100 m / 32A / 2.5 mm²) annotated on the schedule and called out as the most demanding circuit — cable-sizing skill to verify against IEC 60364-5-52 Annex B 4 % socket-circuit target. Ring-circuit topology explicitly annotated on P01-P03 and P08-P10 rows so the schedule does not get misread as a radial design.",
+        "summary": "Schedule emitted as 12-row table with 6 spare ways (W13-W18) reserved as generous margin for tenant fit-out churn — the typical growth pattern for commercial small-power distribution where tenant changes drive most reconfiguration work. RCD column populated as 30 mA Type A on every row. P10's voltage-drop calculation (≈6% at 100 m / 32A / 2.5 mm², centre-loaded ring assumption) annotated on the schedule and called out as the most demanding circuit — cable-sizing skill to verify against IEC 60364-5-52 Annex B 4 % socket-circuit target with actual load distribution. Ring-circuit topology explicitly annotated on P01-P03 and P08-P10 rows so the schedule does not get misread as a radial design.",
         "decisions": [
           {
             "label": "6 spare ways reserved for tenant fit-out churn",
@@ -476,7 +482,7 @@
           },
           {
             "label": "P10 100 m ring voltage-drop flagged for cable-sizing skill",
-            "summary": "P10 sits at the practical edge of a 32A ring envelope; annotated on the schedule for explicit voltage-drop confirmation rather than default tabulated reliance.",
+            "summary": "P10 sits at the practical edge of a 32A ring envelope; conservative centre-loaded estimate ≈6% (6.3% on 230V phase — single-phase socket ring) exceeds the IEC 60364-5-52 Annex B 4% target — annotated on the schedule for explicit voltage-drop confirmation with actual load distribution by the cable-sizing skill.",
             "rule": "Voltage drop on socket circuits per IEC 60364-5-52 Annex B target ≤4 %; long-ring cases warrant explicit confirmation by the cable-sizing skill.",
             "code_clause": "IEC 60364-5-52 § 525 + Annex B"
           }
