@@ -1,9 +1,9 @@
 # Eval 03 — Generator MUST detect and flag an undersized busbar
 # Category: validation_trap
 
-id: eval-03-undersized-busbar-trap
+name: eval-03-undersized-busbar-trap
+skill: db-layout
 category: validation_trap
-severity: critical
 description: |
   Engineer declares busbar rating 200A but sum of way loads × diversity = 230A.
   Generator must either:
@@ -12,7 +12,7 @@ description: |
   (b) Accept the 200A only with a critical flag "BUSBAR_UNDERSIZED".
   Silently accepting 200A is a FAIL.
 
-inputs:
+input:
   jurisdiction: "GB"
   board_type: "distribution_board"
   db_designation: "DB-X1"
@@ -31,21 +31,22 @@ inputs:
     - { id: "C04", designation: "Trap load 4", ocpd_rating_a: 50, ocpd_curve: "C", ocpd_type: "MCCB", load_kw: 30 }
   diversity_factor_main: 0.85
 
-assertions:
-  - kind: schema_valid
-    schema: "db-layout-ir.schema.json"
-  - kind: any_one_of_must_be_true
-    options:
-      - condition: "$.busbar.rating_a >= 250"
-        note: "Generator chose next-rating-up"
-      - condition: "any(f.message contains 'BUSBAR' for f in $.compliance_summary.non_compliance_flags)"
-        note: "Generator flagged the undersize"
-  - kind: jsonpath_not_equals
-    path: "$.busbar.rating_a"
-    forbidden: 200
-    note_if_violated: "Generator silently accepted the trap input — critical fail"
-  - kind: invariant_passes
-    invariant: "INV-3"
-    note: "Busbar rating coverage"
+checks:
+  - assertion: 'ir matches "db-layout-ir.schema.json"'
+    description: Output validates against the db-layout IR schema
+    severity: critical
 
-expected_status: "pass"
+  # Tier 4 approximation: original any_one_of_must_be_true — pick the cleanest observable (busbar not silently 200)
+  # Full semantics: Generator chose next-rating-up (busbar.rating_a >= 250) OR flagged the undersize in compliance_summary.non_compliance_flags
+  # TODO: harness needs OR-clause support for full fidelity
+  - assertion: 'ir.busbar.rating_a != 200'
+    description: >-
+      Generator must NOT silently accept the trap input busbar rating.
+      Expect either busbar.rating_a >= 250 (next rating up) OR a BUSBAR_UNDERSIZED flag in
+      compliance_summary.non_compliance_flags — both are valid outcomes; busbar == 200 with no flag is a critical fail.
+    severity: critical
+
+  - assertion: 'ir.invariants.INV-3.passes == true'
+    description: Busbar rating coverage
+    severity: critical
+    matches_inv: INV-3

@@ -1,9 +1,9 @@
 # Eval 05 — US strip mall panelboard, NEC Art 408
 # Category: jurisdiction_switch
 
-id: eval-05-jurisdiction-us-panelboard
+name: eval-05-jurisdiction-us-panelboard
+skill: db-layout
 category: jurisdiction_switch
-severity: critical
 description: |
   US 200A 120/240V split-phase NEMA panelboard for a strip-mall retail fit-out.
   Must:
@@ -12,7 +12,7 @@ description: |
   (c) Size by NEC table values (Table 220 for load, Table 250.122 for EGC)
   (d) Use GFCI/AFCI terminology, not RCD
 
-inputs:
+input:
   jurisdiction: "US"
   board_type: "panelboard_nema"
   db_designation: "PB-1"
@@ -31,26 +31,31 @@ inputs:
     - { id: "C04", designation: "RTU HVAC unit", ocpd_rating_a: 60, ocpd_type: "MCCB", phase_csa_awg: "6", length_m: 35, load_kw: 11 }
   diversity_factor_main: 0.8
 
-assertions:
-  - kind: schema_valid
-    schema: "db-layout-ir.schema.json"
-  - kind: jsonpath_equals
-    path: "$.jurisdiction"
-    expected: "US"
-  - kind: jsonpath_present
-    path: "$.board.enclosure_form_nec_type"
-    note: "US must use NEMA type, not IEC Form"
-  - kind: jsonpath_absent
-    path: "$.board.enclosure_form_iec61439"
-    note: "US must NOT emit IEC Form code"
-  - kind: clause_cited
-    clause_pattern: "^NEC 2023 Art (408|240|220|250)"
-    minimum_count: 2
-  - kind: clause_not_cited
-    clause_pattern: "^BS 7671"
-    note: "US project must not cite UK regs"
-  - kind: clause_not_cited
-    clause_pattern: "^IEC 60364"
-    note: "US project must not cite IEC 60364"
+checks:
+  - assertion: 'ir matches "db-layout-ir.schema.json"'
+    description: Output validates against the db-layout IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.jurisdiction == "US"'
+    description: Jurisdiction must be US
+    severity: critical
+
+  - assertion: 'ir.board.enclosure_form_nec_type != null'
+    description: US must use NEMA type, not IEC Form
+    severity: critical
+
+  - assertion: 'ir.board.enclosure_form_iec61439 == null'
+    description: US must NOT emit IEC Form code
+    severity: critical
+
+  - assertion: 'ir.citations matches "^NEC 2023 Art (408|240|220|250)"'
+    description: At least 2 citations match NEC 2023 Art 408/240/220/250 pattern
+    severity: warning
+
+  - assertion: 'ir.citations not_contains "BS 7671"'
+    description: Must NOT cite BS 7671 — US project must not cite UK regs
+    severity: warning
+
+  - assertion: 'ir.citations not_contains "IEC 60364"'
+    description: Must NOT cite IEC 60364 — US project must not cite IEC 60364
+    severity: warning

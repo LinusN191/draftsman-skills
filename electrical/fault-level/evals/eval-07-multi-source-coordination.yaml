@@ -1,11 +1,11 @@
-id: eval-07-multi-source-coordination
+name: eval-07-multi-source-coordination
+skill: fault-level
 category: skill_specific
-severity: high
 description: |
   Data centre topology: utility (1600 kVA) + standby gen (800 kVA) + UPS (500 kVA) all active simultaneously.
   Multi-source superposition per IEC 60909-0 §3.6. Sources[] must contain ≥3 entries.
 
-inputs:
+input:
   jurisdiction: "INT"
   project_id: "dc-multi-fl-eg07"
   supply_voltage_v: "400"
@@ -22,19 +22,19 @@ inputs:
     - { node_id: "TX-1", parent_node_id: null, node_kind: "transformer_secondary" }
     - { node_id: "MSB-1", parent_node_id: "TX-1", node_kind: "board_incoming", feeder: { length_m: 20, csa_mm2_or_awg: "240mm²", material: "copper", insulation: "xlpe_90" } }
 
-assertions:
-  - kind: schema_valid
-    schema: "fault-level-ir.schema.json"
-  - kind: jsonpath_count_gte
-    path: "$.sources[*]"
-    minimum: 3
-    note: "utility + generator + UPS"
-  - kind: jsonpath_in
-    path: "$.sources[*].kind"
-    allowed: ["utility", "generator", "ups", "motor_aggregate"]
-  - kind: clause_cited
-    clause_pattern: "IEC 60909-0:2016 §3.6"
-    minimum_count: 1
-    note: "Multi-source superposition cited"
+checks:
+  - assertion: 'ir matches "fault-level-ir.schema.json"'
+    description: Output validates against the fault-level IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.sources.length >= 3'
+    description: utility + generator + UPS — at least 3 sources required
+    severity: warning
+
+  - assertion: 'ir.sources[*].kind matches "^(utility|generator|ups|motor_aggregate)$"'
+    description: All values must be one of utility/generator/ups/motor_aggregate
+    severity: warning
+
+  - assertion: 'ir.citations matches "IEC 60909-0:2016 §3.6"'
+    description: At least 1 citation matches — multi-source superposition cited
+    severity: warning

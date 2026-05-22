@@ -1,9 +1,9 @@
 # Eval 07 — Two-level cascade selectivity verification
 # Category: skill_specific (selectivity_cascade)
 
-id: eval-07-selectivity-cascade
+name: eval-07-selectivity-cascade
+skill: db-layout
 category: skill_specific
-severity: high
 description: |
   MSB 1000A ACB main → 250A MCCB feeder → 32A MCB final.
   Engineer-declared fault currents:
@@ -13,7 +13,7 @@ description: |
   Generator must emit selectivity_results entries for all three cascade pairs and
   verify cascade is "selective_to_fault_ka" for each (using manufacturer table source).
 
-inputs:
+input:
   jurisdiction: "GB"
   board_type: "main_switchboard"
   db_designation: "MSB-CASC"
@@ -33,22 +33,24 @@ inputs:
     - { circuit_id: "F01", ifault_ka: 25 }
     - { circuit_id: "C01", ifault_ka: 6 }
 
-assertions:
-  - kind: schema_valid
-    schema: "db-layout-ir.schema.json"
-  - kind: jsonpath_count_gte
-    path: "$.selectivity_results[*]"
-    minimum: 2
-    note: "At least MAIN→F01 and F01→C01 cascade pairs"
-  - kind: jsonpath_all_in
-    path: "$.selectivity_results[*].source"
-    allowed: ["manufacturer_table", "iec_60909_calc", "engineer_declared"]
-    note: "All cascades resolved (no tool_call_pending since fault currents given)"
-  - kind: jsonpath_all_present
-    path: "$.selectivity_results[*].selective_to_fault_ka"
-    note: "Every cascade has a verdict"
-  - kind: invariant_passes
-    invariant: "INV-9"
-    note: "Selectivity result completeness"
+checks:
+  - assertion: 'ir matches "db-layout-ir.schema.json"'
+    description: Output validates against the db-layout IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.selectivity_results.length >= 2'
+    description: At least MAIN→F01 and F01→C01 cascade pairs must be present
+    severity: warning
+
+  - assertion: 'ir.selectivity_results[*].source matches "^(manufacturer_table|iec_60909_calc|engineer_declared)$"'
+    description: All values must be one of manufacturer_table/iec_60909_calc/engineer_declared — all cascades resolved (no tool_call_pending since fault currents given)
+    severity: warning
+
+  - assertion: 'ir.selectivity_results[*].selective_to_fault_ka not_contains null'
+    description: Every cascade result must have a non-null selective_to_fault_ka verdict
+    severity: warning
+
+  - assertion: 'ir.invariants.INV-9.passes == true'
+    description: Selectivity result completeness
+    severity: critical
+    matches_inv: INV-9

@@ -1,15 +1,15 @@
 # Eval 02 — Rural UK dwelling, TT (no PME), all circuits need RCD
 # Category: edge_case
 
-id: eval-02-rural-tt-system
+name: eval-02-rural-tt-system
+skill: earthing
 category: edge_case
-severity: critical
 description: |
   Rural UK farm cottage. DNO has declined to provide PME earth. Installation is TT
   with a local rod electrode. Soil is loam, engineer declares Ra=85Ω after installation.
   Every final circuit must have RCD per BS 7671 411.5.3 to meet disconnection time.
 
-inputs:
+input:
   jurisdiction: "GB"
   earthing_system_declared: "TT"
   supply_voltage_v: 230
@@ -27,31 +27,36 @@ inputs:
   consumed_intents:
     - { intent_type: "db-layout", intent_version: "1.0.0", produced_by: "electrical/db-layout/v1.0.0", payload_ref: "test-fixtures/db-layout-eval02.json" }
 
-assertions:
-  - kind: schema_valid
-    schema: "earthing-ir.schema.json"
-  - kind: jsonpath_equals
-    path: "$.earthing_system"
-    expected: "TT"
-  - kind: jsonpath_count_gte
-    path: "$.electrodes[*]"
-    minimum: 1
-  - kind: jsonpath_lte
-    path: "$.electrodes[0].ra_ohm_specified"
-    maximum: 100
-    note: "Ra below target (engineer-input value; calc.electrode_resistance pending per WI3)"
-  - kind: jsonpath_all_equals
-    path: "$.circuits[*].rcd_required"
-    expected: true
-    note: "TT requires RCD on every circuit"
-  - kind: invariant_passes
-    invariant: "INV-6"
-    note: "RCD requirement check"
-  - kind: clause_cited
-    clause_pattern: "BS 7671:2018\\+A3 Reg 411\\.5\\.3"
-    minimum_count: 1
-  - kind: tool_call_pending_marked
-    path: "$.electrodes[0]"
-    note: "calc.electrode_resistance is deferred — engineer-provided Ra accepted with pending flag"
+checks:
+  - assertion: 'ir matches "earthing-ir.schema.json"'
+    description: Output validates against the earthing IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.earthing_system == "TT"'
+    description: Earthing system must be TT
+    severity: critical
+
+  - assertion: 'ir.electrodes.length >= 1'
+    description: At least one electrode entry must be present
+    severity: critical
+
+  - assertion: 'ir.electrodes[0].ra_ohm_specified <= 100'
+    description: Ra below target (engineer-input value; calc.electrode_resistance pending per WI3)
+    severity: critical
+
+  - assertion: 'ir.circuits[*].rcd_required all_equal true'
+    description: TT requires RCD on every circuit
+    severity: critical
+
+  - assertion: 'ir.invariants.INV-6.passes == true'
+    description: RCD requirement check
+    severity: critical
+    matches_inv: INV-6
+
+  - assertion: 'ir.citations matches "BS 7671:2018\+A3 Reg 411\.5\.3"'
+    description: At least 1 citation matches BS 7671:2018+A3 Reg 411.5.3
+    severity: warning
+
+  - assertion: 'ir.flags matches "TOOL-CALL-PENDING"'
+    description: calc.electrode_resistance is deferred — engineer-provided Ra accepted with pending flag
+    severity: critical

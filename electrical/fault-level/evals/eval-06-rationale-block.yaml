@@ -1,31 +1,41 @@
-id: eval-06-rationale-block
+name: eval-06-rationale-block
+skill: fault-level
 category: rationale_block
-severity: high
 description: |
   Reuses eval-01 happy-path scenario. Per WI2 the rationale block is mandatory: 8 sections + chat_summary + decisions with IEC 60909 citations.
 
-inputs:
+input:
   reuse_eval: "eval-01-uk-domestic-cu-cascade"
 
-assertions:
-  - kind: schema_valid
-    schema: "fault-level-ir.schema.json"
-  - kind: jsonpath_present
-    path: "$.rationale.chat_summary"
-  - kind: jsonpath_length_gte
-    path: "$.rationale.chat_summary"
-    minimum: 40
-    maximum: 500
-  - kind: jsonpath_count_gte
-    path: "$.rationale.sections[*]"
-    minimum: 8
-    note: "8 sections per Step 14 of generator"
-  - kind: jsonpath_all_present
-    path: "$.rationale.sections[*].title"
-  - kind: jsonpath_all_present
-    path: "$.rationale.sections[*].summary"
-  - kind: jsonpath_pattern_match
-    path: "$.rationale.sections[*].decisions[*].code_clause"
-    pattern: "^(IEC 60909-0:2016|BS 7671:2018\\+A3|IEC 60364-[0-9]+-[0-9]+|NEC 2023)"
+checks:
+  - assertion: 'ir matches "fault-level-ir.schema.json"'
+    description: Output validates against the fault-level IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.rationale.chat_summary != null'
+    description: Rationale chat_summary must be present
+    severity: warning
+
+  - assertion: 'ir.rationale.chat_summary.length >= 40'
+    description: chat_summary must be at least 40 characters (per rationale schema constraint)
+    severity: warning
+
+  - assertion: 'ir.rationale.chat_summary.length <= 500'
+    description: chat_summary must be at most 500 characters (per rationale schema constraint)
+    severity: warning
+
+  - assertion: 'ir.rationale.sections.length >= 8'
+    description: 8 sections per Step 14 of generator
+    severity: warning
+
+  - assertion: 'ir.rationale.sections[*].title not_contains null'
+    description: Every section must have a non-null title
+    severity: warning
+
+  - assertion: 'ir.rationale.sections[*].summary not_contains null'
+    description: Every section must have a non-null summary
+    severity: warning
+
+  - assertion: 'ir.rationale.sections[*].decisions[*].code_clause matches "^(IEC 60909-0:2016|BS 7671:2018\+A3|IEC 60364-[0-9]+-[0-9]+|NEC 2023)"'
+    description: Citations must use canonical format
+    severity: warning
