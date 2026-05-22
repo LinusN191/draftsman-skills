@@ -163,10 +163,12 @@
   "spare_ways": 2,
   "selectivity_results": [
     {
-      "upstream": "MSB-MAIN F04 (63A MCB Type C)",
-      "downstream": "DB-FA1 main switch + all FA circuits",
-      "verdict": "pass",
-      "_note": "63A Type C MCB upstream selective against ≤10A Type C MCBs at DB-FA1 (6.3:1 current ratio + same-curve coordination supports time-current selectivity per IEC 60898 cascade table). Engineer-declared per manufacturer cascade table at 9 kA fault level (IEC 60364-5-53 Clause 536)."
+      "upstream_id": "MSB-MAIN-F04",
+      "downstream_id": "DB-FA1",
+      "selective_to_fault_ka": 9.0,
+      "source": "engineer_declared",
+      "tool_call_pending": false,
+      "code_clause": "IEC 60364-5-53 § 536 — 63A Type C MCB upstream selective against ≤10A Type C MCBs at DB-FA1 (6.3:1 current ratio at FA05 worst case; ≥10.5:1 at FA01/FA02/FA03/FA04/FA06). Same-curve cascade supports time-current selectivity per IEC 60898-1 cascade table. Engineer-declared per manufacturer cascade table at 9 kA fault level."
     }
   ],
   "compliance_summary": {
@@ -196,5 +198,137 @@
     "Role: fire_alarm_panel — flagged in board block for downstream SLD/riser/segregation consumers.",
     "NO RCD upstream or at DB-FA1 per IEC 60364-5-56 §560.",
     "ALL final-circuit cables FP200 LSZH for fire survival per IEC 60331 / IEC 60364-5-56 cable-survival category."
-  ]
+  ],
+  "rationale": {
+    "chat_summary": "DB-FA1: 63A TPN+E fire-alarm sub-DB for the IEC 3-storey commercial office, 6 final circuits (panel power + 3 zone loops + sounder/strobe + battery charger), fed from MSB-MAIN F04 with NO upstream RCD per IEC 60364-5-56 § 560.7. All Type C MCBs and FP200 LSZH fire-rated cables; panel design per IEC 62820. INFO flag: AHJ-required survival duration and secondary supply (ATS to genset) to be verified against the panel battery commissioning certificate at handover.",
+    "sections": [
+      {
+        "title": "Board Identification",
+        "summary": "DB-FA1 is the dedicated fire-alarm sub-DB for the IEC 3-storey commercial office, located adjacent to the building main entrance for fire-brigade and FA installer access. Constructed as an IEC 61439-3 Distribution Board (DBO) in an IP4X enclosure (indoor dry location). Role flagged as `fire_alarm_panel` so downstream SLD, riser, and cable-containment skills recognise it as a life-safety distribution requiring segregation, fire-rated cable, and no-RCD policy.",
+        "decisions": [
+          {
+            "label": "Specialty board role: fire_alarm_panel",
+            "summary": "Flagged on the board block so downstream skills enforce life-safety routing rules.",
+            "rule": "specialty_board role taxonomy — fire_alarm_panel marks the entire DB chain as life-safety per IEC 60364-5-56 § 560 scope.",
+            "code_clause": "IEC 60364-5-56 § 560"
+          },
+          {
+            "label": "IEC 61439-3 DBO assembly",
+            "summary": "IEC 61439-3 Distribution Board class used — IP4X enclosure adequate for the ground-floor entrance lobby location.",
+            "rule": "IEC 61439-3 — Distribution boards intended to be operated by ordinary persons (DBO) — assembly verification requirements.",
+            "code_clause": "IEC 61439-3"
+          }
+        ]
+      },
+      {
+        "title": "Incoming Supply",
+        "summary": "63A TPN+E intake at 400 V fed from MSB-MAIN F04 via a 60 m 16 mm² 5-core SWA XLPE Cu feeder. Declared PFC at DB-FA1 is 9.0 kA — attenuated from the MSB-MAIN bus PFC by the 60 m feeder impedance — well within the 10 kA Icn of standard MCBs. The 63A rating reflects the bounded life-safety load (≈3 kW total final-circuit demand + battery-charge boost transient) and intentionally provides margin for future addressable-loop expansion. Critically, there is NO upstream RCD at MSB-MAIN F04 per IEC 60364-5-56 § 560.7 — earth-fault trip would defeat fire alarm continuity, which is forbidden on safety services. Main switch is a 63A 4-pole switch-disconnector per IEC 60947-3 for emergency manual isolation only.",
+        "decisions": [
+          {
+            "label": "63A TPN+E intake sized for bounded life-safety load",
+            "summary": "63A rating well above the ≈3 kW total demand provides margin for addressable loop expansion and inrush headroom.",
+            "rule": "Life-safety supply must be sized for full panel boost-charge transient + future zone growth, not just steady-state load.",
+            "code_clause": "IEC 60364-5-56 § 560.6",
+            "inputs": { "demand_kw": 3.0, "rating_a": 63, "voltage_v": 400 }
+          },
+          {
+            "label": "NO upstream RCD on the FA feeder",
+            "summary": "MSB-MAIN F04 omits RCD protection because an earth-fault trip on the FA feeder would defeat fire-detection continuity during a fire event (cable insulation degradation can produce earth-fault leakage that does NOT compromise the alarm function itself).",
+            "rule": "Safety services must remain energised during the foreseeable fire event — earth-fault auto-disconnection is incompatible with the availability requirement.",
+            "code_clause": "IEC 60364-5-56 § 560.7"
+          },
+          {
+            "label": "Declared PFC 9.0 kA at DB-FA1",
+            "summary": "PFC attenuated from MSB-MAIN bus PFC by the 60 m 16 mm² feeder impedance — covered by 10 kA Icn MCBs without cascade backup.",
+            "rule": "Fault-current attenuation along the feeder reduces required breaking capacity at downstream OCPDs; fault-level skill to confirm via formal IEC 60909-0 calculation.",
+            "code_clause": "IEC 60909-0"
+          }
+        ]
+      },
+      {
+        "title": "Circuit Breakdown",
+        "summary": "6 final circuits: FA01 panel power supply (6A Type C, 1.5 mm²), FA02/FA03/FA04 zone detection loops for GF/L1/L2 (6A Type C, 1.5 mm², lengths step up by floor), FA05 sounder/strobe across all floors (10A Type C, 2.5 mm² for bank energisation inrush), FA06 battery-charger/standby supply interface (6A Type C, 1.5 mm²). ALL circuits use `voltage_class: fire_alarm` for downstream segregation enforcement (riser, cable-containment). Type C curves throughout to ride through panel SMPS + sounder capacitive inrush. All cables FP200 LSZH for fire survival per IEC 60331. NO RCD on any circuit — life-safety exemption.",
+        "decisions": [
+          {
+            "label": "All Type C MCB curves for FA panel + sounder inrush",
+            "summary": "Type C curve (Ia ≈ 5-10 × In) accommodates capacitive inrush of FA panel SMPS and sounder bank energisation without nuisance tripping.",
+            "rule": "MCB curve selection per IEC 60898-1 — Type C suits transformer/SMPS/capacitive inrush profiles common in alarm electronics.",
+            "code_clause": "IEC 60898-1"
+          },
+          {
+            "label": "FP200 LSZH fire-rated cable on all FA circuits",
+            "summary": "Fire-survival cable specified throughout — the FA wiring must continue to function during the foreseeable fire event for the duration mandated by the fire strategy (typically 30/60/120 min).",
+            "rule": "Safety services cabling must provide fire-survival integrity for the duration required by the fire-safety design.",
+            "code_clause": "IEC 60364-5-56 § 560.8 + IEC 60331"
+          },
+          {
+            "label": "voltage_class: fire_alarm on every circuit",
+            "summary": "Tags all DB-FA1 circuits as fire-alarm class so downstream riser/containment skills enforce segregation from LV power and ELV control cables.",
+            "rule": "Voltage-class taxonomy drives segregation distances and routing rules in the riser and cable-containment skills.",
+            "code_clause": "IEC 60364-5-56 § 560 + IEC 62820"
+          },
+          {
+            "label": "NO RCD on any DB-FA1 circuit",
+            "summary": "Earth-fault auto-disconnection is omitted across the entire DB-FA1 chain — RCD trip would defeat alarm continuity. ADS achieved by overcurrent protection only.",
+            "rule": "Life-safety circuits must remain energised during the foreseeable fire — RCD protection is incompatible with the availability requirement.",
+            "code_clause": "IEC 60364-5-56 § 560.7"
+          }
+        ]
+      },
+      {
+        "title": "Selectivity Analysis",
+        "summary": "Upstream MSB-MAIN F04 = 63A Type C MCB. Downstream MCBs at DB-FA1 are 6A and 10A Type C. Worst-case ratio at FA05 (10A) = 63:10 = 6.3:1; ratio at the 6A circuits = 10.5:1 with comfortable selectivity margin. Same-curve cascade (Type C upstream, Type C downstream) supports time-current selectivity per IEC 60898-1 cascade behaviour. Verdict pass — engineer-declared per manufacturer cascade table at the 9 kA fault level. Fault-level skill to confirm full coordination study via the project-graph upstream link.",
+        "decisions": [
+          {
+            "label": "Worst-case selectivity ratio 6.3:1 at FA05",
+            "summary": "63A:10A ratio meets the threshold for Type C same-curve cascade selectivity per IEC 60898-1.",
+            "rule": "Same-curve MCB cascade requires ≥1.6× current ratio + sufficient time separation for selective behaviour at the declared fault level.",
+            "code_clause": "IEC 60364-5-53 § 536"
+          },
+          {
+            "label": "Engineer-declared per manufacturer cascade table",
+            "summary": "Selectivity declared by engineer at the 9 kA fault level pending formal coordination study from the fault-level skill.",
+            "rule": "Engineer declaration is acceptable per IEC 60364-5-53 § 536 when grounded in a manufacturer cascade table; formal IEC 60909-0 + tool calc to be appended at the runtime layer.",
+            "code_clause": "IEC 60364-5-53 § 536"
+          }
+        ]
+      },
+      {
+        "title": "Compliance Assessment",
+        "summary": "DB-FA1 compliant against IEC 60364-5-56 § 560 (safety services), IEC 60364-4-41 § 411 (ADS by overcurrent — no RCD on the FA chain), IEC 61439-3 (DBO assembly), and IEC 62820 (FA detection panel + zone topology). The deliberate absence of RCD on the entire DB-FA1 chain is the critical engineering point: an earth-fault trip on the FA feeder would defeat alarm continuity during a fire event, explicitly forbidden under IEC 60364-5-56 § 560.7. Protection achieved by overcurrent device only; residual shock risk acceptable in a controlled-access enclosure. One INFO flag: AHJ-required survival duration (typically 24 h standby + 30 min alarm) + secondary supply path to be verified at handover.",
+        "decisions": [
+          {
+            "label": "ADS by overcurrent protection only — NO RCD justified",
+            "summary": "Life-safety exemption — earth-fault trip would defeat alarm continuity; ADS achieved by MCB overcurrent operation within the prescribed disconnection time at the fault level.",
+            "rule": "IEC 60364-5-56 § 560.7 permits omission of additional 30 mA RCD on safety services because the availability requirement (continued operation during the fire event) overrides the supplementary-protection rationale that applies to general circuits.",
+            "code_clause": "IEC 60364-5-56 § 560.7 + IEC 60364-4-41 § 411.3.3"
+          },
+          {
+            "label": "IEC 62820 fire detection panel governs panel design",
+            "summary": "Panel internal architecture, zone-loop topology, and battery autonomy governed by IEC 62820 fire detection and alarm systems — this DB schedule covers only the upstream electrical supply.",
+            "rule": "Scope boundary: db-layout skill covers the supply side of the FA panel; the panel internals are designed under IEC 62820 by the FA specialist.",
+            "code_clause": "IEC 62820"
+          },
+          {
+            "label": "Secondary supply path INFO flag",
+            "summary": "IEC 60364-5-56 § 560 recommends a secondary supply path (ATS to genset) for life-safety distribution; current design relies on the panel-integral battery. AHJ to confirm whether battery autonomy meets the required survival duration.",
+            "rule": "Safety services require a secondary supply path with autonomy matching the foreseeable fire-event duration; integral battery may suffice for smaller installations subject to AHJ acceptance.",
+            "code_clause": "IEC 60364-5-56 § 560.7.1"
+          }
+        ]
+      },
+      {
+        "title": "Schedule Notes",
+        "summary": "Schedule emitted as 6-row table with 2 spare ways (W7-W8) reserved for typical FA-system growth: additional sounder/strobe circuit for atrium acoustic coverage, or interface circuit to access-control / lift-recall. NO RCD column populated across every row — the no-RCD policy flagged on every circuit so the rendered schedule shows it as a documented design choice rather than an oversight. FP200 LSZH cable specified in the cable column. Feeder route to be confirmed by the cable-containment skill — if the route passes through unprotected escape routes, the feeder cable itself must be FP200 LSZH (not just SWA XLPE).",
+        "decisions": [
+          {
+            "label": "2 spare ways reserved for FA-system growth",
+            "summary": "W7-W8 left as spare for atrium sounder expansion or access-control / lift-recall interface — typical growth pattern for commercial FA installations.",
+            "rule": "Design margin per IEC 60364-1 Annex C — spare ways reserved at first installation reduces the cost of foreseeable future expansion.",
+            "code_clause": "IEC 60364-1 Annex C"
+          }
+        ]
+      }
+    ]
+  }
 }
