@@ -1,7 +1,6 @@
-eval_id: eval-02-mv-cascade-with-drawout
-category: edge_case
+name: eval-02-mv-cascade-with-drawout
 skill: arc-flash
-skill_version: 1.0.0
+category: edge_case
 description: |
   11kV MV switchgear with drawout breakers (HCB electrode config) cascaded to 400V LV.
   Tests voltage-class crossing (14300V class for MV → 600V class for LV) + interleaved
@@ -26,20 +25,49 @@ input:
       fault_inputs: { ibf_ka_max: 35, x_over_r: 8 }
       ocpd_inputs: { ocpd_type: "ACB_electronic", t_clear_s: 0.3 }
       geometry: { working_distance_mm: 455 }
-expected:
-  per_node:
-    - node_id: "MV-SWB"
-      voltage_class: "14300V"
-      electrode_config: "HCB"
-      electrode_config_source: "auto_inferred_from_equipment_type"
-      shock_approach_source_contains: "751V to 15 kV"
-      shock_approach_restricted_mm: 660
-    - node_id: "MV-SWB.TX-1.LV-MSB"
-      voltage_class: "600V"
-      electrode_config: "VCB"
-      shock_approach_source_contains: "151V to 750V"
-pass_criteria:
-  - "Two voltage classes resolved correctly (14300V + 600V)"
-  - "Drawout switchgear inferred to HCB; LV switchgear to VCB"
-  - "Each node gets shock-approach from correct voltage row"
-  - "Cascade tree consistent (parent_node_id resolves)"
+
+checks:
+  # per_node[0] — MV-SWB (MV drawout switchgear → HCB + 14300V class)
+  - assertion: 'ir.nodes[?(@.node_id=="MV-SWB")].voltage_class == "14300V"'
+    description: MV-SWB voltage_class resolves to 14300V (IEEE 1584:2018 MV class)
+    severity: critical
+    standard_ref: IEEE 1584:2018
+
+  - assertion: 'ir.nodes[?(@.node_id=="MV-SWB")].electrode_config == "HCB"'
+    description: MV-SWB electrode_config auto-inferred to HCB (drawout switchgear)
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="MV-SWB")].electrode_config_source == "auto_inferred_from_equipment_type"'
+    description: MV-SWB electrode_config_source records auto-inferred path
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="MV-SWB")].shock_approach_source contains "751V to 15 kV"'
+    description: MV-SWB shock_approach_source must reference voltage row "751V to 15 kV"
+    severity: critical
+    standard_ref: NFPA 70E Table 130.4(C)(a)
+
+  - assertion: 'ir.nodes[?(@.node_id=="MV-SWB")].shock_approach_restricted_mm == 660'
+    description: MV-SWB restricted approach is 660 mm per Table 130.4(C)(a) row 751V-15kV
+    severity: critical
+    standard_ref: NFPA 70E Table 130.4(C)(a)
+
+  # per_node[1] — MV-SWB.TX-1.LV-MSB (LV switchgear → VCB + 600V class)
+  - assertion: 'ir.nodes[?(@.node_id=="MV-SWB.TX-1.LV-MSB")].voltage_class == "600V"'
+    description: LV-MSB voltage_class resolves to 600V (IEEE 1584:2018 LV class)
+    severity: critical
+    standard_ref: IEEE 1584:2018
+
+  - assertion: 'ir.nodes[?(@.node_id=="MV-SWB.TX-1.LV-MSB")].electrode_config == "VCB"'
+    description: LV-MSB electrode_config auto-inferred to VCB (LV switchgear)
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="MV-SWB.TX-1.LV-MSB")].shock_approach_source contains "151V to 750V"'
+    description: LV-MSB shock_approach_source must reference voltage row "151V to 750V"
+    severity: critical
+    standard_ref: NFPA 70E Table 130.4(C)(a)
+
+  # pass_criteria coverage:
+  # "Cascade tree consistent (parent_node_id resolves)" — observable
+  - assertion: 'ir.nodes[?(@.node_id=="MV-SWB.TX-1.LV-MSB")].parent_node_id == "MV-SWB"'
+    description: LV-MSB parent_node_id resolves to MV-SWB (cascade tree consistent)
+    severity: critical

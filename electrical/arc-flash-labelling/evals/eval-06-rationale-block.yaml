@@ -1,31 +1,67 @@
-eval_id: eval-06-rationale-block
-category: rationale_block
+name: eval-06-rationale-block
 skill: arc-flash-labelling
-skill_version: 1.0.0
+category: rationale_block
 description: |
   Verify rationale block conforms to WI2: exactly 8 sections + chat_summary ≤ 1200 chars
   + every decision cites rule + clause. Reuses eval-01 scenario.
 input:
   reuse_from: "electrical/arc-flash-labelling/evals/eval-01-us-mixed-cascade-ansi-labels.yaml"
-expected:
-  rationale:
-    chat_summary:
-      type: string
-      max_length_chars: 1200
-    sections:
-      length: 8
-      titles_in_order:
-        - "Input Ingestion"
-        - "Jurisdictional Format Distribution"
-        - "Signal-Word Distribution"
-        - "Content Population"
-        - "RESTRICTED Equipment"
-        - "Rendering Status"
-        - "Compliance + Assumptions"
-        - "Project Label Index"
-      every_decision_has: [label, summary, rule, code_clause]
-pass_criteria:
-  - "rationale.sections.length == 8"
-  - "Every section non-empty (or explicitly says 'none triggered')"
-  - "Every decision cites rule + clause from ANSI Z535.4 / ISO 7010 / BS 5499 / NFPA 70E"
-  - "chat_summary ≤ 1200 chars"
+
+checks:
+  # rationale.chat_summary.max_length_chars
+  - assertion: 'ir.rationale.chat_summary.length <= 1200'
+    description: Chat summary must be ≤ 1200 chars per WI2
+    severity: warning
+
+  # rationale.sections.length
+  - assertion: 'ir.rationale.sections.length == 8'
+    description: Exactly 8 rationale sections expected per WI2
+    severity: critical
+
+  # rationale.sections.titles_in_order — emit per-title contains checks (order not enforceable in canonical grammar)
+  - assertion: 'ir.rationale.sections[*].title contains "Input Ingestion"'
+    description: 'Rationale must include section: Input Ingestion (position 1 expected — order not enforced by canonical grammar)'
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "Jurisdictional Format Distribution"'
+    description: 'Rationale must include section: Jurisdictional Format Distribution (position 2 expected — order not enforced by canonical grammar)'
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "Signal-Word Distribution"'
+    description: 'Rationale must include section: Signal-Word Distribution (position 3 expected — order not enforced by canonical grammar)'
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "Content Population"'
+    description: 'Rationale must include section: Content Population (position 4 expected — order not enforced by canonical grammar)'
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "RESTRICTED Equipment"'
+    description: 'Rationale must include section: RESTRICTED Equipment (position 5 expected — order not enforced by canonical grammar)'
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "Rendering Status"'
+    description: 'Rationale must include section: Rendering Status (position 6 expected — order not enforced by canonical grammar)'
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "Compliance + Assumptions"'
+    description: 'Rationale must include section: Compliance + Assumptions (position 7 expected — order not enforced by canonical grammar)'
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "Project Label Index"'
+    description: 'Rationale must include section: Project Label Index (position 8 expected — order not enforced by canonical grammar)'
+    severity: critical
+
+  # TODO: every_decision_has: [label, summary, rule, code_clause] — canonical grammar cannot
+  # enforce per-decision multi-field presence. Logged as warning with observable best-available check.
+  - assertion: 'ir.rationale.sections[*].decisions != null'
+    description: Every rationale section must have decisions[] populated (full label/summary/rule/code_clause structure not enforceable by canonical grammar — see WI2)
+    severity: warning
+
+  # pass_criteria coverage:
+  # "Every section non-empty (or explicitly says 'none triggered')" — soft, runtime-only
+  # captured by description on the decisions check above
+  # "Every decision cites rule + clause from ANSI Z535.4 / ISO 7010 / BS 5499 / NFPA 70E"
+  # — cited standards observable as substring presence in chat_summary
+  - assertion: 'ir.rationale.chat_summary matches "(ANSI Z535\.4|ISO 7010|BS 5499|NFPA 70E)"'
+    description: Chat summary must reference at least one of ANSI Z535.4 / ISO 7010 / BS 5499 / NFPA 70E
+    severity: critical

@@ -1,7 +1,6 @@
-eval_id: eval-04-no-arc-flash-intent
-category: missing_input
+name: eval-04-no-arc-flash-intent
 skill: arc-flash-labelling
-skill_version: 1.0.0
+category: missing_input
 description: |
   No upstream arc-flash intent. Skill produces empty labels[] + assumption log;
   does NOT fabricate label content.
@@ -11,15 +10,30 @@ input:
     arc_flash: { present: false }
   project_metadata:
     company_name: "Acme Engineering LLC"
-expected:
-  ir_structural:
-    labels_count: 0
-    flags_must_include: ["TOOL-CALL-PENDING-FOR-PDF-PNG"]
-  compliance_summary:
-    assumptions_must_contain_text: ["arc-flash intent absent"]
-  intent_validates_with_empty_labels: true
-pass_criteria:
-  - "labels[] is empty array (not absent, not fabricated)"
-  - "Assumption logged: 'arc-flash intent absent'"
-  - "tool_call_pending flag set"
-  - "Rationale block still has 8 sections (some marked 'none triggered')"
+
+checks:
+  # intent_validates_with_empty_labels: true
+  - assertion: 'ir.intent_emitted == true'
+    description: Intent must still emit (validates with empty labels — no fabrication)
+    severity: critical
+
+  # ir_structural.labels_count == 0
+  - assertion: 'ir.labels.length == 0'
+    description: labels[] must be an empty array (not absent, not fabricated)
+    severity: critical
+
+  # ir_structural.flags_must_include
+  - assertion: 'ir.flags contains "TOOL-CALL-PENDING-FOR-PDF-PNG"'
+    description: Output must still include TOOL-CALL-PENDING-FOR-PDF-PNG flag
+    severity: critical
+
+  # compliance_summary.assumptions_must_contain_text
+  - assertion: 'ir.compliance_summary.assumptions contains "arc-flash intent absent"'
+    description: Assumptions text must mention "arc-flash intent absent"
+    severity: critical
+
+  # pass_criteria coverage:
+  # "Rationale block still has 8 sections (some marked 'none triggered')"
+  - assertion: 'ir.rationale.sections.length == 8'
+    description: Rationale block must still have 8 sections (some marked "none triggered")
+    severity: critical

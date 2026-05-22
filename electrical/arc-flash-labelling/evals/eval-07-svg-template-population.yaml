@@ -1,22 +1,55 @@
-eval_id: eval-07-svg-template-population
-category: skill_specific
-subcategory: svg_template_population
+name: eval-07-svg-template-population
 skill: arc-flash-labelling
-skill_version: 1.0.0
+category: skill_specific
 description: |
   Verify SVG content is fully populated: <svg> element present, expected template
   markers (signal-word panel, equipment-id panel, etc.), no remaining {{...}} placeholders.
+  (Sub-category: svg_template_population)
 input:
   reuse_from: "electrical/arc-flash-labelling/evals/eval-01-us-mixed-cascade-ansi-labels.yaml"
-expected:
-  per_label_svg_validation:
-    - element_present: ["<svg", "</svg>"]
-    - no_remaining_placeholders: true   # NO {{...}} strings in svg_content
-    - has_signal_word_panel: true       # element with appropriate fill colour
-    - has_equipment_id_text: true       # contains the equipment_id value
-    - has_message_panel: true           # text elements for IE / AFB / shock / PPE
-pass_criteria:
-  - "Every label's svg_content starts with <svg and ends with </svg>"
-  - "No Jinja-style placeholders {{...}} remain anywhere in svg_content"
-  - "Every label's equipment_id appears as text in its SVG"
-  - "Every label's signal-word colour matches the format spec hex"
+
+checks:
+  # per_label_svg_validation — element_present
+  - assertion: 'ir.labels[*].svg_content contains "<svg"'
+    description: Every label's SVG must contain opening "<svg" tag
+    severity: critical
+
+  - assertion: 'ir.labels[*].svg_content contains "</svg>"'
+    description: Every label's SVG must contain closing "</svg>" tag
+    severity: critical
+
+  # no_remaining_placeholders: true — no {{...}} strings
+  - assertion: 'ir.labels[*].svg_content not_contains "{{"'
+    description: No remaining Jinja-style opening placeholders {{ in any label SVG
+    severity: critical
+
+  - assertion: 'ir.labels[*].svg_content not_contains "}}"'
+    description: No remaining Jinja-style closing placeholders }} in any label SVG
+    severity: critical
+
+  # has_signal_word_panel — element with appropriate fill colour observed as substring
+  # NOTE: Canonical grammar can't introspect SVG DOM elements. Best-available check
+  # is to verify the signal-word text appears somewhere in svg_content.
+  - assertion: 'ir.labels[*].svg_content matches "(DANGER|WARNING|CAUTION|RESTRICTED)"'
+    description: Every label SVG must contain a signal-word panel text (DANGER/WARNING/CAUTION/RESTRICTED)
+    severity: critical
+
+  # has_equipment_id_text — equipment_id appears as text in SVG
+  # TODO: Canonical grammar cannot do per-label cross-field substring (svg_content contains <its own node_id>).
+  # Logged as warning info-only check.
+  - assertion: 'ir.labels[*].svg_content != null'
+    description: Every label must have svg_content populated (per-label equipment_id substring check requires runtime cross-field — see WI2)
+    severity: warning
+
+  # has_message_panel — text elements for IE / AFB / shock / PPE
+  - assertion: 'ir.labels[*].svg_content matches "(cal/cm|Category|boundary|Approach|PPE)"'
+    description: Every label SVG must contain message panel text (IE / AFB / shock / PPE keywords)
+    severity: critical
+
+  # pass_criteria coverage:
+  # "Every label's signal-word colour matches the format spec hex" — soft (per-format hex map),
+  # not enforceable as single canonical check; runtime SVG-DOM tool required.
+  # Captured as info-level reminder check.
+  - assertion: 'ir.labels[*].format_applied != null'
+    description: Per-format signal-word colour spec match is a runtime SVG-DOM concern; format_applied must at least be declared
+    severity: info

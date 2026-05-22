@@ -1,7 +1,6 @@
-eval_id: eval-03-missing-arc-flash-data-skip
-category: validation_trap
+name: eval-03-missing-arc-flash-data-skip
 skill: arc-flash-labelling
-skill_version: 1.0.0
+category: validation_trap
 description: |
   Arc-flash intent has 3 nodes with label_recommended=true, but one has
   incident_energy_cal_per_cm2 = null (arc-flash method was 'pending').
@@ -14,21 +13,62 @@ input:
       { node_id: "MSB-2", incident_energy_cal_per_cm2: null, ppe_category: null, method_applied: "pending", label_recommended: true, voltage_v: 480 },
       { node_id: "DB-L1", incident_energy_cal_per_cm2: 4.2, ppe_category: 2, label_recommended: true, voltage_v: 400 }
     ]}
-expected:
-  per_label:
-    - node_id: "MSB-1"
-      label_content_contains: ["8.5 cal/cm²", "Category 3"]
-    - node_id: "MSB-2"
-      label_content_contains: ["Not computed", "see analysis"]
-      label_content_must_not_contain: ["8.5", "4.2", "0.0"]
-      ppe_category: null
-    - node_id: "DB-L1"
-      label_content_contains: ["4.2 cal/cm²", "Category 2"]
-  compliance_summary:
-    assumptions_must_contain_text: ["MSB-2", "Not computed"]
-pass_criteria:
-  - "No invented incident energy values for MSB-2"
-  - "MSB-2 label uses 'Not computed — see analysis' placeholder for IE field"
-  - "MSB-2 PPE category line is 'Specialised PPE Required' (null category)"
-  - "MSB-1 and DB-L1 labels generated normally"
-  - "Assumption logged about MSB-2 missing data"
+
+checks:
+  # per_label[0] — MSB-1
+  - assertion: 'ir.labels[?(@.node_id=="MSB-1")].label_content contains "8.5 cal/cm²"'
+    description: MSB-1 label content must include incident energy 8.5 cal/cm²
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-1")].label_content contains "Category 3"'
+    description: MSB-1 label content must include PPE Category 3
+    severity: critical
+
+  # per_label[1] — MSB-2 (missing-data path)
+  - assertion: 'ir.labels[?(@.node_id=="MSB-2")].label_content contains "Not computed"'
+    description: MSB-2 label content must include "Not computed" placeholder (no IE fabrication)
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-2")].label_content contains "see analysis"'
+    description: MSB-2 label content must reference "see analysis" companion document
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-2")].label_content not_contains "8.5"'
+    description: MSB-2 must not borrow IE value 8.5 from sibling node
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-2")].label_content not_contains "4.2"'
+    description: MSB-2 must not borrow IE value 4.2 from sibling node
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-2")].label_content not_contains "0.0"'
+    description: MSB-2 must not invent placeholder IE value 0.0
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-2")].ppe_category == null'
+    description: MSB-2 ppe_category is null (no fabrication when IE is null)
+    severity: critical
+
+  # pass_criteria coverage:
+  # "MSB-2 PPE category line is 'Specialised PPE Required' (null category)"
+  - assertion: 'ir.labels[?(@.node_id=="MSB-2")].label_content contains "Specialised PPE Required"'
+    description: MSB-2 PPE category line must read "Specialised PPE Required" when category is null
+    severity: critical
+
+  # per_label[2] — DB-L1
+  - assertion: 'ir.labels[?(@.node_id=="DB-L1")].label_content contains "4.2 cal/cm²"'
+    description: DB-L1 label content must include incident energy 4.2 cal/cm²
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="DB-L1")].label_content contains "Category 2"'
+    description: DB-L1 label content must include PPE Category 2
+    severity: critical
+
+  # compliance_summary.assumptions_must_contain_text
+  - assertion: 'ir.compliance_summary.assumptions contains "MSB-2"'
+    description: Assumptions text must mention MSB-2 (the missing-data node)
+    severity: critical
+
+  - assertion: 'ir.compliance_summary.assumptions contains "Not computed"'
+    description: Assumptions text must mention "Not computed" placeholder reason
+    severity: critical

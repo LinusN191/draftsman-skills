@@ -1,7 +1,6 @@
-eval_id: eval-01-uk-lv-switchboard-happy-path
-category: happy_path
+name: eval-01-uk-lv-switchboard-happy-path
 skill: arc-flash
-skill_version: 1.0.0
+category: happy_path
 description: |
   UK commercial 400V TPN main switchboard + 1 sub-DB. Standard VCB equipment, MCCB OCPD,
   fault data from fault-level intent. IEEE 1584:2018 method fires (assuming coefficients
@@ -32,27 +31,106 @@ input:
       fault_inputs: { ibf_ka_max: 18.0, ibf_ka_min: 16.5, x_over_r: 5 }
       ocpd_inputs: { ocpd_type: "MCCB_thermal_magnetic", t_clear_s: 0.2 }
       geometry: { working_distance_mm: 455 }
-expected:
-  cascade_node_count: 2
-  per_node:
-    - node_id: "MSB-1"
-      electrode_config: "VCB"
-      electrode_config_source: "auto_inferred_from_equipment_type"
-      method_applied_one_of: ["ieee1584_2018", "lee_1982"]
-      shock_approach_limited_movable_mm: 3050
-      shock_approach_limited_fixed_mm: 1070
-      shock_approach_restricted_mm: 305
-      shock_approach_source_contains: "151V to 750V"
-      label_recommended: true
-    - node_id: "MSB-1.DB-L1"
-      electrode_config: "VCB"
-      ppe_category_one_of: [1, 2, 3]
-      label_recommended: true
-  invariants_pass: ["INV-01","INV-02","INV-03","INV-04","INV-05","INV-08","INV-09","INV-10"]
-pass_criteria:
-  - "IR validates against schema"
-  - "Both nodes have method_applied from controlled vocabulary"
-  - "Both nodes auto-inferred to VCB electrode config"
-  - "Both nodes have shock-approach distances from Table 130.4(C)(a) row 151V-750V"
-  - "Both nodes label_recommended: true (LV switchgear + panelboard ≥240V)"
-  - "If method_applied == lee_1982: LEE_1982_FALLBACK_USED flag present"
+
+checks:
+  # cascade_node_count
+  - assertion: 'ir.cascade.length == 2'
+    description: Expected 2 cascade nodes (MSB-1 + MSB-1.DB-L1)
+    severity: critical
+
+  # per_node[0] — MSB-1
+  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].electrode_config == "VCB"'
+    description: MSB-1 electrode_config auto-inferred to VCB
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].electrode_config_source == "auto_inferred_from_equipment_type"'
+    description: MSB-1 electrode_config_source records auto-inferred path
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].method_applied matches "^(ieee1584_2018|lee_1982)$"'
+    description: MSB-1 method_applied is from controlled vocabulary (IEEE 1584:2018 or Lee 1982 fallback)
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].shock_approach_limited_movable_mm == 3050'
+    description: MSB-1 limited approach (movable) is 3050 mm per Table 130.4(C)(a) row 151V-750V
+    severity: critical
+    standard_ref: NFPA 70E Table 130.4(C)(a)
+
+  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].shock_approach_limited_fixed_mm == 1070'
+    description: MSB-1 limited approach (fixed) is 1070 mm per Table 130.4(C)(a) row 151V-750V
+    severity: critical
+    standard_ref: NFPA 70E Table 130.4(C)(a)
+
+  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].shock_approach_restricted_mm == 305'
+    description: MSB-1 restricted approach is 305 mm per Table 130.4(C)(a) row 151V-750V
+    severity: critical
+    standard_ref: NFPA 70E Table 130.4(C)(a)
+
+  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].shock_approach_source contains "151V to 750V"'
+    description: MSB-1 shock_approach_source must reference voltage row "151V to 750V"
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].label_recommended == true'
+    description: MSB-1 label_recommended is true (LV switchgear ≥240V)
+    severity: critical
+
+  # per_node[1] — MSB-1.DB-L1
+  - assertion: 'ir.nodes[?(@.node_id=="MSB-1.DB-L1")].electrode_config == "VCB"'
+    description: MSB-1.DB-L1 electrode_config auto-inferred to VCB (LV panelboard)
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="MSB-1.DB-L1")].ppe_category matches "^(1|2|3)$"'
+    description: MSB-1.DB-L1 ppe_category is 1, 2, or 3 (depends on IE computation)
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="MSB-1.DB-L1")].label_recommended == true'
+    description: MSB-1.DB-L1 label_recommended is true (panelboard ≥240V)
+    severity: critical
+
+  # invariants_pass
+  - assertion: 'ir.invariants.INV-01.passes == true'
+    description: Invariant INV-01 must pass
+    severity: critical
+    matches_inv: INV-01
+
+  - assertion: 'ir.invariants.INV-02.passes == true'
+    description: Invariant INV-02 must pass
+    severity: critical
+    matches_inv: INV-02
+
+  - assertion: 'ir.invariants.INV-03.passes == true'
+    description: Invariant INV-03 must pass
+    severity: critical
+    matches_inv: INV-03
+
+  - assertion: 'ir.invariants.INV-04.passes == true'
+    description: Invariant INV-04 must pass
+    severity: critical
+    matches_inv: INV-04
+
+  - assertion: 'ir.invariants.INV-05.passes == true'
+    description: Invariant INV-05 must pass
+    severity: critical
+    matches_inv: INV-05
+
+  - assertion: 'ir.invariants.INV-08.passes == true'
+    description: Invariant INV-08 must pass
+    severity: critical
+    matches_inv: INV-08
+
+  - assertion: 'ir.invariants.INV-09.passes == true'
+    description: Invariant INV-09 must pass
+    severity: critical
+    matches_inv: INV-09
+
+  - assertion: 'ir.invariants.INV-10.passes == true'
+    description: Invariant INV-10 must pass
+    severity: critical
+    matches_inv: INV-10
+
+  # pass_criteria coverage:
+  # "If method_applied == lee_1982: LEE_1982_FALLBACK_USED flag present" — conditional, soft.
+  # Captured as warning info-only check (canonical grammar lacks conditional logic).
+  - assertion: 'ir.flags != null'
+    description: If method_applied == lee_1982 anywhere, LEE_1982_FALLBACK_USED flag should be present (conditional not enforceable by canonical grammar)
+    severity: info
