@@ -18,7 +18,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install jsonschema
+        run: pip install jsonschema pyyaml
 
       - name: Run golden-example schema validation
         run: python3 scripts/validate-examples.py
