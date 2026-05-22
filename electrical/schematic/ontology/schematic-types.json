@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schematic_type_taxonomy": {
+    "control_motor_starter": {
+      "description": "Single-motor starter control circuit (DOL, star-delta, autotransformer, soft-start, VFD start logic). Requires sequence_of_operation describing start/stop/protection-trip sequence.",
+      "typical_items": ["contactor", "overload", "push_button", "lamp", "selector_switch"],
+      "typical_standards": ["BS EN 60617 IEC 617-7", "IEC 60364-5-55", "BS 7671 § 552"]
+    },
+    "control_changeover": {
+      "description": "Generator / UPS / mains-mains changeover schemes. Requires sequence_of_operation describing source-priority logic + transfer-time constraints.",
+      "typical_items": ["contactor", "timer", "logic_gate"],
+      "typical_standards": ["BS 7671 § 560", "BS 7671 § 537", "IEC 60364-5-56"]
+    },
+    "control_sequence": {
+      "description": "Multi-step control sequence (HVAC stage start, plant interlock, etc.). Requires sequence_of_operation describing state machine.",
+      "typical_items": ["contactor", "timer", "counter", "latch"],
+      "typical_standards": ["BS EN 60617 IEC 617-12", "IEC 61131-3"]
+    },
+    "protection_overcurrent": {
+      "description": "IDMT or instantaneous overcurrent protection (ANSI 50/51). Requires protection_settings with ansi_code + set_value + time_curve + ct_ratio.",
+      "typical_items": ["idmt_relay", "instantaneous_relay", "ct", "breaker"],
+      "typical_standards": ["IEC 60255-151", "IEC 60044-1 (CT)", "IEEE C37.96"]
+    },
+    "protection_differential": {
+      "description": "Transformer differential (87T) or busbar differential (87B). Requires protection_settings with bias slope + stabilising resistor + ct ratio matching.",
+      "typical_items": ["differential_relay", "ct", "breaker", "lockout_relay"],
+      "typical_standards": ["IEC 60255-187", "IEC 61850-9-2"]
+    },
+    "protection_motor": {
+      "description": "Motor protection scheme (49 thermal + 50/51 overcurrent + 86 lockout + 37 undercurrent + 47 phase rotation). Requires protection_settings per ANSI code.",
+      "typical_items": ["idmt_relay", "instantaneous_relay", "lockout_relay", "thermistor", "ct"],
+      "typical_standards": ["IEC 60255-149", "IEEE C37.96", "NEC Article 430"]
+    },
+    "protection_busbar": {
+      "description": "Busbar protection (87B + 50BF breaker failure + zone overlap). Requires protection_settings with zone-mapping + 50BF time grading.",
+      "typical_items": ["differential_relay", "instantaneous_relay", "lockout_relay", "ct", "breaker"],
+      "typical_standards": ["IEC 60255-187", "IEC 61850-9-2 (process bus)", "IEEE C37.234"]
+    }
+  }
+}
