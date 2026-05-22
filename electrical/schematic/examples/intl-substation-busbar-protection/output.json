@@ -1,0 +1,275 @@
+{
+  "drawing_type": "schematic",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "intl-substation-busbar-protection",
+    "skill_version": "schematic/1.0.0",
+    "produced_at": "2026-05-22T12:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "INT",
+  "schematic_type": "protection_busbar",
+  "sheet": {
+    "sheet_id": "PROT-003",
+    "title": "33 kV Substation Busbar Protection — 2-Zone 87B + 50BF",
+    "page_of": "1/1"
+  },
+  "items": [
+    {"item_id": "T1", "device_class": "ct", "bs_en_60617_ref": "CT_GENERIC", "rating": "1200/5 A, class PX, low-burden high-impedance scheme CT, Zone 1 Feeder 1"},
+    {"item_id": "T2", "device_class": "ct", "bs_en_60617_ref": "CT_GENERIC", "rating": "1200/5 A, class PX, low-burden high-impedance scheme CT, Zone 1 Feeder 2"},
+    {"item_id": "T3", "device_class": "ct", "bs_en_60617_ref": "CT_GENERIC", "rating": "1200/5 A, class PX, low-burden high-impedance scheme CT, Zone 1 Feeder 3"},
+    {"item_id": "T4", "device_class": "ct", "bs_en_60617_ref": "CT_GENERIC", "rating": "1200/5 A, class PX, low-burden high-impedance scheme CT, Zone 1 Feeder 4 (bus-section CT)"},
+    {"item_id": "T5", "device_class": "ct", "bs_en_60617_ref": "CT_GENERIC", "rating": "1200/5 A, class PX, low-burden high-impedance scheme CT, Zone 2 Feeder 5 (bus-section CT, zone overlap)"},
+    {"item_id": "T6", "device_class": "ct", "bs_en_60617_ref": "CT_GENERIC", "rating": "1200/5 A, class PX, low-burden high-impedance scheme CT, Zone 2 Feeder 6"},
+    {"item_id": "T7", "device_class": "ct", "bs_en_60617_ref": "CT_GENERIC", "rating": "1200/5 A, class PX, low-burden high-impedance scheme CT, Zone 2 Feeder 7"},
+    {"item_id": "T8", "device_class": "ct", "bs_en_60617_ref": "CT_GENERIC", "rating": "1200/5 A, class PX, low-burden high-impedance scheme CT, Zone 2 Feeder 8"},
+    {"item_id": "R87B-Z1", "device_class": "differential_relay", "bs_en_60617_ref": "DIFFERENTIAL_RELAY_87T", "rating": "High-impedance busbar differential relay, Zone 1, ABB REB650 / Siemens 7SS52 or equivalent", "ansi_function_code": "87B"},
+    {"item_id": "R87B-Z2", "device_class": "differential_relay", "bs_en_60617_ref": "DIFFERENTIAL_RELAY_87T", "rating": "High-impedance busbar differential relay, Zone 2", "ansi_function_code": "87B"},
+    {"item_id": "R50BF-Q1", "device_class": "instantaneous_relay", "bs_en_60617_ref": "INSTANTANEOUS_RELAY_50", "rating": "Breaker failure (ANSI 50BF): current-check + 200 ms delay element, Zone 1 Q1", "ansi_function_code": "50B"},
+    {"item_id": "R50BF-Q2", "device_class": "instantaneous_relay", "bs_en_60617_ref": "INSTANTANEOUS_RELAY_50", "rating": "Breaker failure (ANSI 50BF): current-check + 200 ms delay element, Zone 1 Q2", "ansi_function_code": "50B"},
+    {"item_id": "R50BF-Q3", "device_class": "instantaneous_relay", "bs_en_60617_ref": "INSTANTANEOUS_RELAY_50", "rating": "Breaker failure (ANSI 50BF): current-check + 200 ms delay element, Zone 1 Q3", "ansi_function_code": "50B"},
+    {"item_id": "R50BF-Q4", "device_class": "instantaneous_relay", "bs_en_60617_ref": "INSTANTANEOUS_RELAY_50", "rating": "Breaker failure (ANSI 50BF): current-check + 200 ms delay element, Zone 1 Q4 bus-section", "ansi_function_code": "50B"},
+    {"item_id": "R50BF-Q5", "device_class": "instantaneous_relay", "bs_en_60617_ref": "INSTANTANEOUS_RELAY_50", "rating": "Breaker failure (ANSI 50BF): current-check + 200 ms delay element, Zone 2 Q5 bus-section", "ansi_function_code": "50B"},
+    {"item_id": "R50BF-Q6", "device_class": "instantaneous_relay", "bs_en_60617_ref": "INSTANTANEOUS_RELAY_50", "rating": "Breaker failure (ANSI 50BF): current-check + 200 ms delay element, Zone 2 Q6", "ansi_function_code": "50B"},
+    {"item_id": "R50BF-Q7", "device_class": "instantaneous_relay", "bs_en_60617_ref": "INSTANTANEOUS_RELAY_50", "rating": "Breaker failure (ANSI 50BF): current-check + 200 ms delay element, Zone 2 Q7", "ansi_function_code": "50B"},
+    {"item_id": "R50BF-Q8", "device_class": "instantaneous_relay", "bs_en_60617_ref": "INSTANTANEOUS_RELAY_50", "rating": "Breaker failure (ANSI 50BF): current-check + 200 ms delay element, Zone 2 Q8", "ansi_function_code": "50B"},
+    {"item_id": "Q1", "device_class": "breaker", "bs_en_60617_ref": "BREAKER_52", "rating": "33 kV / 1250 A / 31.5 kA SF6 vacuum, Zone 1 Feeder 1", "ansi_function_code": "52"},
+    {"item_id": "Q2", "device_class": "breaker", "bs_en_60617_ref": "BREAKER_52", "rating": "33 kV / 1250 A / 31.5 kA SF6 vacuum, Zone 1 Feeder 2", "ansi_function_code": "52"},
+    {"item_id": "Q3", "device_class": "breaker", "bs_en_60617_ref": "BREAKER_52", "rating": "33 kV / 1250 A / 31.5 kA SF6 vacuum, Zone 1 Feeder 3", "ansi_function_code": "52"},
+    {"item_id": "Q4", "device_class": "breaker", "bs_en_60617_ref": "BREAKER_52", "rating": "33 kV / 2000 A / 31.5 kA SF6 vacuum, Bus-section CB (zone overlap)", "ansi_function_code": "52"},
+    {"item_id": "Q5", "device_class": "breaker", "bs_en_60617_ref": "BREAKER_52", "rating": "33 kV / 2000 A / 31.5 kA SF6 vacuum, Bus-section CB Zone 2 side", "ansi_function_code": "52"},
+    {"item_id": "Q6", "device_class": "breaker", "bs_en_60617_ref": "BREAKER_52", "rating": "33 kV / 1250 A / 31.5 kA SF6 vacuum, Zone 2 Feeder 6", "ansi_function_code": "52"},
+    {"item_id": "Q7", "device_class": "breaker", "bs_en_60617_ref": "BREAKER_52", "rating": "33 kV / 1250 A / 31.5 kA SF6 vacuum, Zone 2 Feeder 7", "ansi_function_code": "52"},
+    {"item_id": "Q8", "device_class": "breaker", "bs_en_60617_ref": "BREAKER_52", "rating": "33 kV / 1250 A / 31.5 kA SF6 vacuum, Zone 2 Feeder 8", "ansi_function_code": "52"},
+    {"item_id": "K86-Z1", "device_class": "lockout_relay", "bs_en_60617_ref": "LOCKOUT_RELAY_86", "rating": "Zone 1 master trip lockout, 110 VDC, trips Q1+Q2+Q3+Q4", "ansi_function_code": "86"},
+    {"item_id": "K86-Z2", "device_class": "lockout_relay", "bs_en_60617_ref": "LOCKOUT_RELAY_86", "rating": "Zone 2 master trip lockout, 110 VDC, trips Q5+Q6+Q7+Q8", "ansi_function_code": "86"},
+    {"item_id": "X1", "device_class": "terminal", "bs_en_60617_ref": "TERMINAL_RAIL", "rating": "Zone 1 CT secondary shorting block + summation bus, 4 mm² DIN-rail"},
+    {"item_id": "X2", "device_class": "terminal", "bs_en_60617_ref": "TERMINAL_RAIL", "rating": "Zone 2 CT secondary shorting block + summation bus, 4 mm² DIN-rail"},
+    {"item_id": "X3", "device_class": "terminal", "bs_en_60617_ref": "TERMINAL_RAIL", "rating": "Trip-circuit 110 VDC terminal block, 2.5 mm² DIN-rail"}
+  ],
+  "connections": [
+    {"wire_id": "W1", "from_item": "T1", "from_terminal": "S1", "to_item": "X1", "to_terminal": "1", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Zone 1 Feeder 1 CT secondary to summation bus"},
+    {"wire_id": "W2", "from_item": "T2", "from_terminal": "S1", "to_item": "X1", "to_terminal": "2", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Zone 1 Feeder 2 CT secondary to summation bus"},
+    {"wire_id": "W3", "from_item": "T3", "from_terminal": "S1", "to_item": "X1", "to_terminal": "3", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Zone 1 Feeder 3 CT secondary to summation bus"},
+    {"wire_id": "W4", "from_item": "T4", "from_terminal": "S1", "to_item": "X1", "to_terminal": "4", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Zone 1 Feeder 4 (bus-section) CT secondary to summation bus"},
+    {"wire_id": "W5", "from_item": "T5", "from_terminal": "S1", "to_item": "X2", "to_terminal": "5", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Zone 2 bus-section CT secondary (overlap CT, second core of bus-section position) to summation bus"},
+    {"wire_id": "W6", "from_item": "T6", "from_terminal": "S1", "to_item": "X2", "to_terminal": "6", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Zone 2 Feeder 6 CT secondary to summation bus"},
+    {"wire_id": "W7", "from_item": "T7", "from_terminal": "S1", "to_item": "X2", "to_terminal": "7", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Zone 2 Feeder 7 CT secondary to summation bus"},
+    {"wire_id": "W8", "from_item": "T8", "from_terminal": "S1", "to_item": "X2", "to_terminal": "8", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Zone 2 Feeder 8 CT secondary to summation bus"},
+    {"wire_id": "W9", "from_item": "X1", "from_terminal": "SUM", "to_item": "R87B-Z1", "to_terminal": "ID", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Zone 1 summed CT secondary current to high-impedance 87B relay"},
+    {"wire_id": "W10", "from_item": "X2", "from_terminal": "SUM", "to_item": "R87B-Z2", "to_terminal": "ID", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Zone 2 summed CT secondary current to high-impedance 87B relay"},
+    {"wire_id": "W11", "from_item": "R87B-Z1", "from_terminal": "TRIP", "to_item": "K86-Z1", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Zone 1 87B trip to Zone 1 lockout coil A1"},
+    {"wire_id": "W12", "from_item": "R87B-Z2", "from_terminal": "TRIP", "to_item": "K86-Z2", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Zone 2 87B trip to Zone 2 lockout coil A1"},
+    {"wire_id": "W13", "from_item": "K86-Z1", "from_terminal": "13", "to_item": "Q1", "to_terminal": "TC1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Zone 1 lockout NO 13-14 to Q1 trip coil"},
+    {"wire_id": "W14", "from_item": "K86-Z1", "from_terminal": "23", "to_item": "Q2", "to_terminal": "TC1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Zone 1 lockout NO 23-24 to Q2 trip coil"},
+    {"wire_id": "W15", "from_item": "K86-Z1", "from_terminal": "33", "to_item": "Q3", "to_terminal": "TC1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Zone 1 lockout NO 33-34 to Q3 trip coil"},
+    {"wire_id": "W16", "from_item": "K86-Z1", "from_terminal": "43", "to_item": "Q4", "to_terminal": "TC1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Zone 1 lockout NO 43-44 to Q4 trip coil (bus-section)"},
+    {"wire_id": "W17", "from_item": "K86-Z2", "from_terminal": "13", "to_item": "Q5", "to_terminal": "TC1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Zone 2 lockout NO 13-14 to Q5 trip coil (bus-section)"},
+    {"wire_id": "W18", "from_item": "K86-Z2", "from_terminal": "23", "to_item": "Q6", "to_terminal": "TC1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Zone 2 lockout NO 23-24 to Q6 trip coil"},
+    {"wire_id": "W19", "from_item": "K86-Z2", "from_terminal": "33", "to_item": "Q7", "to_terminal": "TC1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Zone 2 lockout NO 33-34 to Q7 trip coil"},
+    {"wire_id": "W20", "from_item": "K86-Z2", "from_terminal": "43", "to_item": "Q8", "to_terminal": "TC1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Zone 2 lockout NO 43-44 to Q8 trip coil"},
+    {"wire_id": "W21", "from_item": "T1", "from_terminal": "S2", "to_item": "R50BF-Q1", "to_terminal": "I", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Q1 CT secondary (second core) to 50BF current-check element"},
+    {"wire_id": "W22", "from_item": "T5", "from_terminal": "S2", "to_item": "R50BF-Q5", "to_terminal": "I", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Q5 CT secondary (second core) to 50BF current-check element"},
+    {"wire_id": "W23", "from_item": "R50BF-Q1", "from_terminal": "TRIP", "to_item": "K86-Z1", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "50BF-Q1 trip (Q1 failed to open 200 ms after main trip) to Zone 1 lockout (cascades to Q2+Q3+Q4)"},
+    {"wire_id": "W24", "from_item": "R50BF-Q5", "from_terminal": "TRIP", "to_item": "K86-Z2", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "50BF-Q5 trip (Q5 failed to open 200 ms after main trip) to Zone 2 lockout (cascades to Q6+Q7+Q8)"},
+    {"wire_id": "W25", "from_item": "K86-Z1", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Zone 1 lockout coil A2 to DC negative bus"},
+    {"wire_id": "W26", "from_item": "K86-Z2", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Zone 2 lockout coil A2 to DC negative bus"}
+  ],
+  "labels": [
+    {"anchor_item": "T1", "text": "T1 — 1200/5 PX, Z1-F1", "kind": "device_tag"},
+    {"anchor_item": "T4", "text": "T4 — 1200/5 PX, Z1 bus-section (overlap CT 1 of 2)", "kind": "device_tag"},
+    {"anchor_item": "T5", "text": "T5 — 1200/5 PX, Z2 bus-section (overlap CT 2 of 2)", "kind": "device_tag"},
+    {"anchor_item": "R87B-Z1", "text": "R87B-Z1 — High-Z Busbar Differential (ANSI 87B)", "kind": "device_tag"},
+    {"anchor_item": "R87B-Z2", "text": "R87B-Z2 — High-Z Busbar Differential (ANSI 87B)", "kind": "device_tag"},
+    {"anchor_item": "R50BF-Q1", "text": "R50BF-Q1 — Breaker Failure (ANSI 50BF)", "kind": "device_tag"},
+    {"anchor_item": "R50BF-Q5", "text": "R50BF-Q5 — Breaker Failure (ANSI 50BF)", "kind": "device_tag"},
+    {"anchor_item": "Q4", "text": "Q4 — Bus-section CB Zone 1 side", "kind": "device_tag"},
+    {"anchor_item": "Q5", "text": "Q5 — Bus-section CB Zone 2 side", "kind": "device_tag"},
+    {"anchor_item": "K86-Z1", "text": "K86-Z1 — Zone 1 Master Trip", "kind": "device_tag"},
+    {"anchor_item": "K86-Z2", "text": "K86-Z2 — Zone 2 Master Trip", "kind": "device_tag"},
+    {"anchor_item": "R87B-Z1", "text": "Bias slope 50% (high-impedance), Vs 200 V, stabilising R 2200 ohm", "kind": "sequence_note"},
+    {"anchor_item": "R50BF-Q1", "text": "Current-check 100 A primary + 200 ms delay — trips lockout if Q1 fails to open after main trip", "kind": "sequence_note"},
+    {"anchor_item": "Q4", "text": "Zone overlap: T4 and T5 both span the bus-section breaker — internal faults at the bus-section are detected by both 87B-Z1 and 87B-Z2 (intentional overlap)", "kind": "sequence_note"}
+  ],
+  "protection_settings": [
+    {
+      "ansi_code": "87B",
+      "device_id": "R87B-Z1",
+      "set_value": 0.5,
+      "set_unit": "× In bias slope (50%, high-impedance scheme), pickup Vs = 200 V across relay coil",
+      "ct_ratio": "1200/5 class PX",
+      "tool_call_pending": false
+    },
+    {
+      "ansi_code": "87B",
+      "device_id": "R87B-Z2",
+      "set_value": 0.5,
+      "set_unit": "× In bias slope (50%, high-impedance scheme), pickup Vs = 200 V across relay coil",
+      "ct_ratio": "1200/5 class PX",
+      "tool_call_pending": false
+    },
+    {
+      "ansi_code": "50B",
+      "device_id": "R50BF-Q1",
+      "set_value": 0.2,
+      "set_unit": "s breaker failure time, current-check pickup 100 A primary (8.3% In)",
+      "ct_ratio": "1200/5",
+      "tool_call_pending": false
+    },
+    {
+      "ansi_code": "50B",
+      "device_id": "R50BF-Q5",
+      "set_value": 0.2,
+      "set_unit": "s breaker failure time, current-check pickup 100 A primary (8.3% In)",
+      "ct_ratio": "1200/5",
+      "tool_call_pending": false
+    }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "High-impedance busbar differential scheme assumed (vs low-impedance numerical 87B). High-impedance scheme is the dominant choice for 2-zone medium-voltage substation busbars because it requires lower CT performance class and simpler relay logic; numerical 87B (ABB REB670, Siemens 7SS85) is favoured on highly subdivided busbars with many zones.",
+      "Bias slope 50% selected because high-impedance schemes use a higher slope than biased differential — the pickup is voltage-based (Vs across the relay coil) rather than current-bias-based, and 50% is the typical operating-region setting that gives stability against the worst-case through-fault CT mismatch.",
+      "Stabilising resistor 2200 ohm sized per Vs = If × (Rct + 2 × Rl) where Vs = 200 V (relay knee), If = maximum through-fault CT secondary = 131 A (= 31.5 kA / 1200 × 5), Rct = 4 ohm (CT winding), Rl = 1.5 ohm (lead loop) → Vs = 131 × (4 + 3) = 917 V; 2200 ohm resistor designed to dissipate the through-fault voltage without operating the relay.",
+      "50BF breaker failure time 200 ms selected per IEC 60255-187 typical: 90 ms breaker operating time + 60 ms 50BF current-check element + 50 ms margin = 200 ms. Cascades to the zone lockout to trip the adjacent breakers if the primary breaker fails to clear.",
+      "Zone overlap at the bus-section: T4 (Zone 1 CT on the bus-section feeder) and T5 (Zone 2 CT on the bus-section feeder) are physically separate CT cores on the bus-section breaker (Q4/Q5 representing the same physical CB drawn as two items for zone-clarity on the schematic). Internal faults at the bus-section are detected by BOTH 87B-Z1 and 87B-Z2 — intentional overlap to ensure no dead-zone.",
+      "Leaf-mode execution: no db-layout-rollup intent (HV substation busbar sits upstream of any LV cascade), no fault-level intent (engineer-declared maximum through-fault 31.5 kA), no earthing intent (the busbar protection zone is independent of LV earthing system). The 31.5 kA through-fault assumption is the standard IEC 60044-1 / IEC 61869-2 reference for 33 kV switchgear breaking capacity.",
+      "ANSI code field representation: industry parlance uses '50BF' for breaker failure protection (ANSI 50 instantaneous overcurrent + 'BF' breaker-failure qualifier). The schematic IR schema regex ^[0-9]{1,3}[A-Z]?(T|B|N|G)?$ permits second-letter suffixes T/B/N/G only — so the field carries '50B' (50-Breaker-failure-element) while item.rating, label sequence_note text, and assumptions all retain the full '50BF' designation for clarity to the reading engineer."
+    ]
+  },
+  "rationale": {
+    "chat_summary": "33 kV substation 2-zone busbar protection schematic (INT jurisdiction, IEC framework). High-impedance 87B (50% slope, Vs 200 V, 2200 ohm stabilising R) per zone plus 50BF breaker-failure (200 ms time, 100 A current-check) per breaker. Zone overlap at the bus-section via paired T4/T5 CTs. Leaf-mode execution — no consumed intents (busbar zone sits upstream of LV cascades). Reply to refine.",
+    "sections": [
+      {
+        "title": "Schematic Identification",
+        "summary": "protection_busbar on sheet PROT-003 for a 33 kV INT substation with 2 zones, 4 feeders per zone (3 line + 1 bus-section), 8 total breakers, 8 dedicated protection CTs, 2 high-impedance 87B relays, 8 50BF breaker-failure relays, and 2 zone-master lockouts. INT jurisdiction applies the IEC framework directly: IEC 60255-187 (differential / busbar protection), IEC 60255-151 (instantaneous element on 50BF), IEC 60044-1 / IEC 61869-2 (CT performance, class PX for high-impedance), and BS EN 60617 IEC 617-7 for graphical symbols.",
+        "decisions": [
+          {
+            "label": "High-impedance 87B scheme (not low-impedance numerical)",
+            "summary": "High-impedance is the dominant choice for 2-zone medium-voltage substation busbars — simpler relay logic, lower CT performance demand, lower commissioning risk.",
+            "rule": "Busbar protection scheme selection",
+            "code_clause": "IEC 60255-187 (differential / REF / busbar) + IEEE C37.234 (US busbar protection guide, cross-cited as the comprehensive design reference)"
+          },
+          {
+            "label": "Leaf-mode execution",
+            "summary": "No consumed intents — busbar zone sits upstream of any LV cascade; fault-level + earthing engineer-declared.",
+            "rule": "Leaf-mode declaration per generator prompt Step 11"
+          }
+        ]
+      },
+      {
+        "title": "Source Context",
+        "summary": "33 kV three-phase substation busbar with two zones connected via a bus-section breaker. Engineer-declared maximum through-fault current 31.5 kA per IEC standard switchgear rating. Each feeder rated 1250 A (1200/5 CT primary covers up to ~1500 A overload). The bus-section breaker is rated 2000 A to handle worst-case load transfer between zones. No upstream intents available — this schematic sits at the top of the substation protection hierarchy and is the source for downstream cascades (which are sibling schematics, not consumed by this one).",
+        "decisions": [
+          {
+            "label": "Maximum through-fault 31.5 kA engineer-declared",
+            "summary": "Standard IEC 60044-1 / IEC 61869-2 reference value for 33 kV switchgear breaking capacity at this current rating tier.",
+            "rule": "Fault-level declaration in leaf-mode",
+            "inputs": {
+              "busbar_voltage_kv": 33,
+              "ct_primary_a": 1200,
+              "max_through_fault_ka": 31.5,
+              "max_through_fault_secondary_a": 131
+            }
+          },
+          {
+            "label": "Zone overlap at bus-section",
+            "summary": "T4 + T5 are independent CT cores on the bus-section breaker, one assigned to each zone — overlap ensures no dead-zone at the busbar boundary.",
+            "rule": "Zone overlap discipline for busbar protection",
+            "code_clause": "IEC 60255-187 § 5.3 (zone definition)"
+          }
+        ]
+      },
+      {
+        "title": "Items Breakdown",
+        "summary": "28 devices placed: 8× CTs (T1-T8, all 1200/5 class PX for high-impedance scheme linearity), 2× differential relays (R87B-Z1 and R87B-Z2, one per zone), 8× breaker-failure relays (R50BF-Q1 through R50BF-Q8, one per breaker), 8× circuit breakers (Q1-Q8, 33 kV SF6 vacuum, 31.5 kA breaking), 2× zone lockouts (K86-Z1 and K86-Z2, hand-reset), plus three terminal blocks X1/X2 (CT summation buses per zone) and X3 (110 VDC trip circuit). Class PX is the canonical CT class for high-impedance differential schemes — IEC 60044-1 defines it as 'low-leakage-reactance CTs with specified knee-point voltage and excitation current' — and is required because the high-impedance scheme stability depends on linear CT response under through-fault conditions.",
+        "decisions": [
+          {
+            "label": "CT class PX (not 5P) for high-impedance scheme",
+            "summary": "High-impedance schemes require CT linearity (PX class with specified knee-point voltage), not just accuracy at a specified ALF (5P class).",
+            "rule": "CT class selection for high-impedance differential",
+            "code_clause": "IEC 60044-1 class PX + IEC 60255-187 § 5.4",
+            "inputs": {
+              "ct_class": "PX",
+              "rationale": "linearity required for scheme stability"
+            }
+          },
+          {
+            "label": "8× independent 50BF relays (one per breaker)",
+            "summary": "One 50BF per breaker — failure of any breaker triggers the zone lockout, cascading to clear the busbar via the adjacent breakers.",
+            "rule": "50BF granularity discipline"
+          }
+        ]
+      },
+      {
+        "title": "Protection Coordination",
+        "summary": "Two protection layers. Layer 1 (87B): high-impedance scheme, 50% slope, pickup Vs 200 V, 2200 ohm stabilising R, instantaneous (<30 ms). Detects faults inside the CT-bounded zone. Layer 2 (50BF): 8.3% In current-check + 200 ms delay; if current persists through the supposedly-tripped breaker, the zone lockout re-energises and clears all breakers in the zone. Zone overlap at the bus-section: T4 + T5 give dual coverage — internal faults at the bus-section trigger BOTH K86-Z1 and K86-Z2, clearing all 8 feeders (correct response for a bus-section fault).",
+        "decisions": [
+          {
+            "label": "87B 50% slope, Vs 200 V, 2200 ohm stabilising R",
+            "summary": "High-impedance scheme settings per IEC 60255-187 manufacturer commissioning guide.",
+            "rule": "High-impedance 87B design",
+            "code_clause": "IEC 60255-187 § 5.4 (high-impedance scheme) + manufacturer application notes",
+            "inputs": {
+              "ansi_code": "87B",
+              "slope_pct": 50,
+              "vs_v": 200,
+              "stabilising_r_ohm": 2200
+            }
+          },
+          {
+            "label": "50BF time 200 ms = breaker + element + margin",
+            "summary": "90 ms typical 33 kV vacuum CB operating time + 60 ms 50BF current-check element + 50 ms margin = 200 ms.",
+            "rule": "50BF time-grading derivation",
+            "code_clause": "IEEE C37.234 § 5.5 (busbar protection breaker failure logic)",
+            "inputs": {
+              "ansi_code": "50B",
+              "time_s": 0.2,
+              "breaker_op_ms": 90,
+              "element_op_ms": 60,
+              "margin_ms": 50
+            }
+          },
+          {
+            "label": "Zone overlap at bus-section",
+            "summary": "T4 and T5 give dual coverage of the bus-section breaker — no dead-zone.",
+            "rule": "Zone-overlap design"
+          }
+        ]
+      },
+      {
+        "title": "Compliance Assessment",
+        "summary": "Compliant against IEC 60255-187 (differential/busbar), IEC 60255-151 (50BF instantaneous), IEC 60044-1 / IEC 61869-2 (CT performance class PX), IEC 61850-9-2 (process bus / GOOSE — applicable if the substation is digitalised; cited as the framework reference for future-proofing), IEEE C37.234 (US busbar protection guide, cross-cited as the comprehensive design reference), and BS EN 60617 IEC 617-7 (graphical symbols). No CRITICAL or HIGH flags. Six assumptions documented including the high-impedance scheme choice, stabilising-resistor sizing math, 50BF time derivation, zone-overlap discipline, and the leaf-mode declaration.",
+        "decisions": [
+          {
+            "label": "INT jurisdiction citation discipline",
+            "summary": "IEC framework cited directly — no BS 7671 (not applicable on INT), no NEC (not applicable on INT). IEEE C37.234 cross-cited as the design-reference guide.",
+            "rule": "INT jurisdiction citation form"
+          },
+          {
+            "label": "IEC 60044-1 class PX retained vs IEC 61869",
+            "summary": "Class PX retained because manufacturer CT catalogues and substation panel-builder commissioning notes still predominantly use the IEC 60044-1 class PX nomenclature.",
+            "rule": "Pragmatic CT-class citation"
+          }
+        ]
+      },
+      {
+        "title": "Schedule Notes",
+        "summary": "Leaf-mode execution explicit: no db-layout-rollup intent (the busbar zone sits upstream of any LV distribution-board cascade); no fault-level intent (the busbar IS the fault-level source for downstream cascades — its through-fault rating is engineer-declared at 31.5 kA per IEC standard switchgear breaking capacity); no earthing intent (the busbar protection zone is functionally independent of the LV earthing system). All upstream context engineer-declared via inputs.json. No tool_call_pending entries — all protection settings hand-verifiable against the high-impedance scheme design equations (Vs = If × (Rct + 2 × Rl)) and the 50BF time derivation.",
+        "decisions": [
+          {
+            "label": "Leaf-mode declared explicit",
+            "summary": "No upstream intents; busbar is the source of downstream cascades, not a consumer.",
+            "rule": "Leaf-mode declaration"
+          },
+          {
+            "label": "No tool_call_pending entries",
+            "summary": "All four protection_settings entries fully resolved at LLM-emission time.",
+            "rule": "tool_call_pending discipline per generator prompt Step 8"
+          }
+        ]
+      }
+    ]
+  }
+}

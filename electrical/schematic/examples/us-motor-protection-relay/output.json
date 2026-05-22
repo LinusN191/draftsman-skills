@@ -1,0 +1,284 @@
+{
+  "drawing_type": "schematic",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "us-motor-protection-relay",
+    "skill_version": "schematic/1.0.0",
+    "produced_at": "2026-05-22T12:30:00Z",
+    "consumed_intents": [
+      {"intent_type": "db-layout-rollup", "intent_version": "1.0.0", "produced_by": "electrical/db-layout"},
+      {"intent_type": "fault-level", "intent_version": "1.0.0", "produced_by": "electrical/fault-level"}
+    ]
+  },
+  "jurisdiction": "US",
+  "schematic_type": "protection_motor",
+  "sheet": {
+    "sheet_id": "PROT-004",
+    "title": "150 HP 600 V Motor Protection — 49 / 50 / 51 / 86 + PTC",
+    "page_of": "1/1"
+  },
+  "items": [
+    {"item_id": "T1A", "device_class": "ct", "bs_en_60617_ref": "CT_GENERIC", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 13.1", "rating": "200/5 A, class 5P20, 15 VA burden, Phase A protection CT"},
+    {"item_id": "T1B", "device_class": "ct", "bs_en_60617_ref": "CT_GENERIC", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 13.1", "rating": "200/5 A, class 5P20, 15 VA burden, Phase B protection CT"},
+    {"item_id": "T1C", "device_class": "ct", "bs_en_60617_ref": "CT_GENERIC", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 13.1", "rating": "200/5 A, class 5P20, 15 VA burden, Phase C protection CT"},
+    {"item_id": "R49", "device_class": "idmt_relay", "bs_en_60617_ref": "IDMT_RELAY_51", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 16.4 (thermal element)", "rating": "Thermal-replica element (ANSI 49) — implemented in multifunction motor IED (SEL-710 / Schneider Sepam M41 / ABB REM615 or equivalent). Class 10 thermal curve.", "ansi_function_code": "49"},
+    {"item_id": "R50", "device_class": "instantaneous_relay", "bs_en_60617_ref": "INSTANTANEOUS_RELAY_50", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 16.2", "rating": "Instantaneous overcurrent (ANSI 50) — short-circuit element, no intentional delay", "ansi_function_code": "50"},
+    {"item_id": "R51", "device_class": "idmt_relay", "bs_en_60617_ref": "IDMT_RELAY_51", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 16.3", "rating": "IDMT overcurrent (ANSI 51) — locked-rotor / stall backup element on VI curve", "ansi_function_code": "51"},
+    {"item_id": "R86", "device_class": "lockout_relay", "bs_en_60617_ref": "LOCKOUT_RELAY_86", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 16.6", "rating": "Hand-reset master trip relay, 125 VDC coil (US substation DC standard)", "ansi_function_code": "86"},
+    {"item_id": "B1", "device_class": "thermistor", "bs_en_60617_ref": "THERMISTOR", "rating": "Embedded PTC thermistor in motor windings, 6-thermistor series chain (2 per phase), 3-wire connection to PTC relay input on R49"},
+    {"item_id": "Q1", "device_class": "breaker", "bs_en_60617_ref": "BREAKER_52", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 13.3", "rating": "600 V / 200 AF / 35 kAIC molded case circuit breaker with shunt trip, ANSI 52", "ansi_function_code": "52"},
+    {"item_id": "M1", "device_class": "motor", "bs_en_60617_ref": "MOTOR_3PHASE", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 8.2", "rating": "150 HP, 600 V, 3-phase, 140 A FLA, 900 A locked-rotor, Design B, Service Factor 1.15, TEFC"},
+    {"item_id": "X1", "device_class": "terminal", "bs_en_60617_ref": "TERMINAL_RAIL", "rating": "CT secondary terminal block, 10 AWG (5.3 mm²) DIN-rail, shorting-link type"},
+    {"item_id": "X2", "device_class": "terminal", "bs_en_60617_ref": "TERMINAL_RAIL", "rating": "PTC thermistor terminal block, 16 AWG (1.3 mm²), 3-wire to motor termbox"},
+    {"item_id": "X3", "device_class": "terminal", "bs_en_60617_ref": "TERMINAL_RAIL", "rating": "Trip-circuit terminal block, 14 AWG (2.1 mm²) DIN-rail, 125 VDC"}
+  ],
+  "connections": [
+    {"wire_id": "W1", "from_item": "T1A", "from_terminal": "S1", "to_item": "X1", "to_terminal": "1A", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase A CT secondary to terminal block"},
+    {"wire_id": "W2", "from_item": "T1A", "from_terminal": "S2", "to_item": "X1", "to_terminal": "2A", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase A CT secondary return"},
+    {"wire_id": "W3", "from_item": "T1B", "from_terminal": "S1", "to_item": "X1", "to_terminal": "1B", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase B CT secondary to terminal block"},
+    {"wire_id": "W4", "from_item": "T1B", "from_terminal": "S2", "to_item": "X1", "to_terminal": "2B", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase B CT secondary return"},
+    {"wire_id": "W5", "from_item": "T1C", "from_terminal": "S1", "to_item": "X1", "to_terminal": "1C", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase C CT secondary to terminal block"},
+    {"wire_id": "W6", "from_item": "T1C", "from_terminal": "S2", "to_item": "X1", "to_terminal": "2C", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase C CT secondary return"},
+    {"wire_id": "W7", "from_item": "X1", "from_terminal": "1A", "to_item": "R49", "to_terminal": "IA", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase A CT current to thermal-replica element 49 (also shared with 50 + 51 within the multifunction IED)"},
+    {"wire_id": "W8", "from_item": "X1", "from_terminal": "1B", "to_item": "R49", "to_terminal": "IB", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase B CT current to thermal-replica element"},
+    {"wire_id": "W9", "from_item": "X1", "from_terminal": "1C", "to_item": "R49", "to_terminal": "IC", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase C CT current to thermal-replica element"},
+    {"wire_id": "W10", "from_item": "X1", "from_terminal": "1A", "to_item": "R50", "to_terminal": "IA", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled Phase A CT to instantaneous 50 element"},
+    {"wire_id": "W11", "from_item": "X1", "from_terminal": "1B", "to_item": "R50", "to_terminal": "IB", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled Phase B CT to instantaneous 50 element"},
+    {"wire_id": "W12", "from_item": "X1", "from_terminal": "1C", "to_item": "R50", "to_terminal": "IC", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled Phase C CT to instantaneous 50 element"},
+    {"wire_id": "W13", "from_item": "X1", "from_terminal": "1A", "to_item": "R51", "to_terminal": "IA", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled Phase A CT to IDMT 51 element"},
+    {"wire_id": "W14", "from_item": "X1", "from_terminal": "1B", "to_item": "R51", "to_terminal": "IB", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled Phase B CT to IDMT 51 element"},
+    {"wire_id": "W15", "from_item": "X1", "from_terminal": "1C", "to_item": "R51", "to_terminal": "IC", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled Phase C CT to IDMT 51 element"},
+    {"wire_id": "W16", "from_item": "B1", "from_terminal": "T1", "to_item": "X2", "to_terminal": "1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Motor-embedded PTC thermistor chain end T1 to terminal block (3-wire connection)"},
+    {"wire_id": "W17", "from_item": "B1", "from_terminal": "T2", "to_item": "X2", "to_terminal": "2", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Motor-embedded PTC thermistor chain end T2"},
+    {"wire_id": "W18", "from_item": "X2", "from_terminal": "1", "to_item": "R49", "to_terminal": "PTC+", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "PTC chain to R49 thermistor input + (PTC resistance switches abruptly at the motor winding hot-spot threshold ~155 °C Class F)"},
+    {"wire_id": "W19", "from_item": "X2", "from_terminal": "2", "to_item": "R49", "to_terminal": "PTC-", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "PTC chain return"},
+    {"wire_id": "W20", "from_item": "R49", "from_terminal": "TRIP", "to_item": "R86", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Thermal 49 (FLA × Class 10 envelope OR PTC chain trip) to lockout R86 coil A1 (125 VDC)"},
+    {"wire_id": "W21", "from_item": "R50", "from_terminal": "TRIP", "to_item": "R86", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Instantaneous 50 trip to lockout coil A1 (parallel with 49 trip)"},
+    {"wire_id": "W22", "from_item": "R51", "from_terminal": "TRIP", "to_item": "R86", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "IDMT 51 trip to lockout coil A1 (parallel with 49 + 50 trips)"},
+    {"wire_id": "W23", "from_item": "R86", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Lockout coil A2 to 125 VDC negative bus"},
+    {"wire_id": "W24", "from_item": "R86", "from_terminal": "13", "to_item": "Q1", "to_terminal": "ST", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Lockout NO 13-14 contact to Q1 shunt trip coil ST (125 VDC)"},
+    {"wire_id": "W25", "from_item": "Q1", "from_terminal": "T1", "to_item": "M1", "to_terminal": "U", "conductor_csa_mm2": 35, "voltage_class": "power_LV", "function": "Q1 load-side T1 to motor M1 terminal U (Phase A power)"},
+    {"wire_id": "W26", "from_item": "Q1", "from_terminal": "T2", "to_item": "M1", "to_terminal": "V", "conductor_csa_mm2": 35, "voltage_class": "power_LV", "function": "Q1 load-side T2 to motor M1 terminal V (Phase B power)"},
+    {"wire_id": "W27", "from_item": "Q1", "from_terminal": "T3", "to_item": "M1", "to_terminal": "W", "conductor_csa_mm2": 35, "voltage_class": "power_LV", "function": "Q1 load-side T3 to motor M1 terminal W (Phase C power)"}
+  ],
+  "labels": [
+    {"anchor_item": "T1A", "text": "T1A — 200/5 A, 5P20, Ph A", "kind": "device_tag"},
+    {"anchor_item": "T1B", "text": "T1B — 200/5 A, 5P20, Ph B", "kind": "device_tag"},
+    {"anchor_item": "T1C", "text": "T1C — 200/5 A, 5P20, Ph C", "kind": "device_tag"},
+    {"anchor_item": "R49", "text": "R49 — Thermal (ANSI 49) Class 10", "kind": "device_tag"},
+    {"anchor_item": "R50", "text": "R50 — Instantaneous OC (ANSI 50)", "kind": "device_tag"},
+    {"anchor_item": "R51", "text": "R51 — IDMT OC (ANSI 51) VI", "kind": "device_tag"},
+    {"anchor_item": "R86", "text": "R86 — Master Trip Lockout (ANSI 86)", "kind": "device_tag"},
+    {"anchor_item": "B1", "text": "B1 — Motor-embedded PTC chain (6 thermistors, 2/phase)", "kind": "device_tag"},
+    {"anchor_item": "Q1", "text": "Q1 — 600V 200AF 35kAIC MCCB w/ Shunt Trip", "kind": "device_tag"},
+    {"anchor_item": "M1", "text": "M1 — 150 HP 600V 140A FLA Design B SF 1.15 TEFC", "kind": "device_tag"},
+    {"anchor_item": "R49", "text": "Pickup 140 A = 1.0× FLA (Class 10 thermal model, SF 1.15 allowed)", "kind": "sequence_note"},
+    {"anchor_item": "R50", "text": "Pickup 1200 A primary = 1.33× LRA — clears short-circuits without nuisance-tripping on locked rotor", "kind": "sequence_note"},
+    {"anchor_item": "R51", "text": "Pickup 175 A primary = 1.25× FLA × 1.15 SF, VI curve TMS 0.3 — locked-rotor / stall backup if 49 thermal misses", "kind": "sequence_note"},
+    {"anchor_item": "R86", "text": "Hand reset — converges trips from 49, 50, 51, and the PTC chain (via 49 input)", "kind": "sequence_note"},
+    {"anchor_item": "B1", "text": "Class F insulation hot-spot threshold ~155 °C — PTC R switches from <100 ohm cold to >2700 ohm hot at threshold", "kind": "sequence_note"}
+  ],
+  "protection_settings": [
+    {
+      "ansi_code": "49",
+      "device_id": "R49",
+      "set_value": 140,
+      "set_unit": "A FLA × Class 10 thermal curve (pickup 1.0× FLA, Service Factor 1.15 allowed in the thermal model so the relay does NOT trip until current sustained above 1.15× FLA = 161 A for the Class 10 time-current envelope)",
+      "time_curve": "Class 10 thermal envelope (NEC § 430.32(A)(1) — 115% of FLA for SF ≥ 1.15)",
+      "ct_ratio": "200/5",
+      "tool_call_pending": false
+    },
+    {
+      "ansi_code": "50",
+      "device_id": "R50",
+      "set_value": 1200,
+      "set_unit": "A primary (1.33× locked-rotor 900 A — clears bolted short-circuit without nuisance-tripping on legitimate LRA inrush)",
+      "time_curve": "instantaneous, no intentional delay (~25 ms total operate)",
+      "ct_ratio": "200/5",
+      "tool_call_pending": false
+    },
+    {
+      "ansi_code": "51",
+      "device_id": "R51",
+      "set_value": 175,
+      "set_unit": "A primary (1.25× FLA × 1.15 SF — backup against locked-rotor / stall if 49 thermal model fails)",
+      "time_curve": "IEC VI (very inverse), TMS 0.3 — operates ~6 s at 900 A LRA, below the Design B locked-rotor withstand time of 12 s",
+      "ct_ratio": "200/5",
+      "tool_call_pending": false
+    },
+    {
+      "ansi_code": "86",
+      "device_id": "R86",
+      "set_value": "manual reset",
+      "set_unit": "Hand-reset master trip — operator must press reset before Q1 can be re-closed; ensures no auto-reclose onto a faulted or hot motor",
+      "tool_call_pending": false
+    }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Multifunction motor IED (SEL-710, Schneider Sepam M41, or ABB REM615) assumed for R49 / R50 / R51 — modern numerical relays bundle 49/50/51/86 + thermistor input + 46/47/48/49S into a single chassis. The schematic shows them as discrete items per protection-function for zone clarity, but the physical implementation is a single device.",
+      "ANSI 49 thermal element implemented via the relay's thermal-replica algorithm — there is no dedicated 'thermal_relay' value in the schematic IR device_class enum (the 27-value enum includes idmt_relay, instantaneous_relay, differential_relay, ref_relay, lockout_relay, uv_relay, ov_relay, distance_relay but no thermal_relay). The device_class field is therefore 'idmt_relay' (the closest match because the relay's thermal element operates on an inverse-time current curve) with the ANSI function code '49' carrying the actual protection function.",
+      "Class 10 thermal class selected per IEC 60947-4-1 Table 2 and aligned with NEMA MG-1 / IEEE 1068 Design B motor characteristics: 12 s locked-rotor withstand time → Class 10 (tolerates 10 s at 7.2× rated current) — comfortably inside the Design B withstand envelope.",
+      "Service Factor 1.15 incorporated into the 49 thermal-model pickup: the relay does not trip until current sustained above 1.15× FLA = 161 A for the Class 10 time-current curve. NEC 2023 § 430.32(A)(1) permits 115% of FLA for SF ≥ 1.15 motors (vs 125% for SF=1.0 motors — but 115% sits within 125% so the more-conservative 115% applies).",
+      "R50 instantaneous pickup at 1.33× LRA per IEEE C37.96 § 5.5 recommended factor (1.3× to 1.5× LRA depending on cold-start vs warm-start sensitivity).",
+      "fault-level intent consumed: ifault_ka_lv = 14 kA at the motor terminals. Q1 MCCB rated 35 kAIC — comfortably above the available fault current, so the MCCB will safely interrupt a bolted short-circuit per NEC § 110.10 interrupting-rating requirement. 35 kAIC is the standard catalogue rating for 200 AF MCCBs at 600 V from Eaton / Schneider / ABB / Siemens / GE.",
+      "db-layout-rollup intent consumed: motor MCC bucket fed_from = DB-MOTOR-MCC, main_switch_rating_a = 200 A — matches Q1 MCCB AF rating (200 AF), with the Q1 trip-unit setting at 1.25× FLA per NEC § 430.52(C)(1) Table 430.52 for inverse-time CB (max 250% for Design B); 1.25× = 175 A is therefore within the 250% × 140 = 350 A limit."
+    ]
+  },
+  "rationale": {
+    "chat_summary": "150 HP 600 V Design B motor protection schematic (US jurisdiction, NEC framework). R49 thermal (Class 10, 140 A FLA, SF 1.15) + R50 instantaneous (1200 A = 1.33× LRA) + R51 IDMT VI backup + R86 hand-reset lockout, plus motor-embedded PTC thermistor chain B1 wired to R49 thermistor input. db-layout-rollup + fault-level intents both consumed. Reply to refine.",
+    "sections": [
+      {
+        "title": "Schematic Identification",
+        "summary": "protection_motor on sheet PROT-004 for a US industrial 150 HP, 600 V, 140 A FLA, Design B, Service Factor 1.15, Class F insulation TEFC motor. Two intents consumed: db-layout-rollup (motor MCC bucket fed_from = DB-MOTOR-MCC, main_switch_rating_a = 200 A) and fault-level (ifault_ka_lv = 14 kA at motor terminals). US jurisdiction applies NEC 2023 Article 430 (motor circuits) + § 430.32 (overload) + § 430.52 (short-circuit and ground-fault), IEEE C37.96 (motor protection guide), IEEE Std 315 (US symbol library, cross-referenced with BS EN 60617 on bs_en_60617_ref + ieee_std_315_ref item fields).",
+        "decisions": [
+          {
+            "label": "Multifunction IED with discrete schematic representation",
+            "summary": "R49/R50/R51 are functions of a single motor IED (SEL-710 / Sepam M41 / REM615) drawn as discrete items for zone clarity.",
+            "rule": "Multifunction IED schematic representation discipline",
+            "code_clause": "IEEE C37.96 (motor protection guide)"
+          },
+          {
+            "label": "Two consumed intents — full hybrid mode",
+            "summary": "db-layout-rollup + fault-level intents both consumed; settings cross-checked against fault level 14 kA and MCC bucket rating 200 A.",
+            "rule": "Hybrid-mode execution per generator prompt Step 11"
+          }
+        ]
+      },
+      {
+        "title": "Source Context",
+        "summary": "600 V three-phase, supplied from a motor control centre (MCC) bucket via a 200 AF MCCB Q1. Motor M1: 150 HP, 600 V, 140 A FLA, 900 A locked-rotor (LRA = 6.4× FLA, consistent with NEMA Design B Code G typical), Service Factor 1.15, Class F insulation (155 °C hot-spot threshold). fault-level intent supplied 14 kA at the motor terminals; db-layout-rollup intent supplied main_switch_rating_a = 200 A. Q1 MCCB rated 200 AF / 35 kAIC matches both intents.",
+        "decisions": [
+          {
+            "label": "CT primary 200 A at 1.43× FLA",
+            "summary": "200/5 CT primary covers up to ~280 A continuous (40% overload headroom) — comfortable margin above 140 A FLA without compressing the protection setpoint range.",
+            "rule": "CT ratio selection for motor protection",
+            "code_clause": "IEEE C37.96 § 5.3 (CT selection)",
+            "inputs": {
+              "motor_fla_a": 140,
+              "ct_primary_a": 200,
+              "fla_to_ct_ratio": 1.43,
+              "lra_a": 900,
+              "lra_to_ct_ratio": 4.5
+            }
+          },
+          {
+            "label": "fault-level intent consumed: 14 kA",
+            "summary": "Available fault current at motor terminals comfortably below Q1 MCCB interrupting rating 35 kAIC.",
+            "rule": "Interrupting-rating verification per NEC § 110.10",
+            "code_clause": "NEC 2023 § 110.10 (interrupting rating)"
+          },
+          {
+            "label": "db-layout-rollup intent consumed: 200 A MCC bucket",
+            "summary": "main_switch_rating_a = 200 A matches Q1 AF rating; NEC § 430.52 short-circuit protection sizing satisfied.",
+            "rule": "Cross-skill cascade verification"
+          }
+        ]
+      },
+      {
+        "title": "Items Breakdown",
+        "summary": "12 devices placed: 3× CTs T1A/T1B/T1C (200/5 class 5P20, one per phase), R49 (thermal-replica relay, ANSI 49, device_class = idmt_relay because no dedicated thermal_relay enum value exists), R50 (instantaneous OC, ANSI 50), R51 (IDMT VI backup, ANSI 51), R86 (hand-reset lockout, ANSI 86), B1 (motor-embedded PTC thermistor chain, 6 thermistors, 2 per phase, wired through 3-wire connection to R49's thermistor input), Q1 (600 V 200 AF 35 kAIC MCCB with shunt trip coil), M1 (the 150 HP motor itself), plus three terminal blocks X1 (CT secondary shorting), X2 (PTC 3-wire), X3 (125 VDC trip circuit). Every item carries ieee_std_315_ref alongside bs_en_60617_ref because the US drafting convention dual-references both symbol standards on motor protection schematics.",
+        "decisions": [
+          {
+            "label": "device_class judgment call: R49 → idmt_relay (no thermal_relay enum)",
+            "summary": "The 27-value schema enum has idmt_relay / instantaneous_relay / differential_relay / ref_relay / lockout_relay / uv_relay / ov_relay / distance_relay but no thermal_relay; the relay's thermal-replica algorithm operates on an inverse-time current curve so idmt_relay is the closest match. ANSI function code '49' carries the actual protection function.",
+            "rule": "device_class enum mapping for thermal-replica protection"
+          },
+          {
+            "label": "PTC chain B1 wired to R49 thermistor input",
+            "summary": "Motor-embedded PTC thermistors (6 in total, 2 per phase, series chain) report winding hot-spot temperature to the relay; PTC resistance switches abruptly from <100 ohm cold to >2700 ohm at threshold (~155 °C for Class F insulation).",
+            "rule": "PTC thermistor scheme for motor thermal protection",
+            "code_clause": "IEC 60034-11 (rotating machines — thermal protection) + IEEE C37.96 § 5.6"
+          },
+          {
+            "label": "Dual symbol-reference: BS EN 60617 + IEEE Std 315",
+            "summary": "US drafting convention dual-references both standards on motor protection schematics — the bs_en_60617_ref field carries the v1.0 library symbol_id, the ieee_std_315_ref field carries the IEEE Std 315 figure number for the same symbol.",
+            "rule": "US drafting dual-reference convention",
+            "code_clause": "IEEE Std 315-1975 (graphical symbols for electrical and electronic diagrams)"
+          }
+        ]
+      },
+      {
+        "title": "Protection Coordination",
+        "summary": "Four protection layers in coordinated sequence. R49 (thermal): pickup 1.0× FLA (140 A) with Service Factor 1.15 allowed in the thermal model (no trip until sustained > 1.15× FLA = 161 A), Class 10 envelope — tolerates 7.2× FLA for ~10 s (LRA at start). R50 (instantaneous): pickup 1200 A primary (1.33× LRA per IEEE C37.96 § 5.5) — clears bolted short-circuits in ~25 ms without nuisance-tripping on legitimate LRA inrush. R51 (IDMT VI): pickup 175 A (1.25× FLA × 1.15 SF) on VI curve TMS 0.3 — operates ~6 s at 900 A LRA, below the Design B 12 s locked-rotor withstand time. R86 (lockout): hand-reset trip from any of R49/R50/R51 — Q1 cannot reclose until operator presses reset.",
+        "decisions": [
+          {
+            "label": "R49 Class 10 thermal envelope with SF 1.15 margin",
+            "summary": "Class 10 tolerates 7.2× FLA for ~10 s — comfortably inside Design B 12 s locked-rotor withstand. SF 1.15 margin permitted per NEC § 430.32(A)(1) for SF ≥ 1.15 motors.",
+            "rule": "Thermal class selection for Design B motor with SF",
+            "code_clause": "NEC 2023 § 430.32(A)(1) + IEC 60947-4-1 Table 2 (overload classes)",
+            "inputs": {
+              "ansi_code": "49",
+              "thermal_class": 10,
+              "pickup_a": 140,
+              "sf": 1.15,
+              "design_letter": "B"
+            }
+          },
+          {
+            "label": "R50 pickup 1.33× LRA",
+            "summary": "1.33× LRA (1200 A) sits between IEEE C37.96 § 5.5 recommended factors of 1.3× and 1.5× — clears short-circuits without nuisance-tripping on legitimate LRA.",
+            "rule": "Instantaneous OC pickup for motor protection",
+            "code_clause": "IEEE C37.96 § 5.5"
+          },
+          {
+            "label": "R51 backup at 1.25× FLA × 1.15 SF",
+            "summary": "Backup IDMT against thermal model failure — pickup 175 A on VI curve TMS 0.3 trips at ~6 s on LRA, within Design B 12 s withstand.",
+            "rule": "Backup IDMT settings for motor protection",
+            "code_clause": "IEEE C37.96 § 5.4 (backup protection) + NEC § 430.52(C)(1) Table 430.52"
+          }
+        ]
+      },
+      {
+        "title": "Compliance Assessment",
+        "summary": "Compliant against NEC 2023 Article 430 (motor circuits) — specifically § 430.32 (overload protection), § 430.52 (short-circuit and ground-fault protection), and § 430.52(C)(1) Table 430.52 (short-circuit device sizing); IEEE C37.96 (motor protection guide); NEC § 110.10 (interrupting rating verification); IEEE Std 315 (US symbol cross-reference); IEC 60034-11 (rotating machines thermal protection); BS EN 60617 IEC 617-7 (graphical symbols, cross-referenced alongside IEEE Std 315 per the US dual-reference convention). No CRITICAL or HIGH flags. Seven assumptions documented including the multifunction IED choice, ANSI 49 device_class judgment call, Class 10 thermal selection, SF 1.15 application, R50 pickup factor derivation, and both consumed-intent declarations.",
+        "decisions": [
+          {
+            "label": "US jurisdiction citation discipline",
+            "summary": "NEC 2023 Article 430 cited directly as the operative US installation standard; IEEE C37.96 + IEEE Std 315 cross-cited as US protection / symbol references; IEC 60034-11 cited as the jurisdiction-agnostic motor-thermal standard.",
+            "rule": "US jurisdiction citation form"
+          },
+          {
+            "label": "NEC § 430.32(A)(1) for SF ≥ 1.15 thermal margin",
+            "summary": "115% of FLA permitted for SF ≥ 1.15 motors (vs 125% for SF = 1.0); the 115% sits within the 125% so the more-conservative 115% applies in the thermal model.",
+            "rule": "NEC overload sizing per service factor"
+          }
+        ]
+      },
+      {
+        "title": "Cross-Skill Cascade Verification",
+        "summary": "fault-level intent supplied ifault_ka_lv = 14 kA at motor terminals — comfortably below Q1 MCCB 35 kAIC interrupting rating per NEC § 110.10. db-layout-rollup intent supplied main_switch_rating_a = 200 A for the MCC bucket — matches Q1 AF rating. The Q1 trip-unit setting at 1.25× FLA = 175 A satisfies NEC § 430.52(C)(1) Table 430.52 short-circuit device limit (max 250% × 140 = 350 A for inverse-time CB on Design B motor). All cascade values cross-verified.",
+        "decisions": [
+          {
+            "label": "fault-level cross-check passed",
+            "summary": "14 kA available < 35 kAIC Q1 interrupting rating — NEC § 110.10 satisfied.",
+            "rule": "Interrupting-rating cross-check"
+          },
+          {
+            "label": "db-layout-rollup cross-check passed",
+            "summary": "200 A MCC bucket = Q1 200 AF — sensor / load-current alignment.",
+            "rule": "MCC cascade alignment"
+          }
+        ]
+      },
+      {
+        "title": "Schedule Notes",
+        "summary": "Hybrid-mode execution explicit: db-layout-rollup + fault-level intents both consumed. earthing intent not present and not required for this motor protection scheme (motor earth-fault is covered by R51 residual element on the same phase CTs, not by a dedicated earthing-system reference). No tool_call_pending entries — all four protection_settings entries fully resolved at LLM-emission time using the consumed fault-level value (14 kA → Q1 35 kAIC verification) and the consumed db-layout-rollup value (200 A → Q1 200 AF matching). The schematic represents a single motor's protection circuit; the MCC bucket itself + its short-circuit coordination with the upstream feeder are covered on the sibling MCC schematic, not duplicated here.",
+        "decisions": [
+          {
+            "label": "Hybrid-mode 2-of-3 intent consumption",
+            "summary": "db-layout-rollup + fault-level consumed; earthing not required for the motor zone (residual EF carried by phase CTs).",
+            "rule": "Partial-hybrid-mode justification"
+          },
+          {
+            "label": "No tool_call_pending — settings hand-verifiable",
+            "summary": "All four protection_settings entries fully resolved against consumed intent values; no deferred calc.",
+            "rule": "tool_call_pending discipline per generator prompt Step 8"
+          }
+        ]
+      }
+    ]
+  }
+}
