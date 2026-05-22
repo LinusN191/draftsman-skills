@@ -1,0 +1,517 @@
+{
+  "drawing_type": "cable_sizing_study",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "ke-nairobi-commercial-eg01",
+    "skill_version": "1.0.0",
+    "produced_at": "2026-05-20T00:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "KE",
+  "project_supply": {
+    "voltage_v": 415,
+    "phase_arrangement": "TPN_plus_E",
+    "system_type": "TN-S"
+  },
+  "cascade": [
+    {
+      "node_id": "MSB-1",
+      "node_kind": "service_entrance",
+      "designation": "Main switchboard incoming",
+      "load": {
+        "ib_a": 250,
+        "in_a": 315,
+        "phases": "three_phase_4wire",
+        "load_type": "mixed",
+        "pf": 0.92
+      },
+      "route": {
+        "length_m": 12,
+        "installation_method": "E",
+        "ambient_c": 32,
+        "grouping_count": 1
+      },
+      "parent_node_ifault_ka": 9.0,
+      "t_clear_s": 0.4,
+      "selection": {
+        "phase_csa": 95,
+        "cpc_csa": 50,
+        "material": "copper",
+        "insulation": "xlpe_90",
+        "cable_type": "xlpe_swa",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa_attempted": 95,
+            "accepted": true,
+            "iz_corrected_a": 326.0,
+            "vd_segment_pct": 0.31,
+            "vd_cumulative_pct": 0.31
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 326.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 0.31,
+        "vd_cumulative_pct": 0.31,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G power circuits",
+        "vd_pass": true,
+        "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "KS 1700:2018 §543 routes to BS 7671:2018+A2:2022 Reg 543.1.3 + Table 54.7",
+        "motor_starting_vd_pct": null,
+        "motor_starting_vd_pass": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "MSB-1.F01",
+      "parent_node_id": "MSB-1",
+      "node_kind": "feeder",
+      "designation": "Feeder to DB-L1 (lighting)",
+      "load": {
+        "ib_a": 30,
+        "in_a": 40,
+        "phases": "three_phase_4wire",
+        "load_type": "lighting",
+        "pf": 0.95
+      },
+      "route": {
+        "length_m": 22,
+        "installation_method": "E",
+        "ambient_c": 32,
+        "grouping_count": 1
+      },
+      "parent_node_ifault_ka": 9.0,
+      "t_clear_s": 0.4,
+      "selection": {
+        "phase_csa": 10,
+        "cpc_csa": 10,
+        "material": "copper",
+        "insulation": "xlpe_90",
+        "cable_type": "xlpe_swa",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa_attempted": 10,
+            "accepted": true,
+            "iz_corrected_a": 57.0,
+            "vd_segment_pct": 0.95,
+            "vd_cumulative_pct": 1.26
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 57.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 0.95,
+        "vd_cumulative_pct": 1.26,
+        "vd_limit_pct": 3.0,
+        "vd_limit_source": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G lighting circuits",
+        "vd_pass": true,
+        "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "KS 1700:2018 §543 routes to BS 7671:2018+A2:2022 Reg 543.1.3 + Table 54.7",
+        "motor_starting_vd_pct": null,
+        "motor_starting_vd_pass": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "MSB-1.F02",
+      "parent_node_id": "MSB-1",
+      "node_kind": "sub_feeder",
+      "designation": "Sub-feeder to DB-P1 (small-power)",
+      "load": {
+        "ib_a": 65,
+        "in_a": 80,
+        "phases": "three_phase_4wire",
+        "load_type": "power_general",
+        "pf": 0.92
+      },
+      "route": {
+        "length_m": 35,
+        "installation_method": "E",
+        "ambient_c": 32,
+        "grouping_count": 1
+      },
+      "parent_node_ifault_ka": 9.0,
+      "t_clear_s": 0.4,
+      "selection": {
+        "phase_csa": 25,
+        "cpc_csa": 16,
+        "material": "copper",
+        "insulation": "xlpe_90",
+        "cable_type": "xlpe_swa",
+        "parallel_count": 1,
+        "binding_constraint": "vd_cumulative",
+        "walk_up_trail": [
+          {
+            "csa_attempted": 16,
+            "accepted": false,
+            "rejected_by": "vd_cumulative",
+            "iz_corrected_a": 92.0,
+            "vd_segment_pct": 2.7,
+            "vd_cumulative_pct": 2.7
+          },
+          {
+            "csa_attempted": 25,
+            "accepted": true,
+            "iz_corrected_a": 122.0,
+            "vd_segment_pct": 1.8,
+            "vd_cumulative_pct": 1.8
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 122.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 1.8,
+        "vd_cumulative_pct": 1.8,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G power circuits",
+        "vd_pass": true,
+        "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "KS 1700:2018 §543 routes to BS 7671:2018+A2:2022 Reg 543.1.3 + Table 54.7",
+        "motor_starting_vd_pct": null,
+        "motor_starting_vd_pass": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "MSB-1.F03",
+      "parent_node_id": "MSB-1",
+      "node_kind": "feeder",
+      "designation": "Feeder to DB-M1 (HVAC)",
+      "load": {
+        "ib_a": 45,
+        "in_a": 63,
+        "phases": "three_phase_4wire",
+        "load_type": "motor",
+        "pf": 0.85
+      },
+      "route": {
+        "length_m": 18,
+        "installation_method": "E",
+        "ambient_c": 32,
+        "grouping_count": 1
+      },
+      "parent_node_ifault_ka": 9.0,
+      "t_clear_s": 0.4,
+      "selection": {
+        "phase_csa": 16,
+        "cpc_csa": 16,
+        "material": "copper",
+        "insulation": "xlpe_90",
+        "cable_type": "xlpe_swa",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa_attempted": 16,
+            "accepted": true,
+            "iz_corrected_a": 75.0,
+            "vd_segment_pct": 1.05,
+            "vd_cumulative_pct": 1.36
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 75.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 1.05,
+        "vd_cumulative_pct": 1.36,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G power circuits",
+        "vd_pass": true,
+        "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "KS 1700:2018 §543 routes to BS 7671:2018+A2:2022 Reg 543.1.3 + Table 54.7",
+        "motor_starting_vd_pct": null,
+        "motor_starting_vd_pass": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "MSB-1.F02.C03",
+      "parent_node_id": "MSB-1.F02",
+      "node_kind": "final_circuit",
+      "designation": "Remote small-power final circuit",
+      "load": {
+        "ib_a": 18,
+        "in_a": 20,
+        "phases": "single",
+        "load_type": "power_general",
+        "pf": 1.0
+      },
+      "route": {
+        "length_m": 45,
+        "installation_method": "B1",
+        "ambient_c": 30,
+        "grouping_count": 2
+      },
+      "parent_node_ifault_ka": 7.5,
+      "t_clear_s": 0.4,
+      "selection": {
+        "phase_csa": 4,
+        "cpc_csa": 2.5,
+        "material": "copper",
+        "insulation": "pvc_70",
+        "cable_type": "pvc_singles",
+        "parallel_count": 1,
+        "binding_constraint": "vd_cumulative",
+        "walk_up_trail": [
+          {
+            "csa_attempted": 2.5,
+            "accepted": false,
+            "rejected_by": "vd_cumulative",
+            "iz_corrected_a": 21.0,
+            "vd_segment_pct": 4.0,
+            "vd_cumulative_pct": 5.8
+          },
+          {
+            "csa_attempted": 4,
+            "accepted": true,
+            "iz_corrected_a": 28.0,
+            "vd_segment_pct": 3.2,
+            "vd_cumulative_pct": 5.0
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 28.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 3.2,
+        "vd_cumulative_pct": 5.0,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G power circuits",
+        "vd_pass": true,
+        "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "KS 1700:2018 §543 routes to BS 7671:2018+A2:2022 Reg 543.1.3 + Table 54.7",
+        "motor_starting_vd_pct": null,
+        "motor_starting_vd_pass": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "MSB-1.F03.C01",
+      "parent_node_id": "MSB-1.F03",
+      "node_kind": "final_circuit",
+      "designation": "Chiller pump 7.5 kW DOL",
+      "load": {
+        "ib_a": 14.5,
+        "in_a": 32,
+        "phases": "three_phase_3wire",
+        "load_type": "motor",
+        "pf": 0.85,
+        "load_class_motor": {
+          "rated_kw": 7.5,
+          "lra_factor": 6.5,
+          "design_code": "IEC_AB"
+        }
+      },
+      "route": {
+        "length_m": 18,
+        "installation_method": "C",
+        "ambient_c": 32,
+        "grouping_count": 1
+      },
+      "parent_node_ifault_ka": 8.2,
+      "t_clear_s": 0.2,
+      "selection": {
+        "phase_csa": 6,
+        "cpc_csa": 6,
+        "material": "copper",
+        "insulation": "pvc_70",
+        "cable_type": "pvc_singles",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa_attempted": 6,
+            "accepted": true,
+            "iz_corrected_a": 41.0,
+            "vd_segment_pct": 1.2,
+            "vd_cumulative_pct": 1.2
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 41.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 1.2,
+        "vd_cumulative_pct": 1.2,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G power circuits",
+        "vd_pass": true,
+        "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "KS 1700:2018 §543 routes to BS 7671:2018+A2:2022 Reg 543.1.3 + Table 54.7",
+        "motor_starting_vd_pct": 7.8,
+        "motor_starting_vd_pass": true,
+        "tool_call_pending": true
+      }
+    }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      {
+        "node_id": "MSB-1.F02",
+        "message": "Cumulative-Vd binding on sub-feeder to DB-P1 — 35 m run forces csa walk-up from 16 mm² (Iz pass but Vd 2.7%) to 25 mm² to preserve downstream headroom for the 45 m remote final circuit (F02.C03).",
+        "code_clause": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G",
+        "severity": "info"
+      },
+      {
+        "node_id": "MSB-1.F02.C03",
+        "message": "Cumulative-Vd binding on remote small-power final — at the 5.0% limit per KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G power circuits. 2.5 mm² rejected at 5.8% cumulative; 4 mm² accepted at exactly 5.0%. Engineer-confirmed acceptable; runtime calc.voltage_drop deferred per WI3.",
+        "code_clause": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G",
+        "severity": "info"
+      },
+      {
+        "node_id": "MSB-1.F03.C01",
+        "message": "Motor-starting voltage drop on 7.5 kW DOL chiller pump = 7.8% (Vd_running 1.2% × LRA factor 6.5 for IEC AB design code). Within the 10% starting limit per KS 1700:2018 §552 routes to BS 7671:2018+A2:2022 Reg 552.1.1 + IEC 60034-12. Engineer accepts; future calc.motor_starting_vd to ratify.",
+        "code_clause": "KS 1700:2018 §552 routes to BS 7671:2018+A2:2022 Reg 552.1.1",
+        "severity": "info"
+      }
+    ],
+    "assumptions": [
+      "KPLC TN-S 415V TPN+E supply per KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 §313.1; engineer-declared Ze=0.45Ω and PSCC=9.0 kA at MSB-1 busbar verified at incoming.",
+      "Cumulative voltage drop budget allocated across the cascade per KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G: sub-feeder F02 walked up to 25 mm² to preserve 3.2% segment headroom for the remote final circuit F02.C03 (45 m).",
+      "Motor starting Vd estimate uses LRA factor 6.5 for IEC AB design code per KS 1700:2018 §552 routes to BS 7671:2018+A2:2022 Reg 552.1.1 + IEC 60034-12; vd_starting = vd_running × LRA = 1.2% × 6.5 = 7.8% (within 10% limit).",
+      "CPC sized per KS 1700:2018 §543 routes to BS 7671:2018+A2:2022 Reg 543.1.3 + Table 54.7; phase ≤ 16 mm² → CPC = phase by Table 54.7 conservative default; reduced CPC for ≥ 25 mm² phase verified by adiabatic equation S² ≥ I²t / k².",
+      "Engineer's design intent: XLPE for feeders (MSB-1, F01, F02, F03) for thermal margin and future load growth; PVC for final circuits (F02.C03, F03.C01) per typical Kenyan commercial fit-out practice.",
+      "Parent-node Ifault attenuation along cascade modelled as engineer estimates (MSB-1 9.0 kA → F02.C03 7.5 kA / F03.C01 8.2 kA); calc.fault_level deferred per WI3.",
+      "calc.cable_ampacity / calc.voltage_drop / calc.cpc_adiabatic deferred per WI3 — engineer estimates from BS 7671:2018+A2:2022 App 4 Tables 4D1A/4D2A/4E1A/4E2A serve as placeholder values pending deterministic resolution."
+    ]
+  },
+  "flags": [
+    "TOOL-CALL-PENDING:calc.cable_ampacity",
+    "TOOL-CALL-PENDING:calc.voltage_drop",
+    "TOOL-CALL-PENDING:calc.cpc_adiabatic"
+  ],
+  "rationale": {
+    "chat_summary": "Kenya 415V TPN+E commercial office (60-200 m²), KPLC TN-S, Ze=0.45Ω, PSCC=9kA. 6-node cascade per KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 4 + App 12. MSB-1 95 mm² Cu XLPE; F01 lighting feeder 10 mm² (iz_vs_in); F02 power sub-feeder 25 mm² (vd_cumulative binding); F03 HVAC feeder 16 mm²; F02.C03 remote final 4 mm² (vd_cumulative); F03.C01 chiller pump 6 mm² motor-starting Vd 7.8%. 3 calc tools pending.",
+    "sections": [
+      {
+        "title": "Project Supply + Jurisdiction",
+        "summary": "KE jurisdiction; KS 1700:2018 is the primary code. KPLC TN-S 415V TPN+E supply with declared Ze=0.45Ω and PSCC=9.0 kA at MSB-1 busbar. KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 §313.1 for the short-circuit verification rule, anchoring App 4 ampacity and App 12 Vd limits across the cascade.",
+        "decisions": [
+          {
+            "label": "TN-S earthing per KPLC declaration",
+            "summary": "415V TPN+E supply with separate PE conductor terminated at the MSB-1 incoming gland.",
+            "rule": "TN-S earthing arrangement per KS 1700:2018 §312",
+            "code_clause": "KS 1700:2018 §312 routes to BS 7671:2018+A2:2022 §312.2"
+          },
+          {
+            "label": "PSCC 9.0 kA declared at MSB-1",
+            "summary": "Engineer accepts KPLC PSCC declaration as the parent_node_ifault_ka root for the cascade; downstream Ifault attenuated by cable impedance.",
+            "rule": "Short-circuit verification per KS 1700:2018 §313",
+            "code_clause": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 §313.1"
+          }
+        ]
+      },
+      {
+        "title": "Cascade Tree + Topology",
+        "summary": "Three-tier cascade: MSB-1 (service_entrance, 315A) feeds three DB feeders — F01 (DB-L1 lighting, 40A), F02 (DB-P1 small-power sub-feeder, 80A), F03 (DB-M1 HVAC, 63A). F02 and F03 each carry one representative final circuit (F02.C03 remote small-power; F03.C01 chiller pump 7.5 kW). 6 nodes total, node_id form 'MSB-1.Fxx.Cyy'.",
+        "decisions": [
+          {
+            "label": "Three-tier cascade with hierarchical node_ids",
+            "summary": "service_entrance → feeder/sub_feeder → final_circuit; hierarchical node_id form enables downstream consumers (cable-schedule, riser) to render the tree.",
+            "rule": "Cascade topology per cable-sizing IR spec; KS 1700:2018 §314 division of installation",
+            "code_clause": "KS 1700:2018 §314 routes to BS 7671:2018+A2:2022 §314.1"
+          }
+        ]
+      },
+      {
+        "title": "Walk-the-Ladder Approach + Binding Constraints",
+        "summary": "Engine walks the standard IEC ladder (1.0→1.5→2.5→4→6→10→16→25→35→50→70→95 mm²) until all checks pass simultaneously. Per KS 1700:2018 §433 routes to BS 7671:2018+A2:2022 §433.1 (Iz ≥ In). Four nodes bind iz_vs_in (MSB-1, F01, F03, F03.C01); two bind vd_cumulative (F02 sub-feeder + F02.C03 remote final). F03.C01 also passes the motor-starting Vd check.",
+        "decisions": [
+          {
+            "label": "Iz_vs_in on MSB-1",
+            "summary": "315A OCPD on incoming MSB; 95 mm² Cu XLPE method E gives Iz_corrected ≈ 326 A; iz_vs_in passes at first sane ladder step.",
+            "rule": "Iz ≥ In coordination per KS 1700:2018 §433",
+            "code_clause": "KS 1700:2018 §433 routes to BS 7671:2018+A2:2022 §433.1.1",
+            "inputs": {"in_a": 315, "iz_corrected_a": 326.0, "phase_csa_mm2": 95, "method": "E"}
+          },
+          {
+            "label": "vd_cumulative on F02 sub-feeder",
+            "summary": "80A sub-feeder at 35 m: 16 mm² (Iz 92 A pass) walks up to 25 mm² to drop segment Vd from 2.7% to 1.8%, preserving cumulative headroom for the 45 m downstream final F02.C03.",
+            "rule": "Voltage drop limit per KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G; engineering judgement to allocate cascade budget",
+            "code_clause": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G",
+            "inputs": {"length_m": 35, "csa_rejected_mm2": 16, "csa_accepted_mm2": 25, "vd_rejected_pct": 2.7, "vd_accepted_pct": 1.8}
+          },
+          {
+            "label": "vd_cumulative on F02.C03 remote final",
+            "summary": "20A single-phase final at 45 m downstream of F02; 2.5 mm² rejected (cumulative 5.8% > 5%), 4 mm² accepted at exactly 5.0% cumulative limit.",
+            "rule": "Cumulative Vd ≤ 5% for power circuits per KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G",
+            "code_clause": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G",
+            "inputs": {"length_m": 45, "csa_rejected_mm2": 2.5, "csa_accepted_mm2": 4, "vd_cumulative_accepted_pct": 5.0}
+          }
+        ]
+      },
+      {
+        "title": "Cumulative Voltage Drop",
+        "summary": "Vd accumulates root → leaf along the cascade. App 12 §G limits: lighting 3% (≈12.5V at 415V), power 5% (≈20.75V at 415V). F02 walk-up to 25 mm² is engineering judgement: 16 mm² would pass at F02 alone (2.7%) but push F02.C03 cumulative to 5.8%. By walking F02 up first, F02.C03 stays at the limit (5.0%) with the smallest finals csa.",
+        "decisions": [
+          {
+            "label": "Cascade Vd budget allocation",
+            "summary": "Walk sub-feeder up at design time to preserve downstream final-circuit headroom; sizing engine treats Vd as a cumulative constraint along the cascade path.",
+            "rule": "Vd cumulative accounting per KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G",
+            "code_clause": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G",
+            "inputs": {"F02_vd_pct": 1.8, "F02_C03_segment_pct": 3.2, "F02_C03_cumulative_pct": 5.0, "limit_pct": 5.0}
+          }
+        ]
+      },
+      {
+        "title": "CPC Adiabatic Sizing",
+        "summary": "Per KS 1700:2018 §543 routes to BS 7671:2018+A2:2022 Reg 543.1.3 + Table 54.7. Phase ≤ 16 mm² → CPC = phase (conservative default). For ≥ 25 mm² phase (F02 25 mm² / MSB-1 95 mm²), reduced CPC verified by adiabatic S² ≥ I²t / k² (k=143 for Cu/XLPE per Table 54.3; t=0.4s from t_clear_s). CPC selections: 95/50, 10/10, 25/16, 16/16, 4/2.5, 6/6.",
+        "decisions": [
+          {
+            "label": "Reduced CPC on 95 mm² incoming and 25 mm² sub-feeder",
+            "summary": "Adiabatic equation S² ≥ I²t/k² with t_clear_s 0.4s and k=143 gives S_min well below the simplified Table 54.7 figure; engineer adopts the reduced CPC per Table 54.3 + Reg 543.1.3.",
+            "rule": "CPC adiabatic sizing per KS 1700:2018 §543 routes to BS 7671:2018+A2:2022 Reg 543.1.3",
+            "code_clause": "KS 1700:2018 §543 routes to BS 7671:2018+A2:2022 Reg 543.1.3 + Table 54.7"
+          }
+        ]
+      },
+      {
+        "title": "Motor Starting + Parallel Cables + Harmonic Derating",
+        "summary": "F03.C01 (chiller pump 7.5 kW DOL) is the only motor. vd_running=1.2%; LRA=6.5 for IEC AB; vd_starting=7.8%, within the 10% limit per KS 1700:2018 §552 routes to BS 7671:2018+A2:2022 Reg 552.1.1 + IEC 60034-12. parallel_count=1 throughout — 95 mm² Cu XLPE incoming handles 250A Ib in single run. No high-harmonic loads declared; harmonic_ch_applied omitted.",
+        "decisions": [
+          {
+            "label": "Motor-starting Vd on F03.C01",
+            "summary": "DOL starter with locked-rotor current 6.5× FLA gives vd_starting 7.8% — within the 10% limit; engineer accepts without contactor-soft-start.",
+            "rule": "Motor starting Vd ≤ 10% per KS 1700:2018 §552 routes to BS 7671:2018+A2:2022 Reg 552.1.1; LRA factor per IEC 60034-12 design code AB",
+            "code_clause": "KS 1700:2018 §552 routes to BS 7671:2018+A2:2022 Reg 552.1.1",
+            "inputs": {"rated_kw": 7.5, "lra_factor": 6.5, "design_code": "IEC_AB", "vd_running_pct": 1.2, "vd_starting_pct": 7.8, "limit_pct": 10.0}
+          }
+        ]
+      },
+      {
+        "title": "Compliance + Assumptions + Tool-Call Pending",
+        "summary": "compliant=true. Three info-severity flags document binding-constraint walk-ups (F02 sub-feeder + F02.C03 final + F03.C01 motor-starting). Assumptions capture KPLC supply declaration, cascade Vd budget allocation, motor LRA factor, CPC adiabatic basis, XLPE-feeders/PVC-finals design intent, and WI3 calc deferrals.",
+        "decisions": [
+          {
+            "label": "Three deferred-calc flags",
+            "summary": "calc.cable_ampacity, calc.voltage_drop, calc.cpc_adiabatic all carry TOOL-CALL-PENDING flags per WI3 — engineer placeholders ratified at runtime.",
+            "rule": "WI3 deferred-calc contract; engineer estimates carry tool_call_pending=true",
+            "code_clause": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 4 (ampacity) + App 12 (Vd) + Reg 543.1.3 (CPC)"
+          }
+        ]
+      },
+      {
+        "title": "Cross-Skill Contract",
+        "summary": "Emits cable-sizing intent with 6 circuit records covering the full hierarchical cascade (MSB-1.Fxx.Cyy node_ids). Required-field set is the union superset of 4 downstream consumers: cable-schedule (tabulated deliverable), riser (parent-child render), cable-containment (tray/conduit fill), small-power v1.1 (Zs resolution via r1+r2 and reactance per metre at operating temp).",
+        "decisions": [
+          {
+            "label": "Forward-compatible intent emission",
+            "summary": "Required-field set is the union superset of cable-schedule + riser + cable-containment + small-power v1.1 consumers; optional fields (cable_od_mm, weight_kg_per_m) included for downstream containment fill calc.",
+            "rule": "Intent forward-compat contract per cable-sizing-intent.schema.json",
+            "code_clause": "cable-sizing intent v1.0.0"
+          }
+        ]
+      }
+    ]
+  }
+}

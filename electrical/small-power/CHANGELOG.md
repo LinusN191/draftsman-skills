@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.1.0] - 2026-05-20
+
+### Added — cable-sizing intent consumer migration (hybrid mode)
+
+- **Multi-skill consumption**: `consumes_intents: ["cable-sizing"]` (was `[]`). Hybrid posture — when cable-sizing intent is provided in runtime inputs, every circuit's `verified_zs_ohm` is resolved from `Ze + (r1_plus_r2 / 1000) × length + (reactance / 1000) × length`; when intent is absent, v1.0 deferral behaviour holds (no breaking change).
+- **Schema (additive, non-breaking)**: typed `meta.consumed_intents.items` (matches SLD v1.4 shape — required `intent_type` + `intent_version` + `produced_by`); new optional `cable_sizing_node_id` field per circuit (explicit override for the implicit `f"{parent_db.designation}.{circuit_id}"` composition).
+- **Generator**: 12 → 13 numbered steps (new Step 12 inserted: "Resolve Zs from cable-sizing intent"); existing rationale step renumbered.
+- **Validator**: 10 → 11 INV checks (new INV-11: cable-sizing intent lookup integrity — hard fail when intent consumed but a circuit's lookup fails).
+- **Reviewer**: 6 → 7 D-checks (new D-7: Zs resolution provenance audit — flags mixed states where some circuits resolved and others deferred).
+- **New worked example**: `examples/uk-3bed-with-cable-sizing/` (5 files: input.json + consumed-cable-sizing-intent.json + output.json + intent-out.json + reasoning.md). Mirrors the v1.0 `uk-3bed-dwelling` scenario but in v1.1 consumption mode with resolved Zs per circuit.
+- **New eval**: `eval-10-cable-sizing-intent-consumed.yaml` (skill_specific category) — 6 checks covering v1.1 consumption behaviour.
+
+### Unchanged from v1.0 (additive sprint — no breaking changes)
+
+- All 4 existing v1.0 examples (`uk-3bed-dwelling`, `ke-nairobi-small-office`, `intl-open-plan-floor`, `us-residential-dwelling`) — now demonstrate v1.1 hybrid fallback behaviour when no intent is consumed
+- All 9 existing v1.0 evals (eval-01 through eval-09)
+- 5 rules + 3 constraints + 3 validation YAMLs
+- Ontology (`shared/ontology/equipment/socket-types.json`) + symbols (`shared/symbols/electrical/sockets/`)
+- Manifest `standards[]`, `ontology[]`, `calculations[]` arrays (no path changes)
+
+### Pattern parents
+
+- SLD v1.3 → v1.4 (leaf → multi-skill consumer) — closest structural precedent
+- cable-sizing v1.0 refresh §2 (forward-compat contract this sprint fulfils)
+- lighting-layout v1.3 (flexible-inputs pattern)
+
 ## [1.0.0] - 2026-05-19
 
 ### Added — first ship (beta)

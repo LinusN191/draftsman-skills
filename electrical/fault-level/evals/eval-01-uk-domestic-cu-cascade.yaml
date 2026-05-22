@@ -1,11 +1,11 @@
-id: eval-01-uk-domestic-cu-cascade
+name: eval-01-uk-domestic-cu-cascade
+skill: fault-level
 category: happy_path
-severity: critical
 description: |
   UK 3-bed semi: 230V single-phase service from 500 kVA DNO transformer. Engineer declares PSCC = 1.5 kA at service head.
   100A service → CU → 6 final circuits. Single utility source. Cascade Ifault decreases as you walk downstream.
 
-inputs:
+input:
   jurisdiction: "GB"
   project_id: "uk-dom-fl-eg01"
   supply_voltage_v: "230"
@@ -23,23 +23,31 @@ inputs:
     - { node_id: "CU-G.BUSBAR", parent_node_id: "CU-G", node_kind: "board_busbar", designation: "CU busbar" }
     - { node_id: "CU-G.C01", parent_node_id: "CU-G.BUSBAR", node_kind: "final_circuit_endpoint", designation: "Lighting GF", feeder: { length_m: 18, csa_mm2_or_awg: "1.5mm²", material: "copper", insulation: "pvc_70" } }
 
-assertions:
-  - kind: schema_valid
-    schema: "fault-level-ir.schema.json"
-  - kind: jsonpath_equals
-    path: "$.jurisdiction"
-    expected: "GB"
-  - kind: jsonpath_present
-    path: "$.cascade[?(@.node_id=='TX-1')].ifault_ka_max"
-  - kind: jsonpath_lte
-    path: "$.cascade[?(@.node_id=='CU-G.C01')].ifault_ka_max"
-    field_compared_to: "$.cascade[?(@.node_id=='CU-G')].ifault_ka_max"
-    note: "Monotonicity — final circuit Ifault < CU incoming Ifault"
-  - kind: invariant_passes
-    invariant: "INV-4"
-    note: "Monotonicity downstream"
-  - kind: clause_cited
-    clause_pattern: "^IEC 60909-0:2016"
-    minimum_count: 2
+checks:
+  - assertion: 'ir matches "fault-level-ir.schema.json"'
+    description: Output validates against the fault-level IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.jurisdiction == "GB"'
+    description: Jurisdiction must be GB
+    severity: critical
+
+  - assertion: 'ir.cascade[?(@.node_id==''TX-1'')].ifault_ka_max != null'
+    description: TX-1 node must have an ifault_ka_max value
+    severity: critical
+
+  # Tier 3 jsonpath_all_lte — single-value-to-single-value (filter-resolved) cross-field comparison
+  # Semantics: Monotonicity — final circuit Ifault < CU incoming Ifault
+  # Note: canonical harness may not yet evaluate parallel-array comparisons; preserved as descriptive check
+  - assertion: 'ir.cascade[?(@.node_id==''CU-G.C01'')].ifault_ka_max <= ir.cascade[?(@.node_id==''CU-G'')].ifault_ka_max'
+    description: Monotonicity — final circuit Ifault at CU-G.C01 must be <= CU incoming Ifault at CU-G; cascade fault current must decrease downstream
+    severity: critical
+
+  - assertion: 'ir.invariants.INV-4.passes == true'
+    description: Monotonicity downstream
+    severity: critical
+    matches_inv: INV-4
+
+  - assertion: 'ir.citations matches "^IEC 60909-0:2016"'
+    description: At least 2 citations match IEC 60909-0:2016 pattern
+    severity: warning

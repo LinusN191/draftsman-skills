@@ -40,10 +40,13 @@ Source X/R in [0.5, 50] OR flag.
 
 **INV-9: Standards citations format.**
 Every `compliance_summary.non_compliance_flags[].code_clause` uses canonical format:
-- IEC 60909: `"IEC 60909-0:2016 §N.N"` or `"IEC 60909-0:2016 Table N"`
-- BS 7671: `"BS 7671:2018+A3 Reg N.N.N"`
-- IEC 60364: `"IEC 60364-N-NN:YYYY clause N.N"`
-- NEC: `"NEC 2023 Art NNN.N"`
+- IEC 60909 (analytical method, all jurisdictions): `"IEC 60909-0:2016 §N.N"` or `"IEC 60909-0:2016 Table N"`
+- BS 7671 (GB): `"BS 7671:2018+A2:2022 Reg N.N.N"`
+- KS 1700 (KE): `"KS 1700:2018 §N.N.N"` direct form — Annex E §VIII routing-note suffix permitted when leading with `KS 1700:` (e.g. `"KS 1700:2018 §434.5 (Annex E: adopts BS 7671:2018+A2 Reg 434.5 verbatim)"`). The trailing annotation `"BS 7671 ... (adopted by KS 1700)"` is BANNED — flag as INV-9 fail.
+- IEC 60364 (EU/INT): `"IEC 60364-N-NN:YYYY Clause N.N"`
+- NEC (US): `"NEC 2023 Art NNN.N"` or `"NFPA 70:2023 Article NNN.N"`
+
+Cross-contamination ban: `KS 1700` MUST NOT appear when `jurisdiction != "KE"`. `BS 7671` MUST NOT appear as a primary citation when `jurisdiction != "GB"` AND `jurisdiction != "KE"`.
 
 **INV-10: Rationale presence.**
 `rationale` block exists with `chat_summary` (40-500 chars) and `sections[]` with ≥8 entries.

@@ -25,7 +25,7 @@ Run JSON-schema validation against `small-power-ir.schema.json`.
 
 ### 2. Cross-field invariants
 
-Run all 10 INV checks below. For each, emit a violation if the rule fails. Severities are either **Hard fail** (blocks `valid: true`) or **Warning** (does not block but appears in `warnings[]`).
+Run all 11 INV checks below. For each, emit a violation if the rule fails. Severities are either **Hard fail** (blocks `valid: true`) or **Warning** (does not block but appears in `warnings[]`). INV-11 is conditional on cable-sizing intent consumption (v1.1 hybrid mode) — it is a no-op when no cable-sizing intent is consumed.
 
 ---
 
@@ -205,9 +205,28 @@ INV-10: jurisdiction=<J> drawing-layout mismatch — expected drawing_standard=<
 
 ---
 
+## INV-11: Cable-Sizing Intent Lookup Integrity (v1.1)
+
+**Rule:** When `meta.consumed_intents[]` contains an entry with `intent_type == "cable-sizing"`, every small-power circuit MUST successfully resolve its cable-sizing intent counterpart. The lookup key is `c.cable_sizing_node_id` (explicit override, when set) or `f"{parent_db.designation}.{circuit_id}"` (implicit composition default). A lookup that finds no matching `cable-sizing.circuits[].node_id` is a hard fail.
+
+This rule is only triggered when the cable-sizing intent is actively consumed. When the intent is absent (v1.0 fallback mode), INV-11 is a no-op — the v1.0 INV checks (INV-01 through INV-10) carry full enforcement.
+
+**Severity:** Hard fail.
+
+**Fail message format:**
+
+```
+INV-11: small-power circuit <CIRCUIT_ID> cable-sizing intent lookup failed.
+Lookup key: <KEY> (source: <explicit cable_sizing_node_id | implicit composition from parent_db.designation + circuit_id>)
+No matching cable-sizing.circuits[].node_id == <KEY> found in consumed intent.
+Fix: either correct parent_db.designation + circuit_id so they compose the expected node_id, or set an explicit cable_sizing_node_id on this circuit.
+```
+
+---
+
 ### 3. Intent extraction validation
 
-Project the IR down to the intent shape declared by `small-power-intent.schema.json` (per generator Step 12). Validate against that schema.
+Project the IR down to the intent shape declared by `small-power-intent.schema.json` (per generator Step 13). Validate against that schema.
 
 Required intent fields:
 `project_id`, `parent_db_designation`, `circuits[]` (each circuit must have `circuit_id`, `topology`, `breaker_rating_a`, `breaker_type`, `diversified_max_load_a`, `rooms_covered`).
@@ -236,7 +255,7 @@ Emit a single JSON object:
 `valid: true` requires ALL of:
 
 - Schema validation passes
-- INV-01 through INV-09 all pass (no hard fails); INV-10 is warning-only and does not block valid: true
+- INV-01 through INV-09 all pass (no hard fails); INV-10 is warning-only and does not block valid: true; INV-11 (v1.1) must pass when cable-sizing intent is consumed, otherwise it is a no-op
 - Intent extraction validates against `small-power-intent.schema.json`
 
 Warnings from INV-06 (unjustified Type B) and INV-10 (drafting standard mismatch) do not block `valid: true` but appear in `warnings[]` for engineer review.

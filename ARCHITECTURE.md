@@ -416,7 +416,7 @@ v1.6 expanded `shared/standards/drafting/` from 3 minimal cad-layers.json files 
 
 **Pattern parent:** `shared/standards/electrical/BS7671/` (17 JSONs + 10 markdowns).
 
-### small-power skill (v1.0+)
+### small-power skill (v1.0+ / v1.1+)
 
 v1.0 ships as a leaf skill (no cross-skill intent consumption) matching the lighting-layout v1.3 production pattern. Produces a small-power intent for downstream db-layout consumption. Hybrid IR: `circuits[]` (with topology enum: ring | radial | dedicated_radial) + `rooms[]` (with sockets[] cross-referencing circuit_ids). Supports cross-room rings naturally (e.g., UK ground-floor ring covering kitchen + utility + dining + lounge).
 
@@ -457,6 +457,50 @@ INT example C06 (server-room small-power) manually mirrors the Type B 30mA RCD p
 | `us-residential-dwelling/` | ~160 m² single-family | 8 branch circuits | NEC 210.8 GFCI + 210.12 AFCI + 406.12 tamper-resistant + 120/240V split-phase |
 
 **Deferred to v1.1+:** multi-skill intent consumption (consume earthing + fault-level intents); INV-N cross-skill consistency checks. **Deferred to ev-charging skill:** BS 7671 Part 7-722 / NEC 625 EV charging circuits.
+
+**v1.1 — Cable-sizing intent consumer (shipped 2026-05-20).** small-power v1.1 migrates from leaf to hybrid consumer of `cable-sizing` intent. When the intent is provided in runtime inputs, every circuit's `verified_zs_ohm` is resolved from `Ze + (r1_plus_r2 / 1000) × length + (reactance / 1000) × length`. When the intent is absent, v1.0 deferral behaviour holds — non-breaking additive change. Lookup uses implicit `f"{parent_db.designation}.{circuit_id}"` composition (default) or explicit `cable_sizing_node_id` per circuit (override). Generator gains Step 12 (Zs resolution), validator gains INV-11 (lookup integrity), reviewer gains D-7 (provenance audit). New worked example `uk-3bed-with-cable-sizing/` demonstrates the consumption mode; the 4 v1.0 examples now demonstrate the hybrid fallback path.
+
+### cable-sizing skill (v1.0+)
+
+v1.0 ships as a project-scoped cascade calc skill mirroring `electrical/fault-level` structure. Multi-skill consumer (`db-layout-rollup` + `fault-level` intents); produces `cable-sizing` intent for 4 downstream consumers (cable-schedule + riser + cable-containment + small-power v1.1).
+
+**Project-scoped cascade IR:** Every node carries `node_id` (hierarchical, e.g., `MSB-1.F03.DB-L1.C07`) + `parent_node_id` + `node_kind` (final_circuit/feeder/sub_feeder/service_entrance) + route data + selection + checks. Cumulative Vd flows naturally through the parent chain.
+
+**Walk-the-ladder CSA selection:** Per-node binding_constraint from a 6-token vocabulary (iz_vs_in / vd_cumulative / motor_starting_vd / cpc_adiabatic / parallel_required / harmonic_derating). walk_up_trail records every rejected csa with the failing check name — auditable without rerunning the calc.
+
+**4 extra engineering checks (beyond Iz≥In):**
+
+| Check | Trigger | Standard |
+|---|---|---|
+| Cumulative Vd | All nodes | BS 7671:2018+A2:2022 App 12 / IEC 60364-5-52:2009 §G / NEC 2023 Article 215.2(A)(1) IN 2 |
+| Motor-starting Vd | load_type == "motor" | BS 7671:2018+A2:2022 §525.1 + IEC 60364-5-52 §525.1 + NEC 430.6(A)(1) + NEMA MG-1 |
+| Parallel cables | Single-cable ladder exhausted | IEC 60364-5-52:2009 §523.6 (≥50 mm²) / NEC 2023 Article 310.10(H)(1) (≥1/0 AWG) |
+| Harmonic derating | h3 > 15% AND 3-phase 4-wire | BS 7671:2018+A2:2022 App 4 §5.5 / IEC 60364-5-52 Annex E §E.5 / NEC 310.15(E) |
+
+**Intent: Zs-resolution helper fields per refresh 2026-05-20:** Every emitted intent circuit carries `r1_plus_r2_milliohm_per_m_at_operating_temp` + `reactance_milliohm_per_m`. small-power v1.1 (shipped 2026-05-20) is now the live consumer of these helper fields — resolves `TOOL-CALL-PENDING:calc.zs_loop_impedance` flags by table lookup × length rather than re-running ampacity.
+
+**Calc tool consumption (existing contracts reused):**
+
+- `calc.cable_ampacity` — `shared/calculations/electrical/cable-ampacity.json` — Iz_corrected per node
+- `calc.voltage_drop` — `shared/calculations/electrical/voltage-drop.json` — vd_segment_pct per node
+- `calc.cpc_adiabatic` — `shared/calculations/electrical/cpc-adiabatic.json` — CPC adiabatic check
+
+WI3 deferral: every cascade node carries `tool_call_pending: true` until runtime ships the 3 calc tools.
+
+**4 jurisdictional worked examples:**
+
+| Folder | Scenario |
+|---|---|
+| `uk-domestic-final-circuits/` | UK 230V single-phase, 5 final circuits, copper PVC, vd_cumulative binding on lighting radial |
+| `ke-nairobi-commercial-with-msb/` | KE 415V TPN+E KPLC TN-S, MSB → 3 sub-DB cascade, KS 1700:2018 §313 routing form |
+| `intl-commercial-with-feeders/` | INT 400V TPN+E, 7-node TX → MSB → riser → L1/L2/L3 cascade, parallel + harmonic derating |
+| `us-industrial-with-motors/` | US 480V industrial, 5-node cascade, AWG/kcmil sizing, aluminium feeder, 500 hp motor with parallel cables |
+
+**Versioning policy:**
+
+- Minor bumps (1.x.0): new jurisdictions, new cable types, new evals, new examples
+- Major bump (2.0.0): reserved for DC scope OR breaking IR schema change
+- Patch bumps (1.0.x): rules / constraints / validation bug fixes
 
 ## Contribution guide
 

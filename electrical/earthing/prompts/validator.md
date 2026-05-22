@@ -26,6 +26,8 @@ Every `circuits[*].cpc.terminated_at_met_id` must equal `met.id`.
 |---|---|---|
 | GB | TN-C-S | ≥0 (PME — DNO provides earth) |
 | GB | TT | ≥1 |
+| KE | TN-C-S | ≥0 (KPLC PME equivalent — utility provides earth) |
+| KE | TT | ≥1 (KS 1700:2018 §411.5 + Annex E adoption of BS 7671) |
 | EU/INT | TN-C-S | ≥0 |
 | EU/INT | TT | ≥1 |
 | US | TN-S (NEC default) | ≥2 supplemental electrodes per NEC 250.53(A)(2) unless one rod meets ≤25Ω |
@@ -45,8 +47,11 @@ If `extraneous_parts` (from inputs.json) lists any item, every item must appear 
 For every circuit: `zs_calculated_ohm == ze_ohm + r1_ohm + r2_ohm` (within 0.001Ω rounding). And `zs_calculated_ohm ≤ zs_max_ohm`.
 
 **INV-6: RCD requirement.**
-- TT system: every circuit must have `rcd_required: true`.
+- TT system (any jurisdiction): every circuit must have `rcd_required: true`.
 - TN-C-S + GB + circuit serving socket-outlets ≤32A in domestic: `rcd_required: true` per BS 7671 Reg 411.3.3.
+- TN-C-S + KE + ALL final socket-outlet circuits ≤32A (regardless of dwelling type): `rcd_required: true` per KS 1700:2018 §411.3.3 (KS-deviation from BS — universal socket-RCD policy).
+- TN-C-S + EU/INT + per national supplements to IEC 60364-4-41 (jurisdiction-specific).
+- US: not "RCD" terminology — GFCI per NEC 210.8 at specific locations; AFCI per NEC 210.12 (dwelling unit branch circuits).
 
 **INV-7: Symbol references.**
 Every `drawn_as_symbols[*].symbol_id` must exist in `shared/standards/electrical/IEC60617/symbol-index.json`.

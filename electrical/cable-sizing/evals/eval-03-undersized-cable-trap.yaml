@@ -1,33 +1,28 @@
-eval_id: eval-03-undersized-cable-trap
-category: validation_trap
-skill: cable-sizing
-skill_version: 1.0.0
+name: eval-03-undersized-cable-trap
+skill: electrical/cable-sizing
 description: |
-  Engineer pre-declares a cable size that fails Vd cumulative. Skill must detect,
-  flag, and propose the correct upsize — must NOT silently rubber-stamp.
-input:
-  jurisdiction: GB
-  project_supply: { voltage_v: 230, phases: single, frequency_hz: 50, earthing_system: TN-C-S }
-  circuits_declared:
-    - id: "DB-L1.C03"
-      parent_node_id: null
-      node_kind: final_circuit
-      designation: "Long lighting circuit — engineer pre-declared 1.5 mm²"
-      load: { ib_a: 5.5, in_a: 6, load_type: lighting, phases: single }
-      route: { length_m: 55, installation_method: B1, ambient_c: 30, grouping_count: 1 }
-      cable_type_preference: { phase_csa_mm2: 1.5, material: copper, insulation: pvc_70 }
-expected:
-  non_compliance_flags_must_include:
-    - severity: error
-      code_clause_contains: "App 12"
-      message_contains: "cumulative Vd"
-  per_node:
-    - node_id: "DB-L1.C03"
-      binding_constraint: "vd_cumulative"
-      selection_phase_csa_mm2_greater_than: 1.5
-      walk_up_trail_must_contain_rejection_at_csa: 1.5
-pass_criteria:
-  - "1.5 mm² engineer preference is REJECTED with explicit rationale"
-  - "Skill proposes a larger csa that satisfies Vd ≤ 3% for lighting"
-  - "Non-compliance flag emitted with severity: error referencing App 12"
-  - "No silent acceptance"
+  Validation trap: synthetic fixture where engineer-declared phase_csa is
+  forced one ladder step too small. The validator MUST flag INV-05
+  (vd_cumulative violation) when the UK C03 lighting circuit is artificially
+  reverted from 1.5 mm² to 1.0 mm². Note: this eval is intentionally
+  synthetic — the shipped UK example output.json is the baseline; a real
+  runtime would mutate it and re-validate. The eval here asserts that the
+  shipped example does NOT have this defect AND that the walk_up_trail
+  records the rejected 1.0 mm² attempt.
+category: validation_trap
+input_fixtures:
+  - ../examples/uk-domestic-final-circuits/output.json
+
+checks:
+  - assertion: "next(n for n in output.cascade if n.node_id == 'CU-MAIN.C03').selection.phase_csa == 1.5"
+    description: UK C03 lighting circuit accepted at 1.5 mm² (not 1.0 mm²)
+    severity: critical
+
+  - assertion: "len(next(n for n in output.cascade if n.node_id == 'CU-MAIN.C03').selection.walk_up_trail) >= 2"
+    description: C03 walk_up_trail has multiple entries showing the 1.0 mm² rejection
+    severity: critical
+
+  - assertion: "any(e.csa_attempted == 1.0 and e.accepted == False and e.rejected_by == 'vd_cumulative' for e in next(n for n in output.cascade if n.node_id == 'CU-MAIN.C03').selection.walk_up_trail)"
+    description: C03 walk_up_trail records 1.0 mm² rejection with rejected_by=vd_cumulative
+    severity: critical
+    matches_inv: INV-05

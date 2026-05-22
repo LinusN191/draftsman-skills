@@ -47,6 +47,19 @@
         }
       }
     },
+    "board_kind": {
+      "enum": ["main_switchboard", "specialty_board"],
+      "description": "Board discriminator matching db-layout IR board.board_kind"
+    },
+    "main_switch": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type":       { "enum": ["switch-disconnector", "MCCB", "isolator", "RCCB", "RCBO", "main_switch_fused"] },
+        "rating_a":   { "type": "number", "exclusiveMinimum": 0 },
+        "curve":      { "enum": ["B", "C", "D"] }
+      }
+    },
     "spare_ways":      { "type": "integer", "minimum": 0 },
     "form_separation": { "enum": ["1", "2a", "2b", "3a", "3b", "4a", "4b"] },
     "icw_ka_1s":       { "type": "number", "minimum": 0 },

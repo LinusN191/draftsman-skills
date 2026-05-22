@@ -1,11 +1,11 @@
-id: eval-08-induction-motor-contribution
+name: eval-08-induction-motor-contribution
+skill: fault-level
 category: skill_specific
-severity: high
 description: |
   Industrial site: 2500 kVA TX + 500 kW connected motor load (running). Motor contribution > 1% threshold per IEC 60909-0 §4.5.1.2.
   Must include motor_aggregate source in sources[] with ILR-based Ik" contribution.
 
-inputs:
+input:
   jurisdiction: "INT"
   project_id: "ind-motor-fl-eg08"
   supply_voltage_v: "400"
@@ -20,17 +20,19 @@ inputs:
     - { node_id: "TX-1", parent_node_id: null, node_kind: "transformer_secondary" }
     - { node_id: "MCC-1", parent_node_id: "TX-1", node_kind: "board_incoming", designation: "Motor control center" }
 
-assertions:
-  - kind: schema_valid
-    schema: "fault-level-ir.schema.json"
-  - kind: jsonpath_contains
-    path: "$.sources[*].kind"
-    must_contain: "motor_aggregate"
-  - kind: clause_cited
-    clause_pattern: "IEC 60909-0:2016 §4.5"
-    minimum_count: 1
-  - kind: jsonpath_present
-    path: "$.compliance_summary.assumptions[*]"
-    note: "Engineer-input motor ILR assumption captured"
+checks:
+  - assertion: 'ir matches "fault-level-ir.schema.json"'
+    description: Output validates against the fault-level IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.sources[*].kind contains "motor_aggregate"'
+    description: sources[] must include a motor_aggregate entry
+    severity: warning
+
+  - assertion: 'ir.citations matches "IEC 60909-0:2016 §4.5"'
+    description: At least 1 citation matches IEC 60909-0:2016 §4.5
+    severity: warning
+
+  - assertion: 'ir.compliance_summary.assumptions[*] != null'
+    description: Engineer-input motor ILR assumption must be captured in compliance_summary.assumptions
+    severity: warning

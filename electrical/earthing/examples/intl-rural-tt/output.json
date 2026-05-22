@@ -17,7 +17,7 @@
   },
   "met": {
     "location": "MSB cupboard, ground floor plant room",
-    "supply_bond_type": "utility_pen_bond",
+    "supply_bond_type": "consumer_electrode_only",
     "main_earthing_conductor_csa_mm2": 70
   },
   "electrodes": [],
@@ -28,10 +28,10 @@
   ],
   "supplementary_bonding": [],
   "circuits": [
-    { "circuit_id": "F01", "db_designation": "MSB-MAIN", "voltage_class": "LV_power", "breaker_rating_a": 250, "breaker_curve": "D", "route_length_m": 35, "cpc_csa_mm2_or_awg": "70mm²", "cpc_sizing_method": "iec60364_543.1.2_adiabatic", "cpc_sizing_clause": "IEC 60364-5-54:2011 §543.1.2 (S/2 rule for S>16mm²)", "zs_ohm": 0.318, "zs_max_ohm": 0.046, "zs_compliance": "pass_via_downstream_selectivity", "rcd_required": false, "rcd_type": null, "rcd_sensitivity_ma": null },
-    { "circuit_id": "F02", "db_designation": "MSB-MAIN", "voltage_class": "LV_power", "breaker_rating_a": 400, "breaker_curve": "D", "route_length_m": 40, "cpc_csa_mm2_or_awg": "120mm²", "cpc_sizing_method": "iec60364_543.1.2_adiabatic", "cpc_sizing_clause": "IEC 60364-5-54:2011 §543.1.2 (S/2 rule for S>16mm²)", "zs_ohm": 0.312, "zs_max_ohm": 0.029, "zs_compliance": "pass_via_downstream_selectivity", "rcd_required": false, "rcd_type": null, "rcd_sensitivity_ma": null },
-    { "circuit_id": "F03", "db_designation": "MSB-MAIN", "voltage_class": "LV_power", "breaker_rating_a": 250, "breaker_curve": "D", "route_length_m": 45, "cpc_csa_mm2_or_awg": "70mm²", "cpc_sizing_method": "iec60364_543.1.2_adiabatic", "cpc_sizing_clause": "IEC 60364-5-54:2011 §543.1.2 (S/2 rule for S>16mm²)", "zs_ohm": 0.323, "zs_max_ohm": 0.046, "zs_compliance": "pass_via_downstream_selectivity", "rcd_required": false, "rcd_type": null, "rcd_sensitivity_ma": null },
-    { "circuit_id": "F04", "db_designation": "MSB-MAIN", "voltage_class": "fire_alarm", "breaker_rating_a": 63, "breaker_curve": "C", "route_length_m": 60, "cpc_csa_mm2_or_awg": "16mm²", "cpc_sizing_method": "iec60364_table_54.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2 (S=CPC for S≤16mm²)", "zs_ohm": 0.466, "zs_max_ohm": 0.183, "zs_compliance": "ads_exempt_life_safety", "rcd_required": false, "rcd_type": null, "rcd_sensitivity_ma": null }
+    { "circuit_id": "F01", "db_designation": "MSB-MAIN", "voltage_class": "LV_power", "breaker_rating_a": 250, "breaker_curve": "D", "route_length_m": 35, "cpc_csa_mm2_or_awg": "70mm²", "cpc_sizing_method": "iec60364_adiabatic_543.1.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 §543.1.2 (S/2 rule for S>16mm²)", "zs_ohm": 0.318, "zs_max_ohm": 0.046, "zs_compliance": "pass", "rcd_required": false },
+    { "circuit_id": "F02", "db_designation": "MSB-MAIN", "voltage_class": "LV_power", "breaker_rating_a": 400, "breaker_curve": "D", "route_length_m": 40, "cpc_csa_mm2_or_awg": "120mm²", "cpc_sizing_method": "iec60364_adiabatic_543.1.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 §543.1.2 (S/2 rule for S>16mm²)", "zs_ohm": 0.312, "zs_max_ohm": 0.029, "zs_compliance": "pass", "rcd_required": false },
+    { "circuit_id": "F03", "db_designation": "MSB-MAIN", "voltage_class": "LV_power", "breaker_rating_a": 250, "breaker_curve": "D", "route_length_m": 45, "cpc_csa_mm2_or_awg": "70mm²", "cpc_sizing_method": "iec60364_adiabatic_543.1.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 §543.1.2 (S/2 rule for S>16mm²)", "zs_ohm": 0.323, "zs_max_ohm": 0.046, "zs_compliance": "pass", "rcd_required": false },
+    { "circuit_id": "F04", "db_designation": "MSB-MAIN", "voltage_class": "fire_alarm", "breaker_rating_a": 63, "breaker_curve": "C", "route_length_m": 60, "cpc_csa_mm2_or_awg": "16mm²", "cpc_sizing_method": "iec60364_table_54.2", "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2 (S=CPC for S≤16mm²)", "zs_ohm": 0.466, "zs_max_ohm": 0.183, "zs_compliance": "pass", "rcd_required": false }
   ],
   "compliance_summary": {
     "compliant": true,
@@ -55,9 +55,9 @@
       "frequency_hz": 50
     },
     "circuits": [
-      { "circuit_id": "F01", "cable_material": "Cu", "cable_insulation": "XLPE", "line_csa_mm2_or_awg": "150mm²", "cpc_csa_mm2_or_awg": "70mm²", "route_length_m": 35, "device_type": "MCCB_D", "device_rating_a": 250 },
-      { "circuit_id": "F02", "cable_material": "Cu", "cable_insulation": "XLPE", "line_csa_mm2_or_awg": "240mm²", "cpc_csa_mm2_or_awg": "120mm²", "route_length_m": 40, "device_type": "MCCB_D", "device_rating_a": 400 },
-      { "circuit_id": "F03", "cable_material": "Cu", "cable_insulation": "XLPE", "line_csa_mm2_or_awg": "150mm²", "cpc_csa_mm2_or_awg": "70mm²", "route_length_m": 45, "device_type": "MCCB_D", "device_rating_a": 250 },
+      { "circuit_id": "F01", "cable_material": "Cu", "cable_insulation": "XLPE", "line_csa_mm2_or_awg": "150mm²", "cpc_csa_mm2_or_awg": "70mm²", "route_length_m": 35, "device_type": "MCB_D", "device_rating_a": 250 },
+      { "circuit_id": "F02", "cable_material": "Cu", "cable_insulation": "XLPE", "line_csa_mm2_or_awg": "240mm²", "cpc_csa_mm2_or_awg": "120mm²", "route_length_m": 40, "device_type": "MCB_D", "device_rating_a": 400 },
+      { "circuit_id": "F03", "cable_material": "Cu", "cable_insulation": "XLPE", "line_csa_mm2_or_awg": "150mm²", "cpc_csa_mm2_or_awg": "70mm²", "route_length_m": 45, "device_type": "MCB_D", "device_rating_a": 250 },
       { "circuit_id": "F04", "cable_material": "Cu", "cable_insulation": "XLPE", "line_csa_mm2_or_awg": "16mm²", "cpc_csa_mm2_or_awg": "16mm²", "route_length_m": 60, "device_type": "MCB_C", "device_rating_a": 63 }
     ],
     "operating_temperature_c": 70

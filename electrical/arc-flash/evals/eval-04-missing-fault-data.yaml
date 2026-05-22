@@ -1,7 +1,6 @@
-eval_id: eval-04-missing-fault-data
-category: missing_input
+name: eval-04-missing-fault-data
 skill: arc-flash
-skill_version: 1.0.0
+category: missing_input
 description: |
   No fault-level intent + no engineer-declared per-node Ibf. Skill must NOT invent
   fault current — emits method_applied: pending + ARC_FLASH_PENDING flag + logs assumption.
@@ -16,27 +15,47 @@ input:
       node_kind: final_circuit
       designation: "Panel DB-X1 — fault data missing"
       equipment: { type: "LV panelboard", current_type: ac, voltage_v: 400 }
-      fault_inputs: {}  # deliberately empty
+      fault_inputs: {}
       ocpd_inputs: { ocpd_type: "MCCB_thermal_magnetic", t_clear_s: 0.2 }
       geometry: { working_distance_mm: 455 }
-expected:
-  per_node:
-    - node_id: "DB-X1"
-      method_applied: "pending"
-      checks_tool_call_pending: true
-      incident_energy_cal_per_cm2: null
-      arc_flash_boundary_mm: null
-      ppe_category: null
-  compliance_summary:
-    assumptions_must_contain_text:
-      - "calc.arc_flash_incident_energy"
-      - "ibf_ka_max missing"
-  non_compliance_flags_must_include:
-    - code: "ARC_FLASH_PENDING"
-      severity: "warning"
-pass_criteria:
-  - "No invented Ibf; method_applied = pending"
-  - "Numeric outputs are null"
-  - "ARC_FLASH_PENDING flag emitted"
-  - "Assumption explicitly names the missing input"
-  - "Shock-approach still computed (doesn't depend on fault data) + label_recommended still set"
+
+checks:
+  # per_node[0] — DB-X1
+  - assertion: 'ir.nodes[?(@.node_id=="DB-X1")].method_applied == "pending"'
+    description: DB-X1 method_applied = pending (no fault data → no fabrication)
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="DB-X1")].checks_tool_call_pending == true'
+    description: DB-X1 checks_tool_call_pending must be true (downstream tool call required)
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="DB-X1")].incident_energy_cal_per_cm2 == null'
+    description: DB-X1 IE must be null (no invented values)
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="DB-X1")].arc_flash_boundary_mm == null'
+    description: DB-X1 arc_flash_boundary_mm must be null (no invented values)
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="DB-X1")].ppe_category == null'
+    description: DB-X1 ppe_category must be null (no invented values)
+    severity: critical
+
+  # compliance_summary.assumptions_must_contain_text
+  - assertion: 'ir.compliance_summary.assumptions contains "calc.arc_flash_incident_energy"'
+    description: Assumptions text must mention calc.arc_flash_incident_energy (the missing calc)
+    severity: critical
+
+  - assertion: 'ir.compliance_summary.assumptions contains "ibf_ka_max missing"'
+    description: Assumptions text must explicitly name "ibf_ka_max missing"
+    severity: critical
+
+  # non_compliance_flags_must_include — ARC_FLASH_PENDING
+  - assertion: 'ir.flags contains "ARC_FLASH_PENDING"'
+    description: Compliance flag ARC_FLASH_PENDING must be emitted at warning severity
+    severity: warning
+
+  # pass_criteria coverage:
+  # "Shock-approach still computed (doesn't depend on fault data) + label_recommended still set"
+  # shock_approach.source and label.label_recommended are REQUIRED fields per arc-flash-ir.schema.json;
+  # schema validation already enforces their presence — assertions deleted as redundant (Sprint 3-W2b).

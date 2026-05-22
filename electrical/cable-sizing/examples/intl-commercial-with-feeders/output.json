@@ -2,340 +2,604 @@
   "drawing_type": "cable_sizing_study",
   "version": "1.0.0",
   "meta": {
-    "project_id": "intl-comm-cs-eg02",
-    "skill_version": "cable-sizing/1.0.0",
-    "produced_at": "2026-05-17T09:00:00Z",
-    "consumed_intents": [
-      {
-        "intent_type": "db-layout-rollup",
-        "intent_version": "1.0.0",
-        "produced_by": "electrical/db-layout/1.0.0"
-      },
-      {
-        "intent_type": "fault-level",
-        "intent_version": "1.0.0",
-        "produced_by": "electrical/fault-level/1.0.0"
-      }
-    ]
+    "project_id": "intl-commercial-3storey-eg01",
+    "skill_version": "1.0.0",
+    "produced_at": "2026-05-20T00:00:00Z",
+    "consumed_intents": []
   },
   "jurisdiction": "INT",
   "project_supply": {
     "voltage_v": 400,
-    "phases": "three",
-    "frequency_hz": 50,
-    "earthing_system": "TN-S"
+    "phase_arrangement": "TPN_plus_E",
+    "system_type": "TN-S"
   },
   "cascade": [
     {
-      "node_id": "MSB-1",
-      "parent_node_id": null,
+      "node_id": "TX-1",
       "node_kind": "service_entrance",
-      "designation": "Main MSB 2000A incomer",
+      "designation": "TX secondary 1000 kVA → MSB-1 incoming",
       "load": {
         "ib_a": 1450,
-        "in_a": 2000,
-        "phases": "three_plus_n",
-        "load_type": "mixed",
-        "pf": 0.92
-      },
-      "route": {
-        "length_m": 12,
-        "installation_method": "F",
-        "ambient_c": 30,
-        "grouping_count": 1,
-        "in_thermal_insulation": false
-      },
-      "harmonic_content_pct": 0,
-      "fault_at_origin": {
-        "ifault_ka_max": 22.5,
-        "ifault_ka_min": 20.4,
-        "t_clear_s": 0.05
-      },
-      "selection": {
-        "phase_csa": 630,
-        "cpc_csa": 240,
-        "material": "copper",
-        "insulation": "xlpe_90",
-        "cable_type": "xlpe_singles",
-        "parallel_count": 1,
-        "binding_constraint": "iz_vs_in",
-        "walk_up_trail": [
-          {
-            "csa": 630,
-            "accepted": true,
-            "vd_segment_pct": 0.4,
-            "vd_cumulative_pct": 0.4
-          }
-        ]
-      },
-      "checks": {
-        "iz_corrected_a": 2010,
-        "iz_vs_in_pass": true,
-        "vd_segment_pct": 0.4,
-        "vd_cumulative_pct": 0.4,
-        "vd_pass": true,
-        "vd_limit_pct": 5.0,
-        "vd_limit_source": "IEC 60364-5-52:2009 \u00a7G mixed loads",
-        "cpc_adiabatic_pass": true,
-        "motor_starting_vd_pct": null,
-        "harmonic_ch_factor": null,
-        "tool_call_pending": true
-      }
-    },
-    {
-      "node_id": "MSB-1.F03",
-      "parent_node_id": "MSB-1",
-      "node_kind": "feeder",
-      "designation": "Riser feeder to Level 3 DB-L1",
-      "load": {
-        "ib_a": 180,
-        "in_a": 250,
-        "phases": "three_plus_n",
-        "load_type": "mixed",
-        "pf": 0.92
-      },
-      "route": {
-        "length_m": 65,
-        "installation_method": "E",
-        "ambient_c": 35,
-        "grouping_count": 2,
-        "in_thermal_insulation": false
-      },
-      "harmonic_content_pct": 0,
-      "fault_at_origin": {
-        "ifault_ka_max": 21.5,
-        "ifault_ka_min": 19.5,
-        "t_clear_s": 0.08
-      },
-      "selection": {
-        "phase_csa": 95,
-        "cpc_csa": 50,
-        "material": "copper",
-        "insulation": "xlpe_90",
-        "cable_type": "xlpe_singles",
-        "parallel_count": 1,
-        "binding_constraint": "iz_vs_in",
-        "walk_up_trail": [
-          {
-            "csa": 95,
-            "accepted": true,
-            "vd_segment_pct": 1.4,
-            "vd_cumulative_pct": 1.8
-          }
-        ]
-      },
-      "checks": {
-        "iz_corrected_a": 252,
-        "iz_vs_in_pass": true,
-        "vd_segment_pct": 1.4,
-        "vd_cumulative_pct": 1.8,
-        "vd_pass": true,
-        "vd_limit_pct": 5.0,
-        "vd_limit_source": "IEC 60364-5-52:2009 \u00a7G mixed loads",
-        "cpc_adiabatic_pass": true,
-        "motor_starting_vd_pct": null,
-        "harmonic_ch_factor": null,
-        "tool_call_pending": true
-      }
-    },
-    {
-      "node_id": "MSB-1.F03.DB-L1",
-      "parent_node_id": "MSB-1.F03",
-      "node_kind": "sub_feeder",
-      "designation": "DB-L1 incoming sub-feeder",
-      "load": {
-        "ib_a": 45,
-        "in_a": 63,
-        "phases": "three_plus_n",
+        "in_a": 1600,
+        "phases": "three_phase_4wire",
         "load_type": "mixed",
         "pf": 0.92
       },
       "route": {
         "length_m": 8,
-        "installation_method": "C",
+        "installation_method": "F",
         "ambient_c": 30,
-        "grouping_count": 1,
-        "in_thermal_insulation": false
+        "grouping_count": 1
       },
       "harmonic_content_pct": 0,
-      "fault_at_origin": {
-        "ifault_ka_max": 18.2,
-        "ifault_ka_min": 16.5,
-        "t_clear_s": 0.1
-      },
+      "parent_node_ifault_ka": 25.0,
+      "t_clear_s": 0.4,
       "selection": {
-        "phase_csa": 16,
-        "cpc_csa": 6,
+        "phase_csa": 500,
+        "cpc_csa": 240,
         "material": "copper",
         "insulation": "xlpe_90",
-        "cable_type": "xlpe_singles",
-        "parallel_count": 1,
-        "binding_constraint": "iz_vs_in",
+        "cable_type": "xlpe_swa",
+        "parallel_count": 2,
+        "binding_constraint": "parallel_required",
         "walk_up_trail": [
           {
-            "csa": 16,
+            "csa_attempted": 630,
+            "accepted": false,
+            "rejected_by": "iz_vs_in",
+            "iz_corrected_a": 1090.0
+          },
+          {
+            "csa_attempted": 500,
             "accepted": true,
+            "iz_corrected_a": 1830.0,
             "vd_segment_pct": 0.3,
-            "vd_cumulative_pct": 2.1
+            "vd_cumulative_pct": 0.3
           }
         ]
       },
       "checks": {
-        "iz_corrected_a": 68,
+        "iz_corrected_a": 1830.0,
         "iz_vs_in_pass": true,
         "vd_segment_pct": 0.3,
-        "vd_cumulative_pct": 2.1,
-        "vd_pass": true,
+        "vd_cumulative_pct": 0.3,
         "vd_limit_pct": 5.0,
-        "vd_limit_source": "IEC 60364-5-52:2009 \u00a7G mixed loads",
+        "vd_limit_source": "IEC 60364-5-52:2009 Annex G power circuits",
+        "vd_pass": true,
         "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "IEC 60364-5-54:2011 §543",
         "motor_starting_vd_pct": null,
-        "harmonic_ch_factor": null,
+        "motor_starting_vd_pass": null,
         "tool_call_pending": true
       }
     },
     {
-      "node_id": "MSB-1.F03.DB-L1.C07",
-      "parent_node_id": "MSB-1.F03.DB-L1",
-      "node_kind": "final_circuit",
-      "designation": "Lighting circuit L1-C07 long run",
+      "node_id": "MSB-1.F-RISER",
+      "parent_node_id": "TX-1",
+      "node_kind": "feeder",
+      "designation": "MSB → riser DB feeder",
       "load": {
-        "ib_a": 8.5,
-        "in_a": 10,
-        "phases": "single",
-        "load_type": "lighting",
-        "pf": 1.0
+        "ib_a": 320,
+        "in_a": 400,
+        "phases": "three_phase_4wire",
+        "load_type": "mixed",
+        "pf": 0.92
       },
       "route": {
-        "length_m": 48,
-        "installation_method": "B1",
+        "length_m": 25,
+        "installation_method": "E",
         "ambient_c": 30,
-        "grouping_count": 2,
-        "in_thermal_insulation": false
+        "grouping_count": 1
       },
       "harmonic_content_pct": 0,
-      "fault_at_origin": {
-        "ifault_ka_max": 16.0,
-        "ifault_ka_min": 14.5,
-        "t_clear_s": 0.2
-      },
+      "parent_node_ifault_ka": 22.0,
+      "t_clear_s": 0.4,
       "selection": {
-        "phase_csa": 4,
-        "cpc_csa": 2.5,
+        "phase_csa": 185,
+        "cpc_csa": 95,
         "material": "copper",
         "insulation": "xlpe_90",
-        "cable_type": "xlpe_singles",
+        "cable_type": "xlpe_swa",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa_attempted": 185,
+            "accepted": true,
+            "iz_corrected_a": 430.0,
+            "vd_segment_pct": 0.5,
+            "vd_cumulative_pct": 0.8
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 430.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 0.5,
+        "vd_cumulative_pct": 0.8,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "IEC 60364-5-52:2009 Annex G power circuits",
+        "vd_pass": true,
+        "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "IEC 60364-5-54:2011 §543",
+        "motor_starting_vd_pct": null,
+        "motor_starting_vd_pass": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "RISER.L1",
+      "parent_node_id": "MSB-1.F-RISER",
+      "node_kind": "sub_feeder",
+      "designation": "Riser tap-off to Level 1 sub-DB",
+      "load": {
+        "ib_a": 80,
+        "in_a": 100,
+        "phases": "three_phase_4wire",
+        "load_type": "mixed",
+        "pf": 0.92
+      },
+      "route": {
+        "length_m": 8,
+        "installation_method": "E",
+        "ambient_c": 30,
+        "grouping_count": 1
+      },
+      "harmonic_content_pct": 0,
+      "parent_node_ifault_ka": 15.0,
+      "t_clear_s": 0.4,
+      "selection": {
+        "phase_csa": 35,
+        "cpc_csa": 16,
+        "material": "copper",
+        "insulation": "xlpe_90",
+        "cable_type": "xlpe_swa",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa_attempted": 35,
+            "accepted": true,
+            "iz_corrected_a": 140.0,
+            "vd_segment_pct": 0.5,
+            "vd_cumulative_pct": 1.3
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 140.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 0.5,
+        "vd_cumulative_pct": 1.3,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "IEC 60364-5-52:2009 Annex G power circuits",
+        "vd_pass": true,
+        "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "IEC 60364-5-54:2011 §543",
+        "motor_starting_vd_pct": null,
+        "motor_starting_vd_pass": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "RISER.L2",
+      "parent_node_id": "MSB-1.F-RISER",
+      "node_kind": "sub_feeder",
+      "designation": "Riser tap-off to Level 2 sub-DB",
+      "load": {
+        "ib_a": 110,
+        "in_a": 125,
+        "phases": "three_phase_4wire",
+        "load_type": "mixed",
+        "pf": 0.92
+      },
+      "route": {
+        "length_m": 8,
+        "installation_method": "E",
+        "ambient_c": 30,
+        "grouping_count": 1
+      },
+      "harmonic_content_pct": 0,
+      "parent_node_ifault_ka": 14.5,
+      "t_clear_s": 0.4,
+      "selection": {
+        "phase_csa": 50,
+        "cpc_csa": 25,
+        "material": "copper",
+        "insulation": "xlpe_90",
+        "cable_type": "xlpe_swa",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa_attempted": 50,
+            "accepted": true,
+            "iz_corrected_a": 175.0,
+            "vd_segment_pct": 0.5,
+            "vd_cumulative_pct": 1.3
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 175.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 0.5,
+        "vd_cumulative_pct": 1.3,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "IEC 60364-5-52:2009 Annex G power circuits",
+        "vd_pass": true,
+        "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "IEC 60364-5-54:2011 §543",
+        "motor_starting_vd_pct": null,
+        "motor_starting_vd_pass": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "RISER.L3",
+      "parent_node_id": "MSB-1.F-RISER",
+      "node_kind": "sub_feeder",
+      "designation": "Riser tap-off to Level 3 sub-DB",
+      "load": {
+        "ib_a": 130,
+        "in_a": 160,
+        "phases": "three_phase_4wire",
+        "load_type": "mixed",
+        "pf": 0.92
+      },
+      "route": {
+        "length_m": 8,
+        "installation_method": "E",
+        "ambient_c": 30,
+        "grouping_count": 1
+      },
+      "harmonic_content_pct": 0,
+      "parent_node_ifault_ka": 14.0,
+      "t_clear_s": 0.4,
+      "selection": {
+        "phase_csa": 70,
+        "cpc_csa": 35,
+        "material": "copper",
+        "insulation": "xlpe_90",
+        "cable_type": "xlpe_swa",
         "parallel_count": 1,
         "binding_constraint": "vd_cumulative",
         "walk_up_trail": [
           {
-            "csa": 1.5,
+            "csa_attempted": 50,
+            "accepted": false,
             "rejected_by": "vd_cumulative",
-            "vd_segment_pct": 2.2,
-            "vd_cumulative_pct": 4.3
+            "iz_corrected_a": 175.0,
+            "vd_segment_pct": 0.9,
+            "vd_cumulative_pct": 1.7
           },
           {
-            "csa": 2.5,
-            "rejected_by": "vd_cumulative",
-            "vd_segment_pct": 1.3,
-            "vd_cumulative_pct": 3.4
-          },
-          {
-            "csa": 4,
+            "csa_attempted": 70,
             "accepted": true,
-            "vd_segment_pct": 0.8,
+            "iz_corrected_a": 232.0,
+            "vd_segment_pct": 0.7,
+            "vd_cumulative_pct": 1.5
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 232.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 0.7,
+        "vd_cumulative_pct": 1.5,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "IEC 60364-5-52:2009 Annex G power circuits",
+        "vd_pass": true,
+        "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "IEC 60364-5-54:2011 §543",
+        "motor_starting_vd_pct": null,
+        "motor_starting_vd_pass": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "RISER.L3.C04",
+      "parent_node_id": "RISER.L3",
+      "node_kind": "final_circuit",
+      "designation": "L3 long socket-outlet final circuit",
+      "load": {
+        "ib_a": 16,
+        "in_a": 20,
+        "phases": "single",
+        "load_type": "power_general",
+        "pf": 1.0
+      },
+      "route": {
+        "length_m": 38,
+        "installation_method": "B1",
+        "ambient_c": 30,
+        "grouping_count": 2
+      },
+      "harmonic_content_pct": 0,
+      "parent_node_ifault_ka": 8.0,
+      "t_clear_s": 0.4,
+      "selection": {
+        "phase_csa": 4,
+        "cpc_csa": 2.5,
+        "material": "copper",
+        "insulation": "pvc_70",
+        "cable_type": "pvc_singles",
+        "parallel_count": 1,
+        "binding_constraint": "vd_cumulative",
+        "walk_up_trail": [
+          {
+            "csa_attempted": 2.5,
+            "accepted": false,
+            "rejected_by": "vd_cumulative",
+            "iz_corrected_a": 21.0,
+            "vd_segment_pct": 5.1,
+            "vd_cumulative_pct": 6.6
+          },
+          {
+            "csa_attempted": 4,
+            "accepted": true,
+            "iz_corrected_a": 28.0,
+            "vd_segment_pct": 3.0,
+            "vd_cumulative_pct": 4.5
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 28.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 3.0,
+        "vd_cumulative_pct": 4.5,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "IEC 60364-5-52:2009 Annex G power circuits",
+        "vd_pass": true,
+        "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "IEC 60364-5-54:2011 §543",
+        "motor_starting_vd_pct": null,
+        "motor_starting_vd_pass": null,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "RISER.L3.C07",
+      "parent_node_id": "RISER.L3",
+      "node_kind": "final_circuit",
+      "designation": "L3 server rack IT load (3-phase 4-wire)",
+      "load": {
+        "ib_a": 24,
+        "in_a": 32,
+        "phases": "three_phase_4wire",
+        "load_type": "it_load",
+        "pf": 0.95
+      },
+      "route": {
+        "length_m": 18,
+        "installation_method": "B1",
+        "ambient_c": 30,
+        "grouping_count": 2
+      },
+      "harmonic_content_pct": 30,
+      "parent_node_ifault_ka": 8.5,
+      "t_clear_s": 0.4,
+      "selection": {
+        "phase_csa": 6,
+        "cpc_csa": 6,
+        "material": "copper",
+        "insulation": "xlpe_90",
+        "cable_type": "xlpe_lszh",
+        "parallel_count": 1,
+        "binding_constraint": "harmonic_derating",
+        "walk_up_trail": [
+          {
+            "csa_attempted": 4,
+            "accepted": false,
+            "rejected_by": "harmonic_derating",
+            "iz_corrected_a": 30.1
+          },
+          {
+            "csa_attempted": 6,
+            "accepted": true,
+            "iz_corrected_a": 41.0,
+            "vd_segment_pct": 1.4,
             "vd_cumulative_pct": 2.9
           }
         ]
       },
       "checks": {
-        "iz_corrected_a": 25,
+        "iz_corrected_a": 41.0,
         "iz_vs_in_pass": true,
-        "vd_segment_pct": 0.8,
+        "vd_segment_pct": 1.4,
         "vd_cumulative_pct": 2.9,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "IEC 60364-5-52:2009 Annex G power circuits",
         "vd_pass": true,
-        "vd_limit_pct": 3.0,
-        "vd_limit_source": "IEC 60364-5-52:2009 \u00a7G lighting circuits",
         "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "IEC 60364-5-54:2011 §543",
         "motor_starting_vd_pct": null,
-        "harmonic_ch_factor": null,
+        "motor_starting_vd_pass": null,
+        "harmonic_ch_applied": 0.86,
         "tool_call_pending": true
       }
     }
   ],
   "compliance_summary": {
     "compliant": true,
-    "non_compliance_flags": [],
+    "non_compliance_flags": [
+      {
+        "node_id": "TX-1",
+        "message": "Parallel cables required at TX-1 secondary: single 630 mm² Cu XLPE method F insufficient for 1600 A In (Iz ≈ 1090 A); 2 × 500 mm² parallel run accepted per IEC 60364-5-52:2009 §523.6 (equal length, same csa / material / insulation / installation method, terminated on common busbars). Iz_corrected = 2 × 915 ≈ 1830 A.",
+        "code_clause": "IEC 60364-5-52:2009 §523.6",
+        "severity": "info"
+      },
+      {
+        "node_id": "RISER.L3",
+        "message": "Cumulative-Vd binding on L3 riser tap-off: 50 mm² rejected (cumulative 1.7% leaves insufficient headroom for the 38 m L3.C04 final downstream); 70 mm² accepted at 1.5% cumulative to keep L3.C04 at ≤ 4.5%. Engineering judgement allocates the cascade Vd budget per IEC 60364-5-52:2009 Annex G.",
+        "code_clause": "IEC 60364-5-52:2009 Annex G",
+        "severity": "info"
+      },
+      {
+        "node_id": "RISER.L3.C04",
+        "message": "Cumulative-Vd binding on long L3 final circuit (38 m): 2.5 mm² rejected (cumulative 6.6% > 5%); 4 mm² accepted at 4.5% cumulative, within the 5% power-circuit limit per IEC 60364-5-52:2009 Annex G. Engineer-confirmed acceptable; runtime calc.voltage_drop deferred per WI3.",
+        "code_clause": "IEC 60364-5-52:2009 Annex G",
+        "severity": "info"
+      },
+      {
+        "node_id": "RISER.L3.C07",
+        "message": "Harmonic derating applied on L3 server rack IT load: 30% h3 triplen content invokes Annex E (Ch = 0.86 per IEC 60364-5-52:2009 Annex E Table E.1). 4 mm² rejected (Iz_corrected 30.1 A insufficient with Ch applied); 6 mm² accepted (Iz_corrected 41 A ≥ 32 A In). Neutral upsized to full phase csa (6 mm²) per IEC 60364-5-52:2009 §523.6.3 because h3 content ≥ 15% drives neutral current toward 1.73× phase current.",
+        "code_clause": "IEC 60364-5-52:2009 Annex E + §523.6.3",
+        "severity": "info"
+      }
+    ],
     "assumptions": [
-      "db-layout-rollup intent consumed; per-circuit Ib/In/load_type/t_clear sourced from it",
-      "fault-level intent consumed; per-node ifault_ka_max/ifault_ka_min from it",
-      "tool_call_pending: true \u2014 calc.cable_ampacity + calc.voltage_drop + calc.cpc_adiabatic deferred until runtime"
+      "INT 400V TPN+E TN-S supply per IEC 60364-4-41:2017 §411 fault-protection by ADS; engineer-declared PSCC = 25 kA at TX-1 secondary verified at incoming busbar.",
+      "Parallel cables at TX-1 sized per IEC 60364-5-52:2009 §523.6: 2 × 500 mm² Cu XLPE method F, equal length 8 m, same csa / insulation / installation, terminated at MSB-1 common busbar; mutual impedance neglected per §523.6 second paragraph.",
+      "Cumulative voltage drop budget allocated across the cascade per IEC 60364-5-52:2009 Annex G (lighting 3% / power 5%): RISER.L3 walked up to 70 mm² at design time to preserve 3.0% segment headroom for the 38 m RISER.L3.C04 final downstream.",
+      "Harmonic derating on L3.C07 IT load per IEC 60364-5-52:2009 Annex E Table E.1: 30% h3 triplen content gives Ch = 0.86 (interpolated 15-33% band); neutral upsized to full phase csa per §523.6.3 because h3 ≥ 15%.",
+      "CPC sized per IEC 60364-5-54:2011 §543: phase ≤ 16 mm² → CPC = phase by Table 54.2 conservative default (RISER.L3.C04 4/2.5 reduced per Table 54.2 column for steel armour acting as CPC; RISER.L3.C07 6/6 full); reduced CPC for ≥ 25 mm² phase verified by adiabatic equation S² ≥ I²t / k² (k = 143 for Cu/XLPE).",
+      "Engineer's design intent: XLPE for all feeders (TX-1, F-RISER, L1, L2, L3) and IT-load final (L3.C07) for thermal margin and harmonic tolerance; PVC singles for the long socket-outlet final (L3.C04) per commercial fit-out practice.",
+      "Parent-node Ifault attenuation along cascade modelled as engineer estimates (TX-1 25 kA → L3 14 kA → L3.C04 8 kA / L3.C07 8.5 kA); calc.fault_level deferred per WI3.",
+      "calc.cable_ampacity / calc.voltage_drop / calc.cpc_adiabatic deferred per WI3 — engineer estimates from IEC 60364-5-52:2009 Annex B (correction factors) + Annex G (Vd limits) + Annex E (harmonics) serve as placeholders pending deterministic resolution."
     ]
   },
-  "drawn_as_symbols": [],
   "flags": [
-    "TOOL-CALL-PENDING"
+    "TOOL-CALL-PENDING:calc.cable_ampacity",
+    "TOOL-CALL-PENDING:calc.voltage_drop",
+    "TOOL-CALL-PENDING:calc.cpc_adiabatic"
   ],
   "rationale": {
-    "chat_summary": "INT 400V TPN cascade, 4 nodes (MSB \u2192 riser \u2192 DB-L1 \u2192 C07). Lighting leaf C07 forces 2-step walk-up 1.5\u21922.5\u21924 mm\u00b2 (binding: vd_cumulative; 2.9% at 4 mm\u00b2 under 3% lighting limit per IEC 60364-5-52 \u00a7G). Feeders Iz-binding. tool_call_pending across cascade.",
+    "chat_summary": "INT 400V TPN+E commercial 3-storey building per IEC 60364-4-41:2017. 7-node cascade: TX-1 2 × 500 mm² Cu XLPE parallel (parallel_required per IEC 60364-5-52:2009 §523.6); MSB→riser 185 mm² (iz_vs_in); L1/L2/L3 tap-offs 35/50/70 mm² (L3 vd_cumulative binding); L3.C04 long final 4 mm² (vd_cumulative at 4.5% near 5% limit); L3.C07 server rack 6 mm² 3-phase 4W with 30% h3 harmonic derating per Annex E (Ch=0.86) + neutral upsized §523.6.3. 3 calc tools pending.",
     "sections": [
       {
-        "title": "Input Ingestion",
-        "summary": "db-layout-rollup + fault-level intents consumed; engineer added route data per segment.",
-        "decisions": []
-      },
-      {
-        "title": "Cascade Topology",
-        "summary": "4-node depth-3 cascade: service_entrance \u2192 feeder \u2192 sub_feeder \u2192 final_circuit.",
-        "decisions": []
-      },
-      {
-        "title": "Jurisdictional Defaults",
-        "summary": "INT (IEC 60364-5-52). Vd: 3% lighting / 5% mixed loads per \u00a7G. Iz tables from Annex E.",
+        "title": "Project Supply + Jurisdiction",
+        "summary": "INT jurisdiction; IEC 60364 series is the primary code. 1000 kVA TX secondary feeds MSB-1 at 400 V TPN+E TN-S per IEC 60364-4-41:2017 §411. Engineer declares PSCC = 25 kA at TX-1 secondary busbar. IEC 60364-4-43:2017 §433.1 anchors Iz ≥ In; IEC 60364-5-52:2009 Annex G sets Vd limits; IEC 60364-5-54:2011 §543 anchors CPC sizing.",
         "decisions": [
           {
-            "label": "INT defaults applied",
-            "summary": "IEC 60364-5-52 \u00a7G + Annex E",
-            "rule": "IEC 60364-5-52:2009 \u00a7G",
-            "code_clause": "IEC 60364-5-52:2009 \u00a7G"
+            "label": "TN-S earthing per engineer declaration",
+            "summary": "400V TPN+E supply with separate PE conductor; fault-protection by ADS per IEC 60364-4-41:2017 §411.",
+            "rule": "Fault protection by ADS per IEC 60364-4-41:2017 §411",
+            "code_clause": "IEC 60364-4-41:2017 §411.3"
+          },
+          {
+            "label": "PSCC 25 kA declared at TX-1",
+            "summary": "Engineer accepts PSCC declaration from TX nameplate + utility impedance; downstream Ifault attenuated by cable impedance per cascade.",
+            "rule": "Short-circuit verification per IEC 60364-4-43:2017 §433",
+            "code_clause": "IEC 60364-4-43:2017 §433.1"
           }
         ]
       },
       {
-        "title": "Source + Fault Context",
-        "summary": "Ifault max ranges from 22.5 kA (MSB) down to 16.0 kA at C07. CPC adiabatic deferred to runtime tool.",
-        "decisions": []
-      },
-      {
-        "title": "CSA Selection Walk-up Summary",
-        "summary": "3 nodes Iz-binding (no upsize); 1 leaf node Vd_cumulative-binding (upsized 1.5\u21922.5\u21924 mm\u00b2).",
+        "title": "Cascade Tree + Topology",
+        "summary": "Seven-node cascade: TX-1 (service_entrance) → MSB-1.F-RISER (feeder) → 3 riser tap-offs L1/L2/L3 (sub_feeder) → 2 representative L3 finals (L3.C04 socket-outlet + L3.C07 IT load). Hierarchical node_ids let downstream consumers (cable-schedule, riser, cable-containment) render the tree without heuristic re-parenting.",
         "decisions": [
           {
-            "label": "C07 vd_cumulative walk-up",
-            "summary": "Cumulative Vd at parent = 2.1%; 1.5 mm\u00b2 adds 2.2% \u2192 4.3% > 3% lighting limit. Upsize to 4 mm\u00b2 gives 2.9% cumulative.",
-            "rule": "IEC 60364-5-52:2009 \u00a7G lighting circuits",
-            "code_clause": "IEC 60364-5-52:2009 \u00a7G",
-            "inputs": {
-              "vd_parent_pct": 2.1,
-              "vd_limit_pct": 3.0
-            }
+            "label": "Three-tier cascade with riser fan-out",
+            "summary": "service_entrance → feeder → 3× sub_feeder (one per floor) → final_circuit; the L3 tap-off carries two representative finals to exercise vd_cumulative + harmonic_derating bindings.",
+            "rule": "Cascade topology per cable-sizing IR spec; IEC 60364-3:2008 §314 division of installation",
+            "code_clause": "IEC 60364-3:2008 §314"
           }
         ]
       },
       {
-        "title": "Special Checks",
-        "summary": "None triggered (no motor, no parallel, harmonic_content_pct = 0).",
-        "decisions": []
+        "title": "Walk-the-Ladder Approach + Binding Constraints",
+        "summary": "Engine walks the standard IEC ladder until all checks pass simultaneously. TX-1 binds parallel_required (single 630 mm² insufficient for 1600 A In); RISER.L3 + RISER.L3.C04 bind vd_cumulative (5% power limit at the deepest leaf); RISER.L3.C07 binds harmonic_derating (30% h3 → Ch = 0.86). Three other nodes bind iz_vs_in (F-RISER, L1, L2).",
+        "decisions": [
+          {
+            "label": "parallel_required on TX-1",
+            "summary": "1600 A In exceeds single 630 mm² Cu XLPE method F (Iz ≈ 1090 A); 2 × 500 mm² parallel accepted per IEC 60364-5-52:2009 §523.6 (Iz_corrected ≈ 1830 A).",
+            "rule": "Parallel cables per IEC 60364-5-52:2009 §523.6",
+            "code_clause": "IEC 60364-5-52:2009 §523.6",
+            "inputs": {"in_a": 1600, "single_630_iz_a": 1090, "parallel_2x500_iz_a": 1830, "parallel_count": 2}
+          },
+          {
+            "label": "vd_cumulative on RISER.L3 sub-feeder",
+            "summary": "50 mm² rejected at 1.7% cumulative (leaves only 3.3% for L3.C04); 70 mm² accepted at 1.5% cumulative to preserve 3.5% headroom downstream.",
+            "rule": "Cumulative-Vd cascade budget per IEC 60364-5-52:2009 Annex G",
+            "code_clause": "IEC 60364-5-52:2009 Annex G",
+            "inputs": {"length_m": 8, "csa_rejected_mm2": 50, "csa_accepted_mm2": 70, "vd_cumulative_rejected_pct": 1.7, "vd_cumulative_accepted_pct": 1.5}
+          },
+          {
+            "label": "vd_cumulative on RISER.L3.C04 final",
+            "summary": "20A single-phase final at 38 m on PVC singles method B1: 2.5 mm² rejected (cumulative 6.6%); 4 mm² accepted at cumulative 4.5%, within the 5% power limit.",
+            "rule": "Cumulative Vd ≤ 5% for power circuits per IEC 60364-5-52:2009 Annex G",
+            "code_clause": "IEC 60364-5-52:2009 Annex G",
+            "inputs": {"length_m": 38, "csa_rejected_mm2": 2.5, "csa_accepted_mm2": 4, "vd_cumulative_accepted_pct": 4.5}
+          },
+          {
+            "label": "harmonic_derating on RISER.L3.C07 IT load",
+            "summary": "32A 3-phase 4-wire server rack with 30% h3 content: 4 mm² rejected (Iz with Ch=0.86 gives 30.1 A < 32 A); 6 mm² accepted (Iz 41 A ≥ 32 A). Neutral upsized to full phase per §523.6.3.",
+            "rule": "Harmonic derating per IEC 60364-5-52:2009 Annex E Table E.1; neutral upsize per §523.6.3",
+            "code_clause": "IEC 60364-5-52:2009 Annex E + §523.6.3",
+            "inputs": {"h3_pct": 30, "ch": 0.86, "csa_rejected_mm2": 4, "csa_accepted_mm2": 6, "neutral_csa_mm2": 6}
+          }
+        ]
       },
       {
-        "title": "Compliance + Selectivity",
-        "summary": "All 4 nodes compliant. No non-compliance flags.",
-        "decisions": []
+        "title": "Cumulative Voltage Drop",
+        "summary": "Vd accumulates root → leaf along the cascade. IEC 60364-5-52:2009 Annex G limits: lighting 3% / power 5% (≈ 20 V at 400 V L-L). The deepest leaf L3.C04 stacks TX-1 0.3% + F-RISER 0.5% + L3 0.7% + segment 3.0% = 4.5% (within 5%). RISER.L3 walks up to 70 mm² at design time to preserve that 3.0% segment headroom for L3.C04.",
+        "decisions": [
+          {
+            "label": "Cascade Vd budget allocation",
+            "summary": "Walk RISER.L3 sub-feeder up at design time (50 → 70 mm²) so the 38 m L3.C04 final stays within the 5% cumulative limit with the smallest finals csa.",
+            "rule": "Vd cumulative accounting per IEC 60364-5-52:2009 Annex G",
+            "code_clause": "IEC 60364-5-52:2009 Annex G",
+            "inputs": {"tx1_pct": 0.3, "friser_pct": 0.5, "l3_pct": 0.7, "l3_c04_segment_pct": 3.0, "l3_c04_cumulative_pct": 4.5, "limit_pct": 5.0}
+          }
+        ]
       },
       {
-        "title": "Assumptions + Tool-call Status",
-        "summary": "Both intents consumed; tool_call_pending: true on all 4 nodes pending runtime.",
-        "decisions": []
+        "title": "CPC Adiabatic Sizing",
+        "summary": "Per IEC 60364-5-54:2011 §543: phase ≤ 16 mm² → CPC = phase by Table 54.2 conservative default; for ≥ 25 mm² phase, reduced CPC verified by adiabatic S² ≥ I²t / k² (k = 143 Cu/XLPE; k = 115 Cu/PVC; t = 0.4 s per t_clear_s). CPC selections: TX-1 500/240, F-RISER 185/95, L1 35/16, L2 50/25, L3 70/35, L3.C04 4/2.5, L3.C07 6/6.",
+        "decisions": [
+          {
+            "label": "Reduced CPC on 500 / 185 / 70 / 50 / 35 mm² phase",
+            "summary": "Adiabatic S² ≥ I²t / k² with t = 0.4 s gives S_min well below the simplified Table 54.2 equal-csa figure; engineer adopts reduced CPC per §543.1.2.",
+            "rule": "CPC adiabatic sizing per IEC 60364-5-54:2011 §543.1.2",
+            "code_clause": "IEC 60364-5-54:2011 §543"
+          }
+        ]
+      },
+      {
+        "title": "Motor Starting + Parallel Cables + Harmonic Derating",
+        "summary": "No motors declared — motor_starting_vd_pct null throughout. parallel_count = 2 at TX-1 (parallel_required binding per IEC 60364-5-52:2009 §523.6); = 1 elsewhere. RISER.L3.C07 carries 30% h3 triplen content → Ch = 0.86 per Annex E; neutral upsized to full phase csa per §523.6.3.",
+        "decisions": [
+          {
+            "label": "Parallel cables at TX-1",
+            "summary": "2 × 500 mm² Cu XLPE method F parallel run, equal length 8 m, terminated at common MSB-1 busbar; mutual impedance neglected per IEC 60364-5-52:2009 §523.6 second paragraph.",
+            "rule": "Parallel cables per IEC 60364-5-52:2009 §523.6",
+            "code_clause": "IEC 60364-5-52:2009 §523.6",
+            "inputs": {"parallel_count": 2, "csa_each_mm2": 500, "length_each_m": 8}
+          },
+          {
+            "label": "Harmonic derating Ch = 0.86 on L3.C07",
+            "summary": "30% h3 content places the load in the 15-33% band per IEC 60364-5-52:2009 Annex E Table E.1; Ch = 0.86 derates phase ampacity. Neutral upsized to full phase csa because h3 ≥ 15%.",
+            "rule": "Harmonic derating per IEC 60364-5-52:2009 Annex E Table E.1; neutral upsize per §523.6.3",
+            "code_clause": "IEC 60364-5-52:2009 Annex E + §523.6.3",
+            "inputs": {"h3_pct": 30, "ch_applied": 0.86, "neutral_upsized": true}
+          }
+        ]
+      },
+      {
+        "title": "Compliance + Assumptions + Tool-Call Pending",
+        "summary": "compliant = true. Four info-severity flags document binding-constraint walk-ups (TX-1 parallel, L3 vd_cumulative, L3.C04 vd_cumulative at 4.5%, L3.C07 harmonic). Assumptions capture INT supply declaration, cascade Vd budget allocation, harmonic derating basis, CPC adiabatic basis, XLPE-feeders/PVC-finals intent, and WI3 calc deferrals.",
+        "decisions": [
+          {
+            "label": "Three deferred-calc flags",
+            "summary": "calc.cable_ampacity, calc.voltage_drop, calc.cpc_adiabatic carry TOOL-CALL-PENDING flags per WI3 — engineer placeholders ratified at runtime.",
+            "rule": "WI3 deferred-calc contract; engineer estimates carry tool_call_pending = true",
+            "code_clause": "IEC 60364-5-52:2009 Annex B (ampacity) + Annex G (Vd) + IEC 60364-5-54:2011 §543 (CPC)"
+          }
+        ]
+      },
+      {
+        "title": "Cross-Skill Contract",
+        "summary": "Emits cable-sizing intent with 7 circuit records covering the full hierarchical cascade. Required-field set is the union superset of 4 downstream consumers: cable-schedule (tabulated deliverable), riser (parent-child render), cable-containment (tray / conduit fill), small-power v1.1 (Zs resolution via r1+r2 and reactance per metre at operating temperature).",
+        "decisions": [
+          {
+            "label": "Forward-compatible intent emission",
+            "summary": "Required-field set is the union superset of cable-schedule + riser + cable-containment + small-power v1.1 consumers; optional fields (cable_od_mm, weight_kg_per_m) included for downstream containment fill calc.",
+            "rule": "Intent forward-compat contract per cable-sizing-intent.schema.json",
+            "code_clause": "cable-sizing intent v1.0.0"
+          }
+        ]
       }
     ]
   }

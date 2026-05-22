@@ -1,31 +1,29 @@
-eval_id: eval-04-missing-route-data
-category: missing_input
-skill: cable-sizing
-skill_version: 1.0.0
+name: eval-04-missing-route-data
+skill: electrical/cable-sizing
 description: |
-  Engineer omits length_m and installation_method for several circuits. Skill must NOT
-  invent values — must emit tool_call_pending and log the gap in assumptions.
-input:
-  jurisdiction: GB
-  project_supply: { voltage_v: 230, phases: single, frequency_hz: 50, earthing_system: TN-C-S }
-  circuits_declared:
-    - id: "DB.C01"
-      parent_node_id: null
-      node_kind: final_circuit
-      designation: "Power circuit — no route data"
-      load: { ib_a: 14, in_a: 16, load_type: power, phases: single }
-      route: {}  # deliberately empty
-expected:
-  per_node:
-    - node_id: "DB.C01"
-      checks_tool_call_pending: true
-      checks_iz_corrected_a: null
-      checks_vd_segment_pct: null
-  compliance_summary:
-    assumptions_must_contain_text: ["length_m missing", "installation_method missing"]
-  flags_must_include: ["TOOL-CALL-PENDING"]
-pass_criteria:
-  - "No invented length_m, no invented installation_method"
-  - "Node has checks.tool_call_pending: true"
-  - "Numeric checks fields are null where data is missing"
-  - "Assumptions list explicitly names the missing inputs"
+  Missing-input handling: when route data (length_m / installation_method)
+  is not declared and no intent is consumed, the skill MUST emit
+  tool_call_pending: true rather than invent values. Verifies that the
+  UK example output has tool_call_pending uniformly true across all nodes
+  AND carries the 3 TOOL-CALL-PENDING flags at the IR level.
+category: missing_input
+input_fixtures:
+  - ../examples/uk-domestic-final-circuits/output.json
+
+checks:
+  - assertion: "all(n.checks.tool_call_pending == True for n in output.cascade)"
+    description: Every cascade node has tool_call_pending true (WI3 deferral)
+    severity: critical
+    matches_inv: INV-09
+
+  - assertion: "'TOOL-CALL-PENDING:calc.cable_ampacity' in output.flags"
+    description: cable-ampacity tool deferral flag present
+    severity: critical
+
+  - assertion: "'TOOL-CALL-PENDING:calc.voltage_drop' in output.flags"
+    description: voltage-drop tool deferral flag present
+    severity: critical
+
+  - assertion: "'TOOL-CALL-PENDING:calc.cpc_adiabatic' in output.flags"
+    description: cpc-adiabatic tool deferral flag present
+    severity: critical

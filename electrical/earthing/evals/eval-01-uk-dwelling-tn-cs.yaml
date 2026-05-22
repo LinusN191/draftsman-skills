@@ -2,16 +2,16 @@
 # Category: happy_path
 # Standard refs: BS 7671:2018+A3, IEC 60617
 
-id: eval-01-uk-dwelling-tn-cs
+name: eval-01-uk-dwelling-tn-cs
+skill: earthing
 category: happy_path
-severity: critical
 description: |
   Standard UK 3-bed semi-detached dwelling on PME supply. All four upstream skills
   (db-layout, lighting-layout, small-power, plus jurisdictional defaults) have
   produced their intents. Earthing skill must produce a complete TN-C-S schematic
   with correct Zs verification on every circuit.
 
-inputs:
+input:
   jurisdiction: "GB"
   earthing_system_declared: "TN-C-S"
   supply_voltage_v: 230
@@ -28,39 +28,85 @@ inputs:
     - { intent_type: "lighting-layout", intent_version: "1.3.0", produced_by: "electrical/lighting-layout/v1.3.0", payload_ref: "test-fixtures/lighting-eval01.json" }
     - { intent_type: "small-power", intent_version: "1.0.0", produced_by: "electrical/small-power/v1.0.0", payload_ref: "test-fixtures/small-power-eval01.json" }
 
-assertions:
-  - kind: schema_valid
-    schema: "earthing-ir.schema.json"
-  - kind: jsonpath_equals
-    path: "$.earthing_system"
-    expected: "TN-C-S"
-  - kind: jsonpath_equals
-    path: "$.jurisdiction"
-    expected: "GB"
-  - kind: jsonpath_present
-    path: "$.met"
-  - kind: jsonpath_count_gte
-    path: "$.main_bonding[*]"
-    minimum: 3
-    note: "water + gas + structural_steel"
-  - kind: jsonpath_count_gte
-    path: "$.supplementary_bonding[*]"
-    minimum: 1
-    note: "first_floor bathroom"
-  - kind: jsonpath_all_lte
-    path: "$.circuits[*].zs_calculated_ohm"
-    field_compared_to: "zs_max_ohm"
-    note: "Every circuit must satisfy Zs ≤ Zs_max"
-  - kind: invariant_passes
-    invariant: "INV-5"
-    note: "Zs arithmetic"
-  - kind: invariant_passes
-    invariant: "INV-3"
-    note: "Bonding completeness"
-  - kind: clause_cited
-    clause_pattern: "^BS 7671:2018\\+A3 Reg 411\\."
-    minimum_count: 2
-  - kind: rationale_present
-    require_sections: ["chat_summary", "engineering_objectives", "constraints", "regulatory_basis", "key_decisions", "assumptions", "design_methodology", "risks", "evidence"]
+checks:
+  - assertion: 'ir matches "earthing-ir.schema.json"'
+    description: Output validates against the earthing IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.earthing_system == "TN-C-S"'
+    description: Earthing system must be TN-C-S
+    severity: critical
+
+  - assertion: 'ir.jurisdiction == "GB"'
+    description: Jurisdiction must be GB
+    severity: critical
+
+  - assertion: 'ir.met != null'
+    description: Main earthing terminal (met) must be present
+    severity: critical
+
+  - assertion: 'ir.main_bonding.length >= 3'
+    description: At least 3 main bonding conductors required — water + gas + structural_steel
+    severity: critical
+
+  - assertion: 'ir.supplementary_bonding.length >= 1'
+    description: At least 1 supplementary bonding connection required — first_floor bathroom
+    severity: critical
+
+  # Tier 3 jsonpath_all_lte — parallel-array cross-field comparison
+  # Semantics: Every circuit must satisfy Zs ≤ Zs_max (zs_calculated_ohm <= zs_max_ohm per circuit)
+  # Note: canonical harness may not yet evaluate parallel-array comparisons; preserved as descriptive check
+  - assertion: 'ir.circuits[*].zs_calculated_ohm <= ir.circuits[*].zs_max_ohm'
+    description: Every circuit must satisfy Zs ≤ Zs_max — zs_calculated_ohm must not exceed zs_max_ohm for any circuit
+    severity: critical
+    matches_inv: INV-5
+
+  - assertion: 'ir.invariants.INV-5.passes == true'
+    description: Zs arithmetic
+    severity: critical
+    matches_inv: INV-5
+
+  - assertion: 'ir.invariants.INV-3.passes == true'
+    description: Bonding completeness
+    severity: critical
+    matches_inv: INV-3
+
+  - assertion: 'ir.citations matches "^BS 7671:2018\+A3 Reg 411\."'
+    description: At least 2 citations match BS 7671:2018+A3 Reg 411. pattern
+    severity: warning
+
+  - assertion: 'ir.rationale.sections[*].title contains "chat_summary"'
+    description: "Rationale must include section: chat_summary"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "engineering_objectives"'
+    description: "Rationale must include section: engineering_objectives"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "constraints"'
+    description: "Rationale must include section: constraints"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "regulatory_basis"'
+    description: "Rationale must include section: regulatory_basis"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "key_decisions"'
+    description: "Rationale must include section: key_decisions"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "assumptions"'
+    description: "Rationale must include section: assumptions"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "design_methodology"'
+    description: "Rationale must include section: design_methodology"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "risks"'
+    description: "Rationale must include section: risks"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "evidence"'
+    description: "Rationale must include section: evidence"
+    severity: critical

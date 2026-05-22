@@ -1,9 +1,9 @@
 # Eval 03 — Generator MUST detect and reject an undersized CPC
 # Category: validation_trap
 
-id: eval-03-cpc-undersized-trap
+name: eval-03-cpc-undersized-trap
+skill: earthing
 category: validation_trap
-severity: critical
 description: |
   The input feeds a circuit where the engineer has declared a 1.5mm² CPC on a
   10mm² phase circuit. Per BS 7671 Table 54.7 this is incorrect — for L>16mm² ÷ 2
@@ -13,7 +13,7 @@ description: |
       adiabatic-computed value justified by I²t.
   Emitting 1.5mm² is a critical fail.
 
-inputs:
+input:
   jurisdiction: "GB"
   earthing_system_declared: "TN-C-S"
   supply_voltage_v: 230
@@ -34,21 +34,24 @@ inputs:
   consumed_intents:
     - { intent_type: "db-layout", intent_version: "1.0.0", produced_by: "electrical/db-layout/v1.0.0", payload_ref: "test-fixtures/db-layout-eval03.json" }
 
-assertions:
-  - kind: schema_valid
-    schema: "earthing-ir.schema.json"
-  - kind: jsonpath_not_equals
-    path: "$.circuits[?(@.circuit_id=='L1')].cpc.csa_mm2"
-    forbidden: 1.5
-    note: "Generator must NOT accept the undersized declared CPC"
-  - kind: jsonpath_in
-    path: "$.circuits[?(@.circuit_id=='L1')].cpc.cpc_sizing_method"
-    allowed: ["bs7671_table_54.7", "bs7671_adiabatic_54.1"]
-  - kind: invariant_passes
-    invariant: "INV-4"
-    note: "CPC sizing method must match jurisdiction"
-  - kind: compliance_flag_emitted
-    flag_code_pattern: "CPC_OVERRIDE_"
-    note: "Generator should emit a compliance flag explaining the CPC was uprated from declared"
+checks:
+  - assertion: 'ir matches "earthing-ir.schema.json"'
+    description: Output validates against the earthing IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.circuits[?(@.circuit_id==''L1'')].cpc.csa_mm2 != 1.5'
+    description: Generator must NOT accept the undersized declared CPC (1.5mm² is wrong for a 10mm² phase)
+    severity: critical
+
+  - assertion: 'ir.circuits[?(@.circuit_id==''L1'')].cpc.cpc_sizing_method matches "^(bs7671_table_54\.7|bs7671_adiabatic_54\.1)$"'
+    description: Value must be one of bs7671_table_54.7/bs7671_adiabatic_54.1
+    severity: critical
+
+  - assertion: 'ir.invariants.INV-4.passes == true'
+    description: CPC sizing method must match jurisdiction
+    severity: critical
+    matches_inv: INV-4
+
+  - assertion: 'ir.flags matches "CPC_OVERRIDE_"'
+    description: Compliance flag matching pattern CPC_OVERRIDE_ must be emitted — generator should flag that CPC was uprated from declared
+    severity: critical

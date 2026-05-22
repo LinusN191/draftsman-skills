@@ -53,6 +53,11 @@ For any missing source data, emit a flag: `"no <source> data; using IEC60909 def
   - `shared/standards/electrical/IEC60364/part5-52-cable-ratings-copper.json`
   - `shared/standards/electrical/IEC60364/part5-52-cable-ratings-aluminium.json`
 
+- **KE** → load:
+  - `shared/standards/electrical/KS1700/fault-current.json` (Annex E §VIII routing to BS 7671 Reg 434 / IEC 60364 fault-current chain)
+  - `shared/standards/electrical/KS1700/annex-e-references.json` (adoption-verbatim vs IEC-routing map for fault-current clauses)
+  - `shared/standards/electrical/BS7671/appendix4-cable-ratings.json` (KS Annex E adopts BS App 4 R+X tables verbatim — cite the KS clause directly per Sprint 3-W2b citation-form rules)
+
 - **US** → load:
   - `shared/standards/electrical/NFPA70/chapter1-general.json` (NEC 110.9 interrupting rating)
   - `shared/standards/electrical/NFPA70/art240-overcurrent.json`

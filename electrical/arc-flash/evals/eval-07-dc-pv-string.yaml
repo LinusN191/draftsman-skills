@@ -1,14 +1,13 @@
-eval_id: eval-07-dc-pv-string
-category: skill_specific
-subcategory: dc_pv_string
+name: eval-07-dc-pv-string
 skill: arc-flash
-skill_version: 1.0.0
+category: skill_specific
 description: |
   600V DC PV string with combiner box. current_type auto-inferred to dc from equipment_type.
   dc_doan method fires. shock-approach from Table 130.4(C)(b) DC row. electrode_config null.
+  (Sub-category: dc_pv_string)
 input:
   jurisdiction: US
-  project_supply: { voltage_v: 480, phases: three, frequency_hz: 60 }  # project-wide AC supply
+  project_supply: { voltage_v: 480, phases: three, frequency_hz: 60 }
   cascade_declared:
     - id: "PV-INV-1"
       parent_node_id: null
@@ -23,25 +22,50 @@ input:
       node_kind: final_circuit
       designation: "PV string 600V DC combiner box"
       equipment: { type: "PV combiner box", current_type: dc, voltage_v: 600 }
-      fault_inputs: { ibf_ka_max: 0.5 }  # PV is current-limited
+      fault_inputs: { ibf_ka_max: 0.5 }
       ocpd_inputs: { ocpd_type: "fuse_LV_general_purpose", t_clear_s: 0.2 }
       geometry: { working_distance_mm: 455 }
-expected:
-  per_node:
-    - node_id: "PV-INV-1"
-      equipment_current_type: "ac"
-      method_applied_one_of: ["ieee1584_2018", "lee_1982"]
-      shock_approach_source_contains: "Table 130.4(C)(a)"
-    - node_id: "PV-INV-1.DC-STR-1"
-      equipment_current_type: "dc"
-      equipment_electrode_config: null
-      method_applied: "dc_doan"
-      shock_approach_source_contains: "Table 130.4(C)(b)"
-      shock_approach_source_contains_voltage_range: "301V to 1 kV"
-pass_criteria:
-  - "DC node auto-inferred current_type = dc from 'PV combiner box' equipment_type"
-  - "DC node has electrode_config: null"
-  - "DC node method_applied = dc_doan (NOT IEEE 1584)"
-  - "DC node shock-approach from Table 130.4(C)(b), not (a)"
-  - "AC node retains IEEE 1584 path"
-  - "Unified cascade tree with parent_node_id linking inverter to string"
+
+checks:
+  # per_node[0] — PV-INV-1 (AC side)
+  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1")].equipment_current_type == "ac"'
+    description: PV-INV-1 retains AC current type (AC side of inverter)
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1")].method_applied matches "^(ieee1584_2018|lee_1982)$"'
+    description: PV-INV-1 uses IEEE 1584:2018 or Lee 1982 fallback (AC method)
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1")].shock_approach_source contains "Table 130.4(C)(a)"'
+    description: PV-INV-1 shock_approach_source references AC Table 130.4(C)(a)
+    severity: critical
+    standard_ref: NFPA 70E Table 130.4(C)(a)
+
+  # per_node[1] — PV-INV-1.DC-STR-1 (DC side)
+  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1.DC-STR-1")].equipment_current_type == "dc"'
+    description: DC string current_type auto-inferred to dc from "PV combiner box" equipment_type
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1.DC-STR-1")].equipment_electrode_config == null'
+    description: DC string equipment_electrode_config must be null (DC has no electrode config)
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1.DC-STR-1")].method_applied == "dc_doan"'
+    description: DC string method_applied = dc_doan (NOT IEEE 1584)
+    severity: critical
+    standard_ref: NFPA 70E Annex D
+
+  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1.DC-STR-1")].shock_approach_source contains "Table 130.4(C)(b)"'
+    description: DC string shock_approach_source references DC Table 130.4(C)(b)
+    severity: critical
+    standard_ref: NFPA 70E Table 130.4(C)(b)
+
+  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1.DC-STR-1")].shock_approach_source contains "301V to 1 kV"'
+    description: DC string shock_approach_source references voltage row "301V to 1 kV"
+    severity: critical
+
+  # pass_criteria coverage:
+  # "Unified cascade tree with parent_node_id linking inverter to string"
+  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1.DC-STR-1")].parent_node_id == "PV-INV-1"'
+    description: DC string parent_node_id resolves to PV-INV-1 (unified cascade tree)
+    severity: critical

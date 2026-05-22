@@ -1,6 +1,6 @@
 {
   "$schema": "../../schemas/db-layout-ir.schema.json",
-  "drawing_type": "db_layout",
+  "drawing_type": "db_layout_schedule_and_schematic",
   "version": "1.2.0",
   "meta": {
     "project_id": "intl-comm-tpn-eg02",
@@ -15,7 +15,8 @@
     "enclosure_rating": "IP4X",
     "manufacturer_class": "IEC 61439-3 Distribution Board",
     "scope": "single-board",
-    "role": "emergency_lighting_panel"
+    "role": "emergency_lighting_panel",
+    "board_kind": "specialty_board"
   },
   "incoming_supply": {
     "voltage_v": 400,
@@ -32,23 +33,194 @@
     "fault_level_a_min": 7500
   },
   "circuits": [
-    { "circuit_id": "EM01", "way_module_id": "W1", "designation": "GF corridor + escape route luminaires", "voltage_class": "emergency_lighting", "downstream_load_kw": 0.8, "ocpd": { "rating_a": 10, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 35 } },
-    { "circuit_id": "EM02", "way_module_id": "W2", "designation": "GF stairwell + exit signs",            "voltage_class": "emergency_lighting", "downstream_load_kw": 0.4, "ocpd": { "rating_a": 6,  "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 25 } },
-    { "circuit_id": "EM03", "way_module_id": "W3", "designation": "L1 corridor + escape route",           "voltage_class": "emergency_lighting", "downstream_load_kw": 0.8, "ocpd": { "rating_a": 10, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 45 } },
-    { "circuit_id": "EM04", "way_module_id": "W4", "designation": "L1 stairwell + exit signs",            "voltage_class": "emergency_lighting", "downstream_load_kw": 0.4, "ocpd": { "rating_a": 6,  "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 35 } },
-    { "circuit_id": "EM05", "way_module_id": "W5", "designation": "L2 corridor + escape route",           "voltage_class": "emergency_lighting", "downstream_load_kw": 0.8, "ocpd": { "rating_a": 10, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 55 } },
-    { "circuit_id": "EM06", "way_module_id": "W6", "designation": "L2 stairwell + exit signs",            "voltage_class": "emergency_lighting", "downstream_load_kw": 0.4, "ocpd": { "rating_a": 6,  "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 45 } },
-    { "circuit_id": "EM07", "way_module_id": "W7", "designation": "EM panel battery charger",             "voltage_class": "emergency_lighting", "downstream_load_kw": 1.2, "ocpd": { "rating_a": 16, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 2  } },
-    { "circuit_id": "EM08", "way_module_id": "W8", "designation": "EM panel monitoring + test circuit",   "voltage_class": "emergency_lighting", "downstream_load_kw": 0.1, "ocpd": { "rating_a": 6,  "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 2  } }
+    {
+      "circuit_id": "EM01",
+      "way_module_id": "W1",
+      "designation": "GF corridor + escape route luminaires",
+      "voltage_class": "emergency_lighting",
+      "downstream_load_kw": 0.8,
+      "ocpd": {
+        "rating_a": 10,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 35
+      }
+    },
+    {
+      "circuit_id": "EM02",
+      "way_module_id": "W2",
+      "designation": "GF stairwell + exit signs",
+      "voltage_class": "emergency_lighting",
+      "downstream_load_kw": 0.4,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 25
+      }
+    },
+    {
+      "circuit_id": "EM03",
+      "way_module_id": "W3",
+      "designation": "L1 corridor + escape route",
+      "voltage_class": "emergency_lighting",
+      "downstream_load_kw": 0.8,
+      "ocpd": {
+        "rating_a": 10,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 45
+      }
+    },
+    {
+      "circuit_id": "EM04",
+      "way_module_id": "W4",
+      "designation": "L1 stairwell + exit signs",
+      "voltage_class": "emergency_lighting",
+      "downstream_load_kw": 0.4,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 35
+      }
+    },
+    {
+      "circuit_id": "EM05",
+      "way_module_id": "W5",
+      "designation": "L2 corridor + escape route",
+      "voltage_class": "emergency_lighting",
+      "downstream_load_kw": 0.8,
+      "ocpd": {
+        "rating_a": 10,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 55
+      }
+    },
+    {
+      "circuit_id": "EM06",
+      "way_module_id": "W6",
+      "designation": "L2 stairwell + exit signs",
+      "voltage_class": "emergency_lighting",
+      "downstream_load_kw": 0.4,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 45
+      }
+    },
+    {
+      "circuit_id": "EM07",
+      "way_module_id": "W7",
+      "designation": "EM panel battery charger",
+      "voltage_class": "emergency_lighting",
+      "downstream_load_kw": 1.2,
+      "ocpd": {
+        "rating_a": 16,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 2
+      }
+    },
+    {
+      "circuit_id": "EM08",
+      "way_module_id": "W8",
+      "designation": "EM panel monitoring + test circuit",
+      "voltage_class": "emergency_lighting",
+      "downstream_load_kw": 0.1,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 2
+      }
+    }
   ],
   "spare_ways": 4,
   "selectivity_results": [
-    { "upstream": "MSB-MAIN F05 (40A MCB Type C)", "downstream": "DB-EM main switch + all EM circuits", "verdict": "pass", "_note": "40A Type C MCB upstream selective against ≤16A Type C MCBs at DB-EM (2.5:1 minimum ratio met for EM07; 4:1+ ratio for EM01-EM06 and EM08 supports time-current selectivity per IEC 60898 cascade). Engineer-declared per manufacturer cascade table at 7.5 kA fault level (IEC 60364-5-53 Clause 536)." }
+    {
+      "upstream_id": "MSB-MAIN-F05",
+      "downstream_id": "DB-EM",
+      "selective_to_fault_ka": 7.5,
+      "source": "engineer_declared",
+      "tool_call_pending": false,
+      "code_clause": "IEC 60364-5-53 Clause 536 — 40A Type C MCB upstream selective against ≤16A Type C MCBs at DB-EM (2.5:1 minimum ratio met for EM07; 4:1+ ratio for EM01-EM06 and EM08 supports time-current selectivity per IEC 60898 cascade). Engineer-declared per manufacturer cascade table at 7.5 kA fault level."
+    }
   ],
   "compliance_summary": {
     "compliant": true,
     "non_compliance_flags": [
-      { "message": "DB-EM carries emergency-lighting life-safety load — BS EN 50171:2001+A1:2022 requires 3-hour central-battery autonomy minimum and IEC 60598-2-22:2014+A2:2020 governs luminaire conformity. AHJ-required survival duration (1h, 2h, or 3h per local building code) must be verified against the battery commissioning certificate; central-battery installer to provide IEC 61851/EN 50171 compliance certificate and 3-hour discharge test report at handover.", "code_clause": "BS EN 50171 §6.12 + IEC 60598-2-22 §22.6", "severity": "info" }
+      {
+        "message": "DB-EM carries emergency-lighting life-safety load — BS EN 50171:2001+A1:2022 requires 3-hour central-battery autonomy minimum and IEC 60598-2-22:2014+A2:2020 governs luminaire conformity. AHJ-required survival duration (1h, 2h, or 3h per local building code) must be verified against the battery commissioning certificate; central-battery installer to provide IEC 61851/EN 50171 compliance certificate and 3-hour discharge test report at handover.",
+        "code_clause": "BS EN 50171 §6.12 + IEC 60598-2-22 §22.6",
+        "severity": "info"
+      }
     ],
     "assumptions": [
       "DB-EM is the emergency-lighting central-battery sub-DB — `role: emergency_lighting_panel` flagged in the board block.",
@@ -72,7 +244,12 @@
     "ALL final-circuit cables FP200 LSZH for fire survival per IEC 60331 — EM luminaires must remain illuminated during fire-induced cable degradation.",
     "Central battery sized for 3-hour autonomy minimum per BS EN 50171 §6.12; AHJ may require shorter (1h) or longer (3h+) per local building code — verify at handover."
   ],
-  "drawn_as_symbols": ["MCB", "SWITCH_DISCONNECTOR", "CENTRAL_BATTERY", "EM_LUMINAIRE"],
+  "drawn_as_symbols": [
+    "MCB",
+    "SWITCH_DISCONNECTOR",
+    "CENTRAL_BATTERY",
+    "EM_LUMINAIRE"
+  ],
   "flags": [],
   "rationale": {
     "chat_summary": "DB-EM: 40A TPN emergency-lighting central-battery sub-DB, 8 circuits (6 EM lighting zones + charger + monitoring), fed from MSB-MAIN F05 with NO upstream RCD per IEC 60364-5-56:2018 §560.7. Central battery rated 3-hour autonomy per BS EN 50171; luminaires per IEC 60598-2-22. All Type C MCBs, FP200 LSZH cable throughout. INFO flag: AHJ survival duration to be verified at handover.",
@@ -81,50 +258,120 @@
         "title": "Board Identification",
         "summary": "DB-EM is the dedicated emergency-lighting sub-DB for the IEC 3-storey commercial office, located in the ground-floor EM equipment room adjacent to MSB-MAIN. Role flagged as `emergency_lighting_panel` so downstream SLD, riser, and cable-containment skills recognise it as a life-safety distribution.",
         "decisions": [
-          { "label": "Board role flagged as emergency_lighting_panel", "summary": "Signals life-safety distribution to all downstream skills (SLD, riser, segregation).", "rule": "db-layout role taxonomy", "code_clause": "IEC 60364-5-56:2018 §560" },
-          { "label": "Location: ground-floor EM equipment room", "summary": "Co-located with central battery cabinet and adjacent to MSB-MAIN to minimise feeder length and ease maintenance access.", "rule": "BS EN 50171 §6.5 central-battery siting", "code_clause": "BS EN 50171:2001+A1:2022 §6.5" }
+          {
+            "label": "Board role flagged as emergency_lighting_panel",
+            "summary": "Signals life-safety distribution to all downstream skills (SLD, riser, segregation).",
+            "rule": "db-layout role taxonomy",
+            "code_clause": "IEC 60364-5-56:2018 §560"
+          },
+          {
+            "label": "Location: ground-floor EM equipment room",
+            "summary": "Co-located with central battery cabinet and adjacent to MSB-MAIN to minimise feeder length and ease maintenance access.",
+            "rule": "BS EN 50171 §6.5 central-battery siting",
+            "code_clause": "BS EN 50171:2001+A1:2022 §6.5"
+          }
         ]
       },
       {
         "title": "Incoming Supply",
         "summary": "40A TPN intake fed from MSB-MAIN F05 via 80m 16mm² Cu XLPE submain. PFC attenuated from ~22.5 kA at MSB-MAIN to ~7.5 kA at DB-EM by the submain impedance — within 10 kA Icn of standard MCBs. NO upstream RCD per §560.7 life-safety exemption.",
         "decisions": [
-          { "label": "Supply class: essential", "summary": "DB-EM feeds life-safety EM luminaires only.", "rule": "db-layout supply_class taxonomy", "code_clause": "IEC 60364-5-56:2018 §560" },
-          { "label": "NO upstream RCD on essential circuits", "summary": "Earth-fault trip during fire-induced cable degradation would extinguish escape-route lighting.", "rule": "Life-safety RCD exemption", "code_clause": "IEC 60364-5-56:2018 §560.7" },
-          { "label": "Declared PFC 7.5 kA after 80m submain", "summary": "Cable-Z attenuated from 22.5 kA at MSB-MAIN; covered by standard 10 kA Icn MCBs without cascade backup.", "rule": "IEC 60909 series impedance addition", "code_clause": "IEC 60909-0" }
+          {
+            "label": "Supply class: essential",
+            "summary": "DB-EM feeds life-safety EM luminaires only.",
+            "rule": "db-layout supply_class taxonomy",
+            "code_clause": "IEC 60364-5-56:2018 §560"
+          },
+          {
+            "label": "NO upstream RCD on essential circuits",
+            "summary": "Earth-fault trip during fire-induced cable degradation would extinguish escape-route lighting.",
+            "rule": "Life-safety RCD exemption",
+            "code_clause": "IEC 60364-5-56:2018 §560.7"
+          },
+          {
+            "label": "Declared PFC 7.5 kA after 80m submain",
+            "summary": "Cable-Z attenuated from 22.5 kA at MSB-MAIN; covered by standard 10 kA Icn MCBs without cascade backup.",
+            "rule": "IEC 60909 series impedance addition",
+            "code_clause": "IEC 60909-0"
+          }
         ]
       },
       {
         "title": "Circuit Breakdown",
         "summary": "8 final circuits arranged as 6 EM lighting zones (3 corridor/escape-route + 3 stairwell/exit-sign across GF, L1, L2) plus EM07 battery-charger and EM08 monitoring/test. Corridor zones loaded ~0.8 kW each (LED escape-route luminaires); stairwell zones ~0.4 kW (lower density). EM07 battery charger sized 16A Type C for the central-battery boost-charge transient; EM08 monitoring is a low-current interface circuit. Cable lengths step up by floor as expected.",
         "decisions": [
-          { "label": "All Type C MCBs", "summary": "Handles LED driver inrush and battery-charger SMPS energisation; tighter than Type D for earth-fault disconnection.", "rule": "MCB curve selection for SMPS/electronic loads", "code_clause": "IEC 60898-1" },
-          { "label": "6A for stairwell + monitoring; 10A for corridor; 16A for charger", "summary": "Sized to nameplate steady-state load plus 25% headroom for inrush, avoiding nuisance trip on LED driver energisation.", "rule": "IEC 60364-4-43 overcurrent protection coordination", "code_clause": "IEC 60364-4-43" },
-          { "label": "FP200 LSZH 1.5/2.5mm² Cu throughout", "summary": "Fire-survival cable to keep EM luminaires energised during cable degradation in a fire.", "rule": "Life-safety cable survival category", "code_clause": "IEC 60331 / IEC 60364-5-56:2018 §560.8" }
+          {
+            "label": "All Type C MCBs",
+            "summary": "Handles LED driver inrush and battery-charger SMPS energisation; tighter than Type D for earth-fault disconnection.",
+            "rule": "MCB curve selection for SMPS/electronic loads",
+            "code_clause": "IEC 60898-1"
+          },
+          {
+            "label": "6A for stairwell + monitoring; 10A for corridor; 16A for charger",
+            "summary": "Sized to nameplate steady-state load plus 25% headroom for inrush, avoiding nuisance trip on LED driver energisation.",
+            "rule": "IEC 60364-4-43 overcurrent protection coordination",
+            "code_clause": "IEC 60364-4-43"
+          },
+          {
+            "label": "FP200 LSZH 1.5/2.5mm² Cu throughout",
+            "summary": "Fire-survival cable to keep EM luminaires energised during cable degradation in a fire.",
+            "rule": "Life-safety cable survival category",
+            "code_clause": "IEC 60331 / IEC 60364-5-56:2018 §560.8"
+          }
         ]
       },
       {
         "title": "Selectivity Analysis",
         "summary": "Upstream MSB-MAIN F05 = 40A Type C MCB. Downstream MCBs at DB-EM are 6-16A Type C. Worst-case ratio at EM07 (16A) = 2.5:1 — meets the minimum threshold for IEC 60898 same-curve cascade time-current selectivity at 7.5 kA fault level. Remaining circuits operate at 4:1+ ratio with comfortable selectivity margin. Verdict pass — engineer-declared per manufacturer cascade table.",
         "decisions": [
-          { "label": "40A:16A worst-case ratio = 2.5:1", "summary": "Meets minimum same-curve cascade threshold; manufacturer cascade table confirms selectivity to 7.5 kA.", "rule": "IEC 60898 cascade selectivity table", "code_clause": "IEC 60364-5-53 §536" },
-          { "label": "Engineer-declared per manufacturer table", "summary": "Same-curve Type C cascade requires manufacturer-specific confirmation; defer to fault-level skill for full coordination study.", "rule": "Selectivity verification source = engineer_declared", "code_clause": "IEC 60364-5-53 §536" }
+          {
+            "label": "40A:16A worst-case ratio = 2.5:1",
+            "summary": "Meets minimum same-curve cascade threshold; manufacturer cascade table confirms selectivity to 7.5 kA.",
+            "rule": "IEC 60898 cascade selectivity table",
+            "code_clause": "IEC 60364-5-53 §536"
+          },
+          {
+            "label": "Engineer-declared per manufacturer table",
+            "summary": "Same-curve Type C cascade requires manufacturer-specific confirmation; defer to fault-level skill for full coordination study.",
+            "rule": "Selectivity verification source = engineer_declared",
+            "code_clause": "IEC 60364-5-53 §536"
+          }
         ]
       },
       {
         "title": "Compliance Assessment",
         "summary": "DB-EM is compliant against IEC 60364-5-56:2018 §560 (life-safety supply chain), BS EN 50171:2001+A1:2022 (central-battery system), and IEC 60598-2-22:2014+A2:2020 (luminaire conformity). One INFO flag: AHJ-required survival duration (1h / 2h / 3h per local building code) must be verified against the battery commissioning certificate at handover. Central-battery installer to provide BS EN 50171 compliance certificate + 3-hour discharge test report.",
         "decisions": [
-          { "label": "Central battery rated 3-hour autonomy minimum", "summary": "BS EN 50171 §6.12 specifies minimum autonomy; AHJ may require longer per local building code.", "rule": "BS EN 50171 central-battery autonomy", "code_clause": "BS EN 50171:2001+A1:2022 §6.12" },
-          { "label": "Luminaires conform to IEC 60598-2-22", "summary": "Escape-route + stairwell + exit-sign luminaires fed at 230V from central battery via fire-rated cable; all listed as IEC 60598-2-22 compliant.", "rule": "Emergency-lighting luminaire standard", "code_clause": "IEC 60598-2-22:2014+A2:2020" },
-          { "label": "INFO flag — AHJ survival duration verification", "summary": "Not a non-compliance; design-decision flag requiring handover-time confirmation by AHJ + installer.", "rule": "Compliance flag taxonomy (severity=info)", "code_clause": "BS EN 50171 §6.12 + IEC 60598-2-22 §22.6" }
+          {
+            "label": "Central battery rated 3-hour autonomy minimum",
+            "summary": "BS EN 50171 §6.12 specifies minimum autonomy; AHJ may require longer per local building code.",
+            "rule": "BS EN 50171 central-battery autonomy",
+            "code_clause": "BS EN 50171:2001+A1:2022 §6.12"
+          },
+          {
+            "label": "Luminaires conform to IEC 60598-2-22",
+            "summary": "Escape-route + stairwell + exit-sign luminaires fed at 230V from central battery via fire-rated cable; all listed as IEC 60598-2-22 compliant.",
+            "rule": "Emergency-lighting luminaire standard",
+            "code_clause": "IEC 60598-2-22:2014+A2:2020"
+          },
+          {
+            "label": "INFO flag — AHJ survival duration verification",
+            "summary": "Not a non-compliance; design-decision flag requiring handover-time confirmation by AHJ + installer.",
+            "rule": "Compliance flag taxonomy (severity=info)",
+            "code_clause": "BS EN 50171 §6.12 + IEC 60598-2-22 §22.6"
+          }
         ]
       },
       {
         "title": "Schedule Notes",
         "summary": "Schedule emitted as 8-row table with 4 spare ways (W9-W12) for future expansion. Spare-way reservation aligns with typical EM-system growth patterns: basement EM zone, plant-room EM coverage, external escape-route luminaires, or addressable luminaire-monitoring interface. NO RCD across the entire DB-EM chain — life-safety exemption flagged on every row.",
         "decisions": [
-          { "label": "4 spare ways reserved", "summary": "Typical EM-system expansion: basement, plant-room, external escape routes, or addressable monitoring interface.", "rule": "Spare-way provisioning best practice", "code_clause": "IEC 60364-1:2005 §132.12 (design margin)" }
+          {
+            "label": "4 spare ways reserved",
+            "summary": "Typical EM-system expansion: basement, plant-room, external escape routes, or addressable monitoring interface.",
+            "rule": "Spare-way provisioning best practice",
+            "code_clause": "IEC 60364-1:2005 §132.12 (design margin)"
+          }
         ]
       }
     ]

@@ -537,6 +537,16 @@ escape route direction, confirm 1 lux on escape route centreline per BS EN 1838:
 - Never install IP20 in a bathroom zone, commercial kitchen, covered external
   area, or car park without flagging the IP non-compliance in the output
 
+## Field-name precision (avoid these common mistakes)
+
+The IR schema is strict about field names. The LLM has a tendency to generalise these to more "natural" English keys; the runtime validator will reject these emissions, so name them exactly as below:
+
+- **Zones**: every entry in `zones[]` carries `zone_id` (NOT `id`). The full required set for each zone is `[zone_id, circuit_id]`. The schema rejects `{"id": "Z1", ...}` — that's an immediate hard fail.
+- **Luminaires**: every entry in `luminaires[]` carries a `circuit_id` referencing the parent zone's circuit. Schema required set is `[id, x_mm, y_mm, circuit_id]`. Note the subtlety: the luminaire's OWN identifier IS named `id` (not `luminaire_id`) — only the zone uses `zone_id`. Every luminaire must declare its parent circuit explicitly; grouping by zone is NOT a substitute for the per-luminaire `circuit_id` field.
+- **Luminaire types**: `luminaire_type.initial_lumens` is an **integer** (e.g., `4200`, not `4200.0` or `"4200"`). The schema declares `type: integer`. A float or string here fails validation.
+
+If the runtime rejects your IR for one of these, re-read this section — most of the time it's a field-naming or type-precision slip, not a structural problem.
+
 ## Output Format
 
 After showing working in chat, emit this JSON block. This is passed directly

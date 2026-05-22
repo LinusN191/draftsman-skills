@@ -6,6 +6,9 @@
   "tool_name": "calc.cpc_adiabatic",
   "formula_reference": "BS 7671:2018+A3 Reg 543.1.3; Table 54.7; IEC 60364-5-54",
   "implementation_note": "Adiabatic equation S = sqrt(I² × t) / k. Requires lookup against the k-factor table (Table 54.7) keyed on (conductor material, insulation, conductor temp limit). Also requires reading the protective device's I²t let-through curve at the prospective fault current. Inline LLM math reliably mis-reads the k table and miscalls the let-through interpolation; must be tool-executed.",
+  "_consuming_skills": [
+    "electrical/cable-sizing (primary, since v1.0.0)"
+  ],
   "inputs": [
     {"id": "fault_current_a",        "unit": "A rms",         "type": "float", "description": "Prospective earth-fault current at the point of consideration (typically from PSCC at the load end)"},
     {"id": "disconnect_time_s",      "unit": "s",             "type": "float", "description": "Time for the protective device to clear the fault at fault_current_a (read from its time-current curve)"},

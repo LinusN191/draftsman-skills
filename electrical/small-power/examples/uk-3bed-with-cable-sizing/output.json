@@ -1,0 +1,443 @@
+{
+  "drawing_type": "small_power_layout",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "uk-3bed-with-cable-sizing-eg01",
+    "skill_version": "1.0.0",
+    "produced_at": "2026-05-19T00:00:00Z",
+    "consumed_intents": [
+      {
+        "intent_type": "cable-sizing",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/cable-sizing"
+      }
+    ]
+  },
+  "jurisdiction": "GB",
+  "supply_origin": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.35,
+    "psc_declared_ka": 6.0
+  },
+  "parent_db": {
+    "designation": "CU-MAIN",
+    "pfc_at_busbar_ka": 6.0
+  },
+  "circuits": [
+    {
+      "circuit_id": "C01",
+      "designation": "Ground-floor ring final circuit (kitchen, utility, dining, lounge + outdoor spur)",
+      "topology": "ring",
+      "ocpd": {
+        "rating_a": 32,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 6.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC",
+        "cores": 3,
+        "length_m_total": 32.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": false,
+      "verified_zs_ohm": 0.9318,
+      "estimated_max_load_kw": 5.5,
+      "diversified_max_load_a": 16.0,
+      "rooms_covered": ["kitchen", "utility", "dining", "lounge", "outdoor"]
+    },
+    {
+      "circuit_id": "C02",
+      "designation": "First-floor ring final circuit (3 bedrooms)",
+      "topology": "ring",
+      "ocpd": {
+        "rating_a": 32,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 6.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC",
+        "cores": 3,
+        "length_m_total": 28.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": false,
+      "verified_zs_ohm": 0.8590,
+      "estimated_max_load_kw": 2.0,
+      "diversified_max_load_a": 6.5,
+      "rooms_covered": ["bedroom-1", "bedroom-2", "bedroom-3"]
+    },
+    {
+      "circuit_id": "C03",
+      "designation": "Cooker outlet (dedicated radial, kitchen)",
+      "topology": "dedicated_radial",
+      "ocpd": {
+        "rating_a": 32,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 6.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "6mm² T+E",
+        "cores": 3,
+        "length_m_total": 8.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": false,
+      "verified_zs_ohm": 0.4142,
+      "estimated_max_load_kw": 7.0,
+      "diversified_max_load_a": 25.0,
+      "rooms_covered": ["kitchen"]
+    },
+    {
+      "circuit_id": "C04",
+      "designation": "Immersion heater (dedicated radial, utility cylinder)",
+      "topology": "dedicated_radial",
+      "ocpd": {
+        "rating_a": 16,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 6.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² T+E",
+        "cores": 3,
+        "length_m_total": 4.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": false,
+      "verified_zs_ohm": 0.4227,
+      "estimated_max_load_kw": 3.0,
+      "diversified_max_load_a": 13.0,
+      "rooms_covered": ["utility"]
+    },
+    {
+      "circuit_id": "C05",
+      "designation": "Bathroom shaver supply (BS EN 61558-2-5 SSU)",
+      "topology": "dedicated_radial",
+      "ocpd": {
+        "rating_a": 6,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 6.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm² T+E",
+        "cores": 3,
+        "length_m_total": 3.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": false,
+      "verified_zs_ohm": 0.4412,
+      "estimated_max_load_kw": 0.5,
+      "diversified_max_load_a": 2.2,
+      "rooms_covered": ["bathroom"]
+    }
+  ],
+  "rooms": [
+    {
+      "room_id": "kitchen",
+      "room_type": "kitchen_domestic",
+      "dimensions_m": {"length": 4.5, "width": 3.5, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "kitchen-S01", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
+        {"id": "kitchen-S02", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
+        {"id": "kitchen-S03", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
+        {"id": "kitchen-S04", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
+        {"id": "kitchen-S05", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "kitchen-S06", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "kitchen-S07", "type": "BS_4177_cooker_control_unit_45A", "mount": "wall", "height_mm": 1350, "circuit_id": "C03"}
+      ]
+    },
+    {
+      "room_id": "utility",
+      "room_type": "utility_domestic",
+      "dimensions_m": {"length": 2.5, "width": 2.0, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "utility-S01", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
+        {"id": "utility-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "utility-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "utility-S04", "type": "switched_connection_unit_20A_BS_EN_60669", "mount": "wall", "height_mm": 1350, "circuit_id": "C04", "spur_purpose": "immersion heater fixed feed"}
+      ]
+    },
+    {
+      "room_id": "dining",
+      "room_type": "dining_domestic",
+      "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "dining-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "dining-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "dining-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "dining-S04", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"}
+      ]
+    },
+    {
+      "room_id": "lounge",
+      "room_type": "lounge_domestic",
+      "dimensions_m": {"length": 5.0, "width": 4.0, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "lounge-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "lounge-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "lounge-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "lounge-S04", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "lounge-S05", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "lounge-S06", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"}
+      ]
+    },
+    {
+      "room_id": "bedroom-1",
+      "room_type": "bedroom_domestic",
+      "dimensions_m": {"length": 4.0, "width": 3.5, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "bedroom-1-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
+        {"id": "bedroom-1-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
+        {"id": "bedroom-1-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
+        {"id": "bedroom-1-S04", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"}
+      ]
+    },
+    {
+      "room_id": "bedroom-2",
+      "room_type": "bedroom_domestic",
+      "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "bedroom-2-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
+        {"id": "bedroom-2-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
+        {"id": "bedroom-2-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"}
+      ]
+    },
+    {
+      "room_id": "bedroom-3",
+      "room_type": "bedroom_domestic",
+      "dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "bedroom-3-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
+        {"id": "bedroom-3-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
+        {"id": "bedroom-3-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"}
+      ]
+    },
+    {
+      "room_id": "bathroom",
+      "room_type": "bathroom_domestic",
+      "dimensions_m": {"length": 2.5, "width": 2.0, "height": 2.4},
+      "special_location": "bathroom_zone_3",
+      "sockets": [
+        {"id": "bathroom-S01", "type": "BS_EN_61558_2_5_shaver_supply_unit", "mount": "wall", "height_mm": 1400, "circuit_id": "C05"}
+      ]
+    },
+    {
+      "room_id": "outdoor",
+      "room_type": "garden_external",
+      "dimensions_m": {"length": 5.0, "width": 4.0, "height": 0.0},
+      "special_location": "outdoor",
+      "sockets": [
+        {"id": "outdoor-S01", "type": "BS_1363_double_switched_13A_weatherproof", "mount": "external_wall", "height_mm": 1100, "circuit_id": "C01", "fed_by_spur": true, "spur_load_kw": 1.5, "spur_purpose": "garden socket from FCU on ring", "ip_rating": "IP65"}
+      ]
+    }
+  ],
+  "drawing_layout": {
+    "sheet_size": "A1",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "drawing_scale": "1:50"
+  },
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      {
+        "message": "Bathroom zones 1 and 2 contain no socket outlets in this design; only zone 3 shaver supply (BS EN 61558-2-5) provided. Documented for clarity per BS 7671:2018+A2:2022 Part 7-701.",
+        "code_clause": "BS 7671:2018+A2:2022 §701.512.3",
+        "severity": "info"
+      },
+      {
+        "message": "Outdoor socket fed via 13A fused spur from ring final circuit per BS 7671 §522.6.201 and IET OSG Appendix B; IP65 enclosure on external wall.",
+        "code_clause": "BS 7671:2018+A2:2022 §522.6.201",
+        "severity": "info"
+      },
+      {
+        "message": "Zs resolved from consumed cable-sizing intent (v1.1 hybrid mode); verified_zs_ohm range 0.41-0.93Ω across 5 circuits, all within Zs_max per BS 7671:2018+A2:2022 Table 41.3. Ring continuity (r1/rn/r2) still to be confirmed by measurement at install per §612.",
+        "code_clause": "BS 7671:2018+A2:2022 §411.4.5",
+        "severity": "info"
+      }
+    ],
+    "assumptions": [
+      "Zs resolved from consumed cable-sizing intent (electrical/cable-sizing v1.0.0) — verified_zs_ohm per circuit computed from Ze + (r1_plus_r2 / 1000) × length_m + (reactance / 1000) × length_m. v1.1 hybrid consumption mode (cable-sizing intent present).",
+      "Ze=0.35Ω declared by DNO at consumer cut-out; not yet measured on site.",
+      "PSCC=6kA declared at origin; CU busbar and all RCBOs rated 6kA Icu (IEC 60898-1).",
+      "Ground-floor ring (kitchen+utility+dining+lounge) covers ~52 m² floor area, within the IET OSG §8.4.4 100 m² recommended limit for a 32A ring.",
+      "First-floor ring (3 bedrooms) covers ~36 m², within IET OSG §8.4.4 limit.",
+      "Diversity factors per IET OSG Appendix A: cooker 10A + 30% remainder + 5A for socket on CCU; rings assumed simultaneous load ≤ 16A per ring under domestic usage profile.",
+      "Cable routes assumed Reference Method 100/101 (clipped direct to/in stud or under floorboards); final route to be coordinated with cable-containment skill.",
+      "Outdoor socket spur load ≤ 1.5 kW (lawnmower-equivalent); RCD 30mA primary protection per §411.3.3 covers additional protection per §522.6.202."
+    ]
+  },
+  "flags": [
+    "TOOL-CALL-PENDING:calc.diversity_factor"
+  ],
+  "drawing_notes": [
+    "All sockets BS 1363 double 13A switched unless noted; mount above_worktop = 150mm above finished worktop (typ. 1150mm AFFL); mount wall = 450mm AFFL per Part M.",
+    "Bathroom zone 3 SSU per BS EN 61558-2-5; no general-purpose sockets within 3m of zone 1 boundary.",
+    "Outdoor socket IP65 fed via 13A FCU from C01 ring; weatherproof enclosure on external wall, 1100mm AFFL.",
+    "Drawing per BS 1192:2007+A2:2016 layer naming (E-POW-OUTLET-G for ground-floor power, E-POW-OUTLET-1 for first-floor)."
+  ],
+  "rationale": {
+    "chat_summary": "UK 3-bed dwelling, TN-C-S 230V, Ze=0.35Ω, PSCC=6kA. small-power v1.1 hybrid consumption of cable-sizing intent — 5 circuits with verified_zs_ohm resolved (range 0.41-0.93Ω, all within Zs_max for 32A type-B MCB per BS 7671:2018+A2:2022 Table 41.3). 2 ring finals + 3 dedicated radials. Bathroom zone_3 SSU only. All RCD type-A 30mA. calc.zs_loop_impedance deferral cleared by intent consumption.",
+    "sections": [
+      {
+        "title": "Jurisdiction + Supply",
+        "summary": "GB jurisdiction, BS 7671:2018+A2:2022 18th Edition Amendment 2. TN-C-S single-phase 230V DNO supply with declared Ze=0.35Ω and PSCC=6kA at origin. Parent consumer unit CU-MAIN is a 12-way Amendment-3 board with 6kA Icu busbar.",
+        "decisions": [
+          {
+            "label": "TN-C-S supply confirmed",
+            "summary": "DNO has provided combined neutral-earth at the cut-out; main earthing terminal bonded to incoming PEN per §411.4.2.",
+            "rule": "TN-C-S earthing arrangement",
+            "code_clause": "BS 7671:2018+A2:2022 §411.4.2"
+          },
+          {
+            "label": "PSCC 6kA → all RCBOs ≥6kA Icu",
+            "summary": "Declared 6kA at origin so every device on CU busbar must have ≥6kA breaking capacity per IEC 60898-1.",
+            "rule": "OCPD breaking capacity ≥ prospective fault current",
+            "code_clause": "BS 7671:2018+A2:2022 §434.5.1"
+          }
+        ]
+      },
+      {
+        "title": "Circuit Topology",
+        "summary": "Two 32A ring final circuits + three dedicated radials. Ground-floor ring (~52 m²) and first-floor ring (~36 m²) both within IET OSG §8.4.4 100 m² recommended footprint per 32A ring. Cooker, immersion and shaver each get a dedicated radial sized to their nameplate load.",
+        "decisions": [
+          {
+            "label": "Ring topology selected (GB jurisdiction)",
+            "summary": "BS 7671 permits ring final circuits in GB; this is the dominant idiom for domestic 13A socket networks.",
+            "rule": "Ring final circuit per BS 7671 §433.1.5",
+            "code_clause": "BS 7671:2018+A2:2022 §433.1.5"
+          },
+          {
+            "label": "Cooker on dedicated 32A radial",
+            "summary": "7 kW hob+oven exceeds typical ring contribution under diversity; sized 6mm² T+E to a 45A CCU per IET OSG Table A1.",
+            "rule": "IET OSG Appendix A cooker diversity (10A + 30% remainder + 5A for socket on CCU)",
+            "code_clause": "IET On-Site Guide Appendix A, Table A1"
+          }
+        ]
+      },
+      {
+        "title": "Special Locations",
+        "summary": "Bathroom is Part 7-701 location. Zones 0/1/2 receive no socket outlets; only a zone-3 BS EN 61558-2-5 shaver supply unit on C05. Outdoor garden socket is on external wall, IP65, fed by 13A FCU spur from C01 per §522.6.201.",
+        "decisions": [
+          {
+            "label": "Bathroom zone 3 SSU only",
+            "summary": "BS 7671 prohibits general-purpose sockets within 3m of zone 1 boundary; shaver supply per BS EN 61558-2-5 is the only permitted socket.",
+            "rule": "BS 7671 §701.512.3 — shaver supply exception",
+            "code_clause": "BS 7671:2018+A2:2022 §701.512.3"
+          },
+          {
+            "label": "Outdoor socket IP65 + 30mA RCD",
+            "summary": "External wall socket installed in IP65 enclosure; 30mA RCD upstream provides §522.6.202 additional protection.",
+            "rule": "External installations require IP-rated enclosure + 30mA RCD",
+            "code_clause": "BS 7671:2018+A2:2022 §522.6.201 / §522.6.202"
+          }
+        ]
+      },
+      {
+        "title": "RCD Posture",
+        "summary": "All five circuits use Type A 30mA RCBOs per §411.3.3 additional protection for socket outlets ≤32A in domestic premises. No Type B requirement: no IT equipment producing smooth DC residual currents (EV charge points, PV inverters) on these circuits. No §411 exceptions documented.",
+        "decisions": [
+          {
+            "label": "Type A 30mA across all circuits",
+            "summary": "Domestic dwelling with no DC-injecting loads; Type A handles pulsating DC from typical electronics and is the BS 7671 default.",
+            "rule": "BS 7671 §411.3.3 additional protection for socket outlets ≤32A",
+            "code_clause": "BS 7671:2018+A2:2022 §411.3.3"
+          }
+        ]
+      },
+      {
+        "title": "OCPD + Cable",
+        "summary": "Rings: 32A Type B RCBO + 2.5mm² Cu PVC ring with 1.5mm² CPC. Cooker: 32A RCBO + 6mm² T+E. Immersion: 16A RCBO + 2.5mm² T+E. Shaver: 6A RCBO + 1.5mm² T+E. All breakers Type B (no significant inrush). All RCBOs ≥6kA Icu to match parent PFC.",
+        "decisions": [
+          {
+            "label": "Ring cable 2.5mm² + 1.5mm² CPC",
+            "summary": "BS 7671 Table 7.1 standard ring final circuit composition for 32A protection per §433.1.5.",
+            "rule": "BS 7671 Table 7.1 final circuit composition",
+            "code_clause": "BS 7671:2018+A2:2022 Table 7.1"
+          },
+          {
+            "label": "Type B curve for all RCBOs",
+            "summary": "Domestic loads have no significant inrush; Type B trip 3–5× In gives best fault protection and Zs margin.",
+            "rule": "Curve selection per load profile (BS EN 60898-1)",
+            "code_clause": "BS EN 60898-1"
+          }
+        ]
+      },
+      {
+        "title": "Diversity + Zs",
+        "summary": "Diversity factors per IET OSG App A. Zs resolution in v1.1 hybrid mode: cable-sizing intent consumed; verified_zs_ohm computed per circuit from Ze + (r1_plus_r2/1000) × length + (reactance/1000) × length. Range 0.41-0.93Ω across 5 circuits, all within Zs_max for 32A type-B MCB per BS 7671:2018+A2:2022 Table 41.3. TOOL-CALL-PENDING flag dropped.",
+        "decisions": [
+          {
+            "label": "Cooker diversified to 25A",
+            "summary": "30A nameplate → 10A + 30% × (30-10) + 5A (CCU socket) = 21A; rounded to 25A for design margin on 32A breaker.",
+            "rule": "IET OSG Appendix A cooker diversity",
+            "code_clause": "IET On-Site Guide Appendix A, Table A1",
+            "inputs": {"nameplate_a": 30, "diversity_formula": "10 + 0.30*(In-10) + 5"}
+          },
+          {
+            "label": "Zs resolved from cable-sizing intent (v1.1 hybrid)",
+            "summary": "Loop impedance computed per circuit as Ze + (r1_plus_r2/1000) × length + (reactance/1000) × length using consumed cable-sizing intent. verified_zs_ohm populated; tool_call_pending_for_zs_verification=false; TOOL-CALL-PENDING:calc.zs_loop_impedance dropped from flags.",
+            "rule": "v1.1 hybrid intent consumption — Zs resolution per spec §2 (cable-sizing-skill-design-refresh)",
+            "code_clause": "BS 7671:2018+A2:2022 §411.4.5"
+          }
+        ]
+      },
+      {
+        "title": "Compliance + Assumptions",
+        "summary": "Design is compliant (compliant=true). Three info-severity flags document the bathroom zone configuration (no sockets in zones 1/2), the outdoor spur arrangement, and the deferred Zs verification. Engineer assumes Ze=0.35Ω and PSCC=6kA declared at the consumer cut-out will be verified on energisation.",
+        "decisions": [
+          {
+            "label": "Ze and PSCC declared, not measured",
+            "summary": "DNO declared values used for design; site verification at first energisation per §612.",
+            "rule": "Initial verification requirements",
+            "code_clause": "BS 7671:2018+A2:2022 Chapter 64 / §612"
+          }
+        ]
+      },
+      {
+        "title": "Drafting References",
+        "summary": "Single A1 sheet at 1:50 scale per BS 1192:2007+A2:2016 layer naming. Layers split by storey: E-POW-OUTLET-G (ground) and E-POW-OUTLET-1 (first). Bathroom zones annotated per Part 7-701 figures.",
+        "decisions": [
+          {
+            "label": "A1 @ 1:50 single-sheet output",
+            "summary": "~100 m² 2-storey dwelling fits one A1 sheet at 1:50 with both floor plans, panel schedule and notes.",
+            "rule": "BS 1192:2007+A2:2016 drawing conventions",
+            "code_clause": "BS 1192:2007+A2:2016"
+          }
+        ]
+      }
+    ]
+  }
+}

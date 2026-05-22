@@ -2,187 +2,329 @@
   "drawing_type": "cable_sizing_study",
   "version": "1.0.0",
   "meta": {
-    "project_id": "us-ind-cs-eg03",
-    "skill_version": "cable-sizing/1.0.0",
-    "produced_at": "2026-05-17T09:00:00Z",
+    "project_id": "us-industrial-eg01",
+    "skill_version": "1.0.0",
+    "produced_at": "2026-05-20T00:00:00Z",
     "consumed_intents": []
   },
   "jurisdiction": "US",
   "project_supply": {
     "voltage_v": 480,
-    "phases": "three",
-    "frequency_hz": 60,
-    "earthing_system": "NEC_grounded"
+    "phase_arrangement": "TPN",
+    "system_type": "TN-C-S"
   },
   "cascade": [
     {
-      "node_id": "SERVICE",
-      "parent_node_id": null,
+      "node_id": "SERVICE.1200A",
       "node_kind": "service_entrance",
-      "designation": "Service entrance 1200A \u2014 copper THWN-2 in cable tray",
+      "designation": "1200A 480V 3-phase service entrance",
       "load": {
-        "ib_a": 1050,
+        "ib_a": 950,
         "in_a": 1200,
-        "phases": "three",
+        "phases": "three_phase_3wire",
         "load_type": "mixed",
-        "pf": 0.92
+        "pf": 0.85
       },
       "route": {
-        "length_m": 35,
-        "installation_method": "NEC_cable_tray",
+        "length_m": 3,
+        "installation_method": "nec_cable_tray",
         "ambient_c": 30,
         "grouping_count": 1,
-        "in_thermal_insulation": false
+        "terminal_temp_rating_c": 75
       },
       "harmonic_content_pct": 0,
+      "parent_node_ifault_ka": 35.0,
+      "t_clear_s": 0.05,
       "selection": {
-        "phase_csa": "500",
-        "cpc_csa": "3/0",
+        "phase_csa": "350 kcmil",
+        "cpc_csa": "3/0 AWG",
         "material": "copper",
-        "insulation": "thwn_75",
-        "cable_type": "thwn2",
-        "parallel_count": 2,
+        "insulation": "thwn_2_90",
+        "cable_type": "thwn_2",
+        "parallel_count": 4,
         "binding_constraint": "parallel_required",
         "walk_up_trail": [
           {
-            "csa": "750",
+            "csa_attempted": "1000 kcmil",
+            "accepted": false,
             "rejected_by": "iz_vs_in",
-            "iz_corrected_a": 535
+            "iz_corrected_a": 545.0
           },
           {
-            "csa": "1000",
-            "rejected_by": "iz_vs_in",
-            "iz_corrected_a": 615
-          },
-          {
-            "csa": "500 \u00d72 parallel",
+            "csa_attempted": "350 kcmil",
             "accepted": true,
-            "iz_corrected_a": 1280
+            "iz_corrected_a": 1240.0,
+            "vd_segment_pct": 0.1,
+            "vd_cumulative_pct": 0.1
           }
         ]
       },
       "checks": {
-        "iz_corrected_a": 1280,
+        "iz_corrected_a": 1240.0,
         "iz_vs_in_pass": true,
-        "vd_segment_pct": 1.6,
-        "vd_cumulative_pct": 1.6,
-        "vd_pass": true,
+        "vd_segment_pct": 0.1,
+        "vd_cumulative_pct": 0.1,
         "vd_limit_pct": 3.0,
-        "vd_limit_source": "NEC 2023 215.2(A)(1) IN 2 feeder-only",
+        "vd_limit_source": "NEC 2023 Article 215.2(A)(1) Informational Note 2 (feeder portion ≤ 3%)",
+        "vd_pass": true,
         "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "NEC 2023 Article 250.122 Table 250.122",
         "motor_starting_vd_pct": null,
-        "harmonic_ch_factor": null,
+        "motor_starting_vd_pass": null,
         "tool_call_pending": true
       }
     },
     {
-      "node_id": "SERVICE.F01",
-      "parent_node_id": "SERVICE",
+      "node_id": "MCC-1.F01",
+      "parent_node_id": "SERVICE.1200A",
       "node_kind": "feeder",
-      "designation": "Aluminium feeder to MCC \u2014 XHHW-2",
+      "designation": "Feeder service entrance → MCC-1",
       "load": {
         "ib_a": 320,
         "in_a": 400,
-        "phases": "three",
-        "load_type": "power",
-        "pf": 0.92
+        "phases": "three_phase_3wire",
+        "load_type": "mixed",
+        "pf": 0.85
       },
       "route": {
-        "length_m": 45,
-        "installation_method": "NEC_cable_tray",
+        "length_m": 30,
+        "installation_method": "nec_cable_tray",
         "ambient_c": 30,
         "grouping_count": 1,
-        "in_thermal_insulation": false
+        "terminal_temp_rating_c": 75
       },
       "harmonic_content_pct": 0,
+      "parent_node_ifault_ka": 32.0,
+      "t_clear_s": 0.05,
       "selection": {
-        "phase_csa": "600",
-        "cpc_csa": "1/0",
+        "phase_csa": "900 kcmil",
+        "cpc_csa": "1/0 AWG",
         "material": "aluminium",
-        "insulation": "xhhw2_90",
-        "cable_type": "xhhw2",
+        "insulation": "xhhw_2_90",
+        "cable_type": "xhhw_2",
         "parallel_count": 1,
         "binding_constraint": "iz_vs_in",
         "walk_up_trail": [
           {
-            "csa": "600",
+            "csa_attempted": "750 kcmil",
+            "accepted": false,
+            "rejected_by": "iz_vs_in",
+            "iz_corrected_a": 385.0
+          },
+          {
+            "csa_attempted": "900 kcmil",
             "accepted": true,
-            "iz_corrected_a": 420
+            "iz_corrected_a": 425.0,
+            "vd_segment_pct": 0.9,
+            "vd_cumulative_pct": 1.0
           }
         ]
       },
       "checks": {
-        "iz_corrected_a": 420,
+        "iz_corrected_a": 425.0,
         "iz_vs_in_pass": true,
-        "vd_segment_pct": 1.8,
-        "vd_cumulative_pct": 3.4,
-        "vd_pass": true,
+        "vd_segment_pct": 0.9,
+        "vd_cumulative_pct": 1.0,
         "vd_limit_pct": 5.0,
-        "vd_limit_source": "NEC 2023 215.2(A)(1) IN 2 feeder+branch",
+        "vd_limit_source": "NEC 2023 Article 215.2(A)(1) Informational Note 2 (feeder + branch combined ≤ 5%)",
+        "vd_pass": true,
         "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "NEC 2023 Article 250.122 Table 250.122",
         "motor_starting_vd_pct": null,
-        "harmonic_ch_factor": null,
+        "motor_starting_vd_pass": null,
         "tool_call_pending": true
       }
     },
     {
-      "node_id": "MCC.M01",
-      "parent_node_id": "SERVICE.F01",
+      "node_id": "MCC-1.M01",
+      "parent_node_id": "MCC-1.F01",
       "node_kind": "final_circuit",
-      "designation": "500 hp chiller motor DOL",
+      "designation": "500 hp DOL motor M01",
       "load": {
         "ib_a": 590,
         "in_a": 700,
-        "phases": "three",
+        "phases": "three_phase_3wire",
         "load_type": "motor",
         "pf": 0.85,
-        "locked_rotor_multiplier": 6.0
+        "load_class_motor": {
+          "rated_kw": 373,
+          "lra_factor": 6.0,
+          "design_code": "NEMA_B"
+        }
       },
       "route": {
-        "length_m": 30,
-        "installation_method": "NEC_conduit",
+        "length_m": 25,
+        "installation_method": "nec_conduit",
         "ambient_c": 30,
         "grouping_count": 1,
-        "in_thermal_insulation": false
+        "terminal_temp_rating_c": 75
       },
       "harmonic_content_pct": 0,
+      "parent_node_ifault_ka": 28.0,
+      "t_clear_s": 0.1,
       "selection": {
-        "phase_csa": "750",
-        "cpc_csa": "2/0",
+        "phase_csa": "500 kcmil",
+        "cpc_csa": "2/0 AWG",
         "material": "copper",
-        "insulation": "thwn_75",
-        "cable_type": "thwn2",
-        "parallel_count": 1,
-        "binding_constraint": "motor_starting_vd",
+        "insulation": "thwn_2_90",
+        "cable_type": "thwn_2",
+        "parallel_count": 2,
+        "binding_constraint": "parallel_required",
         "walk_up_trail": [
           {
-            "csa": "500",
-            "rejected_by": "motor_starting_vd",
-            "motor_starting_vd_pct": 11.4
+            "csa_attempted": "1000 kcmil",
+            "accepted": false,
+            "rejected_by": "iz_vs_in",
+            "iz_corrected_a": 545.0
           },
           {
-            "csa": "600",
-            "rejected_by": "motor_starting_vd",
-            "motor_starting_vd_pct": 10.5
-          },
-          {
-            "csa": "750",
+            "csa_attempted": "500 kcmil",
             "accepted": true,
-            "motor_starting_vd_pct": 9.6
+            "iz_corrected_a": 760.0,
+            "vd_segment_pct": 1.5,
+            "vd_cumulative_pct": 2.5
           }
         ]
       },
       "checks": {
-        "iz_corrected_a": 760,
+        "iz_corrected_a": 760.0,
         "iz_vs_in_pass": true,
-        "vd_segment_pct": 1.6,
-        "vd_cumulative_pct": 5.0,
-        "vd_pass": true,
+        "vd_segment_pct": 1.5,
+        "vd_cumulative_pct": 2.5,
         "vd_limit_pct": 5.0,
-        "vd_limit_source": "NEC 2023 215.2(A)(1) IN 2 feeder+branch",
+        "vd_limit_source": "NEC 2023 Article 215.2(A)(1) Informational Note 2 (feeder + branch combined ≤ 5%)",
+        "vd_pass": true,
         "cpc_adiabatic_pass": true,
-        "motor_starting_vd_pct": 9.6,
-        "harmonic_ch_factor": null,
+        "cpc_adiabatic_source": "NEC 2023 Article 250.122 Table 250.122",
+        "motor_starting_vd_pct": 9.0,
+        "motor_starting_vd_pass": true,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "MCC-1.M02",
+      "parent_node_id": "MCC-1.F01",
+      "node_kind": "final_circuit",
+      "designation": "200 hp pump motor M02",
+      "load": {
+        "ib_a": 240,
+        "in_a": 300,
+        "phases": "three_phase_3wire",
+        "load_type": "motor",
+        "pf": 0.85,
+        "load_class_motor": {
+          "rated_kw": 149,
+          "lra_factor": 6.0,
+          "design_code": "NEMA_B"
+        }
+      },
+      "route": {
+        "length_m": 18,
+        "installation_method": "nec_conduit",
+        "ambient_c": 30,
+        "grouping_count": 1,
+        "terminal_temp_rating_c": 75
+      },
+      "harmonic_content_pct": 0,
+      "parent_node_ifault_ka": 29.0,
+      "t_clear_s": 0.1,
+      "selection": {
+        "phase_csa": "350 kcmil",
+        "cpc_csa": "4 AWG",
+        "material": "copper",
+        "insulation": "thwn_2_90",
+        "cable_type": "thwn_2",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa_attempted": "250 kcmil",
+            "accepted": false,
+            "rejected_by": "iz_vs_in",
+            "iz_corrected_a": 255.0
+          },
+          {
+            "csa_attempted": "350 kcmil",
+            "accepted": true,
+            "iz_corrected_a": 310.0,
+            "vd_segment_pct": 0.9,
+            "vd_cumulative_pct": 1.9
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 310.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 0.9,
+        "vd_cumulative_pct": 1.9,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "NEC 2023 Article 215.2(A)(1) Informational Note 2 (feeder + branch combined ≤ 5%)",
+        "vd_pass": true,
+        "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "NEC 2023 Article 250.122 Table 250.122",
+        "motor_starting_vd_pct": 5.4,
+        "motor_starting_vd_pass": true,
+        "tool_call_pending": true
+      }
+    },
+    {
+      "node_id": "MCC-1.F02.B01",
+      "parent_node_id": "MCC-1.F01",
+      "node_kind": "final_circuit",
+      "designation": "20A 120V receptacle branch",
+      "load": {
+        "ib_a": 16,
+        "in_a": 20,
+        "phases": "single",
+        "load_type": "power_general",
+        "pf": 1.0
+      },
+      "route": {
+        "length_m": 22,
+        "installation_method": "nec_conduit",
+        "ambient_c": 30,
+        "grouping_count": 1,
+        "terminal_temp_rating_c": 75
+      },
+      "harmonic_content_pct": 0,
+      "parent_node_ifault_ka": 10.0,
+      "t_clear_s": 0.4,
+      "selection": {
+        "phase_csa": "12 AWG",
+        "cpc_csa": "12 AWG",
+        "material": "copper",
+        "insulation": "thwn_2_90",
+        "cable_type": "thwn_2",
+        "parallel_count": 1,
+        "binding_constraint": "iz_vs_in",
+        "walk_up_trail": [
+          {
+            "csa_attempted": "14 AWG",
+            "accepted": false,
+            "rejected_by": "iz_vs_in",
+            "iz_corrected_a": 20.0
+          },
+          {
+            "csa_attempted": "12 AWG",
+            "accepted": true,
+            "iz_corrected_a": 25.0,
+            "vd_segment_pct": 2.3,
+            "vd_cumulative_pct": 3.3
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 25.0,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 2.3,
+        "vd_cumulative_pct": 3.3,
+        "vd_limit_pct": 5.0,
+        "vd_limit_source": "NEC 2023 Article 215.2(A)(1) Informational Note 2 (feeder + branch combined ≤ 5%)",
+        "vd_pass": true,
+        "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "NEC 2023 Article 250.122 Table 250.122",
+        "motor_starting_vd_pct": null,
+        "motor_starting_vd_pass": null,
         "tool_call_pending": true
       }
     }
@@ -191,101 +333,189 @@
     "compliant": true,
     "non_compliance_flags": [
       {
-        "message": "Motor starting Vd at MCC.M01 reaches 9.6% \u2014 within 10% limit but close. Consider soft-starter to reduce to 1.6%.",
-        "code_clause": "NEC 2023 430.6",
-        "severity": "info",
-        "node_id": "MCC.M01"
+        "node_id": "SERVICE.1200A",
+        "message": "Parallel cables required at 1200A service entrance: ladder exhausted at 1000 kcmil Cu THWN-2 75°C terminal column (Iz ≈ 545 A) for 1200 A In; 4 × 350 kcmil parallel Cu THWN-2 accepted per NEC 2023 Article 310.10(H)(1) (each parallel ≥ 1/0 AWG, equal length 3 m, common terminations). Iz_corrected = 4 × 310 ≈ 1240 A.",
+        "code_clause": "NEC 2023 Article 310.10(H)(1)",
+        "severity": "info"
+      },
+      {
+        "node_id": "MCC-1.F01",
+        "message": "Aluminium 900 kcmil XHHW-2 feeder sized at 75°C terminal column per NEC 2023 Article 110.14(C) (terminal temperature limitation): 750 kcmil rejected (Iz_75 ≈ 385 A < Ib_continuous × 1.25 = 400 A); 900 kcmil accepted (Iz_75 ≈ 425 A ≥ 400 A). CPC = 1/0 AWG Cu per Table 250.122 for 400 A OCPD.",
+        "code_clause": "NEC 2023 Article 110.14(C) + Article 240.4(B) + Table 250.122",
+        "severity": "info"
+      },
+      {
+        "node_id": "MCC-1.M01",
+        "message": "500 hp NEMA Design B motor M01: parallel feeder 2 × 500 kcmil Cu THWN-2 accepted (binding_constraint = parallel_required). Conductors sized at 125% of FLC per NEC 2023 Article 430.22 (590 A × 1.25 = 738 A; 2 × 380 = 760 A ≥ 738 A). Motor-starting Vd_running ≈ 1.5% × LRA factor 6.0 = 9.0% — within the 10% running-Vd advisory limit per NEC 2023 Article 430.6(A)(1) commentary; soft-starter or reduced-voltage starting recommended if exact source impedance margin shrinks.",
+        "code_clause": "NEC 2023 Article 430.22 + Article 430.6(A)(1)",
+        "severity": "info"
+      },
+      {
+        "node_id": "MCC-1.M02",
+        "message": "200 hp NEMA Design B motor M02: 350 kcmil Cu THWN-2 single run accepted (binding_constraint = iz_vs_in). 125% FLC = 240 × 1.25 = 300 A; Iz_75 ≈ 310 A ≥ 300 A per NEC 2023 Article 430.22 + Article 310.16. Motor-starting Vd_running ≈ 0.9% × 6.0 = 5.4% — well within the 10% advisory limit.",
+        "code_clause": "NEC 2023 Article 430.22 + Article 430.6(A)(1)",
+        "severity": "info"
       }
     ],
     "assumptions": [
-      "Engineer-declared circuit list (no db-layout-rollup intent present)",
-      "terminal_temp_rating_c = 75\u00b0C applied per NEC 110.14(C)",
-      "Motor MCC.M01: NEMA Design B (LRA multiplier = 6.0) \u2014 verify nameplate",
-      "Parallel cables at SERVICE: 2 \u00d7 500 kcmil copper \u2014 symmetry asserted",
-      "tool_call_pending: true \u2014 calc.cable_ampacity + calc.voltage_drop + calc.cpc_adiabatic deferred until runtime",
-      "iz_corrected_a values are senior-engineer placeholders pending calc.cable_ampacity runtime; final ampacity will be recomputed per NEC Table 310.16 + 110.14(C)"
+      "US 480V 3-phase 3-wire TN-C-S (utility-grounded) supply per NEC 2023 Article 250 grounded-systems requirements; engineer-declared PSCC = 35 kA at service entrance verified at the 1200 A service disconnect.",
+      "All ampacities read from NEC 2023 Article 310.16 75°C copper / 75°C aluminium columns per NEC 2023 Article 110.14(C) terminal temperature limitation (THWN-2 / XHHW-2 are 90°C-rated insulations, but terminal-temp cap reduces the design Iz to the 75°C column).",
+      "Parallel cables at SERVICE.1200A sized per NEC 2023 Article 310.10(H)(1): 4 × 350 kcmil Cu THWN-2 (each parallel ≥ 1/0 AWG), equal length 3 m, terminated on common 1200 A switchgear busbars; per Article 310.10(H)(2) impedance balance maintained by equal-length / equal-CSA / same-raceway routing.",
+      "Parallel cables at MCC-1.M01 (500 hp motor) sized per NEC 2023 Article 430.22: 125% of motor FLC = 590 A × 1.25 = 738 A continuous; 2 × 500 kcmil Cu THWN-2 75°C = 2 × 380 = 760 A ≥ 738 A. Each parallel ≥ 1/0 AWG per Article 310.10(H)(1).",
+      "Motor M01 + M02 design code is NEMA MG-1 Design B with LRA factor 6.0 (locked-rotor / FLC ratio); motor-starting Vd modeled as Vd_running × LRA factor per NEC 2023 Article 430.6(A)(1) commentary and IEEE 141 (Red Book) §3 running-vs-starting Vd guidance.",
+      "Equipment grounding conductor (EGC) sized per NEC 2023 Article 250.122 Table 250.122: SERVICE 3/0 AWG (1200 A OCPD), MCC-1.F01 1/0 AWG (400 A), MCC-1.M01 2/0 AWG (700 A OCPD on motor), MCC-1.M02 4 AWG (300 A), MCC-1.F02.B01 12 AWG (20 A).",
+      "Voltage drop targets per NEC 2023 Article 215.2(A)(1) Informational Note 2: feeder portion ≤ 3%; combined feeder + branch ≤ 5%. Limits are informational (not mandatory) but used as design targets per common US industrial design practice.",
+      "Aluminium feeder MCC-1.F01: 900 kcmil Al XHHW-2 at 75°C terminal column Iz ≈ 425 A ≥ 400 A In per Article 110.14(C); walk-up rejected 750 kcmil (Iz_75 ≈ 385 A < Ib_continuous × 1.25 = 400 A required by Article 215.2(A)(1) continuous-load 125% rule).",
+      "calc.cable_ampacity / calc.voltage_drop / calc.cpc_adiabatic deferred per WI3 — engineer estimates from NEC 2023 Article 310.16 (ampacity), Chapter 9 Table 9 (impedance), and Table 250.122 (EGC) serve as placeholders pending deterministic resolution."
     ]
   },
-  "drawn_as_symbols": [],
   "flags": [
-    "TOOL-CALL-PENDING",
-    "MOTOR_STARTING_VD_CLOSE_TO_LIMIT",
-    "PARALLEL_CABLES"
+    "TOOL-CALL-PENDING:calc.cable_ampacity",
+    "TOOL-CALL-PENDING:calc.voltage_drop",
+    "TOOL-CALL-PENDING:calc.cpc_adiabatic"
   ],
   "rationale": {
-    "chat_summary": "US 480V industrial 3-node cascade. Service entrance: 2\u00d7500 kcmil parallel (binding: parallel_required). Aluminium 600 kcmil feeder (Iz-binding). 500 hp motor: walk-up 500\u2192600\u2192750 kcmil driven by motor_starting_vd at 9.6% (close to 10% \u2014 info flag recommending soft-starter). Cumulative Vd 5.0% at motor (NEC feeder+branch limit). tool_call_pending.",
+    "chat_summary": "US 480V 3-phase industrial facility per NEC 2023 Article 240.4(B) + 250.122 + 220.40. 5-node cascade. SERVICE.1200A: 4 × 350 kcmil Cu THWN-2 parallel (parallel_required, NEC Article 310.10(H)(1) ≥1/0 AWG). MCC-1.F01: 900 kcmil Al XHHW-2 (NEC 110.14(C) terminal-temp cap at 75°C column). M01 500 hp 2 × 500 kcmil Cu parallel + motor-starting Vd 9.0% (NEMA-B LRA=6.0). M02 350 kcmil. B01 12 AWG receptacle. 3 calc tools pending.",
     "sections": [
       {
-        "title": "Input Ingestion",
-        "summary": "No upstream intents; engineer declared all 3 cascade nodes + route + motor LRA.",
-        "decisions": []
-      },
-      {
-        "title": "Cascade Topology",
-        "summary": "Linear cascade SERVICE \u2192 SERVICE.F01 \u2192 MCC.M01. 3 nodes.",
-        "decisions": []
-      },
-      {
-        "title": "Jurisdictional Defaults",
-        "summary": "US \u2014 NEC Chapter 9 + 310.16. Vd: 3% feeder-only / 5% feeder+branch (NEC 215.2 IN 2). Terminal cap per 110.14(C) at 75\u00b0C.",
+        "title": "Project Supply + Jurisdiction",
+        "summary": "US jurisdiction; NEC 2023 (NFPA 70) is primary. 480V 3-phase 3-wire TN-C-S service to a 1200 A service entrance per NEC 2023 Article 250 grounded-systems. Engineer declares PSCC = 35 kA at the disconnect. Article 240.4(B) = OCPD next-size logic; 215.2(A)(1) IN 2 = Vd targets; 250.122 = EGC; 310.16 = ampacity; 110.14(C) = terminal-temp cap.",
         "decisions": [
           {
-            "label": "US NEC defaults",
-            "summary": "AWG ladder, terminal cap 75\u00b0C",
-            "rule": "NEC 2023 110.14(C) + 215.2",
-            "code_clause": "NEC 2023 110.14(C)"
-          }
-        ]
-      },
-      {
-        "title": "Source + Fault Context",
-        "summary": "No fault-level intent; CPC adiabatic deferred to runtime tool. NEC 250.122 minimum applied per OCPD rating.",
-        "decisions": []
-      },
-      {
-        "title": "CSA Selection Walk-up Summary",
-        "summary": "1 node parallel_required (SERVICE); 1 node motor_starting_vd-binding (MCC.M01 \u2014 upsized 500 \u2192 600 \u2192 750 kcmil); 1 node Iz-binding (SERVICE.F01 aluminium).",
-        "decisions": [
-          {
-            "label": "SERVICE parallel cables",
-            "summary": "1200A service \u2192 ladder exhausted at 1000 kcmil single \u2192 2 \u00d7 500 kcmil copper parallel",
-            "rule": "NEC 2023 310.10(H)(1)",
-            "code_clause": "NEC 2023 310.10(H)(1)",
-            "inputs": {
-              "ib_a": 1050,
-              "in_a": 1200,
-              "parallels": 2,
-              "each_csa": "500 kcmil"
-            }
+            "label": "TN-C-S grounded supply per NEC 2023 Article 250",
+            "summary": "480V 3-phase 3-wire (no service neutral; loads with neutral fed from MCC-1 sub-XFMR step-down at 480/277V if needed); equipment grounding via separate EGC.",
+            "rule": "Grounded-system requirements per NEC 2023 Article 250",
+            "code_clause": "NEC 2023 Article 250.20"
           },
           {
-            "label": "MCC.M01 motor starting",
-            "summary": "LRA \u00d7 segment Vd = 6.0 \u00d7 1.6% = 9.6% at 750 kcmil (within 10% limit)",
-            "rule": "BS 7671:2018 \u00a7525.1 / NEC 430.6",
-            "code_clause": "NEC 2023 430.6",
-            "inputs": {
-              "lra_multiplier": 6.0,
-              "vd_segment_pct": 1.6,
-              "starting_vd_pct": 9.6,
-              "limit_pct": 10.0
-            }
+            "label": "PSCC = 35 kA declared at SERVICE.1200A",
+            "summary": "Engineer accepts utility PSCC from transformer + service-conductor impedance; downstream Ifault attenuates along the cascade per parent_node_ifault_ka engineer estimates pending calc.fault_level.",
+            "rule": "Short-circuit verification per NEC 2023 Article 110.10 + Article 240.86",
+            "code_clause": "NEC 2023 Article 110.10"
           }
         ]
       },
       {
-        "title": "Special Checks",
-        "summary": "Motor starting: 9.6% (warning level \u2014 info flag emitted). Parallel cables: 2\u00d7500 kcmil symmetric. Harmonic: not triggered.",
-        "decisions": []
+        "title": "Cascade Tree + Topology",
+        "summary": "Five-node cascade: SERVICE.1200A (service_entrance) → MCC-1.F01 (feeder) → 3 finals (M01 500 hp motor, M02 200 hp pump, F02.B01 20A receptacle). Hierarchical node_ids let downstream consumers render the tree. parent_node_ifault_ka attenuates root → leaf: 35 kA → 32 kA → 28-29 kA at motor terminals → 10 kA at receptacle.",
+        "decisions": [
+          {
+            "label": "Two-tier cascade with MCC-1 fan-out",
+            "summary": "service_entrance → feeder → 3× final_circuit at the MCC; exercises parallel_required (twice, at SERVICE + M01), iz_vs_in (M02 + B01), and motor LRA logic on M01 + M02.",
+            "rule": "Cascade topology per cable-sizing IR spec; NEC 2023 Article 220.40 feeder calculation",
+            "code_clause": "NEC 2023 Article 220.40"
+          }
+        ]
       },
       {
-        "title": "Compliance + Selectivity",
-        "summary": "All 3 nodes compliant. 1 info flag (motor starting Vd close to limit).",
-        "decisions": []
+        "title": "Walk-the-Ladder Approach + Binding Constraints",
+        "summary": "Engine walks the AWG/kcmil ladder (14 AWG → ... → 4/0 AWG → 250 → ... → 1000 kcmil) until all binding checks pass simultaneously: iz_vs_in (NEC 2023 Article 310.16 + 110.14(C)), motor-Iz at 125% FLC (430.22), Vd target (215.2(A)(1) IN 2), EGC (250.122), and parallel_required (310.10(H)(1)). SERVICE + M01 bind parallel_required; M02 + B01 + F01 bind iz_vs_in.",
+        "decisions": [
+          {
+            "label": "parallel_required on SERVICE.1200A",
+            "summary": "Single 1000 kcmil Cu THWN-2 at 75°C terminal column gives Iz ≈ 545 A — insufficient for 1200 A In. 4 × 350 kcmil parallel Cu THWN-2 accepted per NEC 2023 Article 310.10(H)(1) (each ≥ 1/0 AWG); Iz_corrected = 4 × 310 ≈ 1240 A ≥ 1200 A In.",
+            "rule": "Parallel cables per NEC 2023 Article 310.10(H)(1)",
+            "code_clause": "NEC 2023 Article 310.10(H)(1)",
+            "inputs": {"in_a": 1200, "single_1000kcmil_iz_a": 545, "parallel_4x350_iz_a": 1240, "parallel_count": 4}
+          },
+          {
+            "label": "iz_vs_in on MCC-1.F01 aluminium feeder",
+            "summary": "750 kcmil Al rejected (Iz_75 ≈ 385 A < Ib_continuous × 1.25 = 400 A per Article 215.2(A)(1) continuous-load rule); 900 kcmil Al XHHW-2 accepted (Iz_75 ≈ 425 A ≥ 400 A). Article 110.14(C) terminal-temp cap drives the larger conductor.",
+            "rule": "NEC ampacity + terminal-temp cap per NEC 2023 Article 310.16 + Article 110.14(C)",
+            "code_clause": "NEC 2023 Article 110.14(C)",
+            "inputs": {"in_a": 400, "ib_a": 320, "csa_rejected": "750 kcmil", "csa_accepted": "900 kcmil", "material": "aluminium", "iz_75c_a_accepted": 425}
+          },
+          {
+            "label": "parallel_required on MCC-1.M01 500 hp motor",
+            "summary": "Motor 125% FLC = 590 × 1.25 = 738 A continuous per NEC 2023 Article 430.22. Single 1000 kcmil Iz_75 ≈ 545 A insufficient; 2 × 500 kcmil Cu THWN-2 parallel = 2 × 380 = 760 A ≥ 738 A. Each parallel ≥ 1/0 AWG per Article 310.10(H)(1).",
+            "rule": "Motor conductor 125% FLC per NEC 2023 Article 430.22; parallel per Article 310.10(H)(1)",
+            "code_clause": "NEC 2023 Article 430.22 + Article 310.10(H)(1)",
+            "inputs": {"flc_a": 590, "design_flc_a": 738, "parallel_2x500_iz_a": 760, "parallel_count": 2}
+          },
+          {
+            "label": "iz_vs_in on MCC-1.M02 200 hp pump motor",
+            "summary": "Motor 125% FLC = 240 × 1.25 = 300 A. Single 350 kcmil Cu THWN-2 at 75°C terminal column Iz ≈ 310 A ≥ 300 A. No parallel needed.",
+            "rule": "Motor conductor 125% FLC per NEC 2023 Article 430.22",
+            "code_clause": "NEC 2023 Article 430.22",
+            "inputs": {"flc_a": 240, "design_flc_a": 300, "csa": "350 kcmil", "iz_75c_a": 310}
+          },
+          {
+            "label": "iz_vs_in on MCC-1.F02.B01 receptacle branch",
+            "summary": "20 A single-phase branch: 14 AWG Cu THWN-2 75°C Iz = 20 A (borderline; NEC 2023 Article 240.4(D) caps 14 AWG OCPD at 15 A regardless); 12 AWG accepted at Iz = 25 A ≥ 20 A In. CPC = 12 AWG Cu per Table 250.122 for 20 A OCPD.",
+            "rule": "Ampacity per NEC 2023 Article 310.16; small-conductor OCPD limit per Article 240.4(D)",
+            "code_clause": "NEC 2023 Article 240.4(D)",
+            "inputs": {"in_a": 20, "csa": "12 AWG", "iz_75c_a": 25}
+          }
+        ]
       },
       {
-        "title": "Assumptions + Tool-call Status",
-        "summary": "tool_call_pending across cascade; NEMA B LRA assumed for motor M01; parallel symmetry per declared route.",
-        "decisions": []
+        "title": "Cumulative Voltage Drop",
+        "summary": "Vd accumulates root → leaf per NEC 2023 Article 215.2(A)(1) Informational Note 2: feeder ≤ 3%, combined feeder + branch ≤ 5%. All five nodes pass: M01 cumulative 2.5%, M02 1.9%, B01 3.3%. Vd_segment estimates from NEC 2023 Chapter 9 Table 9 effective Z at 75°C in steel conduit — placeholder pending calc.voltage_drop.",
+        "decisions": [
+          {
+            "label": "Cascade Vd budget allocation",
+            "summary": "All paths stack well within the 5% combined limit: SERVICE 0.1% + F01 0.9% + leaf segment = 1.9-3.3% depending on leaf length. No vd_cumulative binding triggered (all binding by iz_vs_in or parallel_required).",
+            "rule": "Vd cumulative accounting per NEC 2023 Article 215.2(A)(1) IN 2",
+            "code_clause": "NEC 2023 Article 215.2(A)(1) Informational Note 2",
+            "inputs": {"service_pct": 0.1, "f01_pct": 0.9, "m01_cumulative_pct": 2.5, "m02_cumulative_pct": 1.9, "b01_cumulative_pct": 3.3, "limit_pct": 5.0}
+          }
+        ]
+      },
+      {
+        "title": "CPC Adiabatic Sizing",
+        "summary": "Per NEC 2023 Article 250.122 Table 250.122 the equipment grounding conductor (EGC) is sized by upstream OCPD rating, not by adiabatic equation directly. Table 250.122 lookups: SERVICE 1200 A → 3/0 AWG Cu; MCC-1.F01 400 A → 1/0 AWG; M01 700 A → 2/0 AWG; M02 300 A → 4 AWG; B01 20 A → 12 AWG. Article 250.4(A)(5) requires the EGC to carry the maximum ground-fault current safely.",
+        "decisions": [
+          {
+            "label": "EGC sized per Table 250.122",
+            "summary": "All five EGC selections taken directly from NEC 2023 Table 250.122 Cu column by upstream OCPD rating. Compliant with Article 250.4(A)(5) effective ground-fault current path requirements.",
+            "rule": "EGC sizing per NEC 2023 Article 250.122 Table 250.122",
+            "code_clause": "NEC 2023 Article 250.122"
+          }
+        ]
+      },
+      {
+        "title": "Motor Starting + Parallel Cables + Harmonic Derating",
+        "summary": "Motors M01 (500 hp) + M02 (200 hp) both NEMA Design B: motor-starting Vd modeled as Vd_running × LRA 6.0 per NEC 2023 Article 430.6(A)(1) + NEMA MG-1. M01 = 1.5% × 6.0 = 9.0% (within 10% advisory limit, info flag); M02 = 0.9% × 6.0 = 5.4%. Parallel at SERVICE (4 × 350 kcmil) + M01 (2 × 500 kcmil) per Article 310.10(H)(1). No harmonic content declared — Ch omitted.",
+        "decisions": [
+          {
+            "label": "Motor M01 starting Vd 9.0% within 10% advisory limit",
+            "summary": "NEMA Design B 500 hp motor with LRA factor 6.0; running Vd 1.5% × LRA = 9.0% during DOL start. Engineer info-flag recommends soft-start review if source impedance margin is tight (utility PSCC declared 35 kA but only 28 kA reaches M01 terminals).",
+            "rule": "Motor-starting Vd per NEC 2023 Article 430.6(A)(1) + NEMA MG-1; 10% advisory limit per IEEE 141 §3",
+            "code_clause": "NEC 2023 Article 430.6(A)(1)",
+            "inputs": {"flc_a": 590, "lra_factor": 6.0, "vd_running_pct": 1.5, "vd_starting_pct": 9.0, "advisory_limit_pct": 10.0}
+          },
+          {
+            "label": "Parallel cables at SERVICE.1200A + MCC-1.M01",
+            "summary": "Two sites where parallel_required binds: 4 × 350 kcmil at 1200 A SERVICE; 2 × 500 kcmil at 738 A design-FLC at M01. Both satisfy ≥ 1/0 AWG per parallel + equal-length / equal-CSA / common terminations per Article 310.10(H)(1) and Article 310.10(H)(2).",
+            "rule": "Parallel cables per NEC 2023 Article 310.10(H)(1) and (H)(2)",
+            "code_clause": "NEC 2023 Article 310.10(H)(1)",
+            "inputs": {"service_parallel_count": 4, "m01_parallel_count": 2, "min_each_per_h1": "1/0 AWG"}
+          }
+        ]
+      },
+      {
+        "title": "Compliance + Assumptions + Tool-Call Pending",
+        "summary": "compliant = true. Four info-severity flags document binding-constraint walk-ups (SERVICE parallel, F01 aluminium-Iz, M01 parallel + motor-starting Vd 9.0%, M02 motor sizing). Assumptions capture US supply declaration, parallel requirements, motor LRA basis, EGC table lookup, Vd informational targets, and WI3 calc deferrals.",
+        "decisions": [
+          {
+            "label": "Three deferred-calc flags",
+            "summary": "calc.cable_ampacity, calc.voltage_drop, calc.cpc_adiabatic carry TOOL-CALL-PENDING flags per WI3 — engineer placeholders ratified at runtime against NEC 2023 Article 310.16 + Chapter 9 Table 9 + Table 250.122.",
+            "rule": "WI3 deferred-calc contract; engineer estimates carry tool_call_pending = true",
+            "code_clause": "NEC 2023 Article 310.16 (ampacity) + Chapter 9 Table 9 (impedance) + Table 250.122 (EGC)"
+          }
+        ]
+      },
+      {
+        "title": "Cross-Skill Contract",
+        "summary": "Emits cable-sizing intent with 5 circuit records. Required-field set is the union superset of 4 downstream consumers: cable-schedule (tabulated), riser (parent-child), cable-containment (tray/conduit fill), small-power v1.1 (Zs resolution via r1+r2 + reactance per metre at operating temperature). AWG/kcmil string identifiers per US convention; per-metre impedance from NEC 2023 Chapter 9 Table 9.",
+        "decisions": [
+          {
+            "label": "Forward-compatible intent emission with AWG/kcmil strings",
+            "summary": "phase_csa_mm2_or_awg and cpc_csa_mm2_or_awg encoded as AWG/kcmil strings per the schema oneOf branch; per-metre impedance values from NEC Chapter 9 Table 9 enable downstream Zs resolution.",
+            "rule": "Intent forward-compat contract per cable-sizing-intent.schema.json + NEC 2023 Chapter 9 Table 9",
+            "code_clause": "cable-sizing intent v1.0.0"
+          }
+        ]
       }
     ]
   }

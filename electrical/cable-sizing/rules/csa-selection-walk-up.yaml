@@ -1,31 +1,45 @@
-rule: csa_selection_walk_up
-version: 1.0.0
-description: |
-  Walk the standard csa ladder from smallest, accept the first size that simultaneously
-  satisfies Iz ≥ In, cumulative Vd ≤ limit, CPC adiabatic, and (if motor) motor-starting Vd.
-  Record binding_constraint = the rejection reason at the csa one rung below the selected
-  size (the check that forced the upsize). If start csa passes all checks with no walk,
-  binding_constraint = "iz_vs_in" (sized purely by overcurrent rule).
-ladder:
-  iec_mm2: [1.0, 1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300, 400, 500, 630]
-  nec_awg: ["14","12","10","8","6","4","3","2","1","1/0","2/0","3/0","4/0","250","300","350","400","500","600","750","1000"]
-acceptance_checks:
-  - id: iz_vs_in
-    description: "Iz_corrected (post Ca×Cg×Ci×Ch) ≥ In (OCPD rating)"
-    source: "BS 7671:2018 Reg 433.1.1 / IEC 60364-4-43 §433.1 / NEC 240.4(B)"
-  - id: vd_cumulative
-    description: "Vd_cumulative_pct (this segment + parent chain) ≤ load-type limit"
-    source: "BS 7671:2018 App 12 / IEC 60364-5-52 §G / NEC 215.2(A)(1) IN 2"
-  - id: cpc_adiabatic
-    description: "CPC csa satisfies S = sqrt(I²t)/k"
-    source: "BS 7671:2018 Reg 543.1.3 Table 54.7 / NEC 250.122 / IEC 60364-5-54"
-  - id: motor_starting_vd
-    description: "vd_starting_pct = vd_running_pct × LRA-multiplier ≤ 10% (warning)"
-    triggered_when: "load.load_type == 'motor'"
-    source: "BS 7671:2018 §525.1 / IEC 60364-5-52 §525.1 / NEC 430.6"
-binding_constraint_assignment:
-  rule: "binding_constraint := rejection_reason_at(csa_one_below_selected)"
-  fallback: "if no rejection (start csa accepted), binding_constraint := 'iz_vs_in'"
-walk_up_trail_format:
-  required_fields: [csa, accepted_or_rejected_by]
-  optional_fields: [iz_corrected_a, vd_segment_pct, vd_cumulative_pct, cpc_required_csa, vd_starting_pct]
+# CSA selection walk-up rules for cable-sizing
+# Consumed by generator (Steps 6-7) + validator (INV-03)
+
+rules:
+  - id: WALK-01
+    jurisdiction: [all]
+    standard_reference: "BS 7671:2018+A2:2022 App 4 / IEC 60364-5-52:2009 Annex B / NEC 2023 Article 310.16"
+    rule_text: "Start csa = smallest where Iz_tabulated × correction_factors ≥ In"
+    applies_to: cascade_node
+    enforcement: algorithm_step
+
+  - id: WALK-02
+    jurisdiction: [all]
+    standard_reference: "BS 7671:2018+A2:2022 / IEC 60364 / NEC 2023 (composite)"
+    rule_text: "Walk-up condition = any of {iz_vs_in, vd_cumulative, motor_starting_vd, cpc_adiabatic, harmonic_derating} fails"
+    applies_to: cascade_node
+    enforcement: algorithm_step
+
+  - id: WALK-03
+    jurisdiction: [all]
+    standard_reference: "BS 7671:2018+A2:2022 / IEC 60364 / NEC 2023 (composite)"
+    rule_text: "Accept condition = all 5 checks pass at current csa"
+    applies_to: cascade_node
+    enforcement: algorithm_step
+
+  - id: WALK-04
+    jurisdiction: [all]
+    standard_reference: "DraftsMan walk_up_trail convention"
+    rule_text: "binding_constraint = the rejection reason at csa_one_below_selected (or 'iz_vs_in' if accepted at start csa with no walk-up)"
+    applies_to: cascade_node
+    enforcement: algorithm_step
+
+  - id: WALK-05
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 110.14(C)"
+    rule_text: "NEC terminal-temp cap applied after Ca × Cg correction — ampacity column selection limited by terminal temp rating (60/75/90 °C)"
+    applies_to: cascade_node
+    enforcement: algorithm_step
+
+  - id: WALK-06
+    jurisdiction: [all]
+    standard_reference: "BS 7671:2018+A2:2022 App 4 / IEC 60364-5-52 / NEC 2023 Chapter 9 Table 8"
+    rule_text: "Standard ladders: mm² ladder [1.0, 1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300, 400, 500, 630] for GB/EU/INT/KE; AWG/kcmil ladder per NEC Chapter 9 Table 8 for US"
+    applies_to: cascade_node
+    enforcement: algorithm_step

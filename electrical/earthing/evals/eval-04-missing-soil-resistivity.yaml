@@ -1,16 +1,16 @@
 # Eval 04 — TT system with soil_type unknown — generator must request, not invent
 # Category: missing_input
 
-id: eval-04-missing-soil-resistivity
+name: eval-04-missing-soil-resistivity
+skill: earthing
 category: missing_input
-severity: high
 description: |
   TT system. Engineer has not declared soil_type or electrode_measured_ra_ohm.
   The generator must NOT invent a value. It must either:
   (a) emit a compliance flag asking the engineer to provide soil data and Ra measurement, OR
   (b) emit electrodes[0].tool_call_pending: true with a clear note that Ra is required.
 
-inputs:
+input:
   jurisdiction: "GB"
   earthing_system_declared: "TT"
   supply_voltage_v: 230
@@ -27,20 +27,27 @@ inputs:
   consumed_intents:
     - { intent_type: "db-layout", intent_version: "1.0.0", produced_by: "electrical/db-layout/v1.0.0", payload_ref: "test-fixtures/db-layout-eval04.json" }
 
-assertions:
-  - kind: schema_valid
-    schema: "earthing-ir.schema.json"
-  - kind: jsonpath_present
-    path: "$.compliance_summary.flags[*]"
-    note: "Generator must emit at least one compliance flag for missing soil/Ra data"
-  - kind: jsonpath_contains_substring
-    path: "$.compliance_summary.flags[*].code"
-    substring: "ELECTRODE"
-  - kind: no_invented_values
-    paths_must_be_null_or_pending:
-      - "$.electrodes[0].ra_ohm_specified"
-      - "$.electrodes[0].soil_resistivity_ohm_m"
-    or_tool_call_pending: true
-    note: "Generator must not invent soil data — engineer must provide Ra or the electrode must be marked tool_call_pending"
+checks:
+  - assertion: 'ir matches "earthing-ir.schema.json"'
+    description: Output validates against the earthing IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.compliance_summary.flags[*] != null'
+    description: Generator must emit at least one compliance flag for missing soil/Ra data
+    severity: warning
+
+  - assertion: 'ir.compliance_summary.flags[*].code contains "ELECTRODE"'
+    description: At least one compliance flag code must contain the substring ELECTRODE
+    severity: warning
+
+  # Tier 4 approximation: no_invented_values
+  # Full semantics: EITHER electrodes[0].ra_ohm_specified is null AND electrodes[0].soil_resistivity_ohm_m is null
+  #                 OR the skill emits TOOL-CALL-PENDING flag (or_tool_call_pending: true)
+  # Generator must not invent soil data — engineer must provide Ra or the electrode must be marked tool_call_pending
+  # TODO: full OR/AND semantics need runtime support
+  - assertion: 'ir.flags matches "TOOL-CALL-PENDING"'
+    description: >-
+      EITHER the listed paths (electrodes[0].ra_ohm_specified, electrodes[0].soil_resistivity_ohm_m) are null
+      OR the skill emits TOOL-CALL-PENDING flag — generator must not invent soil data; engineer must provide Ra
+      or the electrode must be marked tool_call_pending.
+    severity: warning

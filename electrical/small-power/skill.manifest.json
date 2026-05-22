@@ -1,23 +1,21 @@
 {
   "skill": "small-power",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "discipline": "electrical",
   "subdiscipline": "small-power",
-  "description": "Socket outlet layouts for general-purpose power circuits per BS 7671:2018+A2:2022 / IEC 60364 / KS 1700:2018 / NEC 2023 Article 210. Produces circuit topology (ring/radial/dedicated_radial), per-room socket placement, RCD posture, and circuit-to-room cross-references as structured IR. Hybrid model: circuits[] (with topology + ocpd + cable + RCD) + rooms[] (with sockets[] cross-referencing circuit_ids). Leaf skill v1.0 — produces small-power intent for downstream db-layout consumption; multi-skill consumption (earthing + fault-level) deferred to v1.1+.",
+  "description": "Socket outlet layouts for general-purpose power circuits per BS 7671:2018+A2:2022 / IEC 60364 / KS 1700:2018 / NEC 2023 Article 210. Produces circuit topology (ring/radial/dedicated_radial), per-room socket placement, RCD posture, and circuit-to-room cross-references as structured IR. Hybrid model: circuits[] (with topology + ocpd + cable + RCD) + rooms[] (with sockets[] cross-referencing circuit_ids). Leaf skill v1.0 \u2014 produces small-power intent for downstream db-layout consumption; multi-skill consumption (earthing + fault-level) deferred to v1.1+.",
   "status": "beta",
   "licence": "MIT",
   "inputs_path": "inputs.json",
-  "inputs": [
-    "jurisdiction-and-supply",
-    "parent-db-context",
-    "rooms",
-    "design-intent"
+  "outputs": [
+    "small-power-ir"
   ],
-  "outputs": ["small-power-ir"],
   "output_schema": "electrical/small-power/schemas/small-power-ir.schema.json",
   "produces_intent": "small-power",
   "produces_intent_schema": "electrical/small-power/schemas/small-power-intent.schema.json",
-  "consumes_intents": [],
+  "consumes_intents": [
+    "cable-sizing"
+  ],
   "standards": [
     "shared/standards/electrical/BS7671/part7-special-locations.json",
     "shared/standards/electrical/BS7671/reg411-disconnection-times.json",

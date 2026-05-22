@@ -1,11 +1,11 @@
-id: eval-05-jurisdiction-us-with-hv
+name: eval-05-jurisdiction-us-with-hv
+skill: fault-level
 category: jurisdiction_switch
-severity: critical
 description: |
   US industrial: 12.47 kV primary → 480V TPN service, 2500 kVA TX. NEC 110.9 + 240.86 cited alongside IEC 60909.
   No BS 7671 / IEC 60364 citations. Use NEC Chapter 9 Table 9 for cable impedance.
 
-inputs:
+input:
   jurisdiction: "US"
   project_id: "us-ind-fl-eg05"
   supply_voltage_v: "480"
@@ -23,25 +23,31 @@ inputs:
     - { node_id: "TX-1", parent_node_id: "HV-1", node_kind: "transformer_secondary", designation: "2500 kVA TX 480V LV" }
     - { node_id: "MSB-1", parent_node_id: "TX-1", node_kind: "board_incoming", designation: "Main switchboard", feeder: { length_m: 20, csa_mm2_or_awg: "350 kcmil", material: "copper", insulation: "thwn_75" } }
 
-assertions:
-  - kind: schema_valid
-    schema: "fault-level-ir.schema.json"
-  - kind: jsonpath_equals
-    path: "$.jurisdiction"
-    expected: "US"
-  - kind: jsonpath_present
-    path: "$.project_supply.hv_side"
-  - kind: clause_cited
-    clause_pattern: "^NEC 2023 Art (110|240)"
-    minimum_count: 1
-  - kind: clause_cited
-    clause_pattern: "^IEC 60909-0:2016"
-    minimum_count: 2
-  - kind: clause_not_cited
-    clause_pattern: "^BS 7671"
-    note: "US project must not cite UK regs"
-  - kind: clause_not_cited
-    clause_pattern: "^IEC 60364"
-    note: "US project must not cite IEC 60364"
+checks:
+  - assertion: 'ir matches "fault-level-ir.schema.json"'
+    description: Output validates against the fault-level IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.jurisdiction == "US"'
+    description: Jurisdiction must be US
+    severity: critical
+
+  - assertion: 'ir.project_supply.hv_side != null'
+    description: HV side must be present in project_supply
+    severity: critical
+
+  - assertion: 'ir.citations matches "^NEC 2023 Art (110|240)"'
+    description: At least 1 citation matches NEC 2023 Art 110/240 pattern
+    severity: warning
+
+  - assertion: 'ir.citations matches "^IEC 60909-0:2016"'
+    description: At least 2 citations match IEC 60909-0:2016 pattern
+    severity: warning
+
+  - assertion: 'ir.citations not_contains "BS 7671"'
+    description: Must NOT cite BS 7671 — US project must not cite UK regs
+    severity: warning
+
+  - assertion: 'ir.citations not_contains "IEC 60364"'
+    description: Must NOT cite IEC 60364 — US project must not cite IEC 60364
+    severity: warning

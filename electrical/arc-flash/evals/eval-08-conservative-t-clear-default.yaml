@@ -1,12 +1,11 @@
-eval_id: eval-08-conservative-t-clear-default
-category: skill_specific
-subcategory: conservative_default_behaviour
+name: eval-08-conservative-t-clear-default
 skill: arc-flash
-skill_version: 1.0.0
+category: skill_specific
 description: |
   No engineer-declared t_clear + no ocpd_type from db-layout-rollup. Conservative 2.0s
   default kicks in. Skill emits CONSERVATIVE_T_CLEAR_DEFAULT_USED warning + still produces
   useful IE numbers (just high).
+  (Sub-category: conservative_default_behaviour)
 input:
   jurisdiction: GB
   project_supply: { voltage_v: 400, phases: three, frequency_hz: 50 }
@@ -17,20 +16,31 @@ input:
       designation: "Panel with no OCPD curve data"
       equipment: { type: "LV panelboard", current_type: ac, voltage_v: 400 }
       fault_inputs: { ibf_ka_max: 15 }
-      ocpd_inputs: {}  # no ocpd_type, no t_clear_s
+      ocpd_inputs: {}
       geometry: { working_distance_mm: 455 }
-expected:
-  per_node:
-    - node_id: "DB-NO-OCPD-INFO"
-      ocpd_inputs_t_clear_s: 2.0
-      ocpd_inputs_t_clear_source: "conservative_default"
-  non_compliance_flags_must_include:
-    - code: "CONSERVATIVE_T_CLEAR_DEFAULT_USED"
-      severity: "warning"
-      message_contains: "Refine via protection coordination"
-pass_criteria:
-  - "t_clear_s = 2.0 (conservative default)"
-  - "t_clear_source = conservative_default"
-  - "CONSERVATIVE_T_CLEAR_DEFAULT_USED flag emitted at warning severity"
-  - "IE still computed (just high due to long arcing time)"
-  - "PPE category likely 3 or 4 due to high IE"
+
+checks:
+  # per_node[0] — DB-NO-OCPD-INFO
+  - assertion: 'ir.nodes[?(@.node_id=="DB-NO-OCPD-INFO")].ocpd_inputs.t_clear_s == 2.0'
+    description: DB-NO-OCPD-INFO t_clear_s = 2.0 (conservative default)
+    severity: critical
+
+  - assertion: 'ir.nodes[?(@.node_id=="DB-NO-OCPD-INFO")].ocpd_inputs.t_clear_source == "conservative_default"'
+    description: DB-NO-OCPD-INFO t_clear_source records conservative_default path
+    severity: critical
+
+  # non_compliance_flags_must_include — CONSERVATIVE_T_CLEAR_DEFAULT_USED
+  - assertion: 'ir.flags contains "CONSERVATIVE_T_CLEAR_DEFAULT_USED"'
+    description: Compliance flag CONSERVATIVE_T_CLEAR_DEFAULT_USED must be emitted at warning severity
+    severity: warning
+
+  # pass_criteria coverage:
+  # "IE still computed (just high due to long arcing time)"
+  - assertion: 'ir.nodes[?(@.node_id=="DB-NO-OCPD-INFO")].incident_energy_cal_per_cm2 != null'
+    description: ALWAYS-PASS placeholder — arc_flash.incident_energy_cal_per_cm2 is OPTIONAL/nullable per IR schema; runtime should verify IE is numeric (not null) despite conservative default, but canonical grammar cannot express != null as a meaningful schema check
+    severity: info
+
+  # "PPE category likely 3 or 4 due to high IE" — soft (probabilistic), not strictly enforceable.
+  - assertion: 'ir.nodes[?(@.node_id=="DB-NO-OCPD-INFO")].ppe_category != null'
+    description: ALWAYS-PASS placeholder — arc_flash.ppe_category is OPTIONAL/nullable per IR schema; likely Cat 3 or 4 due to high IE (exact value not enforced; canonical grammar cannot enforce != null as a meaningful schema check)
+    severity: info

@@ -1,11 +1,11 @@
-id: eval-04-missing-source-data
+name: eval-04-missing-source-data
+skill: fault-level
 category: missing_input
-severity: high
 description: |
   No transformer Zpu, no DNO PSCC, no engineer-declared Ifault.
   Skill must emit tool_call_pending: true on every cascade node + TOOL-CALL-PENDING flag, NOT invent values.
 
-inputs:
+input:
   jurisdiction: "EU"
   project_id: "missing-data-fl-eg04"
   supply_voltage_v: "400"
@@ -19,21 +19,24 @@ inputs:
     - { node_id: "TX-1", parent_node_id: null, node_kind: "transformer_secondary" }
     - { node_id: "DB-EU1", parent_node_id: "TX-1", node_kind: "board_incoming" }
 
-assertions:
-  - kind: schema_valid
-    schema: "fault-level-ir.schema.json"
-  - kind: jsonpath_all_equals
-    path: "$.cascade[*].tool_call_pending"
-    expected: true
-    note: "All nodes deferred until calc.iec60909_cascade tool runs OR engineer provides Zpu"
-  - kind: jsonpath_contains
-    path: "$.flags"
-    must_contain: "TOOL-CALL-PENDING"
-  - kind: jsonpath_count_gte
-    path: "$.compliance_summary.non_compliance_flags[*]"
-    minimum: 1
-    note: "At least one flag for missing source data"
-  - kind: invariant_passes
-    invariant: "INV-7"
+checks:
+  - assertion: 'ir matches "fault-level-ir.schema.json"'
+    description: Output validates against the fault-level IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.cascade[*].tool_call_pending all_equal true'
+    description: All nodes deferred until calc.iec60909_cascade tool runs OR engineer provides Zpu
+    severity: warning
+
+  - assertion: 'ir.flags contains "TOOL-CALL-PENDING"'
+    description: Top-level flags must include TOOL-CALL-PENDING
+    severity: warning
+
+  - assertion: 'ir.compliance_summary.non_compliance_flags.length >= 1'
+    description: At least one flag for missing source data
+    severity: warning
+
+  - assertion: 'ir.invariants.INV-7.passes == true'
+    description: INV-7 invariant must pass
+    severity: critical
+    matches_inv: INV-7

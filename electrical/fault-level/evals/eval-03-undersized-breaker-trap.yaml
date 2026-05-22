@@ -1,11 +1,11 @@
-id: eval-03-undersized-breaker-trap
+name: eval-03-undersized-breaker-trap
+skill: fault-level
 category: validation_trap
-severity: critical
 description: |
   Cascade Ifault = 12 kA at MSB-1 outgoing. Engineer-declared MCB at that node has Icn = 6 kA.
   Generator MUST emit a CRITICAL flag, NOT silently pass selectivity_implications[*].adequate = true.
 
-inputs:
+input:
   jurisdiction: "GB"
   project_id: "trap-fl-eg03"
   supply_voltage_v: "400"
@@ -22,21 +22,24 @@ inputs:
   declared_devices:
     - { breaker_id: "F01-MCB", breaker_rating_a: 32, breaker_icn_ka: 6, at_node: "MSB-1.F01" }
 
-assertions:
-  - kind: schema_valid
-    schema: "fault-level-ir.schema.json"
-  - kind: jsonpath_equals
-    path: "$.selectivity_implications[?(@.breaker_id=='F01-MCB')].adequate"
-    expected: false
-    note_if_violated: "Generator silently accepted the trap"
-  - kind: jsonpath_contains
-    path: "$.flags"
-    must_contain: "BREAKER_UNDERRATED_FOR_FAULT_LEVEL"
-  - kind: jsonpath_equals
-    path: "$.compliance_summary.compliant"
-    expected: false
-  - kind: invariant_passes
-    invariant: "INV-6"
-    note: "Breaker adequacy check"
+checks:
+  - assertion: 'ir matches "fault-level-ir.schema.json"'
+    description: Output validates against the fault-level IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.selectivity_implications[?(@.breaker_id==''F01-MCB'')].adequate == false'
+    description: Generator must NOT silently accept the trap — F01-MCB adequacy must be false
+    severity: critical
+
+  - assertion: 'ir.flags contains "BREAKER_UNDERRATED_FOR_FAULT_LEVEL"'
+    description: Top-level flags must include BREAKER_UNDERRATED_FOR_FAULT_LEVEL
+    severity: critical
+
+  - assertion: 'ir.compliance_summary.compliant == false'
+    description: Compliance summary must report non-compliant
+    severity: critical
+
+  - assertion: 'ir.invariants.INV-6.passes == true'
+    description: Breaker adequacy check
+    severity: critical
+    matches_inv: INV-6

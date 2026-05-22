@@ -1,7 +1,6 @@
-eval_id: eval-02-restricted-equipment-distinct-format
-category: edge_case
+name: eval-02-restricted-equipment-distinct-format
 skill: arc-flash-labelling
-skill_version: 1.0.0
+category: edge_case
 description: |
   One arc-flash node has incident_energy_cal_per_cm2 = 45 (above 40). Skill MUST use
   restricted_format with distinct purple/black banner, suppress PPE category line,
@@ -15,22 +14,60 @@ input:
   project_metadata:
     company_name: "Acme Engineering LLC"
     qualified_person: "Sarah Chen, PE"
-expected:
-  per_label:
-    - node_id: "MV-SERVICE"
-      format_applied: "restricted_format"
-      format_source: "restricted_override"
-      signal_word: "RESTRICTED"
-      ppe_category: null
-      label_content_contains: ["RESTRICTED", "Energized work prohibited", "12.47kV", "45 cal/cm²"]
-      svg_content_must_contain_colour: "#64446E"
-      svg_content_must_not_contain_colour: ["#E00034", "#F28900"]
-  non_compliance_flags_must_include:
-    - severity: warning
-      message_contains: "RESTRICTED"
-pass_criteria:
-  - "Format auto-overrides to restricted_format despite US jurisdiction default"
-  - "Signal word is RESTRICTED (not DANGER even though IE > 8)"
-  - "Purple/black banner colour used in SVG (#64446E)"
-  - "DO NOT OPERATE overlay present"
-  - "PPE category line shows 'Energized work prohibited' not 'Category null'"
+
+checks:
+  # per_label[0] — MV-SERVICE
+  - assertion: 'ir.labels[?(@.node_id=="MV-SERVICE")].format_applied == "restricted_format"'
+    description: MV-SERVICE label uses restricted_format (auto-override despite US jurisdiction)
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MV-SERVICE")].format_source == "restricted_override"'
+    description: MV-SERVICE format_source records restricted_override path
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MV-SERVICE")].signal_word == "RESTRICTED"'
+    description: MV-SERVICE signal word is RESTRICTED (not DANGER even though IE > 8)
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MV-SERVICE")].ppe_category == null'
+    description: MV-SERVICE ppe_category is null (no Cat 5 for IE > 40)
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MV-SERVICE")].label_content contains "RESTRICTED"'
+    description: MV-SERVICE label content must include "RESTRICTED"
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MV-SERVICE")].label_content contains "Energized work prohibited"'
+    description: MV-SERVICE label content must include "Energized work prohibited"
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MV-SERVICE")].label_content contains "12.47kV"'
+    description: MV-SERVICE label content must include voltage 12.47kV
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MV-SERVICE")].label_content contains "45 cal/cm²"'
+    description: MV-SERVICE label content must include incident energy 45 cal/cm²
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MV-SERVICE")].svg_content contains "#64446E"'
+    description: MV-SERVICE SVG must contain purple banner colour #64446E
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MV-SERVICE")].svg_content not_contains "#E00034"'
+    description: MV-SERVICE SVG must NOT contain DANGER red #E00034
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MV-SERVICE")].svg_content not_contains "#F28900"'
+    description: MV-SERVICE SVG must NOT contain WARNING orange #F28900
+    severity: critical
+
+  # non_compliance_flags_must_include
+  - assertion: 'ir.flags contains "RESTRICTED"'
+    description: Compliance flag matching "RESTRICTED" must be emitted at warning severity
+    severity: warning
+
+  # pass_criteria coverage:
+  # "DO NOT OPERATE overlay present" — testable as SVG/label_content substring
+  - assertion: 'ir.labels[?(@.node_id=="MV-SERVICE")].label_content contains "DO NOT OPERATE"'
+    description: MV-SERVICE label must include "DO NOT OPERATE" overlay text
+    severity: warning

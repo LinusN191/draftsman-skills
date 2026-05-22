@@ -1,9 +1,9 @@
 # Eval 02 — 400V TPN commercial MSB feeding 4 sub-DBs
 # Category: edge_case
 
-id: eval-02-tpn-commercial-msb
+name: eval-02-tpn-commercial-msb
+skill: db-layout
 category: edge_case
-severity: critical
 description: |
   Small commercial building: 400V TPN MSB at 800A main, feeding 4 sub-DBs:
   - Lighting DB (250A, 24 ways)
@@ -13,7 +13,7 @@ description: |
   Form 4b enclosure, IcW 36 kA. Generator must verify cascade selectivity
   between 800A ACB main and each sub-DB feeder.
 
-inputs:
+input:
   jurisdiction: "GB"
   board_type: "main_switchboard"
   db_designation: "MSB-01"
@@ -39,28 +39,32 @@ inputs:
     - { circuit_id: "F04", ifault_ka: 22 }
   diversity_factor_main: 0.8
 
-assertions:
-  - kind: schema_valid
-    schema: "db-layout-ir.schema.json"
-  - kind: jsonpath_equals
-    path: "$.incoming.phase_arrangement"
-    expected: "TPN"
-  - kind: jsonpath_equals
-    path: "$.board.enclosure_form_iec61439"
-    expected: "4b"
-  - kind: jsonpath_gte
-    path: "$.busbar.icw_ka_1s"
-    minimum: 25
-    note: "IcW must withstand declared 25 kA fault"
-  - kind: jsonpath_count_equals
-    path: "$.selectivity_results[*]"
-    expected: 4
-    note: "One selectivity_results entry per feeder cascade pair"
-  - kind: invariant_passes
-    invariant: "INV-6"
-    note: "Busbar IcW vs Ipk"
-  - kind: clause_cited
-    clause_pattern: "^IEC 61439"
-    minimum_count: 1
+checks:
+  - assertion: 'ir matches "db-layout-ir.schema.json"'
+    description: Output validates against the db-layout IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.incoming.phase_arrangement == "TPN"'
+    description: Phase arrangement must be TPN
+    severity: critical
+
+  - assertion: 'ir.board.enclosure_form_iec61439 == "4b"'
+    description: Enclosure form must be Form 4b as declared
+    severity: critical
+
+  - assertion: 'ir.busbar.icw_ka_1s >= 25'
+    description: IcW must withstand declared 25 kA fault
+    severity: critical
+
+  - assertion: 'ir.selectivity_results.length == 4'
+    description: One selectivity_results entry per feeder cascade pair
+    severity: critical
+
+  - assertion: 'ir.invariants.INV-6.passes == true'
+    description: Busbar IcW vs Ipk
+    severity: critical
+    matches_inv: INV-6
+
+  - assertion: 'ir.citations matches "^IEC 61439"'
+    description: At least 1 citation matches IEC 61439 pattern
+    severity: warning

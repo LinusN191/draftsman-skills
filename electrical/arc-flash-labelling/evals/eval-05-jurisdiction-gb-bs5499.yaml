@@ -1,7 +1,6 @@
-eval_id: eval-05-jurisdiction-gb-bs5499
-category: jurisdiction_switch
+name: eval-05-jurisdiction-gb-bs5499
 skill: arc-flash-labelling
-skill_version: 1.0.0
+category: jurisdiction_switch
 description: |
   UK 400V commercial project. Jurisdiction GB → BS-5499 format auto-selected
   for all labels. English signal words present (BS 5499 supplementation).
@@ -16,21 +15,66 @@ input:
   project_metadata:
     company_name: "Acme UK Ltd"
     qualified_person: "John Smith, CEng MIET"
-expected:
-  per_label:
-    - node_id: "MSB-1"
-      format_applied: "bs_5499"
-      format_source: "auto_jurisdiction"
-      signal_word: "DANGER"
-      svg_content_must_contain_text: ["DANGER", "MSB-1", "Category 3"]
-    - node_id: "DB-L1"
-      format_applied: "bs_5499"
-      signal_word: "WARNING"
-  rationale:
-    sections_count: 8
-    chat_summary_must_contain_text: ["BS 5499", "HSG48"]
-pass_criteria:
-  - "All labels use bs_5499 format (not ansi_z535_4 / iso_7010)"
-  - "ISO 7010 W012 symbol present in SVG"
-  - "English signal-word supplementation banner present"
-  - "Rationale section 3 (Jurisdictional Format) mentions HSG48 voluntary status"
+
+checks:
+  # per_label[0] — MSB-1
+  - assertion: 'ir.labels[?(@.node_id=="MSB-1")].format_applied == "bs_5499"'
+    description: MSB-1 label uses BS 5499 format (GB jurisdiction default)
+    severity: critical
+    standard_ref: BS 5499
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-1")].format_source == "auto_jurisdiction"'
+    description: MSB-1 format_source records auto_jurisdiction path
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-1")].signal_word == "DANGER"'
+    description: MSB-1 signal word is DANGER (IE=10 above warning threshold)
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-1")].svg_content contains "DANGER"'
+    description: MSB-1 SVG must contain text "DANGER"
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-1")].svg_content contains "MSB-1"'
+    description: MSB-1 SVG must contain text "MSB-1" (equipment id)
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-1")].svg_content contains "Category 3"'
+    description: MSB-1 SVG must contain text "Category 3"
+    severity: critical
+
+  # per_label[1] — DB-L1
+  - assertion: 'ir.labels[?(@.node_id=="DB-L1")].format_applied == "bs_5499"'
+    description: DB-L1 label uses BS 5499 format
+    severity: critical
+    standard_ref: BS 5499
+
+  - assertion: 'ir.labels[?(@.node_id=="DB-L1")].signal_word == "WARNING"'
+    description: DB-L1 signal word is WARNING (IE=6, below DANGER threshold)
+    severity: critical
+
+  # rationale.sections_count
+  - assertion: 'ir.rationale.sections.length == 8'
+    description: Exactly 8 rationale sections expected per WI2
+    severity: critical
+
+  # rationale.chat_summary_must_contain_text
+  - assertion: 'ir.rationale.chat_summary contains "BS 5499"'
+    description: Chat summary must reference BS 5499
+    severity: critical
+
+  - assertion: 'ir.rationale.chat_summary contains "HSG48"'
+    description: Chat summary must reference HSG48 voluntary best-practice framing
+    severity: critical
+
+  # pass_criteria coverage:
+  # "ISO 7010 W012 symbol present in SVG"
+  - assertion: 'ir.labels[*].svg_content contains "W012"'
+    description: Every label SVG must reference ISO 7010 W012 symbol
+    severity: warning
+    standard_ref: ISO 7010 W012
+
+  # "All labels use bs_5499 format (not ansi_z535_4 / iso_7010)" — cross-cutting check
+  - assertion: 'ir.labels[*].format_applied all_equal "bs_5499"'
+    description: All labels must use bs_5499 format (no ansi_z535_4 or iso_7010)
+    severity: critical

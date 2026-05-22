@@ -3,29 +3,23 @@
   "version": "1.0.0",
   "discipline": "electrical",
   "subdiscipline": "safety-output",
-  "description": "Consume arc-flash intent and render printable arc-flash warning labels per ANSI Z535.4 + ISO 7010 + BS 5499 (jurisdiction-aware) with NFPA 70E §130.5(H) required content. Produces per-equipment SVG labels inline; PDF/PNG rendering deferred to calc.render_label runtime tool per WI3.",
+  "description": "Consume arc-flash intent and render printable arc-flash warning labels per ANSI Z535.4 + ISO 7010 + BS 5499 (jurisdiction-aware) with NFPA 70E \u00a7130.5(H) required content. Produces per-equipment SVG labels inline; PDF/PNG rendering deferred to calc.render_label runtime tool per WI3.",
   "status": "beta",
   "licence": "MIT",
   "inputs_path": "inputs.json",
-  "inputs": [
-    "jurisdiction",
-    "arc-flash-intent-from-disk-or-declared",
-    "company_name",
-    "qualified_person",
-    "qr_code_base_url",
-    "default_label_size_mm",
-    "format_override_per_node",
-    "ppe_description_override",
-    "branding_overlay_svg_path",
-    "label_recommendation_override"
+  "outputs": [
+    "labels-ir"
   ],
-  "outputs": ["labels-ir"],
   "output_schema": "electrical/arc-flash-labelling/schemas/labels-ir.schema.json",
-  "produces_intent": ["labels"],
+  "produces_intent": [
+    "labels"
+  ],
   "produces_intent_schemas": {
     "labels": "electrical/arc-flash-labelling/schemas/labels-intent.schema.json"
   },
-  "consumes_intents": ["arc-flash"],
+  "consumes_intents": [
+    "arc-flash"
+  ],
   "standards": [
     "shared/standards/electrical/ANSI-Z535-4/signal-words.json",
     "shared/standards/electrical/ANSI-Z535-4/colour-spec.json",
@@ -68,7 +62,7 @@
   "prompts": {
     "generator": "electrical/arc-flash-labelling/prompts/generator.md",
     "validator": "electrical/arc-flash-labelling/prompts/validator.md",
-    "reviewer":  "electrical/arc-flash-labelling/prompts/reviewer.md"
+    "reviewer": "electrical/arc-flash-labelling/prompts/reviewer.md"
   },
   "templates": [
     "electrical/arc-flash-labelling/templates/ansi-z535-4-label.svg.template",

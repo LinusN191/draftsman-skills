@@ -33,7 +33,11 @@ Per node, check `arc-flash.nodes[].label_recommended`. Skip nodes where `label_r
 Apply `rules/jurisdiction-format-selection.yaml`:
 1. RESTRICTED override: if `incident_energy_cal_per_cm2 > 40` → `restricted_format`
 2. Engineer per-node override: if `format_override_per_node[node_id]` declared
-3. Jurisdiction default: US→ansi_z535_4 / EU,INT→iso_7010 / GB→bs_5499
+3. Jurisdiction default:
+   - **US** → `ansi_z535_4`
+   - **EU / INT** → `iso_7010`
+   - **GB** → `bs_5499`
+   - **KE** → `bs_5499` (KS 1700:2018 Annex E §VIII adoption-verbatim chain inherits the UK signage convention; KS 50:2018 also tracks BS 5499 for safety signs)
 
 Record `format_source` per node.
 

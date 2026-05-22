@@ -1,46 +1,74 @@
 # Eval 06 — Rationale block must be present and substantive
 # Category: rationale_block
 
-id: eval-06-rationale-block
+name: eval-06-rationale-block
+skill: earthing
 category: rationale_block
-severity: high
 description: |
   Reuses the eval-01 happy-path scenario but specifically targets the rationale block.
   Per upstream WI2 the rationale block is mandatory at IR root and must contain the
   8-section taxonomy plus a chat_summary and a decisions array with citations.
 
-inputs:
+input:
   reuse_eval: "eval-01-uk-dwelling-tn-cs"
 
-assertions:
-  - kind: schema_valid
-    schema: "earthing-ir.schema.json"
-  - kind: jsonpath_present
-    path: "$.rationale.chat_summary"
-  - kind: jsonpath_length_gte
-    path: "$.rationale.chat_summary"
-    minimum: 100
-    maximum: 800
-    note: "1 paragraph, not a sentence and not an essay"
-  - kind: jsonpath_present_all
-    paths:
-      - "$.rationale.engineering_objectives"
-      - "$.rationale.constraints"
-      - "$.rationale.regulatory_basis"
-      - "$.rationale.key_decisions"
-      - "$.rationale.assumptions"
-      - "$.rationale.design_methodology"
-      - "$.rationale.risks"
-      - "$.rationale.evidence"
-  - kind: jsonpath_count_gte
-    path: "$.rationale.key_decisions[*]"
-    minimum: 3
-  - kind: jsonpath_all_present
-    path: "$.rationale.key_decisions[*].clause_ref"
-    note: "Every key decision must cite a standards clause"
-  - kind: jsonpath_pattern_match
-    path: "$.rationale.key_decisions[*].clause_ref"
-    pattern: "^(BS 7671:2018\\+A3|IEC 60364-[0-9]+-[0-9]+|NEC 2023)"
-    note: "Citations must use canonical format"
+checks:
+  - assertion: 'ir matches "earthing-ir.schema.json"'
+    description: Output validates against the earthing IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.rationale.chat_summary != null'
+    description: Rationale chat_summary must be present
+    severity: warning
+
+  - assertion: 'ir.rationale.chat_summary.length >= 100'
+    description: chat_summary must be at least 100 characters — 1 paragraph, not a sentence and not an essay
+    severity: warning
+
+  - assertion: 'ir.rationale.chat_summary.length <= 800'
+    description: chat_summary must be at most 800 characters — 1 paragraph, not a sentence and not an essay
+    severity: warning
+
+  - assertion: 'ir.rationale.engineering_objectives != null'
+    description: Field rationale.engineering_objectives must be present
+    severity: warning
+
+  - assertion: 'ir.rationale.constraints != null'
+    description: Field rationale.constraints must be present
+    severity: warning
+
+  - assertion: 'ir.rationale.regulatory_basis != null'
+    description: Field rationale.regulatory_basis must be present
+    severity: warning
+
+  - assertion: 'ir.rationale.key_decisions != null'
+    description: Field rationale.key_decisions must be present
+    severity: warning
+
+  - assertion: 'ir.rationale.assumptions != null'
+    description: Field rationale.assumptions must be present
+    severity: warning
+
+  - assertion: 'ir.rationale.design_methodology != null'
+    description: Field rationale.design_methodology must be present
+    severity: warning
+
+  - assertion: 'ir.rationale.risks != null'
+    description: Field rationale.risks must be present
+    severity: warning
+
+  - assertion: 'ir.rationale.evidence != null'
+    description: Field rationale.evidence must be present
+    severity: warning
+
+  - assertion: 'ir.rationale.key_decisions.length >= 3'
+    description: At least 3 key decisions required
+    severity: warning
+
+  - assertion: 'ir.rationale.key_decisions[*].clause_ref not_contains null'
+    description: Every key decision must cite a standards clause — clause_ref must be non-null on all items
+    severity: warning
+
+  - assertion: 'ir.rationale.key_decisions[*].clause_ref matches "^(BS 7671:2018\+A3|IEC 60364-[0-9]+-[0-9]+|NEC 2023)"'
+    description: Citations must use canonical format
+    severity: warning

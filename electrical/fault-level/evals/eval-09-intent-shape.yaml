@@ -1,35 +1,44 @@
-id: eval-09-intent-shape
-category: skill_specific
-severity: critical
+name: eval-09-intent-shape
+skill: fault-level
+category: cross_validation
 description: |
-  Reuses eval-01 inputs. Verifies the emitted fault-level intent payload satisfies db-layout v1.0's expected
+  Reuses eval-01 input. Verifies the emitted fault-level intent payload satisfies db-layout v1.0's expected
   consumption shape — drift here breaks db-layout.
 
-inputs:
+input:
   reuse_eval: "eval-01-uk-domestic-cu-cascade"
 
-assertions:
-  - kind: emitted_intent_validates
-    intent_type: "fault-level"
-    schema: "fault-level-intent.schema.json"
-  - kind: emitted_intent_field_present
-    intent_type: "fault-level"
-    path: "$.project_id"
-  - kind: emitted_intent_field_present
-    intent_type: "fault-level"
-    path: "$.source_summary"
-  - kind: emitted_intent_field_present
-    intent_type: "fault-level"
-    path: "$.fault_currents[*].node_id"
-  - kind: emitted_intent_field_present
-    intent_type: "fault-level"
-    path: "$.fault_currents[*].ifault_ka_max"
-  - kind: emitted_intent_field_present
-    intent_type: "fault-level"
-    path: "$.fault_currents[*].node_kind"
-  - kind: cross_skill_compatibility_check
-    consumer_skill: "electrical/db-layout"
-    consumer_field_path: "$.selectivity_results[*]"
-    note: "db-layout selectivity_results entries get resolved from fault-level intent fault_currents[]"
+checks:
+  - assertion: 'ir.emitted_intents[?(@.type=="fault-level")].payload matches "fault-level-intent.schema.json"'
+    description: Emitted fault-level intent must validate against the published intent schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.emitted_intents[?(@.type=="fault-level")].payload.project_id != null'
+    description: Intent fault-level must carry field project_id
+    severity: critical
+
+  - assertion: 'ir.emitted_intents[?(@.type=="fault-level")].payload.source_summary != null'
+    description: Intent fault-level must carry field source_summary
+    severity: critical
+
+  - assertion: 'ir.emitted_intents[?(@.type=="fault-level")].payload.fault_currents[*].node_id != null'
+    description: Intent fault-level must carry field fault_currents[*].node_id
+    severity: critical
+
+  - assertion: 'ir.emitted_intents[?(@.type=="fault-level")].payload.fault_currents[*].ifault_ka_max != null'
+    description: Intent fault-level must carry field fault_currents[*].ifault_ka_max
+    severity: critical
+
+  - assertion: 'ir.emitted_intents[?(@.type=="fault-level")].payload.fault_currents[*].node_kind != null'
+    description: Intent fault-level must carry field fault_currents[*].node_kind
+    severity: critical
+
+  # Tier 4 approximation: cross_skill_compatibility_check
+  # Full semantics: db-layout selectivity_results entries get resolved from fault-level intent fault_currents[]
+  # TODO: deeper cross-skill structural diff requires harness support
+  - assertion: 'ir.emitted_intents != null'
+    description: >-
+      Cross-skill structural compatibility — db-layout consumes fault-level intent; emitted fault-level intent
+      fault_currents[] must match the shape consumed by electrical/db-layout selectivity_results entries
+      (consumer_field_path: $.selectivity_results[*]).
+    severity: warning

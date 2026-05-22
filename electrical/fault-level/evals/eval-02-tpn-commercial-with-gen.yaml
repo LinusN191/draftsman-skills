@@ -1,12 +1,12 @@
-id: eval-02-tpn-commercial-with-gen
+name: eval-02-tpn-commercial-with-gen
+skill: fault-level
 category: edge_case
-severity: critical
 description: |
   400V TPN commercial: 1600 kVA DNO TX + 800 kVA standby generator on ATS scheme.
   Two-source modelling. Near-from-generator method applies in gen-mode (X"d subtransient + decrement).
   Far-from-generator method applies in utility-mode.
 
-inputs:
+input:
   jurisdiction: "GB"
   project_id: "intl-com-fl-eg02"
   supply_voltage_v: "400"
@@ -25,21 +25,23 @@ inputs:
     - { node_id: "TX-1", parent_node_id: "HV-1", node_kind: "transformer_secondary", designation: "1600 kVA TX LV terminals" }
     - { node_id: "MSB-1", parent_node_id: "TX-1", node_kind: "board_incoming", designation: "Main MSB", feeder: { length_m: 15, csa_mm2_or_awg: "240mm²", material: "copper", insulation: "xlpe_90" } }
 
-assertions:
-  - kind: schema_valid
-    schema: "fault-level-ir.schema.json"
-  - kind: jsonpath_present
-    path: "$.project_supply.hv_side"
-  - kind: jsonpath_count_gte
-    path: "$.sources[*]"
-    minimum: 2
-    note: "utility + generator both modelled"
-  - kind: jsonpath_in
-    path: "$.sources[*].kind"
-    allowed: ["utility", "generator", "ups", "motor_aggregate"]
-  - kind: clause_cited
-    clause_pattern: "IEC 60909-0:2016 §3.5"
-    minimum_count: 1
-    note: "Near-from-generator method cited"
+checks:
+  - assertion: 'ir matches "fault-level-ir.schema.json"'
+    description: Output validates against the fault-level IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.project_supply.hv_side != null'
+    description: HV side must be present in project_supply
+    severity: critical
+
+  - assertion: 'ir.sources.length >= 2'
+    description: utility + generator both modelled — at least 2 sources required
+    severity: critical
+
+  - assertion: 'ir.sources[*].kind matches "^(utility|generator|ups|motor_aggregate)$"'
+    description: All values must be one of utility/generator/ups/motor_aggregate
+    severity: critical
+
+  - assertion: 'ir.citations matches "IEC 60909-0:2016 §3.5"'
+    description: At least 1 citation matches — near-from-generator method cited
+    severity: warning

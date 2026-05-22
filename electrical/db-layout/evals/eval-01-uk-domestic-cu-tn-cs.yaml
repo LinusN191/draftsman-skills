@@ -2,15 +2,15 @@
 # Category: happy_path
 # Standard refs: BS 7671:2018+A3, IEC 61439-3, IEC 60617
 
-id: eval-01-uk-domestic-cu-tn-cs
+name: eval-01-uk-domestic-cu-tn-cs
+skill: db-layout
 category: happy_path
-severity: critical
 description: |
   Standard UK 3-bed semi-detached dwelling on PME supply (TN-C-S). 100A main switch +
   12-way Hager consumer unit + 30mA main RCD + 6 final circuits (lighting × 2, sockets × 2,
   cooker, shower). All circuits RCBO or behind main RCD. Form 1 enclosure.
 
-inputs:
+input:
   jurisdiction: "GB"
   board_type: "consumer_unit"
   db_designation: "CU-G"
@@ -34,37 +34,82 @@ inputs:
   diversity_factor_main: 0.4
   rcd_type_default: "A"
 
-assertions:
-  - kind: schema_valid
-    schema: "db-layout-ir.schema.json"
-  - kind: jsonpath_equals
-    path: "$.jurisdiction"
-    expected: "GB"
-  - kind: jsonpath_equals
-    path: "$.board.db_id"
-    expected: "CU-G"
-  - kind: jsonpath_equals
-    path: "$.board.enclosure_form_iec61439"
-    expected: "1"
-  - kind: jsonpath_count_equals
-    path: "$.circuits[*]"
-    expected: 6
-  - kind: jsonpath_lte
-    path: "$.board.ways_used"
-    maximum: 12
-  - kind: invariant_passes
-    invariant: "INV-1"
-    note: "Way accounting"
-  - kind: invariant_passes
-    invariant: "INV-3"
-    note: "Busbar rating coverage"
-  - kind: invariant_passes
-    invariant: "INV-4"
-    note: "OCPD-cable coordination"
-  - kind: clause_cited
-    clause_pattern: "^BS 7671:2018\\+A3 Reg 4(11|33)\\."
-    minimum_count: 2
-  - kind: rationale_present
-    require_sections: ["Board Classification", "Incoming Supply", "Busbar Sizing", "Way Assignment", "OCPD Selection", "RCD Strategy", "Cable Selection", "Selectivity Verification", "Compliance"]
+checks:
+  - assertion: 'ir matches "db-layout-ir.schema.json"'
+    description: Output validates against the db-layout IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.jurisdiction == "GB"'
+    description: Jurisdiction must be GB
+    severity: critical
+
+  - assertion: 'ir.board.db_id == "CU-G"'
+    description: Board id must match declared designation
+    severity: critical
+
+  - assertion: 'ir.board.enclosure_form_iec61439 == "1"'
+    description: Enclosure form must be Form 1 as declared
+    severity: critical
+
+  - assertion: 'ir.circuits.length == 6'
+    description: Six circuits declared in input must appear in IR
+    severity: critical
+
+  - assertion: 'ir.board.ways_used <= 12'
+    description: Ways used must not exceed declared total of 12
+    severity: critical
+
+  - assertion: 'ir.invariants.INV-1.passes == true'
+    description: Way accounting
+    severity: critical
+    matches_inv: INV-1
+
+  - assertion: 'ir.invariants.INV-3.passes == true'
+    description: Busbar rating coverage
+    severity: critical
+    matches_inv: INV-3
+
+  - assertion: 'ir.invariants.INV-4.passes == true'
+    description: OCPD-cable coordination
+    severity: critical
+    matches_inv: INV-4
+
+  - assertion: 'ir.citations matches "^BS 7671:2018\+A3 Reg 4(11|33)\."'
+    description: At least 2 citations match pattern
+    severity: warning
+
+  - assertion: 'ir.rationale.sections[*].title contains "Board Classification"'
+    description: "Rationale must include section: Board Classification"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "Incoming Supply"'
+    description: "Rationale must include section: Incoming Supply"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "Busbar Sizing"'
+    description: "Rationale must include section: Busbar Sizing"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "Way Assignment"'
+    description: "Rationale must include section: Way Assignment"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "OCPD Selection"'
+    description: "Rationale must include section: OCPD Selection"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "RCD Strategy"'
+    description: "Rationale must include section: RCD Strategy"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "Cable Selection"'
+    description: "Rationale must include section: Cable Selection"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "Selectivity Verification"'
+    description: "Rationale must include section: Selectivity Verification"
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].title contains "Compliance"'
+    description: "Rationale must include section: Compliance"
+    severity: critical

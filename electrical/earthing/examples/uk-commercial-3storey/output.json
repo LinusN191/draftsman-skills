@@ -20,7 +20,7 @@
   },
   "met": {
     "location": "ground-floor plant room, adjacent to MSB-MAIN switchboard",
-    "supply_bond_type": "tn_c_s_pen",
+    "supply_bond_type": "dno_pme_bond",
     "main_earthing_conductor_csa_mm2": 25
   },
   "electrodes": [],
@@ -33,7 +33,7 @@
   ],
   "supplementary_bonding": [
     {
-      "location": "plant_room_wash_hand_basin",
+      "location": "other",
       "items_bonded": ["wash_basin_taps", "exposed_water_pipework", "metallic_partition"],
       "csa_mm2_or_awg": "4mm²",
       "code_clause": "BS 7671:2018+A2 Reg 415.2"
@@ -136,7 +136,7 @@
         "title": "System Identification",
         "summary": "TN-C-S confirmed from UK Power Networks DNO declaration (Ze=0.35Ω, PSCC=9.8 kA at MSB) — matches fault-level UK example's source-summary for cross-skill consistency. Within the installation, N and PE are separated downstream of the service head; the PEN bond is made at the DNO cut-out by the supplier.",
         "decisions": [
-          { "label": "TN-C-S system confirmed", "summary": "DNO declared PME earth with Ze=0.35Ω at MSB intake.", "rule": "BS 7671:2018+A2 Reg 411.4 — TN-C-S system definition", "code_clause": "BS 7671:2018+A2 Reg 411.4", "inputs": { "ze_ohm_declared": 0.35, "supply_bond_type": "tn_c_s_pen", "jurisdiction": "GB" } }
+          { "label": "TN-C-S system confirmed", "summary": "DNO declared PME earth with Ze=0.35Ω at MSB intake.", "rule": "BS 7671:2018+A2 Reg 411.4 — TN-C-S system definition", "code_clause": "BS 7671:2018+A2 Reg 411.4", "inputs": { "ze_ohm_declared": 0.35, "supply_bond_type": "dno_pme_bond", "jurisdiction": "GB" } }
         ]
       },
       {

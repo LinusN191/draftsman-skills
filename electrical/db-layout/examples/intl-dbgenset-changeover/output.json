@@ -1,6 +1,6 @@
 {
   "$schema": "../../schemas/db-layout-ir.schema.json",
-  "drawing_type": "db_layout",
+  "drawing_type": "db_layout_schedule_and_schematic",
   "version": "1.2.0",
   "meta": {
     "project_id": "intl-comm-tpn-eg02",
@@ -15,7 +15,8 @@
     "enclosure_rating": "IP4X",
     "manufacturer_class": "IEC 61439-3 Distribution Board",
     "scope": "single-board",
-    "role": "ats_changeover_panel"
+    "role": "ats_changeover_panel",
+    "board_kind": "specialty_board"
   },
   "incoming_supply": {
     "voltage_v": 400,
@@ -29,24 +30,136 @@
     "type": "switch-disconnector",
     "rating_a": 63,
     "breaking_capacity_ka": 10,
-    "fault_level_a_min": 9000,
-    "_note": "Integrated with ATS — utility/genset transfer via mechanical interlock per IEC 60364-5-56:2018 §552 (4-pole transfer, neutral switched)"
+    "fault_level_a_min": 9000
   },
   "circuits": [
-    { "circuit_id": "G01", "way_module_id": "W1", "designation": "ATS controller + signaling (24 VDC supervisory)", "voltage_class": "ELV_control", "downstream_load_kw": 0.5,  "ocpd": { "rating_a": 6,  "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false                                              }, "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 2  } },
-    { "circuit_id": "G02", "way_module_id": "W2", "designation": "EM lighting changeover feed to DB-EM",            "voltage_class": "LV_power",    "downstream_load_kw": 6.0,  "ocpd": { "rating_a": 32, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false                                              }, "cable": { "csa_mm2_or_awg": "6mm²",   "cores": 4, "length_m": 80 } },
-    { "circuit_id": "G03", "way_module_id": "W3", "designation": "Fire alarm changeover feed to DB-FA1",            "voltage_class": "LV_power",    "downstream_load_kw": 4.0,  "ocpd": { "rating_a": 20, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false                                              }, "cable": { "csa_mm2_or_awg": "4mm²",   "cores": 4, "length_m": 60 } },
-    { "circuit_id": "G04", "way_module_id": "W4", "designation": "UPS bypass mains backup to DB-UPS",               "voltage_class": "LV_power",    "downstream_load_kw": 12.0, "ocpd": { "rating_a": 32, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false                                              }, "cable": { "csa_mm2_or_awg": "6mm²",   "cores": 4, "length_m": 40 } },
-    { "circuit_id": "G05", "way_module_id": "W5", "designation": "Genset day tank + cooling fan",                   "voltage_class": "LV_power",    "downstream_load_kw": 1.5,  "ocpd": { "rating_a": 10, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 5  } }
+    {
+      "circuit_id": "G01",
+      "way_module_id": "W1",
+      "designation": "ATS controller + signaling (24 VDC supervisory)",
+      "voltage_class": "ELV_control",
+      "downstream_load_kw": 0.5,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 2
+      }
+    },
+    {
+      "circuit_id": "G02",
+      "way_module_id": "W2",
+      "designation": "EM lighting changeover feed to DB-EM",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 6.0,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "6mm²",
+        "cores": 4,
+        "length_m": 80
+      }
+    },
+    {
+      "circuit_id": "G03",
+      "way_module_id": "W3",
+      "designation": "Fire alarm changeover feed to DB-FA1",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 4.0,
+      "ocpd": {
+        "rating_a": 20,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "4mm²",
+        "cores": 4,
+        "length_m": 60
+      }
+    },
+    {
+      "circuit_id": "G04",
+      "way_module_id": "W4",
+      "designation": "UPS bypass mains backup to DB-UPS",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 12.0,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "6mm²",
+        "cores": 4,
+        "length_m": 40
+      }
+    },
+    {
+      "circuit_id": "G05",
+      "way_module_id": "W5",
+      "designation": "Genset day tank + cooling fan",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 1.5,
+      "ocpd": {
+        "rating_a": 10,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 5
+      }
+    }
   ],
   "spare_ways": 3,
   "selectivity_results": [
-    { "upstream": "MSB-MAIN F08 (63A MCCB Type D, utility-side) → ATS → DB-GENSET-XCV main switch", "downstream": "DB-GENSET-XCV main switch + 6A-32A Type C MCBs on ATS-output side", "verdict": "info", "_note": "63A MCCB Type D upstream cascading via the ATS to 6-32A Type C MCBs at DB-GENSET-XCV. MCCB-upstream-of-MCB cascade benefits from device-class differential (Type D magnetic trip 10-20×In vs Type C 5-10×In) — IEC 60898 + IEC 60947-2 cascade tables typically grant time-current selectivity at ratios ≥1.5:1 across these classes. Worst-case ratio at G02/G04 (32A) = 63:32 = ~2:1 — at the IEC 60898 same-curve cascade threshold and ABOVE the MCCB-class cross-discrimination threshold. Dual-mode fault contribution: utility-side declared PFC 9.0 kA (IEC 60909-0:2016 §3.5 utility worst case); genset-mode subtransient Ik\" ≈ 1.0 kA on the 80 kVA standby genset per IEC 60909-0:2016 §3.5.1 equivalent voltage source method (In ≈ 115.5 A, Xd\" ≈ 0.12 pu per IEC 60909-1:2002 Table A.1, E\" ≈ 1.05 pu → Ik\" ≈ 115.5 × 1.05/0.12 ≈ 1.01 kA; peak ip ≈ 2.57 kA at κ ≈ 1.8; sustained Ik ≈ 0.4 kA after AVR field forcing settles ~5 s post-fault, which is what the 3-5× In figure references — NOT subtransient Ik\") — significantly lower than utility-mode. Flagged INFO for fault-level skill to verify against manufacturer cascade table at BOTH 9.0 kA utility-mode + ~1.0 kA genset-mode subtransient Ik\" (sustained Ik ~0.4 kA after AVR settles), including ATS transfer-time impact on cascade behaviour." }
+    {
+      "upstream_id": "MSB-MAIN-F08-via-ATS",
+      "downstream_id": "DB-GENSET-XCV",
+      "selective_to_fault_ka": 9.0,
+      "source": "tool_call_pending",
+      "tool_call_pending": true,
+      "code_clause": "IEC 60898 + IEC 60947-2 cascade tables — 63A MCCB Type D upstream cascading via the ATS to 6-32A Type C MCBs at DB-GENSET-XCV. MCCB-upstream-of-MCB cascade benefits from device-class differential (Type D magnetic trip 10-20×In vs Type C 5-10×In) — IEC 60898 + IEC 60947-2 cascade tables typically grant time-current selectivity at ratios ≥1.5:1 across these classes. Worst-case ratio at G02/G04 (32A) = 63:32 = ~2:1 — at the IEC 60898 same-curve cascade threshold and ABOVE the MCCB-class cross-discrimination threshold. Dual-mode fault contribution: utility-side declared PFC 9.0 kA (IEC 60909-0:2016 §3.5 utility worst case); genset-mode subtransient Ik\" ≈ 1.0 kA on the 80 kVA standby genset per IEC 60909-0:2016 §3.5.1 equivalent voltage source method (In ≈ 115.5 A, Xd\" ≈ 0.12 pu per IEC 60909-1:2002 Table A.1, E\" ≈ 1.05 pu → Ik\" ≈ 115.5 × 1.05/0.12 ≈ 1.01 kA; peak ip ≈ 2.57 kA at κ ≈ 1.8; sustained Ik ≈ 0.4 kA after AVR field forcing settles ~5 s post-fault, which is what the 3-5× In figure references — NOT subtransient Ik\") — significantly lower than utility-mode. Flagged tool_call_pending for fault-level skill to verify against manufacturer cascade table at BOTH 9.0 kA utility-mode + ~1.0 kA genset-mode subtransient Ik\" (sustained Ik ~0.4 kA after AVR settles), including ATS transfer-time impact on cascade behaviour."
+    }
   ],
   "compliance_summary": {
     "compliant": true,
     "non_compliance_flags": [
-      { "message": "ATS transfer time requirement — typical 6-10 s for a medium standby genset (engine crank + warm-up + breaker close + load step) PER ISO 8528-12:1997. Engineer to confirm AHJ acceptance against the strictest applicable cross-jurisdictional benchmark: BS EN 50171:2001+A1:2022 §6.3 (central-battery emergency-lighting transfer time ≤0.5 s if classified as Type Z, else ≤15 s for Type N — DB-EM downstream of G02 must specify), NFPA 110-2022 Type 10 (≤10 s for life-safety branch — US-aligned facilities), and IEC 60364-5-56:2018 §556+§551 (safety services + LV generating sets — engineer-declared per AHJ). The 6-10 s genset-only transfer is INSUFFICIENT for Type Z emergency lighting (≤0.5 s) — those circuits MUST be backed by central-battery EM lighting or local-battery luminaires per BS EN 50171:2001 §6.3, and G02 here merely provides the post-genset feed once the ATS has completed transfer.", "code_clause": "BS EN 50171:2001+A1:2022 §6.3 + NFPA 110-2022 Type 10 + ISO 8528-12:1997 + IEC 60364-5-56:2018 §556 + §551", "severity": "warning" }
+      {
+        "message": "ATS transfer time requirement — typical 6-10 s for a medium standby genset (engine crank + warm-up + breaker close + load step) PER ISO 8528-12:1997. Engineer to confirm AHJ acceptance against the strictest applicable cross-jurisdictional benchmark: BS EN 50171:2001+A1:2022 §6.3 (central-battery emergency-lighting transfer time ≤0.5 s if classified as Type Z, else ≤15 s for Type N — DB-EM downstream of G02 must specify), NFPA 110-2022 Type 10 (≤10 s for life-safety branch — US-aligned facilities), and IEC 60364-5-56:2018 §556+§551 (safety services + LV generating sets — engineer-declared per AHJ). The 6-10 s genset-only transfer is INSUFFICIENT for Type Z emergency lighting (≤0.5 s) — those circuits MUST be backed by central-battery EM lighting or local-battery luminaires per BS EN 50171:2001 §6.3, and G02 here merely provides the post-genset feed once the ATS has completed transfer.",
+        "code_clause": "BS EN 50171:2001+A1:2022 §6.3 + NFPA 110-2022 Type 10 + ISO 8528-12:1997 + IEC 60364-5-56:2018 §556 + §551",
+        "severity": "warning"
+      }
     ],
     "assumptions": [
       "DB-GENSET-XCV is the dedicated standby-genset changeover sub-DB — `role: ats_changeover_panel` flagged in the board block; supply_class: essential signals to downstream consumers (riser, generator-sizing, fault-level, SLD) that this distribution feeds safety-services and essential life-safety loads with dual-source resilience.",
@@ -81,7 +194,13 @@
     "Placard on DB-GENSET-XCV faceplate: 'DUAL-SOURCE — UTILITY/GENSET ATS — DO NOT BACK-FEED' per IEEE 446-1995 critical-power labelling practice + IEC 60364-5-56:2018 §552 dual-source warning requirement.",
     "WARNING flag: ATS transfer time (6-10 s) is AT the NFPA 110-2022 Type 10 boundary and BELOW BS EN 50171:2001+A1:2022 §6.3 Type Z threshold — AHJ sign-off required at commissioning; downstream EM lighting must be central-battery or self-contained to bridge the gap."
   ],
-  "drawn_as_symbols": ["MCB", "MCCB", "ATS_BLOCK", "GENSET_BLOCK", "MAIN_SWITCH"],
+  "drawn_as_symbols": [
+    "MCB",
+    "MCCB",
+    "ATS_BLOCK",
+    "GENSET_BLOCK",
+    "MAIN_SWITCH"
+  ],
   "flags": [],
   "rationale": {
     "chat_summary": "DB-GENSET-XCV: 63A TPN ATS changeover sub-DB (utility-priority, 80 kVA standby genset, IEC 60364-5-56:2018 §552 4-pole transfer). 5 circuits: G01 ATS-controller ELV + G02 EM-lighting + G03 fire-alarm + G04 UPS-bypass (all RCD-free life-safety per §560.7 + IEC 62040-1 §5.2.4) + G05 day-tank/fan Type A 30mA. WARNING: 6-10s transfer (ISO 8528-12:1997) at NFPA 110-2022 Type 10 boundary, below BS EN 50171 §6.3 Type Z — AHJ sign-off required; downstream DB-EM bridges via central battery.",
@@ -90,62 +209,192 @@
         "title": "Board Identification",
         "summary": "DB-GENSET-XCV is the dedicated standby-genset changeover sub-DB for the IEC 3-storey commercial office, with the ATS section in the ground-floor plant room (IP4X) and the contactor-enclosure section co-located with the 80 kVA external standby genset (IP54). Role flagged as `ats_changeover_panel` and supply_class as `essential` — signals dual-source resilience to downstream SLD, riser, fault-level, and generator-sizing skills so they treat this distribution as a safety-services bus with utility/genset alternative-source coordination and dedicated ATS-transfer-time disclosure.",
         "decisions": [
-          { "label": "Board role flagged as ats_changeover_panel", "summary": "Signals dual-source ATS-fed distribution to all downstream skills (SLD, riser, fault-level, generator-sizing, earthing).", "rule": "db-layout role taxonomy", "code_clause": "IEC 60364-5-56:2018 §552 + IEEE 446-1995" },
-          { "label": "supply_class: essential", "summary": "Safety-services bus — essential life-safety loads (EM lighting + fire alarm + UPS bypass) with dual-source resilience.", "rule": "db-layout supply_class taxonomy", "code_clause": "IEC 60364-5-56:2018 §556" },
-          { "label": "Split-location enclosure (ATS indoor + contactor outdoor)", "summary": "ATS controller + utility-source breaker in ground-floor plant room (IP4X); genset-source contactor + transfer cabling in external IP54 genset enclosure; sealed wall penetration per IEC 60364-5-52 §522.8.3.", "rule": "Genset/ATS siting best practice", "code_clause": "IEC 60364-5-52 §522.8.3 + IEC 60364-5-56:2018 §552" }
+          {
+            "label": "Board role flagged as ats_changeover_panel",
+            "summary": "Signals dual-source ATS-fed distribution to all downstream skills (SLD, riser, fault-level, generator-sizing, earthing).",
+            "rule": "db-layout role taxonomy",
+            "code_clause": "IEC 60364-5-56:2018 §552 + IEEE 446-1995"
+          },
+          {
+            "label": "supply_class: essential",
+            "summary": "Safety-services bus — essential life-safety loads (EM lighting + fire alarm + UPS bypass) with dual-source resilience.",
+            "rule": "db-layout supply_class taxonomy",
+            "code_clause": "IEC 60364-5-56:2018 §556"
+          },
+          {
+            "label": "Split-location enclosure (ATS indoor + contactor outdoor)",
+            "summary": "ATS controller + utility-source breaker in ground-floor plant room (IP4X); genset-source contactor + transfer cabling in external IP54 genset enclosure; sealed wall penetration per IEC 60364-5-52 §522.8.3.",
+            "rule": "Genset/ATS siting best practice",
+            "code_clause": "IEC 60364-5-52 §522.8.3 + IEC 60364-5-56:2018 §552"
+          }
         ]
       },
       {
         "title": "Incoming Supply",
         "summary": "63A TPN intake fed from MSB-MAIN F08 (63A MCCB Type D) via 60m 16mm² Cu XLPE submain to the ATS utility-source input, AND from an 80 kVA standby genset via 25mm² Cu XLPE to the ATS genset-source input. Utility-priority logic per IEC 60364-5-56:2018 §552: rests on utility, auto-starts genset on utility loss, transfers when genset stable (≥95% V + ≥98% f for ≥3 s), reverses on utility return + 30 s stable. Transfer time 6-10 s typical for an 80 kVA medium-genset per ISO 8528-12:1997 — DOES NOT meet BS EN 50171:2001+A1:2022 §6.3 Type Z (≤0.5 s) and sits AT the NFPA 110-2022 Type 10 (≤10 s) boundary.",
         "decisions": [
-          { "label": "Supply class: essential", "summary": "Safety-services bus with dual-source resilience — utility + genset via ATS.", "rule": "db-layout supply_class taxonomy", "code_clause": "IEC 60364-5-56:2018 §556" },
-          { "label": "4-pole transfer ATS (neutral switched)", "summary": "Genset operates as separately derived TN-S system in genset-mode; prevents parallel-neutral fault paths to utility transformer.", "rule": "ATS topology selection", "code_clause": "IEC 60364-5-56:2018 §552" },
-          { "label": "Utility-priority logic", "summary": "Default rest on utility; auto-start genset on utility loss; reverse-transfer on utility return + 30 s stable + 5-min cooldown.", "rule": "ATS control logic", "code_clause": "IEC 60364-5-56:2018 §552" },
-          { "label": "Upstream MSB-MAIN F08 = Type D MCCB", "summary": "Type D magnetic trip 10-20×In tolerates genset block-load transfer transient travelling upstream through ATS; Type C would risk nuisance trip during transfer.", "rule": "MCCB curve for genset-fed feeders", "code_clause": "IEC 60947-2" },
-          { "label": "Dual-mode declared PFC: 9.0 kA utility / ~1.0 kA genset subtransient Ik\" (sustained Ik ~0.4 kA)", "summary": "Utility-mode worst case per IEC 60909-0:2016 §3.5 (after 60m feeder impedance); genset-mode subtransient Ik\" ≈ 1.01 kA per §3.5.1 equivalent voltage source on 80 kVA (In ≈ 115.5 A, Xd\" ≈ 0.12 pu, E\" ≈ 1.05 pu; peak ip ≈ 2.57 kA, κ ≈ 1.8). Sustained Ik ≈ 0.4 kA after AVR field forcing settles ~5 s post-fault.", "rule": "Dual-mode fault current declaration (subtransient + sustained)", "code_clause": "IEC 60909-0:2016 §3.5 + §3.5.1 + IEC 60909-1:2002 Table A.1" }
+          {
+            "label": "Supply class: essential",
+            "summary": "Safety-services bus with dual-source resilience — utility + genset via ATS.",
+            "rule": "db-layout supply_class taxonomy",
+            "code_clause": "IEC 60364-5-56:2018 §556"
+          },
+          {
+            "label": "4-pole transfer ATS (neutral switched)",
+            "summary": "Genset operates as separately derived TN-S system in genset-mode; prevents parallel-neutral fault paths to utility transformer.",
+            "rule": "ATS topology selection",
+            "code_clause": "IEC 60364-5-56:2018 §552"
+          },
+          {
+            "label": "Utility-priority logic",
+            "summary": "Default rest on utility; auto-start genset on utility loss; reverse-transfer on utility return + 30 s stable + 5-min cooldown.",
+            "rule": "ATS control logic",
+            "code_clause": "IEC 60364-5-56:2018 §552"
+          },
+          {
+            "label": "Upstream MSB-MAIN F08 = Type D MCCB",
+            "summary": "Type D magnetic trip 10-20×In tolerates genset block-load transfer transient travelling upstream through ATS; Type C would risk nuisance trip during transfer.",
+            "rule": "MCCB curve for genset-fed feeders",
+            "code_clause": "IEC 60947-2"
+          },
+          {
+            "label": "Dual-mode declared PFC: 9.0 kA utility / ~1.0 kA genset subtransient Ik\" (sustained Ik ~0.4 kA)",
+            "summary": "Utility-mode worst case per IEC 60909-0:2016 §3.5 (after 60m feeder impedance); genset-mode subtransient Ik\" ≈ 1.01 kA per §3.5.1 equivalent voltage source on 80 kVA (In ≈ 115.5 A, Xd\" ≈ 0.12 pu, E\" ≈ 1.05 pu; peak ip ≈ 2.57 kA, κ ≈ 1.8). Sustained Ik ≈ 0.4 kA after AVR field forcing settles ~5 s post-fault.",
+            "rule": "Dual-mode fault current declaration (subtransient + sustained)",
+            "code_clause": "IEC 60909-0:2016 §3.5 + §3.5.1 + IEC 60909-1:2002 Table A.1"
+          }
         ]
       },
       {
         "title": "Circuit Breakdown",
         "summary": "5 final circuits: G01 ATS controller (6A ELV_control supervisory) + G02 EM lighting changeover feed to DB-EM (32A 3-phase) + G03 fire alarm changeover feed to DB-FA1 (20A 3-phase) + G04 UPS bypass mains backup to DB-UPS (32A 3-phase) + G05 genset day tank + cooling fan (10A 1-phase mechanical). The 4 downstream emergency feeds (G02-G04) re-energise their respective central-battery / battery-backed sub-DBs once the genset is online, bridging the 6-10 s transfer gap through their own battery autonomy.",
         "decisions": [
-          { "label": "G01 on ELV_control voltage class", "summary": "24 VDC supervisory ATS controller + signaling — dedicated control circuit, not a socket circuit.", "rule": "voltage_class taxonomy for control supplies", "code_clause": "IEC 60364-5-51 §514.5" },
-          { "label": "G02/G03/G04 on LV_power voltage class (4-pole life-safety feeds)", "summary": "Standard LV TPN distribution treatment; each feed re-energises a downstream battery-backed sub-DB once genset is online.", "rule": "voltage_class taxonomy for LV power distribution", "code_clause": "IEC 60364-5-52" },
-          { "label": "G05 mechanical-services 1-phase + N + E", "summary": "Day tank fuel pump motor + cooling fan motor in exterior genset enclosure.", "rule": "Mechanical-services circuit treatment", "code_clause": "IEC 60364-5-52" },
-          { "label": "Sizing: 32A on G02/G04, 20A on G03, 10A on G05, 6A on G01", "summary": "Sized for downstream sub-DB intake capacity + voltage-drop margin across long 40-80m runs (G02 at 80m drives 6mm² selection).", "rule": "IEC 60364-4-43 overcurrent protection coordination", "code_clause": "IEC 60364-4-43" },
-          { "label": "1.5/2.5/4/6mm² LSZH Cu cabling", "summary": "LSZH for low toxic emission in occupied plant room + genset enclosure; sizing matched to load + voltage-drop + cable-route environment.", "rule": "Cable selection for ATS-output distribution", "code_clause": "IEC 60364-5-52" }
+          {
+            "label": "G01 on ELV_control voltage class",
+            "summary": "24 VDC supervisory ATS controller + signaling — dedicated control circuit, not a socket circuit.",
+            "rule": "voltage_class taxonomy for control supplies",
+            "code_clause": "IEC 60364-5-51 §514.5"
+          },
+          {
+            "label": "G02/G03/G04 on LV_power voltage class (4-pole life-safety feeds)",
+            "summary": "Standard LV TPN distribution treatment; each feed re-energises a downstream battery-backed sub-DB once genset is online.",
+            "rule": "voltage_class taxonomy for LV power distribution",
+            "code_clause": "IEC 60364-5-52"
+          },
+          {
+            "label": "G05 mechanical-services 1-phase + N + E",
+            "summary": "Day tank fuel pump motor + cooling fan motor in exterior genset enclosure.",
+            "rule": "Mechanical-services circuit treatment",
+            "code_clause": "IEC 60364-5-52"
+          },
+          {
+            "label": "Sizing: 32A on G02/G04, 20A on G03, 10A on G05, 6A on G01",
+            "summary": "Sized for downstream sub-DB intake capacity + voltage-drop margin across long 40-80m runs (G02 at 80m drives 6mm² selection).",
+            "rule": "IEC 60364-4-43 overcurrent protection coordination",
+            "code_clause": "IEC 60364-4-43"
+          },
+          {
+            "label": "1.5/2.5/4/6mm² LSZH Cu cabling",
+            "summary": "LSZH for low toxic emission in occupied plant room + genset enclosure; sizing matched to load + voltage-drop + cable-route environment.",
+            "rule": "Cable selection for ATS-output distribution",
+            "code_clause": "IEC 60364-5-52"
+          }
         ]
       },
       {
         "title": "Selectivity Analysis",
         "summary": "Upstream MSB-MAIN F08 = 63A MCCB Type D on the utility-side; ATS sits between MSB-MAIN F08 and DB-GENSET-XCV; downstream MCBs at DB-GENSET-XCV are 6-32A Type C. Worst-case ratio at G02/G04 (32A) = 63:32 = ~2:1 — AT the IEC 60898 same-curve cascade threshold BUT benefits from MCCB-upstream-of-MCB cross-discrimination per IEC 60947-2 (Type D magnetic 10-20×In vs Type C 5-10×In typically gives reliable cascade at ratios ≥1.5:1). Verdict info — engineer-declared per manufacturer cascade chart; fault-level skill to confirm at BOTH 9.0 kA utility-mode and ~1.0 kA genset-mode subtransient Ik\" (sustained Ik ~0.4 kA after AVR settles) + ATS transfer-time impact.",
         "decisions": [
-          { "label": "63A:32A worst-case ratio = ~2:1 at G02/G04", "summary": "AT the IEC 60898 same-curve minimum; MCCB-class cross-discrimination via Type D upstream vs Type C downstream provides additional margin per IEC 60947-2.", "rule": "MCCB-MCB cascade selectivity", "code_clause": "IEC 60898-1 + IEC 60947-2 + IEC 60364-5-53:2002 §536" },
-          { "label": "Dual-mode cascade verification required", "summary": "Utility-mode PFC 9.0 kA + genset-mode subtransient Ik\" ~1.0 kA (sustained Ik ~0.4 kA after AVR settles) — both regimes must be checked against manufacturer cascade table.", "rule": "Cascade study across alternative-source distribution", "code_clause": "IEC 60909-0:2016 §3.5 + §3.5.1 + IEC 60909-1:2002 Table A.1 + IEC 60364-5-53:2002 §536" },
-          { "label": "ATS transfer-time impact on cascade", "summary": "During the 6-10 s transfer window, the ATS is briefly in dwell (no source) — cascade behaviour cannot be analysed in steady-state alone; fault-level skill must model the transfer sequence.", "rule": "Time-domain cascade study for ATS-fed distribution", "code_clause": "IEC 60364-5-56:2018 §552 + IEC 60909-1:2002" },
-          { "label": "Defer to fault-level skill", "summary": "Manufacturer cascade table + ATS transfer-sequence behaviour + dual-mode PFC verification required at full coordination study.", "rule": "Selectivity verification source = engineer_declared", "code_clause": "IEC 60364-5-53:2002 §536" }
+          {
+            "label": "63A:32A worst-case ratio = ~2:1 at G02/G04",
+            "summary": "AT the IEC 60898 same-curve minimum; MCCB-class cross-discrimination via Type D upstream vs Type C downstream provides additional margin per IEC 60947-2.",
+            "rule": "MCCB-MCB cascade selectivity",
+            "code_clause": "IEC 60898-1 + IEC 60947-2 + IEC 60364-5-53:2002 §536"
+          },
+          {
+            "label": "Dual-mode cascade verification required",
+            "summary": "Utility-mode PFC 9.0 kA + genset-mode subtransient Ik\" ~1.0 kA (sustained Ik ~0.4 kA after AVR settles) — both regimes must be checked against manufacturer cascade table.",
+            "rule": "Cascade study across alternative-source distribution",
+            "code_clause": "IEC 60909-0:2016 §3.5 + §3.5.1 + IEC 60909-1:2002 Table A.1 + IEC 60364-5-53:2002 §536"
+          },
+          {
+            "label": "ATS transfer-time impact on cascade",
+            "summary": "During the 6-10 s transfer window, the ATS is briefly in dwell (no source) — cascade behaviour cannot be analysed in steady-state alone; fault-level skill must model the transfer sequence.",
+            "rule": "Time-domain cascade study for ATS-fed distribution",
+            "code_clause": "IEC 60364-5-56:2018 §552 + IEC 60909-1:2002"
+          },
+          {
+            "label": "Defer to fault-level skill",
+            "summary": "Manufacturer cascade table + ATS transfer-sequence behaviour + dual-mode PFC verification required at full coordination study.",
+            "rule": "Selectivity verification source = engineer_declared",
+            "code_clause": "IEC 60364-5-53:2002 §536"
+          }
         ]
       },
       {
         "title": "Compliance Assessment",
         "summary": "DB-GENSET-XCV is compliant against IEC 60364 series (general LV distribution), IEC 60364-5-56:2018 §552 (ATS + dual-source) + §551 (LV generating sets) + §556 (safety services), ISO 8528-12:1997 (genset emergency power supply), IEC 60364-5-56:2018 §560.7 (no-RCD on safety-services emergency feeds), IEC 62040-1:2017 §5.2.4 (UPS bypass — applied to G04 RCD exemption), IEC 60364-4-41 §411.3.3 (Type A 30 mA on G05 mechanical-services socket-class circuit), and IEC 61439-3:2012 (distribution-board assembly). ONE WARNING flag: ATS transfer time (6-10 s) is AT NFPA 110-2022 Type 10 boundary and BELOW BS EN 50171:2001+A1:2022 §6.3 Type Z threshold — AHJ sign-off required at commissioning.",
         "decisions": [
-          { "label": "G01 ATS controller RCD-free", "summary": "Dedicated ELV_control supervisory circuit — not a socket circuit; same exemption principle as DB-UPS U05 BMS controller.", "rule": "Supervisory circuit RCD exemption", "code_clause": "IEC 60364-5-51 §514.5" },
-          { "label": "G02 EM lighting feed RCD-free", "summary": "Life-safety emergency feed per IEC 60364-5-56:2018 §560.7 — no RCD on safety-services distribution.", "rule": "Safety-services RCD exemption", "code_clause": "IEC 60364-5-56:2018 §560.7" },
-          { "label": "G03 fire alarm feed RCD-free", "summary": "Life-safety emergency feed per §560.7 — fire-alarm panel must be reachable for upstream fault current to clear.", "rule": "Safety-services RCD exemption", "code_clause": "IEC 60364-5-56:2018 §560.7" },
-          { "label": "G04 UPS bypass RCD-free", "summary": "UPS bypass mains-backup path per IEC 62040-1:2017 §5.2.4 — must allow upstream fault flow for proper isolation.", "rule": "UPS bypass RCD exemption", "code_clause": "IEC 62040-1:2017 §5.2.4" },
-          { "label": "G05 day tank + cooling fan Type A 30 mA", "summary": "Mechanical-services 1-phase motor circuit — exterior-routed + fuel-handling + motor windings justify shock protection per §411.3.3.", "rule": "Mechanical-services RCD selection", "code_clause": "IEC 60364-4-41 §411.3.3" },
-          { "label": "WARNING flag — ATS transfer time AHJ disclosure", "summary": "6-10 s typical sits AT NFPA 110-2022 Type 10 boundary and BELOW BS EN 50171:2001+A1:2022 §6.3 Type Z threshold; AHJ sign-off required at commissioning.", "rule": "Compliance flag taxonomy (severity=warning)", "code_clause": "BS EN 50171:2001+A1:2022 §6.3 + NFPA 110-2022 + ISO 8528-12:1997 + IEC 60364-5-56:2018 §556" }
+          {
+            "label": "G01 ATS controller RCD-free",
+            "summary": "Dedicated ELV_control supervisory circuit — not a socket circuit; same exemption principle as DB-UPS U05 BMS controller.",
+            "rule": "Supervisory circuit RCD exemption",
+            "code_clause": "IEC 60364-5-51 §514.5"
+          },
+          {
+            "label": "G02 EM lighting feed RCD-free",
+            "summary": "Life-safety emergency feed per IEC 60364-5-56:2018 §560.7 — no RCD on safety-services distribution.",
+            "rule": "Safety-services RCD exemption",
+            "code_clause": "IEC 60364-5-56:2018 §560.7"
+          },
+          {
+            "label": "G03 fire alarm feed RCD-free",
+            "summary": "Life-safety emergency feed per §560.7 — fire-alarm panel must be reachable for upstream fault current to clear.",
+            "rule": "Safety-services RCD exemption",
+            "code_clause": "IEC 60364-5-56:2018 §560.7"
+          },
+          {
+            "label": "G04 UPS bypass RCD-free",
+            "summary": "UPS bypass mains-backup path per IEC 62040-1:2017 §5.2.4 — must allow upstream fault flow for proper isolation.",
+            "rule": "UPS bypass RCD exemption",
+            "code_clause": "IEC 62040-1:2017 §5.2.4"
+          },
+          {
+            "label": "G05 day tank + cooling fan Type A 30 mA",
+            "summary": "Mechanical-services 1-phase motor circuit — exterior-routed + fuel-handling + motor windings justify shock protection per §411.3.3.",
+            "rule": "Mechanical-services RCD selection",
+            "code_clause": "IEC 60364-4-41 §411.3.3"
+          },
+          {
+            "label": "WARNING flag — ATS transfer time AHJ disclosure",
+            "summary": "6-10 s typical sits AT NFPA 110-2022 Type 10 boundary and BELOW BS EN 50171:2001+A1:2022 §6.3 Type Z threshold; AHJ sign-off required at commissioning.",
+            "rule": "Compliance flag taxonomy (severity=warning)",
+            "code_clause": "BS EN 50171:2001+A1:2022 §6.3 + NFPA 110-2022 + ISO 8528-12:1997 + IEC 60364-5-56:2018 §556"
+          }
         ]
       },
       {
         "title": "Schedule Notes",
         "summary": "Schedule emitted as 5-row table with 3 spare ways (W6-W8) for future expansion. Spare-way reservation aligns with typical safety-services growth: additional CCTV/security panel feed, genset block heater for cold-climate retrofit, or genset-room utility lighting/socket. G01 (ELV control) + G02/G03/G04 (life-safety + UPS bypass) RCD-FREE; G05 (day tank + cooling fan) Type A 30 mA RCD. Placard 'DUAL-SOURCE — UTILITY/GENSET ATS — DO NOT BACK-FEED' on faceplate per IEEE 446-1995 + IEC 60364-5-56:2018 §552.",
         "decisions": [
-          { "label": "3 spare ways reserved", "summary": "Typical safety-services growth: CCTV/security feed, block heater for cold-climate retrofit, or genset-room utility lighting/socket.", "rule": "Spare-way provisioning best practice", "code_clause": "IEC 60364-1:2005 §132.12 (design margin)" },
-          { "label": "Placard 'DUAL-SOURCE — DO NOT BACK-FEED'", "summary": "IEEE 446-1995 critical-power labelling + IEC 60364-5-56:2018 §552 dual-source warning requirement.", "rule": "Dual-source labelling practice", "code_clause": "IEEE 446-1995 §4 + IEC 60364-5-56:2018 §552" },
-          { "label": "ATS transfer-time disclosure footer on schedule", "summary": "6-10 s typical AHJ-disclosed; downstream DB-EM bridges via central battery; downstream DB-UPS bridges via 30-min UPS autonomy.", "rule": "Transfer-time disclosure on schedule", "code_clause": "BS EN 50171:2001+A1:2022 §6.3 + NFPA 110-2022 + ISO 8528-12:1997" }
+          {
+            "label": "3 spare ways reserved",
+            "summary": "Typical safety-services growth: CCTV/security feed, block heater for cold-climate retrofit, or genset-room utility lighting/socket.",
+            "rule": "Spare-way provisioning best practice",
+            "code_clause": "IEC 60364-1:2005 §132.12 (design margin)"
+          },
+          {
+            "label": "Placard 'DUAL-SOURCE — DO NOT BACK-FEED'",
+            "summary": "IEEE 446-1995 critical-power labelling + IEC 60364-5-56:2018 §552 dual-source warning requirement.",
+            "rule": "Dual-source labelling practice",
+            "code_clause": "IEEE 446-1995 §4 + IEC 60364-5-56:2018 §552"
+          },
+          {
+            "label": "ATS transfer-time disclosure footer on schedule",
+            "summary": "6-10 s typical AHJ-disclosed; downstream DB-EM bridges via central battery; downstream DB-UPS bridges via 30-min UPS autonomy.",
+            "rule": "Transfer-time disclosure on schedule",
+            "code_clause": "BS EN 50171:2001+A1:2022 §6.3 + NFPA 110-2022 + ISO 8528-12:1997"
+          }
         ]
       }
     ]

@@ -1,24 +1,31 @@
-rule: parallel_cables_threshold
-version: 1.0.0
-description: |
-  Engage parallel cables when single-cable selection at largest available csa fails Iz ≥ In.
-  Required: minimum csa per parallel + identical length / csa / material / installation /
-  route across all parallels (symmetrical impedance → balanced current sharing).
-engage_when: "single_cable.ladder_exhausted AND iz_corrected < in_a"
-minimum_csa_per_parallel:
-  iec_mm2: 50
-  nec_awg: "1/0"
-  source: "BS 7671:2018 Reg 523.7 / IEC 60364-5-52 §523.6 / NEC 2023 310.10(H)(1)"
-required_symmetry:
-  - same_length: "absolute, no tolerance"
-  - same_csa: "absolute, no mix"
-  - same_material: "absolute, no copper+aluminium mix"
-  - same_installation_method: "absolute, no clipped+conduit mix"
-  - same_route: "approximately — small geometric deviations acceptable if impedances within 10%"
-search:
-  starting_count: 2
-  step: 1
-  max_count: 6
-  beyond_max_action: "raise warning recommending bus duct / busway redesign instead of >6 parallel cables"
-binding_constraint_token: "parallel_required"
-ipk_note: "Peak short-circuit current divides equally across symmetric parallels — verify each parallel's csa against I²t/k separately"
+# Parallel cables threshold rules
+# Consumed by generator (Step 11) + validator (INV-08)
+
+rules:
+  - id: PAR-01
+    jurisdiction: [all]
+    standard_reference: "DraftsMan walk-the-ladder convention"
+    rule_text: "Engage parallel when single-cable ladder exhausted at largest csa with Iz < In"
+    applies_to: cascade_node
+    enforcement: algorithm_step
+
+  - id: PAR-02
+    jurisdiction: [GB, KE, INT, EU]
+    standard_reference: "IEC 60364-5-52:2009 §523.6"
+    rule_text: "Minimum csa per parallel = 50 mm² for IEC jurisdictions"
+    applies_to: cascade_node
+    enforcement: hard_fail
+
+  - id: PAR-03
+    jurisdiction: [US]
+    standard_reference: "NEC 2023 Article 310.10(H)(1)"
+    rule_text: "Minimum csa per parallel = 1/0 AWG for NEC jurisdiction"
+    applies_to: cascade_node
+    enforcement: hard_fail
+
+  - id: PAR-04
+    jurisdiction: [all]
+    standard_reference: "IEC 60364-5-52 §523.6 / NEC 310.10(H)"
+    rule_text: "All parallels MUST match on length + csa + material + installation method (symmetric impedances → balanced current sharing)"
+    applies_to: cascade_node
+    enforcement: hard_fail

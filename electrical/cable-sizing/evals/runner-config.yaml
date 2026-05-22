@@ -1,0 +1,22 @@
+skill: electrical/cable-sizing
+schema_paths:
+  ir: electrical/cable-sizing/schemas/cable-sizing-ir.schema.json
+  intent: electrical/cable-sizing/schemas/cable-sizing-intent.schema.json
+eval_order:
+  - eval-01-uk-domestic-happy-path
+  - eval-02-tpn-commercial-cumulative-vd
+  - eval-03-undersized-cable-trap
+  - eval-04-missing-route-data
+  - eval-05-jurisdiction-us-with-awg
+  - eval-06-rationale-block
+  - eval-07-motor-starting-vd
+  - eval-08-parallel-cables
+  - eval-09-harmonic-derating-data-centre
+required_categories:
+  - happy_path
+  - edge_case
+  - validation_trap
+  - missing_input
+  - jurisdiction_switch
+  - rationale_block
+  - skill_specific

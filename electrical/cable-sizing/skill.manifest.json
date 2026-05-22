@@ -3,29 +3,20 @@
   "version": "1.0.0",
   "discipline": "electrical",
   "subdiscipline": "circuit-sizing",
-  "description": "Produces per-circuit cable selection (phase csa + CPC csa + insulation + installation method + parallel count) for every cable run in a project's distribution cascade. Named binding constraint per node (iz_vs_in | vd_cumulative | motor_starting_vd | cpc_adiabatic | parallel_required | harmonic_derating). Covers BS 7671 App 4 (GB), IEC 60364-5-52 (EU/INT), NEC Chapter 9 + 310.16 (US). Consumes db-layout-rollup + fault-level intents (preferred) with engineer fallback. Emits cable-sizing intent consumed downstream by cable-schedule, riser, cable-containment.",
+  "description": "Per-circuit cable selection (phase + CPC csa + insulation + installation method + parallel count) for every cable run in a project's distribution cascade per BS 7671:2018+A2:2022 App 4 + App 12 / IEC 60364-5-52 / NEC 2023 Chapter 9. Walk-the-ladder CSA selection with binding_constraint named per node. Consumes db-layout-rollup + fault-level intents; produces cable-sizing intent for cable-schedule + riser + cable-containment + small-power v1.1 consumption.",
   "status": "beta",
   "licence": "MIT",
   "inputs_path": "inputs.json",
-  "inputs": [
-    "jurisdiction",
-    "project_supply",
-    "circuits-from-intent-or-declared",
-    "fault-data-from-intent-or-declared",
-    "route-data-per-segment",
-    "ambient-overlay",
-    "grouping-per-segment",
-    "harmonic-content-per-circuit",
-    "vd-target-overrides",
-    "cable-type-preferences"
+  "outputs": [
+    "cable-sizing-ir"
   ],
-  "outputs": ["cable-sizing-ir"],
   "output_schema": "electrical/cable-sizing/schemas/cable-sizing-ir.schema.json",
-  "produces_intent": ["cable-sizing"],
-  "produces_intent_schemas": {
-    "cable-sizing": "electrical/cable-sizing/schemas/cable-sizing-intent.schema.json"
-  },
-  "consumes_intents": ["db-layout-rollup", "fault-level"],
+  "produces_intent": "cable-sizing",
+  "produces_intent_schema": "electrical/cable-sizing/schemas/cable-sizing-intent.schema.json",
+  "consumes_intents": [
+    "db-layout-rollup",
+    "fault-level"
+  ],
   "standards": [
     "shared/standards/electrical/BS7671/appendix4-cable-ratings.json",
     "shared/standards/electrical/BS7671/appendix4-cable-ratings-aluminium.json",
@@ -50,60 +41,13 @@
     "shared/standards/electrical/NFPA70/art210-branch-circuits.json",
     "shared/standards/electrical/NFPA70/ampacity-correction-factors.json"
   ],
-  "calculations": [
-    "shared/calculations/electrical/cable-ampacity.json",
-    "shared/calculations/electrical/voltage-drop.json",
-    "shared/calculations/electrical/cpc-adiabatic.json"
-  ],
   "ontology": [
     "electrical/cable-sizing/ontology/cable-types.json",
     "electrical/cable-sizing/ontology/installation-methods.json"
   ],
-  "rules": [
-    "electrical/cable-sizing/rules/csa-selection-walk-up.yaml",
-    "electrical/cable-sizing/rules/voltage-drop-targets.yaml",
-    "electrical/cable-sizing/rules/correction-factor-stack.yaml",
-    "electrical/cable-sizing/rules/parallel-cables-threshold.yaml",
-    "electrical/cable-sizing/rules/harmonic-derating-trigger.yaml"
-  ],
-  "constraints": [
-    "electrical/cable-sizing/constraints/iz-vs-in-vs-ib.yaml",
-    "electrical/cable-sizing/constraints/vd-cumulative-limit.yaml",
-    "electrical/cable-sizing/constraints/cpc-adiabatic-passes.yaml",
-    "electrical/cable-sizing/constraints/motor-starting-vd-limit.yaml"
-  ],
-  "validators": [
-    "electrical/cable-sizing/validation/cascade-tree-integrity.yaml",
-    "electrical/cable-sizing/validation/csa-on-standard-ladder.yaml",
-    "electrical/cable-sizing/validation/tool-call-resolved.yaml",
-    "electrical/cable-sizing/validation/intent-shape.yaml"
-  ],
-  "prompts": {
-    "generator": "electrical/cable-sizing/prompts/generator.md",
-    "validator": "electrical/cable-sizing/prompts/validator.md",
-    "reviewer":  "electrical/cable-sizing/prompts/reviewer.md"
-  },
-  "evals": [
-    "electrical/cable-sizing/evals/eval-01-uk-domestic-final-circuits.yaml",
-    "electrical/cable-sizing/evals/eval-02-tpn-commercial-feeders-cumulative-vd.yaml",
-    "electrical/cable-sizing/evals/eval-03-undersized-cable-trap.yaml",
-    "electrical/cable-sizing/evals/eval-04-missing-route-data.yaml",
-    "electrical/cable-sizing/evals/eval-05-jurisdiction-us-with-awg.yaml",
-    "electrical/cable-sizing/evals/eval-06-rationale-block.yaml",
-    "electrical/cable-sizing/evals/eval-07-motor-starting-vd.yaml",
-    "electrical/cable-sizing/evals/eval-08-parallel-cables.yaml",
-    "electrical/cable-sizing/evals/eval-09-harmonic-derating-data-centre.yaml"
-  ],
-  "examples": [
-    "electrical/cable-sizing/examples/uk-domestic-final-circuits/",
-    "electrical/cable-sizing/examples/intl-commercial-with-feeders/",
-    "electrical/cable-sizing/examples/us-industrial-with-motors/"
-  ],
-  "compatible_runtimes": [
-    "DraftsMan >= 1.0",
-    "Claude Code",
-    "OpenClaw",
-    "any-llm-agent"
-  ],
-  "changelog": "electrical/cable-sizing/CHANGELOG.md"
+  "calculations": [
+    "shared/calculations/electrical/cable-ampacity.json",
+    "shared/calculations/electrical/voltage-drop.json",
+    "shared/calculations/electrical/cpc-adiabatic.json"
+  ]
 }

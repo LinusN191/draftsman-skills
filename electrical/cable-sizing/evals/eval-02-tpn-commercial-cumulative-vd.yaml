@@ -1,0 +1,38 @@
+name: eval-02-tpn-commercial-cumulative-vd
+skill: electrical/cable-sizing
+description: |
+  Edge-case coverage: INT 7-node TPN cascade demonstrating cumulative-Vd
+  binding at the deepest final circuit. Verifies cumulative Vd stays within
+  the 5% limit at the leaf and that the upstream sub-feeder (RISER.L3) was
+  upsized to keep downstream headroom.
+category: edge_case
+input_fixtures:
+  - ../examples/intl-commercial-with-feeders/output.json
+
+checks:
+  - assertion: "output.jurisdiction == 'INT'"
+    description: INT example carries jurisdiction == 'INT'
+    severity: critical
+
+  - assertion: "len(output.cascade) == 7"
+    description: 7-node cascade
+    severity: critical
+
+  - assertion: "next(n for n in output.cascade if n.node_id == 'RISER.L3.C04').selection.binding_constraint == 'vd_cumulative'"
+    description: L3.C04 leaf binds on vd_cumulative
+    severity: critical
+    matches_inv: INV-05
+
+  - assertion: "next(n for n in output.cascade if n.node_id == 'RISER.L3').selection.binding_constraint == 'vd_cumulative'"
+    description: L3 sub-feeder binds on vd_cumulative (upstream cascade-aware allocation)
+    severity: critical
+
+  - assertion: "next(n for n in output.cascade if n.node_id == 'RISER.L3.C04').checks.vd_cumulative_pct <= 5.0"
+    description: L3.C04 cumulative Vd at or below 5% limit
+    severity: critical
+    matches_inv: INV-05
+
+  - assertion: "all(n.checks.iz_corrected_a >= n.load.in_a for n in output.cascade)"
+    description: Iz ≥ In on every node
+    severity: critical
+    matches_inv: INV-04

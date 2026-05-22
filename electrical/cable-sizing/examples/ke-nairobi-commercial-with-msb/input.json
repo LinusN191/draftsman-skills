@@ -1,0 +1,21 @@
+{
+  "project_id": "ke-nairobi-commercial-eg01",
+  "jurisdiction": "KE",
+  "site_brief": "60-200 m² Nairobi commercial office tenant fit-out. 415V TPN+E KPLC TN-S supply per KS 1700:2018 §313 (routes to BS 7671:2018+A2:2022 §313.1 for short-circuit verification). MSB-1 (315A) → 3 sub-DB feeders (DB-L1 lighting + DB-P1 small-power + DB-M1 HVAC) → final circuits. Cumulative-Vd binding expected on remote small-power circuit and HVAC chiller pump 7.5 kW motor.",
+  "supply": {
+    "voltage_v": 415,
+    "phase_arrangement": "TPN_plus_E",
+    "system_type": "TN-S"
+  },
+  "circuits_declared": [
+    {"node_id": "MSB-1", "node_kind": "service_entrance", "designation": "Main switchboard incoming", "load": {"ib_a": 250, "in_a": 315, "phases": "three_phase_4wire", "load_type": "mixed", "pf": 0.92}, "route": {"length_m": 12, "installation_method": "E", "ambient_c": 32, "grouping_count": 1}, "parent_node_ifault_ka": 9.0, "t_clear_s": 0.4},
+    {"node_id": "MSB-1.F01", "parent_node_id": "MSB-1", "node_kind": "feeder", "designation": "Feeder to DB-L1 (lighting)", "load": {"ib_a": 30, "in_a": 40, "phases": "three_phase_4wire", "load_type": "lighting", "pf": 0.95}, "route": {"length_m": 22, "installation_method": "E", "ambient_c": 32, "grouping_count": 1}, "parent_node_ifault_ka": 9.0, "t_clear_s": 0.4},
+    {"node_id": "MSB-1.F02", "parent_node_id": "MSB-1", "node_kind": "sub_feeder", "designation": "Sub-feeder to DB-P1 (small-power)", "load": {"ib_a": 65, "in_a": 80, "phases": "three_phase_4wire", "load_type": "power_general", "pf": 0.92}, "route": {"length_m": 35, "installation_method": "E", "ambient_c": 32, "grouping_count": 1}, "parent_node_ifault_ka": 9.0, "t_clear_s": 0.4},
+    {"node_id": "MSB-1.F03", "parent_node_id": "MSB-1", "node_kind": "feeder", "designation": "Feeder to DB-M1 (HVAC)", "load": {"ib_a": 45, "in_a": 63, "phases": "three_phase_4wire", "load_type": "motor", "pf": 0.85}, "route": {"length_m": 18, "installation_method": "E", "ambient_c": 32, "grouping_count": 1}, "parent_node_ifault_ka": 9.0, "t_clear_s": 0.4},
+    {"node_id": "MSB-1.F02.C03", "parent_node_id": "MSB-1.F02", "node_kind": "final_circuit", "designation": "Remote small-power final circuit", "load": {"ib_a": 18, "in_a": 20, "phases": "single", "load_type": "power_general", "pf": 1.0}, "route": {"length_m": 45, "installation_method": "B1", "ambient_c": 30, "grouping_count": 2}, "parent_node_ifault_ka": 7.5, "t_clear_s": 0.4},
+    {"node_id": "MSB-1.F03.C01", "parent_node_id": "MSB-1.F03", "node_kind": "final_circuit", "designation": "Chiller pump 7.5 kW DOL", "load": {"ib_a": 14.5, "in_a": 32, "phases": "three_phase_3wire", "load_type": "motor", "pf": 0.85, "load_class_motor": {"rated_kw": 7.5, "lra_factor": 6.5, "design_code": "IEC_AB"}}, "route": {"length_m": 18, "installation_method": "C", "ambient_c": 32, "grouping_count": 1}, "parent_node_ifault_ka": 8.2, "t_clear_s": 0.2}
+  ],
+  "design_intent": {
+    "cable_type_preference": "xlpe"
+  }
+}

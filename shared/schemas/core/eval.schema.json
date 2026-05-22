@@ -4,7 +4,7 @@
   "title": "Skill evaluation schema",
   "description": "Metaschema for per-skill eval YAML files. Each eval declares one scenario (input + expected behaviour) the runtime can execute against any LLM and report pass/fail uniformly. Assertion grammar is restricted by design — see assertion_grammar below.",
   "type": "object",
-  "required": ["name", "skill", "input", "checks"],
+  "required": ["name", "skill", "checks"],
   "additionalProperties": false,
   "properties": {
     "name": {
@@ -20,13 +20,47 @@
       "description": "One-line summary of what this eval verifies"
     },
     "category": {
-      "enum": ["happy_path", "edge_case", "compliance_failure", "cross_validation", "skill_specific"],
-      "description": "Eval-coverage-matrix bucket. The 5 named categories form the production minimum; skill_specific is additional."
+      "enum": [
+        "happy_path",
+        "edge_case",
+        "compliance_failure",
+        "cross_validation",
+        "skill_specific",
+        "validation_trap",
+        "rationale_block",
+        "jurisdiction_switch",
+        "missing_input"
+      ],
+      "description": "Eval-coverage-matrix bucket. happy_path / edge_case / compliance_failure / cross_validation are the canonical four. skill_specific is the additional-coverage bucket. validation_trap / rationale_block / jurisdiction_switch / missing_input are emerged sub-categories."
     },
     "input": {
       "type": "object",
-      "description": "Maps to inputs.json item ids → answers. Validated by the skill's inputs metaschema at runtime.",
+      "description": "Inline input dict mapping inputs.json item ids → answers. Validated by the skill's inputs metaschema at runtime. Mutually exclusive with input_fixture.",
       "additionalProperties": true
+    },
+    "input_fixture": {
+      "type": ["string", "null"],
+      "description": "Path string pointing at an example input.json (e.g. '../examples/uk-domestic/input.json'). Singular. May be null when test_scenario carries the full input override. Mutually exclusive with inline input."
+    },
+    "input_fixtures": {
+      "type": "array",
+      "description": "References to example folders that serve as inputs for this eval. Mutually exclusive with input.",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "expected_output_fixture": {
+      "type": "string",
+      "description": "Path string pointing at the expected output.json for fixture-based evals. Singular form used by most fixture evals."
+    },
+    "expected_output_fixtures": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Plural variant: multiple expected outputs for fan-out evals that run the skill against several fixtures and compare each."
+    },
+    "test_scenario": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional scenario-specific overrides applied to the loaded input_fixture (e.g. force a smaller breaker rating to create a compliance trap). Free-form; runtime merges this on top of the fixture input."
     },
     "expected_compliance": {
       "type": "object",
@@ -44,6 +78,11 @@
       "items": { "$ref": "#/definitions/Check" }
     }
   },
+  "oneOf": [
+    { "required": ["input"] },
+    { "required": ["input_fixture"] },
+    { "required": ["input_fixtures"] }
+  ],
   "assertion_grammar": {
     "format": "<jsonpath> <operator> <value>",
     "jsonpath_examples": [
@@ -80,6 +119,14 @@
         "standard_ref": {
           "type": "string",
           "description": "Optional citation, e.g. 'BS EN 12464-1:2021 Table 5.3'"
+        },
+        "matches_inv": {
+          "type": "string",
+          "description": "Cross-reference to an INV-N invariant id (e.g. 'INV-3'). Lets evals declare which invariant they verify."
+        },
+        "matches_nec": {
+          "type": "string",
+          "description": "Cross-reference to an NEC article (e.g. 'Article 210.8' or 'NEC 250.122'). Used in US-jurisdiction evals."
         }
       }
     }

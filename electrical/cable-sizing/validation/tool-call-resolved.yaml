@@ -1,26 +1,13 @@
-validator: tool_call_resolved
-version: 1.0.0
-description: |
-  Tool-call status is consistent across the IR. Generator emits tool_call_pending: true WITH
-  best-effort numeric placeholders; runtime will recompute them. When tool_call_pending: false,
-  all numeric checks are final.
-checks:
-  - id: tool_call_pending_is_boolean
-    description: "Every node has checks.tool_call_pending as a boolean (true or false)"
-    expression: "for each node n: type(n.checks.tool_call_pending) == 'boolean'"
-    severity: error
-  - id: resolved_means_numeric_values
-    description: "When tool_call_pending == false, all three numeric checks are populated (not null)"
-    expression: |
-      for each node n where n.checks.tool_call_pending == false:
-        n.checks.iz_corrected_a is numeric AND
-        n.checks.vd_segment_pct is numeric AND
-        n.checks.vd_cumulative_pct is numeric
-    severity: error
-  - id: pending_flag_propagates_to_assumptions
-    description: "If any node has tool_call_pending: true, compliance_summary.assumptions[] contains a substring matching any of the deferred tool names"
-    expression: |
-      if any node has tool_call_pending: true then
-        compliance_summary.assumptions[] contains substring matching any of:
-        ['calc.cable_ampacity', 'calc.voltage_drop', 'calc.cpc_adiabatic']
-    severity: error
+# Tool-call resolved validation
+# Checked by validator INV-09
+
+validations:
+  - id: TC-01
+    description: "Tool-call consistency: all nodes have tool_call_pending==true OR all 3 calc tool outputs populated"
+    rule: |
+      for each node:
+        node.checks.tool_call_pending == true
+        OR (node.checks.iz_corrected_a populated AND node.checks.vd_cumulative_pct populated AND node.checks.cpc_adiabatic_pass populated)
+    enforcement: hard_fail
+    matches_inv: INV-09
+    fail_message: "TC-01: tool_call_pending state inconsistent — mixed states across cascade not permitted in v1.0"

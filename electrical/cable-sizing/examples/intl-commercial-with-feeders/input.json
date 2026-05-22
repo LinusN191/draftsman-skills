@@ -1,13 +1,22 @@
 {
-  "$schema": "../../schemas/inputs.schema.json",
-  "project_id": "intl-comm-cs-eg02",
+  "project_id": "intl-commercial-3storey-eg01",
   "jurisdiction": "INT",
-  "project_supply": { "voltage_v": 400, "phases": "three", "frequency_hz": 50, "earthing_system": "TN-S" },
-  "consumed_intents_present": ["db-layout-rollup", "fault-level"],
+  "site_brief": "INT 400V TPN+E 3-storey commercial building per IEC 60364-4-41:2017. 1000 kVA transformer secondary → MSB → riser → 3 floors of sub-DBs → final circuits. 7-node cascade demonstrates parallel cables at TX-1, cumulative-Vd binding at L3.C04, and harmonic derating on L3.C07 server rack (30% h3 triplen content). Citations lead with IEC 60364-X-XX form.",
+  "supply": {
+    "voltage_v": 400,
+    "phase_arrangement": "TPN_plus_E",
+    "system_type": "TN-S"
+  },
   "circuits_declared": [
-    { "id": "MSB-1",                  "parent_node_id": null,                  "node_kind": "service_entrance", "designation": "Main MSB 2000A incomer",          "load": { "ib_a": 1450, "in_a": 2000, "load_type": "mixed",    "phases": "three_plus_n" }, "route": { "length_m": 12, "installation_method": "F",  "ambient_c": 30, "grouping_count": 1 }, "cable_type_preference": { "material": "copper", "insulation": "xlpe_90" } },
-    { "id": "MSB-1.F03",              "parent_node_id": "MSB-1",               "node_kind": "feeder",           "designation": "Riser feeder to Level 3 DB-L1",    "load": { "ib_a": 180,  "in_a": 250,  "load_type": "mixed",    "phases": "three_plus_n" }, "route": { "length_m": 65, "installation_method": "E",  "ambient_c": 35, "grouping_count": 2 }, "cable_type_preference": { "material": "copper", "insulation": "xlpe_90" } },
-    { "id": "MSB-1.F03.DB-L1",        "parent_node_id": "MSB-1.F03",           "node_kind": "sub_feeder",       "designation": "DB-L1 incoming sub-feeder",        "load": { "ib_a": 45,   "in_a": 63,   "load_type": "mixed",    "phases": "three_plus_n" }, "route": { "length_m": 8,  "installation_method": "C",  "ambient_c": 30, "grouping_count": 1 }, "cable_type_preference": { "material": "copper", "insulation": "xlpe_90" } },
-    { "id": "MSB-1.F03.DB-L1.C07",    "parent_node_id": "MSB-1.F03.DB-L1",     "node_kind": "final_circuit",    "designation": "Lighting circuit L1-C07 long run", "load": { "ib_a": 8.5,  "in_a": 10,   "load_type": "lighting", "phases": "single",        "pf": 1.0 }, "route": { "length_m": 48, "installation_method": "B1", "ambient_c": 30, "grouping_count": 2 } }
-  ]
+    {"node_id": "TX-1", "node_kind": "service_entrance", "designation": "TX secondary 1000 kVA → MSB-1 incoming", "load": {"ib_a": 1450, "in_a": 1600, "phases": "three_phase_4wire", "load_type": "mixed", "pf": 0.92}, "route": {"length_m": 8, "installation_method": "F", "ambient_c": 30, "grouping_count": 1}, "harmonic_content_pct": 0, "parent_node_ifault_ka": 25.0, "t_clear_s": 0.4},
+    {"node_id": "MSB-1.F-RISER", "parent_node_id": "TX-1", "node_kind": "feeder", "designation": "MSB → riser DB feeder", "load": {"ib_a": 320, "in_a": 400, "phases": "three_phase_4wire", "load_type": "mixed", "pf": 0.92}, "route": {"length_m": 25, "installation_method": "E", "ambient_c": 30, "grouping_count": 1}, "harmonic_content_pct": 0, "parent_node_ifault_ka": 22.0, "t_clear_s": 0.4},
+    {"node_id": "RISER.L1", "parent_node_id": "MSB-1.F-RISER", "node_kind": "sub_feeder", "designation": "Riser tap-off to Level 1 sub-DB", "load": {"ib_a": 80, "in_a": 100, "phases": "three_phase_4wire", "load_type": "mixed", "pf": 0.92}, "route": {"length_m": 8, "installation_method": "E", "ambient_c": 30, "grouping_count": 1}, "harmonic_content_pct": 0, "parent_node_ifault_ka": 15.0, "t_clear_s": 0.4},
+    {"node_id": "RISER.L2", "parent_node_id": "MSB-1.F-RISER", "node_kind": "sub_feeder", "designation": "Riser tap-off to Level 2 sub-DB", "load": {"ib_a": 110, "in_a": 125, "phases": "three_phase_4wire", "load_type": "mixed", "pf": 0.92}, "route": {"length_m": 8, "installation_method": "E", "ambient_c": 30, "grouping_count": 1}, "harmonic_content_pct": 0, "parent_node_ifault_ka": 14.5, "t_clear_s": 0.4},
+    {"node_id": "RISER.L3", "parent_node_id": "MSB-1.F-RISER", "node_kind": "sub_feeder", "designation": "Riser tap-off to Level 3 sub-DB", "load": {"ib_a": 130, "in_a": 160, "phases": "three_phase_4wire", "load_type": "mixed", "pf": 0.92}, "route": {"length_m": 8, "installation_method": "E", "ambient_c": 30, "grouping_count": 1}, "harmonic_content_pct": 0, "parent_node_ifault_ka": 14.0, "t_clear_s": 0.4},
+    {"node_id": "RISER.L3.C04", "parent_node_id": "RISER.L3", "node_kind": "final_circuit", "designation": "L3 long socket-outlet final circuit", "load": {"ib_a": 16, "in_a": 20, "phases": "single", "load_type": "power_general", "pf": 1.0}, "route": {"length_m": 38, "installation_method": "B1", "ambient_c": 30, "grouping_count": 2}, "harmonic_content_pct": 0, "parent_node_ifault_ka": 8.0, "t_clear_s": 0.4},
+    {"node_id": "RISER.L3.C07", "parent_node_id": "RISER.L3", "node_kind": "final_circuit", "designation": "L3 server rack IT load (3-phase 4-wire)", "load": {"ib_a": 24, "in_a": 32, "phases": "three_phase_4wire", "load_type": "it_load", "pf": 0.95}, "route": {"length_m": 18, "installation_method": "B1", "ambient_c": 30, "grouping_count": 2}, "harmonic_content_pct": 30, "parent_node_ifault_ka": 8.5, "t_clear_s": 0.4}
+  ],
+  "design_intent": {
+    "cable_type_preference": "xlpe"
+  }
 }

@@ -6,6 +6,9 @@
   "tool_name": "calc.cable_ampacity",
   "formula_reference": "BS 7671:2018+A3 Appendix 4 Tables 4D1A–4F + Appendix 4 §6 (correction factors); IEC 60364-5-52:2009 Annex E + Annex B; NEC 2023 Table 310.16 + 310.15(B) adjustment factors",
   "implementation_note": "Looks up tabulated continuous ampacity (Iz) for the given (csa OR AWG, material, insulation, installation method) tuple, then applies correction factors for ambient temperature, grouping (Cg), thermal insulation enclosure (Ci), and harmonic content (Ch where applicable). The 3-dimensional table lookup (method × insulation × csa) is jurisdiction-specific — BS 7671 Appendix 4 has different tables for PVC vs XLPE vs MICC; NEC has different ampacity columns for 60°C/75°C/90°C terminations. Inline LLM math reliably picks the wrong column on 15-25% of cases (PVC vs XLPE confusion is the dominant failure). The correction factor multiplication is also commonly compounded incorrectly (Cg AND Ci applied together vs the larger-of rule). Must be tool-executed. Output drives db-layout OCPD coordination (In ≤ Iz), cable-sizing skill, voltage-drop calc.",
+  "_consuming_skills": [
+    "electrical/cable-sizing (primary, since v1.0.0)"
+  ],
   "inputs": [
     {"id": "jurisdiction",         "type": "enum", "values": ["GB", "EU", "INT", "US", "AU_NZ", "CA"], "description": "Standards family that drives the ampacity table"},
     {"id": "csa_mm2",              "unit": "mm²", "type": "float", "description": "Cross-section in mm². Use this OR csa_awg, not both. IEC sizes: 1.0, 1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300, 400, 500, 630"},

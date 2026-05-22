@@ -30,7 +30,7 @@ You read jurisdiction-aware. A BS 7671 citation in a US example is a fail. A NEC
 }
 ```
 
-## The 6 D dimensions
+## The 7 D dimensions
 
 ### D-1 — Rationale chat_summary captures essential engineering story
 
@@ -118,6 +118,26 @@ You read jurisdiction-aware. A BS 7671 citation in a US example is a fail. A NEC
 - Engineer override is valid if `compliance_summary.assumptions[]` carries the override reason — flag absence of justification, not the override itself.
 
 **Flag when:** the drafting standard does not match the jurisdiction without a documented override; layer-naming in drawing_notes contradicts the declared drawing_standard.
+
+### D-7 — Zs Resolution Provenance Audit (v1.1)
+
+**Question:** Is the Zs resolution state consistent across all circuits? In v1.1 hybrid mode the answer must be uniform — either every circuit resolved from cable-sizing intent, or every circuit deferred (no mixed states).
+
+**Look for:**
+
+When `meta.consumed_intents[]` contains a `cable-sizing` entry:
+- Every circuit has `verified_zs_ohm` populated and > 0
+- Every circuit has `tool_call_pending_for_zs_verification == false`
+- `TOOL-CALL-PENDING:calc.zs_loop_impedance` is NOT in `flags[]`
+- Rationale §6 (Diversity + Zs) narrates the resolution
+
+When `meta.consumed_intents[]` does NOT contain a `cable-sizing` entry:
+- Every circuit has `verified_zs_ohm` absent
+- Every circuit has `tool_call_pending_for_zs_verification == true`
+- `TOOL-CALL-PENDING:calc.zs_loop_impedance` IS in `flags[]`
+- Rationale §6 documents the v1.0 deferral path
+
+**Flag when:** Mixed states detected — e.g., some circuits resolved while others deferred, without engineer-documented justification in `assumptions[]`. Also flag if the cable-sizing intent is consumed but the TOOL-CALL-PENDING flag was not dropped from `flags[]` (book-keeping leak).
 
 ## Severity + verdict
 

@@ -1,6 +1,6 @@
 {
   "$schema": "../../schemas/db-layout-ir.schema.json",
-  "drawing_type": "db_layout",
+  "drawing_type": "db_layout_schedule_and_schematic",
   "version": "1.2.0",
   "meta": {
     "project_id": "uk-3storey-office-eg01",
@@ -14,7 +14,9 @@
     "location": "level-2 electrical cupboard",
     "enclosure_rating": "IP4X",
     "manufacturer_class": "BS EN 61439-3 Distribution Board (DBO)",
-    "scope": "single-board"
+    "scope": "single-board",
+    "board_kind": "specialty_board",
+    "role": "floor_distribution"
   },
   "incoming_supply": {
     "voltage_v": 400,
@@ -31,22 +33,292 @@
     "fault_level_a_min": 3500
   },
   "circuits": [
-    { "circuit_id": "C01", "way_module_id": "W1",  "designation": "Lighting L2 — open office LED panels",  "voltage_class": "LV_power",          "downstream_load_kw": 2.0, "ocpd": { "rating_a": 10, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 26 } },
-    { "circuit_id": "C02", "way_module_id": "W2",  "designation": "Lighting L2 — breakout area LED",       "voltage_class": "LV_power",          "downstream_load_kw": 1.0, "ocpd": { "rating_a": 6,  "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 16 } },
-    { "circuit_id": "C03", "way_module_id": "W3",  "designation": "Emergency lighting L2",                 "voltage_class": "emergency_lighting","downstream_load_kw": 0.8, "ocpd": { "rating_a": 6,  "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 22 } },
-    { "circuit_id": "C04", "way_module_id": "W4",  "designation": "Sockets L2 — open office RFC",          "voltage_class": "LV_power",          "downstream_load_kw": 6.0, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 36 } },
-    { "circuit_id": "C05", "way_module_id": "W5",  "designation": "Sockets L2 — meeting rooms RFC",        "voltage_class": "LV_power",          "downstream_load_kw": 4.5, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 28 } },
-    { "circuit_id": "C06", "way_module_id": "W6",  "designation": "Sockets L2 — breakout area RFC",        "voltage_class": "LV_power",          "downstream_load_kw": 3.5, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 22 } },
-    { "circuit_id": "C07", "way_module_id": "W7",  "designation": "Sockets L2 — printer corner radial",    "voltage_class": "LV_power",          "downstream_load_kw": 2.5, "ocpd": { "rating_a": 20, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 16 } },
-    { "circuit_id": "C08", "way_module_id": "W8",  "designation": "Dedicated socket — A/V rack",           "voltage_class": "LV_power",          "downstream_load_kw": 1.8, "ocpd": { "rating_a": 16, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 14 } },
-    { "circuit_id": "C09", "way_module_id": "W9",  "designation": "Dedicated socket — comms cabinet UPS",  "voltage_class": "LV_power",          "downstream_load_kw": 2.0, "ocpd": { "rating_a": 16, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 10 } },
-    { "circuit_id": "C10", "way_module_id": "W10", "designation": "HVAC FCU bank L2",                      "voltage_class": "LV_power",          "downstream_load_kw": 6.0, "ocpd": { "rating_a": 32, "curve": "C", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": false },                                       "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 5, "length_m": 24 } },
-    { "circuit_id": "C11", "way_module_id": "W11", "designation": "IT/data outlet ring — desks",           "voltage_class": "LV_power",          "downstream_load_kw": 4.0, "ocpd": { "rating_a": 32, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 34 } },
-    { "circuit_id": "C12", "way_module_id": "W12", "designation": "Audio-visual radial — meeting rooms",   "voltage_class": "LV_power",          "downstream_load_kw": 2.5, "ocpd": { "rating_a": 20, "curve": "B", "type": "MCB", "breaking_capacity_ka": 10 }, "rcd": { "required": true,  "type": "A", "sensitivity_ma": 30 }, "cable": { "csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 25 } }
+    {
+      "circuit_id": "C01",
+      "way_module_id": "W1",
+      "designation": "Lighting L2 — open office LED panels",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 2.0,
+      "ocpd": {
+        "rating_a": 10,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 26
+      }
+    },
+    {
+      "circuit_id": "C02",
+      "way_module_id": "W2",
+      "designation": "Lighting L2 — breakout area LED",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 1.0,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 16
+      }
+    },
+    {
+      "circuit_id": "C03",
+      "way_module_id": "W3",
+      "designation": "Emergency lighting L2",
+      "voltage_class": "emergency_lighting",
+      "downstream_load_kw": 0.8,
+      "ocpd": {
+        "rating_a": 6,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm²",
+        "cores": 3,
+        "length_m": 22
+      }
+    },
+    {
+      "circuit_id": "C04",
+      "way_module_id": "W4",
+      "designation": "Sockets L2 — open office RFC",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 6.0,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 36
+      }
+    },
+    {
+      "circuit_id": "C05",
+      "way_module_id": "W5",
+      "designation": "Sockets L2 — meeting rooms RFC",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 4.5,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 28
+      }
+    },
+    {
+      "circuit_id": "C06",
+      "way_module_id": "W6",
+      "designation": "Sockets L2 — breakout area RFC",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 3.5,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 22
+      }
+    },
+    {
+      "circuit_id": "C07",
+      "way_module_id": "W7",
+      "designation": "Sockets L2 — printer corner radial",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 2.5,
+      "ocpd": {
+        "rating_a": 20,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 16
+      }
+    },
+    {
+      "circuit_id": "C08",
+      "way_module_id": "W8",
+      "designation": "Dedicated socket — A/V rack",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 1.8,
+      "ocpd": {
+        "rating_a": 16,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 14
+      }
+    },
+    {
+      "circuit_id": "C09",
+      "way_module_id": "W9",
+      "designation": "Dedicated socket — comms cabinet UPS",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 2.0,
+      "ocpd": {
+        "rating_a": 16,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 10
+      }
+    },
+    {
+      "circuit_id": "C10",
+      "way_module_id": "W10",
+      "designation": "HVAC FCU bank L2",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 6.0,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "C",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": false
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 5,
+        "length_m": 24
+      }
+    },
+    {
+      "circuit_id": "C11",
+      "way_module_id": "W11",
+      "designation": "IT/data outlet ring — desks",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 4.0,
+      "ocpd": {
+        "rating_a": 32,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 34
+      }
+    },
+    {
+      "circuit_id": "C12",
+      "way_module_id": "W12",
+      "designation": "Audio-visual radial — meeting rooms",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 2.5,
+      "ocpd": {
+        "rating_a": 20,
+        "curve": "B",
+        "type": "MCB",
+        "breaking_capacity_ka": 10
+      },
+      "rcd": {
+        "required": true,
+        "type": "A",
+        "sensitivity_ma": 30
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm²",
+        "cores": 3,
+        "length_m": 25
+      }
+    }
   ],
   "spare_ways": 4,
   "selectivity_results": [
-    { "upstream": "MSB-MAIN F03 (100A MCCB Type D)", "downstream": "SDB-L2 main switch + all final circuits", "verdict": "pass", "_note": "100A MCCB Type D upstream selective against all SDB-L2 final-circuit MCBs (≤32A); 3.1:1 ratio + curve separation gives time-current selectivity per BS 7671 §536." }
+    {
+      "upstream_id": "MSB-MAIN-F03",
+      "downstream_id": "SDB-L2-MAIN-SWITCH",
+      "source": "engineer_declared",
+      "tool_call_pending": false,
+      "selective_to_fault_ka": 3.5,
+      "code_clause": "BS 7671:2018+A2:2022 § 536 + BS EN 60947-2:2017 — Upstream 100A Type D MCCB at MSB-MAIN F03 selective against SDB-L2 100A switch-disconnector (non-OCPD pass-through device) at local 3.5 kA PFC; cascade is bounded by the downstream final-circuit MCBs."
+    },
+    {
+      "upstream_id": "SDB-L2-MAIN-SWITCH",
+      "downstream_id": "SDB-L2-FINAL-CIRCUITS",
+      "source": "tool_call_pending",
+      "tool_call_pending": true,
+      "code_clause": "BS 7671:2018+A2:2022 § 411.4 (max disconnection time + Zs) + Appendix 12 (voltage drop) — 45m F03 feeder is the longest in cascade; downstream Zs at the most-distant socket terminal and final-circuit voltage drop both need fault-level + cable-sizing tool-calls to confirm against BS 7671 § 411.4 disconnection-time and § 525 voltage-drop limits at the actual computed load currents."
+    }
   ],
   "compliance_summary": {
     "compliant": true,
@@ -65,5 +337,149 @@
     "Fed from MSB-MAIN F03 via 45m 35mm² 5-core SWA XLPE Cu feeder (longest cascade run).",
     "12 final circuits + 4 spare ways (W13-W16 reserved).",
     "Voltage drop + Zs check critical on this DB; flagged for cable-sizing + fault-level downstream verification."
-  ]
+  ],
+  "rationale": {
+    "chat_summary": "SDB-L2: 100A TPN+E level-2 sub-DB for a UK 3-storey office, 12 final circuits, fed from MSB-MAIN F03 via the 45m 35mm² SWA feeder — the LONGEST in the cascade. BS EN 61439-3 DBO IP4X enclosure. 30mA Type A RCD on all socket circuits per BS 7671 § 411.3.3. INFO flag: 45m feeder + downstream radial runs put F03 voltage drop and Zs at L2 sockets at the cascade limit; final verification flagged for the cable-sizing and fault-level skills.",
+    "sections": [
+      {
+        "title": "Board Identification",
+        "summary": "SDB-L2 is the level-2 sub-DB for the UK 3-storey office, located in the level-2 electrical cupboard at the top of the riser. Built as a BS EN 61439-3 Distribution Board (DBO) — UK sub-DB default — with IP4X rating for the indoor cupboard environment. Role flagged as `floor_distribution`; topology mirrors SDB-GF and SDB-L1 to keep floor fit-out and spares uniform across the cascade, despite L2 being the longest-feeder leg.",
+        "decisions": [
+          {
+            "label": "Board role flagged as floor_distribution",
+            "summary": "Signals per-floor distribution function to downstream skills (riser, cable-containment, earthing); part of the MSB-MAIN → SDB-GF/L1/L2 cascade.",
+            "rule": "db-layout role taxonomy"
+          },
+          {
+            "label": "BS EN 61439-3 DBO enclosure, IP4X",
+            "summary": "DBO-class assembly per BS EN 61439-3 is the UK sub-DB default; IP4X protects against solid objects ≥1 mm in the indoor cupboard environment.",
+            "rule": "Sub-DB enclosure selection",
+            "code_clause": "BS EN 61439-3:2012"
+          }
+        ]
+      },
+      {
+        "title": "Incoming Supply",
+        "summary": "100A TPN+E intake at 400V fed from MSB-MAIN F03 via a 45m 35mm² 5-core SWA XLPE Cu feeder — three times the F01 length and 50% longer than F02. Declared PFC at SDB-L2 is 3.5 kA (attenuated from 9.8 kA at MSB-MAIN by the long feeder impedance); covered comfortably by 10 kA Icn final-circuit MCBs. Main switch is a 100A switch-disconnector (non-OCPD isolation device) at 10 kA Icw; overcurrent protection lives upstream on the F03 MCCB at MSB-MAIN.",
+        "decisions": [
+          {
+            "label": "100A TPN+E intake from MSB-MAIN F03 (45m feeder — longest in cascade)",
+            "summary": "Floor maximum demand ~26 kVA after BS 7671 § 311.1 + IET OSG Appendix A diversity sits within the 100A intake; F03 length is the longest of three feeders and drives the voltage-drop + Zs constraints in the cascade.",
+            "rule": "Sub-DB sizing from floor maximum demand + diversity",
+            "code_clause": "BS 7671:2018+A2:2022 § 311.1 + IET On-Site Guide Appendix A",
+            "inputs": {
+              "intake_rating_a": 100,
+              "feeder_length_m": 45,
+              "connected_load_kw_sum": 28,
+              "diversified_demand_kw_est": 18
+            }
+          },
+          {
+            "label": "Declared PFC 3.5 kA at SDB-L2 after feeder impedance",
+            "summary": "Attenuation from 9.8 kA at MSB-MAIN via 45m 35mm² Cu SWA impedance — the longest feeder in the cascade gives the lowest local PFC; covered by 10 kA Icn final-circuit MCBs with ~186% headroom (the smallest absolute PFC but the largest Icn margin of the three sub-DBs).",
+            "rule": "Cable-Z series impedance addition",
+            "code_clause": "BS 7671:2018+A2:2022 Appendix 4 (cable impedance) + IEC 60909-0",
+            "inputs": {
+              "upstream_pfc_ka": 9.8,
+              "feeder_length_m": 45,
+              "feeder_csa_mm2": 35,
+              "declared_pfc_ka": 3.5
+            }
+          },
+          {
+            "label": "100A switch-disconnector as main switch",
+            "summary": "Sub-DB main switch is a non-OCPD switch-disconnector — overcurrent protection lives upstream on the MSB-MAIN F03 MCCB; switch-disconnector provides on-load isolation only per UK sub-DB convention.",
+            "rule": "Sub-DB main-switch selection — isolation only",
+            "code_clause": "BS EN 60947-3:2020 + BS 7671:2018+A2:2022 § 537"
+          }
+        ]
+      },
+      {
+        "title": "Circuit Breakdown",
+        "summary": "12 final circuits, mix identical to SDB-L1: C01/C02 lighting (Type B, no RCD), C03 emergency lighting (Type B, no RCD), C04-C07 socket RFCs/radials (Type B + 30mA Type A RCD), C08 A/V-rack dedicated socket 16A (Type B + 30mA), C09 comms-cabinet UPS dedicated socket 16A (Type B + 30mA), C10 HVAC FCU 32A (Type C, no RCD — fixed-motor exempt from § 411.3.3), C11 IT/data ring 32A (Type B + 30mA), C12 A/V radial 20A (Type B + 30mA). Final-circuit run lengths are similar to SDB-GF/L1 — the cascade strain sits on the feeder, not on the final-circuit lengths.",
+        "decisions": [
+          {
+            "label": "30mA Type A RCD on all socket-bearing circuits",
+            "summary": "BS 7671 § 411.3.3 + § 415.1 universal socket-RCD policy on C04-C09, C11, C12; Type A handles pulsating-DC residual from modern switching supplies.",
+            "rule": "Socket-RCD universal policy",
+            "code_clause": "BS 7671:2018+A2:2022 § 411.3.3 + § 415.1"
+          },
+          {
+            "label": "Emergency lighting C03 — no upstream RCD",
+            "summary": "BS 7671 § 560 + BS 5266-1 require life-safety circuit availability — RCD upstream would create a single point of failure for the emergency-lighting circuit.",
+            "rule": "Emergency-lighting RCD exemption",
+            "code_clause": "BS 7671:2018+A2:2022 § 560 + BS 5266-1:2016"
+          },
+          {
+            "label": "HVAC FCU C10 — Type C, no RCD",
+            "summary": "Fixed motor circuit (no socket) — outside the § 411.3.3 socket-RCD scope; Type C curve handles motor inrush without nuisance trip on the 32A MCB.",
+            "rule": "Fixed-motor circuit MCB curve + RCD exemption",
+            "code_clause": "BS 7671:2018+A2:2022 § 411.3.3 + BS EN 60898-1:2019"
+          }
+        ]
+      },
+      {
+        "title": "Selectivity Analysis",
+        "summary": "Two-stage cascade: 100A Type D MCCB at MSB-MAIN F03, then non-OCPD 100A switch-disconnector at SDB-L2, then final MCBs (6-32A Type B/C). Worst-case feeder-MCCB-to-final-MCB ratio is 100:32 ≈ 3.1:1, above the 2:1 same-curve cascade threshold. The Type D upstream curve trips slower than the Type B/C final MCBs at every fault magnitude up to the 3.5 kA local PFC, so the downstream MCB clears before the MCCB operates. 10 kA Icn on all final MCBs exceeds the local 3.5 kA PFC by 186%. The cascade ratio is firm engineer-declared; the SDB-L2-MAIN-SWITCH→FINAL-CIRCUITS Zs and voltage-drop verification is flagged as tool_call_pending in selectivity_results because the 45m feeder leg makes this the binding leg of the cascade.",
+        "decisions": [
+          {
+            "label": "Cascade ratio 3.1:1 worst-case at C10 (32A)",
+            "summary": "100A:32A feeder-MCCB-to-final-MCB ratio sits above the 2:1 same-curve cascade threshold; analysis identical to SDB-GF and SDB-L1 because the upstream feeder OCPDs are uniform.",
+            "rule": "MCB cascade selectivity by ratio",
+            "code_clause": "BS 7671:2018+A2:2022 § 536 + BS EN 60898-1:2019"
+          },
+          {
+            "label": "Zs + voltage-drop verification flagged tool_call_pending",
+            "summary": "The 45m F03 feeder is the longest in the cascade — final Zs at the most-distant L2 socket terminal and the F03 voltage drop at actual load current need fault-level and cable-sizing tool-calls before final sign-off.",
+            "rule": "Tool-call-pending flag for binding-leg cascade verification",
+            "code_clause": "BS 7671:2018+A2:2022 § 411.4 + Appendix 12"
+          }
+        ]
+      },
+      {
+        "title": "Compliance Assessment",
+        "summary": "SDB-L2 compliant against BS 7671:2018+A2:2022 (protection § 411 / § 415 / § 434 / § 536, emergency-lighting § 560, cable-sizing Appendix 4, voltage-drop Appendix 12), BS EN 61439-3:2012 (DBO assembly), BS EN 60898-1:2019 (MCBs), BS EN 61009-1:2012+A12:2014 (RCBOs). No CRITICAL or HIGH flags. INFO note: voltage drop on the 45m F03 feeder at the rated 100A is ≈ 1.24% / 4.95V on 400V line-line, which combined with downstream radial drops on the longer L2 final-circuits puts the cumulative drop close to the BS 7671 § 525.1 5% socket limit — final cable-sizing tool-call required to confirm against actual computed load currents rather than the rated current.",
+        "decisions": [
+          {
+            "label": "Voltage-drop INFO flag — cumulative drop near § 525.1 limit",
+            "summary": "F03 45m + downstream radial 30-35m runs put cumulative drop close to the 5% socket limit at rated current; cable-sizing skill must confirm with actual computed load currents before final sign-off.",
+            "rule": "Cumulative voltage-drop check at cascade end",
+            "code_clause": "BS 7671:2018+A2:2022 § 525.1 + Appendix 12"
+          },
+          {
+            "label": "BS 7671:2018+A2:2022 + BS EN 61439-3 citation discipline",
+            "summary": "Protection clauses cite BS 7671 directly (UK source jurisdiction); enclosure construction cites BS EN 61439-3 as the DBO assembly standard.",
+            "rule": "GB jurisdiction citation discipline",
+            "code_clause": "BS 7671:2018+A2:2022 + BS EN 61439-3:2012"
+          }
+        ]
+      },
+      {
+        "title": "Schedule Notes",
+        "summary": "Schedule emitted as 12-row table with 4 spare ways (W13-W16) reserved for floor expansion. SDB-L2 is the binding-leg of the cascade — the 45m F03 feeder makes voltage drop and Zs tightest at L2 socket terminals; cable-sizing and fault-level skills must verify the L2 cascade end against BS 7671 § 411.4 disconnection-time and § 525.1 voltage-drop limits at actual computed load currents before final sign-off. Cascade-end status is flagged in selectivity_results (tool_call_pending = true) and in the drawing notes so downstream skills see the constraint without re-deriving it.",
+        "decisions": [
+          {
+            "label": "4 spare ways reserved (W13-W16)",
+            "summary": "Floor-expansion provision: additional desk-bank socket RFC, future video-conferencing AV upgrade, or dual-feed for comms cabinet.",
+            "rule": "Spare-way provisioning best practice"
+          },
+          {
+            "label": "Cascade-end (binding-leg) status flagged",
+            "summary": "L2 is the binding leg of the cascade — feeder length drives the cascade voltage-drop + Zs constraints; flagged downstream via selectivity_results tool_call_pending and drawing_notes so cable-sizing + fault-level skills see the constraint without re-deriving it.",
+            "rule": "Cross-skill cascade-state propagation"
+          },
+          {
+            "label": "main_switch.breaking_capacity_ka carries Icw not Icu",
+            "summary": "BS EN 60947-3 switch-disconnectors do not break fault current; the breaking_capacity_ka IR field carries the device's short-time withstand (Icw) rating. Equipment manufacturer's catalogue confirms 10 kA Icw / 1 s.",
+            "rule": "BS EN 60947-3 switch-disconnector IR field semantics",
+            "code_clause": "BS EN 60947-3:2020 (switch-disconnector device class)",
+            "inputs": {
+              "main_switch_type": "switch-disconnector",
+              "icw_rating_ka_at_1s": 10
+            }
+          }
+        ]
+      }
+    ]
+  }
 }

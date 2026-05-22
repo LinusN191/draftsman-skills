@@ -47,9 +47,15 @@ For every node with `signal_word == RESTRICTED`:
 Pick 3 random labels. For each, verify all NFPA 70E §130.5(H) required fields have real, non-placeholder values (not "TBD", "TODO", or empty strings). Dual-unit formatting present for distance fields.
 
 ### D5 — Jurisdictional format match
-For every node, format_applied matches jurisdiction (US → ansi_z535_4; EU,INT → iso_7010; GB → bs_5499) UNLESS `format_source == engineer_override` OR `signal_word == RESTRICTED` (which legitimately supersedes jurisdiction).
+For every node, format_applied matches jurisdiction per the routing table:
+- **US** → `ansi_z535_4`
+- **EU / INT** → `iso_7010`
+- **GB** → `bs_5499`
+- **KE** → `bs_5499` (KS 1700:2018 Annex E §VIII adoption-verbatim — KE inherits the UK signage chain; KS 50:2018 tracks BS 5499)
 
-If any node has wrong format-jurisdiction pairing without explicit override, fail.
+UNLESS `format_source == engineer_override` OR `signal_word == RESTRICTED` (which legitimately supersedes jurisdiction).
+
+If any node has wrong format-jurisdiction pairing without explicit override, fail. Also fail if a KE example uses `iso_7010` without a documented engineer override (KE defaults to bs_5499, not iso_7010).
 
 ### D6 — Rationale block conformance
 - `rationale.sections.length == 8` exactly

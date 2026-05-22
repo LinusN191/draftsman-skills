@@ -1,0 +1,36 @@
+name: eval-08a-qr-code-emitted
+skill: arc-flash-labelling
+category: skill_specific
+description: |
+  When qr_code_base_url is declared, every label must carry qr_code_url = <base_url>/<node_id>
+  in both label_content and intent. SVG content must include "QR" text/element.
+  Split from original A/B eval-08 (companion: eval-08b-qr-code-suppressed). Skill never invents
+  fake URLs.
+input:
+  jurisdiction: US
+  consumed_intents:
+    arc_flash: { present: true, fabricated_nodes: [
+      { node_id: "MSB-1", incident_energy_cal_per_cm2: 8, ppe_category: 3, label_recommended: true, voltage_v: 480 }
+    ]}
+  project_metadata:
+    qr_code_base_url: "https://example.com/af/project-123"
+
+checks:
+  # per_label[0] — MSB-1 (qr_code_base_url is declared)
+  - assertion: 'ir.labels[?(@.node_id=="MSB-1")].label_content_qr_code_url == "https://example.com/af/project-123/MSB-1"'
+    description: MSB-1 label_content qr_code_url is <base_url>/<node_id>
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-1")].intent_qr_code_url == "https://example.com/af/project-123/MSB-1"'
+    description: MSB-1 intent qr_code_url matches label_content qr_code_url
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-1")].svg_content contains "QR"'
+    description: MSB-1 SVG must contain "QR" text/element when QR code is emitted
+    severity: critical
+
+  # Cross-cutting: every label (not just MSB-1) must carry the same node-scoped qr_code_url shape
+  - assertion: 'ir.labels[*].label_content_qr_code_url all_equal "https://example.com/af/project-123/MSB-1"'
+    description: Every label (across all nodes) must carry qr_code_url = <base_url>/<node_id>; degenerate single-node case still enforces the universal claim
+    severity: warning
+    # TODO: tighten once eval-08a fixture is extended to multiple nodes

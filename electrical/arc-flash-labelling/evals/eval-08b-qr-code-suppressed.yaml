@@ -1,0 +1,32 @@
+name: eval-08b-qr-code-suppressed
+skill: arc-flash-labelling
+category: skill_specific
+description: |
+  When qr_code_base_url is null, no label may carry qr_code_url and no QR-code SVG element
+  may be present. Skill never invents fake URLs.
+  Split from original A/B eval-08 (companion: eval-08a-qr-code-emitted).
+input:
+  jurisdiction: US
+  consumed_intents:
+    arc_flash: { present: true, fabricated_nodes: [
+      { node_id: "MSB-1", incident_energy_cal_per_cm2: 8, ppe_category: 3, label_recommended: true, voltage_v: 480 }
+    ]}
+  project_metadata:
+    qr_code_base_url: null
+
+checks:
+  # per_label[0] — MSB-1 (qr_code_base_url is null)
+  - assertion: 'ir.labels[?(@.node_id=="MSB-1")].label_content_qr_code_url == null'
+    description: MSB-1 label_content qr_code_url must be null when base_url is null
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-1")].intent_qr_code_url == null'
+    description: MSB-1 intent qr_code_url must be null when base_url is null
+    severity: critical
+
+  - assertion: 'ir.labels[?(@.node_id=="MSB-1")].svg_content not_contains "QR"'
+    description: MSB-1 SVG must NOT contain "QR" element when QR code is suppressed
+    severity: critical
+
+  # pass_criteria coverage:
+  # "Skill never invents fake URLs" — captured by the null checks above; no separate assertion needed.

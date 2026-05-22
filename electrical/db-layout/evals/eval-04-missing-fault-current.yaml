@@ -1,9 +1,9 @@
 # Eval 04 — No fault-level intent + no engineer Ifault — selectivity must defer, not invent
 # Category: missing_input
 
-id: eval-04-missing-fault-current
+name: eval-04-missing-fault-current
+skill: db-layout
 category: missing_input
-severity: high
 description: |
   Engineer has not declared fault currents, fault-level intent is absent.
   Generator must NOT invent values. Every selectivity_results entry must:
@@ -11,7 +11,7 @@ description: |
   (b) Set tool_call_pending = true, AND
   (c) The top-level flags array must include "TOOL-CALL-PENDING".
 
-inputs:
+input:
   jurisdiction: "EU"
   board_type: "distribution_board"
   db_designation: "DB-EU1"
@@ -28,20 +28,24 @@ inputs:
   # No fault_currents_engineer_declared
   # No cross_drawing_context.fault-level
 
-assertions:
-  - kind: schema_valid
-    schema: "db-layout-ir.schema.json"
-  - kind: jsonpath_all_equals
-    path: "$.selectivity_results[*].source"
-    expected: "tool_call_pending"
-  - kind: jsonpath_all_equals
-    path: "$.selectivity_results[*].tool_call_pending"
-    expected: true
-  - kind: jsonpath_contains
-    path: "$.flags"
-    must_contain: "TOOL-CALL-PENDING"
-  - kind: invariant_passes
-    invariant: "INV-9"
-    note: "Selectivity result completeness via tool_call_pending"
+checks:
+  - assertion: 'ir matches "db-layout-ir.schema.json"'
+    description: Output validates against the db-layout IR schema
+    severity: critical
 
-expected_status: "pass"
+  - assertion: 'ir.selectivity_results[*].source all_equal "tool_call_pending"'
+    description: All selectivity_results sources must be tool_call_pending when no fault data provided
+    severity: warning
+
+  - assertion: 'ir.selectivity_results[*].tool_call_pending all_equal true'
+    description: All selectivity_results entries must have tool_call_pending == true
+    severity: warning
+
+  - assertion: 'ir.flags contains "TOOL-CALL-PENDING"'
+    description: Top-level flags must include TOOL-CALL-PENDING
+    severity: warning
+
+  - assertion: 'ir.invariants.INV-9.passes == true'
+    description: Selectivity result completeness via tool_call_pending
+    severity: critical
+    matches_inv: INV-9
