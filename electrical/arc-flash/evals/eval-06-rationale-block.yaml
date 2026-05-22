@@ -14,10 +14,8 @@ checks:
     severity: warning
 
   # rationale.chat_summary.max_words — no canonical word-count operator.
-  # Emit info-level check capturing the constraint for runtime word-count audit.
-  - assertion: 'ir.rationale.chat_summary != null'
-    description: Chat summary expected ≤ 200 words — runtime word-count check pending (canonical grammar lacks word-count operator)
-    severity: info
+  # TODO: runtime word-count audit pending (chat_summary ≤ 200 words target; canonical grammar lacks word-count operator)
+  # chat_summary is REQUIRED per rationale.schema.json — null check deleted as redundant (Sprint 3-W2b).
 
   # rationale.sections.length
   - assertion: 'ir.rationale.sections.length == 8'
@@ -58,10 +56,10 @@ checks:
     severity: critical
 
   # TODO: every_decision_has: [label, summary, rule, code_clause] — canonical grammar cannot
-  # enforce per-decision multi-field presence. Logged as warning.
+  # enforce per-decision multi-field presence. Logged as info placeholder.
   - assertion: 'ir.rationale.sections[*].decisions != null'
-    description: Every rationale section must have decisions[] populated (full label/summary/rule/code_clause structure not enforceable by canonical grammar — see WI2)
-    severity: warning
+    description: ALWAYS-PASS placeholder — Section.decisions is OPTIONAL per rationale.schema.json; full label/summary/rule/code_clause structure check not enforceable by canonical grammar (see WI2)
+    severity: info
 
   # pass_criteria coverage:
   # "Every decision cites a rule + clause from IEEE 1584 or NFPA 70E" — observable as

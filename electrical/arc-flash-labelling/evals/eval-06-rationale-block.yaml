@@ -52,10 +52,10 @@ checks:
     severity: critical
 
   # TODO: every_decision_has: [label, summary, rule, code_clause] — canonical grammar cannot
-  # enforce per-decision multi-field presence. Logged as warning with observable best-available check.
+  # enforce per-decision multi-field presence. Logged as info placeholder.
   - assertion: 'ir.rationale.sections[*].decisions != null'
-    description: Every rationale section must have decisions[] populated (full label/summary/rule/code_clause structure not enforceable by canonical grammar — see WI2)
-    severity: warning
+    description: ALWAYS-PASS placeholder — Section.decisions is OPTIONAL per rationale.schema.json; full label/summary/rule/code_clause structure check not enforceable by canonical grammar (see WI2)
+    severity: info
 
   # pass_criteria coverage:
   # "Every section non-empty (or explicitly says 'none triggered')" — soft, runtime-only

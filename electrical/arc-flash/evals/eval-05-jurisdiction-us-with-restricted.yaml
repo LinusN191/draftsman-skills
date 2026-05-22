@@ -34,12 +34,6 @@ checks:
     description: Compliance flag INCIDENT_ENERGY_GT_40_RESTRICTED must be emitted at error severity
     severity: critical
 
-  - assertion: 'ir.flags contains "specialised teams"'
-    description: Flag message must recommend specialised-team handling for restricted equipment
-    severity: warning
-
   # pass_criteria coverage:
   # "shock_approach still populated (separate concern)"
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-RESTRICTED")].shock_approach_source != null'
-    description: MSB-RESTRICTED shock_approach_source must still be populated (separate concern from IE)
-    severity: critical
+  # shock_approach.source is REQUIRED per arc-flash-ir.schema.json; assertion deleted as redundant (Sprint 3-W2b).

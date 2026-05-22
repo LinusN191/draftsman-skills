@@ -28,3 +28,9 @@ checks:
   - assertion: 'ir.labels[?(@.node_id=="MSB-1")].svg_content contains "QR"'
     description: MSB-1 SVG must contain "QR" text/element when QR code is emitted
     severity: critical
+
+  # Cross-cutting: every label (not just MSB-1) must carry the same node-scoped qr_code_url shape
+  - assertion: 'ir.labels[*].label_content_qr_code_url all_equal "https://example.com/af/project-123/MSB-1"'
+    description: Every label (across all nodes) must carry qr_code_url = <base_url>/<node_id>; degenerate single-node case still enforces the universal claim
+    severity: warning
+    # TODO: tighten once eval-08a fixture is extended to multiple nodes

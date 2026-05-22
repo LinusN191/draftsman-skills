@@ -57,10 +57,5 @@ checks:
 
   # pass_criteria coverage:
   # "Shock-approach still computed (doesn't depend on fault data) + label_recommended still set"
-  - assertion: 'ir.nodes[?(@.node_id=="DB-X1")].shock_approach_source != null'
-    description: DB-X1 shock_approach_source must still be populated (doesn't depend on fault data)
-    severity: critical
-
-  - assertion: 'ir.nodes[?(@.node_id=="DB-X1")].label_recommended != null'
-    description: DB-X1 label_recommended must still be set (doesn't depend on fault data)
-    severity: critical
+  # shock_approach.source and label.label_recommended are REQUIRED fields per arc-flash-ir.schema.json;
+  # schema validation already enforces their presence — assertions deleted as redundant (Sprint 3-W2b).

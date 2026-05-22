@@ -36,10 +36,10 @@ checks:
 
   # has_equipment_id_text — equipment_id appears as text in SVG
   # TODO: Canonical grammar cannot do per-label cross-field substring (svg_content contains <its own node_id>).
-  # Logged as warning info-only check.
+  # Logged as info placeholder pending runtime cross-field support.
   - assertion: 'ir.labels[*].svg_content != null'
-    description: Every label must have svg_content populated (per-label equipment_id substring check requires runtime cross-field — see WI2)
-    severity: warning
+    description: ALWAYS-PASS placeholder pending runtime cross-field support — svg_content is REQUIRED per labels-ir.schema.json; per-label equipment_id substring check (svg_content contains its own node_id) not enforceable by canonical grammar
+    severity: info
 
   # has_message_panel — text elements for IE / AFB / shock / PPE
   - assertion: 'ir.labels[*].svg_content matches "(cal/cm|Category|boundary|Approach|PPE)"'
@@ -49,7 +49,7 @@ checks:
   # pass_criteria coverage:
   # "Every label's signal-word colour matches the format spec hex" — soft (per-format hex map),
   # not enforceable as single canonical check; runtime SVG-DOM tool required.
-  # Captured as info-level reminder check.
+  # Captured as info-level placeholder pending runtime SVG-DOM colour audit.
   - assertion: 'ir.labels[*].format_applied != null'
-    description: Per-format signal-word colour spec match is a runtime SVG-DOM concern; format_applied must at least be declared
+    description: ALWAYS-PASS placeholder pending runtime SVG-DOM colour audit — format_applied is REQUIRED per labels-ir.schema.json; per-format signal-word colour spec match requires runtime SVG-DOM tooling not available in canonical grammar
     severity: info

@@ -106,6 +106,7 @@ def validate_examples_pass(skill_dirs: list) -> tuple:
             jsonschema.Draft7Validator.check_schema(schema_test)
         except Exception as e:
             results[skill_name].append(("META-SCHEMA-INVALID", schema_path, str(e)[:200]))
+            total_failures += 1
 
         examples = sorted(glob.glob(f"{skill_dir}/examples/*/output.json"))
         for ex_path in examples:
@@ -161,8 +162,6 @@ def validate_evals_pass(skill_dirs: list, eval_schema: dict) -> tuple:
             continue
 
         eval_files = sorted(glob.glob(f"{evals_dir}/eval-*.yaml"))
-        # Exclude anything under _archive/
-        eval_files = [p for p in eval_files if "/_archive/" not in p]
 
         if not eval_files:
             continue
@@ -170,7 +169,6 @@ def validate_evals_pass(skill_dirs: list, eval_schema: dict) -> tuple:
         for eval_path in eval_files:
             total_evals += 1
             eval_basename = os.path.basename(eval_path)
-            label = f"{skill_name}/{eval_basename}"
 
             try:
                 with open(eval_path) as f:
@@ -280,17 +278,17 @@ def main(repo_root="."):
     ev_tot, ev_fail, ev_lines = validate_evals_pass(skill_dirs, eval_schema)
     in_tot, in_fail, in_lines = validate_inputs_pass(skill_dirs, inputs_schema)
 
-    print(f"=== Pass 1 — Example outputs ===\n")
+    print("=== Pass 1 — Example outputs ===\n")
     for line in ex_lines:
         print(line)
     print(f"\nSubtotal: {ex_tot - ex_fail}/{ex_tot} pass ({ex_fail} failures)\n")
 
-    print(f"=== Pass 2 — Eval files ===\n")
+    print("=== Pass 2 — Eval files ===\n")
     for line in ev_lines:
         print(line)
     print(f"\nSubtotal: {ev_tot - ev_fail}/{ev_tot} pass ({ev_fail} failures)\n")
 
-    print(f"=== Pass 3 — Inputs files ===\n")
+    print("=== Pass 3 — Inputs files ===\n")
     for line in in_lines:
         print(line)
     print(f"\nSubtotal: {in_tot - in_fail}/{in_tot} pass ({in_fail} failures)\n")

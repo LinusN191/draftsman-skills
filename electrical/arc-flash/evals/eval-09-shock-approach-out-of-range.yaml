@@ -33,6 +33,7 @@ checks:
     severity: critical
     standard_ref: NFPA 70E Table 130.4(C)(a)
 
+  # NOTE: regex match relies on runtime coercing numeric values to string; canonical grammar lacks an `in [N1, N2]` numeric-set operator.
   - assertion: 'ir.nodes[?(@.node_id=="MV-36KV")].shock_approach_restricted_mm matches "^(790|840)$"'
     description: MV-36KV restricted approach is 790 mm or 840 mm (Table 130.4(C)(a) row 15.1-36 kV or alt row)
     severity: critical

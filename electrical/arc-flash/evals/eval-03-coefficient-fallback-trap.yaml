@@ -38,11 +38,11 @@ checks:
   # Best-available: assert that the trail mentions each expected method as substring on the
   # serialised JSON path. Flagged as warning.
   - assertion: 'ir.nodes[?(@.node_id=="PNL-A1")].method_fallback_trail contains "ieee1584_2018"'
-    description: PNL-A1 method_fallback_trail must include attempt of ieee1584_2018 (object-membership check approximated as substring — canonical grammar lacks array-of-objects predicate)
+    description: PNL-A1 method_fallback_trail must include attempt of ieee1584_2018 (object-membership check approximated as substring — canonical grammar lacks array-of-objects predicate; substring may also incidentally match a `method` field with the same value — pairing semantics not enforced)
     severity: warning
 
   - assertion: 'ir.nodes[?(@.node_id=="PNL-A1")].method_fallback_trail contains "ieee1584_2002"'
-    description: PNL-A1 method_fallback_trail must include attempt of ieee1584_2002 (object-membership check approximated as substring)
+    description: PNL-A1 method_fallback_trail must include attempt of ieee1584_2002 (object-membership check approximated as substring — canonical grammar lacks array-of-objects predicate; substring may also incidentally match a `method` field with the same value — pairing semantics not enforced)
     severity: warning
 
   - assertion: 'ir.nodes[?(@.node_id=="PNL-A1")].method_fallback_trail contains "lee_1982"'

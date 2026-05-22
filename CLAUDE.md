@@ -28,13 +28,16 @@ Per-skill folder (use `electrical/lighting-layout/` as the reference shape):
 - `evals/eval-NN-*.yaml` — per-skill evaluations (≥5 required).
 - `examples/<scenario>/input.json + output.json + reasoning.md` — worked examples (≥3 required).
 - `rules/`, `constraints/`, `ontology/`, `validation/`, `docs/` — supporting reference content.
-- `assets/` where applicable — reference tables (photometric data, standards values).
+- `assets/` (where applicable) — reference tables (photometric data, standards values).
+- `calculations/` (where applicable) — skill-specific calc declarations.
+- `annotations/` (where applicable) — annotation tags (e.g. drawing layer mapping).
+- `templates/` (where applicable) — output templates (e.g. SVG label templates).
 
 ## Core schemas (shared/schemas/core/)
 
 - `intent.schema.json` — cross-drawing intent envelope. Every skill that declares `produces_intent` emits a payload wrapped in this envelope so consumer skills can read it from sibling chats.
 - `eval.schema.json` — eval YAML metaschema. Requires `[name, skill, checks]`; enforces the 9-value category enum; accepts `input` / `input_fixture` / `input_fixtures` via `oneOf`; `Check` supports `matches_inv` and `matches_nec`.
-- `inputs.schema.json` — per-skill `inputs.json` metaschema. Accepts all three in-the-wild conventions via `oneOf [items, inputs, input_groups]` (canonical WI1 `items[]`, legacy `inputs[]`, grouped `input_groups[]`).
+- `inputs.schema.json` — per-skill inputs.json metaschema; accepts canonical WI1 `items[]` (5 skills), legacy `inputs[]` (arc-flash family), or grouped `input_groups[]` (cable-sizing + small-power) at top level via oneOf.
 - `rationale.schema.json` — embedded rationale block. `chat_summary` (40–500 chars) plus `sections[]` (each ≥1 with `title` + `summary` up to 800 chars, optional `decisions[]`).
 
 ## Sprint workflow
@@ -60,7 +63,7 @@ The established workflow. The `superpowers:*` skills are loaded on demand — do
 - **Pass 2** — every `evals/eval-*.yaml` validated against `shared/schemas/core/eval.schema.json`.
 - **Pass 3** — each skill's `inputs.json` validated against `shared/schemas/core/inputs.schema.json`.
 
-Aggregate exit 0 only when all three passes are 100% green. Pass 2 and Pass 3 are currently 100%; Pass 1 has 14 known db-layout content failures deferred to a follow-up sprint. Any new skill PR must add new evals and `inputs.json` and pass all three.
+Aggregate exit 0 only when all three passes are 100% green. Sprint 3-W2 (W/W2a/W2b) cleared the schema-fragmentation backlog; remaining work documented in `[[sprint-3w-shipped]]` / `[[sprint-3w2a-shipped]]` / `[[sprint-3w2b-shipped]]` memory files. Any new skill PR must add new evals and `inputs.json` and pass all three.
 
 Workflow: `.github/workflows/validate-examples.yml`. Local run: `python3 scripts/validate-examples.py`.
 
@@ -76,7 +79,7 @@ Strategy: breadth-first — finish every skill across disciplines before scaling
 
 **Other shipped:** arc-flash-labelling (companion to arc-flash).
 
-Folders under `electrical/` beyond the 9 shipped (access-control, cctv, fire-alarm, generator, hvac-power, lightning-protection, metering, panel-schedule, etc.) are scaffolds — README + manifest + evals only, awaiting `inputs.json` and `schemas/` to be considered shipped.
+All other `electrical/<skill>/` folders are scaffolds — README + manifest + evals only, awaiting `inputs.json` and `schemas/` to be considered shipped.
 
 ## Standards to apply
 
