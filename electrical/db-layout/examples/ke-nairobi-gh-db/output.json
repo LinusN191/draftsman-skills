@@ -15,6 +15,7 @@
     "enclosure_rating": "IP54",
     "manufacturer_class": "KS Annex E (BS EN 61439-3 Distribution Board)",
     "scope": "single-board",
+    "role": "gate_house_distribution",
     "board_kind": "specialty_board"
   },
   "incoming_supply": {
@@ -103,10 +104,12 @@
   "spare_ways": 1,
   "selectivity_results": [
     {
-      "upstream": "MSP-100 C08 (40A MCB Type B + 30mA Type A RCD)",
-      "downstream": "GH-DB main switch + final circuits",
-      "verdict": "pass_with_rcd_caution",
-      "_note": "Upstream 40A MCB selectively protects against 16A and smaller final-circuit MCBs at GH-DB (current ratio ≥2.5:1). RCD selectivity NOT achieved: upstream 30mA Type A at MSP-100 C08 and downstream 30mA Type A on C02/C03 are both 30mA — series 30mA pairs are time-coincident (KS 1700 §314 requires staged sensitivities for true selectivity). Coordination accepted because the upstream RCD also serves only the gate house; an earth fault tripping both is operationally acceptable for a small isolated load."
+      "upstream_id": "MSP-100-C08",
+      "downstream_id": "GH-DB",
+      "selective_to_fault_ka": 3.0,
+      "source": "engineer_declared",
+      "tool_call_pending": false,
+      "code_clause": "KS 1700:2018 § 536 (route to BS 7671 via §313) — 40A Type B upstream cascading to 6-16A Type B at GH-DB (current ratio ≥2.5:1) satisfies same-curve cascade selectivity at 3.0 kA local PFC. RCD selectivity caveat: upstream 30mA Type A at MSP-100 C08 and downstream 30mA Type A on C02/C03 share sensitivity — KS 1700:2018 §314 (route to BS 7671 §314.1) requires staged sensitivities for full RCD selectivity. Coincident tripping accepted by design because the upstream RCD exclusively serves the gate-house submain; an earth fault tripping both is operationally acceptable for the isolated perimeter load and avoids inventing a 100mA upstream RCD that the existing MSP-100 schedule does not carry."
     }
   ],
   "compliance_summary": {
@@ -124,5 +127,127 @@
     "Fed from MSP-100 C08 via 60m 10mm² 4-core SWA PVC Cu submain.",
     "IP54 enclosure rating suits semi-outdoor gate-house cupboard.",
     "3 final circuits + 1 spare way (W4 reserved)."
-  ]
+  ],
+  "rationale": {
+    "chat_summary": "GH-DB: 40A single-phase 240V gate-house sub-DB, 3 circuits (gate lighting + sockets + CCTV/intercom), fed from MSP-100 C08 via 60m SWA submain. KS Annex E (BS EN 61439-3) IP54 enclosure suits semi-outdoor perimeter cupboard. 30mA Type A RCD on C02/C03 per KS 1700:2018 §411.3.3 socket policy. Selectivity to MSP-100 cascade verified at 2.5:1 ratio; coincident-RCD caveat accepted because upstream 30mA serves only this gate-house submain.",
+    "sections": [
+      {
+        "title": "Board Identification",
+        "summary": "GH-DB is the dedicated gate-house sub-DB for the Nairobi industrial light-engineering workshop, housed in the gate-house plant cupboard at the site perimeter. Role flagged as `gate_house_distribution` so downstream consumers recognise it as an isolated perimeter board with environmental exposure (IP54 enclosure for semi-outdoor tropical conditions) and limited-load scope. Enclosure built to KS Annex E which adopts BS EN 61439-3 verbatim for distribution-board construction in Kenya.",
+        "decisions": [
+          {
+            "label": "Board role flagged as gate_house_distribution",
+            "summary": "Signals isolated perimeter scope and IP54 environmental constraint to downstream skills (riser, cable-containment, earthing).",
+            "rule": "db-layout role taxonomy"
+          },
+          {
+            "label": "IP54 enclosure for semi-outdoor gate-house cupboard",
+            "summary": "Gate-house cupboards in Nairobi face dust ingress + occasional wind-driven rain through ventilation louvres; IP54 protects against dust deposition and splash water without forcing the cost of an IP65 outdoor pillar.",
+            "rule": "Enclosure IP selection for tropical semi-outdoor",
+            "code_clause": "KS Annex E (BS EN 61439-3 Distribution Board) + IEC 60529:2013"
+          }
+        ]
+      },
+      {
+        "title": "Incoming Supply",
+        "summary": "40A single-phase 240V intake fed from MSP-100 C08 via 60m 10mm² 4-core SWA PVC Cu submain. Single-phase chosen because the gate-house load is small (~2.3 kW total) and isolated — TPN would force neutral imbalance management at MSP-100 with no engineering benefit. Submain impedance attenuates PFC from 9.8 kA at MSP-100 to ≈3.0 kA at GH-DB; comfortably within the 6 kA Icn of the downstream MCBs. Upstream 30mA Type A RCD at MSP-100 C08 protects the submain itself per KS 1700:2018 §411.3.3.",
+        "decisions": [
+          {
+            "label": "Single-phase 240V intake",
+            "summary": "Small isolated load (~2.3 kW) — single-phase simplifies isolation and avoids neutral imbalance at MSP-100.",
+            "rule": "Phase selection by load size and topology"
+          },
+          {
+            "label": "Declared PFC 3.0 kA after 60m submain",
+            "summary": "Attenuation from 9.8 kA at MSP-100 via 10mm² Cu SWA impedance; covered by 6 kA Icn MCBs at GH-DB with 100% headroom.",
+            "rule": "Cable-Z series impedance addition",
+            "code_clause": "KS 1700:2018 Appendix 4 (route to BS 7671 Appendix 4) + IEC 60909-0",
+            "inputs": {
+              "upstream_pfc_ka": 9.8,
+              "submain_length_m": 60,
+              "submain_csa_mm2": 10,
+              "declared_pfc_ka": 3.0
+            }
+          },
+          {
+            "label": "Upstream 30mA Type A RCD at MSP-100 C08",
+            "summary": "Protects the 60m submain itself and provides additional discrimination layer for the perimeter gate-house circuit per KS 1700:2018 §411.3.3.",
+            "rule": "RCD on submain serving isolated outbuilding",
+            "code_clause": "KS 1700:2018 § 411.3.3 (route to BS 7671 via §313)"
+          }
+        ]
+      },
+      {
+        "title": "Circuit Breakdown",
+        "summary": "3 final circuits: C01 gate-house lighting (external floodlights + internal, 10A Type B, no RCD) + C02 general sockets (16A Type B, 30mA Type A RCD) + C03 comms outlet for CCTV + intercom (6A Type B, 30mA Type A RCD). Type B curve selected throughout: lighting is incandescent/LED with no inrush, sockets feed general appliances with no specialist motor inrush, and CCTV/intercom DC content is small enough that Type A RCD coverage is adequate. Diversity not applied at GH-DB — total connected ~2.3 kW well within 40A intake.",
+        "decisions": [
+          {
+            "label": "Type B MCBs throughout",
+            "summary": "Lighting (LED/incandescent), general sockets, and small CCTV/intercom loads have no specialist inrush — Type B is the lowest-cost compliant curve.",
+            "rule": "MCB curve selection by load type",
+            "code_clause": "BS EN 60898-1:2019 + KS 1700:2018 § 432"
+          },
+          {
+            "label": "30mA Type A RCD on C02 (socket) and C03 (CCTV/intercom)",
+            "summary": "KS 1700:2018 §411.3.3 universal socket-RCD policy; Type A handles pulsating DC residual from CCTV switching supplies.",
+            "rule": "Socket and small-DC-load RCD policy",
+            "code_clause": "KS 1700:2018 § 411.3.3 (route to BS 7671 via §313)"
+          },
+          {
+            "label": "No RCD on C01 gate-house lighting",
+            "summary": "Fixed lighting outside socket-RCD scope; final-circuit MCB provides overcurrent and short-circuit protection.",
+            "rule": "RCD scope for fixed lighting",
+            "code_clause": "KS 1700:2018 § 411.3.3 (route to BS 7671 via §313)"
+          }
+        ]
+      },
+      {
+        "title": "Selectivity Analysis",
+        "summary": "Upstream MSP-100 C08 = 40A Type B MCB + 30mA Type A RCD. Downstream MCBs at GH-DB are 6-16A Type B. Cascade ratio ≥2.5:1 satisfies same-curve cascade selectivity at the 3.0 kA local PFC per KS 1700:2018 §536. RCD coordination caveat: the upstream 30mA Type A at MSP-100 C08 shares sensitivity with the downstream 30mA Type A at C02/C03 — series 30mA pairs are time-coincident and KS 1700:2018 §314 requires staged sensitivities for true RCD selectivity. Coincident tripping accepted by design because the upstream RCD exclusively serves the gate-house submain; an earth fault tripping both is operationally acceptable for an isolated perimeter load.",
+        "decisions": [
+          {
+            "label": "MCB cascade selectivity at 2.5:1 ratio",
+            "summary": "40A:16A worst-case ratio satisfies IEC 60898 same-curve cascade threshold (≥2:1) at 3.0 kA local PFC.",
+            "rule": "MCB same-curve cascade selectivity",
+            "code_clause": "KS 1700:2018 § 536 (route to BS 7671 via §313) + BS EN 60898-1:2019"
+          },
+          {
+            "label": "Coincident 30mA RCD pair accepted by design",
+            "summary": "Upstream and downstream 30mA Type A pair is non-selective by KS 1700:2018 §314, but accepted because the upstream RCD serves only this submain — no other downstream consumers are penalised by coincident trip.",
+            "rule": "RCD selectivity exemption by upstream-RCD-scope analysis",
+            "code_clause": "KS 1700:2018 § 314 (route to BS 7671 via §313)"
+          }
+        ]
+      },
+      {
+        "title": "Compliance Assessment",
+        "summary": "GH-DB compliant against KS 1700:2018 (the Kenyan adoption of the IET Wiring Regulations, with §313 establishing equivalence to BS 7671:2018), KS Annex E (BS EN 61439-3 distribution-board construction), BS EN 60898-1:2019 (MCBs), and BS EN 61009-1:2012 (RCBOs where applied). One INFO note: coincident 30mA RCD pair with MSP-100 C08 — not a non-compliance but a deliberate design acceptance documented in Selectivity Analysis. No CRITICAL or HIGH flags raised.",
+        "decisions": [
+          {
+            "label": "KS 1700:2018 + BS 7671 dual-routing citation",
+            "summary": "Every protection-related clause cites KS 1700:2018 with `(route to BS 7671 via §313)` qualifier — KS 1700 §313 establishes BS 7671:2018 equivalence and the IET Wiring Regs are the deeper-published source.",
+            "rule": "KE jurisdiction citation discipline",
+            "code_clause": "KS 1700:2018 § 313"
+          },
+          {
+            "label": "Enclosure construction per KS Annex E",
+            "summary": "KS Annex E adopts BS EN 61439-3 verbatim for distribution-board enclosures — selection driven by IP54 environmental classification.",
+            "rule": "Enclosure construction standard",
+            "code_clause": "KS Annex E (BS EN 61439-3 Distribution Board)"
+          }
+        ]
+      },
+      {
+        "title": "Schedule Notes",
+        "summary": "Schedule emitted as 3-row table with 1 spare way (W4 reserved). Spare-way provision allows for typical gate-house growth: barrier-motor circuit, additional perimeter floodlight string, or guard-room small-power upgrade. Tropical-environment derating implicit in the 6 kA Icn margin and IP54 enclosure choice; no per-circuit derating applied because the cupboard interior temperature is moderated by ventilation and the 60m feeder is below the 70°C ground-laid cable threshold.",
+        "decisions": [
+          {
+            "label": "1 spare way reserved (W4)",
+            "summary": "Typical gate-house growth path: barrier motor, perimeter floodlight extension, or guard-room small-power upgrade.",
+            "rule": "Spare-way provisioning best practice"
+          }
+        ]
+      }
+    ]
+  }
 }
