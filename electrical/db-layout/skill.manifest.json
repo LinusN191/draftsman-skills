@@ -7,24 +7,22 @@
   "status": "beta",
   "licence": "MIT",
   "inputs_path": "inputs.json",
-  "inputs": [
-    "jurisdiction",
-    "board-type",
-    "db-designation",
-    "incoming-supply",
-    "ways-total",
-    "form-separation",
-    "circuits-declared",
-    "fault-currents-engineer-declared"
+  "outputs": [
+    "db-layout-ir"
   ],
-  "outputs": ["db-layout-ir"],
   "output_schema": "electrical/db-layout/schemas/db-layout-ir.schema.json",
-  "produces_intent": ["db-layout", "db-layout-rollup"],
+  "produces_intent": [
+    "db-layout",
+    "db-layout-rollup"
+  ],
   "produces_intent_schemas": {
-    "db-layout":         "electrical/db-layout/schemas/db-layout-intent.schema.json",
-    "db-layout-rollup":  "electrical/db-layout/schemas/db-layout-rollup-intent.schema.json"
+    "db-layout": "electrical/db-layout/schemas/db-layout-intent.schema.json",
+    "db-layout-rollup": "electrical/db-layout/schemas/db-layout-rollup-intent.schema.json"
   },
-  "consumes_intents": ["fault-level", "lighting-layout"],
+  "consumes_intents": [
+    "fault-level",
+    "lighting-layout"
+  ],
   "standards": [
     "shared/standards/electrical/IEC60617/symbol-index.json",
     "shared/standards/electrical/IEC60617/part7-switchgear.json",
@@ -76,7 +74,7 @@
   "prompts": {
     "generator": "electrical/db-layout/prompts/generator.md",
     "validator": "electrical/db-layout/prompts/validator.md",
-    "reviewer":  "electrical/db-layout/prompts/reviewer.md"
+    "reviewer": "electrical/db-layout/prompts/reviewer.md"
   },
   "evals": [
     "electrical/db-layout/evals/eval-01-uk-domestic-cu-tn-cs.yaml",

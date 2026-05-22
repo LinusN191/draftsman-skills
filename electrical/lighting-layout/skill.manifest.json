@@ -7,21 +7,9 @@
   "status": "production",
   "licence": "MIT",
   "inputs_path": "inputs.json",
-  "inputs": [
-    "room-dimensions",
-    "ceiling-height",
-    "room-type",
-    "luminaire-specification",
-    "lumen-output",
-    "wattage",
-    "ceiling-grid-module",
-    "entrance-positions",
-    "glazed-wall-positions",
-    "new-build-flag",
-    "jurisdiction",
-    "db-designation"
+  "outputs": [
+    "lighting-layout-ir"
   ],
-  "outputs": ["lighting-layout-ir"],
   "output_schema": "shared/schemas/electrical/lighting-layout-ir.schema.json",
   "produces_intent": "lighting-layout",
   "produces_intent_schema": "electrical/lighting-layout/schemas/lighting-layout-intent.schema.json",
@@ -56,7 +44,7 @@
   "prompts": {
     "generator": "electrical/lighting-layout/prompts/generator.md",
     "validator": "electrical/lighting-layout/prompts/validator.md",
-    "reviewer":  "electrical/lighting-layout/prompts/reviewer.md"
+    "reviewer": "electrical/lighting-layout/prompts/reviewer.md"
   },
   "evals": [
     "electrical/lighting-layout/evals/eval-01-office-happy-path.yaml",

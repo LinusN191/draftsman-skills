@@ -7,21 +7,16 @@
   "status": "beta",
   "licence": "MIT",
   "inputs_path": "inputs.json",
-  "inputs": [
-    "jurisdiction",
-    "circuits-from-intent-or-declared",
-    "route-data-per-segment",
-    "ambient-overlay",
-    "grouping-per-segment",
-    "harmonic-content-per-circuit",
-    "vd-target-overrides",
-    "cable-type-preferences"
+  "outputs": [
+    "cable-sizing-ir"
   ],
-  "outputs": ["cable-sizing-ir"],
   "output_schema": "electrical/cable-sizing/schemas/cable-sizing-ir.schema.json",
   "produces_intent": "cable-sizing",
   "produces_intent_schema": "electrical/cable-sizing/schemas/cable-sizing-intent.schema.json",
-  "consumes_intents": ["db-layout-rollup", "fault-level"],
+  "consumes_intents": [
+    "db-layout-rollup",
+    "fault-level"
+  ],
   "standards": [
     "shared/standards/electrical/BS7671/appendix4-cable-ratings.json",
     "shared/standards/electrical/BS7671/appendix4-cable-ratings-aluminium.json",

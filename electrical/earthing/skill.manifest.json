@@ -7,21 +7,17 @@
   "status": "beta",
   "licence": "MIT",
   "inputs_path": "inputs.json",
-  "inputs": [
-    "jurisdiction",
-    "earthing-system",
-    "supply-data",
-    "ze-declared",
-    "extraneous-parts",
-    "electrode-arrangement",
-    "supplementary-bonding-locations",
-    "db-designations"
+  "outputs": [
+    "earthing-ir"
   ],
-  "outputs": ["earthing-ir"],
   "output_schema": "electrical/earthing/schemas/earthing-ir.schema.json",
   "produces_intent": "earthing",
   "produces_intent_schema": "electrical/earthing/schemas/earthing-intent.schema.json",
-  "consumes_intents": ["db-layout", "lighting-layout", "small-power"],
+  "consumes_intents": [
+    "db-layout",
+    "lighting-layout",
+    "small-power"
+  ],
   "standards": [
     "shared/standards/electrical/BS7671/reg411-disconnection-times.json",
     "shared/standards/electrical/BS7671/reg411-rcd-requirements.json",
@@ -68,7 +64,7 @@
   "prompts": {
     "generator": "electrical/earthing/prompts/generator.md",
     "validator": "electrical/earthing/prompts/validator.md",
-    "reviewer":  "electrical/earthing/prompts/reviewer.md"
+    "reviewer": "electrical/earthing/prompts/reviewer.md"
   },
   "evals": [
     "electrical/earthing/evals/eval-01-uk-dwelling-tn-cs.yaml",
