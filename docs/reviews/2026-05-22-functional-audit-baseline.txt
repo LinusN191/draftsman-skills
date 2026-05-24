@@ -1,0 +1,73 @@
+
+=== [1] CROSS-REFERENCE PATH RESOLUTION ===
+  BROKEN [db-layout/ke-nairobi-industrial-100A-tpn] annex_e_adoption_pathway -> KS 1700:2018 Annex E adopts BS 7671:2018+A2 substantially; see KS1700/annex-E-bs7671-adoption-table.json
+  BROKEN [arc-flash-labelling/intl-iso7010-label-set] consumed_intent_path -> electrical/arc-flash/examples/intl-11kv-substation/intent-out.json
+  BROKEN [arc-flash-labelling/uk-bs5499-label-set] consumed_intent_path -> electrical/arc-flash/examples/uk-400v-commercial/intent-out.json
+  checked 81 references, 3 broken
+
+=== [2] EVAL-ASSERTION vs EXAMPLE-OUTPUT AUDIT ===
+  arc-flash              6 top-level paths asserted, 2 absent/empty in all outputs
+  arc-flash-labelling    7 top-level paths asserted, 2 absent/empty in all outputs
+  cable-sizing           0 top-level paths asserted, 0 absent/empty in all outputs
+  db-layout              11 top-level paths asserted, 5 absent/empty in all outputs
+  earthing               15 top-level paths asserted, 2 absent/empty in all outputs
+  fault-level            11 top-level paths asserted, 3 absent/empty in all outputs
+  lighting-layout        10 top-level paths asserted, 1 absent/empty in all outputs
+  schematic              10 top-level paths asserted, 0 absent/empty in all outputs
+  sld                    0 top-level paths asserted, 0 absent/empty in all outputs
+  small-power            0 top-level paths asserted, 0 absent/empty in all outputs
+
+=== [3a] FAULT-LEVEL RECOMPUTE (IEC 60909) ===
+  (findings appended; note motor/UPS superposition & declared-PSCC cases need manual review)
+
+=== [3b] CABLE-SIZING RECOMPUTE (BS 7671 App-4) ===
+  (ring-final & SWA nodes excluded — oracle cannot model those)
+
+=== [3c] EARTHING RECOMPUTE (Zs = Ze + R1+R2) ===
+  (TT→RCD branch has 0 examples to exercise)
+
+======================================================================
+TOTAL FINDINGS: 43
+  [CRITICAL] earthing/intl-rural-tt/F01: Zs 0.318 > Zs_max 0.046 but flagged 'pass', rcd_required=False (non-compliant certified safe)
+  [CRITICAL] earthing/intl-rural-tt/F02: Zs 0.312 > Zs_max 0.029 but flagged 'pass', rcd_required=False (non-compliant certified safe)
+  [CRITICAL] earthing/intl-rural-tt/F03: Zs 0.323 > Zs_max 0.046 but flagged 'pass', rcd_required=False (non-compliant certified safe)
+  [CRITICAL] earthing/intl-rural-tt/F04: Zs 0.466 > Zs_max 0.183 but flagged 'pass', rcd_required=False (non-compliant certified safe)
+  [HIGH    ] db-layout/ke-nairobi-industrial-100A-tpn: broken annex_e_adoption_pathway -> KS 1700:2018 Annex E adopts BS 7671:2018+A2 substantially; see KS1700/annex-E-bs7671-adoption-table.json
+  [HIGH    ] arc-flash-labelling/intl-iso7010-label-set: broken consumed_intent_path -> electrical/arc-flash/examples/intl-11kv-substation/intent-out.json
+  [HIGH    ] arc-flash-labelling/uk-bs5499-label-set: broken consumed_intent_path -> electrical/arc-flash/examples/uk-400v-commercial/intent-out.json
+  [HIGH    ] fault-level/intl-commercial-with-genset/HV-1: Ik 17.6 vs recompute 16.02kA (z↔Ik inconsistent)
+  [HIGH    ] fault-level/intl-commercial-with-genset/TX-1: Ik 22.5 vs recompute 48.50kA (z↔Ik inconsistent)
+  [HIGH    ] fault-level/intl-commercial-with-genset/MSB-1: Ik 21.5 vs recompute 34.64kA (z↔Ik inconsistent)
+  [HIGH    ] fault-level/intl-commercial-with-genset/MSB-1.BUSBAR: Ik 21.4 vs recompute 34.64kA (z↔Ik inconsistent)
+  [HIGH    ] fault-level/intl-commercial-with-genset/DB-L1: Ik 18.2 vs recompute 20.21kA (z↔Ik inconsistent)
+  [HIGH    ] fault-level/uk-domestic-single-source/TX-1: Ik 1.575 vs recompute 33.20kA (z↔Ik inconsistent)
+  [HIGH    ] fault-level/uk-domestic-single-source/CU-G: Ik 1.5 vs recompute 17.43kA (z↔Ik inconsistent)
+  [HIGH    ] fault-level/uk-domestic-single-source/CU-G.BUSBAR: Ik 1.49 vs recompute 17.21kA (z↔Ik inconsistent)
+  [HIGH    ] fault-level/uk-domestic-single-source/CU-G.C01: Ik 0.85 vs recompute 0.61kA (z↔Ik inconsistent)
+  [HIGH    ] fault-level/uk-domestic-single-source/CU-G.C03: Ik 0.79 vs recompute 0.48kA (z↔Ik inconsistent)
+  [HIGH    ] fault-level/us-industrial-with-motors/HV-1: Ik 27.5 vs recompute 24.98kA (z↔Ik inconsistent)
+  [HIGH    ] fault-level/us-industrial-with-motors/MCC-1: Ik 35.0 vs recompute 31.98kA (z↔Ik inconsistent)
+  [HIGH    ] cable-sizing/intl-commercial-with-feeders/RISER.L3.C07: 3ph Vd 1.4% used 230V not 400V (correct 0.79%)
+  [HIGH    ] cable-sizing/ke-nairobi-commercial-with-msb/MSB-1.F02: 3ph Vd 1.8% used 230V not 415V (correct 0.96%)
+  [HIGH    ] cable-sizing/ke-nairobi-commercial-with-msb/MSB-1.F03: 3ph Vd 1.05% used 230V not 415V (correct 0.55%)
+  [MEDIUM  ] arc-flash/evals: asserts ir.invariants.* but ABSENT in all outputs
+  [MEDIUM  ] arc-flash/evals: asserts ir.nodes.* but ABSENT in all outputs
+  [MEDIUM  ] arc-flash-labelling/evals: asserts ir.intent_emitted.* but ABSENT in all outputs
+  [MEDIUM  ] arc-flash-labelling/evals: asserts ir.invariants.* but ABSENT in all outputs
+  [MEDIUM  ] db-layout/evals: asserts ir.busbar.* but ABSENT in all outputs
+  [MEDIUM  ] db-layout/evals: asserts ir.citations.* but ABSENT in all outputs
+  [MEDIUM  ] db-layout/evals: asserts ir.emitted_intents.* but ABSENT in all outputs
+  [MEDIUM  ] db-layout/evals: asserts ir.incoming.* but ABSENT in all outputs
+  [MEDIUM  ] db-layout/evals: asserts ir.invariants.* but ABSENT in all outputs
+  [MEDIUM  ] earthing/evals: asserts ir.citations.* but ABSENT in all outputs
+  [MEDIUM  ] earthing/evals: asserts ir.invariants.* but ABSENT in all outputs
+  [MEDIUM  ] fault-level/evals: asserts ir.citations.* but ABSENT in all outputs
+  [MEDIUM  ] fault-level/evals: asserts ir.emitted_intents.* but ABSENT in all outputs
+  [MEDIUM  ] fault-level/evals: asserts ir.invariants.* but ABSENT in all outputs
+  [MEDIUM  ] lighting-layout/evals: asserts ir.flags.* but ABSENT in all outputs
+  [MEDIUM  ] fault-level/intl-commercial-with-genset/TX-1: ipk 48.8 vs k·√2·Ik 52.77
+  [MEDIUM  ] fault-level/intl-commercial-with-genset/DB-L1: ipk 35.4 vs k·√2·Ik 38.17
+  [MEDIUM  ] fault-level/uk-domestic-single-source/TX-1: ipk 2.4 vs k·√2·Ik 3.47
+  [MEDIUM  ] fault-level/uk-domestic-single-source/CU-G: ipk 2.3 vs k·√2·Ik 2.79
+  [MEDIUM  ] fault-level/uk-domestic-single-source/CU-G.BUSBAR: ipk 2.28 vs k·√2·Ik 2.77
+  [MEDIUM  ] fault-level/us-industrial-with-motors/HV-1: ipk 67.2 vs k·√2·Ik 62.79
