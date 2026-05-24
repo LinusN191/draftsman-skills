@@ -1,0 +1,30 @@
+{
+  "drawing_type": "fire-alarm",
+  "meta": {"project_id": "proj-fa-001", "produced_at": "2026-05-18T00:00:00Z"},
+  "project": {
+    "name": "Test Office",
+    "drawing_number": "FA-001",
+    "revision": "P1",
+    "scale": "1:100"
+  },
+  "room": {
+    "id": "main",
+    "label": "Open Plan Office",
+    "outline": [[0, 0], [10000, 0], [10000, 6000], [0, 6000]]
+  },
+  "detectors": [
+    {"id": "SD-1", "x_mm": 2500, "y_mm": 1500, "kind": "smoke"},
+    {"id": "SD-2", "x_mm": 7500, "y_mm": 1500, "kind": "smoke"},
+    {"id": "SD-3", "x_mm": 2500, "y_mm": 4500, "kind": "smoke"},
+    {"id": "SD-4", "x_mm": 7500, "y_mm": 4500, "kind": "smoke"},
+    {"id": "HD-1", "x_mm": 5000, "y_mm": 3000, "kind": "heat"}
+  ],
+  "sounders": [
+    {"id": "S-1", "x_mm": 5000, "y_mm": 0},
+    {"id": "S-2", "x_mm": 5000, "y_mm": 6000}
+  ],
+  "zones": [
+    {"id": "Z1", "coverage_label": "Open Plan", "detector_count": 5, "sounder_count": 2}
+  ],
+  "rationale": {"chat_summary": "BS 5839 L2 layout for small open-plan office", "sections": []}
+}

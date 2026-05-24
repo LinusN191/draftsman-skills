@@ -1,11 +1,13 @@
 {
   "skill": "fire-alarm",
-  "version": "0.1.0",
-  "status": "stub",
+  "version": "0.2.0",
+  "status": "beta",
   "discipline": "electrical",
-  "description": "Fire alarm system drawings and zone layouts",
-  "standards": [],
-  "inputs": [],
-  "outputs": [],
+  "subdiscipline": "life-safety",
+  "description": "BS 5839 fire-alarm layout: room outline, smoke + heat detector placement, sounder coverage, zone schedule",
+  "standards": ["BS 5839-1", "BS 7273"],
+  "inputs": ["room_dims_mm", "ceiling_height_mm", "occupancy_category", "alarm_category"],
+  "outputs": ["dxf"],
+  "chat_type": "drawing",
   "compatible_runtimes": ["DraftsMan >= 1.0", "Claude Code", "OpenClaw"]
 }

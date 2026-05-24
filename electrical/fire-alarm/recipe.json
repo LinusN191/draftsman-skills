@@ -1,0 +1,82 @@
+{
+  "recipe_version": 1,
+  "render_target": "dxf",
+  "page_size": "A3",
+  "pages": [
+    {
+      "id": "main",
+      "origin_mm": [0, 0],
+      "primitives": [
+        {
+          "op": "lwpolyline",
+          "from": "ir.room.outline",
+          "close": true,
+          "layer": "DM-WALLS"
+        },
+        {
+          "op": "text",
+          "text": {"from": "ir.room.label"},
+          "at": [100, -200],
+          "layer": "DM-ANNOTATIONS",
+          "height_mm": 80,
+          "align": "left"
+        },
+        {
+          "op": "insert_per",
+          "items": "ir.detectors",
+          "where": {"kind": "smoke"},
+          "block": "FA_SMOKE_DETECTOR",
+          "at": ["x_mm", "y_mm"],
+          "layer": "DM-EQUIPMENT"
+        },
+        {
+          "op": "insert_per",
+          "items": "ir.detectors",
+          "where": {"kind": "heat"},
+          "block": "FA_HEAT_DETECTOR",
+          "at": ["x_mm", "y_mm"],
+          "layer": "DM-EQUIPMENT"
+        },
+        {
+          "op": "insert_per",
+          "items": "ir.sounders",
+          "block": "FA_SOUNDER",
+          "at": ["x_mm", "y_mm"],
+          "layer": "DM-EQUIPMENT"
+        },
+        {
+          "op": "text_per",
+          "items": "ir.detectors",
+          "text": "id",
+          "at": ["x_mm", "y_mm"],
+          "offset_mm": [0, -150],
+          "layer": "DM-ANNOTATIONS",
+          "height_mm": 50
+        },
+        {
+          "op": "schedule",
+          "items": "ir.zones",
+          "columns": [
+            {"header": "Zone", "from": "id"},
+            {"header": "Coverage", "from": "coverage_label"},
+            {"header": "Detectors", "from": "detector_count"},
+            {"header": "Sounders", "from": "sounder_count"}
+          ],
+          "row_height_mm": 80,
+          "col_widths_mm": [100, 200, 120, 120],
+          "anchor_mm": [12000, 0],
+          "layer": "DM-ANNOTATIONS"
+        },
+        {
+          "op": "title_block",
+          "project_name": {"from": "ir.project.name"},
+          "drawing_number": {"from": "ir.project.drawing_number"},
+          "revision": {"from": "ir.project.revision"},
+          "scale": {"from": "ir.project.scale"},
+          "sheet_size": "A3",
+          "anchor_mm": [0, -1500]
+        }
+      ]
+    }
+  ]
+}
