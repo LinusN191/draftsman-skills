@@ -18,7 +18,7 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | db-layout | `electrical/db-layout` | **beta** | BS 7671:2018, IEC 60364, IEC 61439, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 8/3 ✓ | v1.3.1 — genset Ik" precision fix per IEC 60909-0:2016 §3.5.1 (patch). v1.3.0 — 4 new INT sub-DB examples (DB-EM + DB-COMMS + DB-UPS + DB-GENSET-XCV) paired with SLD v1.5 sprint. 20 worked examples total covering UK/KE/INT/US jurisdictions. |
 | cable-containment | `electrical/cable-containment` | stub | BS 7671:2018, BS 1192 | — | — |
 | riser | `electrical/riser` | stub | BS 7671:2018 | — | — |
-| schematic | `electrical/schematic` | stub | BS EN 60617 | — | — |
+| schematic | `electrical/schematic` | **beta** | BS EN 60617, IEC 60617, IEC 60255, IEC 60044, IEC 60076, IEEE C37, BS 7671:2018, KS 1700:2018, IEC 60364, NEC 2023 | 9/5 ✓ | v1.0.0 beta — 10th electrical skill; 8 examples (4 control + 4 protection across KE/UK/INT/US); hybrid consumer of db-layout-rollup + fault-level + earthing intents with leaf-mode fallback; 12-step generator + 10 INV validator + 6 D-check reviewer. |
 | small-power | `electrical/small-power` | **beta** | BS 7671:2018+A2:2022, IEC 60364-4-41/-5-53/-7-701, KS 1700:2018, NEC 2023 Article 210, BS 1363, NEMA WD-1, BS EN 61558-2-5, BS EN 60529 | 10/4 ✓ | v1.1.0 beta — Hybrid consumer (was leaf v1.0). Hybrid IR: circuits[] (3 topology enum: ring/radial/dedicated_radial) + rooms[] (with sockets[] cross-referencing circuit_ids). 3 design enums (topology + special_location + rcd_posture). 4 jurisdictional examples (UK + KE + INT + US). 13-step generator + 11 INV validator + 7 D-check reviewer. 10 evals (5 WI5 categories + 5 skill-specific). Consumes existing calc.diversity_factor + calc.zs_loop_impedance contracts (REUSED). 1 NEW standards file: shared/standards/electrical/NFPA70/part7-special-locations.json. INT example C06 server-room mirrors db-layout intl-dbcomms-data Type B 30mA RCD policy (cross-skill alignment without v1.0 multi-skill consumption). v1.1.0 — migrated from leaf to hybrid consumer of cable-sizing intent (consumes_intents: ["cable-sizing"]). New example uk-3bed-with-cable-sizing demonstrates resolved verified_zs_ohm per circuit from r1_plus_r2 × length + reactance × length + Ze. New INV-11 + D-7 + eval-10. Original 4 v1.0 examples + 9 v1.0 evals unchanged (demonstrate hybrid fallback). |
 | earthing | `electrical/earthing` | **beta** | BS 7671:2018, IEC 60364, NFPA 70 (NEC 2023), KS 1700:2018, IEC 60617 | 9/5 ✓ | v1.4.0 — 5 worked examples (added uk-commercial-3storey in v1.4 sprint); consumed by SLD v1.4 as system-wide earthing intent source. |
 | emergency-lighting | `electrical/emergency-lighting` | stub | BS 5266-1, BS EN 1838 | — | — |
@@ -169,12 +169,12 @@ Status codes: `production` | `beta` | `draft` | `stub`
 | Status | Count |
 |--------|-------|
 | production | 1 |
-| beta | 8 |
+| beta | 9 |
 | draft | 0 |
-| stub | 67 |
+| stub | 66 |
 | **Total** | **76** |
 
-**Beta (8):** `electrical/sld`, `electrical/db-layout`, `electrical/earthing`, `electrical/fault-level`, `electrical/cable-sizing`, `electrical/arc-flash`, `electrical/arc-flash-labelling`, `electrical/small-power`
+**Beta (9):** `electrical/sld`, `electrical/db-layout`, `electrical/earthing`, `electrical/fault-level`, `electrical/cable-sizing`, `electrical/arc-flash`, `electrical/arc-flash-labelling`, `electrical/small-power`, `electrical/schematic`
 **Production (1):** `electrical/lighting-layout`
 
 ---
@@ -226,9 +226,9 @@ Tier 1 sequence (live):
 7. ✅ `electrical/arc-flash-labelling` v1.0.0 beta + ANSI-Z535-4 + ISO-7010 + BS-5499 (shipped 2026-05-17)
 8. ✅ `electrical/earthing` v1.1.0 — TN-S + Zs table + KE example (shipped 2026-05-17)
 9. ✅ `electrical/earthing` v1.2.0 — KS 1700 standards layer + citation refactor (shipped 2026-05-18)
-10. `electrical/db-layout` v1.1 — DC distribution + Type B RCD
-10. `electrical/voltage-drop` (or fold into cable-sizing)
-11. `electrical/sld` v1.2 — eval split
+10. ✅ `electrical/schematic` v1.0.0 beta (shipped 2026-05-24) — 10th electrical skill; 8 examples (4 control + 4 protection across KE/UK/INT/US); hybrid consumer of db-layout-rollup + fault-level + earthing intents with leaf-mode fallback
+11. `electrical/cable-containment`
+12. `electrical/riser`
 
 Tier 2 (next):
 - `electrical/emergency-lighting` — depends on lighting-layout patterns

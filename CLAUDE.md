@@ -71,7 +71,7 @@ Workflow: `.github/workflows/validate-examples.yml`. Local run: `python3 scripts
 
 Strategy: breadth-first — finish every skill across disciplines before scaling standards across more jurisdictions. See `[[build-strategy-breadth-first]]`.
 
-**Drawings (5/8 shipped):** lighting-layout, sld, db-layout, earthing, small-power. Remaining: cable-containment, riser, schematic.
+**Drawings (6/8 shipped):** lighting-layout, sld, db-layout, earthing, small-power, schematic. Remaining: cable-containment, riser.
 
 **Calculations (3/7 shipped):** cable-sizing, fault-level, arc-flash. Remaining: lux, load-schedule, voltage-drop, generator-sizing.
 
