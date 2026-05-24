@@ -1,0 +1,79 @@
+# Busbar protection zoning and breaker failure rules
+# Consumed by validator (INV checks) and engineer reasoning
+
+rule_id: BUSBAR_PROTECTION_ZONING
+rule_name: Busbar zone overlap with 50BF breaker failure backup
+applies_to_schematic_type:
+  - protection_busbar
+
+description: |
+  Each busbar protection zone must satisfy three requirements:
+  1. At least one 87B (busbar differential) element covers every zone.
+  2. Every circuit breaker within the zone has a corresponding 50BF (breaker failure)
+     element with its own trip timer (typically 0.1–0.2 s) to initiate backup tripping
+     of all other breakers in the zone if the primary breaker fails to clear.
+  3. Zone overlap is achieved by including the circuit breaker CT in BOTH the adjacent
+     protection zone AND the main busbar zone. This prevents a dead-zone blind spot
+     at the boundary between zones.
+
+  IEEE C37.234 and IEC 60255-187 govern busbar protection scheme design.
+
+checks:
+  - check_id: every_zone_has_87b
+    description: |
+      Each declared busbar protection zone must contain at least one differential relay
+      element with ansi_code = '87B'. A zone with no 87B provides no primary protection
+      against internal busbar faults.
+    expression: >
+      FOR EACH zone IN busbar_zones:
+        COUNT(items[device_class='differential_relay' AND protection_zone=zone AND ansi_code='87B']) >= 1
+    severity: critical
+    standard_ref: "IEC 60255-187:2013 § 5.1 + IEEE C37.234-2009 clause 5.2"
+    advisory: >
+      For double-busbar substations, declare separate zone_id values for bus-1,
+      bus-2, and the bus-coupler zone. Each zone requires its own 87B element.
+      The bus-coupler breaker CT must appear in both bus-1 and bus-2 zones to
+      provide zone overlap and prevent a dead zone at the coupler.
+
+  - check_id: every_breaker_has_50bf
+    description: |
+      Every circuit breaker within the busbar protection scheme must have an associated
+      50BF breaker failure instantaneous element. The 50BF timer must initiate backup
+      tripping of all remaining breakers in the zone within ≤ 0.2 s of primary breaker
+      failure to clear the fault.
+    expression: >
+      FOR EACH item IN items[device_class='circuit_breaker' AND protection_zone != null]:
+        COUNT(items[device_class='instantaneous_relay' AND ansi_code='50BF' AND protected_breaker=item.item_id]) >= 1
+    severity: critical
+    standard_ref: "IEEE C37.119-2016 (breaker failure protection) + IEEE C37.234-2009 clause 5.5"
+    advisory: >
+      Typical 50BF timer settings: 0.1 s (100 ms) initiation delay + breaker interrupting
+      time (typically 60–80 ms for modern SF6 breakers) = total backup trip time ≤ 200 ms.
+      Declare a protection_settings entry for each 50BF element with the timer value.
+
+  - check_id: zone_overlap_ct_coverage
+    description: |
+      Circuit breaker CTs at zone boundaries must be included in both adjacent zones
+      to prevent a dead-zone fault blind spot between zones.
+    expression: advisory_text
+    severity: warning
+    standard_ref: "IEC 60255-187:2013 Annex B (zone overlap) + IEEE C37.234-2009 clause 5.3"
+    advisory: >
+      In the schematic IR, declare boundary CTs with protection_zone = ['zone_A', 'zone_B']
+      (list, not scalar) to indicate the CT current flows into both zone differential
+      calculations. The skill generator must produce zone overlap in the connections[] graph
+      when boundary CTs are so declared.
+
+  - check_id: check_back_tripping_matrix
+    description: |
+      The backup tripping matrix must be defined so that if any one breaker in a zone
+      fails to clear, ALL remaining breakers in the same zone receive an independent
+      trip command from the 50BF scheme.
+    expression: advisory_text
+    severity: warning
+    standard_ref: "IEEE C37.119-2016 clause 6.3 (backup tripping matrix)"
+    advisory: >
+      Include a back_trip_matrix block in the schematic IR annotations listing,
+      for each breaker, the list of backup trip targets. Verify that no single
+      wiring or relay failure can prevent backup tripping — typically achieved by
+      using independent trip coils (trip coil 1 / trip coil 2) and separate DC supplies.

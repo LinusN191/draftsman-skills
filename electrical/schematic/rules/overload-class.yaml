@@ -1,0 +1,63 @@
+# Thermal overload class selection rules
+# Consumed by validator (INV checks) and engineer reasoning
+
+rule_id: OVERLOAD_CLASS
+rule_name: Thermal overload class selection by motor start time
+applies_to_schematic_type:
+  - control_motor_starter
+  - control_sequence
+  - protection_motor
+
+description: |
+  IEC 60947-4-1 defines overload relay trip classes by the maximum time taken to trip from
+  cold (ambient) at 7.2 × set current (motor locked-rotor current approximation).
+  The correct class must match the motor's declared start time to avoid nuisance tripping
+  during normal starting while providing adequate protection against locked-rotor fault.
+
+  Class 5:  cold-trip ≤  5 s at 7.2 × Ie — very fast; high-inertia starts NOT permitted.
+  Class 10: cold-trip ≤ 10 s at 7.2 × Ie — standard for DOL pumps and fans.
+  Class 20: cold-trip ≤ 20 s at 7.2 × Ie — loaded fans, conveyors with long acceleration.
+  Class 30: cold-trip ≤ 30 s at 7.2 × Ie — high-inertia loads: crushers, large compressors.
+
+checks:
+  - check_id: class_appropriate_for_start_time
+    description: |
+      Overload class must accommodate declared motor start time.
+      Machine-check uses the mapping: class_max_trip_s >= motor_start_time_s.
+      This is an advisory-text check because start-time data comes from the motor
+      data sheet and may not be available in all inputs.
+    expression: advisory_text
+    severity: warning
+    standard_ref: "IEC 60947-4-1:2010+AMD1:2012 Table 2"
+    advisory: >
+      Motor start_time_s ≤ 5 s: use Class 5 or Class 10 (prefer Class 10 for
+      standard squirrel cage motors). Motor start_time_s 6–10 s: use Class 10.
+      Motor start_time_s 11–20 s: use Class 20. Motor start_time_s 21–30 s:
+      use Class 30. For start times > 30 s (unusual), consult motor manufacturer
+      for special thermal protection or embedded PTC thermistor scheme.
+
+  - check_id: hot_trip_vs_cold_trip_distinction
+    description: |
+      Hot-trip time (motor already at operating temperature) is approximately 50% of
+      the cold-trip time for the same class. Engineers must confirm protection is
+      adequate for repetitive starting duty (e.g. frequent DOL restarts in pump duty).
+    expression: advisory_text
+    severity: info
+    standard_ref: "IEC 60947-4-1 Annex A (tripping characteristics)"
+    advisory: >
+      For repetitive starting duty (> 3 starts per hour), verify that the overload relay
+      thermal model accounts for cumulative heat. Many modern electronic overload relays
+      include a thermal memory feature. Confirm this is enabled for frequent-start duty.
+
+  - check_id: electronic_vs_bimetal_relay
+    description: |
+      Electronic overload relays provide adjustable class and thermal memory.
+      Bimetal relays have fixed class characteristics and no thermal memory.
+      For motors with variable start duty, electronic relays are preferred.
+    expression: advisory_text
+    severity: info
+    standard_ref: "IEC 60947-4-1 clause 7.3 (bimetal) + clause 7.4 (electronic)"
+    advisory: >
+      Declare relay_type = 'electronic' in protection_settings for variable-duty
+      motors. Bimetal relays are acceptable for fixed, infrequent-start duty
+      (e.g. a standby pump started once per day).

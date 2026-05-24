@@ -1,0 +1,83 @@
+# Differential protection stability and CT class rules
+# Consumed by validator (INV checks) and engineer reasoning
+
+rule_id: DIFFERENTIAL_STABILITY
+rule_name: Differential protection bias slope + CT class for stability under through-fault
+applies_to_schematic_type:
+  - protection_differential
+  - protection_busbar
+
+description: |
+  Differential protection must remain stable during through-faults (external faults) where
+  CT saturation produces spurious differential current. Bias slope and CT class are the
+  primary stability controls.
+
+  Percentage bias (restrained differential) relays use a bias slope of 20–50% to tolerate
+  CT mismatch during through-fault conditions. High-impedance differential schemes use a
+  stabilising resistor instead. CT class must be appropriate for the scheme type.
+
+  IEC 60255-187 governs the performance requirements; IEC 60044-1 (superseded by IEC 61869-2)
+  governs CT accuracy classes (PX / PS / 5P / 10P).
+
+checks:
+  - check_id: bias_slope_in_stability_envelope
+    description: |
+      For biased differential relays (87T, 87N, 87B), bias slope declared in
+      protection_settings must lie in the range 20–60%.
+      Below 20%: relay may maloperate on through-fault due to CT mismatch.
+      Above 60%: relay becomes insensitive to genuine internal faults.
+    expression: >
+      protection_settings[ansi_code IN ('87T','87N','87B') AND scheme='biased'].set_value
+      BETWEEN 20.0 AND 60.0
+    severity: warning
+    standard_ref: "IEC 60255-187:2013 § 4.3 (stability factor)"
+    advisory: >
+      Typical settings: 30% slope for transformer differential (87T), 40% for
+      restricted earth fault (87N), 20–40% for busbar protection (87B).
+      Confirm against relay manufacturer's application guide
+      (ABB REF615, Siemens 7UM62, Schneider Sepam 80, SEL-487T/E reference points).
+
+  - check_id: ct_class_for_high_impedance
+    description: |
+      High-impedance differential schemes (used with 87B and 87N) require class PX or PS
+      CTs (IEC 60044-1 / IEC 61869-2) with defined knee-point voltage and resistance.
+      Standard accuracy classes (5P, 10P) are insufficient because their knee-point
+      is not guaranteed and saturation cannot be controlled.
+    expression: >
+      protection_settings[scheme='high_impedance'].ct_class IN ('PX','PS')
+    severity: warning
+    standard_ref: "IEC 61869-2:2012 (superseding IEC 60044-1) + IEC 60255-187 Annex A"
+    advisory: >
+      For biased schemes, class 5P or 10P CTs are acceptable. For high-impedance schemes,
+      PX (or legacy PS) CTs are mandatory. Verify minimum knee-point voltage per
+      IEC 60255-187 Annex A formula: Vk ≥ 2 × (If_max × Rct + If_max × RL).
+
+  - check_id: stabilising_resistor_high_impedance
+    description: |
+      High-impedance differential circuits require a stabilising resistor in series with
+      the relay voltage coil to limit the operating current under through-fault CT saturation.
+      Resistor value must be verified against the relay manufacturer's formula.
+    expression: advisory_text
+    severity: warning
+    standard_ref: "IEC 60255-187:2013 Annex A + GEC Measurements P631 application guide"
+    advisory: >
+      Stabilising resistance Rs = (Vk - Vr) / Is where Vk is CT knee-point voltage,
+      Vr is relay operating voltage, and Is is relay pick-up current. Include a
+      non-linear varistor (metrosil) across the relay + Rs to limit peak voltage
+      during internal faults to protect CT insulation.
+
+  - check_id: vector_group_correction_87t
+    description: |
+      Transformer differential protection (87T) must account for transformer vector group
+      (phase shift and zero-sequence isolation). Relay must apply software or hardware
+      vector group correction so that balanced through-load current produces zero
+      differential current.
+    expression: advisory_text
+    severity: critical
+    standard_ref: "IEC 60255-187:2013 § 5.2 (vector group compensation)"
+    advisory: >
+      Modern numeric relays (ABB REF615, SEL-387, Siemens 7UT) apply automatic
+      vector group correction. Declare the transformer vector_group (e.g. Dyn11) in
+      the schematic input so the relay can configure delta/wye compensation matrices.
+      For Dyn11: HV current delta-connected → relay introduces -30° phase correction
+      on HV side to align with LV star connection.

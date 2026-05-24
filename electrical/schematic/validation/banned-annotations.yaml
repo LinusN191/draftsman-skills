@@ -1,0 +1,95 @@
+validator_id: BANNED_ANNOTATIONS
+version: 1.0.0
+description: |
+  Post-3W2c lesson set for the schematic skill. These patterns are banned from schematic IR
+  output and rationale text. Each entry records the lesson learned, the canonical replacement,
+  and the severity level. The generator prompt (prompts/generator.md § post-generation checklist)
+  must scan for these patterns before emitting the final IR.
+
+  Lessons captured from Sprint 3-W2c review:
+    - UK-1: dual-frame VD % dimensionally wrong for 3-phase circuits
+    - UK-3: § 311 chapter heading vs § 311.1 operative regulation
+    - UK-4: BS EN 61009-1:2012 without A12:2014 amendment
+    - INT-1: IEC 60364-7-701 water-proximity series misapplied outside bathrooms
+    - Task 3 date error: BS EN 61439 :2022 fabricated year (correct: :2021)
+
+banned_patterns:
+  - pattern: "switch-fuse"
+    replacement: "main_switch_fused"
+    severity: warning
+    reason: >
+      Canonical enum value per Sprint 3-W2a Task 1 is 'main_switch_fused'. The informal
+      term 'switch-fuse' is not in the schematic_type or device_class enums and must
+      not appear in IR output or rationale prose.
+
+  - pattern: "§ 311(?![.0-9])"
+    replacement: "§ 311.1"
+    severity: warning
+    reason: >
+      UK-3 lesson (3-W2c Task 1): § 311 is the chapter heading of BS 7671:2018+A2:2022.
+      The operative regulation requiring overcurrent protection is § 311.1. Always cite
+      the specific regulation number, never the section heading alone.
+
+  - pattern: "BS EN 61009-1:2012(?!\\+A12:2014)"
+    replacement: "BS EN 61009-1:2012+A12:2014"
+    severity: warning
+    reason: >
+      UK-4 lesson (3-W2c Task 1): The current edition of BS EN 61009-1 includes the
+      A12:2014 amendment. Citing only BS EN 61009-1:2012 without the amendment is
+      an incomplete reference that implies an outdated edition is current.
+
+  - pattern: "230V phase.{0,30}voltage drop"
+    replacement: "voltage drop in volts on 400V line-to-line (3-phase) basis"
+    severity: critical
+    reason: >
+      UK-1 lesson (3-W2c Task 1): Calculating voltage drop percentage on a 230 V
+      single-phase reference frame for a balanced 3-phase circuit is dimensionally wrong.
+      Voltage drop limits apply to line-to-line voltage (400 V) for 3-phase circuits.
+      Use absolute mV/A/m tables from BS 7671:2018+A2:2022 Appendix 4 and express
+      the result as a percentage of the applicable line voltage.
+
+  - pattern: "IEC 60364-7-701.{0,60}(socket|outlet|bathroom|water proximity)"
+    replacement: "IEC 60364-4-41 § 411.3.3 (universal socket-circuit policy for non-bathroom contexts)"
+    severity: warning
+    reason: >
+      INT-1 lesson (3-W2c Task 1): IEC 60364-7-701 governs special installations in
+      bathrooms, shower rooms, and similar wet locations (zones 0, 1, 2 defined by
+      proximity to bath or shower). Citing this standard for general socket-outlet
+      protection in dry locations is incorrect. Use IEC 60364-4-41 for general
+      socket-outlet protection requirements.
+
+  - pattern: "BS EN 61439-[12]:2022"
+    replacement: "BS EN 61439-1:2021 or BS EN 61439-2:2021"
+    severity: warning
+    reason: >
+      Task 3 lesson (3-W2c): The published current editions of BS EN 61439-1 and
+      BS EN 61439-2 are dated :2021. The year :2022 was a fabricated edition year
+      that does not correspond to any published standard. Always verify publication
+      year against BSI Shop or IEC Webstore before citing.
+
+  - pattern: "IDMT curve.{0,80}(S.I.|SI).{0,40}\\bonly\\b"
+    replacement: "IDMT curve selected with justification (SI / VI / EI / US Moderate Inverse)"
+    severity: info
+    reason: >
+      Standard Inverse (SI) is the most common IDMT curve selection but is not the
+      only appropriate choice. Asserting SI is the only option is misleading. Always
+      state the curve choice with reference to the application (feeder, transformer,
+      motor) and explain why the selected curve provides adequate grading.
+
+  - pattern: "CT ratio.{0,30}assumed"
+    replacement: "CT ratio specified with primary current basis (load current or fault level)"
+    severity: warning
+    reason: >
+      CT ratios must be derived from the rated primary current or maximum fault level,
+      not assumed. State the basis: e.g. 'CT 200/5 selected: primary = 160 A FLA,
+      next standard ratio per IEC 61869-2 Table 1 is 200 A'. Assumed ratios without
+      a declared basis are not defensible.
+
+  - pattern: "relay vendor.{0,30}TBD|manufacturer.{0,30}TBD|relay type.{0,30}TBD"
+    replacement: "relay family declared (e.g. ABB REF615, Siemens 7SJ, SEL-311C, Schneider Sepam)"
+    severity: info
+    reason: >
+      Schematic IR should declare at minimum a relay family for each protection function.
+      TBD relay type prevents any setting validation against manufacturer typicals and
+      makes the schematic output less useful for tender or construction documentation.
+      Use a representative family; the engineer substitutes actual model at procurement.

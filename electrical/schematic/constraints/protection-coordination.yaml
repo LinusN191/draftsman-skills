@@ -1,0 +1,98 @@
+constraint_set: protection-coordination
+version: 1.0.0
+applies_to_schematic_type:
+  - protection_overcurrent
+  - protection_differential
+  - protection_motor
+  - protection_busbar
+
+description: |
+  Cascade selectivity rules for protection schemes. Upstream device operating time at
+  downstream's maximum fault current must exceed the downstream device operating time by
+  the grading margin. The standard grading margin is 0.3 s for electromechanical relays,
+  0.2 s for numerical relays (accounting for overshoot, CT transient, breaker time,
+  and safety margin).
+
+  Protection settings must be defensible against relay manufacturer typicals. Declared
+  set values that fall outside ±25% of manufacturer typical for the protection function
+  require a rationale justification in the rationale.sections[] block.
+
+  Reference relay families: ABB REF615, ABB REF630, Siemens 7UM62, Siemens 7SJ66,
+  Schneider Sepam 80 series, SEL-710 (motor), SEL-387 / SEL-487E (differential),
+  SEL-311C (line overcurrent).
+
+checks:
+  - check_id: cascade_selectivity_grading_margin
+    name: Upstream relay picks up after downstream + grading margin
+    description: |
+      For each pair of upstream/downstream overcurrent relays in the coordination cascade,
+      the upstream relay operating time at the downstream maximum fault current must be:
+        t_upstream(I_fault_max_downstream) >= t_downstream(I_fault_max_downstream) + grading_margin
+      grading_margin = 0.3 s for IDMT (electromechanical or numerical using fixed curve sets).
+      grading_margin = 0.2 s for numerical relays with measured overshoot ≤ 0.05 s.
+    expression: advisory_text
+    severity: warning
+    standard_ref: "IEC 60255-151:2009 § 6.3 (IDMT coordination) + IEC 60909-0:2016"
+    advisory: >
+      Verify coordination on a time-current coordination (TCC) plot. Upstream relay must
+      display above downstream relay for all current values up to the upstream relay's
+      definite-time or instantaneous element pickup. Include the TCC evidence in the
+      schematic rationale sections[].
+
+  - check_id: idmt_curve_consistency
+    description: |
+      All IDMT relays in the same radial feeder section should use the same curve family
+      (IEC Standard Inverse, Very Inverse, Extremely Inverse, or US Moderately Inverse)
+      to simplify coordination. Mixing curve families requires explicit justification.
+    expression: advisory_text
+    severity: info
+    standard_ref: "IEC 60255-151:2009 Table A.1 (standard IDMT curves)"
+    advisory: >
+      Standard Inverse (SI) is the default for cable-fed distribution feeders.
+      Very Inverse (VI) provides better discrimination for feeders with high
+      fault-current variation. Extremely Inverse (EI) is appropriate for fuse-relay
+      coordination and transformer feeder protection.
+
+  - check_id: instantaneous_element_reach
+    description: |
+      The instantaneous overcurrent element (50) must not reach beyond the protected zone.
+      For a radial feeder, the 50 pickup must be set above the maximum through-fault current
+      at the far end of the zone (to avoid overreach into adjacent zones) but below the
+      minimum fault current at the near end.
+    expression: >
+      protection_settings[ansi_code='50'].set_value > 0.8 * ifault_max_at_zone_end_a
+      AND protection_settings[ansi_code='50'].set_value < 1.25 * ifault_min_at_relay_a
+    severity: warning
+    standard_ref: "IEC 60255-151:2009 § 6.4 + IEEE C37.96 § 5.4"
+    advisory: >
+      If no combination of pickup and time delay provides zone selectivity, consider a
+      directional overcurrent element (67) or a communication-assisted scheme (PUTT/POTT).
+
+  - check_id: manufacturer_typical_setting_envelope
+    description: |
+      Declared set values should be defensible against published manufacturer typicals.
+      Values outside ±25% of typical require rationale documentation. This prevents
+      fabricated or arbitrary settings.
+    expression: advisory_text
+    severity: warning
+    standard_ref: "ABB REF615 Application Manual Rev. J + SEL-710 Instruction Manual"
+    advisory: >
+      Cross-check each ANSI function setting against the relay's application manual typical
+      setting table. Document any deviation from typical in rationale.sections[].decisions[].
+      Relay-manufacturer application guides provide ANSI function–specific default envelopes
+      for common protection applications (transformer differential 87T, motor protection,
+      feeder overcurrent 51/50).
+
+  - check_id: earth_fault_50n_67n_coordination
+    description: |
+      Earth fault overcurrent elements (50N/51N/67N) must be coordinated independently
+      from phase overcurrent elements (50/51). Earth fault settings are typically 10–30%
+      of phase settings to provide sensitivity for single-phase earth faults.
+    expression: advisory_text
+    severity: warning
+    standard_ref: "IEC 60255-151:2009 § 7.2 (earth fault protection)"
+    advisory: >
+      For effectively earthed systems: 51N pickup = 10–30% of In (phase rated current).
+      For impedance-earthed systems: 51N pickup = 10% of In or below (high sensitivity
+      needed because fault current is limited). Restricted earth fault (87N) is preferred
+      over 51N for transformer earth fault detection in impedance-earthed systems.

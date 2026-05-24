@@ -1,0 +1,58 @@
+# Motor protection coordination rules
+# Consumed by validator (INV checks) and engineer reasoning
+
+rule_id: MOTOR_PROTECTION_COORDINATION
+rule_name: Motor protection coordination (49 thermal vs motor FLC + service factor)
+applies_to_schematic_type:
+  - control_motor_starter
+  - control_sequence
+  - protection_motor
+
+description: |
+  Thermal overload pickup must coordinate with motor full-load current (FLA) and service factor.
+  Overload class selection (10 / 20 / 30) must match motor start time per IEC 60947-4-1 Table 2.
+  Pickup at or below 1.15 × FLA protects against sustained running overload while allowing
+  starting inrush. Set value must be defensible against relay manufacturer typicals
+  (ABB REF615, Siemens 7UM62, SEL-710 for relay-based schemes; direct thermal in starter).
+
+checks:
+  - check_id: thermal_pickup_fla_ratio
+    description: |
+      Thermal/overload relay pickup ≤ 1.15 × motor FLA. Pickup above this risks inadequate
+      winding protection during sustained overload; below 1.0 × FLA risks nuisance trips.
+    expression: >
+      protection_settings[ansi_code='49'].set_value <= motor.fla_a * 1.15
+      AND protection_settings[ansi_code='49'].set_value >= motor.fla_a * 0.95
+    severity: warning
+    standard_ref: "IEC 60364-5-55 § 559.5.2 + IEEE C37.96 § 5.3"
+    advisory: >
+      For motors with service factor > 1.0, upper bound may be extended to
+      FLA × service_factor (max 1.25 × FLA) per NEMA MG1 clause 12.47.
+
+  - check_id: overload_class_vs_start_time
+    description: |
+      Overload relay class matched to motor start time (cold-start, hot-trip boundary):
+      Class 10 ≤ 10 s start; Class 20 ≤ 20 s start; Class 30 ≤ 30 s start.
+      Use advisory text (not machine expression) because class-vs-time requires
+      runtime motor-curve data.
+    expression: advisory_text
+    severity: warning
+    standard_ref: "IEC 60947-4-1:2010+AMD1:2012 Table 2"
+    advisory: >
+      Class 10 is appropriate for standard DOL pumps and fans with ≤ 10 s start time.
+      Class 20 suits heavily loaded conveyors or fans with 11–20 s start time.
+      Class 30 suits high-inertia loads (crushers, large compressors) with 21–30 s start time.
+      Selecting a class too low risks nuisance tripping on legitimate starting duty.
+
+  - check_id: upstream_ocpd_discrimination
+    description: |
+      Upstream overcurrent protective device (MCCB or HRC fuse) must clear motor
+      locked-rotor current within its own time without operating through the overload relay.
+      The overload relay must be the first device to operate on running overload.
+    expression: advisory_text
+    severity: warning
+    standard_ref: "IEC 60947-4-1 Annex A + IEEE C37.96 § 5.5"
+    advisory: >
+      Verify the time-current characteristic of the upstream OCPD clears at ≥ 10 × FLA
+      (locked rotor) in ≤ 10 s, while the overload relay operates first for currents
+      in the 1.05–8 × FLA range. Use a TCC (time-current coordination) plot to confirm.

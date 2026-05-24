@@ -1,0 +1,82 @@
+constraint_set: schema-cross-references
+version: 1.0.0
+applies_to_schematic_type:
+  - control_motor_starter
+  - control_changeover
+  - control_sequence
+  - protection_overcurrent
+  - protection_differential
+  - protection_motor
+  - protection_busbar
+
+description: |
+  Cross-reference integrity within a schematic IR. Every structural reference (symbol lookup,
+  connection endpoint, protection device pointer, label anchor) must resolve to a real target.
+  These checks run before any engineering rule checks and gate the rest of validation.
+  A schematic IR that fails cross-reference checks must be rejected and regenerated.
+
+checks:
+  - check_id: symbol_resolution
+    name: BS EN 60617 symbol ref → shared/symbols file existence
+    description: |
+      Every items[].bs_en_60617_ref must resolve to a JSON file under
+      shared/symbols/electrical/schematic/<subcategory>/. If the symbol file does
+      not exist, the validator emits a tool_call_pending to the symbol-lookup tool
+      before raising the error. Symbols added via the schematic skill's symbol library
+      but not yet in shared/symbols/ must be declared as pending.
+    jsonpath: "$.items[*].bs_en_60617_ref"
+    assert: "file_exists('shared/symbols/electrical/schematic/**/' + ref + '.json')"
+    severity: critical
+    message: "Symbol '{ref}' not found under shared/symbols/electrical/schematic/. Check bs_en_60617_ref value or add the symbol file."
+    standard_ref: "BS EN 60617-2:1996 + IEC 60617 (graphical symbols for diagrams)"
+
+  - check_id: connection_endpoints
+    name: connections[].from_item and to_item → items[].item_id existence
+    description: |
+      Every entry in connections[] must have both from_item and to_item resolving to
+      an existing item_id in items[]. Dangling connection endpoints indicate a topology
+      error in the generated schematic IR.
+    jsonpath: "$.connections[*]"
+    assert: >
+      from_item in [i.item_id for i in items]
+      AND to_item in [i.item_id for i in items]
+    severity: critical
+    message: "Connection endpoint '{endpoint}' does not match any items[].item_id. Regenerate the connections[] block."
+    standard_ref: "design integrity check"
+
+  - check_id: protection_device_resolution
+    name: protection_settings[].device_id → items[].item_id existence
+    description: |
+      Every entry in protection_settings[] must have device_id resolving to an existing
+      item_id in items[]. Protection settings for a device not present in items[] are
+      meaningless and indicate a copy-paste or rename error.
+    jsonpath: "$.protection_settings[*].device_id"
+    assert: "device_id in [i.item_id for i in items]"
+    severity: critical
+    message: "protection_settings[].device_id '{device_id}' not found in items[]. Check item_id spelling."
+    standard_ref: "design integrity check"
+
+  - check_id: label_anchor_resolution
+    name: labels[].anchor_item → items[].item_id existence
+    description: |
+      Every label with an anchor_item field must resolve that anchor to an existing
+      item_id in items[]. Labels with unresolved anchors will misplace on the drawing.
+    jsonpath: "$.labels[*]"
+    when: "anchor_item is not null"
+    assert: "anchor_item in [i.item_id for i in items]"
+    severity: warning
+    message: "labels[].anchor_item '{anchor_item}' not found in items[]. Label may render at default position."
+    standard_ref: "design integrity check"
+
+  - check_id: ct_ref_resolution
+    name: protection_settings[].ct_ref → items[].item_id where device_class='current_transformer'
+    description: |
+      Where protection_settings[] entries include a ct_ref field (linking a protection relay
+      to its measuring CT), ct_ref must resolve to an item with device_class = 'current_transformer'.
+    jsonpath: "$.protection_settings[*]"
+    when: "ct_ref is not null"
+    assert: >
+      ct_ref in [i.item_id for i in items if i.device_class == 'current_transformer']
+    severity: warning
+    message: "protection_settings[].ct_ref '{ct_ref}' does not resolve to a current_transformer item."
+    standard_ref: "design integrity check"

@@ -1,0 +1,68 @@
+# Contactor rating and utilisation category rules
+# Consumed by validator (INV checks) and engineer reasoning
+
+rule_id: CONTACTOR_RATING
+rule_name: Contactor utilisation category (AC-3 motor vs AC-1 resistive) and current rating
+applies_to_schematic_type:
+  - control_motor_starter
+  - control_changeover
+  - control_sequence
+
+description: |
+  Contactors switching inductive motor loads must carry AC-3 utilisation category (making and
+  breaking currents during running, and breaking during stall). Resistive or mildly inductive
+  loads use AC-1. The contactor rated current must accommodate motor FLA with margin.
+  AC-3 contactors are rated at 6 × Ie for making and 1 × Ie for breaking at 0.35 pf —
+  this is more demanding than AC-1 resistive duty.
+
+checks:
+  - check_id: ac3_for_motor_loads
+    description: |
+      Any contactor with a downstream motor load must declare utilisation_category = AC-3.
+      AC-1 is insufficient for motor duty; it may weld contacts under inrush.
+    expression: >
+      items[device_class='contactor' AND downstream_load='motor'].utilisation_category == 'AC-3'
+    severity: critical
+    standard_ref: "IEC 60947-4-1:2010+AMD1:2012 Annex A (utilisation categories)"
+    advisory: >
+      For star-delta starters the main contactors (line + delta) carry AC-3 duty.
+      The star contactor may carry AC-4 duty during open-transition switching;
+      verify against the contactor manufacturer's AC-4 rating table.
+
+  - check_id: rating_vs_motor_fla
+    description: |
+      Contactor rated current (Ie at AC-3) must be ≥ 1.0 × motor FLA.
+      A margin of ≥ 1.1 × FLA is recommended for thermal headroom under
+      sustained rated duty including ambient derating.
+    expression: >
+      contactor.rated_current_a_ac3 >= motor.fla_a * 1.1
+    severity: warning
+    standard_ref: "IEC 60947-4-1 Annex A table + IEC 60947-1 clause 7.2"
+    advisory: >
+      For motors with service factor > 1.0, base the margin calculation on
+      FLA × service_factor rather than nameplate FLA.
+
+  - check_id: ac4_for_plugging_duty
+    description: |
+      Contactors used for plugging (switching motor against rotation), inching/jogging,
+      or direct-on-line reversing must carry AC-4 utilisation category rating.
+      AC-3 contactors will fail prematurely under AC-4 duty.
+    expression: advisory_text
+    severity: warning
+    standard_ref: "IEC 60947-4-1 Annex A"
+    advisory: >
+      Check schematic annotations for REVERSING, PLUG-STOP, or INCH/JOG control logic.
+      Where present, uprate the reversing contactors to AC-4 duty or select a reversing
+      starter assembly rated for AC-4 duty at the motor FLA.
+
+  - check_id: mechanical_interlock_reversing
+    description: |
+      Forward and reverse contactors must be mechanically interlocked to prevent
+      simultaneous closure (which would create a phase-to-phase short circuit).
+    expression: advisory_text
+    severity: critical
+    standard_ref: "IEC 60947-4-1 clause 7.1 + BS 7671:2018+A2:2022 Regulation 552.1"
+    advisory: >
+      Declare a mechanical_interlock block in the items[] between FWD and REV contactors.
+      Auxiliary contacts providing electrical interlock are supplementary, not a substitute
+      for mechanical interlock.

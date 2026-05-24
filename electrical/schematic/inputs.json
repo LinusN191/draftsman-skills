@@ -1,0 +1,264 @@
+{
+  "$schema": "../../shared/schemas/core/inputs.schema.json",
+  "skill": "schematic",
+  "version": "1.0.0",
+  "items": [
+    {
+      "id": "jurisdiction",
+      "label": "Project jurisdiction",
+      "hint": "GB=BS 7671:2018+A2:2022; KE=KS 1700:2018 routing to BS 7671 via §313; INT=IEC 60364; US=NEC 2023.",
+      "answer_type": "enum",
+      "options": ["GB", "KE", "INT", "US"],
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "schematic_type",
+      "label": "Schematic type",
+      "hint": "Choose control_* for control/starter schemes; protection_* for relay-based protection schemes.",
+      "answer_type": "enum",
+      "options": [
+        "control_motor_starter",
+        "control_changeover",
+        "control_sequence",
+        "protection_overcurrent",
+        "protection_differential",
+        "protection_motor",
+        "protection_busbar"
+      ],
+      "required": true,
+      "project_fact_candidate": false
+    },
+    {
+      "id": "consumed_intents_present",
+      "label": "Which upstream intents are available for this schematic?",
+      "hint": "Leaf-mode fallback applies if all absent. Select all that apply.",
+      "answer_type": "enum_list",
+      "options": ["db-layout-rollup", "fault-level", "earthing"],
+      "required": false
+    },
+    {
+      "id": "drawing_designation",
+      "label": "Drawing designation or tag",
+      "hint": "Stable reference (e.g. 'SCH-MCC-01', 'PRO-TR1-87T'). Used in cross-drawing intent envelope.",
+      "answer_type": "text",
+      "required": true,
+      "validator": "non_empty_text",
+      "project_fact_candidate": false
+    },
+    {
+      "id": "system_voltage_v",
+      "label": "System voltage (V, line-to-line)",
+      "hint": "e.g. 415 (GB/KE LV), 400 (INT LV), 480 (US), 11000 (11 kV MV), 33000 (33 kV HV).",
+      "answer_type": "int",
+      "required": true,
+      "validator": "positive_int",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "starter_topology",
+      "label": "Motor starter topology",
+      "hint": "DOL=direct-on-line; star_delta=star-delta reduced voltage; soft_start=electronic soft starter; VFD=variable frequency drive.",
+      "answer_type": "enum",
+      "options": ["DOL", "star_delta", "autotransformer", "soft_start", "VFD"],
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "motor_rating_kw",
+      "label": "Motor rated output power (kW)",
+      "hint": "From motor nameplate. Used to select contactor, overload relay, and cable sizing.",
+      "answer_type": "float",
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "motor_voltage_v",
+      "label": "Motor rated voltage (V)",
+      "hint": "Line-to-line nameplate voltage (e.g. 415, 400, 480). Must match system voltage.",
+      "answer_type": "int",
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "motor_fla_a",
+      "label": "Motor full-load current FLA (A)",
+      "hint": "Nameplate full-load amperes at rated voltage. Basis for contactor and overload relay sizing.",
+      "answer_type": "float",
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "motor_inrush_a",
+      "label": "Motor starting inrush current (A)",
+      "hint": "Locked-rotor or peak starting current. Typically 6–8× FLA for squirrel-cage motors.",
+      "answer_type": "float",
+      "required": false,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "motor_start_time_s",
+      "label": "Motor start time (s)",
+      "hint": "Time from energisation to rated speed at full load. Drives overload class selection (Class 10 ≤10s, Class 20 ≤20s, Class 30 ≤30s).",
+      "answer_type": "float",
+      "required": false,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "upstream_breaker_rating_a",
+      "label": "Upstream circuit breaker or fuse rating (A)",
+      "hint": "Overcurrent protective device immediately upstream of the starter. Used in selectivity check.",
+      "answer_type": "float",
+      "required": false,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "changeover_topology",
+      "label": "ATS changeover topology",
+      "hint": "ATS_3P=3-pole automatic transfer switch; ATS_4P=4-pole (switched neutral); manual=manually operated changeover.",
+      "answer_type": "enum",
+      "options": ["ATS_3P", "ATS_4P", "manual"],
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "primary_source_kva",
+      "label": "Primary supply source rating (kVA)",
+      "hint": "Mains or utility supply rating at the ATS input. Used for transfer capacity check.",
+      "answer_type": "float",
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "backup_source_kva",
+      "label": "Backup supply source rating (kVA)",
+      "hint": "Generator or UPS rating at the ATS alternate input.",
+      "answer_type": "float",
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "transfer_time_s",
+      "label": "Maximum permissible transfer time (s)",
+      "hint": "Time from mains loss to backup supply availability. Typical: 10–15 s for generator ATS; <20 ms for static transfer switch.",
+      "answer_type": "float",
+      "required": false,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "transformer_kva",
+      "label": "Protected transformer rating (kVA)",
+      "hint": "From transformer nameplate. Used to derive rated currents and CT primary selection.",
+      "answer_type": "float",
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "hv_kv",
+      "label": "Transformer HV winding voltage (kV)",
+      "hint": "Line-to-line voltage at the high-voltage terminals (e.g. 11.0, 33.0, 6.6).",
+      "answer_type": "float",
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "lv_kv",
+      "label": "Transformer LV winding voltage (kV)",
+      "hint": "Line-to-line voltage at the low-voltage terminals (e.g. 0.415, 0.400, 0.480).",
+      "answer_type": "float",
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "ct_primary_a",
+      "label": "CT primary current (A)",
+      "hint": "Rated primary current of the measuring CT(s). Select to IEC 61869-2 preferred ratios.",
+      "answer_type": "float",
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "ct_secondary_a",
+      "label": "CT secondary current (A)",
+      "hint": "1 A secondary for long cabling runs; 5 A secondary for local panel installations.",
+      "answer_type": "enum",
+      "options": ["1", "5"],
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "ct_class",
+      "label": "CT accuracy class",
+      "hint": "5P or 10P for overcurrent protection; PX or PS for differential and high-impedance schemes per IEC 61869-2.",
+      "answer_type": "enum",
+      "options": ["5P", "10P", "PX", "PS"],
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "vector_group",
+      "label": "Transformer vector group",
+      "hint": "e.g. Dyn11, YNyn0, Yd1. Required for 87T vector group compensation in differential relay.",
+      "answer_type": "text",
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "bias_slope_percent",
+      "label": "Differential relay bias slope (%)",
+      "hint": "Percentage bias for restrained differential relay (87T or 87B). Typical: 20–40% for transformers, 30–50% for busbars. Omit for high-impedance schemes.",
+      "answer_type": "float",
+      "required": false,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "motor_hp",
+      "label": "Motor rated power (hp)",
+      "hint": "US / nameplate horsepower. Used in NEMA MG1 coordination checks for protection_motor schematics.",
+      "answer_type": "float",
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "service_factor",
+      "label": "Motor service factor (SF)",
+      "hint": "From nameplate. Typical: 1.0–1.15 for NEMA motors. Extends permissible overload relay pickup to FLA × SF.",
+      "answer_type": "float",
+      "required": false,
+      "default": "1.0",
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "busbar_voltage_kv",
+      "label": "Protected busbar voltage (kV)",
+      "hint": "Line-to-line busbar voltage (e.g. 11.0, 33.0, 132.0).",
+      "answer_type": "float",
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "busbar_zones",
+      "label": "Number of busbar protection zones",
+      "hint": "Single busbar=1; double busbar or bus-section=2; double busbar with bus-coupler=3.",
+      "answer_type": "int",
+      "required": true,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "relay_family",
+      "label": "Relay family or manufacturer model",
+      "hint": "e.g. ABB REF615, Siemens 7SJ66, Schneider Sepam 80, SEL-710, SEL-387. Used to validate settings against manufacturer typicals.",
+      "answer_type": "text",
+      "required": false,
+      "depends_on": ["schematic_type"]
+    },
+    {
+      "id": "sequence_steps",
+      "label": "Number of sequence steps",
+      "hint": "For control_sequence schematics: total number of timed or interlocked steps in the sequence.",
+      "answer_type": "int",
+      "required": false,
+      "depends_on": ["schematic_type"]
+    }
+  ]
+}
