@@ -1,0 +1,39 @@
+name: eval-09-banned-annotation-trap
+skill: schematic
+description: >
+  Validation trap — verifies the IR does not contain banned drafting wording.
+  Specifically the "switch-fuse" hyphenated form (canonical is "main switch-fuse"
+  per BS 7671 vocabulary, but the bare "switch-fuse" annotation is rejected by
+  banned-annotations.yaml) and the "230V phase reference" dual-frame voltage
+  drop wording (3-W2c Task 1 UK-1 lesson). Asserts absence positively rather
+  than via negative-lookahead regex since the canonical assertion grammar does
+  not support lookarounds.
+category: validation_trap
+
+input:
+  jurisdiction: GB
+  schematic_type: control_motor_starter
+  project_id: eval-09-test
+  motor_rating_kw: 5.5
+  motor_voltage_v: 400
+  fla_a: 11
+  starter_topology: DOL
+
+checks:
+  - assertion: ir.drawing_type == "schematic"
+    description: Output drawing_type must be schematic
+    severity: critical
+
+  - assertion: ir.rationale.chat_summary not_contains "switch-fuse"
+    description: Banned annotation — "switch-fuse" must use the canonical "main switch-fuse" or "isolator" terminology per banned-annotations.yaml
+    severity: warning
+
+  - assertion: 'ir.rationale.sections[*].decisions[*].code_clause not_contains "230V phase reference"'
+    description: Banned dual-frame voltage drop wording (Sprint 3-W2c Task 1 UK-1 lesson) — citations must not mix 230 V phase voltage with 400 V line-to-line context
+    severity: warning
+
+  - assertion: 'ir.labels[*].text not_contains "switch-fuse"'
+    description: Banned annotation must not appear on any item label either
+    severity: warning
+
+expected_flags: []

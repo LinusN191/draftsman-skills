@@ -1,0 +1,52 @@
+name: eval-10-schematic-type-classification
+skill: schematic
+description: >
+  Skill-specific — verifies schematic_type classification correctness. Tests
+  protection_busbar (the most specialised of the 7 enum values) and asserts
+  (a) the classification is in the canonical 7-value enum, (b) it carries the
+  protection_busbar topology requirement (at least one differential_relay
+  configured as ANSI 87B), and (c) the oneOf branch is satisfied (protection_*
+  must carry protection_settings).
+category: skill_specific
+
+input:
+  jurisdiction: INT
+  schematic_type: protection_busbar
+  project_id: eval-10-test
+  busbar_voltage_kv: 11
+  busbar_sections: 2
+  protection_topology: low_impedance_busbar_differential
+
+checks:
+  - assertion: ir.drawing_type == "schematic"
+    description: Output drawing_type must be schematic
+    severity: critical
+
+  - assertion: 'ir.schematic_type matches "^(control_motor_starter|control_changeover|control_sequence|protection_overcurrent|protection_differential|protection_motor|protection_busbar)$"'
+    description: schematic_type must be one of the 7 canonical enum values per schematic-ir.schema.json
+    severity: critical
+
+  - assertion: 'ir.schematic_type matches "^protection_"'
+    description: protection_busbar belongs to the protection_* family — must trigger protection_settings oneOf branch
+    severity: critical
+
+  - assertion: ir.schematic_type == "protection_busbar"
+    description: Type classification preserved through the pipeline
+    severity: critical
+
+  - assertion: 'ir.items[?(@.device_class=="differential_relay")].length >= 1'
+    description: protection_busbar requires at least one differential_relay (ANSI 87B — busbar differential)
+    severity: critical
+    standard_ref: IEEE C37.2 (87B)
+
+  - assertion: ir.protection_settings.length >= 1
+    description: protection_* oneOf branch — protection_settings must be present
+    severity: critical
+    standard_ref: schematic-ir.schema.json oneOf
+
+  - assertion: 'ir.protection_settings[*].ansi_code matches "^87"'
+    description: protection_busbar must carry ANSI 87 (differential) function codes
+    severity: critical
+    standard_ref: IEEE C37.2
+
+expected_flags: []

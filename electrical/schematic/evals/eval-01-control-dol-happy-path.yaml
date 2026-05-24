@@ -1,0 +1,49 @@
+name: eval-01-control-dol-happy-path
+skill: schematic
+description: >
+  Happy path — Direct-On-Line motor starter, 11 kW / 415 V / 21 A FLA. Verifies
+  the skill produces a compliant control_motor_starter IR with the minimum DOL
+  topology (contactor + overload + isolator + motor + start/stop pushbuttons)
+  and a sequence_of_operation block.
+category: happy_path
+
+input:
+  jurisdiction: KE
+  schematic_type: control_motor_starter
+  project_id: eval-01-test
+  motor_rating_kw: 11
+  motor_voltage_v: 415
+  fla_a: 21
+  starter_topology: DOL
+
+checks:
+  - assertion: ir.drawing_type == "schematic"
+    description: Output drawing_type must be schematic
+    severity: critical
+
+  - assertion: ir.schematic_type == "control_motor_starter"
+    description: schematic_type echoes the requested control_motor_starter classification
+    severity: critical
+
+  - assertion: ir.items.length >= 5
+    description: DOL starter requires at least 5 items (K1 contactor + F1 overload + Q1 isolator + M1 motor + S1 start PB)
+    severity: critical
+
+  - assertion: ir.sequence_of_operation != null
+    description: control_* schematics MUST carry sequence_of_operation per IR schema oneOf
+    severity: critical
+    standard_ref: schematic-ir.schema.json oneOf
+
+  - assertion: 'ir.items[?(@.device_class=="contactor")].length >= 1'
+    description: DOL topology must have at least one contactor (K1 main)
+    severity: critical
+
+  - assertion: 'ir.items[?(@.device_class=="overload")].length >= 1'
+    description: DOL topology must have at least one overload device (F1)
+    severity: critical
+
+  - assertion: ir.jurisdiction == "KE"
+    description: jurisdiction echo for downstream citation routing
+    severity: critical
+
+expected_flags: []

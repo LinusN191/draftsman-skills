@@ -1,0 +1,40 @@
+name: eval-06-jurisdiction-citation-form
+skill: schematic
+description: >
+  Jurisdiction switch — KE motor starter. Verifies that KE-jurisdiction citations
+  follow the KS 1700:2018 + route-to-BS 7671 pattern per the KE Annex E rule
+  (citations must reference Kenyan standard primary, BS 7671 as the routed
+  technical authority). Single-jurisdiction eval because canonical Format A
+  does not natively support multi-fixture jurisdiction sweeps — representative
+  KE case selected because of its dual-citation requirement.
+category: jurisdiction_switch
+
+input:
+  jurisdiction: KE
+  schematic_type: control_motor_starter
+  project_id: eval-06-test
+  motor_rating_kw: 7.5
+  motor_voltage_v: 415
+  fla_a: 15
+  starter_topology: DOL
+
+checks:
+  - assertion: ir.drawing_type == "schematic"
+    description: Output drawing_type must be schematic
+    severity: critical
+
+  - assertion: ir.jurisdiction == "KE"
+    description: jurisdiction echo for downstream citation routing
+    severity: critical
+
+  - assertion: 'ir.rationale.sections[*].decisions[*].code_clause contains "KS 1700"'
+    description: KE jurisdiction citations must reference KS 1700:2018 as primary local standard
+    severity: warning
+    standard_ref: KS 1700:2018
+
+  - assertion: 'ir.rationale.sections[*].decisions[*].code_clause contains "BS 7671"'
+    description: KE citations must include BS 7671 routing per KEBS Annex E (BS 7671 is the routed technical authority for KE installations)
+    severity: warning
+    standard_ref: BS 7671:2018+A2:2022
+
+expected_flags: []

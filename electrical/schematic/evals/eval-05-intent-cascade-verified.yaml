@@ -1,0 +1,45 @@
+name: eval-05-intent-cascade-verified
+skill: schematic
+description: >
+  Cross-validation — schematic consumes db-layout-rollup AND fault-level intents
+  upstream. Verifies the cascade is honoured (both consumed intents present in
+  meta) and that protection settings carry concrete set_values defensible against
+  the upstream fault-level PFC figure.
+category: cross_validation
+
+input:
+  jurisdiction: GB
+  schematic_type: protection_differential
+  project_id: eval-05-test
+  transformer_kva: 2500
+  hv_kv: 11
+  consumed_intents_present:
+    - db-layout-rollup
+    - fault-level
+
+checks:
+  - assertion: ir.drawing_type == "schematic"
+    description: Output drawing_type must be schematic
+    severity: critical
+
+  - assertion: ir.meta.consumed_intents.length >= 2
+    description: Both upstream intents must appear in meta.consumed_intents
+    severity: critical
+
+  - assertion: 'ir.meta.consumed_intents[*].intent_type contains "db-layout-rollup"'
+    description: db-layout-rollup intent must be recorded as consumed (provides board topology)
+    severity: critical
+
+  - assertion: 'ir.meta.consumed_intents[*].intent_type contains "fault-level"'
+    description: fault-level intent must be recorded as consumed (provides PFC for protection setting selectivity)
+    severity: critical
+
+  - assertion: 'ir.protection_settings[*].set_value all_non_empty'
+    description: Protection settings must carry concrete set_value when fault-level intent is available — no tool_call_pending fallback once PFC is known
+    severity: warning
+
+  - assertion: 'ir.items[?(@.device_class=="differential_relay")].length >= 1'
+    description: protection_differential requires at least one differential_relay (ANSI 87)
+    severity: critical
+
+expected_flags: []

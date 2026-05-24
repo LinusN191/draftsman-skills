@@ -1,0 +1,41 @@
+name: eval-08-symbol-library-resolution
+skill: schematic
+description: >
+  Skill-specific — every item in the schematic IR must resolve to a recognised
+  device_class (per the schema enum) and carry a BS EN 60617 reference. US
+  jurisdiction selected because protection_motor schematics typically require
+  IEEE Std 315 cross-references as well — verifies the dual symbol library
+  resolution holds.
+category: skill_specific
+
+input:
+  jurisdiction: US
+  schematic_type: protection_motor
+  project_id: eval-08-test
+  motor_hp: 50
+  motor_voltage_v: 480
+  protection_topology: 49_51_46_thermistor
+
+checks:
+  - assertion: ir.drawing_type == "schematic"
+    description: Output drawing_type must be schematic
+    severity: critical
+
+  - assertion: 'ir.items[*].bs_en_60617_ref all_non_empty'
+    description: Every item must carry a BS EN 60617 symbol reference (primary symbol library)
+    severity: critical
+    standard_ref: BS EN 60617
+
+  - assertion: 'ir.items[*].device_class matches "^(contactor|overload|isolator|motor|thermistor|ptc|idmt_relay|instantaneous_relay|differential_relay|ref_relay|distance_relay|lockout_relay|uv_relay|ov_relay|breaker|ct|vt|terminal|wire_reference|lamp|push_button|selector_switch|timer|counter|latch|logic_gate|signal_converter)$"'
+    description: Every item's device_class must be in the schematic-ir.schema.json enum
+    severity: critical
+
+  - assertion: ir.schematic_type == "protection_motor"
+    description: Type classification preserved
+    severity: critical
+
+  - assertion: 'ir.items[?(@.device_class=="motor")].length >= 1'
+    description: protection_motor schematic must include the motor item it protects
+    severity: critical
+
+expected_flags: []

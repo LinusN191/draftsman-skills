@@ -1,0 +1,44 @@
+name: eval-02-protection-idmt-happy-path
+skill: schematic
+description: >
+  Happy path — 11 kV / 1000 kVA transformer overcurrent protection with IDMT
+  characteristic. Verifies protection_overcurrent schematic produces an IR with
+  protection_settings carrying ANSI 50/51 codes per IEEE C37.2.
+category: happy_path
+
+input:
+  jurisdiction: KE
+  schematic_type: protection_overcurrent
+  project_id: eval-02-test
+  transformer_kva: 1000
+  hv_kv: 11
+  ct_primary_a: 100
+
+checks:
+  - assertion: ir.drawing_type == "schematic"
+    description: Output drawing_type must be schematic
+    severity: critical
+
+  - assertion: ir.schematic_type == "protection_overcurrent"
+    description: schematic_type echoes the requested protection_overcurrent classification
+    severity: critical
+
+  - assertion: ir.protection_settings.length >= 1
+    description: protection_* schematics MUST carry protection_settings per IR schema oneOf
+    severity: critical
+    standard_ref: schematic-ir.schema.json oneOf
+
+  - assertion: 'ir.protection_settings[*].ansi_code matches "^5[01]"'
+    description: Overcurrent protection must include at least one ANSI 50 (instantaneous) or 51 (IDMT) function code
+    severity: critical
+    standard_ref: IEEE C37.2
+
+  - assertion: 'ir.protection_settings[*].device_id all_non_empty'
+    description: Every protection setting must reference a device_id present in items[]
+    severity: critical
+
+  - assertion: 'ir.items[?(@.device_class=="idmt_relay" || @.device_class=="instantaneous_relay")].length >= 1'
+    description: Overcurrent protection must include at least one IDMT or instantaneous relay item
+    severity: critical
+
+expected_flags: []

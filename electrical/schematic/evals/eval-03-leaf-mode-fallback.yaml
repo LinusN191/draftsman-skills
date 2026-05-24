@@ -1,0 +1,41 @@
+name: eval-03-leaf-mode-fallback
+skill: schematic
+description: >
+  Edge case — leaf-mode fallback. When no upstream intents (db-layout-rollup or
+  fault-level) are present, the schematic skill must still produce a valid IR,
+  flag leaf-mode in compliance_summary.assumptions, and surface that consumed_intents
+  is empty in meta.
+category: edge_case
+
+input:
+  jurisdiction: KE
+  schematic_type: control_motor_starter
+  project_id: eval-03-test
+  motor_rating_kw: 11
+  motor_voltage_v: 415
+  fla_a: 21
+  starter_topology: DOL
+  consumed_intents_present: []
+
+checks:
+  - assertion: ir.drawing_type == "schematic"
+    description: Output drawing_type must be schematic even in leaf mode
+    severity: critical
+
+  - assertion: ir.meta.consumed_intents.length == 0
+    description: Leaf-mode marks empty consumed_intents
+    severity: critical
+
+  - assertion: ir.compliance_summary.assumptions contains "leaf-mode"
+    description: Leaf-mode must be explicitly acknowledged in assumptions (downstream auditor must know inputs were not verified by cascade)
+    severity: warning
+
+  - assertion: ir.items.length >= 5
+    description: Leaf mode still requires a complete DOL topology
+    severity: critical
+
+  - assertion: ir.sequence_of_operation != null
+    description: control_* requires sequence_of_operation even in leaf mode
+    severity: critical
+
+expected_flags: []

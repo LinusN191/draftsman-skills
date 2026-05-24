@@ -1,0 +1,43 @@
+name: eval-07-rationale-block
+skill: schematic
+description: >
+  Rationale block — verifies the IR carries a complete rationale block per
+  shared/schemas/core/rationale.schema.json with 6–9 sections and a chat summary
+  between 40 and 500 characters. Section summaries must respect the Sprint 3-W
+  Phase E maxLength bump (≤ 800 chars).
+category: rationale_block
+
+input:
+  jurisdiction: GB
+  schematic_type: control_changeover
+  project_id: eval-07-test
+  source_a: utility_supply
+  source_b: standby_genset
+  changeover_topology: ATS_break_before_make
+
+checks:
+  - assertion: ir.rationale.chat_summary.length >= 40
+    description: chat_summary must be at least 40 characters (multi-sentence minimum)
+    severity: critical
+
+  - assertion: ir.rationale.chat_summary.length <= 500
+    description: chat_summary must not exceed 500 characters (chat-pane budget)
+    severity: critical
+
+  - assertion: ir.rationale.sections.length >= 6
+    description: Schematic skill requires at least 6 rationale sections per skill prompt
+    severity: critical
+
+  - assertion: ir.rationale.sections.length <= 9
+    description: Rationale section count capped at 9 to keep audit trail focused
+    severity: critical
+
+  - assertion: ir.rationale.sections[*].summary all_non_empty
+    description: Every rationale section must carry a non-empty summary
+    severity: critical
+
+  - assertion: ir.rationale.sections[*].decisions[*].rule all_non_empty
+    description: Every decision in every section must cite a rule
+    severity: critical
+
+expected_flags: []

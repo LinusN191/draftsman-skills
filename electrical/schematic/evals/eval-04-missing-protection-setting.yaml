@@ -1,0 +1,41 @@
+name: eval-04-missing-protection-setting
+skill: schematic
+description: >
+  Compliance failure — protection_overcurrent schematic where one or more
+  protection_settings entries omit required engineering fields (time_curve,
+  ct_ratio, set_value). Verifies the skill flags this as non-compliant rather
+  than silently producing an undefendable protection design.
+category: compliance_failure
+
+input:
+  jurisdiction: GB
+  schematic_type: protection_overcurrent
+  project_id: eval-04-test
+  transformer_kva: 2500
+  hv_kv: 11
+  ct_primary_a: 200
+  protection_settings_incomplete: true
+
+checks:
+  - assertion: ir.drawing_type == "schematic"
+    description: IR must still be produced — compliance is reported via flags, not by refusing output
+    severity: critical
+
+  - assertion: ir.schematic_type == "protection_overcurrent"
+    description: Type classification preserved
+    severity: critical
+
+  - assertion: ir.compliance_summary.compliant == false
+    description: Compliance flag must detect the missing required protection field and mark IR non-compliant
+    severity: critical
+    standard_ref: BS 7671 Reg 432.1
+
+  - assertion: ir.compliance_summary.non_compliance_flags.length >= 1
+    description: At least one non_compliance_flag entry must enumerate the missing protection setting field
+    severity: critical
+
+  - assertion: ir.protection_settings.length >= 1
+    description: protection_settings array still present (oneOf required) even when incomplete
+    severity: critical
+
+expected_flags: []
