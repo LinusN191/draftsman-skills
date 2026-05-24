@@ -4,20 +4,27 @@
   "last_updated": "2026-05-19",
   "discipline": "electrical",
   "subdiscipline": "distribution",
+  "chat_type": "drawing",
   "status": "beta",
   "licence": "MIT",
-  "description": "LV single line diagram \u2014 system-wide distribution from supply origin through MSB to sub-boards. Consumes db-layout + earthing + fault-level intents. Computes Imax/PFC/SPD/life-safety system metrics. Verifies cascade selectivity. v1.5 adds optional drawing_layout (spatial-intent layer) with functional grouping, routing intent, CAD layer enums, and hybrid multi-sheet split rule.",
+  "description": "LV single line diagram — system-wide distribution from supply origin through MSB to sub-boards. Consumes db-layout + earthing + fault-level intents. Computes Imax/PFC/SPD/life-safety system metrics. Verifies cascade selectivity. v1.5 adds optional drawing_layout (spatial-intent layer) with functional grouping, routing intent, CAD layer enums, and hybrid multi-sheet split rule.",
   "inputs_path": "inputs.json",
   "outputs": [
     "sld-ir"
   ],
   "output_schema": "electrical/sld/schemas/sld-ir.schema.json",
-  "produces_intent": "sld",
+  "produces_intents": [
+    {
+      "name": "sld",
+      "version": "1.0.0",
+      "schema_path": "electrical/sld/schemas/sld-intent.schema.json"
+    }
+  ],
   "produces_intent_schema": "electrical/sld/schemas/sld-intent.schema.json",
   "consumes_intents": [
-    "db-layout",
-    "earthing",
-    "fault-level"
+    {"skill_id": "db-layout", "intent_name": "db-layout", "version_constraint": "^1.0"},
+    {"skill_id": "earthing", "intent_name": "earthing", "version_constraint": "^1.0"},
+    {"skill_id": "fault-level", "intent_name": "fault-level", "version_constraint": "^1.0"}
   ],
   "standards": [
     "shared/standards/electrical/BS7671/",

@@ -1,0 +1,50 @@
+{
+  "$schema": "../../../../shared/schemas/core/inputs.schema.json",
+  "skill": "fire-alarm",
+  "example_id": "uk-small-office",
+  "jurisdiction": "GB",
+  "items": [
+    {
+      "id": "I-1",
+      "category": "site_brief",
+      "label": "Site description",
+      "value": "Single-storey office 250 m² (open-plan + 2 meeting rooms + WC + kitchenette); occupancy ≤30; sleeping accommodation: none."
+    },
+    {
+      "id": "I-2",
+      "category": "occupancy_category",
+      "label": "BS 5839-1 occupancy",
+      "value": "Office (Type M minimum per BS 5839-1:2017 §6 — manual call points only; risk assessment recommends Type L4 — escape protection)."
+    },
+    {
+      "id": "I-3",
+      "category": "alarm_category",
+      "label": "Alarm category sought",
+      "value": "L4 (escape route protection per BS 5839-1:2017 §6 + Table 1)."
+    },
+    {
+      "id": "I-4",
+      "category": "rooms",
+      "label": "Room schedule (dims mm + ceiling mm)",
+      "value": [
+        {"id": "R1", "name": "Open-plan office", "dims_mm": [12000, 10000], "ceiling_height_mm": 2800, "use": "office"},
+        {"id": "R2", "name": "Meeting room 1",   "dims_mm": [5000, 4000],   "ceiling_height_mm": 2800, "use": "meeting"},
+        {"id": "R3", "name": "Meeting room 2",   "dims_mm": [5000, 4000],   "ceiling_height_mm": 2800, "use": "meeting"},
+        {"id": "R4", "name": "WC",               "dims_mm": [3000, 2500],   "ceiling_height_mm": 2700, "use": "sanitary"},
+        {"id": "R5", "name": "Kitchenette",      "dims_mm": [3500, 3000],   "ceiling_height_mm": 2700, "use": "kitchen"}
+      ]
+    },
+    {
+      "id": "I-5",
+      "category": "escape_routes",
+      "label": "Escape routes",
+      "value": "Single corridor (8 m) from rear of office → final exit at main entrance; secondary fire exit at rear of meeting room 2."
+    },
+    {
+      "id": "I-6",
+      "category": "ancillary",
+      "label": "Special hazards / ancillary spaces",
+      "value": "Kitchenette: small electric hob + microwave only (no commercial cooking). No storerooms > 4 m²."
+    }
+  ]
+}

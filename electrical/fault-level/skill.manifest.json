@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "discipline": "electrical",
   "subdiscipline": "fault-analysis",
+  "chat_type": "calculation",
   "description": "Produces IEC 60909-0 prospective short-circuit current (Ik\" + ipk + X/R) cascade IR for any node in a project's distribution tree, HV+LV. Models four source types: utility transformer, standby generator (with subtransient decrement), UPS (current-limited), and induction motor back-feed. Emits stable fault-level intent that resolves db-layout selectivity tool_call_pending entries.",
   "status": "beta",
   "licence": "MIT",
@@ -11,10 +12,16 @@
     "fault-level-ir"
   ],
   "output_schema": "electrical/fault-level/schemas/fault-level-ir.schema.json",
-  "produces_intent": "fault-level",
+  "produces_intents": [
+    {
+      "name": "fault-level",
+      "version": "1.0.0",
+      "schema_path": "electrical/fault-level/schemas/fault-level-intent.schema.json"
+    }
+  ],
   "produces_intent_schema": "electrical/fault-level/schemas/fault-level-intent.schema.json",
   "consumes_intents": [
-    "db-layout-rollup"
+    {"skill_id": "db-layout", "intent_name": "db-layout-rollup", "version_constraint": "^1.0"}
   ],
   "standards": [
     "shared/standards/electrical/IEC60909/part0-fundamentals.json",

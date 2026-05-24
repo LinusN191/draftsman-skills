@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "discipline": "electrical",
   "subdiscipline": "safety-analysis",
-  "description": "Per-node arc-flash analysis per IEEE 1584:2018 (primary) + fallback chain (IEEE 1584:2002 \u2192 Lee 1982 \u2192 NFPA 70E table method) + DC method (Doan + Stokes & Oppenlander). Produces incident energy, arc-flash boundary, shock-approach boundaries, and PPE category 1-4. Consumes fault-level + db-layout-rollup intents; emits arc-flash intent for downstream labelling skill. Unified AC/DC cascade with per-node current_type tag.",
+  "chat_type": "calculation",
+  "description": "Per-node arc-flash analysis per IEEE 1584:2018 (primary) + fallback chain (IEEE 1584:2002 → Lee 1982 → NFPA 70E table method) + DC method (Doan + Stokes & Oppenlander). Produces incident energy, arc-flash boundary, shock-approach boundaries, and PPE category 1-4. Consumes fault-level + db-layout-rollup intents; emits arc-flash intent for downstream labelling skill. Unified AC/DC cascade with per-node current_type tag.",
   "status": "beta",
   "licence": "MIT",
   "inputs_path": "inputs.json",
@@ -11,15 +12,19 @@
     "arc-flash-ir"
   ],
   "output_schema": "electrical/arc-flash/schemas/arc-flash-ir.schema.json",
-  "produces_intent": [
-    "arc-flash"
+  "produces_intents": [
+    {
+      "name": "arc-flash",
+      "version": "1.0.0",
+      "schema_path": "electrical/arc-flash/schemas/arc-flash-intent.schema.json"
+    }
   ],
   "produces_intent_schemas": {
     "arc-flash": "electrical/arc-flash/schemas/arc-flash-intent.schema.json"
   },
   "consumes_intents": [
-    "fault-level",
-    "db-layout-rollup"
+    {"skill_id": "fault-level", "intent_name": "fault-level", "version_constraint": "^1.0"},
+    {"skill_id": "db-layout", "intent_name": "db-layout-rollup", "version_constraint": "^1.0"}
   ],
   "standards": [
     "shared/standards/electrical/IEEE1584/method-2018-600V-coefficients.json",

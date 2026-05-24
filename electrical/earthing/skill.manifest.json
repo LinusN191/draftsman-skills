@@ -3,6 +3,7 @@
   "version": "1.4.0",
   "discipline": "electrical",
   "subdiscipline": "earthing",
+  "chat_type": "drawing",
   "description": "Produces earthing single-line schematic IR for LV installations. Covers TN-C-S + TT systems across GB (BS 7671), EU/INT (IEC 60364), and US (NFPA 70) jurisdictions. Sizes CPC/EGC by jurisdiction-appropriate table, verifies Zs against disconnection-time tables, flags RCD requirements, emits structured rationale per WI2.",
   "status": "beta",
   "licence": "MIT",
@@ -11,12 +12,18 @@
     "earthing-ir"
   ],
   "output_schema": "electrical/earthing/schemas/earthing-ir.schema.json",
-  "produces_intent": "earthing",
+  "produces_intents": [
+    {
+      "name": "earthing",
+      "version": "1.0.0",
+      "schema_path": "electrical/earthing/schemas/earthing-intent.schema.json"
+    }
+  ],
   "produces_intent_schema": "electrical/earthing/schemas/earthing-intent.schema.json",
   "consumes_intents": [
-    "db-layout",
-    "lighting-layout",
-    "small-power"
+    {"skill_id": "db-layout", "intent_name": "db-layout", "version_constraint": "^1.0"},
+    {"skill_id": "lighting-layout", "intent_name": "lighting-layout", "version_constraint": "^1.0"},
+    {"skill_id": "small-power", "intent_name": "small-power", "version_constraint": "^1.0"}
   ],
   "standards": [
     "shared/standards/electrical/BS7671/reg411-disconnection-times.json",

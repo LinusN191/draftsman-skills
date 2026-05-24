@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "discipline": "electrical",
   "subdiscipline": "circuit-sizing",
+  "chat_type": "calculation",
   "description": "Per-circuit cable selection (phase + CPC csa + insulation + installation method + parallel count) for every cable run in a project's distribution cascade per BS 7671:2018+A2:2022 App 4 + App 12 / IEC 60364-5-52 / NEC 2023 Chapter 9. Walk-the-ladder CSA selection with binding_constraint named per node. Consumes db-layout-rollup + fault-level intents; produces cable-sizing intent for cable-schedule + riser + cable-containment + small-power v1.1 consumption.",
   "status": "beta",
   "licence": "MIT",
@@ -11,11 +12,17 @@
     "cable-sizing-ir"
   ],
   "output_schema": "electrical/cable-sizing/schemas/cable-sizing-ir.schema.json",
-  "produces_intent": "cable-sizing",
+  "produces_intents": [
+    {
+      "name": "cable-sizing",
+      "version": "1.0.0",
+      "schema_path": "electrical/cable-sizing/schemas/cable-sizing-intent.schema.json"
+    }
+  ],
   "produces_intent_schema": "electrical/cable-sizing/schemas/cable-sizing-intent.schema.json",
   "consumes_intents": [
-    "db-layout-rollup",
-    "fault-level"
+    {"skill_id": "db-layout", "intent_name": "db-layout-rollup", "version_constraint": "^1.0"},
+    {"skill_id": "fault-level", "intent_name": "fault-level", "version_constraint": "^1.0"}
   ],
   "standards": [
     "shared/standards/electrical/BS7671/appendix4-cable-ratings.json",

@@ -4,18 +4,25 @@
   "last_updated": "2026-05-22",
   "discipline": "electrical",
   "subdiscipline": "schematic_diagrams",
+  "chat_type": "drawing",
   "status": "beta",
   "licence": "MIT",
   "description": "Schematic control + protection diagrams per BS EN 60617 / BS EN 61082 / IEC 60255 / IEC 61850 / NEC 2023 / IEEE Std 315. Hybrid consumer of db-layout-rollup + fault-level + earthing intents (leaf-mode fallback when intents absent). Produces schematic IR for control circuits (motor starter / changeover / sequence) + protection schemes (IDMT overcurrent / differential / motor protection / busbar protection). 4 jurisdictions: GB / KE / INT / US.",
   "inputs_path": "inputs.json",
   "outputs": ["schematic-ir"],
   "output_schema": "electrical/schematic/schemas/schematic-ir.schema.json",
-  "produces_intent": "schematic",
+  "produces_intents": [
+    {
+      "name": "schematic",
+      "version": "1.0.0",
+      "schema_path": "electrical/schematic/schemas/schematic-intent.schema.json"
+    }
+  ],
   "produces_intent_schema": "electrical/schematic/schemas/schematic-intent.schema.json",
   "consumes_intents": [
-    "db-layout-rollup",
-    "fault-level",
-    "earthing"
+    {"skill_id": "db-layout", "intent_name": "db-layout-rollup", "version_constraint": "^1.0"},
+    {"skill_id": "fault-level", "intent_name": "fault-level", "version_constraint": "^1.0"},
+    {"skill_id": "earthing", "intent_name": "earthing", "version_constraint": "^1.0"}
   ],
   "standards": [
     "shared/standards/electrical/BS7671/",

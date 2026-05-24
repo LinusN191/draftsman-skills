@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "discipline": "electrical",
   "subdiscipline": "safety-output",
-  "description": "Consume arc-flash intent and render printable arc-flash warning labels per ANSI Z535.4 + ISO 7010 + BS 5499 (jurisdiction-aware) with NFPA 70E \u00a7130.5(H) required content. Produces per-equipment SVG labels inline; PDF/PNG rendering deferred to calc.render_label runtime tool per WI3.",
+  "chat_type": "drawing",
+  "description": "Consume arc-flash intent and render printable arc-flash warning labels per ANSI Z535.4 + ISO 7010 + BS 5499 (jurisdiction-aware) with NFPA 70E §130.5(H) required content. Produces per-equipment SVG labels inline; PDF/PNG rendering deferred to calc.render_label runtime tool per WI3.",
   "status": "beta",
   "licence": "MIT",
   "inputs_path": "inputs.json",
@@ -11,14 +12,18 @@
     "labels-ir"
   ],
   "output_schema": "electrical/arc-flash-labelling/schemas/labels-ir.schema.json",
-  "produces_intent": [
-    "labels"
+  "produces_intents": [
+    {
+      "name": "labels",
+      "version": "1.0.0",
+      "schema_path": "electrical/arc-flash-labelling/schemas/labels-intent.schema.json"
+    }
   ],
   "produces_intent_schemas": {
     "labels": "electrical/arc-flash-labelling/schemas/labels-intent.schema.json"
   },
   "consumes_intents": [
-    "arc-flash"
+    {"skill_id": "arc-flash", "intent_name": "arc-flash", "version_constraint": "^1.0"}
   ],
   "standards": [
     "shared/standards/electrical/ANSI-Z535-4/signal-words.json",
