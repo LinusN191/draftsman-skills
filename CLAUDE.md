@@ -88,6 +88,12 @@ Strategy: breadth-first — finish every skill across disciplines before scaling
 - `plumbing/` (2 new): medical-gas, legionella-risk
 - `documents/` (1 new): cdm-designer-risk-register
 
+**Post-Sprint-D within-skill-depth stubs added 2026-05-25 (9 new stubs from the production-readiness audit; depth specialisms that compose with parent beta skills via intent):**
+- `electrical/` (6 new): electrode-design (consumed by earthing), photometric-analysis (UGR + uniformity + point-grid; consumed by lighting-layout), lighting-controls (DALI/KNX zoning + sensors), spd-coordination (BS 7671 §443 + IEC 61643; interfaces with lightning-protection), load-flow (steady-state power flow distinct from fault-level transient), control-sequence-design (relay/PLC logic adjacent to schematic)
+- `documents/` (3 new): bonding-schedule (consumed-from-earthing deliverable), energised-work-permit (HSE permit from arc-flash intent), accessory-schedule (consumed-from-small-power deliverable)
+
+Manifest tally: **103 total** = 11 shipped (10 beta + 1 production) + 92 stubs.
+
 All other `electrical/<skill>/` folders are scaffolds — README + manifest + evals only, awaiting `inputs.json` and `schemas/` to be considered shipped.
 
 ## Standards to apply
