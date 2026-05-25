@@ -54,7 +54,8 @@
         "csa_mm2_or_awg": "2.5mm²",
         "cores": 3,
         "length_m": 40
-      }
+      },
+      "phase": "L1"
     },
     {
       "circuit_id": "L02",
@@ -77,7 +78,8 @@
         "csa_mm2_or_awg": "2.5mm²",
         "cores": 3,
         "length_m": 60
-      }
+      },
+      "phase": "L2"
     },
     {
       "circuit_id": "L03",
@@ -100,7 +102,8 @@
         "csa_mm2_or_awg": "2.5mm²",
         "cores": 3,
         "length_m": 80
-      }
+      },
+      "phase": "L3"
     },
     {
       "circuit_id": "L04",
@@ -123,7 +126,8 @@
         "csa_mm2_or_awg": "1.5mm²",
         "cores": 3,
         "length_m": 45
-      }
+      },
+      "phase": "L1"
     },
     {
       "circuit_id": "L05",
@@ -146,7 +150,8 @@
         "csa_mm2_or_awg": "4mm²",
         "cores": 3,
         "length_m": 90
-      }
+      },
+      "phase": "L2"
     },
     {
       "circuit_id": "L06",
@@ -167,7 +172,8 @@
         "csa_mm2_or_awg": "1.5mm²",
         "cores": 3,
         "length_m": 55
-      }
+      },
+      "phase": "L3"
     },
     {
       "circuit_id": "L07",
@@ -190,7 +196,8 @@
         "csa_mm2_or_awg": "1.5mm²",
         "cores": 3,
         "length_m": 35
-      }
+      },
+      "phase": "L1"
     }
   ],
   "spare_ways": 1,
@@ -252,7 +259,10 @@
             "summary": "250A rating is well above the ≈30 A per-phase diversified demand — margin handles future zone expansion, dimmer-driven inrush, and LED-driver capacitive transients.",
             "rule": "Lighting feeder sized for steady-state load × inrush factor × growth margin; lighting circuits exhibit significant capacitive inrush from electronic-driver SMPS banks.",
             "code_clause": "IEC 60364-5-52 § 523",
-            "inputs": { "diversified_load_kw": 19.3, "rating_a": 250 }
+            "inputs": {
+              "diversified_load_kw": 19.3,
+              "rating_a": 250
+            }
           },
           {
             "label": "PFC 15.0 kA at DB-L1",
@@ -359,5 +369,11 @@
         ]
       }
     ]
-  }
+  },
+  "per_phase_loading_a": {
+    "L1": 29.6,
+    "L2": 32.6,
+    "L3": 21.7
+  },
+  "neutral_current_a": 9.8
 }

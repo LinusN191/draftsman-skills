@@ -73,7 +73,8 @@
         "csa_mm2_or_awg": "6mm²",
         "cores": 4,
         "length_m": 80
-      }
+      },
+      "phase": "L1+L2+L3"
     },
     {
       "circuit_id": "G03",
@@ -94,7 +95,8 @@
         "csa_mm2_or_awg": "4mm²",
         "cores": 4,
         "length_m": 60
-      }
+      },
+      "phase": "L1+L2+L3"
     },
     {
       "circuit_id": "G04",
@@ -115,7 +117,8 @@
         "csa_mm2_or_awg": "6mm²",
         "cores": 4,
         "length_m": 40
-      }
+      },
+      "phase": "L1+L2+L3"
     },
     {
       "circuit_id": "G05",
@@ -138,7 +141,8 @@
         "csa_mm2_or_awg": "2.5mm²",
         "cores": 3,
         "length_m": 5
-      }
+      },
+      "phase": "L1"
     }
   ],
   "spare_ways": 3,
@@ -192,7 +196,8 @@
     "4-pole transfer ATS (utility neutral switched separately from genset neutral) + genset-side neutral-earth bonding contact per IEC 60364-5-56:2018 §552 — genset operates as separately derived TN-S system in genset-mode.",
     "Dual-mode fault levels: 9.0 kA utility-mode (IEC 60909-0:2016 §3.5 worst case after 60m feeder impedance) + ~1.0 kA genset-mode subtransient Ik\" (IEC 60909-0:2016 §3.5.1 equivalent voltage source on 80 kVA, In ≈ 115.5 A, Xd\" ≈ 0.12 pu, E\" ≈ 1.05 pu → Ik\" ≈ 1.01 kA, peak ip ≈ 2.57 kA at κ ≈ 1.8; sustained Ik ~0.4 kA after AVR settles ~5 s post-fault). Both modes flagged for fault-level skill.",
     "Placard on DB-GENSET-XCV faceplate: 'DUAL-SOURCE — UTILITY/GENSET ATS — DO NOT BACK-FEED' per IEEE 446-1995 critical-power labelling practice + IEC 60364-5-56:2018 §552 dual-source warning requirement.",
-    "WARNING flag: ATS transfer time (6-10 s) is AT the NFPA 110-2022 Type 10 boundary and BELOW BS EN 50171:2001+A1:2022 §6.3 Type Z threshold — AHJ sign-off required at commissioning; downstream EM lighting must be central-battery or self-contained to bridge the gap."
+    "WARNING flag: ATS transfer time (6-10 s) is AT the NFPA 110-2022 Type 10 boundary and BELOW BS EN 50171:2001+A1:2022 §6.3 Type Z threshold — AHJ sign-off required at commissioning; downstream EM lighting must be central-battery or self-contained to bridge the gap.",
+    "Circuit G01 is ELV control — phase field omitted (no phase current)."
   ],
   "drawn_as_symbols": [
     "MCB",
@@ -398,5 +403,11 @@
         ]
       }
     ]
-  }
+  },
+  "per_phase_loading_a": {
+    "L1": 38.4,
+    "L2": 31.9,
+    "L3": 31.9
+  },
+  "neutral_current_a": 6.5
 }

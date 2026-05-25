@@ -52,7 +52,8 @@
         "csa_mm2_or_awg": "1.5mm²",
         "cores": 3,
         "length_m": 5
-      }
+      },
+      "phase": "L1"
     },
     {
       "circuit_id": "FA02",
@@ -73,7 +74,8 @@
         "csa_mm2_or_awg": "1.5mm²",
         "cores": 3,
         "length_m": 40
-      }
+      },
+      "phase": "L2"
     },
     {
       "circuit_id": "FA03",
@@ -94,7 +96,8 @@
         "csa_mm2_or_awg": "1.5mm²",
         "cores": 3,
         "length_m": 60
-      }
+      },
+      "phase": "L3"
     },
     {
       "circuit_id": "FA04",
@@ -115,7 +118,8 @@
         "csa_mm2_or_awg": "1.5mm²",
         "cores": 3,
         "length_m": 80
-      }
+      },
+      "phase": "L1"
     },
     {
       "circuit_id": "FA05",
@@ -136,7 +140,8 @@
         "csa_mm2_or_awg": "2.5mm²",
         "cores": 3,
         "length_m": 70
-      }
+      },
+      "phase": "L2"
     },
     {
       "circuit_id": "FA06",
@@ -157,7 +162,8 @@
         "csa_mm2_or_awg": "1.5mm²",
         "cores": 3,
         "length_m": 3
-      }
+      },
+      "phase": "L3"
     }
   ],
   "spare_ways": 2,
@@ -229,7 +235,11 @@
             "summary": "63A rating well above the ≈3 kW total demand provides margin for addressable loop expansion and inrush headroom.",
             "rule": "Life-safety supply must be sized for full panel boost-charge transient + future zone growth, not just steady-state load.",
             "code_clause": "IEC 60364-5-56 § 560.6",
-            "inputs": { "demand_kw": 3.0, "rating_a": 63, "voltage_v": 400 }
+            "inputs": {
+              "demand_kw": 3.0,
+              "rating_a": 63,
+              "voltage_v": 400
+            }
           },
           {
             "label": "NO upstream RCD on the FA feeder",
@@ -330,5 +340,11 @@
         ]
       }
     ]
-  }
+  },
+  "per_phase_loading_a": {
+    "L1": 3.0,
+    "L2": 7.4,
+    "L3": 2.6
+  },
+  "neutral_current_a": 4.6
 }

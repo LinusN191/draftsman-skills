@@ -1,5 +1,44 @@
 # Changelog — db-layout
 
+## [1.3.2] - 2026-05-25
+
+### Fixed
+- **H5**: blanket 0.4 diversity factor was applied to instantaneous loads
+  (9 kW shower). Per BS 7671:2018+A2:2022 § 311.1 + IET OSG Appendix A,
+  instantaneous loads get NO diversity. uk-domestic-consumer-unit recomputed
+  with per-load-type table (shower at 1.00, cooker at 10 A + 30% remainder,
+  lighting at 0.66, sockets at 100% largest + 40% remainder). Citation
+  corrected: BS 7671 Appendix 1 (informative) → IET OSG Appendix A + § 311.1.
+  Reported demand changed from 47 A (wrong) to 88.91 A (correct) on the
+  100 A supply — headroom collapses from 53 A to ~11 A, now flagged as
+  marginal.
+- **H6**: phase allocation was dropped on TPN board outputs; per-phase
+  loading and neutral current were not computed. All 17 TPN example outputs
+  now carry `phase` per circuit (preserved from input.json where declared,
+  else L1/L2/L3 round-robin), `per_phase_loading_a` per board, and
+  `neutral_current_a` computed from the IEC 60364-5-52 § 524.2.2 worst-case
+  unbalance formula.
+
+### Added
+- Generator prompt (Step 5): per-load-type diversity table (IET OSG App A)
+  with explicit 1.00-factor call-out for instantaneous loads, plus phase
+  preservation rule for TPN boards (phase field per circuit +
+  per_phase_loading_a + neutral_current_a + unbalance flag guidance).
+- Validator **INV-12** (diversity on instantaneous loads, HIGH).
+- Validator **INV-13** (phase preservation + per-phase loading + neutral
+  current on TPN boards, HIGH).
+- Schema: optional `phase` (circuit, enum incl. L1/L2/L3 + 3-phase span
+  forms), `per_phase_loading_a` + `neutral_current_a` (top-level board) —
+  additive, doesn't break existing examples.
+
+### TPN examples updated (17)
+intl-commercial-tpn-msb, intl-dbcomms-data, intl-dbem-emergency-lighting,
+intl-dbfa1-fire-alarm, intl-dbgenset-changeover, intl-dbl1-lighting,
+intl-dbm1-mechanical, intl-dbp1-power, intl-dbups-backed,
+ke-nairobi-industrial-100A-tpn, uk-commercial-msb-3storey,
+uk-commercial-sdb-gf, uk-commercial-sdb-l1, uk-commercial-sdb-l2,
+us-strip-mall-common-area, us-strip-mall-tsp-a, us-strip-mall-tsp-b.
+
 ## [1.3.1] - 2026-05-19
 
 ### Fixed

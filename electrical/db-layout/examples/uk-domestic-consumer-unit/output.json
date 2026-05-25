@@ -221,9 +221,15 @@
   ],
   "compliance_summary": {
     "compliant": true,
-    "non_compliance_flags": [],
+    "non_compliance_flags": [
+      {
+        "message": "Maximum demand ~89 A on 100 A supply leaves only ~11 A headroom — marginal for future-load addition (e.g. EV charger, heat pump). Per BS 7671 § 311.1 the instantaneous 9 kW shower contributes its full 39.1 A; no diversity applies.",
+        "code_clause": "IET OSG Appendix A + BS 7671:2018+A2:2022 § 311.1",
+        "severity": "warning"
+      }
+    ],
     "assumptions": [
-      "Diversity factor 0.4 (domestic typical per BS 7671 Appendix 1).",
+      "Diversity computed per IET OSG Appendix A + BS 7671:2018+A2:2022 § 311.1 (NOT a blanket factor): lighting (domestic) 0.66, standard socket-outlet circuits 100% of largest + 40% of remainder, cooker 10 A + 30% of (Ib − 10 A), instantaneous shower (9 kW ≥ 7.2 kW) 1.00 — no diversity. Per-load-type contributions: lighting 4.30 A + sockets 28.70 A + cooker 16.78 A + shower 39.13 A = 88.91 A maximum demand on a 100 A supply.",
       "Selectivity verification deferred — fault-level intent absent and engineer Ifault not declared per WI3.",
       "Cable ampacity check assumes BS 7671 Appendix 4 Reference Method C (clipped direct)."
     ]
@@ -239,7 +245,7 @@
     "TOOL-CALL-PENDING"
   ],
   "rationale": {
-    "chat_summary": "100A TN-C-S consumer unit for a UK 3-bed semi, 12-way Form 1 Hager-style enclosure. 6 final circuits — Type B MCBs grouped behind a main 30mA RCD. Busbar 100A IcW 6kA accommodates 47A diversified load. Selectivity verification pending fault-level intent — emitted as tool_call_pending per WI3. Reply to refine, e.g. 'switch to per-circuit RCBOs' or 'add EV charger'.",
+    "chat_summary": "100A TN-C-S consumer unit for a UK 3-bed semi, 12-way Form 1 Hager-style enclosure. 6 final circuits — Type B MCBs grouped behind a main 30mA RCD. Maximum demand ~89 A computed per IET OSG App A + BS 7671 § 311.1 (instantaneous 9 kW shower at 1.00, NO diversity): leaves ~11 A headroom on 100 A supply — marginal for future loads. Selectivity verification pending fault-level intent — emitted as tool_call_pending per WI3. Reply to refine, e.g. 'add EV charger requires supply upgrade' or 'switch to per-circuit RCBOs'.",
     "sections": [
       {
         "title": "Board Classification",
@@ -274,16 +280,31 @@
       },
       {
         "title": "Busbar Sizing",
-        "summary": "100A busbar, IcW 6kA. Sum of way loads ~117A → 47A diversified at 0.4 → 100A busbar adequate with headroom.",
+        "summary": "100A busbar, IcW 6kA. Diversity applied per IET OSG App A by LOAD TYPE (NOT a blanket 0.4): lighting (domestic) 0.66 → 4.30 A; standard sockets 100% largest + 40% remainder → 28.70 A; cooker 10 A + 30% remainder → 16.78 A; instantaneous shower 9 kW at 1.00 per BS 7671 § 311.1 → 39.13 A. Total maximum demand = 88.91 A on 100 A supply — adequate but marginal (~11 A headroom).",
         "decisions": [
           {
-            "label": "100A busbar adequate",
-            "summary": "47A diversified load × 1.5 future expansion factor fits 100A.",
+            "label": "Per-load-type diversity per IET OSG App A",
+            "summary": "Lighting 0.66, sockets 100%+40%, cooker 10A+30%, instantaneous shower 1.00 (no diversity per § 311.1). Blanket 0.4 factor is WRONG — Appendix 1 is informative; per-load-type is the prescribed method.",
+            "rule": "IET OSG Appendix A + BS 7671:2018+A2:2022 § 311.1",
+            "code_clause": "IET OSG Appendix A + BS 7671:2018+A2:2022 § 311.1",
+            "inputs": {
+              "lighting_a": 4.30,
+              "sockets_a": 28.70,
+              "cooker_a": 16.78,
+              "shower_a": 39.13,
+              "max_demand_a": 88.91,
+              "supply_a": 100
+            }
+          },
+          {
+            "label": "100A busbar adequate but marginal",
+            "summary": "88.91 A demand fits 100 A — ~11 A headroom only. Any future-load addition (EV charger, heat pump, second instantaneous shower) requires supply upgrade or load shedding.",
             "rule": "IEC 61439-1 rated current of assembly",
             "code_clause": "IEC 61439-3:2012 clause 5.3",
             "inputs": {
               "busbar_a": 100,
-              "diversified_a": 47
+              "diversified_a": 88.91,
+              "headroom_a": 11.09
             }
           }
         ]
@@ -347,7 +368,7 @@
       },
       {
         "title": "Compliance",
-        "summary": "Compliant. One TOOL-CALL-PENDING flag for deferred selectivity.",
+        "summary": "Compliant. One warning: maximum demand 88.91 A on 100 A supply is marginal — only ~11 A headroom after applying correct per-load-type diversity per IET OSG App A + BS 7671 § 311.1. One TOOL-CALL-PENDING flag for deferred selectivity.",
         "decisions": []
       }
     ]

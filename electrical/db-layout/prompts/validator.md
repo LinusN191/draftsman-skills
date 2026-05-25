@@ -63,6 +63,47 @@ Every `compliance_summary.non_compliance_flags[].code_clause` entry must use can
 
 Cross-contamination ban: `KS 1700` must not appear when `jurisdiction != "KE"`. `BS 7671` must not appear as a primary citation when `jurisdiction != "GB"` AND `jurisdiction != "KE"` (KE only via the routing-note form above).
 
+**INV-12: Diversity factor — instantaneous loads must use 1.00.**
+For any circuit whose `designation` or load metadata indicates an
+instantaneous load (e.g. `instantaneous_shower`, `instantaneous_water_heater`,
+or shower / instant heater designations with `downstream_load_kw ≥ 7.2`),
+the diversity factor applied to its demand contribution MUST be 1.00 (not
+a blanket lower factor). Per BS 7671:2018+A2:2022 § 311.1 + IET OSG
+Appendix A.
+
+Validator action: if a circuit is an instantaneous load AND the board-level
+diversity assumption recorded in `compliance_summary.assumptions[]` applies
+a sub-1.00 factor uniformly across all circuits (including instantaneous),
+FLAG INV-12. The fix is to record per-load-type diversity, not a blanket
+factor, and explicitly call out the 1.00 factor on instantaneous loads.
+
+Rationale: instantaneous heating loads are inherently full-rated when
+energised — no statistical diversity applies. H5 defect class.
+
+**INV-13: Phase preservation on TPN boards.**
+For boards where `incoming_supply.phase_arrangement ∈ {"TPN", "TPN_plus_E"}`,
+every circuit in `circuits[]` MUST carry `phase ∈ {"L1", "L2", "L3"}` or a
+3-phase span value (`"L1+L2+L3"` for 3-phase loads). ELV / SELV / PELV
+control circuits that intrinsically don't see phase current MAY omit
+`phase` with an explanatory `drawing_notes[]` entry.
+
+The board IR MUST include:
+- `per_phase_loading_a`: object with `L1`, `L2`, `L3` numbers (A)
+- `neutral_current_a`: number (A), worst-case unbalanced neutral per IEC
+  60364-5-52 § 524.2.2.
+
+Validator actions:
+- If board is TPN AND any non-ELV circuit lacks `phase`, FLAG INV-13.
+- If `per_phase_loading_a` is absent on a TPN board, FLAG INV-13.
+- If `neutral_current_a` is absent on a TPN board with non-zero loads,
+  FLAG INV-13.
+- Sanity-check `I_N ∈ [0, max(IL1, IL2, IL3)]`. If outside the range,
+  FLAG INV-13 — the unbalance formula was applied incorrectly.
+
+Rationale: phase balance is the classic 3-phase board failure mode; H6
+defect class. Per IEC 60364-5-52 § 524.2.2 the neutral current depends on
+per-phase unbalance.
+
 ### 3. Intent extraction validation
 
 Project the IR down to:
@@ -84,4 +125,4 @@ Emit a single JSON object:
 }
 ```
 
-`valid: true` requires ALL of: schema pass, all 11 invariants pass, both intent projections valid.
+`valid: true` requires ALL of: schema pass, all 13 invariants pass, both intent projections valid.

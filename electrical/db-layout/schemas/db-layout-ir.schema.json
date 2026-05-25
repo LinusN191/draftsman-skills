@@ -111,6 +111,7 @@
           "designation":     { "type": "string" },
           "voltage_class":   { "enum": ["LV_power", "ELV_control", "comms_data", "fire_alarm", "emergency_lighting"] },
           "downstream_load_kw": { "type": "number", "minimum": 0 },
+          "phase":           { "type": "string", "enum": ["L1", "L2", "L3", "L1+L2+L3", "L1+L2", "L2+L3", "L1+L3", "L", "N"], "description": "Phase allocation per IET OSG App A round-robin or manual; required on TPN boards. Single-phase: 'L'. 3-phase span: 'L1+L2+L3'. ELV / SELV circuits may omit." },
           "ocpd": {
             "type": "object",
             "required": ["rating_a", "type"],
@@ -178,6 +179,20 @@
     "drawing_notes":     { "type": "array", "items": { "type": "string" } },
     "drawn_as_symbols":  { "type": "array", "items": { "oneOf": [ { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" }, { "type": "object" } ] }, "description": "IEC 60617 symbol_id roll-up — each entry must resolve in symbol-index.json (string form) or be a richer object form for jurisdictions with extra symbol metadata" },
     "flags":             { "type": "array", "items": { "type": "string" } },
+    "per_phase_loading_a": {
+      "type": "object",
+      "description": "Per-phase design current loading on TPN boards, summed from circuits[].phase (a 3-phase load contributes Ib/√3 to each phase). Required on TPN/TPN_plus_E boards.",
+      "properties": {
+        "L1": { "type": "number", "minimum": 0 },
+        "L2": { "type": "number", "minimum": 0 },
+        "L3": { "type": "number", "minimum": 0 }
+      }
+    },
+    "neutral_current_a": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Worst-case unbalanced neutral current per IEC 60364-5-52 § 524.2.2: I_N = sqrt(IL1² + IL2² + IL3² − IL1·IL2 − IL2·IL3 − IL3·IL1). Required on TPN/TPN_plus_E boards with non-zero loads."
+    },
     "rationale":         { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
   }
 }

@@ -52,7 +52,8 @@
         "csa_mm2_or_awg": "6mm²",
         "cores": 5,
         "length_m": 25
-      }
+      },
+      "phase": "L1+L2+L3"
     },
     {
       "circuit_id": "M02",
@@ -73,7 +74,8 @@
         "csa_mm2_or_awg": "4mm²",
         "cores": 5,
         "length_m": 25
-      }
+      },
+      "phase": "L1+L2+L3"
     },
     {
       "circuit_id": "M03",
@@ -94,7 +96,8 @@
         "csa_mm2_or_awg": "6mm²",
         "cores": 5,
         "length_m": 35
-      }
+      },
+      "phase": "L1+L2+L3"
     },
     {
       "circuit_id": "M04",
@@ -115,7 +118,8 @@
         "csa_mm2_or_awg": "4mm²",
         "cores": 5,
         "length_m": 35
-      }
+      },
+      "phase": "L1+L2+L3"
     },
     {
       "circuit_id": "M05",
@@ -136,7 +140,8 @@
         "csa_mm2_or_awg": "2.5mm²",
         "cores": 5,
         "length_m": 20
-      }
+      },
+      "phase": "L1+L2+L3"
     },
     {
       "circuit_id": "M06",
@@ -157,7 +162,8 @@
         "csa_mm2_or_awg": "2.5mm²",
         "cores": 5,
         "length_m": 45
-      }
+      },
+      "phase": "L1+L2+L3"
     },
     {
       "circuit_id": "M07",
@@ -180,7 +186,8 @@
         "csa_mm2_or_awg": "2.5mm²",
         "cores": 3,
         "length_m": 30
-      }
+      },
+      "phase": "L1"
     },
     {
       "circuit_id": "M08",
@@ -203,7 +210,8 @@
         "csa_mm2_or_awg": "1.5mm²",
         "cores": 3,
         "length_m": 18
-      }
+      },
+      "phase": "L2"
     }
   ],
   "spare_ways": 4,
@@ -275,7 +283,11 @@
             "summary": "Motor demand diversified per IEC 60364-1 Annex C (~70 % running diversity) gives ≈90-110 A per phase; 250A rating leaves headroom for future VRF / FCU expansion as noted in spare ways.",
             "rule": "Motor circuit diversity per IEC 60364-1 Annex C — full FLC × running diversity factor + largest-motor inrush kicker as the starting-current contributor.",
             "code_clause": "IEC 60364-1 Annex C + IEC 60364-5-55",
-            "inputs": { "total_motor_kw": 60.5, "running_diversity": 0.7, "rating_a": 250 }
+            "inputs": {
+              "total_motor_kw": 60.5,
+              "running_diversity": 0.7,
+              "rating_a": 250
+            }
           },
           {
             "label": "PFC 14.0 kA at DB-M1",
@@ -388,5 +400,11 @@
         ]
       }
     ]
-  }
+  },
+  "per_phase_loading_a": {
+    "L1": 75.8,
+    "L2": 73.6,
+    "L3": 67.1
+  },
+  "neutral_current_a": 7.8
 }

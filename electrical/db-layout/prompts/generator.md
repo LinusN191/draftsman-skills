@@ -142,9 +142,88 @@ Voltage validation: 120/208/240/277 typical for US; 230/240/400/415 for IEC.
 
 Per `rules/busbar-sizing.yaml`:
 - Sum the load currents of all outgoing circuits
-- Apply diversity factor (`inputs.diversity_factor_main`, default 0.7 — or from jurisdiction-specific tables)
+- Apply diversity per the per-load-type table below (NOT a blanket factor)
 - Round up to next standard rating: 100, 125, 160, 200, 250, 400, 630, 800, 1250, 1600 A
 - IcW / breaking capacity: query `IEC61439/short-circuit-withstand.json` for the rated assembly + verify against Ipk at this point
+
+### Diversity computation per IET OSG Appendix A + BS 7671 § 311.1
+
+Apply diversity per LOAD TYPE, not a blanket factor. The published OSG App A
+table gives:
+
+| Load type | Diversity factor | Notes |
+|---|---|---|
+| Lighting (domestic) | 0.66 | 66% of total connected |
+| Lighting (other) | 0.90 | 90% of total connected |
+| Cooking appliances | 10 A + 30% of remainder + 5 A if socket on unit | Per OSG App A |
+| Instantaneous water heaters | **1.00** (no diversity) | Single load applied at full demand — never derated |
+| Showers (instantaneous, ≥ 7.2 kW) | **1.00** (no diversity) | Per BS 7671 § 311.1 |
+| Storage water heaters | 1.00 (no diversity) | Continuous load |
+| Standard socket-outlet circuits | 100% of largest + 40% of remainder | Per OSG App A |
+| Motors | 100% of largest + 50% of remainder | Industrial |
+
+**CRITICAL:** Instantaneous loads (showers, instant water heaters) get NO
+diversity. Citing BS 7671 Appendix 1 for diversity is wrong — Appendix 1
+is informative; the per-load-type method is prescribed by IET OSG Appendix
+A + BS 7671 § 311.1.
+
+Record the per-load-type contributions in `compliance_summary.assumptions[]`
+and cite `IET OSG Appendix A + BS 7671:2018+A2:2022 § 311.1` (not
+`BS 7671 Appendix 1`). For non-GB jurisdictions, the equivalent local
+tabulation applies (IEC 60364 Annex E / NFPA 70 Art 220 for US load
+calculations). Do NOT apply a blanket `inputs.diversity_factor_main` to
+instantaneous loads even if the engineer declared one.
+
+### Phase preservation for TPN boards
+
+For three-phase-and-neutral (TPN / TPN_plus_E) boards, every circuit MUST
+carry its allocated phase in the output IR:
+
+```json
+{
+  "circuit_id": "C01",
+  "phase": "L1",
+  "ocpd": { ... },
+  ...
+}
+```
+
+The phase field MUST be one of `"L1" | "L2" | "L3"`. For circuits that
+intrinsically span all three phases (a single 3-phase motor or 3-phase
+sub-feeder), use `"L1+L2+L3"` and document the per-phase contribution
+explicitly (the load on each phase = Ib / √3 for balanced 3-phase loads).
+For ELV control / data circuits at SELV / PELV that don't see phase
+current, omit the field with a note in `drawing_notes`.
+
+Preserve the round-robin from the input (L1, L2, L3, L1, L2, L3, ...)
+unless the engineer has specified manual allocation in
+`inputs.circuits_declared[].phase`. When the input declares phases
+explicitly, the output MUST reflect them verbatim — do not re-balance
+silently.
+
+After all circuits are allocated, compute per-phase loading by summing the
+design current Ib on each phase (a 3-phase load contributes Ib/√3 to each).
+Add at the board level (top of IR, alongside `main_switch`):
+
+```json
+"per_phase_loading_a": {
+  "L1": 47.2,
+  "L2": 51.6,
+  "L3": 44.8
+}
+```
+
+And neutral current (worst-case unbalance per IEC 60364-5-52 § 524.2.2):
+
+```
+I_N = sqrt(IL1² + IL2² + IL3² − IL1·IL2 − IL2·IL3 − IL3·IL1)
+```
+
+Add this as `neutral_current_a` at the board level. Sanity check: I_N must
+be in the range [0, max(IL1, IL2, IL3)]; I_N = 0 when the board is
+perfectly balanced. A large I_N (> 30% of the largest phase) indicates
+poor balance — flag with a `PHASE_UNBALANCE_HIGH` warning in
+`compliance_summary.non_compliance_flags[]`.
 
 State the incoming OCPD/isolator in `ir.main_switch`:
 ```json
