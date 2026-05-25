@@ -279,16 +279,43 @@ here is the chosen OCPD rating, AFTER applying 240.4(B).
 
 Call `calc.voltage_drop` (DEFERRED in v1.0 — engineer estimates inline).
 
-For the candidate csa (output of Step 7):
+### Voltage drop computation per BS 7671 App-4 mVA/m + Appendix 12
+
+For **single-phase circuits** (230 V phase voltage):
+```
+Vd_pct = (mVAm × Ib × L) / 1000 / 230 × 100
+```
+
+For **three-phase circuits** (400 V line-line for IEC/INT; 415 V for KE):
+```
+Vd_pct = (mVAm × Ib × L) / 1000 / U_LL × 100
+```
+where `U_LL = 400` V (jurisdiction=INT/EU) or `415` V (jurisdiction=KE/GB).
+
+**CRITICAL:** Do NOT divide three-phase Vd by 230 V (the phase voltage). The
+mVA/m tables in BS 7671 App-4 are referenced to LINE-LINE voltage for
+three-phase calculations (per BS 7671:2018+A2:2022 Appendix 4 + Appendix 12
+and IEC 60364-5-52:2009 Annex G). Dividing by 230 V instead of 400/415 V
+inflates the three-phase Vd by √3 (~73%) — conservative-wrong: forces
+unnecessary cable upsizing and fails design-office QA.
+
+For the candidate csa (output of Step 7), the equivalent formulation via
+impedance components (r, x in mΩ/m at operating temp from BS 7671 App 4
+Table 4F / IEC 60364-5-52 Table B.52.5 / NEC 2023 Chapter 9 Table 9):
 
 ```
 vd_segment_pct = (Ib × length_m × (r_cosφ + x_sinφ) × phase_factor) /
-                 (voltage_v × 1000) × 100
+                 (U_ref_v × 1000) × 100
 ```
 
-where `phase_factor = 2` for single-phase, `√3` for three-phase, `r` and
-`x` come from BS 7671 App 4 Table 4F / IEC 60364-5-52 Table B.52.5 / NEC
-2023 Chapter 9 Table 9 (in mΩ/m at operating temp).
+where:
+- `phase_factor = 2` for single-phase; `√3` for three-phase.
+- `U_ref_v = 230` for single-phase; `U_LL` (400 or 415) for three-phase.
+
+Both formulations are equivalent when the mVA/m value is derived from the
+same impedance table. Use the mVA/m form when the BS 7671 App-4 tables
+provide mVA/m directly (most common case); use the r/x form when working
+from IEC 60364-5-52 Table B.52.5 or NEC Chapter 9 Table 9 impedance data.
 
 Add the parent's cumulative Vd:
 

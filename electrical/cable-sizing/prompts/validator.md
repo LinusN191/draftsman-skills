@@ -304,9 +304,47 @@ project into the emitted intent
 
 ---
 
+### INV-11: Three-phase voltage drop denominator must be line-line
+
+**Rule:** For any circuit in `cascade[]` with `load.phases == "three"` (or
+`"three_phase_4wire"` / `"three_phase_3wire"`), the voltage drop computation
+MUST divide by the line-line voltage (400 V for INT/EU, 415 V for KE/GB) —
+NOT 230 V phase voltage.
+
+**Validator action:** for each three-phase circuit's selected CSA, compute
+the expected Vd% using both denominators (÷230 and ÷U_LL). If the stored
+`vd_segment_pct` in `selection.walk_up_trail` for the accepted CSA matches
+the ÷230 result within 0.05% but mismatches the ÷U_LL result by > 0.3%,
+FLAG as the H4 defect class (3-phase Vd divided by phase voltage instead
+of line-line).
+
+Determine `U_LL` per jurisdiction:
+- `jurisdiction == "KE"` or `"GB"`: `U_LL = 415` V
+- `jurisdiction == "INT"` or `"EU"`: `U_LL = 400` V
+- `jurisdiction == "US"`: not applicable (NEC uses actual line-line voltage
+  from project supply); skip this INV for US circuits.
+
+**Severity:** HIGH
+
+**Rationale:** BS 7671:2018+A2:2022 Appendix 4 mVA/m tables are referenced
+to line-line voltage for 3-phase calculations (Appendix 12). Dividing by
+230 V (phase voltage) instead of U_LL inflates Vd by √3 (~73%) —
+conservative-wrong: forces unnecessary cable upsizing and fails
+design-office QA (Reviewer 1 H4).
+
+**Fail message format:**
+```
+INV-11: Node <NODE_ID> three-phase vd_segment_pct=<STORED>% matches
+÷230 result (<WRONG>%) but not ÷<U_LL>V result (<CORRECT>%) — three-phase
+Vd MUST divide by line-line voltage per BS 7671:2018+A2:2022 App 4 +
+App 12 / IEC 60364-5-52:2009 Annex G
+```
+
+---
+
 ### 3. Intent extraction validation
 
-After all 10 INV checks pass, run one final structural check:
+After all 11 INV checks pass, run one final structural check:
 
 - The count of `intent.circuits[]` entries MUST equal the count of IR
   cascade nodes that are final_circuit OR feeder OR sub_feeder (in v1.0

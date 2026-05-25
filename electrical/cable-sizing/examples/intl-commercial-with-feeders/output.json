@@ -399,16 +399,16 @@
             "csa_attempted": 6,
             "accepted": true,
             "iz_corrected_a": 41.0,
-            "vd_segment_pct": 1.4,
-            "vd_cumulative_pct": 2.9
+            "vd_segment_pct": 0.79,
+            "vd_cumulative_pct": 2.29
           }
         ]
       },
       "checks": {
         "iz_corrected_a": 41.0,
         "iz_vs_in_pass": true,
-        "vd_segment_pct": 1.4,
-        "vd_cumulative_pct": 2.9,
+        "vd_segment_pct": 0.79,
+        "vd_cumulative_pct": 2.29,
         "vd_limit_pct": 5.0,
         "vd_limit_source": "IEC 60364-5-52:2009 Annex G power circuits",
         "vd_pass": true,
@@ -507,28 +507,50 @@
             "summary": "1600 A In exceeds single 630 mm² Cu XLPE method F (Iz ≈ 1090 A); 2 × 500 mm² parallel accepted per IEC 60364-5-52:2009 §523.6 (Iz_corrected ≈ 1830 A).",
             "rule": "Parallel cables per IEC 60364-5-52:2009 §523.6",
             "code_clause": "IEC 60364-5-52:2009 §523.6",
-            "inputs": {"in_a": 1600, "single_630_iz_a": 1090, "parallel_2x500_iz_a": 1830, "parallel_count": 2}
+            "inputs": {
+              "in_a": 1600,
+              "single_630_iz_a": 1090,
+              "parallel_2x500_iz_a": 1830,
+              "parallel_count": 2
+            }
           },
           {
             "label": "vd_cumulative on RISER.L3 sub-feeder",
             "summary": "50 mm² rejected at 1.7% cumulative (leaves only 3.3% for L3.C04); 70 mm² accepted at 1.5% cumulative to preserve 3.5% headroom downstream.",
             "rule": "Cumulative-Vd cascade budget per IEC 60364-5-52:2009 Annex G",
             "code_clause": "IEC 60364-5-52:2009 Annex G",
-            "inputs": {"length_m": 8, "csa_rejected_mm2": 50, "csa_accepted_mm2": 70, "vd_cumulative_rejected_pct": 1.7, "vd_cumulative_accepted_pct": 1.5}
+            "inputs": {
+              "length_m": 8,
+              "csa_rejected_mm2": 50,
+              "csa_accepted_mm2": 70,
+              "vd_cumulative_rejected_pct": 1.7,
+              "vd_cumulative_accepted_pct": 1.5
+            }
           },
           {
             "label": "vd_cumulative on RISER.L3.C04 final",
             "summary": "20A single-phase final at 38 m on PVC singles method B1: 2.5 mm² rejected (cumulative 6.6%); 4 mm² accepted at cumulative 4.5%, within the 5% power limit.",
             "rule": "Cumulative Vd ≤ 5% for power circuits per IEC 60364-5-52:2009 Annex G",
             "code_clause": "IEC 60364-5-52:2009 Annex G",
-            "inputs": {"length_m": 38, "csa_rejected_mm2": 2.5, "csa_accepted_mm2": 4, "vd_cumulative_accepted_pct": 4.5}
+            "inputs": {
+              "length_m": 38,
+              "csa_rejected_mm2": 2.5,
+              "csa_accepted_mm2": 4,
+              "vd_cumulative_accepted_pct": 4.5
+            }
           },
           {
             "label": "harmonic_derating on RISER.L3.C07 IT load",
             "summary": "32A 3-phase 4-wire server rack with 30% h3 content: 4 mm² rejected (Iz with Ch=0.86 gives 30.1 A < 32 A); 6 mm² accepted (Iz 41 A ≥ 32 A). Neutral upsized to full phase per §523.6.3.",
             "rule": "Harmonic derating per IEC 60364-5-52:2009 Annex E Table E.1; neutral upsize per §523.6.3",
             "code_clause": "IEC 60364-5-52:2009 Annex E + §523.6.3",
-            "inputs": {"h3_pct": 30, "ch": 0.86, "csa_rejected_mm2": 4, "csa_accepted_mm2": 6, "neutral_csa_mm2": 6}
+            "inputs": {
+              "h3_pct": 30,
+              "ch": 0.86,
+              "csa_rejected_mm2": 4,
+              "csa_accepted_mm2": 6,
+              "neutral_csa_mm2": 6
+            }
           }
         ]
       },
@@ -541,7 +563,14 @@
             "summary": "Walk RISER.L3 sub-feeder up at design time (50 → 70 mm²) so the 38 m L3.C04 final stays within the 5% cumulative limit with the smallest finals csa.",
             "rule": "Vd cumulative accounting per IEC 60364-5-52:2009 Annex G",
             "code_clause": "IEC 60364-5-52:2009 Annex G",
-            "inputs": {"tx1_pct": 0.3, "friser_pct": 0.5, "l3_pct": 0.7, "l3_c04_segment_pct": 3.0, "l3_c04_cumulative_pct": 4.5, "limit_pct": 5.0}
+            "inputs": {
+              "tx1_pct": 0.3,
+              "friser_pct": 0.5,
+              "l3_pct": 0.7,
+              "l3_c04_segment_pct": 3.0,
+              "l3_c04_cumulative_pct": 4.5,
+              "limit_pct": 5.0
+            }
           }
         ]
       },
@@ -566,14 +595,22 @@
             "summary": "2 × 500 mm² Cu XLPE method F parallel run, equal length 8 m, terminated at common MSB-1 busbar; mutual impedance neglected per IEC 60364-5-52:2009 §523.6 second paragraph.",
             "rule": "Parallel cables per IEC 60364-5-52:2009 §523.6",
             "code_clause": "IEC 60364-5-52:2009 §523.6",
-            "inputs": {"parallel_count": 2, "csa_each_mm2": 500, "length_each_m": 8}
+            "inputs": {
+              "parallel_count": 2,
+              "csa_each_mm2": 500,
+              "length_each_m": 8
+            }
           },
           {
             "label": "Harmonic derating Ch = 0.86 on L3.C07",
             "summary": "30% h3 content places the load in the 15-33% band per IEC 60364-5-52:2009 Annex E Table E.1; Ch = 0.86 derates phase ampacity. Neutral upsized to full phase csa because h3 ≥ 15%.",
             "rule": "Harmonic derating per IEC 60364-5-52:2009 Annex E Table E.1; neutral upsize per §523.6.3",
             "code_clause": "IEC 60364-5-52:2009 Annex E + §523.6.3",
-            "inputs": {"h3_pct": 30, "ch_applied": 0.86, "neutral_upsized": true}
+            "inputs": {
+              "h3_pct": 30,
+              "ch_applied": 0.86,
+              "neutral_upsized": true
+            }
           }
         ]
       },

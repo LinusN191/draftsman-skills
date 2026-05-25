@@ -153,23 +153,23 @@
             "accepted": false,
             "rejected_by": "vd_cumulative",
             "iz_corrected_a": 92.0,
-            "vd_segment_pct": 2.7,
-            "vd_cumulative_pct": 2.7
+            "vd_segment_pct": 1.5,
+            "vd_cumulative_pct": 1.81
           },
           {
             "csa_attempted": 25,
             "accepted": true,
             "iz_corrected_a": 122.0,
-            "vd_segment_pct": 1.8,
-            "vd_cumulative_pct": 1.8
+            "vd_segment_pct": 0.96,
+            "vd_cumulative_pct": 1.27
           }
         ]
       },
       "checks": {
         "iz_corrected_a": 122.0,
         "iz_vs_in_pass": true,
-        "vd_segment_pct": 1.8,
-        "vd_cumulative_pct": 1.8,
+        "vd_segment_pct": 0.96,
+        "vd_cumulative_pct": 1.27,
         "vd_limit_pct": 5.0,
         "vd_limit_source": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G power circuits",
         "vd_pass": true,
@@ -213,16 +213,16 @@
             "csa_attempted": 16,
             "accepted": true,
             "iz_corrected_a": 75.0,
-            "vd_segment_pct": 1.05,
-            "vd_cumulative_pct": 1.36
+            "vd_segment_pct": 0.55,
+            "vd_cumulative_pct": 0.86
           }
         ]
       },
       "checks": {
         "iz_corrected_a": 75.0,
         "iz_vs_in_pass": true,
-        "vd_segment_pct": 1.05,
-        "vd_cumulative_pct": 1.36,
+        "vd_segment_pct": 0.55,
+        "vd_cumulative_pct": 0.86,
         "vd_limit_pct": 5.0,
         "vd_limit_source": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G power circuits",
         "vd_pass": true,
@@ -268,14 +268,14 @@
             "rejected_by": "vd_cumulative",
             "iz_corrected_a": 21.0,
             "vd_segment_pct": 4.0,
-            "vd_cumulative_pct": 5.8
+            "vd_cumulative_pct": 5.27
           },
           {
             "csa_attempted": 4,
             "accepted": true,
             "iz_corrected_a": 28.0,
             "vd_segment_pct": 3.2,
-            "vd_cumulative_pct": 5.0
+            "vd_cumulative_pct": 4.47
           }
         ]
       },
@@ -283,7 +283,7 @@
         "iz_corrected_a": 28.0,
         "iz_vs_in_pass": true,
         "vd_segment_pct": 3.2,
-        "vd_cumulative_pct": 5.0,
+        "vd_cumulative_pct": 4.47,
         "vd_limit_pct": 5.0,
         "vd_limit_source": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G power circuits",
         "vd_pass": true,
@@ -332,22 +332,22 @@
             "csa_attempted": 6,
             "accepted": true,
             "iz_corrected_a": 41.0,
-            "vd_segment_pct": 1.2,
-            "vd_cumulative_pct": 1.2
+            "vd_segment_pct": 0.46,
+            "vd_cumulative_pct": 1.32
           }
         ]
       },
       "checks": {
         "iz_corrected_a": 41.0,
         "iz_vs_in_pass": true,
-        "vd_segment_pct": 1.2,
-        "vd_cumulative_pct": 1.2,
+        "vd_segment_pct": 0.46,
+        "vd_cumulative_pct": 1.32,
         "vd_limit_pct": 5.0,
         "vd_limit_source": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G power circuits",
         "vd_pass": true,
         "cpc_adiabatic_pass": true,
         "cpc_adiabatic_source": "KS 1700:2018 §543 routes to BS 7671:2018+A2:2022 Reg 543.1.3 + Table 54.7",
-        "motor_starting_vd_pct": 7.8,
+        "motor_starting_vd_pct": 3.0,
         "motor_starting_vd_pass": true,
         "tool_call_pending": true
       }
@@ -358,13 +358,13 @@
     "non_compliance_flags": [
       {
         "node_id": "MSB-1.F02",
-        "message": "Cumulative-Vd binding on sub-feeder to DB-P1 — 35 m run forces csa walk-up from 16 mm² (Iz pass but Vd 2.7%) to 25 mm² to preserve downstream headroom for the 45 m remote final circuit (F02.C03).",
+        "message": "Cumulative-Vd binding on sub-feeder to DB-P1 — 35 m run forces csa walk-up from 16 mm² (Iz pass but cumulative 1.81% pushes downstream F02.C03 to 5.01%, over the 5% limit) to 25 mm² to preserve downstream headroom for the 45 m remote final circuit (F02.C03). Post-H4 (Sprint B): 3-phase denominator corrected to 415 V line-line per BS 7671 App 12.",
         "code_clause": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G",
         "severity": "info"
       },
       {
         "node_id": "MSB-1.F02.C03",
-        "message": "Cumulative-Vd binding on remote small-power final — at the 5.0% limit per KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G power circuits. 2.5 mm² rejected at 5.8% cumulative; 4 mm² accepted at exactly 5.0%. Engineer-confirmed acceptable; runtime calc.voltage_drop deferred per WI3.",
+        "message": "Cumulative-Vd binding on remote small-power final per KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G power circuits. 2.5 mm² rejected at 5.27% cumulative (> 5% limit); 4 mm² accepted at 4.47% cumulative. Post-H4 (Sprint B): denominators corrected to 415 V line-line for 3-phase parent F02; F02.C03 itself is single-phase so /230 retained. Engineer-confirmed acceptable; runtime calc.voltage_drop deferred per WI3.",
         "code_clause": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G",
         "severity": "info"
       },
@@ -432,34 +432,55 @@
             "summary": "315A OCPD on incoming MSB; 95 mm² Cu XLPE method E gives Iz_corrected ≈ 326 A; iz_vs_in passes at first sane ladder step.",
             "rule": "Iz ≥ In coordination per KS 1700:2018 §433",
             "code_clause": "KS 1700:2018 §433 routes to BS 7671:2018+A2:2022 §433.1.1",
-            "inputs": {"in_a": 315, "iz_corrected_a": 326.0, "phase_csa_mm2": 95, "method": "E"}
+            "inputs": {
+              "in_a": 315,
+              "iz_corrected_a": 326.0,
+              "phase_csa_mm2": 95,
+              "method": "E"
+            }
           },
           {
             "label": "vd_cumulative on F02 sub-feeder",
-            "summary": "80A sub-feeder at 35 m: 16 mm² (Iz 92 A pass) walks up to 25 mm² to drop segment Vd from 2.7% to 1.8%, preserving cumulative headroom for the 45 m downstream final F02.C03.",
+            "summary": "80A sub-feeder at 35 m: 16 mm² (Iz 92 A pass) walks up to 25 mm² to drop segment Vd from 1.50% to 0.96% (post-H4 corrected denominator 415 V line-line per BS 7671 App 12), preserving cumulative headroom for the 45 m downstream final F02.C03.",
             "rule": "Voltage drop limit per KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G; engineering judgement to allocate cascade budget",
             "code_clause": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G",
-            "inputs": {"length_m": 35, "csa_rejected_mm2": 16, "csa_accepted_mm2": 25, "vd_rejected_pct": 2.7, "vd_accepted_pct": 1.8}
+            "inputs": {
+              "length_m": 35,
+              "csa_rejected_mm2": 16,
+              "csa_accepted_mm2": 25,
+              "vd_rejected_pct": 2.7,
+              "vd_accepted_pct": 1.8
+            }
           },
           {
             "label": "vd_cumulative on F02.C03 remote final",
-            "summary": "20A single-phase final at 45 m downstream of F02; 2.5 mm² rejected (cumulative 5.8% > 5%), 4 mm² accepted at exactly 5.0% cumulative limit.",
+            "summary": "20A single-phase final at 45 m downstream of F02; 2.5 mm² rejected (cumulative 5.27% > 5%), 4 mm² accepted at 4.47% cumulative.",
             "rule": "Cumulative Vd ≤ 5% for power circuits per KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G",
             "code_clause": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G",
-            "inputs": {"length_m": 45, "csa_rejected_mm2": 2.5, "csa_accepted_mm2": 4, "vd_cumulative_accepted_pct": 5.0}
+            "inputs": {
+              "length_m": 45,
+              "csa_rejected_mm2": 2.5,
+              "csa_accepted_mm2": 4,
+              "vd_cumulative_accepted_pct": 5.0
+            }
           }
         ]
       },
       {
         "title": "Cumulative Voltage Drop",
-        "summary": "Vd accumulates root → leaf along the cascade. App 12 §G limits: lighting 3% (≈12.5V at 415V), power 5% (≈20.75V at 415V). F02 walk-up to 25 mm² is engineering judgement: 16 mm² would pass at F02 alone (2.7%) but push F02.C03 cumulative to 5.8%. By walking F02 up first, F02.C03 stays at the limit (5.0%) with the smallest finals csa.",
+        "summary": "Vd accumulates root → leaf along the cascade. App 12 §G limits: lighting 3% (≈12.5V at 415V), power 5% (≈20.75V at 415V). F02 walk-up to 25 mm² is engineering judgement: 16 mm² would pass at F02 alone (cumulative 1.81%) but push F02.C03 cumulative to 5.01% (just over 5% limit). By walking F02 up first, F02.C03 sits comfortably at 4.47% with the smallest finals csa. Post-H4: 3-phase denominators corrected to 415 V line-line per BS 7671 App 12.",
         "decisions": [
           {
             "label": "Cascade Vd budget allocation",
             "summary": "Walk sub-feeder up at design time to preserve downstream final-circuit headroom; sizing engine treats Vd as a cumulative constraint along the cascade path.",
             "rule": "Vd cumulative accounting per KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G",
             "code_clause": "KS 1700:2018 §313 routes to BS 7671:2018+A2:2022 App 12 §G",
-            "inputs": {"F02_vd_pct": 1.8, "F02_C03_segment_pct": 3.2, "F02_C03_cumulative_pct": 5.0, "limit_pct": 5.0}
+            "inputs": {
+              "F02_vd_pct": 0.96,
+              "F02_C03_segment_pct": 3.2,
+              "F02_C03_cumulative_pct": 4.47,
+              "limit_pct": 5.0
+            }
           }
         ]
       },
@@ -484,7 +505,14 @@
             "summary": "DOL starter with locked-rotor current 6.5× FLA gives vd_starting 7.8% — within the 10% limit; engineer accepts without contactor-soft-start.",
             "rule": "Motor starting Vd ≤ 10% per KS 1700:2018 §552 routes to BS 7671:2018+A2:2022 Reg 552.1.1; LRA factor per IEC 60034-12 design code AB",
             "code_clause": "KS 1700:2018 §552 routes to BS 7671:2018+A2:2022 Reg 552.1.1",
-            "inputs": {"rated_kw": 7.5, "lra_factor": 6.5, "design_code": "IEC_AB", "vd_running_pct": 1.2, "vd_starting_pct": 7.8, "limit_pct": 10.0}
+            "inputs": {
+              "rated_kw": 7.5,
+              "lra_factor": 6.5,
+              "design_code": "IEC_AB",
+              "vd_running_pct": 1.2,
+              "vd_starting_pct": 7.8,
+              "limit_pct": 10.0
+            }
           }
         ]
       },

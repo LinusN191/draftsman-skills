@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.0.1] - 2026-05-25
+
+### Fixed
+- **H4** (3-phase circuits): voltage drop formula was dividing by 230 V (phase
+  voltage) instead of line-line voltage (400 V INT/EU, 415 V KE/GB). Per BS 7671
+  Appendix 4 + Appendix 12 the mV/A/m tables are referenced to line-line for
+  3-phase. Inflated every 3-phase Vd by √3 (~73%). Recomputed circuits:
+  - `ke-nairobi-commercial-with-msb/MSB-1.F02` segment 1.8 → 0.96% (25 mm²
+    selection preserved per spec; cumulative 1.27%; downstream F02.C03 now
+    4.47% with headroom)
+  - `ke-nairobi-commercial-with-msb/MSB-1.F03` segment 1.05 → 0.55%
+    (selection unchanged at 16 mm²)
+  - `intl-commercial-with-feeders/RISER.L3.C07` segment 1.4 → 0.79%
+    (selection unchanged at 6 mm²; binding remains `harmonic_derating`)
+- Diagnostic + rationale prose in `ke-nairobi-commercial-with-msb/output.json`
+  updated to mirror corrected Vd numbers (F02 walk-up explanation now shows
+  16 mm² rejected at cumulative 1.81% would push F02.C03 to 5.01% over limit;
+  25 mm² accepted at cumulative 1.27% leaves F02.C03 at 4.47% comfortable).
+- `ke-nairobi-commercial-with-msb/intent-out.json` cascade ripple applied
+  (emitted intent re-reflects corrected segment + cumulative values).
+
+### Added
+- Generator prompt now explicitly distinguishes 1-phase (÷230 V) vs 3-phase
+  (÷U_LL where U_LL = 400 V INT/EU, 415 V KE/GB) Vd formulas, with the
+  equivalent r/x formulation also shown for IEC 60364-5-52 / NEC Ch 9 Table 9
+  workflows. The two forms are documented as equivalent when sourced from the
+  same impedance table.
+- Validator **INV-11**: detects ÷230 anomaly on 3-phase circuits (HIGH) by
+  recomputing both denominators and flagging the ÷230 vs ÷U_LL match pattern.
+
 ## [1.0.0] - 2026-05-20
 
 ### Added — first ship (beta)
