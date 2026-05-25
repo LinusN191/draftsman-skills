@@ -85,7 +85,12 @@ def oracle_fault_level():
         inp, out = J(f'{ex}/input.json'), J(f'{ex}/output.json')
         Ulv = vf(inp.get('supply_voltage_v')) or 400
         Uhv = vf(inp.get('hv_voltage_kv')); Uhv = Uhv*1000 if Uhv else None
-        single = inp.get('supply_phase') == 'single_phase' or 'single_phase' in json.dumps(inp).lower()
+        # Single-phase detection (improved post-Sprint D pre-flight):
+        # explicit declaration OR 230V supply with no HV side OR string match anywhere
+        single = (inp.get('supply_phase') == 'single_phase'
+                  or 'single_phase' in json.dumps(inp).lower()
+                  or (str(inp.get('supply_voltage_v', '')).strip() == '230'
+                      and inp.get('hv_side_present') is False))
         nm = ex.split('/')[-1]
         for n in out.get('cascade', []):
             kind = n.get('node_kind', '').lower(); is_hv = 'hv' in kind
@@ -144,7 +149,21 @@ def oracle_earthing():
                          f"Zs {zs} > Zs_max {zmax} but flagged '{fl}', rcd_required={rcd} (non-compliant certified safe)")
             if sysT == 'TT' and rcd is not True:
                 flag('HIGH', 'earthing', f"{nm}/{c['circuit_id']}", "TT system but rcd_required not true")
-    print("  (TT→RCD branch has 0 examples to exercise)")
+    # Dynamic TT-example coverage status (was hardcoded print pre-Sprint D pre-flight)
+    tt_examples = []
+    for ex in sorted(glob.glob('electrical/earthing/examples/*')):
+        try:
+            out = J(f'{ex}/output.json')
+            sysT = (out.get('earthing_system') or {})
+            sysT = sysT.get('system_type') if isinstance(sysT, dict) else sysT
+            if sysT == 'TT':
+                tt_examples.append(ex.split('/')[-1])
+        except Exception:
+            pass
+    if tt_examples:
+        print(f"  (TT→RCD branch exercised by {len(tt_examples)} example(s): {', '.join(tt_examples)})")
+    else:
+        print("  (TT→RCD branch has 0 examples to exercise)")
 
 if __name__ == '__main__':
     os.chdir(ROOT)
