@@ -4,25 +4,33 @@
   "title": "Rationale block embedded in every IR document",
   "description": "Structured reasoning chain the LLM emits alongside the IR. Drives the runtime's chat-summary, collapsible sections, and downloadable audit document. Replaces bespoke rationale Python in the DraftsMan runtime.",
   "type": "object",
-  "required": ["chat_summary", "sections"],
+  "required": [
+    "chat_summary",
+    "sections"
+  ],
   "additionalProperties": false,
   "properties": {
     "chat_summary": {
       "type": "string",
       "minLength": 40,
-      "maxLength": 500,
-      "description": "3–5 sentences shown inline in the chat thread. Tell the engineer: what you designed (1 sentence), the key decisions (1–2 sentences), any flags or assumptions (1 sentence), and an invitation to refine."
+      "maxLength": 800,
+      "description": "3–5 sentences shown inline in the chat thread. Tell the engineer: what you designed (1 sentence), the key decisions (1–2 sentences), any flags or assumptions (1 sentence), and an invitation to refine. Cap raised to 800 (was 500) per [[feedback-no-trim-non-consequential]] — when engineering content needs more room, prefer raising the cap over trimming. For deeper detail use rationale.sections[]."
     },
     "sections": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "#/definitions/Section" }
+      "items": {
+        "$ref": "#/definitions/Section"
+      }
     }
   },
   "definitions": {
     "Section": {
       "type": "object",
-      "required": ["title", "summary"],
+      "required": [
+        "title",
+        "summary"
+      ],
       "additionalProperties": false,
       "properties": {
         "title": {
@@ -38,13 +46,19 @@
         "decisions": {
           "type": "array",
           "description": "Discrete decisions made in this section. May be empty when the section's summary explains non-applicability.",
-          "items": { "$ref": "#/definitions/Decision" }
+          "items": {
+            "$ref": "#/definitions/Decision"
+          }
         }
       }
     },
     "Decision": {
       "type": "object",
-      "required": ["label", "summary", "rule"],
+      "required": [
+        "label",
+        "summary",
+        "rule"
+      ],
       "additionalProperties": false,
       "properties": {
         "label": {
