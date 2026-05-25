@@ -1,6 +1,6 @@
 {
   "skill": "cable-sizing",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "discipline": "electrical",
   "subdiscipline": "circuit-sizing",
   "chat_type": "calculation",
@@ -91,5 +91,18 @@
     "electrical/cable-sizing/validation/csa-on-standard-ladder.yaml",
     "electrical/cable-sizing/validation/intent-shape.yaml",
     "electrical/cable-sizing/validation/tool-call-resolved.yaml"
+  ],
+  "rules": [
+    "electrical/cable-sizing/rules/correction-factor-stack.yaml",
+    "electrical/cable-sizing/rules/csa-selection-walk-up.yaml",
+    "electrical/cable-sizing/rules/harmonic-derating-trigger.yaml",
+    "electrical/cable-sizing/rules/parallel-cables-threshold.yaml",
+    "electrical/cable-sizing/rules/voltage-drop-targets.yaml"
+  ],
+  "constraints": [
+    "electrical/cable-sizing/constraints/cpc-adiabatic-passes.yaml",
+    "electrical/cable-sizing/constraints/iz-vs-in-vs-ib.yaml",
+    "electrical/cable-sizing/constraints/motor-starting-vd-limit.yaml",
+    "electrical/cable-sizing/constraints/vd-cumulative-limit.yaml"
   ]
 }

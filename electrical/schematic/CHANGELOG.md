@@ -1,6 +1,6 @@
 # Schematic Skill — Changelog
 
-## [next-patch] - 2026-05-25 — M1 hybrid eval-vs-IR fix
+## [1.0.1] - 2026-05-25 — M1 hybrid eval-vs-IR fix
 
 ### Added
 - `invariants[]` field added to the IR root (required). Each entry is

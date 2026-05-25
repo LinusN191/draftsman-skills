@@ -2,7 +2,7 @@
 
 All notable changes. Follows [Keep a Changelog](https://keepachangelog.com).
 
-## [next-patch] - 2026-05-25 — M4 non-provisional provenance worked example
+## [1.0.2] - 2026-05-25 — M4 non-provisional provenance worked example
 
 ### Added
 - New worked example `examples/uk-bs5499-final-with-provenance/` exercising

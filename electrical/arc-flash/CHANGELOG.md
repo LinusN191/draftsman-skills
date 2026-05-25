@@ -2,7 +2,7 @@
 
 All notable changes to the arc-flash skill. Follows [Keep a Changelog](https://keepachangelog.com).
 
-## [next-patch] - 2026-05-25 — M4 RESTRICTED branch worked example
+## [1.0.2] - 2026-05-25 — M4 RESTRICTED branch worked example
 
 ### Added
 - New worked example `examples/intl-hv-restricted-substation/` exercising the
