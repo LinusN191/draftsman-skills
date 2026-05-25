@@ -82,7 +82,7 @@ electrical/earthing/
 │   └── eval-08-ks1700-citation-consistency.yaml
 └── examples/
     ├── uk-dwelling-tn-cs/         (input.json, reasoning.md, output.json, intent-out.json)
-    ├── intl-rural-tt/             (input.json, reasoning.md, output.json, intent-out.json)
+    ├── intl-rural-tncs/           (input.json, reasoning.md, output.json, intent-out.json)
     ├── us-commercial-nec/         (input.json, reasoning.md, output.json, intent-out.json)
     └── ke-nairobi-industrial-tn-s/ (input.json, reasoning.md, output.json, intent-out.json, sample-schedule.md)
 ```

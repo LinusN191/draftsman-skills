@@ -1,0 +1,25 @@
+{
+  "intent_type": "earthing",
+  "intent_version": "1.0.0",
+  "produced_by_skill_version": "earthing/1.3.0",
+  "tool_call_pending": true,
+  "jurisdiction": "INT",
+  "system_type": "TN-C-S",
+  "ze_declared_ohm": 0.30,
+  "supply_bond_type": "utility_pen_bond",
+  "main_earthing_conductor_csa_mm2": 70,
+  "electrodes": [],
+  "main_bonding": [
+    { "id": "B1", "target": "water_pipe",        "csa_mm2": 35 },
+    { "id": "B2", "target": "gas_pipe",          "csa_mm2": 35 },
+    { "id": "B3", "target": "structural_steel",  "csa_mm2": 25 }
+  ],
+  "circuits": [
+    { "circuit_id": "F01", "cpc_csa_mm2":  70.0, "device": "MCCB_D_250A", "zs_compliance": "fail_needs_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 300 },
+    { "circuit_id": "F02", "cpc_csa_mm2": 120.0, "device": "MCCB_D_400A", "zs_compliance": "fail_needs_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 300 },
+    { "circuit_id": "F03", "cpc_csa_mm2":  70.0, "device": "MCCB_D_250A", "zs_compliance": "fail_needs_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 300 },
+    { "circuit_id": "F04", "cpc_csa_mm2":  16.0, "device": "MCB_C_63A",   "zs_compliance": "fail_needs_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma":  30 }
+  ],
+  "overall_compliant": false,
+  "produced_at": "2026-05-18"
+}
