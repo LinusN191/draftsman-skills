@@ -48,5 +48,29 @@
   "calculations": [
     "shared/calculations/electrical/diversity-factor.json",
     "shared/calculations/electrical/zs-loop-impedance.json"
+  ],
+  "prompts": {
+    "generator": "electrical/small-power/prompts/generator.md",
+    "validator": "electrical/small-power/prompts/validator.md",
+    "reviewer":  "electrical/small-power/prompts/reviewer.md"
+  },
+  "evals": [
+    "electrical/small-power/evals/eval-01-uk-happy-path.yaml",
+    "electrical/small-power/evals/eval-02-no-rcd-exception.yaml",
+    "electrical/small-power/evals/eval-03-validation-trap-ring-in-us.yaml",
+    "electrical/small-power/evals/eval-04-rationale-block.yaml",
+    "electrical/small-power/evals/eval-05-jurisdiction-citation-form.yaml",
+    "electrical/small-power/evals/eval-06-ring-topology-by-jurisdiction.yaml",
+    "electrical/small-power/evals/eval-07-special-locations-compliance.yaml",
+    "electrical/small-power/evals/eval-08-cross-room-ring-integrity.yaml",
+    "electrical/small-power/evals/eval-09-gfci-scope-us.yaml",
+    "electrical/small-power/evals/eval-10-cable-sizing-intent-consumed.yaml"
+  ],
+  "examples": [
+    "electrical/small-power/examples/uk-3bed-dwelling/",
+    "electrical/small-power/examples/uk-3bed-with-cable-sizing/",
+    "electrical/small-power/examples/us-residential-dwelling/",
+    "electrical/small-power/examples/intl-open-plan-floor/",
+    "electrical/small-power/examples/ke-nairobi-small-office/"
   ]
 }

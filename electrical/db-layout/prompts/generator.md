@@ -316,7 +316,7 @@ State in `ir.circuits[i].cable`:
 }
 ```
 
-Cable size must satisfy Iz ≥ In after correction factors (see jurisdiction-appropriate ampacity table — `BS7671/cable-current-ratings.json` for GB, `IEC60364/part5-52-cable-ratings-copper.json` for EU/INT, `NFPA70/art310-conductor-ampacity.json` for US).
+Cable size must satisfy Iz ≥ In after correction factors (see jurisdiction-appropriate ampacity table — `BS7671/appendix4-cable-ratings.json` for GB, `IEC60364/part5-52-cable-ratings-copper.json` for EU/INT, `NFPA70/art310-conductor-ampacity.json` for US).
 
 ---
 

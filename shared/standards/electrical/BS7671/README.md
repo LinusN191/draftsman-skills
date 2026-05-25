@@ -84,9 +84,7 @@ use by DraftsMan skills and the engineers reviewing their output.
 | [diversity-factors.json](diversity-factors.json) | OSG Appendix A — domestic, commercial, EV, healthcare diversity |
 
 ### Legacy / deprecated
-| File | Status |
-|------|--------|
-| `cable-current-ratings.json` | **DEPRECATED** — superseded by `appendix4-cable-ratings.json` and `appendix4-correction-factors.json`. To be removed in next minor version. |
+(none — `cable-current-ratings.json` was removed Sprint C.4 / L2 after being deprecated for one minor version; consumers migrated to `appendix4-cable-ratings.json` + `appendix4-correction-factors.json`.)
 
 ---
 
@@ -174,9 +172,6 @@ BS7671/
 │   ├── part7-special-locations.json
 │   ├── cable-types-fire-rated.json
 │   └── diversity-factors.json
-│
-└── (deprecated)
-    └── cable-current-ratings.json     ← do not use
 ```
 
 ---

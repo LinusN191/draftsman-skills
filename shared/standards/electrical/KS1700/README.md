@@ -14,7 +14,7 @@
 | Foundational | meta.json, README.md, terminology.md, compliance-checklist.md, amd-summary.md |
 | Contextual prose | earthing-systems-explained.md, cable-types-overview.md, inspection-and-testing.md, protective-device-types.md, pscc-determination.md |
 | Earthing-relevant clauses | reg411-disconnection-times.json, reg411-rcd-requirements.json, reg433-overcurrent-protection.json, reg434-fault-current.json, reg443-spd.json, reg521-installation-methods.json, reg522-ip-ratings.json |
-| Appendix / table content | appendix4-cable-ratings.json, appendix4-cable-ratings-aluminium.json, appendix4-correction-factors.json, appendix12-voltage-drop.json, appendix3-device-curves.json, cable-current-ratings.json, diversity-factors.json |
+| Appendix / table content | appendix4-cable-ratings.json, appendix4-cable-ratings-aluminium.json, appendix4-correction-factors.json, appendix12-voltage-drop.json, appendix3-device-curves.json, diversity-factors.json |
 | Special locations | part7-special-locations.json, cable-types-fire-rated.json |
 | **KS-unique** | annex-E-bs7671-adoption-table.json, ks-unique-deviations.json |
 
