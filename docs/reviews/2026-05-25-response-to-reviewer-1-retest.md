@@ -206,3 +206,50 @@ After the fix: validate-examples.py 166/166 still passes, but now because the sc
 Score: **5 actioned/clarified this commit + 1 prior commit = 6 closed + 4 runtime-boundary clarifications + 5 remaining open.**
 
 — DraftsMan team
+
+---
+
+# Addendum — 2026-05-25 round 3 (component-by-component audits: fault-level + earthing + db-layout + sld)
+
+Genuinely the most rigorous category of review the project has had — full component decomposition (manifest / schemas / prompts / rules / validation / constraints / ontology / examples / intents / evals) tested independently.
+
+## Quick wins from round 3
+
+- **fault-level** (commit `1c68184`): the ontology `utility`/`utility_transformer` "mismatch" turned out to be a deliberate dual-form (long form at the supply-arrangement slot, short form at the contributor slot). Documented `_schema_field_mapping` in the ontology so the next audit doesn't re-flag it.
+- **earthing** (commit `97e4570`): real schema-conformance regressions found. Five of 6 intents missing `available_zs_at_main_db_ohm` AND the entire intent shape was pre-Sprint-A; migrated all 5 to current shape. `intl-rural-tncs` chat_summary 641 chars > 500 cap.
+- **Structural fix from earthing audit:** added **Pass 4 (intent validation)** to `validate-examples.py` — the harness now validates every `intent-out.json` against the producing skill's intent schema. Aggregate jumped 166/166 → 219/219 across 4 passes. Pass 4 also surfaced `sld/intl-commercial-msb-4subdbs/intent-out.json` carrying a stray `sheet_count: 2` field that nobody had flagged (removed).
+- **Cap raise from chat_summary friction** (commit `7e35755`): user explicit rule "don't trim non-consequential content even when reviewer highlights it." Schema `rationale.chat_summary.maxLength` raised 500 → 800 (aligns with the existing `invariants.evidence` + `arc-flash/provenance.provenance_note` benchmarks). Restored intl-rural-tncs to the original 641-char content. Future trim-vs-cap-raise decisions go to cap-raise unless the field has documented UI/render constraints.
+- **db-layout** (commit `7492840`): 4 chat_summary >500 findings (ke-nairobi-gh-db 581, uk-domestic-consumer-unit 519, us-strip-mall-common-area 503, us-strip-mall-tsp-b 533) ALL pass under the new 800 cap — no action needed at the example level. The manifest gap (4 validation specs not declared) turned out to be universal — all 10 shipped skills had the same `validation` declaration missing, plus 8 of 10 carried a silent legacy `validators` (plural-noun) key alongside any new declaration. Added `validation` key + removed legacy `validators` across all 10 manifests; uniform convention now matches `prompts/`, `evals/`, `examples/`.
+
+## sld round 4 — both findings already pre-resolved
+
+Your sld audit flagged two schema items that turned out to be pre-resolved:
+
+1. **chat_summary > 500 in 1 sld example** — `intl-commercial-msb-4subdbs` is 533 chars. Cap was raised 500→800 in commit `7e35755` per the no-trim rule. All 4 sld outputs now within cap (323/439/466/533).
+2. **`sheet_count` extra property in 1 sld intent** — removed in commit `97e4570` (the same commit that added Pass 4; Pass 4 was the check that surfaced this in the first place). `git log electrical/sld/examples/intl-commercial-msb-4subdbs/intent-out.json` confirms.
+
+If your audit was against a recent pull, the cap-raise (`7e35755` at 2026-05-25 12:xx) and the Pass-4 fix (`97e4570` slightly earlier same day) should both be in. If your re-test pulled before those, the findings are stale. Either way: zero remaining schema issues on sld at HEAD.
+
+## sld round 4 — confirmations + headline
+
+Your headline observation lands cleanly: **sld is the strongest skill tested so far.** Specific confirmations:
+
+- **H1 propagation** (the consumed `peak_pfc_ka = 43.49` matching the fault-level intent's fixed max after H1 was corrected from 22.5 → 43.49 kA): this is exactly the cascade-correctness the Sprint B.1 fix-pass intended. Worth flagging because it confirms the cascade fix wasn't just to the producer — the consumer was updated too (we did that in B.1's fix-pass commit `2cddbac`).
+- **Selectivity-cascade catching ke-nairobi's 10 kA Icu vs 10.2 kA PFC** with regulatory citation (your "skill's finest moment") — agreed. The skill carries the issue in `compliance_summary.non_compliance_flags` rather than the top-level `flags` array, which is why a flag-array filter misses it.
+- **Both your false positives** (Icu < PFC; life-safety overlap from substring match) confirm the skill's defensive engineering is more granular than coarse cross-cutting checks can see. That asymmetry — skill catches more than the oracle sees — is the right direction.
+
+## Pattern update: 4 skills deep
+
+You wrote: "engineering and integration logic are consistently sound (and prior defects verifiably fixed); the only recurring open defect class is schema conformance."
+
+True at the time. After this round's fixes:
+
+- **chat_summary >500 systematic finding** → resolved at the SCHEMA layer (cap raise) per the user's no-trim rule. Not a per-skill problem anymore
+- **intent-shape drift (earthing) + stray property (sld)** → resolved per-example AND structurally via Pass 4 (which would have caught both at CI time)
+- **Manifest validation declaration missing (db-layout)** → resolved universally across 10 skills
+
+The "schema conformance" defect class is now actively guarded by 4 harness passes + the cap-raise convention + the no-trim rule. Future regressions in this class should be caught in CI on the introducing commit.
+
+The remaining genuinely-open items from the original consolidated list are unchanged: C3 IEEE 1584 transcription (paywall), integrated-design-review skill (stubbed, unbuilt), eval-execution engine (#13 — still queued).
+
+— DraftsMan team
