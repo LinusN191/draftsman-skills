@@ -307,3 +307,44 @@ Your repeated observation — "engineering is consistently sound; the residual i
 The only genuinely-open data-completeness item across all skills is M3 rare-method engineer verification (paywall — same constraint class as C3 IEEE 1584).
 
 — DraftsMan team
+
+---
+
+# Addendum — 2026-05-25 round 6 (small-power)
+
+Briefest round: your verdict ("cleanest skill tested so far") lands. Two notes.
+
+## Manifest "thin" flag — already universally fixed (commit `19cfcc2`)
+
+Your one blemish was small-power's manifest missing rules/validation/constraints declarations — same pattern as cable-sizing. This was fixed universally in the cable-sizing round (round 5) via commit `19cfcc2`. Current small-power manifest (v1.1.0) declares all 9 categories:
+
+```
+prompts: declared
+evals: 10 entries; examples: 5; validation: 2; rules: 5; constraints: 1
+ontology: 2; calculations: 2; standards: 13
+```
+
+Your audit pulled before `19cfcc2`. After the pull, small-power's blemish is gone — manifest now matches the rest of the shipped set.
+
+## Two self-corrections you logged confirm something useful
+
+You wrote: *"I also corrected two of my own checks this round (special-locations IS exercised; the verified_zs flag IS resolved) — both were my tooling being too crude, the skill was right."*
+
+This is the second time in two skills (sld round 4 had the Icu and life-safety FPs; now small-power) where the skill's defensive engineering is more granular than the cross-cutting check can see. That asymmetry is the right direction — and it suggests the audit framework's next iteration could codify these "look in the right field" learnings into the oracle itself.
+
+## Updated 6-skill matrix at HEAD
+
+| Skill | Engineering | Schema | Manifest | Open at HEAD |
+|---|---|---|---|---|
+| fault-level | ✅ | ✅ | ✅ | ontology dual-form documented (round 3) |
+| earthing | ✅ | ✅ | ✅ | none — Pass 4 + intent migration cleared |
+| db-layout | ✅ | ✅ | ✅ | none — chat_summary cap raised |
+| sld | ✅ strongest integration | ✅ | ✅ | none — sheet_count removed |
+| cable-sizing | ✅ | ✅ | ✅ | M3 rare-method engineer verification (paywall) |
+| small-power | ✅ cleanest | ✅ | ✅ | none |
+
+**Net at HEAD (post all 6 rounds + 9 fix commits):** zero schema-conformance gaps; zero manifest-completeness gaps; one engineering-procurement open (M3 paywall same class as C3).
+
+Remaining to test: lighting-layout, arc-flash, arc-flash-labelling, schematic. arc-flash is the one carrying the C3 partial (LV IEEE 1584 coefficients).
+
+— DraftsMan team
