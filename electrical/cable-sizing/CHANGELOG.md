@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.2] - 2026-05-25
+
+### Standards data (M3 cause-fix)
+- **M3** (data provenance): added `shared/standards/electrical/BS7671/appendix4-table-4D1A-pvc-twin-earth.json` — UK domestic PVC twin-and-earth Iz + mVAm per Methods C / A / 100 / 101 / 102 / 103.
+- **M3**: added `shared/standards/electrical/BS7671/appendix4-table-4D5A-pvc-swa.json` — PVC SWA Iz + mVAm per Methods C / D.
+- **M3**: added 1.0 mm² row to existing `appendix4-cable-ratings.json` (4D2A XLPE Cu, all 5 method blocks: A1, B1, C, E_trefoil, F_flat); previously absent despite being a standard UK lighting CSA.
+- All new tables flagged `verification_status: engineer_transcription_C2` — values transcribed from industry-standard references; engineer-verify against published BS 7671:2018+A2:2022 Appendix 4 before runtime use.
+- Methods 101 / 102 / 103 (4D1A) and Method D (4D5A) additionally flagged `verification_status: pending_engineer_transcription` with `_TODO` notes — engineering estimates only; must be verified against published edition before runtime use.
+
+Closes DEFECT_REGISTER M3 (Reviewer 1: "PVC and SWA cables sized from values not present in shipped XLPE-only tables; 1.0 mm² absent entirely").
+
 ## [next-patch] - 2026-05-25 — M1 hybrid eval-vs-IR fix
 
 ### Added
