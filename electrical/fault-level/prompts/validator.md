@@ -51,6 +51,34 @@ Cross-contamination ban: `KS 1700` MUST NOT appear when `jurisdiction != "KE"`. 
 **INV-10: Rationale presence.**
 `rationale` block exists with `chat_summary` (40-500 chars) and `sections[]` with ≥8 entries.
 
+### INV-11: Internal consistency — Ik reconciles to c·U/(div·Z)
+
+**Severity:** HIGH
+
+**Rule:** For every cascade node, the stored `ifault_ka_max` MUST reconcile to
+the documented formula within 1%:
+
+- Three-phase: `Ik = c × U / (√3 × Z)`  (kA when U is in V, Z in Ω, ÷1000)
+- Single-phase TN: `Ik = c × U₀ / (2 × Z)`
+- HV declared PSCC: `Ik = declared_value` (do NOT re-multiply by c; ZQ is
+  back-calculated as `ZQ = c × U / (√3 × Ik_declared)`)
+
+Where:
+- c = 1.10 for HV nodes (voltage_class > 1 kV), 1.05 for LV nodes
+- U = node voltage (line-to-line for 3-phase, phase-to-neutral for 1-phase)
+- Z = node `z_total_ohm` (after all upstream impedances summed in series)
+
+**Validator action:** for each node in `cascade[]`, compute the expected Ik from
+c, U, div, Z; compare to stored `ifault_ka_max`; flag any deviation > 1% with
+the formula used + the expected value. Special cases:
+- declared PSCC nodes (where `calculation_basis` contains "declared"): skip
+  reconciliation but assert that ZQ back-calc holds.
+- motor superposition nodes: skip (oracle limitation documented in
+  functional_audit.py false-positive disclosure).
+
+**Rationale:** prevents H1+H2+H3 class of defects (TX-1 sub-impedance,
+double-c-factor on declared PSCC, single-phase z disconnect).
+
 ### 3. Intent extraction validation
 
 Project IR → `fault-level` intent shape. Validate against `fault-level-intent.schema.json`. Intent must contain `project_id`, `source_summary`, `fault_currents[]` (≥1 entry).
@@ -68,4 +96,4 @@ Project IR → `fault-level` intent shape. Validate against `fault-level-intent.
 }
 ```
 
-`valid: true` requires schema pass + all 10 invariants pass + intent extraction valid.
+`valid: true` requires schema pass + all 11 invariants pass + intent extraction valid.
