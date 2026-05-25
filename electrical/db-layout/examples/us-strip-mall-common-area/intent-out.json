@@ -8,12 +8,91 @@
     "supply_class": "non_essential"
   },
   "circuits": [
-    { "id": "C01", "module_id": "W1", "breaker_rating_a": 30, "breaker_curve": "C", "rcd_protected": false,                                            "cable_csa_awg": "10 AWG Cu", "cable_cores": 3, "voltage_class": "LV_power",          "downstream_load_kw": 3.5, "approximate_route_length_m": 60 },
-    { "id": "C02", "module_id": "W2", "breaker_rating_a": 20, "breaker_curve": "C", "rcd_protected": false,                                            "cable_csa_awg": "12 AWG Cu", "cable_cores": 3, "voltage_class": "LV_power",          "downstream_load_kw": 1.8, "approximate_route_length_m": 40 },
-    { "id": "C03", "module_id": "W3", "breaker_rating_a": 20, "breaker_curve": "C", "rcd_protected": false,                                            "cable_csa_awg": "12 AWG Cu", "cable_cores": 3, "voltage_class": "emergency_lighting", "downstream_load_kw": 1.2, "approximate_route_length_m": 35 },
-    { "id": "C04", "module_id": "W4", "breaker_rating_a": 20, "breaker_curve": "C", "rcd_protected": true,  "rcd_type": "A", "rcd_sensitivity_ma": 10, "cable_csa_awg": "12 AWG Cu", "cable_cores": 3, "voltage_class": "LV_power",          "downstream_load_kw": 1.5, "approximate_route_length_m": 30 },
-    { "id": "C05", "module_id": "W5-W6", "breaker_rating_a": 60, "breaker_curve": "D", "rcd_protected": false,                                          "cable_csa_awg": "6 AWG Cu",  "cable_cores": 4, "voltage_class": "LV_power",          "downstream_load_kw": 11.0, "approximate_route_length_m": 18 },
-    { "id": "C06", "module_id": "W7", "breaker_rating_a": 15, "breaker_curve": "C", "rcd_protected": false,                                            "cable_csa_awg": "14 AWG Cu", "cable_cores": 3, "voltage_class": "LV_power",          "downstream_load_kw": 0.6, "approximate_route_length_m": 50 }
+    {
+      "id": "C01",
+      "module_id": "W1",
+      "breaker_rating_a": 30,
+      "breaker_curve": "C",
+      "rcd_protected": false,
+      "cable_csa_awg": "10 AWG Cu",
+      "cable_cores": 3,
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 3.5,
+      "approximate_route_length_m": 60,
+      "breaker_breaking_capacity_ka": 10
+    },
+    {
+      "id": "C02",
+      "module_id": "W2",
+      "breaker_rating_a": 20,
+      "breaker_curve": "C",
+      "rcd_protected": false,
+      "cable_csa_awg": "12 AWG Cu",
+      "cable_cores": 3,
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 1.8,
+      "approximate_route_length_m": 40,
+      "breaker_breaking_capacity_ka": 10
+    },
+    {
+      "id": "C03",
+      "module_id": "W3",
+      "breaker_rating_a": 20,
+      "breaker_curve": "C",
+      "rcd_protected": false,
+      "cable_csa_awg": "12 AWG Cu",
+      "cable_cores": 3,
+      "voltage_class": "emergency_lighting",
+      "downstream_load_kw": 1.2,
+      "approximate_route_length_m": 35,
+      "breaker_breaking_capacity_ka": 10
+    },
+    {
+      "id": "C04",
+      "module_id": "W4",
+      "breaker_rating_a": 20,
+      "breaker_curve": "C",
+      "rcd_protected": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 10,
+      "cable_csa_awg": "12 AWG Cu",
+      "cable_cores": 3,
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 1.5,
+      "approximate_route_length_m": 30,
+      "breaker_breaking_capacity_ka": 10
+    },
+    {
+      "id": "C05",
+      "module_id": "W5-W6",
+      "breaker_rating_a": 60,
+      "breaker_curve": "D",
+      "rcd_protected": false,
+      "cable_csa_awg": "6 AWG Cu",
+      "cable_cores": 4,
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 11.0,
+      "approximate_route_length_m": 18,
+      "breaker_breaking_capacity_ka": 22
+    },
+    {
+      "id": "C06",
+      "module_id": "W7",
+      "breaker_rating_a": 15,
+      "breaker_curve": "C",
+      "rcd_protected": false,
+      "cable_csa_awg": "14 AWG Cu",
+      "cable_cores": 3,
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 0.6,
+      "approximate_route_length_m": 50,
+      "breaker_breaking_capacity_ka": 10
+    }
   ],
-  "spare_ways": 13
+  "spare_ways": 13,
+  "main_switch": {
+    "type": "switch-disconnector",
+    "rating_a": 60,
+    "breaking_capacity_ka": 22
+  }
 }

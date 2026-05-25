@@ -23,6 +23,18 @@ change makes the validator-INV evidence visible to the runtime eval harness
 and fixes the dangling-path findings without weakening the engineering
 contract.
 
+## [1.3.3] - 2026-05-25
+
+### Added
+- **D1.0 (Sprint D1 prerequisite):** `main_switch.breaking_capacity_ka` +
+  outgoing-circuit `breaker_breaking_capacity_ka` declared in the intent
+  schema (now required). Field already existed in the output IR; the
+  intent was the missing piece. Enables downstream fault-level Sprint D1
+  hybrid-consumer breaking-capacity verdict (D1.1).
+- Backported the field across all 20 example intent-out.json files
+  by reading from each example's corresponding output.json main_switch
+  + per-circuit ocpd block.
+
 ## [1.3.2] - 2026-05-25
 
 ### Fixed

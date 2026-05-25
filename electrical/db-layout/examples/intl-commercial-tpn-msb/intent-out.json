@@ -7,10 +7,59 @@
     "supply_class": "non_essential"
   },
   "circuits": [
-    { "id": "F01", "module_id": "W1-W3", "breaker_rating_a": 250, "breaker_curve": "D", "cable_csa_mm2": 150, "cable_cores": 5, "voltage_class": "LV_power", "downstream_load_kw": 80, "approximate_route_length_m": 35 },
-    { "id": "F02", "module_id": "W4-W6", "breaker_rating_a": 400, "breaker_curve": "D", "cable_csa_mm2": 240, "cable_cores": 5, "voltage_class": "LV_power", "downstream_load_kw": 150, "approximate_route_length_m": 40 },
-    { "id": "F03", "module_id": "W7-W9", "breaker_rating_a": 250, "breaker_curve": "D", "cable_csa_mm2": 150, "cable_cores": 5, "voltage_class": "LV_power", "downstream_load_kw": 100, "approximate_route_length_m": 45 },
-    { "id": "F04", "module_id": "W10-W12", "breaker_rating_a": 63, "breaker_curve": "C", "cable_csa_mm2": 16, "cable_cores": 5, "voltage_class": "fire_alarm", "downstream_load_kw": 12, "approximate_route_length_m": 60 }
+    {
+      "id": "F01",
+      "module_id": "W1-W3",
+      "breaker_rating_a": 250,
+      "breaker_curve": "D",
+      "cable_csa_mm2": 150,
+      "cable_cores": 5,
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 80,
+      "approximate_route_length_m": 35,
+      "breaker_breaking_capacity_ka": 36
+    },
+    {
+      "id": "F02",
+      "module_id": "W4-W6",
+      "breaker_rating_a": 400,
+      "breaker_curve": "D",
+      "cable_csa_mm2": 240,
+      "cable_cores": 5,
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 150,
+      "approximate_route_length_m": 40,
+      "breaker_breaking_capacity_ka": 36
+    },
+    {
+      "id": "F03",
+      "module_id": "W7-W9",
+      "breaker_rating_a": 250,
+      "breaker_curve": "D",
+      "cable_csa_mm2": 150,
+      "cable_cores": 5,
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 100,
+      "approximate_route_length_m": 45,
+      "breaker_breaking_capacity_ka": 36
+    },
+    {
+      "id": "F04",
+      "module_id": "W10-W12",
+      "breaker_rating_a": 63,
+      "breaker_curve": "C",
+      "cable_csa_mm2": 16,
+      "cable_cores": 5,
+      "voltage_class": "fire_alarm",
+      "downstream_load_kw": 12,
+      "approximate_route_length_m": 60,
+      "breaker_breaking_capacity_ka": 36
+    }
   ],
-  "spare_ways": 8
+  "spare_ways": 8,
+  "main_switch": {
+    "type": "MCCB",
+    "rating_a": 800,
+    "breaking_capacity_ka": 80
+  }
 }

@@ -8,12 +8,89 @@
     "supply_class": "essential"
   },
   "circuits": [
-    { "id": "FA01", "module_id": "W1", "breaker_rating_a": 6,  "breaker_curve": "C", "rcd_protected": false, "cable_csa_mm2": 1.5, "cable_cores": 3, "voltage_class": "fire_alarm", "downstream_load_kw": 0.5, "approximate_route_length_m": 5 },
-    { "id": "FA02", "module_id": "W2", "breaker_rating_a": 6,  "breaker_curve": "C", "rcd_protected": false, "cable_csa_mm2": 1.5, "cable_cores": 3, "voltage_class": "fire_alarm", "downstream_load_kw": 0.2, "approximate_route_length_m": 40 },
-    { "id": "FA03", "module_id": "W3", "breaker_rating_a": 6,  "breaker_curve": "C", "rcd_protected": false, "cable_csa_mm2": 1.5, "cable_cores": 3, "voltage_class": "fire_alarm", "downstream_load_kw": 0.2, "approximate_route_length_m": 60 },
-    { "id": "FA04", "module_id": "W4", "breaker_rating_a": 6,  "breaker_curve": "C", "rcd_protected": false, "cable_csa_mm2": 1.5, "cable_cores": 3, "voltage_class": "fire_alarm", "downstream_load_kw": 0.2, "approximate_route_length_m": 80 },
-    { "id": "FA05", "module_id": "W5", "breaker_rating_a": 10, "breaker_curve": "C", "rcd_protected": false, "cable_csa_mm2": 2.5, "cable_cores": 3, "voltage_class": "fire_alarm", "downstream_load_kw": 1.5, "approximate_route_length_m": 70 },
-    { "id": "FA06", "module_id": "W6", "breaker_rating_a": 6,  "breaker_curve": "C", "rcd_protected": false, "cable_csa_mm2": 1.5, "cable_cores": 3, "voltage_class": "fire_alarm", "downstream_load_kw": 0.4, "approximate_route_length_m": 3 }
+    {
+      "id": "FA01",
+      "module_id": "W1",
+      "breaker_rating_a": 6,
+      "breaker_curve": "C",
+      "rcd_protected": false,
+      "cable_csa_mm2": 1.5,
+      "cable_cores": 3,
+      "voltage_class": "fire_alarm",
+      "downstream_load_kw": 0.5,
+      "approximate_route_length_m": 5,
+      "breaker_breaking_capacity_ka": 10
+    },
+    {
+      "id": "FA02",
+      "module_id": "W2",
+      "breaker_rating_a": 6,
+      "breaker_curve": "C",
+      "rcd_protected": false,
+      "cable_csa_mm2": 1.5,
+      "cable_cores": 3,
+      "voltage_class": "fire_alarm",
+      "downstream_load_kw": 0.2,
+      "approximate_route_length_m": 40,
+      "breaker_breaking_capacity_ka": 10
+    },
+    {
+      "id": "FA03",
+      "module_id": "W3",
+      "breaker_rating_a": 6,
+      "breaker_curve": "C",
+      "rcd_protected": false,
+      "cable_csa_mm2": 1.5,
+      "cable_cores": 3,
+      "voltage_class": "fire_alarm",
+      "downstream_load_kw": 0.2,
+      "approximate_route_length_m": 60,
+      "breaker_breaking_capacity_ka": 10
+    },
+    {
+      "id": "FA04",
+      "module_id": "W4",
+      "breaker_rating_a": 6,
+      "breaker_curve": "C",
+      "rcd_protected": false,
+      "cable_csa_mm2": 1.5,
+      "cable_cores": 3,
+      "voltage_class": "fire_alarm",
+      "downstream_load_kw": 0.2,
+      "approximate_route_length_m": 80,
+      "breaker_breaking_capacity_ka": 10
+    },
+    {
+      "id": "FA05",
+      "module_id": "W5",
+      "breaker_rating_a": 10,
+      "breaker_curve": "C",
+      "rcd_protected": false,
+      "cable_csa_mm2": 2.5,
+      "cable_cores": 3,
+      "voltage_class": "fire_alarm",
+      "downstream_load_kw": 1.5,
+      "approximate_route_length_m": 70,
+      "breaker_breaking_capacity_ka": 10
+    },
+    {
+      "id": "FA06",
+      "module_id": "W6",
+      "breaker_rating_a": 6,
+      "breaker_curve": "C",
+      "rcd_protected": false,
+      "cable_csa_mm2": 1.5,
+      "cable_cores": 3,
+      "voltage_class": "fire_alarm",
+      "downstream_load_kw": 0.4,
+      "approximate_route_length_m": 3,
+      "breaker_breaking_capacity_ka": 10
+    }
   ],
-  "spare_ways": 2
+  "spare_ways": 2,
+  "main_switch": {
+    "type": "switch-disconnector",
+    "rating_a": 63,
+    "breaking_capacity_ka": 10
+  }
 }

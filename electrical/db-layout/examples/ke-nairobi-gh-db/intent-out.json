@@ -8,9 +8,54 @@
     "supply_class": "non_essential"
   },
   "circuits": [
-    { "id": "C01", "module_id": "W1", "breaker_rating_a": 10, "breaker_curve": "B", "rcd_protected": false,                                            "cable_csa_mm2": 1.5, "cable_cores": 3, "voltage_class": "LV_power",   "downstream_load_kw": 0.6, "approximate_route_length_m": 8 },
-    { "id": "C02", "module_id": "W2", "breaker_rating_a": 16, "breaker_curve": "B", "rcd_protected": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30, "cable_csa_mm2": 2.5, "cable_cores": 3, "voltage_class": "LV_power",   "downstream_load_kw": 1.5, "approximate_route_length_m": 6 },
-    { "id": "C03", "module_id": "W3", "breaker_rating_a": 6,  "breaker_curve": "B", "rcd_protected": true,  "rcd_type": "A", "rcd_sensitivity_ma": 30, "cable_csa_mm2": 1.5, "cable_cores": 3, "voltage_class": "comms_data", "downstream_load_kw": 0.2, "approximate_route_length_m": 5 }
+    {
+      "id": "C01",
+      "module_id": "W1",
+      "breaker_rating_a": 10,
+      "breaker_curve": "B",
+      "rcd_protected": false,
+      "cable_csa_mm2": 1.5,
+      "cable_cores": 3,
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 0.6,
+      "approximate_route_length_m": 8,
+      "breaker_breaking_capacity_ka": 6
+    },
+    {
+      "id": "C02",
+      "module_id": "W2",
+      "breaker_rating_a": 16,
+      "breaker_curve": "B",
+      "rcd_protected": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2": 2.5,
+      "cable_cores": 3,
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 1.5,
+      "approximate_route_length_m": 6,
+      "breaker_breaking_capacity_ka": 6
+    },
+    {
+      "id": "C03",
+      "module_id": "W3",
+      "breaker_rating_a": 6,
+      "breaker_curve": "B",
+      "rcd_protected": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2": 1.5,
+      "cable_cores": 3,
+      "voltage_class": "comms_data",
+      "downstream_load_kw": 0.2,
+      "approximate_route_length_m": 5,
+      "breaker_breaking_capacity_ka": 6
+    }
   ],
-  "spare_ways": 1
+  "spare_ways": 1,
+  "main_switch": {
+    "type": "switch-disconnector",
+    "rating_a": 40,
+    "breaking_capacity_ka": 6
+  }
 }

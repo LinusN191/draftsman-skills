@@ -28,13 +28,18 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["id", "module_id", "breaker_rating_a", "breaker_curve"],
+        "required": ["id", "module_id", "breaker_rating_a", "breaker_curve", "breaker_breaking_capacity_ka"],
         "additionalProperties": false,
         "properties": {
           "id":                 { "type": "string" },
           "module_id":          { "type": "string" },
           "breaker_rating_a":   { "type": "integer", "enum": [6, 10, 15, 16, 20, 25, 30, 32, 35, 40, 45, 50, 60, 63, 70, 80, 90, 100, 110, 125, 150, 160, 175, 200, 225, 250, 300, 400, 500, 600, 630, 700, 800, 1000, 1200, 1250, 1600, 2000, 2500, 3000, 4000] },
           "breaker_curve":      { "enum": ["B", "C", "D"] },
+          "breaker_breaking_capacity_ka": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Rated short-circuit breaking capacity in kA for this circuit's OCPD. Per BS EN 60898 (MCBs) / IEC 60947-2 (MCCBs/ACBs). Used by downstream fault-level for breaking-capacity verdict per BS 7671 Reg 432.1.2 / NEC 110.9. Added Sprint D1.0."
+          },
           "rcd_protected":      { "type": "boolean" },
           "rcd_type":           { "enum": ["AC", "A", "F", "B"] },
           "rcd_sensitivity_ma": { "type": "integer", "enum": [10, 30, 100, 300, 500] },
@@ -53,11 +58,17 @@
     },
     "main_switch": {
       "type": "object",
+      "required": ["type", "rating_a", "breaking_capacity_ka"],
       "additionalProperties": false,
       "properties": {
         "type":       { "enum": ["switch-disconnector", "MCCB", "isolator", "RCCB", "RCBO", "main_switch_fused"] },
         "rating_a":   { "type": "number", "exclusiveMinimum": 0 },
-        "curve":      { "enum": ["B", "C", "D"] }
+        "curve":      { "enum": ["B", "C", "D"] },
+        "breaking_capacity_ka": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Rated short-circuit breaking capacity in kA (Icn per BS EN 60898; Icu per IEC 60947-2). Used by downstream fault-level for breaking-capacity verdict per BS 7671 Reg 432.1.2 / NEC 110.9. Added Sprint D1.0 to enable fault-level hybrid consumer pattern (D1.1)."
+        }
       }
     },
     "spare_ways":      { "type": "integer", "minimum": 0 },
