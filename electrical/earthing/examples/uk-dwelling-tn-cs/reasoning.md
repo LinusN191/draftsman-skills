@@ -5,7 +5,7 @@
 > **v1.1 retrofit (2026-05-17):** This example now declares `calc.zs_loop_impedance` tool deferral per WI3. The Zs values below are unchanged from v1.0.0 (LLM-computed inline); the deterministic tool will refine them when the DraftsMan runtime ships. The `zs_calc_tool_input` replay payload was added at the IR root so the tool can re-execute deterministically.
 
 ## Step 1 — Discovery check
-Confirmed `consumed_intents` array contains the triple: db-layout, lighting-layout, small-power. All circuits to earth-aware-design are visible.
+Confirmed `consumed_intents` array contains the load-bearing db-layout intent (inline payload). The earthing computation derives Zs = Ze + R1+R2 per BS 7671:2018+A2:2022 Reg 411.4 from the db-layout circuits alone; lighting-layout and small-power refs were removed in Sprint B H7 as non-load-bearing cruft (they did not contribute additional earth-fault-loop data).
 
 ## Step 2 — Standards files to load
 Jurisdiction is GB. Loading:
