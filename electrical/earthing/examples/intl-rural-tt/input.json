@@ -1,0 +1,39 @@
+{
+  "$schema": "../../inputs.json",
+  "project_meta": {
+    "name": "Rural off-grid cottage — TT earthing (genuine TT)",
+    "client": "INT rural — off-grid cottage owner",
+    "designer": "DraftsMan Skills demo",
+    "date": "2026-05-25",
+    "revision": "P01",
+    "sprint_note": "Authored in Sprint C.1 / M2 — the previously misnamed `intl-rural-tt/` folder was renamed to `intl-rural-tncs/` in Sprint A.1 because its content was always TN-C-S. This NEW example is the genuine TT case: rural off-grid dwelling, no PME, single rod electrode, RCD mandatory on every final circuit per IEC 60364-4-41 §411.5."
+  },
+  "jurisdiction": "INT",
+  "earthing_system": "TT",
+  "supply_voltage_v": "230",
+  "supply_phase": "single_phase",
+  "ze_ohm_declared": 200.0,
+  "ze_ohm_source": "Off-grid installation — no utility supply, therefore Ze (network impedance) is effectively the local electrode resistance Ra. Installer-measured Ra = 200 Ω in dry season (worst case) on a single 3 m driven rod in sandy loam at ~800 Ω·m soil resistivity.",
+  "building_type": "dwelling_single_family",
+  "has_lightning_protection": false,
+  "extraneous_parts": [],
+  "ground_conditions": "sand_dry",
+  "electrode_count_planned": 1,
+  "electrode_type_planned": "rod",
+  "target_ra_ohm": 200.0,
+  "met_location": "meter board, kitchen utility area",
+  "supplementary_bonding_required_locations": [],
+  "life_safety_bonded_assets": ["none"],
+  "rcd_type_default": "A",
+  "engineering_brief": {
+    "site_summary": "80 m² single-storey off-grid rural cottage. No grid connection (no utility PEN bond → TT is the only valid system arrangement per IEC 60364-4-41 §411.5). PV-and-battery off-grid supply with inverter providing 230 V single-phase; inverter is configured with a single neutral-earth bond at the consumer side that establishes the system as TT (no utility-side bond exists).",
+    "soil_summary": "Sandy loam, ~800 Ω·m soil resistivity, dry season worst case. A single 3 m driven rod measured Ra = 200 Ω at handover. Engineer accepts this Ra value as the design value — calc.electrode_resistance tool deferred per WI3.",
+    "circuits_summary": [
+      {"circuit_id": "F01", "designation": "lighting (whole cottage)",         "ocpd": "B6 MCB",   "line_cpc_csa_mm2": 1.5, "route_length_m": 18},
+      {"circuit_id": "F02", "designation": "sockets — kitchen ring",            "ocpd": "B16 MCB",  "line_cpc_csa_mm2": 2.5, "route_length_m": 12},
+      {"circuit_id": "F03", "designation": "water heater (storage, dedicated)", "ocpd": "B16 MCB",  "line_cpc_csa_mm2": 2.5, "route_length_m": 6},
+      {"circuit_id": "F04", "designation": "sockets — bedroom",                 "ocpd": "B16 MCB",  "line_cpc_csa_mm2": 2.5, "route_length_m": 14}
+    ],
+    "rcd_strategy": "Per IEC 60364-4-41:2017 §411.5 — TT mandates RCD on every final circuit. Disconnection condition §411.5.3: Ra × IΔn ≤ 50 V. With IΔn = 30 mA on every circuit and Ra = 200 Ω: 200 × 0.030 = 6.0 V ≤ 50 V (passes with margin). RCD type: §531.3.3 — Type A on socket-outlet circuits (≤6 mA DC residual tolerance, sufficient for modern domestic electronic loads); Type AC on the dedicated lighting circuit (no DC residual). F03 water heater is fed via socket-outlet spur in this design and takes Type A as precaution."
+  }
+}

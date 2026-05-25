@@ -1,62 +1,57 @@
-# Eval 02 — Rural UK dwelling, TT (no PME), all circuits need RCD
+# Eval 02 — Rural off-grid cottage, TT (genuine), all circuits need RCD
 # Category: edge_case
+#
+# Sprint C.1 / M2 (2026-05-25): re-pointed from inline GB rural-TT input
+# to the canonical INT off-grid cottage fixture authored at
+# examples/intl-rural-tt/. The previous inline input was authored when
+# the intl-rural-tt/ folder did not exist; now that Sprint C.1 has filled
+# that slot with a genuine TT example, this eval consumes the example
+# fixture directly. Option (a) per Sprint C.1 plan.
 
 name: eval-02-rural-tt-system
 skill: earthing
 category: edge_case
 description: |
-  Rural UK farm cottage. DNO has declined to provide PME earth. Installation is TT
-  with a local rod electrode. Soil is loam, engineer declares Ra=85Ω after installation.
-  Every final circuit must have RCD per BS 7671 411.5.3 to meet disconnection time.
+  Rural off-grid cottage — TT mandated by absence of utility PEN bond.
+  Single 3 m driven rod electrode, installer-measured Ra=200 Ω. Every
+  final circuit RCD-protected at 30 mA per IEC 60364-4-41 §411.5 to meet
+  the §411.5.3 disconnection condition Ra·IΔn ≤ 50 V (passes at 6.0 V).
+  This eval exercises the safest earthing branch (TT + RCD on every
+  circuit) which prior to Sprint C.1 / M2 had thorough prompt logic but
+  no worked example.
 
-input:
-  jurisdiction: "GB"
-  earthing_system_declared: "TT"
-  supply_voltage_v: 230
-  ze_ohm_declared: 85.0
-  electrode_target_ra_ohm: 100
-  electrode_measured_ra_ohm: 85.0
-  electrode_arrangement: "single_rod_1200mm_copper_clad"
-  soil_type: "loam"
-  water_service_metallic: false
-  gas_service_metallic: true
-  extraneous_parts:
-    - { kind: "gas_service_entry", location: "kitchen utility" }
-  met_location: "boot room"
-  supplementary_bonding_required_locations: []
-  consumed_intents:
-    - { intent_type: "db-layout", intent_version: "1.0.0", produced_by: "electrical/db-layout/v1.0.0", payload_ref: "test-fixtures/db-layout-eval02.json" }
+input_fixture: electrical/earthing/examples/intl-rural-tt/input.json
 
 checks:
   - assertion: 'ir matches "earthing-ir.schema.json"'
     description: Output validates against the earthing IR schema
     severity: critical
 
-  - assertion: 'ir.earthing_system == "TT"'
+  - assertion: 'ir.earthing_system.system_type == "TT"'
     description: Earthing system must be TT
     severity: critical
 
   - assertion: 'ir.electrodes.length >= 1'
-    description: At least one electrode entry must be present
+    description: At least one electrode entry must be present (TT requires electrode)
     severity: critical
 
-  - assertion: 'ir.electrodes[0].ra_ohm_specified <= 100'
-    description: Ra below target (engineer-input value; calc.electrode_resistance pending per WI3)
+  - assertion: 'ir.electrodes[0].ra_ohm_specified <= 1666'
+    description: Ra below the disconnection-condition ceiling Ra_max = 50/IΔn = 1666Ω at 30mA (engineer-input value; calc.electrode_resistance pending per WI3)
     severity: critical
 
   - assertion: 'ir.circuits[*].rcd_required all_equal true'
-    description: TT requires RCD on every circuit
+    description: TT requires RCD on every circuit per IEC 60364-4-41 §411.5
     severity: critical
 
   - assertion: 'ir.invariants[?(@.id=="INV-06")].passes == true'
-    description: RCD requirement check
+    description: RCD requirement check (the safest earthing branch — TT mandates RCD on every circuit)
     severity: critical
     matches_inv: INV-06
 
-  - assertion: 'ir.earthing_system.code_clause matches "BS 7671:2018\+A3 Reg 411\.5\.3"'
-    description: At least 1 citation matches BS 7671:2018+A3 Reg 411.5.3
+  - assertion: 'ir.earthing_system.code_clause matches "IEC 60364-4-41:2017 §411\.5"'
+    description: At least 1 citation matches IEC 60364-4-41:2017 §411.5 (TT disconnection by RCD)
     severity: warning
 
   - assertion: 'ir.flags matches "TOOL-CALL-PENDING"'
-    description: calc.electrode_resistance is deferred — engineer-provided Ra accepted with pending flag
+    description: calc.electrode_resistance + calc.zs_loop_impedance are deferred — engineer-provided Ra accepted with pending flag
     severity: critical

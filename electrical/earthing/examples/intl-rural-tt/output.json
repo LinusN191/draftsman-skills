@@ -1,0 +1,381 @@
+{
+  "$schema": "../../schemas/earthing-ir.schema.json",
+  "drawing_type": "earthing_schematic",
+  "version": "1.4.1",
+  "meta": {
+    "project_id": "intl-rural-cottage-tt-eg01",
+    "skill_version": "earthing/1.4.1",
+    "produced_at": "2026-05-25T12:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "INT",
+  "earthing_system": {
+    "system_type": "TT",
+    "code_clause": "IEC 60364-4-41:2017 §411.5 (TT system — disconnection by RCD)"
+  },
+  "met": {
+    "location": "meter board, kitchen utility area",
+    "supply_bond_type": "consumer_electrode_only",
+    "main_earthing_conductor_csa_mm2": 16
+  },
+  "electrodes": [
+    {
+      "id": "E1",
+      "electrode_type": "rod",
+      "length_mm": 3000,
+      "diameter_mm": 16,
+      "burial_depth_mm": 3000,
+      "soil_resistivity_ohm_m": 800,
+      "ra_ohm_specified": 200,
+      "tool_call_pending": true
+    }
+  ],
+  "main_bonding": [],
+  "supplementary_bonding": [],
+  "circuits": [
+    {
+      "circuit_id": "F01",
+      "db_designation": "DB-COTTAGE",
+      "voltage_class": "LV_power",
+      "breaker_rating_a": 6,
+      "breaker_curve": "B",
+      "route_length_m": 18,
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "cpc_sizing_method": "iec60364_table_54.2",
+      "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2 (S=CPC for S≤16mm²)",
+      "zs_ohm": 200.436,
+      "zs_max_ohm": 7666.67,
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "AC",
+      "rcd_sensitivity_ma": 30,
+      "compliance_note": "TT lighting circuit. Zs = Ze + (R1+R2) = 200 + (2 × 12.1 mΩ/m × 18 m) = 200.436 Ω. RCD-derived Zs_max = U0/IΔn = 230/0.030 = 7666.67 Ω (per IEC 60364-4-41 §411.5.3 RCD disconnection path). Ra·IΔn = 200 × 0.030 = 6.0 V ≤ 50 V satisfies §411.5.3 disconnection condition. Type AC sufficient — pure resistive/inductive lighting load, no DC residual expected."
+    },
+    {
+      "circuit_id": "F02",
+      "db_designation": "DB-COTTAGE",
+      "voltage_class": "LV_power",
+      "breaker_rating_a": 16,
+      "breaker_curve": "B",
+      "route_length_m": 12,
+      "cpc_csa_mm2_or_awg": "2.5mm²",
+      "cpc_sizing_method": "iec60364_table_54.2",
+      "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2 (S=CPC for S≤16mm²)",
+      "zs_ohm": 200.178,
+      "zs_max_ohm": 7666.67,
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "compliance_note": "TT kitchen socket-outlet circuit. Zs = 200 + (2 × 7.41 mΩ/m × 12 m) = 200.178 Ω. RCD-derived Zs_max = 7666.67 Ω. Ra·IΔn = 6.0 V ≤ 50 V per §411.5.3. Type A per §531.3.3 — domestic socket outlets host electronic loads (chargers, small appliances) with ≤6 mA DC residual; Type AC would be inadequate."
+    },
+    {
+      "circuit_id": "F03",
+      "db_designation": "DB-COTTAGE",
+      "voltage_class": "LV_power",
+      "breaker_rating_a": 16,
+      "breaker_curve": "B",
+      "route_length_m": 6,
+      "cpc_csa_mm2_or_awg": "2.5mm²",
+      "cpc_sizing_method": "iec60364_table_54.2",
+      "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2 (S=CPC for S≤16mm²)",
+      "zs_ohm": 200.089,
+      "zs_max_ohm": 7666.67,
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "compliance_note": "TT dedicated water-heater circuit. Zs = 200 + (2 × 7.41 mΩ/m × 6 m) = 200.089 Ω. Resistive storage-tank heater, but installed on socket-outlet spur — Type A retained as a precaution per §531.3.3. Ra·IΔn = 6.0 V ≤ 50 V."
+    },
+    {
+      "circuit_id": "F04",
+      "db_designation": "DB-COTTAGE",
+      "voltage_class": "LV_power",
+      "breaker_rating_a": 16,
+      "breaker_curve": "B",
+      "route_length_m": 14,
+      "cpc_csa_mm2_or_awg": "2.5mm²",
+      "cpc_sizing_method": "iec60364_table_54.2",
+      "cpc_sizing_clause": "IEC 60364-5-54:2011 Table 54.2 (S=CPC for S≤16mm²)",
+      "zs_ohm": 200.207,
+      "zs_max_ohm": 7666.67,
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "compliance_note": "TT bedroom socket-outlet circuit. Zs = 200 + (2 × 7.41 mΩ/m × 14 m) = 200.207 Ω. Type A per §531.3.3 (electronic loads expected). Ra·IΔn = 6.0 V ≤ 50 V."
+    }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "TT system — no PME, no utility metallic services. Single 3 m driven rod with installer-measured Ra = 200 Ω accepted as the design value (worst-case dry-season). Deterministic refinement via calc.electrode_resistance is deferred per WI3.",
+      "RCD disconnection condition per IEC 60364-4-41 §411.5.3: Ra × IΔn ≤ 50 V. With Ra = 200 Ω and IΔn = 30 mA → 6.0 V ≤ 50 V passes with margin of ~8×.",
+      "RCD type selection per IEC 60364-4-41 §531.3.3: Type A on all socket-outlet circuits (F02-F04) to handle DC residual from electronic loads; Type AC on the dedicated lighting circuit F01 (no DC residual expected).",
+      "No extraneous-conductive-parts to bond — off-grid cottage has no incoming metallic water/gas service (rainwater + bottled LPG). Main bonding array is therefore empty by site fact, not by oversight.",
+      "Cable resistance values are LLM-estimates using IEC 60228 / Eland 20 °C Cu conductor data (1.5 mm²: 12.1 mΩ/m; 2.5 mm²: 7.41 mΩ/m). Deterministic refinement via calc.zs_loop_impedance is deferred per WI3. The conservative 20 °C base under-estimates resistance vs the 70 °C operating case by ~20 %; the design margin (Zs ≈ 200 Ω vs Zs_max 7667 Ω) is two orders of magnitude, so temperature uplift is immaterial to the disconnection-condition pass."
+    ]
+  },
+  "drawing_notes": [
+    "TT system — single rod electrode E1 is the ONLY protective earth source. Cottage has no incoming metallic services; main bonding array intentionally empty.",
+    "All four final circuits protected by 30 mA RCD per IEC 60364-4-41 §411.5. Lighting F01 = Type AC; socket-outlet circuits F02-F04 = Type A.",
+    "Disconnection condition Ra × IΔn = 6.0 V ≤ 50 V per §411.5.3 — passes with ~8× margin. Ra acceptance ceiling for the design: Ra_max = 50 / 0.030 = 1666 Ω, well above the measured 200 Ω.",
+    "Ra = 200 Ω is an installer-measured worst-case dry-season value. Periodic re-measurement (every 5 years per IEC 60364-6 §61.3.6 inspection cycle) is recommended; if Ra drifts above 1500 Ω the disconnection condition margin erodes and a supplementary rod or chemical electrode must be added."
+  ],
+  "drawn_as_symbols": [
+    "EARTH_GENERAL",
+    "EARTH_PROTECTIVE",
+    "ELECTRODE_ROD",
+    "CONDUCTOR_PE",
+    "JUNCTION_T",
+    "BUSBAR",
+    "RCD_30MA"
+  ],
+  "flags": [
+    "TOOL-CALL-PENDING:calc.electrode_resistance — Ra=200Ω is installer-measured (engineer-input); deterministic refinement deferred per WI3.",
+    "TOOL-CALL-PENDING:calc.zs_loop_impedance — Zs values are LLM-estimates from 20°C Cu data; deterministic refinement deferred per WI3."
+  ],
+  "tool_call_pending_for_zs": true,
+  "zs_calc_tool_input": {
+    "jurisdiction": "INT",
+    "supply": {
+      "ze_declared_ohm": 200.0,
+      "system_type": "TT",
+      "voltage_phase_to_earth_v": 230,
+      "frequency_hz": 50
+    },
+    "circuits": [
+      {
+        "circuit_id": "F01",
+        "cable_material": "Cu",
+        "cable_insulation": "PVC",
+        "line_csa_mm2_or_awg": "1.5mm²",
+        "cpc_csa_mm2_or_awg": "1.5mm²",
+        "route_length_m": 18,
+        "device_type": "MCB_B",
+        "device_rating_a": 6
+      },
+      {
+        "circuit_id": "F02",
+        "cable_material": "Cu",
+        "cable_insulation": "PVC",
+        "line_csa_mm2_or_awg": "2.5mm²",
+        "cpc_csa_mm2_or_awg": "2.5mm²",
+        "route_length_m": 12,
+        "device_type": "MCB_B",
+        "device_rating_a": 16
+      },
+      {
+        "circuit_id": "F03",
+        "cable_material": "Cu",
+        "cable_insulation": "PVC",
+        "line_csa_mm2_or_awg": "2.5mm²",
+        "cpc_csa_mm2_or_awg": "2.5mm²",
+        "route_length_m": 6,
+        "device_type": "MCB_B",
+        "device_rating_a": 16
+      },
+      {
+        "circuit_id": "F04",
+        "cable_material": "Cu",
+        "cable_insulation": "PVC",
+        "line_csa_mm2_or_awg": "2.5mm²",
+        "cpc_csa_mm2_or_awg": "2.5mm²",
+        "route_length_m": 14,
+        "device_type": "MCB_B",
+        "device_rating_a": 16
+      }
+    ],
+    "operating_temperature_c": 70
+  },
+  "rationale": {
+    "chat_summary": "TT earthing for an INT rural off-grid cottage (single-phase 230 V, no utility PEN bond). Single 3 m driven rod at Ra=200 Ω is the ONLY system earth. All four final circuits protected by 30 mA RCD per IEC 60364-4-41 §411.5 — Type AC on lighting, Type A on socket circuits per §531.3.3. Ra·IΔn = 6.0 V ≤ 50 V passes the §411.5.3 disconnection condition. Reply to refine, e.g. 'add solar PV submain'.",
+    "sections": [
+      {
+        "title": "Earthing System",
+        "summary": "TT mandated by site fact: off-grid cottage has no utility supply, therefore no PEN bond and no TN-arrangement is possible. The inverter-side neutral-earth bond establishes the system as TT, with the consumer-side rod E1 acting as both the system earth and the protective earth.",
+        "decisions": [
+          {
+            "label": "TT system — off-grid mandates it",
+            "summary": "No grid connection → no utility-side bond → TT is the only valid IEC 60364-4-41 system class. The inverter creates one neutral-earth bond at the consumer side; all fault current returns to that bond via the local rod electrode and the earth.",
+            "rule": "IEC 60364-4-41 §411.5 — TT system arrangement",
+            "code_clause": "IEC 60364-4-41:2017 §411.5",
+            "inputs": {
+              "supply_arrangement": "off_grid_pv_battery_inverter",
+              "utility_pen_bond_available": false,
+              "jurisdiction": "INT"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Main Earthing Terminal",
+        "summary": "MET at the cottage meter board, kitchen utility area. 16 mm² Cu main earthing conductor sized per IEC 60364-5-54 §542.3 — TT installation with single rod, so the MEC carries the same fault path as the rod tail; 16 mm² is the IEC 60364-5-54 §542.3.1 minimum for Cu MEC where buried portion is mechanically protected and corrosion-resistant.",
+        "decisions": [
+          {
+            "label": "MET location at kitchen meter board",
+            "summary": "Co-located with the consumer unit for short bond run and accessible inspection per §542.4.1.",
+            "rule": "IEC 60364-5-54 §542.4.1 — MET accessibility",
+            "code_clause": "IEC 60364-5-54:2011 §542.4.1",
+            "inputs": {
+              "met_location": "meter board, kitchen utility area"
+            }
+          },
+          {
+            "label": "16 mm² Cu main earthing conductor",
+            "summary": "TT with single rod — MEC sized to §542.3.1 minimum for mechanically protected, corrosion-resistant Cu.",
+            "rule": "IEC 60364-5-54 §542.3.1 — MEC minimum CSA",
+            "code_clause": "IEC 60364-5-54:2011 §542.3",
+            "inputs": {
+              "csa_mm2": 16,
+              "material": "Cu",
+              "protection": "mechanically_protected_corrosion_resistant"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Electrodes",
+        "summary": "Single 3 m × 16 mm copper-clad steel driven rod E1, installed in sandy loam at 800 Ω·m soil resistivity. Installer-measured Ra = 200 Ω at handover (dry-season worst case). Ra is the design value pending calc.electrode_resistance tool execution. The acceptance ceiling for the chosen RCD (30 mA) is Ra_max = 50 V / 0.030 A = 1666 Ω — the measured 200 Ω passes with ~8× margin.",
+        "decisions": [
+          {
+            "label": "Single 3 m driven rod E1",
+            "summary": "One rod is sufficient because the Ra·IΔn ≤ 50 V condition is met with 8× margin at 30 mA. Adding a second rod would reduce Ra further but is not required to achieve disconnection compliance.",
+            "rule": "IEC 60364-4-41 §411.5.3 — RCD disconnection condition Ra·IΔn ≤ 50 V",
+            "code_clause": "IEC 60364-4-41:2017 §411.5.3",
+            "inputs": {
+              "electrode_count": 1,
+              "electrode_type": "rod",
+              "length_mm": 3000,
+              "diameter_mm": 16,
+              "soil_resistivity_ohm_m": 800,
+              "ra_ohm_specified": 200
+            }
+          },
+          {
+            "label": "Periodic re-measurement",
+            "summary": "Ra in sandy loam drifts with seasonal moisture. IEC 60364-6 §61.3.6 mandates periodic verification; re-measure every 5 years and add a supplementary rod if Ra exceeds 1500 Ω (which would erode the disconnection margin).",
+            "rule": "IEC 60364-6 §61.3.6 — periodic earth-electrode resistance verification",
+            "code_clause": "IEC 60364-6:2016 §61.3.6",
+            "inputs": {
+              "verification_interval_years": 5,
+              "ra_action_threshold_ohm": 1500
+            }
+          }
+        ]
+      },
+      {
+        "title": "Main Bonding",
+        "summary": "No main protective bonds — the cottage has no incoming metallic services (rainwater supply, bottled LPG). The empty main_bonding array is a site fact, not an oversight. If a future borehole water pump introduces an incoming metallic pipe, that pipe must be bonded to MET per §544.1.",
+        "decisions": []
+      },
+      {
+        "title": "Supplementary Bonding",
+        "summary": "No supplementary bonding zones declared. The cottage has no bathroom (washroom is a dry-composting WC outside the equipotential zone) and no other §701/§702/§710 special-location triggers. If a future build adds a wet bathroom, IEC 60364-7-701 supplementary bonding will be required at that zone.",
+        "decisions": []
+      },
+      {
+        "title": "CPC + Zs Verification",
+        "summary": "Each final circuit has its CPC sized per IEC 60364-5-54 Table 54.2 (S=CPC for S≤16 mm² in Cu — the 1.5 / 2.5 mm² regime). Zs is computed as Ze + (R1+R2) where Ze=Ra=200 Ω dominates and the cable R1+R2 contribution is sub-1 Ω. Compliance is via the §411.5.3 RCD disconnection path: Zs ≤ U0/IΔn = 230/0.030 = 7666.67 Ω is satisfied by every circuit with three orders of magnitude of margin.",
+        "decisions": [
+          {
+            "label": "CPC = line per Table 54.2 (S ≤ 16 mm²)",
+            "summary": "IEC 60364-5-54 Table 54.2 requires CPC ≥ line CSA for line ≤ 16 mm² in Cu. F01-F04 all satisfy this with CPC = line size.",
+            "rule": "IEC 60364-5-54 Table 54.2 — CPC sizing for S ≤ 16 mm² Cu",
+            "code_clause": "IEC 60364-5-54:2011 Table 54.2",
+            "inputs": {
+              "rule": "S_equals_CPC_for_S_le_16_Cu"
+            }
+          },
+          {
+            "label": "Zs verification by RCD disconnection path",
+            "summary": "TT with high-Ra rod electrode — OCPD alone (B6/B16 MCB) cannot meet §411.4 disconnection time because Ze = 200 Ω yields an earth-fault current of just ~1.15 A (230/200), well below any MCB instantaneous trip. The §411.5.3 RCD path replaces the OCPD path: Zs ≤ U0/IΔn = 7666.67 Ω, satisfied by every circuit (Zs ≈ 200.1–200.4 Ω).",
+            "rule": "IEC 60364-4-41 §411.5 — TT disconnection by RCD; Zs_max = U0/IΔn",
+            "code_clause": "IEC 60364-4-41:2017 §411.5 + §411.5.3",
+            "inputs": {
+              "ra_ohm": 200,
+              "rcd_idn_a": 0.030,
+              "u0_v": 230,
+              "zs_max_via_rcd_ohm": 7666.67,
+              "worst_case_zs_ohm": 200.436
+            }
+          }
+        ]
+      },
+      {
+        "title": "RCD Requirements",
+        "summary": "TT mandates RCD on every final circuit per IEC 60364-4-41 §411.5. All four circuits take 30 mA. Type selection per §531.3.3: Type AC on the dedicated lighting circuit F01 (no DC residual expected from B6 + filament/halogen/LED-driver loads); Type A on F02-F04 socket-outlet circuits (≤6 mA DC residual tolerance accommodates electronic chargers, small appliances). The disconnection condition Ra × IΔn = 200 × 0.030 = 6.0 V ≤ 50 V passes with margin of ~8× (action threshold 50 V).",
+        "decisions": [
+          {
+            "label": "30 mA RCD on every final circuit (TT mandate)",
+            "summary": "IEC 60364-4-41 §411.5 mandates RCD-based ADS in TT. 30 mA chosen because it gives 8× headroom on the disconnection condition AND meets the additional-protection requirement §415.1.1 for general-purpose use in domestic.",
+            "rule": "IEC 60364-4-41 §411.5 — TT RCD mandate; §415.1.1 — 30 mA additional protection",
+            "code_clause": "IEC 60364-4-41:2017 §411.5 + §415.1.1",
+            "inputs": {
+              "rcd_sensitivity_ma": 30,
+              "ra_ohm": 200,
+              "ra_idn_v": 6.0,
+              "action_threshold_v": 50,
+              "margin_factor": 8.33
+            }
+          },
+          {
+            "label": "Type AC on F01 lighting; Type A on F02-F04 sockets",
+            "summary": "Type AC adequate where no DC residual is expected (lighting). Type A required on socket circuits per §531.3.3 — domestic socket-outlets accommodate electronic loads with ≤6 mA DC residual which would blind a Type AC RCD.",
+            "rule": "IEC 60364-4-41 §531.3.3 — RCD type selection by load DC characteristics",
+            "code_clause": "IEC 60364-4-41:2017 §531.3.3",
+            "inputs": {
+              "F01_rcd_type": "AC",
+              "F02_rcd_type": "A",
+              "F03_rcd_type": "A",
+              "F04_rcd_type": "A"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Compliance",
+        "summary": "Compliant — all four circuits pass the §411.5.3 RCD disconnection condition with ~8× margin on Ra·IΔn and three orders of magnitude on Zs. No non-compliance flags. Two TOOL-CALL-PENDING entries remain (calc.electrode_resistance for live Ra refinement, calc.zs_loop_impedance for deterministic Zs).",
+        "decisions": []
+      },
+      {
+        "title": "Assumptions",
+        "summary": "Five assumptions captured: TT system mandated by off-grid context; installer-measured Ra=200 Ω accepted as worst-case design value with WI3 tool deferral; RCD selectivity is single-stage (no upstream RCD); no extraneous metallic services exist on site; cable R1+R2 estimated at 20 °C with the resulting under-estimate immaterial given the two-orders-of-magnitude Zs margin.",
+        "decisions": []
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Jurisdiction-system match: INT + TT requires ≥1 electrode per the validator INV-02 table. electrodes[] has one entry (E1, single 3 m driven rod) satisfying the rule."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "CPC sizing method per jurisdiction: INT permits {iec60364_table_54.2, iec60364_adiabatic_543.1.2}. All four circuits use iec60364_table_54.2 because line CSA is ≤16 mm² Cu (1.5 or 2.5 mm²), so Table 54.2 applies (CPC=line)."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "TT system → rcd_required is true on all 4 final circuits (F01-F04) per IEC 60364-4-41 §411.5. Disconnection condition §411.5.3: Ra·IΔn = 200 × 0.030 = 6.0 V ≤ 50 V passes with ~8× margin. RCD type selection per §531.3.3: Type AC on lighting F01, Type A on socket circuits F02-F04."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Tool deferral shape: tool_call_pending_for_zs=true and zs_calc_tool_input is present and well-formed (jurisdiction=INT, supply.ze_declared_ohm=200, supply.system_type=TT, 4 circuit entries). flags[] contains TOOL-CALL-PENDING:calc.zs_loop_impedance string per INV-09 critical pairing."
+    },
+    {
+      "id": "INV-10",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Jurisdiction is INT, not KE, so the 'KS 1700' string MUST NOT appear in any citation. Confirmed: no code_clause field contains 'KS 1700'. All citations are 'IEC 60364-X-XX:YYYY §N.N.N' form per the INT citation contract."
+    }
+  ]
+}

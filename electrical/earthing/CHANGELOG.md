@@ -1,5 +1,48 @@
 # Changelog — earthing
 
+## [1.4.1] - 2026-05-25 — C.1 / M2 genuine TT example
+
+### Added
+- **M2**: genuine TT example authored at `examples/intl-rural-tt/` — completes
+  the Sprint A.1 cause-fix (the previously misnamed folder was renamed to
+  `intl-rural-tncs/`; the genuine TT case was untested). Rural off-grid
+  single-storey cottage at Ze=Ra=200 Ω on a single 3 m driven rod, four final
+  circuits (lighting + 3 socket circuits) each with 30 mA RCD per
+  IEC 60364-4-41 §411.5. Disconnection condition §411.5.3: Ra·IΔn = 200 × 0.030
+  = 6.0 V ≤ 50 V passes with ~8× margin. RCD type per §531.3.3: Type AC on
+  lighting, Type A on socket-outlet circuits.
+- Five validator INVs populated in `ir.invariants[]`: INV-02 (electrode
+  jurisdiction-system match), INV-04 (CPC sizing method per jurisdiction),
+  **INV-06 (RCD requirement) — now fires PASS on a real example for the
+  first time**; the safest earthing branch was previously untested. Plus
+  INV-09 (tool deferral shape) and INV-10 (no cross-contamination KE↔INT
+  citation form).
+
+### Changed
+- `evals/eval-02-rural-tt-system.yaml` re-pointed from inline GB rural-TT
+  input to `input_fixture: electrical/earthing/examples/intl-rural-tt/input.json`
+  (Option (a) per Sprint C.1 plan — single canonical TT eval consuming the
+  canonical TT example). Two assertion updates to match the new fixture:
+  `ir.earthing_system.system_type` path (was `ir.earthing_system`, but the
+  schema is a nested object); `ra_ohm_specified <= 1666` (the §411.5.3
+  disconnection ceiling at 30 mA, replacing the prior `<= 100`); citation
+  regex switched to IEC 60364-4-41:2017 §411.5 (was BS 7671:2018+A3 Reg 411.5.3).
+- Examples count: 5 → 6.
+
+### Why this sprint
+Reviewer 1 / DEFECT_REGISTER M2 closed. The Sprint A.1 fix renamed the
+misnamed folder but left the TT slot empty, so the safest earthing branch
+(TT + RCD on every circuit per §411.5) had thorough prompt logic but no
+example exercising it. Sprint C.1 / M2 closes the gap with an off-grid
+cottage example demonstrating: TT mandate by site context (no PEN bond),
+high-Ra electrode design, OCPD-path-fails / RCD-path-succeeds Zs strategy,
+§411.5.3 disconnection-condition hand-check, §531.3.3 RCD type selection.
+
+### Verification
+- `validate-examples.py`: 164/164 (was 163/163). New example adds 1.
+- `functional_audit.py`: 6 findings held (no new findings; M2 has no direct
+  audit signature, but the cause-fix is closed in the example fabric).
+
 ## [next-patch] - 2026-05-25 — M1 hybrid eval-vs-IR fix
 
 ### Added
