@@ -25,7 +25,7 @@
       "format_source": "auto_jurisdiction",
       "signal_word": "DANGER",
       "label_content": {
-        "header_line": "MAIN SERVICE ENTRANCE 480V 1200A",
+        "header_line": "DRAFT — NOT FOR FIELD INSTALLATION\nMAIN SERVICE ENTRANCE 480V 1200A",
         "equipment_id": "SERVICE-480V",
         "nominal_voltage": "480 V AC, 3-phase",
         "incident_energy_at_working_distance": "12.0 cal/cm² @ 455mm",
@@ -57,7 +57,7 @@
       "format_source": "auto_jurisdiction",
       "signal_word": "WARNING",
       "label_content": {
-        "header_line": "PV INVERTER 100 KW AC OUTPUT 480V",
+        "header_line": "DRAFT — NOT FOR FIELD INSTALLATION\nPV INVERTER 100 KW AC OUTPUT 480V",
         "equipment_id": "SERVICE-480V.PV-INV-1",
         "nominal_voltage": "480 V AC, 3-phase",
         "incident_energy_at_working_distance": "7.0 cal/cm² @ 455mm",
@@ -89,7 +89,7 @@
       "format_source": "auto_jurisdiction",
       "signal_word": "DANGER",
       "label_content": {
-        "header_line": "DC FAST CHARGER AC INPUT 50 KW",
+        "header_line": "DRAFT — NOT FOR FIELD INSTALLATION\nDC FAST CHARGER AC INPUT 50 KW",
         "equipment_id": "SERVICE-480V.DCFC-1",
         "nominal_voltage": "480 V AC, 3-phase",
         "incident_energy_at_working_distance": "8.0 cal/cm² @ 455mm",
@@ -121,7 +121,7 @@
       "format_source": "auto_jurisdiction",
       "signal_word": "WARNING",
       "label_content": {
-        "header_line": "DCFC OUTPUT 500V DC TO VEHICLE CONNECTOR",
+        "header_line": "DRAFT — NOT FOR FIELD INSTALLATION\nDCFC OUTPUT 500V DC TO VEHICLE CONNECTOR",
         "equipment_id": "DCFC-1.DC-OUT",
         "nominal_voltage": "500 V DC",
         "incident_energy_at_working_distance": "6.0 cal/cm² @ 300mm",
@@ -147,6 +147,13 @@
       }
     }
   ],
+  "provenance": {
+    "method_applied": "lee_1982",
+    "computed_at": "2026-05-25T12:00:00Z",
+    "calc_tool_version": "shared/calculations/electrical/arc-flash@1.0.0-pending",
+    "is_provisional": true,
+    "provenance_note": "Upstream arc-flash calc used Lee 1982 fallback because IEEE 1584-2018 600V coefficients were null at time of computation (pending Sprint A.3 transcription). Re-run after IEEE coefficients are verified before any field use."
+  },
   "project_label_index": {
     "summary_table": [
       {"node_id": "SERVICE-480V", "designation": "Main service entrance 480V 1200A", "signal_word": "DANGER", "ppe_category": 3, "ie_cal_per_cm2": 12.0, "format_applied": "ansi_z535_4"},

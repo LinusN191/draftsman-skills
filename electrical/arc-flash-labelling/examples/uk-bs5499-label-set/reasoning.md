@@ -41,3 +41,7 @@ Per WI3, SVG generation is inline. PDF + PNG rendering is deferred to the `calc.
 ## When UK Standards update
 
 BS-5499 is due for revision. When a new edition is published, this labelling skill will auto-regenerate with the new edition reference. No code changes needed.
+
+## Provenance & provisional status
+
+This label set carries `provenance.is_provisional: true` because the upstream arc-flash calculation used the Lee 1982 fallback method at LV (400 V). Lee 1982 is a >15 kV theoretical model that over-predicts incident energy at low voltage; the correct method at 600 V class is IEEE 1584-2018, whose coefficients are still pending transcription (Sprint A.3). Because the C2 cause-fix landed at the IR schema level, every label `label_content.header_line` is prepended with `"DRAFT — NOT FOR FIELD USE\n"` (BS 5499-4 / EN ISO 7010 family marker) so downstream renderers cannot silently omit the draft state. Sprint A.3 will transcribe the IEEE 1584-2018 coefficients and allow recomputation; Sprint C.3 will add a non-provisional UK example so the cleared-state path is also covered by examples. Until then, this label set MUST NOT be sent for field installation.

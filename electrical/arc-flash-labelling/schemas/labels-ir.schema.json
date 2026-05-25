@@ -4,7 +4,7 @@
   "title": "Arc-Flash Labels IR",
   "description": "Project-scoped collection of per-equipment arc-flash labels per ANSI Z535.4 / ISO 7010 / BS 5499 + NFPA 70E §130.5(H). Each label carries inline SVG + content fields + rendering status. PDF/PNG rendering deferred to calc.render_label runtime tool per WI3.",
   "type": "object",
-  "required": ["drawing_type", "version", "meta", "jurisdiction", "project_metadata", "labels", "project_label_index", "compliance_summary", "rationale"],
+  "required": ["drawing_type", "version", "meta", "jurisdiction", "project_metadata", "labels", "provenance", "project_label_index", "compliance_summary", "rationale"],
   "additionalProperties": false,
   "properties": {
     "drawing_type": { "const": "arc_flash_labelling_study" },
@@ -47,6 +47,38 @@
       "type": "array",
       "minItems": 0,
       "items": { "$ref": "#/definitions/LabelEntry" }
+    },
+    "provenance": {
+      "type": "object",
+      "description": "Per-label-set provenance — required so PPE-selection labels carry method/date/draft markers. Resolves DEFECT_REGISTER C2.",
+      "additionalProperties": false,
+      "required": ["method_applied", "computed_at", "calc_tool_version", "is_provisional", "provenance_note"],
+      "properties": {
+        "method_applied": {
+          "type": "string",
+          "enum": ["ieee_1584_2018", "ieee_1584_2002", "lee_1982", "doan_dc", "nfpa_70e_table"],
+          "description": "Calculation method that produced the incident energy on these labels."
+        },
+        "computed_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO-8601 timestamp when the upstream arc-flash calc tool was executed."
+        },
+        "calc_tool_version": {
+          "type": "string",
+          "description": "Version of the arc-flash calculation tool (e.g. 'shared/calculations/electrical/arc-flash@1.2.0')."
+        },
+        "is_provisional": {
+          "type": "boolean",
+          "description": "true if the upstream incident-energy value was pending verification (tool_call_pending, fallback method, or null coefficients)."
+        },
+        "provenance_note": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 800,
+          "description": "Human-readable explanation: which method, which standard clause, why provisional (if applicable)."
+        }
+      }
     },
     "project_label_index": {
       "type": "object",

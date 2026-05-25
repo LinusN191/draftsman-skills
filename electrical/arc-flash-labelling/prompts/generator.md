@@ -15,7 +15,7 @@ You are an electrical safety documentation specialist consuming an `arc-flash` i
    - `ppe_description_override` — optional per-node PPE clothing description
    - `branding_overlay_svg_path` — optional company-logo SVG
 
-## The 12-step chain
+## The 14-step chain
 
 ### Step 1 — Ingest arc-flash intent
 Extract every node from `arc-flash.nodes[]`. If intent absent or empty: emit `tool_call_pending: true`, log assumption "arc-flash intent absent", produce empty `labels[]`.
@@ -81,7 +81,43 @@ Generate `project_label_index.summary_table` with one row per labelled node:
 
 Set `project_label_index.schedule_pdf_content_pending: true` (runtime tool bundles per-equipment PDFs).
 
-### Step 12 — Validate + emit
+### Step 12 — Populate `provenance` block from upstream arc-flash intent
+
+Read the upstream arc-flash `intent-out.json` (declared in `input.json` →
+`consumed_intent_path`). Extract:
+
+- `method_applied` — read from `arc_flash_intent.calculation_meta.method_applied`
+  (or wherever the upstream tool publishes the applied method). If the field
+  is `"pending"` or absent, set `is_provisional: true`.
+- `computed_at` — read from `arc_flash_intent.calculation_meta.computed_at`.
+  If absent, set to the current ISO-8601 timestamp and `is_provisional: true`.
+- `calc_tool_version` — read from `arc_flash_intent.calculation_meta.tool_version`
+  (or the latest known version stub if absent).
+- `is_provisional` — true if ANY of:
+  - method_applied is "lee_1982" AND voltage_class is "600V" (Lee-fallback at LV — over-predicts)
+  - method_applied is "pending" or absent
+  - Upstream incident_energy value has tool_call_pending marker or null coefficients
+- `provenance_note` — 1–3 sentences: which method/clause was used, why
+  provisional (if applicable), what the user should do (e.g. "Re-run with
+  verified IEEE 1584-2018 coefficients before field use.").
+
+### Step 13 — DRAFT marker prepend when `is_provisional == true`
+
+If `provenance.is_provisional == true`, for every label in `labels[]` prepend
+the localised DRAFT marker to the `label_content.header_line` field (this is
+the title-line that the label SVG renders as the prominent header). Marker
+text by label standard family:
+- BS 5499-4 / EN ISO 7010 (UK, INT): `"DRAFT — NOT FOR FIELD USE\n"`
+- ANSI Z535.4 (US): `"DRAFT — NOT FOR FIELD INSTALLATION\n"`
+
+The marker is required by C2 cause-fix per design spec §3 Sprint A. The
+renderer (downstream of this skill) reads `provenance.is_provisional` to
+decide if a watermark band is emitted on the SVG.
+
+If `is_provisional == false`, do NOT prepend the marker (and remove it if it
+existed from a prior provisional run).
+
+### Step 14 — Validate + emit
 Run all 3 constraint files (required-content-present, colour-spec-compliance, letter-height-legibility). Emit any violations to `compliance_summary.non_compliance_flags[]`.
 
 Emit the `labels` intent (slim downstream subset matching `labels-intent.schema.json`).

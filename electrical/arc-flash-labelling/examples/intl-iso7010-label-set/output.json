@@ -25,7 +25,7 @@
       "format_source": "auto_jurisdiction",
       "signal_word": "DANGER",
       "label_content": {
-        "header_line": "DANGER: ARC FLASH AND SHOCK HAZARD",
+        "header_line": "DRAFT — NOT FOR FIELD USE\nDANGER: ARC FLASH AND SHOCK HAZARD",
         "equipment_id": "MSB-1",
         "nominal_voltage": "11 kV AC, 3-phase",
         "incident_energy_at_working_distance": "18.5 cal/cm² @ 500mm",
@@ -57,7 +57,7 @@
       "format_source": "auto_jurisdiction",
       "signal_word": "DANGER",
       "label_content": {
-        "header_line": "DANGER: ARC FLASH AND SHOCK HAZARD",
+        "header_line": "DRAFT — NOT FOR FIELD USE\nDANGER: ARC FLASH AND SHOCK HAZARD",
         "equipment_id": "DB-L1",
         "nominal_voltage": "400 V AC, 3-phase",
         "incident_energy_at_working_distance": "12.3 cal/cm² @ 450mm",
@@ -89,7 +89,7 @@
       "format_source": "restricted_override",
       "signal_word": "RESTRICTED",
       "label_content": {
-        "header_line": "RESTRICTED: DO NOT OPERATE — ENERGIZED WORK PROHIBITED",
+        "header_line": "DRAFT — NOT FOR FIELD USE\nRESTRICTED: DO NOT OPERATE — ENERGIZED WORK PROHIBITED",
         "equipment_id": "MV-SWB",
         "nominal_voltage": "33 kV AC, 3-phase",
         "incident_energy_at_working_distance": "47.2 cal/cm² @ 600mm",
@@ -115,6 +115,13 @@
       }
     }
   ],
+  "provenance": {
+    "method_applied": "lee_1982",
+    "computed_at": "2026-05-25T12:00:00Z",
+    "calc_tool_version": "shared/calculations/electrical/arc-flash@1.0.0-pending",
+    "is_provisional": true,
+    "provenance_note": "Upstream arc-flash calc used Lee 1982 fallback because IEEE 1584-2018 600V coefficients were null at time of computation (pending Sprint A.3 transcription). Re-run after IEEE coefficients are verified before any field use."
+  },
   "project_label_index": {
     "summary_table": [
       {"node_id": "MSB-1", "designation": "Main switchboard 1 — 11 kV 400A", "signal_word": "DANGER", "ppe_category": 3, "ie_cal_per_cm2": 18.5, "format_applied": "iso_7010"},

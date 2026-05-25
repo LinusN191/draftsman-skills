@@ -57,3 +57,7 @@ See `sample-svg/MSB-1.svg` for an extracted standalone SVG file rendering the SE
 ## When IEEE 1584:2018 coefficients are transcribed (future)
 
 The arc-flash intent currently uses `method_applied: lee_1982` (conservative upper bound). When IEEE 1584:2018 coefficients are transcribed, arc-flash regenerates with lower IE values; this labelling skill auto-regenerates with potentially-different PPE categories (e.g., Cat 3 → Cat 2 if IE drops below 8 cal/cm²). No code changes needed.
+
+## Provenance & provisional status
+
+This label set carries `provenance.is_provisional: true` because the upstream arc-flash calculation used the Lee 1982 fallback method at LV (480 V). Lee 1982 is a >15 kV theoretical model that over-predicts incident energy at low voltage; the correct method at 600 V class is IEEE 1584-2018, whose coefficients are still pending transcription (Sprint A.3). Because the C2 cause-fix landed at the IR schema level, every label `label_content.header_line` is prepended with `"DRAFT — NOT FOR FIELD INSTALLATION\n"` (ANSI Z535.4 family marker — US-localised) so downstream renderers cannot silently omit the draft state. Sprint A.3 will transcribe the IEEE 1584-2018 coefficients and allow recomputation; Sprint C.3 will add a non-provisional US example so the cleared-state path is also covered by examples. Until then, this label set MUST NOT be sent for field installation.

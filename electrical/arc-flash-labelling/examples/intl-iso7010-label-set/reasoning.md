@@ -62,3 +62,7 @@ If the arc-flash intent is recalculated (e.g., due to equipment replacement or f
 ## Reference SVG
 
 See `sample-svg/MV-SWB.svg` for an extracted standalone SVG file rendering the RESTRICTED label. Open in any browser to preview the distinct purple/prohibition visual treatment.
+
+## Provenance & provisional status
+
+This label set carries `provenance.is_provisional: true` because the upstream arc-flash calculation used the Lee 1982 fallback method. Lee 1982 is a >15 kV theoretical model that over-predicts incident energy at low voltage (400 V); the MV-SWB (33 kV) node is closer to Lee's intended regime, but IEEE 1584-2018 remains the modern reference for incident energy in this voltage class and its coefficients are still pending transcription (Sprint A.3). Because the C2 cause-fix landed at the IR schema level, every label `label_content.header_line` is prepended with `"DRAFT — NOT FOR FIELD USE\n"` (BS 5499-4 / EN ISO 7010 family marker) so downstream renderers cannot silently omit the draft state. Sprint A.3 will transcribe the IEEE 1584-2018 coefficients and allow recomputation; Sprint C.3 will add a non-provisional INT example so the cleared-state path is also covered by examples. Until then, this label set MUST NOT be sent for field installation.
