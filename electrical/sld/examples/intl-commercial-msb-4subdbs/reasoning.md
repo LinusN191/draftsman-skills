@@ -23,7 +23,7 @@
 >
 > Both sheets: A1 ISO, ISO 19650:2018 + BS 1192:2007+A2:2016 generic INT, NTS scale.
 >
-> **Cross-skill values preserved from v1.4:** `supply_origin.system_type=TN-C-S` (matches earthing intent, INV-11 check 6), `system_metrics.peak_pfc_ka=22.5 kA` (sourced from fault-level intent TX-1 transformer-secondary `ifault_ka_max`, INV-11 check 7 within ±0.5 kA tolerance) — INV-11 cross-skill checks still pass after the cascade grew from 5 to 9 boards. Peak PFC is a property of the utility supply, NOT of the cascade structure, so adding sub-DBs downstream does not shift it.
+> **Cross-skill values preserved from v1.4:** `supply_origin.system_type=TN-C-S` (matches earthing intent, INV-11 check 6), `system_metrics.peak_pfc_ka=43.49 kA` (sourced from fault-level intent TX-1 transformer-secondary `ifault_ka_max`, INV-11 check 7 within ±0.5 kA tolerance — refreshed from prior 22.5 kA after Sprint B H1+H2 fix on the fault-level intent) — INV-11 cross-skill checks still pass after the cascade grew from 5 to 9 boards. Peak PFC is a property of the utility supply, NOT of the cascade structure, so adding sub-DBs downstream does not shift it.
 >
 > **`meta.consumed_intents[]` grew 7 → 11:** 4 new db-layout intents (v1.3.0) added BEFORE the earthing + fault-level entries to preserve the v1.4 ordering rule (all db-layout first, then earthing, then fault-level). INV-11 cross-skill check on consumed_intents count + ordering still passes.
 >
@@ -36,13 +36,13 @@
 > **v1.4 — multi-skill intent consumption:** This example consumes 3 upstream skill domains:
 > - **db-layout** (5 intents — MSB + 4 sub-DBs) — per-board detail
 > - **earthing** (1 intent, system-wide) — at `electrical/earthing/examples/intl-rural-tncs/intent-out.json` (folder renamed from `intl-rural-tt` to `intl-rural-tncs` in Sprint A.1 C1 cause-fix — the original folder name was a lie; the content has always been TN-C-S commercial) — provides `system_type=TN-C-S`, `supply_bond_type=utility_pen_bond`, `ze_declared_ohm=0.30`; cross-checked against SLD `supply_origin` via INV-11
-> - **fault-level** (1 intent, system-wide) — at `electrical/fault-level/examples/intl-commercial-with-genset/intent-out.json` — provides deterministic peak_pfc_ka at transformer secondary per IEC 60909-0:2016 cascade. Transformer-secondary `ifault_ka_max = 22.5 kA` → SLD `system_metrics.peak_pfc_ka = 22.5` (was LLM-estimated 15.5 in v1.3)
+> - **fault-level** (1 intent, system-wide) — at `electrical/fault-level/examples/intl-commercial-with-genset/intent-out.json` — provides deterministic peak_pfc_ka at transformer secondary per IEC 60909-0:2016 cascade. Transformer-secondary `ifault_ka_max = 43.49 kA` (post-Sprint-B H1+H2 fix: prior 22.5 kA had `z_total = 0.005 Ω` below the transformer's own impedance and HV-1 carried a double-c-factor; corrected per IEC 60909-0:2016 §3.3.2 + §3.3 — see fault-level CHANGELOG [1.1.1]) → SLD `system_metrics.peak_pfc_ka = 43.49` (was 22.5 in v1.4 / LLM-estimated 15.5 in v1.3)
 >
 > **Genset-source filtering (bespoke v1.4 handling):** The fault-level intent models a 1600 kVA utility + 800 kVA standby genset (`source_summary.type == "mixed"`). SLD's `distribution_hierarchy` does NOT include genset topology — that is a fault-level domain concern, not an SLD one. SLD's `system_metrics.peak_pfc_ka` is sourced from the **utility-source worst-case** PFC at transformer secondary (worst case for breaker rating verification per IEC 60909-0:2016 §3.5). Engineers consulting this SLD MUST cross-reference the fault-level skill's full IR for genset-mode settings — particularly for protection coordination during genset-only operation when Ik" can be substantially LOWER, potentially falling below selectivity thresholds that hold under utility-source conditions.
 >
-> The PFC shift 15.5 → 22.5 kA does NOT trigger a non_compliance_flag: the 800A main switch has 50 kA Icu (IEC 60947-2), so 55% headroom remains. The downstream sub-DB Icu ratings (each 10–16 kA typical for MCCB at this scale) have not been re-verified against the cascade-reduced PFC in this v1.4 refresh — that step is part of the deferred WI3 sld_system_metrics tool.
+> The PFC shift 15.5 → 22.5 → 43.49 kA (v1.3 LLM-estimate → v1.4 fault-level intent → post-Sprint-B H1+H2 refresh) does NOT trigger a non_compliance_flag: the 800A main switch has 50 kA Icu (IEC 60947-2), giving `50 − 43.49 = 6.51 kA` absolute headroom = **13% relative headroom — marginal**. This is documented in `assumptions[4]` with a recommendation to upgrade to 65 kA Icu at the next design refresh and to verify `Ics ≥ Icu` per IEC 60947-2 §8.4.5. The downstream sub-DB Icu ratings (each 10–16 kA typical for MCCB at this scale) have not been re-verified against the cascade-reduced PFC in this refresh — that step is part of the deferred WI3 sld_system_metrics tool.
 >
-> `meta.consumed_intents[]` grows from 5 entries (v1.3) to 7 entries (v1.4): 5 db-layout + 1 earthing + 1 fault-level. INV-11 enforces the count + ordering + cross-skill field equality (`supply_origin.system_type == earthing.system_type`, `system_metrics.peak_pfc_ka ≈ fault-level TX-1 ifault_ka_max` within ±0.5 kA tolerance).
+> `meta.consumed_intents[]` grows from 5 entries (v1.3) to 7 entries (v1.4): 5 db-layout + 1 earthing + 1 fault-level. INV-11 enforces the count + ordering + cross-skill field equality (`supply_origin.system_type == earthing.system_type`, `system_metrics.peak_pfc_ka ≈ fault-level TX-1 ifault_ka_max` within ±0.5 kA tolerance — post-Sprint-B both sides are 43.49 kA).
 
 ## Site context
 
@@ -106,7 +106,7 @@ Total diverse                  99.2 kW
 Imax_total = 99,200 / (√3 × 400 × 0.85) ≈ 168A → rounded to 170A
 ```
 
-Peak PFC at MSB busbar: declared 16kA at the service head, minus ~0.05Ω service-tail impedance → ~15.5kA. Both values are LLM estimates and the IR flags `tool_call_pending_for_system_metrics: true` — per WI3 the deterministic refinement is deferred to `calc.sld_system_metrics`.
+Peak PFC at MSB busbar: post-Sprint-B refresh, the SLD `peak_pfc_ka = 43.49 kA` is sourced from the fault-level intent's TX-1 transformer-secondary `ifault_ka_max` (utility-source worst case, IEC 60909-0:2016 §3.3 — declared HV PSCC 16 kA is re-cascaded through the 1600 kVA TX without double-c-multiplication per §3.3.2, giving `z_total = ZQ_LV + Z_TX_LV = 0.005577 Ω` and `Ik = 1.05 · 400 / (√3 · 0.005577) ≈ 43.49 kA`). The Imax_total LLM estimate is still flagged `tool_call_pending_for_system_metrics: true` — per WI3 the deterministic refinement of system metrics is deferred to `calc.sld_system_metrics`. The 800A main switch 50 kA Icu now sits 13% above peak PFC: marginal — see assumptions[4] for the 65 kA Icu device recommendation at next refresh.
 
 ## SPD assessment — Type 2
 

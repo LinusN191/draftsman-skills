@@ -1,5 +1,35 @@
 # Changelog — fault-level
 
+## [1.1.1] - 2026-05-25
+
+### Fixed
+- **H1** (intl-commercial-with-genset/TX-1): z_total = 0.005 Ω was below the
+  transformer's own LV-referred impedance. Recomputed per IEC 60909-0:2016 §3.3:
+  ZQ_LV (0.578 mΩ) + Z_TX_LV (5.0 mΩ) → z_total = 5.577 mΩ → Ik3 ≈ 43.49 kA.
+  Cascade downstream nodes (MSB-1, MSB-1.BUSBAR, DB-L1) recomputed.
+- **H2** (intl-commercial-with-genset/HV-1 + us-industrial-with-motors/HV-1):
+  Declared utility PSCC was being multiplied by c=1.10 a second time (16→17.6,
+  25→27.5). Per IEC 60909-0:2016 §3.3.2 the declared PSCC IS already c-corrected
+  by the utility; ZQ is back-calculated FROM it.
+- **H3** (uk-domestic-single-source): z_total values satisfied no documented
+  formula. Reconciled to single-phase TN L-N formula Ik1 = c·U₀/(2·Z_S) per
+  IEC 60909-0:2016 §6. CU-G anchored as binding boundary per BS 7671 Reg
+  313.1.1; TX-1 back-derived upstream.
+
+### Added
+- Validator **INV-11**: internal-consistency reconcile Ik = c·U/(div·Z) within
+  1% (3-phase + 1-phase TN + declared-PSCC formulas) with special cases for
+  declared PSCC nodes and motor superposition.
+- `calculation_basis` field on every cascade node documenting the formula
+  branch used (declared, computed, or back-calculated).
+
+### Cascade
+- `electrical/sld/examples/intl-commercial-msb-4subdbs` peak_pfc_ka updated
+  22.5 → 43.49 kA; Icu headroom recomputed 55% → 13% (marginal — flagged for
+  65 kA Icu device upgrade at next refresh).
+
+---
+
 ## [1.1.0] - 2026-05-18
 
 ### Added

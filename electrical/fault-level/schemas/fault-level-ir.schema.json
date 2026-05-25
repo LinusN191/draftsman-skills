@@ -113,6 +113,10 @@
           "ipk_ka":              { "type": "number", "minimum": 0, "description": "κ × √2 × Ik\"max" },
           "x_over_r_at_node":    { "type": "number", "minimum": 0 },
           "z_total_ohm":         { "type": "number", "minimum": 0 },
+          "calculation_basis":   {
+            "type": "string",
+            "description": "Provenance string documenting which IEC 60909 formula branch was used: 'declared' (utility PSCC anchor, c already applied), 'computed' (physical impedance recompute per §3.3), or 'back_calculated' (z derived from declared Ik downstream). May include section citation (e.g. 'IEC 60909-0:2016 §6 single-phase TN L-N')."
+          },
           "tool_call_pending":   { "type": "boolean", "description": "true when calc.iec60909_cascade has not yet executed" }
         }
       }
