@@ -1,47 +1,202 @@
 {
-  "intent_type": "earthing",
-  "intent_version": "1.0.0",
-  "produced_by_skill_version": "earthing/1.4.0",
-  "tool_call_pending": true,
   "jurisdiction": "GB",
-  "system_type": "TN-C-S",
-  "ze_declared_ohm": 0.35,
-  "supply_bond_type": "tn_c_s_pen",
-  "main_earthing_conductor_csa_mm2": 25,
-  "electrodes": [],
-  "main_bonding": [
-    { "id": "B1", "target": "metal_water_service",  "csa_mm2": 10 },
-    { "id": "B2", "target": "metal_gas_service",    "csa_mm2": 10 },
-    { "id": "B3", "target": "structural_steel_gf",  "csa_mm2": 16 },
-    { "id": "B4", "target": "structural_steel_l1",  "csa_mm2": 16 },
-    { "id": "B5", "target": "structural_steel_l2",  "csa_mm2": 16 }
+  "earthing_system": "TN-C-S",
+  "met_location": "ground-floor plant room, adjacent to MSB-MAIN switchboard",
+  "available_zs_at_main_db_ohm": 1.07,
+  "electrode_target_met": true,
+  "supplementary_bonding_locations": [
+    "other"
+  ],
+  "rcd_protected_circuit_ids": [
+    "G04",
+    "G05",
+    "G06",
+    "G07",
+    "L104",
+    "L105",
+    "L106",
+    "L107",
+    "L204",
+    "L205",
+    "L206",
+    "L207"
   ],
   "circuits": [
-    { "circuit_id": "F01",  "cpc_csa_mm2": 25.0, "device": "MCCB_D_100A", "zs_compliance": "pass",          "rcd_required": false },
-    { "circuit_id": "F02",  "cpc_csa_mm2": 25.0, "device": "MCCB_D_100A", "zs_compliance": "pass",          "rcd_required": false },
-    { "circuit_id": "F03",  "cpc_csa_mm2": 25.0, "device": "MCCB_D_100A", "zs_compliance": "pass",          "rcd_required": false },
-    { "circuit_id": "G01",  "cpc_csa_mm2": 1.5,  "device": "MCB_B_10A",   "zs_compliance": "pass",          "rcd_required": false },
-    { "circuit_id": "G02",  "cpc_csa_mm2": 1.5,  "device": "MCB_B_6A",    "zs_compliance": "pass",          "rcd_required": false },
-    { "circuit_id": "G03",  "cpc_csa_mm2": 1.5,  "device": "MCB_B_6A",    "zs_compliance": "pass",          "rcd_required": false },
-    { "circuit_id": "G04",  "cpc_csa_mm2": 1.5,  "device": "MCB_B_32A",   "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "G05",  "cpc_csa_mm2": 1.5,  "device": "MCB_B_32A",   "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "G06",  "cpc_csa_mm2": 1.5,  "device": "MCB_B_32A",   "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "G07",  "cpc_csa_mm2": 2.5,  "device": "MCB_B_20A",   "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "L101", "cpc_csa_mm2": 1.5,  "device": "MCB_B_10A",   "zs_compliance": "pass",          "rcd_required": false },
-    { "circuit_id": "L102", "cpc_csa_mm2": 1.5,  "device": "MCB_B_6A",    "zs_compliance": "pass",          "rcd_required": false },
-    { "circuit_id": "L103", "cpc_csa_mm2": 1.5,  "device": "MCB_B_6A",    "zs_compliance": "pass",          "rcd_required": false },
-    { "circuit_id": "L104", "cpc_csa_mm2": 1.5,  "device": "MCB_B_32A",   "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "L105", "cpc_csa_mm2": 1.5,  "device": "MCB_B_32A",   "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "L106", "cpc_csa_mm2": 1.5,  "device": "MCB_B_32A",   "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "L107", "cpc_csa_mm2": 2.5,  "device": "MCB_B_20A",   "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "L201", "cpc_csa_mm2": 1.5,  "device": "MCB_B_10A",   "zs_compliance": "pass",          "rcd_required": false },
-    { "circuit_id": "L202", "cpc_csa_mm2": 1.5,  "device": "MCB_B_6A",    "zs_compliance": "pass",          "rcd_required": false },
-    { "circuit_id": "L203", "cpc_csa_mm2": 1.5,  "device": "MCB_B_6A",    "zs_compliance": "pass",          "rcd_required": false },
-    { "circuit_id": "L204", "cpc_csa_mm2": 2.5,  "device": "MCB_B_32A",   "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "L205", "cpc_csa_mm2": 1.5,  "device": "MCB_B_32A",   "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "L206", "cpc_csa_mm2": 1.5,  "device": "MCB_B_32A",   "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "L207", "cpc_csa_mm2": 2.5,  "device": "MCB_B_20A",   "zs_compliance": "pass_with_rcd", "rcd_required": true,  "rcd_sensitivity_ma": 30 }
+    {
+      "circuit_id": "F01",
+      "cpc_csa_mm2_or_awg": "25mm²",
+      "zs_compliance": "pass",
+      "rcd_required": false
+    },
+    {
+      "circuit_id": "F02",
+      "cpc_csa_mm2_or_awg": "25mm²",
+      "zs_compliance": "pass",
+      "rcd_required": false
+    },
+    {
+      "circuit_id": "F03",
+      "cpc_csa_mm2_or_awg": "25mm²",
+      "zs_compliance": "pass",
+      "rcd_required": false
+    },
+    {
+      "circuit_id": "G01",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass",
+      "rcd_required": false
+    },
+    {
+      "circuit_id": "G02",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass",
+      "rcd_required": false
+    },
+    {
+      "circuit_id": "G03",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass",
+      "rcd_required": false
+    },
+    {
+      "circuit_id": "G04",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "G05",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "G06",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "G07",
+      "cpc_csa_mm2_or_awg": "2.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "L101",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass",
+      "rcd_required": false
+    },
+    {
+      "circuit_id": "L102",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass",
+      "rcd_required": false
+    },
+    {
+      "circuit_id": "L103",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass",
+      "rcd_required": false
+    },
+    {
+      "circuit_id": "L104",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "L105",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "L106",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "L107",
+      "cpc_csa_mm2_or_awg": "2.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "L201",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass",
+      "rcd_required": false
+    },
+    {
+      "circuit_id": "L202",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass",
+      "rcd_required": false
+    },
+    {
+      "circuit_id": "L203",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass",
+      "rcd_required": false
+    },
+    {
+      "circuit_id": "L204",
+      "cpc_csa_mm2_or_awg": "2.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "L205",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "L206",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "L207",
+      "cpc_csa_mm2_or_awg": "2.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    }
   ],
-  "overall_compliant": true,
-  "produced_at": "2026-05-18"
+  "life_safety_bonded_assets": [
+    "fire_alarm_panel_earth_bus",
+    "lift_machine_room_steelwork"
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flag_count": 0
+  }
 }

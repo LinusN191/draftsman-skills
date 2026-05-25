@@ -256,6 +256,95 @@ def validate_inputs_pass(skill_dirs: list, inputs_schema: dict) -> tuple:
     return total_inputs, total_failures, lines
 
 
+def validate_intents_pass(skill_dirs: list) -> tuple:
+    """Pass 4 — Intent emissions: validate every examples/*/intent-out.json against
+    the producing skill's intent schema (electrical/<skill>/schemas/*-intent.schema.json).
+
+    Added 2026-05-25 (Sprint D round-3) to close the structural-hole Reviewer 1
+    flagged: prior gate counted intent-out.json files toward example count via
+    Pass 1's output validation but never validated them against the intent
+    schema — a downstream consumer of a non-conformant intent would break at
+    runtime, invisible to the gate. Same strip_refs convention as Pass 1
+    (external $refs to shared/schemas/core/* replaced with {type: object}).
+
+    Returns (total_intents, total_failures, report_lines).
+    """
+    results = defaultdict(list)
+    total_intents = 0
+    total_failures = 0
+
+    for skill_dir in skill_dirs:
+        skill_name = os.path.basename(skill_dir)
+        intent_schemas = glob.glob(f"{skill_dir}/schemas/*-intent.schema.json")
+        if not intent_schemas:
+            continue  # skill doesn't produce an intent; skip
+        # Pick the canonical schema (usually one per skill; fallback to first)
+        schema_path = intent_schemas[0]
+
+        try:
+            with open(schema_path) as f:
+                schema = json.load(f)
+        except json.JSONDecodeError as e:
+            results[skill_name].append(("INTENT-SCHEMA-PARSE", schema_path, str(e)[:200]))
+            total_failures += 1
+            continue
+
+        # Handle shim-ref pattern (same as Pass 1)
+        if "$ref" in schema and len(schema.keys()) <= 5:
+            ref = schema["$ref"]
+            resolved_path = os.path.normpath(os.path.join(os.path.dirname(schema_path), ref))
+            if os.path.exists(resolved_path):
+                with open(resolved_path) as f:
+                    schema = json.load(f)
+
+        schema_test = strip_refs(schema)
+
+        try:
+            jsonschema.Draft7Validator.check_schema(schema_test)
+        except Exception as e:
+            results[skill_name].append(("INTENT-META-SCHEMA-INVALID", schema_path, str(e)[:200]))
+            total_failures += 1
+            continue
+
+        intents = sorted(glob.glob(f"{skill_dir}/examples/*/intent-out.json"))
+        for ip in intents:
+            total_intents += 1
+            try:
+                with open(ip) as f:
+                    instance = json.load(f)
+            except json.JSONDecodeError as e:
+                results[skill_name].append(("FAIL", ip, f"JSON parse: {str(e)[:200]}"))
+                total_failures += 1
+                continue
+            validator = jsonschema.Draft7Validator(schema_test)
+            errs = sorted(validator.iter_errors(instance), key=lambda e: e.absolute_path)
+            if errs:
+                e = errs[0]
+                path = ".".join(str(p) for p in e.absolute_path) or "(root)"
+                results[skill_name].append(("FAIL", os.path.basename(os.path.dirname(ip)), f"{path}: {e.message[:200]}"))
+                total_failures += 1
+            else:
+                results[skill_name].append(("PASS", os.path.basename(os.path.dirname(ip)), ""))
+
+    lines = []
+    for skill_name in sorted(results):
+        items = results[skill_name]
+        pass_n = sum(1 for r in items if r[0] == "PASS")
+        fail_n = len(items) - pass_n
+        status = "PASS" if fail_n == 0 else f"FAIL ({fail_n} failures, {pass_n} pass)"
+        lines.append(f"## {skill_name}: {status}")
+        for status_code, name, detail in items:
+            if status_code == "PASS":
+                lines.append(f"  PASS {name}")
+            else:
+                lines.append(f"  FAIL [{status_code}] {name}")
+                if detail:
+                    lines.append(f"       -> {detail}")
+        lines.append("")
+
+    return total_intents, total_failures, lines
+
+
 def main(repo_root="."):
     os.chdir(repo_root)
     skill_dirs = discover_skill_dirs()
@@ -277,6 +366,7 @@ def main(repo_root="."):
     ex_tot, ex_fail, ex_lines = validate_examples_pass(skill_dirs)
     ev_tot, ev_fail, ev_lines = validate_evals_pass(skill_dirs, eval_schema)
     in_tot, in_fail, in_lines = validate_inputs_pass(skill_dirs, inputs_schema)
+    it_tot, it_fail, it_lines = validate_intents_pass(skill_dirs)
 
     print("=== Pass 1 — Example outputs ===\n")
     for line in ex_lines:
@@ -293,8 +383,13 @@ def main(repo_root="."):
         print(line)
     print(f"\nSubtotal: {in_tot - in_fail}/{in_tot} pass ({in_fail} failures)\n")
 
-    total = ex_tot + ev_tot + in_tot
-    total_fail = ex_fail + ev_fail + in_fail
+    print("=== Pass 4 — Intent emissions ===\n")
+    for line in it_lines:
+        print(line)
+    print(f"\nSubtotal: {it_tot - it_fail}/{it_tot} pass ({it_fail} failures)\n")
+
+    total = ex_tot + ev_tot + in_tot + it_tot
+    total_fail = ex_fail + ev_fail + in_fail + it_fail
     print(f"=== AGGREGATE: {total - total_fail}/{total} pass ({total_fail} failures) ===")
     sys.exit(0 if total_fail == 0 else 1)
 

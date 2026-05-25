@@ -208,7 +208,7 @@
     "operating_temperature_c": 70
   },
   "rationale": {
-    "chat_summary": "TN-C-S earthing for an INT commercial multi-tenant MSB on a utility PEN-bonded supply (Ze=0.30Ω). MET in the MSB cupboard with 70mm² main earthing conductor; 35mm² bonds to incoming water and gas, 25mm² to structural steel. Four MSB feeders (F01-F03 LV_power to lighting/power/mechanical sub-DBs, F04 fire-alarm to DB-FA1). C1 Sprint A.1 cause-fix: F01-F04 flagged fail_needs_rcd because Zs exceeds OCPD-only Zs_max by 2.5×-10.8×; 300 mA / 30 mA Type A RCDs required at MSB level per IEC 60364-4-41 §411.4.9(b). CPCs sized per IEC 60364-5-54 §543.1.2 (S/2 rule for S>16mm²). Reply to refine, e.g. 'specify time-delayed 300mA RCD on F01-F03'.",
+    "chat_summary": "TN-C-S earthing for INT commercial multi-tenant MSB on PEN-bonded supply (Ze=0.30Ω). MET in MSB cupboard; main earthing 70mm² Cu per IEC 60364-5-54 §544.1. RCD additional protection on socket circuits per IEC 60364-4-41 §415.1; no RCD required for fault protection (TN OCPD clears via low Zs per §411.4). All circuits Zs ≤ Zs_max. Renamed from intl-rural-tt during Sprint A.1 / C1 cause-fix (content was TN-C-S all along; genuine TT now at intl-rural-tt/).",
     "sections": [
       {
         "title": "Earthing System",

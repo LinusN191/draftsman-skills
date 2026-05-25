@@ -1,27 +1,73 @@
 {
-  "intent_type": "earthing",
-  "intent_version": "1.0.0",
-  "produced_by_skill_version": "earthing/1.1.0",
-  "tool_call_pending": true,
   "jurisdiction": "GB",
-  "system_type": "TN-C-S",
-  "ze_declared_ohm": 0.35,
-  "supply_bond_type": "dno_pme_bond",
-  "main_earthing_conductor_csa_mm2": 16,
-  "electrodes": [],
-  "main_bonding": [
-    { "id": "B1", "target": "water_pipe", "csa_mm2": 10 },
-    { "id": "B2", "target": "gas_pipe", "csa_mm2": 10 },
-    { "id": "B3", "target": "structural_steel", "csa_mm2": 6 }
+  "earthing_system": "TN-C-S",
+  "met_location": "consumer unit cupboard, ground floor hallway",
+  "available_zs_at_main_db_ohm": 1.14,
+  "electrode_target_met": true,
+  "supplementary_bonding_locations": [
+    "bathroom"
+  ],
+  "rcd_protected_circuit_ids": [
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C06"
   ],
   "circuits": [
-    { "circuit_id": "C01", "cpc_csa_mm2": 1.5, "device": "MCB_B_6A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "C02", "cpc_csa_mm2": 1.5, "device": "MCB_B_6A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "C03", "cpc_csa_mm2": 1.5, "device": "MCB_B_32A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "C04", "cpc_csa_mm2": 1.5, "device": "MCB_B_32A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "C05", "cpc_csa_mm2": 2.5, "device": "MCB_B_32A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "C06", "cpc_csa_mm2": 4.0, "device": "MCB_B_40A", "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_sensitivity_ma": 30 }
+    {
+      "circuit_id": "C01",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "C02",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "C03",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "C04",
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "C05",
+      "cpc_csa_mm2_or_awg": "2.5mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "C06",
+      "cpc_csa_mm2_or_awg": "4mm²",
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    }
   ],
-  "overall_compliant": true,
-  "produced_at": "2026-05-18"
+  "life_safety_bonded_assets": [],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flag_count": 0
+  }
 }
