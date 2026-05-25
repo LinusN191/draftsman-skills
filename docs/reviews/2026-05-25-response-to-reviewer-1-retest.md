@@ -253,3 +253,57 @@ The "schema conformance" defect class is now actively guarded by 4 harness passe
 The remaining genuinely-open items from the original consolidated list are unchanged: C3 IEEE 1584 transcription (paywall), integrated-design-review skill (stubbed, unbuilt), eval-execution engine (#13 — still queued).
 
 — DraftsMan team
+
+---
+
+# Addendum — 2026-05-25 round 5 (cable-sizing)
+
+Your cable-sizing audit was the cleanest engineering verdict so far — H4 verified across all 10 three-phase nodes, 0 violations on Ib≤In≤Iz across 23 circuits, Vd-cumulative + CPC adiabatic clean, schema conformance fully green (4/4 outputs + 4/4 intents). The two findings need pairing:
+
+## M3 PVC tables — files ARE shipped, second time the check is missing them
+
+You wrote: *"PVC 4D1/4D5 tables still absent — only XLPE (4D2) + SWA (4D4)"*
+
+Same find as round 2. Both files are shipped per Sprint C.2 commit `70bece4`:
+
+```
+shared/standards/electrical/BS7671/appendix4-table-4D1A-pvc-twin-earth.json
+shared/standards/electrical/BS7671/appendix4-table-4D5A-pvc-swa.json
+```
+
+Per BS 7671 published numbering:
+- **4D1A** = PVC twin-and-earth (shipped ✓)
+- **4D2A** = XLPE single-core copper (shipped ✓)
+- **4D4A** = XLPE-SWA armored (NOT shipped — your "SWA (4D4)" reference doesn't match any file)
+- **4D5A** = PVC-SWA armored (shipped ✓)
+
+Your check is likely globbing for `4D1.json` / `4D5.json` without the descriptive `-pvc-twin-earth` / `-pvc-swa` suffix. The PVC closure for M3 happened — what's still partial is that methods 4D1A 101/102/103 + 4D5A method D ship as STRUCTURE with per-entry `_TODO` and `verification_status: pending_engineer_transcription` (engineer-cited subset is methods C/A/100 + 4D5A method C). Disclosed under the original reshare prompt Disclosure 2.
+
+## Manifest incompleteness — fixed universally (commit `19cfcc2`)
+
+You wrote: *"cable-sizing manifest is the least-mature: rules/validation/constraints exist on disk but aren't declared; still v1.0.0."*
+
+Investigation found this was THREE compounding gaps:
+
+1. **rules + constraints not declared** — universal pattern in 3 of 10 shipped skills (cable-sizing + lighting-layout + small-power). Added declarations matching the established eval/example/validation path convention. Now uniform across all 10 manifests.
+
+2. **manifest version vs CHANGELOG out of sync** — 7 of 10 manifests had a version OLDER than the CHANGELOG top entry. The Sprint A/B/C work bumped CHANGELOG entries but the implementers didn't propagate to the manifest. Bumped all 7:
+   - arc-flash 1.0.1 → 1.0.2; arc-flash-labelling 1.0.1 → 1.0.2
+   - cable-sizing 1.0.0 → 1.0.2; db-layout 1.3.1 → 1.3.2; fault-level 1.1.0 → 1.1.1
+   - lighting-layout 1.3.0 → 1.3.1; schematic 1.0.0 → 1.0.1
+
+3. **4 CHANGELOGs had unresolved `[next-patch]` placeholders** — the M1/M4 work used the placeholder string and never resolved it. Resolved arc-flash + arc-flash-labelling + lighting-layout + schematic to their corresponding bumped versions.
+
+After this commit: all 10 manifests have rules/constraints/validation/prompts/evals/examples uniformly declared and version matches CHANGELOG.
+
+## Pattern after 5 skills (fault-level, earthing, db-layout, sld, cable-sizing)
+
+Your repeated observation — "engineering is consistently sound; the residual issues are schema conformance + manifest plumbing + data-completeness" — is now structurally addressed at every layer:
+
+- **Schema conformance (chat_summary, intent shape, stray properties):** Pass 4 + cap raise + no-trim rule (commits `97e4570`, `7e35755`)
+- **Manifest plumbing (rules / constraints / validation / version):** uniform across all 10 (commits `7492840`, `19cfcc2`)
+- **Data completeness (PVC tables):** core methods shipped C.2; rare methods carry pending_engineer_transcription flags
+
+The only genuinely-open data-completeness item across all skills is M3 rare-method engineer verification (paywall — same constraint class as C3 IEEE 1584).
+
+— DraftsMan team
