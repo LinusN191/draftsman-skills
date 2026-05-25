@@ -1,0 +1,242 @@
+{
+  "drawing_type": "arc_flash_study",
+  "version": "1.0.0",
+  "meta": {
+    "project_id": "intl-hv-af-restricted-eg04",
+    "skill_version": "arc-flash/1.0.1",
+    "produced_at": "2026-05-25T10:00:00Z",
+    "consumed_intents": [
+      {
+        "intent_type": "fault-level",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/fault-level/1.0.0"
+      },
+      {
+        "intent_type": "db-layout-rollup",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/1.0.0"
+      }
+    ]
+  },
+  "jurisdiction": "INT",
+  "project_supply": {
+    "voltage_v": 11000,
+    "phases": "three",
+    "frequency_hz": 50
+  },
+  "cascade": [
+    {
+      "node_id": "HV-BUS-A",
+      "parent_node_id": null,
+      "node_kind": "service_entrance",
+      "designation": "11 kV indoor switchgear bus-A — 2 MVA oil-filled TX upstream",
+      "equipment": {
+        "type": "indoor metal-clad MV switchgear",
+        "current_type": "ac",
+        "voltage_v": 11000,
+        "voltage_class": "2700V",
+        "electrode_config": "HCB",
+        "electrode_config_source": "engineer_override"
+      },
+      "fault_inputs": {
+        "ibf_ka_max": 25,
+        "ibf_ka_min": 22,
+        "x_over_r": 22,
+        "z_total_ohm": 0.254
+      },
+      "ocpd_inputs": {
+        "ocpd_type": "MV_VCB_relay_protected",
+        "t_clear_s": 0.5,
+        "t_clear_source": "engineer_declared"
+      },
+      "geometry": {
+        "working_distance_mm": 910,
+        "gap_distance_mm": 153,
+        "enclosure_volume_mm3": 762293544
+      },
+      "arc_flash": {
+        "method_applied": "ieee_1584_2018",
+        "method_fallback_trail": [
+          {
+            "method": "ieee_1584_2018",
+            "result": "applied",
+            "reason": "2700V model class HCB coefficients available per Sprint A.3 transcription (IEEE 1584-2018 Table 1, applicable 600 V to 15 kV per §7.3)"
+          }
+        ],
+        "arcing_current_a": 22700,
+        "incident_energy_cal_per_cm2": 48.2,
+        "arc_flash_boundary_mm": 4275,
+        "ppe_category": null,
+        "ppe_category_source": "computed_from_E"
+      },
+      "shock_approach": {
+        "limited_approach_movable_mm": 3050,
+        "limited_approach_fixed_mm": 1530,
+        "restricted_approach_mm": 660,
+        "source": "NFPA 70E:2024 Table 130.4(C)(a) — 751V to 15 kV row"
+      },
+      "label": {
+        "label_recommended": true,
+        "label_required_per": "NFPA 70E:2024 §130.5(H) + IEEE 1584-2018 §13.1 — RESTRICTED equipment (IE > 40 cal/cm²) requires distinct RESTRICTED-format label per ANSI Z535.4 §6.2",
+        "engineer_can_skip_with_reason": false
+      },
+      "checks": {
+        "incident_energy_finite": true,
+        "boundary_ge_working_distance": true,
+        "ppe_category_consistent_with_E": true,
+        "method_fallback_consistent": true,
+        "tool_call_pending": false
+      }
+    }
+  ],
+  "compliance_summary": {
+    "compliant": false,
+    "non_compliance_flags": [
+      {
+        "code": "INCIDENT_ENERGY_GT_40_RESTRICTED",
+        "message": "HV-BUS-A IE = 48.2 cal/cm² exceeds the 40 cal/cm² threshold above which no commercially available arc-rated PPE provides adequate protection. Live-work is PROHIBITED per IEEE 1584-2018 §13.1. De-energise before approach OR use remote racking with interlocked door operator. NFPA 70E:2024 Table 130.7(C)(15)(A)(b): PPE categories 1-4 do not extend above 40 cal/cm².",
+        "severity": "error",
+        "node_id": "HV-BUS-A"
+      }
+    ],
+    "assumptions": [
+      "fault-level intent consumed; HV-BUS-A Ibf = 25 kA (max) + X/R = 22 from 11 kV utility supply backed by 2 MVA oil-filled TX",
+      "db-layout-rollup intent consumed; equipment classified as indoor metal-clad MV switchgear",
+      "Electrode configuration HCB engineer-override (auto-inference for 11 kV indoor cubicle could default to VCB; HCB is documented IEEE 1584-2018 §4.1.2 profile for horizontal cylindrical bus assemblies typical at this class)",
+      "Working distance 910 mm = standard MV switchgear value per IEEE 1584-2018 Table 8 (36 in)",
+      "Gap distance 153 mm = standard MV switchgear value per IEEE 1584-2018 Table 9",
+      "Enclosure 914×914×914 mm (≈762 L) within IEEE 1584-2018 §10.5 typical range",
+      "t_clear 0.5 s = engineer-declared MV VCB with overcurrent relay (typical 50/51 + reclose-block setting at incomer)",
+      "IE 48.2 cal/cm² @ 910 mm + AFB 4275 mm = IEEE 1584-2018 §10 + §11 result using 2700V HCB coefficient set per Sprint A.3 transcription",
+      "ppe_category set NULL per INV-07 because IE > 40 cal/cm² → RESTRICTED branch (no PPE category mapping applies above the 40 cal/cm² ceiling)",
+      "Compliance set FALSE because the RESTRICTED flag is an error-severity blocker for live-work — operational control (remote racking / de-energise) is the only path forward"
+    ]
+  },
+  "flags": [
+    "INCIDENT_ENERGY_GT_40_RESTRICTED",
+    "RESTRICTED_LIVE_WORK_PROHIBITED",
+    "MV_HV_EQUIPMENT"
+  ],
+  "rationale": {
+    "chat_summary": "INT 11 kV indoor substation bus-A. IEEE 1584-2018 2700V HCB coefficient set applied per Sprint A.3 transcription. With Ibf = 25 kA, t_clear = 0.5 s, gap 153 mm, working distance 910 mm: I_arc ≈ 22.7 kA → IE ≈ 48.2 cal/cm² → AFB ≈ 4275 mm. IE EXCEEDS 40 cal/cm² → RESTRICTED branch: ppe_category=null, INCIDENT_ENERGY_GT_40_RESTRICTED flag emitted (error severity), live-work PROHIBITED per IEEE 1584-2018 §13.1 + NFPA 70E Table 130.7(C)(15)(A)(b). Operational control required: remote racking with interlocked door operator OR de-energise before approach. PPE alone cannot make this work safe.",
+    "sections": [
+      {
+        "title": "Input Ingestion + HV Equipment Classification",
+        "summary": "Consumed fault-level + db-layout-rollup intents. HV-BUS-A: 11 kV indoor metal-clad MV switchgear, 25 kA bolted fault, X/R 22, downstream of 2 MVA oil-immersed TX. Engineer-declared electrode_config = HCB (horizontal cylindrical bars typical for 11 kV indoor cubicles).",
+        "decisions": [
+          {
+            "label": "HV-BUS-A classified as 2700V model class",
+            "summary": "11 kV nominal falls within IEEE 1584-2018 §7.3 model class boundary 600 V to 15 kV; 2700V coefficient set applies",
+            "rule": "IEEE 1584-2018 §7.3 — 2700V model class voltage range",
+            "code_clause": "IEEE 1584-2018 §7.3"
+          }
+        ]
+      },
+      {
+        "title": "Method Selection — IEEE 1584-2018 Applied (No Fallback)",
+        "summary": "Sprint A.3 transcribed the IEEE 1584-2018 Table 1 2700V model class coefficients (k1-k7 for HCB, plus arcing-current variation coefficients). Method ieee_1584_2018 applied directly — no Lee 1982 fallback. method_fallback_trail records one entry: ieee_1584_2018 = applied.",
+        "decisions": [
+          {
+            "label": "ieee_1584_2018 applied",
+            "summary": "Coefficients verified per Sprint A.3; voltage 11 kV in 600 V to 15 kV applicability range",
+            "rule": "rules/method-fallback-chain.yaml — 2018 first; coefficients verified",
+            "code_clause": "IEEE 1584-2018 §10 + §11 — incident-energy and boundary formulas"
+          }
+        ]
+      },
+      {
+        "title": "Arc-Current + Incident-Energy Derivation",
+        "summary": "I_arc derived from IEEE 1584-2018 §10 with 2700V HCB coefficients: I_arc ≈ 22.7 kA (≈ 91% of Ibf — the HV regime arcing-current reduction is much smaller than at LV). IE evaluated at working distance 910 mm with t_clear 0.5 s, gap 153 mm, enclosure 914 mm cube: IE ≈ 48.2 cal/cm² (incident energy at 36-in face-front working position).",
+        "decisions": [
+          {
+            "label": "IE 48.2 cal/cm² at 910 mm working distance",
+            "summary": "IEEE 1584-2018 §11 formula with 2700V HCB k1-k7 coefficients; CF distance/gap corrections applied per Table 8 + Table 9",
+            "rule": "IEEE 1584-2018 §11 — incident energy formula",
+            "code_clause": "IEEE 1584-2018 §11",
+            "inputs": {
+              "ibf_ka": 25.0,
+              "i_arc_ka": 22.7,
+              "t_clear_s": 0.5,
+              "working_distance_mm": 910,
+              "gap_distance_mm": 153,
+              "voltage_class": "2700V",
+              "electrode_config": "HCB",
+              "incident_energy_cal_per_cm2": 48.2
+            }
+          },
+          {
+            "label": "Arc-flash boundary 4275 mm",
+            "summary": "AFB computed where IE drops to 1.2 cal/cm² (per IEEE 1584-2018 §11 boundary equation): ≈ 4.28 m. AFB > working_distance (910 mm), satisfying invariant boundary_ge_working_distance.",
+            "rule": "IEEE 1584-2018 §11 — AFB formula",
+            "code_clause": "IEEE 1584-2018 §11"
+          }
+        ]
+      },
+      {
+        "title": "RESTRICTED Branch — IE > 40 cal/cm² (Critical Safety Decision)",
+        "summary": "IE 48.2 cal/cm² exceeds the 40 cal/cm² ceiling. Per IEEE 1584-2018 §13.1, no commercially available arc-rated PPE protects against incident energy above 40 cal/cm² (the limit of practical AR-suit ATPV ratings + the onset of pressure-wave / molten-metal-ejection injury modes not addressed by garment thermal protection). NFPA 70E:2024 Table 130.7(C)(15)(A)(b) PPE categories 1-4 cap out at 40 cal/cm². ppe_category = null is the CORRECT IR encoding (do not pretend Cat 4 covers this); INCIDENT_ENERGY_GT_40_RESTRICTED flag emitted with error severity. Live-work is PROHIBITED. Operational consequence: switch dead before approach OR use remote racking with interlocked door operator. PPE alone cannot make this work safe.",
+        "decisions": [
+          {
+            "label": "ppe_category set to null",
+            "summary": "IE 48.2 > 40 ceiling → null is the contract-correct value per INV-07; do not silently emit Cat 4",
+            "rule": "rules/ppe-category-mapping.yaml — IE > 40 → null + INCIDENT_ENERGY_GT_40_RESTRICTED",
+            "code_clause": "NFPA 70E:2024 Table 130.7(C)(15)(A)(b) — PPE categories 1-4 only"
+          },
+          {
+            "label": "Live-work PROHIBITED",
+            "summary": "Operational policy: de-energise OR remote-rack with interlocked door operator. No PPE-only approach permitted.",
+            "rule": "IEEE 1584-2018 §13.1 — PPE inadequate above 40 cal/cm²",
+            "code_clause": "IEEE 1584-2018 §13.1"
+          }
+        ]
+      },
+      {
+        "title": "Shock-Approach Boundaries (Distinct From Arc-Flash)",
+        "summary": "Shock-approach distances apply independently of arc-flash even in RESTRICTED branch — they protect against electrical contact, not thermal energy. NFPA 70E:2024 Table 130.4(C)(a) 751 V to 15 kV row: limited movable 3050 mm, limited fixed 1530 mm, restricted 660 mm. These distances remain enforceable when de-energised work plan is followed.",
+        "decisions": []
+      },
+      {
+        "title": "Label Recommendation — RESTRICTED Format Required",
+        "summary": "label_recommended: true. RESTRICTED-class labels follow a distinct format (red full-bezel, RESTRICTED signal-word in lieu of DANGER, explicit 'No commercially available PPE protects against this arc-flash hazard' text per IEEE 1584-2018 §13.1). Downstream arc-flash-labelling skill must select format_applied = 'restricted_format', signal_word = 'RESTRICTED'. ppe_clothing_description must record 'NO PPE ADEQUATE — DE-ENERGISE OR REMOTE-RACK ONLY'.",
+        "decisions": []
+      },
+      {
+        "title": "Compliance + Tool-Call Status",
+        "summary": "compliant: false because INCIDENT_ENERGY_GT_40_RESTRICTED is error-severity — the equipment can only be operated under operational-control (de-energise / remote rack), not by PPE selection. tool_call_pending: false because Sprint A.3 transcribed coefficients are present and IEEE 1584-2018 formulae are deterministic. MV_HV_EQUIPMENT + RESTRICTED_LIVE_WORK_PROHIBITED flags emitted in flags[] for downstream skills to filter.",
+        "decisions": []
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "method_applied='ieee_1584_2018' is in the controlled vocabulary {ieee_1584_2018, ieee_1584_2002, lee_1982, nfpa_70e_table, doan_dc, pending}. 2700V model class (IEEE 1584-2018 §7.3) applies because nominal 11 kV is within 600 V to 15 kV range."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "method_applied='ieee_1584_2018' equals the method of the last (and only) method_fallback_trail entry where result='applied'. Single-entry trail because coefficients available per Sprint A.3 transcription; no fallback needed."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Numeric outputs populated because method_applied is not in {pending, nfpa_70e_table}: incident_energy_cal_per_cm2=48.2 (finite positive), arc_flash_boundary_mm=4275 (≥ working_distance_mm=910). Both gating conditions satisfied."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "ppe_category=null because IE=48.2 > 40 cal/cm² (RESTRICTED branch). INCIDENT_ENERGY_GT_40_RESTRICTED flag present in non_compliance_flags with error severity and node_id='HV-BUS-A'. Per validator.md INV-07 spec: 'If IE > 40: ppe_category is null AND INCIDENT_ENERGY_GT_40_RESTRICTED flag is in non_compliance_flags.' Both conditions hold."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "high",
+      "evidence": "shock_approach block populated with all three distance fields (limited_approach_movable_mm=3050, limited_approach_fixed_mm=1530, restricted_approach_mm=660) and source cites NFPA 70E:2024 Table 130.4(C)(a) 751V to 15 kV row (AC node — correct table)."
+    }
+  ]
+}

@@ -2,6 +2,34 @@
 
 All notable changes. Follows [Keep a Changelog](https://keepachangelog.com).
 
+## [next-patch] - 2026-05-25 — M4 non-provisional provenance worked example
+
+### Added
+- New worked example `examples/uk-bs5499-final-with-provenance/` exercising
+  the NON-PROVISIONAL label branch (DEFECT_REGISTER M4: high-consequence
+  branch had no example coverage). Consumes the refreshed
+  `electrical/arc-flash/examples/uk-lv-switchgear/intent-out.json` and emits
+  BS 5499-4:2013 + BS EN ISO 7010 labels with `provenance.is_provisional =
+  false`, DRAFT marker SUPPRESSED on `header_line`, and QR codes populated.
+- Provenance block fully populated per Sprint A.2 C2 cause-fix schema:
+  `method_applied = ieee_1584_2018`, `computed_at`, `calc_tool_version`,
+  `is_provisional = false`, `provenance_note` explaining Sprint A.3
+  verification rationale (IEEE 1584-2018 600V VCB coefficients now
+  transcribed; upstream Lee 1982 fallback no longer in play).
+- INVs populated in `invariants[]`: INV-01 (node_id uniqueness), INV-04
+  (PPE Cat ↔ signal_word), INV-05 (NFPA 70E §130.5(H) content fields),
+  INV-06 (SVG content + no template placeholders), INV-08 (intent shape +
+  1-to-1 with IR), INV-09 (provenance block + DRAFT marker suppression).
+
+### Rationale
+Sprint C Task C.3 — closes M4 (untested safety branches). Counterpart to
+the existing `uk-bs5499-label-set` example which exercises the provisional
+/ DRAFT branch. Together the two examples demonstrate that the C2
+provenance disclosure mechanism is a genuine decision gate — the SAME
+upstream cascade produces DIFFERENT label output depending on
+`is_provisional` state. Non-provisional labels are approved for
+OPERATIONAL FIELD USE (print + laminate + affix).
+
 ## [next-patch] - 2026-05-25 — M1 hybrid eval-vs-IR fix
 
 ### Added

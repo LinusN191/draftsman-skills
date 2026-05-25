@@ -1,0 +1,21 @@
+{
+  "project_id": "intl-hv-af-restricted-eg04",
+  "jurisdiction": "INT",
+  "project_supply": { "voltage_v": 11000, "phases": "three", "frequency_hz": 50 },
+  "consumed_intents_present": ["fault-level", "db-layout-rollup"],
+  "cascade_declared": [
+    {
+      "id": "HV-BUS-A",
+      "parent_node_id": null,
+      "node_kind": "service_entrance",
+      "designation": "11 kV indoor switchgear bus-A — 2 MVA oil-filled TX upstream",
+      "equipment": { "type": "indoor metal-clad MV switchgear", "current_type": "ac", "voltage_v": 11000 },
+      "fault_inputs": { "ibf_ka_max": 25, "ibf_ka_min": 22, "x_over_r": 22 },
+      "ocpd_inputs": { "ocpd_type": "MV_VCB_relay_protected", "t_clear_s": 0.5 },
+      "geometry": { "working_distance_mm": 910, "gap_distance_mm": 153, "enclosure_volume_mm3": 762293544 }
+    }
+  ],
+  "electrode_config_overrides": [
+    { "node_id": "HV-BUS-A", "electrode_config": "HCB", "reason": "11 kV indoor cubicle with horizontal cylindrical bus configuration per IEEE 1584-2018 §4.1.2" }
+  ]
+}

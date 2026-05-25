@@ -2,6 +2,32 @@
 
 All notable changes to the arc-flash skill. Follows [Keep a Changelog](https://keepachangelog.com).
 
+## [next-patch] - 2026-05-25 — M4 RESTRICTED branch worked example
+
+### Added
+- New worked example `examples/intl-hv-restricted-substation/` exercising the
+  IE > 40 cal/cm² RESTRICTED branch (DEFECT_REGISTER M4: high-consequence
+  branch had no example coverage). 11 kV indoor metal-clad MV switchgear,
+  HCB electrode configuration, 25 kA bolted fault, 0.5 s clearing time,
+  910 mm working distance, 153 mm gap. IEEE 1584-2018 2700V model class
+  coefficients applied per Sprint A.3 transcription — no Lee 1982 fallback.
+- Computed results: I_arc ≈ 22.7 kA, IE ≈ 48.2 cal/cm², AFB ≈ 4275 mm.
+  ppe_category = null (per validator.md INV-07: IE > 40 → null);
+  INCIDENT_ENERGY_GT_40_RESTRICTED flag emitted at error severity;
+  compliance_summary.compliant = false; live-work PROHIBITED per
+  IEEE 1584-2018 §13.1 + NFPA 70E:2024 Table 130.7(C)(15)(A)(b).
+- INVs populated in `invariants[]`: INV-04 (method vocabulary), INV-05
+  (method matches fallback trail — single applied entry), INV-06 (numeric
+  outputs gated by method), INV-07 (RESTRICTED branch encoding), INV-08
+  (shock-approach block complete).
+
+### Rationale
+Sprint C Task C.3 — closes M4 (untested safety branches). Demonstrates the
+upper-bound safety branch fires correctly: ppe_category null + RESTRICTED
+flag + compliant=false + operational consequence (de-energise or remote
+rack) documented in `assumptions[]`. Counterpart in arc-flash-labelling
+exercises non-provisional provenance.
+
 ## [next-patch] - 2026-05-25 — M1 hybrid eval-vs-IR fix
 
 ### Added
