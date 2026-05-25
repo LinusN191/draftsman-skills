@@ -26,6 +26,8 @@ Each item follows the established pattern:
 4. **Example update** (existing examples gain the new field where applicable; 1 new example added for arc-flash abnormal-condition)
 5. **CHANGELOG patch-bump** (per skill)
 
+**INV-numbering placeholders** (`INV-NN`, `INV-NN+1`, `INV-NN+2`, etc. throughout this spec) **resolve at plan-writing time** by reading each validator.md's current count and appending sequentially (e.g. if fault-level/prompts/validator.md currently ends at INV-11, the breaking-capacity INV becomes INV-12; superposition INV becomes INV-13; decrement INV becomes INV-14). The plan must do this resolution explicitly and zero-pad per the Sprint B.5 fix-pass-2 convention (INV-01 not INV-1).
+
 **Pre-flight assumption:** validate-examples.py stays at 219/219+ after each item; functional_audit.py stays ≤ 1 finding (the motor-superposition disclaimed FP). New examples increase the denominator; never decrease pass count.
 
 ---
@@ -421,7 +423,7 @@ overrides regardless of position.
 Each item ships as its own commit. Before commit:
 
 - `python3 scripts/validate-examples.py` — 219/219+ across 4 passes (held; new examples increase denominator)
-- `python3 functional_audit.py` — ≤ 1 finding (motor-superposition disclaimed FP; Item 2 may CLEAR this FP if oracle now sees the explicit breakdown)
+- `python3 functional_audit.py` — ≤ 1 finding (motor-superposition disclaimed FP remains visible after Item 2 ships UNLESS the audit oracle is updated to read the new `superposition_contribution_ka` field; **oracle update is OUT OF SCOPE for D1** — Item 2 ships the data as explicit so a future oracle improvement CAN read it, but improving the oracle itself is a separate task post-D-program)
 - Manual hand-check on at least 1 example per item:
   - Item 1: pick `intl-commercial-with-genset` MSB-1, verify `headroom_pct` matches the device/Ik arithmetic
   - Item 2: pick `us-industrial-with-motors` MCC-1, verify `sum(superposition_contribution_ka.{non-total}) == .total` and `.total == ifault_ka_max`
