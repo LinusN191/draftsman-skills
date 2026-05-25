@@ -1,0 +1,40 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "IEEE Std 1584-2018 §7 + Table 3 (incident-energy)",
+  "formula_id": "ieee1584-2018-incident-energy",
+  "formula_latex": "\\log_{10}(E) = k_1 + k_2 \\log_{10}(I_{arc}) + k_3 \\log_{10}(G) + k_4 I_{arc} + k_5 I_{arc}^2 + k_6 G \\cdot I_{arc} + k_7 V + k_8 V \\cdot I_{arc} + k_9 V \\cdot G + k_{10} \\log_{10}(t) + k_{11} \\log_{10}(D) + k_{12} V \\cdot \\log_{10}(t) + k_{13} V \\cdot \\log_{10}(D)",
+  "formula_plain_text": "log10(E) = k1 + k2·log10(I_arc) + k3·log10(G) + k4·I_arc + k5·I_arc^2 + k6·G·I_arc + k7·V + k8·V·I_arc + k9·V·G + k10·log10(t) + k11·log10(D) + k12·V·log10(t) + k13·V·log10(D). The 2018 incident-energy model is a 13-term polynomial-in-V with cross-terms; coefficient ROW (k1..k13) is selected per (voltage_class, electrode_config) per Table 3. Note this functional form has explicit V coupling — distinguishes from the 2002 Annex F simplified regression which is purely log-linear with no V cross-terms. The 2018 SUPERSEDES 2002 Annex F for new studies.",
+  "symbols": [
+    {"symbol": "E",         "meaning": "Incident energy at working distance D",        "unit": "cal/cm²"},
+    {"symbol": "I_arc",     "meaning": "Arcing current (from arc-current-formula-2018)", "unit": "kA"},
+    {"symbol": "G",         "meaning": "Gap between conductors",                       "unit": "mm"},
+    {"symbol": "D",         "meaning": "Working distance",                             "unit": "mm"},
+    {"symbol": "t",         "meaning": "Arcing time (OCPD clearing time at I_arc)",   "unit": "s"},
+    {"symbol": "V",         "meaning": "Nominal system voltage",                       "unit": "kV"},
+    {"symbol": "k_1..k_13", "meaning": "Empirical coefficients per voltage class × electrode config (Table 3)", "unit": "dimensionless"}
+  ],
+  "applicable_range": {
+    "v_nom_min_v": 208,
+    "v_nom_max_v": 15000,
+    "t_arc_min_s": 0.0005,
+    "t_arc_max_s": 2.0,
+    "d_min_mm": 305,
+    "d_max_mm": 1524,
+    "i_bf_min_ka": 0.5,
+    "i_bf_max_ka": 106
+  },
+  "units": {"e": "cal/cm²"},
+  "worked_examples": [
+    {
+      "name": "Annex D.1 (VCB at 480 V)",
+      "input":  {"v_nom_v": 480, "i_arc_ka": 21.5, "g_mm": 32, "d_mm": 455, "t_arc_s": 0.2, "electrode_config": "VCB"},
+      "expected_output": {"incident_energy_cal_per_cm2": 6.4},
+      "source": "IEEE 1584-2018 Annex D Example D.1"
+    }
+  ],
+  "implementation_notes": "IEEE 1584-2018 expresses V in kV and I_arc/I_bf in kA inside the polynomial (per Tables 1 and 3 unit conventions). Implementers MUST verify the unit convention against the licensed standard before computing — using V in volts will produce wildly wrong results given the V coupling in k7..k9, k12, k13. The two-stage flow is: (1) compute I_arc per arc-current-formula-2018.json + Table 1; (2) apply this formula with Table 3 coefficients to get E. Adjustment factors (gap-out-of-table, distance-out-of-table, enclosure-size) multiply the result per §10.5.",
+  "transcribed_at": "2026-05-25",
+  "transcribed_by": "DraftsMan skills repo — Sprint A.3 (Path Z2-ext)",
+  "verification_status": "verified-against-source-shape-only",
+  "license_note": "Formula structure (13-term polynomial-in-V with cross-terms) is factual data per IEEE Std 1584-2018 Table 3 row schema. Coefficient values live in method-2018-tables-1-3-<class>V-coefficients.json (currently null pending source-vetted transcription)."
+}

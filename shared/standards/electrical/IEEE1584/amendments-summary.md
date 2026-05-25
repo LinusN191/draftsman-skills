@@ -27,6 +27,6 @@ Per repo policy, in-place update of this layer:
 - `meta.json` `edition` → `"2028"`
 - `meta.json` `layer_version` → `"2.0.0"`
 - This file gets a new `## 2018 → 2028` section
-- Method files for the 2018 edition remain as `method-2018-*.json` (legacy)
+- Method files for the 2018 edition remain as `method-2018-tables-1-3-*.json` (current) and `method-2002-annex-f-*.json` (retained alongside for relabel correctness — see Sprint A.3 dual-track rationale)
 - New `method-2028-*.json` files added for the new edition
 - The consuming `arc-flash` skill bumps its version to follow

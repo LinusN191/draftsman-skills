@@ -1,0 +1,58 @@
+name: eval-10-calculation-meta-is-provisional
+skill: arc-flash
+category: validation_trap
+description: |
+  Sprint A.3 (Path Z2-ext) regression guard: when IEEE 1584-2018 coefficients are
+  pending source-vetted transcription (the current state after the relabel correction
+  on 2026-05-25), the arc-flash skill MUST fall back to Lee 1982 at LV and emit a
+  top-level calculation_meta block on the produced arc-flash intent with
+  is_provisional: true. This eval asserts the downstream-facing contract that the
+  arc-flash-labelling skill depends on (Step 12 reads calculation_meta directly).
+
+  Until the 2018 transcription completes, every LV arc-flash intent MUST advertise
+  is_provisional: true so labels propagate the DRAFT marker per the C2 cause-fix.
+input:
+  jurisdiction: GB
+  project_supply: { voltage_v: 400, phases: three, frequency_hz: 50 }
+  consumed_intents:
+    fault_level: { present: true, source: "electrical/fault-level/1.0.0" }
+    db_layout_rollup: { present: true, source: "electrical/db-layout/1.0.0" }
+  simulated_environment:
+    ieee_1584_2018_coefficients_available: false
+    ieee_1584_2002_coefficients_available: false
+  cascade_declared:
+    - id: "MSB-1"
+      parent_node_id: null
+      node_kind: service_entrance
+      designation: "Main MSB 2500A — Lee fallback under A.3 pending state"
+      equipment: { type: "metal-clad LV switchgear", current_type: ac, voltage_v: 400 }
+      fault_inputs: { ibf_ka_max: 22.5, ibf_ka_min: 20.4, x_over_r: 7 }
+      ocpd_inputs: { ocpd_type: "ACB_electronic", t_clear_s: 0.3 }
+      geometry: { working_distance_mm: 455 }
+
+checks:
+  # Top-level calculation_meta block present + provisional under A.3 pending state
+  - assertion: 'intent.calculation_meta != null'
+    description: arc-flash intent MUST carry a top-level calculation_meta block (per A.3 contract update)
+    severity: critical
+
+  - assertion: 'intent.calculation_meta.is_provisional == true'
+    description: Under A.3 pending-transcription state, calculation_meta.is_provisional MUST be true (downstream labelling skill propagates DRAFT marker on this signal)
+    severity: critical
+
+  - assertion: 'intent.calculation_meta.method_applied == "lee_1982"'
+    description: Under A.3 pending-transcription state, LV node MUST use Lee 1982 fallback (IEEE 1584-2018 coefficients null)
+    severity: critical
+
+  - assertion: 'intent.calculation_meta.tool_version != null'
+    description: calculation_meta.tool_version MUST be populated (downstream provenance trail)
+    severity: critical
+
+  - assertion: 'intent.calculation_meta.computed_at != null'
+    description: calculation_meta.computed_at MUST be populated (downstream provenance trail)
+    severity: critical
+
+  # The node-level method_applied must use the canonical underscore-form enum (Sprint A.3 unification)
+  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].method_applied matches "^(ieee_1584_2018|ieee_1584_2002|lee_1982|nfpa_70e_table|doan_dc|pending)$"'
+    description: MSB-1 method_applied is from the unified controlled vocabulary (Sprint A.3 enum unification — underscore form per labels-ir.schema.json canonical)
+    severity: critical

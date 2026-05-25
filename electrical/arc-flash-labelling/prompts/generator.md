@@ -84,19 +84,26 @@ Set `project_label_index.schedule_pdf_content_pending: true` (runtime tool bundl
 ### Step 12 — Populate `provenance` block from upstream arc-flash intent
 
 Read the upstream arc-flash `intent-out.json` (declared in `input.json` →
-`consumed_intent_path`). Extract:
+`consumed_intent_path`). Per the Sprint A.3 (Path Z2-ext) contract update, the
+upstream now publishes a top-level `calculation_meta` block on the arc-flash
+intent (per `arc-flash-intent.schema.json` § `calculation_meta`). Read directly
+from that block:
 
-- `method_applied` — read from `arc_flash_intent.calculation_meta.method_applied`
-  (or wherever the upstream tool publishes the applied method). If the field
-  is `"pending"` or absent, set `is_provisional: true`.
+- `method_applied` — read from `arc_flash_intent.calculation_meta.method_applied`.
+  If the field is absent OR the upstream lacks a `calculation_meta` block, treat
+  this as a legacy upstream and set `is_provisional: true`. Canonical method
+  enum values: `ieee_1584_2018 | ieee_1584_2002 | lee_1982 | doan_dc | nfpa_70e_table`.
 - `computed_at` — read from `arc_flash_intent.calculation_meta.computed_at`.
   If absent, set to the current ISO-8601 timestamp and `is_provisional: true`.
 - `calc_tool_version` — read from `arc_flash_intent.calculation_meta.tool_version`
   (or the latest known version stub if absent).
-- `is_provisional` — true if ANY of:
-  - method_applied is "lee_1982" AND voltage_class is "600V" (Lee-fallback at LV — over-predicts)
+- `is_provisional` — read from `arc_flash_intent.calculation_meta.is_provisional`
+  when present (the upstream is the source of truth). Otherwise, infer
+  `is_provisional: true` if ANY of:
+  - method_applied is "lee_1982" AND any node has `voltage_v <= 1000` (Lee-fallback at LV — over-predicts; the LV threshold replaces the legacy "600V" voltage_class string check because the arc-flash intent carries `voltage_v` directly per node, not a voltage_class string)
   - method_applied is "pending" or absent
   - Upstream incident_energy value has tool_call_pending marker or null coefficients
+  - The upstream `calculation_meta` block itself is absent (legacy upstream)
 - `provenance_note` — 1–3 sentences: which method/clause was used, why
   provisional (if applicable), what the user should do (e.g. "Re-run with
   verified IEEE 1584-2018 coefficients before field use.").

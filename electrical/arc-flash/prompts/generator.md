@@ -57,8 +57,8 @@ Record `t_clear_source: engineer_declared | ocpd_type_default | conservative_def
 
 ### Step 8 — Per-node: select method via fallback chain
 Execute `rules/method-fallback-chain.yaml`:
-- **DC nodes:** if voltage_v ≤ 1000 → `dc_doan`; else → `pending`.
-- **AC nodes:** try in order: `ieee1584_2018` → `ieee1584_2002` → `lee_1982` → `nfpa70e_table` → `pending`. Record `method_fallback_trail[]` with `result: applied | skipped` and `reason` for every attempt.
+- **DC nodes:** if voltage_v ≤ 1000 → `doan_dc`; else → `pending`.
+- **AC nodes:** try in order: `ieee_1584_2018` → `ieee_1584_2002` → `lee_1982` → `nfpa_70e_table` → `pending`. Record `method_fallback_trail[]` with `result: applied | skipped` and `reason` for every attempt.
 
 Set `method_applied` = last entry in trail where `result == applied` (or `pending` if no method applied).
 
@@ -78,15 +78,15 @@ Populate `shock_approach.limited_approach_movable_mm`, `limited_approach_fixed_m
 If voltage > 46 kV (out of Table 130.4 range): emit `SHOCK_APPROACH_BEYOND_TABLE_RANGE` flag (error severity).
 
 ### Step 11 — Per-node: assign PPE category
-**If method_applied is ieee1584_2018 / ieee1584_2002 / lee_1982 / dc_doan:**
+**If method_applied is ieee_1584_2018 / ieee_1584_2002 / lee_1982 / doan_dc:**
 - Apply `rules/ppe-category-mapping.yaml` to `incident_energy_cal_per_cm2`
 - 1.2–4 → Cat 1; 4–8 → Cat 2; 8–25 → Cat 3; 25–40 → Cat 4; >40 → null + `INCIDENT_ENERGY_GT_40_RESTRICTED` error
 - Record `ppe_category_source: computed_from_E`
 
-**If method_applied is nfpa70e_table:**
+**If method_applied is nfpa_70e_table:**
 - Lookup row in `NFPA70E/table-130-7-C-15-a-ac-tasks.json` (AC) or `(b)-dc-tasks.json` (DC)
 - Use the category from the matched row
-- Record `ppe_category_source: nfpa70e_table_lookup`
+- Record `ppe_category_source: nfpa_70e_table_lookup`
 
 **Engineer override (if specified for this node):**
 - Allowed UP only (Cat 2 → Cat 3 OK; Cat 3 → Cat 2 NOT OK)
@@ -145,7 +145,7 @@ Until DraftsMan runtime ships `calc.arc_flash_incident_energy`, every affected n
 ## Hard rules (never violate)
 
 - Never invent IEEE 1584 coefficients — fallback chain handles null coefficients
-- Never set `method_applied` outside the controlled vocabulary: `ieee1584_2018 | ieee1584_2002 | lee_1982 | nfpa70e_table | dc_doan | pending`
+- Never set `method_applied` outside the controlled vocabulary: `ieee_1584_2018 | ieee_1584_2002 | lee_1982 | nfpa_70e_table | doan_dc | pending`
 - Never produce negative IE or negative AFB
 - Never skip `method_fallback_trail` — every node must show what was tried
 - Every `shock_approach` block cites NFPA 70E:2024 Table 130.4(C)(a) or (b)

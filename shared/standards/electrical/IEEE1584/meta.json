@@ -1,13 +1,13 @@
 {
   "standard": "IEEE1584",
-  "title": "IEEE 1584:2018 Arc Flash Incident Energy & Boundary",
+  "title": "IEEE 1584 Arc Flash Incident Energy & Boundary (dual-track: 2002 Annex F + 2018 Tables 1+3)",
   "body": "IEEE",
-  "edition": "2018",
-  "layer_version": "1.0.0",
-  "scope_one_line": "Empirical arc-flash incident energy and boundary calculations for AC equipment 208V – 15 kV using IEEE 1584:2018 model",
+  "edition": "2018 (current) + 2002 Annex F (retained alongside for relabel correctness)",
+  "layer_version": "1.1.0",
+  "scope_one_line": "Empirical arc-flash incident energy and boundary calculations for AC equipment 208 V – 15 kV. The 2018 edition (Tables 1+3 polynomial-in-V model) is the current authoritative anchor; the 2002 Annex F simplified regression is retained for traceability of pre-2018 labels.",
   "jurisdiction": ["US", "INT"],
-  "status": "production",
-  "related_skills": ["electrical/arc-flash (planned v1.0.0)"],
+  "status": "production-dual-track",
+  "related_skills": ["electrical/arc-flash (v1.0.0 beta)", "electrical/arc-flash-labelling (v1.0.0 beta)"],
   "files_planned": [],
   "files_present": [
     "README.md",
@@ -23,12 +23,17 @@
     "electrode-config-VOA-coefficients.json",
     "electrode-config-HOA-coefficients.json",
     "arc-current-formula.json",
+    "arc-current-formula-2018.json",
     "arc-current-variation-high-low.json",
     "incident-energy-formula.json",
+    "incident-energy-formula-2018.json",
     "boundary-distance-formula.json",
-    "method-2018-600V-coefficients.json",
-    "method-2018-2700V-coefficients.json",
-    "method-2018-14300V-coefficients.json",
+    "method-2002-annex-f-600V-coefficients.json",
+    "method-2002-annex-f-2700V-coefficients.json",
+    "method-2002-annex-f-14300V-coefficients.json",
+    "method-2018-tables-1-3-600V-coefficients.json",
+    "method-2018-tables-1-3-2700V-coefficients.json",
+    "method-2018-tables-1-3-14300V-coefficients.json",
     "intermediate-voltage-interpolation.json",
     "adjustment-factor-non-standard-gap.json",
     "adjustment-factor-non-standard-distance.json",
@@ -39,9 +44,23 @@
     "working-distance-defaults.json",
     "equipment-classification.json"
   ],
+  "verification_status_per_file": {
+    "arc-current-formula.json": "verified-against-source (2002 Annex F anchor)",
+    "arc-current-formula-2018.json": "verified-against-source-shape-only (2018 anchor; values pending)",
+    "incident-energy-formula.json": "verified-against-source (2002 Annex F.16 anchor)",
+    "incident-energy-formula-2018.json": "verified-against-source-shape-only (2018 anchor; values pending)",
+    "boundary-distance-formula.json": "verified-against-source",
+    "method-2002-annex-f-600V-coefficients.json": "pending-transcription-from-IEEE-1584-2002-annex-f-table-f-1",
+    "method-2002-annex-f-2700V-coefficients.json": "pending-transcription-from-IEEE-1584-2002-annex-f-table-f-1",
+    "method-2002-annex-f-14300V-coefficients.json": "pending-transcription-from-IEEE-1584-2002-annex-f-table-f-1",
+    "method-2018-tables-1-3-600V-coefficients.json": "pending-transcription-from-IEEE-1584-2018-tables-1-3",
+    "method-2018-tables-1-3-2700V-coefficients.json": "pending-transcription-from-IEEE-1584-2018-tables-1-3",
+    "method-2018-tables-1-3-14300V-coefficients.json": "pending-transcription-from-IEEE-1584-2018-tables-1-3"
+  },
   "license_note": "Clause references + numeric coefficients (factual data) + brief paraphrase only — never full standard text.",
   "edition_history": [
-    { "edition": "2002", "released": "2002-09-23", "deprecated_by": "2018 revision but legacy files retained as method-2002-*.json" },
-    { "edition": "2018", "released": "2018-11-30", "status": "current" }
-  ]
+    { "edition": "2002", "released": "2002-09-23", "withdrawn_by_ieee": "2019", "status": "Annex F simplified regression retained as method-2002-annex-f-*.json for traceability + legacy label compatibility" },
+    { "edition": "2018", "released": "2018-11-30", "status": "current; Tables 1 (arc-current) + 3 (incident-energy) polynomial-in-V model is the authoritative anchor; lives in method-2018-tables-1-3-*.json" }
+  ],
+  "dual_track_rationale": "Sprint A.3 (Path Z2-ext) on 2026-05-25 corrected a mislabel: the original method-2018-*-coefficients.json files declared 'IEEE 1584:2018' but their 7-coefficient log-linear shape (k1..k7 + x_distance_exponent) is the IEEE 1584-2002 Annex F simplified regression form, NOT the 2018 model. IEEE 1584-2018 §7 + Tables 1+3 use a 10-coef arc-current + 13-coef incident-energy polynomial-in-V form with cross-terms. The misnamed files were renamed to method-2002-annex-f-*.json (correct anchor + null values pending transcription) and the actual 2018 model files were added alongside as method-2018-tables-1-3-*.json (correct shape + null values pending transcription). Confirmed against ETAP white paper, EasyPower release notes, Bisson 'Electrical Safety: Practical Solutions' Ch. 5 — those references describe the 2018 model SHAPE (10-coef + 13-coef polynomial-in-V) but verbatim numerical coefficients require licensed access to IEEE Std 1584-2018."
 }

@@ -35,14 +35,14 @@ For every AC node: `equipment.electrode_config` is one of `VCB | VCBB | HCB | VO
 For every DC node: `equipment.electrode_config` is `null` AND `electrode_config_source == "not_applicable_dc"`.
 
 ### INV-04 — method_applied from controlled vocabulary
-Every `arc_flash.method_applied` is one of: `ieee1584_2018 | ieee1584_2002 | lee_1982 | nfpa70e_table | dc_doan | pending`. No free-form strings.
+Every `arc_flash.method_applied` is one of: `ieee_1584_2018 | ieee_1584_2002 | lee_1982 | nfpa_70e_table | doan_dc | pending`. No free-form strings.
 
 ### INV-05 — method_applied matches fallback trail
 `method_applied` equals the `method` of the last entry in `method_fallback_trail` where `result == "applied"`. If no entry has `result: applied`, then `method_applied == "pending"`.
 
 ### INV-06 — Numeric outputs gated by method
-- When `method_applied not in [pending, nfpa70e_table]`: `incident_energy_cal_per_cm2` is a finite positive number AND `arc_flash_boundary_mm >= working_distance_mm`.
-- When `method_applied in [pending, nfpa70e_table]`: `incident_energy_cal_per_cm2 is null` AND `arc_flash_boundary_mm is null`.
+- When `method_applied not in [pending, nfpa_70e_table]`: `incident_energy_cal_per_cm2` is a finite positive number AND `arc_flash_boundary_mm >= working_distance_mm`.
+- When `method_applied in [pending, nfpa_70e_table]`: `incident_energy_cal_per_cm2 is null` AND `arc_flash_boundary_mm is null`.
 
 ### INV-07 — PPE category in 1-4 OR null
 Every `arc_flash.ppe_category` is an integer 1-4 OR null. If IE numeric, it matches the mapping per Table 130.7(C)(15)(c): 1.2-4=1, 4-8=2, 8-25=3, 25-40=4. If IE > 40: `ppe_category` is null AND `INCIDENT_ENERGY_GT_40_RESTRICTED` flag is in `non_compliance_flags`.
@@ -50,8 +50,8 @@ Every `arc_flash.ppe_category` is an integer 1-4 OR null. If IE numeric, it matc
 ### INV-08 — Shock-approach block complete
 Every `shock_approach` block has all 3 distance fields (`limited_approach_movable_mm`, `limited_approach_fixed_mm`, `restricted_approach_mm`) populated (number or string like "avoid contact"), and `source` cites either Table 130.4(C)(a) for AC nodes or Table 130.4(C)(b) for DC nodes.
 
-### INV-09 — DC nodes use dc_doan or pending only
-For every node where `equipment.current_type == "dc"`: `method_applied` is `dc_doan` OR `pending`. Never an AC method.
+### INV-09 — DC nodes use doan_dc or pending only
+For every node where `equipment.current_type == "dc"`: `method_applied` is `doan_dc` OR `pending`. Never an AC method.
 
 ### INV-10 — Intent shape + 1-to-1 mapping
 The emitted `arc-flash` intent validates against `arc-flash-intent.schema.json`. AND for every cascade node in the IR, there is exactly one matching entry (by `node_id`) in `intent.nodes[]`. No extras, no missing.

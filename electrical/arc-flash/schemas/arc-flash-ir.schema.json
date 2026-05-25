@@ -130,7 +130,7 @@
           "required": ["method_applied", "method_fallback_trail"],
           "additionalProperties": false,
           "properties": {
-            "method_applied": { "enum": ["ieee1584_2018", "ieee1584_2002", "lee_1982", "nfpa70e_table", "dc_doan", "pending"] },
+            "method_applied": { "enum": ["ieee_1584_2018", "ieee_1584_2002", "lee_1982", "nfpa_70e_table", "doan_dc", "pending"] },
             "method_fallback_trail": {
               "type": "array",
               "minItems": 1,
@@ -138,7 +138,7 @@
                 "type": "object",
                 "required": ["method", "result", "reason"],
                 "properties": {
-                  "method": { "enum": ["ieee1584_2018", "ieee1584_2002", "lee_1982", "nfpa70e_table", "dc_doan"] },
+                  "method": { "enum": ["ieee_1584_2018", "ieee_1584_2002", "lee_1982", "nfpa_70e_table", "doan_dc"] },
                   "result": { "enum": ["applied", "skipped"] },
                   "reason": { "type": "string" }
                 }
@@ -148,7 +148,7 @@
             "incident_energy_cal_per_cm2": { "type": ["number", "null"], "minimum": 0 },
             "arc_flash_boundary_mm": { "type": ["number", "null"], "minimum": 0 },
             "ppe_category": { "type": ["integer", "null"], "minimum": 1, "maximum": 4 },
-            "ppe_category_source": { "enum": ["computed_from_E", "engineer_override", "nfpa70e_table_lookup", "null_when_pending"] }
+            "ppe_category_source": { "enum": ["computed_from_E", "engineer_override", "nfpa_70e_table_lookup", "null_when_pending"] }
           }
         },
         "shock_approach": {

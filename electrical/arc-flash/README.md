@@ -23,11 +23,11 @@ A project-scoped arc-flash IR with per-node:
 
 | Method | Source | Bias | When used |
 |---|---|---|---|
-| `ieee1584_2018` | IEEE 1584:2018 §§6-10 + Annex C | Most realistic | Preferred for AC; requires transcribed coefficients |
-| `ieee1584_2002` | IEEE 1584:2002 (Doughty/Neal) | Slightly conservative vs 2018 | Legacy compatibility + fallback |
+| `ieee_1584_2018` | IEEE 1584:2018 §§6-10 + Annex C | Most realistic | Preferred for AC; requires transcribed coefficients |
+| `ieee_1584_2002` | IEEE 1584:2002 (Doughty/Neal) | Slightly conservative vs 2018 | Legacy compatibility + fallback |
 | `lee_1982` | Lee 1982 IEEE-IAS paper | **Significantly conservative (2-5× higher IE)** | Always-available fallback |
-| `nfpa70e_table` | NFPA 70E Table 130.7(C)(15)(a)/(b) | **Most conservative** | Equipment-class lookup, no IE computed |
-| `dc_doan` | NFPA 70E Annex D §D.1+D.2 | Realistic for DC | DC nodes only (current_type=dc) |
+| `nfpa_70e_table` | NFPA 70E Table 130.7(C)(15)(a)/(b) | **Most conservative** | Equipment-class lookup, no IE computed |
+| `doan_dc` | NFPA 70E Annex D §D.1+D.2 | Realistic for DC | DC nodes only (current_type=dc) |
 
 For each AC node: 2018 → 2002 → Lee 1982 → NFPA 70E table → pending. Every node records the full trail.
 
@@ -82,7 +82,7 @@ Plus the new calc contract at `shared/calculations/electrical/arc-flash-incident
 | eval-04-missing-fault-data | missing_input | No Ifault → method_applied: pending |
 | eval-05-jurisdiction-us-with-restricted | jurisdiction_switch | IE > 40 → RESTRICTED |
 | eval-06-rationale-block | rationale_block | 8 sections + chat_summary |
-| eval-07-dc-pv-string | skill_specific | DC node with dc_doan method |
+| eval-07-dc-pv-string | skill_specific | DC node with doan_dc method |
 | eval-08-conservative-t-clear-default | skill_specific | No ocpd_type → 2.0s default + warning |
 | eval-09-shock-approach-out-of-range | skill_specific | 47 kV → SHOCK_APPROACH_BEYOND_TABLE_RANGE |
 
@@ -105,7 +105,7 @@ All 6 WI5 categories + 3 skill-specific.
 
 17 IEEE 1584 coefficient files in the Phase A standards layer carry null values (pending transcription from a paid copy). The skill handles this gracefully via the method fallback chain — when 2018 coefficients are null, auto-demotes to Lee 1982 or NFPA 70E table method.
 
-When the coefficients are eventually transcribed (a future micro-sprint), the skill auto-promotes from `lee_1982` to `ieee1584_2018` with no code changes.
+When the coefficients are eventually transcribed (a future micro-sprint), the skill auto-promotes from `lee_1982` to `ieee_1584_2018` with no code changes.
 
 ## Known limitations
 

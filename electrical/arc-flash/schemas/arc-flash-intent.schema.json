@@ -4,13 +4,25 @@
   "title": "Arc-Flash Intent (downstream slim subset)",
   "description": "Stable subset of the arc-flash IR consumed by future electrical/arc-flash-labelling skill. One entry per cascade node carrying everything needed to render an arc-flash label per ANSI Z535.4 + NFPA 70E §130.5(H). Forward-compat: optional fields may be added freely; required-field changes require a major intent_version bump.",
   "type": "object",
-  "required": ["intent_kind", "version", "nodes"],
+  "required": ["intent_kind", "version", "calculation_meta", "nodes"],
   "additionalProperties": false,
   "properties": {
     "intent_kind": { "const": "arc-flash" },
     "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
     "produced_by_skill_version": { "type": "string" },
     "tool_call_pending": { "type": "boolean", "description": "true if any node has method_applied: pending" },
+    "calculation_meta": {
+      "type": "object",
+      "description": "Aggregate calculation metadata for downstream consumers (e.g. arc-flash-labelling provenance per C2 cause-fix). Records the method applied across the cascade, when the IE values were computed, the calc-tool version that produced them, and whether the values are provisional (e.g. Lee-fallback at LV that over-predicts vs. verified IEEE 1584-2018).",
+      "additionalProperties": false,
+      "required": ["method_applied", "computed_at", "tool_version", "is_provisional"],
+      "properties": {
+        "method_applied": {"type": "string", "enum": ["ieee_1584_2018", "ieee_1584_2002", "lee_1982", "doan_dc", "nfpa_70e_table"]},
+        "computed_at": {"type": "string", "format": "date-time"},
+        "tool_version": {"type": "string"},
+        "is_provisional": {"type": "boolean"}
+      }
+    },
     "nodes": {
       "type": "array",
       "minItems": 1,
@@ -32,7 +44,7 @@
           "limited_approach_fixed_mm": { "type": ["number", "string"] },
           "restricted_approach_mm": { "type": ["number", "string"] },
           "ppe_category": { "type": ["integer", "null"], "minimum": 1, "maximum": 4 },
-          "method_applied": { "enum": ["ieee1584_2018", "ieee1584_2002", "lee_1982", "nfpa70e_table", "dc_doan", "pending"] },
+          "method_applied": { "enum": ["ieee_1584_2018", "ieee_1584_2002", "lee_1982", "nfpa_70e_table", "doan_dc", "pending"] },
           "label_recommended": { "type": "boolean" },
           "label_required_per": { "type": "string" },
           "produced_at": { "type": "string", "format": "date" }

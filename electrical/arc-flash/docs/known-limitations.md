@@ -28,8 +28,9 @@ If any required input is missing AND no upstream intent provides it, the generat
 
 ## Phase A pending-verification coefficients
 
-17 files in `shared/standards/electrical/IEEE1584/` are pending-verification:
-- 3 method-2018-*V-coefficients files (k1..k7 per electrode config)
+Files in `shared/standards/electrical/IEEE1584/` are pending source-vetted transcription:
+- 3 method-2018-tables-1-3-*V-coefficients files (10-coef Iarc + 13-coef IE polynomial-in-V per Tables 1+3)
+- 3 method-2002-annex-f-*V-coefficients files (7-coef log-linear per Annex F; retained alongside for relabel correctness — see Sprint A.3 dual-track rationale in `shared/standards/electrical/IEEE1584/meta.json`)
 - 5 electrode-config-*-coefficients files
 - 3 adjustment-factor-*.json files
 - 1 method-2002-doughty-neal-formula.json

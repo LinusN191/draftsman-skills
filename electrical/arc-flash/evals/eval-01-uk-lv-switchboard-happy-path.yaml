@@ -47,7 +47,7 @@ checks:
     description: MSB-1 electrode_config_source records auto-inferred path
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].method_applied matches "^(ieee1584_2018|lee_1982)$"'
+  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].method_applied matches "^(ieee_1584_2018|lee_1982)$"'
     description: MSB-1 method_applied is from controlled vocabulary (IEEE 1584:2018 or Lee 1982 fallback)
     severity: critical
 

@@ -12,8 +12,8 @@ Both consumed from fault-level + db-layout-rollup intents.
 
 IEEE 1584:2018 Annex C Table 4 coefficients for VCB 600V class are currently pending-verification (null in Phase A). The fallback chain:
 
-1. **ieee1584_2018**: SKIPPED — coefficients pending-verification
-2. **ieee1584_2002**: SKIPPED — Doughty/Neal coefficients also pending-verification
+1. **ieee_1584_2018**: SKIPPED — coefficients pending-verification
+2. **ieee_1584_2002**: SKIPPED — Doughty/Neal coefficients also pending-verification
 3. **lee_1982**: APPLIED — theoretical formula always available; V_nom 400V within 50-15000V range
 
 `LEE_1982_FALLBACK_USED` info-severity flag emitted. Lee 1982 gives a **conservative upper bound** — actual IE per IEEE 1584:2018 will likely be 2-5× lower when coefficients are transcribed.
@@ -52,7 +52,7 @@ Labels would carry: nominal voltage (400V), incident energy at 455mm (cal/cm² v
 ## What changes when IEEE 1584:2018 coefficients ship
 
 When the coefficient transcription micro-sprint completes:
-- `method_applied` auto-promotes from `lee_1982` → `ieee1584_2018`
+- `method_applied` auto-promotes from `lee_1982` → `ieee_1584_2018`
 - IE values drop by 2-5× (more realistic empirical values)
 - PPE category may drop one level (e.g., MSB Cat 3 → Cat 2)
 - AFB shrinks accordingly
@@ -63,3 +63,11 @@ This is the clean separation that came from doing Phase A and Phase B in separat
 ## tool_call_pending status
 
 Both nodes carry `tool_call_pending: true`. The numeric values in `arc_flash` are senior-engineer estimates from the Lee 1982 formula — runtime tool will recompute when DraftsMan runtime ships.
+
+## A.3 status — pending IEEE 1584-2018 transcription
+
+Sprint A.3 (Path Z2-ext) on 2026-05-25 corrected a mislabel in the IEEE1584 standards layer: the original `method-2018-*-coefficients.json` files declared "IEEE 1584:2018" but their 7-coefficient log-linear shape is actually IEEE 1584-2002 Annex F (NOT the 2018 model). The misnamed files were renamed to `method-2002-annex-f-*.json` and the actual 2018 model files (`method-2018-tables-1-3-*.json`, with the correct 10-coef Iarc + 13-coef IE polynomial-in-V shape per Tables 1+3) were added alongside.
+
+Coefficient values remain null on both tracks pending authoritative source-vetted transcription from IEEE Std 1584-2018 Annex A / Tables 1+3 (the standard is paywalled at IEEE Xplore; structural shape was confirmed against ETAP white papers, EasyPower release notes, and Bisson Ch. 5, but verbatim numerical coefficients require licensed access).
+
+Until the 2018 coefficients are transcribed, this example continues to use the **Lee 1982 fallback** as the safe upper bound at LV. The emitted intent's top-level `calculation_meta.is_provisional` is set to `true`, and downstream labelling skill propagates the DRAFT marker on every label per the C2 cause-fix contract. Once the 2018 transcription completes, the fallback chain auto-promotes both nodes to `ieee_1584_2018` and IE values drop 2–5× to realistic empirical values.

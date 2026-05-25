@@ -1,0 +1,41 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "IEEE Std 1584-2018 §7 + Table 1 (arc-current) + Table 3 (incident-energy), 14 300 V class",
+  "formula_id": "ieee1584-2018-tables-1-3-14300V-method",
+  "formula_latex": "(coefficient set — used by arc-current-formula-2018 + incident-energy-formula-2018; 13-term polynomial-in-V IE form per Table 3 + 10-term polynomial-in-V Iarc form per Table 1)",
+  "formula_plain_text": "Empirical coefficients for IEEE Std 1584-2018 at the 14 300 V model class (2701 V – 15 000 V). Two coefficient sets per electrode configuration: (a) incident_energy_coefficients (13 terms per row per Table 3) and (b) arc_current_coefficients (10 terms per row per Table 1). The 2018 model SUPERSEDES the 2002 Annex F simplified regression.",
+  "applicable_range": {
+    "v_nom_min_v": 2701,
+    "v_nom_max_v": 15000,
+    "voltage_class": "14300V"
+  },
+  "electrode_configs_applicable": ["VCB", "VCBB", "HCB", "VOA", "HOA"],
+  "_source": "pending-source-vetting — IEEE Std 1584-2018 Tables 1 and 3 (14 300 V rows) require an authoritative copy of the 2018 standard. Source-vetting attempt on 2026-05-25 confirmed the model SHAPE against ETAP, EasyPower, and Bisson Ch.5 references but could not reproduce verbatim coefficient values without licensed access to IEEE Std 1584-2018.",
+  "_status": "pending-transcription-from-IEEE-1584-2018-tables-1-3",
+  "incident_energy_coefficients": {
+    "VCB":  {"k1": null, "k2": null, "k3": null, "k4": null, "k5": null, "k6": null, "k7": null, "k8": null, "k9": null, "k10": null, "k11": null, "k12": null, "k13": null},
+    "VCBB": {"k1": null, "k2": null, "k3": null, "k4": null, "k5": null, "k6": null, "k7": null, "k8": null, "k9": null, "k10": null, "k11": null, "k12": null, "k13": null},
+    "HCB":  {"k1": null, "k2": null, "k3": null, "k4": null, "k5": null, "k6": null, "k7": null, "k8": null, "k9": null, "k10": null, "k11": null, "k12": null, "k13": null},
+    "VOA":  {"k1": null, "k2": null, "k3": null, "k4": null, "k5": null, "k6": null, "k7": null, "k8": null, "k9": null, "k10": null, "k11": null, "k12": null, "k13": null},
+    "HOA":  {"k1": null, "k2": null, "k3": null, "k4": null, "k5": null, "k6": null, "k7": null, "k8": null, "k9": null, "k10": null, "k11": null, "k12": null, "k13": null}
+  },
+  "arc_current_coefficients": {
+    "VCB":  {"h1": null, "h2": null, "h3": null, "h4": null, "h5": null, "h6": null, "h7": null, "h8": null, "h9": null, "h10": null},
+    "VCBB": {"h1": null, "h2": null, "h3": null, "h4": null, "h5": null, "h6": null, "h7": null, "h8": null, "h9": null, "h10": null},
+    "HCB":  {"h1": null, "h2": null, "h3": null, "h4": null, "h5": null, "h6": null, "h7": null, "h8": null, "h9": null, "h10": null},
+    "VOA":  {"h1": null, "h2": null, "h3": null, "h4": null, "h5": null, "h6": null, "h7": null, "h8": null, "h9": null, "h10": null},
+    "HOA":  {"h1": null, "h2": null, "h3": null, "h4": null, "h5": null, "h6": null, "h7": null, "h8": null, "h9": null, "h10": null}
+  },
+  "worked_examples": [
+    {
+      "name": "Annex D back-test (VCB at 13.8 kV)",
+      "input": {"v_nom_v": 13800, "i_bf_ka": 25, "g_mm": 152, "d_mm": 914, "t_arc_s": 0.2, "electrode_config": "VCB"},
+      "expected_incident_energy_cal_per_cm2": "pending coefficient transcription",
+      "source": "IEEE 1584-2018 Annex D 13.8 kV example — back-test cannot be executed until coefficients transcribed."
+    }
+  ],
+  "transcribed_at": "2026-05-25",
+  "transcribed_by": "DraftsMan skills repo — Sprint A.3 (Path Z2-ext)",
+  "verification_status": "pending-transcription-from-IEEE-1584-2018-tables-1-3",
+  "license_note": "Coefficient values are factual empirical fits from IEEE Std 1584-2018 Tables 1 and 3 — reproduced for interoperation when transcribed. Currently null pending authoritative transcription."
+}

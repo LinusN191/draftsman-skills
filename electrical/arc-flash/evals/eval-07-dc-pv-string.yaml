@@ -3,7 +3,7 @@ skill: arc-flash
 category: skill_specific
 description: |
   600V DC PV string with combiner box. current_type auto-inferred to dc from equipment_type.
-  dc_doan method fires. shock-approach from Table 130.4(C)(b) DC row. electrode_config null.
+  doan_dc method fires. shock-approach from Table 130.4(C)(b) DC row. electrode_config null.
   (Sub-category: dc_pv_string)
 input:
   jurisdiction: US
@@ -32,7 +32,7 @@ checks:
     description: PV-INV-1 retains AC current type (AC side of inverter)
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1")].method_applied matches "^(ieee1584_2018|lee_1982)$"'
+  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1")].method_applied matches "^(ieee_1584_2018|lee_1982)$"'
     description: PV-INV-1 uses IEEE 1584:2018 or Lee 1982 fallback (AC method)
     severity: critical
 
@@ -50,8 +50,8 @@ checks:
     description: DC string equipment_electrode_config must be null (DC has no electrode config)
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1.DC-STR-1")].method_applied == "dc_doan"'
-    description: DC string method_applied = dc_doan (NOT IEEE 1584)
+  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1.DC-STR-1")].method_applied == "doan_dc"'
+    description: DC string method_applied = doan_dc (NOT IEEE 1584)
     severity: critical
     standard_ref: NFPA 70E Annex D
 

@@ -1,8 +1,8 @@
 constraint: incident_energy_finite
 version: 1.0.0
 description: |
-  When method_applied is not pending AND not nfpa70e_table, the incident_energy_cal_per_cm2
-  field must be a finite positive number (not null, NaN, or infinity). nfpa70e_table returns
+  When method_applied is not pending AND not nfpa_70e_table, the incident_energy_cal_per_cm2
+  field must be a finite positive number (not null, NaN, or infinity). nfpa_70e_table returns
   PPE category without computing IE — null is acceptable. pending means tool_call_pending —
   null is acceptable.
 triggered_for: "every cascade node"
@@ -10,7 +10,7 @@ checks:
   - id: ie_finite_when_method_computes_it
     expression: |
       for each node n:
-        if n.arc_flash.method_applied not in [pending, nfpa70e_table]:
+        if n.arc_flash.method_applied not in [pending, nfpa_70e_table]:
           n.arc_flash.incident_energy_cal_per_cm2 is numeric AND
           n.arc_flash.incident_energy_cal_per_cm2 > 0 AND
           n.arc_flash.incident_energy_cal_per_cm2 < 10000  (sanity max)
@@ -18,7 +18,7 @@ checks:
     message: "Incident energy at {node_id} is not a finite positive number (method={method_applied}, IE={incident_energy_cal_per_cm2})"
   - id: ie_null_when_method_is_pending_or_table
     expression: |
-      for each node n where n.arc_flash.method_applied in [pending, nfpa70e_table]:
+      for each node n where n.arc_flash.method_applied in [pending, nfpa_70e_table]:
         n.arc_flash.incident_energy_cal_per_cm2 is null
     severity: error
     message: "Method {method_applied} should return null incident energy; got {incident_energy_cal_per_cm2} at {node_id}"

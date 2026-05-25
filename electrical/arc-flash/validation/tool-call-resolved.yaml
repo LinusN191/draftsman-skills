@@ -11,10 +11,10 @@ checks:
     severity: error
   - id: resolved_means_numeric_when_method_computes_ie
     description: |
-      When tool_call_pending == false AND method_applied not in [pending, nfpa70e_table]:
+      When tool_call_pending == false AND method_applied not in [pending, nfpa_70e_table]:
       incident_energy_cal_per_cm2 + arc_flash_boundary_mm + arcing_current_a are all numeric
     expression: |
-      for each node n where n.checks.tool_call_pending == false AND n.arc_flash.method_applied not in ['pending', 'nfpa70e_table']:
+      for each node n where n.checks.tool_call_pending == false AND n.arc_flash.method_applied not in ['pending', 'nfpa_70e_table']:
         n.arc_flash.incident_energy_cal_per_cm2 is numeric AND
         n.arc_flash.arc_flash_boundary_mm is numeric AND
         n.arc_flash.arcing_current_a is numeric

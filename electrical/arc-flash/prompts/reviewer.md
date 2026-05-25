@@ -30,10 +30,10 @@ Every per-node IE / AFB result references a clause (e.g., "IEEE 1584:2018 §7.5 
 For every node with a multi-entry trail, each `skipped` entry names a specific reason (e.g., "coefficients pending-verification for VCB 600V"). The `applied` entry is the last one. Trail entries appear in fallback-priority order (2018 → 2002 → Lee → table → pending). Spot-check 3 random nodes; if any are scrambled, fail.
 
 ### D3 — Conservative-fallback warnings present
-When `method_applied == lee_1982` OR `method_applied == nfpa70e_table`: the rationale's "Method Selection Summary" section explicitly notes the conservatism + recommends the action that would un-block IEEE 1584:2018 (e.g., "transcribe coefficients from IEEE 1584:2018 Annex C Table 4"). Failure: silent fallback with no warning.
+When `method_applied == lee_1982` OR `method_applied == nfpa_70e_table`: the rationale's "Method Selection Summary" section explicitly notes the conservatism + recommends the action that would un-block IEEE 1584:2018 (e.g., "transcribe coefficients from IEEE 1584:2018 Annex C Table 4"). Failure: silent fallback with no warning.
 
 ### D4 — Per-node AFB arithmetic spot-check
-Pick 2 random nodes with `method_applied` ∈ `{ieee1584_2018, ieee1584_2002, lee_1982, dc_doan}` and numeric IE. Manually verify:
+Pick 2 random nodes with `method_applied` ∈ `{ieee_1584_2018, ieee_1584_2002, lee_1982, doan_dc}` and numeric IE. Manually verify:
 
 ```
 AFB = D × (E / 1.2)^(1/x)
@@ -64,7 +64,7 @@ DC rows similar via Table 130.4(C)(b). Verify the cited row matches the voltage_
 
 ### D7 — DC handling correct
 For every DC node:
-- `method_applied` is `dc_doan` OR `pending` (never IEEE 1584)
+- `method_applied` is `doan_dc` OR `pending` (never IEEE 1584)
 - `electrode_config` is null
 - `electrode_config_source` is `not_applicable_dc`
 - `shock_approach.source` cites Table 130.4(C)(b) (DC), not (a)

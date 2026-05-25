@@ -50,7 +50,7 @@ All three carry `tool_call_pending: true` + Lee 1982 fallback flag.
 - DC fault current is limited by source impedance (no network contribution)
 - Duration is dictated by DC contactor or fuse clearing time
 
-Therefore: **dc_doan method per NFPA 70E Annex D** (Doan 2007 + Stokes & Oppenlander 1991).
+Therefore: **doan_dc method per NFPA 70E Annex D** (Doan 2007 + Stokes & Oppenlander 1991).
 
 ### PV-INV-1.DC-STR-1 (600V DC, PV Combiner)
 
@@ -100,16 +100,16 @@ DC safety boundaries include "limited approach movable" — the DC table 130.4(C
 ## Why both methods fall back on their respective chains
 
 ### AC fallback (SERVICE, PV-INV, DCFC):
-1. **ieee1584_2018**: SKIPPED — VCB 600V coefficients null
-2. **ieee1584_2002**: SKIPPED — same coefficients null
+1. **ieee_1584_2018**: SKIPPED — VCB 600V coefficients null
+2. **ieee_1584_2002**: SKIPPED — same coefficients null
 3. **lee_1982**: APPLIED — conservative upper bound
 
 ### DC direct application (PV combiner, DCFC out):
-1. **ieee1584_2018**: SKIPPED — AC method, current_type=dc
-2. **ieee1584_2002**: SKIPPED — AC method, current_type=dc
-3. **dc_doan**: APPLIED — DC-specific per NFPA 70E Annex D
+1. **ieee_1584_2018**: SKIPPED — AC method, current_type=dc
+2. **ieee_1584_2002**: SKIPPED — AC method, current_type=dc
+3. **doan_dc**: APPLIED — DC-specific per NFPA 70E Annex D
 
-No fallback needed for DC because `dc_doan` is always available (empirical data, not coefficient-dependent).
+No fallback needed for DC because `doan_dc` is always available (empirical data, not coefficient-dependent).
 
 ## Current-Type Auto-Inference
 
@@ -152,10 +152,10 @@ The PV combiner (high impedance, IE 2 cal/cm²) is optionally labeled because Ca
 
 ## What changes when IEEE 1584:2018 coefficients ship
 
-- AC nodes: `method_applied` auto-promotes `lee_1982` → `ieee1584_2018`
+- AC nodes: `method_applied` auto-promotes `lee_1982` → `ieee_1584_2018`
 - AC IE values drop by 2–5×
 - AC PPE categories may downgrade (e.g., SERVICE Cat 3 → Cat 2)
-- DC nodes: unchanged (dc_doan is permanent, not method-dependent)
+- DC nodes: unchanged (doan_dc is permanent, not method-dependent)
 - No skill code changes required — method selection re-runs at runtime
 
 ## tool_call_pending Status
@@ -168,7 +168,7 @@ All 5 nodes carry `tool_call_pending: true`:
 
 Example 3 validates:
 1. **Unified AC+DC cascade**: Mixed current types in a single project IR
-2. **Method diversity**: Lee 1982 + dc_doan in the same cascade
+2. **Method diversity**: Lee 1982 + doan_dc in the same cascade
 3. **Current-type auto-inference**: PV combiner and DCFC output correctly inferred as DC
 4. **Electrode config nullability**: DC nodes with null electrode_config + proper source notation
 5. **Shock-approach table diversity**: Table 130.4(C)(a) vs (C)(b) applied correctly per current type

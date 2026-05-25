@@ -1,0 +1,38 @@
+{
+  "$schema": "../../../../schemas/core/standards-formula.schema.json",
+  "clause_ref": "IEEE Std 1584-2002 Annex F (LV/MV simplified regression, 7-term log-linear with K + x). 2700 V class.",
+  "formula_id": "ieee1584-2002-annex-f-2700V-method",
+  "formula_latex": "(coefficient set — used by incident-energy-formula, 7-term log-linear form per Annex F.16)",
+  "formula_plain_text": "Empirical coefficients for IEEE Std 1584-2002 Annex F simplified regression, applied at the 2700 V model class (601 V – 2700 V). One coefficient set per electrode configuration: k1..k7 multiplied through the log-linear incident-energy formula, with x as the distance exponent. NOTE — file was originally mis-labelled `method-2018-2700V-coefficients.json`; the 7-coefficient log-linear shape (k1..k7 + x) matches IEEE 1584-2002 Annex F, NOT the IEEE 1584-2018 model which uses a 13-coefficient polynomial-in-V form per Table 3 (incident-energy) + a separate 10-coefficient arc-current model per Table 1. Renamed under Sprint A.3 (Path Z2-ext) on 2026-05-25. The NEW 2018 file alongside is `method-2018-tables-1-3-2700V-coefficients.json`.",
+  "symbols": [
+    {"symbol": "k_1..k_7", "meaning": "Empirical IE-formula coefficients (Annex F 7-term log-linear)", "unit": "dimensionless"},
+    {"symbol": "x",        "meaning": "Distance exponent",                                              "unit": "dimensionless"}
+  ],
+  "applicable_range": {
+    "v_nom_min_v": 601,
+    "v_nom_max_v": 2700,
+    "voltage_class": "2700V"
+  },
+  "units": {"coefficients": "dimensionless", "x_exponent": "dimensionless"},
+  "electrode_configs_applicable": ["VCB", "VCBB", "HCB", "VOA", "HOA"],
+  "coefficients": {
+    "VCB":  {"k1": null, "k2": null, "k3": null, "k4": null, "k5": null, "k6": null, "k7": null, "x_distance_exponent": null},
+    "VCBB": {"k1": null, "k2": null, "k3": null, "k4": null, "k5": null, "k6": null, "k7": null, "x_distance_exponent": null},
+    "HCB":  {"k1": null, "k2": null, "k3": null, "k4": null, "k5": null, "k6": null, "k7": null, "x_distance_exponent": null},
+    "VOA":  {"k1": null, "k2": null, "k3": null, "k4": null, "k5": null, "k6": null, "k7": null, "x_distance_exponent": null},
+    "HOA":  {"k1": null, "k2": null, "k3": null, "k4": null, "k5": null, "k6": null, "k7": null, "x_distance_exponent": null},
+    "_note": "Coefficient values null pending source-vetted transcription from IEEE Std 1584-2002 Annex F (Table F.1 or equivalent). IEEE 1584-2002 was WITHDRAWN by IEEE in 2019 and Annex F values must be sourced from a retained 2002 print copy or a licensed reseller. DO NOT INVENT VALUES. NOTE — VCB and VCBB were the only electrode configs published in IEEE 1584-2002; we keep all five keys for downstream-shape compatibility but HCB/VOA/HOA must remain null when honouring the 2002 anchor."
+  },
+  "worked_examples": [
+    {
+      "input":  {"v_nom_v": 2300, "i_arc_a": 21500, "g_mm": 76, "d_mm": 914, "t_arc_s": 0.2, "electrode_config": "VCB"},
+      "expected_output": {"incident_energy_cal_per_cm2": "pending coefficient transcription"},
+      "source": "IEEE 1584-2002 Annex F worked example for MV (approximate; verify when coefficients are transcribed)"
+    }
+  ],
+  "transcribed_at": "2026-05-17",
+  "relabelled_at": "2026-05-25",
+  "transcribed_by": "DraftsMan skills repo",
+  "verification_status": "pending-transcription-from-IEEE-1584-2002-annex-f-table-f-1",
+  "license_note": "Coefficient values are factual empirical fits from IEEE 1584-2002 Annex F — reproduced for interoperation only. Currently null pending authoritative transcription. The 2018 Tables 1+3 model (which superseded this) is in the alongside file method-2018-tables-1-3-2700V-coefficients.json."
+}

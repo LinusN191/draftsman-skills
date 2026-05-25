@@ -64,8 +64,8 @@ IEEE 1584:2018 Annex C Table 4 coefficients for:
 
 Fallback chain for both nodes:
 
-1. **ieee1584_2018**: SKIPPED — coefficients null
-2. **ieee1584_2002**: SKIPPED — Doughty/Neal coefficients also null (legacy pending)
+1. **ieee_1584_2018**: SKIPPED — coefficients null
+2. **ieee_1584_2002**: SKIPPED — Doughty/Neal coefficients also null (legacy pending)
 3. **lee_1982**: APPLIED — theoretical formula always available for 50V–15,000V
 
 `LEE_1982_FALLBACK_USED` info-severity flag emitted for compliance tracking. Actual IE values will drop by 2–5× when coefficients are transcribed.
@@ -86,7 +86,7 @@ Both nodes `label_recommended: true`:
 ## What changes when IEEE 1584:2018 coefficients ship
 
 When the Phase A standards layer coefficients are transcribed:
-- `method_applied` auto-promotes from `lee_1982` → `ieee1584_2018` on next run
+- `method_applied` auto-promotes from `lee_1982` → `ieee_1584_2018` on next run
 - **MV node**: IE will drop from 14 to ~5–7 cal/cm², possibly downgrading to Cat 2
 - **LV node**: IE will drop from 8.5 to ~3–5 cal/cm², downgrading to Cat 1 or Cat 2
 - AFB shrinks accordingly on both nodes

@@ -1,9 +1,9 @@
 {
   "$schema": "../../../../schemas/core/standards-formula.schema.json",
-  "clause_ref": "IEEE 1584:2018 §6 (arc current calculations)",
-  "formula_id": "ieee1584-2018-arc-current",
+  "clause_ref": "IEEE 1584-2002 Annex F (arc current calculations, simplified regression)",
+  "formula_id": "ieee1584-2002-annex-f-arc-current",
   "formula_latex": "I_{arc} = f(V_{nom}, I_{bf}, G, \\text{electrode\\_config}, \\text{voltage\\_class})",
-  "formula_plain_text": "Predicted arcing current is an empirical function of nominal voltage, bolted fault current, conductor gap distance, electrode configuration, and voltage class. Each voltage class has its own coefficient set; see method-2018-<class>V-coefficients.json files.",
+  "formula_plain_text": "Predicted arcing current is an empirical function of nominal voltage, bolted fault current, conductor gap distance, electrode configuration, and voltage class. This file declares the 2002 Annex F functional shape; each voltage class has its own coefficient set in method-2002-annex-f-<class>V-coefficients.json. NOTE — IEEE 1584-2018 §6 + Table 1 use a different 10-coefficient polynomial-in-V form; see arc-current-formula-2018.json for that anchor.",
   "symbols": [
     {"symbol": "I_arc",         "meaning": "Predicted arcing current (always < I_bf)", "unit": "A"},
     {"symbol": "V_nom",         "meaning": "Nominal line-to-line voltage",             "unit": "V"},
@@ -25,10 +25,10 @@
     {
       "input":  {"v_nom_v": 480, "i_bf_a": 25000, "g_mm": 32, "electrode_config": "VCB", "voltage_class": "600V"},
       "expected_output": {"i_arc_a": 21500},
-      "source": "IEEE 1584:2018 Annex D Example D.1 (approximate — verify with implementer's source)"
+      "source": "IEEE 1584-2002 Annex F worked example (approximate — verify with implementer's source)"
     }
   ],
-  "implementation_notes": "The actual coefficient lookup happens at runtime via calc.arc_flash_incident_energy (next-sprint contract). This file declares the formula's variables + applicable range; the coefficient tables are in method-2018-<class>V-coefficients.json.",
+  "implementation_notes": "The actual coefficient lookup happens at runtime via calc.arc_flash_incident_energy (next-sprint contract). This file declares the formula's variables + applicable range for the 2002 Annex F anchor; the coefficient tables are in method-2002-annex-f-<class>V-coefficients.json. The 2018 anchor lives in arc-current-formula-2018.json + method-2018-tables-1-3-<class>V-coefficients.json.",
   "transcribed_at": "2026-05-17",
   "transcribed_by": "DraftsMan skills repo",
   "verification_status": "verified-against-source",
