@@ -26,22 +26,172 @@
     }
   },
   "sources": [
-    { "id": "utility-PoCo", "kind": "utility", "contribution_method": "constant", "ifault_contribution_ka": 22.00 }
+    {
+      "id": "utility-PoCo",
+      "kind": "utility",
+      "contribution_method": "constant",
+      "ifault_contribution_ka": 22.0
+    }
   ],
   "cascade": [
-    { "node_id": "HV-1",    "parent_node_id": null,      "node_kind": "hv_source",              "designation": "13.2 kV PoCo primary",                  "ifault_ka_max": 28.00, "ifault_ka_min": 25.45, "ipk_ka": 65.67, "x_over_r_at_node": 7.00, "z_total_ohm": 0.2994,  "tool_call_pending": true },
-    { "node_id": "TX-1",    "parent_node_id": "HV-1",    "node_kind": "transformer_secondary", "designation": "300 kVA PoCo TX 208Y/120V LV terminals", "ifault_ka_max": 23.78, "ifault_ka_min": 21.52, "ipk_ka": 56.96, "x_over_r_at_node": 8.00, "z_total_ohm": 0.005302, "tool_call_pending": true },
-    { "node_id": "MSP",     "parent_node_id": "TX-1",    "node_kind": "board_incoming",         "designation": "Main service panel 600A incoming",      "feeder": { "length_m": 3.05, "csa_mm2_or_awg": "350 kcmil", "material": "copper", "insulation": "thwn_75" }, "z_addition_ohm": { "r": 0.00041, "x": 0.00037 }, "ifault_ka_max": 22.00, "ifault_ka_min": 19.90, "ipk_ka": 52.69, "x_over_r_at_node": 8.00, "z_total_ohm": 0.005732, "tool_call_pending": true },
-    { "node_id": "MSP.BUS", "parent_node_id": "MSP",     "node_kind": "board_busbar",           "designation": "MSP busbar 600A",                       "ifault_ka_max": 21.58, "ifault_ka_min": 19.52, "ipk_ka": 50.77, "x_over_r_at_node": 7.14, "z_total_ohm": 0.005844, "tool_call_pending": true },
-    { "node_id": "TSP-A",   "parent_node_id": "MSP.BUS", "node_kind": "board_incoming",         "designation": "Tenant A sub-panel 200A incoming",      "feeder": { "length_m": 24.4, "csa_mm2_or_awg": "250 kcmil", "material": "copper", "insulation": "thwn_75" }, "z_addition_ohm": { "r": 0.00432, "x": 0.00304 }, "ifault_ka_max": 12.35, "ifault_ka_min": 11.17, "ipk_ka": 20.81, "x_over_r_at_node": 1.72, "z_total_ohm": 0.010210, "tool_call_pending": true },
-    { "node_id": "TSP-B",   "parent_node_id": "MSP.BUS", "node_kind": "board_incoming",         "designation": "Tenant B sub-panel 200A incoming",      "feeder": { "length_m": 30.5, "csa_mm2_or_awg": "250 kcmil", "material": "copper", "insulation": "thwn_75" }, "z_addition_ohm": { "r": 0.00540, "x": 0.00380 }, "ifault_ka_max": 11.04, "ifault_ka_min": 9.99,  "ipk_ka": 18.11, "x_over_r_at_node": 1.54, "z_total_ohm": 0.011423, "tool_call_pending": true },
-    { "node_id": "CA-P",    "parent_node_id": "MSP.BUS", "node_kind": "board_incoming",         "designation": "Common-areas panel 100A incoming",      "feeder": { "length_m": 36.6, "csa_mm2_or_awg": "4/0 AWG",   "material": "copper", "insulation": "thwn_75" }, "z_addition_ohm": { "r": 0.00756, "x": 0.00480 }, "ifault_ka_max": 9.34,  "ifault_ka_min": 8.45,  "ipk_ka": 14.68, "x_over_r_at_node": 1.26, "z_total_ohm": 0.013497, "tool_call_pending": true }
+    {
+      "node_id": "HV-1",
+      "parent_node_id": null,
+      "node_kind": "hv_source",
+      "designation": "13.2 kV PoCo primary",
+      "ifault_ka_max": 28.0,
+      "ifault_ka_min": 25.45,
+      "ipk_ka": 65.67,
+      "x_over_r_at_node": 7.0,
+      "z_total_ohm": 0.2994,
+      "tool_call_pending": true
+    },
+    {
+      "node_id": "TX-1",
+      "parent_node_id": "HV-1",
+      "node_kind": "transformer_secondary",
+      "designation": "300 kVA PoCo TX 208Y/120V LV terminals",
+      "ifault_ka_max": 23.78,
+      "ifault_ka_min": 21.52,
+      "ipk_ka": 56.96,
+      "x_over_r_at_node": 8.0,
+      "z_total_ohm": 0.005302,
+      "tool_call_pending": true
+    },
+    {
+      "node_id": "MSP",
+      "parent_node_id": "TX-1",
+      "node_kind": "board_incoming",
+      "designation": "Main service panel 600A incoming",
+      "feeder": {
+        "length_m": 3.05,
+        "csa_mm2_or_awg": "350 kcmil",
+        "material": "copper",
+        "insulation": "thwn_75"
+      },
+      "z_addition_ohm": {
+        "r": 0.00041,
+        "x": 0.00037
+      },
+      "ifault_ka_max": 22.0,
+      "ifault_ka_min": 19.9,
+      "ipk_ka": 52.69,
+      "x_over_r_at_node": 8.0,
+      "z_total_ohm": 0.005732,
+      "tool_call_pending": true
+    },
+    {
+      "node_id": "MSP.BUS",
+      "parent_node_id": "MSP",
+      "node_kind": "board_busbar",
+      "designation": "MSP busbar 600A",
+      "ifault_ka_max": 21.58,
+      "ifault_ka_min": 19.52,
+      "ipk_ka": 50.77,
+      "x_over_r_at_node": 7.14,
+      "z_total_ohm": 0.005844,
+      "tool_call_pending": true
+    },
+    {
+      "node_id": "TSP-A",
+      "parent_node_id": "MSP.BUS",
+      "node_kind": "board_incoming",
+      "designation": "Tenant A sub-panel 200A incoming",
+      "feeder": {
+        "length_m": 24.4,
+        "csa_mm2_or_awg": "250 kcmil",
+        "material": "copper",
+        "insulation": "thwn_75"
+      },
+      "z_addition_ohm": {
+        "r": 0.00432,
+        "x": 0.00304
+      },
+      "ifault_ka_max": 12.35,
+      "ifault_ka_min": 11.17,
+      "ipk_ka": 20.81,
+      "x_over_r_at_node": 1.72,
+      "z_total_ohm": 0.01021,
+      "tool_call_pending": true
+    },
+    {
+      "node_id": "TSP-B",
+      "parent_node_id": "MSP.BUS",
+      "node_kind": "board_incoming",
+      "designation": "Tenant B sub-panel 200A incoming",
+      "feeder": {
+        "length_m": 30.5,
+        "csa_mm2_or_awg": "250 kcmil",
+        "material": "copper",
+        "insulation": "thwn_75"
+      },
+      "z_addition_ohm": {
+        "r": 0.0054,
+        "x": 0.0038
+      },
+      "ifault_ka_max": 11.04,
+      "ifault_ka_min": 9.99,
+      "ipk_ka": 18.11,
+      "x_over_r_at_node": 1.54,
+      "z_total_ohm": 0.011423,
+      "tool_call_pending": true
+    },
+    {
+      "node_id": "CA-P",
+      "parent_node_id": "MSP.BUS",
+      "node_kind": "board_incoming",
+      "designation": "Common-areas panel 100A incoming",
+      "feeder": {
+        "length_m": 36.6,
+        "csa_mm2_or_awg": "4/0 AWG",
+        "material": "copper",
+        "insulation": "thwn_75"
+      },
+      "z_addition_ohm": {
+        "r": 0.00756,
+        "x": 0.0048
+      },
+      "ifault_ka_max": 9.34,
+      "ifault_ka_min": 8.45,
+      "ipk_ka": 14.68,
+      "x_over_r_at_node": 1.26,
+      "z_total_ohm": 0.013497,
+      "tool_call_pending": true
+    }
   ],
   "selectivity_implications": [
-    { "breaker_id": "MSP-MAIN-MCCB-600A", "breaker_rating_a": 600, "breaker_icn_ka": 65, "ifault_at_breaker_ka": 22.00, "adequate": true, "recommendation": "MCCB 600A AIC 65 kA — adequate against 22.00 kA at MSP intake (3.0× margin). Verify nameplate marking of series-combination rating if downstream sub-panel breakers are series-rated per NEC 2023 Article 240.86; SCCR marking on MSP enclosure per NEC 2023 §408.36 + Article 110.10." },
-    { "breaker_id": "TSP-A-MCCB-200A",    "breaker_rating_a": 200, "breaker_icn_ka": 25, "ifault_at_breaker_ka": 12.35, "adequate": true, "recommendation": "MCCB 200A AIC 25 kA — adequate against 12.35 kA at TSP-A incoming (2.0× margin). Tenant fit-out devices downstream must carry SCCR ≥ 12.35 kA per NEC 2023 Article 110.9; verify equipment SCCR labels on HVAC condenser units, lighting contactors, and POS rack." },
-    { "breaker_id": "TSP-B-MCCB-200A",    "breaker_rating_a": 200, "breaker_icn_ka": 25, "ifault_at_breaker_ka": 11.04, "adequate": true, "recommendation": "MCCB 200A AIC 25 kA — adequate against 11.04 kA at TSP-B incoming (2.3× margin). Cascade discrimination with upstream MSP MCCB supported by 100 ft × 250 kcmil sub-feeder impedance step (5.84 → 11.42 mΩ) per NEC 2023 Article 240.87 selectivity assessment." },
-    { "breaker_id": "CA-P-MCCB-100A",     "breaker_rating_a": 100, "breaker_icn_ka": 22, "ifault_at_breaker_ka": 9.34,  "adequate": true, "recommendation": "MCCB 100A AIC 22 kA — adequate against 9.34 kA at CA-P incoming (2.4× margin). Common-areas panel feeds parking-lot lighting contactors and signage; verify lighting-control panel SCCR ≥ 9.34 kA per NEC 2023 Article 110.9." }
+    {
+      "breaker_id": "MSP-MAIN-MCCB-600A",
+      "breaker_rating_a": 600,
+      "breaker_icn_ka": 65,
+      "ifault_at_breaker_ka": 22.0,
+      "adequate": true,
+      "recommendation": "MCCB 600A AIC 65 kA — adequate against 22.00 kA at MSP intake (3.0× margin). Verify nameplate marking of series-combination rating if downstream sub-panel breakers are series-rated per NEC 2023 Article 240.86; SCCR marking on MSP enclosure per NEC 2023 §408.36 + Article 110.10."
+    },
+    {
+      "breaker_id": "TSP-A-MCCB-200A",
+      "breaker_rating_a": 200,
+      "breaker_icn_ka": 25,
+      "ifault_at_breaker_ka": 12.35,
+      "adequate": true,
+      "recommendation": "MCCB 200A AIC 25 kA — adequate against 12.35 kA at TSP-A incoming (2.0× margin). Tenant fit-out devices downstream must carry SCCR ≥ 12.35 kA per NEC 2023 Article 110.9; verify equipment SCCR labels on HVAC condenser units, lighting contactors, and POS rack."
+    },
+    {
+      "breaker_id": "TSP-B-MCCB-200A",
+      "breaker_rating_a": 200,
+      "breaker_icn_ka": 25,
+      "ifault_at_breaker_ka": 11.04,
+      "adequate": true,
+      "recommendation": "MCCB 200A AIC 25 kA — adequate against 11.04 kA at TSP-B incoming (2.3× margin). Cascade discrimination with upstream MSP MCCB supported by 100 ft × 250 kcmil sub-feeder impedance step (5.84 → 11.42 mΩ) per NEC 2023 Article 240.87 selectivity assessment."
+    },
+    {
+      "breaker_id": "CA-P-MCCB-100A",
+      "breaker_rating_a": 100,
+      "breaker_icn_ka": 22,
+      "ifault_at_breaker_ka": 9.34,
+      "adequate": true,
+      "recommendation": "MCCB 100A AIC 22 kA — adequate against 9.34 kA at CA-P incoming (2.4× margin). Common-areas panel feeds parking-lot lighting contactors and signage; verify lighting-control panel SCCR ≥ 9.34 kA per NEC 2023 Article 110.9."
+    }
   ],
   "compliance_summary": {
     "compliant": true,
@@ -57,8 +207,15 @@
       "tool_call_pending: true — calc.iec60909_cascade deterministic execution pending per shared runtime contract."
     ]
   },
-  "drawn_as_symbols": ["TRANSFORMER", "BREAKER", "BUSBAR", "EARTH_GENERAL"],
-  "flags": ["TOOL-CALL-PENDING:calc.iec60909_cascade"],
+  "drawn_as_symbols": [
+    "TRANSFORMER",
+    "BREAKER",
+    "BUSBAR",
+    "EARTH_GENERAL"
+  ],
+  "flags": [
+    "TOOL-CALL-PENDING:calc.iec60909_cascade"
+  ],
   "rationale": {
     "chat_summary": "US 4-tenant retail strip mall, 208Y/120V TPN. 300 kVA pad-mount TX feeds MSP (600A) then TSP-A (200A, 80 ft), TSP-B (200A, 100 ft), CA-P (100A, 120 ft). PoCo declared 22.0 kA at MSP binds the cascade per NEC 2023 §110.24. Ik\"max range 9.34–22.00 kA across LV; HV-1 28.0 kA. Motor load 0 kW — IEC 60909-0:2016 §3.8.1 threshold not met → EXCLUDED. MCCB AIC 65 kA + 25 kA + 22 kA verified per NEC 2023 Article 110.9.",
     "sections": [
@@ -71,7 +228,11 @@
             "summary": "Utility transformer with no rotating generation on bus during fault; constant Thévenin source.",
             "rule": "IEC 60909-0:2016 §3.4 far-from-generator method",
             "code_clause": "IEC 60909-0:2016 §3.4",
-            "inputs": { "lv_source_type": "utility_transformer", "kva": 300, "z_percent": 5.75 }
+            "inputs": {
+              "lv_source_type": "utility_transformer",
+              "kva": 300,
+              "z_percent": 5.75
+            }
           }
         ]
       },
@@ -84,7 +245,10 @@
             "summary": "Author-supplied cascade matching the architectural drawing — single MSP serving three tenant sub-panels with no inter-tenant tie or generator.",
             "rule": "Skill v1.1 — engineer_declared input mode",
             "code_clause": "fault-level/1.1.0 §cascade_topology_source",
-            "inputs": { "nodes": 7, "boards": 4 }
+            "inputs": {
+              "nodes": 7,
+              "boards": 4
+            }
           }
         ]
       },
@@ -97,7 +261,10 @@
             "summary": "Voltage factor selected for Un = 13.2 kV per IEC 60909-0:2016 Table 1.",
             "rule": "IEC 60909-0:2016 Table 1",
             "code_clause": "IEC 60909-0:2016 Table 1",
-            "inputs": { "c_max_hv": 1.10, "c_min_hv": 1.00 }
+            "inputs": {
+              "c_max_hv": 1.1,
+              "c_min_hv": 1.0
+            }
           }
         ]
       },
@@ -110,7 +277,10 @@
             "summary": "NEC 2023 §110.24(A) requires field-marking of available fault current at service equipment; the PoCo-furnished 22.0 kA at MSP is the design-binding value. The isolated TX calculation against an infinite source yields ≈15.2 kA — the higher 22.0 kA declaration reflects a stronger upstream network than nameplate-only modelling captures.",
             "rule": "NEC 2023 §110.24(A) — Available fault current field-marking at service equipment",
             "code_clause": "NEC 2023 Article 110.24(A)",
-            "inputs": { "poco_pfc_ka": 22.0, "tx_isolated_ka": 15.2 }
+            "inputs": {
+              "poco_pfc_ka": 22.0,
+              "tx_isolated_ka": 15.2
+            }
           }
         ]
       },
@@ -123,7 +293,13 @@
             "summary": "ΣI_rM = 0 A is below the 220 A threshold. No motor-aggregate entry added to sources[]. Future retrofits (large refrigeration compressors for a restaurant tenant, electric-vehicle charging dispensers) would re-open §3.8.1 and require re-running.",
             "rule": "IEC 60909-0:2016 §3.8.1 motor contribution threshold (ΣI_rM ≥ 1% × Ik\"_no_motors)",
             "code_clause": "IEC 60909-0:2016 §3.8.1",
-            "inputs": { "total_motor_kw": 0, "largest_motor_kw": 0, "sigma_I_rM_a": 0, "threshold_a": 220, "threshold_met": false }
+            "inputs": {
+              "total_motor_kw": 0,
+              "largest_motor_kw": 0,
+              "sigma_I_rM_a": 0,
+              "threshold_a": 220,
+              "threshold_met": false
+            }
           }
         ]
       },
@@ -136,14 +312,20 @@
             "summary": "Per IEC 60909-0:2016 Table 1 for low-voltage networks ≤ 1 kV.",
             "rule": "IEC 60909-0:2016 Table 1",
             "code_clause": "IEC 60909-0:2016 Table 1",
-            "inputs": { "c_max_lv": 1.05, "c_min_lv": 0.95 }
+            "inputs": {
+              "c_max_lv": 1.05,
+              "c_min_lv": 0.95
+            }
           },
           {
             "label": "tool_call_pending across cascade",
             "summary": "Per-node Ik\"max/Ik\"min/ipk values emitted as engineer estimates; deterministic recompute requires calc.iec60909_cascade tool execution.",
             "rule": "IEC 60909-0:2016 §4.2 cascade method",
             "code_clause": "IEC 60909-0:2016 §4.2",
-            "inputs": { "tool_call_pending": true, "tool": "calc.iec60909_cascade" }
+            "inputs": {
+              "tool_call_pending": true,
+              "tool": "calc.iec60909_cascade"
+            }
           }
         ]
       },
@@ -156,14 +338,21 @@
             "summary": "Device interrupting ratings (AIC) exceed applied prospective fault at each node by at least 2.0×.",
             "rule": "NEC 2023 Article 110.9 — Interrupting Rating",
             "code_clause": "NEC 2023 Article 110.9",
-            "inputs": { "msp_mccb_aic": 65, "tsp_mccb_aic": 25, "cap_mccb_aic": 22 }
+            "inputs": {
+              "msp_mccb_aic": 65,
+              "tsp_mccb_aic": 25,
+              "cap_mccb_aic": 22
+            }
           },
           {
             "label": "SCCR marking per NEC 2023 §408.36 + Article 110.10",
             "summary": "Panelboard SCCR ≥ maximum available fault current at terminals; component protection coordination required.",
             "rule": "NEC 2023 §408.36 + Article 110.10 — Short-Circuit Current Rating",
             "code_clause": "NEC 2023 §408.36",
-            "inputs": { "msp_sccr_required_ka": 22.0, "tenant_sccr_required_ka": 12.4 }
+            "inputs": {
+              "msp_sccr_required_ka": 22.0,
+              "tenant_sccr_required_ka": 12.4
+            }
           }
         ]
       },
@@ -176,10 +365,15 @@
             "summary": "Type 1 SPD recommended at MSP service entrance and Type 2 SPDs at each tenant sub-panel per NEC 2023 Article 285 for transient-overvoltage protection on commercial occupancy with significant point-of-sale and HVAC controls electronics. Retail tenants frequently churn equipment loads — SPDs simplify subsequent fit-outs.",
             "rule": "NEC 2023 Article 285 — Surge-Protective Devices",
             "code_clause": "NEC 2023 Article 285.11",
-            "inputs": { "occupancy": "retail_strip_mall", "msp_spd_type": 1, "tenant_spd_type": 2 }
+            "inputs": {
+              "occupancy": "retail_strip_mall",
+              "msp_spd_type": 1,
+              "tenant_spd_type": 2
+            }
           }
         ]
       }
     ]
-  }
+  },
+  "invariants": []
 }

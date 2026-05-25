@@ -288,8 +288,8 @@
             "rule": "IET OSG Appendix A + BS 7671:2018+A2:2022 § 311.1",
             "code_clause": "IET OSG Appendix A + BS 7671:2018+A2:2022 § 311.1",
             "inputs": {
-              "lighting_a": 4.30,
-              "sockets_a": 28.70,
+              "lighting_a": 4.3,
+              "sockets_a": 28.7,
               "cooker_a": 16.78,
               "shower_a": 39.13,
               "max_demand_a": 88.91,
@@ -372,5 +372,25 @@
         "decisions": []
       }
     ]
-  }
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Way accounting (ways_used + ways_spare == ways_total): ways_total=12, 6 circuits declared and seated, 6 spare ways recorded; sum balances. Specialty-board branch not engaged (board_kind='consumer_unit', main_switchboard branch applies)."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Busbar rating coverage: 100 A busbar with IcW=6 kA per IEC 61439-3 DBO (consumer unit). Diversified incoming load (After-Diversity Maximum Demand) computed per IET OSG App A is well within 100 A; selectivity_results show selectivity verified to main RCD."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "OCPD-cable coordination per BS 7671 §433.1.1: every circuit's In ≤ Iz_corrected for the declared phase_csa (e.g. 32 A MCB on 2.5 mm² ring with Iz=27 A passes via ring-final §433.1.5 special case, 32 A MCB on 6 mm² cooker radial Iz=46 A passes outright)."
+    }
+  ]
 }

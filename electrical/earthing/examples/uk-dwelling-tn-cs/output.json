@@ -7,7 +7,11 @@
     "skill_version": "earthing/1.3.0",
     "produced_at": "2026-05-15T12:00:00Z",
     "consumed_intents": [
-      { "intent_type": "db-layout", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.1.0" }
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.1.0"
+      }
     ]
   },
   "jurisdiction": "GB",
@@ -22,25 +26,144 @@
   },
   "electrodes": [],
   "main_bonding": [
-    { "id": "B1", "source": "MET", "target": "water_pipe", "csa_mm2_or_awg": "10mm²", "code_clause": "BS 7671:2018+A3 Reg 544.1.1" },
-    { "id": "B2", "source": "MET", "target": "gas_pipe", "csa_mm2_or_awg": "10mm²", "code_clause": "BS 7671:2018+A3 Reg 544.1.1" },
-    { "id": "B3", "source": "MET", "target": "structural_steel", "csa_mm2_or_awg": "6mm²", "code_clause": "BS 7671:2018+A3 Reg 544.1.1" }
+    {
+      "id": "B1",
+      "source": "MET",
+      "target": "water_pipe",
+      "csa_mm2_or_awg": "10mm²",
+      "code_clause": "BS 7671:2018+A3 Reg 544.1.1"
+    },
+    {
+      "id": "B2",
+      "source": "MET",
+      "target": "gas_pipe",
+      "csa_mm2_or_awg": "10mm²",
+      "code_clause": "BS 7671:2018+A3 Reg 544.1.1"
+    },
+    {
+      "id": "B3",
+      "source": "MET",
+      "target": "structural_steel",
+      "csa_mm2_or_awg": "6mm²",
+      "code_clause": "BS 7671:2018+A3 Reg 544.1.1"
+    }
   ],
   "supplementary_bonding": [
     {
       "location": "bathroom",
-      "items_bonded": ["bath_taps", "towel_rail", "exposed_water_pipework", "shower_enclosure_earth_lug"],
+      "items_bonded": [
+        "bath_taps",
+        "towel_rail",
+        "exposed_water_pipework",
+        "shower_enclosure_earth_lug"
+      ],
       "csa_mm2_or_awg": "4mm²",
       "code_clause": "BS 7671:2018+A3 Section 701 Reg 415.2.1"
     }
   ],
   "circuits": [
-    { "circuit_id": "C01", "db_designation": "MB-G", "voltage_class": "LV_power", "breaker_rating_a": 6, "breaker_curve": "B", "route_length_m": 18, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A3 Table 54.7", "zs_ohm": 0.80, "zs_max_ohm": 8.66, "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "C02", "db_designation": "MB-G", "voltage_class": "LV_power", "breaker_rating_a": 6, "breaker_curve": "B", "route_length_m": 22, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A3 Table 54.7", "zs_ohm": 0.97, "zs_max_ohm": 8.66, "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "C03", "db_designation": "MB-G", "voltage_class": "LV_power", "breaker_rating_a": 32, "breaker_curve": "B", "route_length_m": 38, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A3 Table 54.7", "zs_ohm": 1.09, "zs_max_ohm": 1.15, "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "C04", "db_designation": "MB-G", "voltage_class": "LV_power", "breaker_rating_a": 32, "breaker_curve": "B", "route_length_m": 42, "cpc_csa_mm2_or_awg": "1.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A3 Table 54.7", "zs_ohm": 1.14, "zs_max_ohm": 1.15, "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "C05", "db_designation": "MB-G", "voltage_class": "LV_power", "breaker_rating_a": 32, "breaker_curve": "B", "route_length_m": 14, "cpc_csa_mm2_or_awg": "2.5mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A3 Table 54.7", "zs_ohm": 0.55, "zs_max_ohm": 1.15, "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 30 },
-    { "circuit_id": "C06", "db_designation": "MB-G", "voltage_class": "LV_power", "breaker_rating_a": 40, "breaker_curve": "B", "route_length_m": 16, "cpc_csa_mm2_or_awg": "4mm²", "cpc_sizing_method": "bs7671_table_54.7", "cpc_sizing_clause": "BS 7671:2018+A3 Table 54.7", "zs_ohm": 0.45, "zs_max_ohm": 0.92, "zs_compliance": "pass_with_rcd", "rcd_required": true, "rcd_type": "A", "rcd_sensitivity_ma": 30 }
+    {
+      "circuit_id": "C01",
+      "db_designation": "MB-G",
+      "voltage_class": "LV_power",
+      "breaker_rating_a": 6,
+      "breaker_curve": "B",
+      "route_length_m": 18,
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "cpc_sizing_method": "bs7671_table_54.7",
+      "cpc_sizing_clause": "BS 7671:2018+A3 Table 54.7",
+      "zs_ohm": 0.8,
+      "zs_max_ohm": 8.66,
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "C02",
+      "db_designation": "MB-G",
+      "voltage_class": "LV_power",
+      "breaker_rating_a": 6,
+      "breaker_curve": "B",
+      "route_length_m": 22,
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "cpc_sizing_method": "bs7671_table_54.7",
+      "cpc_sizing_clause": "BS 7671:2018+A3 Table 54.7",
+      "zs_ohm": 0.97,
+      "zs_max_ohm": 8.66,
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "C03",
+      "db_designation": "MB-G",
+      "voltage_class": "LV_power",
+      "breaker_rating_a": 32,
+      "breaker_curve": "B",
+      "route_length_m": 38,
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "cpc_sizing_method": "bs7671_table_54.7",
+      "cpc_sizing_clause": "BS 7671:2018+A3 Table 54.7",
+      "zs_ohm": 1.09,
+      "zs_max_ohm": 1.15,
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "C04",
+      "db_designation": "MB-G",
+      "voltage_class": "LV_power",
+      "breaker_rating_a": 32,
+      "breaker_curve": "B",
+      "route_length_m": 42,
+      "cpc_csa_mm2_or_awg": "1.5mm²",
+      "cpc_sizing_method": "bs7671_table_54.7",
+      "cpc_sizing_clause": "BS 7671:2018+A3 Table 54.7",
+      "zs_ohm": 1.14,
+      "zs_max_ohm": 1.15,
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "C05",
+      "db_designation": "MB-G",
+      "voltage_class": "LV_power",
+      "breaker_rating_a": 32,
+      "breaker_curve": "B",
+      "route_length_m": 14,
+      "cpc_csa_mm2_or_awg": "2.5mm²",
+      "cpc_sizing_method": "bs7671_table_54.7",
+      "cpc_sizing_clause": "BS 7671:2018+A3 Table 54.7",
+      "zs_ohm": 0.55,
+      "zs_max_ohm": 1.15,
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    },
+    {
+      "circuit_id": "C06",
+      "db_designation": "MB-G",
+      "voltage_class": "LV_power",
+      "breaker_rating_a": 40,
+      "breaker_curve": "B",
+      "route_length_m": 16,
+      "cpc_csa_mm2_or_awg": "4mm²",
+      "cpc_sizing_method": "bs7671_table_54.7",
+      "cpc_sizing_clause": "BS 7671:2018+A3 Table 54.7",
+      "zs_ohm": 0.45,
+      "zs_max_ohm": 0.92,
+      "zs_compliance": "pass_with_rcd",
+      "rcd_required": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30
+    }
   ],
   "compliance_summary": {
     "compliant": true,
@@ -51,8 +174,17 @@
       "Bathroom layout matches default zone classification per BS 7671 Section 701."
     ]
   },
-  "drawn_as_symbols": ["EARTH_GENERAL", "EARTH_PROTECTIVE", "CONDUCTOR_PE", "CONDUCTOR_PEN", "JUNCTION_T", "BUSBAR"],
-  "flags": ["TOOL-CALL-PENDING:calc.zs_loop_impedance — Zs values are LLM-estimates; deterministic refinement deferred per WI3."],
+  "drawn_as_symbols": [
+    "EARTH_GENERAL",
+    "EARTH_PROTECTIVE",
+    "CONDUCTOR_PE",
+    "CONDUCTOR_PEN",
+    "JUNCTION_T",
+    "BUSBAR"
+  ],
+  "flags": [
+    "TOOL-CALL-PENDING:calc.zs_loop_impedance — Zs values are LLM-estimates; deterministic refinement deferred per WI3."
+  ],
   "tool_call_pending_for_zs": true,
   "zs_calc_tool_input": {
     "jurisdiction": "GB",
@@ -63,12 +195,66 @@
       "frequency_hz": 50
     },
     "circuits": [
-      { "circuit_id": "C01", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.0mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 18, "device_type": "MCB_B", "device_rating_a": 6 },
-      { "circuit_id": "C02", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "1.0mm²", "cpc_csa_mm2_or_awg": "1.0mm²", "route_length_m": 22, "device_type": "MCB_B", "device_rating_a": 6 },
-      { "circuit_id": "C03", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 38, "device_type": "MCB_B", "device_rating_a": 32 },
-      { "circuit_id": "C04", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "2.5mm²", "cpc_csa_mm2_or_awg": "1.5mm²", "route_length_m": 42, "device_type": "MCB_B", "device_rating_a": 32 },
-      { "circuit_id": "C05", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "4mm²", "cpc_csa_mm2_or_awg": "2.5mm²", "route_length_m": 14, "device_type": "MCB_B", "device_rating_a": 32 },
-      { "circuit_id": "C06", "cable_material": "Cu", "cable_insulation": "PVC", "line_csa_mm2_or_awg": "6mm²", "cpc_csa_mm2_or_awg": "4mm²", "route_length_m": 16, "device_type": "MCB_B", "device_rating_a": 40 }
+      {
+        "circuit_id": "C01",
+        "cable_material": "Cu",
+        "cable_insulation": "PVC",
+        "line_csa_mm2_or_awg": "1.0mm²",
+        "cpc_csa_mm2_or_awg": "1.0mm²",
+        "route_length_m": 18,
+        "device_type": "MCB_B",
+        "device_rating_a": 6
+      },
+      {
+        "circuit_id": "C02",
+        "cable_material": "Cu",
+        "cable_insulation": "PVC",
+        "line_csa_mm2_or_awg": "1.0mm²",
+        "cpc_csa_mm2_or_awg": "1.0mm²",
+        "route_length_m": 22,
+        "device_type": "MCB_B",
+        "device_rating_a": 6
+      },
+      {
+        "circuit_id": "C03",
+        "cable_material": "Cu",
+        "cable_insulation": "PVC",
+        "line_csa_mm2_or_awg": "2.5mm²",
+        "cpc_csa_mm2_or_awg": "1.5mm²",
+        "route_length_m": 38,
+        "device_type": "MCB_B",
+        "device_rating_a": 32
+      },
+      {
+        "circuit_id": "C04",
+        "cable_material": "Cu",
+        "cable_insulation": "PVC",
+        "line_csa_mm2_or_awg": "2.5mm²",
+        "cpc_csa_mm2_or_awg": "1.5mm²",
+        "route_length_m": 42,
+        "device_type": "MCB_B",
+        "device_rating_a": 32
+      },
+      {
+        "circuit_id": "C05",
+        "cable_material": "Cu",
+        "cable_insulation": "PVC",
+        "line_csa_mm2_or_awg": "4mm²",
+        "cpc_csa_mm2_or_awg": "2.5mm²",
+        "route_length_m": 14,
+        "device_type": "MCB_B",
+        "device_rating_a": 32
+      },
+      {
+        "circuit_id": "C06",
+        "cable_material": "Cu",
+        "cable_insulation": "PVC",
+        "line_csa_mm2_or_awg": "6mm²",
+        "cpc_csa_mm2_or_awg": "4mm²",
+        "route_length_m": 16,
+        "device_type": "MCB_B",
+        "device_rating_a": 40
+      }
     ],
     "operating_temperature_c": 70
   },
@@ -79,15 +265,41 @@
         "title": "Earthing System",
         "summary": "TN-C-S confirmed from the DNO PME declaration (Ze=0.35Ω). Within the installation, N and PE are separated downstream of the service head. NEC terminology equivalent: 'grounded system with combined PEN at supply side'.",
         "decisions": [
-          { "label": "TN-C-S system confirmed", "summary": "DNO declared PME earth with Ze=0.35Ω; no DNO restriction in force.", "rule": "Ontology TN-C-S entry permitted for GB", "code_clause": "BS 7671:2018+A3 Reg 411.4.1", "inputs": { "ze_ohm_declared": 0.35, "jurisdiction": "GB" } }
+          {
+            "label": "TN-C-S system confirmed",
+            "summary": "DNO declared PME earth with Ze=0.35Ω; no DNO restriction in force.",
+            "rule": "Ontology TN-C-S entry permitted for GB",
+            "code_clause": "BS 7671:2018+A3 Reg 411.4.1",
+            "inputs": {
+              "ze_ohm_declared": 0.35,
+              "jurisdiction": "GB"
+            }
+          }
         ]
       },
       {
         "title": "Main Earthing Terminal",
         "summary": "MET located in consumer unit cupboard, ground floor hallway. Supply bond type 'dno_pme_bond' (PEN bonded at service head). Main earthing conductor 16mm² Cu.",
         "decisions": [
-          { "label": "MET location", "summary": "Located in CU cupboard for accessibility and short bond runs.", "rule": "BS 7671 Reg 542.4.1 — MET accessible and labelled", "code_clause": "BS 7671:2018+A3 Reg 542.4.1", "inputs": { "met_location": "consumer unit cupboard, ground floor hallway" } },
-          { "label": "Main earthing conductor 16 mm² Cu", "summary": "Half of largest service conductor (25mm² → 16mm²), unprotected route ≥10mm², so 16mm² satisfies both rules.", "rule": "BS 7671 Reg 544.1.1 sizing", "code_clause": "BS 7671:2018+A3 Reg 544.1.1", "inputs": { "service_csa_mm2": 25, "result_csa_mm2": 16 } }
+          {
+            "label": "MET location",
+            "summary": "Located in CU cupboard for accessibility and short bond runs.",
+            "rule": "BS 7671 Reg 542.4.1 — MET accessible and labelled",
+            "code_clause": "BS 7671:2018+A3 Reg 542.4.1",
+            "inputs": {
+              "met_location": "consumer unit cupboard, ground floor hallway"
+            }
+          },
+          {
+            "label": "Main earthing conductor 16 mm² Cu",
+            "summary": "Half of largest service conductor (25mm² → 16mm²), unprotected route ≥10mm², so 16mm² satisfies both rules.",
+            "rule": "BS 7671 Reg 544.1.1 sizing",
+            "code_clause": "BS 7671:2018+A3 Reg 544.1.1",
+            "inputs": {
+              "service_csa_mm2": 25,
+              "result_csa_mm2": 16
+            }
+          }
         ]
       },
       {
@@ -99,30 +311,87 @@
         "title": "Main Bonding",
         "summary": "Three main protective bonds from MET to all extraneous-conductive-parts: water service entry, gas service entry, and structural steel in loft.",
         "decisions": [
-          { "label": "10mm² Cu to water and gas services", "summary": "PME minimum CSA for service bonds; supports max Ief in fault.", "rule": "BS 7671 Reg 544.1.1 + Reg 411.3.1.2", "code_clause": "BS 7671:2018+A3 Reg 411.3.1.2", "inputs": { "csa_mm2": 10, "targets": ["water_pipe", "gas_pipe"] } },
-          { "label": "6mm² Cu to structural steel", "summary": "Structural steel sized per general 544.1 rule; not a service entry.", "rule": "BS 7671 Reg 544.1.1 — half of largest PE, min 6mm²", "code_clause": "BS 7671:2018+A3 Reg 544.1.1", "inputs": { "csa_mm2": 6, "target": "structural_steel" } }
+          {
+            "label": "10mm² Cu to water and gas services",
+            "summary": "PME minimum CSA for service bonds; supports max Ief in fault.",
+            "rule": "BS 7671 Reg 544.1.1 + Reg 411.3.1.2",
+            "code_clause": "BS 7671:2018+A3 Reg 411.3.1.2",
+            "inputs": {
+              "csa_mm2": 10,
+              "targets": [
+                "water_pipe",
+                "gas_pipe"
+              ]
+            }
+          },
+          {
+            "label": "6mm² Cu to structural steel",
+            "summary": "Structural steel sized per general 544.1 rule; not a service entry.",
+            "rule": "BS 7671 Reg 544.1.1 — half of largest PE, min 6mm²",
+            "code_clause": "BS 7671:2018+A3 Reg 544.1.1",
+            "inputs": {
+              "csa_mm2": 6,
+              "target": "structural_steel"
+            }
+          }
         ]
       },
       {
         "title": "Supplementary Bonding",
         "summary": "First-floor bathroom retains supplementary bonding even though the 701.415.2 exemption could apply, as belt-and-braces resilience per UK trade custom.",
         "decisions": [
-          { "label": "4mm² supplementary bonding in bathroom", "summary": "Bonds bath taps, towel rail, exposed pipework, shower enclosure earth lug.", "rule": "BS 7671 Section 701 supplementary bonding requirement", "code_clause": "BS 7671:2018+A3 Section 701 Reg 415.2.1", "inputs": { "zone": "first_floor_main_bathroom", "csa_mm2": 4 } }
+          {
+            "label": "4mm² supplementary bonding in bathroom",
+            "summary": "Bonds bath taps, towel rail, exposed pipework, shower enclosure earth lug.",
+            "rule": "BS 7671 Section 701 supplementary bonding requirement",
+            "code_clause": "BS 7671:2018+A3 Section 701 Reg 415.2.1",
+            "inputs": {
+              "zone": "first_floor_main_bathroom",
+              "csa_mm2": 4
+            }
+          }
         ]
       },
       {
         "title": "CPC + Zs Verification",
         "summary": "All CPCs sized via BS 7671 Table 54.7 (twin-and-earth integral reduced CPCs). Zs verified per circuit against the 0.8-corrected Zs_max from Table 41.3. All circuits pass.",
         "decisions": [
-          { "label": "CPCs from Table 54.7", "summary": "Domestic twin-and-earth wiring — table method appropriate.", "rule": "BS 7671 Table 54.7 banded lookup", "code_clause": "BS 7671:2018+A3 Table 54.7", "inputs": { "cpc_sizing_method": "bs7671_table_54.7" } },
-          { "label": "Zs verified against 0.8-corrected Zs_max", "summary": "Temperature correction per Appendix 14; all margins positive.", "rule": "BS 7671 Appendix 14 temperature correction", "code_clause": "BS 7671:2018+A3 Appendix 14", "inputs": { "correction_factor": 0.8, "circuits_passing": 6, "circuits_total": 6 } }
+          {
+            "label": "CPCs from Table 54.7",
+            "summary": "Domestic twin-and-earth wiring — table method appropriate.",
+            "rule": "BS 7671 Table 54.7 banded lookup",
+            "code_clause": "BS 7671:2018+A3 Table 54.7",
+            "inputs": {
+              "cpc_sizing_method": "bs7671_table_54.7"
+            }
+          },
+          {
+            "label": "Zs verified against 0.8-corrected Zs_max",
+            "summary": "Temperature correction per Appendix 14; all margins positive.",
+            "rule": "BS 7671 Appendix 14 temperature correction",
+            "code_clause": "BS 7671:2018+A3 Appendix 14",
+            "inputs": {
+              "correction_factor": 0.8,
+              "circuits_passing": 6,
+              "circuits_total": 6
+            }
+          }
         ]
       },
       {
         "title": "RCD Requirements",
         "summary": "All final circuits 30mA RCD-protected via the consumer unit main RCD: sockets ≤32A and bathroom circuits per BS 7671 411.3.3, lighting in bathroom path per 411.3.4.",
         "decisions": [
-          { "label": "30mA RCD on every circuit via main RCD", "summary": "Single RCD-main consumer unit covers all final circuits.", "rule": "BS 7671 411.3.3 — RCD for sockets ≤32A in domestic", "code_clause": "BS 7671:2018+A3 Reg 411.3.3", "inputs": { "rcd_sensitivity_ma": 30, "rcd_type": "A" } }
+          {
+            "label": "30mA RCD on every circuit via main RCD",
+            "summary": "Single RCD-main consumer unit covers all final circuits.",
+            "rule": "BS 7671 411.3.3 — RCD for sockets ≤32A in domestic",
+            "code_clause": "BS 7671:2018+A3 Reg 411.3.3",
+            "inputs": {
+              "rcd_sensitivity_ma": 30,
+              "rcd_type": "A"
+            }
+          }
         ]
       },
       {
@@ -136,5 +405,25 @@
         "decisions": []
       }
     ]
-  }
+  },
+  "invariants": [
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Main earthing conductor CSA selected per BS 7671 §544.1.1: 16 mm² Cu satisfies the lookup against the supplied 25 mm² phase conductor (Table 54.7 / §544.1.1). PME bonding present per Reg 411.4.5."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Main protective bonding present and sized per BS 7671 §411.3.1.2 + §544.1.1: bonds to water, gas, oil service routes at least 10 mm² Cu (or local equivalent), satisfying the 'not less than half the main earthing conductor' rule and the 6 mm² minimum."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Zs deferred to cable-sizing tool: tool_call_pending_for_zs=true and zs_calc_tool_input is populated with Ze=0.35 Ω plus per-circuit R1+R2 inputs. INV deferred-resolution path applies; downstream cable-sizing skill verifies Zs ≤ Z_s_max (BS 7671 Table 41.3)."
+    }
+  ]
 }

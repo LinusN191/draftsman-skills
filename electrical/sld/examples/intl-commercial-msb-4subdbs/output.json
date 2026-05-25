@@ -7,17 +7,72 @@
     "skill_version": "sld/1.5.0",
     "produced_at": "2026-05-19T11:00:00Z",
     "consumed_intents": [
-      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/intl-commercial-tpn-msb/intent-out.json" },
-      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/intl-dbl1-lighting/intent-out.json" },
-      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/intl-dbp1-power/intent-out.json" },
-      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/intl-dbm1-mechanical/intent-out.json" },
-      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/intl-dbfa1-fire-alarm/intent-out.json" },
-      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.3.0",   "path": "electrical/db-layout/examples/intl-dbem-emergency-lighting/intent-out.json" },
-      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.3.0",   "path": "electrical/db-layout/examples/intl-dbcomms-data/intent-out.json" },
-      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.3.0",   "path": "electrical/db-layout/examples/intl-dbups-backed/intent-out.json" },
-      { "intent_type": "db-layout",   "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.3.0",   "path": "electrical/db-layout/examples/intl-dbgenset-changeover/intent-out.json" },
-      { "intent_type": "earthing",    "intent_version": "1.0.0", "produced_by": "electrical/earthing/v1.4.0",    "path": "electrical/earthing/examples/intl-rural-tncs/intent-out.json" },
-      { "intent_type": "fault-level", "intent_version": "1.0.0", "produced_by": "electrical/fault-level/v1.1.0", "path": "electrical/fault-level/examples/intl-commercial-with-genset/intent-out.json" }
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.2.0",
+        "path": "electrical/db-layout/examples/intl-commercial-tpn-msb/intent-out.json"
+      },
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.2.0",
+        "path": "electrical/db-layout/examples/intl-dbl1-lighting/intent-out.json"
+      },
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.2.0",
+        "path": "electrical/db-layout/examples/intl-dbp1-power/intent-out.json"
+      },
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.2.0",
+        "path": "electrical/db-layout/examples/intl-dbm1-mechanical/intent-out.json"
+      },
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.2.0",
+        "path": "electrical/db-layout/examples/intl-dbfa1-fire-alarm/intent-out.json"
+      },
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.3.0",
+        "path": "electrical/db-layout/examples/intl-dbem-emergency-lighting/intent-out.json"
+      },
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.3.0",
+        "path": "electrical/db-layout/examples/intl-dbcomms-data/intent-out.json"
+      },
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.3.0",
+        "path": "electrical/db-layout/examples/intl-dbups-backed/intent-out.json"
+      },
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.3.0",
+        "path": "electrical/db-layout/examples/intl-dbgenset-changeover/intent-out.json"
+      },
+      {
+        "intent_type": "earthing",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/earthing/v1.4.0",
+        "path": "electrical/earthing/examples/intl-rural-tncs/intent-out.json"
+      },
+      {
+        "intent_type": "fault-level",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/fault-level/v1.1.0",
+        "path": "electrical/fault-level/examples/intl-commercial-with-genset/intent-out.json"
+      }
     ]
   },
   "jurisdiction": "INT",
@@ -28,31 +83,159 @@
     "voltage_nominal_v": 400,
     "voltage_arrangement": "TPN_plus_E",
     "frequency_hz": 50,
-    "ze_declared_ohm": 0.30,
+    "ze_declared_ohm": 0.3,
     "pfc_declared_ka": 16.0,
     "main_switch_rating_a": 800,
     "main_switch_breaking_capacity_ka": 50
   },
   "distribution_hierarchy": [
-    { "board_id": "MSB-MAIN", "board_role": "main_switchboard",       "consumed_intent_path": "electrical/db-layout/examples/intl-commercial-tpn-msb/intent-out.json", "parent_board_id": null,       "fed_via_circuit_id": null,  "location": "ground-floor plant room",         "enclosure_rating": "IP4X" },
-    { "board_id": "DB-L1",    "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/intl-dbl1-lighting/intent-out.json",      "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F01", "location": "ground-floor lighting riser",     "enclosure_rating": "IP4X" },
-    { "board_id": "DB-P1",    "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/intl-dbp1-power/intent-out.json",         "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F02", "location": "ground-floor power riser",        "enclosure_rating": "IP4X" },
-    { "board_id": "DB-M1",    "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/intl-dbm1-mechanical/intent-out.json",    "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F03", "location": "ground-floor mechanical riser",   "enclosure_rating": "IP4X" },
-    { "board_id": "DB-FA1",   "board_role": "fire_alarm_panel",       "consumed_intent_path": "electrical/db-layout/examples/intl-dbfa1-fire-alarm/intent-out.json",   "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F04", "location": "ground-floor fire-alarm room",    "enclosure_rating": "IP4X" },
-    { "board_id": "DB-EM",         "board_role": "life_safety_panel",         "consumed_intent_path": "electrical/db-layout/examples/intl-dbem-emergency-lighting/intent-out.json", "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F05", "location": "ground-floor EM equipment room",                            "enclosure_rating": "IP4X" },
-    { "board_id": "DB-COMMS",      "board_role": "sub_distribution_board",    "consumed_intent_path": "electrical/db-layout/examples/intl-dbcomms-data/intent-out.json",          "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F06", "location": "ground-floor main comms room (MDF)",                        "enclosure_rating": "IP4X" },
-    { "board_id": "DB-UPS",        "board_role": "ups_distribution",          "consumed_intent_path": "electrical/db-layout/examples/intl-dbups-backed/intent-out.json",           "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F07", "location": "ground-floor server/UPS room",                              "enclosure_rating": "IP4X" },
-    { "board_id": "DB-GENSET-XCV", "board_role": "sub_distribution_board",    "consumed_intent_path": "electrical/db-layout/examples/intl-dbgenset-changeover/intent-out.json",    "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F08", "location": "external genset enclosure + ATS in ground-floor plant room", "enclosure_rating": "IP54" }
+    {
+      "board_id": "MSB-MAIN",
+      "board_role": "main_switchboard",
+      "consumed_intent_path": "electrical/db-layout/examples/intl-commercial-tpn-msb/intent-out.json",
+      "parent_board_id": null,
+      "fed_via_circuit_id": null,
+      "location": "ground-floor plant room",
+      "enclosure_rating": "IP4X"
+    },
+    {
+      "board_id": "DB-L1",
+      "board_role": "sub_distribution_board",
+      "consumed_intent_path": "electrical/db-layout/examples/intl-dbl1-lighting/intent-out.json",
+      "parent_board_id": "MSB-MAIN",
+      "fed_via_circuit_id": "F01",
+      "location": "ground-floor lighting riser",
+      "enclosure_rating": "IP4X"
+    },
+    {
+      "board_id": "DB-P1",
+      "board_role": "sub_distribution_board",
+      "consumed_intent_path": "electrical/db-layout/examples/intl-dbp1-power/intent-out.json",
+      "parent_board_id": "MSB-MAIN",
+      "fed_via_circuit_id": "F02",
+      "location": "ground-floor power riser",
+      "enclosure_rating": "IP4X"
+    },
+    {
+      "board_id": "DB-M1",
+      "board_role": "sub_distribution_board",
+      "consumed_intent_path": "electrical/db-layout/examples/intl-dbm1-mechanical/intent-out.json",
+      "parent_board_id": "MSB-MAIN",
+      "fed_via_circuit_id": "F03",
+      "location": "ground-floor mechanical riser",
+      "enclosure_rating": "IP4X"
+    },
+    {
+      "board_id": "DB-FA1",
+      "board_role": "fire_alarm_panel",
+      "consumed_intent_path": "electrical/db-layout/examples/intl-dbfa1-fire-alarm/intent-out.json",
+      "parent_board_id": "MSB-MAIN",
+      "fed_via_circuit_id": "F04",
+      "location": "ground-floor fire-alarm room",
+      "enclosure_rating": "IP4X"
+    },
+    {
+      "board_id": "DB-EM",
+      "board_role": "life_safety_panel",
+      "consumed_intent_path": "electrical/db-layout/examples/intl-dbem-emergency-lighting/intent-out.json",
+      "parent_board_id": "MSB-MAIN",
+      "fed_via_circuit_id": "F05",
+      "location": "ground-floor EM equipment room",
+      "enclosure_rating": "IP4X"
+    },
+    {
+      "board_id": "DB-COMMS",
+      "board_role": "sub_distribution_board",
+      "consumed_intent_path": "electrical/db-layout/examples/intl-dbcomms-data/intent-out.json",
+      "parent_board_id": "MSB-MAIN",
+      "fed_via_circuit_id": "F06",
+      "location": "ground-floor main comms room (MDF)",
+      "enclosure_rating": "IP4X"
+    },
+    {
+      "board_id": "DB-UPS",
+      "board_role": "ups_distribution",
+      "consumed_intent_path": "electrical/db-layout/examples/intl-dbups-backed/intent-out.json",
+      "parent_board_id": "MSB-MAIN",
+      "fed_via_circuit_id": "F07",
+      "location": "ground-floor server/UPS room",
+      "enclosure_rating": "IP4X"
+    },
+    {
+      "board_id": "DB-GENSET-XCV",
+      "board_role": "sub_distribution_board",
+      "consumed_intent_path": "electrical/db-layout/examples/intl-dbgenset-changeover/intent-out.json",
+      "parent_board_id": "MSB-MAIN",
+      "fed_via_circuit_id": "F08",
+      "location": "external genset enclosure + ATS in ground-floor plant room",
+      "enclosure_rating": "IP54"
+    }
   ],
   "selectivity_cascade": [
-    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F01", "child_board_id": "DB-L1",  "verdict": "selective",         "verification_method": "iec_60898_typical", "_note": "F01 800A Type D upstream / 250A downstream main = 3.2:1 ratio, above IEC 60898 typical 3:1 selectivity threshold." },
-    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F02", "child_board_id": "DB-P1",  "verdict": "partial_selective", "verification_method": "iec_60898_typical", "_note": "F02 800A Type D upstream / 400A downstream main = 2.0:1 ratio, BELOW the IEC 60898 typical 3:1 selectivity threshold. Manufacturer selectivity-table consultation required for design intent; in practice the short-time grading on modern MCCBs typically maintains discrimination at this ratio, but cannot be claimed without the device-pair-specific table." },
-    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F03", "child_board_id": "DB-M1",  "verdict": "selective",         "verification_method": "iec_60898_typical", "_note": "F03 800A Type D upstream / 250A downstream main = 3.2:1 ratio, above IEC 60898 typical threshold. Mechanical inrush (motor starts on M01/M03) handled by D-curve coordination." },
-    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F04", "child_board_id": "DB-FA1", "verdict": "selective",         "verification_method": "iec_60898_typical", "_note": "F04 800A Type D upstream / 63A Type C downstream main = 12.7:1 ratio, deeply selective. CRITICAL: F04 fire_alarm feeder has NO upstream RCD per IEC 60364-5-56 §560 — life-safety isolation maintained at MSB level; RCDs at MSB intake would trip the entire DB-FA1 panel on a single earth-fault and disable fire-alarm functionality." },
-    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F05", "child_board_id": "DB-EM",         "verdict": "selective", "verification_method": "iec_60898_typical", "_note": "F05 800A Type D upstream / 40A Type C downstream main = 20.0:1 ratio, deeply selective. F05 emergency-lighting feeder has NO upstream RCD per IEC 60364-5-56:2018 §560.7 — central-battery / sustained-supply EM lighting requires same life-safety isolation pattern as fire-alarm. Earth-fault clearance via TN-C-S adiabatic 5s per IEC 60364-4-41 §411.3.2.2." },
-    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F06", "child_board_id": "DB-COMMS",      "verdict": "selective", "verification_method": "iec_60898_typical", "_note": "F06 800A Type D upstream / 32A Type C downstream main = 25.0:1 ratio, deeply selective. F06 comms feeder carries a Type B RCD upstream of DB-COMMS per IEC 60364-5-53:2002+A2:2015 §531.3.3 (DC-leakage-tolerant for IT/SMPS loads — BS EN 50173:2018 EMC). Type B selectivity vs final-circuit Type A RCDs on data circuits is achieved by time-delay (S-type or selective Type B) at the feeder tier." },
-    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F07", "child_board_id": "DB-UPS",        "verdict": "selective", "verification_method": "iec_60898_typical", "_note": "F07 800A Type D upstream / 50A Type C downstream main = 16.0:1 ratio, deeply selective. F07 feeds the UPS input (10 kVA online double-conversion); the UPS-output side of DB-UPS is electrically downstream of the UPS rectifier+inverter pair and therefore decoupled from the upstream MSB during normal operation. Bypass-mode selectivity (when UPS is in static-bypass) reverts to the F07 cascade ratio." },
-    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F08", "child_board_id": "DB-GENSET-XCV", "verdict": "selective", "verification_method": "iec_60898_typical", "_note": "F08 800A Type D upstream / 63A Type D MCCB downstream main = 12.7:1 ratio, deeply selective. F08 feeds the utility-side input of the ATS changeover (utility-priority mode per IEC 60364-5-56:2018 §552). Genset-side input bypasses the MSB entirely — genset-mode selectivity is documented in the fault-level skill's full IR (Ik\" is substantially lower on standby source; instantaneous trip settings on G02/G03/G04 may need re-verification during commissioning). D-curve on F08 + D-curve on G02/G03 handle motor-start inrush propagation." }
+    {
+      "parent_board_id": "MSB-MAIN",
+      "parent_circuit_id": "F01",
+      "child_board_id": "DB-L1",
+      "verdict": "selective",
+      "verification_method": "iec_60898_typical",
+      "_note": "F01 800A Type D upstream / 250A downstream main = 3.2:1 ratio, above IEC 60898 typical 3:1 selectivity threshold."
+    },
+    {
+      "parent_board_id": "MSB-MAIN",
+      "parent_circuit_id": "F02",
+      "child_board_id": "DB-P1",
+      "verdict": "partial_selective",
+      "verification_method": "iec_60898_typical",
+      "_note": "F02 800A Type D upstream / 400A downstream main = 2.0:1 ratio, BELOW the IEC 60898 typical 3:1 selectivity threshold. Manufacturer selectivity-table consultation required for design intent; in practice the short-time grading on modern MCCBs typically maintains discrimination at this ratio, but cannot be claimed without the device-pair-specific table."
+    },
+    {
+      "parent_board_id": "MSB-MAIN",
+      "parent_circuit_id": "F03",
+      "child_board_id": "DB-M1",
+      "verdict": "selective",
+      "verification_method": "iec_60898_typical",
+      "_note": "F03 800A Type D upstream / 250A downstream main = 3.2:1 ratio, above IEC 60898 typical threshold. Mechanical inrush (motor starts on M01/M03) handled by D-curve coordination."
+    },
+    {
+      "parent_board_id": "MSB-MAIN",
+      "parent_circuit_id": "F04",
+      "child_board_id": "DB-FA1",
+      "verdict": "selective",
+      "verification_method": "iec_60898_typical",
+      "_note": "F04 800A Type D upstream / 63A Type C downstream main = 12.7:1 ratio, deeply selective. CRITICAL: F04 fire_alarm feeder has NO upstream RCD per IEC 60364-5-56 §560 — life-safety isolation maintained at MSB level; RCDs at MSB intake would trip the entire DB-FA1 panel on a single earth-fault and disable fire-alarm functionality."
+    },
+    {
+      "parent_board_id": "MSB-MAIN",
+      "parent_circuit_id": "F05",
+      "child_board_id": "DB-EM",
+      "verdict": "selective",
+      "verification_method": "iec_60898_typical",
+      "_note": "F05 800A Type D upstream / 40A Type C downstream main = 20.0:1 ratio, deeply selective. F05 emergency-lighting feeder has NO upstream RCD per IEC 60364-5-56:2018 §560.7 — central-battery / sustained-supply EM lighting requires same life-safety isolation pattern as fire-alarm. Earth-fault clearance via TN-C-S adiabatic 5s per IEC 60364-4-41 §411.3.2.2."
+    },
+    {
+      "parent_board_id": "MSB-MAIN",
+      "parent_circuit_id": "F06",
+      "child_board_id": "DB-COMMS",
+      "verdict": "selective",
+      "verification_method": "iec_60898_typical",
+      "_note": "F06 800A Type D upstream / 32A Type C downstream main = 25.0:1 ratio, deeply selective. F06 comms feeder carries a Type B RCD upstream of DB-COMMS per IEC 60364-5-53:2002+A2:2015 §531.3.3 (DC-leakage-tolerant for IT/SMPS loads — BS EN 50173:2018 EMC). Type B selectivity vs final-circuit Type A RCDs on data circuits is achieved by time-delay (S-type or selective Type B) at the feeder tier."
+    },
+    {
+      "parent_board_id": "MSB-MAIN",
+      "parent_circuit_id": "F07",
+      "child_board_id": "DB-UPS",
+      "verdict": "selective",
+      "verification_method": "iec_60898_typical",
+      "_note": "F07 800A Type D upstream / 50A Type C downstream main = 16.0:1 ratio, deeply selective. F07 feeds the UPS input (10 kVA online double-conversion); the UPS-output side of DB-UPS is electrically downstream of the UPS rectifier+inverter pair and therefore decoupled from the upstream MSB during normal operation. Bypass-mode selectivity (when UPS is in static-bypass) reverts to the F07 cascade ratio."
+    },
+    {
+      "parent_board_id": "MSB-MAIN",
+      "parent_circuit_id": "F08",
+      "child_board_id": "DB-GENSET-XCV",
+      "verdict": "selective",
+      "verification_method": "iec_60898_typical",
+      "_note": "F08 800A Type D upstream / 63A Type D MCCB downstream main = 12.7:1 ratio, deeply selective. F08 feeds the utility-side input of the ATS changeover (utility-priority mode per IEC 60364-5-56:2018 §552). Genset-side input bypasses the MSB entirely — genset-mode selectivity is documented in the fault-level skill's full IR (Ik\" is substantially lower on standby source; instantaneous trip settings on G02/G03/G04 may need re-verification during commissioning). D-curve on F08 + D-curve on G02/G03 handle motor-start inrush propagation."
+    }
   ],
   "system_metrics": {
     "imax_total_a": 190,
@@ -102,33 +285,166 @@
     "DB-COMMS Type B RCD upstream per IEC 60364-5-53:2002+A2:2015 §531.3.3 (DC-leakage-tolerant for IT/SMPS loads).",
     "Multi-sheet drawing: 2 × A1 ISO sheets per v1.5 split (9 boards > 8 + life-safety isolation per BS 9999 §6.4 / IEC 60364-5-56:2018 §560). Sheet 1: main + general-power + mechanical group. Sheet 2: life-safety + emergency-power + comms group."
   ],
-  "drawn_as_symbols": ["BUSBAR", "MCCB", "MCB", "RCD", "RCD_TYPE_B", "EARTH_GENERAL", "EARTH_PROTECTIVE", "CONDUCTOR_PE", "CONDUCTOR_PEN", "JUNCTION_T", "SPD_SYMBOL", "UPS_BLOCK", "ATS_CHANGEOVER", "GENERATOR_BLOCK"],
-  "flags": ["TOOL-CALL-PENDING:sld_system_metrics — System metrics are LLM-estimates; deterministic refinement deferred per WI3."],
+  "drawn_as_symbols": [
+    "BUSBAR",
+    "MCCB",
+    "MCB",
+    "RCD",
+    "RCD_TYPE_B",
+    "EARTH_GENERAL",
+    "EARTH_PROTECTIVE",
+    "CONDUCTOR_PE",
+    "CONDUCTOR_PEN",
+    "JUNCTION_T",
+    "SPD_SYMBOL",
+    "UPS_BLOCK",
+    "ATS_CHANGEOVER",
+    "GENERATOR_BLOCK"
+  ],
+  "flags": [
+    "TOOL-CALL-PENDING:sld_system_metrics — System metrics are LLM-estimates; deterministic refinement deferred per WI3."
+  ],
   "rationale": {
     "chat_summary": "Generic IEC commercial 4-floor office on TN-C-S 400V (Ze=0.30Ω). 800A MSB feeds 8 sub-DBs: lighting/power/mech/fire-alarm + EM-lighting/comms/UPS/ATS-genset. v1.5 multi-sheet (9 boards): Sheet 1 main+power+mech, Sheet 2 life-safety+emergency+comms per BS 9999 §6.4 / IEC §560. Peak PFC 43.49 kA (fault-level TX-1 post-Sprint-B H1+H2 fix, INV-11 preserved). 50 kA Icu 13% headroom — marginal, verify Ics ≥ Icu per IEC 60947-2 and consider 65 kA Icu at next refresh. F02 2:1 partial_selective; F05-F08 fully_selective. Type 2 SPD §443.",
     "sections": [
-      { "title": "Supply Origin", "summary": "TN-C-S 400V TPN+E, declared Ze=0.30Ω + PFC=16kA. 800A MCCB main switch with 50kA Icu (IEC 60947-2). Generic IEC jurisdiction — citations use IEC 60364 form only.", "decisions": [
-        { "label": "TN-C-S supply confirmed", "summary": "PEN at service head, MET separation downstream of main switch.", "rule": "IEC 60364-4-41 §411.4 TN-C-S system definition", "code_clause": "IEC 60364-4-41:2005 §411.4", "inputs": { "ze_ohm_declared": 0.30, "pfc_ka_declared": 16.0 } }
-      ] },
-      { "title": "Distribution Hierarchy", "summary": "9-board cascade across 2 A1 sheets (v1.5). MSB-MAIN feeds 8 functionally-separated sub-DBs via dedicated feeders: F01 lighting (DB-L1), F02 small-power (DB-P1), F03 mechanical (DB-M1), F04 fire-alarm (DB-FA1), F05 emergency-lighting (DB-EM), F06 comms (DB-COMMS), F07 UPS-input (DB-UPS), F08 ATS-utility (DB-GENSET-XCV). Functional separation is the dominant design driver — life-safety (DB-FA1+DB-EM) gets isolated from general-power (DB-L1+DB-P1) per BS 9999 §6.4 / IEC 60364-5-56:2018 §560, mechanical (DB-M1) kept separate to contain motor inrush, comms (DB-COMMS) on its own Type-B-RCD feeder for IT/SMPS DC-leakage tolerance, UPS (DB-UPS) decouples critical loads from utility, ATS (DB-GENSET-XCV) provides standby genset changeover. Sheet split per drawing_layout below.", "decisions": [
-        { "label": "Functional separation at MSB", "summary": "8 feeders by voltage_class / load discipline rather than per-floor. Life-safety (DB-FA1, DB-EM) gets dedicated feeders with no upstream RCD per IEC 60364-5-56:2018 §560; mechanical (DB-M1) kept separate to avoid motor inrush propagating to lighting; comms (DB-COMMS) on Type-B-RCD feeder; UPS (DB-UPS) decouples critical loads; ATS (DB-GENSET-XCV) provides standby source per IEC 60364-5-56:2018 §552.", "rule": "IEC 60364-5-51 §514 functional separation; IEC 60364-5-56 §560+§552 life-safety + standby source", "code_clause": "IEC 60364-5-56:2018 §560", "inputs": { "board_count": 9, "feeder_count": 8, "sheet_count": 2 } }
-      ] },
-      { "title": "System Metrics", "summary": "Imax_total 190A (revised from v1.4 170A; +20A engineer estimate for 4 new sub-DBs diversified contribution — DB-EM/DB-COMMS/DB-UPS/DB-GENSET-XCV; vs 800A intake = 24% utilisation, 76% headroom). Peak PFC 43.49 kA — refreshed from prior 22.5 kA after Sprint B H1+H2 fix on the fault-level intent (TX-1 z previously 0.005 Ω below transformer's own impedance and HV-1 carried a double-c-factor; corrected per IEC 60909-0:2016 §3.3.2 + §3.3). Sourced from fault-level intent TX-1 (utility-source worst case at transformer secondary). Icu headroom now 13% (50 kA breaker vs 43.49 kA peak PFC — marginal vs prior 55%; consider 65 kA Icu device at next refresh and verify Ics ≥ Icu per IEC 60947-2 §8.4.5). Genset-mode PFC is documented separately in the fault-level skill IR.", "decisions": [
-        { "label": "Intake capacity — interrupting rating now marginal", "summary": "main_switch_rating 800A >> imax_total 190A; breaking_capacity 50kA > peak_pfc 43.49kA (utility-source) but with only 13% headroom (post-Sprint-B H1+H2 refresh). Continues to comply with IEC 60364-4-43 §434.5.1 but device upgrade to 65 kA Icu recommended at next design refresh.", "rule": "IEC 60364-4-43 §433.1 + §434.5.1 Icu adequacy", "code_clause": "IEC 60364-4-43:2008 §433.1", "inputs": { "imax_total_a": 190, "main_switch_rating_a": 800, "peak_pfc_ka": 43.49, "icu_ka": 50, "icu_headroom_pct": 13, "recommendation": "upgrade to 65 kA Icu at next refresh" } }
-      ] },
-      { "title": "Cascade Selectivity", "summary": "7 of 8 cascade pairs verified selective by IEC 60898 typical ratio. F02 (800A/400A = 2:1) flagged 'partial_selective' — below the 3:1 typical threshold but acceptable with manufacturer table consultation. F04 (12.7:1), F05 (20:1), F06 (25:1), F07 (16:1), F08 (12.7:1) are deeply selective — life-safety + emergency-power isolation preserved. F05+F08 cascade verification on standby/genset-mode operation requires re-check via fault-level skill IR before commissioning (Ik\" lower on genset source).", "decisions": [
-        { "label": "F02 partial selectivity documented", "summary": "Verdict 'partial_selective' with note explaining ratio + remediation options (downsize child to 315A, upsize parent to 1250A, or accept with manufacturer selectivity-table confirmation).", "rule": "IEC 60947-2 selectivity table guidance", "code_clause": "IEC 60364-5-53:2002 §536", "inputs": { "f02_ratio": 2.0, "verdict": "partial_selective" } },
-        { "label": "F05-F08 fully selective at deep ratios", "summary": "All 4 new MSB→sub-DB cascade pairs added in v1.5 carry ratios ≥12.7:1 — well above the 3:1 IEC 60898 typical threshold. Sub-DB main ratings (40A, 32A, 50A, 63A) are tightly sized to actual diversified load, not feeder rating headroom, so the 800A upstream Type D gives generous margin.", "rule": "IEC 60898 typical 3:1 ratio rule", "code_clause": "IEC 60364-5-53:2002 §536", "inputs": { "f05_ratio": 20.0, "f06_ratio": 25.0, "f07_ratio": 16.0, "f08_ratio": 12.7, "verdict": "fully_selective" } }
-      ] },
-      { "title": "SPD Assessment", "summary": "Type 2 SPD required at MSB intake per IEC 60364-4-44 §443. Commercial with moderate lightning risk + life-safety present — Type 2 baseline. Would escalate to Type 1+2 if site has IEC 62305 LPS.", "decisions": [
-        { "label": "Type 2 SPD at MSB", "summary": "IEC 60364-4-44 §443.4 baseline for indoor commercial without site-LPS.", "rule": "IEC 60364-4-44 §443 SPD policy lookup", "code_clause": "IEC 60364-4-44:2007 §443", "inputs": { "spd_type": "Type 2", "location_type": "commercial", "lightning_risk": "moderate" } }
-      ] },
-      { "title": "Life-Safety Isolation", "summary": "Three life-safety / emergency-power panels established in v1.5: DB-FA1 (fire_alarm_panel, F04 NO upstream RCD per IEC 60364-5-56 §560), DB-EM (emergency_lighting_panel, F05 NO upstream RCD per IEC 60364-5-56:2018 §560.7 — central-battery BS EN 50171 3hr backup), DB-UPS (ups_backed_critical_panel, F07 feeds 10 kVA online UPS — 30-min ride-through critical IT loads). Earth-fault clearance on F04+F05 via TN-C-S adiabatic 5s. Multi-sheet split per BS 9999 §6.4 / IEC 60364-5-56:2018 §560 (life-safety isolated from general power on dedicated sheet). UPS-essential loads kVA = 10.", "decisions": [
-        { "label": "DB-FA1 + DB-EM dedicated supplies", "summary": "fire_alarm_dedicated_supply: true; emergency_lighting_dedicated_supply: true (v1.5 flip). NO upstream RCD on F04 (fire-alarm) or F05 (EM lighting). Final-circuit devices inside DB-FA1+DB-EM also rcd_protected: false. Earth-fault clearance via TN-C-S adiabatic 5s.", "rule": "IEC 60364-5-56:2018 §560 (+§560.7 for EM lighting) + IEC 60364-4-41 §411.3.2.2", "code_clause": "IEC 60364-5-56:2018 §560", "inputs": { "fire_alarm_dedicated_supply": true, "emergency_lighting_dedicated_supply": true, "f04_upstream_rcd": false, "f05_upstream_rcd": false } },
-        { "label": "DB-UPS critical loads + DB-GENSET-XCV standby source", "summary": "ups_essential_loads_kva = 10 (10 kVA online double-conversion, 30-min ride-through per BS EN 62040 / IEC 62040). DB-GENSET-XCV ATS per IEC 60364-5-56:2018 §552 (utility-priority) — 80 kVA standby genset bypasses MSB on genset-mode operation.", "rule": "IEC 60364-5-56:2018 §552 standby source + BS EN 62040 UPS", "code_clause": "IEC 60364-5-56:2018 §552", "inputs": { "ups_essential_loads_kva": 10, "ats_present": true, "genset_kva": 80 } }
-      ] },
-      { "title": "Compliance", "summary": "Compliant. No non-compliance flags. 13 assumptions documented covering diversity factor structure, sub-DB-summed-load basis, F02 partial selectivity rationale, DB-FA1 dedicated supply confirmation, peak PFC sourced from fault-level intent, emergency lighting strategy, earthing intent cross-check (INV-11), fault-level intent provenance with genset filtering note, WI3 tool deferral, v1.5 cascade growth (4 new sub-DBs), v1.5 cross-skill invariants preserved (peak_pfc_ka + system_type unchanged), v1.5 multi-sheet split rationale (BS 9999 §6.4 + IEC §560 life-safety isolation), and F05-F08 feeder-brief authoritative-source caveat.", "decisions": [] },
-      { "title": "Assumptions", "summary": "13 assumptions captured in compliance_summary covering diversity factor structure (lighting 0.95 / power 0.85 / mechanical 0.75 / fire 1.0), authoritative basis for Imax derivation, F02 cascade caveat, DB-FA1 dedicated-supply confirmation, peak PFC sourced from fault-level intent (utility-source worst case, genset filtered), emergency lighting strategy, multi-skill earthing+fault-level INV-11 cross-checks, WI3 system-metrics tool deferral, v1.5 4-sub-DB growth (DB-EM/DB-COMMS/DB-UPS/DB-GENSET-XCV via F05-F08), v1.5 cross-skill INV-11 preservation, v1.5 multi-sheet split rationale, and F05-F08 brief-authoritative caveat.", "decisions": [] }
+      {
+        "title": "Supply Origin",
+        "summary": "TN-C-S 400V TPN+E, declared Ze=0.30Ω + PFC=16kA. 800A MCCB main switch with 50kA Icu (IEC 60947-2). Generic IEC jurisdiction — citations use IEC 60364 form only.",
+        "decisions": [
+          {
+            "label": "TN-C-S supply confirmed",
+            "summary": "PEN at service head, MET separation downstream of main switch.",
+            "rule": "IEC 60364-4-41 §411.4 TN-C-S system definition",
+            "code_clause": "IEC 60364-4-41:2005 §411.4",
+            "inputs": {
+              "ze_ohm_declared": 0.3,
+              "pfc_ka_declared": 16.0
+            }
+          }
+        ]
+      },
+      {
+        "title": "Distribution Hierarchy",
+        "summary": "9-board cascade across 2 A1 sheets (v1.5). MSB-MAIN feeds 8 functionally-separated sub-DBs via dedicated feeders: F01 lighting (DB-L1), F02 small-power (DB-P1), F03 mechanical (DB-M1), F04 fire-alarm (DB-FA1), F05 emergency-lighting (DB-EM), F06 comms (DB-COMMS), F07 UPS-input (DB-UPS), F08 ATS-utility (DB-GENSET-XCV). Functional separation is the dominant design driver — life-safety (DB-FA1+DB-EM) gets isolated from general-power (DB-L1+DB-P1) per BS 9999 §6.4 / IEC 60364-5-56:2018 §560, mechanical (DB-M1) kept separate to contain motor inrush, comms (DB-COMMS) on its own Type-B-RCD feeder for IT/SMPS DC-leakage tolerance, UPS (DB-UPS) decouples critical loads from utility, ATS (DB-GENSET-XCV) provides standby genset changeover. Sheet split per drawing_layout below.",
+        "decisions": [
+          {
+            "label": "Functional separation at MSB",
+            "summary": "8 feeders by voltage_class / load discipline rather than per-floor. Life-safety (DB-FA1, DB-EM) gets dedicated feeders with no upstream RCD per IEC 60364-5-56:2018 §560; mechanical (DB-M1) kept separate to avoid motor inrush propagating to lighting; comms (DB-COMMS) on Type-B-RCD feeder; UPS (DB-UPS) decouples critical loads; ATS (DB-GENSET-XCV) provides standby source per IEC 60364-5-56:2018 §552.",
+            "rule": "IEC 60364-5-51 §514 functional separation; IEC 60364-5-56 §560+§552 life-safety + standby source",
+            "code_clause": "IEC 60364-5-56:2018 §560",
+            "inputs": {
+              "board_count": 9,
+              "feeder_count": 8,
+              "sheet_count": 2
+            }
+          }
+        ]
+      },
+      {
+        "title": "System Metrics",
+        "summary": "Imax_total 190A (revised from v1.4 170A; +20A engineer estimate for 4 new sub-DBs diversified contribution — DB-EM/DB-COMMS/DB-UPS/DB-GENSET-XCV; vs 800A intake = 24% utilisation, 76% headroom). Peak PFC 43.49 kA — refreshed from prior 22.5 kA after Sprint B H1+H2 fix on the fault-level intent (TX-1 z previously 0.005 Ω below transformer's own impedance and HV-1 carried a double-c-factor; corrected per IEC 60909-0:2016 §3.3.2 + §3.3). Sourced from fault-level intent TX-1 (utility-source worst case at transformer secondary). Icu headroom now 13% (50 kA breaker vs 43.49 kA peak PFC — marginal vs prior 55%; consider 65 kA Icu device at next refresh and verify Ics ≥ Icu per IEC 60947-2 §8.4.5). Genset-mode PFC is documented separately in the fault-level skill IR.",
+        "decisions": [
+          {
+            "label": "Intake capacity — interrupting rating now marginal",
+            "summary": "main_switch_rating 800A >> imax_total 190A; breaking_capacity 50kA > peak_pfc 43.49kA (utility-source) but with only 13% headroom (post-Sprint-B H1+H2 refresh). Continues to comply with IEC 60364-4-43 §434.5.1 but device upgrade to 65 kA Icu recommended at next design refresh.",
+            "rule": "IEC 60364-4-43 §433.1 + §434.5.1 Icu adequacy",
+            "code_clause": "IEC 60364-4-43:2008 §433.1",
+            "inputs": {
+              "imax_total_a": 190,
+              "main_switch_rating_a": 800,
+              "peak_pfc_ka": 43.49,
+              "icu_ka": 50,
+              "icu_headroom_pct": 13,
+              "recommendation": "upgrade to 65 kA Icu at next refresh"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Cascade Selectivity",
+        "summary": "7 of 8 cascade pairs verified selective by IEC 60898 typical ratio. F02 (800A/400A = 2:1) flagged 'partial_selective' — below the 3:1 typical threshold but acceptable with manufacturer table consultation. F04 (12.7:1), F05 (20:1), F06 (25:1), F07 (16:1), F08 (12.7:1) are deeply selective — life-safety + emergency-power isolation preserved. F05+F08 cascade verification on standby/genset-mode operation requires re-check via fault-level skill IR before commissioning (Ik\" lower on genset source).",
+        "decisions": [
+          {
+            "label": "F02 partial selectivity documented",
+            "summary": "Verdict 'partial_selective' with note explaining ratio + remediation options (downsize child to 315A, upsize parent to 1250A, or accept with manufacturer selectivity-table confirmation).",
+            "rule": "IEC 60947-2 selectivity table guidance",
+            "code_clause": "IEC 60364-5-53:2002 §536",
+            "inputs": {
+              "f02_ratio": 2.0,
+              "verdict": "partial_selective"
+            }
+          },
+          {
+            "label": "F05-F08 fully selective at deep ratios",
+            "summary": "All 4 new MSB→sub-DB cascade pairs added in v1.5 carry ratios ≥12.7:1 — well above the 3:1 IEC 60898 typical threshold. Sub-DB main ratings (40A, 32A, 50A, 63A) are tightly sized to actual diversified load, not feeder rating headroom, so the 800A upstream Type D gives generous margin.",
+            "rule": "IEC 60898 typical 3:1 ratio rule",
+            "code_clause": "IEC 60364-5-53:2002 §536",
+            "inputs": {
+              "f05_ratio": 20.0,
+              "f06_ratio": 25.0,
+              "f07_ratio": 16.0,
+              "f08_ratio": 12.7,
+              "verdict": "fully_selective"
+            }
+          }
+        ]
+      },
+      {
+        "title": "SPD Assessment",
+        "summary": "Type 2 SPD required at MSB intake per IEC 60364-4-44 §443. Commercial with moderate lightning risk + life-safety present — Type 2 baseline. Would escalate to Type 1+2 if site has IEC 62305 LPS.",
+        "decisions": [
+          {
+            "label": "Type 2 SPD at MSB",
+            "summary": "IEC 60364-4-44 §443.4 baseline for indoor commercial without site-LPS.",
+            "rule": "IEC 60364-4-44 §443 SPD policy lookup",
+            "code_clause": "IEC 60364-4-44:2007 §443",
+            "inputs": {
+              "spd_type": "Type 2",
+              "location_type": "commercial",
+              "lightning_risk": "moderate"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Life-Safety Isolation",
+        "summary": "Three life-safety / emergency-power panels established in v1.5: DB-FA1 (fire_alarm_panel, F04 NO upstream RCD per IEC 60364-5-56 §560), DB-EM (emergency_lighting_panel, F05 NO upstream RCD per IEC 60364-5-56:2018 §560.7 — central-battery BS EN 50171 3hr backup), DB-UPS (ups_backed_critical_panel, F07 feeds 10 kVA online UPS — 30-min ride-through critical IT loads). Earth-fault clearance on F04+F05 via TN-C-S adiabatic 5s. Multi-sheet split per BS 9999 §6.4 / IEC 60364-5-56:2018 §560 (life-safety isolated from general power on dedicated sheet). UPS-essential loads kVA = 10.",
+        "decisions": [
+          {
+            "label": "DB-FA1 + DB-EM dedicated supplies",
+            "summary": "fire_alarm_dedicated_supply: true; emergency_lighting_dedicated_supply: true (v1.5 flip). NO upstream RCD on F04 (fire-alarm) or F05 (EM lighting). Final-circuit devices inside DB-FA1+DB-EM also rcd_protected: false. Earth-fault clearance via TN-C-S adiabatic 5s.",
+            "rule": "IEC 60364-5-56:2018 §560 (+§560.7 for EM lighting) + IEC 60364-4-41 §411.3.2.2",
+            "code_clause": "IEC 60364-5-56:2018 §560",
+            "inputs": {
+              "fire_alarm_dedicated_supply": true,
+              "emergency_lighting_dedicated_supply": true,
+              "f04_upstream_rcd": false,
+              "f05_upstream_rcd": false
+            }
+          },
+          {
+            "label": "DB-UPS critical loads + DB-GENSET-XCV standby source",
+            "summary": "ups_essential_loads_kva = 10 (10 kVA online double-conversion, 30-min ride-through per BS EN 62040 / IEC 62040). DB-GENSET-XCV ATS per IEC 60364-5-56:2018 §552 (utility-priority) — 80 kVA standby genset bypasses MSB on genset-mode operation.",
+            "rule": "IEC 60364-5-56:2018 §552 standby source + BS EN 62040 UPS",
+            "code_clause": "IEC 60364-5-56:2018 §552",
+            "inputs": {
+              "ups_essential_loads_kva": 10,
+              "ats_present": true,
+              "genset_kva": 80
+            }
+          }
+        ]
+      },
+      {
+        "title": "Compliance",
+        "summary": "Compliant. No non-compliance flags. 13 assumptions documented covering diversity factor structure, sub-DB-summed-load basis, F02 partial selectivity rationale, DB-FA1 dedicated supply confirmation, peak PFC sourced from fault-level intent, emergency lighting strategy, earthing intent cross-check (INV-11), fault-level intent provenance with genset filtering note, WI3 tool deferral, v1.5 cascade growth (4 new sub-DBs), v1.5 cross-skill invariants preserved (peak_pfc_ka + system_type unchanged), v1.5 multi-sheet split rationale (BS 9999 §6.4 + IEC §560 life-safety isolation), and F05-F08 feeder-brief authoritative-source caveat.",
+        "decisions": []
+      },
+      {
+        "title": "Assumptions",
+        "summary": "13 assumptions captured in compliance_summary covering diversity factor structure (lighting 0.95 / power 0.85 / mechanical 0.75 / fire 1.0), authoritative basis for Imax derivation, F02 cascade caveat, DB-FA1 dedicated-supply confirmation, peak PFC sourced from fault-level intent (utility-source worst case, genset filtered), emergency lighting strategy, multi-skill earthing+fault-level INV-11 cross-checks, WI3 system-metrics tool deferral, v1.5 4-sub-DB growth (DB-EM/DB-COMMS/DB-UPS/DB-GENSET-XCV via F05-F08), v1.5 cross-skill INV-11 preservation, v1.5 multi-sheet split rationale, and F05-F08 brief-authoritative caveat.",
+        "decisions": []
+      }
     ]
   },
   "drawing_layout": {
@@ -149,15 +465,70 @@
       }
     ],
     "boards": {
-      "MSB-MAIN":      { "sheet_id": "sheet_1", "tree_layer": 0, "layout_group": "main",                    "routing_intent": "direct_from_msb",       "layout_intent_note": "Main switchboard at IEC TN-C-S intake — ground-floor plant room, root of distribution tree" },
-      "DB-L1":         { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "lighting",                "routing_intent": "via_main_spine",        "layout_intent_note": "Lighting distribution sub-DB — ground-floor lighting riser" },
-      "DB-P1":         { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "general_power",           "routing_intent": "via_main_spine",        "layout_intent_note": "General small-power sub-DB — ground-floor power riser" },
-      "DB-M1":         { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "mechanical",              "routing_intent": "via_main_spine",        "layout_intent_note": "Mechanical/HVAC sub-DB — ground-floor mechanical riser" },
-      "DB-FA1":        { "sheet_id": "sheet_2", "tree_layer": 1, "layout_group": "fire_alarm_life_safety",  "routing_intent": "via_dedicated_riser",   "layout_intent_note": "Fire alarm panel — life-safety isolation per IEC 60364-5-56:2018 §560 / BS 9999 §6.4; dedicated riser, not shared with general power" },
-      "DB-EM":         { "sheet_id": "sheet_2", "tree_layer": 1, "layout_group": "emergency_power",         "routing_intent": "via_dedicated_riser",   "layout_intent_note": "Emergency lighting central battery (BS EN 50171 3hr backup) — dedicated EM riser" },
-      "DB-UPS":        { "sheet_id": "sheet_2", "tree_layer": 1, "layout_group": "emergency_power",         "routing_intent": "via_dedicated_riser",   "layout_intent_note": "10 kVA online UPS critical loads (30-min ride-through) — dedicated UPS-output riser" },
-      "DB-COMMS":      { "sheet_id": "sheet_2", "tree_layer": 1, "layout_group": "comms",                   "routing_intent": "via_dedicated_riser",   "layout_intent_note": "LV data/comms (Type B RCD per BS EN 50173) — dedicated comms riser, MDF" },
-      "DB-GENSET-XCV": { "sheet_id": "sheet_2", "tree_layer": 1, "layout_group": "emergency_power",         "routing_intent": "via_genset_changeover", "layout_intent_note": "ATS standby genset changeover (IEC 60364-5-56:2018 §552) — utility-priority mode" }
+      "MSB-MAIN": {
+        "sheet_id": "sheet_1",
+        "tree_layer": 0,
+        "layout_group": "main",
+        "routing_intent": "direct_from_msb",
+        "layout_intent_note": "Main switchboard at IEC TN-C-S intake — ground-floor plant room, root of distribution tree"
+      },
+      "DB-L1": {
+        "sheet_id": "sheet_1",
+        "tree_layer": 1,
+        "layout_group": "lighting",
+        "routing_intent": "via_main_spine",
+        "layout_intent_note": "Lighting distribution sub-DB — ground-floor lighting riser"
+      },
+      "DB-P1": {
+        "sheet_id": "sheet_1",
+        "tree_layer": 1,
+        "layout_group": "general_power",
+        "routing_intent": "via_main_spine",
+        "layout_intent_note": "General small-power sub-DB — ground-floor power riser"
+      },
+      "DB-M1": {
+        "sheet_id": "sheet_1",
+        "tree_layer": 1,
+        "layout_group": "mechanical",
+        "routing_intent": "via_main_spine",
+        "layout_intent_note": "Mechanical/HVAC sub-DB — ground-floor mechanical riser"
+      },
+      "DB-FA1": {
+        "sheet_id": "sheet_2",
+        "tree_layer": 1,
+        "layout_group": "fire_alarm_life_safety",
+        "routing_intent": "via_dedicated_riser",
+        "layout_intent_note": "Fire alarm panel — life-safety isolation per IEC 60364-5-56:2018 §560 / BS 9999 §6.4; dedicated riser, not shared with general power"
+      },
+      "DB-EM": {
+        "sheet_id": "sheet_2",
+        "tree_layer": 1,
+        "layout_group": "emergency_power",
+        "routing_intent": "via_dedicated_riser",
+        "layout_intent_note": "Emergency lighting central battery (BS EN 50171 3hr backup) — dedicated EM riser"
+      },
+      "DB-UPS": {
+        "sheet_id": "sheet_2",
+        "tree_layer": 1,
+        "layout_group": "emergency_power",
+        "routing_intent": "via_dedicated_riser",
+        "layout_intent_note": "10 kVA online UPS critical loads (30-min ride-through) — dedicated UPS-output riser"
+      },
+      "DB-COMMS": {
+        "sheet_id": "sheet_2",
+        "tree_layer": 1,
+        "layout_group": "comms",
+        "routing_intent": "via_dedicated_riser",
+        "layout_intent_note": "LV data/comms (Type B RCD per BS EN 50173) — dedicated comms riser, MDF"
+      },
+      "DB-GENSET-XCV": {
+        "sheet_id": "sheet_2",
+        "tree_layer": 1,
+        "layout_group": "emergency_power",
+        "routing_intent": "via_genset_changeover",
+        "layout_intent_note": "ATS standby genset changeover (IEC 60364-5-56:2018 §552) — utility-priority mode"
+      }
     }
-  }
+  },
+  "invariants": []
 }

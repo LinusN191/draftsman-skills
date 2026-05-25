@@ -26,19 +26,128 @@
     }
   },
   "sources": [
-    { "id": "utility-DNO", "kind": "utility", "contribution_method": "constant", "ifault_contribution_ka": 22.5 },
-    { "id": "standby-gen", "kind": "generator", "contribution_method": "subtransient_decrement", "ifault_contribution_ka": 12.0, "decrement_profile": { "x_d_doubleprime_pu": 0.15, "x_d_prime_pu": 0.25, "x_d_pu": 1.20 } }
+    {
+      "id": "utility-DNO",
+      "kind": "utility",
+      "contribution_method": "constant",
+      "ifault_contribution_ka": 22.5
+    },
+    {
+      "id": "standby-gen",
+      "kind": "generator",
+      "contribution_method": "subtransient_decrement",
+      "ifault_contribution_ka": 12.0,
+      "decrement_profile": {
+        "x_d_doubleprime_pu": 0.15,
+        "x_d_prime_pu": 0.25,
+        "x_d_pu": 1.2
+      }
+    }
   ],
   "cascade": [
-    { "node_id": "HV-1",          "parent_node_id": null,           "node_kind": "hv_source",              "designation": "11 kV primary",         "ifault_ka_max": 16.00, "ifault_ka_min": 14.55, "ipk_ka": 35.27, "x_over_r_at_node": 5,   "z_total_ohm": 0.4366, "calculation_basis": "declared PSCC from utility (already c-corrected); ZQ back-calculated per IEC 60909-0:2016 §3.3.2 as ZQ = c·U/(√3·Ik_declared) = 1.10×11kV/(√3×16kA) = 0.4366 Ω. Ik_min uses c_min=1.00 (HV) per IEC 60909-0:2016 Table 1.", "tool_call_pending": true },
-    { "node_id": "TX-1",          "parent_node_id": "HV-1",         "node_kind": "transformer_secondary", "designation": "1600 kVA TX LV",        "ifault_ka_max": 43.49, "ifault_ka_min": 39.34, "ipk_ka": 102.0, "x_over_r_at_node": 7,   "z_total_ohm": 0.005577, "calculation_basis": "Three-phase LV terminals: z_total = ZQ_LV + Z_TX_LV per IEC 60909-0:2016 §3.3. ZQ_LV = ZQ_HV × (U_LV/U_HV)² = 0.4366 × (400/11000)² = 0.000577 Ω. Z_TX_LV = u_k × U_LV² / S_tx = 0.05 × 400²/1.6MVA = 0.005 Ω. z_total = 0.005577 Ω. Ik_max = 1.05·400/(√3·0.005577) = 43.49 kA per IEC 60909-0:2016 Table 1 (c_max=1.05 LV).", "tool_call_pending": true },
-    { "node_id": "MSB-1",         "parent_node_id": "TX-1",         "node_kind": "board_incoming",         "designation": "Main MSB",              "feeder": { "length_m": 15, "csa_mm2_or_awg": "240mm²", "material": "copper", "insulation": "xlpe_90" }, "z_addition_ohm": {"r": 0.0012, "x": 0.0012}, "ifault_ka_max": 33.34, "ifault_ka_min": 30.17, "ipk_ka": 76.12, "x_over_r_at_node": 6, "z_total_ohm": 0.007274, "calculation_basis": "z_total = upstream TX-1 z + cable magnitude √(R²+X²) = 0.005577 + √(0.0012² + 0.0012²) = 0.005577 + 0.001697 = 0.007274 Ω. Ik_max = 1.05·400/(√3·0.007274) = 33.34 kA per IEC 60909-0:2016 §4.3.", "tool_call_pending": true },
-    { "node_id": "MSB-1.BUSBAR",  "parent_node_id": "MSB-1",        "node_kind": "board_busbar",           "designation": "MSB busbar 2000A",      "ifault_ka_max": 33.31, "ifault_ka_min": 30.13, "ipk_ka": 76.05, "x_over_r_at_node": 6, "z_total_ohm": 0.007280, "calculation_basis": "Busbar internal impedance ≈ negligible vs upstream cascade; z carried from MSB-1 incoming with small monotonic increment (0.000006 Ω) to reflect busbar copper trunk. Ik_max = 1.05·400/(√3·0.007280) = 33.31 kA.", "tool_call_pending": true },
-    { "node_id": "DB-L1",         "parent_node_id": "MSB-1.BUSBAR", "node_kind": "board_incoming",         "designation": "Lighting DB",           "feeder": { "length_m": 35, "csa_mm2_or_awg": "150mm²", "material": "copper", "insulation": "xlpe_90" }, "z_addition_ohm": {"r": 0.0045, "x": 0.0028}, "ifault_ka_max": 19.27, "ifault_ka_min": 17.43, "ipk_ka": 40.42, "x_over_r_at_node": 4, "z_total_ohm": 0.01258, "calculation_basis": "z_total = upstream busbar z + cable magnitude = 0.007280 + √(0.0045² + 0.0028²) = 0.007280 + 0.005300 = 0.01258 Ω. Ik_max = 1.05·400/(√3·0.01258) = 19.27 kA per IEC 60909-0:2016 §4.3.", "tool_call_pending": true }
+    {
+      "node_id": "HV-1",
+      "parent_node_id": null,
+      "node_kind": "hv_source",
+      "designation": "11 kV primary",
+      "ifault_ka_max": 16.0,
+      "ifault_ka_min": 14.55,
+      "ipk_ka": 35.27,
+      "x_over_r_at_node": 5,
+      "z_total_ohm": 0.4366,
+      "calculation_basis": "declared PSCC from utility (already c-corrected); ZQ back-calculated per IEC 60909-0:2016 §3.3.2 as ZQ = c·U/(√3·Ik_declared) = 1.10×11kV/(√3×16kA) = 0.4366 Ω. Ik_min uses c_min=1.00 (HV) per IEC 60909-0:2016 Table 1.",
+      "tool_call_pending": true
+    },
+    {
+      "node_id": "TX-1",
+      "parent_node_id": "HV-1",
+      "node_kind": "transformer_secondary",
+      "designation": "1600 kVA TX LV",
+      "ifault_ka_max": 43.49,
+      "ifault_ka_min": 39.34,
+      "ipk_ka": 102.0,
+      "x_over_r_at_node": 7,
+      "z_total_ohm": 0.005577,
+      "calculation_basis": "Three-phase LV terminals: z_total = ZQ_LV + Z_TX_LV per IEC 60909-0:2016 §3.3. ZQ_LV = ZQ_HV × (U_LV/U_HV)² = 0.4366 × (400/11000)² = 0.000577 Ω. Z_TX_LV = u_k × U_LV² / S_tx = 0.05 × 400²/1.6MVA = 0.005 Ω. z_total = 0.005577 Ω. Ik_max = 1.05·400/(√3·0.005577) = 43.49 kA per IEC 60909-0:2016 Table 1 (c_max=1.05 LV).",
+      "tool_call_pending": true
+    },
+    {
+      "node_id": "MSB-1",
+      "parent_node_id": "TX-1",
+      "node_kind": "board_incoming",
+      "designation": "Main MSB",
+      "feeder": {
+        "length_m": 15,
+        "csa_mm2_or_awg": "240mm²",
+        "material": "copper",
+        "insulation": "xlpe_90"
+      },
+      "z_addition_ohm": {
+        "r": 0.0012,
+        "x": 0.0012
+      },
+      "ifault_ka_max": 33.34,
+      "ifault_ka_min": 30.17,
+      "ipk_ka": 76.12,
+      "x_over_r_at_node": 6,
+      "z_total_ohm": 0.007274,
+      "calculation_basis": "z_total = upstream TX-1 z + cable magnitude √(R²+X²) = 0.005577 + √(0.0012² + 0.0012²) = 0.005577 + 0.001697 = 0.007274 Ω. Ik_max = 1.05·400/(√3·0.007274) = 33.34 kA per IEC 60909-0:2016 §4.3.",
+      "tool_call_pending": true
+    },
+    {
+      "node_id": "MSB-1.BUSBAR",
+      "parent_node_id": "MSB-1",
+      "node_kind": "board_busbar",
+      "designation": "MSB busbar 2000A",
+      "ifault_ka_max": 33.31,
+      "ifault_ka_min": 30.13,
+      "ipk_ka": 76.05,
+      "x_over_r_at_node": 6,
+      "z_total_ohm": 0.00728,
+      "calculation_basis": "Busbar internal impedance ≈ negligible vs upstream cascade; z carried from MSB-1 incoming with small monotonic increment (0.000006 Ω) to reflect busbar copper trunk. Ik_max = 1.05·400/(√3·0.007280) = 33.31 kA.",
+      "tool_call_pending": true
+    },
+    {
+      "node_id": "DB-L1",
+      "parent_node_id": "MSB-1.BUSBAR",
+      "node_kind": "board_incoming",
+      "designation": "Lighting DB",
+      "feeder": {
+        "length_m": 35,
+        "csa_mm2_or_awg": "150mm²",
+        "material": "copper",
+        "insulation": "xlpe_90"
+      },
+      "z_addition_ohm": {
+        "r": 0.0045,
+        "x": 0.0028
+      },
+      "ifault_ka_max": 19.27,
+      "ifault_ka_min": 17.43,
+      "ipk_ka": 40.42,
+      "x_over_r_at_node": 4,
+      "z_total_ohm": 0.01258,
+      "calculation_basis": "z_total = upstream busbar z + cable magnitude = 0.007280 + √(0.0045² + 0.0028²) = 0.007280 + 0.005300 = 0.01258 Ω. Ik_max = 1.05·400/(√3·0.01258) = 19.27 kA per IEC 60909-0:2016 §4.3.",
+      "tool_call_pending": true
+    }
   ],
   "selectivity_implications": [
-    { "breaker_id": "MSB-ACB-2000A", "breaker_rating_a": 2000, "breaker_icn_ka": 65, "ifault_at_breaker_ka": 33.34, "adequate": true, "recommendation": "ACB Icn 65 kA — adequate at 33.34 kA cascade (1.95× margin)" },
-    { "breaker_id": "DB-L1-MCCB", "breaker_rating_a": 250, "breaker_icn_ka": 25, "ifault_at_breaker_ka": 19.27, "adequate": true, "recommendation": "MCCB Icn 25 kA — adequate at 19.27 kA (1.30× margin; verify Ics ≥ Icu at full rating per IEC 60947-2)" }
+    {
+      "breaker_id": "MSB-ACB-2000A",
+      "breaker_rating_a": 2000,
+      "breaker_icn_ka": 65,
+      "ifault_at_breaker_ka": 33.34,
+      "adequate": true,
+      "recommendation": "ACB Icn 65 kA — adequate at 33.34 kA cascade (1.95× margin)"
+    },
+    {
+      "breaker_id": "DB-L1-MCCB",
+      "breaker_rating_a": 250,
+      "breaker_icn_ka": 25,
+      "ifault_at_breaker_ka": 19.27,
+      "adequate": true,
+      "recommendation": "MCCB Icn 25 kA — adequate at 19.27 kA (1.30× margin; verify Ics ≥ Icu at full rating per IEC 60947-2)"
+    }
   ],
   "compliance_summary": {
     "compliant": true,
@@ -51,19 +160,117 @@
       "tool_call_pending: true — calc.iec60909_cascade pending."
     ]
   },
-  "drawn_as_symbols": ["TRANSFORMER", "GENERATOR", "BREAKER", "BUSBAR", "EARTH_GENERAL"],
-  "flags": ["TOOL-CALL-PENDING"],
+  "drawn_as_symbols": [
+    "TRANSFORMER",
+    "GENERATOR",
+    "BREAKER",
+    "BUSBAR",
+    "EARTH_GENERAL"
+  ],
+  "flags": [
+    "TOOL-CALL-PENDING"
+  ],
   "rationale": {
     "chat_summary": "INT commercial 11 kV/400V TPN with 1600 kVA TX + 800 kVA standby genset. 5-node cascade. Ik\"max at MSB 33.34 kA (utility-mode worst case; H1+H2 corrected: HV-1 declared 16 kA not re-multiplied by c per §3.3.2; TX-1 z properly sums ZQ_LV + Z_TX_LV per §3.3). ACB 65 kA Icn (1.95× margin) + MCCB 25 kA Icn (1.30× margin) both adequate. Near-from-gen decrement modelled per §3.5. tool_call_pending until calc runs.",
     "sections": [
-      { "title": "Source Specification", "summary": "Two sources modelled: utility transformer (1600 kVA, Zpu 5%) + standby gen (800 kVA, X\"d 0.15 pu).", "decisions": [ { "label": "Mixed source modelling", "summary": "Utility-mode worst case + gen-mode capability documented.", "rule": "IEC 60909-0:2016 §3.5 near-from-generator + §3.4 far-from-generator", "code_clause": "IEC 60909-0:2016 §3.5", "inputs": { "utility_kva": 1600, "gen_kva": 800 } } ] },
-      { "title": "Cascade Topology", "summary": "5 nodes engineer-declared. HV → TX → MSB → busbar → DB-L1.", "decisions": [] },
-      { "title": "HV-side Assumptions", "summary": "11 kV primary, ring-main, declared PSCC 16 kA, X/R 5. c_max = 1.10 per Table 1 (HV).", "decisions": [ { "label": "c_max = 1.10 HV", "summary": "Per IEC 60909-0 Table 1 for Un > 1 kV.", "rule": "IEC 60909-0:2016 Table 1", "code_clause": "IEC 60909-0:2016 Table 1", "inputs": { "c_max_hv": 1.10 } } ] },
-      { "title": "Transformer + Source Impedances", "summary": "ZQ_HV = c·U_HV/(√3·Ik_declared) = 1.10×11kV/(√3×16kA) = 0.4366 Ω per IEC 60909-0:2016 §3.3.2 (declared PSCC is already c-corrected by utility — back-calculate ZQ FROM it; do NOT re-multiply Ik by c). ZQ_LV = 0.4366 × (400/11000)² = 0.000577 Ω. Z_TX_LV = u_k × U_LV²/S_tx = 0.05 × 400²/1.6MVA = 0.005 Ω. z_total_TX = 0.005577 Ω. X/R_TX = 7.", "decisions": [ { "label": "Declared PSCC anchored, no double-c", "summary": "16 kA at HV-1 stored as-is (NOT 16×1.10=17.6 kA). ZQ_HV back-calculated FROM declared value.", "rule": "IEC 60909-0:2016 §3.3.2 declared-PSCC convention", "code_clause": "IEC 60909-0:2016 §3.3.2", "inputs": { "ik_declared_ka": 16.0, "c_max_hv": 1.10, "zq_hv_ohm": 0.4366, "zq_lv_ohm": 0.000577, "z_tx_lv_ohm": 0.005, "z_total_tx_ohm": 0.005577 } } ] },
-      { "title": "Motor Contribution Assessment", "summary": "Motor load 0 kW; threshold not met.", "decisions": [] },
-      { "title": "Per-node Ifault Computation", "summary": "Ik\"max range across cascade: HV-1 16.00 kA (declared) → TX-1 43.49 kA → MSB-1 33.34 kA → MSB-1.BUSBAR 33.31 kA → DB-L1 19.27 kA. ipk range 35-102 kA. Each node's z_total reconciles to Ik = c·U/(√3·Z) within 1% tolerance per the new internal-consistency invariant (INV-11). H1+H2 corrected May 2026: TX-1 z previously stored as 0.005 Ω (below transformer-only impedance); now 0.005577 Ω = ZQ_LV + Z_TX_LV. HV-1 previously 17.6 kA = 16×1.10 (double-c); now 16.0 kA exact per §3.3.2.", "decisions": [ { "label": "Internal-consistency reconciliation", "summary": "Every node Ik = c·U/(√3·Z) within 1% (LV c_max=1.05 per Table 1; HV uses declared-PSCC convention).", "rule": "IEC 60909-0:2016 §3.3 + §4.3 cascade method + fault-level validator INV-11", "code_clause": "IEC 60909-0:2016 §3.3", "inputs": { "c_max_lv": 1.05, "c_max_hv": 1.10, "tolerance_pct": 1.0 } }, { "label": "tool_call_pending across cascade", "summary": "Multi-source superposition + near-gen decrement requires deterministic tool execution.", "rule": "IEC 60909-0:2016 §3.5 + §3.6", "code_clause": "IEC 60909-0:2016 §3.5", "inputs": { "tool_call_pending": true } } ] },
-      { "title": "Selectivity Implications", "summary": "ACB Icn 65 kA verified against 33.34 kA at MSB (1.95× margin). DB-L1 MCCB Icn 25 kA verified against 19.27 kA (1.30× margin — verify Ics ≥ Icu at full rating per IEC 60947-2). Both comply with IEC 60364-4-43 §434.5.1.", "decisions": [] },
-      { "title": "Compliance + Assumptions", "summary": "Compliant. Assumptions captured: utility PSCC, gen X\"d, X/R, cable tables.", "decisions": [] }
+      {
+        "title": "Source Specification",
+        "summary": "Two sources modelled: utility transformer (1600 kVA, Zpu 5%) + standby gen (800 kVA, X\"d 0.15 pu).",
+        "decisions": [
+          {
+            "label": "Mixed source modelling",
+            "summary": "Utility-mode worst case + gen-mode capability documented.",
+            "rule": "IEC 60909-0:2016 §3.5 near-from-generator + §3.4 far-from-generator",
+            "code_clause": "IEC 60909-0:2016 §3.5",
+            "inputs": {
+              "utility_kva": 1600,
+              "gen_kva": 800
+            }
+          }
+        ]
+      },
+      {
+        "title": "Cascade Topology",
+        "summary": "5 nodes engineer-declared. HV → TX → MSB → busbar → DB-L1.",
+        "decisions": []
+      },
+      {
+        "title": "HV-side Assumptions",
+        "summary": "11 kV primary, ring-main, declared PSCC 16 kA, X/R 5. c_max = 1.10 per Table 1 (HV).",
+        "decisions": [
+          {
+            "label": "c_max = 1.10 HV",
+            "summary": "Per IEC 60909-0 Table 1 for Un > 1 kV.",
+            "rule": "IEC 60909-0:2016 Table 1",
+            "code_clause": "IEC 60909-0:2016 Table 1",
+            "inputs": {
+              "c_max_hv": 1.1
+            }
+          }
+        ]
+      },
+      {
+        "title": "Transformer + Source Impedances",
+        "summary": "ZQ_HV = c·U_HV/(√3·Ik_declared) = 1.10×11kV/(√3×16kA) = 0.4366 Ω per IEC 60909-0:2016 §3.3.2 (declared PSCC is already c-corrected by utility — back-calculate ZQ FROM it; do NOT re-multiply Ik by c). ZQ_LV = 0.4366 × (400/11000)² = 0.000577 Ω. Z_TX_LV = u_k × U_LV²/S_tx = 0.05 × 400²/1.6MVA = 0.005 Ω. z_total_TX = 0.005577 Ω. X/R_TX = 7.",
+        "decisions": [
+          {
+            "label": "Declared PSCC anchored, no double-c",
+            "summary": "16 kA at HV-1 stored as-is (NOT 16×1.10=17.6 kA). ZQ_HV back-calculated FROM declared value.",
+            "rule": "IEC 60909-0:2016 §3.3.2 declared-PSCC convention",
+            "code_clause": "IEC 60909-0:2016 §3.3.2",
+            "inputs": {
+              "ik_declared_ka": 16.0,
+              "c_max_hv": 1.1,
+              "zq_hv_ohm": 0.4366,
+              "zq_lv_ohm": 0.000577,
+              "z_tx_lv_ohm": 0.005,
+              "z_total_tx_ohm": 0.005577
+            }
+          }
+        ]
+      },
+      {
+        "title": "Motor Contribution Assessment",
+        "summary": "Motor load 0 kW; threshold not met.",
+        "decisions": []
+      },
+      {
+        "title": "Per-node Ifault Computation",
+        "summary": "Ik\"max range across cascade: HV-1 16.00 kA (declared) → TX-1 43.49 kA → MSB-1 33.34 kA → MSB-1.BUSBAR 33.31 kA → DB-L1 19.27 kA. ipk range 35-102 kA. Each node's z_total reconciles to Ik = c·U/(√3·Z) within 1% tolerance per the new internal-consistency invariant (INV-11). H1+H2 corrected May 2026: TX-1 z previously stored as 0.005 Ω (below transformer-only impedance); now 0.005577 Ω = ZQ_LV + Z_TX_LV. HV-1 previously 17.6 kA = 16×1.10 (double-c); now 16.0 kA exact per §3.3.2.",
+        "decisions": [
+          {
+            "label": "Internal-consistency reconciliation",
+            "summary": "Every node Ik = c·U/(√3·Z) within 1% (LV c_max=1.05 per Table 1; HV uses declared-PSCC convention).",
+            "rule": "IEC 60909-0:2016 §3.3 + §4.3 cascade method + fault-level validator INV-11",
+            "code_clause": "IEC 60909-0:2016 §3.3",
+            "inputs": {
+              "c_max_lv": 1.05,
+              "c_max_hv": 1.1,
+              "tolerance_pct": 1.0
+            }
+          },
+          {
+            "label": "tool_call_pending across cascade",
+            "summary": "Multi-source superposition + near-gen decrement requires deterministic tool execution.",
+            "rule": "IEC 60909-0:2016 §3.5 + §3.6",
+            "code_clause": "IEC 60909-0:2016 §3.5",
+            "inputs": {
+              "tool_call_pending": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Selectivity Implications",
+        "summary": "ACB Icn 65 kA verified against 33.34 kA at MSB (1.95× margin). DB-L1 MCCB Icn 25 kA verified against 19.27 kA (1.30× margin — verify Ics ≥ Icu at full rating per IEC 60947-2). Both comply with IEC 60364-4-43 §434.5.1.",
+        "decisions": []
+      },
+      {
+        "title": "Compliance + Assumptions",
+        "summary": "Compliant. Assumptions captured: utility PSCC, gen X\"d, X/R, cable tables.",
+        "decisions": []
+      }
     ]
-  }
+  },
+  "invariants": []
 }

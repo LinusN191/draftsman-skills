@@ -45,15 +45,15 @@ checks:
     description: NEC requires supplemental grounding electrode system — at least 2 electrodes
     severity: critical
 
-  - assertion: 'ir.citations matches "^NEC 2023 (Art|Table) 250\."'
+  - assertion: 'ir.earthing_system.code_clause matches "^NEC 2023 (Art|Table) 250\."'
     description: At least 2 citations match NEC 2023 Art/Table 250. pattern
     severity: warning
 
-  - assertion: 'ir.citations not_contains "BS 7671"'
+  - assertion: 'ir.earthing_system.code_clause not_contains "BS 7671"'
     description: Must NOT cite BS 7671 — US project must not cite UK regs
     severity: warning
 
-  - assertion: 'ir.invariants.INV-4.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-04")].passes == true'
     description: CPC method jurisdiction match
     severity: critical
     matches_inv: INV-4

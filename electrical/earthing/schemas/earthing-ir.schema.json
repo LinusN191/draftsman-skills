@@ -15,69 +15,172 @@
     "main_bonding",
     "circuits",
     "compliance_summary",
-    "rationale"
+    "rationale",
+    "invariants"
   ],
   "properties": {
-    "drawing_type": { "const": "earthing_schematic" },
-    "version":      { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "drawing_type": {
+      "const": "earthing_schematic"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+(\\.\\d+)?$"
+    },
     "meta": {
       "type": "object",
-      "required": ["project_id", "skill_version", "produced_at"],
+      "required": [
+        "project_id",
+        "skill_version",
+        "produced_at"
+      ],
       "properties": {
-        "project_id":    { "type": "string" },
-        "skill_version": { "type": "string" },
-        "produced_at":   { "type": "string", "format": "date-time" },
+        "project_id": {
+          "type": "string"
+        },
+        "skill_version": {
+          "type": "string"
+        },
+        "produced_at": {
+          "type": "string",
+          "format": "date-time"
+        },
         "consumed_intents": {
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["intent_type", "intent_version", "produced_by"],
+            "required": [
+              "intent_type",
+              "intent_version",
+              "produced_by"
+            ],
             "properties": {
-              "intent_type":    { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
-              "intent_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
-              "produced_by":    { "type": "string", "description": "Source skill id" }
+              "intent_type": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]*$"
+              },
+              "intent_version": {
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+\\.\\d+$"
+              },
+              "produced_by": {
+                "type": "string",
+                "description": "Source skill id"
+              }
             }
           }
         }
       }
     },
     "jurisdiction": {
-      "enum": ["GB", "EU", "INT", "KE", "US"],
+      "enum": [
+        "GB",
+        "EU",
+        "INT",
+        "KE",
+        "US"
+      ],
       "description": "Selects which standards files were loaded at generation time. KE (Kenya, KS 1700:2018) routes through BS 7671 Table 41.2 Zs_max + IEC 60364-5-52 cable impedance per KS 1700 Annex E."
     },
     "earthing_system": {
       "type": "object",
-      "required": ["system_type", "code_clause"],
+      "required": [
+        "system_type",
+        "code_clause"
+      ],
       "properties": {
-        "system_type": { "enum": ["TN-S", "TN-C-S", "TT"] },
-        "code_clause": { "type": "string", "description": "e.g. BS 7671 Reg 411.4, IEC 60364-4-41 Clause 411, NEC 250.20" }
+        "system_type": {
+          "enum": [
+            "TN-S",
+            "TN-C-S",
+            "TT"
+          ]
+        },
+        "code_clause": {
+          "type": "string",
+          "description": "e.g. BS 7671 Reg 411.4, IEC 60364-4-41 Clause 411, NEC 250.20"
+        }
       }
     },
     "met": {
       "type": "object",
-      "required": ["location", "supply_bond_type"],
+      "required": [
+        "location",
+        "supply_bond_type"
+      ],
       "properties": {
-        "location":                          { "type": "string" },
-        "supply_bond_type":                  { "enum": ["dno_pme_bond", "consumer_electrode_only", "tn_s_separate_pe"] },
-        "main_earthing_conductor_csa_mm2":   { "type": "number", "exclusiveMinimum": 0 },
-        "main_earthing_conductor_size_awg":  { "type": "string" }
+        "location": {
+          "type": "string"
+        },
+        "supply_bond_type": {
+          "enum": [
+            "dno_pme_bond",
+            "consumer_electrode_only",
+            "tn_s_separate_pe"
+          ]
+        },
+        "main_earthing_conductor_csa_mm2": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "main_earthing_conductor_size_awg": {
+          "type": "string"
+        }
       }
     },
     "electrodes": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "electrode_type", "ra_ohm_specified"],
+        "required": [
+          "id",
+          "electrode_type",
+          "ra_ohm_specified"
+        ],
         "properties": {
-          "id":                     { "type": "string", "pattern": "^E[0-9]+$" },
-          "electrode_type":         { "enum": ["rod", "plate", "mat", "ufer", "ground_ring", "structural_metal"] },
-          "length_mm":              { "type": "integer", "minimum": 0 },
-          "diameter_mm":            { "type": "integer", "minimum": 0 },
-          "burial_depth_mm":        { "type": "integer", "minimum": 0 },
-          "soil_resistivity_ohm_m": { "type": "number", "minimum": 0 },
-          "ra_ohm_specified":       { "type": "number", "minimum": 0, "description": "Engineer-input target; used when tool_call_pending=true" },
-          "ra_ohm_calculated":      { "type": "number", "minimum": 0, "description": "Tool-call result; absent when tool_call_pending=true" },
-          "tool_call_pending":      { "type": "boolean", "description": "true if calc.electrode_resistance not yet executed because runtime tool not available" }
+          "id": {
+            "type": "string",
+            "pattern": "^E[0-9]+$"
+          },
+          "electrode_type": {
+            "enum": [
+              "rod",
+              "plate",
+              "mat",
+              "ufer",
+              "ground_ring",
+              "structural_metal"
+            ]
+          },
+          "length_mm": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "diameter_mm": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "burial_depth_mm": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "soil_resistivity_ohm_m": {
+            "type": "number",
+            "minimum": 0
+          },
+          "ra_ohm_specified": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Engineer-input target; used when tool_call_pending=true"
+          },
+          "ra_ohm_calculated": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Tool-call result; absent when tool_call_pending=true"
+          },
+          "tool_call_pending": {
+            "type": "boolean",
+            "description": "true if calc.electrode_resistance not yet executed because runtime tool not available"
+          }
         }
       }
     },
@@ -85,13 +188,33 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "source", "target", "csa_mm2_or_awg", "code_clause"],
+        "required": [
+          "id",
+          "source",
+          "target",
+          "csa_mm2_or_awg",
+          "code_clause"
+        ],
         "properties": {
-          "id":              { "type": "string", "pattern": "^B[0-9]+$" },
-          "source":          { "type": "string", "description": "Origin of the bond, typically 'MET' or 'E1'" },
-          "target":          { "type": "string", "description": "Bonded extraneous part: water_pipe / gas_pipe / structural_steel / lift_rails / external_metalwork" },
-          "csa_mm2_or_awg":  { "type": "string", "description": "Conductor size in jurisdiction-appropriate units" },
-          "code_clause":     { "type": "string" }
+          "id": {
+            "type": "string",
+            "pattern": "^B[0-9]+$"
+          },
+          "source": {
+            "type": "string",
+            "description": "Origin of the bond, typically 'MET' or 'E1'"
+          },
+          "target": {
+            "type": "string",
+            "description": "Bonded extraneous part: water_pipe / gas_pipe / structural_steel / lift_rails / external_metalwork"
+          },
+          "csa_mm2_or_awg": {
+            "type": "string",
+            "description": "Conductor size in jurisdiction-appropriate units"
+          },
+          "code_clause": {
+            "type": "string"
+          }
         }
       }
     },
@@ -99,12 +222,33 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["location", "items_bonded", "csa_mm2_or_awg"],
+        "required": [
+          "location",
+          "items_bonded",
+          "csa_mm2_or_awg"
+        ],
         "properties": {
-          "location":       { "enum": ["bathroom", "pool", "kitchen_commercial", "medical_group_2", "other"] },
-          "items_bonded":   { "type": "array", "items": { "type": "string" } },
-          "csa_mm2_or_awg": { "type": "string" },
-          "code_clause":    { "type": "string" }
+          "location": {
+            "enum": [
+              "bathroom",
+              "pool",
+              "kitchen_commercial",
+              "medical_group_2",
+              "other"
+            ]
+          },
+          "items_bonded": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "csa_mm2_or_awg": {
+            "type": "string"
+          },
+          "code_clause": {
+            "type": "string"
+          }
         }
       }
     },
@@ -112,49 +256,160 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["circuit_id", "cpc_csa_mm2_or_awg", "zs_compliance"],
+        "required": [
+          "circuit_id",
+          "cpc_csa_mm2_or_awg",
+          "zs_compliance"
+        ],
         "properties": {
-          "circuit_id":           { "type": "string" },
-          "db_designation":       { "type": "string" },
-          "voltage_class":        { "enum": ["LV_power", "ELV_control", "comms_data", "fire_alarm", "emergency_lighting"] },
-          "breaker_rating_a":     { "type": "integer", "minimum": 1 },
-          "breaker_curve":        { "enum": ["B", "C", "D"] },
-          "route_length_m":       { "type": "number", "exclusiveMinimum": 0 },
-          "cpc_csa_mm2_or_awg":   { "type": "string" },
-          "cpc_sizing_method":    { "enum": ["bs7671_table_54.7", "bs7671_adiabatic_54.1", "iec60364_table_54.2", "iec60364_adiabatic_543.1.2", "nec_table_250.122"] },
-          "cpc_sizing_clause":    { "type": "string" },
-          "zs_ohm":               { "type": "number", "minimum": 0 },
-          "zs_max_ohm":           { "type": "number", "minimum": 0 },
-          "zs_compliance":        { "enum": ["pass", "fail_needs_rcd", "fail_oversize_cpc", "pass_with_rcd"] },
-          "rcd_required":         { "type": "boolean" },
-          "rcd_type":             { "enum": ["AC", "A", "F", "B"] },
-          "rcd_sensitivity_ma":   { "type": "integer", "enum": [10, 30, 100, 300, 500] }
+          "circuit_id": {
+            "type": "string"
+          },
+          "db_designation": {
+            "type": "string"
+          },
+          "voltage_class": {
+            "enum": [
+              "LV_power",
+              "ELV_control",
+              "comms_data",
+              "fire_alarm",
+              "emergency_lighting"
+            ]
+          },
+          "breaker_rating_a": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "breaker_curve": {
+            "enum": [
+              "B",
+              "C",
+              "D"
+            ]
+          },
+          "route_length_m": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "cpc_csa_mm2_or_awg": {
+            "type": "string"
+          },
+          "cpc_sizing_method": {
+            "enum": [
+              "bs7671_table_54.7",
+              "bs7671_adiabatic_54.1",
+              "iec60364_table_54.2",
+              "iec60364_adiabatic_543.1.2",
+              "nec_table_250.122"
+            ]
+          },
+          "cpc_sizing_clause": {
+            "type": "string"
+          },
+          "zs_ohm": {
+            "type": "number",
+            "minimum": 0
+          },
+          "zs_max_ohm": {
+            "type": "number",
+            "minimum": 0
+          },
+          "zs_compliance": {
+            "enum": [
+              "pass",
+              "fail_needs_rcd",
+              "fail_oversize_cpc",
+              "pass_with_rcd"
+            ]
+          },
+          "rcd_required": {
+            "type": "boolean"
+          },
+          "rcd_type": {
+            "enum": [
+              "AC",
+              "A",
+              "F",
+              "B"
+            ]
+          },
+          "rcd_sensitivity_ma": {
+            "type": "integer",
+            "enum": [
+              10,
+              30,
+              100,
+              300,
+              500
+            ]
+          }
         }
       }
     },
     "compliance_summary": {
       "type": "object",
-      "required": ["compliant", "non_compliance_flags", "assumptions"],
+      "required": [
+        "compliant",
+        "non_compliance_flags",
+        "assumptions"
+      ],
       "properties": {
-        "compliant":            { "type": "boolean" },
+        "compliant": {
+          "type": "boolean"
+        },
         "non_compliance_flags": {
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["message"],
+            "required": [
+              "message"
+            ],
             "properties": {
-              "message":      { "type": "string" },
-              "code_clause":  { "type": "string" },
-              "severity":     { "enum": ["critical", "warning", "info"] }
+              "message": {
+                "type": "string"
+              },
+              "code_clause": {
+                "type": "string"
+              },
+              "severity": {
+                "enum": [
+                  "critical",
+                  "warning",
+                  "info"
+                ]
+              }
             }
           }
         },
-        "assumptions":          { "type": "array", "items": { "type": "string" } }
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
-    "drawing_notes":     { "type": "array", "items": { "type": "string" } },
-    "drawn_as_symbols":  { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" }, "description": "Roll-up of IEC 60617 symbol_ids — every entry must resolve in IEC60617/symbol-index.json" },
-    "flags":             { "type": "array", "items": { "type": "string" } },
+    "drawing_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "drawn_as_symbols": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9_]*$"
+      },
+      "description": "Roll-up of IEC 60617 symbol_ids — every entry must resolve in IEC60617/symbol-index.json"
+    },
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "tool_call_pending_for_zs": {
       "type": "boolean",
       "description": "WI3 deferral flag. True until calc.zs_loop_impedance runtime tool ships. When true, circuits[].zs_ohm and zs_max_ohm are LLM-computed estimates with disclaimer in flags. When false or absent, values are tool-computed."
@@ -162,39 +417,163 @@
     "zs_calc_tool_input": {
       "type": "object",
       "description": "The payload that would be sent to calc.zs_loop_impedance once runtime ships. Captured at generation time so the runtime can replay deterministically without re-prompting the LLM.",
-      "required": ["jurisdiction", "supply", "circuits", "operating_temperature_c"],
+      "required": [
+        "jurisdiction",
+        "supply",
+        "circuits",
+        "operating_temperature_c"
+      ],
       "properties": {
-        "jurisdiction": { "enum": ["GB", "EU", "INT", "KE", "US"] },
+        "jurisdiction": {
+          "enum": [
+            "GB",
+            "EU",
+            "INT",
+            "KE",
+            "US"
+          ]
+        },
         "supply": {
           "type": "object",
-          "required": ["ze_declared_ohm", "system_type", "voltage_phase_to_earth_v", "frequency_hz"],
+          "required": [
+            "ze_declared_ohm",
+            "system_type",
+            "voltage_phase_to_earth_v",
+            "frequency_hz"
+          ],
           "properties": {
-            "ze_declared_ohm":          { "type": "number", "minimum": 0 },
-            "system_type":              { "enum": ["TN-S", "TN-C-S", "TT"] },
-            "voltage_phase_to_earth_v": { "type": "integer", "enum": [120, 230, 240, 277] },
-            "frequency_hz":             { "type": "integer", "enum": [50, 60] }
+            "ze_declared_ohm": {
+              "type": "number",
+              "minimum": 0
+            },
+            "system_type": {
+              "enum": [
+                "TN-S",
+                "TN-C-S",
+                "TT"
+              ]
+            },
+            "voltage_phase_to_earth_v": {
+              "type": "integer",
+              "enum": [
+                120,
+                230,
+                240,
+                277
+              ]
+            },
+            "frequency_hz": {
+              "type": "integer",
+              "enum": [
+                50,
+                60
+              ]
+            }
           }
         },
         "circuits": {
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["circuit_id", "cable_material", "cable_insulation", "line_csa_mm2_or_awg", "cpc_csa_mm2_or_awg", "route_length_m", "device_type", "device_rating_a"],
+            "required": [
+              "circuit_id",
+              "cable_material",
+              "cable_insulation",
+              "line_csa_mm2_or_awg",
+              "cpc_csa_mm2_or_awg",
+              "route_length_m",
+              "device_type",
+              "device_rating_a"
+            ],
             "properties": {
-              "circuit_id":             { "type": "string" },
-              "cable_material":         { "enum": ["Cu", "Al"] },
-              "cable_insulation":       { "enum": ["PVC", "XLPE"] },
-              "line_csa_mm2_or_awg":    { "type": "string" },
-              "cpc_csa_mm2_or_awg":     { "type": "string" },
-              "route_length_m":         { "type": "number", "exclusiveMinimum": 0 },
-              "device_type":            { "enum": ["MCB_B", "MCB_C", "MCB_D", "BS_88_fuse", "RCBO", "GFCI"] },
-              "device_rating_a":        { "type": "integer", "minimum": 1 }
+              "circuit_id": {
+                "type": "string"
+              },
+              "cable_material": {
+                "enum": [
+                  "Cu",
+                  "Al"
+                ]
+              },
+              "cable_insulation": {
+                "enum": [
+                  "PVC",
+                  "XLPE"
+                ]
+              },
+              "line_csa_mm2_or_awg": {
+                "type": "string"
+              },
+              "cpc_csa_mm2_or_awg": {
+                "type": "string"
+              },
+              "route_length_m": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "device_type": {
+                "enum": [
+                  "MCB_B",
+                  "MCB_C",
+                  "MCB_D",
+                  "BS_88_fuse",
+                  "RCBO",
+                  "GFCI"
+                ]
+              },
+              "device_rating_a": {
+                "type": "integer",
+                "minimum": 1
+              }
             }
           }
         },
-        "operating_temperature_c":      { "type": "integer", "minimum": 20, "maximum": 120 }
+        "operating_temperature_c": {
+          "type": "integer",
+          "minimum": 20,
+          "maximum": 120
+        }
       }
     },
-    "rationale":         { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
+    "rationale": {
+      "$ref": "../../../shared/schemas/core/rationale.schema.json"
+    },
+    "invariants": {
+      "type": "array",
+      "description": "Validator INVs that fired during generation, with pass/fail + evidence. Populated by generator per validator.md INV list. Empty array is valid for skills where no INV applies to the given example.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "passes",
+          "severity",
+          "evidence"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^INV-[0-9]{2,3}$"
+          },
+          "passes": {
+            "type": "boolean"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 800
+          }
+        }
+      }
+    }
   }
 }

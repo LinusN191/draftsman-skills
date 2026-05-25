@@ -3,14 +3,20 @@
   "drawing_type": "lighting_layout",
   "room": {
     "room_type": "warehouse_low",
-    "length_mm": 30000, "width_mm": 20000, "area_m2": 600,
-    "ceiling_height_mm": 7000, "working_plane_mm": 0, "hm_mm": 7000,
-    "room_index": 1.75, "environment_type": "industrial_dusty", "ip_required": "IP65"
+    "length_mm": 30000,
+    "width_mm": 20000,
+    "area_m2": 600,
+    "ceiling_height_mm": 7000,
+    "working_plane_mm": 0,
+    "hm_mm": 7000,
+    "room_index": 1.75,
+    "environment_type": "industrial_dusty",
+    "ip_required": "IP65"
   },
   "calculation_summary": {
     "target_illuminance_lux": 200,
     "achieved_illuminance_lux": 215,
-    "maintenance_factor": 0.60,
+    "maintenance_factor": 0.6,
     "compliant": true
   },
   "rationale": {
@@ -47,7 +53,9 @@
             "summary": "Dusty environment per BS 7671 Section 522.5; IP65 protects against ingress and water washdown.",
             "rule": "BS 7671 Section 522.5 (external influence AE — solid object protection)",
             "code_clause": "BS 7671:2018 § 522.5",
-            "inputs": { "luminaire_environment": "industrial_dusty" }
+            "inputs": {
+              "luminaire_environment": "industrial_dusty"
+            }
           },
           {
             "label": "MF = 0.60 (industrial dusty)",
@@ -70,5 +78,6 @@
         ]
       }
     ]
-  }
+  },
+  "invariants": []
 }

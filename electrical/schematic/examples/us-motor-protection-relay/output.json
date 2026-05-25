@@ -6,8 +6,16 @@
     "skill_version": "schematic/1.0.0",
     "produced_at": "2026-05-22T12:30:00Z",
     "consumed_intents": [
-      {"intent_type": "db-layout-rollup", "intent_version": "1.0.0", "produced_by": "electrical/db-layout"},
-      {"intent_type": "fault-level", "intent_version": "1.0.0", "produced_by": "electrical/fault-level"}
+      {
+        "intent_type": "db-layout-rollup",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout"
+      },
+      {
+        "intent_type": "fault-level",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/fault-level"
+      }
     ]
   },
   "jurisdiction": "US",
@@ -18,65 +26,447 @@
     "page_of": "1/1"
   },
   "items": [
-    {"item_id": "T1A", "device_class": "ct", "bs_en_60617_ref": "CT_GENERIC", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 13.1", "rating": "200/5 A, class 5P20, 15 VA burden, Phase A protection CT"},
-    {"item_id": "T1B", "device_class": "ct", "bs_en_60617_ref": "CT_GENERIC", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 13.1", "rating": "200/5 A, class 5P20, 15 VA burden, Phase B protection CT"},
-    {"item_id": "T1C", "device_class": "ct", "bs_en_60617_ref": "CT_GENERIC", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 13.1", "rating": "200/5 A, class 5P20, 15 VA burden, Phase C protection CT"},
-    {"item_id": "R49", "device_class": "idmt_relay", "bs_en_60617_ref": "IDMT_RELAY_51", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 16.4 (thermal element)", "rating": "Thermal-replica element (ANSI 49) — implemented in multifunction motor IED (SEL-710 / Schneider Sepam M41 / ABB REM615 or equivalent). Class 10 thermal curve.", "ansi_function_code": "49"},
-    {"item_id": "R50", "device_class": "instantaneous_relay", "bs_en_60617_ref": "INSTANTANEOUS_RELAY_50", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 16.2", "rating": "Instantaneous overcurrent (ANSI 50) — short-circuit element, no intentional delay", "ansi_function_code": "50"},
-    {"item_id": "R51", "device_class": "idmt_relay", "bs_en_60617_ref": "IDMT_RELAY_51", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 16.3", "rating": "IDMT overcurrent (ANSI 51) — locked-rotor / stall backup element on VI curve", "ansi_function_code": "51"},
-    {"item_id": "R86", "device_class": "lockout_relay", "bs_en_60617_ref": "LOCKOUT_RELAY_86", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 16.6", "rating": "Hand-reset master trip relay, 125 VDC coil (US substation DC standard)", "ansi_function_code": "86"},
-    {"item_id": "B1", "device_class": "thermistor", "bs_en_60617_ref": "THERMISTOR", "rating": "Embedded PTC thermistor in motor windings, 6-thermistor series chain (2 per phase), 3-wire connection to PTC relay input on R49"},
-    {"item_id": "Q1", "device_class": "breaker", "bs_en_60617_ref": "BREAKER_52", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 13.3", "rating": "600 V / 200 AF / 35 kAIC molded case circuit breaker with shunt trip, ANSI 52", "ansi_function_code": "52"},
-    {"item_id": "M1", "device_class": "motor", "bs_en_60617_ref": "MOTOR_3PHASE", "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 8.2", "rating": "150 HP, 600 V, 3-phase, 140 A FLA, 900 A locked-rotor, Design B, Service Factor 1.15, TEFC"},
-    {"item_id": "X1", "device_class": "terminal", "bs_en_60617_ref": "TERMINAL_RAIL", "rating": "CT secondary terminal block, 10 AWG (5.3 mm²) DIN-rail, shorting-link type"},
-    {"item_id": "X2", "device_class": "terminal", "bs_en_60617_ref": "TERMINAL_RAIL", "rating": "PTC thermistor terminal block, 16 AWG (1.3 mm²), 3-wire to motor termbox"},
-    {"item_id": "X3", "device_class": "terminal", "bs_en_60617_ref": "TERMINAL_RAIL", "rating": "Trip-circuit terminal block, 14 AWG (2.1 mm²) DIN-rail, 125 VDC"}
+    {
+      "item_id": "T1A",
+      "device_class": "ct",
+      "bs_en_60617_ref": "CT_GENERIC",
+      "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 13.1",
+      "rating": "200/5 A, class 5P20, 15 VA burden, Phase A protection CT"
+    },
+    {
+      "item_id": "T1B",
+      "device_class": "ct",
+      "bs_en_60617_ref": "CT_GENERIC",
+      "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 13.1",
+      "rating": "200/5 A, class 5P20, 15 VA burden, Phase B protection CT"
+    },
+    {
+      "item_id": "T1C",
+      "device_class": "ct",
+      "bs_en_60617_ref": "CT_GENERIC",
+      "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 13.1",
+      "rating": "200/5 A, class 5P20, 15 VA burden, Phase C protection CT"
+    },
+    {
+      "item_id": "R49",
+      "device_class": "idmt_relay",
+      "bs_en_60617_ref": "IDMT_RELAY_51",
+      "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 16.4 (thermal element)",
+      "rating": "Thermal-replica element (ANSI 49) — implemented in multifunction motor IED (SEL-710 / Schneider Sepam M41 / ABB REM615 or equivalent). Class 10 thermal curve.",
+      "ansi_function_code": "49"
+    },
+    {
+      "item_id": "R50",
+      "device_class": "instantaneous_relay",
+      "bs_en_60617_ref": "INSTANTANEOUS_RELAY_50",
+      "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 16.2",
+      "rating": "Instantaneous overcurrent (ANSI 50) — short-circuit element, no intentional delay",
+      "ansi_function_code": "50"
+    },
+    {
+      "item_id": "R51",
+      "device_class": "idmt_relay",
+      "bs_en_60617_ref": "IDMT_RELAY_51",
+      "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 16.3",
+      "rating": "IDMT overcurrent (ANSI 51) — locked-rotor / stall backup element on VI curve",
+      "ansi_function_code": "51"
+    },
+    {
+      "item_id": "R86",
+      "device_class": "lockout_relay",
+      "bs_en_60617_ref": "LOCKOUT_RELAY_86",
+      "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 16.6",
+      "rating": "Hand-reset master trip relay, 125 VDC coil (US substation DC standard)",
+      "ansi_function_code": "86"
+    },
+    {
+      "item_id": "B1",
+      "device_class": "thermistor",
+      "bs_en_60617_ref": "THERMISTOR",
+      "rating": "Embedded PTC thermistor in motor windings, 6-thermistor series chain (2 per phase), 3-wire connection to PTC relay input on R49"
+    },
+    {
+      "item_id": "Q1",
+      "device_class": "breaker",
+      "bs_en_60617_ref": "BREAKER_52",
+      "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 13.3",
+      "rating": "600 V / 200 AF / 35 kAIC molded case circuit breaker with shunt trip, ANSI 52",
+      "ansi_function_code": "52"
+    },
+    {
+      "item_id": "M1",
+      "device_class": "motor",
+      "bs_en_60617_ref": "MOTOR_3PHASE",
+      "ieee_std_315_ref": "IEEE Std 315-1975 Fig. 8.2",
+      "rating": "150 HP, 600 V, 3-phase, 140 A FLA, 900 A locked-rotor, Design B, Service Factor 1.15, TEFC"
+    },
+    {
+      "item_id": "X1",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "CT secondary terminal block, 10 AWG (5.3 mm²) DIN-rail, shorting-link type"
+    },
+    {
+      "item_id": "X2",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "PTC thermistor terminal block, 16 AWG (1.3 mm²), 3-wire to motor termbox"
+    },
+    {
+      "item_id": "X3",
+      "device_class": "terminal",
+      "bs_en_60617_ref": "TERMINAL_RAIL",
+      "rating": "Trip-circuit terminal block, 14 AWG (2.1 mm²) DIN-rail, 125 VDC"
+    }
   ],
   "connections": [
-    {"wire_id": "W1", "from_item": "T1A", "from_terminal": "S1", "to_item": "X1", "to_terminal": "1A", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase A CT secondary to terminal block"},
-    {"wire_id": "W2", "from_item": "T1A", "from_terminal": "S2", "to_item": "X1", "to_terminal": "2A", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase A CT secondary return"},
-    {"wire_id": "W3", "from_item": "T1B", "from_terminal": "S1", "to_item": "X1", "to_terminal": "1B", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase B CT secondary to terminal block"},
-    {"wire_id": "W4", "from_item": "T1B", "from_terminal": "S2", "to_item": "X1", "to_terminal": "2B", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase B CT secondary return"},
-    {"wire_id": "W5", "from_item": "T1C", "from_terminal": "S1", "to_item": "X1", "to_terminal": "1C", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase C CT secondary to terminal block"},
-    {"wire_id": "W6", "from_item": "T1C", "from_terminal": "S2", "to_item": "X1", "to_terminal": "2C", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase C CT secondary return"},
-    {"wire_id": "W7", "from_item": "X1", "from_terminal": "1A", "to_item": "R49", "to_terminal": "IA", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase A CT current to thermal-replica element 49 (also shared with 50 + 51 within the multifunction IED)"},
-    {"wire_id": "W8", "from_item": "X1", "from_terminal": "1B", "to_item": "R49", "to_terminal": "IB", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase B CT current to thermal-replica element"},
-    {"wire_id": "W9", "from_item": "X1", "from_terminal": "1C", "to_item": "R49", "to_terminal": "IC", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Phase C CT current to thermal-replica element"},
-    {"wire_id": "W10", "from_item": "X1", "from_terminal": "1A", "to_item": "R50", "to_terminal": "IA", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled Phase A CT to instantaneous 50 element"},
-    {"wire_id": "W11", "from_item": "X1", "from_terminal": "1B", "to_item": "R50", "to_terminal": "IB", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled Phase B CT to instantaneous 50 element"},
-    {"wire_id": "W12", "from_item": "X1", "from_terminal": "1C", "to_item": "R50", "to_terminal": "IC", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled Phase C CT to instantaneous 50 element"},
-    {"wire_id": "W13", "from_item": "X1", "from_terminal": "1A", "to_item": "R51", "to_terminal": "IA", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled Phase A CT to IDMT 51 element"},
-    {"wire_id": "W14", "from_item": "X1", "from_terminal": "1B", "to_item": "R51", "to_terminal": "IB", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled Phase B CT to IDMT 51 element"},
-    {"wire_id": "W15", "from_item": "X1", "from_terminal": "1C", "to_item": "R51", "to_terminal": "IC", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled Phase C CT to IDMT 51 element"},
-    {"wire_id": "W16", "from_item": "B1", "from_terminal": "T1", "to_item": "X2", "to_terminal": "1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Motor-embedded PTC thermistor chain end T1 to terminal block (3-wire connection)"},
-    {"wire_id": "W17", "from_item": "B1", "from_terminal": "T2", "to_item": "X2", "to_terminal": "2", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Motor-embedded PTC thermistor chain end T2"},
-    {"wire_id": "W18", "from_item": "X2", "from_terminal": "1", "to_item": "R49", "to_terminal": "PTC+", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "PTC chain to R49 thermistor input + (PTC resistance switches abruptly at the motor winding hot-spot threshold ~155 °C Class F)"},
-    {"wire_id": "W19", "from_item": "X2", "from_terminal": "2", "to_item": "R49", "to_terminal": "PTC-", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "PTC chain return"},
-    {"wire_id": "W20", "from_item": "R49", "from_terminal": "TRIP", "to_item": "R86", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Thermal 49 (FLA × Class 10 envelope OR PTC chain trip) to lockout R86 coil A1 (125 VDC)"},
-    {"wire_id": "W21", "from_item": "R50", "from_terminal": "TRIP", "to_item": "R86", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Instantaneous 50 trip to lockout coil A1 (parallel with 49 trip)"},
-    {"wire_id": "W22", "from_item": "R51", "from_terminal": "TRIP", "to_item": "R86", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "IDMT 51 trip to lockout coil A1 (parallel with 49 + 50 trips)"},
-    {"wire_id": "W23", "from_item": "R86", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Lockout coil A2 to 125 VDC negative bus"},
-    {"wire_id": "W24", "from_item": "R86", "from_terminal": "13", "to_item": "Q1", "to_terminal": "ST", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Lockout NO 13-14 contact to Q1 shunt trip coil ST (125 VDC)"},
-    {"wire_id": "W25", "from_item": "Q1", "from_terminal": "T1", "to_item": "M1", "to_terminal": "U", "conductor_csa_mm2": 35, "voltage_class": "power_LV", "function": "Q1 load-side T1 to motor M1 terminal U (Phase A power)"},
-    {"wire_id": "W26", "from_item": "Q1", "from_terminal": "T2", "to_item": "M1", "to_terminal": "V", "conductor_csa_mm2": 35, "voltage_class": "power_LV", "function": "Q1 load-side T2 to motor M1 terminal V (Phase B power)"},
-    {"wire_id": "W27", "from_item": "Q1", "from_terminal": "T3", "to_item": "M1", "to_terminal": "W", "conductor_csa_mm2": 35, "voltage_class": "power_LV", "function": "Q1 load-side T3 to motor M1 terminal W (Phase C power)"}
+    {
+      "wire_id": "W1",
+      "from_item": "T1A",
+      "from_terminal": "S1",
+      "to_item": "X1",
+      "to_terminal": "1A",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Phase A CT secondary to terminal block"
+    },
+    {
+      "wire_id": "W2",
+      "from_item": "T1A",
+      "from_terminal": "S2",
+      "to_item": "X1",
+      "to_terminal": "2A",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Phase A CT secondary return"
+    },
+    {
+      "wire_id": "W3",
+      "from_item": "T1B",
+      "from_terminal": "S1",
+      "to_item": "X1",
+      "to_terminal": "1B",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Phase B CT secondary to terminal block"
+    },
+    {
+      "wire_id": "W4",
+      "from_item": "T1B",
+      "from_terminal": "S2",
+      "to_item": "X1",
+      "to_terminal": "2B",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Phase B CT secondary return"
+    },
+    {
+      "wire_id": "W5",
+      "from_item": "T1C",
+      "from_terminal": "S1",
+      "to_item": "X1",
+      "to_terminal": "1C",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Phase C CT secondary to terminal block"
+    },
+    {
+      "wire_id": "W6",
+      "from_item": "T1C",
+      "from_terminal": "S2",
+      "to_item": "X1",
+      "to_terminal": "2C",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Phase C CT secondary return"
+    },
+    {
+      "wire_id": "W7",
+      "from_item": "X1",
+      "from_terminal": "1A",
+      "to_item": "R49",
+      "to_terminal": "IA",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Phase A CT current to thermal-replica element 49 (also shared with 50 + 51 within the multifunction IED)"
+    },
+    {
+      "wire_id": "W8",
+      "from_item": "X1",
+      "from_terminal": "1B",
+      "to_item": "R49",
+      "to_terminal": "IB",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Phase B CT current to thermal-replica element"
+    },
+    {
+      "wire_id": "W9",
+      "from_item": "X1",
+      "from_terminal": "1C",
+      "to_item": "R49",
+      "to_terminal": "IC",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Phase C CT current to thermal-replica element"
+    },
+    {
+      "wire_id": "W10",
+      "from_item": "X1",
+      "from_terminal": "1A",
+      "to_item": "R50",
+      "to_terminal": "IA",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Paralleled Phase A CT to instantaneous 50 element"
+    },
+    {
+      "wire_id": "W11",
+      "from_item": "X1",
+      "from_terminal": "1B",
+      "to_item": "R50",
+      "to_terminal": "IB",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Paralleled Phase B CT to instantaneous 50 element"
+    },
+    {
+      "wire_id": "W12",
+      "from_item": "X1",
+      "from_terminal": "1C",
+      "to_item": "R50",
+      "to_terminal": "IC",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Paralleled Phase C CT to instantaneous 50 element"
+    },
+    {
+      "wire_id": "W13",
+      "from_item": "X1",
+      "from_terminal": "1A",
+      "to_item": "R51",
+      "to_terminal": "IA",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Paralleled Phase A CT to IDMT 51 element"
+    },
+    {
+      "wire_id": "W14",
+      "from_item": "X1",
+      "from_terminal": "1B",
+      "to_item": "R51",
+      "to_terminal": "IB",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Paralleled Phase B CT to IDMT 51 element"
+    },
+    {
+      "wire_id": "W15",
+      "from_item": "X1",
+      "from_terminal": "1C",
+      "to_item": "R51",
+      "to_terminal": "IC",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Paralleled Phase C CT to IDMT 51 element"
+    },
+    {
+      "wire_id": "W16",
+      "from_item": "B1",
+      "from_terminal": "T1",
+      "to_item": "X2",
+      "to_terminal": "1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "Motor-embedded PTC thermistor chain end T1 to terminal block (3-wire connection)"
+    },
+    {
+      "wire_id": "W17",
+      "from_item": "B1",
+      "from_terminal": "T2",
+      "to_item": "X2",
+      "to_terminal": "2",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "Motor-embedded PTC thermistor chain end T2"
+    },
+    {
+      "wire_id": "W18",
+      "from_item": "X2",
+      "from_terminal": "1",
+      "to_item": "R49",
+      "to_terminal": "PTC+",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "PTC chain to R49 thermistor input + (PTC resistance switches abruptly at the motor winding hot-spot threshold ~155 °C Class F)"
+    },
+    {
+      "wire_id": "W19",
+      "from_item": "X2",
+      "from_terminal": "2",
+      "to_item": "R49",
+      "to_terminal": "PTC-",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "PTC chain return"
+    },
+    {
+      "wire_id": "W20",
+      "from_item": "R49",
+      "from_terminal": "TRIP",
+      "to_item": "R86",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "Thermal 49 (FLA × Class 10 envelope OR PTC chain trip) to lockout R86 coil A1 (125 VDC)"
+    },
+    {
+      "wire_id": "W21",
+      "from_item": "R50",
+      "from_terminal": "TRIP",
+      "to_item": "R86",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "Instantaneous 50 trip to lockout coil A1 (parallel with 49 trip)"
+    },
+    {
+      "wire_id": "W22",
+      "from_item": "R51",
+      "from_terminal": "TRIP",
+      "to_item": "R86",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "IDMT 51 trip to lockout coil A1 (parallel with 49 + 50 trips)"
+    },
+    {
+      "wire_id": "W23",
+      "from_item": "R86",
+      "from_terminal": "A2",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "Lockout coil A2 to 125 VDC negative bus"
+    },
+    {
+      "wire_id": "W24",
+      "from_item": "R86",
+      "from_terminal": "13",
+      "to_item": "Q1",
+      "to_terminal": "ST",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "Lockout NO 13-14 contact to Q1 shunt trip coil ST (125 VDC)"
+    },
+    {
+      "wire_id": "W25",
+      "from_item": "Q1",
+      "from_terminal": "T1",
+      "to_item": "M1",
+      "to_terminal": "U",
+      "conductor_csa_mm2": 35,
+      "voltage_class": "power_LV",
+      "function": "Q1 load-side T1 to motor M1 terminal U (Phase A power)"
+    },
+    {
+      "wire_id": "W26",
+      "from_item": "Q1",
+      "from_terminal": "T2",
+      "to_item": "M1",
+      "to_terminal": "V",
+      "conductor_csa_mm2": 35,
+      "voltage_class": "power_LV",
+      "function": "Q1 load-side T2 to motor M1 terminal V (Phase B power)"
+    },
+    {
+      "wire_id": "W27",
+      "from_item": "Q1",
+      "from_terminal": "T3",
+      "to_item": "M1",
+      "to_terminal": "W",
+      "conductor_csa_mm2": 35,
+      "voltage_class": "power_LV",
+      "function": "Q1 load-side T3 to motor M1 terminal W (Phase C power)"
+    }
   ],
   "labels": [
-    {"anchor_item": "T1A", "text": "T1A — 200/5 A, 5P20, Ph A", "kind": "device_tag"},
-    {"anchor_item": "T1B", "text": "T1B — 200/5 A, 5P20, Ph B", "kind": "device_tag"},
-    {"anchor_item": "T1C", "text": "T1C — 200/5 A, 5P20, Ph C", "kind": "device_tag"},
-    {"anchor_item": "R49", "text": "R49 — Thermal (ANSI 49) Class 10", "kind": "device_tag"},
-    {"anchor_item": "R50", "text": "R50 — Instantaneous OC (ANSI 50)", "kind": "device_tag"},
-    {"anchor_item": "R51", "text": "R51 — IDMT OC (ANSI 51) VI", "kind": "device_tag"},
-    {"anchor_item": "R86", "text": "R86 — Master Trip Lockout (ANSI 86)", "kind": "device_tag"},
-    {"anchor_item": "B1", "text": "B1 — Motor-embedded PTC chain (6 thermistors, 2/phase)", "kind": "device_tag"},
-    {"anchor_item": "Q1", "text": "Q1 — 600V 200AF 35kAIC MCCB w/ Shunt Trip", "kind": "device_tag"},
-    {"anchor_item": "M1", "text": "M1 — 150 HP 600V 140A FLA Design B SF 1.15 TEFC", "kind": "device_tag"},
-    {"anchor_item": "R49", "text": "Pickup 140 A = 1.0× FLA (Class 10 thermal model, SF 1.15 allowed)", "kind": "sequence_note"},
-    {"anchor_item": "R50", "text": "Pickup 1200 A primary = 1.33× LRA — clears short-circuits without nuisance-tripping on locked rotor", "kind": "sequence_note"},
-    {"anchor_item": "R51", "text": "Pickup 175 A primary = 1.25× FLA × 1.15 SF, VI curve TMS 0.3 — locked-rotor / stall backup if 49 thermal misses", "kind": "sequence_note"},
-    {"anchor_item": "R86", "text": "Hand reset — converges trips from 49, 50, 51, and the PTC chain (via 49 input)", "kind": "sequence_note"},
-    {"anchor_item": "B1", "text": "Class F insulation hot-spot threshold ~155 °C — PTC R switches from <100 ohm cold to >2700 ohm hot at threshold", "kind": "sequence_note"}
+    {
+      "anchor_item": "T1A",
+      "text": "T1A — 200/5 A, 5P20, Ph A",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "T1B",
+      "text": "T1B — 200/5 A, 5P20, Ph B",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "T1C",
+      "text": "T1C — 200/5 A, 5P20, Ph C",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "R49",
+      "text": "R49 — Thermal (ANSI 49) Class 10",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "R50",
+      "text": "R50 — Instantaneous OC (ANSI 50)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "R51",
+      "text": "R51 — IDMT OC (ANSI 51) VI",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "R86",
+      "text": "R86 — Master Trip Lockout (ANSI 86)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "B1",
+      "text": "B1 — Motor-embedded PTC chain (6 thermistors, 2/phase)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "Q1",
+      "text": "Q1 — 600V 200AF 35kAIC MCCB w/ Shunt Trip",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "M1",
+      "text": "M1 — 150 HP 600V 140A FLA Design B SF 1.15 TEFC",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "R49",
+      "text": "Pickup 140 A = 1.0× FLA (Class 10 thermal model, SF 1.15 allowed)",
+      "kind": "sequence_note"
+    },
+    {
+      "anchor_item": "R50",
+      "text": "Pickup 1200 A primary = 1.33× LRA — clears short-circuits without nuisance-tripping on locked rotor",
+      "kind": "sequence_note"
+    },
+    {
+      "anchor_item": "R51",
+      "text": "Pickup 175 A primary = 1.25× FLA × 1.15 SF, VI curve TMS 0.3 — locked-rotor / stall backup if 49 thermal misses",
+      "kind": "sequence_note"
+    },
+    {
+      "anchor_item": "R86",
+      "text": "Hand reset — converges trips from 49, 50, 51, and the PTC chain (via 49 input)",
+      "kind": "sequence_note"
+    },
+    {
+      "anchor_item": "B1",
+      "text": "Class F insulation hot-spot threshold ~155 °C — PTC R switches from <100 ohm cold to >2700 ohm hot at threshold",
+      "kind": "sequence_note"
+    }
   ],
   "protection_settings": [
     {
@@ -280,5 +670,6 @@
         ]
       }
     ]
-  }
+  },
+  "invariants": []
 }

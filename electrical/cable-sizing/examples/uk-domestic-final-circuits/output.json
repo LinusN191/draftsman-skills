@@ -345,5 +345,25 @@
         "summary": "Emits cable-sizing intent with 5 circuit records carrying phase_csa, cpc_csa, material, insulation, cable_type, length_m, installation_method, r1_plus_r2 and reactance per metre at operating temperature. Future consumers: cable-schedule (tabulated), riser (parent-child render), cable-containment (tray/conduit fill), small-power v1.1 (Zs resolution)."
       }
     ]
-  }
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Standard IEC ladder CSA selection: 2.5 mm² phase for C01 ring final (selection.phase_csa=2.5) is in the BS 7671 App-4 Table 4D2A ladder {1.0, 1.5, 2.5, 4, 6, 10, 16, 25, ...}; binding_constraint='iz_vs_in' confirms ampacity-limited selection."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Voltage-drop budget per BS 7671 §525.201: walk_up_trail records vd_cumulative_pct=1.6% for the accepted 2.5 mm² CSA, well inside the 5% domestic lighting/socket budget (3% Vd for power circuits + 2% headroom)."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "CPC adiabatic check passes per BS 7671 §543.1.3: cpc_csa=1.5 mm² with k=115 (Cu/PVC) clears the adiabatic test S²·k² ≥ I²·t for the parent fault current applied for t_clear at the protective device's pre-arcing characteristic."
+    }
+  ]
 }

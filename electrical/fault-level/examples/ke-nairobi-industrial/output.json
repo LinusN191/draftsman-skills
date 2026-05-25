@@ -26,18 +26,112 @@
     }
   },
   "sources": [
-    { "id": "utility-KPLC", "kind": "utility", "contribution_method": "constant", "ifault_contribution_ka": 9.80 }
+    {
+      "id": "utility-KPLC",
+      "kind": "utility",
+      "contribution_method": "constant",
+      "ifault_contribution_ka": 9.8
+    }
   ],
   "cascade": [
-    { "node_id": "HV-1",        "parent_node_id": null,           "node_kind": "hv_source",              "designation": "11 kV KPLC primary",                       "ifault_ka_max": 13.00, "ifault_ka_min": 11.82, "ipk_ka": 28.64, "x_over_r_at_node": 5.00, "z_total_ohm": 0.5374,  "tool_call_pending": true },
-    { "node_id": "TX-1",        "parent_node_id": "HV-1",         "node_kind": "transformer_secondary", "designation": "500 kVA KPLC TX 415V TPN LV terminals",   "ifault_ka_max": 10.22, "ifault_ka_min": 9.24,  "ipk_ka": 22.51, "x_over_r_at_node": 5.00, "z_total_ohm": 0.02463, "tool_call_pending": true },
-    { "node_id": "MSP-100",     "parent_node_id": "TX-1",         "node_kind": "board_incoming",         "designation": "Main switch-panel 100A incoming",         "feeder": { "length_m": 3,  "csa_mm2_or_awg": "70mm²", "material": "copper", "insulation": "xlpe_90" }, "z_addition_ohm": { "r": 0.00101, "x": 0.00026 }, "ifault_ka_max": 9.80, "ifault_ka_min": 8.87, "ipk_ka": 20.76, "x_over_r_at_node": 4.18, "z_total_ohm": 0.02567, "tool_call_pending": true },
-    { "node_id": "MSP-100.BUS", "parent_node_id": "MSP-100",     "node_kind": "board_busbar",           "designation": "MSP-100 busbar 100A",                      "ifault_ka_max": 9.78,  "ifault_ka_min": 8.85,  "ipk_ka": 20.66, "x_over_r_at_node": 4.13, "z_total_ohm": 0.02587, "tool_call_pending": true },
-    { "node_id": "GH-DB",       "parent_node_id": "MSP-100.BUS", "node_kind": "board_incoming",         "designation": "Glasshouse/workshop DB incoming",         "feeder": { "length_m": 60, "csa_mm2_or_awg": "95mm²", "material": "copper", "insulation": "xlpe_90" }, "z_addition_ohm": { "r": 0.01248, "x": 0.00497 }, "ifault_ka_max": 7.24, "ifault_ka_min": 6.55, "ipk_ka": 11.98, "x_over_r_at_node": 1.60, "z_total_ohm": 0.03477, "tool_call_pending": true }
+    {
+      "node_id": "HV-1",
+      "parent_node_id": null,
+      "node_kind": "hv_source",
+      "designation": "11 kV KPLC primary",
+      "ifault_ka_max": 13.0,
+      "ifault_ka_min": 11.82,
+      "ipk_ka": 28.64,
+      "x_over_r_at_node": 5.0,
+      "z_total_ohm": 0.5374,
+      "tool_call_pending": true
+    },
+    {
+      "node_id": "TX-1",
+      "parent_node_id": "HV-1",
+      "node_kind": "transformer_secondary",
+      "designation": "500 kVA KPLC TX 415V TPN LV terminals",
+      "ifault_ka_max": 10.22,
+      "ifault_ka_min": 9.24,
+      "ipk_ka": 22.51,
+      "x_over_r_at_node": 5.0,
+      "z_total_ohm": 0.02463,
+      "tool_call_pending": true
+    },
+    {
+      "node_id": "MSP-100",
+      "parent_node_id": "TX-1",
+      "node_kind": "board_incoming",
+      "designation": "Main switch-panel 100A incoming",
+      "feeder": {
+        "length_m": 3,
+        "csa_mm2_or_awg": "70mm²",
+        "material": "copper",
+        "insulation": "xlpe_90"
+      },
+      "z_addition_ohm": {
+        "r": 0.00101,
+        "x": 0.00026
+      },
+      "ifault_ka_max": 9.8,
+      "ifault_ka_min": 8.87,
+      "ipk_ka": 20.76,
+      "x_over_r_at_node": 4.18,
+      "z_total_ohm": 0.02567,
+      "tool_call_pending": true
+    },
+    {
+      "node_id": "MSP-100.BUS",
+      "parent_node_id": "MSP-100",
+      "node_kind": "board_busbar",
+      "designation": "MSP-100 busbar 100A",
+      "ifault_ka_max": 9.78,
+      "ifault_ka_min": 8.85,
+      "ipk_ka": 20.66,
+      "x_over_r_at_node": 4.13,
+      "z_total_ohm": 0.02587,
+      "tool_call_pending": true
+    },
+    {
+      "node_id": "GH-DB",
+      "parent_node_id": "MSP-100.BUS",
+      "node_kind": "board_incoming",
+      "designation": "Glasshouse/workshop DB incoming",
+      "feeder": {
+        "length_m": 60,
+        "csa_mm2_or_awg": "95mm²",
+        "material": "copper",
+        "insulation": "xlpe_90"
+      },
+      "z_addition_ohm": {
+        "r": 0.01248,
+        "x": 0.00497
+      },
+      "ifault_ka_max": 7.24,
+      "ifault_ka_min": 6.55,
+      "ipk_ka": 11.98,
+      "x_over_r_at_node": 1.6,
+      "z_total_ohm": 0.03477,
+      "tool_call_pending": true
+    }
   ],
   "selectivity_implications": [
-    { "breaker_id": "MSP-MCCB-100A",   "breaker_rating_a": 100, "breaker_icn_ka": 25, "ifault_at_breaker_ka": 9.80, "adequate": true, "recommendation": "MCCB 100A Icu 25 kA — adequate against 9.80 kA at MSP-100 intake (2.6× margin). Verify Ics ≥ 75% Icu at full rating; KS 1700:2018 §434.5 (routes to BS 7671:2018+A2 §434.5.1 for short-circuit breaking capacity)." },
-    { "breaker_id": "GH-DB-MCCB-63A",  "breaker_rating_a": 63,  "breaker_icn_ka": 10, "ifault_at_breaker_ka": 7.24, "adequate": true, "recommendation": "MCCB 63A Icu 10 kA — adequate against 7.24 kA at GH-DB incoming (1.38× margin — marginal). Consider upgrading to Icu 15 kA for prudent design margin; cascade discrimination with upstream MSP MCCB verified by 60m × 95mm² submain impedance step (25.87 → 34.77 mΩ)." }
+    {
+      "breaker_id": "MSP-MCCB-100A",
+      "breaker_rating_a": 100,
+      "breaker_icn_ka": 25,
+      "ifault_at_breaker_ka": 9.8,
+      "adequate": true,
+      "recommendation": "MCCB 100A Icu 25 kA — adequate against 9.80 kA at MSP-100 intake (2.6× margin). Verify Ics ≥ 75% Icu at full rating; KS 1700:2018 §434.5 (routes to BS 7671:2018+A2 §434.5.1 for short-circuit breaking capacity)."
+    },
+    {
+      "breaker_id": "GH-DB-MCCB-63A",
+      "breaker_rating_a": 63,
+      "breaker_icn_ka": 10,
+      "ifault_at_breaker_ka": 7.24,
+      "adequate": true,
+      "recommendation": "MCCB 63A Icu 10 kA — adequate against 7.24 kA at GH-DB incoming (1.38× margin — marginal). Consider upgrading to Icu 15 kA for prudent design margin; cascade discrimination with upstream MSP MCCB verified by 60m × 95mm² submain impedance step (25.87 → 34.77 mΩ)."
+    }
   ],
   "compliance_summary": {
     "compliant": true,
@@ -53,8 +147,15 @@
       "tool_call_pending: true — calc.iec60909_cascade deterministic execution pending per shared runtime contract."
     ]
   },
-  "drawn_as_symbols": ["TRANSFORMER", "BREAKER", "BUSBAR", "EARTH_GENERAL"],
-  "flags": ["TOOL-CALL-PENDING:calc.iec60909_cascade"],
+  "drawn_as_symbols": [
+    "TRANSFORMER",
+    "BREAKER",
+    "BUSBAR",
+    "EARTH_GENERAL"
+  ],
+  "flags": [
+    "TOOL-CALL-PENDING:calc.iec60909_cascade"
+  ],
   "rationale": {
     "chat_summary": "KE Nairobi industrial workshop on KPLC TN-S 415V. 5-node cascade: 11kV → 500 kVA TX → MSP-100 (100A) → busbar → 60m × 95mm² submain → GH-DB. KPLC-declared 9.8 kA at MSP-100 binds the cascade per KS 1700:2018 §313.1. Ik\"max range 7.24–13.00 kA; HV-1 13.00 kA. Motor load 37 kW: ΣI_rM=71 A < §3.8.1 threshold 98 A — motor contribution EXCLUDED. MCCB 25 kA + 10 kA verified.",
     "sections": [
@@ -67,7 +168,11 @@
             "summary": "Utility transformer with no rotating generation on bus during fault; constant Thévenin source.",
             "rule": "IEC 60909-0:2016 §3.4 far-from-generator method",
             "code_clause": "IEC 60909-0:2016 §3.4",
-            "inputs": { "lv_source_type": "utility_transformer", "kva": 500, "z_percent": 4.75 }
+            "inputs": {
+              "lv_source_type": "utility_transformer",
+              "kva": 500,
+              "z_percent": 4.75
+            }
           }
         ]
       },
@@ -80,7 +185,10 @@
             "summary": "Author-supplied cascade matching the architectural drawing rather than inferred from a board-graph.",
             "rule": "Skill v1.1 — engineer_declared input mode",
             "code_clause": "fault-level/1.1.0 §cascade_topology_source",
-            "inputs": { "nodes": 5, "boards": 2 }
+            "inputs": {
+              "nodes": 5,
+              "boards": 2
+            }
           }
         ]
       },
@@ -93,7 +201,10 @@
             "summary": "Voltage factor selected for Un = 11 kV per IEC 60909-0:2016 Table 1.",
             "rule": "IEC 60909-0:2016 Table 1",
             "code_clause": "IEC 60909-0:2016 Table 1",
-            "inputs": { "c_max_hv": 1.10, "c_min_hv": 1.00 }
+            "inputs": {
+              "c_max_hv": 1.1,
+              "c_min_hv": 1.0
+            }
           }
         ]
       },
@@ -106,7 +217,10 @@
             "summary": "KS 1700:2018 §313.1 (routing to BS 7671:2018+A2 §313.1) requires using utility-declared values for design. The isolated TX calculation would yield ≈15.4 kA at LV terminals; the binding 9.8 kA at MSP-100 reflects the actual upstream network including HV feeder impedance, transformer impedance, and the 3m service cable.",
             "rule": "KS 1700:2018 §313.1 — Maximum prospective fault current to be ascertained (Annex E adopts BS 7671:2018+A2 §313.1 verbatim)",
             "code_clause": "KS 1700:2018 §313.1 (routes to BS 7671:2018+A2 §313.1)",
-            "inputs": { "kplc_pscc_ka": 9.8, "kplc_ze_ohm": 0.80 }
+            "inputs": {
+              "kplc_pscc_ka": 9.8,
+              "kplc_ze_ohm": 0.8
+            }
           }
         ]
       },
@@ -119,7 +233,13 @@
             "summary": "ΣI_rM = 71 A is below the 1% threshold (98 A). No asynchronous-motor sub-transient contribution added to sources[]. If workshop expands or adds large mechanical plant, re-run with updated motor inventory.",
             "rule": "IEC 60909-0:2016 §3.8.1 motor contribution threshold (ΣI_rM ≥ 1% × Ik\"_no_motors)",
             "code_clause": "IEC 60909-0:2016 §3.8.1",
-            "inputs": { "total_motor_kw": 37, "largest_motor_kw": 22, "sigma_I_rM_a": 71, "threshold_a": 98, "threshold_met": false }
+            "inputs": {
+              "total_motor_kw": 37,
+              "largest_motor_kw": 22,
+              "sigma_I_rM_a": 71,
+              "threshold_a": 98,
+              "threshold_met": false
+            }
           }
         ]
       },
@@ -132,14 +252,20 @@
             "summary": "Per IEC 60909-0:2016 Table 1 for low-voltage networks ≤ 1 kV.",
             "rule": "IEC 60909-0:2016 Table 1",
             "code_clause": "IEC 60909-0:2016 Table 1",
-            "inputs": { "c_max_lv": 1.05, "c_min_lv": 0.95 }
+            "inputs": {
+              "c_max_lv": 1.05,
+              "c_min_lv": 0.95
+            }
           },
           {
             "label": "tool_call_pending across cascade",
             "summary": "Per-node Ik\"max/Ik\"min/ipk values emitted as engineer estimates; deterministic recompute requires calc.iec60909_cascade tool execution.",
             "rule": "IEC 60909-0:2016 §4.2 cascade method",
             "code_clause": "IEC 60909-0:2016 §4.2",
-            "inputs": { "tool_call_pending": true, "tool": "calc.iec60909_cascade" }
+            "inputs": {
+              "tool_call_pending": true,
+              "tool": "calc.iec60909_cascade"
+            }
           }
         ]
       },
@@ -152,7 +278,11 @@
             "summary": "Device Icu ratings exceed applied prospective fault at each node; GH-DB headroom is marginal at 1.38× and flagged for upgrade.",
             "rule": "KS 1700:2018 §434.5 — Devices for fault current protection (routes to BS 7671:2018+A2 §434.5.1)",
             "code_clause": "KS 1700:2018 §434.5 (routes to BS 7671:2018+A2 §434.5.1)",
-            "inputs": { "msp_mccb_icu": 25, "gh_db_mccb_icu": 10, "gh_db_margin": 1.38 }
+            "inputs": {
+              "msp_mccb_icu": 25,
+              "gh_db_mccb_icu": 10,
+              "gh_db_margin": 1.38
+            }
           }
         ]
       },
@@ -165,10 +295,14 @@
             "summary": "Type 1/2 SPD recommended at MSP-100 origin for atmospheric-origin transient protection — Nairobi sits on the Rift escarpment with elevated keraunic level (40–80 thunder-days/year); KS 1700:2018 §443 routes to BS 7671:2018+A2 §443.4 verbatim.",
             "rule": "KS 1700:2018 §443.4 — Protection against transient overvoltages of atmospheric origin (routes to BS 7671:2018+A2 §443.4)",
             "code_clause": "KS 1700:2018 §443.4 (routes to BS 7671:2018+A2 §443.4)",
-            "inputs": { "occupancy": "industrial_workshop", "keraunic_zone": "AQ2_high" }
+            "inputs": {
+              "occupancy": "industrial_workshop",
+              "keraunic_zone": "AQ2_high"
+            }
           }
         ]
       }
     ]
-  }
+  },
+  "invariants": []
 }

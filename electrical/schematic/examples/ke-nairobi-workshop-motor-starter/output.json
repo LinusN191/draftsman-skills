@@ -325,22 +325,86 @@
     }
   ],
   "labels": [
-    {"anchor_item": "Q1", "text": "Q1 — Isolator 32A 3P", "kind": "device_tag"},
-    {"anchor_item": "K1", "text": "K1 — Main Contactor 32A AC-3", "kind": "device_tag"},
-    {"anchor_item": "K1-AUX", "text": "K1-13/14 — Auxiliary Hold NO", "kind": "device_tag"},
-    {"anchor_item": "F1", "text": "F1 — Overload Class 10, set 21A", "kind": "device_tag"},
-    {"anchor_item": "M1", "text": "M1 — 11 kW Grinder 415V 21A", "kind": "device_tag"},
-    {"anchor_item": "S1", "text": "S1 — START (green)", "kind": "device_tag"},
-    {"anchor_item": "S2", "text": "S2 — STOP (red mushroom)", "kind": "device_tag"},
-    {"anchor_item": "H1", "text": "H1 — RUN (green)", "kind": "device_tag"},
-    {"anchor_item": "X1", "text": "X1 — Power IN L1/L2/L3", "kind": "device_tag"},
-    {"anchor_item": "X2", "text": "X2 — Motor OUT U/V/W", "kind": "device_tag"},
-    {"anchor_item": "X3", "text": "X3 — Control L/N 230 VAC", "kind": "device_tag"},
-    {"anchor_item": "K1", "text": "A1 / A2", "kind": "terminal_number"},
-    {"anchor_item": "F1", "text": "95 / 96 (trip contact NC)", "kind": "terminal_number"},
-    {"anchor_item": "S1", "text": "13 / 14", "kind": "terminal_number"},
-    {"anchor_item": "S2", "text": "21 / 22", "kind": "terminal_number"},
-    {"anchor_item": "K1-AUX", "text": "K1 hold parallels S1 — release-safe once K1 picks", "kind": "sequence_note"}
+    {
+      "anchor_item": "Q1",
+      "text": "Q1 — Isolator 32A 3P",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K1",
+      "text": "K1 — Main Contactor 32A AC-3",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K1-AUX",
+      "text": "K1-13/14 — Auxiliary Hold NO",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "F1",
+      "text": "F1 — Overload Class 10, set 21A",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "M1",
+      "text": "M1 — 11 kW Grinder 415V 21A",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "S1",
+      "text": "S1 — START (green)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "S2",
+      "text": "S2 — STOP (red mushroom)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "H1",
+      "text": "H1 — RUN (green)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "X1",
+      "text": "X1 — Power IN L1/L2/L3",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "X2",
+      "text": "X2 — Motor OUT U/V/W",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "X3",
+      "text": "X3 — Control L/N 230 VAC",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K1",
+      "text": "A1 / A2",
+      "kind": "terminal_number"
+    },
+    {
+      "anchor_item": "F1",
+      "text": "95 / 96 (trip contact NC)",
+      "kind": "terminal_number"
+    },
+    {
+      "anchor_item": "S1",
+      "text": "13 / 14",
+      "kind": "terminal_number"
+    },
+    {
+      "anchor_item": "S2",
+      "text": "21 / 22",
+      "kind": "terminal_number"
+    },
+    {
+      "anchor_item": "K1-AUX",
+      "text": "K1 hold parallels S1 — release-safe once K1 picks",
+      "kind": "sequence_note"
+    }
   ],
   "sequence_of_operation": "START sequence: Operator presses S1 (momentary NO 13-14 closes) → control-supply L flows X3 → F1 95-96 (NC, closed because no trip) → S2 21-22 (NC, closed because not pressed) → S1 13-14 (closed) → K1 coil A1-A2 energises → K1 main poles 1/2 + 3/4 + 5/6 close → motor M1 receives 415 V 3-phase via F1 thermal element → motor accelerates from 147 A inrush down to 21 A FLA in ~4 s. K1-AUX 13-14 (mechanically linked NO) closes simultaneously and provides hold-in current bypassing S1, so K1 stays energised after S1 release. K1-AUX also energises H1 green RUN lamp via X3-N. STOP sequence: Operator presses S2 → S2 21-22 opens (NC break) → coil A1-A2 path interrupted → K1 drops out → main poles open → motor coasts to stop → K1-AUX 13-14 opens → H1 extinguishes. TRIP sequence: Motor thermal overload (sustained current > 24 A) heats F1 bimetal → F1 95-96 opens (NC break) → coil path interrupted → identical drop-out as STOP. Restart requires manual F1 reset before S1 will re-energise.",
   "compliance_summary": {
@@ -494,5 +558,6 @@
         ]
       }
     ]
-  }
+  },
+  "invariants": []
 }

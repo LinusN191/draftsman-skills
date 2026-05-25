@@ -128,72 +128,558 @@
     }
   ],
   "connections": [
-    {"wire_id": "W1", "from_item": "X1", "from_terminal": "L1", "to_item": "Q1", "to_terminal": "1", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Mains L1 to mains incomer breaker pole 1"},
-    {"wire_id": "W2", "from_item": "X1", "from_terminal": "L2", "to_item": "Q1", "to_terminal": "3", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Mains L2 to Q1 pole 2"},
-    {"wire_id": "W3", "from_item": "X1", "from_terminal": "L3", "to_item": "Q1", "to_terminal": "5", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Mains L3 to Q1 pole 3"},
-    {"wire_id": "W4", "from_item": "X1", "from_terminal": "N", "to_item": "Q1", "to_terminal": "7", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Mains N to Q1 pole 4 (4-pole switching)"},
-    {"wire_id": "W5", "from_item": "Q1", "from_terminal": "2", "to_item": "K1", "to_terminal": "1", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Mains-side breaker output L1 to mains contactor K1 pole 1"},
-    {"wire_id": "W6", "from_item": "Q1", "from_terminal": "4", "to_item": "K1", "to_terminal": "3", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Q1 pole 2 to K1 pole 2"},
-    {"wire_id": "W7", "from_item": "Q1", "from_terminal": "6", "to_item": "K1", "to_terminal": "5", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Q1 pole 3 to K1 pole 3"},
-    {"wire_id": "W8", "from_item": "Q1", "from_terminal": "8", "to_item": "K1", "to_terminal": "7", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Q1 N pole to K1 pole 4 (neutral)"},
-    {"wire_id": "W9", "from_item": "X2", "from_terminal": "L1", "to_item": "Q2", "to_terminal": "1", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Genset L1 to genset incomer breaker pole 1"},
-    {"wire_id": "W10", "from_item": "X2", "from_terminal": "L2", "to_item": "Q2", "to_terminal": "3", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Genset L2 to Q2 pole 2"},
-    {"wire_id": "W11", "from_item": "X2", "from_terminal": "L3", "to_item": "Q2", "to_terminal": "5", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Genset L3 to Q2 pole 3"},
-    {"wire_id": "W12", "from_item": "X2", "from_terminal": "N", "to_item": "Q2", "to_terminal": "7", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Genset N to Q2 pole 4 (segregated genset neutral — TN-S separation)"},
-    {"wire_id": "W13", "from_item": "Q2", "from_terminal": "2", "to_item": "K2", "to_terminal": "1", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Q2 output L1 to genset contactor K2 pole 1"},
-    {"wire_id": "W14", "from_item": "Q2", "from_terminal": "4", "to_item": "K2", "to_terminal": "3", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Q2 pole 2 to K2 pole 2"},
-    {"wire_id": "W15", "from_item": "Q2", "from_terminal": "6", "to_item": "K2", "to_terminal": "5", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Q2 pole 3 to K2 pole 3"},
-    {"wire_id": "W16", "from_item": "Q2", "from_terminal": "8", "to_item": "K2", "to_terminal": "7", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "Q2 N pole to K2 pole 4 (genset neutral switched separately)"},
-    {"wire_id": "W17", "from_item": "K1", "from_terminal": "2", "to_item": "X3", "to_terminal": "L1", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K1 output L1 to common outgoing bus to MSB"},
-    {"wire_id": "W18", "from_item": "K1", "from_terminal": "4", "to_item": "X3", "to_terminal": "L2", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K1 output L2 to common bus L2"},
-    {"wire_id": "W19", "from_item": "K1", "from_terminal": "6", "to_item": "X3", "to_terminal": "L3", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K1 output L3 to common bus L3"},
-    {"wire_id": "W20", "from_item": "K1", "from_terminal": "8", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K1 output N to common bus N"},
-    {"wire_id": "W21", "from_item": "K2", "from_terminal": "2", "to_item": "X3", "to_terminal": "L1", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K2 output L1 to common bus L1 (K1/K2 interlocked — never simultaneous)"},
-    {"wire_id": "W22", "from_item": "K2", "from_terminal": "4", "to_item": "X3", "to_terminal": "L2", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K2 output L2 to common bus L2"},
-    {"wire_id": "W23", "from_item": "K2", "from_terminal": "6", "to_item": "X3", "to_terminal": "L3", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K2 output L3 to common bus L3"},
-    {"wire_id": "W24", "from_item": "K2", "from_terminal": "8", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 240, "voltage_class": "power_LV", "function": "K2 output N to common bus N"},
-    {"wire_id": "W25", "from_item": "X1", "from_terminal": "L1", "to_item": "K3", "to_terminal": "L1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "Mains-fail UV relay K3 sense input L1"},
-    {"wire_id": "W26", "from_item": "X1", "from_terminal": "L2", "to_item": "K3", "to_terminal": "L2", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K3 sense input L2"},
-    {"wire_id": "W27", "from_item": "X1", "from_terminal": "L3", "to_item": "K3", "to_terminal": "L3", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K3 sense input L3"},
-    {"wire_id": "W28", "from_item": "X1", "from_terminal": "N", "to_item": "K3", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K3 sense neutral reference"},
-    {"wire_id": "W29", "from_item": "K3", "from_terminal": "11", "to_item": "KT1", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K3 mains-fail output (NC, opens on mains-OK) energises KT1 on-delay timer"},
-    {"wire_id": "W30", "from_item": "KT1", "from_terminal": "A2", "to_item": "X4", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "KT1 coil return to control N"},
-    {"wire_id": "W31", "from_item": "KT1", "from_terminal": "15", "to_item": "X4", "to_terminal": "GEN-START", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "KT1 output (after 0.5 s confirm) → 24 VDC genset start signal to genset controller"},
-    {"wire_id": "W32", "from_item": "KT1", "from_terminal": "15", "to_item": "KT2", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "KT1 output also energises KT2 (10 s warm-up timer)"},
-    {"wire_id": "W33", "from_item": "KT2", "from_terminal": "A2", "to_item": "X4", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "KT2 coil return to N"},
-    {"wire_id": "W34", "from_item": "KT2", "from_terminal": "15", "to_item": "K1", "to_terminal": "A2", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "KT2 timed-out output opens K1 mains-contactor coil break path"},
-    {"wire_id": "W35", "from_item": "KT2", "from_terminal": "18", "to_item": "K2", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "KT2 NO contact (after 10 s) energises K2 genset contactor"},
-    {"wire_id": "W36", "from_item": "K2", "from_terminal": "A2", "to_item": "X4", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K2 coil return to N"},
-    {"wire_id": "W37", "from_item": "K3", "from_terminal": "14", "to_item": "KT3", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K3 mains-OK output (NO, closes on mains restored) → KT3 retransfer hysteresis timer"},
-    {"wire_id": "W38", "from_item": "KT3", "from_terminal": "A2", "to_item": "X4", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "KT3 coil return to N"},
-    {"wire_id": "W39", "from_item": "KT3", "from_terminal": "15", "to_item": "K1", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "KT3 timed-out (60 s mains-stable) re-energises K1 mains contactor"},
-    {"wire_id": "W40", "from_item": "K1", "from_terminal": "A2", "to_item": "X4", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K1 coil return to N"},
-    {"wire_id": "W41", "from_item": "K1", "from_terminal": "13", "to_item": "H1", "to_terminal": "X1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_AC", "function": "K1 NO auxiliary 13-14 drives H1 MAINS ON green lamp"},
-    {"wire_id": "W42", "from_item": "H1", "from_terminal": "X2", "to_item": "X4", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "aux_AC", "function": "H1 lamp return to N"},
-    {"wire_id": "W43", "from_item": "K2", "from_terminal": "13", "to_item": "H2", "to_terminal": "X1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_AC", "function": "K2 NO auxiliary 13-14 drives H2 GENSET ON amber lamp"},
-    {"wire_id": "W44", "from_item": "H2", "from_terminal": "X2", "to_item": "X4", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "aux_AC", "function": "H2 lamp return to N"},
-    {"wire_id": "W45", "from_item": "S1", "from_terminal": "14", "to_item": "X4", "to_terminal": "GEN-START", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "S1 TEST push-button parallels KT1 start signal — manual genset exercise"},
-    {"wire_id": "W46", "from_item": "S2", "from_terminal": "14", "to_item": "H3", "to_terminal": "X2", "conductor_csa_mm2": 1.5, "voltage_class": "aux_AC", "function": "S2 RESET clears H3 FAULT lamp latch (fault contact wired upstream of S2)"}
+    {
+      "wire_id": "W1",
+      "from_item": "X1",
+      "from_terminal": "L1",
+      "to_item": "Q1",
+      "to_terminal": "1",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Mains L1 to mains incomer breaker pole 1"
+    },
+    {
+      "wire_id": "W2",
+      "from_item": "X1",
+      "from_terminal": "L2",
+      "to_item": "Q1",
+      "to_terminal": "3",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Mains L2 to Q1 pole 2"
+    },
+    {
+      "wire_id": "W3",
+      "from_item": "X1",
+      "from_terminal": "L3",
+      "to_item": "Q1",
+      "to_terminal": "5",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Mains L3 to Q1 pole 3"
+    },
+    {
+      "wire_id": "W4",
+      "from_item": "X1",
+      "from_terminal": "N",
+      "to_item": "Q1",
+      "to_terminal": "7",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Mains N to Q1 pole 4 (4-pole switching)"
+    },
+    {
+      "wire_id": "W5",
+      "from_item": "Q1",
+      "from_terminal": "2",
+      "to_item": "K1",
+      "to_terminal": "1",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Mains-side breaker output L1 to mains contactor K1 pole 1"
+    },
+    {
+      "wire_id": "W6",
+      "from_item": "Q1",
+      "from_terminal": "4",
+      "to_item": "K1",
+      "to_terminal": "3",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Q1 pole 2 to K1 pole 2"
+    },
+    {
+      "wire_id": "W7",
+      "from_item": "Q1",
+      "from_terminal": "6",
+      "to_item": "K1",
+      "to_terminal": "5",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Q1 pole 3 to K1 pole 3"
+    },
+    {
+      "wire_id": "W8",
+      "from_item": "Q1",
+      "from_terminal": "8",
+      "to_item": "K1",
+      "to_terminal": "7",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Q1 N pole to K1 pole 4 (neutral)"
+    },
+    {
+      "wire_id": "W9",
+      "from_item": "X2",
+      "from_terminal": "L1",
+      "to_item": "Q2",
+      "to_terminal": "1",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Genset L1 to genset incomer breaker pole 1"
+    },
+    {
+      "wire_id": "W10",
+      "from_item": "X2",
+      "from_terminal": "L2",
+      "to_item": "Q2",
+      "to_terminal": "3",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Genset L2 to Q2 pole 2"
+    },
+    {
+      "wire_id": "W11",
+      "from_item": "X2",
+      "from_terminal": "L3",
+      "to_item": "Q2",
+      "to_terminal": "5",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Genset L3 to Q2 pole 3"
+    },
+    {
+      "wire_id": "W12",
+      "from_item": "X2",
+      "from_terminal": "N",
+      "to_item": "Q2",
+      "to_terminal": "7",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Genset N to Q2 pole 4 (segregated genset neutral — TN-S separation)"
+    },
+    {
+      "wire_id": "W13",
+      "from_item": "Q2",
+      "from_terminal": "2",
+      "to_item": "K2",
+      "to_terminal": "1",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Q2 output L1 to genset contactor K2 pole 1"
+    },
+    {
+      "wire_id": "W14",
+      "from_item": "Q2",
+      "from_terminal": "4",
+      "to_item": "K2",
+      "to_terminal": "3",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Q2 pole 2 to K2 pole 2"
+    },
+    {
+      "wire_id": "W15",
+      "from_item": "Q2",
+      "from_terminal": "6",
+      "to_item": "K2",
+      "to_terminal": "5",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Q2 pole 3 to K2 pole 3"
+    },
+    {
+      "wire_id": "W16",
+      "from_item": "Q2",
+      "from_terminal": "8",
+      "to_item": "K2",
+      "to_terminal": "7",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "Q2 N pole to K2 pole 4 (genset neutral switched separately)"
+    },
+    {
+      "wire_id": "W17",
+      "from_item": "K1",
+      "from_terminal": "2",
+      "to_item": "X3",
+      "to_terminal": "L1",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "K1 output L1 to common outgoing bus to MSB"
+    },
+    {
+      "wire_id": "W18",
+      "from_item": "K1",
+      "from_terminal": "4",
+      "to_item": "X3",
+      "to_terminal": "L2",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "K1 output L2 to common bus L2"
+    },
+    {
+      "wire_id": "W19",
+      "from_item": "K1",
+      "from_terminal": "6",
+      "to_item": "X3",
+      "to_terminal": "L3",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "K1 output L3 to common bus L3"
+    },
+    {
+      "wire_id": "W20",
+      "from_item": "K1",
+      "from_terminal": "8",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "K1 output N to common bus N"
+    },
+    {
+      "wire_id": "W21",
+      "from_item": "K2",
+      "from_terminal": "2",
+      "to_item": "X3",
+      "to_terminal": "L1",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "K2 output L1 to common bus L1 (K1/K2 interlocked — never simultaneous)"
+    },
+    {
+      "wire_id": "W22",
+      "from_item": "K2",
+      "from_terminal": "4",
+      "to_item": "X3",
+      "to_terminal": "L2",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "K2 output L2 to common bus L2"
+    },
+    {
+      "wire_id": "W23",
+      "from_item": "K2",
+      "from_terminal": "6",
+      "to_item": "X3",
+      "to_terminal": "L3",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "K2 output L3 to common bus L3"
+    },
+    {
+      "wire_id": "W24",
+      "from_item": "K2",
+      "from_terminal": "8",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 240,
+      "voltage_class": "power_LV",
+      "function": "K2 output N to common bus N"
+    },
+    {
+      "wire_id": "W25",
+      "from_item": "X1",
+      "from_terminal": "L1",
+      "to_item": "K3",
+      "to_terminal": "L1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "Mains-fail UV relay K3 sense input L1"
+    },
+    {
+      "wire_id": "W26",
+      "from_item": "X1",
+      "from_terminal": "L2",
+      "to_item": "K3",
+      "to_terminal": "L2",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "K3 sense input L2"
+    },
+    {
+      "wire_id": "W27",
+      "from_item": "X1",
+      "from_terminal": "L3",
+      "to_item": "K3",
+      "to_terminal": "L3",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "K3 sense input L3"
+    },
+    {
+      "wire_id": "W28",
+      "from_item": "X1",
+      "from_terminal": "N",
+      "to_item": "K3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "K3 sense neutral reference"
+    },
+    {
+      "wire_id": "W29",
+      "from_item": "K3",
+      "from_terminal": "11",
+      "to_item": "KT1",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "K3 mains-fail output (NC, opens on mains-OK) energises KT1 on-delay timer"
+    },
+    {
+      "wire_id": "W30",
+      "from_item": "KT1",
+      "from_terminal": "A2",
+      "to_item": "X4",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "KT1 coil return to control N"
+    },
+    {
+      "wire_id": "W31",
+      "from_item": "KT1",
+      "from_terminal": "15",
+      "to_item": "X4",
+      "to_terminal": "GEN-START",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "KT1 output (after 0.5 s confirm) → 24 VDC genset start signal to genset controller"
+    },
+    {
+      "wire_id": "W32",
+      "from_item": "KT1",
+      "from_terminal": "15",
+      "to_item": "KT2",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "KT1 output also energises KT2 (10 s warm-up timer)"
+    },
+    {
+      "wire_id": "W33",
+      "from_item": "KT2",
+      "from_terminal": "A2",
+      "to_item": "X4",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "KT2 coil return to N"
+    },
+    {
+      "wire_id": "W34",
+      "from_item": "KT2",
+      "from_terminal": "15",
+      "to_item": "K1",
+      "to_terminal": "A2",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "KT2 timed-out output opens K1 mains-contactor coil break path"
+    },
+    {
+      "wire_id": "W35",
+      "from_item": "KT2",
+      "from_terminal": "18",
+      "to_item": "K2",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "KT2 NO contact (after 10 s) energises K2 genset contactor"
+    },
+    {
+      "wire_id": "W36",
+      "from_item": "K2",
+      "from_terminal": "A2",
+      "to_item": "X4",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "K2 coil return to N"
+    },
+    {
+      "wire_id": "W37",
+      "from_item": "K3",
+      "from_terminal": "14",
+      "to_item": "KT3",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "K3 mains-OK output (NO, closes on mains restored) → KT3 retransfer hysteresis timer"
+    },
+    {
+      "wire_id": "W38",
+      "from_item": "KT3",
+      "from_terminal": "A2",
+      "to_item": "X4",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "KT3 coil return to N"
+    },
+    {
+      "wire_id": "W39",
+      "from_item": "KT3",
+      "from_terminal": "15",
+      "to_item": "K1",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "KT3 timed-out (60 s mains-stable) re-energises K1 mains contactor"
+    },
+    {
+      "wire_id": "W40",
+      "from_item": "K1",
+      "from_terminal": "A2",
+      "to_item": "X4",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "K1 coil return to N"
+    },
+    {
+      "wire_id": "W41",
+      "from_item": "K1",
+      "from_terminal": "13",
+      "to_item": "H1",
+      "to_terminal": "X1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_AC",
+      "function": "K1 NO auxiliary 13-14 drives H1 MAINS ON green lamp"
+    },
+    {
+      "wire_id": "W42",
+      "from_item": "H1",
+      "from_terminal": "X2",
+      "to_item": "X4",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_AC",
+      "function": "H1 lamp return to N"
+    },
+    {
+      "wire_id": "W43",
+      "from_item": "K2",
+      "from_terminal": "13",
+      "to_item": "H2",
+      "to_terminal": "X1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_AC",
+      "function": "K2 NO auxiliary 13-14 drives H2 GENSET ON amber lamp"
+    },
+    {
+      "wire_id": "W44",
+      "from_item": "H2",
+      "from_terminal": "X2",
+      "to_item": "X4",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_AC",
+      "function": "H2 lamp return to N"
+    },
+    {
+      "wire_id": "W45",
+      "from_item": "S1",
+      "from_terminal": "14",
+      "to_item": "X4",
+      "to_terminal": "GEN-START",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "S1 TEST push-button parallels KT1 start signal — manual genset exercise"
+    },
+    {
+      "wire_id": "W46",
+      "from_item": "S2",
+      "from_terminal": "14",
+      "to_item": "H3",
+      "to_terminal": "X2",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_AC",
+      "function": "S2 RESET clears H3 FAULT lamp latch (fault contact wired upstream of S2)"
+    }
   ],
   "labels": [
-    {"anchor_item": "Q1", "text": "Q1 — 400A Mains ACB (52)", "kind": "device_tag"},
-    {"anchor_item": "Q2", "text": "Q2 — 400A Genset ACB (52)", "kind": "device_tag"},
-    {"anchor_item": "K1", "text": "K1 — 400A 4P Mains Contactor", "kind": "device_tag"},
-    {"anchor_item": "K2", "text": "K2 — 400A 4P Genset Contactor (interlocked with K1)", "kind": "device_tag"},
-    {"anchor_item": "K3", "text": "K3 — Mains-Fail UV Relay (ANSI 27)", "kind": "device_tag"},
-    {"anchor_item": "KT1", "text": "KT1 — 0.5s Confirm Delay (on-delay)", "kind": "device_tag"},
-    {"anchor_item": "KT2", "text": "KT2 — 10s Genset Warm-Up (on-delay)", "kind": "device_tag"},
-    {"anchor_item": "KT3", "text": "KT3 — 60s Retransfer Hysteresis (off-delay)", "kind": "device_tag"},
-    {"anchor_item": "S1", "text": "S1 — TEST (manual genset start)", "kind": "device_tag"},
-    {"anchor_item": "S2", "text": "S2 — RESET (clear latched fault)", "kind": "device_tag"},
-    {"anchor_item": "H1", "text": "H1 — MAINS ON (green)", "kind": "device_tag"},
-    {"anchor_item": "H2", "text": "H2 — GENSET ON (amber)", "kind": "device_tag"},
-    {"anchor_item": "H3", "text": "H3 — FAULT (red)", "kind": "device_tag"},
-    {"anchor_item": "K1", "text": "A1 / A2", "kind": "terminal_number"},
-    {"anchor_item": "K2", "text": "A1 / A2", "kind": "terminal_number"},
-    {"anchor_item": "K3", "text": "11/14 (mains-OK NO) / 11/12 (mains-fail NC)", "kind": "terminal_number"},
-    {"anchor_item": "K1", "text": "K1/K2 mechanical interlock — both contactors cannot close simultaneously", "kind": "sequence_note"},
-    {"anchor_item": "K2", "text": "Genset neutral switched separately from mains neutral (4-pole) — preserves TN-S separation between sources", "kind": "sequence_note"}
+    {
+      "anchor_item": "Q1",
+      "text": "Q1 — 400A Mains ACB (52)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "Q2",
+      "text": "Q2 — 400A Genset ACB (52)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K1",
+      "text": "K1 — 400A 4P Mains Contactor",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K2",
+      "text": "K2 — 400A 4P Genset Contactor (interlocked with K1)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K3",
+      "text": "K3 — Mains-Fail UV Relay (ANSI 27)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "KT1",
+      "text": "KT1 — 0.5s Confirm Delay (on-delay)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "KT2",
+      "text": "KT2 — 10s Genset Warm-Up (on-delay)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "KT3",
+      "text": "KT3 — 60s Retransfer Hysteresis (off-delay)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "S1",
+      "text": "S1 — TEST (manual genset start)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "S2",
+      "text": "S2 — RESET (clear latched fault)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "H1",
+      "text": "H1 — MAINS ON (green)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "H2",
+      "text": "H2 — GENSET ON (amber)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "H3",
+      "text": "H3 — FAULT (red)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K1",
+      "text": "A1 / A2",
+      "kind": "terminal_number"
+    },
+    {
+      "anchor_item": "K2",
+      "text": "A1 / A2",
+      "kind": "terminal_number"
+    },
+    {
+      "anchor_item": "K3",
+      "text": "11/14 (mains-OK NO) / 11/12 (mains-fail NC)",
+      "kind": "terminal_number"
+    },
+    {
+      "anchor_item": "K1",
+      "text": "K1/K2 mechanical interlock — both contactors cannot close simultaneously",
+      "kind": "sequence_note"
+    },
+    {
+      "anchor_item": "K2",
+      "text": "Genset neutral switched separately from mains neutral (4-pole) — preserves TN-S separation between sources",
+      "kind": "sequence_note"
+    }
   ],
   "sequence_of_operation": "STEADY-STATE MAINS-OK: K3 senses 3-phase mains via X1, internal contacts 11/12 open (no mains-fail) and 11/14 closed (mains-OK). K1 mains contactor energised (held by KT3 timed-out path), K2 genset contactor de-energised. MSB drinks from common bus X3 fed by K1. H1 MAINS ON green lit. MAINS-FAIL DETECT: any phase or all phases drop below K3 pickup (0.85×Un = 340 V). K3 11/12 closes, K3 11/14 opens, KT3 retransfer timer de-energises. KT1 on-delay (0.5 s) starts — short confirm window rejects momentary dips. CONFIRM + GENSET START: at t = 0.5 s KT1 times out → KT1 15 closes → 24 VDC GEN-START signal to genset controller via X4 → genset crank/run sequence begins. Simultaneously KT2 (10 s on-delay) starts, modelling the worst-case genset start-to-stable interval. TRANSFER: at t = 10.5 s KT2 times out → KT2 15 opens K1 coil path (K1 drops out) → mechanical interlock allows K2 to close → KT2 18 closes → K2 coil energises → K2 main poles close → load on common bus X3 now fed from genset. H1 extinguishes, H2 GENSET ON amber lit. Total dead-time on the bus: ~50 ms contactor mechanical time. MAINS-RESTORE DETECT: mains voltage returns, K3 11/14 closes, K3 11/12 opens → KT3 (60 s off-delay) starts. The 60 s window confirms mains is stable and not just briefly recovered. RETRANSFER: at t = mains-restore + 60 s KT3 times out → KT3 15 closes K1 coil path → K2 drops out (KT2 path no longer asserted, K2 coil released as KT2 18 also reverts when mains-fail clears) → mechanical interlock releases → K1 picks up → load back on mains. H2 extinguishes, H1 lit. GENSET COOL-DOWN: handled by genset controller's own cool-down timer (typically 5 minutes after off-load); not part of this changeover scheme. TEST MODE: S1 momentarily provides manual GEN-START signal (parallels KT1 output) for periodic exercise without simulating mains-fail. FAULT LATCH: any persistent genset failure (fail-to-start, low oil pressure, high coolant temp) latches H3 FAULT red via genset controller alarm contact; S2 RESET clears the latch.",
   "compliance_summary": {
@@ -343,5 +829,25 @@
         ]
       }
     ]
-  }
+  },
+  "invariants": [
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "schematic_type ↔ items consistency: schematic_type='control' is satisfied by the items[] population (ATS controller, sensing relays, indicating lamps, sequence interlocks) which align with the control-schematic item-type whitelist."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Connection topology valid: every connections[*].from_item_id and to_item_id resolves to an items[*].item_id (verified by id-set membership). No dangling endpoints. Sequence_of_operation references only items present in items[]."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Symbol resolution per BS EN 60617: every item carrying a symbol_ref maps to a documented symbol id in shared/symbols/bs-en-60617-symbols.json (graphic-12-04 'contactor', graphic-07-15 'timer', etc.)."
+    }
+  ]
 }

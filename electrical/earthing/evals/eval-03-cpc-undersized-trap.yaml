@@ -47,7 +47,7 @@ checks:
     description: Value must be one of bs7671_table_54.7/bs7671_adiabatic_54.1
     severity: critical
 
-  - assertion: 'ir.invariants.INV-4.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-04")].passes == true'
     description: CPC sizing method must match jurisdiction
     severity: critical
     matches_inv: INV-4

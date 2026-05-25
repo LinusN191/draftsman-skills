@@ -50,7 +50,7 @@ checks:
     description: Every cascade result must have a non-null selective_to_fault_ka verdict
     severity: warning
 
-  - assertion: 'ir.invariants.INV-9.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-09")].passes == true'
     description: Selectivity result completeness
     severity: critical
     matches_inv: INV-9

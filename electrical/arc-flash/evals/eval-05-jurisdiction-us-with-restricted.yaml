@@ -20,11 +20,11 @@ input:
 
 checks:
   # per_node[0] — MSB-RESTRICTED
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-RESTRICTED")].incident_energy_cal_per_cm2 > 40'
+  - assertion: 'ir.cascade[?(@.node_id=="MSB-RESTRICTED")].arc_flash.incident_energy_cal_per_cm2 > 40'
     description: MSB-RESTRICTED IE must be > 40 cal/cm² (high Ibf + slow OCPD)
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-RESTRICTED")].ppe_category == null'
+  - assertion: 'ir.cascade[?(@.node_id=="MSB-RESTRICTED")].arc_flash.ppe_category == null'
     description: MSB-RESTRICTED ppe_category is null (no Cat 5 in NFPA 70E)
     severity: critical
     standard_ref: NFPA 70E

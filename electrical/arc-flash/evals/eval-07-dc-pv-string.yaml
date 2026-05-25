@@ -28,44 +28,44 @@ input:
 
 checks:
   # per_node[0] — PV-INV-1 (AC side)
-  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1")].equipment_current_type == "ac"'
+  - assertion: 'ir.cascade[?(@.node_id=="PV-INV-1")].equipment.current_type == "ac"'
     description: PV-INV-1 retains AC current type (AC side of inverter)
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1")].method_applied matches "^(ieee_1584_2018|lee_1982)$"'
+  - assertion: 'ir.cascade[?(@.node_id=="PV-INV-1")].arc_flash.method_applied matches "^(ieee_1584_2018|lee_1982)$"'
     description: PV-INV-1 uses IEEE 1584:2018 or Lee 1982 fallback (AC method)
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1")].shock_approach_source contains "Table 130.4(C)(a)"'
+  - assertion: 'ir.cascade[?(@.node_id=="PV-INV-1")].shock_approach.source contains "Table 130.4(C)(a)"'
     description: PV-INV-1 shock_approach_source references AC Table 130.4(C)(a)
     severity: critical
     standard_ref: NFPA 70E Table 130.4(C)(a)
 
   # per_node[1] — PV-INV-1.DC-STR-1 (DC side)
-  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1.DC-STR-1")].equipment_current_type == "dc"'
+  - assertion: 'ir.cascade[?(@.node_id=="PV-INV-1.DC-STR-1")].equipment.current_type == "dc"'
     description: DC string current_type auto-inferred to dc from "PV combiner box" equipment_type
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1.DC-STR-1")].equipment_electrode_config == null'
+  - assertion: 'ir.cascade[?(@.node_id=="PV-INV-1.DC-STR-1")].equipment.electrode_config == null'
     description: DC string equipment_electrode_config must be null (DC has no electrode config)
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1.DC-STR-1")].method_applied == "doan_dc"'
+  - assertion: 'ir.cascade[?(@.node_id=="PV-INV-1.DC-STR-1")].arc_flash.method_applied == "doan_dc"'
     description: DC string method_applied = doan_dc (NOT IEEE 1584)
     severity: critical
     standard_ref: NFPA 70E Annex D
 
-  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1.DC-STR-1")].shock_approach_source contains "Table 130.4(C)(b)"'
+  - assertion: 'ir.cascade[?(@.node_id=="PV-INV-1.DC-STR-1")].shock_approach.source contains "Table 130.4(C)(b)"'
     description: DC string shock_approach_source references DC Table 130.4(C)(b)
     severity: critical
     standard_ref: NFPA 70E Table 130.4(C)(b)
 
-  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1.DC-STR-1")].shock_approach_source contains "301V to 1 kV"'
+  - assertion: 'ir.cascade[?(@.node_id=="PV-INV-1.DC-STR-1")].shock_approach.source contains "301V to 1 kV"'
     description: DC string shock_approach_source references voltage row "301V to 1 kV"
     severity: critical
 
   # pass_criteria coverage:
   # "Unified cascade tree with parent_node_id linking inverter to string"
-  - assertion: 'ir.nodes[?(@.node_id=="PV-INV-1.DC-STR-1")].parent_node_id == "PV-INV-1"'
+  - assertion: 'ir.cascade[?(@.node_id=="PV-INV-1.DC-STR-1")].parent_node_id == "PV-INV-1"'
     description: DC string parent_node_id resolves to PV-INV-1 (unified cascade tree)
     severity: critical

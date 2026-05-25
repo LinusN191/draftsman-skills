@@ -50,7 +50,7 @@ checks:
   - assertion: ir.controls.required contains "daylight"
     description: Daylight-linked dimming required in perimeter zone
 
-  - assertion: ir.flags contains "NON-COMPLIANCE"
+  - assertion: ir.calculation_summary.non_compliance_flags.length >= 1
     description: Chat-facing NON-COMPLIANCE flag must appear
 
 expected_flags:

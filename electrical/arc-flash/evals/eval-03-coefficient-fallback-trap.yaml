@@ -24,12 +24,12 @@ input:
 
 checks:
   # per_node[0] — PNL-A1
-  - assertion: 'ir.nodes[?(@.node_id=="PNL-A1")].method_applied == "lee_1982"'
+  - assertion: 'ir.cascade[?(@.node_id=="PNL-A1")].arc_flash.method_applied == "lee_1982"'
     description: PNL-A1 method_applied = lee_1982 (not pending — fallback chain worked)
     severity: critical
 
   # method_fallback_trail_length_min: 3
-  - assertion: 'ir.nodes[?(@.node_id=="PNL-A1")].method_fallback_trail.length >= 3'
+  - assertion: 'ir.cascade[?(@.node_id=="PNL-A1")].arc_flash.method_fallback_trail.length >= 3'
     description: PNL-A1 method_fallback_trail must have ≥3 entries (records IEEE 1584:2018 skip, IEEE 1584:2002 skip, Lee 1982 applied)
     severity: critical
 
@@ -37,33 +37,33 @@ checks:
   # TODO: Canonical grammar cannot express "array contains object with these field values".
   # Best-available: assert that the trail mentions each expected method as substring on the
   # serialised JSON path. Flagged as warning.
-  - assertion: 'ir.nodes[?(@.node_id=="PNL-A1")].method_fallback_trail contains "ieee_1584_2018"'
+  - assertion: 'ir.cascade[?(@.node_id=="PNL-A1")].arc_flash.method_fallback_trail contains "ieee_1584_2018"'
     description: PNL-A1 method_fallback_trail must include attempt of ieee_1584_2018 (object-membership check approximated as substring — canonical grammar lacks array-of-objects predicate; substring may also incidentally match a `method` field with the same value — pairing semantics not enforced)
     severity: warning
 
-  - assertion: 'ir.nodes[?(@.node_id=="PNL-A1")].method_fallback_trail contains "ieee_1584_2002"'
+  - assertion: 'ir.cascade[?(@.node_id=="PNL-A1")].arc_flash.method_fallback_trail contains "ieee_1584_2002"'
     description: PNL-A1 method_fallback_trail must include attempt of ieee_1584_2002 (object-membership check approximated as substring — canonical grammar lacks array-of-objects predicate; substring may also incidentally match a `method` field with the same value — pairing semantics not enforced)
     severity: warning
 
-  - assertion: 'ir.nodes[?(@.node_id=="PNL-A1")].method_fallback_trail contains "lee_1982"'
+  - assertion: 'ir.cascade[?(@.node_id=="PNL-A1")].arc_flash.method_fallback_trail contains "lee_1982"'
     description: PNL-A1 method_fallback_trail must include lee_1982 as applied method
     severity: warning
 
-  - assertion: 'ir.nodes[?(@.node_id=="PNL-A1")].method_fallback_trail contains "skipped"'
+  - assertion: 'ir.cascade[?(@.node_id=="PNL-A1")].arc_flash.method_fallback_trail contains "skipped"'
     description: PNL-A1 method_fallback_trail must include "skipped" result for at least one attempt
     severity: warning
 
-  - assertion: 'ir.nodes[?(@.node_id=="PNL-A1")].method_fallback_trail contains "applied"'
+  - assertion: 'ir.cascade[?(@.node_id=="PNL-A1")].arc_flash.method_fallback_trail contains "applied"'
     description: PNL-A1 method_fallback_trail must include "applied" result for the final attempt
     severity: warning
 
   # incident_energy_cal_per_cm2_gt: 1.0
-  - assertion: 'ir.nodes[?(@.node_id=="PNL-A1")].incident_energy_cal_per_cm2 > 1.0'
+  - assertion: 'ir.cascade[?(@.node_id=="PNL-A1")].arc_flash.incident_energy_cal_per_cm2 > 1.0'
     description: PNL-A1 IE must be > 1.0 cal/cm² (Lee 1982 produces conservative upper bound)
     severity: critical
 
   # arc_flash_boundary_mm_gt: 455
-  - assertion: 'ir.nodes[?(@.node_id=="PNL-A1")].arc_flash_boundary_mm > 455'
+  - assertion: 'ir.cascade[?(@.node_id=="PNL-A1")].arc_flash.arc_flash_boundary_mm > 455'
     description: PNL-A1 arc_flash_boundary_mm must be > 455 mm (Lee 1982 conservative)
     severity: critical
 

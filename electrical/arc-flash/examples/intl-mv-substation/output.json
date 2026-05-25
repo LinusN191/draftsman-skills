@@ -6,12 +6,24 @@
     "skill_version": "arc-flash/1.0.0",
     "produced_at": "2026-05-17T12:00:00Z",
     "consumed_intents": [
-      {"intent_type": "fault-level", "intent_version": "1.0.0", "produced_by": "electrical/fault-level/1.0.0"},
-      {"intent_type": "db-layout-rollup", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/1.0.0"}
+      {
+        "intent_type": "fault-level",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/fault-level/1.0.0"
+      },
+      {
+        "intent_type": "db-layout-rollup",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/1.0.0"
+      }
     ]
   },
   "jurisdiction": "INT",
-  "project_supply": { "voltage_v": 11000, "phases": "three", "frequency_hz": 50 },
+  "project_supply": {
+    "voltage_v": 11000,
+    "phases": "three",
+    "frequency_hz": 50
+  },
   "cascade": [
     {
       "node_id": "MV-SWB",
@@ -26,15 +38,39 @@
         "electrode_config": "HCB",
         "electrode_config_source": "auto_inferred_from_equipment_type"
       },
-      "fault_inputs": { "ibf_ka_max": 12, "ibf_ka_min": 11, "x_over_r": 15, "z_total_ohm": 0.92 },
-      "ocpd_inputs": { "ocpd_type": "ACB_with_intentional_delay", "t_clear_s": 0.5, "t_clear_source": "engineer_declared" },
-      "geometry": { "working_distance_mm": 910, "gap_distance_mm": 76 },
+      "fault_inputs": {
+        "ibf_ka_max": 12,
+        "ibf_ka_min": 11,
+        "x_over_r": 15,
+        "z_total_ohm": 0.92
+      },
+      "ocpd_inputs": {
+        "ocpd_type": "ACB_with_intentional_delay",
+        "t_clear_s": 0.5,
+        "t_clear_source": "engineer_declared"
+      },
+      "geometry": {
+        "working_distance_mm": 910,
+        "gap_distance_mm": 76
+      },
       "arc_flash": {
         "method_applied": "lee_1982",
         "method_fallback_trail": [
-          {"method": "ieee_1584_2018", "result": "skipped", "reason": "coefficients pending-verification for HCB 14300V (k1-k7 null)"},
-          {"method": "ieee_1584_2002", "result": "skipped", "reason": "Doughty/Neal coefficients pending-verification for MV"},
-          {"method": "lee_1982", "result": "applied", "reason": "theoretical formula always available; V_nom 11kV within 50-15000V range"}
+          {
+            "method": "ieee_1584_2018",
+            "result": "skipped",
+            "reason": "coefficients pending-verification for HCB 14300V (k1-k7 null)"
+          },
+          {
+            "method": "ieee_1584_2002",
+            "result": "skipped",
+            "reason": "Doughty/Neal coefficients pending-verification for MV"
+          },
+          {
+            "method": "lee_1982",
+            "result": "applied",
+            "reason": "theoretical formula always available; V_nom 11kV within 50-15000V range"
+          }
         ],
         "arcing_current_a": 11200,
         "incident_energy_cal_per_cm2": 14.0,
@@ -74,15 +110,39 @@
         "electrode_config": "VCB",
         "electrode_config_source": "auto_inferred_from_equipment_type"
       },
-      "fault_inputs": { "ibf_ka_max": 35, "ibf_ka_min": 32, "x_over_r": 8, "z_total_ohm": 0.0088 },
-      "ocpd_inputs": { "ocpd_type": "ACB_electronic", "t_clear_s": 0.3, "t_clear_source": "engineer_declared" },
-      "geometry": { "working_distance_mm": 455, "gap_distance_mm": 32 },
+      "fault_inputs": {
+        "ibf_ka_max": 35,
+        "ibf_ka_min": 32,
+        "x_over_r": 8,
+        "z_total_ohm": 0.0088
+      },
+      "ocpd_inputs": {
+        "ocpd_type": "ACB_electronic",
+        "t_clear_s": 0.3,
+        "t_clear_source": "engineer_declared"
+      },
+      "geometry": {
+        "working_distance_mm": 455,
+        "gap_distance_mm": 32
+      },
       "arc_flash": {
         "method_applied": "lee_1982",
         "method_fallback_trail": [
-          {"method": "ieee_1584_2018", "result": "skipped", "reason": "coefficients pending-verification for VCB 600V"},
-          {"method": "ieee_1584_2002", "result": "skipped", "reason": "Doughty/Neal coefficients pending-verification"},
-          {"method": "lee_1982", "result": "applied", "reason": "theoretical formula always available"}
+          {
+            "method": "ieee_1584_2018",
+            "result": "skipped",
+            "reason": "coefficients pending-verification for VCB 600V"
+          },
+          {
+            "method": "ieee_1584_2002",
+            "result": "skipped",
+            "reason": "Doughty/Neal coefficients pending-verification"
+          },
+          {
+            "method": "lee_1982",
+            "result": "applied",
+            "reason": "theoretical formula always available"
+          }
         ],
         "arcing_current_a": 31500,
         "incident_energy_cal_per_cm2": 8.5,
@@ -113,7 +173,11 @@
   "compliance_summary": {
     "compliant": true,
     "non_compliance_flags": [
-      { "code": "LEE_1982_FALLBACK_USED", "message": "Both cascade nodes fell back to Lee 1982 (conservative upper bound). IEEE 1584:2018 coefficients for HCB 14300V and VCB 600V pending transcription from Phase A standards layer.", "severity": "info" }
+      {
+        "code": "LEE_1982_FALLBACK_USED",
+        "message": "Both cascade nodes fell back to Lee 1982 (conservative upper bound). IEEE 1584:2018 coefficients for HCB 14300V and VCB 600V pending transcription from Phase A standards layer.",
+        "severity": "info"
+      }
     ],
     "assumptions": [
       "fault-level intent consumed; per-node Ibf + X/R from it",
@@ -124,26 +188,105 @@
       "tool_call_pending: true on both nodes — runtime calc tool awaits DraftsMan runtime ship"
     ]
   },
-  "flags": ["TOOL-CALL-PENDING", "LEE_1982_FALLBACK_USED", "VOLTAGE_CLASS_CROSSING"],
+  "flags": [
+    "TOOL-CALL-PENDING",
+    "LEE_1982_FALLBACK_USED",
+    "VOLTAGE_CLASS_CROSSING"
+  ],
   "rationale": {
     "chat_summary": "INT industrial 11kV/400V MV→LV cascade via transformer. MV node HCB auto-inferred, LV node VCB. Both Lee 1982 fallback (IEEE 1584 coefficients pending). MV IE ≈ 14 cal/cm² → Cat 3 / AFB 2200mm. LV IE ≈ 8.5 → Cat 3 / AFB 1300mm. Shock-approach: MV uses Table 130.4(C)(a) 751V-15kV row; LV uses 151V-750V row. tool_call_pending both nodes.",
     "sections": [
-      { "title": "Input Ingestion", "summary": "Consumed fault-level + db-layout-rollup intents; per-node Ibf, X/R, equipment_type, ocpd_type, t_clear extracted.", "decisions": [] },
-      { "title": "Cascade Topology", "summary": "2-node cascade with voltage-class crossing: 11kV service_entrance → 400V feeder via TX-mediated step-down. Both AC. Parent-child tree: MV-SWB → MV-SWB.TX-1.LV-MSB.", "decisions": [] },
-      { "title": "Jurisdictional Framing", "summary": "INT — IEEE 1584:2018 de facto standard. Labels recommended as engineering best practice (not statutory like US OSHA).", "decisions": [{ "label": "INT jurisdiction applied", "summary": "IEEE 1584:2018 baseline + NFPA 70E for shock-approach reference", "rule": "IEEE 1584:2018 + NFPA 70E:2024", "code_clause": "IEEE 1584:2018 §§6-10" }] },
-      { "title": "Electrode Configuration Auto-Inference", "summary": "MV-SWB 'drawout switchgear' → HCB (horizontal-center-bank configuration for drawout breakers). LV-MSB 'LV switchgear' → VCB (vertical-center-bank, standard for LV). Both auto-inferred from equipment_type; no override needed.", "decisions": [
-        { "label": "MV drawout → HCB", "summary": "Drawout breaker = horizontal disconnecting mechanism", "rule": "IEEE 1584:2018 §4.1.2", "code_clause": "IEEE 1584:2018 Fig. A.1 — HCB illustrated" },
-        { "label": "LV switchgear → VCB", "summary": "Standard LV panel = vertical configuration", "rule": "IEEE 1584:2018 §4.1.2", "code_clause": "IEEE 1584:2018 Table 4 VCB 600V" }
-      ] },
-      { "title": "Method Selection + Fallback Chain", "summary": "Both nodes attempted IEEE 1584:2018 → skipped (coefficients pending for HCB 14300V and VCB 600V). IEEE 1584:2002 skipped (also pending). Lee 1982 applied as always-available conservative baseline. LEE_1982_FALLBACK_USED info-severity flag emitted.", "decisions": [
-        { "label": "Lee 1982 fallback both nodes", "summary": "IEEE 1584:2018 + 2002 coefficients null. Lee theoretical (conservative 2-5× upper bound) applied.", "rule": "rules/method-fallback-chain.yaml", "code_clause": "Lee 1982 (cited IEEE 1584:2018 §2)" }
-      ] },
-      { "title": "Per-Node Arc-Flash Results + Voltage-Class Crossing", "summary": "MV-SWB: 11kV HCB → IE 14 cal/cm² (Cat 3) / AFB 2200mm / Table 130.4(C)(a) 751V-15kV shock row. LV-MSB: 400V VCB → IE 8.5 cal/cm² (Cat 3) / AFB 1300mm / Table 130.4(C)(a) 151V-750V shock row. Voltage crossing creates two distinct shock-approach regimes.", "decisions": [
-        { "label": "MV node Cat 3", "summary": "IE 14 cal/cm² in 8-25 range", "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "code_clause": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "inputs": { "ie": 14.0, "category": 3, "voltage_v": 11000 } },
-        { "label": "LV node Cat 3", "summary": "IE 8.5 cal/cm² in 8-25 range", "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "code_clause": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "inputs": { "ie": 8.5, "category": 3, "voltage_v": 400 } }
-      ] },
-      { "title": "Label Recommendations", "summary": "Both nodes label_recommended: true. INT context: IEEE 1584 best practice for industrial substations. Labels would be mandatory by NFPA 70E §130.5(H) if installed in US; recommended as leading practice for INT.", "decisions": [] },
-      { "title": "Compliance + Tool-call Status", "summary": "Compliant. VOLTAGE_CLASS_CROSSING flag emitted (informational). tool_call_pending on both nodes. When IEEE 1584:2018 coefficients transcribed, method auto-promotes and IE values become realistic empirical estimates.", "decisions": [] }
+      {
+        "title": "Input Ingestion",
+        "summary": "Consumed fault-level + db-layout-rollup intents; per-node Ibf, X/R, equipment_type, ocpd_type, t_clear extracted.",
+        "decisions": []
+      },
+      {
+        "title": "Cascade Topology",
+        "summary": "2-node cascade with voltage-class crossing: 11kV service_entrance → 400V feeder via TX-mediated step-down. Both AC. Parent-child tree: MV-SWB → MV-SWB.TX-1.LV-MSB.",
+        "decisions": []
+      },
+      {
+        "title": "Jurisdictional Framing",
+        "summary": "INT — IEEE 1584:2018 de facto standard. Labels recommended as engineering best practice (not statutory like US OSHA).",
+        "decisions": [
+          {
+            "label": "INT jurisdiction applied",
+            "summary": "IEEE 1584:2018 baseline + NFPA 70E for shock-approach reference",
+            "rule": "IEEE 1584:2018 + NFPA 70E:2024",
+            "code_clause": "IEEE 1584:2018 §§6-10"
+          }
+        ]
+      },
+      {
+        "title": "Electrode Configuration Auto-Inference",
+        "summary": "MV-SWB 'drawout switchgear' → HCB (horizontal-center-bank configuration for drawout breakers). LV-MSB 'LV switchgear' → VCB (vertical-center-bank, standard for LV). Both auto-inferred from equipment_type; no override needed.",
+        "decisions": [
+          {
+            "label": "MV drawout → HCB",
+            "summary": "Drawout breaker = horizontal disconnecting mechanism",
+            "rule": "IEEE 1584:2018 §4.1.2",
+            "code_clause": "IEEE 1584:2018 Fig. A.1 — HCB illustrated"
+          },
+          {
+            "label": "LV switchgear → VCB",
+            "summary": "Standard LV panel = vertical configuration",
+            "rule": "IEEE 1584:2018 §4.1.2",
+            "code_clause": "IEEE 1584:2018 Table 4 VCB 600V"
+          }
+        ]
+      },
+      {
+        "title": "Method Selection + Fallback Chain",
+        "summary": "Both nodes attempted IEEE 1584:2018 → skipped (coefficients pending for HCB 14300V and VCB 600V). IEEE 1584:2002 skipped (also pending). Lee 1982 applied as always-available conservative baseline. LEE_1982_FALLBACK_USED info-severity flag emitted.",
+        "decisions": [
+          {
+            "label": "Lee 1982 fallback both nodes",
+            "summary": "IEEE 1584:2018 + 2002 coefficients null. Lee theoretical (conservative 2-5× upper bound) applied.",
+            "rule": "rules/method-fallback-chain.yaml",
+            "code_clause": "Lee 1982 (cited IEEE 1584:2018 §2)"
+          }
+        ]
+      },
+      {
+        "title": "Per-Node Arc-Flash Results + Voltage-Class Crossing",
+        "summary": "MV-SWB: 11kV HCB → IE 14 cal/cm² (Cat 3) / AFB 2200mm / Table 130.4(C)(a) 751V-15kV shock row. LV-MSB: 400V VCB → IE 8.5 cal/cm² (Cat 3) / AFB 1300mm / Table 130.4(C)(a) 151V-750V shock row. Voltage crossing creates two distinct shock-approach regimes.",
+        "decisions": [
+          {
+            "label": "MV node Cat 3",
+            "summary": "IE 14 cal/cm² in 8-25 range",
+            "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)",
+            "code_clause": "NFPA 70E:2024 Table 130.7(C)(15)(c)",
+            "inputs": {
+              "ie": 14.0,
+              "category": 3,
+              "voltage_v": 11000
+            }
+          },
+          {
+            "label": "LV node Cat 3",
+            "summary": "IE 8.5 cal/cm² in 8-25 range",
+            "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)",
+            "code_clause": "NFPA 70E:2024 Table 130.7(C)(15)(c)",
+            "inputs": {
+              "ie": 8.5,
+              "category": 3,
+              "voltage_v": 400
+            }
+          }
+        ]
+      },
+      {
+        "title": "Label Recommendations",
+        "summary": "Both nodes label_recommended: true. INT context: IEEE 1584 best practice for industrial substations. Labels would be mandatory by NFPA 70E §130.5(H) if installed in US; recommended as leading practice for INT.",
+        "decisions": []
+      },
+      {
+        "title": "Compliance + Tool-call Status",
+        "summary": "Compliant. VOLTAGE_CLASS_CROSSING flag emitted (informational). tool_call_pending on both nodes. When IEEE 1584:2018 coefficients transcribed, method auto-promotes and IE values become realistic empirical estimates.",
+        "decisions": []
+      }
     ]
-  }
+  },
+  "invariants": []
 }

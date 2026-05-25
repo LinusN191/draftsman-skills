@@ -132,74 +132,583 @@
     }
   ],
   "connections": [
-    {"wire_id": "W1", "from_item": "X1", "from_terminal": "L1", "to_item": "Q1", "to_terminal": "1", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "Incoming L1 to disconnect switch pole 1"},
-    {"wire_id": "W2", "from_item": "X1", "from_terminal": "L2", "to_item": "Q1", "to_terminal": "3", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "Incoming L2 to Q1 pole 2"},
-    {"wire_id": "W3", "from_item": "X1", "from_terminal": "L3", "to_item": "Q1", "to_terminal": "5", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "Incoming L3 to Q1 pole 3"},
-    {"wire_id": "W4", "from_item": "Q1", "from_terminal": "2", "to_item": "K1", "to_terminal": "1", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "Disconnected L1 to MAIN contactor K1 pole 1"},
-    {"wire_id": "W5", "from_item": "Q1", "from_terminal": "4", "to_item": "K1", "to_terminal": "3", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "Q1 to K1 pole 2"},
-    {"wire_id": "W6", "from_item": "Q1", "from_terminal": "6", "to_item": "K1", "to_terminal": "5", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "Q1 to K1 pole 3"},
-    {"wire_id": "W7", "from_item": "K1", "from_terminal": "2", "to_item": "F1", "to_terminal": "1", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "K1 output L1 to overload F1 phase L1"},
-    {"wire_id": "W8", "from_item": "K1", "from_terminal": "4", "to_item": "F1", "to_terminal": "3", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "K1 L2 to F1 phase L2"},
-    {"wire_id": "W9", "from_item": "K1", "from_terminal": "6", "to_item": "F1", "to_terminal": "5", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "K1 L3 to F1 phase L3"},
-    {"wire_id": "W10", "from_item": "F1", "from_terminal": "2", "to_item": "X2", "to_terminal": "U1", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "F1 output L1 → motor lead U1 (winding 1 start end)"},
-    {"wire_id": "W11", "from_item": "F1", "from_terminal": "4", "to_item": "X2", "to_terminal": "V1", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "F1 output L2 → motor lead V1"},
-    {"wire_id": "W12", "from_item": "F1", "from_terminal": "6", "to_item": "X2", "to_terminal": "W1", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "F1 output L3 → motor lead W1"},
-    {"wire_id": "W13", "from_item": "K2", "from_terminal": "2", "to_item": "X2", "to_terminal": "U2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "STAR contactor K2 output → motor lead U2 (winding 1 finish end) — K2 closes wye-point during start"},
-    {"wire_id": "W14", "from_item": "K2", "from_terminal": "4", "to_item": "X2", "to_terminal": "V2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "K2 → motor lead V2"},
-    {"wire_id": "W15", "from_item": "K2", "from_terminal": "6", "to_item": "X2", "to_terminal": "W2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "K2 → motor lead W2 (forms wye point at K2 common when K2 closes)"},
-    {"wire_id": "W16", "from_item": "K2", "from_terminal": "1", "to_item": "K2", "to_terminal": "3", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "K2 internal star-point bond pole 1 to pole 2 (wye-point common)"},
-    {"wire_id": "W17", "from_item": "K2", "from_terminal": "3", "to_item": "K2", "to_terminal": "5", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "K2 internal star-point bond pole 2 to pole 3"},
-    {"wire_id": "W18", "from_item": "K3", "from_terminal": "2", "to_item": "X2", "to_terminal": "U2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "DELTA contactor K3 output → motor lead U2 (parallel with K2 lead U2)"},
-    {"wire_id": "W19", "from_item": "K3", "from_terminal": "4", "to_item": "X2", "to_terminal": "V2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "K3 → motor lead V2"},
-    {"wire_id": "W20", "from_item": "K3", "from_terminal": "6", "to_item": "X2", "to_terminal": "W2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "K3 → motor lead W2"},
-    {"wire_id": "W21", "from_item": "K1", "from_terminal": "2", "to_item": "K3", "to_terminal": "1", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "K1 L1 cross-tied to K3 input pole 1 (delta closure: L1→U2 path)"},
-    {"wire_id": "W22", "from_item": "K1", "from_terminal": "4", "to_item": "K3", "to_terminal": "3", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "K1 L2 cross-tied to K3 input pole 2 (delta closure: L2→V2)"},
-    {"wire_id": "W23", "from_item": "K1", "from_terminal": "6", "to_item": "K3", "to_terminal": "5", "conductor_csa_mm2": 13, "voltage_class": "power_LV", "function": "K1 L3 cross-tied to K3 input pole 3 (delta closure: L3→W2)"},
-    {"wire_id": "W24", "from_item": "X2", "from_terminal": "U1", "to_item": "M1", "to_terminal": "U1", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "Motor lead U1 to motor terminal U1"},
-    {"wire_id": "W25", "from_item": "X2", "from_terminal": "V1", "to_item": "M1", "to_terminal": "V1", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "Motor lead V1 to motor terminal V1"},
-    {"wire_id": "W26", "from_item": "X2", "from_terminal": "W1", "to_item": "M1", "to_terminal": "W1", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "Motor lead W1 to motor terminal W1"},
-    {"wire_id": "W27", "from_item": "X2", "from_terminal": "U2", "to_item": "M1", "to_terminal": "U2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "Motor lead U2 to motor terminal U2"},
-    {"wire_id": "W28", "from_item": "X2", "from_terminal": "V2", "to_item": "M1", "to_terminal": "V2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "Motor lead V2 to motor terminal V2"},
-    {"wire_id": "W29", "from_item": "X2", "from_terminal": "W2", "to_item": "M1", "to_terminal": "W2", "conductor_csa_mm2": 5.3, "voltage_class": "power_LV", "function": "Motor lead W2 to motor terminal W2"},
-    {"wire_id": "W30", "from_item": "X3", "from_terminal": "L", "to_item": "F1", "to_terminal": "95", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "Control L 120 VAC to F1 trip NC 95"},
-    {"wire_id": "W31", "from_item": "F1", "from_terminal": "96", "to_item": "S2", "to_terminal": "21", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "F1 96 to STOP NC 21"},
-    {"wire_id": "W32", "from_item": "S2", "from_terminal": "22", "to_item": "S1", "to_terminal": "13", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "STOP 22 to START NO 13"},
-    {"wire_id": "W33", "from_item": "S1", "from_terminal": "14", "to_item": "K1", "to_terminal": "A1", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "START 14 to K1 main coil A1"},
-    {"wire_id": "W34", "from_item": "K1", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K1 coil A2 to N"},
-    {"wire_id": "W35", "from_item": "S2", "from_terminal": "22", "to_item": "K1-AUX", "to_terminal": "13", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "STOP 22 to K1-AUX 13 (hold-in branch)"},
-    {"wire_id": "W36", "from_item": "K1-AUX", "from_terminal": "14", "to_item": "K1", "to_terminal": "A1", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K1-AUX 14 holds K1 coil after S1 release"},
-    {"wire_id": "W37", "from_item": "K1-AUX", "from_terminal": "14", "to_item": "K3-NC-K2", "to_terminal": "21", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K1 main proven → K3 cross-interlock NC 21 (K3 not picked, so closed)"},
-    {"wire_id": "W38", "from_item": "K3-NC-K2", "from_terminal": "22", "to_item": "K2", "to_terminal": "A1", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K3-NC-K2 22 to STAR contactor K2 coil A1 (energise wye)"},
-    {"wire_id": "W39", "from_item": "K2", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K2 coil return to N"},
-    {"wire_id": "W40", "from_item": "K1-AUX", "from_terminal": "14", "to_item": "KT1", "to_terminal": "A1", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K1 main proven → KT1 7s transition timer energised"},
-    {"wire_id": "W41", "from_item": "KT1", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "KT1 coil return to N"},
-    {"wire_id": "W42", "from_item": "KT1", "from_terminal": "15", "to_item": "K2", "to_terminal": "A2", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "KT1 timed-out NC opens K2 coil-break path → K2 drops out at t = 7 s"},
-    {"wire_id": "W43", "from_item": "KT1", "from_terminal": "18", "to_item": "K2-NC-K3", "to_terminal": "21", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "KT1 timed-out NO → K2-NC-K3 cross-interlock NC 21 (K2 dropped, so K2-NC-K3 has closed back NC)"},
-    {"wire_id": "W44", "from_item": "K2-NC-K3", "from_terminal": "22", "to_item": "K3", "to_terminal": "A1", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K2-NC-K3 22 to DELTA contactor K3 coil A1 — energise delta"},
-    {"wire_id": "W45", "from_item": "K3", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 2, "voltage_class": "control_LV", "function": "K3 coil return to N"},
-    {"wire_id": "W46", "from_item": "K2", "from_terminal": "13", "to_item": "H2", "to_terminal": "X1", "conductor_csa_mm2": 2, "voltage_class": "aux_AC", "function": "K2 NO aux 13-14 drives H2 STARTING amber lamp"},
-    {"wire_id": "W47", "from_item": "H2", "from_terminal": "X2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 2, "voltage_class": "aux_AC", "function": "H2 return to N"},
-    {"wire_id": "W48", "from_item": "K3", "from_terminal": "13", "to_item": "H1", "to_terminal": "X1", "conductor_csa_mm2": 2, "voltage_class": "aux_AC", "function": "K3 NO aux 13-14 drives H1 RUN green lamp"},
-    {"wire_id": "W49", "from_item": "H1", "from_terminal": "X2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 2, "voltage_class": "aux_AC", "function": "H1 return to N"}
+    {
+      "wire_id": "W1",
+      "from_item": "X1",
+      "from_terminal": "L1",
+      "to_item": "Q1",
+      "to_terminal": "1",
+      "conductor_csa_mm2": 13,
+      "voltage_class": "power_LV",
+      "function": "Incoming L1 to disconnect switch pole 1"
+    },
+    {
+      "wire_id": "W2",
+      "from_item": "X1",
+      "from_terminal": "L2",
+      "to_item": "Q1",
+      "to_terminal": "3",
+      "conductor_csa_mm2": 13,
+      "voltage_class": "power_LV",
+      "function": "Incoming L2 to Q1 pole 2"
+    },
+    {
+      "wire_id": "W3",
+      "from_item": "X1",
+      "from_terminal": "L3",
+      "to_item": "Q1",
+      "to_terminal": "5",
+      "conductor_csa_mm2": 13,
+      "voltage_class": "power_LV",
+      "function": "Incoming L3 to Q1 pole 3"
+    },
+    {
+      "wire_id": "W4",
+      "from_item": "Q1",
+      "from_terminal": "2",
+      "to_item": "K1",
+      "to_terminal": "1",
+      "conductor_csa_mm2": 13,
+      "voltage_class": "power_LV",
+      "function": "Disconnected L1 to MAIN contactor K1 pole 1"
+    },
+    {
+      "wire_id": "W5",
+      "from_item": "Q1",
+      "from_terminal": "4",
+      "to_item": "K1",
+      "to_terminal": "3",
+      "conductor_csa_mm2": 13,
+      "voltage_class": "power_LV",
+      "function": "Q1 to K1 pole 2"
+    },
+    {
+      "wire_id": "W6",
+      "from_item": "Q1",
+      "from_terminal": "6",
+      "to_item": "K1",
+      "to_terminal": "5",
+      "conductor_csa_mm2": 13,
+      "voltage_class": "power_LV",
+      "function": "Q1 to K1 pole 3"
+    },
+    {
+      "wire_id": "W7",
+      "from_item": "K1",
+      "from_terminal": "2",
+      "to_item": "F1",
+      "to_terminal": "1",
+      "conductor_csa_mm2": 13,
+      "voltage_class": "power_LV",
+      "function": "K1 output L1 to overload F1 phase L1"
+    },
+    {
+      "wire_id": "W8",
+      "from_item": "K1",
+      "from_terminal": "4",
+      "to_item": "F1",
+      "to_terminal": "3",
+      "conductor_csa_mm2": 13,
+      "voltage_class": "power_LV",
+      "function": "K1 L2 to F1 phase L2"
+    },
+    {
+      "wire_id": "W9",
+      "from_item": "K1",
+      "from_terminal": "6",
+      "to_item": "F1",
+      "to_terminal": "5",
+      "conductor_csa_mm2": 13,
+      "voltage_class": "power_LV",
+      "function": "K1 L3 to F1 phase L3"
+    },
+    {
+      "wire_id": "W10",
+      "from_item": "F1",
+      "from_terminal": "2",
+      "to_item": "X2",
+      "to_terminal": "U1",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "F1 output L1 → motor lead U1 (winding 1 start end)"
+    },
+    {
+      "wire_id": "W11",
+      "from_item": "F1",
+      "from_terminal": "4",
+      "to_item": "X2",
+      "to_terminal": "V1",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "F1 output L2 → motor lead V1"
+    },
+    {
+      "wire_id": "W12",
+      "from_item": "F1",
+      "from_terminal": "6",
+      "to_item": "X2",
+      "to_terminal": "W1",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "F1 output L3 → motor lead W1"
+    },
+    {
+      "wire_id": "W13",
+      "from_item": "K2",
+      "from_terminal": "2",
+      "to_item": "X2",
+      "to_terminal": "U2",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "STAR contactor K2 output → motor lead U2 (winding 1 finish end) — K2 closes wye-point during start"
+    },
+    {
+      "wire_id": "W14",
+      "from_item": "K2",
+      "from_terminal": "4",
+      "to_item": "X2",
+      "to_terminal": "V2",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "K2 → motor lead V2"
+    },
+    {
+      "wire_id": "W15",
+      "from_item": "K2",
+      "from_terminal": "6",
+      "to_item": "X2",
+      "to_terminal": "W2",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "K2 → motor lead W2 (forms wye point at K2 common when K2 closes)"
+    },
+    {
+      "wire_id": "W16",
+      "from_item": "K2",
+      "from_terminal": "1",
+      "to_item": "K2",
+      "to_terminal": "3",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "K2 internal star-point bond pole 1 to pole 2 (wye-point common)"
+    },
+    {
+      "wire_id": "W17",
+      "from_item": "K2",
+      "from_terminal": "3",
+      "to_item": "K2",
+      "to_terminal": "5",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "K2 internal star-point bond pole 2 to pole 3"
+    },
+    {
+      "wire_id": "W18",
+      "from_item": "K3",
+      "from_terminal": "2",
+      "to_item": "X2",
+      "to_terminal": "U2",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "DELTA contactor K3 output → motor lead U2 (parallel with K2 lead U2)"
+    },
+    {
+      "wire_id": "W19",
+      "from_item": "K3",
+      "from_terminal": "4",
+      "to_item": "X2",
+      "to_terminal": "V2",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "K3 → motor lead V2"
+    },
+    {
+      "wire_id": "W20",
+      "from_item": "K3",
+      "from_terminal": "6",
+      "to_item": "X2",
+      "to_terminal": "W2",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "K3 → motor lead W2"
+    },
+    {
+      "wire_id": "W21",
+      "from_item": "K1",
+      "from_terminal": "2",
+      "to_item": "K3",
+      "to_terminal": "1",
+      "conductor_csa_mm2": 13,
+      "voltage_class": "power_LV",
+      "function": "K1 L1 cross-tied to K3 input pole 1 (delta closure: L1→U2 path)"
+    },
+    {
+      "wire_id": "W22",
+      "from_item": "K1",
+      "from_terminal": "4",
+      "to_item": "K3",
+      "to_terminal": "3",
+      "conductor_csa_mm2": 13,
+      "voltage_class": "power_LV",
+      "function": "K1 L2 cross-tied to K3 input pole 2 (delta closure: L2→V2)"
+    },
+    {
+      "wire_id": "W23",
+      "from_item": "K1",
+      "from_terminal": "6",
+      "to_item": "K3",
+      "to_terminal": "5",
+      "conductor_csa_mm2": 13,
+      "voltage_class": "power_LV",
+      "function": "K1 L3 cross-tied to K3 input pole 3 (delta closure: L3→W2)"
+    },
+    {
+      "wire_id": "W24",
+      "from_item": "X2",
+      "from_terminal": "U1",
+      "to_item": "M1",
+      "to_terminal": "U1",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "Motor lead U1 to motor terminal U1"
+    },
+    {
+      "wire_id": "W25",
+      "from_item": "X2",
+      "from_terminal": "V1",
+      "to_item": "M1",
+      "to_terminal": "V1",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "Motor lead V1 to motor terminal V1"
+    },
+    {
+      "wire_id": "W26",
+      "from_item": "X2",
+      "from_terminal": "W1",
+      "to_item": "M1",
+      "to_terminal": "W1",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "Motor lead W1 to motor terminal W1"
+    },
+    {
+      "wire_id": "W27",
+      "from_item": "X2",
+      "from_terminal": "U2",
+      "to_item": "M1",
+      "to_terminal": "U2",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "Motor lead U2 to motor terminal U2"
+    },
+    {
+      "wire_id": "W28",
+      "from_item": "X2",
+      "from_terminal": "V2",
+      "to_item": "M1",
+      "to_terminal": "V2",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "Motor lead V2 to motor terminal V2"
+    },
+    {
+      "wire_id": "W29",
+      "from_item": "X2",
+      "from_terminal": "W2",
+      "to_item": "M1",
+      "to_terminal": "W2",
+      "conductor_csa_mm2": 5.3,
+      "voltage_class": "power_LV",
+      "function": "Motor lead W2 to motor terminal W2"
+    },
+    {
+      "wire_id": "W30",
+      "from_item": "X3",
+      "from_terminal": "L",
+      "to_item": "F1",
+      "to_terminal": "95",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "Control L 120 VAC to F1 trip NC 95"
+    },
+    {
+      "wire_id": "W31",
+      "from_item": "F1",
+      "from_terminal": "96",
+      "to_item": "S2",
+      "to_terminal": "21",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "F1 96 to STOP NC 21"
+    },
+    {
+      "wire_id": "W32",
+      "from_item": "S2",
+      "from_terminal": "22",
+      "to_item": "S1",
+      "to_terminal": "13",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "STOP 22 to START NO 13"
+    },
+    {
+      "wire_id": "W33",
+      "from_item": "S1",
+      "from_terminal": "14",
+      "to_item": "K1",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "START 14 to K1 main coil A1"
+    },
+    {
+      "wire_id": "W34",
+      "from_item": "K1",
+      "from_terminal": "A2",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "K1 coil A2 to N"
+    },
+    {
+      "wire_id": "W35",
+      "from_item": "S2",
+      "from_terminal": "22",
+      "to_item": "K1-AUX",
+      "to_terminal": "13",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "STOP 22 to K1-AUX 13 (hold-in branch)"
+    },
+    {
+      "wire_id": "W36",
+      "from_item": "K1-AUX",
+      "from_terminal": "14",
+      "to_item": "K1",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "K1-AUX 14 holds K1 coil after S1 release"
+    },
+    {
+      "wire_id": "W37",
+      "from_item": "K1-AUX",
+      "from_terminal": "14",
+      "to_item": "K3-NC-K2",
+      "to_terminal": "21",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "K1 main proven → K3 cross-interlock NC 21 (K3 not picked, so closed)"
+    },
+    {
+      "wire_id": "W38",
+      "from_item": "K3-NC-K2",
+      "from_terminal": "22",
+      "to_item": "K2",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "K3-NC-K2 22 to STAR contactor K2 coil A1 (energise wye)"
+    },
+    {
+      "wire_id": "W39",
+      "from_item": "K2",
+      "from_terminal": "A2",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "K2 coil return to N"
+    },
+    {
+      "wire_id": "W40",
+      "from_item": "K1-AUX",
+      "from_terminal": "14",
+      "to_item": "KT1",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "K1 main proven → KT1 7s transition timer energised"
+    },
+    {
+      "wire_id": "W41",
+      "from_item": "KT1",
+      "from_terminal": "A2",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "KT1 coil return to N"
+    },
+    {
+      "wire_id": "W42",
+      "from_item": "KT1",
+      "from_terminal": "15",
+      "to_item": "K2",
+      "to_terminal": "A2",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "KT1 timed-out NC opens K2 coil-break path → K2 drops out at t = 7 s"
+    },
+    {
+      "wire_id": "W43",
+      "from_item": "KT1",
+      "from_terminal": "18",
+      "to_item": "K2-NC-K3",
+      "to_terminal": "21",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "KT1 timed-out NO → K2-NC-K3 cross-interlock NC 21 (K2 dropped, so K2-NC-K3 has closed back NC)"
+    },
+    {
+      "wire_id": "W44",
+      "from_item": "K2-NC-K3",
+      "from_terminal": "22",
+      "to_item": "K3",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "K2-NC-K3 22 to DELTA contactor K3 coil A1 — energise delta"
+    },
+    {
+      "wire_id": "W45",
+      "from_item": "K3",
+      "from_terminal": "A2",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "control_LV",
+      "function": "K3 coil return to N"
+    },
+    {
+      "wire_id": "W46",
+      "from_item": "K2",
+      "from_terminal": "13",
+      "to_item": "H2",
+      "to_terminal": "X1",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "aux_AC",
+      "function": "K2 NO aux 13-14 drives H2 STARTING amber lamp"
+    },
+    {
+      "wire_id": "W47",
+      "from_item": "H2",
+      "from_terminal": "X2",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "aux_AC",
+      "function": "H2 return to N"
+    },
+    {
+      "wire_id": "W48",
+      "from_item": "K3",
+      "from_terminal": "13",
+      "to_item": "H1",
+      "to_terminal": "X1",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "aux_AC",
+      "function": "K3 NO aux 13-14 drives H1 RUN green lamp"
+    },
+    {
+      "wire_id": "W49",
+      "from_item": "H1",
+      "from_terminal": "X2",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 2,
+      "voltage_class": "aux_AC",
+      "function": "H1 return to N"
+    }
   ],
   "labels": [
-    {"anchor_item": "Q1", "text": "Q1 — 30 A 3-pole Disconnect", "kind": "device_tag"},
-    {"anchor_item": "K1", "text": "K1 — NEMA Size 1 MAIN Contactor", "kind": "device_tag"},
-    {"anchor_item": "K1-AUX", "text": "K1-AUX 13/14 — Hold-In", "kind": "device_tag"},
-    {"anchor_item": "K2", "text": "K2 — NEMA Size 1 STAR (Wye) Contactor", "kind": "device_tag"},
-    {"anchor_item": "K3", "text": "K3 — NEMA Size 1 DELTA Contactor", "kind": "device_tag"},
-    {"anchor_item": "K2-NC-K3", "text": "K2 NC-aux → K3 cross-interlock", "kind": "device_tag"},
-    {"anchor_item": "K3-NC-K2", "text": "K3 NC-aux → K2 cross-interlock", "kind": "device_tag"},
-    {"anchor_item": "F1", "text": "F1 — Class 10 Overload, set 21 A", "kind": "device_tag"},
-    {"anchor_item": "M1", "text": "M1 — 15 HP 460V 21A 6-Lead Delta-Wound", "kind": "device_tag"},
-    {"anchor_item": "KT1", "text": "KT1 — 7s Transition Timer (on-delay)", "kind": "device_tag"},
-    {"anchor_item": "S1", "text": "S1 — START (green)", "kind": "device_tag"},
-    {"anchor_item": "S2", "text": "S2 — STOP (red mushroom)", "kind": "device_tag"},
-    {"anchor_item": "H1", "text": "H1 — RUN (green, delta mode)", "kind": "device_tag"},
-    {"anchor_item": "H2", "text": "H2 — STARTING (amber, star mode)", "kind": "device_tag"},
-    {"anchor_item": "K1", "text": "K1/K2/K3 use IEEE Std 315 §22.1.1 contactor symbol (US convention) alongside BS EN 60617 IEC 617-7", "kind": "sequence_note"},
-    {"anchor_item": "K2", "text": "K2 (star) and K3 (delta) electrically cross-interlocked AND mechanically interlocked — cannot close simultaneously", "kind": "sequence_note"},
-    {"anchor_item": "KT1", "text": "Open-transition star-delta: K2 drops fully before K3 picks, brief dead-time on motor — acceptable for conveyor load, not for high-inertia loads", "kind": "sequence_note"}
+    {
+      "anchor_item": "Q1",
+      "text": "Q1 — 30 A 3-pole Disconnect",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K1",
+      "text": "K1 — NEMA Size 1 MAIN Contactor",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K1-AUX",
+      "text": "K1-AUX 13/14 — Hold-In",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K2",
+      "text": "K2 — NEMA Size 1 STAR (Wye) Contactor",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K3",
+      "text": "K3 — NEMA Size 1 DELTA Contactor",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K2-NC-K3",
+      "text": "K2 NC-aux → K3 cross-interlock",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K3-NC-K2",
+      "text": "K3 NC-aux → K2 cross-interlock",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "F1",
+      "text": "F1 — Class 10 Overload, set 21 A",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "M1",
+      "text": "M1 — 15 HP 460V 21A 6-Lead Delta-Wound",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "KT1",
+      "text": "KT1 — 7s Transition Timer (on-delay)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "S1",
+      "text": "S1 — START (green)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "S2",
+      "text": "S2 — STOP (red mushroom)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "H1",
+      "text": "H1 — RUN (green, delta mode)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "H2",
+      "text": "H2 — STARTING (amber, star mode)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K1",
+      "text": "K1/K2/K3 use IEEE Std 315 §22.1.1 contactor symbol (US convention) alongside BS EN 60617 IEC 617-7",
+      "kind": "sequence_note"
+    },
+    {
+      "anchor_item": "K2",
+      "text": "K2 (star) and K3 (delta) electrically cross-interlocked AND mechanically interlocked — cannot close simultaneously",
+      "kind": "sequence_note"
+    },
+    {
+      "anchor_item": "KT1",
+      "text": "Open-transition star-delta: K2 drops fully before K3 picks, brief dead-time on motor — acceptable for conveyor load, not for high-inertia loads",
+      "kind": "sequence_note"
+    }
   ],
   "sequence_of_operation": "START STAR PHASE (t = 0): Operator presses S1 → F1 95-96 NC closed + S2 21-22 NC closed + S1 13-14 closes → K1 main coil energises → K1 main poles close (3-phase reaches F1 then motor U1/V1/W1 leads). Simultaneously K1-AUX 13-14 closes providing hold-in + drives two parallel control paths: (a) energises K2 STAR contactor coil via K3-NC-K2 cross-interlock (K3 not yet picked, so K3-NC-K2 path is closed) — K2 closes and shorts motor leads U2/V2/W2 into a common wye-point, motor windings now configured in wye (each winding sees 460/√3 = 266 V phase voltage); (b) energises KT1 7 s on-delay timer. Motor accelerates in wye configuration drawing reduced starting current (~33% of DOL inrush) for 7 s. K2 NO aux 13-14 drives H2 STARTING amber lamp. TRANSITION (t = 7 s): KT1 times out → KT1 15 NC opens K2 coil-break path → K2 drops out (motor disconnected from wye-point common; motor now coasts briefly with windings open at U2/V2/W2 end). Critical: K2-NC-K3 cross-interlock contact has been open during the wye phase (K2 was picked) — when K2 drops, K2-NC-K3 closes NC, and the KT1 timed-out NO contact 18 simultaneously energises K3 DELTA contactor coil via the now-closed K2-NC-K3 path. K3 picks → K3 main poles close → motor leads U2/V2/W2 reconnected to L2/L3/L1 (cross-tied delta) → motor windings now in delta (each winding sees full 460 V line voltage). K3 NO aux 13-14 drives H1 RUN green lamp; H2 STARTING extinguishes. RUN STEADY-STATE: Motor in delta configuration draws full 21 A FLA at rated torque. K1 + K3 + F1 in series carry motor current; K2 dropped and isolated. STOP: Operator presses S2 → S2 21-22 opens → K1 + KT1 + K3 (and K2 if still picked) all drop together → motor coasts. TRIP: F1 thermal overload (sustained > 24 A) opens 95-96 → identical drop-out as STOP.",
   "compliance_summary": {
@@ -339,5 +848,6 @@
         ]
       }
     ]
-  }
+  },
+  "invariants": []
 }

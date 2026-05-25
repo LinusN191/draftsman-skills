@@ -39,91 +39,91 @@ checks:
     severity: critical
 
   # per_node[0] — MSB-1
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].electrode_config == "VCB"'
+  - assertion: 'ir.cascade[?(@.node_id=="MSB-1")].equipment.electrode_config == "VCB"'
     description: MSB-1 electrode_config auto-inferred to VCB
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].electrode_config_source == "auto_inferred_from_equipment_type"'
+  - assertion: 'ir.cascade[?(@.node_id=="MSB-1")].equipment.electrode_config_source == "auto_inferred_from_equipment_type"'
     description: MSB-1 electrode_config_source records auto-inferred path
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].method_applied matches "^(ieee_1584_2018|lee_1982)$"'
+  - assertion: 'ir.cascade[?(@.node_id=="MSB-1")].arc_flash.method_applied matches "^(ieee_1584_2018|lee_1982)$"'
     description: MSB-1 method_applied is from controlled vocabulary (IEEE 1584:2018 or Lee 1982 fallback)
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].shock_approach_limited_movable_mm == 3050'
+  - assertion: 'ir.cascade[?(@.node_id=="MSB-1")].shock_approach.limited_approach_movable_mm == 3050'
     description: MSB-1 limited approach (movable) is 3050 mm per Table 130.4(C)(a) row 151V-750V
     severity: critical
     standard_ref: NFPA 70E Table 130.4(C)(a)
 
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].shock_approach_limited_fixed_mm == 1070'
+  - assertion: 'ir.cascade[?(@.node_id=="MSB-1")].shock_approach.limited_approach_fixed_mm == 1070'
     description: MSB-1 limited approach (fixed) is 1070 mm per Table 130.4(C)(a) row 151V-750V
     severity: critical
     standard_ref: NFPA 70E Table 130.4(C)(a)
 
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].shock_approach_restricted_mm == 305'
+  - assertion: 'ir.cascade[?(@.node_id=="MSB-1")].shock_approach.restricted_approach_mm == 305'
     description: MSB-1 restricted approach is 305 mm per Table 130.4(C)(a) row 151V-750V
     severity: critical
     standard_ref: NFPA 70E Table 130.4(C)(a)
 
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].shock_approach_source contains "151V to 750V"'
+  - assertion: 'ir.cascade[?(@.node_id=="MSB-1")].shock_approach.source contains "151V to 750V"'
     description: MSB-1 shock_approach_source must reference voltage row "151V to 750V"
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].label_recommended == true'
+  - assertion: 'ir.cascade[?(@.node_id=="MSB-1")].label.label_recommended == true'
     description: MSB-1 label_recommended is true (LV switchgear ≥240V)
     severity: critical
 
   # per_node[1] — MSB-1.DB-L1
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-1.DB-L1")].electrode_config == "VCB"'
+  - assertion: 'ir.cascade[?(@.node_id=="MSB-1.DB-L1")].equipment.electrode_config == "VCB"'
     description: MSB-1.DB-L1 electrode_config auto-inferred to VCB (LV panelboard)
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-1.DB-L1")].ppe_category matches "^(1|2|3)$"'
+  - assertion: 'ir.cascade[?(@.node_id=="MSB-1.DB-L1")].arc_flash.ppe_category matches "^(1|2|3)$"'
     description: MSB-1.DB-L1 ppe_category is 1, 2, or 3 (depends on IE computation)
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-1.DB-L1")].label_recommended == true'
+  - assertion: 'ir.cascade[?(@.node_id=="MSB-1.DB-L1")].label.label_recommended == true'
     description: MSB-1.DB-L1 label_recommended is true (panelboard ≥240V)
     severity: critical
 
   # invariants_pass
-  - assertion: 'ir.invariants.INV-01.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-01")].passes == true'
     description: Invariant INV-01 must pass
     severity: critical
     matches_inv: INV-01
 
-  - assertion: 'ir.invariants.INV-02.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-02")].passes == true'
     description: Invariant INV-02 must pass
     severity: critical
     matches_inv: INV-02
 
-  - assertion: 'ir.invariants.INV-03.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-03")].passes == true'
     description: Invariant INV-03 must pass
     severity: critical
     matches_inv: INV-03
 
-  - assertion: 'ir.invariants.INV-04.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-04")].passes == true'
     description: Invariant INV-04 must pass
     severity: critical
     matches_inv: INV-04
 
-  - assertion: 'ir.invariants.INV-05.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-05")].passes == true'
     description: Invariant INV-05 must pass
     severity: critical
     matches_inv: INV-05
 
-  - assertion: 'ir.invariants.INV-08.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-08")].passes == true'
     description: Invariant INV-08 must pass
     severity: critical
     matches_inv: INV-08
 
-  - assertion: 'ir.invariants.INV-09.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-09")].passes == true'
     description: Invariant INV-09 must pass
     severity: critical
     matches_inv: INV-09
 
-  - assertion: 'ir.invariants.INV-10.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-10")].passes == true'
     description: Invariant INV-10 must pass
     severity: critical
     matches_inv: INV-10

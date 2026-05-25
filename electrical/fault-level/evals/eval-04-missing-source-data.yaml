@@ -36,7 +36,7 @@ checks:
     description: At least one flag for missing source data
     severity: warning
 
-  - assertion: 'ir.invariants.INV-7.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-07")].passes == true'
     description: INV-7 invariant must pass
     severity: critical
     matches_inv: INV-7

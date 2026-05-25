@@ -48,14 +48,14 @@ checks:
     description: US must NOT emit IEC Form code
     severity: critical
 
-  - assertion: 'ir.citations matches "^NEC 2023 Art (408|240|220|250)"'
+  - assertion: 'ir.rationale.sections[*].summary matches "^NEC 2023 Art (408|240|220|250)"'
     description: At least 2 citations match NEC 2023 Art 408/240/220/250 pattern
     severity: warning
 
-  - assertion: 'ir.citations not_contains "BS 7671"'
+  - assertion: 'ir.rationale.sections[*].summary not_contains "BS 7671"'
     description: Must NOT cite BS 7671 — US project must not cite UK regs
     severity: warning
 
-  - assertion: 'ir.citations not_contains "IEC 60364"'
+  - assertion: 'ir.rationale.sections[*].summary not_contains "IEC 60364"'
     description: Must NOT cite IEC 60364 — US project must not cite IEC 60364
     severity: warning

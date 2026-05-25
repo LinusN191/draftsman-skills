@@ -42,6 +42,6 @@ checks:
     description: All values must be one of utility/generator/ups/motor_aggregate
     severity: critical
 
-  - assertion: 'ir.citations matches "IEC 60909-0:2016 §3.5"'
+  - assertion: 'ir.rationale.sections[*].decisions[*].code_clause matches "IEC 60909-0:2016 §3.5"'
     description: At least 1 citation matches — near-from-generator method cited
     severity: warning

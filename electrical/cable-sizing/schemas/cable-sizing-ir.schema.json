@@ -12,185 +12,609 @@
     "project_supply",
     "cascade",
     "compliance_summary",
-    "rationale"
+    "rationale",
+    "invariants"
   ],
   "additionalProperties": false,
   "properties": {
-    "drawing_type": { "const": "cable_sizing_study" },
-    "version":      { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "drawing_type": {
+      "const": "cable_sizing_study"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+(\\.\\d+)?$"
+    },
     "meta": {
       "type": "object",
-      "required": ["project_id", "skill_version", "produced_at"],
+      "required": [
+        "project_id",
+        "skill_version",
+        "produced_at"
+      ],
       "additionalProperties": false,
       "properties": {
-        "project_id":    { "type": "string" },
-        "skill_version": { "type": "string" },
-        "produced_at":   { "type": "string", "format": "date-time" },
+        "project_id": {
+          "type": "string"
+        },
+        "skill_version": {
+          "type": "string"
+        },
+        "produced_at": {
+          "type": "string",
+          "format": "date-time"
+        },
         "consumed_intents": {
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["intent_type", "intent_version", "produced_by"],
+            "required": [
+              "intent_type",
+              "intent_version",
+              "produced_by"
+            ],
             "additionalProperties": false,
             "properties": {
-              "intent_type":    { "enum": ["db-layout-rollup", "fault-level"] },
-              "intent_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
-              "produced_by":    { "type": "string" }
+              "intent_type": {
+                "enum": [
+                  "db-layout-rollup",
+                  "fault-level"
+                ]
+              },
+              "intent_version": {
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+\\.\\d+$"
+              },
+              "produced_by": {
+                "type": "string"
+              }
             }
           }
         }
       }
     },
-    "jurisdiction": { "enum": ["GB", "EU", "INT", "KE", "US"] },
+    "jurisdiction": {
+      "enum": [
+        "GB",
+        "EU",
+        "INT",
+        "KE",
+        "US"
+      ]
+    },
     "project_supply": {
       "type": "object",
-      "required": ["voltage_v", "phase_arrangement"],
+      "required": [
+        "voltage_v",
+        "phase_arrangement"
+      ],
       "additionalProperties": false,
       "properties": {
-        "voltage_v":         { "type": "integer", "enum": [120, 208, 230, 240, 277, 400, 415, 480] },
-        "phase_arrangement": { "enum": ["single_phase", "single_phase_split", "TPN", "TPN_plus_E"] },
-        "system_type":       { "enum": ["TN-S", "TN-C-S", "TT", "IT"] }
+        "voltage_v": {
+          "type": "integer",
+          "enum": [
+            120,
+            208,
+            230,
+            240,
+            277,
+            400,
+            415,
+            480
+          ]
+        },
+        "phase_arrangement": {
+          "enum": [
+            "single_phase",
+            "single_phase_split",
+            "TPN",
+            "TPN_plus_E"
+          ]
+        },
+        "system_type": {
+          "enum": [
+            "TN-S",
+            "TN-C-S",
+            "TT",
+            "IT"
+          ]
+        }
       }
     },
     "cascade": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "#/definitions/CascadeNode" }
+      "items": {
+        "$ref": "#/definitions/CascadeNode"
+      }
     },
     "compliance_summary": {
       "type": "object",
-      "required": ["compliant", "non_compliance_flags", "assumptions"],
+      "required": [
+        "compliant",
+        "non_compliance_flags",
+        "assumptions"
+      ],
       "additionalProperties": false,
       "properties": {
-        "compliant":            { "type": "boolean" },
+        "compliant": {
+          "type": "boolean"
+        },
         "non_compliance_flags": {
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["message"],
+            "required": [
+              "message"
+            ],
             "additionalProperties": false,
             "properties": {
-              "node_id":     { "type": "string" },
-              "message":     { "type": "string" },
-              "code_clause": { "type": "string" },
-              "severity":    { "enum": ["critical", "warning", "info"] }
+              "node_id": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "code_clause": {
+                "type": "string"
+              },
+              "severity": {
+                "enum": [
+                  "critical",
+                  "warning",
+                  "info"
+                ]
+              }
             }
           }
         },
-        "assumptions": { "type": "array", "items": { "type": "string" } }
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
-    "flags": { "type": "array", "items": { "type": "string" } },
-    "rationale": { "$ref": "../../../shared/schemas/core/rationale.schema.json" }
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rationale": {
+      "$ref": "../../../shared/schemas/core/rationale.schema.json"
+    },
+    "invariants": {
+      "type": "array",
+      "description": "Validator INVs that fired during generation, with pass/fail + evidence. Populated by generator per validator.md INV list. Empty array is valid for skills where no INV applies to the given example.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "passes",
+          "severity",
+          "evidence"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^INV-[0-9]{2,3}$"
+          },
+          "passes": {
+            "type": "boolean"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 800
+          }
+        }
+      }
+    }
   },
   "definitions": {
     "CascadeNode": {
       "type": "object",
-      "required": ["node_id", "node_kind", "designation", "load", "route", "selection", "checks"],
+      "required": [
+        "node_id",
+        "node_kind",
+        "designation",
+        "load",
+        "route",
+        "selection",
+        "checks"
+      ],
       "additionalProperties": false,
       "properties": {
-        "node_id":        { "type": "string", "pattern": "^[A-Z0-9][A-Za-z0-9._-]*$" },
-        "parent_node_id": { "type": "string", "pattern": "^[A-Z0-9][A-Za-z0-9._-]*$" },
-        "node_kind":      { "enum": ["final_circuit", "feeder", "sub_feeder", "service_entrance"] },
-        "designation":    { "type": "string" },
+        "node_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9][A-Za-z0-9._-]*$"
+        },
+        "parent_node_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9][A-Za-z0-9._-]*$"
+        },
+        "node_kind": {
+          "enum": [
+            "final_circuit",
+            "feeder",
+            "sub_feeder",
+            "service_entrance"
+          ]
+        },
+        "designation": {
+          "type": "string"
+        },
         "load": {
           "type": "object",
-          "required": ["ib_a", "in_a", "phases", "load_type"],
+          "required": [
+            "ib_a",
+            "in_a",
+            "phases",
+            "load_type"
+          ],
           "additionalProperties": false,
           "properties": {
-            "ib_a":      { "type": "number", "minimum": 0 },
-            "in_a":      { "type": "number", "minimum": 0 },
-            "phases":    { "enum": ["single", "single_split", "three_phase_3wire", "three_phase_4wire"] },
-            "load_type": { "enum": ["lighting", "power_general", "power_socket", "motor", "heating", "cooker", "it_load", "ev_charging", "fixed_appliance", "mixed"] },
-            "pf":        { "type": "number", "minimum": 0, "maximum": 1.0 },
+            "ib_a": {
+              "type": "number",
+              "minimum": 0
+            },
+            "in_a": {
+              "type": "number",
+              "minimum": 0
+            },
+            "phases": {
+              "enum": [
+                "single",
+                "single_split",
+                "three_phase_3wire",
+                "three_phase_4wire"
+              ]
+            },
+            "load_type": {
+              "enum": [
+                "lighting",
+                "power_general",
+                "power_socket",
+                "motor",
+                "heating",
+                "cooker",
+                "it_load",
+                "ev_charging",
+                "fixed_appliance",
+                "mixed"
+              ]
+            },
+            "pf": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1.0
+            },
             "load_class_motor": {
               "type": "object",
               "additionalProperties": false,
               "properties": {
-                "rated_kw":    { "type": "number", "minimum": 0 },
-                "lra_factor":  { "type": "number", "minimum": 1.0, "maximum": 10.0 },
-                "design_code": { "enum": ["NEMA_B", "NEMA_C", "IEC_AA", "IEC_AB"] }
+                "rated_kw": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "lra_factor": {
+                  "type": "number",
+                  "minimum": 1.0,
+                  "maximum": 10.0
+                },
+                "design_code": {
+                  "enum": [
+                    "NEMA_B",
+                    "NEMA_C",
+                    "IEC_AA",
+                    "IEC_AB"
+                  ]
+                }
               }
             }
           }
         },
         "route": {
           "type": "object",
-          "required": ["length_m", "installation_method"],
+          "required": [
+            "length_m",
+            "installation_method"
+          ],
           "additionalProperties": false,
           "properties": {
-            "length_m":               { "type": "number", "exclusiveMinimum": 0 },
-            "installation_method":    { "enum": ["A1","A2","B1","B2","C","D1","D2","E","F","G","nec_conduit","nec_cable_tray","nec_direct_burial","nec_free_air"] },
-            "ambient_c":              { "type": "integer", "minimum": -20, "maximum": 90 },
-            "grouping_count":         { "type": "integer", "minimum": 1 },
-            "in_thermal_insulation":  { "type": "boolean" },
-            "terminal_temp_rating_c": { "type": "integer", "enum": [60, 75, 90] }
+            "length_m": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "installation_method": {
+              "enum": [
+                "A1",
+                "A2",
+                "B1",
+                "B2",
+                "C",
+                "D1",
+                "D2",
+                "E",
+                "F",
+                "G",
+                "nec_conduit",
+                "nec_cable_tray",
+                "nec_direct_burial",
+                "nec_free_air"
+              ]
+            },
+            "ambient_c": {
+              "type": "integer",
+              "minimum": -20,
+              "maximum": 90
+            },
+            "grouping_count": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "in_thermal_insulation": {
+              "type": "boolean"
+            },
+            "terminal_temp_rating_c": {
+              "type": "integer",
+              "enum": [
+                60,
+                75,
+                90
+              ]
+            }
           }
         },
-        "harmonic_content_pct":  { "type": "number", "minimum": 0, "maximum": 100 },
-        "parent_node_ifault_ka": { "type": "number", "minimum": 0 },
-        "t_clear_s":             { "type": "number", "minimum": 0 },
+        "harmonic_content_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "parent_node_ifault_ka": {
+          "type": "number",
+          "minimum": 0
+        },
+        "t_clear_s": {
+          "type": "number",
+          "minimum": 0
+        },
         "selection": {
           "type": "object",
-          "required": ["phase_csa", "cpc_csa", "material", "insulation", "cable_type", "parallel_count", "binding_constraint", "walk_up_trail"],
+          "required": [
+            "phase_csa",
+            "cpc_csa",
+            "material",
+            "insulation",
+            "cable_type",
+            "parallel_count",
+            "binding_constraint",
+            "walk_up_trail"
+          ],
           "additionalProperties": false,
           "properties": {
             "phase_csa": {
               "oneOf": [
-                { "type": "number", "minimum": 1.0 },
-                { "type": "string", "pattern": "^([1-4]/0 AWG|[1-9][0-9]* AWG|[1-9][0-9]{2,} kcmil)$" }
+                {
+                  "type": "number",
+                  "minimum": 1.0
+                },
+                {
+                  "type": "string",
+                  "pattern": "^([1-4]/0 AWG|[1-9][0-9]* AWG|[1-9][0-9]{2,} kcmil)$"
+                }
               ]
             },
             "cpc_csa": {
               "oneOf": [
-                { "type": "number", "minimum": 1.0 },
-                { "type": "string", "pattern": "^([1-4]/0 AWG|[1-9][0-9]* AWG|[1-9][0-9]{2,} kcmil)$" }
+                {
+                  "type": "number",
+                  "minimum": 1.0
+                },
+                {
+                  "type": "string",
+                  "pattern": "^([1-4]/0 AWG|[1-9][0-9]* AWG|[1-9][0-9]{2,} kcmil)$"
+                }
               ]
             },
-            "material":            { "enum": ["copper", "aluminium"] },
-            "insulation":          { "enum": ["pvc_70", "xlpe_90", "epr_90", "mineral_micc_90", "fp200_90", "cwz_90", "thwn_2_90", "thhn_90", "xhhw_2_90"] },
-            "cable_type":          { "enum": ["pvc_singles", "pvc_multicore", "xlpe_swa", "xlpe_lszh", "epr_swa", "mineral_micc", "fp200_lszh", "cwz_glass_mica", "thwn_2", "thhn", "xhhw_2"] },
-            "parallel_count":      { "type": "integer", "minimum": 1, "maximum": 6 },
-            "binding_constraint":  { "enum": ["iz_vs_in", "vd_cumulative", "motor_starting_vd", "cpc_adiabatic", "parallel_required", "harmonic_derating"] },
+            "material": {
+              "enum": [
+                "copper",
+                "aluminium"
+              ]
+            },
+            "insulation": {
+              "enum": [
+                "pvc_70",
+                "xlpe_90",
+                "epr_90",
+                "mineral_micc_90",
+                "fp200_90",
+                "cwz_90",
+                "thwn_2_90",
+                "thhn_90",
+                "xhhw_2_90"
+              ]
+            },
+            "cable_type": {
+              "enum": [
+                "pvc_singles",
+                "pvc_multicore",
+                "xlpe_swa",
+                "xlpe_lszh",
+                "epr_swa",
+                "mineral_micc",
+                "fp200_lszh",
+                "cwz_glass_mica",
+                "thwn_2",
+                "thhn",
+                "xhhw_2"
+              ]
+            },
+            "parallel_count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 6
+            },
+            "binding_constraint": {
+              "enum": [
+                "iz_vs_in",
+                "vd_cumulative",
+                "motor_starting_vd",
+                "cpc_adiabatic",
+                "parallel_required",
+                "harmonic_derating"
+              ]
+            },
             "walk_up_trail": {
               "type": "array",
               "minItems": 1,
               "items": {
                 "type": "object",
-                "required": ["csa_attempted"],
+                "required": [
+                  "csa_attempted"
+                ],
                 "additionalProperties": false,
                 "properties": {
-                  "csa_attempted":      { "oneOf": [{ "type": "number" }, { "type": "string" }] },
-                  "accepted":           { "type": "boolean" },
-                  "rejected_by":        { "enum": ["iz_vs_in", "vd_cumulative", "motor_starting_vd", "cpc_adiabatic", "harmonic_derating"] },
-                  "iz_corrected_a":     { "type": "number", "minimum": 0 },
-                  "vd_segment_pct":     { "type": "number", "minimum": 0 },
-                  "vd_cumulative_pct":  { "type": "number", "minimum": 0 }
+                  "csa_attempted": {
+                    "oneOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "accepted": {
+                    "type": "boolean"
+                  },
+                  "rejected_by": {
+                    "enum": [
+                      "iz_vs_in",
+                      "vd_cumulative",
+                      "motor_starting_vd",
+                      "cpc_adiabatic",
+                      "harmonic_derating"
+                    ]
+                  },
+                  "iz_corrected_a": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "vd_segment_pct": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "vd_cumulative_pct": {
+                    "type": "number",
+                    "minimum": 0
+                  }
                 },
-                "if": { "properties": { "accepted": { "const": false } }, "required": ["accepted"] },
-                "then": { "required": ["rejected_by"] }
+                "if": {
+                  "properties": {
+                    "accepted": {
+                      "const": false
+                    }
+                  },
+                  "required": [
+                    "accepted"
+                  ]
+                },
+                "then": {
+                  "required": [
+                    "rejected_by"
+                  ]
+                }
               }
             }
           }
         },
         "checks": {
           "type": "object",
-          "required": ["iz_corrected_a", "iz_vs_in_pass", "vd_cumulative_pct", "vd_limit_pct", "vd_pass", "cpc_adiabatic_pass", "tool_call_pending"],
+          "required": [
+            "iz_corrected_a",
+            "iz_vs_in_pass",
+            "vd_cumulative_pct",
+            "vd_limit_pct",
+            "vd_pass",
+            "cpc_adiabatic_pass",
+            "tool_call_pending"
+          ],
           "additionalProperties": false,
           "properties": {
-            "iz_corrected_a":        { "type": "number", "minimum": 0 },
-            "iz_vs_in_pass":         { "type": "boolean" },
-            "vd_segment_pct":        { "type": "number", "minimum": 0 },
-            "vd_cumulative_pct":     { "type": "number", "minimum": 0 },
-            "vd_limit_pct":          { "type": "number", "minimum": 0 },
-            "vd_limit_source":       { "type": "string" },
-            "vd_pass":               { "type": "boolean" },
-            "cpc_adiabatic_pass":    { "type": "boolean" },
-            "cpc_adiabatic_source":  { "type": "string" },
-            "motor_starting_vd_pct": { "oneOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }] },
-            "motor_starting_vd_pass":{ "oneOf": [{ "type": "boolean" }, { "type": "null" }] },
-            "harmonic_ch_applied":   { "type": "number", "minimum": 0, "maximum": 1.0 },
-            "tool_call_pending":     { "type": "boolean", "default": true }
+            "iz_corrected_a": {
+              "type": "number",
+              "minimum": 0
+            },
+            "iz_vs_in_pass": {
+              "type": "boolean"
+            },
+            "vd_segment_pct": {
+              "type": "number",
+              "minimum": 0
+            },
+            "vd_cumulative_pct": {
+              "type": "number",
+              "minimum": 0
+            },
+            "vd_limit_pct": {
+              "type": "number",
+              "minimum": 0
+            },
+            "vd_limit_source": {
+              "type": "string"
+            },
+            "vd_pass": {
+              "type": "boolean"
+            },
+            "cpc_adiabatic_pass": {
+              "type": "boolean"
+            },
+            "cpc_adiabatic_source": {
+              "type": "string"
+            },
+            "motor_starting_vd_pct": {
+              "oneOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "motor_starting_vd_pass": {
+              "oneOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "harmonic_ch_applied": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1.0
+            },
+            "tool_call_pending": {
+              "type": "boolean",
+              "default": true
+            }
           }
         }
       }

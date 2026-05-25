@@ -118,58 +118,428 @@
     }
   ],
   "connections": [
-    {"wire_id": "W1", "from_item": "X1", "from_terminal": "L1", "to_item": "Q1", "to_terminal": "1", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "Incoming L1 to isolator pole 1"},
-    {"wire_id": "W2", "from_item": "X1", "from_terminal": "L2", "to_item": "Q1", "to_terminal": "3", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "Incoming L2 to isolator pole 2"},
-    {"wire_id": "W3", "from_item": "X1", "from_terminal": "L3", "to_item": "Q1", "to_terminal": "5", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "Incoming L3 to isolator pole 3"},
-    {"wire_id": "W4", "from_item": "Q1", "from_terminal": "2", "to_item": "K1", "to_terminal": "1", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "Isolated L1 to line contactor pole 1"},
-    {"wire_id": "W5", "from_item": "Q1", "from_terminal": "4", "to_item": "K1", "to_terminal": "3", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "Isolated L2 to K1 pole 2"},
-    {"wire_id": "W6", "from_item": "Q1", "from_terminal": "6", "to_item": "K1", "to_terminal": "5", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "Isolated L3 to K1 pole 3"},
-    {"wire_id": "W7", "from_item": "K1", "from_terminal": "2", "to_item": "VFD1", "to_terminal": "L1", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "K1 output L1 to VFD line input L1"},
-    {"wire_id": "W8", "from_item": "K1", "from_terminal": "4", "to_item": "VFD1", "to_terminal": "L2", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "K1 output L2 to VFD line input L2"},
-    {"wire_id": "W9", "from_item": "K1", "from_terminal": "6", "to_item": "VFD1", "to_terminal": "L3", "conductor_csa_mm2": 16, "voltage_class": "power_LV", "function": "K1 output L3 to VFD line input L3"},
-    {"wire_id": "W10", "from_item": "VFD1", "from_terminal": "U", "to_item": "X2", "to_terminal": "U", "conductor_csa_mm2": 10, "voltage_class": "power_LV", "function": "VFD output U to motor-tail terminal U (screened cable required)"},
-    {"wire_id": "W11", "from_item": "VFD1", "from_terminal": "V", "to_item": "X2", "to_terminal": "V", "conductor_csa_mm2": 10, "voltage_class": "power_LV", "function": "VFD output V to motor-tail terminal V"},
-    {"wire_id": "W12", "from_item": "VFD1", "from_terminal": "W", "to_item": "X2", "to_terminal": "W", "conductor_csa_mm2": 10, "voltage_class": "power_LV", "function": "VFD output W to motor-tail terminal W"},
-    {"wire_id": "W13", "from_item": "X2", "from_terminal": "U", "to_item": "M1", "to_terminal": "U", "conductor_csa_mm2": 10, "voltage_class": "power_LV", "function": "Motor-tail U to motor M1 terminal U"},
-    {"wire_id": "W14", "from_item": "X2", "from_terminal": "V", "to_item": "M1", "to_terminal": "V", "conductor_csa_mm2": 10, "voltage_class": "power_LV", "function": "Motor-tail V to M1 terminal V"},
-    {"wire_id": "W15", "from_item": "X2", "from_terminal": "W", "to_item": "M1", "to_terminal": "W", "conductor_csa_mm2": 10, "voltage_class": "power_LV", "function": "Motor-tail W to M1 terminal W"},
-    {"wire_id": "W16", "from_item": "X3", "from_terminal": "L", "to_item": "S2", "to_terminal": "21", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "Control L to STOP NC contact 21"},
-    {"wire_id": "W17", "from_item": "S2", "from_terminal": "22", "to_item": "S1", "to_terminal": "13", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "STOP 22 to START NO 13"},
-    {"wire_id": "W18", "from_item": "S1", "from_terminal": "14", "to_item": "K1", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "START 14 to K1 coil A1 (line-contactor energise)"},
-    {"wire_id": "W19", "from_item": "K1", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K1 coil A2 return to control N"},
-    {"wire_id": "W20", "from_item": "S2", "from_terminal": "22", "to_item": "K1-AUX", "to_terminal": "13", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "Hold-in: STOP 22 to K1-AUX 13"},
-    {"wire_id": "W21", "from_item": "K1-AUX", "from_terminal": "14", "to_item": "K1", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "K1-AUX 14 holds K1 coil after S1 release"},
-    {"wire_id": "W22", "from_item": "K1-AUX", "from_terminal": "14", "to_item": "VFD1", "to_terminal": "RUN-PERMIT", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "K1-AUX also drives VFD run-permissive 24 VDC input (line contactor proven closed)"},
-    {"wire_id": "W23", "from_item": "VFD1", "from_terminal": "RUN-PERMIT", "to_item": "KT1", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Run-permissive also starts soft-start ramp timer KT1"},
-    {"wire_id": "W24", "from_item": "KT1", "from_terminal": "A2", "to_item": "X3", "to_terminal": "DC-COM", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "KT1 coil return to 24 VDC common"},
-    {"wire_id": "W25", "from_item": "F1", "from_terminal": "95", "to_item": "K1", "to_terminal": "A2", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "F1 95-96 NC trip-contact in K1 coil-break path (overload trip drops K1)"},
-    {"wire_id": "W26", "from_item": "F1", "from_terminal": "96", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "control_LV", "function": "F1 96 return to N (closes the F1-in-coil-break loop)"},
-    {"wire_id": "W27", "from_item": "X3", "from_terminal": "BMS-SPEED-REF+", "to_item": "VFD1", "to_terminal": "AI1+", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "BMS 4-20 mA speed-reference + into VFD analogue input AI1"},
-    {"wire_id": "W28", "from_item": "X3", "from_terminal": "BMS-SPEED-REF-", "to_item": "VFD1", "to_terminal": "AI1-", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "BMS speed-reference return"},
-    {"wire_id": "W29", "from_item": "VFD1", "from_terminal": "DO-RAMPING", "to_item": "H2", "to_terminal": "X1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "VFD digital output RAMPING (24 VDC during 0-3 s acceleration) drives H2 amber lamp"},
-    {"wire_id": "W30", "from_item": "H2", "from_terminal": "X2", "to_item": "X3", "to_terminal": "DC-COM", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "H2 return to 24 VDC common"},
-    {"wire_id": "W31", "from_item": "VFD1", "from_terminal": "DO-AT-SPEED", "to_item": "H1", "to_terminal": "X1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "VFD digital output AT-SPEED (24 VDC at ≥95% of speed-ref) drives H1 green RUN lamp"},
-    {"wire_id": "W32", "from_item": "H1", "from_terminal": "X2", "to_item": "X3", "to_terminal": "DC-COM", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "H1 return to 24 VDC common"},
-    {"wire_id": "W33", "from_item": "VFD1", "from_terminal": "DO-FAULT", "to_item": "H3", "to_terminal": "X1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "VFD fault digital output drives H3 red lamp"},
-    {"wire_id": "W34", "from_item": "H3", "from_terminal": "X2", "to_item": "X3", "to_terminal": "DC-COM", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "H3 return to 24 VDC common"}
+    {
+      "wire_id": "W1",
+      "from_item": "X1",
+      "from_terminal": "L1",
+      "to_item": "Q1",
+      "to_terminal": "1",
+      "conductor_csa_mm2": 16,
+      "voltage_class": "power_LV",
+      "function": "Incoming L1 to isolator pole 1"
+    },
+    {
+      "wire_id": "W2",
+      "from_item": "X1",
+      "from_terminal": "L2",
+      "to_item": "Q1",
+      "to_terminal": "3",
+      "conductor_csa_mm2": 16,
+      "voltage_class": "power_LV",
+      "function": "Incoming L2 to isolator pole 2"
+    },
+    {
+      "wire_id": "W3",
+      "from_item": "X1",
+      "from_terminal": "L3",
+      "to_item": "Q1",
+      "to_terminal": "5",
+      "conductor_csa_mm2": 16,
+      "voltage_class": "power_LV",
+      "function": "Incoming L3 to isolator pole 3"
+    },
+    {
+      "wire_id": "W4",
+      "from_item": "Q1",
+      "from_terminal": "2",
+      "to_item": "K1",
+      "to_terminal": "1",
+      "conductor_csa_mm2": 16,
+      "voltage_class": "power_LV",
+      "function": "Isolated L1 to line contactor pole 1"
+    },
+    {
+      "wire_id": "W5",
+      "from_item": "Q1",
+      "from_terminal": "4",
+      "to_item": "K1",
+      "to_terminal": "3",
+      "conductor_csa_mm2": 16,
+      "voltage_class": "power_LV",
+      "function": "Isolated L2 to K1 pole 2"
+    },
+    {
+      "wire_id": "W6",
+      "from_item": "Q1",
+      "from_terminal": "6",
+      "to_item": "K1",
+      "to_terminal": "5",
+      "conductor_csa_mm2": 16,
+      "voltage_class": "power_LV",
+      "function": "Isolated L3 to K1 pole 3"
+    },
+    {
+      "wire_id": "W7",
+      "from_item": "K1",
+      "from_terminal": "2",
+      "to_item": "VFD1",
+      "to_terminal": "L1",
+      "conductor_csa_mm2": 16,
+      "voltage_class": "power_LV",
+      "function": "K1 output L1 to VFD line input L1"
+    },
+    {
+      "wire_id": "W8",
+      "from_item": "K1",
+      "from_terminal": "4",
+      "to_item": "VFD1",
+      "to_terminal": "L2",
+      "conductor_csa_mm2": 16,
+      "voltage_class": "power_LV",
+      "function": "K1 output L2 to VFD line input L2"
+    },
+    {
+      "wire_id": "W9",
+      "from_item": "K1",
+      "from_terminal": "6",
+      "to_item": "VFD1",
+      "to_terminal": "L3",
+      "conductor_csa_mm2": 16,
+      "voltage_class": "power_LV",
+      "function": "K1 output L3 to VFD line input L3"
+    },
+    {
+      "wire_id": "W10",
+      "from_item": "VFD1",
+      "from_terminal": "U",
+      "to_item": "X2",
+      "to_terminal": "U",
+      "conductor_csa_mm2": 10,
+      "voltage_class": "power_LV",
+      "function": "VFD output U to motor-tail terminal U (screened cable required)"
+    },
+    {
+      "wire_id": "W11",
+      "from_item": "VFD1",
+      "from_terminal": "V",
+      "to_item": "X2",
+      "to_terminal": "V",
+      "conductor_csa_mm2": 10,
+      "voltage_class": "power_LV",
+      "function": "VFD output V to motor-tail terminal V"
+    },
+    {
+      "wire_id": "W12",
+      "from_item": "VFD1",
+      "from_terminal": "W",
+      "to_item": "X2",
+      "to_terminal": "W",
+      "conductor_csa_mm2": 10,
+      "voltage_class": "power_LV",
+      "function": "VFD output W to motor-tail terminal W"
+    },
+    {
+      "wire_id": "W13",
+      "from_item": "X2",
+      "from_terminal": "U",
+      "to_item": "M1",
+      "to_terminal": "U",
+      "conductor_csa_mm2": 10,
+      "voltage_class": "power_LV",
+      "function": "Motor-tail U to motor M1 terminal U"
+    },
+    {
+      "wire_id": "W14",
+      "from_item": "X2",
+      "from_terminal": "V",
+      "to_item": "M1",
+      "to_terminal": "V",
+      "conductor_csa_mm2": 10,
+      "voltage_class": "power_LV",
+      "function": "Motor-tail V to M1 terminal V"
+    },
+    {
+      "wire_id": "W15",
+      "from_item": "X2",
+      "from_terminal": "W",
+      "to_item": "M1",
+      "to_terminal": "W",
+      "conductor_csa_mm2": 10,
+      "voltage_class": "power_LV",
+      "function": "Motor-tail W to M1 terminal W"
+    },
+    {
+      "wire_id": "W16",
+      "from_item": "X3",
+      "from_terminal": "L",
+      "to_item": "S2",
+      "to_terminal": "21",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "Control L to STOP NC contact 21"
+    },
+    {
+      "wire_id": "W17",
+      "from_item": "S2",
+      "from_terminal": "22",
+      "to_item": "S1",
+      "to_terminal": "13",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "STOP 22 to START NO 13"
+    },
+    {
+      "wire_id": "W18",
+      "from_item": "S1",
+      "from_terminal": "14",
+      "to_item": "K1",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "START 14 to K1 coil A1 (line-contactor energise)"
+    },
+    {
+      "wire_id": "W19",
+      "from_item": "K1",
+      "from_terminal": "A2",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "K1 coil A2 return to control N"
+    },
+    {
+      "wire_id": "W20",
+      "from_item": "S2",
+      "from_terminal": "22",
+      "to_item": "K1-AUX",
+      "to_terminal": "13",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "Hold-in: STOP 22 to K1-AUX 13"
+    },
+    {
+      "wire_id": "W21",
+      "from_item": "K1-AUX",
+      "from_terminal": "14",
+      "to_item": "K1",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "K1-AUX 14 holds K1 coil after S1 release"
+    },
+    {
+      "wire_id": "W22",
+      "from_item": "K1-AUX",
+      "from_terminal": "14",
+      "to_item": "VFD1",
+      "to_terminal": "RUN-PERMIT",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "K1-AUX also drives VFD run-permissive 24 VDC input (line contactor proven closed)"
+    },
+    {
+      "wire_id": "W23",
+      "from_item": "VFD1",
+      "from_terminal": "RUN-PERMIT",
+      "to_item": "KT1",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "Run-permissive also starts soft-start ramp timer KT1"
+    },
+    {
+      "wire_id": "W24",
+      "from_item": "KT1",
+      "from_terminal": "A2",
+      "to_item": "X3",
+      "to_terminal": "DC-COM",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "KT1 coil return to 24 VDC common"
+    },
+    {
+      "wire_id": "W25",
+      "from_item": "F1",
+      "from_terminal": "95",
+      "to_item": "K1",
+      "to_terminal": "A2",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "F1 95-96 NC trip-contact in K1 coil-break path (overload trip drops K1)"
+    },
+    {
+      "wire_id": "W26",
+      "from_item": "F1",
+      "from_terminal": "96",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "control_LV",
+      "function": "F1 96 return to N (closes the F1-in-coil-break loop)"
+    },
+    {
+      "wire_id": "W27",
+      "from_item": "X3",
+      "from_terminal": "BMS-SPEED-REF+",
+      "to_item": "VFD1",
+      "to_terminal": "AI1+",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "BMS 4-20 mA speed-reference + into VFD analogue input AI1"
+    },
+    {
+      "wire_id": "W28",
+      "from_item": "X3",
+      "from_terminal": "BMS-SPEED-REF-",
+      "to_item": "VFD1",
+      "to_terminal": "AI1-",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "BMS speed-reference return"
+    },
+    {
+      "wire_id": "W29",
+      "from_item": "VFD1",
+      "from_terminal": "DO-RAMPING",
+      "to_item": "H2",
+      "to_terminal": "X1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "VFD digital output RAMPING (24 VDC during 0-3 s acceleration) drives H2 amber lamp"
+    },
+    {
+      "wire_id": "W30",
+      "from_item": "H2",
+      "from_terminal": "X2",
+      "to_item": "X3",
+      "to_terminal": "DC-COM",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "H2 return to 24 VDC common"
+    },
+    {
+      "wire_id": "W31",
+      "from_item": "VFD1",
+      "from_terminal": "DO-AT-SPEED",
+      "to_item": "H1",
+      "to_terminal": "X1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "VFD digital output AT-SPEED (24 VDC at ≥95% of speed-ref) drives H1 green RUN lamp"
+    },
+    {
+      "wire_id": "W32",
+      "from_item": "H1",
+      "from_terminal": "X2",
+      "to_item": "X3",
+      "to_terminal": "DC-COM",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "H1 return to 24 VDC common"
+    },
+    {
+      "wire_id": "W33",
+      "from_item": "VFD1",
+      "from_terminal": "DO-FAULT",
+      "to_item": "H3",
+      "to_terminal": "X1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "VFD fault digital output drives H3 red lamp"
+    },
+    {
+      "wire_id": "W34",
+      "from_item": "H3",
+      "from_terminal": "X2",
+      "to_item": "X3",
+      "to_terminal": "DC-COM",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "H3 return to 24 VDC common"
+    }
   ],
   "labels": [
-    {"anchor_item": "Q1", "text": "Q1 — 63A Isolator", "kind": "device_tag"},
-    {"anchor_item": "K1", "text": "K1 — 63A AC-1 Line Contactor", "kind": "device_tag"},
-    {"anchor_item": "K1-AUX", "text": "K1-AUX 13/14 — Hold-In + Run-Permit", "kind": "device_tag"},
-    {"anchor_item": "F1", "text": "F1 — VFD-Internal I²t Overload (Class 10A)", "kind": "device_tag"},
-    {"anchor_item": "VFD1", "text": "VFD1 — 22 kW 50A VFD", "kind": "device_tag"},
-    {"anchor_item": "M1", "text": "M1 — 22 kW CHW Pump P1", "kind": "device_tag"},
-    {"anchor_item": "KT1", "text": "KT1 — 3s Soft-Start Ramp (on-delay)", "kind": "device_tag"},
-    {"anchor_item": "S1", "text": "S1 — START (green)", "kind": "device_tag"},
-    {"anchor_item": "S2", "text": "S2 — STOP (red)", "kind": "device_tag"},
-    {"anchor_item": "H1", "text": "H1 — RUN (green, AT-SPEED)", "kind": "device_tag"},
-    {"anchor_item": "H2", "text": "H2 — RAMPING (amber, 0-3s)", "kind": "device_tag"},
-    {"anchor_item": "H3", "text": "H3 — FAULT (red, VFD trip)", "kind": "device_tag"},
-    {"anchor_item": "VFD1", "text": "VFD modelled as signal_converter device_class — captures analogue + digital I/O block per generator prompt v1.0 enum", "kind": "sequence_note"},
-    {"anchor_item": "VFD1", "text": "AI1+ / AI1- (BMS speed-ref) / RUN-PERMIT / DO-RAMPING / DO-AT-SPEED / DO-FAULT", "kind": "terminal_number"},
-    {"anchor_item": "K1", "text": "Line contactor K1 NEVER switches under load — only isolates the VFD line side. Motor torque is built/released by VFD output, not by K1.", "kind": "sequence_note"},
-    {"anchor_item": "X2", "text": "Screened cable mandatory between VFD output and motor — limits dV/dt-driven common-mode currents and meets IEC 61800-3 EMC", "kind": "sequence_note"}
+    {
+      "anchor_item": "Q1",
+      "text": "Q1 — 63A Isolator",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K1",
+      "text": "K1 — 63A AC-1 Line Contactor",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K1-AUX",
+      "text": "K1-AUX 13/14 — Hold-In + Run-Permit",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "F1",
+      "text": "F1 — VFD-Internal I²t Overload (Class 10A)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "VFD1",
+      "text": "VFD1 — 22 kW 50A VFD",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "M1",
+      "text": "M1 — 22 kW CHW Pump P1",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "KT1",
+      "text": "KT1 — 3s Soft-Start Ramp (on-delay)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "S1",
+      "text": "S1 — START (green)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "S2",
+      "text": "S2 — STOP (red)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "H1",
+      "text": "H1 — RUN (green, AT-SPEED)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "H2",
+      "text": "H2 — RAMPING (amber, 0-3s)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "H3",
+      "text": "H3 — FAULT (red, VFD trip)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "VFD1",
+      "text": "VFD modelled as signal_converter device_class — captures analogue + digital I/O block per generator prompt v1.0 enum",
+      "kind": "sequence_note"
+    },
+    {
+      "anchor_item": "VFD1",
+      "text": "AI1+ / AI1- (BMS speed-ref) / RUN-PERMIT / DO-RAMPING / DO-AT-SPEED / DO-FAULT",
+      "kind": "terminal_number"
+    },
+    {
+      "anchor_item": "K1",
+      "text": "Line contactor K1 NEVER switches under load — only isolates the VFD line side. Motor torque is built/released by VFD output, not by K1.",
+      "kind": "sequence_note"
+    },
+    {
+      "anchor_item": "X2",
+      "text": "Screened cable mandatory between VFD output and motor — limits dV/dt-driven common-mode currents and meets IEC 61800-3 EMC",
+      "kind": "sequence_note"
+    }
   ],
   "sequence_of_operation": "ENABLE: Operator presses S1 → S2 22 (NC, closed) + S1 14 (NO, closed) energise K1 coil A1-A2 → K1 closes line poles + K1-AUX 13/14 closes → K1-AUX provides hold-in + drives VFD RUN-PERMIT input 24 VDC. STATE 1 SOFT-START RAMP (t = 0 → 3 s): RUN-PERMIT energises KT1 (3 s on-delay). VFD begins frequency ramp from 0 Hz to BMS-commanded reference frequency (typically 50 Hz, but driven by BMS 4-20 mA via AI1) over 3 s. Motor M1 current ramps gradually from 0 A to 42 A FLA instead of seeing inrush 7×FLA. VFD asserts DO-RAMPING 24 VDC → H2 amber lit. STATE 2 RUN-PERMISSIVE (t = 3 s): KT1 times out (informational — the actual at-speed signal is VFD-internal). VFD reaches ≥95% of reference frequency → VFD asserts DO-AT-SPEED 24 VDC → H1 green lit, H2 extinguishes. VFD now in closed-loop speed control, tracking BMS 4-20 mA reference. STATE 3 STEADY-STATE (t = 3 s + ∞): VFD modulates motor frequency continuously per BMS-commanded reference. Motor current tracks pump load curve (typically 0.6-1.0×FLA on a part-load CHW pump). STOP RAMP-DOWN: Operator presses S2 → S2 21-22 opens → K1 coil drops → K1-AUX 13/14 opens → VFD RUN-PERMIT 24 VDC removed → VFD begins controlled deceleration (manufacturer-default 5 s decel) → at 0 Hz VFD coasts. K1 main poles open at the line side (no current at this point because VFD has internally crow-barred output). FAULT: VFD-internal overload (I²t algorithm sketched as F1 thermal symbol for completeness) OR over-voltage OR over-current OR PTC sensor OR communication-loss latches VFD trip → DO-FAULT 24 VDC → H3 red lit. F1 95-96 NC opens K1 coil-break path → K1 drops out → motor coasts. Reset requires VFD HMI fault clear before re-START.",
   "compliance_summary": {
@@ -317,5 +687,6 @@
         ]
       }
     ]
-  }
+  },
+  "invariants": []
 }

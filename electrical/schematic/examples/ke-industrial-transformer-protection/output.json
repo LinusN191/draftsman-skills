@@ -6,8 +6,16 @@
     "skill_version": "schematic/1.0.0",
     "produced_at": "2026-05-22T11:00:00Z",
     "consumed_intents": [
-      {"intent_type": "fault-level", "intent_version": "1.0.0", "produced_by": "electrical/fault-level"},
-      {"intent_type": "earthing", "intent_version": "1.0.0", "produced_by": "electrical/earthing"}
+      {
+        "intent_type": "fault-level",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/fault-level"
+      },
+      {
+        "intent_type": "earthing",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/earthing"
+      }
     ]
   },
   "jurisdiction": "KE",
@@ -236,22 +244,86 @@
     }
   ],
   "labels": [
-    {"anchor_item": "T1A", "text": "T1A — 100/5 A, 5P10, Phase A CT", "kind": "device_tag"},
-    {"anchor_item": "T1B", "text": "T1B — 100/5 A, 5P10, Phase B CT", "kind": "device_tag"},
-    {"anchor_item": "T1C", "text": "T1C — 100/5 A, 5P10, Phase C CT", "kind": "device_tag"},
-    {"anchor_item": "T1N", "text": "T1N — 100/5 A, PX, Neutral CT for REF", "kind": "device_tag"},
-    {"anchor_item": "R51", "text": "R51 — IDMT Phase + EF (ANSI 51/51N)", "kind": "device_tag"},
-    {"anchor_item": "R87N", "text": "R87N — High-impedance REF (ANSI 87N)", "kind": "device_tag"},
-    {"anchor_item": "Q1", "text": "Q1 — 11 kV CB, ANSI 52", "kind": "device_tag"},
-    {"anchor_item": "K86", "text": "K86 — Master Trip Lockout (ANSI 86)", "kind": "device_tag"},
-    {"anchor_item": "X1", "text": "X1 — CT secondary shorting block", "kind": "device_tag"},
-    {"anchor_item": "X2", "text": "X2 — Trip circuit DC terminals", "kind": "device_tag"},
-    {"anchor_item": "R51", "text": "IA / IB / IC inputs", "kind": "terminal_number"},
-    {"anchor_item": "R87N", "text": "IN / IN_RET inputs", "kind": "terminal_number"},
-    {"anchor_item": "K86", "text": "A1 / A2 coil, 13/14 NO trip-out", "kind": "terminal_number"},
-    {"anchor_item": "R51", "text": "Pickup 100% In = 100 A primary, SI curve, TMS 0.2", "kind": "sequence_note"},
-    {"anchor_item": "R87N", "text": "Pickup 5% In = 5% of CT secondary, high-impedance scheme with 470 ohm stabilising resistor", "kind": "sequence_note"},
-    {"anchor_item": "K86", "text": "Hand-reset lockout — operator must reset before breaker can reclose", "kind": "sequence_note"}
+    {
+      "anchor_item": "T1A",
+      "text": "T1A — 100/5 A, 5P10, Phase A CT",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "T1B",
+      "text": "T1B — 100/5 A, 5P10, Phase B CT",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "T1C",
+      "text": "T1C — 100/5 A, 5P10, Phase C CT",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "T1N",
+      "text": "T1N — 100/5 A, PX, Neutral CT for REF",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "R51",
+      "text": "R51 — IDMT Phase + EF (ANSI 51/51N)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "R87N",
+      "text": "R87N — High-impedance REF (ANSI 87N)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "Q1",
+      "text": "Q1 — 11 kV CB, ANSI 52",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K86",
+      "text": "K86 — Master Trip Lockout (ANSI 86)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "X1",
+      "text": "X1 — CT secondary shorting block",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "X2",
+      "text": "X2 — Trip circuit DC terminals",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "R51",
+      "text": "IA / IB / IC inputs",
+      "kind": "terminal_number"
+    },
+    {
+      "anchor_item": "R87N",
+      "text": "IN / IN_RET inputs",
+      "kind": "terminal_number"
+    },
+    {
+      "anchor_item": "K86",
+      "text": "A1 / A2 coil, 13/14 NO trip-out",
+      "kind": "terminal_number"
+    },
+    {
+      "anchor_item": "R51",
+      "text": "Pickup 100% In = 100 A primary, SI curve, TMS 0.2",
+      "kind": "sequence_note"
+    },
+    {
+      "anchor_item": "R87N",
+      "text": "Pickup 5% In = 5% of CT secondary, high-impedance scheme with 470 ohm stabilising resistor",
+      "kind": "sequence_note"
+    },
+    {
+      "anchor_item": "K86",
+      "text": "Hand-reset lockout — operator must reset before breaker can reclose",
+      "kind": "sequence_note"
+    }
   ],
   "protection_settings": [
     {
@@ -441,5 +513,6 @@
         ]
       }
     ]
-  }
+  },
+  "invariants": []
 }

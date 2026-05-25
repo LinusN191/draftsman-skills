@@ -35,6 +35,6 @@ checks:
     description: All values must be one of utility/generator/ups/motor_aggregate
     severity: warning
 
-  - assertion: 'ir.citations matches "IEC 60909-0:2016 §3.6"'
+  - assertion: 'ir.rationale.sections[*].decisions[*].code_clause matches "IEC 60909-0:2016 §3.6"'
     description: At least 1 citation matches — multi-source superposition cited
     severity: warning

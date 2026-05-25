@@ -21,23 +21,23 @@ input:
 
 checks:
   # per_node[0] — DB-X1
-  - assertion: 'ir.nodes[?(@.node_id=="DB-X1")].method_applied == "pending"'
+  - assertion: 'ir.cascade[?(@.node_id=="DB-X1")].arc_flash.method_applied == "pending"'
     description: DB-X1 method_applied = pending (no fault data → no fabrication)
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="DB-X1")].checks_tool_call_pending == true'
+  - assertion: 'ir.cascade[?(@.node_id=="DB-X1")].checks.tool_call_pending == true'
     description: DB-X1 checks_tool_call_pending must be true (downstream tool call required)
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="DB-X1")].incident_energy_cal_per_cm2 == null'
+  - assertion: 'ir.cascade[?(@.node_id=="DB-X1")].arc_flash.incident_energy_cal_per_cm2 == null'
     description: DB-X1 IE must be null (no invented values)
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="DB-X1")].arc_flash_boundary_mm == null'
+  - assertion: 'ir.cascade[?(@.node_id=="DB-X1")].arc_flash.arc_flash_boundary_mm == null'
     description: DB-X1 arc_flash_boundary_mm must be null (no invented values)
     severity: critical
 
-  - assertion: 'ir.nodes[?(@.node_id=="DB-X1")].ppe_category == null'
+  - assertion: 'ir.cascade[?(@.node_id=="DB-X1")].arc_flash.ppe_category == null'
     description: DB-X1 ppe_category must be null (no invented values)
     severity: critical
 

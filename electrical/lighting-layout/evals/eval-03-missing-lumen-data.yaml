@@ -29,7 +29,7 @@ checks:
     description: No luminaires placed when lumen data is missing
     severity: critical
 
-  - assertion: ir.flags contains "INCOMPLETE-INPUT"
+  - assertion: ir.calculation_summary.discovery_status == "incomplete"
     description: Chat-facing flag must signal the discovery gap
 
 expected_flags:

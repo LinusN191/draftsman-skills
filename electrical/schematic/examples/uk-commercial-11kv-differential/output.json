@@ -6,8 +6,16 @@
     "skill_version": "schematic/1.0.0",
     "produced_at": "2026-05-22T11:30:00Z",
     "consumed_intents": [
-      {"intent_type": "fault-level", "intent_version": "1.0.0", "produced_by": "electrical/fault-level"},
-      {"intent_type": "db-layout-rollup", "intent_version": "1.0.0", "produced_by": "electrical/db-layout"}
+      {
+        "intent_type": "fault-level",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/fault-level"
+      },
+      {
+        "intent_type": "db-layout-rollup",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout"
+      }
     ]
   },
   "jurisdiction": "GB",
@@ -116,46 +124,308 @@
     }
   ],
   "connections": [
-    {"wire_id": "W1", "from_item": "T1A-HV", "from_terminal": "S1", "to_item": "X1", "to_terminal": "1A", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "HV phase A CT secondary to terminal block"},
-    {"wire_id": "W2", "from_item": "T1B-HV", "from_terminal": "S1", "to_item": "X1", "to_terminal": "1B", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "HV phase B CT secondary to terminal block"},
-    {"wire_id": "W3", "from_item": "T1C-HV", "from_terminal": "S1", "to_item": "X1", "to_terminal": "1C", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "HV phase C CT secondary to terminal block"},
-    {"wire_id": "W4", "from_item": "T2A-LV", "from_terminal": "S1", "to_item": "X2", "to_terminal": "2A", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "LV phase A CT secondary to terminal block"},
-    {"wire_id": "W5", "from_item": "T2B-LV", "from_terminal": "S1", "to_item": "X2", "to_terminal": "2B", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "LV phase B CT secondary to terminal block"},
-    {"wire_id": "W6", "from_item": "T2C-LV", "from_terminal": "S1", "to_item": "X2", "to_terminal": "2C", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "LV phase C CT secondary to terminal block"},
-    {"wire_id": "W7", "from_item": "X1", "from_terminal": "1A", "to_item": "R87T", "to_terminal": "IA-HV", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "HV phase A CT current to 87T differential relay HV input"},
-    {"wire_id": "W8", "from_item": "X1", "from_terminal": "1B", "to_item": "R87T", "to_terminal": "IB-HV", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "HV phase B CT current to 87T differential relay HV input"},
-    {"wire_id": "W9", "from_item": "X1", "from_terminal": "1C", "to_item": "R87T", "to_terminal": "IC-HV", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "HV phase C CT current to 87T differential relay HV input"},
-    {"wire_id": "W10", "from_item": "X2", "from_terminal": "2A", "to_item": "R87T", "to_terminal": "IA-LV", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "LV phase A CT current to 87T differential relay LV input"},
-    {"wire_id": "W11", "from_item": "X2", "from_terminal": "2B", "to_item": "R87T", "to_terminal": "IB-LV", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "LV phase B CT current to 87T differential relay LV input"},
-    {"wire_id": "W12", "from_item": "X2", "from_terminal": "2C", "to_item": "R87T", "to_terminal": "IC-LV", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "LV phase C CT current to 87T differential relay LV input"},
-    {"wire_id": "W13", "from_item": "X1", "from_terminal": "1A", "to_item": "R51-HVBU", "to_terminal": "IA", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled HV phase A CT current to backup IDMT 51 relay"},
-    {"wire_id": "W14", "from_item": "X1", "from_terminal": "1B", "to_item": "R51-HVBU", "to_terminal": "IB", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled HV phase B CT current to backup IDMT 51 relay"},
-    {"wire_id": "W15", "from_item": "X1", "from_terminal": "1C", "to_item": "R51-HVBU", "to_terminal": "IC", "conductor_csa_mm2": 4, "voltage_class": "aux_AC", "function": "Paralleled HV phase C CT current to backup IDMT 51 relay"},
-    {"wire_id": "W16", "from_item": "R87T", "from_terminal": "TRIP-HV", "to_item": "K86-HV", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "87T trip output to HV lockout K86-HV coil A1 (110 VDC)"},
-    {"wire_id": "W17", "from_item": "R87T", "from_terminal": "TRIP-LV", "to_item": "K86-LV", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "87T trip output to LV lockout K86-LV coil A1 (parallel — both ends must trip)"},
-    {"wire_id": "W18", "from_item": "R51-HVBU", "from_terminal": "TRIP", "to_item": "K86-HV", "to_terminal": "A1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "Backup 51 trip output to HV lockout coil A1 (parallel with 87T HV trip)"},
-    {"wire_id": "W19", "from_item": "K86-HV", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "HV lockout coil A2 to DC negative bus"},
-    {"wire_id": "W20", "from_item": "K86-LV", "from_terminal": "A2", "to_item": "X3", "to_terminal": "N", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "LV lockout coil A2 to DC negative bus"},
-    {"wire_id": "W21", "from_item": "K86-HV", "from_terminal": "13", "to_item": "Q1-HV", "to_terminal": "TC1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "HV lockout NO 13-14 to HV CB trip coil TC1"},
-    {"wire_id": "W22", "from_item": "K86-LV", "from_terminal": "13", "to_item": "Q1-LV", "to_terminal": "TC1", "conductor_csa_mm2": 1.5, "voltage_class": "aux_DC", "function": "LV lockout NO 13-14 to LV ACB trip coil TC1"}
+    {
+      "wire_id": "W1",
+      "from_item": "T1A-HV",
+      "from_terminal": "S1",
+      "to_item": "X1",
+      "to_terminal": "1A",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "HV phase A CT secondary to terminal block"
+    },
+    {
+      "wire_id": "W2",
+      "from_item": "T1B-HV",
+      "from_terminal": "S1",
+      "to_item": "X1",
+      "to_terminal": "1B",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "HV phase B CT secondary to terminal block"
+    },
+    {
+      "wire_id": "W3",
+      "from_item": "T1C-HV",
+      "from_terminal": "S1",
+      "to_item": "X1",
+      "to_terminal": "1C",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "HV phase C CT secondary to terminal block"
+    },
+    {
+      "wire_id": "W4",
+      "from_item": "T2A-LV",
+      "from_terminal": "S1",
+      "to_item": "X2",
+      "to_terminal": "2A",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "LV phase A CT secondary to terminal block"
+    },
+    {
+      "wire_id": "W5",
+      "from_item": "T2B-LV",
+      "from_terminal": "S1",
+      "to_item": "X2",
+      "to_terminal": "2B",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "LV phase B CT secondary to terminal block"
+    },
+    {
+      "wire_id": "W6",
+      "from_item": "T2C-LV",
+      "from_terminal": "S1",
+      "to_item": "X2",
+      "to_terminal": "2C",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "LV phase C CT secondary to terminal block"
+    },
+    {
+      "wire_id": "W7",
+      "from_item": "X1",
+      "from_terminal": "1A",
+      "to_item": "R87T",
+      "to_terminal": "IA-HV",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "HV phase A CT current to 87T differential relay HV input"
+    },
+    {
+      "wire_id": "W8",
+      "from_item": "X1",
+      "from_terminal": "1B",
+      "to_item": "R87T",
+      "to_terminal": "IB-HV",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "HV phase B CT current to 87T differential relay HV input"
+    },
+    {
+      "wire_id": "W9",
+      "from_item": "X1",
+      "from_terminal": "1C",
+      "to_item": "R87T",
+      "to_terminal": "IC-HV",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "HV phase C CT current to 87T differential relay HV input"
+    },
+    {
+      "wire_id": "W10",
+      "from_item": "X2",
+      "from_terminal": "2A",
+      "to_item": "R87T",
+      "to_terminal": "IA-LV",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "LV phase A CT current to 87T differential relay LV input"
+    },
+    {
+      "wire_id": "W11",
+      "from_item": "X2",
+      "from_terminal": "2B",
+      "to_item": "R87T",
+      "to_terminal": "IB-LV",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "LV phase B CT current to 87T differential relay LV input"
+    },
+    {
+      "wire_id": "W12",
+      "from_item": "X2",
+      "from_terminal": "2C",
+      "to_item": "R87T",
+      "to_terminal": "IC-LV",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "LV phase C CT current to 87T differential relay LV input"
+    },
+    {
+      "wire_id": "W13",
+      "from_item": "X1",
+      "from_terminal": "1A",
+      "to_item": "R51-HVBU",
+      "to_terminal": "IA",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Paralleled HV phase A CT current to backup IDMT 51 relay"
+    },
+    {
+      "wire_id": "W14",
+      "from_item": "X1",
+      "from_terminal": "1B",
+      "to_item": "R51-HVBU",
+      "to_terminal": "IB",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Paralleled HV phase B CT current to backup IDMT 51 relay"
+    },
+    {
+      "wire_id": "W15",
+      "from_item": "X1",
+      "from_terminal": "1C",
+      "to_item": "R51-HVBU",
+      "to_terminal": "IC",
+      "conductor_csa_mm2": 4,
+      "voltage_class": "aux_AC",
+      "function": "Paralleled HV phase C CT current to backup IDMT 51 relay"
+    },
+    {
+      "wire_id": "W16",
+      "from_item": "R87T",
+      "from_terminal": "TRIP-HV",
+      "to_item": "K86-HV",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "87T trip output to HV lockout K86-HV coil A1 (110 VDC)"
+    },
+    {
+      "wire_id": "W17",
+      "from_item": "R87T",
+      "from_terminal": "TRIP-LV",
+      "to_item": "K86-LV",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "87T trip output to LV lockout K86-LV coil A1 (parallel — both ends must trip)"
+    },
+    {
+      "wire_id": "W18",
+      "from_item": "R51-HVBU",
+      "from_terminal": "TRIP",
+      "to_item": "K86-HV",
+      "to_terminal": "A1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "Backup 51 trip output to HV lockout coil A1 (parallel with 87T HV trip)"
+    },
+    {
+      "wire_id": "W19",
+      "from_item": "K86-HV",
+      "from_terminal": "A2",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "HV lockout coil A2 to DC negative bus"
+    },
+    {
+      "wire_id": "W20",
+      "from_item": "K86-LV",
+      "from_terminal": "A2",
+      "to_item": "X3",
+      "to_terminal": "N",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "LV lockout coil A2 to DC negative bus"
+    },
+    {
+      "wire_id": "W21",
+      "from_item": "K86-HV",
+      "from_terminal": "13",
+      "to_item": "Q1-HV",
+      "to_terminal": "TC1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "HV lockout NO 13-14 to HV CB trip coil TC1"
+    },
+    {
+      "wire_id": "W22",
+      "from_item": "K86-LV",
+      "from_terminal": "13",
+      "to_item": "Q1-LV",
+      "to_terminal": "TC1",
+      "conductor_csa_mm2": 1.5,
+      "voltage_class": "aux_DC",
+      "function": "LV lockout NO 13-14 to LV ACB trip coil TC1"
+    }
   ],
   "labels": [
-    {"anchor_item": "T1A-HV", "text": "T1A-HV — 200/5 A, 5P20, HV Phase A CT", "kind": "device_tag"},
-    {"anchor_item": "T1B-HV", "text": "T1B-HV — 200/5 A, 5P20, HV Phase B CT", "kind": "device_tag"},
-    {"anchor_item": "T1C-HV", "text": "T1C-HV — 200/5 A, 5P20, HV Phase C CT", "kind": "device_tag"},
-    {"anchor_item": "T2A-LV", "text": "T2A-LV — 4000/5 A, 5P20, LV Phase A CT", "kind": "device_tag"},
-    {"anchor_item": "T2B-LV", "text": "T2B-LV — 4000/5 A, 5P20, LV Phase B CT", "kind": "device_tag"},
-    {"anchor_item": "T2C-LV", "text": "T2C-LV — 4000/5 A, 5P20, LV Phase C CT", "kind": "device_tag"},
-    {"anchor_item": "R87T", "text": "R87T — Biased Differential (ANSI 87T)", "kind": "device_tag"},
-    {"anchor_item": "R51-HVBU", "text": "R51-HVBU — HV Backup IDMT (ANSI 51)", "kind": "device_tag"},
-    {"anchor_item": "Q1-HV", "text": "Q1-HV — 11 kV CB, ANSI 52", "kind": "device_tag"},
-    {"anchor_item": "Q1-LV", "text": "Q1-LV — 0.4 kV ACB, ANSI 52", "kind": "device_tag"},
-    {"anchor_item": "K86-HV", "text": "K86-HV — HV Master Trip (ANSI 86)", "kind": "device_tag"},
-    {"anchor_item": "K86-LV", "text": "K86-LV — LV Master Trip (ANSI 86)", "kind": "device_tag"},
-    {"anchor_item": "R87T", "text": "Bias slope 30%, pickup 20% In", "kind": "sequence_note"},
-    {"anchor_item": "R87T", "text": "Numerical phase + ratio compensation for Dyn11: 30° lag LV behind HV, ratio 200:4000 normalised in relay", "kind": "sequence_note"},
-    {"anchor_item": "R51-HVBU", "text": "Backup pickup 240 A primary (1.2× HV FLA 131 A), VI curve TMS 0.3 — grades above 87T", "kind": "sequence_note"},
-    {"anchor_item": "K86-HV", "text": "Hand reset — energy trip on either 87T or 51 backup", "kind": "sequence_note"}
+    {
+      "anchor_item": "T1A-HV",
+      "text": "T1A-HV — 200/5 A, 5P20, HV Phase A CT",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "T1B-HV",
+      "text": "T1B-HV — 200/5 A, 5P20, HV Phase B CT",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "T1C-HV",
+      "text": "T1C-HV — 200/5 A, 5P20, HV Phase C CT",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "T2A-LV",
+      "text": "T2A-LV — 4000/5 A, 5P20, LV Phase A CT",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "T2B-LV",
+      "text": "T2B-LV — 4000/5 A, 5P20, LV Phase B CT",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "T2C-LV",
+      "text": "T2C-LV — 4000/5 A, 5P20, LV Phase C CT",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "R87T",
+      "text": "R87T — Biased Differential (ANSI 87T)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "R51-HVBU",
+      "text": "R51-HVBU — HV Backup IDMT (ANSI 51)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "Q1-HV",
+      "text": "Q1-HV — 11 kV CB, ANSI 52",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "Q1-LV",
+      "text": "Q1-LV — 0.4 kV ACB, ANSI 52",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K86-HV",
+      "text": "K86-HV — HV Master Trip (ANSI 86)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "K86-LV",
+      "text": "K86-LV — LV Master Trip (ANSI 86)",
+      "kind": "device_tag"
+    },
+    {
+      "anchor_item": "R87T",
+      "text": "Bias slope 30%, pickup 20% In",
+      "kind": "sequence_note"
+    },
+    {
+      "anchor_item": "R87T",
+      "text": "Numerical phase + ratio compensation for Dyn11: 30° lag LV behind HV, ratio 200:4000 normalised in relay",
+      "kind": "sequence_note"
+    },
+    {
+      "anchor_item": "R51-HVBU",
+      "text": "Backup pickup 240 A primary (1.2× HV FLA 131 A), VI curve TMS 0.3 — grades above 87T",
+      "kind": "sequence_note"
+    },
+    {
+      "anchor_item": "K86-HV",
+      "text": "Hand reset — energy trip on either 87T or 51 backup",
+      "kind": "sequence_note"
+    }
   ],
   "protection_settings": [
     {
@@ -333,5 +603,6 @@
         ]
       }
     ]
-  }
+  },
+  "invariants": []
 }

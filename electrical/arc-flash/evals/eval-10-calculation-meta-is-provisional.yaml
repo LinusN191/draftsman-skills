@@ -53,6 +53,6 @@ checks:
     severity: critical
 
   # The node-level method_applied must use the canonical underscore-form enum (Sprint A.3 unification)
-  - assertion: 'ir.nodes[?(@.node_id=="MSB-1")].method_applied matches "^(ieee_1584_2018|ieee_1584_2002|lee_1982|nfpa_70e_table|doan_dc|pending)$"'
+  - assertion: 'ir.cascade[?(@.node_id=="MSB-1")].arc_flash.method_applied matches "^(ieee_1584_2018|ieee_1584_2002|lee_1982|nfpa_70e_table|doan_dc|pending)$"'
     description: MSB-1 method_applied is from the unified controlled vocabulary (Sprint A.3 enum unification — underscore form per labels-ir.schema.json canonical)
     severity: critical

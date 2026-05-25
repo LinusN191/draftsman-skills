@@ -449,3 +449,31 @@ Emit two JSON documents per board:
 **Do not paraphrase code clauses.** Cite them exactly as they appear in the loaded standards file.
 
 **Do not skip the rationale.** It is the engineer's audit trail.
+
+## Step (final) — Populate the `invariants` array
+
+For every invariant declared in `prompts/validator.md` (INV-01, INV-02, ...),
+determine if it APPLIES to the current example. For each INV that applies:
+
+1. Compute the check (run the rule against the IR you have just generated).
+2. Emit a `{id, passes, severity, evidence}` entry into the root-level
+   `invariants` array.
+
+Field shapes:
+
+- `id` — string matching `^INV-[0-9]{2,3}$` (use the same id format your
+  `validator.md` declares; pad single-digit ids to two digits).
+- `passes` — boolean. `true` when the rule holds; `false` when violated.
+- `severity` — one of `critical | high | medium | low` (engineering impact,
+  not eval severity).
+- `evidence` — 20-800 character prose explaining WHAT was checked, WHAT
+  value was found, and WHY it passes/fails. Cite a clause or formula
+  where applicable (e.g. `BS 7671:2018+A3 §433.1.1`,
+  `IEC 60909-0:2016 §3.5`, `NFPA 70E:2024 Table 130.5(G)`).
+
+Skills with no INVs that apply to the current example: emit `"invariants": []`
+(empty array is valid). Do not invent INV ids — only emit ids that exist in
+this skill's `validator.md`.
+
+This block is consumed by the runtime eval harness, which references INVs
+by id via JSONPath filters like `ir.invariants[?(@.id=="INV-04")].passes`.

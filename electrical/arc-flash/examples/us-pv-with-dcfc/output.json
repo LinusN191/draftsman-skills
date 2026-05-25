@@ -6,12 +6,24 @@
     "skill_version": "arc-flash/1.0.0",
     "produced_at": "2026-05-17T12:00:00Z",
     "consumed_intents": [
-      {"intent_type": "fault-level", "intent_version": "1.0.0", "produced_by": "electrical/fault-level/1.0.0"},
-      {"intent_type": "db-layout-rollup", "intent_version": "1.0.0", "produced_by": "electrical/db-layout/1.0.0"}
+      {
+        "intent_type": "fault-level",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/fault-level/1.0.0"
+      },
+      {
+        "intent_type": "db-layout-rollup",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/1.0.0"
+      }
     ]
   },
   "jurisdiction": "US",
-  "project_supply": { "voltage_v": 480, "phases": "three", "frequency_hz": 60 },
+  "project_supply": {
+    "voltage_v": 480,
+    "phases": "three",
+    "frequency_hz": 60
+  },
   "cascade": [
     {
       "node_id": "SERVICE-480V",
@@ -26,15 +38,39 @@
         "electrode_config": "VCB",
         "electrode_config_source": "auto_inferred_from_equipment_type"
       },
-      "fault_inputs": { "ibf_ka_max": 25, "ibf_ka_min": 22, "x_over_r": 8, "z_total_ohm": 0.012 },
-      "ocpd_inputs": { "ocpd_type": "ACB_electronic", "t_clear_s": 0.3, "t_clear_source": "engineer_declared" },
-      "geometry": { "working_distance_mm": 455, "gap_distance_mm": 32 },
+      "fault_inputs": {
+        "ibf_ka_max": 25,
+        "ibf_ka_min": 22,
+        "x_over_r": 8,
+        "z_total_ohm": 0.012
+      },
+      "ocpd_inputs": {
+        "ocpd_type": "ACB_electronic",
+        "t_clear_s": 0.3,
+        "t_clear_source": "engineer_declared"
+      },
+      "geometry": {
+        "working_distance_mm": 455,
+        "gap_distance_mm": 32
+      },
       "arc_flash": {
         "method_applied": "lee_1982",
         "method_fallback_trail": [
-          {"method": "ieee_1584_2018", "result": "skipped", "reason": "coefficients pending-verification for VCB 600V"},
-          {"method": "ieee_1584_2002", "result": "skipped", "reason": "Doughty/Neal coefficients pending-verification"},
-          {"method": "lee_1982", "result": "applied", "reason": "theoretical formula always available"}
+          {
+            "method": "ieee_1584_2018",
+            "result": "skipped",
+            "reason": "coefficients pending-verification for VCB 600V"
+          },
+          {
+            "method": "ieee_1584_2002",
+            "result": "skipped",
+            "reason": "Doughty/Neal coefficients pending-verification"
+          },
+          {
+            "method": "lee_1982",
+            "result": "applied",
+            "reason": "theoretical formula always available"
+          }
         ],
         "arcing_current_a": 22000,
         "incident_energy_cal_per_cm2": 12.0,
@@ -74,15 +110,39 @@
         "electrode_config": "VCB",
         "electrode_config_source": "auto_inferred_from_equipment_type"
       },
-      "fault_inputs": { "ibf_ka_max": 12, "ibf_ka_min": 10, "x_over_r": 6, "z_total_ohm": 0.032 },
-      "ocpd_inputs": { "ocpd_type": "MCCB_electronic", "t_clear_s": 0.2, "t_clear_source": "engineer_declared" },
-      "geometry": { "working_distance_mm": 455, "gap_distance_mm": 32 },
+      "fault_inputs": {
+        "ibf_ka_max": 12,
+        "ibf_ka_min": 10,
+        "x_over_r": 6,
+        "z_total_ohm": 0.032
+      },
+      "ocpd_inputs": {
+        "ocpd_type": "MCCB_electronic",
+        "t_clear_s": 0.2,
+        "t_clear_source": "engineer_declared"
+      },
+      "geometry": {
+        "working_distance_mm": 455,
+        "gap_distance_mm": 32
+      },
       "arc_flash": {
         "method_applied": "lee_1982",
         "method_fallback_trail": [
-          {"method": "ieee_1584_2018", "result": "skipped", "reason": "coefficients pending-verification for VCB 600V"},
-          {"method": "ieee_1584_2002", "result": "skipped", "reason": "Doughty/Neal coefficients pending-verification"},
-          {"method": "lee_1982", "result": "applied", "reason": "theoretical formula always available"}
+          {
+            "method": "ieee_1584_2018",
+            "result": "skipped",
+            "reason": "coefficients pending-verification for VCB 600V"
+          },
+          {
+            "method": "ieee_1584_2002",
+            "result": "skipped",
+            "reason": "Doughty/Neal coefficients pending-verification"
+          },
+          {
+            "method": "lee_1982",
+            "result": "applied",
+            "reason": "theoretical formula always available"
+          }
         ],
         "arcing_current_a": 10500,
         "incident_energy_cal_per_cm2": 7.0,
@@ -122,13 +182,29 @@
         "electrode_config": null,
         "electrode_config_source": "not_applicable_dc"
       },
-      "fault_inputs": { "ibf_ka_max": 0.5, "ibf_ka_min": 0.45, "x_over_r": null, "z_total_ohm": 1200 },
-      "ocpd_inputs": { "ocpd_type": "DC_fuse_PV", "t_clear_s": 0.004, "t_clear_source": "engineer_declared" },
-      "geometry": { "working_distance_mm": 305, "gap_distance_mm": 16 },
+      "fault_inputs": {
+        "ibf_ka_max": 0.5,
+        "ibf_ka_min": 0.45,
+        "x_over_r": null,
+        "z_total_ohm": 1200
+      },
+      "ocpd_inputs": {
+        "ocpd_type": "DC_fuse_PV",
+        "t_clear_s": 0.004,
+        "t_clear_source": "engineer_declared"
+      },
+      "geometry": {
+        "working_distance_mm": 305,
+        "gap_distance_mm": 16
+      },
       "arc_flash": {
         "method_applied": "doan_dc",
         "method_fallback_trail": [
-          {"method": "doan_dc", "result": "applied", "reason": "DC path (current_type=dc, voltage_v <= 1000); IEEE 1584 not applicable to DC physics"}
+          {
+            "method": "doan_dc",
+            "result": "applied",
+            "reason": "DC path (current_type=dc, voltage_v <= 1000); IEEE 1584 not applicable to DC physics"
+          }
         ],
         "arcing_current_a": 0.5,
         "incident_energy_cal_per_cm2": 2.0,
@@ -168,15 +244,39 @@
         "electrode_config": "VCB",
         "electrode_config_source": "auto_inferred_from_equipment_type"
       },
-      "fault_inputs": { "ibf_ka_max": 18, "ibf_ka_min": 16, "x_over_r": 7, "z_total_ohm": 0.02 },
-      "ocpd_inputs": { "ocpd_type": "MCCB_electronic", "t_clear_s": 0.2, "t_clear_source": "engineer_declared" },
-      "geometry": { "working_distance_mm": 455, "gap_distance_mm": 32 },
+      "fault_inputs": {
+        "ibf_ka_max": 18,
+        "ibf_ka_min": 16,
+        "x_over_r": 7,
+        "z_total_ohm": 0.02
+      },
+      "ocpd_inputs": {
+        "ocpd_type": "MCCB_electronic",
+        "t_clear_s": 0.2,
+        "t_clear_source": "engineer_declared"
+      },
+      "geometry": {
+        "working_distance_mm": 455,
+        "gap_distance_mm": 32
+      },
       "arc_flash": {
         "method_applied": "lee_1982",
         "method_fallback_trail": [
-          {"method": "ieee_1584_2018", "result": "skipped", "reason": "coefficients pending-verification for VCB 600V"},
-          {"method": "ieee_1584_2002", "result": "skipped", "reason": "Doughty/Neal coefficients pending-verification"},
-          {"method": "lee_1982", "result": "applied", "reason": "theoretical formula always available"}
+          {
+            "method": "ieee_1584_2018",
+            "result": "skipped",
+            "reason": "coefficients pending-verification for VCB 600V"
+          },
+          {
+            "method": "ieee_1584_2002",
+            "result": "skipped",
+            "reason": "Doughty/Neal coefficients pending-verification"
+          },
+          {
+            "method": "lee_1982",
+            "result": "applied",
+            "reason": "theoretical formula always available"
+          }
         ],
         "arcing_current_a": 16000,
         "incident_energy_cal_per_cm2": 8.0,
@@ -216,13 +316,29 @@
         "electrode_config": null,
         "electrode_config_source": "not_applicable_dc"
       },
-      "fault_inputs": { "ibf_ka_max": 5.0, "ibf_ka_min": 4.5, "x_over_r": null, "z_total_ohm": 100 },
-      "ocpd_inputs": { "ocpd_type": "DC_contactor", "t_clear_s": 0.02, "t_clear_source": "engineer_declared" },
-      "geometry": { "working_distance_mm": 300, "gap_distance_mm": 20 },
+      "fault_inputs": {
+        "ibf_ka_max": 5.0,
+        "ibf_ka_min": 4.5,
+        "x_over_r": null,
+        "z_total_ohm": 100
+      },
+      "ocpd_inputs": {
+        "ocpd_type": "DC_contactor",
+        "t_clear_s": 0.02,
+        "t_clear_source": "engineer_declared"
+      },
+      "geometry": {
+        "working_distance_mm": 300,
+        "gap_distance_mm": 20
+      },
       "arc_flash": {
         "method_applied": "doan_dc",
         "method_fallback_trail": [
-          {"method": "doan_dc", "result": "applied", "reason": "DC path (current_type=dc, voltage_v <= 1000); IEEE 1584 not applicable to DC physics"}
+          {
+            "method": "doan_dc",
+            "result": "applied",
+            "reason": "DC path (current_type=dc, voltage_v <= 1000); IEEE 1584 not applicable to DC physics"
+          }
         ],
         "arcing_current_a": 5.0,
         "incident_energy_cal_per_cm2": 6.0,
@@ -253,7 +369,11 @@
   "compliance_summary": {
     "compliant": true,
     "non_compliance_flags": [
-      { "code": "LEE_1982_FALLBACK_USED", "message": "AC nodes fell back to Lee 1982 (IEEE 1584:2018 coefficients pending). DC nodes use doan_dc method (NFPA 70E Annex D).", "severity": "info" }
+      {
+        "code": "LEE_1982_FALLBACK_USED",
+        "message": "AC nodes fell back to Lee 1982 (IEEE 1584:2018 coefficients pending). DC nodes use doan_dc method (NFPA 70E Annex D).",
+        "severity": "info"
+      }
     ],
     "assumptions": [
       "fault-level intent consumed; per-node Ibf from it; X/R null for DC nodes (impedance-based instead)",
@@ -267,35 +387,164 @@
       "tool_call_pending: true on all nodes — calc.arc_flash_incident_energy runtime tool deferred"
     ]
   },
-  "flags": ["TOOL-CALL-PENDING", "LEE_1982_FALLBACK_USED", "DC_NODES_PRESENT"],
+  "flags": [
+    "TOOL-CALL-PENDING",
+    "LEE_1982_FALLBACK_USED",
+    "DC_NODES_PRESENT"
+  ],
   "rationale": {
     "chat_summary": "US 480V AC + 600V/500V DC unified cascade (PV + DCFC). AC nodes: SERVICE (Cat 3, 12 cal/cm²), PV-INV (Cat 2, 7 cal/cm²), DCFC-AC (Cat 2, 8 cal/cm²). DC nodes: PV-STR (doan_dc Cat 1, 2 cal/cm²), DCFC-OUT (doan_dc Cat 2, 6 cal/cm²). AC uses Lee 1982 fallback (IEEE 1584 pending); DC uses doan_dc (NFPA 70E Annex D). Shock-approach: AC from Table 130.4(C)(a), DC from Table 130.4(C)(b). tool_call_pending all nodes.",
     "sections": [
-      { "title": "Input Ingestion", "summary": "Consumed fault-level + db-layout-rollup intents; 5-node unified AC+DC cascade extracted.", "decisions": [] },
-      { "title": "Cascade Topology", "summary": "5-node depth-3 cascade: SERVICE-480V (root) → PV-INV-1 (AC feeder) → DC-STR-1 (PV DC combiner); SERVICE-480V → DCFC-1 (AC feeder) → DC-OUT (DCFC DC output). Mixed current types.", "decisions": [] },
-      { "title": "Jurisdictional Framing", "summary": "US — NFPA 70E:2024 primary standard. AC nodes use IEEE 1584:2018 method (pending coefficients, fallback Lee 1982). DC nodes use NFPA 70E Annex D doan_dc. Shock-approach from Table 130.4(C)(a) AC + (C)(b) DC.", "decisions": [{ "label": "US jurisdiction applied", "summary": "NFPA 70E:2024 + IEEE 1584:2018 framework", "rule": "NFPA 70E:2024 §§130.4 + 130.5 + Annex D", "code_clause": "NFPA 70E:2024" }] },
-      { "title": "Current-Type Auto-Inference", "summary": "AC equipment → current_type=ac (metal-clad switchgear, inverter, DCFC AC input). DC equipment → current_type=dc (PV combiner box, DCFC output). Cascaded correctly: AC parent → DC child via inverter/DCFC interface.", "decisions": [
-        { "label": "AC equipment identified", "summary": "Service entrance, inverter output, DCFC input = ac", "rule": "equipment_type pattern matching", "code_clause": "arc-flash skill auto-inference" },
-        { "label": "DC equipment identified", "summary": "PV combiner box, DCFC output = dc", "rule": "equipment_type pattern matching", "code_clause": "arc-flash skill auto-inference" }
-      ] },
-      { "title": "Method Selection: AC vs DC", "summary": "AC nodes: IEEE 1584:2018 skipped (coefficients pending) → Lee 1982 applied (conservative). DC nodes: doan_dc applied directly per NFPA 70E Annex D (AC methods not applicable to DC). LEE_1982_FALLBACK_USED + DC_NODES_PRESENT flags emitted.", "decisions": [
-        { "label": "AC fallback Lee 1982", "summary": "IEEE 1584:2018 + 2002 coefficients null. Theoretical Lee formula conservative baseline.", "rule": "rules/method-fallback-chain.yaml", "code_clause": "Lee 1982" },
-        { "label": "DC uses doan_dc", "summary": "DC-specific per Annex D. No IEEE 1584 equivalent for DC.", "rule": "NFPA 70E:2024 Annex D §D.1+D.2", "code_clause": "Doan 2007 + Stokes & Oppenlander 1991" }
-      ] },
-      { "title": "Electrode Configuration: AC Only", "summary": "AC nodes auto-inferred to VCB (metal-clad, inverter, DCFC AC = vertical geometry). DC nodes set electrode_config: null + electrode_config_source: not_applicable_dc (IEEE 1584 electrode concept undefined for DC).", "decisions": [
-        { "label": "AC nodes VCB", "summary": "All three AC nodes → VCB standard geometry", "rule": "IEEE 1584:2018 §4.1.2", "code_clause": "VCB vertical-center-bank" },
-        { "label": "DC nodes null", "summary": "DC nodes have no electrode_config (N/A)", "rule": "NFPA 70E:2024 Annex D", "code_clause": "DC arc-flash distinct from AC" }
-      ] },
-      { "title": "Per-Node Arc-Flash Results", "summary": "SERVICE-480V: Lee 1982 → IE 12 cal/cm² (Cat 3) / AFB 1800mm. PV-INV-1: IE 7 (Cat 2) / AFB 1100mm. DCFC-1: IE 8 (Cat 2) / AFB 1250mm. PV-STR-1 (DC): doan_dc → IE 2 (Cat 1) / AFB 450mm (high impedance PV source). DCFC-OUT (DC): IE 6 (Cat 2) / AFB 850mm (lower impedance contactor).", "decisions": [
-        { "label": "SERVICE Cat 3", "summary": "IE 12 in 8–25 range", "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "code_clause": "130.7(C)(15)(c)", "inputs": { "ie": 12.0, "category": 3 } },
-        { "label": "PV-INV Cat 2", "summary": "IE 7 in 4–8 range", "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "code_clause": "130.7(C)(15)(c)", "inputs": { "ie": 7.0, "category": 2 } },
-        { "label": "DCFC-AC Cat 3", "summary": "IE 8.0 in 8-25 range → Cat 3 (lower bound per Table 130.7(C)(15)(c))", "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)", "code_clause": "130.7(C)(15)(c)", "inputs": { "ie": 8.0, "category": 3 } },
-        { "label": "PV-STR DC Cat 1", "summary": "IE 2 in 0.4–4 range; very low due to high source impedance", "rule": "NFPA 70E:2024 Annex D doan_dc", "code_clause": "Doan 2007", "inputs": { "ie": 2.0, "category": 1, "method": "doan_dc" } },
-        { "label": "DCFC-OUT DC Cat 2", "summary": "IE 6 in 4–8 range; contactor arc duration 20 ms", "rule": "NFPA 70E:2024 Annex D doan_dc", "code_clause": "Doan 2007", "inputs": { "ie": 6.0, "category": 2, "method": "doan_dc" } }
-      ] },
-      { "title": "Shock-Approach: AC vs DC Table Rows", "summary": "AC nodes (SERVICE, PV-INV, DCFC-AC): 480V → Table 130.4(C)(a) row '151V to 750V' (3050mm movable, 1070mm fixed, 305mm restricted). DC nodes: Table 130.4(C)(b) row '301V to 1 kV DC' (1070mm fixed, 305mm restricted, no movable limit for DC).", "decisions": [] },
-      { "title": "Label Recommendations", "summary": "SERVICE: label_recommended=true (NFPA 70E §130.5(H) metal-clad ≥240V). PV-INV: true (inverter AC ≥240V). DCFC-AC: true (DCFC input ≥240V). PV-STR (DC): false (low IE + high impedance → optional per NFPA 70E). DCFC-OUT (DC): true (equipment accessible at vehicle connector, even though DC).", "decisions": [] },
-      { "title": "Compliance + Tool-call Status", "summary": "Compliant. LEE_1982_FALLBACK_USED flag (AC methods pending). DC_NODES_PRESENT flag (doan_dc applied). tool_call_pending on all 5 nodes. Values are estimates; runtime tool will recompute.", "decisions": [] }
+      {
+        "title": "Input Ingestion",
+        "summary": "Consumed fault-level + db-layout-rollup intents; 5-node unified AC+DC cascade extracted.",
+        "decisions": []
+      },
+      {
+        "title": "Cascade Topology",
+        "summary": "5-node depth-3 cascade: SERVICE-480V (root) → PV-INV-1 (AC feeder) → DC-STR-1 (PV DC combiner); SERVICE-480V → DCFC-1 (AC feeder) → DC-OUT (DCFC DC output). Mixed current types.",
+        "decisions": []
+      },
+      {
+        "title": "Jurisdictional Framing",
+        "summary": "US — NFPA 70E:2024 primary standard. AC nodes use IEEE 1584:2018 method (pending coefficients, fallback Lee 1982). DC nodes use NFPA 70E Annex D doan_dc. Shock-approach from Table 130.4(C)(a) AC + (C)(b) DC.",
+        "decisions": [
+          {
+            "label": "US jurisdiction applied",
+            "summary": "NFPA 70E:2024 + IEEE 1584:2018 framework",
+            "rule": "NFPA 70E:2024 §§130.4 + 130.5 + Annex D",
+            "code_clause": "NFPA 70E:2024"
+          }
+        ]
+      },
+      {
+        "title": "Current-Type Auto-Inference",
+        "summary": "AC equipment → current_type=ac (metal-clad switchgear, inverter, DCFC AC input). DC equipment → current_type=dc (PV combiner box, DCFC output). Cascaded correctly: AC parent → DC child via inverter/DCFC interface.",
+        "decisions": [
+          {
+            "label": "AC equipment identified",
+            "summary": "Service entrance, inverter output, DCFC input = ac",
+            "rule": "equipment_type pattern matching",
+            "code_clause": "arc-flash skill auto-inference"
+          },
+          {
+            "label": "DC equipment identified",
+            "summary": "PV combiner box, DCFC output = dc",
+            "rule": "equipment_type pattern matching",
+            "code_clause": "arc-flash skill auto-inference"
+          }
+        ]
+      },
+      {
+        "title": "Method Selection: AC vs DC",
+        "summary": "AC nodes: IEEE 1584:2018 skipped (coefficients pending) → Lee 1982 applied (conservative). DC nodes: doan_dc applied directly per NFPA 70E Annex D (AC methods not applicable to DC). LEE_1982_FALLBACK_USED + DC_NODES_PRESENT flags emitted.",
+        "decisions": [
+          {
+            "label": "AC fallback Lee 1982",
+            "summary": "IEEE 1584:2018 + 2002 coefficients null. Theoretical Lee formula conservative baseline.",
+            "rule": "rules/method-fallback-chain.yaml",
+            "code_clause": "Lee 1982"
+          },
+          {
+            "label": "DC uses doan_dc",
+            "summary": "DC-specific per Annex D. No IEEE 1584 equivalent for DC.",
+            "rule": "NFPA 70E:2024 Annex D §D.1+D.2",
+            "code_clause": "Doan 2007 + Stokes & Oppenlander 1991"
+          }
+        ]
+      },
+      {
+        "title": "Electrode Configuration: AC Only",
+        "summary": "AC nodes auto-inferred to VCB (metal-clad, inverter, DCFC AC = vertical geometry). DC nodes set electrode_config: null + electrode_config_source: not_applicable_dc (IEEE 1584 electrode concept undefined for DC).",
+        "decisions": [
+          {
+            "label": "AC nodes VCB",
+            "summary": "All three AC nodes → VCB standard geometry",
+            "rule": "IEEE 1584:2018 §4.1.2",
+            "code_clause": "VCB vertical-center-bank"
+          },
+          {
+            "label": "DC nodes null",
+            "summary": "DC nodes have no electrode_config (N/A)",
+            "rule": "NFPA 70E:2024 Annex D",
+            "code_clause": "DC arc-flash distinct from AC"
+          }
+        ]
+      },
+      {
+        "title": "Per-Node Arc-Flash Results",
+        "summary": "SERVICE-480V: Lee 1982 → IE 12 cal/cm² (Cat 3) / AFB 1800mm. PV-INV-1: IE 7 (Cat 2) / AFB 1100mm. DCFC-1: IE 8 (Cat 2) / AFB 1250mm. PV-STR-1 (DC): doan_dc → IE 2 (Cat 1) / AFB 450mm (high impedance PV source). DCFC-OUT (DC): IE 6 (Cat 2) / AFB 850mm (lower impedance contactor).",
+        "decisions": [
+          {
+            "label": "SERVICE Cat 3",
+            "summary": "IE 12 in 8–25 range",
+            "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)",
+            "code_clause": "130.7(C)(15)(c)",
+            "inputs": {
+              "ie": 12.0,
+              "category": 3
+            }
+          },
+          {
+            "label": "PV-INV Cat 2",
+            "summary": "IE 7 in 4–8 range",
+            "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)",
+            "code_clause": "130.7(C)(15)(c)",
+            "inputs": {
+              "ie": 7.0,
+              "category": 2
+            }
+          },
+          {
+            "label": "DCFC-AC Cat 3",
+            "summary": "IE 8.0 in 8-25 range → Cat 3 (lower bound per Table 130.7(C)(15)(c))",
+            "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)",
+            "code_clause": "130.7(C)(15)(c)",
+            "inputs": {
+              "ie": 8.0,
+              "category": 3
+            }
+          },
+          {
+            "label": "PV-STR DC Cat 1",
+            "summary": "IE 2 in 0.4–4 range; very low due to high source impedance",
+            "rule": "NFPA 70E:2024 Annex D doan_dc",
+            "code_clause": "Doan 2007",
+            "inputs": {
+              "ie": 2.0,
+              "category": 1,
+              "method": "doan_dc"
+            }
+          },
+          {
+            "label": "DCFC-OUT DC Cat 2",
+            "summary": "IE 6 in 4–8 range; contactor arc duration 20 ms",
+            "rule": "NFPA 70E:2024 Annex D doan_dc",
+            "code_clause": "Doan 2007",
+            "inputs": {
+              "ie": 6.0,
+              "category": 2,
+              "method": "doan_dc"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Shock-Approach: AC vs DC Table Rows",
+        "summary": "AC nodes (SERVICE, PV-INV, DCFC-AC): 480V → Table 130.4(C)(a) row '151V to 750V' (3050mm movable, 1070mm fixed, 305mm restricted). DC nodes: Table 130.4(C)(b) row '301V to 1 kV DC' (1070mm fixed, 305mm restricted, no movable limit for DC).",
+        "decisions": []
+      },
+      {
+        "title": "Label Recommendations",
+        "summary": "SERVICE: label_recommended=true (NFPA 70E §130.5(H) metal-clad ≥240V). PV-INV: true (inverter AC ≥240V). DCFC-AC: true (DCFC input ≥240V). PV-STR (DC): false (low IE + high impedance → optional per NFPA 70E). DCFC-OUT (DC): true (equipment accessible at vehicle connector, even though DC).",
+        "decisions": []
+      },
+      {
+        "title": "Compliance + Tool-call Status",
+        "summary": "Compliant. LEE_1982_FALLBACK_USED flag (AC methods pending). DC_NODES_PRESENT flag (doan_dc applied). tool_call_pending on all 5 nodes. Values are estimates; runtime tool will recompute.",
+        "decisions": []
+      }
     ]
-  }
+  },
+  "invariants": []
 }

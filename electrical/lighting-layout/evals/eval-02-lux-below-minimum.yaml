@@ -28,7 +28,7 @@ checks:
   - assertion: ir.calculation_summary.compliant == false
     description: Overall compliance flag must be false
 
-  - assertion: ir.flags contains "NON-COMPLIANCE"
+  - assertion: ir.calculation_summary.non_compliance_flags.length >= 1
     description: Chat-facing flags must contain the NON-COMPLIANCE marker
 
   - assertion: ir.calculation_summary.non_compliance_flags[*].reference contains "BS EN 12464-1"

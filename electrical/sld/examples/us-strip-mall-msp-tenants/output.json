@@ -7,12 +7,42 @@
     "skill_version": "sld/1.5.0",
     "produced_at": "2026-05-18T13:30:00Z",
     "consumed_intents": [
-      { "intent_type": "db-layout",    "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",    "path": "electrical/db-layout/examples/us-strip-mall-panelboard/intent-out.json" },
-      { "intent_type": "db-layout",    "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",    "path": "electrical/db-layout/examples/us-strip-mall-tsp-a/intent-out.json" },
-      { "intent_type": "db-layout",    "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",    "path": "electrical/db-layout/examples/us-strip-mall-tsp-b/intent-out.json" },
-      { "intent_type": "db-layout",    "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",    "path": "electrical/db-layout/examples/us-strip-mall-common-area/intent-out.json" },
-      { "intent_type": "earthing",     "intent_version": "1.0.0", "produced_by": "electrical/earthing/v1.4.0",     "path": "electrical/earthing/examples/us-commercial-nec/intent-out.json" },
-      { "intent_type": "fault-level",  "intent_version": "1.0.0", "produced_by": "electrical/fault-level/v1.1.0",  "path": "electrical/fault-level/examples/us-strip-mall-retail/intent-out.json" }
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.2.0",
+        "path": "electrical/db-layout/examples/us-strip-mall-panelboard/intent-out.json"
+      },
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.2.0",
+        "path": "electrical/db-layout/examples/us-strip-mall-tsp-a/intent-out.json"
+      },
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.2.0",
+        "path": "electrical/db-layout/examples/us-strip-mall-tsp-b/intent-out.json"
+      },
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.2.0",
+        "path": "electrical/db-layout/examples/us-strip-mall-common-area/intent-out.json"
+      },
+      {
+        "intent_type": "earthing",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/earthing/v1.4.0",
+        "path": "electrical/earthing/examples/us-commercial-nec/intent-out.json"
+      },
+      {
+        "intent_type": "fault-level",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/fault-level/v1.1.0",
+        "path": "electrical/fault-level/examples/us-strip-mall-retail/intent-out.json"
+      }
     ]
   },
   "jurisdiction": "US",
@@ -23,21 +53,74 @@
     "voltage_nominal_v": 208,
     "voltage_arrangement": "TPN_plus_E",
     "frequency_hz": 60,
-    "ze_declared_ohm": 0.10,
+    "ze_declared_ohm": 0.1,
     "pfc_declared_ka": 22.0,
     "main_switch_rating_a": 200,
     "main_switch_breaking_capacity_ka": 25
   },
   "distribution_hierarchy": [
-    { "board_id": "MSP-A", "board_role": "main_switchboard",       "consumed_intent_path": "electrical/db-layout/examples/us-strip-mall-panelboard/intent-out.json",   "parent_board_id": null,    "fed_via_circuit_id": null,  "location": "service-entry room, north exterior wall",            "enclosure_rating": "NEMA 3R" },
-    { "board_id": "TSP-A", "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/us-strip-mall-tsp-a/intent-out.json",        "parent_board_id": "MSP-A", "fed_via_circuit_id": "T01", "location": "Suite 100 (apparel retail), back-of-house",         "enclosure_rating": "NEMA 1" },
-    { "board_id": "TSP-B", "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/us-strip-mall-tsp-b/intent-out.json",        "parent_board_id": "MSP-A", "fed_via_circuit_id": "T02", "location": "Suite 200 (food-service retail), back-of-house",    "enclosure_rating": "NEMA 1" },
-    { "board_id": "CA-P",  "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/us-strip-mall-common-area/intent-out.json", "parent_board_id": "MSP-A", "fed_via_circuit_id": "T03", "location": "common-area utility closet (parking-lot + exterior)", "enclosure_rating": "NEMA 1" }
+    {
+      "board_id": "MSP-A",
+      "board_role": "main_switchboard",
+      "consumed_intent_path": "electrical/db-layout/examples/us-strip-mall-panelboard/intent-out.json",
+      "parent_board_id": null,
+      "fed_via_circuit_id": null,
+      "location": "service-entry room, north exterior wall",
+      "enclosure_rating": "NEMA 3R"
+    },
+    {
+      "board_id": "TSP-A",
+      "board_role": "sub_distribution_board",
+      "consumed_intent_path": "electrical/db-layout/examples/us-strip-mall-tsp-a/intent-out.json",
+      "parent_board_id": "MSP-A",
+      "fed_via_circuit_id": "T01",
+      "location": "Suite 100 (apparel retail), back-of-house",
+      "enclosure_rating": "NEMA 1"
+    },
+    {
+      "board_id": "TSP-B",
+      "board_role": "sub_distribution_board",
+      "consumed_intent_path": "electrical/db-layout/examples/us-strip-mall-tsp-b/intent-out.json",
+      "parent_board_id": "MSP-A",
+      "fed_via_circuit_id": "T02",
+      "location": "Suite 200 (food-service retail), back-of-house",
+      "enclosure_rating": "NEMA 1"
+    },
+    {
+      "board_id": "CA-P",
+      "board_role": "sub_distribution_board",
+      "consumed_intent_path": "electrical/db-layout/examples/us-strip-mall-common-area/intent-out.json",
+      "parent_board_id": "MSP-A",
+      "fed_via_circuit_id": "T03",
+      "location": "common-area utility closet (parking-lot + exterior)",
+      "enclosure_rating": "NEMA 1"
+    }
   ],
   "selectivity_cascade": [
-    { "parent_board_id": "MSP-A", "parent_circuit_id": "T01", "child_board_id": "TSP-A", "verdict": "partial_selective", "verification_method": "manual_review", "_note": "MSP-A 200A main / TSP-A 100A 2-pole tenant feeder = 2.0:1 ratio. Below the 3:1 typical instantaneous-selectivity threshold but acceptable for general retail per NEC 240.86 series-rated combinations — full selective coordination is mandated only for elevators (NEC 620.62), emergency systems (NEC 700.27/701.27), and healthcare critical branches (NEC 517.17). Manufacturer series-rating table consultation recommended for AIC stacking." },
-    { "parent_board_id": "MSP-A", "parent_circuit_id": "T02", "child_board_id": "TSP-B", "verdict": "partial_selective", "verification_method": "manual_review", "_note": "MSP-A 200A main / TSP-B 100A 2-pole tenant feeder = 2.0:1 ratio. Same rationale as T01. Note: TSP-B C03/C04 (food-service kitchen equipment) use Type D curves for inrush — handled at the TSP-B device tier, no impact on cascade." },
-    { "parent_board_id": "MSP-A", "parent_circuit_id": "T03", "child_board_id": "CA-P",  "verdict": "selective",         "verification_method": "iec_60898_typical", "_note": "MSP-A 200A main / CA-P 60A 2-pole feeder = 3.33:1 ratio, above the 3:1 typical selectivity threshold. CA-P carries fire-pump branch (C05) — see compliance flag for NEC 695.4(A) independent-source requirement." }
+    {
+      "parent_board_id": "MSP-A",
+      "parent_circuit_id": "T01",
+      "child_board_id": "TSP-A",
+      "verdict": "partial_selective",
+      "verification_method": "manual_review",
+      "_note": "MSP-A 200A main / TSP-A 100A 2-pole tenant feeder = 2.0:1 ratio. Below the 3:1 typical instantaneous-selectivity threshold but acceptable for general retail per NEC 240.86 series-rated combinations — full selective coordination is mandated only for elevators (NEC 620.62), emergency systems (NEC 700.27/701.27), and healthcare critical branches (NEC 517.17). Manufacturer series-rating table consultation recommended for AIC stacking."
+    },
+    {
+      "parent_board_id": "MSP-A",
+      "parent_circuit_id": "T02",
+      "child_board_id": "TSP-B",
+      "verdict": "partial_selective",
+      "verification_method": "manual_review",
+      "_note": "MSP-A 200A main / TSP-B 100A 2-pole tenant feeder = 2.0:1 ratio. Same rationale as T01. Note: TSP-B C03/C04 (food-service kitchen equipment) use Type D curves for inrush — handled at the TSP-B device tier, no impact on cascade."
+    },
+    {
+      "parent_board_id": "MSP-A",
+      "parent_circuit_id": "T03",
+      "child_board_id": "CA-P",
+      "verdict": "selective",
+      "verification_method": "iec_60898_typical",
+      "_note": "MSP-A 200A main / CA-P 60A 2-pole feeder = 3.33:1 ratio, above the 3:1 typical selectivity threshold. CA-P carries fire-pump branch (C05) — see compliance flag for NEC 695.4(A) independent-source requirement."
+    }
   ],
   "system_metrics": {
     "imax_total_a": 127,
@@ -58,7 +141,11 @@
   "compliance_summary": {
     "compliant": false,
     "non_compliance_flags": [
-      { "message": "CA-P common-area panel carries fire-pump branch circuit (C05 60A Type D, 11.0 kW motor load). NEC 695.4(A) requires fire-pump from an independent service or dedicated tap ahead of the service-disconnecting means — fire-pump CANNOT share a panel with non-essential common-area loads (parking-lot lighting, signage, etc.) because a fault elsewhere on CA-P could open the upstream T03 feeder and disable the fire-pump during a fire event. This example documents a deliberate teaching scenario showing how the SLD surfaces multi-board compliance tensions rather than silently engineering-correcting at the IR tier. Remediation: relocate C05 fire-pump branch to a dedicated 'FP-1' fire-pump controller fed directly from MSP-A line-side (ahead of MSP-A main disconnect) or from an independent service drop per NEC 695.3.", "code_clause": "NEC 2023 Article 695.4(A)", "severity": "critical" }
+      {
+        "message": "CA-P common-area panel carries fire-pump branch circuit (C05 60A Type D, 11.0 kW motor load). NEC 695.4(A) requires fire-pump from an independent service or dedicated tap ahead of the service-disconnecting means — fire-pump CANNOT share a panel with non-essential common-area loads (parking-lot lighting, signage, etc.) because a fault elsewhere on CA-P could open the upstream T03 feeder and disable the fire-pump during a fire event. This example documents a deliberate teaching scenario showing how the SLD surfaces multi-board compliance tensions rather than silently engineering-correcting at the IR tier. Remediation: relocate C05 fire-pump branch to a dedicated 'FP-1' fire-pump controller fed directly from MSP-A line-side (ahead of MSP-A main disconnect) or from an independent service drop per NEC 695.3.",
+        "code_clause": "NEC 2023 Article 695.4(A)",
+        "severity": "critical"
+      }
     ],
     "assumptions": [
       "Diversity factor 0.85 applied across sub-panel summed loads. Aggregate Imax_total = (9.9 + 16.6 + 19.6 kW) × 0.85 / (√3 × 208V × 0.85) ≈ 127A. Inline LLM derivation; deterministic refinement deferred per WI3 to calc.sld_system_metrics.",
@@ -80,7 +167,17 @@
     "Cable conductors per upstream db-layout intents use AWG sizing (Cu, THHN insulation typical for US commercial sub-panel feeders).",
     "CRITICAL: CA-P C05 fire-pump branch violates NEC 695.4(A) — fire-pump requires independent source. Relocate to dedicated FP-1 controller ahead of MSP-A main disconnect or to independent service drop per NEC 695.3."
   ],
-  "drawn_as_symbols": ["BUSBAR", "MCCB", "MCB", "GFCI", "EARTH_GENERAL", "EARTH_PROTECTIVE", "CONDUCTOR_PE", "JUNCTION_T", "SPD_SYMBOL"],
+  "drawn_as_symbols": [
+    "BUSBAR",
+    "MCCB",
+    "MCB",
+    "GFCI",
+    "EARTH_GENERAL",
+    "EARTH_PROTECTIVE",
+    "CONDUCTOR_PE",
+    "JUNCTION_T",
+    "SPD_SYMBOL"
+  ],
   "flags": [
     "TOOL-CALL-PENDING:sld_system_metrics — System metrics are LLM-estimates; deterministic refinement deferred per WI3.",
     "NON-COMPLIANCE:critical — NEC 695.4(A) fire-pump on shared common-area panel (deliberate teaching scenario; see compliance_summary)"
@@ -88,26 +185,117 @@
   "rationale": {
     "chat_summary": "US strip-mall retail TN-S 208Y/120V 3-phase. 200A MSP-A feeds 3 sub-panels: TSP-A (apparel 100A), TSP-B (food-service 100A), CA-P (common+exterior 60A). Imax ~127A; peak PFC 23.8kA per fault-level intent (NEC 110.9: MSP AIC 25kA at 1.05× margin). Type 1+2 SPD per NEC 285. Cascade partially_selective (T01/T02 2:1, T03 3.33:1). CRITICAL: CA-P C05 fire-pump violates NEC 695.4(A). v1.4 consumes 4 db-layout + earthing + fault-level intents.",
     "sections": [
-      { "title": "Supply Origin", "summary": "TN-S 208Y/120V 3-phase 4-wire, declared Ze=0.10Ω + PFC=22kA. 200A panelboard main switch with 25kA AIC rating (per NEC 110.9 interrupting-rating). Generic US IOU service — citations use NEC 2023 form.", "decisions": [
-        { "label": "TN-S 208Y/120V service confirmed", "summary": "Separate neutral conductor from utility transformer secondary; service equipment grounding electrode conductor (GEC) per NEC 250.66 sized to service conductor ampacity.", "rule": "NEC 2023 Article 250 grounding/bonding for service equipment", "code_clause": "NEC 2023 Article 250.24", "inputs": { "ze_ohm_declared": 0.10, "pfc_ka_declared": 22.0 } }
-      ] },
-      { "title": "Distribution Hierarchy", "summary": "4-board cascade. MSP-A in service-entry room feeds 2 tenant sub-panels (TSP-A apparel + TSP-B food-service) and 1 common-area sub-panel (CA-P with parking-lot + exterior + fire-pump). Strip-mall topology typical for US small commercial.", "decisions": [
-        { "label": "Tenant-isolated sub-panels", "summary": "Each tenant gets a dedicated 100A 2-pole feeder for billing isolation + fit-out independence. CA-P handles landlord-side loads (common-area lighting, parking-lot, signage, fire-pump).", "rule": "Industry convention; NEC 230.71 disconnecting means per tenant", "code_clause": "NEC 2023 Article 230.71", "inputs": { "board_count": 4, "tenant_count": 2 } }
-      ] },
-      { "title": "System Metrics", "summary": "Imax_total 127A (vs 200A intake = 64% utilisation, 36% headroom). Peak PFC 23.8kA from fault-level intent (vs 25kA AIC — tight 1.05× margin, acceptable per NEC 110.9 which requires AIC ≥ PFC with no mandated margin). Sub-panel feeder runs drop PFC further at the branch tier.", "decisions": [
-        { "label": "Intake capacity verified", "summary": "main_switch_rating 200A >= imax_total 127A; AIC 25kA >= peak_pfc 23.8kA per fault-level intent IEC 60909-0:2016 cascade. NEC 110.9 interrupting rating satisfied at 1.05× margin.", "rule": "NEC 110.9 interrupting rating + NEC 220.10 calculated load", "code_clause": "NEC 2023 Article 110.9", "inputs": { "imax_total_a": 127, "main_switch_rating_a": 200, "peak_pfc_ka": 23.8, "aic_ka": 25, "aic_margin_pct": 5 } }
-      ] },
-      { "title": "Cascade Selectivity", "summary": "T01/T02 (200A/100A = 2:1) flagged 'partial_selective' — below 3:1 typical but acceptable for general retail per NEC 240.86 series-rated combinations. T03 (200A/60A = 3.33:1) verified selective. Full selective coordination NOT required for general commercial per NEC scope — only elevators, emergency, healthcare critical.", "decisions": [
-        { "label": "Partial selectivity acceptable for general retail", "summary": "NEC does not mandate selective coordination for general commercial sub-panels. Series-rated AIC stacking per NEC 240.86 covers the partial-selectivity cases; manufacturer table consultation confirms specific breaker pair behaviour.", "rule": "NEC 240.86 series-rated combinations + NEC 620.62 / 700.27 selectivity scope (excluded)", "code_clause": "NEC 2023 Article 240.86", "inputs": { "t01_ratio": 2.0, "t02_ratio": 2.0, "t03_ratio": 3.33 } }
-      ] },
-      { "title": "SPD Assessment", "summary": "Combined Type 1+2 SPD at MSP-A intake per NEC 285. Type 1 at service-entry (ahead of main disconnect per NEC 285.23) handles direct-strike; Type 2 at branch panels per NEC 285.24 handles residual transients. Standard US commercial practice for strip-mall with rooftop exposure.", "decisions": [
-        { "label": "Type 1+2 SPD at MSP-A", "summary": "NEC 2023 Article 285 service-entry SPD policy. Combined assembly preferred over separate Type 1 + Type 2 devices for installation simplicity at this scale.", "rule": "NEC 285 SPD installation requirements + UL 1449 SPD listing", "code_clause": "NEC 2023 Article 285", "inputs": { "spd_type": "Type 1+2", "location_type": "commercial_retail", "lightning_risk": "moderate" } }
-      ] },
-      { "title": "Life-Safety Isolation", "summary": "No dedicated fire-alarm panel (fire-alarm on 24V supervised loop with NFPA 72 battery backup). No central inverter emergency-lighting (per-fixture battery packs per NFPA 101). CA-P C03 sustained-supply emergency-lighting feeder distributes to battery-pack luminaires. UPS-essential loads kVA = 0 at this scale.", "decisions": [] },
-      { "title": "Compliance", "summary": "Non-compliant: CRITICAL flag on CA-P C05 fire-pump branch per NEC 695.4(A) — fire-pump must have independent source, NOT share a panel with common-area / parking-lot loads. Deliberate teaching scenario at this SLD tier showing how multi-board IR surfaces compliance tensions that single-board db-layout cannot.", "decisions": [
-        { "label": "NEC 695.4(A) critical non-compliance", "summary": "CA-P C05 60A Type D fire-pump branch on common-area panel — a fault elsewhere on CA-P could disable the fire-pump during a fire event. Remediation: dedicated 'FP-1' fire-pump controller fed directly from MSP-A line-side (ahead of main disconnect) or independent service drop per NEC 695.3.", "rule": "NEC 695.4(A) independent-source rule for fire-pumps", "code_clause": "NEC 2023 Article 695.4(A)", "inputs": { "severity": "critical", "remediation_options": 2 } }
-      ] },
-      { "title": "Assumptions", "summary": "9 assumptions captured covering diversity factor, MSP-A upstream voltage-arrangement mismatch (db-layout intent shows 240V single-phase split; SLD applies 208Y/120V per task brief), NEC selectivity-scope rationale, Type 1+2 SPD per NEC 285, fault-level-derived PFC + AIC verification, life-safety strategy, v1.4 multi-skill earthing+fault-level intent consumption, and tool_call_pending_for_system_metrics deferral preservation.", "decisions": [] }
+      {
+        "title": "Supply Origin",
+        "summary": "TN-S 208Y/120V 3-phase 4-wire, declared Ze=0.10Ω + PFC=22kA. 200A panelboard main switch with 25kA AIC rating (per NEC 110.9 interrupting-rating). Generic US IOU service — citations use NEC 2023 form.",
+        "decisions": [
+          {
+            "label": "TN-S 208Y/120V service confirmed",
+            "summary": "Separate neutral conductor from utility transformer secondary; service equipment grounding electrode conductor (GEC) per NEC 250.66 sized to service conductor ampacity.",
+            "rule": "NEC 2023 Article 250 grounding/bonding for service equipment",
+            "code_clause": "NEC 2023 Article 250.24",
+            "inputs": {
+              "ze_ohm_declared": 0.1,
+              "pfc_ka_declared": 22.0
+            }
+          }
+        ]
+      },
+      {
+        "title": "Distribution Hierarchy",
+        "summary": "4-board cascade. MSP-A in service-entry room feeds 2 tenant sub-panels (TSP-A apparel + TSP-B food-service) and 1 common-area sub-panel (CA-P with parking-lot + exterior + fire-pump). Strip-mall topology typical for US small commercial.",
+        "decisions": [
+          {
+            "label": "Tenant-isolated sub-panels",
+            "summary": "Each tenant gets a dedicated 100A 2-pole feeder for billing isolation + fit-out independence. CA-P handles landlord-side loads (common-area lighting, parking-lot, signage, fire-pump).",
+            "rule": "Industry convention; NEC 230.71 disconnecting means per tenant",
+            "code_clause": "NEC 2023 Article 230.71",
+            "inputs": {
+              "board_count": 4,
+              "tenant_count": 2
+            }
+          }
+        ]
+      },
+      {
+        "title": "System Metrics",
+        "summary": "Imax_total 127A (vs 200A intake = 64% utilisation, 36% headroom). Peak PFC 23.8kA from fault-level intent (vs 25kA AIC — tight 1.05× margin, acceptable per NEC 110.9 which requires AIC ≥ PFC with no mandated margin). Sub-panel feeder runs drop PFC further at the branch tier.",
+        "decisions": [
+          {
+            "label": "Intake capacity verified",
+            "summary": "main_switch_rating 200A >= imax_total 127A; AIC 25kA >= peak_pfc 23.8kA per fault-level intent IEC 60909-0:2016 cascade. NEC 110.9 interrupting rating satisfied at 1.05× margin.",
+            "rule": "NEC 110.9 interrupting rating + NEC 220.10 calculated load",
+            "code_clause": "NEC 2023 Article 110.9",
+            "inputs": {
+              "imax_total_a": 127,
+              "main_switch_rating_a": 200,
+              "peak_pfc_ka": 23.8,
+              "aic_ka": 25,
+              "aic_margin_pct": 5
+            }
+          }
+        ]
+      },
+      {
+        "title": "Cascade Selectivity",
+        "summary": "T01/T02 (200A/100A = 2:1) flagged 'partial_selective' — below 3:1 typical but acceptable for general retail per NEC 240.86 series-rated combinations. T03 (200A/60A = 3.33:1) verified selective. Full selective coordination NOT required for general commercial per NEC scope — only elevators, emergency, healthcare critical.",
+        "decisions": [
+          {
+            "label": "Partial selectivity acceptable for general retail",
+            "summary": "NEC does not mandate selective coordination for general commercial sub-panels. Series-rated AIC stacking per NEC 240.86 covers the partial-selectivity cases; manufacturer table consultation confirms specific breaker pair behaviour.",
+            "rule": "NEC 240.86 series-rated combinations + NEC 620.62 / 700.27 selectivity scope (excluded)",
+            "code_clause": "NEC 2023 Article 240.86",
+            "inputs": {
+              "t01_ratio": 2.0,
+              "t02_ratio": 2.0,
+              "t03_ratio": 3.33
+            }
+          }
+        ]
+      },
+      {
+        "title": "SPD Assessment",
+        "summary": "Combined Type 1+2 SPD at MSP-A intake per NEC 285. Type 1 at service-entry (ahead of main disconnect per NEC 285.23) handles direct-strike; Type 2 at branch panels per NEC 285.24 handles residual transients. Standard US commercial practice for strip-mall with rooftop exposure.",
+        "decisions": [
+          {
+            "label": "Type 1+2 SPD at MSP-A",
+            "summary": "NEC 2023 Article 285 service-entry SPD policy. Combined assembly preferred over separate Type 1 + Type 2 devices for installation simplicity at this scale.",
+            "rule": "NEC 285 SPD installation requirements + UL 1449 SPD listing",
+            "code_clause": "NEC 2023 Article 285",
+            "inputs": {
+              "spd_type": "Type 1+2",
+              "location_type": "commercial_retail",
+              "lightning_risk": "moderate"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Life-Safety Isolation",
+        "summary": "No dedicated fire-alarm panel (fire-alarm on 24V supervised loop with NFPA 72 battery backup). No central inverter emergency-lighting (per-fixture battery packs per NFPA 101). CA-P C03 sustained-supply emergency-lighting feeder distributes to battery-pack luminaires. UPS-essential loads kVA = 0 at this scale.",
+        "decisions": []
+      },
+      {
+        "title": "Compliance",
+        "summary": "Non-compliant: CRITICAL flag on CA-P C05 fire-pump branch per NEC 695.4(A) — fire-pump must have independent source, NOT share a panel with common-area / parking-lot loads. Deliberate teaching scenario at this SLD tier showing how multi-board IR surfaces compliance tensions that single-board db-layout cannot.",
+        "decisions": [
+          {
+            "label": "NEC 695.4(A) critical non-compliance",
+            "summary": "CA-P C05 60A Type D fire-pump branch on common-area panel — a fault elsewhere on CA-P could disable the fire-pump during a fire event. Remediation: dedicated 'FP-1' fire-pump controller fed directly from MSP-A line-side (ahead of main disconnect) or independent service drop per NEC 695.3.",
+            "rule": "NEC 695.4(A) independent-source rule for fire-pumps",
+            "code_clause": "NEC 2023 Article 695.4(A)",
+            "inputs": {
+              "severity": "critical",
+              "remediation_options": 2
+            }
+          }
+        ]
+      },
+      {
+        "title": "Assumptions",
+        "summary": "9 assumptions captured covering diversity factor, MSP-A upstream voltage-arrangement mismatch (db-layout intent shows 240V single-phase split; SLD applies 208Y/120V per task brief), NEC selectivity-scope rationale, Type 1+2 SPD per NEC 285, fault-level-derived PFC + AIC verification, life-safety strategy, v1.4 multi-skill earthing+fault-level intent consumption, and tool_call_pending_for_system_metrics deferral preservation.",
+        "decisions": []
+      }
     ]
   },
   "drawing_layout": {
@@ -121,10 +309,35 @@
       }
     ],
     "boards": {
-      "MSP-A": { "sheet_id": "sheet_1", "tree_layer": 0, "layout_group": "main",          "routing_intent": "direct_from_msb", "layout_intent_note": "Main service panel 200A — PoCo intake, root of tenant cascade" },
-      "TSP-A": { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "general_power", "routing_intent": "via_main_spine",  "layout_intent_note": "Tenant A sub-panel 100A — Suite 100 apparel retail" },
-      "TSP-B": { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "general_power", "routing_intent": "via_main_spine",  "layout_intent_note": "Tenant B sub-panel 100A — Suite 200 food-service retail" },
-      "CA-P":  { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "general_power", "routing_intent": "via_main_spine",  "layout_intent_note": "Common-area panel 60A — shared lighting + parking + signage (fire-pump branch flagged for NEC 695.4(A) remediation)" }
+      "MSP-A": {
+        "sheet_id": "sheet_1",
+        "tree_layer": 0,
+        "layout_group": "main",
+        "routing_intent": "direct_from_msb",
+        "layout_intent_note": "Main service panel 200A — PoCo intake, root of tenant cascade"
+      },
+      "TSP-A": {
+        "sheet_id": "sheet_1",
+        "tree_layer": 1,
+        "layout_group": "general_power",
+        "routing_intent": "via_main_spine",
+        "layout_intent_note": "Tenant A sub-panel 100A — Suite 100 apparel retail"
+      },
+      "TSP-B": {
+        "sheet_id": "sheet_1",
+        "tree_layer": 1,
+        "layout_group": "general_power",
+        "routing_intent": "via_main_spine",
+        "layout_intent_note": "Tenant B sub-panel 100A — Suite 200 food-service retail"
+      },
+      "CA-P": {
+        "sheet_id": "sheet_1",
+        "tree_layer": 1,
+        "layout_group": "general_power",
+        "routing_intent": "via_main_spine",
+        "layout_intent_note": "Common-area panel 60A — shared lighting + parking + signage (fire-pump branch flagged for NEC 695.4(A) remediation)"
+      }
     }
-  }
+  },
+  "invariants": []
 }

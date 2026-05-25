@@ -44,7 +44,7 @@ checks:
     description: Output validates against the db-layout IR schema
     severity: critical
 
-  - assertion: 'ir.incoming.phase_arrangement == "TPN"'
+  - assertion: 'ir.incoming_supply.phase_arrangement == "TPN"'
     description: Phase arrangement must be TPN
     severity: critical
 
@@ -52,7 +52,7 @@ checks:
     description: Enclosure form must be Form 4b as declared
     severity: critical
 
-  - assertion: 'ir.busbar.icw_ka_1s >= 25'
+  - assertion: 'ir.main_switch.breaking_capacity_ka >= 25'
     description: IcW must withstand declared 25 kA fault
     severity: critical
 
@@ -60,11 +60,11 @@ checks:
     description: One selectivity_results entry per feeder cascade pair
     severity: critical
 
-  - assertion: 'ir.invariants.INV-6.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-06")].passes == true'
     description: Busbar IcW vs Ipk
     severity: critical
     matches_inv: INV-6
 
-  - assertion: 'ir.citations matches "^IEC 61439"'
+  - assertion: 'ir.rationale.sections[*].summary matches "^IEC 61439"'
     description: At least 1 citation matches IEC 61439 pattern
     severity: warning

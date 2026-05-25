@@ -43,7 +43,13 @@
       "tool_call_pending_for_zs_verification": true,
       "estimated_max_load_kw": 5.5,
       "diversified_max_load_a": 16.0,
-      "rooms_covered": ["kitchen", "utility", "dining", "lounge", "outdoor"]
+      "rooms_covered": [
+        "kitchen",
+        "utility",
+        "dining",
+        "lounge",
+        "outdoor"
+      ]
     },
     {
       "circuit_id": "C02",
@@ -68,7 +74,11 @@
       "tool_call_pending_for_zs_verification": true,
       "estimated_max_load_kw": 2.0,
       "diversified_max_load_a": 6.5,
-      "rooms_covered": ["bedroom-1", "bedroom-2", "bedroom-3"]
+      "rooms_covered": [
+        "bedroom-1",
+        "bedroom-2",
+        "bedroom-3"
+      ]
     },
     {
       "circuit_id": "C03",
@@ -93,7 +103,9 @@
       "tool_call_pending_for_zs_verification": true,
       "estimated_max_load_kw": 7.0,
       "diversified_max_load_a": 25.0,
-      "rooms_covered": ["kitchen"]
+      "rooms_covered": [
+        "kitchen"
+      ]
     },
     {
       "circuit_id": "C04",
@@ -118,7 +130,9 @@
       "tool_call_pending_for_zs_verification": true,
       "estimated_max_load_kw": 3.0,
       "diversified_max_load_a": 13.0,
-      "rooms_covered": ["utility"]
+      "rooms_covered": [
+        "utility"
+      ]
     },
     {
       "circuit_id": "C05",
@@ -143,113 +157,354 @@
       "tool_call_pending_for_zs_verification": true,
       "estimated_max_load_kw": 0.5,
       "diversified_max_load_a": 2.2,
-      "rooms_covered": ["bathroom"]
+      "rooms_covered": [
+        "bathroom"
+      ]
     }
   ],
   "rooms": [
     {
       "room_id": "kitchen",
       "room_type": "kitchen_domestic",
-      "dimensions_m": {"length": 4.5, "width": 3.5, "height": 2.4},
+      "dimensions_m": {
+        "length": 4.5,
+        "width": 3.5,
+        "height": 2.4
+      },
       "special_location": null,
       "sockets": [
-        {"id": "kitchen-S01", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
-        {"id": "kitchen-S02", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
-        {"id": "kitchen-S03", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
-        {"id": "kitchen-S04", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
-        {"id": "kitchen-S05", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
-        {"id": "kitchen-S06", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
-        {"id": "kitchen-S07", "type": "BS_4177_cooker_control_unit_45A", "mount": "wall", "height_mm": 1350, "circuit_id": "C03"}
+        {
+          "id": "kitchen-S01",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "above_worktop",
+          "height_mm": 1150,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "kitchen-S02",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "above_worktop",
+          "height_mm": 1150,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "kitchen-S03",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "above_worktop",
+          "height_mm": 1150,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "kitchen-S04",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "above_worktop",
+          "height_mm": 1150,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "kitchen-S05",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "kitchen-S06",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "kitchen-S07",
+          "type": "BS_4177_cooker_control_unit_45A",
+          "mount": "wall",
+          "height_mm": 1350,
+          "circuit_id": "C03"
+        }
       ]
     },
     {
       "room_id": "utility",
       "room_type": "utility_domestic",
-      "dimensions_m": {"length": 2.5, "width": 2.0, "height": 2.4},
+      "dimensions_m": {
+        "length": 2.5,
+        "width": 2.0,
+        "height": 2.4
+      },
       "special_location": null,
       "sockets": [
-        {"id": "utility-S01", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
-        {"id": "utility-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
-        {"id": "utility-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
-        {"id": "utility-S04", "type": "switched_connection_unit_20A_BS_EN_60669", "mount": "wall", "height_mm": 1350, "circuit_id": "C04", "spur_purpose": "immersion heater fixed feed"}
+        {
+          "id": "utility-S01",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "above_worktop",
+          "height_mm": 1150,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "utility-S02",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "utility-S03",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "utility-S04",
+          "type": "switched_connection_unit_20A_BS_EN_60669",
+          "mount": "wall",
+          "height_mm": 1350,
+          "circuit_id": "C04",
+          "spur_purpose": "immersion heater fixed feed"
+        }
       ]
     },
     {
       "room_id": "dining",
       "room_type": "dining_domestic",
-      "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4},
+      "dimensions_m": {
+        "length": 3.5,
+        "width": 3.0,
+        "height": 2.4
+      },
       "special_location": null,
       "sockets": [
-        {"id": "dining-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
-        {"id": "dining-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
-        {"id": "dining-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
-        {"id": "dining-S04", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"}
+        {
+          "id": "dining-S01",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "dining-S02",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "dining-S03",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "dining-S04",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        }
       ]
     },
     {
       "room_id": "lounge",
       "room_type": "lounge_domestic",
-      "dimensions_m": {"length": 5.0, "width": 4.0, "height": 2.4},
+      "dimensions_m": {
+        "length": 5.0,
+        "width": 4.0,
+        "height": 2.4
+      },
       "special_location": null,
       "sockets": [
-        {"id": "lounge-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
-        {"id": "lounge-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
-        {"id": "lounge-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
-        {"id": "lounge-S04", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
-        {"id": "lounge-S05", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
-        {"id": "lounge-S06", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"}
+        {
+          "id": "lounge-S01",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "lounge-S02",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "lounge-S03",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "lounge-S04",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "lounge-S05",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "lounge-S06",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        }
       ]
     },
     {
       "room_id": "bedroom-1",
       "room_type": "bedroom_domestic",
-      "dimensions_m": {"length": 4.0, "width": 3.5, "height": 2.4},
+      "dimensions_m": {
+        "length": 4.0,
+        "width": 3.5,
+        "height": 2.4
+      },
       "special_location": null,
       "sockets": [
-        {"id": "bedroom-1-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
-        {"id": "bedroom-1-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
-        {"id": "bedroom-1-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
-        {"id": "bedroom-1-S04", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"}
+        {
+          "id": "bedroom-1-S01",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "bedroom-1-S02",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "bedroom-1-S03",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "bedroom-1-S04",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        }
       ]
     },
     {
       "room_id": "bedroom-2",
       "room_type": "bedroom_domestic",
-      "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4},
+      "dimensions_m": {
+        "length": 3.5,
+        "width": 3.0,
+        "height": 2.4
+      },
       "special_location": null,
       "sockets": [
-        {"id": "bedroom-2-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
-        {"id": "bedroom-2-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
-        {"id": "bedroom-2-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"}
+        {
+          "id": "bedroom-2-S01",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "bedroom-2-S02",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "bedroom-2-S03",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        }
       ]
     },
     {
       "room_id": "bedroom-3",
       "room_type": "bedroom_domestic",
-      "dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.4},
+      "dimensions_m": {
+        "length": 3.0,
+        "width": 2.5,
+        "height": 2.4
+      },
       "special_location": null,
       "sockets": [
-        {"id": "bedroom-3-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
-        {"id": "bedroom-3-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
-        {"id": "bedroom-3-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"}
+        {
+          "id": "bedroom-3-S01",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "bedroom-3-S02",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "bedroom-3-S03",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        }
       ]
     },
     {
       "room_id": "bathroom",
       "room_type": "bathroom_domestic",
-      "dimensions_m": {"length": 2.5, "width": 2.0, "height": 2.4},
+      "dimensions_m": {
+        "length": 2.5,
+        "width": 2.0,
+        "height": 2.4
+      },
       "special_location": "bathroom_zone_3",
       "sockets": [
-        {"id": "bathroom-S01", "type": "BS_EN_61558_2_5_shaver_supply_unit", "mount": "wall", "height_mm": 1400, "circuit_id": "C05"}
+        {
+          "id": "bathroom-S01",
+          "type": "BS_EN_61558_2_5_shaver_supply_unit",
+          "mount": "wall",
+          "height_mm": 1400,
+          "circuit_id": "C05"
+        }
       ]
     },
     {
       "room_id": "outdoor",
       "room_type": "garden_external",
-      "dimensions_m": {"length": 5.0, "width": 4.0, "height": 0.0},
+      "dimensions_m": {
+        "length": 5.0,
+        "width": 4.0,
+        "height": 0.0
+      },
       "special_location": "outdoor",
       "sockets": [
-        {"id": "outdoor-S01", "type": "BS_1363_double_switched_13A_weatherproof", "mount": "external_wall", "height_mm": 1100, "circuit_id": "C01", "fed_by_spur": true, "spur_load_kw": 1.5, "spur_purpose": "garden socket from FCU on ring", "ip_rating": "IP65"}
+        {
+          "id": "outdoor-S01",
+          "type": "BS_1363_double_switched_13A_weatherproof",
+          "mount": "external_wall",
+          "height_mm": 1100,
+          "circuit_id": "C01",
+          "fed_by_spur": true,
+          "spur_load_kw": 1.5,
+          "spur_purpose": "garden socket from FCU on ring",
+          "ip_rating": "IP65"
+        }
       ]
     }
   ],
@@ -393,7 +648,10 @@
             "summary": "30A nameplate → 10A + 30% × (30-10) + 5A (CCU socket) = 21A; rounded to 25A for design margin on 32A breaker.",
             "rule": "IET OSG Appendix A cooker diversity",
             "code_clause": "IET On-Site Guide Appendix A, Table A1",
-            "inputs": {"nameplate_a": 30, "diversity_formula": "10 + 0.30*(In-10) + 5"}
+            "inputs": {
+              "nameplate_a": 30,
+              "diversity_formula": "10 + 0.30*(In-10) + 5"
+            }
           },
           {
             "label": "Zs deferred to calc.zs_loop_impedance",
@@ -428,5 +686,6 @@
         ]
       }
     ]
-  }
+  },
+  "invariants": []
 }

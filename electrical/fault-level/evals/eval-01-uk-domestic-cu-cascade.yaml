@@ -43,11 +43,11 @@ checks:
     description: Monotonicity — final circuit Ifault at CU-G.C01 must be <= CU incoming Ifault at CU-G; cascade fault current must decrease downstream
     severity: critical
 
-  - assertion: 'ir.invariants.INV-4.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-04")].passes == true'
     description: Monotonicity downstream
     severity: critical
     matches_inv: INV-4
 
-  - assertion: 'ir.citations matches "^IEC 60909-0:2016"'
+  - assertion: 'ir.rationale.sections[*].decisions[*].code_clause matches "^IEC 60909-0:2016"'
     description: At least 2 citations match IEC 60909-0:2016 pattern
     severity: warning

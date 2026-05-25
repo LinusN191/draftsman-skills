@@ -36,18 +36,18 @@ checks:
     description: HV side must be present in project_supply
     severity: critical
 
-  - assertion: 'ir.citations matches "^NEC 2023 Art (110|240)"'
+  - assertion: 'ir.rationale.sections[*].decisions[*].code_clause matches "^NEC 2023 Art (110|240)"'
     description: At least 1 citation matches NEC 2023 Art 110/240 pattern
     severity: warning
 
-  - assertion: 'ir.citations matches "^IEC 60909-0:2016"'
+  - assertion: 'ir.rationale.sections[*].decisions[*].code_clause matches "^IEC 60909-0:2016"'
     description: At least 2 citations match IEC 60909-0:2016 pattern
     severity: warning
 
-  - assertion: 'ir.citations not_contains "BS 7671"'
+  - assertion: 'ir.rationale.sections[*].decisions[*].code_clause not_contains "BS 7671"'
     description: Must NOT cite BS 7671 — US project must not cite UK regs
     severity: warning
 
-  - assertion: 'ir.citations not_contains "IEC 60364"'
+  - assertion: 'ir.rationale.sections[*].decisions[*].code_clause not_contains "IEC 60364"'
     description: Must NOT cite IEC 60364 — US project must not cite IEC 60364
     severity: warning

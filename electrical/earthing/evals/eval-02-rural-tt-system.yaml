@@ -48,12 +48,12 @@ checks:
     description: TT requires RCD on every circuit
     severity: critical
 
-  - assertion: 'ir.invariants.INV-6.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-06")].passes == true'
     description: RCD requirement check
     severity: critical
     matches_inv: INV-6
 
-  - assertion: 'ir.citations matches "BS 7671:2018\+A3 Reg 411\.5\.3"'
+  - assertion: 'ir.earthing_system.code_clause matches "BS 7671:2018\+A3 Reg 411\.5\.3"'
     description: At least 1 citation matches BS 7671:2018+A3 Reg 411.5.3
     severity: warning
 

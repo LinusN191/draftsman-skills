@@ -416,35 +416,61 @@
             "summary": "Single 1000 kcmil Cu THWN-2 at 75°C terminal column gives Iz ≈ 545 A — insufficient for 1200 A In. 4 × 350 kcmil parallel Cu THWN-2 accepted per NEC 2023 Article 310.10(H)(1) (each ≥ 1/0 AWG); Iz_corrected = 4 × 310 ≈ 1240 A ≥ 1200 A In.",
             "rule": "Parallel cables per NEC 2023 Article 310.10(H)(1)",
             "code_clause": "NEC 2023 Article 310.10(H)(1)",
-            "inputs": {"in_a": 1200, "single_1000kcmil_iz_a": 545, "parallel_4x350_iz_a": 1240, "parallel_count": 4}
+            "inputs": {
+              "in_a": 1200,
+              "single_1000kcmil_iz_a": 545,
+              "parallel_4x350_iz_a": 1240,
+              "parallel_count": 4
+            }
           },
           {
             "label": "iz_vs_in on MCC-1.F01 aluminium feeder",
             "summary": "750 kcmil Al rejected (Iz_75 ≈ 385 A < Ib_continuous × 1.25 = 400 A per Article 215.2(A)(1) continuous-load rule); 900 kcmil Al XHHW-2 accepted (Iz_75 ≈ 425 A ≥ 400 A). Article 110.14(C) terminal-temp cap drives the larger conductor.",
             "rule": "NEC ampacity + terminal-temp cap per NEC 2023 Article 310.16 + Article 110.14(C)",
             "code_clause": "NEC 2023 Article 110.14(C)",
-            "inputs": {"in_a": 400, "ib_a": 320, "csa_rejected": "750 kcmil", "csa_accepted": "900 kcmil", "material": "aluminium", "iz_75c_a_accepted": 425}
+            "inputs": {
+              "in_a": 400,
+              "ib_a": 320,
+              "csa_rejected": "750 kcmil",
+              "csa_accepted": "900 kcmil",
+              "material": "aluminium",
+              "iz_75c_a_accepted": 425
+            }
           },
           {
             "label": "parallel_required on MCC-1.M01 500 hp motor",
             "summary": "Motor 125% FLC = 590 × 1.25 = 738 A continuous per NEC 2023 Article 430.22. Single 1000 kcmil Iz_75 ≈ 545 A insufficient; 2 × 500 kcmil Cu THWN-2 parallel = 2 × 380 = 760 A ≥ 738 A. Each parallel ≥ 1/0 AWG per Article 310.10(H)(1).",
             "rule": "Motor conductor 125% FLC per NEC 2023 Article 430.22; parallel per Article 310.10(H)(1)",
             "code_clause": "NEC 2023 Article 430.22 + Article 310.10(H)(1)",
-            "inputs": {"flc_a": 590, "design_flc_a": 738, "parallel_2x500_iz_a": 760, "parallel_count": 2}
+            "inputs": {
+              "flc_a": 590,
+              "design_flc_a": 738,
+              "parallel_2x500_iz_a": 760,
+              "parallel_count": 2
+            }
           },
           {
             "label": "iz_vs_in on MCC-1.M02 200 hp pump motor",
             "summary": "Motor 125% FLC = 240 × 1.25 = 300 A. Single 350 kcmil Cu THWN-2 at 75°C terminal column Iz ≈ 310 A ≥ 300 A. No parallel needed.",
             "rule": "Motor conductor 125% FLC per NEC 2023 Article 430.22",
             "code_clause": "NEC 2023 Article 430.22",
-            "inputs": {"flc_a": 240, "design_flc_a": 300, "csa": "350 kcmil", "iz_75c_a": 310}
+            "inputs": {
+              "flc_a": 240,
+              "design_flc_a": 300,
+              "csa": "350 kcmil",
+              "iz_75c_a": 310
+            }
           },
           {
             "label": "iz_vs_in on MCC-1.F02.B01 receptacle branch",
             "summary": "20 A single-phase branch: 14 AWG Cu THWN-2 75°C Iz = 20 A (borderline; NEC 2023 Article 240.4(D) caps 14 AWG OCPD at 15 A regardless); 12 AWG accepted at Iz = 25 A ≥ 20 A In. CPC = 12 AWG Cu per Table 250.122 for 20 A OCPD.",
             "rule": "Ampacity per NEC 2023 Article 310.16; small-conductor OCPD limit per Article 240.4(D)",
             "code_clause": "NEC 2023 Article 240.4(D)",
-            "inputs": {"in_a": 20, "csa": "12 AWG", "iz_75c_a": 25}
+            "inputs": {
+              "in_a": 20,
+              "csa": "12 AWG",
+              "iz_75c_a": 25
+            }
           }
         ]
       },
@@ -457,7 +483,14 @@
             "summary": "All paths stack well within the 5% combined limit: SERVICE 0.1% + F01 0.9% + leaf segment = 1.9-3.3% depending on leaf length. No vd_cumulative binding triggered (all binding by iz_vs_in or parallel_required).",
             "rule": "Vd cumulative accounting per NEC 2023 Article 215.2(A)(1) IN 2",
             "code_clause": "NEC 2023 Article 215.2(A)(1) Informational Note 2",
-            "inputs": {"service_pct": 0.1, "f01_pct": 0.9, "m01_cumulative_pct": 2.5, "m02_cumulative_pct": 1.9, "b01_cumulative_pct": 3.3, "limit_pct": 5.0}
+            "inputs": {
+              "service_pct": 0.1,
+              "f01_pct": 0.9,
+              "m01_cumulative_pct": 2.5,
+              "m02_cumulative_pct": 1.9,
+              "b01_cumulative_pct": 3.3,
+              "limit_pct": 5.0
+            }
           }
         ]
       },
@@ -482,14 +515,24 @@
             "summary": "NEMA Design B 500 hp motor with LRA factor 6.0; running Vd 1.5% × LRA = 9.0% during DOL start. Engineer info-flag recommends soft-start review if source impedance margin is tight (utility PSCC declared 35 kA but only 28 kA reaches M01 terminals).",
             "rule": "Motor-starting Vd per NEC 2023 Article 430.6(A)(1) + NEMA MG-1; 10% advisory limit per IEEE 141 §3",
             "code_clause": "NEC 2023 Article 430.6(A)(1)",
-            "inputs": {"flc_a": 590, "lra_factor": 6.0, "vd_running_pct": 1.5, "vd_starting_pct": 9.0, "advisory_limit_pct": 10.0}
+            "inputs": {
+              "flc_a": 590,
+              "lra_factor": 6.0,
+              "vd_running_pct": 1.5,
+              "vd_starting_pct": 9.0,
+              "advisory_limit_pct": 10.0
+            }
           },
           {
             "label": "Parallel cables at SERVICE.1200A + MCC-1.M01",
             "summary": "Two sites where parallel_required binds: 4 × 350 kcmil at 1200 A SERVICE; 2 × 500 kcmil at 738 A design-FLC at M01. Both satisfy ≥ 1/0 AWG per parallel + equal-length / equal-CSA / common terminations per Article 310.10(H)(1) and Article 310.10(H)(2).",
             "rule": "Parallel cables per NEC 2023 Article 310.10(H)(1) and (H)(2)",
             "code_clause": "NEC 2023 Article 310.10(H)(1)",
-            "inputs": {"service_parallel_count": 4, "m01_parallel_count": 2, "min_each_per_h1": "1/0 AWG"}
+            "inputs": {
+              "service_parallel_count": 4,
+              "m01_parallel_count": 2,
+              "min_each_per_h1": "1/0 AWG"
+            }
           }
         ]
       },
@@ -518,5 +561,6 @@
         ]
       }
     ]
-  }
+  },
+  "invariants": []
 }

@@ -45,7 +45,7 @@ checks:
     description: Top-level flags must include TOOL-CALL-PENDING
     severity: warning
 
-  - assertion: 'ir.invariants.INV-9.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-09")].passes == true'
     description: Selectivity result completeness via tool_call_pending
     severity: critical
     matches_inv: INV-9

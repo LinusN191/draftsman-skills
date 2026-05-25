@@ -28,19 +28,19 @@ input:
 
 checks:
   # per_node[0] — MV-36KV (in-range)
-  - assertion: 'ir.nodes[?(@.node_id=="MV-36KV")].shock_approach_source contains "15.1 kV to 36 kV"'
+  - assertion: 'ir.cascade[?(@.node_id=="MV-36KV")].shock_approach.source contains "15.1 kV to 36 kV"'
     description: MV-36KV shock_approach_source references voltage row "15.1 kV to 36 kV" per Table 130.4(C)(a)
     severity: critical
     standard_ref: NFPA 70E Table 130.4(C)(a)
 
   # NOTE: regex match relies on runtime coercing numeric values to string; canonical grammar lacks an `in [N1, N2]` numeric-set operator.
-  - assertion: 'ir.nodes[?(@.node_id=="MV-36KV")].shock_approach_restricted_mm matches "^(790|840)$"'
+  - assertion: 'ir.cascade[?(@.node_id=="MV-36KV")].shock_approach.restricted_approach_mm matches "^(790|840)$"'
     description: MV-36KV restricted approach is 790 mm or 840 mm (Table 130.4(C)(a) row 15.1-36 kV or alt row)
     severity: critical
     standard_ref: NFPA 70E Table 130.4(C)(a)
 
   # per_node[1] — MV-47KV (out-of-range)
-  - assertion: 'ir.nodes[?(@.node_id=="MV-47KV")].shock_approach_source contains "out_of_table_range"'
+  - assertion: 'ir.cascade[?(@.node_id=="MV-47KV")].shock_approach.source contains "out_of_table_range"'
     description: MV-47KV shock_approach_source must mark "out_of_table_range" (47 kV beyond 46 kV row)
     severity: critical
 

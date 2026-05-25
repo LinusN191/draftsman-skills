@@ -7,12 +7,42 @@
     "skill_version": "sld/1.5.0",
     "produced_at": "2026-05-18T12:00:00Z",
     "consumed_intents": [
-      { "intent_type": "db-layout",    "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/uk-commercial-msb-3storey/intent-out.json" },
-      { "intent_type": "db-layout",    "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/uk-commercial-sdb-gf/intent-out.json" },
-      { "intent_type": "db-layout",    "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/uk-commercial-sdb-l1/intent-out.json" },
-      { "intent_type": "db-layout",    "intent_version": "1.0.0", "produced_by": "electrical/db-layout/v1.2.0",   "path": "electrical/db-layout/examples/uk-commercial-sdb-l2/intent-out.json" },
-      { "intent_type": "earthing",     "intent_version": "1.0.0", "produced_by": "electrical/earthing/v1.4.0",    "path": "electrical/earthing/examples/uk-commercial-3storey/intent-out.json" },
-      { "intent_type": "fault-level",  "intent_version": "1.0.0", "produced_by": "electrical/fault-level/v1.1.0", "path": "electrical/fault-level/examples/uk-commercial-3storey/intent-out.json" }
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.2.0",
+        "path": "electrical/db-layout/examples/uk-commercial-msb-3storey/intent-out.json"
+      },
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.2.0",
+        "path": "electrical/db-layout/examples/uk-commercial-sdb-gf/intent-out.json"
+      },
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.2.0",
+        "path": "electrical/db-layout/examples/uk-commercial-sdb-l1/intent-out.json"
+      },
+      {
+        "intent_type": "db-layout",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/db-layout/v1.2.0",
+        "path": "electrical/db-layout/examples/uk-commercial-sdb-l2/intent-out.json"
+      },
+      {
+        "intent_type": "earthing",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/earthing/v1.4.0",
+        "path": "electrical/earthing/examples/uk-commercial-3storey/intent-out.json"
+      },
+      {
+        "intent_type": "fault-level",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/fault-level/v1.1.0",
+        "path": "electrical/fault-level/examples/uk-commercial-3storey/intent-out.json"
+      }
     ]
   },
   "jurisdiction": "GB",
@@ -29,15 +59,68 @@
     "main_switch_breaking_capacity_ka": 36
   },
   "distribution_hierarchy": [
-    { "board_id": "MSB-MAIN", "board_role": "main_switchboard",       "consumed_intent_path": "electrical/db-layout/examples/uk-commercial-msb-3storey/intent-out.json", "parent_board_id": null,       "fed_via_circuit_id": null,  "location": "ground-floor plant room",      "enclosure_rating": "IP4X" },
-    { "board_id": "SDB-GF",   "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/uk-commercial-sdb-gf/intent-out.json",     "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F01", "location": "ground-floor riser cupboard",  "enclosure_rating": "IP4X" },
-    { "board_id": "SDB-L1",   "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/uk-commercial-sdb-l1/intent-out.json",     "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F02", "location": "level-1 riser cupboard",       "enclosure_rating": "IP4X" },
-    { "board_id": "SDB-L2",   "board_role": "sub_distribution_board", "consumed_intent_path": "electrical/db-layout/examples/uk-commercial-sdb-l2/intent-out.json",     "parent_board_id": "MSB-MAIN", "fed_via_circuit_id": "F03", "location": "level-2 riser cupboard",       "enclosure_rating": "IP4X" }
+    {
+      "board_id": "MSB-MAIN",
+      "board_role": "main_switchboard",
+      "consumed_intent_path": "electrical/db-layout/examples/uk-commercial-msb-3storey/intent-out.json",
+      "parent_board_id": null,
+      "fed_via_circuit_id": null,
+      "location": "ground-floor plant room",
+      "enclosure_rating": "IP4X"
+    },
+    {
+      "board_id": "SDB-GF",
+      "board_role": "sub_distribution_board",
+      "consumed_intent_path": "electrical/db-layout/examples/uk-commercial-sdb-gf/intent-out.json",
+      "parent_board_id": "MSB-MAIN",
+      "fed_via_circuit_id": "F01",
+      "location": "ground-floor riser cupboard",
+      "enclosure_rating": "IP4X"
+    },
+    {
+      "board_id": "SDB-L1",
+      "board_role": "sub_distribution_board",
+      "consumed_intent_path": "electrical/db-layout/examples/uk-commercial-sdb-l1/intent-out.json",
+      "parent_board_id": "MSB-MAIN",
+      "fed_via_circuit_id": "F02",
+      "location": "level-1 riser cupboard",
+      "enclosure_rating": "IP4X"
+    },
+    {
+      "board_id": "SDB-L2",
+      "board_role": "sub_distribution_board",
+      "consumed_intent_path": "electrical/db-layout/examples/uk-commercial-sdb-l2/intent-out.json",
+      "parent_board_id": "MSB-MAIN",
+      "fed_via_circuit_id": "F03",
+      "location": "level-2 riser cupboard",
+      "enclosure_rating": "IP4X"
+    }
   ],
   "selectivity_cascade": [
-    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F01", "child_board_id": "SDB-GF", "verdict": "selective", "verification_method": "iec_60898_typical", "_note": "400A MCCB Type D upstream / 100A MCCB downstream — 4:1 ratio exceeds BS EN 60947-2 typical selectivity threshold." },
-    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F02", "child_board_id": "SDB-L1", "verdict": "selective", "verification_method": "iec_60898_typical", "_note": "Same as F01 — 4:1 ratio." },
-    { "parent_board_id": "MSB-MAIN", "parent_circuit_id": "F03", "child_board_id": "SDB-L2", "verdict": "selective", "verification_method": "iec_60898_typical", "_note": "Same as F01 — 4:1 ratio. L2 is 45m route (longest)." }
+    {
+      "parent_board_id": "MSB-MAIN",
+      "parent_circuit_id": "F01",
+      "child_board_id": "SDB-GF",
+      "verdict": "selective",
+      "verification_method": "iec_60898_typical",
+      "_note": "400A MCCB Type D upstream / 100A MCCB downstream — 4:1 ratio exceeds BS EN 60947-2 typical selectivity threshold."
+    },
+    {
+      "parent_board_id": "MSB-MAIN",
+      "parent_circuit_id": "F02",
+      "child_board_id": "SDB-L1",
+      "verdict": "selective",
+      "verification_method": "iec_60898_typical",
+      "_note": "Same as F01 — 4:1 ratio."
+    },
+    {
+      "parent_board_id": "MSB-MAIN",
+      "parent_circuit_id": "F03",
+      "child_board_id": "SDB-L2",
+      "verdict": "selective",
+      "verification_method": "iec_60898_typical",
+      "_note": "Same as F01 — 4:1 ratio. L2 is 45m route (longest)."
+    }
   ],
   "system_metrics": {
     "imax_total_a": 146,
@@ -75,29 +158,118 @@
     "Type 2 SPD assembly at MSB intake per BS 7671 Reg 443.",
     "Final-circuit RCDs (30mA) located at sub-DBs (preserves MSB-level selectivity)."
   ],
-  "drawn_as_symbols": ["BUSBAR", "MCCB", "MCB", "RCD", "EARTH_GENERAL", "EARTH_PROTECTIVE", "CONDUCTOR_PE", "CONDUCTOR_PEN", "JUNCTION_T", "SPD_SYMBOL"],
-  "flags": ["TOOL-CALL-PENDING:sld_system_metrics — System metrics are LLM-estimates; deterministic refinement deferred per WI3."],
+  "drawn_as_symbols": [
+    "BUSBAR",
+    "MCCB",
+    "MCB",
+    "RCD",
+    "EARTH_GENERAL",
+    "EARTH_PROTECTIVE",
+    "CONDUCTOR_PE",
+    "CONDUCTOR_PEN",
+    "JUNCTION_T",
+    "SPD_SYMBOL"
+  ],
+  "flags": [
+    "TOOL-CALL-PENDING:sld_system_metrics — System metrics are LLM-estimates; deterministic refinement deferred per WI3."
+  ],
   "rationale": {
     "chat_summary": "UK 3-storey commercial office (1200m²) on DNO TN-C-S 400V TPN supply (Ze=0.35Ω, PFC=9.8kA). 400A MSB feeds 3 per-floor sub-DBs at 100A each. Total Imax ~146A with diversity 0.85. Type 2 SPD per BS 7671 Reg 443. 4-board cascade verified selective; final-circuit RCDs at sub-DBs. Reply to refine, e.g. 'add UPS for IT loads'.",
     "sections": [
-      { "title": "Supply Origin", "summary": "TN-C-S 400V TPN, declared Ze=0.35Ω + PFC=9.8kA. 400A MCCB main switch with 36kA Icu (BS EN 60947-2).", "decisions": [
-        { "label": "UK DNO TN-C-S confirmed", "summary": "Underground TN-C-S supply with PME bond at service head.", "rule": "BS 7671:2018+A2 Reg 411.4 TN-C-S system definition", "code_clause": "BS 7671:2018+A2 Reg 411.4", "inputs": { "ze_ohm_declared": 0.35, "pfc_ka_declared": 9.8 } }
-      ] },
-      { "title": "Distribution Hierarchy", "summary": "4-board radial cascade. MSB-MAIN feeds SDB-GF (F01, 15m), SDB-L1 (F02, 30m), SDB-L2 (F03, 45m). Spec office topology typical for UK 3-storey.", "decisions": [
-        { "label": "Single MSB + per-floor sub-DB", "summary": "Standard UK commercial topology; preserves selectivity and simplifies tenant fit-out.", "rule": "Industry convention; BCO Specification", "code_clause": "n/a (engineering convention)", "inputs": { "board_count": 4 } }
-      ] },
-      { "title": "System Metrics", "summary": "Imax_total 146A (vs 400A main = 36% utilisation, 63% headroom). Peak PFC 9.8kA (vs 36kA Icu — comfortable). Headroom appropriate for tenant fit-out variation.", "decisions": [
-        { "label": "Intake capacity verified", "summary": "main_switch_rating 400A ≥ imax_total 146A; breaking_capacity 36kA ≥ peak_pfc 9.8kA.", "rule": "BS 7671 Fundamental Rule (Reg 433.1.1)", "code_clause": "BS 7671:2018+A2 Reg 433.1.1", "inputs": { "imax_total_a": 146, "main_switch_rating_a": 400 } }
-      ] },
-      { "title": "Cascade Selectivity", "summary": "All 3 parent→child links verified selective: 400A MCCB Type D upstream / 100A MCCB downstream gives 4:1 ratio (exceeds BS EN 60947-2 typical selectivity threshold).", "decisions": [
-        { "label": "4:1 selectivity verified", "summary": "400A/100A ratio exceeds 3:1 BS EN 60947-2 typical; verification_method 'iec_60898_typical'.", "rule": "BS EN 60947-2 selectivity table guidance", "code_clause": "BS 7671:2018+A2 Reg 536", "inputs": { "ratio": 4.0, "verdict": "selective" } }
-      ] },
-      { "title": "SPD Assessment", "summary": "Type 2 SPD required at MSB intake per BS 7671 Reg 443. Urban commercial location with moderate lightning risk.", "decisions": [
-        { "label": "Type 2 SPD at MSB", "summary": "BS 7671 Reg 443 baseline for indoor commercial.", "rule": "BS 7671 Reg 443 SPD policy lookup", "code_clause": "BS 7671:2018+A2 Reg 443", "inputs": { "spd_type": "Type 2", "location_type": "urban_commercial" } }
-      ] },
-      { "title": "Life-Safety Isolation", "summary": "No dedicated fire-alarm / emergency-lighting / UPS distribution at this scale. Emergency lighting via local battery-pack luminaires (BS 5266). Fire alarm system on local battery-backed FCU.", "decisions": [] },
-      { "title": "Compliance", "summary": "Compliant. No non-compliance flags. 5 assumptions documented (diversity factor, Imax derivation, selectivity verification method, emergency lighting strategy, fire alarm strategy).", "decisions": [] },
-      { "title": "Assumptions", "summary": "5 assumptions captured in compliance_summary covering diversity factor, Imax derivation, selectivity method, emergency lighting via local battery packs, fire alarm via local battery FCU.", "decisions": [] }
+      {
+        "title": "Supply Origin",
+        "summary": "TN-C-S 400V TPN, declared Ze=0.35Ω + PFC=9.8kA. 400A MCCB main switch with 36kA Icu (BS EN 60947-2).",
+        "decisions": [
+          {
+            "label": "UK DNO TN-C-S confirmed",
+            "summary": "Underground TN-C-S supply with PME bond at service head.",
+            "rule": "BS 7671:2018+A2 Reg 411.4 TN-C-S system definition",
+            "code_clause": "BS 7671:2018+A2 Reg 411.4",
+            "inputs": {
+              "ze_ohm_declared": 0.35,
+              "pfc_ka_declared": 9.8
+            }
+          }
+        ]
+      },
+      {
+        "title": "Distribution Hierarchy",
+        "summary": "4-board radial cascade. MSB-MAIN feeds SDB-GF (F01, 15m), SDB-L1 (F02, 30m), SDB-L2 (F03, 45m). Spec office topology typical for UK 3-storey.",
+        "decisions": [
+          {
+            "label": "Single MSB + per-floor sub-DB",
+            "summary": "Standard UK commercial topology; preserves selectivity and simplifies tenant fit-out.",
+            "rule": "Industry convention; BCO Specification",
+            "code_clause": "n/a (engineering convention)",
+            "inputs": {
+              "board_count": 4
+            }
+          }
+        ]
+      },
+      {
+        "title": "System Metrics",
+        "summary": "Imax_total 146A (vs 400A main = 36% utilisation, 63% headroom). Peak PFC 9.8kA (vs 36kA Icu — comfortable). Headroom appropriate for tenant fit-out variation.",
+        "decisions": [
+          {
+            "label": "Intake capacity verified",
+            "summary": "main_switch_rating 400A ≥ imax_total 146A; breaking_capacity 36kA ≥ peak_pfc 9.8kA.",
+            "rule": "BS 7671 Fundamental Rule (Reg 433.1.1)",
+            "code_clause": "BS 7671:2018+A2 Reg 433.1.1",
+            "inputs": {
+              "imax_total_a": 146,
+              "main_switch_rating_a": 400
+            }
+          }
+        ]
+      },
+      {
+        "title": "Cascade Selectivity",
+        "summary": "All 3 parent→child links verified selective: 400A MCCB Type D upstream / 100A MCCB downstream gives 4:1 ratio (exceeds BS EN 60947-2 typical selectivity threshold).",
+        "decisions": [
+          {
+            "label": "4:1 selectivity verified",
+            "summary": "400A/100A ratio exceeds 3:1 BS EN 60947-2 typical; verification_method 'iec_60898_typical'.",
+            "rule": "BS EN 60947-2 selectivity table guidance",
+            "code_clause": "BS 7671:2018+A2 Reg 536",
+            "inputs": {
+              "ratio": 4.0,
+              "verdict": "selective"
+            }
+          }
+        ]
+      },
+      {
+        "title": "SPD Assessment",
+        "summary": "Type 2 SPD required at MSB intake per BS 7671 Reg 443. Urban commercial location with moderate lightning risk.",
+        "decisions": [
+          {
+            "label": "Type 2 SPD at MSB",
+            "summary": "BS 7671 Reg 443 baseline for indoor commercial.",
+            "rule": "BS 7671 Reg 443 SPD policy lookup",
+            "code_clause": "BS 7671:2018+A2 Reg 443",
+            "inputs": {
+              "spd_type": "Type 2",
+              "location_type": "urban_commercial"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Life-Safety Isolation",
+        "summary": "No dedicated fire-alarm / emergency-lighting / UPS distribution at this scale. Emergency lighting via local battery-pack luminaires (BS 5266). Fire alarm system on local battery-backed FCU.",
+        "decisions": []
+      },
+      {
+        "title": "Compliance",
+        "summary": "Compliant. No non-compliance flags. 5 assumptions documented (diversity factor, Imax derivation, selectivity verification method, emergency lighting strategy, fire alarm strategy).",
+        "decisions": []
+      },
+      {
+        "title": "Assumptions",
+        "summary": "5 assumptions captured in compliance_summary covering diversity factor, Imax derivation, selectivity method, emergency lighting via local battery packs, fire alarm via local battery FCU.",
+        "decisions": []
+      }
     ]
   },
   "drawing_layout": {
@@ -111,10 +283,54 @@
       }
     ],
     "boards": {
-      "MSB-MAIN": { "sheet_id": "sheet_1", "tree_layer": 0, "layout_group": "main",          "routing_intent": "direct_from_msb", "layout_intent_note": "Main switchboard at DNO intake — ground-floor plant room, root of distribution tree" },
-      "SDB-GF":   { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "general_power", "routing_intent": "via_main_spine",  "layout_intent_note": "Ground-floor general power + lighting via main vertical riser" },
-      "SDB-L1":   { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "general_power", "routing_intent": "via_main_spine",  "layout_intent_note": "Level 1 general power via shared main riser" },
-      "SDB-L2":   { "sheet_id": "sheet_1", "tree_layer": 1, "layout_group": "general_power", "routing_intent": "via_main_spine",  "layout_intent_note": "Level 2 general power via shared main riser" }
+      "MSB-MAIN": {
+        "sheet_id": "sheet_1",
+        "tree_layer": 0,
+        "layout_group": "main",
+        "routing_intent": "direct_from_msb",
+        "layout_intent_note": "Main switchboard at DNO intake — ground-floor plant room, root of distribution tree"
+      },
+      "SDB-GF": {
+        "sheet_id": "sheet_1",
+        "tree_layer": 1,
+        "layout_group": "general_power",
+        "routing_intent": "via_main_spine",
+        "layout_intent_note": "Ground-floor general power + lighting via main vertical riser"
+      },
+      "SDB-L1": {
+        "sheet_id": "sheet_1",
+        "tree_layer": 1,
+        "layout_group": "general_power",
+        "routing_intent": "via_main_spine",
+        "layout_intent_note": "Level 1 general power via shared main riser"
+      },
+      "SDB-L2": {
+        "sheet_id": "sheet_1",
+        "tree_layer": 1,
+        "layout_group": "general_power",
+        "routing_intent": "via_main_spine",
+        "layout_intent_note": "Level 2 general power via shared main riser"
+      }
     }
-  }
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Single root in distribution_hierarchy: exactly one entry has parent_board_id=null (the root MSB), satisfying the SLD topology contract that the distribution tree be a single connected hierarchy rooted at the service entrance."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Every non-root board's parent_board_id resolves to an existing board_id in distribution_hierarchy. Verified: SDB-GF, SDB-L1, SDB-L2 all point at the MSB root; no dangling pointers, no cycles, no self-references."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "high",
+      "evidence": "selectivity_cascade entries present for every parent-child OCPD pair; each entry carries upstream/downstream OCPD ids and a verdict from the selectivity matrix (manufacturer tables or breaking-capacity ratio per BS 7671 §536.4)."
+    }
+  ]
 }

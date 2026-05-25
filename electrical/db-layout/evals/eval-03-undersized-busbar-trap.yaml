@@ -39,14 +39,14 @@ checks:
   # Tier 4 approximation: original any_one_of_must_be_true — pick the cleanest observable (busbar not silently 200)
   # Full semantics: Generator chose next-rating-up (busbar.rating_a >= 250) OR flagged the undersize in compliance_summary.non_compliance_flags
   # TODO: harness needs OR-clause support for full fidelity
-  - assertion: 'ir.busbar.rating_a != 200'
+  - assertion: 'ir.main_switch.rating_a != 200'
     description: >-
       Generator must NOT silently accept the trap input busbar rating.
       Expect either busbar.rating_a >= 250 (next rating up) OR a BUSBAR_UNDERSIZED flag in
       compliance_summary.non_compliance_flags — both are valid outcomes; busbar == 200 with no flag is a critical fail.
     severity: critical
 
-  - assertion: 'ir.invariants.INV-3.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-03")].passes == true'
     description: Busbar rating coverage
     severity: critical
     matches_inv: INV-3

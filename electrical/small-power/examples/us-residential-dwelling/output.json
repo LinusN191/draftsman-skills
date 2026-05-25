@@ -43,7 +43,9 @@
       "tool_call_pending_for_zs_verification": true,
       "estimated_max_load_kw": 2.5,
       "diversified_max_load_a": 12.0,
-      "rooms_covered": ["kitchen"]
+      "rooms_covered": [
+        "kitchen"
+      ]
     },
     {
       "circuit_id": "C02",
@@ -68,7 +70,9 @@
       "tool_call_pending_for_zs_verification": true,
       "estimated_max_load_kw": 2.0,
       "diversified_max_load_a": 10.0,
-      "rooms_covered": ["kitchen"]
+      "rooms_covered": [
+        "kitchen"
+      ]
     },
     {
       "circuit_id": "C03",
@@ -92,7 +96,12 @@
       "tool_call_pending_for_zs_verification": true,
       "estimated_max_load_kw": 1.4,
       "diversified_max_load_a": 5.0,
-      "rooms_covered": ["living-room", "bedroom-1", "bedroom-2", "hallway"]
+      "rooms_covered": [
+        "living-room",
+        "bedroom-1",
+        "bedroom-2",
+        "hallway"
+      ]
     },
     {
       "circuit_id": "C04",
@@ -117,7 +126,9 @@
       "tool_call_pending_for_zs_verification": true,
       "estimated_max_load_kw": 0.8,
       "diversified_max_load_a": 3.5,
-      "rooms_covered": ["bathroom"]
+      "rooms_covered": [
+        "bathroom"
+      ]
     },
     {
       "circuit_id": "C05",
@@ -142,7 +153,9 @@
       "tool_call_pending_for_zs_verification": true,
       "estimated_max_load_kw": 1.0,
       "diversified_max_load_a": 4.5,
-      "rooms_covered": ["garage"]
+      "rooms_covered": [
+        "garage"
+      ]
     },
     {
       "circuit_id": "C06",
@@ -167,7 +180,9 @@
       "tool_call_pending_for_zs_verification": true,
       "estimated_max_load_kw": 0.5,
       "diversified_max_load_a": 2.0,
-      "rooms_covered": ["outdoor"]
+      "rooms_covered": [
+        "outdoor"
+      ]
     },
     {
       "circuit_id": "C07",
@@ -192,7 +207,9 @@
       "tool_call_pending_for_zs_verification": true,
       "estimated_max_load_kw": 1.5,
       "diversified_max_load_a": 6.5,
-      "rooms_covered": ["basement"]
+      "rooms_covered": [
+        "basement"
+      ]
     },
     {
       "circuit_id": "C08",
@@ -217,119 +234,349 @@
       "tool_call_pending_for_zs_verification": true,
       "estimated_max_load_kw": 1.5,
       "diversified_max_load_a": 6.5,
-      "rooms_covered": ["laundry"]
+      "rooms_covered": [
+        "laundry"
+      ]
     }
   ],
   "rooms": [
     {
       "room_id": "kitchen",
       "room_type": "kitchen_domestic_us",
-      "dimensions_m": {"length": 4.5, "width": 3.5, "height": 2.4},
+      "dimensions_m": {
+        "length": 4.5,
+        "width": 3.5,
+        "height": 2.4
+      },
       "special_location": null,
       "sockets": [
-        {"id": "kitchen-R01", "type": "NEMA_5_20_tamper_resistant", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C01"},
-        {"id": "kitchen-R02", "type": "NEMA_5_20_tamper_resistant", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C01"},
-        {"id": "kitchen-R03", "type": "NEMA_5_20_tamper_resistant", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C01"},
-        {"id": "kitchen-R04", "type": "NEMA_5_20_tamper_resistant", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C02"},
-        {"id": "kitchen-R05", "type": "NEMA_5_20_tamper_resistant", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C02"},
-        {"id": "kitchen-R06", "type": "NEMA_5_20_tamper_resistant", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C02"}
+        {
+          "id": "kitchen-R01",
+          "type": "NEMA_5_20_tamper_resistant",
+          "mount": "above_worktop",
+          "height_mm": 1100,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "kitchen-R02",
+          "type": "NEMA_5_20_tamper_resistant",
+          "mount": "above_worktop",
+          "height_mm": 1100,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "kitchen-R03",
+          "type": "NEMA_5_20_tamper_resistant",
+          "mount": "above_worktop",
+          "height_mm": 1100,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "kitchen-R04",
+          "type": "NEMA_5_20_tamper_resistant",
+          "mount": "above_worktop",
+          "height_mm": 1100,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "kitchen-R05",
+          "type": "NEMA_5_20_tamper_resistant",
+          "mount": "above_worktop",
+          "height_mm": 1100,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "kitchen-R06",
+          "type": "NEMA_5_20_tamper_resistant",
+          "mount": "above_worktop",
+          "height_mm": 1100,
+          "circuit_id": "C02"
+        }
       ]
     },
     {
       "room_id": "living-room",
       "room_type": "living_room_domestic",
-      "dimensions_m": {"length": 5.5, "width": 4.5, "height": 2.4},
+      "dimensions_m": {
+        "length": 5.5,
+        "width": 4.5,
+        "height": 2.4
+      },
       "special_location": null,
       "sockets": [
-        {"id": "living-R01", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
-        {"id": "living-R02", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
-        {"id": "living-R03", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
-        {"id": "living-R04", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
-        {"id": "living-R05", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
-        {"id": "living-R06", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"}
+        {
+          "id": "living-R01",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        },
+        {
+          "id": "living-R02",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        },
+        {
+          "id": "living-R03",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        },
+        {
+          "id": "living-R04",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        },
+        {
+          "id": "living-R05",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        },
+        {
+          "id": "living-R06",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        }
       ]
     },
     {
       "room_id": "bedroom-1",
       "room_type": "bedroom_domestic",
-      "dimensions_m": {"length": 4.0, "width": 3.5, "height": 2.4},
+      "dimensions_m": {
+        "length": 4.0,
+        "width": 3.5,
+        "height": 2.4
+      },
       "special_location": null,
       "sockets": [
-        {"id": "bedroom-1-R01", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
-        {"id": "bedroom-1-R02", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
-        {"id": "bedroom-1-R03", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
-        {"id": "bedroom-1-R04", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"}
+        {
+          "id": "bedroom-1-R01",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        },
+        {
+          "id": "bedroom-1-R02",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        },
+        {
+          "id": "bedroom-1-R03",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        },
+        {
+          "id": "bedroom-1-R04",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        }
       ]
     },
     {
       "room_id": "bedroom-2",
       "room_type": "bedroom_domestic",
-      "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4},
+      "dimensions_m": {
+        "length": 3.5,
+        "width": 3.0,
+        "height": 2.4
+      },
       "special_location": null,
       "sockets": [
-        {"id": "bedroom-2-R01", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
-        {"id": "bedroom-2-R02", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
-        {"id": "bedroom-2-R03", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"}
+        {
+          "id": "bedroom-2-R01",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        },
+        {
+          "id": "bedroom-2-R02",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        },
+        {
+          "id": "bedroom-2-R03",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        }
       ]
     },
     {
       "room_id": "hallway",
       "room_type": "hallway_domestic",
-      "dimensions_m": {"length": 6.0, "width": 1.2, "height": 2.4},
+      "dimensions_m": {
+        "length": 6.0,
+        "width": 1.2,
+        "height": 2.4
+      },
       "special_location": null,
       "sockets": [
-        {"id": "hallway-R01", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"},
-        {"id": "hallway-R02", "type": "NEMA_5_15_tamper_resistant", "mount": "wall", "height_mm": 450, "circuit_id": "C03"}
+        {
+          "id": "hallway-R01",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        },
+        {
+          "id": "hallway-R02",
+          "type": "NEMA_5_15_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C03"
+        }
       ]
     },
     {
       "room_id": "bathroom",
       "room_type": "bathroom_domestic_us",
-      "dimensions_m": {"length": 2.5, "width": 2.0, "height": 2.4},
+      "dimensions_m": {
+        "length": 2.5,
+        "width": 2.0,
+        "height": 2.4
+      },
       "special_location": "bathroom_zone_3",
       "sockets": [
-        {"id": "bathroom-R01", "type": "NEMA_5_20_tamper_resistant_GFCI", "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C04"}
+        {
+          "id": "bathroom-R01",
+          "type": "NEMA_5_20_tamper_resistant_GFCI",
+          "mount": "above_worktop",
+          "height_mm": 1100,
+          "circuit_id": "C04"
+        }
       ]
     },
     {
       "room_id": "garage",
       "room_type": "garage_attached",
-      "dimensions_m": {"length": 6.0, "width": 5.5, "height": 2.4},
+      "dimensions_m": {
+        "length": 6.0,
+        "width": 5.5,
+        "height": 2.4
+      },
       "special_location": null,
       "sockets": [
-        {"id": "garage-R01", "type": "NEMA_5_20_tamper_resistant", "mount": "wall", "height_mm": 1100, "circuit_id": "C05"},
-        {"id": "garage-R02", "type": "NEMA_5_20_tamper_resistant", "mount": "wall", "height_mm": 1100, "circuit_id": "C05"},
-        {"id": "garage-R03", "type": "NEMA_5_20_tamper_resistant", "mount": "wall", "height_mm": 1100, "circuit_id": "C05"}
+        {
+          "id": "garage-R01",
+          "type": "NEMA_5_20_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 1100,
+          "circuit_id": "C05"
+        },
+        {
+          "id": "garage-R02",
+          "type": "NEMA_5_20_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 1100,
+          "circuit_id": "C05"
+        },
+        {
+          "id": "garage-R03",
+          "type": "NEMA_5_20_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 1100,
+          "circuit_id": "C05"
+        }
       ]
     },
     {
       "room_id": "outdoor",
       "room_type": "exterior_us",
-      "dimensions_m": {"length": 5.0, "width": 4.0, "height": 0.0},
+      "dimensions_m": {
+        "length": 5.0,
+        "width": 4.0,
+        "height": 0.0
+      },
       "special_location": "outdoor",
       "sockets": [
-        {"id": "outdoor-R01", "type": "NEMA_5_20_tamper_resistant_weather_resistant", "mount": "external_wall", "height_mm": 1100, "circuit_id": "C06", "ip_rating": "IP66"},
-        {"id": "outdoor-R02", "type": "NEMA_5_20_tamper_resistant_weather_resistant", "mount": "external_wall", "height_mm": 1100, "circuit_id": "C06", "ip_rating": "IP66"}
+        {
+          "id": "outdoor-R01",
+          "type": "NEMA_5_20_tamper_resistant_weather_resistant",
+          "mount": "external_wall",
+          "height_mm": 1100,
+          "circuit_id": "C06",
+          "ip_rating": "IP66"
+        },
+        {
+          "id": "outdoor-R02",
+          "type": "NEMA_5_20_tamper_resistant_weather_resistant",
+          "mount": "external_wall",
+          "height_mm": 1100,
+          "circuit_id": "C06",
+          "ip_rating": "IP66"
+        }
       ]
     },
     {
       "room_id": "basement",
       "room_type": "basement_us",
-      "dimensions_m": {"length": 8.0, "width": 6.0, "height": 2.1},
+      "dimensions_m": {
+        "length": 8.0,
+        "width": 6.0,
+        "height": 2.1
+      },
       "special_location": null,
       "sockets": [
-        {"id": "basement-R01", "type": "NEMA_5_20_tamper_resistant", "mount": "wall", "height_mm": 1100, "circuit_id": "C07"},
-        {"id": "basement-R02", "type": "NEMA_5_20_tamper_resistant", "mount": "wall", "height_mm": 1100, "circuit_id": "C07"},
-        {"id": "basement-R03", "type": "NEMA_5_20_tamper_resistant", "mount": "wall", "height_mm": 1100, "circuit_id": "C07"}
+        {
+          "id": "basement-R01",
+          "type": "NEMA_5_20_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 1100,
+          "circuit_id": "C07"
+        },
+        {
+          "id": "basement-R02",
+          "type": "NEMA_5_20_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 1100,
+          "circuit_id": "C07"
+        },
+        {
+          "id": "basement-R03",
+          "type": "NEMA_5_20_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 1100,
+          "circuit_id": "C07"
+        }
       ]
     },
     {
       "room_id": "laundry",
       "room_type": "laundry_domestic_us",
-      "dimensions_m": {"length": 2.5, "width": 2.5, "height": 2.4},
+      "dimensions_m": {
+        "length": 2.5,
+        "width": 2.5,
+        "height": 2.4
+      },
       "special_location": null,
       "sockets": [
-        {"id": "laundry-R01", "type": "NEMA_5_20_tamper_resistant", "mount": "wall", "height_mm": 1100, "circuit_id": "C08"}
+        {
+          "id": "laundry-R01",
+          "type": "NEMA_5_20_tamper_resistant",
+          "mount": "wall",
+          "height_mm": 1100,
+          "circuit_id": "C08"
+        }
       ]
     }
   ],
@@ -521,7 +768,11 @@
             "summary": "NEC 220.52(A) sets the minimum at 1500 VA per branch (12.5 A at 120 V); engineer specifies 12 A + 10 A as design-stage estimates with the 20 A breakers giving comfortable headroom against simultaneous countertop appliance use.",
             "rule": "Kitchen small-appliance branch load per NEC 220.52(A)",
             "code_clause": "NEC 2023 Article 220.52(A)",
-            "inputs": {"nameplate_va_per_branch": 1500, "diversified_a_branch_1": 12.0, "diversified_a_branch_2": 10.0}
+            "inputs": {
+              "nameplate_va_per_branch": 1500,
+              "diversified_a_branch_1": 12.0,
+              "diversified_a_branch_2": 10.0
+            }
           },
           {
             "label": "Zs deferred to calc.zs_loop_impedance",
@@ -562,5 +813,6 @@
         ]
       }
     ]
-  }
+  },
+  "invariants": []
 }

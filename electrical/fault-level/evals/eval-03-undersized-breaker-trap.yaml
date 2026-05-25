@@ -39,7 +39,7 @@ checks:
     description: Compliance summary must report non-compliant
     severity: critical
 
-  - assertion: 'ir.invariants.INV-6.passes == true'
+  - assertion: 'ir.invariants[?(@.id=="INV-06")].passes == true'
     description: Breaker adequacy check
     severity: critical
     matches_inv: INV-6

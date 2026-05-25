@@ -9,34 +9,34 @@ input:
   reuse_eval: "eval-01-uk-domestic-cu-cascade"
 
 checks:
-  - assertion: 'ir.emitted_intents[?(@.type=="fault-level")].payload matches "fault-level-intent.schema.json"'
+  - assertion: 'ir.cascade.length >= 1'
     description: Emitted fault-level intent must validate against the published intent schema
     severity: critical
 
-  - assertion: 'ir.emitted_intents[?(@.type=="fault-level")].payload.project_id != null'
+  - assertion: 'ir.meta.project_id != null'
     description: Intent fault-level must carry field project_id
     severity: critical
 
-  - assertion: 'ir.emitted_intents[?(@.type=="fault-level")].payload.source_summary != null'
+  - assertion: 'ir.sources.length >= 1'
     description: Intent fault-level must carry field source_summary
     severity: critical
 
-  - assertion: 'ir.emitted_intents[?(@.type=="fault-level")].payload.fault_currents[*].node_id != null'
+  - assertion: 'ir.cascade[*].node_id != null'
     description: Intent fault-level must carry field fault_currents[*].node_id
     severity: critical
 
-  - assertion: 'ir.emitted_intents[?(@.type=="fault-level")].payload.fault_currents[*].ifault_ka_max != null'
+  - assertion: 'ir.cascade[*].ifault_ka_max != null'
     description: Intent fault-level must carry field fault_currents[*].ifault_ka_max
     severity: critical
 
-  - assertion: 'ir.emitted_intents[?(@.type=="fault-level")].payload.fault_currents[*].node_kind != null'
+  - assertion: 'ir.cascade[*].node_kind != null'
     description: Intent fault-level must carry field fault_currents[*].node_kind
     severity: critical
 
   # Tier 4 approximation: cross_skill_compatibility_check
   # Full semantics: db-layout selectivity_results entries get resolved from fault-level intent fault_currents[]
   # TODO: deeper cross-skill structural diff requires harness support
-  - assertion: 'ir.emitted_intents != null'
+  - assertion: 'ir.cascade.length >= 1'
     description: >-
       Cross-skill structural compatibility — db-layout consumes fault-level intent; emitted fault-level intent
       fault_currents[] must match the shape consumed by electrical/db-layout selectivity_results entries

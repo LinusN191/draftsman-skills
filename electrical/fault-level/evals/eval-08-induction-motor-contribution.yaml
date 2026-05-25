@@ -29,7 +29,7 @@ checks:
     description: sources[] must include a motor_aggregate entry
     severity: warning
 
-  - assertion: 'ir.citations matches "IEC 60909-0:2016 §4.5"'
+  - assertion: 'ir.rationale.sections[*].decisions[*].code_clause matches "IEC 60909-0:2016 §4.5"'
     description: At least 1 citation matches IEC 60909-0:2016 §4.5
     severity: warning
 
