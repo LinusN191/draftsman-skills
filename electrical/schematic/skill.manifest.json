@@ -9,7 +9,9 @@
   "licence": "MIT",
   "description": "Schematic control + protection diagrams per BS EN 60617 / BS EN 61082 / IEC 60255 / IEC 61850 / NEC 2023 / IEEE Std 315. Hybrid consumer of db-layout-rollup + fault-level + earthing intents (leaf-mode fallback when intents absent). Produces schematic IR for control circuits (motor starter / changeover / sequence) + protection schemes (IDMT overcurrent / differential / motor protection / busbar protection). 4 jurisdictions: GB / KE / INT / US.",
   "inputs_path": "inputs.json",
-  "outputs": ["schematic-ir"],
+  "outputs": [
+    "schematic-ir"
+  ],
   "output_schema": "electrical/schematic/schemas/schematic-ir.schema.json",
   "produces_intents": [
     {
@@ -20,9 +22,21 @@
   ],
   "produces_intent_schema": "electrical/schematic/schemas/schematic-intent.schema.json",
   "consumes_intents": [
-    {"skill_id": "db-layout", "intent_name": "db-layout-rollup", "version_constraint": "^1.0"},
-    {"skill_id": "fault-level", "intent_name": "fault-level", "version_constraint": "^1.0"},
-    {"skill_id": "earthing", "intent_name": "earthing", "version_constraint": "^1.0"}
+    {
+      "skill_id": "db-layout",
+      "intent_name": "db-layout-rollup",
+      "version_constraint": "^1.0"
+    },
+    {
+      "skill_id": "fault-level",
+      "intent_name": "fault-level",
+      "version_constraint": "^1.0"
+    },
+    {
+      "skill_id": "earthing",
+      "intent_name": "earthing",
+      "version_constraint": "^1.0"
+    }
   ],
   "standards": [
     "shared/standards/electrical/BS7671/",
@@ -48,9 +62,6 @@
     "electrical/schematic/constraints/schema-cross-references.yaml",
     "electrical/schematic/constraints/protection-coordination.yaml"
   ],
-  "validators": [
-    "electrical/schematic/validation/banned-annotations.yaml"
-  ],
   "symbols": "shared/symbols/electrical/schematic/",
   "evals": "electrical/schematic/evals/",
   "examples": "electrical/schematic/examples/",
@@ -61,5 +72,12 @@
   },
   "docs": "electrical/schematic/docs/",
   "changelog": "electrical/schematic/CHANGELOG.md",
-  "compatible_runtimes": ["DraftsMan >= 1.0", "Claude Code", "OpenClaw"]
+  "compatible_runtimes": [
+    "DraftsMan >= 1.0",
+    "Claude Code",
+    "OpenClaw"
+  ],
+  "validation": [
+    "electrical/schematic/validation/banned-annotations.yaml"
+  ]
 }

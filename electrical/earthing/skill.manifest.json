@@ -21,9 +21,21 @@
   ],
   "produces_intent_schema": "electrical/earthing/schemas/earthing-intent.schema.json",
   "consumes_intents": [
-    {"skill_id": "db-layout", "intent_name": "db-layout", "version_constraint": "^1.0"},
-    {"skill_id": "lighting-layout", "intent_name": "lighting-layout", "version_constraint": "^1.0"},
-    {"skill_id": "small-power", "intent_name": "small-power", "version_constraint": "^1.0"}
+    {
+      "skill_id": "db-layout",
+      "intent_name": "db-layout",
+      "version_constraint": "^1.0"
+    },
+    {
+      "skill_id": "lighting-layout",
+      "intent_name": "lighting-layout",
+      "version_constraint": "^1.0"
+    },
+    {
+      "skill_id": "small-power",
+      "intent_name": "small-power",
+      "version_constraint": "^1.0"
+    }
   ],
   "standards": [
     "shared/standards/electrical/BS7671/reg411-disconnection-times.json",
@@ -62,12 +74,6 @@
     "electrical/earthing/constraints/electrode-resistance.yaml",
     "electrical/earthing/constraints/bonding-geometry.yaml"
   ],
-  "validators": [
-    "electrical/earthing/validation/zs-compliance.yaml",
-    "electrical/earthing/validation/bonding-completeness.yaml",
-    "electrical/earthing/validation/cpc-sizing.yaml",
-    "electrical/earthing/validation/tool-deferral-shape.yaml"
-  ],
   "prompts": {
     "generator": "electrical/earthing/prompts/generator.md",
     "validator": "electrical/earthing/prompts/validator.md",
@@ -98,5 +104,11 @@
     "OpenClaw",
     "any-llm-agent"
   ],
-  "changelog": "electrical/earthing/CHANGELOG.md"
+  "changelog": "electrical/earthing/CHANGELOG.md",
+  "validation": [
+    "electrical/earthing/validation/bonding-completeness.yaml",
+    "electrical/earthing/validation/cpc-sizing.yaml",
+    "electrical/earthing/validation/tool-deferral-shape.yaml",
+    "electrical/earthing/validation/zs-compliance.yaml"
+  ]
 }

@@ -22,9 +22,21 @@
   ],
   "produces_intent_schema": "electrical/sld/schemas/sld-intent.schema.json",
   "consumes_intents": [
-    {"skill_id": "db-layout", "intent_name": "db-layout", "version_constraint": "^1.0"},
-    {"skill_id": "earthing", "intent_name": "earthing", "version_constraint": "^1.0"},
-    {"skill_id": "fault-level", "intent_name": "fault-level", "version_constraint": "^1.0"}
+    {
+      "skill_id": "db-layout",
+      "intent_name": "db-layout",
+      "version_constraint": "^1.0"
+    },
+    {
+      "skill_id": "earthing",
+      "intent_name": "earthing",
+      "version_constraint": "^1.0"
+    },
+    {
+      "skill_id": "fault-level",
+      "intent_name": "fault-level",
+      "version_constraint": "^1.0"
+    }
   ],
   "standards": [
     "shared/standards/electrical/BS7671/",
@@ -49,11 +61,6 @@
     "electrical/sld/constraints/selectivity-cascade.yaml",
     "electrical/sld/constraints/intake-capacity.yaml",
     "electrical/sld/constraints/intent-shape.yaml"
-  ],
-  "validators": [
-    "electrical/sld/validation/ir-integrity.yaml",
-    "electrical/sld/validation/jurisdiction-routing.yaml",
-    "electrical/sld/validation/tool-deferral-shape.yaml"
   ],
   "prompts": {
     "generator": "electrical/sld/prompts/generator.md",
@@ -84,5 +91,10 @@
     "OpenClaw",
     "any-llm-agent"
   ],
-  "changelog": "electrical/sld/CHANGELOG.md"
+  "changelog": "electrical/sld/CHANGELOG.md",
+  "validation": [
+    "electrical/sld/validation/ir-integrity.yaml",
+    "electrical/sld/validation/jurisdiction-routing.yaml",
+    "electrical/sld/validation/tool-deferral-shape.yaml"
+  ]
 }

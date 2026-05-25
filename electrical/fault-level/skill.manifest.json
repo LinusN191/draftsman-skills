@@ -21,7 +21,11 @@
   ],
   "produces_intent_schema": "electrical/fault-level/schemas/fault-level-intent.schema.json",
   "consumes_intents": [
-    {"skill_id": "db-layout", "intent_name": "db-layout-rollup", "version_constraint": "^1.0"}
+    {
+      "skill_id": "db-layout",
+      "intent_name": "db-layout-rollup",
+      "version_constraint": "^1.0"
+    }
   ],
   "standards": [
     "shared/standards/electrical/IEC60909/part0-fundamentals.json",
@@ -66,12 +70,6 @@
     "electrical/fault-level/constraints/cable-i2t-vs-cascade.yaml",
     "electrical/fault-level/constraints/source-impedance-bounds.yaml"
   ],
-  "validators": [
-    "electrical/fault-level/validation/cascade-tree-integrity.yaml",
-    "electrical/fault-level/validation/ifault-monotonicity.yaml",
-    "electrical/fault-level/validation/tool-call-resolved.yaml",
-    "electrical/fault-level/validation/intent-shape.yaml"
-  ],
   "prompts": {
     "generator": "electrical/fault-level/prompts/generator.md",
     "validator": "electrical/fault-level/prompts/validator.md",
@@ -103,5 +101,11 @@
     "OpenClaw",
     "any-llm-agent"
   ],
-  "changelog": "electrical/fault-level/CHANGELOG.md"
+  "changelog": "electrical/fault-level/CHANGELOG.md",
+  "validation": [
+    "electrical/fault-level/validation/cascade-tree-integrity.yaml",
+    "electrical/fault-level/validation/ifault-monotonicity.yaml",
+    "electrical/fault-level/validation/intent-shape.yaml",
+    "electrical/fault-level/validation/tool-call-resolved.yaml"
+  ]
 }

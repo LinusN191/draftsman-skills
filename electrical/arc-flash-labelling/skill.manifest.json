@@ -23,7 +23,11 @@
     "labels": "electrical/arc-flash-labelling/schemas/labels-intent.schema.json"
   },
   "consumes_intents": [
-    {"skill_id": "arc-flash", "intent_name": "arc-flash", "version_constraint": "^1.0"}
+    {
+      "skill_id": "arc-flash",
+      "intent_name": "arc-flash",
+      "version_constraint": "^1.0"
+    }
   ],
   "standards": [
     "shared/standards/electrical/ANSI-Z535-4/signal-words.json",
@@ -59,11 +63,6 @@
     "electrical/arc-flash-labelling/constraints/colour-spec-compliance.yaml",
     "electrical/arc-flash-labelling/constraints/letter-height-legibility.yaml"
   ],
-  "validators": [
-    "electrical/arc-flash-labelling/validation/ir-integrity.yaml",
-    "electrical/arc-flash-labelling/validation/jurisdiction-format-match.yaml",
-    "electrical/arc-flash-labelling/validation/intent-shape.yaml"
-  ],
   "prompts": {
     "generator": "electrical/arc-flash-labelling/prompts/generator.md",
     "validator": "electrical/arc-flash-labelling/prompts/validator.md",
@@ -97,5 +96,10 @@
     "OpenClaw",
     "any-llm-agent"
   ],
-  "changelog": "electrical/arc-flash-labelling/CHANGELOG.md"
+  "changelog": "electrical/arc-flash-labelling/CHANGELOG.md",
+  "validation": [
+    "electrical/arc-flash-labelling/validation/intent-shape.yaml",
+    "electrical/arc-flash-labelling/validation/ir-integrity.yaml",
+    "electrical/arc-flash-labelling/validation/jurisdiction-format-match.yaml"
+  ]
 }

@@ -43,11 +43,6 @@
     "shared/calculations/lighting/lumen-method-check.json",
     "shared/calculations/lighting/lumen-method.json"
   ],
-  "validators": [
-    "electrical/lighting-layout/validation/lux-validation.yaml",
-    "electrical/lighting-layout/validation/spacing-validation.yaml",
-    "electrical/lighting-layout/validation/emergency-validation.yaml"
-  ],
   "prompts": {
     "generator": "electrical/lighting-layout/prompts/generator.md",
     "validator": "electrical/lighting-layout/prompts/validator.md",
@@ -74,5 +69,10 @@
     "OpenClaw",
     "any-llm-agent"
   ],
-  "changelog": "electrical/lighting-layout/CHANGELOG.md"
+  "changelog": "electrical/lighting-layout/CHANGELOG.md",
+  "validation": [
+    "electrical/lighting-layout/validation/emergency-validation.yaml",
+    "electrical/lighting-layout/validation/lux-validation.yaml",
+    "electrical/lighting-layout/validation/spacing-validation.yaml"
+  ]
 }

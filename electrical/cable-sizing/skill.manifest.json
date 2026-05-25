@@ -21,8 +21,16 @@
   ],
   "produces_intent_schema": "electrical/cable-sizing/schemas/cable-sizing-intent.schema.json",
   "consumes_intents": [
-    {"skill_id": "db-layout", "intent_name": "db-layout-rollup", "version_constraint": "^1.0"},
-    {"skill_id": "fault-level", "intent_name": "fault-level", "version_constraint": "^1.0"}
+    {
+      "skill_id": "db-layout",
+      "intent_name": "db-layout-rollup",
+      "version_constraint": "^1.0"
+    },
+    {
+      "skill_id": "fault-level",
+      "intent_name": "fault-level",
+      "version_constraint": "^1.0"
+    }
   ],
   "standards": [
     "shared/standards/electrical/BS7671/appendix4-cable-ratings.json",
@@ -59,7 +67,7 @@
   "prompts": {
     "generator": "electrical/cable-sizing/prompts/generator.md",
     "validator": "electrical/cable-sizing/prompts/validator.md",
-    "reviewer":  "electrical/cable-sizing/prompts/reviewer.md"
+    "reviewer": "electrical/cable-sizing/prompts/reviewer.md"
   },
   "evals": [
     "electrical/cable-sizing/evals/eval-01-uk-domestic-happy-path.yaml",
@@ -77,5 +85,11 @@
     "electrical/cable-sizing/examples/ke-nairobi-commercial-with-msb/",
     "electrical/cable-sizing/examples/intl-commercial-with-feeders/",
     "electrical/cable-sizing/examples/us-industrial-with-motors/"
+  ],
+  "validation": [
+    "electrical/cable-sizing/validation/cascade-tree-integrity.yaml",
+    "electrical/cable-sizing/validation/csa-on-standard-ladder.yaml",
+    "electrical/cable-sizing/validation/intent-shape.yaml",
+    "electrical/cable-sizing/validation/tool-call-resolved.yaml"
   ]
 }

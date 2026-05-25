@@ -23,8 +23,16 @@
     "arc-flash": "electrical/arc-flash/schemas/arc-flash-intent.schema.json"
   },
   "consumes_intents": [
-    {"skill_id": "fault-level", "intent_name": "fault-level", "version_constraint": "^1.0"},
-    {"skill_id": "db-layout", "intent_name": "db-layout-rollup", "version_constraint": "^1.0"}
+    {
+      "skill_id": "fault-level",
+      "intent_name": "fault-level",
+      "version_constraint": "^1.0"
+    },
+    {
+      "skill_id": "db-layout",
+      "intent_name": "db-layout-rollup",
+      "version_constraint": "^1.0"
+    }
   ],
   "standards": [
     "shared/standards/electrical/IEEE1584/method-2018-tables-1-3-600V-coefficients.json",
@@ -89,12 +97,6 @@
     "electrical/arc-flash/constraints/ppe-category-monotonic.yaml",
     "electrical/arc-flash/constraints/method-fallback-consistency.yaml"
   ],
-  "validators": [
-    "electrical/arc-flash/validation/cascade-tree-integrity.yaml",
-    "electrical/arc-flash/validation/method-applied-from-vocabulary.yaml",
-    "electrical/arc-flash/validation/tool-call-resolved.yaml",
-    "electrical/arc-flash/validation/intent-shape.yaml"
-  ],
   "prompts": {
     "generator": "electrical/arc-flash/prompts/generator.md",
     "validator": "electrical/arc-flash/prompts/validator.md",
@@ -124,5 +126,11 @@
     "OpenClaw",
     "any-llm-agent"
   ],
-  "changelog": "electrical/arc-flash/CHANGELOG.md"
+  "changelog": "electrical/arc-flash/CHANGELOG.md",
+  "validation": [
+    "electrical/arc-flash/validation/cascade-tree-integrity.yaml",
+    "electrical/arc-flash/validation/intent-shape.yaml",
+    "electrical/arc-flash/validation/method-applied-from-vocabulary.yaml",
+    "electrical/arc-flash/validation/tool-call-resolved.yaml"
+  ]
 }
