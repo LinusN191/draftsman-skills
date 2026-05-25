@@ -75,9 +75,18 @@ Strategy: breadth-first — finish every skill across disciplines before scaling
 
 **Calculations (3/7 shipped):** cable-sizing, fault-level, arc-flash. Remaining: lux, load-schedule, voltage-drop, generator-sizing.
 
-**Document skills (0/7 outstanding):** tender-report, bq, method-statement, cable-schedule, specification, om-manual, design-statement (all live under `documents/`, NOT `electrical/`).
+**Document skills (0/8 outstanding):** tender-report, bq, method-statement, cable-schedule, specification, om-manual, design-statement, cdm-designer-risk-register (all live under `documents/`, NOT `electrical/`).
 
 **Other shipped:** arc-flash-labelling (companion to arc-flash).
+
+**Sprint D follow-up — scope-coverage stubs added 2026-05-25 (19 new stubs across 8 truly-unscoped domains identified by Reviewer 1):**
+- `fire-protection/` (3 new — passive fire): fire-stopping, compartmentation, fire-damper-schedule
+- `commissioning/` (3 new, NEW DISCIPLINE): inspection-test-certificate, commissioning-plan, witness-testing-record
+- `compliance/` (4 new, NEW DISCIPLINE): energy-statement, carbon-assessment, breeam-leed-assessment, **integrated-design-review** (the cross-discipline whole-package sign-off — the most consequential unscoped domain per Reviewer 1)
+- `electrical/` (3 new): ev-charging, battery-storage, protection-coordination
+- `mechanical/` (3 new): heat-pump, lifts, acoustics
+- `plumbing/` (2 new): medical-gas, legionella-risk
+- `documents/` (1 new): cdm-designer-risk-register
 
 All other `electrical/<skill>/` folders are scaffolds — README + manifest + evals only, awaiting `inputs.json` and `schemas/` to be considered shipped.
 
