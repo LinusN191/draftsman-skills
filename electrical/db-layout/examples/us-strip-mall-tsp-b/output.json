@@ -281,6 +281,15 @@
         "message": "GFCI required by NEC 210.8(B) on counter/customer-area + prep-area receptacles (C02, C07). 10mA Class A GFCI per UL 943. Display refrigeration motor circuits (C03, C04, C05) and POS dedicated (C06) protected by feeder-side GFEP at the upstream cooler controller per NEC 426/427 hardline cold-line practice; not on the panelboard GFCI. Verify with AHJ at tenant fit-out commissioning.",
         "code_clause": "NEC 2023 Article 210.8(B)",
         "severity": "info"
+      },
+      {
+        "code": "PHASE_UNBALANCE_HIGH",
+        "severity": "warning",
+        "message": "Neutral current 21.7 A is 37.2% of the largest phase (L2 = 58.3 A). Per NFPA 70 Article 220.61: single-phase load distribution best practice — rebalance recommended. Re-allocate one or more circuits between phases to reduce neutral loading and improve voltage symmetry.",
+        "code_clause": "IEC 60364-5-52:2009 § 524.2.2 + NFPA 70 Article 220.61 (single-phase load distribution / neutral sizing)",
+        "neutral_current_a": 21.7,
+        "max_phase_current_a": 58.3,
+        "unbalance_pct": 37.2
       }
     ],
     "assumptions": [

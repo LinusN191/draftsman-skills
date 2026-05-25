@@ -228,6 +228,15 @@
         "message": "DB-EM carries emergency-lighting life-safety load — BS EN 50171:2001+A1:2022 requires 3-hour central-battery autonomy minimum and IEC 60598-2-22:2014+A2:2020 governs luminaire conformity. AHJ-required survival duration (1h, 2h, or 3h per local building code) must be verified against the battery commissioning certificate; central-battery installer to provide IEC 61851/EN 50171 compliance certificate and 3-hour discharge test report at handover.",
         "code_clause": "BS EN 50171 §6.12 + IEC 60598-2-22 §22.6",
         "severity": "info"
+      },
+      {
+        "code": "PHASE_UNBALANCE_HIGH",
+        "severity": "warning",
+        "message": "Neutral current 5.0 A is 48.1% of the largest phase (L1 = 10.4 A). Per IEC 60364-1 § 132.6: single-phase load distribution best practice — rebalance recommended. Re-allocate one or more circuits between phases to reduce neutral loading and improve voltage symmetry.",
+        "code_clause": "IEC 60364-5-52:2009 § 524.2.2 + IEC 60364-1 § 132.6 (load balancing best practice)",
+        "neutral_current_a": 5.0,
+        "max_phase_current_a": 10.4,
+        "unbalance_pct": 48.1
       }
     ],
     "assumptions": [

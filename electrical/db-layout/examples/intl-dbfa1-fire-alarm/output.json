@@ -184,6 +184,15 @@
         "message": "DB-FA1 carries life-safety load — IEC 60364-5-56:2018 §560 recommends a secondary supply path via ATS. Current design relies on the integral panel battery for primary backup; ATS to a generator or alternative supply should be considered if the panel battery capacity does not meet the AHJ-required survival duration (typically 24h standby + 30 min alarm).",
         "code_clause": "IEC 60364-5-56:2018 §560.7.1",
         "severity": "info"
+      },
+      {
+        "code": "PHASE_UNBALANCE_HIGH",
+        "severity": "warning",
+        "message": "Neutral current 4.6 A is 62.2% of the largest phase (L2 = 7.4 A). Per IEC 60364-1 § 132.6: single-phase load distribution best practice — rebalance recommended. Re-allocate one or more circuits between phases to reduce neutral loading and improve voltage symmetry.",
+        "code_clause": "IEC 60364-5-52:2009 § 524.2.2 + IEC 60364-1 § 132.6 (load balancing best practice)",
+        "neutral_current_a": 4.6,
+        "max_phase_current_a": 7.4,
+        "unbalance_pct": 62.2
       }
     ],
     "assumptions": [

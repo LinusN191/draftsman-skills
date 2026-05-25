@@ -213,7 +213,17 @@
   ],
   "compliance_summary": {
     "compliant": true,
-    "non_compliance_flags": [],
+    "non_compliance_flags": [
+      {
+        "code": "PHASE_UNBALANCE_HIGH",
+        "severity": "warning",
+        "message": "Neutral current 9.8 A is 30.1% of the largest phase (L2 = 32.6 A). Per IEC 60364-1 § 132.6: single-phase load distribution best practice — rebalance recommended. Re-allocate one or more circuits between phases to reduce neutral loading and improve voltage symmetry.",
+        "code_clause": "IEC 60364-5-52:2009 § 524.2.2 + IEC 60364-1 § 132.6 (load balancing best practice)",
+        "neutral_current_a": 9.8,
+        "max_phase_current_a": 32.6,
+        "unbalance_pct": 30.1
+      }
+    ],
     "assumptions": [
       "IEC 61439-3 Distribution Board (DBO) used for the lighting sub-DB.",
       "IEC 60364-4-41:2018 Clause 411.3.3 universal 30mA Type A RCD applied to all general lighting circuits (L01-L05, L07). Type A required because modern LED drivers contain switched-mode power supplies that produce pulsating DC residual currents.",

@@ -223,6 +223,15 @@
         "message": "Worst-case cascade ratio at C01 (32A:16A = 2:1) sits at the minimum IEC 60898 same-curve cascade threshold for selectivity at 8 kA. Manufacturer cascade-table verification required at full fault level — flagged for fault-level skill coordination study at engineering hand-off.",
         "code_clause": "IEC 60898-1 + IEC 60364-5-53:2002 §536",
         "severity": "info"
+      },
+      {
+        "code": "PHASE_UNBALANCE_HIGH",
+        "severity": "warning",
+        "message": "Neutral current 11.7 A is 53.9% of the largest phase (L1 = 21.7 A). Per IEC 60364-1 § 132.6: single-phase load distribution best practice — rebalance recommended. Re-allocate one or more circuits between phases to reduce neutral loading and improve voltage symmetry.",
+        "code_clause": "IEC 60364-5-52:2009 § 524.2.2 + IEC 60364-1 § 132.6 (load balancing best practice)",
+        "neutral_current_a": 11.7,
+        "max_phase_current_a": 21.7,
+        "unbalance_pct": 53.9
       }
     ],
     "assumptions": [

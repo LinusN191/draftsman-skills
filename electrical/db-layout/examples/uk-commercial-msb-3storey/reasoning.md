@@ -10,7 +10,7 @@ Peak design load per floor: ~30 kVA (12kW lighting + 10kW sockets + 5kW IT + 3kW
 
 Design current per phase: 86,000 / (√3 × 400 × 0.85) = ~146A.
 
-Applying diversity factor 0.8 (commercial typical for spec offices per BS 7671 Appendix 1 + BCO guidance): ~117A. With 25% growth margin: ~146A peak.
+Applying diversity factor 0.8 (commercial spec-office norm per CIBSE Guide F + BCO Guidance at the building-aggregate level — distinct from per-circuit / per-load-type diversity that BS 7671:2018+A2:2022 § 311.1 + IET OSG Appendix A prescribes on individual instantaneous loads): ~117A. With 25% growth margin: ~146A peak.
 
 400A TPN intake gives ~63% headroom — generous for spec office where tenant fit-out can dramatically change loads. Standard practice for commercial multi-tenant buildings.
 

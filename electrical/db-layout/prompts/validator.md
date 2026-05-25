@@ -100,6 +100,15 @@ Validator actions:
 - Sanity-check `I_N ∈ [0, max(IL1, IL2, IL3)]`. If outside the range,
   FLAG INV-13 — the unbalance formula was applied incorrectly.
 
+**Validator action (additional, PHASE_UNBALANCE regression-detection):**
+Compute `unbalance_pct = neutral_current_a / max(per_phase_loading_a.L1,
+per_phase_loading_a.L2, per_phase_loading_a.L3) × 100`. If `unbalance_pct
+> 30` AND no entry in `compliance_summary.non_compliance_flags[]` has
+`code == "PHASE_UNBALANCE_HIGH"`, FLAG INV-13. This guarantees the
+PHASE_UNBALANCE_HIGH rule (declared in `prompts/generator.md` Step 6) is
+emitted whenever the board crosses the 30% unbalance threshold — closes
+the regression-detection gap from the B.3 fix-pass.
+
 Rationale: phase balance is the classic 3-phase board failure mode; H6
 defect class. Per IEC 60364-5-52 § 524.2.2 the neutral current depends on
 per-phase unbalance.

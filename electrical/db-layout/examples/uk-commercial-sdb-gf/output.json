@@ -335,7 +335,17 @@
   ],
   "compliance_summary": {
     "compliant": true,
-    "non_compliance_flags": [],
+    "non_compliance_flags": [
+      {
+        "code": "PHASE_UNBALANCE_HIGH",
+        "severity": "warning",
+        "message": "Neutral current 32.8 A is 44.0% of the largest phase (L1 = 74.6 A). Per IET OSG Appendix A: single-phase load distribution best practice — rebalance recommended. Re-allocate one or more circuits between phases to reduce neutral loading and improve voltage symmetry.",
+        "code_clause": "IEC 60364-5-52:2009 § 524.2.2 + IET OSG Appendix A (load balancing best practice)",
+        "neutral_current_a": 32.8,
+        "max_phase_current_a": 74.6,
+        "unbalance_pct": 44.0
+      }
+    ],
     "assumptions": [
       "BS EN 61439-3 Distribution Board (DBO) used for the sub-DB.",
       "BS 7671:2018+A2 Reg 411.3.3: 30mA Type A RCD applied to all socket-bearing circuits (C04-C08, C10-C12).",

@@ -6,7 +6,7 @@ Level-2 sub-DB on the UK 3-storey commercial office. ~400m² floor plate — ide
 
 ## Board sizing — 100A TPN intake
 
-Connected load summary (12 final circuits): ~37 kW total connected; ~27 kW after diversity (DF ≈ 0.75 per BS 7671 Appendix 1). Design current per phase ≈ 46A — well below 100A. Matches SDB-L1 sizing convention for consistency across upper floors.
+Connected load summary (12 final circuits): ~37 kW total connected; ~27 kW after diversity (DF ≈ 0.75 per CIBSE Guide F + BCO Guidance for typical commercial spec-office at the board-aggregate level — distinct from per-circuit / per-load-type diversity prescribed by BS 7671:2018+A2:2022 § 311.1 + IET OSG Appendix A on individual instantaneous loads). Design current per phase ≈ 46A — well below 100A. Matches SDB-L1 sizing convention for consistency across upper floors.
 
 ## Why this DB is the cascade bottleneck
 

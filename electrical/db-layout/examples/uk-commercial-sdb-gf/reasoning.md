@@ -6,7 +6,7 @@ Ground-floor sub-DB on the UK 3-storey commercial office. ~400m² floor plate ho
 
 ## Board sizing — 100A TPN intake
 
-Connected load summary (12 final circuits): ~38 kW total connected; ~28 kW after diversity (DF ≈ 0.75 per BS 7671 Appendix 1 typical commercial office). Design current per phase ≈ 28,000 / (√3 × 400 × 0.85) ≈ 47A — well below the 100A intake. Headroom suits open spec-office tenant variation.
+Connected load summary (12 final circuits): ~38 kW total connected; ~28 kW after diversity (DF ≈ 0.75 per CIBSE Guide F + BCO Guidance for typical commercial spec-office at the board-aggregate level — distinct from the per-circuit / per-load-type diversity that BS 7671:2018+A2:2022 § 311.1 + IET OSG Appendix A would prescribe on individual instantaneous loads). Design current per phase ≈ 28,000 / (√3 × 400 × 0.85) ≈ 47A — well below the 100A intake. Headroom suits open spec-office tenant variation.
 
 100A TPN sub-DB is the standard UK commercial floor-DB rating for ~400m² spec-office plates.
 

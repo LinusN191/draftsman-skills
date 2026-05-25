@@ -231,7 +231,17 @@
   ],
   "compliance_summary": {
     "compliant": true,
-    "non_compliance_flags": [],
+    "non_compliance_flags": [
+      {
+        "code": "PHASE_UNBALANCE_HIGH",
+        "severity": "warning",
+        "message": "Neutral current 17.8 A is 30.8% of the largest phase (L2 = 57.8 A). Per KS 1700:2018 § 524 (route to BS 7671): single-phase load distribution best practice — rebalance recommended. Re-allocate one or more circuits between phases to reduce neutral loading and improve voltage symmetry.",
+        "code_clause": "IEC 60364-5-52:2009 § 524.2.2 + KS 1700:2018 § 524 / IET OSG Appendix A (load balancing best practice)",
+        "neutral_current_a": 17.8,
+        "max_phase_current_a": 57.8,
+        "unbalance_pct": 30.8
+      }
+    ],
     "assumptions": [
       "KPLC declared PFC of 9.8kA at intake; MCBs selected with 10kA Icn (BS EN 60898).",
       "KS 1700 §411.3.3 universal socket-RCD policy applied to all socket-bearing circuits (C03, C04, C08).",

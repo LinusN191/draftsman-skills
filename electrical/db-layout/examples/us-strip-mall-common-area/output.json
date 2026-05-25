@@ -211,6 +211,15 @@
         "message": "GFCI 10mA Class A applied to common-area receptacles C04 per NEC 210.8(B)(7) outdoor + 210.8(B)(8) janitor/utility — outdoor maintenance receptacles are within scope.",
         "code_clause": "NEC 2023 Article 210.8(B)",
         "severity": "info"
+      },
+      {
+        "code": "PHASE_UNBALANCE_HIGH",
+        "severity": "warning",
+        "message": "Neutral current 81.7 A is 76.6% of the largest phase (L2 = 106.7 A). Per NFPA 70 Article 220.61: single-phase load distribution best practice — rebalance recommended. Re-allocate one or more circuits between phases to reduce neutral loading and improve voltage symmetry.",
+        "code_clause": "IEC 60364-5-52:2009 § 524.2.2 + NFPA 70 Article 220.61 (single-phase load distribution / neutral sizing)",
+        "neutral_current_a": 81.7,
+        "max_phase_current_a": 106.7,
+        "unbalance_pct": 76.6
       }
     ],
     "assumptions": [
