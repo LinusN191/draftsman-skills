@@ -39,7 +39,7 @@ Common failures:
 Is the upstream data trail intact and traceable?
 
 Key questions:
-- Every `consumed_intent_path` resolves to a real file? (Validator INV-3 covers existence — D2 covers correctness of CONTENT match)
+- Every `consumed_intent_path` resolves to a real file? (Validator INV-03 covers existence — D2 covers correctness of CONTENT match)
 - The path's payload genuinely describes the board it's attached to? (e.g., FAP-1 path points to a db-layout intent for fire alarm, not a generic sub-DB)
 - `meta.consumed_intents[]` accurately reflects each consumed intent's version + producing skill version?
 - Upstream `breaker_rating` + `breaker_curve` + `voltage_class` data adopted verbatim into the SLD's selectivity reasoning (no silent re-authoring)?
@@ -105,14 +105,14 @@ Does the SLD honour the WI3 deferred-tool contract?
 
 Key questions:
 - `system_metrics.tool_call_pending_for_system_metrics: true` set? (Until `calc.sld_system_metrics` ships in a future runtime release, this flag must be true on every v1.3.0 generation)
-- The TOOL-CALL-PENDING string in `flags[]` matches the boolean state? (Validator INV-9 covers shape — D6 covers semantic completeness)
+- The TOOL-CALL-PENDING string in `flags[]` matches the boolean state? (Validator INV-09 covers shape — D6 covers semantic completeness)
 - Assumptions section documents the LLM-estimate nature of `imax_total_a` and `peak_pfc_ka`?
 - No deterministic-looking precision in `peak_pfc_ka` (e.g., `21.347 kA` to 3-decimal precision implies a tool ran, which it didn't in v1.3 — round to 1-decimal or set as the engineer-typical 1-significant-figure estimate)?
 - Replay payload (the snapshot the tool will consume in v1.4.0+) — for v1.3 this is NOT yet captured in the IR (unlike earthing's `zs_calc_tool_input`); confirm absence is intentional and not a missing field
 
 Common failures:
 - LLM produced a precise-looking `peak_pfc_ka` (21.347 kA) without the WI3 disclaimer
-- Boolean flag set but TOOL-CALL-PENDING string missing (validator INV-9 will already block this; D6 also flags as poor practice)
+- Boolean flag set but TOOL-CALL-PENDING string missing (validator INV-09 will already block this; D6 also flags as poor practice)
 - Assumptions section silent on the deferral
 
 ## Output

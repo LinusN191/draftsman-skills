@@ -62,17 +62,17 @@ checks:
   - assertion: 'ir.invariants[?(@.id=="INV-01")].passes == true'
     description: Way accounting
     severity: critical
-    matches_inv: INV-1
+    matches_inv: INV-01
 
   - assertion: 'ir.invariants[?(@.id=="INV-03")].passes == true'
     description: Busbar rating coverage
     severity: critical
-    matches_inv: INV-3
+    matches_inv: INV-03
 
   - assertion: 'ir.invariants[?(@.id=="INV-04")].passes == true'
     description: OCPD-cable coordination
     severity: critical
-    matches_inv: INV-4
+    matches_inv: INV-04
 
   - assertion: 'ir.rationale.sections[*].summary matches "^BS 7671:2018\+A3 Reg 4(11|33)\."'
     description: At least 2 citations match pattern

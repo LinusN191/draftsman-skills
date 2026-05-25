@@ -1,6 +1,6 @@
 name: eval-04-missing-spd-assessment
 skill: sld
-description: Validation trap — INV-8 catches an IR missing system_metrics.spd_assessment. Generator should ALWAYS emit an SPD assessment (or assessment with required=false + spd_type="not_required" if explicitly N/A).
+description: Validation trap — INV-08 catches an IR missing system_metrics.spd_assessment. Generator should ALWAYS emit an SPD assessment (or assessment with required=false + spd_type="not_required" if explicitly N/A).
 category: validation_trap
 input_fixture: null
 test_scenario:
@@ -10,7 +10,7 @@ expected_compliance:
   compliant: false
 checks:
   - assertion: "compliance_summary.non_compliance_flags has entry with severity == 'critical'"
-    description: Missing SPD assessment triggers critical flag per INV-8.
+    description: Missing SPD assessment triggers critical flag per INV-08.
     severity: critical
   - assertion: "compliance_summary.compliant == false"
     description: Overall compliance is false when SPD assessment missing.

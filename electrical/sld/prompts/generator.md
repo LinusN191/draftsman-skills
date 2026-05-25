@@ -194,7 +194,7 @@ For each board in `input.distribution_hierarchy_brief`, emit one entry in `ir.di
 - Exactly ONE node has `parent_board_id: null` (the root MSB — typically `board_role: main_switchboard`)
 - Every non-root node has a `parent_board_id` pointing to an existing entry in the array
 - Every non-root node has a `fed_via_circuit_id` matching an `id` in the parent's consumed db-layout intent's `circuits[]`
-- No cycles (acyclic tree — validated by INV-2)
+- No cycles (acyclic tree — validated by INV-02)
 
 The tree is expressed as a flat array with parent pointers, not as nested objects. This simplifies schema validation and downstream traversal.
 

@@ -35,7 +35,7 @@ Standby generators have specific earthing requirements (BS 7671 Chapter 55, NEC 
 ## What may produce false positives in evals
 
 - **D6 (Zs margin):** if the engineer provides exact measured Ze (rather than declared), the design may pass with very small margins that the reviewer flags as "low headroom". This is correct engineering judgement, not a bug.
-- **INV-3 (bonding completeness):** the skill cannot detect un-declared extraneous-conductive-parts. Garbage-in-garbage-out applies.
+- **INV-03 (bonding completeness):** the skill cannot detect un-declared extraneous-conductive-parts. Garbage-in-garbage-out applies.
 
 ## Tool calls awaiting runtime
 

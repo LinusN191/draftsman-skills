@@ -22,7 +22,7 @@ Run all 10 INV checks below. For each, emit a violation if the rule fails. All s
 
 ---
 
-## INV-1: Single root in distribution_hierarchy
+## INV-01: Single root in distribution_hierarchy
 
 **Condition:** Exactly ONE entry in `ir.distribution_hierarchy[]` has `parent_board_id == null`.
 
@@ -32,12 +32,12 @@ Run all 10 INV checks below. For each, emit a violation if the rule fails. All s
 **Severity:** CRITICAL
 
 **Failure message templates:**
-- Zero roots: `"INV-1: No root board found in distribution_hierarchy — exactly one entry must have parent_board_id: null (the root MSB)"`
-- Multiple roots: `"INV-1: Multiple roots found in distribution_hierarchy (count=<N>) — exactly one entry must have parent_board_id: null"`
+- Zero roots: `"INV-01: No root board found in distribution_hierarchy — exactly one entry must have parent_board_id: null (the root MSB)"`
+- Multiple roots: `"INV-01: Multiple roots found in distribution_hierarchy (count=<N>) — exactly one entry must have parent_board_id: null"`
 
 ---
 
-## INV-2: All non-root nodes resolve to an existing parent
+## INV-02: All non-root nodes resolve to an existing parent
 
 **Condition:** For every entry in `ir.distribution_hierarchy[]` where `parent_board_id != null`, that `parent_board_id` value MUST match the `board_id` of another entry in the same array. No dangling pointers, no self-references, no cycles.
 
@@ -48,15 +48,15 @@ Run all 10 INV checks below. For each, emit a violation if the rule fails. All s
 **Severity:** CRITICAL
 
 **Failure message templates:**
-- Dangling pointer: `"INV-2: Board <CHILD_ID> declares parent_board_id=<PARENT_ID> but no entry with board_id=<PARENT_ID> exists in distribution_hierarchy"`
-- Self-reference: `"INV-2: Board <ID> has parent_board_id pointing to itself — cycle detected"`
-- Cycle: `"INV-2: Cycle detected in distribution_hierarchy: <ID_A> → <ID_B> → ... → <ID_A>"`
+- Dangling pointer: `"INV-02: Board <CHILD_ID> declares parent_board_id=<PARENT_ID> but no entry with board_id=<PARENT_ID> exists in distribution_hierarchy"`
+- Self-reference: `"INV-02: Board <ID> has parent_board_id pointing to itself — cycle detected"`
+- Cycle: `"INV-02: Cycle detected in distribution_hierarchy: <ID_A> → <ID_B> → ... → <ID_A>"`
 
 Implementation note: traverse from each non-root upward to root following `parent_board_id`; if traversal revisits a node, it is a cycle.
 
 ---
 
-## INV-3: All boards have a resolvable consumed_intent_path
+## INV-03: All boards have a resolvable consumed_intent_path
 
 **Condition:** For every entry in `ir.distribution_hierarchy[]`, the `consumed_intent_path` field MUST point to a file that exists relative to the repo root.
 
@@ -66,14 +66,14 @@ Implementation note: traverse from each non-root upward to root following `paren
 **Severity:** CRITICAL
 
 **Failure message templates:**
-- Missing file: `"INV-3: Board <ID> consumed_intent_path=<PATH> does not resolve to an existing file (relative to repo root)"`
-- Empty/null path: `"INV-3: Board <ID> consumed_intent_path is empty or null — every board must reference its db-layout intent-out.json"`
+- Missing file: `"INV-03: Board <ID> consumed_intent_path=<PATH> does not resolve to an existing file (relative to repo root)"`
+- Empty/null path: `"INV-03: Board <ID> consumed_intent_path is empty or null — every board must reference its db-layout intent-out.json"`
 
 Implementation note: resolve each path against the repo root used for validation (typically the validation host's working directory). If file not found, emit failure.
 
 ---
 
-## INV-4: consumed_intents[] count matches distribution_hierarchy[] count
+## INV-04: consumed_intents[] count matches distribution_hierarchy[] count
 
 **Condition:** `len(ir.meta.consumed_intents) == len(ir.distribution_hierarchy)`. Every board contributes exactly one entry to the consumed_intents trace.
 
@@ -84,13 +84,13 @@ Implementation note: resolve each path against the repo root used for validation
 **Severity:** CRITICAL
 
 **Failure message templates:**
-- Count mismatch: `"INV-4: meta.consumed_intents length (<M>) does not match distribution_hierarchy length (<N>) — every board must contribute one consumed-intent trace entry"`
+- Count mismatch: `"INV-04: meta.consumed_intents length (<M>) does not match distribution_hierarchy length (<N>) — every board must contribute one consumed-intent trace entry"`
 
 Implementation note: this catches the case where the generator forgot to register one of the board's intent consumption in the meta trace.
 
 ---
 
-## INV-5: Intake current capacity adequate
+## INV-05: Intake current capacity adequate
 
 **Condition:** `ir.system_metrics.imax_total_a <= ir.supply_origin.main_switch_rating_a`.
 
@@ -101,13 +101,13 @@ Implementation note: this catches the case where the generator forgot to registe
 **Severity:** CRITICAL
 
 **Failure message templates:**
-- Undersized: `"INV-5: Intake undersized — imax_total_a=<N>A exceeds main_switch_rating_a=<M>A. Upgrade main switch or split supplies."`
+- Undersized: `"INV-05: Intake undersized — imax_total_a=<N>A exceeds main_switch_rating_a=<M>A. Upgrade main switch or split supplies."`
 
 Note: this is an arithmetic check on what the generator should have detected in Step 5. The validator independently re-verifies and refuses to bless an undersized intake.
 
 ---
 
-## INV-6: Intake breaking capacity adequate
+## INV-06: Intake breaking capacity adequate
 
 **Condition:** `ir.system_metrics.peak_pfc_ka <= ir.supply_origin.main_switch_breaking_capacity_ka`.
 
@@ -118,13 +118,13 @@ Note: this is an arithmetic check on what the generator should have detected in 
 **Severity:** CRITICAL
 
 **Failure message templates:**
-- Insufficient Icu: `"INV-6: Main switch breaking capacity insufficient — peak_pfc_ka=<P> kA exceeds main_switch_breaking_capacity_ka=<I> kA. Specify device with higher Icu."`
+- Insufficient Icu: `"INV-06: Main switch breaking capacity insufficient — peak_pfc_ka=<P> kA exceeds main_switch_breaking_capacity_ka=<I> kA. Specify device with higher Icu."`
 
 Note: independent verification of Step 5 Check 2 in the generator.
 
 ---
 
-## INV-7: selectivity_cascade has exactly N-1 entries for N boards
+## INV-07: selectivity_cascade has exactly N-1 entries for N boards
 
 **Condition:** `len(ir.selectivity_cascade) == len(ir.distribution_hierarchy) - 1`. One selectivity entry per parent→child link (root has no parent, so N-1 links for N boards).
 
@@ -135,15 +135,15 @@ Note: independent verification of Step 5 Check 2 in the generator.
 **Severity:** CRITICAL
 
 **Failure message templates:**
-- Count mismatch: `"INV-7: selectivity_cascade has <C> entries; expected <N>-1 = <E> entries for the <N>-board cascade. Every parent→child link must have a selectivity verdict."`
-- Orphan entry: `"INV-7: selectivity_cascade entry references child_board_id=<ID> which has no entry in distribution_hierarchy"`
-- Missing entry: `"INV-7: Non-root board <CHILD_ID> (parent=<PARENT_ID>) has no entry in selectivity_cascade"`
+- Count mismatch: `"INV-07: selectivity_cascade has <C> entries; expected <N>-1 = <E> entries for the <N>-board cascade. Every parent→child link must have a selectivity verdict."`
+- Orphan entry: `"INV-07: selectivity_cascade entry references child_board_id=<ID> which has no entry in distribution_hierarchy"`
+- Missing entry: `"INV-07: Non-root board <CHILD_ID> (parent=<PARENT_ID>) has no entry in selectivity_cascade"`
 
 Implementation note: also verify each entry's `parent_board_id` + `child_board_id` correspond to a real parent→child relationship in `distribution_hierarchy` (the child's `parent_board_id` matches the entry's `parent_board_id`).
 
 ---
 
-## INV-8: SPD assessment present + jurisdiction-appropriate code_clause
+## INV-08: SPD assessment present + jurisdiction-appropriate code_clause
 
 **Condition:** `ir.system_metrics.spd_assessment` is present (required by schema) AND the `code_clause` field starts with the jurisdiction-appropriate prefix per the routing table below.
 
@@ -164,12 +164,12 @@ Implementation note: also verify each entry's `parent_board_id` + `child_board_i
 | US | `"NEC 2023"` or `"NFPA 70:"` |
 
 **Failure message templates:**
-- Missing block: `"INV-8: system_metrics.spd_assessment missing — SPD assessment is mandatory per Step 7"`
-- Wrong jurisdiction prefix: `"INV-8: SPD code_clause=<CLAUSE> does not start with jurisdiction-appropriate prefix for <JURISDICTION>. Expected prefix: <EXPECTED>"`
+- Missing block: `"INV-08: system_metrics.spd_assessment missing — SPD assessment is mandatory per Step 7"`
+- Wrong jurisdiction prefix: `"INV-08: SPD code_clause=<CLAUSE> does not start with jurisdiction-appropriate prefix for <JURISDICTION>. Expected prefix: <EXPECTED>"`
 
 ---
 
-## INV-9: Tool deferral shape consistency
+## INV-09: Tool deferral shape consistency
 
 **Condition:** The pair `(tool_call_pending_for_system_metrics, flags[contains TOOL-CALL-PENDING string])` MUST be coherent.
 
@@ -191,8 +191,8 @@ Implementation note: also verify each entry's `parent_board_id` + `child_board_i
 | absent | yes | FAIL (mismatched) |
 
 **Failure message templates:**
-- Flag-without-bool: `"INV-9: flags[] contains TOOL-CALL-PENDING:sld_system_metrics but tool_call_pending_for_system_metrics is false/absent — mismatched deferral shape"`
-- Bool-without-flag: `"INV-9: tool_call_pending_for_system_metrics=true but flags[] does not contain TOOL-CALL-PENDING:sld_system_metrics — mismatched deferral shape"`
+- Flag-without-bool: `"INV-09: flags[] contains TOOL-CALL-PENDING:sld_system_metrics but tool_call_pending_for_system_metrics is false/absent — mismatched deferral shape"`
+- Bool-without-flag: `"INV-09: tool_call_pending_for_system_metrics=true but flags[] does not contain TOOL-CALL-PENDING:sld_system_metrics — mismatched deferral shape"`
 
 The TOOL-CALL-PENDING string MUST match the prefix `^TOOL-CALL-PENDING:sld_system_metrics` (suffix may carry the disclaimer text).
 

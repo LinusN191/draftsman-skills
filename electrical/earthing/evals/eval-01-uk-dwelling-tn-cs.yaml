@@ -59,17 +59,17 @@ checks:
   - assertion: 'ir.circuits[*].zs_calculated_ohm <= ir.circuits[*].zs_max_ohm'
     description: Every circuit must satisfy Zs ≤ Zs_max — zs_calculated_ohm must not exceed zs_max_ohm for any circuit
     severity: critical
-    matches_inv: INV-5
+    matches_inv: INV-05
 
   - assertion: 'ir.invariants[?(@.id=="INV-05")].passes == true'
     description: Zs arithmetic
     severity: critical
-    matches_inv: INV-5
+    matches_inv: INV-05
 
   - assertion: 'ir.invariants[?(@.id=="INV-03")].passes == true'
     description: Bonding completeness
     severity: critical
-    matches_inv: INV-3
+    matches_inv: INV-03
 
   - assertion: 'ir.earthing_system.code_clause matches "^BS 7671:2018\+A3 Reg 411\."'
     description: At least 2 citations match BS 7671:2018+A3 Reg 411. pattern

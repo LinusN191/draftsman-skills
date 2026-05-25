@@ -36,7 +36,7 @@ Voltage drop per circuit is a separate validation (cable-sizing skill scope). Th
 ## What may produce false positives in evals
 
 - **D6 (Cable + OCPD coordination):** if the engineer provides explicit cable temperature class and installation method, the verdict may differ from the default-corrected ampacity. Reviewer should accept engineer-provided derating.
-- **INV-9 (Selectivity result completeness):** the skill cannot detect undeclared cascade pairs. If two circuits share an upstream OCPD that wasn't declared, the cascade entry is missing.
+- **INV-09 (Selectivity result completeness):** the skill cannot detect undeclared cascade pairs. If two circuits share an upstream OCPD that wasn't declared, the cascade entry is missing.
 
 ## Tool calls awaiting runtime
 

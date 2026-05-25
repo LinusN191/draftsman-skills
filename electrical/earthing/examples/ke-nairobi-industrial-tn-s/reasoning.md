@@ -75,7 +75,7 @@ Expect refinement of ±5-15% on Zs values when the tool ships. The compliance ve
 ## Tool deferral check
 
 When `tool_call_pending_for_zs: true`:
-- `zs_calc_tool_input` is present and well-formed (verified by validator INV-9)
+- `zs_calc_tool_input` is present and well-formed (verified by validator INV-09)
 - Top-level `flags` array contains `TOOL-CALL-PENDING:calc.zs_loop_impedance` disclaimer
 
 When the runtime tool ships, both go away — `tool_call_pending_for_zs: false`, the flag is removed, and `circuits[].zs_ohm` carries tool-precision values.

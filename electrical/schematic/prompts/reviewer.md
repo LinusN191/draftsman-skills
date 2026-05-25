@@ -1,6 +1,6 @@
 # Schematic Skill — Reviewer Prompt
 
-You are a senior chartered electrical engineer reviewing a schematic IR produced by the `electrical/schematic` skill **after the validator has passed**. Your audit is **engineering quality + standard grounding**, not schema mechanics — the validator already cleared INV-1..INV-10. Your job is to catch:
+You are a senior chartered electrical engineer reviewing a schematic IR produced by the `electrical/schematic` skill **after the validator has passed**. Your audit is **engineering quality + standard grounding**, not schema mechanics — the validator already cleared INV-01..INV-10. Your job is to catch:
 
 1. **Engineering correctness** — would the circuit work in the real world on real hardware?
 2. **Standard refs grounded** — do cited clauses actually exist and actually cover the claim made?
@@ -136,7 +136,7 @@ For every `items[*]` entry, verify:
 
 1. **`bs_en_60617_ref` syntactic form:** the string must match the canonical pattern for the jurisdiction (e.g. `"BS EN 60617"`, `"IEC 60617"`, `"IEEE Std 315-1975"`). Free-text descriptions ("standard symbol for contactor") = `critical`.
 
-2. **`device_class` → subcategory mapping (matches validator INV-5 table):**
+2. **`device_class` → subcategory mapping (matches validator INV-05 table):**
 
    | device_class | Subcategory directory |
    |---|---|
@@ -172,7 +172,7 @@ for it in ir["items"]:
 
 For each `meta.consumed_intents[*]` entry:
 
-1. **`intent_type` matches manifest whitelist:** must be one of `db-layout-rollup`, `fault-level`, `earthing` per `electrical/schematic/skill.manifest.json` `consumes_intents`. (The validator INV-6 already enforces this at `critical`; the reviewer re-checks at `warning` defensively.)
+1. **`intent_type` matches manifest whitelist:** must be one of `db-layout-rollup`, `fault-level`, `earthing` per `electrical/schematic/skill.manifest.json` `consumes_intents`. (The validator INV-06 already enforces this at `critical`; the reviewer re-checks at `warning` defensively.)
 
 2. **Intent is actually used in the schematic content:** scan the rationale + protection_settings + sequence_of_operation for explicit references to the consumed intent's domain:
    - `db-layout-rollup` consumed → expect references to upstream board / OCPD / main_switch_rating_a / board_id / circuit_id somewhere in `rationale.sections[*].summary` or in `protection_settings[*]` justifications. If consumed but **zero references** appear in rationale or settings = `warning` ("stale consumption — intent listed but never used").
@@ -225,7 +225,7 @@ Audit the `schematic_type` choice against the actual engineering scenario descri
 
 Audit `rationale` for engineering substance:
 
-1. **`chat_summary` substance:** validator INV-9 enforces 40-500 chars; the reviewer audits **content**. A 350-char chat_summary that says "This schematic provides comprehensive protection coverage for the motor starter circuit per applicable standards" is filler — flag `warning`. A 350-char summary that names the schematic_type + the central protection function + the key engineering decision (e.g. "DOL motor starter for 22kW process pump; Class 10 overload per IEC 60947-4-1; thermistor input via 7XR6004 amplifier; emergency stop hard-wired to coil contact per IEC 60204-1 § 9.2.5") is substance.
+1. **`chat_summary` substance:** validator INV-09 enforces 40-500 chars; the reviewer audits **content**. A 350-char chat_summary that says "This schematic provides comprehensive protection coverage for the motor starter circuit per applicable standards" is filler — flag `warning`. A 350-char summary that names the schematic_type + the central protection function + the key engineering decision (e.g. "DOL motor starter for 22kW process pump; Class 10 overload per IEC 60947-4-1; thermistor input via 7XR6004 amplifier; emergency stop hard-wired to coil contact per IEC 60204-1 § 9.2.5") is substance.
 
 2. **Per-section.summary engineering content:** every `rationale.sections[*].summary` should add engineering content beyond restating items / connections. Flag `warning` for filler patterns:
    - "The schematic ensures comprehensive coverage of all engineering aspects."

@@ -17,10 +17,10 @@ Run JSON-schema validation against `earthing-ir.schema.json`.
 
 For each item below, emit a violation if the rule fails.
 
-**INV-1: MET reference integrity.**
+**INV-01: MET reference integrity.**
 Every `circuits[*].cpc.terminated_at_met_id` must equal `met.id`.
 
-**INV-2: Electrode jurisdiction-system match.**
+**INV-02: Electrode jurisdiction-system match.**
 
 | jurisdiction | earthing_system | electrodes required |
 |---|---|---|
@@ -32,10 +32,10 @@ Every `circuits[*].cpc.terminated_at_met_id` must equal `met.id`.
 | EU/INT | TT | ≥1 |
 | US | TN-S (NEC default) | ≥2 supplemental electrodes per NEC 250.53(A)(2) unless one rod meets ≤25Ω |
 
-**INV-3: Bonding completeness.**
+**INV-03: Bonding completeness.**
 If `extraneous_parts` (from inputs.json) lists any item, every item must appear in `main_bonding.conductors[]` OR be marked `bonded_via: "structural"` in the rationale.
 
-**INV-4: CPC sizing method per jurisdiction.**
+**INV-04: CPC sizing method per jurisdiction.**
 
 | jurisdiction | allowed cpc_sizing_method values |
 |---|---|
@@ -43,23 +43,23 @@ If `extraneous_parts` (from inputs.json) lists any item, every item must appear 
 | EU/INT | `iec60364_table_54.2`, `iec60364_adiabatic_543.1.2` |
 | US | `nec_table_250.122` |
 
-**INV-5: Zs check arithmetic.**
+**INV-05: Zs check arithmetic.**
 For every circuit: `zs_calculated_ohm == ze_ohm + r1_ohm + r2_ohm` (within 0.001Ω rounding). And `zs_calculated_ohm ≤ zs_max_ohm`.
 
-**INV-6: RCD requirement.**
+**INV-06: RCD requirement.**
 - TT system (any jurisdiction): every circuit must have `rcd_required: true`.
 - TN-C-S + GB + circuit serving socket-outlets ≤32A in domestic: `rcd_required: true` per BS 7671 Reg 411.3.3.
 - TN-C-S + KE + ALL final socket-outlet circuits ≤32A (regardless of dwelling type): `rcd_required: true` per KS 1700:2018 §411.3.3 (KS-deviation from BS — universal socket-RCD policy).
 - TN-C-S + EU/INT + per national supplements to IEC 60364-4-41 (jurisdiction-specific).
 - US: not "RCD" terminology — GFCI per NEC 210.8 at specific locations; AFCI per NEC 210.12 (dwelling unit branch circuits).
 
-**INV-7: Symbol references.**
+**INV-07: Symbol references.**
 Every `drawn_as_symbols[*].symbol_id` must exist in `shared/standards/electrical/IEC60617/symbol-index.json`.
 
-**INV-8: Rationale presence.**
+**INV-08: Rationale presence.**
 `rationale` block must exist at root and contain `chat_summary`, all 8 taxonomy keys, and `decisions` array with ≥3 entries.
 
-**INV-9: Tool deferral shape (NEW in v1.1.0).**
+**INV-09: Tool deferral shape (NEW in v1.1.0).**
 
 When `tool_call_pending_for_zs: true`:
 - `zs_calc_tool_input` MUST be present and well-formed per the schema in `electrical/earthing/schemas/earthing-ir.schema.json`

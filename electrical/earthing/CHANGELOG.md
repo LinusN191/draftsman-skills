@@ -97,7 +97,7 @@ Pairs with SLD v1.4 multi-skill intent consumption sprint. SLD UK example consum
 - **`validation/tool-deferral-shape.yaml`** — 2 critical checks for tool_call_pending ↔ flags pair consistency.
 - **`eval-07-ke-tn-s-tool-deferral.yaml`** — 15 assertions verifying the KE example output.
 - **Generator Step 9.5** — Build `zs_calc_tool_input` payload before inline Zs estimation.
-- **Validator INV-9** — Enforce tool_call_pending shape consistency.
+- **Validator INV-09** — Enforce tool_call_pending shape consistency.
 
 ### Changed
 - **Generator Step 10 reshaped** — Inline Zs estimation now sets `tool_call_pending_for_zs: true` and appends TOOL-CALL-PENDING string to top-level `flags`.

@@ -16,38 +16,38 @@ Run JSON-schema validation against `db-layout-ir.schema.json`.
 
 For each item below, emit a violation if the rule fails.
 
-**INV-1: Board way accounting.**
-Applies when `board.board_kind == "main_switchboard"` (oneOf branch enforces ways accounting): `board.ways_used + board.ways_spare == board.ways_total`. When `board.board_kind == "specialty_board"`, INV-1 is not applicable (specialty boards may omit the ways triple).
+**INV-01: Board way accounting.**
+Applies when `board.board_kind == "main_switchboard"` (oneOf branch enforces ways accounting): `board.ways_used + board.ways_spare == board.ways_total`. When `board.board_kind == "specialty_board"`, INV-01 is not applicable (specialty boards may omit the ways triple).
 
 The `board_kind` discriminator (Sprint 3-W2b) gates which oneOf branch is enforced by the schema — a wrong discriminator (e.g. emitting `main_switchboard` shape but declaring `board_kind: "specialty_board"`) hard-fails at schema validation before reaching the invariants stage.
 
-**INV-2: Circuit-to-way mapping uniqueness.**
+**INV-02: Circuit-to-way mapping uniqueness.**
 Every `circuits[*].way_module_id` must be unique across all circuits in this IR.
 
-**INV-3: Busbar rating coverage.**
+**INV-03: Busbar rating coverage.**
 `busbar.rating_a >= sum(circuits[*].ocpd.rating_a) × diversity_factor` (diversity from compliance_summary.assumptions OR default 0.7).
 
-**INV-4: OCPD-cable coordination.**
+**INV-04: OCPD-cable coordination.**
 For every circuit: `cable.csa_mm2_or_awg`'s ampacity (from jurisdiction ampacity table) >= ocpd.rating_a. Validate by jurisdiction:
 - GB: lookup in BS 7671:2018+A2:2022 Appendix 4 Tables 4D-4F
 - KE: lookup in BS 7671:2018+A2:2022 Appendix 4 (KS 1700:2018 §313 routes ampacity to BS Appendix 4)
 - EU/INT: lookup in IEC 60364-5-52:2009 Annex B Tables B.52.2-B.52.4
 - US: lookup in NEC 2023 Article 310.16 (75°C / 90°C column per terminal rating)
 
-**INV-5: Breaker breaking capacity.**
+**INV-05: Breaker breaking capacity.**
 For every circuit: `ocpd.breaking_capacity_ka >= ifault_at_downstream_ka` (from selectivity_results OR engineer declaration). If unknown, the selectivity_results entry MUST have `tool_call_pending: true`.
 
-**INV-6: Busbar IcW coverage.**
+**INV-06: Busbar IcW coverage.**
 `busbar.icw_ka_1s >= ipk_at_busbar` (per IEC 61439 short-circuit-withstand reference).
 
-**INV-7: Symbol references.**
+**INV-07: Symbol references.**
 Every `drawn_as_symbols[*]` must be a valid symbol_id in `shared/standards/electrical/IEC60617/symbol-index.json`.
 
-**INV-8: RCD requirement per jurisdiction.**
+**INV-08: RCD requirement per jurisdiction.**
 - TT system (consumed from upstream): every circuit must have `rcd.required: true`.
 - TN-C-S + GB + socket-outlets ≤32A in domestic: `rcd.required: true` per BS 7671 411.3.3.
 
-**INV-9: Selectivity result completeness.**
+**INV-09: Selectivity result completeness.**
 Every upstream-downstream OCPD pair must have a corresponding `selectivity_results[]` entry. No silent omissions.
 
 **INV-10: Rationale presence.**

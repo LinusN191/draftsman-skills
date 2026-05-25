@@ -44,13 +44,13 @@ Emit a single JSON object:
 
 ## Validation procedure
 
-Walk invariants INV-1 through INV-10 **in order**. On the first `critical` violation, **halt** and emit the report — do not proceed to subsequent INV. Aggregate all `warning` + `info` violations into the report after a clean critical pass.
+Walk invariants INV-01 through INV-10 **in order**. On the first `critical` violation, **halt** and emit the report — do not proceed to subsequent INV. Aggregate all `warning` + `info` violations into the report after a clean critical pass.
 
 When a `protection_settings[*].tool_call_pending = true`, the INV-10 cross-skill cascade check is **skipped** for that setting (deferred to cable-sizing or a specialised calc skill). Log as `info`: `"Setting deferred via tool_call_pending; downstream skill will verify"`.
 
 ---
 
-## INV-1 — schema_valid
+## INV-01 — schema_valid
 
 **Severity:** `critical`.
 
@@ -64,11 +64,11 @@ ir = json.load(open(ir_path))
 jsonschema.validate(ir, schema)  # raises on failure
 ```
 
-If validation fails: HALT. Emit `{"inv": "INV-1", "severity": "critical", "message": "<jsonschema error>", "location": "<json-path>"}`. Do not proceed to INV-2.
+If validation fails: HALT. Emit `{"inv": "INV-01", "severity": "critical", "message": "<jsonschema error>", "location": "<json-path>"}`. Do not proceed to INV-02.
 
 ---
 
-## INV-2 — schematic_type ↔ items consistency
+## INV-02 — schematic_type ↔ items consistency
 
 **Severity:** `critical`.
 
@@ -88,7 +88,7 @@ The IR's `items[]` array must contain the typical_items for the declared `schema
 
 ---
 
-## INV-3 — Connection topology valid
+## INV-03 — Connection topology valid
 
 **Severity:** `critical`.
 
@@ -113,7 +113,7 @@ assert len(wire_ids) == len(set(wire_ids)), "duplicate wire_ids"
 
 ---
 
-## INV-4 — oneOf branch satisfied
+## INV-04 — oneOf branch satisfied
 
 **Severity:** `critical`.
 
@@ -130,7 +130,7 @@ Beyond the schema's basic presence check, this validator imposes substantive con
 
 ---
 
-## INV-5 — Symbol resolution
+## INV-05 — Symbol resolution
 
 **Severity:** `critical`.
 
@@ -149,7 +149,7 @@ The v1.0 library exclusions documented in `shared/symbols/electrical/schematic/R
 
 ---
 
-## INV-6 — consumed_intents shape
+## INV-06 — consumed_intents shape
 
 **Severity:** `critical` for shape errors; `info` for valid leaf-mode acknowledgement; `critical` for unjustified empty-when-hybrid-was-expected.
 
@@ -165,7 +165,7 @@ Three sub-checks:
 
 ---
 
-## INV-7 — Per-jurisdiction citation form
+## INV-07 — Per-jurisdiction citation form
 
 **Severity:** `warning` (citation-form drift does not block ship but must be surfaced).
 
@@ -184,7 +184,7 @@ Jurisdiction-agnostic citations (always accepted): `BS EN 60617`, `IEC 60255-X`,
 
 ---
 
-## INV-8 — Banned annotations absent
+## INV-08 — Banned annotations absent
 
 **Severity:** `warning` (post-rewrite scan; the generator is expected to have removed these, but the validator scans defensively).
 
@@ -205,13 +205,13 @@ For the 6 banned patterns (Sprint 3-W2c lessons):
 | 5 | `BS\s+EN\s+61439-1:2022` (when actual edition is `:2021`); `BS\s+EN\s+60947-4-1:\d{4}` when year is unverified | Omit year OR cross-verify against the loaded standards file (Sprint 3-W2c Task 3) | Standard years drift across amendments; do not invent |
 | 6 | `IEC\s+60364-7-701` (when context is kitchen / not bathroom) | `IEC 60364-4-41 § 411.3.3` (Sprint 3-W2c Task 1 INT-1) | Kitchens are not Part 7-701 bathroom locations |
 
-Additionally, scan for the retired KE-form trailing annotation `BS\s+7671[^()]*\(adopted\s+by\s+KS\s+1700\)`. This was retired in Sprint 3-W2b; the correct form is the Annex E §VIII routing-note covered in INV-7.
+Additionally, scan for the retired KE-form trailing annotation `BS\s+7671[^()]*\(adopted\s+by\s+KS\s+1700\)`. This was retired in Sprint 3-W2b; the correct form is the Annex E §VIII routing-note covered in INV-07.
 
 **Verification:** run each regex against the four scanned surfaces. Each match emits one `warning` violation with the matched substring + location.
 
 ---
 
-## INV-9 — Rationale block complete
+## INV-09 — Rationale block complete
 
 **Severity:** `critical` (rationale incompleteness causes harness failure on golden CI).
 
@@ -268,15 +268,15 @@ if "fault-level" in consumed_types:
 
 ## Validation procedure summary
 
-1. **INV-1** — schema validation. Critical halt on failure.
-2. **INV-2** — schematic_type ↔ items consistency. Critical halt on failure.
-3. **INV-3** — connection topology (no broken refs, no orphans, no duplicate wire_ids). Critical halt on failure.
-4. **INV-4** — oneOf branch satisfied (substantive content, not just schema presence). Critical halt on failure.
-5. **INV-5** — symbol resolution. Critical halt on failure.
-6. **INV-6** — consumed_intents shape (whitelist + producer + leaf-mode acknowledgement). Critical halt on shape errors.
-7. **INV-7** — per-jurisdiction citation form. Warnings accumulated.
-8. **INV-8** — banned annotations absent (6 patterns post-3W2c). Warnings accumulated.
-9. **INV-9** — rationale block complete (chat_summary 40-500, sections 6-9, summary 1-800). Critical halt on failure.
+1. **INV-01** — schema validation. Critical halt on failure.
+2. **INV-02** — schematic_type ↔ items consistency. Critical halt on failure.
+3. **INV-03** — connection topology (no broken refs, no orphans, no duplicate wire_ids). Critical halt on failure.
+4. **INV-04** — oneOf branch satisfied (substantive content, not just schema presence). Critical halt on failure.
+5. **INV-05** — symbol resolution. Critical halt on failure.
+6. **INV-06** — consumed_intents shape (whitelist + producer + leaf-mode acknowledgement). Critical halt on shape errors.
+7. **INV-07** — per-jurisdiction citation form. Warnings accumulated.
+8. **INV-08** — banned annotations absent (6 patterns post-3W2c). Warnings accumulated.
+9. **INV-09** — rationale block complete (chat_summary 40-500, sections 6-9, summary 1-800). Critical halt on failure.
 10. **INV-10** — cross-skill cascade consistency (db-layout-rollup + fault-level coherence). Warnings + infos accumulated; tool_call_pending entries skipped with `info` log.
 
 Return `{"valid": true, "stage": "passed", "violations": [<warnings + infos>]}` on a clean critical pass.
@@ -289,9 +289,9 @@ Return `{"valid": false, "stage": "<stage>", "violations": [<the critical violat
 
 When `protection_settings[i].tool_call_pending = true`:
 
-- The schema validation (INV-1) still requires the entry's required fields (`ansi_code`, `device_id`) to be present.
+- The schema validation (INV-01) still requires the entry's required fields (`ansi_code`, `device_id`) to be present.
 - INV-10 cross-skill cascade is **skipped** for that setting.
-- The top-level `flags[]` array MUST contain `"TOOL-CALL-PENDING"` per generator.md Step 8; if absent, INV-9 (rationale completeness, by extension) flags it — but the strict enforcement happens at the schema/generator layer, not here.
+- The top-level `flags[]` array MUST contain `"TOOL-CALL-PENDING"` per generator.md Step 8; if absent, INV-09 (rationale completeness, by extension) flags it — but the strict enforcement happens at the schema/generator layer, not here.
 - One `info` violation is logged per pending entry to make the deferral explicit in the report.
 
 This allowance exists to keep the validator from blocking ship on values whose deterministic resolution is the job of a downstream calc skill (cable-sizing, fault-level, or a specialised relay-coordination calc).

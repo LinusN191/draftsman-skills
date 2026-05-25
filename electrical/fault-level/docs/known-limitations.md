@@ -32,7 +32,7 @@ DC offset envelope, asymmetry decay below 1 cycle — requires EMT (electromagne
 
 - **D2 (Cascade topology accuracy):** Engineer-declared cascade trees can have legitimate non-standard structures (loop systems, transfer schemes, parallel feeders). Reviewer should accept these when documented.
 - **D5 (Peak factor κ):** Tool-computed κ might differ slightly from inline approximation due to floating-point precision; 2% tolerance applied.
-- **INV-4 (Monotonicity):** Motor back-feed nodes legitimately add to downstream Ifault — flagged as expected, not as error.
+- **INV-04 (Monotonicity):** Motor back-feed nodes legitimately add to downstream Ifault — flagged as expected, not as error.
 
 ## Tool calls awaiting runtime
 
