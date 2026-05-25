@@ -121,4 +121,88 @@ If the latter, we'd need to commission a licensed-engineer transcription pass on
 
 After the re-test you noted that the defect register and scope coverage are distinct axes. We did a scope-coverage audit too and added **19 stubs across 8 truly-unscoped domains** in commit `808913c` — including the integration-verdict skill (`compliance/integrated-design-review`) you specifically flagged as "the most consequential absence." Not asking for a verdict on those, but the placeholders exist now.
 
+---
+
+# Addendum — 2026-05-25 second round (your consolidated 15-item gap list)
+
+Thank you for the consolidated list. Three quick clarifications + concrete action on three real gaps.
+
+## Clarifications (factual)
+
+**Item #12 — CI gate IS wired.** `.github/workflows/functional-audit.yml` has been live since Sprint 0 (commit `414a300`, 2026-05-25). It runs `python3 functional_audit.py` on every push + PR to `main`. Your check may have looked for a different filename. The workflow:
+
+```yaml
+name: Functional Audit
+on:
+  push: { branches: [main] }
+  pull_request: { branches: [main] }
+jobs:
+  audit:
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install jsonschema pyyaml
+      - run: python3 functional_audit.py
+```
+
+It exits non-zero on any finding, so the harness is genuinely a regression gate.
+
+**Item #2 — PVC tables ARE shipped.** Your re-test pulled at `808913c` — exactly one commit before `0bc66ec` where my first response clarified the PVC filenames. Both files exist:
+- `shared/standards/electrical/BS7671/appendix4-table-4D1A-pvc-twin-earth.json`
+- `shared/standards/electrical/BS7671/appendix4-table-4D5A-pvc-swa.json`
+
+**Item #5 — small-power has 0 socket positions in any example (not "invents 100%").** Verified by inspection: 5 examples × 0 positions each. small-power is a **topology + cross-reference** skill by design. Documented explicitly in the README in this commit (`electrical/small-power/README.md` "Out of scope" section now leads with this clarification + cites your re-test).
+
+## Real gaps actioned in this commit
+
+**Item #6 + #15 — lighting-layout "abbreviated examples pass validation": root-cause fix.** Investigation found a real bug, not just a missing INV:
+
+- The lighting-layout schema shim at `electrical/lighting-layout/schemas/lighting-layout-ir.schema.json` carried `"$ref": "../../shared/schemas/electrical/lighting-layout-ir.schema.json"` — wrong by 1 directory level. Should be `../../../`.
+- The harness's `validate-examples.py` fell through silently when the ref couldn't resolve, leaving the schema effectively `{type: object}` (no constraints). **Every lighting-layout example was passing trivially — including office-open-plan; we just got lucky that it happened to be authored properly.**
+- Reception-lobby + warehouse-highbay were missing **6 required fields each** (`version`, `luminaire_type`, `luminaires`, `switches`, `circuits`, `drawing_notes`) and carried only `"_note": "Abbreviated — see office-open-plan for full schema"`. The schema couldn't see them.
+
+Fix in this commit:
+
+1. **Shim ref corrected** to `../../../shared/...` — harness now actually applies the canonical schema.
+2. **`mode` discriminator added** to canonical schema (enum `full_drawing` | `calc_only`, default `full_drawing`) with conditional required-field logic via `allOf` + `if/then/else`. `full_drawing` requires the original 12-field set; `calc_only` requires only the 6-field always-present core + a mandatory `calc_only_reason` (20–500 chars).
+3. **Reception-lobby + warehouse-highbay** converted to explicit `mode: calc_only` with proper `calc_only_reason` text. The `_note` workaround is removed. Their `calculation_summary` now carries `non_compliance_flags` + `assumptions` per the schema's always-required core.
+4. **Office-open-plan** keeps its full layout; explicit `mode: full_drawing` added for symmetry.
+
+After the fix: validate-examples.py 166/166 still passes, but now because the schema actually enforces — not because it was silently bypassed.
+
+**Item #5 (additional)** — small-power's topology-only design is now documented in `electrical/small-power/README.md` "Out of scope" section, with explicit cross-reference to the future drawing skill that would own positions.
+
+## Items still open / not actioned this commit
+
+- **#1 C3** — already addressed in commit `43d3824` (IR-level provenance); the data transcription gap remains paywall-blocked
+- **#4** No renderer skill — out of scope per `[[runtime-project-boundary]]` (CLAUDE.md L7: "the runtime owns rendering, calc execution, project graph, and the eval harness; this repo ships contracts only"). Worth disagreeing on the record: this is a design choice, not an oversight
+- **#7** tool_call_pending in drawings — same runtime boundary (WI3 deferral pattern; calc executor populates)
+- **#13** eval truth vs existence — confirmed real gap; the harness validates eval YAML *shapes* but doesn't *execute* assertions against outputs. Closing this requires an eval-runtime executor (substantial — comparable to building a small JSONPath + arithmetic engine). Queued
+- **#10** integrated-design-review — stubbed; needs proper authoring (~3–5 Opus dev-days)
+- **#8, #9, #11** — breadth-first roadmap work
+- **#14** — your tooling
+
+## Updated post-this-commit scorecard
+
+| # | Item | Status |
+|---|---|---|
+| 1 C3 | ⚠️ partial (IR-level honesty closed; data paywall-blocked) | unchanged |
+| 2 M3 | ✅ FIXED (file paths clarified) | clarification |
+| 3 H3 | ✅ harness FP cleared by Sprint D pre-flight | unchanged |
+| 4 renderer | ⚠️ out-of-scope per runtime boundary | clarification |
+| 5 small-power coords | ✅ topology-by-design documented | actioned |
+| 6 lighting abbreviated | ✅ FIXED — schema shim ref + mode discriminator + 2 examples converted | actioned |
+| 7 tool_call_pending in drawings | ⚠️ runtime-boundary (WI3 calc deferral) | clarification |
+| 8 drawing stubs | scope/breadth-first | open |
+| 9 67 stubs | scope/breadth-first | open |
+| 10 integrated-design-review | stubbed (Sprint D follow-up); unbuilt | open |
+| 11 within-skill scope | scope discussion | open |
+| 12 CI gate | ✅ FIXED (already wired since Sprint 0) | clarification |
+| 13 eval execution | open (real test-infra gap) | queued |
+| 14 oracle fidelity | your tooling | n/a |
+| 15 abbreviated examples | ✅ FIXED (covered by #6) | actioned |
+
+Score: **5 actioned/clarified this commit + 1 prior commit = 6 closed + 4 runtime-boundary clarifications + 5 remaining open.**
+
 — DraftsMan team

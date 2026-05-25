@@ -36,8 +36,9 @@ For a given parent DB + jurisdiction + room briefs, the skill emits:
 
 ## Out of scope (v1.0)
 
-- EV charging (BS 7671 Part 7-722 / NEC 625) — future ev-charging skill
-- Cable containment / routing — future cable-containment skill
+- **Socket x/y coordinates / physical placement on a drawing.** small-power is a **topology + cross-reference** skill, not a placement skill. Each `room.sockets[]` entry carries `circuit_id`, `mount`, `height_mm`, `type`, and a logical position descriptor — but NOT explicit floor-plan x/y. Placement coordinates belong to a future **socket-placement** drawing skill (currently unscoped — closest analogue is `electrical/lighting-layout` for luminaires). A downstream drawing/rendering layer consumes the small-power intent + a room/floor-plan IR + applies BS 7671 §553 spacing rules to derive coordinates. *Flagged by Reviewer 1's re-test as "small-power invents 100% of socket positions" — clarification: it doesn't carry positions at all; positions are explicitly deferred.*
+- EV charging (BS 7671 Part 7-722 / NEC 625) — future ev-charging skill (stub at `electrical/ev-charging/` per Sprint D follow-up)
+- Cable containment / routing — future cable-containment skill (stub at `electrical/cable-containment/`)
 - Multi-skill intent consumption — deferred to v1.1+
 - 3-phase socket outlets (BS EN 60309 CEEform) — future revision
 

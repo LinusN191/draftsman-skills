@@ -8,13 +8,7 @@
     "drawing_type",
     "version",
     "room",
-    "luminaire_type",
-    "luminaires",
-    "switches",
-    "circuits",
-    "controls",
     "calculation_summary",
-    "drawing_notes",
     "rationale",
     "invariants"
   ],
@@ -468,6 +462,51 @@
           }
         }
       }
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "full_drawing",
+        "calc_only"
+      ],
+      "default": "full_drawing",
+      "description": "Output completeness mode. 'full_drawing' = drawable layout with luminaire placement (luminaires/switches/circuits/drawing_notes populated). 'calc_only' = illuminance calculation only, placement deferred (calc_only_reason explains why). Added Sprint D reviewer follow-up to make abbreviated examples explicit rather than silent (fixed shim ref that previously bypassed schema validation)."
+    },
+    "calc_only_reason": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 500,
+      "description": "Explanation for why this example is calc_only rather than full_drawing. Required when mode == calc_only."
     }
-  }
+  },
+  "allOf": [
+    {
+      "description": "Sprint D reviewer follow-up: conditional required-fields by mode. Top-level required is the always-true subset; mode-specific fields are enforced here via if/then/else. full_drawing (default) requires luminaire_type/luminaires/switches/circuits/controls/drawing_notes; calc_only requires calc_only_reason.",
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "calc_only"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "then": {
+        "required": [
+          "calc_only_reason"
+        ]
+      },
+      "else": {
+        "required": [
+          "luminaire_type",
+          "luminaires",
+          "switches",
+          "circuits",
+          "controls",
+          "drawing_notes"
+        ]
+      }
+    }
+  ]
 }

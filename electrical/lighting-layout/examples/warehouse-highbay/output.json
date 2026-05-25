@@ -1,5 +1,4 @@
 {
-  "_note": "Abbreviated — see office-open-plan/output.json for full schema",
   "drawing_type": "lighting_layout",
   "room": {
     "room_type": "warehouse_low",
@@ -17,7 +16,11 @@
     "target_illuminance_lux": 200,
     "achieved_illuminance_lux": 215,
     "maintenance_factor": 0.6,
-    "compliant": true
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Engineer-verified lumen-method illuminance for warehouse highbay; placement deferred to drafting-package stage per calc_only mode."
+    ]
   },
   "rationale": {
     "chat_summary": "Warehouse highbay — 600 m² at 7 m mounting height. Target 200 lx achieved at 215 lx with industrial-dusty MF=0.60 (LSF and LMF degraded for dusty environment). IP65 luminaires specified. Reply to refine, e.g. 'specify 5000 K cool white'.",
@@ -79,5 +82,8 @@
       }
     ]
   },
-  "invariants": []
+  "invariants": [],
+  "mode": "calc_only",
+  "calc_only_reason": "Calc-only demonstration: illuminance target (200 lx storage per BS EN 12464-1) verified achievable with the calculated highbay luminaire count + MF derating; full placement grid deferred to drafting-package stage. Marked explicit calc_only post-Sprint-D reviewer follow-up — prior _note workaround removed; placement authoring queued.",
+  "version": "1.0.0"
 }
