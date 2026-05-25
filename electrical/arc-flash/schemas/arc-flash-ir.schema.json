@@ -208,6 +208,51 @@
           }
         }
       }
+    },
+    "provenance": {
+      "type": "object",
+      "description": "IR-level provenance — required so the arc-flash output carries method/date/draft markers even before it reaches a label. Extends the C2 mitigation upstream to the producer skill. Added Sprint D follow-up after Reviewer 1's re-test flagged that the IR itself lacked the provenance the labelling schema enforces.",
+      "additionalProperties": false,
+      "required": [
+        "method_applied",
+        "computed_at",
+        "calc_tool_version",
+        "is_provisional",
+        "provenance_note"
+      ],
+      "properties": {
+        "method_applied": {
+          "type": "string",
+          "enum": [
+            "ieee_1584_2018",
+            "ieee_1584_2002",
+            "lee_1982",
+            "doan_dc",
+            "nfpa_70e_table",
+            "mixed_per_node"
+          ],
+          "description": "Dominant calculation method across cascade. Use 'mixed_per_node' when cascade nodes use different methods (each node retains its own method_applied in arc_flash.method_applied)."
+        },
+        "computed_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO-8601 timestamp when the upstream arc-flash calc tool was executed (or when the example was authored)."
+        },
+        "calc_tool_version": {
+          "type": "string",
+          "description": "Version of the arc-flash calculation tool (e.g. 'shared/calculations/electrical/arc-flash@1.2.0'). Use 'engineer_authored' when example IE values are illustrative rather than table-computed."
+        },
+        "is_provisional": {
+          "type": "boolean",
+          "description": "true if ANY of: (a) ieee_1584_2018 coefficient files carry _status: pending-transcription; (b) tool_call_pending true on any node; (c) fallback method used at a voltage where the preferred method's coefficients are null; (d) IE values are engineer-authored rather than table-computed. Downstream labelling consumers MUST honour is_provisional=true with DRAFT marker per C2 convention."
+        },
+        "provenance_note": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 800,
+          "description": "Human-readable explanation: which method, which standard clause, why provisional (if applicable). Reference IEEE 1584-2018 §7.3 for voltage-class applicability; cite Sprint A.3 transcription pending status when invoking ieee_1584_2018 method whose coefficient file is _status: pending-transcription."
+        }
+      }
     }
   },
   "definitions": {

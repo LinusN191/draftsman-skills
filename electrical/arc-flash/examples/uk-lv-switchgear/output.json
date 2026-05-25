@@ -289,5 +289,12 @@
       "severity": "critical",
       "evidence": "Numeric outputs gated by method_applied: incident_energy_cal_per_cm2 and arc_flash_boundary_mm are populated only because IEEE 1584:2018 fired (not 'pending'); PPE category derived from incident_energy per NFPA 70E Table 130.5(G)."
     }
-  ]
+  ],
+  "provenance": {
+    "method_applied": "lee_1982",
+    "computed_at": "2026-05-22T16:00:00Z",
+    "calc_tool_version": "shared/calculations/electrical/arc-flash@1.0.0-lee-fallback",
+    "is_provisional": true,
+    "provenance_note": "LV (400 V) example uses Lee 1982 fallback because IEEE Std 1584-2018 600 V coefficient table at shared/standards/electrical/IEEE1584/method-2018-tables-1-3-600V-coefficients.json carries _status: pending-transcription-from-IEEE-1584-2018-tables-1-3 (IEEE Xplore paywall blocks verbatim transcription per Sprint A.3 source-vetting). Lee is the >15 kV theoretical-max model — over-predicts at 400 V; PPE category conservative-wrong (over-specs). Downstream label consumers MUST mark is_provisional=true + DRAFT marker per Sprint A.2 C2 convention. Resolves DEFECT_REGISTER C3 honesty gap raised by Reviewer 1's re-test."
+  }
 }

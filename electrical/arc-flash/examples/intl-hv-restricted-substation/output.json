@@ -60,7 +60,7 @@
           {
             "method": "ieee_1584_2018",
             "result": "applied",
-            "reason": "2700V model class HCB coefficients available per Sprint A.3 transcription (IEEE 1584-2018 Table 1, applicable 600 V to 15 kV per §7.3)"
+            "reason": "2700V model class HCB electrode-config code path applied per IEEE 1584-2018 §7.3 (applicable 600 V to 15 kV); IE value is engineer-authored for RESTRICTED-branch demonstration — coefficient file _status: pending-transcription per Sprint A.3 IEEE Xplore paywall constraint. See top-level provenance.is_provisional=true."
           }
         ],
         "arcing_current_a": 22700,
@@ -238,5 +238,12 @@
       "severity": "high",
       "evidence": "shock_approach block populated with all three distance fields (limited_approach_movable_mm=3050, limited_approach_fixed_mm=1530, restricted_approach_mm=660) and source cites NFPA 70E:2024 Table 130.4(C)(a) 751V to 15 kV row (AC node — correct table)."
     }
-  ]
+  ],
+  "provenance": {
+    "method_applied": "ieee_1584_2018",
+    "computed_at": "2026-05-25T14:00:00Z",
+    "calc_tool_version": "engineer_authored",
+    "is_provisional": true,
+    "provenance_note": "HV (11 kV) example demonstrates the IEEE 1584-2018 2700V model class HCB code path AND the RESTRICTED-branch handling (IE > 40 cal/cm² → ppe_category=null, live-work prohibited). IE=48.2 cal/cm² is ENGINEER-AUTHORED for RESTRICTED-branch demonstration, NOT table-computed — 2700V coefficient file _status: pending-transcription-from-IEEE-1584-2018-tables-1-3 (IEEE Xplore paywall per Sprint A.3). Downstream labels MUST mark is_provisional=true. Closes C3 honesty gap raised by Reviewer 1 re-test — prior trail reason 'coefficients available per Sprint A.3 transcription' was misleading; Sprint A.3 shipped safety mitigation, not data."
+  }
 }
