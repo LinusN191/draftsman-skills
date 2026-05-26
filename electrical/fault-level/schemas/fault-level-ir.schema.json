@@ -305,6 +305,10 @@
             "description": "Breaking-capacity verdict for the protective device at this node. Hybrid consumer pattern: when consumed_intents includes db-layout, generator reads device data from db-layout intent's main_switch.breaking_capacity_ka + circuits[*].breaker_breaking_capacity_ka. When db-layout intent absent, engineer declares device per-node. Verdict thresholds: ok >= 10% headroom; marginal 0-10%; inadequate < 0%. Per BS 7671:2018+A2:2022 Reg 432.1.2 / NEC 2023 §110.9 / IEC 60947-2.",
             "additionalProperties": false,
             "required": ["device_id", "device_type", "ik3_node_ka", "headroom_pct", "verdict", "verdict_basis", "data_source"],
+            "anyOf": [
+              {"required": ["device_icn_ka"]},
+              {"required": ["device_icu_ka"]}
+            ],
             "properties": {
               "device_id": {
                 "type": "string",
@@ -338,6 +342,11 @@
                 "type": "number",
                 "minimum": 0,
                 "description": "Three-phase Ik at this node, recomputed from z_total_ohm for self-consistency."
+              },
+              "ik3_basis": {
+                "type": "string",
+                "enum": ["formula_from_z", "ifault_ka_max_with_motor_superposition", "ifault_ka_max_with_ups_superposition", "ifault_ka_max_multi_source"],
+                "description": "How ik3_node_ka was derived. For single-source nodes use 'formula_from_z' (c·U/(div·Z) reconciles to stored ifault_ka_max within INV-11 1% tolerance). For multi-source nodes (motor/UPS superposition per IEC 60909-0:2016 §4.5) use the appropriate '..._superposition' enum — ik3_node_ka equals stored ifault_ka_max which includes the contributions. Sprint D1.2 makes superposition contributions fully explicit."
               },
               "headroom_pct": {
                 "type": "number",

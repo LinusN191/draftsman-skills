@@ -326,7 +326,7 @@ verdict = "ok"          if headroom_pct >= 10
 
 **Emit block per cascade node** (only when device data is available; nodes without a device — e.g. pure cable midpoints — omit the block).
 
-**Cross-validate with INV-12** (validator.md): headroom_pct arithmetic must reconcile within 0.5% of the computed value.
+**Cross-validate with INV-12** (validator.md): `ik3_node_ka` reconciles within 1% (single-source) or matches `ifault_ka_max` exactly (multi-source per IEC 60909 §4.5); `headroom_pct` arithmetic reconciles within 0.5% of the computed value.
 
 ---
 

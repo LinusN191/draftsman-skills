@@ -62,7 +62,11 @@ Severity HIGH. For every cascade node, the stored `ifault_ka_max` MUST reconcile
 
 **Rule:** For every cascade node carrying a `breaking_capacity` block, the following must hold:
 
-1. **Ik3 self-consistency:** `breaking_capacity.ik3_node_ka` reconciles to `c × U / (div × z_total_ohm) / 1000` within 1%, using the same formula INV-11 enforces on this node's `ifault_ka_max`.
+1. **Ik3 self-consistency (with multi-source exception):** `breaking_capacity.ik3_node_ka` MUST equal the actual fault current the device will interrupt at this node. Two cases:
+   - **Single-source nodes (utility-only):** `ik3_node_ka` reconciles to `c × U / (div × z_total_ohm) / 1000` within 1% (matches INV-11). The formula and stored `ifault_ka_max` agree.
+   - **Multi-source nodes (motor/UPS superposition per IEC 60909-0:2016 §4.5):** `ik3_node_ka` equals the stored `ifault_ka_max` (which includes the motor/UPS contribution). The formula-from-z gives only the utility component and is NOT the device's interrupting requirement. Sprint D1.2 makes the superposition explicit via `superposition_contribution_ka`; until then, infer multi-source nodes from divergence between `ifault_ka_max` and `c·U/(div·Z)` exceeding INV-11's 1% tolerance.
+
+**Validator action update:** for nodes where `ifault_ka_max` diverges from `c·U/(div·Z)` by more than 1% (i.e. multi-source per IEC 60909 §4.5), require `ik3_node_ka == ifault_ka_max` within 0.1%, NOT the formula recompute. For single-source nodes, the original Rule 1 holds.
 
 2. **Headroom arithmetic:** `headroom_pct` reconciles to `((min(device_icn_ka, device_icu_ka) − ik3_node_ka) / ik3_node_ka) × 100` within 0.5%.
 

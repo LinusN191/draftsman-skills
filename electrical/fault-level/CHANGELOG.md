@@ -14,6 +14,12 @@
 - **Validator INV-12: Breaking-capacity verdict internal consistency.**
   Asserts Ik recompute + headroom arithmetic + verdict-threshold match +
   data_source consistency.
+- **Citation precision:** `breaking_capacity.verdict_basis` cites BS 7671
+  Reg 432.1.2 (the canonical breaking-capacity rule) rather than Reg 434.5.1
+  (which is about short-circuit characteristics + adiabatic let-through —
+  adjacent but distinct). Existing prose elsewhere in fault-level using
+  Reg 434.5.1 for breaking-capacity facts is a known divergence flagged for
+  follow-up cleanup; not addressed in D1.1.
 
 ### Generator prompt
 - New step appended populating `breaking_capacity` per cascade node with
