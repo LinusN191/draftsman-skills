@@ -52,7 +52,7 @@
         "machine_reactances_pu": {
           "xd_pp_pu": 0.18,
           "xd_p_pu": 0.28,
-          "xd_pu": 1.40
+          "xd_pu": 1.4
         },
         "machine_data_source": "typical_ieee_c50_13"
       },
@@ -159,18 +159,42 @@
       },
       "decrement_curve": {
         "applies_when": "MSB-1 in standby supply state (utility offline; generator standby-gen bonded via ATS) — distinct from the normal-supply state modelled by ifault_ka_max=33.34 kA (utility-fed). Per IEC 60909-0:2016 §4.3 Park's equations applied to 2 MVA salient-pole synchronous standby genset. INV-14 rule 2 (ik_initial_subtransient_ka == ifault_ka_max within 1%) is intentionally not applicable here because the decrement_curve documents a different operating state from ifault_ka_max; rules 1, 3, 4, 5, 6 all hold.",
-        "ik_initial_subtransient_ka": 16.00,
+        "ik_initial_subtransient_ka": 16.0,
         "ik_transient_ka": 6.29,
         "ik_steady_state_ka": 2.06,
         "time_series_samples": [
-          {"t_ms": 0, "ik_ka": 16.00},
-          {"t_ms": 10, "ik_ka": 14.53},
-          {"t_ms": 50, "ik_ka": 11.40},
-          {"t_ms": 100, "ik_ka": 10.10},
-          {"t_ms": 500, "ik_ka": 7.96},
-          {"t_ms": 1000, "ik_ka": 6.29},
-          {"t_ms": 3000, "ik_ka": 3.18},
-          {"t_ms": 10000, "ik_ka": 2.07}
+          {
+            "t_ms": 0,
+            "ik_ka": 16.0
+          },
+          {
+            "t_ms": 10,
+            "ik_ka": 14.53
+          },
+          {
+            "t_ms": 50,
+            "ik_ka": 11.4
+          },
+          {
+            "t_ms": 100,
+            "ik_ka": 10.1
+          },
+          {
+            "t_ms": 500,
+            "ik_ka": 7.96
+          },
+          {
+            "t_ms": 1000,
+            "ik_ka": 6.29
+          },
+          {
+            "t_ms": 3000,
+            "ik_ka": 3.18
+          },
+          {
+            "t_ms": 10000,
+            "ik_ka": 2.07
+          }
         ],
         "decrement_model": "iec_60909_4_3_full_park",
         "_source": "IEC 60909-0:2016 §4.3 (Park's equations) + IEEE C50.13:2014 Table 1 typical salient-pole synchronous-machine characteristics (2 MVA standby genset class). Voltage factor c=1.0 used (consistent with this example's ifault_ka_max basis; per IEC 60909-0:2016 §2.3.1 Table 1, c_max=1.05 for ≤1 kV systems would scale all Ik values by 5% — disclosed for audit clarity). I_n at 400V LV: (2000 kVA × 1000)/(√3 × 400V) = 2887 A = 2.89 kA. Ik''_gen = 2.89/Xd''(0.18) = 16.0 kA; Ik'_asymptote = 2.89/Xd'(0.28) = 10.3 kA (conceptual; not what samples reach because subtransient term has decayed by then); Ik_steady = 2.89/Xd(1.40) = 2.06 kA. Park's formula: Ik(t) = (16.0-10.3)·exp(-t/35ms) + (10.3-2.06)·exp(-t/1500ms) + 2.06. ik_transient_ka set to Park's value at t=1000ms (closest sample to Td'=1500ms; engineering judgment per spec §4 — using a sample value rather than the conceptual asymptote to keep the time series coherent)."
@@ -363,6 +387,12 @@
     ]
   },
   "invariants": [
+    {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Breaking-capacity verdicts on 3 cascade nodes (HV-1/HV-1-ACB Ik3=16.0 vs Icu=25.0 headroom=56.24% ok; TX-1/MSB-1-MAIN-ACB Ik3=43.48 vs Icu=50.0 headroom=15.0% ok; MSB-1/MSB-1-INC-MCCB Ik3=33.34 vs Icu=50.0 headroom=49.99% ok). Rule 1 (Ik3 self-consistency): each ik3_node_ka reconciles to declared ifault_ka_max at its node (single-source utility-only path; no motor superposition in this example). Rule 2 (headroom arithmetic): all 3 reconcile within 0.5%. Rule 3 (verdict threshold): all headroom ≥ 10% → 'ok'. Rule 4 (data_source): 'engineer_declared' consistent with no db-layout intent in consumed_intents[]. Rule 5 (at least one rating): both Icn and Icu present and >0 on all 3."
+    },
     {
       "id": "INV-13",
       "passes": true,

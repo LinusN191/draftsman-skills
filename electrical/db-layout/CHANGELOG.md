@@ -1,28 +1,5 @@
 # Changelog — db-layout
 
-## [next-patch] - 2026-05-25 — M1 hybrid eval-vs-IR fix
-
-### Added
-- `invariants[]` field added to the IR root (required). Each entry is
-  `{id: "INV-NN", passes: bool, severity: critical|high|medium|low, evidence: 20-800c prose}`.
-- Generator prompt gained a step instructing it to populate `invariants[]` per
-  validator-INV that applies to the current example.
-
-### Changed
-- Eval assertions reconciled to actual IR field locations. Where evals
-  referenced runtime-fan-out fields (`ir.emitted_intents`, `ir.intent_emitted`,
-  `ir.citations` at root), assertions now point at the equivalent IR field
-  (rationale section summaries / decisions[*].code_clause / sibling IR root
-  fields). `ir.invariants.INV-NN.passes` rewritten as
-  `ir.invariants[?(@.id=="INV-NN")].passes` to match the new array shape.
-
-### Rationale
-Sprint B Task B.5 — closes M1 (functional_audit MEDIUM eval-vs-output drift).
-Evals were aspirational specs that had drifted from the IR schemas; this
-change makes the validator-INV evidence visible to the runtime eval harness
-and fixes the dangling-path findings without weakening the engineering
-contract.
-
 ## [1.3.3] - 2026-05-25
 
 ### Added
@@ -36,6 +13,29 @@ contract.
   + per-circuit ocpd block.
 
 ## [1.3.2] - 2026-05-25
+
+### Added (Sprint B M1 hybrid eval-vs-IR fix)
+- `invariants[]` field added to the IR root (required). Each entry is
+  `{id: "INV-NN", passes: bool, severity: critical|high|medium|low, evidence: 20-800c prose}`.
+- Generator prompt gained a step instructing it to populate `invariants[]` per
+  validator-INV that applies to the current example.
+
+### Changed (Sprint B M1 hybrid eval-vs-IR fix)
+- Eval assertions reconciled to actual IR field locations. Where evals
+  referenced runtime-fan-out fields (`ir.emitted_intents`, `ir.intent_emitted`,
+  `ir.citations` at root), assertions now point at the equivalent IR field
+  (rationale section summaries / decisions[*].code_clause / sibling IR root
+  fields). `ir.invariants.INV-NN.passes` rewritten as
+  `ir.invariants[?(@.id=="INV-NN")].passes` to match the new array shape.
+
+### Sprint B M1 rationale
+Sprint B Task B.5 — closes M1 (functional_audit MEDIUM eval-vs-output drift).
+Evals were aspirational specs that had drifted from the IR schemas; this
+change makes the validator-INV evidence visible to the runtime eval harness
+and fixes the dangling-path findings without weakening the engineering
+contract. (Originally tracked as [next-patch]; promoted into [1.3.2]
+during Sprint D1 verification fence because both M1 and H5/H6 shipped
+together on 2026-05-25 as Sprint B remediation.)
 
 ### Fixed
 - **H5**: blanket 0.4 diversity factor was applied to instantaneous loads

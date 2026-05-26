@@ -452,6 +452,12 @@
       "evidence": "Selectivity implications recorded: MSB-MAIN at 9.8 kA Ik (computed via z_total=0.0247 Ω, c=1.05, U=400 V, √3 divisor) is within the breaking-capacity envelope declared for downstream OCPDs. selectivity_implications array flags any device whose Icu < Ik_at_node."
     },
     {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Breaking-capacity verdicts on 3 cascade nodes (HV-1/HV-1-FUSE Ik3=14.0 vs Icu=25.0 headroom=78.57% ok; MSB-MAIN/MSB-MAIN-ACB Ik3=9.82 vs Icu=50.0 headroom=409.32% ok; SDB-GF/SDB-GF-MCCB Ik3=8.19 vs Icu=36.0 headroom=339.45% ok). Rule 1: all reconcile to ifault_ka_max (single-source). Rule 2: headroom arithmetic within 0.5%. Rule 3: all ≥ 10% → 'ok'. Rule 4: 'engineer_declared' consistent. Rule 5: ratings present and >0."
+    },
+    {
       "id": "INV-13",
       "passes": true,
       "severity": "high",

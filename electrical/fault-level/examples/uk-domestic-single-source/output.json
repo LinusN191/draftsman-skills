@@ -325,6 +325,12 @@
   },
   "invariants": [
     {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Breaking-capacity verdicts on 3 cascade nodes (CU-G/CU-G-MAINSW Ik3=1.5 vs Icu=6.0 headroom=300.0% ok; CU-G.BUSBAR/CU-G-BUSBAR-DEV Ik3=1.49 vs Icu=6.0 headroom=302.5% ok; CU-G.C01/CU-G-C01-MCB-B32 Ik3=0.40 vs Icu=6.0 headroom=1395.51% ok). Rule 1: all reconcile to single-phase ifault_ka_max per TN L-N formula (single-source domestic supply). Rule 2: headroom arithmetic within 0.5%. Rule 3: all ≥ 10% → 'ok'. Rule 4: 'engineer_declared' consistent. Rule 5: ratings present and >0."
+    },
+    {
       "id": "INV-13",
       "passes": true,
       "severity": "high",

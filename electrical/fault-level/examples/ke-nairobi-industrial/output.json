@@ -369,6 +369,12 @@
   },
   "invariants": [
     {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Breaking-capacity verdicts on 3 cascade nodes (HV-1/HV-1-FUSE Ik3=13.0 vs Icu=25.0 headroom=92.31% ok; MSP-100/MSP-100-ACB Ik3=9.45 vs Icu=50.0 headroom=429.32% ok; GH-DB/GH-DB-MCCB Ik3=6.97 vs Icu=36.0 headroom=416.2% ok). Rule 1: all ik3_node_ka reconcile to ifault_ka_max (single-source utility path). Rule 2: headroom arithmetic within 0.5% (e.g. MSP-100 (50-9.446)/9.446×100=429.32). Rule 3: all ≥ 10% → 'ok'. Rule 4: 'engineer_declared' consistent. Rule 5: ratings present and >0."
+    },
+    {
       "id": "INV-13",
       "passes": true,
       "severity": "high",

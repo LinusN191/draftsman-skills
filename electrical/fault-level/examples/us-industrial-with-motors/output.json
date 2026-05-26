@@ -338,6 +338,12 @@
   },
   "invariants": [
     {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Breaking-capacity verdicts on 3 cascade nodes (HV-1/HV-1-PRI-ACB Ik3=25.0 vs Icu=50.0 headroom=100.02% ok; MSB-1/MSB-1-MAIN-ACB Ik3=38.80 vs Icu=65.0 headroom=67.53% ok; MCC-1/MCC-1-MAIN-ACB Ik3=35.0 vs Icu=50.0 headroom=42.86% ok). Rule 1 (Ik3 self-consistency with multi-source exception): MCC-1 is a multi-source node per IEC 60909 §4.5 (utility 31.98 + motor_aggregate 3.02 = 35.0 stored ifault_ka_max; D1.2 superposition_contribution_ka makes this explicit). ik3_basis='ifault_ka_max_with_motor_superposition' per D1.1 fix-pass — MCC-1 ik3_node_ka=35.0 equals ifault_ka_max within 0.1% (NOT the c·U/(div·Z) recompute which would give 31.98). HV-1 and MSB-1 are single-source. Rule 2: headroom arithmetic within 0.5% on all 3. Rule 3: all ≥ 10% → 'ok'. Rule 4: 'engineer_declared'. Rule 5: ratings present."
+    },
+    {
       "id": "INV-13",
       "passes": true,
       "severity": "high",
