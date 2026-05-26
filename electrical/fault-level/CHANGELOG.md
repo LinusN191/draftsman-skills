@@ -54,6 +54,19 @@
   maps. `intl-commercial-with-genset` documents normal-supply state via
   generator's empty contributes_to_nodes.
 
+### D1.2 fix-pass (post code-quality review)
+- Schema: `superposition_contribution_ka.total` carved out structurally
+  via `properties: {total: ...}` + per-source `additionalProperties`,
+  so a future implementer cannot mis-read `total` as a reserved source
+  key.
+- Generator Step 16: motor back-feed formula now states the canonical
+  IEC §3.8 form `Ik"_M ≈ (c·U_n)/(√3·Z_M)` alongside the per-unit form,
+  and adds the **locked-rotor ratio** (LRR ≈ 5–7) terminology.
+- Generator Step 16: `tool_call_pending: true` rule corrected — MAY emit
+  `superposition_contribution_ka` when engineer-declared in
+  `cascade_topology_declared` (matches observed example behaviour;
+  field is engineer audit trail, not awaiting calc).
+
 ## [1.1.2] - 2026-05-25 — M1 hybrid eval-vs-IR fix (was [next-patch])
 
 ### Added

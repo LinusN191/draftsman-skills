@@ -381,10 +381,18 @@
           },
           "superposition_contribution_ka": {
             "type": "object",
-            "description": "Per-node breakdown of fault current contributions per source. Keys are '<source_kind>_<source_id>' (e.g. 'utility_S1', 'motor_aggregate_S2'); values are kA contributions. MUST include a 'total' key equal to the sum of non-total entries within 1%. Sum must reconcile to this node's ifault_ka_max within 1%. Read-convenience map; canonical authority is sources[].contributes_to_nodes. Per IEC 60909-0:2016 §4.5. Added Sprint D1.2.",
+            "description": "Per-node breakdown of fault current contributions per source. The 'total' key holds the aggregated kA at this node; all other keys are per-source entries named '<source_kind>_<source_id>' (e.g. 'utility_S1', 'motor_aggregate_S2') whose values sum to 'total' within 1%. 'total' must reconcile to this node's ifault_ka_max within 1%. Read-convenience map; canonical authority is sources[].contributes_to_nodes. Per IEC 60909-0:2016 §4.5. Added Sprint D1.2.",
+            "properties": {
+              "total": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Aggregated fault current at this node (sum of per-source entries)."
+              }
+            },
             "additionalProperties": {
               "type": "number",
-              "minimum": 0
+              "minimum": 0,
+              "description": "Per-source contribution in kA. Key format: '<source_kind>_<source_id>'."
             },
             "required": ["total"]
           }

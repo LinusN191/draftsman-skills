@@ -339,11 +339,12 @@ For each cascade node with `ifault_ka_max`, identify every source contributing f
 - **utility**: contributes via the z-cascade computation already in place (INV-11 reconciles).
 - **generator**: when bonded (ATS in normal-supply state), contributes via z-cascade like a second utility source. When ATS open (standby state), contributes 0 to the LV side; contributes to its own bonded loads if separately routed.
 - **ups**: contributes let-through current during inverter short-circuit current limit phase (typically 1.0–2.0 × In for ~100 ms before electronic trip). Engineer-declared in `cascade_topology_declared` for D1.2; will consume from future `electrical/ups/` intent when that skill ships (forward-compatibility note).
-- **motor_aggregate**: induction motors > 100 kW total (or > 1% of node Ik) contribute back-feed per IEC 60909 §3.8:
+- **motor_aggregate**: induction motors > 100 kW total (or > 1% of node Ik) contribute back-feed per IEC 60909 §3.8. Two equivalent forms:
   ```
-  Ik_motor_aggregate ≈ (1 / Z_M_pu) × I_n,motor_aggregate
+  Canonical IEC §3.8 form:  Ik"_M ≈ (c · U_n) / (√3 · Z_M)
+  Per-unit form:            Ik_motor_aggregate ≈ (1 / Z_M_pu) × I_n,motor_aggregate
   ```
-  where Z_M_pu is the locked-rotor impedance per-unit of the motor (typical 0.15–0.20 for IEC class B/C/D induction motors). Sum across declared motors. Decays per IEC 60909 §4.3 — see Step 17 (D1.3) decrement_curve if applicable.
+  where `Z_M_pu` is the locked-rotor impedance per-unit (typical 0.15–0.20 for IEC class B/C/D induction motors), equivalent to the **locked-rotor ratio** `LRR = 1 / Z_M_pu ≈ 5–7` (i.e. locked-rotor current ≈ 5–7 × rated current). Sum across declared motors. Decays per IEC 60909 §4.3 — see Step 17 (D1.3) decrement_curve if applicable.
 
 **Emit BOTH representations** (hybrid pattern per spec §3):
 
@@ -355,7 +356,7 @@ For each cascade node with `ifault_ka_max`, identify every source contributing f
 
 **Special cases:**
 - **Pure single-source nodes** (utility-only, no motors/generators/UPS): emit the degenerate single-entry map `{utility_<S_id>: <ik>, total: <ik>}`. INV-13 expects the field present on every cascade node with `ifault_ka_max`.
-- **Nodes with `tool_call_pending: true`**: omit `superposition_contribution_ka` (consistent with existing convention).
+- **Nodes with `tool_call_pending: true`**: MAY emit `superposition_contribution_ka` when the breakdown is engineer-declared in `cascade_topology_declared` (the data is the engineer's audit trail, not awaiting calc execution). Omit only when no engineer breakdown is available. INV-13 enforces self-consistency only when the field is present.
 
 **Interaction with D1.1 breaking_capacity:** When a node is multi-source (motor/UPS superposition), the D1.1 `breaking_capacity.ik3_node_ka` uses `ifault_ka_max` (the actual node Ik including all contributions) per the D1.1 fix-pass — not the formula-from-z (which is utility-only). D1.2's `superposition_contribution_ka.total` reconciles to the SAME `ifault_ka_max`, so the two blocks tell a coherent story.
 
