@@ -107,6 +107,20 @@ Arc-flash boundary (where IE drops to 1.2 cal/cm²) ≈ 1850 mm — well
 beyond the 457 mm working distance, so `boundary_ge_working_distance`
 holds.
 
+**Note on AFB conservatism** — Lee 1982 is known to over-predict the
+arc-flash boundary at LV (≤ 1 kV) by a factor of ~1.5–1.7× relative
+to IEEE 1584-2018 at comparable IE (per the well-documented LV
+inflation of the Lee theoretical-max model — see IEEE 1584 Annex C
+discussion). A naive inverse-square scaling from a sibling example
+at IE 5.2 cal/cm² (uk-lv-switchgear's IEEE 1584 result) would predict
+AFB ≈ 1175 mm at this node. The 1850 mm value here is intentionally
+the Lee-conservative AFB, retained as the field value because the
+study is gated by `is_provisional=true` + Lee-fallback + abnormal-
+condition disclosures — the wider boundary is the safer field
+posture pending IEEE 1584-2018 600V coefficient transcription
+(Sprint A.3). When the coefficient table ships and the calc re-runs
+under IEEE 1584-2018, AFB will tighten accordingly.
+
 **PPE category** per NFPA 70E Table 130.7(C)(15)(c):
 
 | IE band (cal/cm²) | Category |
