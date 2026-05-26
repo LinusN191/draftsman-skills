@@ -1,6 +1,29 @@
 # Changelog — fault-level
 
-## [next-patch] - 2026-05-25 — M1 hybrid eval-vs-IR fix
+## [1.2.0] - 2026-05-25 — Sprint D1 depth
+
+### Added (Sprint D1.1)
+- **Breaking-capacity verdict per cascade node.** New `breaking_capacity`
+  block on cascade items: `{device_id, device_type, device_icn_ka,
+  device_icu_ka, device_ics_ka, device_icw_ka_1s, ik3_node_ka,
+  headroom_pct, verdict, verdict_basis, data_source}`. Hybrid consumer
+  pattern: reads device data from db-layout intent when present (per
+  D1.0 intent schema extension), engineer-declared fallback. Verdict
+  thresholds: ok ≥ 10%, marginal 0–10%, inadequate < 0%. Cites BS 7671
+  Reg 432.1.2 / NEC §110.9 / IEC 60947-2 / KS 1700 §432.
+- **Validator INV-12: Breaking-capacity verdict internal consistency.**
+  Asserts Ik recompute + headroom arithmetic + verdict-threshold match +
+  data_source consistency.
+
+### Generator prompt
+- New step appended populating `breaking_capacity` per cascade node with
+  the hybrid consumer logic.
+
+### Examples
+- All 6 fault-level examples gain `breaking_capacity` on at least 3
+  cascade nodes (service-entrance, MSB main switch, one downstream).
+
+## [1.1.2] - 2026-05-25 — M1 hybrid eval-vs-IR fix (was [next-patch])
 
 ### Added
 - `invariants[]` field added to the IR root (required). Each entry is

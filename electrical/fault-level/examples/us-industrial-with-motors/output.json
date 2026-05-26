@@ -51,7 +51,19 @@
       "x_over_r_at_node": 6,
       "z_total_ohm": 0.3168,
       "calculation_basis": "declared PSCC from POCO (already c-corrected); ZQ back-calculated per IEC 60909-0:2016 §3.3.2 as ZQ = c·U/(√3·Ik_declared) = 1.10×12.47kV/(√3×25kA) = 0.3168 Ω. Ik_min uses c_min=1.00 (HV) per IEC 60909-0:2016 Table 1. NEC 110.9 anchored on IEC 60909 c-factor math (universal).",
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "breaking_capacity": {
+        "device_id": "HV-1-PRI-ACB",
+        "device_type": "ACB",
+        "device_icn_ka": 50.0,
+        "device_icu_ka": 50.0,
+        "device_icw_ka_1s": 50.0,
+        "ik3_node_ka": 24.998,
+        "headroom_pct": 100.02,
+        "verdict": "ok",
+        "verdict_basis": "NEC 2023 § 110.9",
+        "data_source": "engineer_declared"
+      }
     },
     {
       "node_id": "TX-1",
@@ -85,7 +97,19 @@
       "ipk_ka": 84.5,
       "x_over_r_at_node": 5,
       "z_total_ohm": 0.0075,
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "breaking_capacity": {
+        "device_id": "MSB-1-MAIN-ACB",
+        "device_type": "ACB",
+        "device_icn_ka": 65.0,
+        "device_icu_ka": 65.0,
+        "device_icw_ka_1s": 65.0,
+        "ik3_node_ka": 38.798,
+        "headroom_pct": 67.53,
+        "verdict": "ok",
+        "verdict_basis": "NEC 2023 § 110.9",
+        "data_source": "engineer_declared"
+      }
     },
     {
       "node_id": "MSB-1.BUSBAR",
@@ -119,7 +143,19 @@
       "ipk_ka": 75.0,
       "x_over_r_at_node": 4,
       "z_total_ohm": 0.0091,
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "breaking_capacity": {
+        "device_id": "MCC-1-MAIN-ACB",
+        "device_type": "ACB",
+        "device_icn_ka": 50.0,
+        "device_icu_ka": 50.0,
+        "device_icw_ka_1s": 50.0,
+        "ik3_node_ka": 31.976,
+        "headroom_pct": 56.37,
+        "verdict": "ok",
+        "verdict_basis": "NEC 2023 § 110.9",
+        "data_source": "engineer_declared"
+      }
     }
   ],
   "selectivity_implications": [

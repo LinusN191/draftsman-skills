@@ -299,6 +299,63 @@
           "tool_call_pending": {
             "type": "boolean",
             "description": "true when calc.iec60909_cascade has not yet executed"
+          },
+          "breaking_capacity": {
+            "type": "object",
+            "description": "Breaking-capacity verdict for the protective device at this node. Hybrid consumer pattern: when consumed_intents includes db-layout, generator reads device data from db-layout intent's main_switch.breaking_capacity_ka + circuits[*].breaker_breaking_capacity_ka. When db-layout intent absent, engineer declares device per-node. Verdict thresholds: ok >= 10% headroom; marginal 0-10%; inadequate < 0%. Per BS 7671:2018+A2:2022 Reg 432.1.2 / NEC 2023 §110.9 / IEC 60947-2.",
+            "additionalProperties": false,
+            "required": ["device_id", "device_type", "ik3_node_ka", "headroom_pct", "verdict", "verdict_basis", "data_source"],
+            "properties": {
+              "device_id": {
+                "type": "string",
+                "description": "Engineer reference for the device (e.g. 'MS-1' or 'OCPD-C03')."
+              },
+              "device_type": {
+                "type": "string",
+                "enum": ["MCB", "MCCB", "ACB", "fuse_BS88", "fuse_NEC", "air_circuit_breaker", "switch_disconnector"]
+              },
+              "device_icn_ka": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Rated short-circuit breaking capacity per BS EN 60898 / IEC 60947-2 Annex."
+              },
+              "device_icu_ka": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Ultimate short-circuit breaking capacity per IEC 60947-2."
+              },
+              "device_ics_ka": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Service short-circuit breaking capacity per IEC 60947-2 (typically 0.5-1.0 × Icu). Optional."
+              },
+              "device_icw_ka_1s": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Rated short-time withstand at 1 second per IEC 60947-2 (ACBs only). Optional."
+              },
+              "ik3_node_ka": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Three-phase Ik at this node, recomputed from z_total_ohm for self-consistency."
+              },
+              "headroom_pct": {
+                "type": "number",
+                "description": "((min(device_icn_ka, device_icu_ka) − ik3_node_ka) / ik3_node_ka) × 100. Negative values mean inadequate."
+              },
+              "verdict": {
+                "type": "string",
+                "enum": ["ok", "marginal", "inadequate"]
+              },
+              "verdict_basis": {
+                "type": "string",
+                "description": "Citation: BS 7671:2018+A2:2022 Reg 432.1.2 / NEC 2023 §110.9 / IEC 60947-2."
+              },
+              "data_source": {
+                "type": "string",
+                "enum": ["db_layout_intent", "engineer_declared"]
+              }
+            }
           }
         }
       }

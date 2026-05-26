@@ -54,6 +54,31 @@ Cross-contamination ban: `KS 1700` MUST NOT appear when `jurisdiction != "KE"`. 
 **INV-11: Internal consistency — Ik reconciles to c·U/(div·Z).**
 Severity HIGH. For every cascade node, the stored `ifault_ka_max` MUST reconcile to the documented IEC 60909 formula within 1%: three-phase `Ik = c × U / (√3 × Z)`, single-phase TN `Ik = c × U₀ / (2 × Z)`, or HV declared PSCC `Ik = declared_value` (do NOT re-multiply by c — ZQ is back-calculated as `ZQ = c × U / (√3 × Ik_declared)` per IEC 60909-0:2016 §3.3.2). Use c = 1.10 for HV nodes (voltage_class > 1 kV) and c = 1.05 for LV nodes per IEC 60909-0:2016 Table 1; U is line-to-line for 3-phase and phase-to-neutral for 1-phase; Z is the node `z_total_ohm` after all upstream impedances summed in series. Validator action: for each node in `cascade[]`, compute the expected Ik from c, U, div, Z; compare to stored `ifault_ka_max`; flag any deviation > 1% with the formula used and the expected value. Special cases: declared PSCC nodes (where `calculation_basis` contains "declared") skip reconciliation but assert the ZQ back-calc holds; motor superposition nodes skip (oracle limitation documented in `functional_audit.py` false-positive disclosure). Rationale: prevents H1+H2+H3 class of defects (TX-1 sub-impedance, double-c-factor on declared PSCC, single-phase z disconnect).
 
+---
+
+**INV-12: Breaking-capacity verdict internal consistency.**
+
+**Severity:** HIGH
+
+**Rule:** For every cascade node carrying a `breaking_capacity` block, the following must hold:
+
+1. **Ik3 self-consistency:** `breaking_capacity.ik3_node_ka` reconciles to `c × U / (div × z_total_ohm) / 1000` within 1%, using the same formula INV-11 enforces on this node's `ifault_ka_max`.
+
+2. **Headroom arithmetic:** `headroom_pct` reconciles to `((min(device_icn_ka, device_icu_ka) − ik3_node_ka) / ik3_node_ka) × 100` within 0.5%.
+
+3. **Verdict threshold match:** `verdict` matches the threshold table:
+   - `ok` if `headroom_pct >= 10`
+   - `marginal` if `0 <= headroom_pct < 10`
+   - `inadequate` if `headroom_pct < 0`
+
+4. **Data source consistency:** `data_source ∈ {"db_layout_intent", "engineer_declared"}`. If `"db_layout_intent"`, then `meta.consumed_intents[]` must include a db-layout entry.
+
+5. **At least one device rating present:** at least one of `device_icn_ka` or `device_icu_ka` must be present and > 0.
+
+**Validator action:** for each cascade node with `breaking_capacity`, recompute ik3 and headroom_pct; assert verdict matches threshold; assert data_source consistency. Flag any mismatch > 1% (ik3) or > 0.5% (headroom) or wrong verdict bucket.
+
+**Rationale:** Makes fault-level self-sufficient for switchgear selection per BS 7671 Reg 432.1.2 / NEC §110.9 / IEC 60947-2 — engineer no longer has to manually cross-check Ik vs device Icn/Icu. INV catches authoring drift.
+
 ### 3. Intent extraction validation
 
 Project IR → `fault-level` intent shape. Validate against `fault-level-intent.schema.json`. Intent must contain `project_id`, `source_summary`, `fault_currents[]` (≥1 entry).
@@ -71,4 +96,4 @@ Project IR → `fault-level` intent shape. Validate against `fault-level-intent.
 }
 ```
 
-`valid: true` requires schema pass + all 11 invariants pass + intent extraction valid.
+`valid: true` requires schema pass + all 12 invariants pass + intent extraction valid.

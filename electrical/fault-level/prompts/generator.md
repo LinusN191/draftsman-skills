@@ -292,6 +292,44 @@ Each section: `{title, summary, decisions[]}`. Each decision: `{label, summary, 
 
 ---
 
+## Step 15 — Breaking-capacity verdict per cascade node (D1.1)
+
+For every cascade node carrying a protective device (OCPD upstream of the node OR main switch at the supply boundary), emit a `breaking_capacity` block.
+
+**Data source — hybrid consumer pattern:**
+
+1. **If `consumed_intents` includes a db-layout entry:** read device data from the consumed intent.
+   - Service-entrance node (cascade root / first LV node): use `main_switch.{rating_a, breaking_capacity_ka, type}` from db-layout intent.
+   - Downstream OCPD-protected nodes: match by `node_id` to db-layout intent's `circuits[*]` and read `{breaker_rating_a, breaker_breaking_capacity_ka, breaker_curve}`.
+   - Set `data_source: "db_layout_intent"`.
+
+2. **If db-layout intent absent:** read engineer-declared device data from `cascade_topology_declared[*].device` in input.json (engineer provides `{device_id, device_type, device_icn_ka, device_icu_ka}` per node).
+   - Set `data_source: "engineer_declared"`.
+
+**Compute the verdict per node:**
+
+```
+ik3_node_ka     = c × U / (div × z_total_ohm) / 1000     (recompute from node z; same as INV-11)
+device_rating   = min(device_icn_ka, device_icu_ka)       (worst-case interrupting rating)
+headroom_pct    = ((device_rating − ik3_node_ka) / ik3_node_ka) × 100
+
+verdict = "ok"          if headroom_pct >= 10
+        = "marginal"    if 0 <= headroom_pct < 10
+        = "inadequate"  if headroom_pct < 0
+```
+
+**Citation form per jurisdiction (verdict_basis):**
+- GB: `"BS 7671:2018+A2:2022 Reg 432.1.2"`
+- INT: `"IEC 60947-2:2016 § 4.3.6.4"`
+- US: `"NEC 2023 § 110.9"` or `"NFPA 70 § 110.9"`
+- KE: `"KS 1700:2018 § 432 (routes to BS 7671:2018+A2:2022 Reg 432.1.2)"`
+
+**Emit block per cascade node** (only when device data is available; nodes without a device — e.g. pure cable midpoints — omit the block).
+
+**Cross-validate with INV-12** (validator.md): headroom_pct arithmetic must reconcile within 0.5% of the computed value.
+
+---
+
 ## Final output
 
 Emit two JSON documents:

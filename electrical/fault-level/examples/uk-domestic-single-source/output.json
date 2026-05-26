@@ -62,7 +62,18 @@
       "x_over_r_at_node": 2.5,
       "z_total_ohm": 0.0805,
       "calculation_basis": "DNO-declared PSCC anchor (1.5 kA) per BS 7671:2018+A2:2022 Reg 313.1.1; Z_CU-G back-calculated single-phase: Z = c·U₀/(2·Ik) = 1.05·230/(2·1500) = 0.0805 Ω per IEC 60909-0:2016 §6.",
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "breaking_capacity": {
+        "device_id": "CU-G-MAINSW",
+        "device_type": "switch_disconnector",
+        "device_icn_ka": 6.0,
+        "device_icu_ka": 6.0,
+        "ik3_node_ka": 1.5,
+        "headroom_pct": 300.0,
+        "verdict": "ok",
+        "verdict_basis": "BS 7671:2018+A2:2022 Reg 432.1.2",
+        "data_source": "engineer_declared"
+      }
     },
     {
       "node_id": "CU-G.BUSBAR",
@@ -75,7 +86,18 @@
       "x_over_r_at_node": 2.5,
       "z_total_ohm": 0.081,
       "calculation_basis": "Internal CU busbar copper trunk impedance ≈ negligible; monotonic increment from CU-G (0.0805 → 0.0810 Ω). Ik_max = 1.05·230/(2·0.0810) = 1.491 kA per IEC 60909-0:2016 §6.",
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "breaking_capacity": {
+        "device_id": "CU-G-BUSBAR-DEV",
+        "device_type": "switch_disconnector",
+        "device_icn_ka": 6.0,
+        "device_icu_ka": 6.0,
+        "ik3_node_ka": 1.4907,
+        "headroom_pct": 302.5,
+        "verdict": "ok",
+        "verdict_basis": "BS 7671:2018+A2:2022 Reg 432.1.2",
+        "data_source": "engineer_declared"
+      }
     },
     {
       "node_id": "CU-G.C01",
@@ -98,7 +120,18 @@
       "x_over_r_at_node": 0.5,
       "z_total_ohm": 0.301,
       "calculation_basis": "Single-phase TN L-N fault per IEC 60909-0:2016 §6: z_total = upstream busbar z + cable magnitude = 0.0810 + √(0.22² + 0.004²) = 0.0810 + 0.2200 = 0.3010 Ω. Cable R from BS 7671:2018+A2:2022 Appendix 4 Table 4D5 (1.5mm² Cu PVC); X from Appendix 4 Table 4F. Ik_max = 1.05·230/(2·0.3010) = 0.401 kA. Note: previous stored Ik 0.85 kA was physically inconsistent with cable impedance (z-Ik reconciliation failure flagged by Sprint B H3).",
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "breaking_capacity": {
+        "device_id": "CU-G-C01-MCB-B32",
+        "device_type": "MCB",
+        "device_icn_ka": 6.0,
+        "device_icu_ka": 6.0,
+        "ik3_node_ka": 0.4012,
+        "headroom_pct": 1395.51,
+        "verdict": "ok",
+        "verdict_basis": "BS 7671:2018+A2:2022 Reg 432.1.2",
+        "data_source": "engineer_declared"
+      }
     },
     {
       "node_id": "CU-G.C03",

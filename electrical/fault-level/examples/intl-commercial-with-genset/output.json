@@ -56,7 +56,19 @@
       "x_over_r_at_node": 5,
       "z_total_ohm": 0.4366,
       "calculation_basis": "declared PSCC from utility (already c-corrected); ZQ back-calculated per IEC 60909-0:2016 §3.3.2 as ZQ = c·U/(√3·Ik_declared) = 1.10×11kV/(√3×16kA) = 0.4366 Ω. Ik_min uses c_min=1.00 (HV) per IEC 60909-0:2016 Table 1.",
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "breaking_capacity": {
+        "device_id": "HV-1-ACB",
+        "device_type": "ACB",
+        "device_icn_ka": 25.0,
+        "device_icu_ka": 25.0,
+        "device_icw_ka_1s": 25.0,
+        "ik3_node_ka": 16.001,
+        "headroom_pct": 56.24,
+        "verdict": "ok",
+        "verdict_basis": "IEC 60947-2:2016 § 4.3.6.4",
+        "data_source": "engineer_declared"
+      }
     },
     {
       "node_id": "TX-1",
@@ -69,7 +81,19 @@
       "x_over_r_at_node": 7,
       "z_total_ohm": 0.005577,
       "calculation_basis": "Three-phase LV terminals: z_total = ZQ_LV + Z_TX_LV per IEC 60909-0:2016 §3.3. ZQ_LV = ZQ_HV × (U_LV/U_HV)² = 0.4366 × (400/11000)² = 0.000577 Ω. Z_TX_LV = u_k × U_LV² / S_tx = 0.05 × 400²/1.6MVA = 0.005 Ω. z_total = 0.005577 Ω. Ik_max = 1.05·400/(√3·0.005577) = 43.49 kA per IEC 60909-0:2016 Table 1 (c_max=1.05 LV).",
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "breaking_capacity": {
+        "device_id": "MSB-1-MAIN-ACB",
+        "device_type": "ACB",
+        "device_icn_ka": 50.0,
+        "device_icu_ka": 50.0,
+        "device_icw_ka_1s": 50.0,
+        "ik3_node_ka": 43.48,
+        "headroom_pct": 15.0,
+        "verdict": "ok",
+        "verdict_basis": "IEC 60947-2:2016 § 4.3.6.4",
+        "data_source": "engineer_declared"
+      }
     },
     {
       "node_id": "MSB-1",
@@ -92,7 +116,19 @@
       "x_over_r_at_node": 6,
       "z_total_ohm": 0.007274,
       "calculation_basis": "z_total = upstream TX-1 z + cable magnitude √(R²+X²) = 0.005577 + √(0.0012² + 0.0012²) = 0.005577 + 0.001697 = 0.007274 Ω. Ik_max = 1.05·400/(√3·0.007274) = 33.34 kA per IEC 60909-0:2016 §4.3.",
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "breaking_capacity": {
+        "device_id": "MSB-1-INC-MCCB",
+        "device_type": "MCCB",
+        "device_icn_ka": 50.0,
+        "device_icu_ka": 50.0,
+        "device_ics_ka": 50.0,
+        "ik3_node_ka": 33.336,
+        "headroom_pct": 49.99,
+        "verdict": "ok",
+        "verdict_basis": "IEC 60947-2:2016 § 4.3.6.4",
+        "data_source": "engineer_declared"
+      }
     },
     {
       "node_id": "MSB-1.BUSBAR",
