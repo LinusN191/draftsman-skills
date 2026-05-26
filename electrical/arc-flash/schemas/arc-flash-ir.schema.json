@@ -100,6 +100,30 @@
         }
       }
     },
+    "equipment_condition_basis": {
+      "type": "object",
+      "description": "Project-level default equipment-condition assumptions per NFPA 70E §130.5(A). Each cascade node may override via its own equipment_condition block. Added Sprint D1.4.",
+      "additionalProperties": false,
+      "required": ["default_condition", "default_worker_position", "working_distance_basis"],
+      "properties": {
+        "default_condition": {"type": "string", "enum": ["normal", "abnormal"]},
+        "default_worker_position": {"type": "string", "enum": ["standing", "kneeling", "reaching"]},
+        "working_distance_basis": {"type": "string", "enum": ["standard_18in", "custom_mm"]},
+        "abnormal_ie_adjustment_factor_default": {
+          "type": "number",
+          "minimum": 1.0,
+          "maximum": 2.0,
+          "default": 1.25,
+          "description": "Default IE multiplier applied at nodes with equipment_condition.condition == 'abnormal'. Engineer-overrideable per node."
+        },
+        "abnormal_ie_adjustment_source": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 500,
+          "description": "Cited source for the default multiplier (typically industry consensus — ETAP / EasyPower technical bulletins — NOT NFPA 70E prescription)."
+        }
+      }
+    },
     "cascade": {
       "type": "array",
       "minItems": 1,
@@ -136,7 +160,8 @@
                   "NFPA70E_TABLE_METHOD_USED",
                   "INCIDENT_ENERGY_GT_40_RESTRICTED",
                   "CONSERVATIVE_T_CLEAR_DEFAULT_USED",
-                  "SHOCK_APPROACH_BEYOND_TABLE_RANGE"
+                  "SHOCK_APPROACH_BEYOND_TABLE_RANGE",
+                  "ABNORMAL_EQUIPMENT_CONDITION"
                 ]
               },
               "message": {
@@ -476,6 +501,14 @@
                 "null"
               ]
             },
+            "incident_energy_base_cal_per_cm2": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "description": "Pre-adjustment base IE (before equipment_condition.ie_adjustment_factor is applied). Optional traceability field. When equipment_condition.condition == 'normal' (factor 1.0), this field equals incident_energy_cal_per_cm2 or may be omitted. Added Sprint D1.4."
+            },
             "incident_energy_cal_per_cm2": {
               "type": [
                 "number",
@@ -582,8 +615,49 @@
             },
             "tool_call_pending": {
               "type": "boolean"
+            },
+            "abnormal_condition_provisional_forced": {
+              "type": "boolean",
+              "description": "When equipment_condition.condition == 'abnormal' on this node, the IR root provenance.is_provisional MUST be forced to true. This check records that the rule has been honoured. Added Sprint D1.4 (INV-11)."
             }
           }
+        },
+        "equipment_condition": {
+          "type": "object",
+          "description": "Per-node equipment-condition assumption per NFPA 70E §130.5(A). When condition='abnormal', the skill forces provenance.is_provisional=true (via Sprint C3 IR-level provenance block) and applies an IE adjustment factor. Added Sprint D1.4.",
+          "additionalProperties": false,
+          "required": ["condition", "ie_adjustment_factor", "ie_adjustment_source"],
+          "properties": {
+            "condition": {"type": "string", "enum": ["normal", "abnormal"]},
+            "justification": {
+              "type": "string",
+              "minLength": 20,
+              "maxLength": 500,
+              "description": "Required when condition=='abnormal' — describes the abnormal observation (water damage, corrosion, prior arc damage, missed maintenance, etc.)."
+            },
+            "last_maintenance_date": {
+              "type": "string",
+              "format": "date",
+              "description": "Required when condition=='abnormal' — most recent documented inspection/maintenance date."
+            },
+            "ie_adjustment_factor": {
+              "type": "number",
+              "minimum": 1.0,
+              "maximum": 2.0,
+              "description": "IE multiplier applied to the base computed value. 1.0 for normal; 1.25 default for abnormal (engineer-overrideable). Per the project's equipment_condition_basis.abnormal_ie_adjustment_factor_default."
+            },
+            "ie_adjustment_source": {
+              "type": "string",
+              "minLength": 20,
+              "maxLength": 500,
+              "description": "Cited reference for the factor (industry default — ETAP / EasyPower — when standard; engineer-specific reasoning when overridden)."
+            }
+          }
+        },
+        "worker_position": {
+          "type": "string",
+          "enum": ["standing", "kneeling", "reaching"],
+          "description": "Worker body posture during planned live-work at this node. Affects effective working distance when working_distance_basis == 'standard_18in'. Added Sprint D1.4."
         }
       }
     }

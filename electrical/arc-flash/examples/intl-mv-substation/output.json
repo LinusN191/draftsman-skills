@@ -24,6 +24,13 @@
     "phases": "three",
     "frequency_hz": 50
   },
+  "equipment_condition_basis": {
+    "default_condition": "normal",
+    "default_worker_position": "standing",
+    "working_distance_basis": "standard_18in",
+    "abnormal_ie_adjustment_factor_default": 1.25,
+    "abnormal_ie_adjustment_source": "ETAP Arc Flash Analysis App Note 2020 + EasyPower technical bulletin TB-AF-2019 (industry consensus 1.2–1.5× range; NFPA 70E §130.5(A) does NOT prescribe — engineer must validate against site assessment)"
+  },
   "cascade": [
     {
       "node_id": "MV-SWB",
@@ -95,7 +102,13 @@
         "ppe_category_consistent_with_E": true,
         "method_fallback_consistent": true,
         "tool_call_pending": true
-      }
+      },
+      "equipment_condition": {
+        "condition": "normal",
+        "ie_adjustment_factor": 1.0,
+        "ie_adjustment_source": "default (normal equipment — no adjustment per NFPA 70E §130.5(A))"
+      },
+      "worker_position": "standing"
     },
     {
       "node_id": "MV-SWB.TX-1.LV-MSB",
@@ -167,7 +180,13 @@
         "ppe_category_consistent_with_E": true,
         "method_fallback_consistent": true,
         "tool_call_pending": true
-      }
+      },
+      "equipment_condition": {
+        "condition": "normal",
+        "ie_adjustment_factor": 1.0,
+        "ie_adjustment_source": "default (normal equipment — no adjustment per NFPA 70E §130.5(A))"
+      },
+      "worker_position": "standing"
     }
   ],
   "compliance_summary": {

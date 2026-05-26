@@ -22,7 +22,7 @@ You are a static analyzer running deterministic invariants over the IR produced 
 }
 ```
 
-## The 10 INV invariants
+## The 11 INV invariants
 
 ### INV-01 — Valid node_id path pattern + parent resolution
 Every `cascade[].node_id` matches `^[A-Z][A-Z0-9.\-]{0,63}$`. Every non-null `parent_node_id` resolves to another node in `cascade[]`.
@@ -55,6 +55,32 @@ For every node where `equipment.current_type == "dc"`: `method_applied` is `doan
 
 ### INV-10 — Intent shape + 1-to-1 mapping
 The emitted `arc-flash` intent validates against `arc-flash-intent.schema.json`. AND for every cascade node in the IR, there is exactly one matching entry (by `node_id`) in `intent.nodes[]`. No extras, no missing.
+
+---
+
+### INV-11 — Abnormal-condition defensive posture
+
+**Severity:** HIGH
+
+**Rule:** For every cascade node carrying `equipment_condition`:
+
+1. `condition ∈ {"normal", "abnormal"}`
+
+2. **If `condition == "abnormal"`:**
+   - `justification` is present, ≥ 20 chars, ≤ 500 chars
+   - `last_maintenance_date` is present and parses as a valid ISO date
+   - `ie_adjustment_factor >= 1.0` (no negative-adjustment via this field; factor of 1.0 with "abnormal" is allowed but unusual)
+   - `ie_adjustment_source` is present, ≥ 20 chars
+   - **IR root `provenance.is_provisional == true`** — abnormal equipment warrants site assessment, not a desk-study verdict
+
+3. **If `condition == "normal"`:**
+   - `ie_adjustment_factor == 1.0` (no abnormal-adder on a normal node — would be a contradiction)
+
+4. **Project-level coherence:** if ANY cascade node has `condition == "abnormal"`, then IR root `equipment_condition_basis` must be populated (it provides the default factor + source).
+
+**Validator action:** for each cascade node, check the condition consistency rules above. Cross-walk to root provenance + equipment_condition_basis. Flag any rule violation as HIGH.
+
+**Rationale:** Defensive engineering. Abnormal equipment is a site-assessment finding, not a calc result; the skill responds defensively (1.25× IE adjustment + mandatory is_provisional=true) so a downstream consumer (labelling, energised-work-permit document) cannot accidentally trust the desk-study value as field-actionable. Resolves NFPA 70E §130.5(A) requirement.
 
 ## Reporting rules
 

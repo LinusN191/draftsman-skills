@@ -1,0 +1,30 @@
+{
+  "project_id": "uk-abnormal-condition-water-damaged",
+  "jurisdiction": "GB",
+  "project_supply": { "voltage_v": 400, "phases": "three", "frequency_hz": 50 },
+  "consumed_intents_present": [],
+  "site_brief": "Indoor LV switchboard (400 V TPN), basement plant room. Plumbing leak in 2024-Q3 caused water ingress on busbar compartment; visible corrosion on three of six busbar mounting brackets at follow-up inspection 2024-08-12. Equipment remained energised pending remediation. This study assesses arc-flash risk under abnormal equipment condition per NFPA 70E §130.5(A) prior to authorising further live work.",
+  "cascade_declared": [
+    {
+      "id": "PANEL-A",
+      "parent_node_id": null,
+      "node_kind": "service_entrance",
+      "designation": "Basement plant-room LV panel — water-damaged",
+      "equipment": { "type": "indoor LV distribution panel (TPN)", "current_type": "ac", "voltage_v": 400 },
+      "fault_inputs": { "ibf_ka_max": 12.5, "ibf_ka_min": 11.2, "x_over_r": 8, "z_total_ohm": 0.0194 },
+      "ocpd_inputs": { "ocpd_type": "LV_MCCB_thermal_magnetic", "t_clear_s": 0.2 },
+      "geometry": { "working_distance_mm": 457, "gap_distance_mm": 32, "enclosure_volume_mm3": 226981000 }
+    }
+  ],
+  "equipment_condition_declared": [
+    {
+      "node_id": "PANEL-A",
+      "condition": "abnormal",
+      "justification": "Water-damaged distribution panel from plumbing leak 2024-Q3; corrosion on 3 of 6 busbar mounting brackets observed at inspection 2024-08-12; no remediation completed.",
+      "last_maintenance_date": "2024-08-12",
+      "ie_adjustment_factor": 1.25,
+      "ie_adjustment_source": "ETAP Arc Flash Analysis App Note 2020 + EasyPower technical bulletin TB-AF-2019 (industry consensus 1.2–1.5× range; NFPA 70E §130.5(A) does NOT prescribe — engineer must validate against site assessment)"
+    }
+  ],
+  "method_preference": "IEEE 1584-2018 (600V VCB coefficient set). Per Sprint A.3 honest disclosure: 600V coefficient table carries _status: pending-transcription per IEEE Xplore paywall; this example uses the Lee 1982 fallback for the base IE (per C3 IR-level provenance is_provisional=true)."
+}

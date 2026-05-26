@@ -181,3 +181,43 @@ this skill's `validator.md`.
 
 This block is consumed by the runtime eval harness, which references INVs
 by id via JSONPath filters like `ir.invariants[?(@.id=="INV-04")].passes`.
+
+### Step 15 — Equipment-condition + worker-position assumptions per NFPA 70E §130.5(A) (D1.4)
+
+For every cascade node, the engineer must declare `equipment_condition`. Default to `normal` unless the input declares otherwise via a per-node abnormal-condition block.
+
+**When `equipment_condition.condition == "normal"`:**
+- `ie_adjustment_factor = 1.0`
+- `ie_adjustment_source = "default (normal equipment — no adjustment per NFPA 70E §130.5(A))"`
+- No additional behaviour; standard IE computation applies.
+
+**When `equipment_condition.condition == "abnormal"`:**
+
+1. **Require `justification`** (≥20 chars) describing the abnormal observation. Examples: "water-damaged distribution panel; last inspection 2024-08-12 flagged corrosion on busbar mounts"; "prior arc-flash incident 2025-03-14 at upstream MCCB; equipment passed but un-recertified"; "missed annual thermographic survey; last test cycle 2023-11".
+
+2. **Require `last_maintenance_date`** (ISO date).
+
+3. **Apply `ie_adjustment_factor = 1.25` by default** (or engineer-overridden value from the input within [1.0, 2.0]):
+
+   ```
+   IE_adjusted = IE_base × ie_adjustment_factor
+   ```
+
+   The adjusted IE is what flows into `arc_flash.incident_energy_cal_per_cm2`; the base value (pre-adjustment) is captured in `arc_flash.incident_energy_base_cal_per_cm2` for traceability (optional informational field).
+
+4. **Set `ie_adjustment_source`**: default to the project-level `equipment_condition_basis.abnormal_ie_adjustment_source` value, e.g. *"ETAP Arc Flash Analysis App Note 2020 + EasyPower technical bulletin TB-AF-2019 (industry consensus 1.2–1.5× range; NFPA 70E §130.5(A) does NOT prescribe — engineer must validate against site assessment)"*.
+
+5. **Force `provenance.is_provisional = true`** at the IR root (via the Sprint C3 IR-level provenance block). Update `provenance.provenance_note` to cite §130.5(A) + the abnormal observation. Record this on each affected node via `checks.abnormal_condition_provisional_forced = true`.
+
+6. **If `IE_adjusted > 40 cal/cm²`** → RESTRICTED branch (Sprint A.3 + Sprint C.3 logic already handles this — `ppe_category = null`, live-work prohibited, AFB > 4 m typical).
+
+7. **Emit `ABNORMAL_EQUIPMENT_CONDITION` error-severity flag** into `compliance_summary.non_compliance_flags[]` with citation `NFPA 70E:2024 §130.5(A) + ETAP/EasyPower industry-consensus 1.25× adder` and remediation guidance (replace/dry/re-test + re-run with condition=normal).
+
+**worker_position semantics:** affects working_distance only when `equipment_condition_basis.working_distance_basis == "standard_18in"`:
+- `standing` → 18 in standard (457 mm)
+- `kneeling` → 12 in (305 mm) — closer than standard; increases IE
+- `reaching` → 24 in (610 mm) — further than standard; decreases IE
+
+For `working_distance_basis == "custom_mm"`, the engineer-declared distance in `geometry.working_distance_mm` overrides regardless of posture.
+
+**Project-level basis:** populate `equipment_condition_basis` at IR root for every project (defaults: `default_condition="normal"`, `default_worker_position="standing"`, `working_distance_basis="standard_18in"`, `abnormal_ie_adjustment_factor_default=1.25`, `abnormal_ie_adjustment_source` cited industry source). The basis MUST be populated if ANY node carries `equipment_condition.condition == "abnormal"`.

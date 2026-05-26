@@ -1,0 +1,33 @@
+{
+  "intent_kind": "arc-flash",
+  "version": "1.1.0",
+  "produced_by_skill_version": "arc-flash/1.1.0",
+  "tool_call_pending": true,
+  "calculation_meta": {
+    "method_applied": "lee_1982",
+    "computed_at": "2026-05-25T15:00:00Z",
+    "tool_version": "shared/calculations/electrical/arc-flash@1.0.0-lee-fallback",
+    "is_provisional": true
+  },
+  "nodes": [
+    {
+      "node_id": "PANEL-A",
+      "parent_node_id": null,
+      "designation": "Basement plant-room LV panel — water-damaged",
+      "equipment_type": "indoor LV distribution panel (TPN)",
+      "current_type": "ac",
+      "voltage_v": 400,
+      "incident_energy_cal_per_cm2": 6.5,
+      "arc_flash_boundary_mm": 1850,
+      "working_distance_mm": 457,
+      "limited_approach_movable_mm": 3050,
+      "limited_approach_fixed_mm": 1070,
+      "restricted_approach_mm": 305,
+      "ppe_category": 2,
+      "method_applied": "lee_1982",
+      "label_recommended": true,
+      "label_required_per": "NFPA 70E:2024 §130.5(H) — LV distribution panel ≥240V (UK voluntary best practice per HSG48). DRAFT marker required per is_provisional=true.",
+      "produced_at": "2026-05-25"
+    }
+  ]
+}

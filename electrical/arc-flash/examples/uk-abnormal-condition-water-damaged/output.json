@@ -1,0 +1,285 @@
+{
+  "drawing_type": "arc_flash_study",
+  "version": "1.1.0",
+  "meta": {
+    "project_id": "uk-abnormal-condition-water-damaged",
+    "skill_version": "arc-flash/1.1.0",
+    "produced_at": "2026-05-25T15:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "GB",
+  "project_supply": {
+    "voltage_v": 400,
+    "phases": "three",
+    "frequency_hz": 50
+  },
+  "equipment_condition_basis": {
+    "default_condition": "normal",
+    "default_worker_position": "standing",
+    "working_distance_basis": "standard_18in",
+    "abnormal_ie_adjustment_factor_default": 1.25,
+    "abnormal_ie_adjustment_source": "ETAP Arc Flash Analysis App Note 2020 + EasyPower technical bulletin TB-AF-2019 (industry consensus 1.2–1.5× range; NFPA 70E §130.5(A) does NOT prescribe — engineer must validate against site assessment)"
+  },
+  "cascade": [
+    {
+      "node_id": "PANEL-A",
+      "parent_node_id": null,
+      "node_kind": "service_entrance",
+      "designation": "Basement plant-room LV panel — water-damaged",
+      "equipment": {
+        "type": "indoor LV distribution panel (TPN)",
+        "current_type": "ac",
+        "voltage_v": 400,
+        "voltage_class": "600V",
+        "electrode_config": "VCB",
+        "electrode_config_source": "engineer_override"
+      },
+      "fault_inputs": {
+        "ibf_ka_max": 12.5,
+        "ibf_ka_min": 11.2,
+        "x_over_r": 8,
+        "z_total_ohm": 0.0194
+      },
+      "ocpd_inputs": {
+        "ocpd_type": "LV_MCCB_thermal_magnetic",
+        "t_clear_s": 0.2,
+        "t_clear_source": "engineer_declared"
+      },
+      "geometry": {
+        "working_distance_mm": 457,
+        "gap_distance_mm": 32,
+        "enclosure_volume_mm3": 226981000
+      },
+      "arc_flash": {
+        "method_applied": "lee_1982",
+        "method_fallback_trail": [
+          {
+            "method": "ieee_1584_2018",
+            "result": "skipped",
+            "reason": "600V coefficient table at shared/standards/electrical/IEEE1584/method-2018-tables-1-3-600V-coefficients.json carries _status: pending-transcription per IEEE Xplore paywall (Sprint A.3 honest disclosure). Skill falls back to Lee 1982 per the established dual-track convention."
+          },
+          {
+            "method": "ieee_1584_2002",
+            "result": "skipped",
+            "reason": "Doughty/Neal 2002 Annex F coefficients similarly pending-verification per Sprint A.3."
+          },
+          {
+            "method": "lee_1982",
+            "result": "applied",
+            "reason": "LV fallback per dual-track convention; Lee is the >15kV theoretical-max model — conservative at 400 V. Theoretical formula always available; V_nom 400 V within 50-15000 V range."
+          }
+        ],
+        "arcing_current_a": 10870,
+        "incident_energy_base_cal_per_cm2": 5.2,
+        "incident_energy_cal_per_cm2": 6.5,
+        "arc_flash_boundary_mm": 1850,
+        "ppe_category": 2,
+        "ppe_category_source": "computed_from_E"
+      },
+      "shock_approach": {
+        "limited_approach_movable_mm": 3050,
+        "limited_approach_fixed_mm": 1070,
+        "restricted_approach_mm": 305,
+        "source": "NFPA 70E:2024 Table 130.4(C)(a) — 151V to 750V row"
+      },
+      "label": {
+        "label_recommended": true,
+        "label_required_per": "NFPA 70E:2024 §130.5(H) — LV distribution panel ≥240V (UK: voluntary best practice per HSG48). Label MUST carry DRAFT marker per is_provisional=true; live-work prohibited until remediation completes.",
+        "engineer_can_skip_with_reason": false
+      },
+      "checks": {
+        "incident_energy_finite": true,
+        "boundary_ge_working_distance": true,
+        "ppe_category_consistent_with_E": true,
+        "method_fallback_consistent": true,
+        "tool_call_pending": true,
+        "abnormal_condition_provisional_forced": true
+      },
+      "equipment_condition": {
+        "condition": "abnormal",
+        "justification": "Water-damaged distribution panel from plumbing leak 2024-Q3; corrosion on 3 of 6 busbar mounting brackets observed at inspection 2024-08-12; no remediation completed before this assessment.",
+        "last_maintenance_date": "2024-08-12",
+        "ie_adjustment_factor": 1.25,
+        "ie_adjustment_source": "ETAP Arc Flash Analysis App Note 2020 + EasyPower technical bulletin TB-AF-2019 (industry consensus 1.2–1.5× range; NFPA 70E §130.5(A) does NOT prescribe — engineer must validate against site assessment)"
+      },
+      "worker_position": "standing"
+    }
+  ],
+  "compliance_summary": {
+    "compliant": false,
+    "non_compliance_flags": [
+      {
+        "code": "ABNORMAL_EQUIPMENT_CONDITION",
+        "message": "Abnormal equipment condition declared at PANEL-A (water-damaged + corroded busbar mounting brackets). Per NFPA 70E §130.5(A) site assessment + remediation required before authorising live work. IE adjusted by 1.25× industry-default multiplier (NOT prescribed by NFPA 70E — see ie_adjustment_source for ETAP/EasyPower citation); output is_provisional=true. Engineer-overrideable but not by desk study alone.",
+        "severity": "error",
+        "node_id": "PANEL-A",
+        "code_clause": "NFPA 70E:2024 §130.5(A) + ETAP/EasyPower industry-consensus 1.25× adder",
+        "remediation": "Replace corroded busbar mounting brackets; dry + re-test panel per BS 7671 Part 6; re-run arc-flash with condition=normal after sign-off."
+      },
+      {
+        "code": "LEE_1982_FALLBACK_USED",
+        "message": "Lee 1982 used as base-IE method because IEEE 1584-2018 600V VCB coefficient table _status: pending-transcription per Sprint A.3 IEEE Xplore paywall disclosure. Lee over-predicts at LV — conservative for an abnormal-condition desk study where the operational recommendation is site assessment + remediation.",
+        "severity": "info",
+        "node_id": "PANEL-A"
+      }
+    ],
+    "assumptions": [
+      "No fault-level intent consumed; per-node Ibf + X/R engineer-declared from utility data + downstream impedance estimate",
+      "No db-layout-rollup intent consumed; equipment classification engineer-declared as indoor LV distribution panel (TPN)",
+      "Electrode configuration VCB engineer-override consistent with auto-inference pattern for indoor LV distribution panels",
+      "Working distance 457 mm (18 in) per IEEE 1584-2018 Table 8 LV standard; equipment_condition_basis.working_distance_basis=standard_18in + worker_position=standing",
+      "Gap distance 32 mm per IEEE 1584-2018 Table 9 LV panel standard",
+      "t_clear 0.2 s engineer-declared for the LV MCCB thermal-magnetic at panel incomer; downstream protection coordination not yet shipped",
+      "Base IE 5.2 cal/cm² is the Lee 1982 senior-engineer estimate at 400 V / 12.5 kA / 0.2 s / 457 mm — pending runtime calc tool",
+      "Adjusted IE 6.5 cal/cm² = 5.2 × 1.25 abnormal-condition adder per NFPA 70E §130.5(A) (the standard does NOT prescribe the multiplier — 1.25 is the mid-range of the industry 1.2-1.5× range cited by ETAP and EasyPower technical bulletins)",
+      "ppe_category=2 because adjusted IE 6.5 cal/cm² falls in the 4-8 band per NFPA 70E Table 130.7(C)(15)(c)",
+      "Compliance set FALSE because ABNORMAL_EQUIPMENT_CONDITION is error-severity — operational control (site assessment + remediation) is the only path forward",
+      "is_provisional=true forced by both: (a) abnormal-condition declaration per NFPA 70E §130.5(A) defensive posture; (b) Lee 1982 fallback per Sprint A.3 600V coefficient pending-transcription",
+      "tool_call_pending=true — calc.arc_flash_incident_energy contract shipped but runtime tool not yet implemented; numeric values are senior-engineer Lee 1982 estimates"
+    ]
+  },
+  "flags": [
+    "ABNORMAL_EQUIPMENT_CONDITION",
+    "LEE_1982_FALLBACK_USED",
+    "TOOL-CALL-PENDING"
+  ],
+  "rationale": {
+    "chat_summary": "GB indoor LV panel (400V TPN basement plant room) under abnormal equipment condition per NFPA 70E §130.5(A) — water-damaged busbar compartment with visible corrosion on 3 of 6 mounting brackets. Base IE 5.2 cal/cm² (Lee 1982 fallback; IEEE 1584-2018 600V coefficient pending-transcription per Sprint A.3). Adjusted IE 6.5 cal/cm² (× 1.25 industry-default adder; NFPA 70E does NOT prescribe the multiplier). PPE Cat 2. is_provisional=true forced — live-work PROHIBITED until busbar mounting brackets replaced + re-assessed.",
+    "sections": [
+      {
+        "title": "Why abnormal",
+        "summary": "Plumbing leak 2024-Q3 caused water ingress on basement panel busbar compartment; corrosion observed 3 of 6 mounting brackets at 2024-08-12 inspection; no remediation completed. Per NFPA 70E §130.5(A), equipment condition is a required input to arc-flash hazard analysis — abnormal warrants different posture (site assessment, not desk-study verdict).",
+        "decisions": [
+          {
+            "label": "PANEL-A flagged abnormal",
+            "summary": "Water-damaged + corroded busbar mounting brackets observed 2024-08-12; remediation not completed; equipment remains energised pending this assessment.",
+            "rule": "NFPA 70E:2024 §130.5(A) — equipment condition is a required input to arc-flash hazard analysis",
+            "code_clause": "NFPA 70E:2024 §130.5(A)"
+          }
+        ]
+      },
+      {
+        "title": "Method choice",
+        "summary": "Lee 1982 fallback per Sprint A.3 dual-track honest disclosure: IEEE 1584-2018 600V coefficient table at shared/standards/electrical/IEEE1584/method-2018-tables-1-3-600V-coefficients.json carries _status: pending-transcription due to IEEE Xplore paywall. Lee over-predicts at LV (conservative) — acceptable conservatism for an abnormal-condition desk study where the actual recommendation is site assessment.",
+        "decisions": [
+          {
+            "label": "Lee 1982 applied as base-IE method",
+            "summary": "method_fallback_trail: ieee_1584_2018 skipped (coefficients pending) → ieee_1584_2002 skipped (pending) → lee_1982 applied. LEE_1982_FALLBACK_USED info-severity flag emitted.",
+            "rule": "rules/method-fallback-chain.yaml + Sprint A.3 honest disclosure",
+            "code_clause": "Lee 1982 (cited by IEEE 1584:2018 §2 + IEEE 1584:2002 Annex B)"
+          }
+        ]
+      },
+      {
+        "title": "Adder choice",
+        "summary": "1.25× IE adder applied per industry consensus (ETAP Arc Flash Analysis App Note 2020 + EasyPower technical bulletin TB-AF-2019). Explicit disclosure: NFPA 70E §130.5(A) does NOT prescribe the multiplier — the standard says 'warrants different posture' without quantification. 1.25 is the mid-range of the industry 1.2–1.5× range. Engineer-overrideable within [1.0, 2.0].",
+        "decisions": [
+          {
+            "label": "1.25× abnormal-condition adder",
+            "summary": "IE_base 5.2 × 1.25 = IE_adjusted 6.5 cal/cm². Honest source citation: industry consensus, NOT NFPA prescription.",
+            "rule": "equipment_condition_basis.abnormal_ie_adjustment_factor_default",
+            "code_clause": "ETAP Arc Flash Analysis App Note 2020 + EasyPower TB-AF-2019 (NFPA 70E §130.5(A) does NOT prescribe)"
+          }
+        ]
+      },
+      {
+        "title": "Per-node arc-flash result",
+        "summary": "PANEL-A: I_arc ≈ 10.87 kA, IE_base 5.2 cal/cm² (Lee 1982), IE_adjusted 6.5 cal/cm² (× 1.25), AFB 1850 mm at E=1.2 cal/cm² threshold. PPE Cat 2 per NFPA 70E Table 130.7(C)(15)(c) 4 < IE ≤ 8 band. Shock-approach from Table 130.4(C)(a) 151V-750V row.",
+        "decisions": [
+          {
+            "label": "PANEL-A PPE Cat 2",
+            "summary": "Adjusted IE 6.5 cal/cm² → 4-8 band → Cat 2",
+            "rule": "NFPA 70E:2024 Table 130.7(C)(15)(c)",
+            "code_clause": "NFPA 70E:2024 Table 130.7(C)(15)(c)",
+            "inputs": { "ie_base": 5.2, "ie_adjusted": 6.5, "category": 2 }
+          }
+        ]
+      },
+      {
+        "title": "Operational consequence",
+        "summary": "DRAFT — NOT FOR FIELD USE. Live-work prohibited at PANEL-A until: (1) corroded busbar mounting brackets replaced, (2) panel dried + re-tested per BS 7671 Part 6, (3) arc-flash re-assessed with condition=normal post-remediation. ABNORMAL_EQUIPMENT_CONDITION error-severity flag drives compliance_summary.compliant=false.",
+        "decisions": [
+          {
+            "label": "Live-work PROHIBITED at PANEL-A",
+            "summary": "Operational policy: remediate before approach. No PPE-only approach permitted under abnormal condition.",
+            "rule": "NFPA 70E:2024 §130.5(A) defensive posture + ABNORMAL_EQUIPMENT_CONDITION error flag",
+            "code_clause": "NFPA 70E:2024 §130.5(A)"
+          }
+        ]
+      },
+      {
+        "title": "Provisional posture",
+        "summary": "is_provisional=true forced by the abnormal condition + Lee fallback combination. Downstream consumers (labelling, energised-work-permit document) MUST honour the DRAFT marker per Sprint A.2 C2 convention.",
+        "decisions": [
+          {
+            "label": "provenance.is_provisional=true",
+            "summary": "Forced by: (a) abnormal-condition declaration per NFPA 70E §130.5(A); (b) Lee 1982 fallback per Sprint A.3 600V coefficient pending-transcription. Either alone is sufficient.",
+            "rule": "Sprint C3 IR-level provenance + Sprint D1.4 abnormal-condition gate",
+            "code_clause": "NFPA 70E:2024 §130.5(A) + Sprint A.3 IEEE 1584-2018 coefficient pending-transcription"
+          }
+        ]
+      },
+      {
+        "title": "Shock-approach boundaries",
+        "summary": "PANEL-A: 400V → NFPA 70E:2024 Table 130.4(C)(a) row '151V to 750V'. Limited movable 3050mm, fixed 1070mm; restricted 305mm. Shock-approach distances apply independently of arc-flash — they protect against electrical contact, not thermal energy.",
+        "decisions": []
+      },
+      {
+        "title": "Compliance + assumptions + tool-call status",
+        "summary": "compliant=false because ABNORMAL_EQUIPMENT_CONDITION is error-severity. tool_call_pending=true on PANEL-A — Lee 1982 numeric values are senior-engineer estimates pending runtime calc tool. abnormal_condition_provisional_forced=true confirms INV-11 rule honoured.",
+        "decisions": []
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "node_id 'PANEL-A' matches ^[A-Z][A-Z0-9.\\-]{0,63}$; parent_node_id null (root); single-node cascade so no parent-resolution check applies."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "method_applied='lee_1982' is in the controlled vocabulary {ieee_1584_2018, ieee_1584_2002, lee_1982, nfpa_70e_table, doan_dc, pending}. Lee theoretical formula always available; V_nom 400V within 50-15000V range."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "method_applied='lee_1982' equals the method of the last fallback_trail entry with result='applied' (the third entry). Trail: ieee_1584_2018 skipped → ieee_1584_2002 skipped → lee_1982 applied."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Numeric outputs gated by method: method_applied='lee_1982' (not pending or nfpa_70e_table) → incident_energy_cal_per_cm2=6.5 (finite positive) AND arc_flash_boundary_mm=1850 (≥ working_distance_mm=457). Both gating conditions satisfied."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "PPE category 2 derived from IE_adjusted 6.5 cal/cm² per NFPA 70E Table 130.7(C)(15)(c) thresholds: 4 < IE ≤ 8 → Cat 2. IE not > 40 so RESTRICTED branch does not apply."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "high",
+      "evidence": "shock_approach block populated with all three distance fields (limited_approach_movable_mm=3050, limited_approach_fixed_mm=1070, restricted_approach_mm=305) and source cites NFPA 70E:2024 Table 130.4(C)(a) 151V to 750V row (AC node — correct table)."
+    },
+    {
+      "id": "INV-11",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Abnormal-condition defensive posture: PANEL-A.equipment_condition.condition=abnormal → justification present (203 chars) + last_maintenance_date=2024-08-12 + ie_adjustment_factor=1.25 (within [1.0,2.0]) + ie_adjustment_source cited (ETAP/EasyPower; NFPA 70E §130.5(A) does NOT prescribe — disclosed) + provenance.is_provisional=true forced. equipment_condition_basis populated at root with abnormal defaults. checks.abnormal_condition_provisional_forced=true. All rules PASS per D1.4 INV-11."
+    }
+  ],
+  "provenance": {
+    "method_applied": "lee_1982",
+    "computed_at": "2026-05-25T15:00:00Z",
+    "calc_tool_version": "shared/calculations/electrical/arc-flash@1.0.0-lee-fallback",
+    "is_provisional": true,
+    "provenance_note": "Abnormal equipment condition (water-damaged) per NFPA 70E §130.5(A) — IE 5.2 base × 1.25 abnormal adder = 6.5 cal/cm² → PPE Cat 2. Lee 1982 fallback used because IEEE 1584-2018 600V coefficient table is pending-transcription (IEEE Xplore paywall, Sprint A.3 disclosure). is_provisional=true forced by abnormal condition + Lee fallback combination. NFPA 70E §130.5(A) does NOT prescribe the 1.25× multiplier — industry consensus per ETAP/EasyPower technical bulletins (1.2-1.5× range). Live-work prohibited until equipment is remediated + re-assessed."
+  }
+}

@@ -2,6 +2,64 @@
 
 All notable changes to the arc-flash skill. Follows [Keep a Changelog](https://keepachangelog.com).
 
+## [1.1.0] - 2026-05-25 — Sprint D1.4 equipment-condition + abnormal IE adjustment
+
+### Added
+- **Per-cascade-node `equipment_condition` block** per NFPA 70E §130.5(A):
+  `{condition: normal|abnormal, justification (≥20c when abnormal),
+  last_maintenance_date (ISO date when abnormal), ie_adjustment_factor
+  (1.0 normal / 1.25 default abnormal / engineer-overrideable in
+  [1.0, 2.0]), ie_adjustment_source (cited reference)}`.
+- **Per-cascade-node `worker_position`** enum standing|kneeling|reaching.
+- **IR-root `equipment_condition_basis`** carrying project-level defaults
+  + the abnormal_ie_adjustment_factor_default (1.25) + cited industry
+  source (ETAP/EasyPower — NOT NFPA 70E prescription).
+- **Per-node `arc_flash.incident_energy_base_cal_per_cm2`** optional
+  traceability field carrying the pre-adjustment IE so the multiplier
+  arithmetic is auditable.
+- **Per-node `checks.abnormal_condition_provisional_forced`** boolean
+  recording that the INV-11 rule (is_provisional forced when condition is
+  abnormal) has been honoured.
+- **Validator INV-11** — abnormal-condition defensive posture. Asserts
+  abnormal nodes carry justification + last_maintenance_date +
+  ie_adjustment_factor >= 1.0 + cited source + provenance.is_provisional
+  forced to true. Normal nodes have ie_adjustment_factor == 1.0.
+- **Generator prompt Step 15** applying the 1.25× adjustment when abnormal,
+  forcing is_provisional via Sprint C3 IR-level provenance + flagging
+  the RESTRICTED branch when adjusted IE > 40 cal/cm².
+- **Compliance flag `ABNORMAL_EQUIPMENT_CONDITION`** added to the
+  non_compliance_flags enum for error-severity reporting when condition
+  is abnormal at any node.
+- **NEW example** `uk-abnormal-condition-water-damaged/` — basement
+  plant-room LV panel with water-damaged busbar; base IE 5.2 cal/cm²
+  (Lee 1982 fallback per Sprint A.3 600V coefficient pending) ×
+  1.25 = 6.5 cal/cm² → PPE Cat 2 with is_provisional=true forced.
+  Operational consequence: live-work prohibited pending remediation +
+  re-assessment.
+- 4 existing examples (uk-lv-switchgear, intl-mv-substation,
+  us-pv-with-dcfc, intl-hv-restricted-substation) gain
+  equipment_condition: normal + ie_adjustment_factor: 1.0 on every
+  cascade node, and equipment_condition_basis at root. No IE change for
+  normal nodes.
+
+### Honest disclosure
+- NFPA 70E §130.5(A) does NOT prescribe the abnormal-condition adder.
+  The 1.25× default is industry consensus (ETAP Arc Flash Analysis App
+  Note 2020 + EasyPower technical bulletin TB-AF-2019; 1.2–1.5× range).
+  Engineer must validate against site assessment. ie_adjustment_source
+  cites this on every node + at the project-level basis.
+- The new example's base IE uses Lee 1982 fallback because IEEE
+  1584-2018 600V coefficients carry _status: pending-transcription per
+  Sprint A.3 IEEE Xplore paywall. Documented in provenance_note.
+
+### Rationale
+Sprint D1 Task D1.4 — closes the equipment-condition depth item inside
+the arc-flash beta skill. Resolves NFPA 70E §130.5(A) requirement by
+exposing the engineer's site-assessment finding as a first-class IR
+field that defensively gates downstream label/permit consumers. The 1.25×
+multiplier is sourced honestly (industry consensus, not NFPA
+prescription) per the Sprint C3 honesty pattern + `[[feedback-no-trim-non-consequential]]`.
+
 ## [1.0.2] - 2026-05-25 — M4 RESTRICTED branch worked example
 
 ### Added
