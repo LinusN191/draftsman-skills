@@ -30,7 +30,17 @@
       "id": "utility-DNO",
       "kind": "utility",
       "contribution_method": "constant",
-      "ifault_contribution_ka": 9.85
+      "ifault_contribution_ka": 9.85,
+      "contributes_to_nodes": {
+        "HV-1": 14.0,
+        "TX-1": 9.85,
+        "MSB-MAIN": 9.8,
+        "MSB-MAIN.BUS": 9.78,
+        "SDB-GF": 8.19,
+        "SDB-L1": 7.77,
+        "SDB-L2": 7.37
+      },
+      "_source_aggregation": "IEC 60909-0:2016 §3.3.2 — declared PSCC at HV primary back-calculates ZQ; single-source utility-only contribution at every cascade node."
     }
   ],
   "cascade": [
@@ -55,6 +65,10 @@
         "verdict": "ok",
         "verdict_basis": "BS 7671:2018+A2:2022 Reg 432.1.2",
         "data_source": "engineer_declared"
+      },
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 14.0,
+        "total": 14.0
       }
     },
     {
@@ -67,7 +81,11 @@
       "ipk_ka": 22.5,
       "x_over_r_at_node": 6,
       "z_total_ohm": 0.0246,
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 9.85,
+        "total": 9.85
+      }
     },
     {
       "node_id": "MSB-MAIN",
@@ -101,6 +119,10 @@
         "verdict": "ok",
         "verdict_basis": "BS 7671:2018+A2:2022 Reg 432.1.2",
         "data_source": "engineer_declared"
+      },
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 9.8,
+        "total": 9.8
       }
     },
     {
@@ -113,7 +135,11 @@
       "ipk_ka": 22.32,
       "x_over_r_at_node": 6,
       "z_total_ohm": 0.0248,
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 9.78,
+        "total": 9.78
+      }
     },
     {
       "node_id": "SDB-GF",
@@ -147,6 +173,10 @@
         "verdict": "ok",
         "verdict_basis": "BS 7671:2018+A2:2022 Reg 432.1.2",
         "data_source": "engineer_declared"
+      },
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 8.19,
+        "total": 8.19
       }
     },
     {
@@ -169,7 +199,11 @@
       "ipk_ka": 13.78,
       "x_over_r_at_node": 2.09,
       "z_total_ohm": 0.0312,
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 7.77,
+        "total": 7.77
+      }
     },
     {
       "node_id": "SDB-L2",
@@ -191,7 +225,11 @@
       "ipk_ka": 12.69,
       "x_over_r_at_node": 1.87,
       "z_total_ohm": 0.0329,
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 7.37,
+        "total": 7.37
+      }
     }
   ],
   "selectivity_implications": [
@@ -412,6 +450,12 @@
       "passes": true,
       "severity": "critical",
       "evidence": "Selectivity implications recorded: MSB-MAIN at 9.8 kA Ik (computed via z_total=0.0247 Ω, c=1.05, U=400 V, √3 divisor) is within the breaking-capacity envelope declared for downstream OCPDs. selectivity_implications array flags any device whose Icu < Ik_at_node."
+    },
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Single-source utility-only example: every cascade node carries superposition_contribution_ka with single key 'utility_utility-DNO' equal to ifault_ka_max and total reconciling to ifault_ka_max within 0% (degenerate single-source case per IEC 60909-0:2016 §4.5). Cross-walk verified: sources[utility-DNO].contributes_to_nodes keys match cascade[*].node_id where ifault_ka_max present."
     }
   ]
 }

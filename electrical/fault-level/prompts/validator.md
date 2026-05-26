@@ -83,6 +83,26 @@ Severity HIGH. For every cascade node, the stored `ifault_ka_max` MUST reconcile
 
 **Rationale:** Makes fault-level self-sufficient for switchgear selection per BS 7671 Reg 432.1.2 / NEC §110.9 / IEC 60947-2 — engineer no longer has to manually cross-check Ik vs device Icn/Icu. INV catches authoring drift.
 
+---
+
+**INV-13: Superposition self-consistency.**
+
+**Severity:** HIGH
+
+**Rule:** For every cascade node carrying `superposition_contribution_ka`:
+
+1. **Internal sum match:** `total == Σ(non-total entries)` within 1%.
+
+2. **Total matches ifault_ka_max:** `total == ifault_ka_max` within 1%.
+
+3. **Cross-walk to sources[]:** for every key `<kind>_<id>` in `superposition_contribution_ka`, the source with `id == <id>` exists in IR root `sources[]`. Conversely, every `sources[*].contributes_to_nodes[this_node_id]` value equals the corresponding `superposition_contribution_ka[<source_kind>_<source_id>]` within 1%.
+
+4. **Non-negative contributions:** all per-source values ≥ 0 (negative contributions are nonsensical for IEC 60909 superposition).
+
+**Validator action:** for each cascade node, walk the contribution map; reconcile internal sum + cross-walk against sources[].contributes_to_nodes; flag any mismatch > 1%.
+
+**Rationale:** Makes the IEC 60909 §4.5 superposition contributions explicit and attributable. Clears the audit's motor-superposition oracle false-positive on us-industrial-with-motors/MCC-1 once a future oracle update reads the contribution map (oracle update OUT OF SCOPE for D1 — Item 2 makes the data explicit; oracle improvement is post-D-program work). Pairs with D1.1's `ik3_basis` enum which schema-attests multi-source nodes from the breaking-capacity side.
+
 ### 3. Intent extraction validation
 
 Project IR → `fault-level` intent shape. Validate against `fault-level-intent.schema.json`. Intent must contain `project_id`, `source_summary`, `fault_currents[]` (≥1 entry).
@@ -100,4 +120,4 @@ Project IR → `fault-level` intent shape. Validate against `fault-level-intent.
 }
 ```
 
-`valid: true` requires schema pass + all 12 invariants pass + intent extraction valid.
+`valid: true` requires schema pass + all 13 invariants pass + intent extraction valid.

@@ -30,7 +30,17 @@
       "id": "utility-PoCo",
       "kind": "utility",
       "contribution_method": "constant",
-      "ifault_contribution_ka": 22.0
+      "ifault_contribution_ka": 22.0,
+      "contributes_to_nodes": {
+        "HV-1": 28.0,
+        "TX-1": 23.78,
+        "MSP": 22.0,
+        "MSP.BUS": 21.58,
+        "TSP-A": 12.35,
+        "TSP-B": 11.04,
+        "CA-P": 9.34
+      },
+      "_source_aggregation": "IEC 60909-0:2016 §3.3.2 — declared PSCC at HV primary back-calculates ZQ; single-source utility-only contribution at every cascade node."
     }
   ],
   "cascade": [
@@ -55,6 +65,10 @@
         "verdict": "ok",
         "verdict_basis": "NEC 2023 § 110.9",
         "data_source": "engineer_declared"
+      },
+      "superposition_contribution_ka": {
+        "utility_utility-PoCo": 28.0,
+        "total": 28.0
       }
     },
     {
@@ -67,7 +81,11 @@
       "ipk_ka": 56.96,
       "x_over_r_at_node": 8.0,
       "z_total_ohm": 0.005302,
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "superposition_contribution_ka": {
+        "utility_utility-PoCo": 23.78,
+        "total": 23.78
+      }
     },
     {
       "node_id": "MSP",
@@ -101,6 +119,10 @@
         "verdict": "ok",
         "verdict_basis": "NEC 2023 § 110.9",
         "data_source": "engineer_declared"
+      },
+      "superposition_contribution_ka": {
+        "utility_utility-PoCo": 22.0,
+        "total": 22.0
       }
     },
     {
@@ -113,7 +135,11 @@
       "ipk_ka": 50.77,
       "x_over_r_at_node": 7.14,
       "z_total_ohm": 0.005844,
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "superposition_contribution_ka": {
+        "utility_utility-PoCo": 21.58,
+        "total": 21.58
+      }
     },
     {
       "node_id": "TSP-A",
@@ -147,6 +173,10 @@
         "verdict": "ok",
         "verdict_basis": "NEC 2023 § 110.9",
         "data_source": "engineer_declared"
+      },
+      "superposition_contribution_ka": {
+        "utility_utility-PoCo": 12.35,
+        "total": 12.35
       }
     },
     {
@@ -169,7 +199,11 @@
       "ipk_ka": 18.11,
       "x_over_r_at_node": 1.54,
       "z_total_ohm": 0.011423,
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "superposition_contribution_ka": {
+        "utility_utility-PoCo": 11.04,
+        "total": 11.04
+      }
     },
     {
       "node_id": "CA-P",
@@ -191,7 +225,11 @@
       "ipk_ka": 14.68,
       "x_over_r_at_node": 1.26,
       "z_total_ohm": 0.013497,
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "superposition_contribution_ka": {
+        "utility_utility-PoCo": 9.34,
+        "total": 9.34
+      }
     }
   ],
   "selectivity_implications": [
@@ -410,5 +448,12 @@
       }
     ]
   },
-  "invariants": []
+  "invariants": [
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Single-source utility-only example: every cascade node carries superposition_contribution_ka with single key 'utility_utility-PoCo' equal to ifault_ka_max and total reconciling to ifault_ka_max within 0% (degenerate single-source case per IEC 60909-0:2016 §4.5). Cross-walk verified: sources[utility-PoCo].contributes_to_nodes keys match cascade[*].node_id where ifault_ka_max present."
+    }
+  ]
 }

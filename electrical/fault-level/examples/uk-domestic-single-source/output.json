@@ -24,7 +24,15 @@
       "id": "utility-DNO",
       "kind": "utility",
       "contribution_method": "constant",
-      "ifault_contribution_ka": 1.5
+      "ifault_contribution_ka": 1.5,
+      "contributes_to_nodes": {
+        "TX-1": 1.579,
+        "CU-G": 1.5,
+        "CU-G.BUSBAR": 1.491,
+        "CU-G.C01": 0.401,
+        "CU-G.C03": 0.334
+      },
+      "_source_aggregation": "IEC 60909-0:2016 §3.3.2 — declared PSCC at HV primary back-calculates ZQ; single-source utility-only contribution at every cascade node."
     }
   ],
   "cascade": [
@@ -39,7 +47,11 @@
       "x_over_r_at_node": 5,
       "z_total_ohm": 0.07647,
       "calculation_basis": "Single-phase TN L-N fault per IEC 60909-0:2016 §6: Ik1 = c·U₀/(2·Z_S). DNO declared PSCC 1.5 kA at CU-G (service head) is binding per BS 7671:2018+A2:2022 Reg 313.1; TX-1 (upstream of CU-G by 5m of 25mm² Cu PVC, |Z_cable| ≈ √(0.004² + 0.0005²) = 0.00403 Ω) back-calculated: Z_TX-1 = Z_CU-G − Z_cable = 0.0805 − 0.00403 = 0.07647 Ω. Ik_max = 1.05·230/(2·0.07647) = 1.579 kA per c_max LV (IEC 60909-0:2016 Table 1).",
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 1.579,
+        "total": 1.579
+      }
     },
     {
       "node_id": "CU-G",
@@ -73,6 +85,10 @@
         "verdict": "ok",
         "verdict_basis": "BS 7671:2018+A2:2022 Reg 432.1.2",
         "data_source": "engineer_declared"
+      },
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 1.5,
+        "total": 1.5
       }
     },
     {
@@ -97,6 +113,10 @@
         "verdict": "ok",
         "verdict_basis": "BS 7671:2018+A2:2022 Reg 432.1.2",
         "data_source": "engineer_declared"
+      },
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 1.491,
+        "total": 1.491
       }
     },
     {
@@ -131,6 +151,10 @@
         "verdict": "ok",
         "verdict_basis": "BS 7671:2018+A2:2022 Reg 432.1.2",
         "data_source": "engineer_declared"
+      },
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 0.401,
+        "total": 0.401
       }
     },
     {
@@ -154,7 +178,11 @@
       "x_over_r_at_node": 0.4,
       "z_total_ohm": 0.3621,
       "calculation_basis": "Single-phase TN L-N fault per IEC 60909-0:2016 §6: z_total = upstream busbar z + cable magnitude = 0.0810 + √(0.281² + 0.009²) = 0.0810 + 0.2811 = 0.3621 Ω (ring approximated as radial worst-case for cascade Ik\"; tight ring would halve cable resistance per BS 7671:2018+A2:2022 Appendix 15). Cable R from Appendix 4 Table 4D5 (2.5mm² Cu PVC); X from Appendix 4 Table 4F. Ik_max = 1.05·230/(2·0.3621) = 0.334 kA.",
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 0.334,
+        "total": 0.334
+      }
     }
   ],
   "selectivity_implications": [
@@ -295,5 +323,12 @@
       }
     ]
   },
-  "invariants": []
+  "invariants": [
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Single-source utility-only example: every cascade node carries superposition_contribution_ka with single key 'utility_utility-DNO' equal to ifault_ka_max and total reconciling to ifault_ka_max within 0% (degenerate single-source case per IEC 60909-0:2016 §4.5). Cross-walk verified: sources[utility-DNO].contributes_to_nodes keys match cascade[*].node_id where ifault_ka_max present."
+    }
+  ]
 }

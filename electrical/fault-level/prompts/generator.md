@@ -330,6 +330,37 @@ verdict = "ok"          if headroom_pct >= 10
 
 ---
 
+### Step 16: Motor/UPS superposition explicit modeling per IEC 60909 §4.5 (D1.2)
+
+For each cascade node with `ifault_ka_max`, identify every source contributing fault current to it and emit BOTH representations of the breakdown.
+
+**Standard sources** (matching the existing `sources[].kind` enum):
+
+- **utility**: contributes via the z-cascade computation already in place (INV-11 reconciles).
+- **generator**: when bonded (ATS in normal-supply state), contributes via z-cascade like a second utility source. When ATS open (standby state), contributes 0 to the LV side; contributes to its own bonded loads if separately routed.
+- **ups**: contributes let-through current during inverter short-circuit current limit phase (typically 1.0–2.0 × In for ~100 ms before electronic trip). Engineer-declared in `cascade_topology_declared` for D1.2; will consume from future `electrical/ups/` intent when that skill ships (forward-compatibility note).
+- **motor_aggregate**: induction motors > 100 kW total (or > 1% of node Ik) contribute back-feed per IEC 60909 §3.8:
+  ```
+  Ik_motor_aggregate ≈ (1 / Z_M_pu) × I_n,motor_aggregate
+  ```
+  where Z_M_pu is the locked-rotor impedance per-unit of the motor (typical 0.15–0.20 for IEC class B/C/D induction motors). Sum across declared motors. Decays per IEC 60909 §4.3 — see Step 17 (D1.3) decrement_curve if applicable.
+
+**Emit BOTH representations** (hybrid pattern per spec §3):
+
+1. At IR root `sources[]`: extend each source entry with `contributes_to_nodes: {node_id_1: ik_contribution_ka, node_id_2: ..., ...}` listing every node this source contributes to. Optionally add `_source_aggregation` citing the formula.
+
+2. At each cascade node: emit `superposition_contribution_ka: {<source_kind>_<source_id>: ik_ka, ..., total: <sum>}`. Key naming convention: combine the source's `kind` with its `id` separated by underscore (e.g. `utility_S1`, `motor_aggregate_S2`, `generator_S3`, `ups_S4`). The `total` key MUST equal the sum of non-total entries within 1%, AND equal this node's `ifault_ka_max` within 1%.
+
+**Cross-walk:** every node_id in any `sources[*].contributes_to_nodes` must appear as a key in that node's `superposition_contribution_ka` (and vice versa). INV-13 enforces.
+
+**Special cases:**
+- **Pure single-source nodes** (utility-only, no motors/generators/UPS): emit the degenerate single-entry map `{utility_<S_id>: <ik>, total: <ik>}`. INV-13 expects the field present on every cascade node with `ifault_ka_max`.
+- **Nodes with `tool_call_pending: true`**: omit `superposition_contribution_ka` (consistent with existing convention).
+
+**Interaction with D1.1 breaking_capacity:** When a node is multi-source (motor/UPS superposition), the D1.1 `breaking_capacity.ik3_node_ka` uses `ifault_ka_max` (the actual node Ik including all contributions) per the D1.1 fix-pass — not the formula-from-z (which is utility-only). D1.2's `superposition_contribution_ka.total` reconciles to the SAME `ifault_ka_max`, so the two blocks tell a coherent story.
+
+---
+
 ## Final output
 
 Emit two JSON documents:

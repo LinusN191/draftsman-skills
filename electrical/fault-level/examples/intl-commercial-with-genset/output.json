@@ -30,7 +30,15 @@
       "id": "utility-DNO",
       "kind": "utility",
       "contribution_method": "constant",
-      "ifault_contribution_ka": 22.5
+      "ifault_contribution_ka": 22.5,
+      "contributes_to_nodes": {
+        "HV-1": 16.0,
+        "TX-1": 43.49,
+        "MSB-1": 33.34,
+        "MSB-1.BUSBAR": 33.31,
+        "DB-L1": 19.27
+      },
+      "_source_aggregation": "IEC 60909-0:2016 §3.3.2 — declared PSCC at HV primary back-calculates ZQ; utility supplies every LV cascade node in normal-supply state."
     },
     {
       "id": "standby-gen",
@@ -41,7 +49,9 @@
         "x_d_doubleprime_pu": 0.15,
         "x_d_prime_pu": 0.25,
         "x_d_pu": 1.2
-      }
+      },
+      "contributes_to_nodes": {},
+      "_source_aggregation": "IEC 60909-0:2016 §4.5 — generator contribution is 0 kA at all LV nodes in normal-supply state (ATS closed to utility). Generator subtransient Ik\" = 12.0 kA per source.ifault_contribution_ka would apply only in standby-supply state (ATS open from utility, closed to generator); that state is not modelled in this example. See assumptions[2]."
     }
   ],
   "cascade": [
@@ -68,6 +78,10 @@
         "verdict": "ok",
         "verdict_basis": "IEC 60947-2:2016 § 4.3.6.4",
         "data_source": "engineer_declared"
+      },
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 16.0,
+        "total": 16.0
       }
     },
     {
@@ -93,6 +107,10 @@
         "verdict": "ok",
         "verdict_basis": "IEC 60947-2:2016 § 4.3.6.4",
         "data_source": "engineer_declared"
+      },
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 43.49,
+        "total": 43.49
       }
     },
     {
@@ -128,6 +146,10 @@
         "verdict": "ok",
         "verdict_basis": "IEC 60947-2:2016 § 4.3.6.4",
         "data_source": "engineer_declared"
+      },
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 33.34,
+        "total": 33.34
       }
     },
     {
@@ -141,7 +163,11 @@
       "x_over_r_at_node": 6,
       "z_total_ohm": 0.00728,
       "calculation_basis": "Busbar internal impedance ≈ negligible vs upstream cascade; z carried from MSB-1 incoming with small monotonic increment (0.000006 Ω) to reflect busbar copper trunk. Ik_max = 1.05·400/(√3·0.007280) = 33.31 kA.",
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 33.31,
+        "total": 33.31
+      }
     },
     {
       "node_id": "DB-L1",
@@ -164,7 +190,11 @@
       "x_over_r_at_node": 4,
       "z_total_ohm": 0.01258,
       "calculation_basis": "z_total = upstream busbar z + cable magnitude = 0.007280 + √(0.0045² + 0.0028²) = 0.007280 + 0.005300 = 0.01258 Ω. Ik_max = 1.05·400/(√3·0.01258) = 19.27 kA per IEC 60909-0:2016 §4.3.",
-      "tool_call_pending": true
+      "tool_call_pending": true,
+      "superposition_contribution_ka": {
+        "utility_utility-DNO": 19.27,
+        "total": 19.27
+      }
     }
   ],
   "selectivity_implications": [
@@ -308,5 +338,12 @@
       }
     ]
   },
-  "invariants": []
+  "invariants": [
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Multi-source example modelled in normal-supply state (ATS to utility): utility contributes to every cascade node; generator contributes 0 kA. Per-node superposition maps contain single utility key + total = ifault_ka_max (degenerate single-source map for this state). Cross-walk verified: utility.contributes_to_nodes keys match all cascade nodes with ifault_ka_max; generator.contributes_to_nodes = {} consistent with absence from per-node maps. Standby-supply state would re-populate maps with generator_standby-gen entry per IEC 60909-0:2016 §4.5."
+    }
+  ]
 }

@@ -192,6 +192,19 @@
           },
           "decrement_profile": {
             "type": "object"
+          },
+          "contributes_to_nodes": {
+            "type": "object",
+            "description": "Per-node fault current contribution from this source in kA. Keys are cascade node_ids; values are the source's contribution to ifault_ka_max at that node. The sum across all contributing sources for a node equals the node's ifault_ka_max within 1%. Per IEC 60909-0:2016 §4.5 (multiple-source superposition). Added Sprint D1.2.",
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Contribution in kA from this source to the keyed node."
+            }
+          },
+          "_source_aggregation": {
+            "type": "string",
+            "description": "Optional citation for how this source's ik3_at_source_ka was aggregated (e.g. 'Sum of I_LR for declared motors per IEC 60909 §3.8' or 'IEC 60909 §3.3.2 declared PSCC')."
           }
         }
       }
@@ -365,6 +378,15 @@
                 "enum": ["db_layout_intent", "engineer_declared"]
               }
             }
+          },
+          "superposition_contribution_ka": {
+            "type": "object",
+            "description": "Per-node breakdown of fault current contributions per source. Keys are '<source_kind>_<source_id>' (e.g. 'utility_S1', 'motor_aggregate_S2'); values are kA contributions. MUST include a 'total' key equal to the sum of non-total entries within 1%. Sum must reconcile to this node's ifault_ka_max within 1%. Read-convenience map; canonical authority is sources[].contributes_to_nodes. Per IEC 60909-0:2016 §4.5. Added Sprint D1.2.",
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 0
+            },
+            "required": ["total"]
           }
         }
       }

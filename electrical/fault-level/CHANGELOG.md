@@ -29,6 +29,31 @@
 - All 6 fault-level examples gain `breaking_capacity` on at least 3
   cascade nodes (service-entrance, MSB main switch, one downstream).
 
+### Added (Sprint D1.2)
+- **Motor/UPS superposition explicit modeling.** Hybrid representation
+  per IEC 60909 §4.5: `sources[].contributes_to_nodes` (canonical
+  authority at IR root) + `superposition_contribution_ka` per cascade
+  node (read-convenience map). Sum reconciles to ifault_ka_max within
+  1%. Per-source key naming convention: `<kind>_<id>` (e.g.
+  `utility_S1`, `motor_aggregate_S2`).
+- **Validator INV-13: Superposition self-consistency.** Internal sum +
+  total-vs-ifault + sources cross-walk + non-negative.
+
+### Generator prompt
+- New Step 16 appended for IEC 60909 §4.5 superposition population with
+  motor back-feed formula (§3.8 locked-rotor) + UPS let-through default.
+  Documents interaction with D1.1 breaking_capacity: multi-source nodes
+  use `ifault_ka_max` as the device-rating denominator (matches the
+  D1.1 fix-pass `ik3_basis: ifault_ka_max_with_motor_superposition`).
+
+### Examples
+- All 6 examples populate the new fields. `us-industrial-with-motors/
+  MCC-1` makes the 3.02 kA motor back-feed explicit (clears the audit
+  FP semantically; audit oracle update for actual flag clearance is
+  post-D-program). 4 utility-only examples emit degenerate single-source
+  maps. `intl-commercial-with-genset` documents normal-supply state via
+  generator's empty contributes_to_nodes.
+
 ## [1.1.2] - 2026-05-25 — M1 hybrid eval-vs-IR fix (was [next-patch])
 
 ### Added
