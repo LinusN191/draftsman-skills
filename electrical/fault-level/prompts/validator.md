@@ -103,6 +103,30 @@ Severity HIGH. For every cascade node, the stored `ifault_ka_max` MUST reconcile
 
 **Rationale:** Makes the IEC 60909 §4.5 superposition contributions explicit and attributable. Clears the audit's motor-superposition oracle false-positive on us-industrial-with-motors/MCC-1 once a future oracle update reads the contribution map (oracle update OUT OF SCOPE for D1 — Item 2 makes the data explicit; oracle improvement is post-D-program work). Pairs with D1.1's `ik3_basis` enum which schema-attests multi-source nodes from the breaking-capacity side.
 
+---
+
+**INV-14: Decrement curve monotonicity + bounds.**
+
+**Severity:** HIGH
+
+**Rule:** For every cascade node carrying `decrement_curve`:
+
+1. **Monotonic decay:** `ik_initial_subtransient_ka >= ik_transient_ka >= ik_steady_state_ka` (Park's equations require monotonic decay; any inversion is a calc error).
+
+2. **Initial = node Ik max:** `ik_initial_subtransient_ka == ifault_ka_max` within 1% (the node's headline Ik is the subtransient initial value — what switchgear sees at t=0+).
+
+3. **Time-series bounds:** every `time_series_samples[*].ik_ka` lies between `ik_steady_state_ka` (lower bound) and `ik_initial_subtransient_ka` (upper bound) within 5% tolerance for numerical rounding.
+
+4. **Monotonic time:** `time_series_samples[*].t_ms` strictly increasing.
+
+5. **First sample at t=0:** `time_series_samples[0].t_ms == 0` and `samples[0].ik_ka == ik_initial_subtransient_ka` within 0.5%.
+
+6. **Machine-data source consistency:** if `decrement_model == "iec_60909_4_3_full_park"` AND the producing source has `decrement_profile.machine_data_source == "typical_ieee_c50_13"`, then the machine reactances must fall within published IEEE C50.13 Table 1 typical ranges (Xd'': 0.05–0.40; Xd': 0.10–0.50; Xd: 0.5–3.0 — matches the schema's min/max).
+
+**Validator action:** for each cascade node with `decrement_curve`, walk the samples; check monotonicity in t and Ik; verify Ik'' = ifault; verify samples lie in bounds; verify machine_reactances within typical range when claimed typical.
+
+**Rationale:** Catches Park's-equation authoring errors (sign mistakes, non-monotonic decay, samples drifting outside bounds). Required for the protection-coordination skill (currently stubbed) to do its job — it'll consume `ik_transient_ka` for relay time-grading.
+
 ### 3. Intent extraction validation
 
 Project IR → `fault-level` intent shape. Validate against `fault-level-intent.schema.json`. Intent must contain `project_id`, `source_summary`, `fault_currents[]` (≥1 entry).
@@ -120,4 +144,4 @@ Project IR → `fault-level` intent shape. Validate against `fault-level-intent.
 }
 ```
 
-`valid: true` requires schema pass + all 13 invariants pass + intent extraction valid.
+`valid: true` requires schema pass + all 14 invariants pass + intent extraction valid.

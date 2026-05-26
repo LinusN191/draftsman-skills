@@ -191,7 +191,40 @@
             "minimum": 0
           },
           "decrement_profile": {
-            "type": "object"
+            "type": "object",
+            "description": "Machine-side decrement profile parameters per IEC 60909-0:2016 §4.3 (Park's equations). Required for synchronous_generator + ups + large motor_aggregate sources contributing to near-source nodes. Populated Sprint D1.3.",
+            "additionalProperties": false,
+            "properties": {
+              "subtransient_time_constant_td_pp_ms": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Td'' subtransient time constant per IEC 60909 §4.3 (typical 30-50 ms for synchronous generators)."
+              },
+              "transient_time_constant_td_p_ms": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Td' transient time constant (typical 500-2000 ms for synchronous generators)."
+              },
+              "armature_time_constant_ta_ms": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Ta armature/DC time constant (typical 50-200 ms)."
+              },
+              "machine_reactances_pu": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["xd_pp_pu", "xd_p_pu", "xd_pu"],
+                "properties": {
+                  "xd_pp_pu": {"type": "number", "minimum": 0.05, "maximum": 0.40, "description": "Xd'' subtransient reactance (typical 0.10-0.20)."},
+                  "xd_p_pu": {"type": "number", "minimum": 0.10, "maximum": 0.50, "description": "Xd' transient reactance (typical 0.15-0.30)."},
+                  "xd_pu": {"type": "number", "minimum": 0.5, "maximum": 3.0, "description": "Xd synchronous reactance (typical 1.0-2.0)."}
+                }
+              },
+              "machine_data_source": {
+                "type": "string",
+                "enum": ["engineer_declared", "nameplate", "typical_iec_50050", "typical_ieee_c50_13"]
+              }
+            }
           },
           "contributes_to_nodes": {
             "type": "object",
@@ -395,6 +428,56 @@
               "description": "Per-source contribution in kA. Key format: '<source_kind>_<source_id>'."
             },
             "required": ["total"]
+          },
+          "decrement_curve": {
+            "type": "object",
+            "description": "Time-series fault-current decrement at this node per IEC 60909-0:2016 §4.3 Park's equations. REQUIRED only on cascade nodes downstream of a synchronous_generator OR large induction motor (>1000 kW) source in fault-feed mode. Omit on nodes where utility is the sole contributor (decrement is negligible at the far-source limit). Added Sprint D1.3.",
+            "additionalProperties": false,
+            "required": ["ik_initial_subtransient_ka", "ik_transient_ka", "ik_steady_state_ka", "time_series_samples", "decrement_model"],
+            "properties": {
+              "applies_when": {
+                "type": "string",
+                "description": "Reason this node has a decrement_curve (e.g. 'downstream of synchronous_generator S2 in standby state')."
+              },
+              "ik_initial_subtransient_ka": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Ik'' at t=0+ — used for switchgear rating + arc-flash IE."
+              },
+              "ik_transient_ka": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Ik' at ~Td' (~1 second typically) — used for protection coordination."
+              },
+              "ik_steady_state_ka": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Ik at >3 × Td' — used for thermal sizing."
+              },
+              "time_series_samples": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 16,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["t_ms", "ik_ka"],
+                  "properties": {
+                    "t_ms": {"type": "number", "minimum": 0},
+                    "ik_ka": {"type": "number", "exclusiveMinimum": 0},
+                    "x_over_r": {"type": "number", "exclusiveMinimum": 0}
+                  }
+                }
+              },
+              "decrement_model": {
+                "type": "string",
+                "enum": ["iec_60909_4_3_full_park", "iec_60909_4_3_simple", "engineer_declared"]
+              },
+              "_source": {
+                "type": "string",
+                "description": "Citation for the model + machine data (e.g. 'IEC 60909-0:2016 §4.3 + IEEE C50.13 typical synchronous-machine characteristics')."
+              }
+            }
           }
         }
       }
@@ -523,7 +606,7 @@
           "evidence": {
             "type": "string",
             "minLength": 20,
-            "maxLength": 800
+            "maxLength": 1200
           }
         }
       }

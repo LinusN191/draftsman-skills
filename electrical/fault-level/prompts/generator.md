@@ -362,6 +362,44 @@ For each cascade node with `ifault_ka_max`, identify every source contributing f
 
 ---
 
+### Step 17: Decrement curves for synchronous-machine-bonded nodes (D1.3)
+
+For cascade nodes downstream of a synchronous generator (per `sources[*].kind == "generator"`) OR a large induction motor aggregate (>1000 kW total, in fault-feed mode), populate `decrement_curve`.
+
+**Apply per IEC 60909-0:2016 §4.3 (Park's equations):**
+
+```
+Ik(t) = (Ik'' − Ik') × exp(−t / Td'') + (Ik' − Ik) × exp(−t / Td') + Ik
+DC_component(t) = √2 × Ik'' × exp(−t / Ta)
+```
+
+**Machine data inputs:**
+
+1. **If engineer declared** machine reactances + time constants in `input.json` under `cascade_topology_declared[*].machine_data`: use those values. Set `machine_data_source: "engineer_declared"` (or `"nameplate"` if cited from a specific nameplate).
+
+2. **If engineer didn't declare:** fall back to IEEE C50.13:2014 Table 1 typical-machine values for the matching machine class:
+   - 2-pole synchronous (turbogenerator): Xd''=0.15, Xd'=0.23, Xd=1.80, Td''=30 ms, Td'=1000 ms, Ta=100 ms
+   - Salient-pole synchronous (genset): Xd''=0.18, Xd'=0.28, Xd=1.40, Td''=35 ms, Td'=1500 ms, Ta=120 ms
+   - Large induction motor aggregate (>1000 kW): Xd''=0.17, Xd'=0.25, Xd=1.50, Td''=40 ms, Td'=600 ms, Ta=80 ms
+   Set `machine_data_source: "typical_ieee_c50_13"` and cite `IEEE C50.13:2014 Table 1`.
+
+**Emit 8-point time-series sample:**
+
+For t ∈ {0, 10, 50, 100, 500, 1000, 3000, 10000} ms, evaluate the Park's formula. Round Ik to 2 decimals; X/R to 1 decimal (optional field).
+
+**Set fields:**
+- `ik_initial_subtransient_ka` = Ik(t=0) = sample[0].ik_ka
+- `ik_transient_ka` = Ik(t=Td') ≈ sample at the closest time (typically t=500 or t=1000 ms)
+- `ik_steady_state_ka` = Ik(t→∞) = the asymptote (Ik = c × U / (√3 × Xd × U_base²/S_base) per IEC 60909-0:2016 §4.3 for synchronous machines)
+- `decrement_model` = `"iec_60909_4_3_full_park"` (per user spec choice)
+- `_source` cites IEC 60909 + IEEE C50.13 (or engineer-declared source)
+
+**Cross-validate:** ensure Ik'' ≥ Ik' ≥ Ik_steady (monotonic decay). INV-14 enforces.
+
+**Omit decrement_curve** on cascade nodes downstream of utility-only paths (utility is far-source per IEC 60909; decrement negligible at typical commercial/industrial distances).
+
+---
+
 ## Final output
 
 Emit two JSON documents:

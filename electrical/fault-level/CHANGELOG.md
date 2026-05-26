@@ -67,6 +67,37 @@
   `cascade_topology_declared` (matches observed example behaviour;
   field is engineer audit trail, not awaiting calc).
 
+### Added (Sprint D1.3)
+- **Decrement curves for synchronous-machine-bonded nodes.** Full
+  Park's-equations time-series per IEC 60909-0:2016 §4.3. Schema:
+  cascade.items gains `decrement_curve` (Ik''/Ik'/Ik_steady +
+  8-sample time series at t ∈ {0,10,50,100,500,1000,3000,10000} ms +
+  decrement_model enum); sources[].items.decrement_profile populated
+  (machine reactances Xd''/Xd'/Xd + time constants Td''/Td'/Ta).
+- **Validator INV-14: Decrement curve monotonicity + bounds.** Asserts
+  Ik'' >= Ik' >= Ik_steady; Ik'' = ifault_ka_max; samples in bounds;
+  monotonic time; first sample at t=0; machine data source consistency.
+
+### Generator prompt
+- New Step 17 appended applying Park's equations with IEEE C50.13:2014
+  Table 1 typical-machine fallback when nameplate not available.
+
+### Examples
+- `intl-commercial-with-genset` populates decrement_curve on MSB-1
+  (generator-bonded node in standby supply state); 2 MVA salient-pole
+  synchronous genset characteristics per IEEE C50.13. Hand-computed
+  Park's samples: 16.00 → 14.53 → 11.40 → 10.10 → 7.96 → 6.29 → 3.18
+  → 2.07 kA at t = 0/10/50/100/500/1000/3000/10000 ms. Source
+  `standby-gen` decrement_profile migrated from legacy
+  `x_d_doubleprime_pu` keys to canonical `xd_pp_pu` shape under
+  `machine_reactances_pu` plus Td''/Td'/Ta time constants.
+
+### D1.3 schema cap relaxation
+- `invariants[].evidence` maxLength raised from 800 → 1200 to accommodate
+  Park's-equation audit-trail prose for INV-14 (per the no-trim policy
+  for non-consequential style caps; engineering content preserved over
+  arbitrary length limits).
+
 ## [1.1.2] - 2026-05-25 — M1 hybrid eval-vs-IR fix (was [next-patch])
 
 ### Added
