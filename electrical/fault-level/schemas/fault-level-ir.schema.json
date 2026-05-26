@@ -198,17 +198,20 @@
               "subtransient_time_constant_td_pp_ms": {
                 "type": "number",
                 "exclusiveMinimum": 0,
-                "description": "Td'' subtransient time constant per IEC 60909 §4.3 (typical 30-50 ms for synchronous generators)."
+                "maximum": 500,
+                "description": "Td'' subtransient time constant per IEC 60909 §4.3 (typical 30-50 ms for synchronous generators). Upper bound 500 ms catches s-vs-ms unit confusion."
               },
               "transient_time_constant_td_p_ms": {
                 "type": "number",
                 "exclusiveMinimum": 0,
-                "description": "Td' transient time constant (typical 500-2000 ms for synchronous generators)."
+                "maximum": 10000,
+                "description": "Td' transient time constant (typical 500-2000 ms for synchronous generators). Upper bound 10000 ms covers very-large turbo machines and catches s-vs-ms unit confusion."
               },
               "armature_time_constant_ta_ms": {
                 "type": "number",
                 "exclusiveMinimum": 0,
-                "description": "Ta armature/DC time constant (typical 50-200 ms)."
+                "maximum": 500,
+                "description": "Ta armature/DC time constant (typical 50-200 ms). Upper bound 500 ms catches s-vs-ms unit confusion."
               },
               "machine_reactances_pu": {
                 "type": "object",

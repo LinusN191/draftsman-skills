@@ -390,9 +390,15 @@ For t ∈ {0, 10, 50, 100, 500, 1000, 3000, 10000} ms, evaluate the Park's formu
 **Set fields:**
 - `ik_initial_subtransient_ka` = Ik(t=0) = sample[0].ik_ka
 - `ik_transient_ka` = Ik(t=Td') ≈ sample at the closest time (typically t=500 or t=1000 ms)
-- `ik_steady_state_ka` = Ik(t→∞) = the asymptote (Ik = c × U / (√3 × Xd × U_base²/S_base) per IEC 60909-0:2016 §4.3 for synchronous machines)
+- `ik_steady_state_ka` = Ik(t→∞), computed in two steps:
+  - `Xd_ohm = Xd_pu × U_base² / S_base` (machine reactance referred to LV terminals in Ω)
+  - `Ik_steady = c × U_n / (√3 × Xd_ohm)`
 - `decrement_model` = `"iec_60909_4_3_full_park"` (per user spec choice)
 - `_source` cites IEC 60909 + IEEE C50.13 (or engineer-declared source)
+
+**Voltage factor c:** Per IEC 60909-0:2016 §2.3.1 / Table 1, `c_max = 1.05` for ≤1 kV systems (or 1.10 with ≤6% tap tolerance) when computing Ik''_max. If you choose to use `c=1.0` for the decrement-curve calc (e.g. to keep the field comparable to a pre-D1.3 `ifault_ka_max` that was also c=1.0), state this explicitly in `_source` (e.g. "c=1.0 used; consistent with this example's ifault_ka_max basis").
+
+**Supply-state binding:** `applies_when` MUST state which supply state the curve describes (e.g. "MSB-1 in standby supply state; utility offline, generator S2 bonded via ATS"). When `applies_when` describes a different supply state than the node's `ifault_ka_max`, INV-14 Rule 2 N/A applies — the curve-side `ik_initial_subtransient_ka` is then validated by reconciliation against the source's reactances, not against `ifault_ka_max`.
 
 **Cross-validate:** ensure Ik'' ≥ Ik' ≥ Ik_steady (monotonic decay). INV-14 enforces.
 

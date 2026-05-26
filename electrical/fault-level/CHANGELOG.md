@@ -98,6 +98,34 @@
   for non-consequential style caps; engineering content preserved over
   arbitrary length limits).
 
+### D1.3 fix-pass (post code-quality review)
+- **INV-14 Rule 2 structural carve-out.** Rule 2 (Ik'' = ifault_ka_max
+  within 1%) now reads "ONLY WHEN `decrement_curve.applies_when`
+  describes the same supply state that produced `ifault_ka_max`". When
+  the two describe different supply states (e.g. curve documents
+  standby, ifault documents normal), Rule 2 is N/A; instead require
+  the curve-side `ik_initial_subtransient_ka` to reconcile to
+  `c × U_n / (√3 × Z_M)` from the source's reactances, and
+  `applies_when` MUST state the divergence explicitly. Eliminates the
+  evidence-prose carve-out that intl-commercial-with-genset relied on.
+- **Step 17 voltage-factor disclosure.** Added explicit note that
+  `c_max=1.05` per IEC 60909-0:2016 §2.3.1 Table 1 applies for ≤1 kV
+  systems, with guidance to disclose `c=1.0` choice in `_source` when
+  used (for consistency with a pre-D1.3 ifault_ka_max basis).
+- **Step 17 steady-state formula clarity.** Split single ambiguous
+  formula `Ik = c × U / (√3 × Xd × U_base²/S_base)` into two lines:
+  `Xd_ohm = Xd_pu × U_base² / S_base`, then
+  `Ik_steady = c × U_n / (√3 × Xd_ohm)`.
+- **Step 17 supply-state binding clause.** Added explicit instruction
+  that `applies_when` MUST state which supply state the curve
+  describes (matching the new INV-14 Rule 2 pre-condition).
+- **Schema sanity bounds on time constants.** Td'' ≤ 500 ms, Td' ≤
+  10000 ms, Ta ≤ 500 ms — catches s-vs-ms unit confusion at
+  validation time.
+- **Example c=1.0 disclosure.** intl-commercial-with-genset MSB-1
+  decrement_curve `_source` now explicitly discloses the c=1.0
+  choice and what c_max=1.05 would scale the Ik values to.
+
 ## [1.1.2] - 2026-05-25 — M1 hybrid eval-vs-IR fix (was [next-patch])
 
 ### Added

@@ -113,7 +113,7 @@ Severity HIGH. For every cascade node, the stored `ifault_ka_max` MUST reconcile
 
 1. **Monotonic decay:** `ik_initial_subtransient_ka >= ik_transient_ka >= ik_steady_state_ka` (Park's equations require monotonic decay; any inversion is a calc error).
 
-2. **Initial = node Ik max:** `ik_initial_subtransient_ka == ifault_ka_max` within 1% (the node's headline Ik is the subtransient initial value — what switchgear sees at t=0+).
+2. **Initial = node Ik max (conditional):** `ik_initial_subtransient_ka == ifault_ka_max` within 1% **ONLY WHEN** `decrement_curve.applies_when` describes the same supply state that produced `ifault_ka_max`. If the two describe different supply states (e.g. `decrement_curve` documents the standby/genset-fed state while `ifault_ka_max` documents the normal/utility-fed state), Rule 2 is N/A; instead require that `ik_initial_subtransient_ka` independently reconciles to `c × U_n / (√3 × Z_M)` from the relevant source's reactances (the curve-side calc), and `applies_when` MUST state the divergence explicitly.
 
 3. **Time-series bounds:** every `time_series_samples[*].ik_ka` lies between `ik_steady_state_ka` (lower bound) and `ik_initial_subtransient_ka` (upper bound) within 5% tolerance for numerical rounding.
 
