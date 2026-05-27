@@ -96,6 +96,49 @@ Iz ≥ In = 6 A), but voltage drop is the issue:
 `walk_up_trail` therefore has two entries on C03 (rejected 1.0 + accepted
 1.5) and one entry on every other node.
 
+## Table selection walk (Sprint D2.1)
+
+UK domestic final circuits use flat twin-and-earth (T&E) cable —
+70°C PVC insulated, two-core plus reduced-section CPC, copper,
+unarmoured. Per the BS 7671:2018+A2:2022 Appendix 4 walk-the-ladder
+convention, the canonical ampacity table for T&E is **Table 4D1A**.
+
+This example refits the prior `pvc_singles` declaration (which would
+direct the engineer to Table 4D2A — singles in conduit, the wrong
+construction) to `pvc_twin_earth` + `table_used: 4D1A`. The four power
+final circuits (C01/C02 rings, C04 cooker, C05 immersion) use
+`installation_method: C` (clipped direct to non-metallic surface — the
+canonical UK domestic surface-clipped case). The lighting radial (C03)
+uses `installation_method: A1` (T&E in a thermally insulating wall, the
+OSG Method A reference — derates more heavily than Method C and matches
+the historic 14.5 A figure used in the walk-up trail).
+
+Ampacity column reads per 4D1A (one twin-pair loaded):
+
+| Circuit | csa | Method | Iz tabulated | In | Pass |
+|---|---|---|---|---|---|
+| C01 ring  | 2.5 mm² | C  | 27 A   | 32 A | IET OSG §8.4.4 ring-final rule applies — ring shares load across two legs |
+| C02 ring  | 2.5 mm² | C  | 27 A   | 32 A | IET OSG §8.4.4 ring-final rule applies |
+| C03 light | 1.5 mm² | A1 | 14.5 A | 6 A  | ample (Vd binds, not Iz) |
+| C04 cooker| 6 mm²   | C  | 46 A   | 32 A | ample headroom |
+| C05 imm.  | 2.5 mm² | C  | 27 A   | 16 A | ample headroom |
+
+The two ring finals (C01/C02) carry `iz_corrected_a: 27.0` reflecting
+the 4D1A Method C 2.5 mm² figure; `iz_vs_in_pass: true` is justified
+by the IET On-Site Guide §8.4.4 ring-final rule (each leg of the ring
+carries roughly half the design current, so the 27 A per-conductor
+capacity supports a 32 A circuit-rated MCB when the floor area is
+≤ 100 m²).
+
+**Honest disclosure (Sprint C.2 transcription).** Table 4D1A under
+`shared/standards/electrical/BS7671/appendix4-table-4D1A-pvc-twin-earth.json`
+carries `verification_status: engineer_transcription_C2`. The
+ampacity values cited above were engineer-transcribed from
+industry-standard references during the Sprint C.2 remediation pass;
+the engineer-of-record MUST verify against the published BS
+7671:2018+A2:2022 edition before runtime use. INV-12 Rule 4
+enforces this disclosure on every example consuming 4D1A.
+
 ## Cumulative Voltage Drop
 
 **Appendix 12 §G** sets the dwelling limits:

@@ -1,5 +1,74 @@
 # Changelog
 
+## [1.1.0] - 2026-05-26 — Sprint D2.1 PVC/SWA edge cases (4D1A + 4D5A consumers)
+
+### Added
+- **cable_type enum** extended with `pvc_twin_earth` and `pvc_swa`
+  (additive; existing 11 values unchanged). Mirrored in the
+  cable-sizing intent schema.
+- **`table_used` field** on every cable-bearing cascade node; enum
+  references BS 7671 4D-series, NEC 310.16 columns, IEC 60364-5-52
+  tables, plus `none` for jurisdictions without a tabular reference.
+  Required member of `selection.required` (every cable run names its
+  reference table).
+- **`_source` field** on selection — citation tying cable_type +
+  table_used + installation_method back to the source table.
+- **`cpc_provision` field** on selection — free-text descriptor for
+  non-default CPC routing (e.g. `separate_copper_cpc_per_reg_543_2_5`
+  when SWA armour adiabatic insufficient).
+- **`reject_reason` field** on walk_up_trail entries — free-text
+  rejection narrative sibling to the existing `rejected_by` enum.
+- **Validator INV-12: cable_type ↔ table_used consistency** (HIGH).
+  Asserts the compatibility matrix (`pvc_twin_earth → 4D1A` only,
+  `pvc_swa → 4D5A` only, etc.), method validity (the method must be
+  listed in the table's `installation_methods` block), citation
+  consistency in `selection._source`, and the engineer-transcription
+  disclosure on examples consuming 4D1A or 4D5A.
+
+### Generator prompt
+- New Step 15 (table-selection walk) added at end of flow with the
+  full cable_type → table_used compatibility matrix for BS 7671 / NEC
+  / IEC jurisdictions. Cites Sprint C.2 engineer_transcription_C2
+  disclosure requirement for 4D1A + 4D5A consumers.
+
+### Examples
+- **Refit** `uk-domestic-final-circuits/`: final circuits (C01/C02
+  ring finals, C03 lighting radial, C04 cooker, C05 immersion)
+  switched from `pvc_singles` (incorrect — these are physically T&E)
+  to `pvc_twin_earth` + `table_used: "4D1A"`. Method changed B1 → C
+  for ring finals (clipped-direct T&E is the canonical UK domestic
+  case); C03 lighting retained method A1 (T&E in thermally-insulating
+  wall, matches Iz 14.5 A from 4D1A method A column). Ampacity values
+  refreshed per 4D1A column reads (27 / 14.5 / 46 A). reasoning.md
+  adds new "Table selection walk (Sprint D2.1)" section narrating the
+  table walk + the Sprint C.2 engineer_transcription_C2 honesty
+  disclosure. intent-out.json cable_type field updated.
+- **NEW example** `uk-rural-swa-submain/`: 100 m direct-buried PVC
+  SWA submain feeding a 100 A SP&N outbuilding SDB. Exercises Table
+  4D5A method D (direct-buried, soil 2.5 K·m/W, ambient 15 °C).
+  Walk-up trail rejects 16 mm² (Vd 9.74%) / 25 mm² (Vd 6.09%) /
+  35 mm² (Vd 4.35%) / 50 mm² (Vd 3.23%) all over the App 12 §6.4 3%
+  power-circuit Vd limit; 70 mm² accepted at Vd 2.19%. CPC alternative
+  per Reg 543.2.5: SWA armour (steel k=46 × ~50 mm² = 2300) fails
+  6 kA × 0.4 s adiabatic (required 3795); separate 35 mm² Cu CPC
+  (k=143 × 35 = 5005) PASSES.
+
+### Honest disclosure
+- Tables 4D1A + 4D5A under `shared/standards/electrical/BS7671/`
+  carry `verification_status: engineer_transcription_C2` per the
+  Sprint C.2 remediation pass. Every example consuming these tables
+  cites this status in its reasoning.md (INV-12 Rule 4 enforces).
+  4D5A method D column additionally tagged
+  `verification_status: pending_engineer_transcription` in the source
+  file; the uk-rural-swa-submain reasoning surfaces this stricter
+  caveat explicitly.
+
+### Gates
+- validate-examples.py: 221 → **223** (+2 for new example output.json
+  + intent-out.json).
+- functional_audit.py: 1 finding unchanged (motor-superposition oracle
+  FP on us-industrial-with-motors/MCC-1, disclosed in Sprint D1.1).
+
 ## [1.0.2] - 2026-05-25
 
 ### Standards data (M3 cause-fix)

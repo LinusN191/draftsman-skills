@@ -398,6 +398,7 @@
             "material",
             "insulation",
             "cable_type",
+            "table_used",
             "parallel_count",
             "binding_constraint",
             "walk_up_trail"
@@ -450,7 +451,9 @@
             "cable_type": {
               "enum": [
                 "pvc_singles",
+                "pvc_twin_earth",
                 "pvc_multicore",
+                "pvc_swa",
                 "xlpe_swa",
                 "xlpe_lszh",
                 "epr_swa",
@@ -461,6 +464,35 @@
                 "thhn",
                 "xhhw_2"
               ]
+            },
+            "table_used": {
+              "type": "string",
+              "enum": [
+                "4D1A",
+                "4D2A",
+                "4D4A",
+                "4D5A",
+                "4E1A",
+                "4E2A",
+                "4E4A",
+                "4E5A",
+                "nec_310_16_60",
+                "nec_310_16_75",
+                "nec_310_16_90",
+                "iec_60364_5_52_b1",
+                "iec_60364_5_52_e",
+                "iec_60364_5_52_f",
+                "none"
+              ],
+              "description": "Reference ampacity table consulted for the cable walk. `none` for jurisdictions without a tabular reference. Required when route.installation_method is set. Cite the matching table identifier + method in the example's `_source`. Added Sprint D2.1."
+            },
+            "_source": {
+              "type": "string",
+              "description": "Citation tying selection.cable_type + selection.table_used + route.installation_method back to the source table (BS 7671 App 4 / NEC 310.16 / IEC 60364-5-52). Format: 'BS 7671:2018+A2:2022 App 4 Table {table_used} method {installation_method}' or jurisdiction-equivalent. Required when table_used is set. Added Sprint D2.1."
+            },
+            "cpc_provision": {
+              "type": "string",
+              "description": "Free-text descriptor for non-default CPC routing (e.g. 'separate_copper_cpc_per_reg_543_2_5' when SWA armour adiabatic insufficient). Added Sprint D2.1."
             },
             "parallel_count": {
               "type": "integer",
@@ -508,6 +540,10 @@
                       "cpc_adiabatic",
                       "harmonic_derating"
                     ]
+                  },
+                  "reject_reason": {
+                    "type": "string",
+                    "description": "Free-text explanation of the rejection (e.g. 'Iz 93.1 < In 100' or 'Vd 6.26% > 3% power-circuit limit'). Sibling to enum rejected_by. Added Sprint D2.1."
                   },
                   "iz_corrected_a": {
                     "type": "number",

@@ -37,7 +37,7 @@
           "cpc_csa_mm2_or_awg":                            { "type": "string", "pattern": "^([0-9]+(\\.[0-9]+)?( mm²)?|[1-4]/0 AWG|[1-9][0-9]* AWG|[1-9][0-9]{2,} kcmil)$" },
           "material":                                      { "enum": ["copper", "aluminium"] },
           "insulation":                                    { "enum": ["pvc_70", "xlpe_90", "epr_90", "mineral_micc_90", "fp200_90", "cwz_90", "thwn_2_90", "thhn_90", "xhhw_2_90"] },
-          "cable_type":                                    { "enum": ["pvc_singles", "pvc_multicore", "xlpe_swa", "xlpe_lszh", "epr_swa", "mineral_micc", "fp200_lszh", "cwz_glass_mica", "thwn_2", "thhn", "xhhw_2"] },
+          "cable_type":                                    { "enum": ["pvc_singles", "pvc_twin_earth", "pvc_multicore", "pvc_swa", "xlpe_swa", "xlpe_lszh", "epr_swa", "mineral_micc", "fp200_lszh", "cwz_glass_mica", "thwn_2", "thhn", "xhhw_2"] },
           "parallel_count":                                { "type": "integer", "minimum": 1, "maximum": 6 },
           "cable_od_mm":                                   { "type": "number", "exclusiveMinimum": 0 },
           "weight_kg_per_m":                               { "type": "number", "exclusiveMinimum": 0 },

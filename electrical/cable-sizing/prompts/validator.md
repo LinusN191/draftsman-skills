@@ -342,9 +342,75 @@ App 12 / IEC 60364-5-52:2009 Annex G
 
 ---
 
+### INV-12: cable_type ↔ table_used consistency (D2.1)
+
+**Severity:** HIGH
+
+**Rule:** For every cascade node carrying `selection.cable_type` AND
+`route.installation_method`:
+
+1. **Compatibility:** `cable_type` maps to a specific `table_used` value
+   per the matrix in generator Step 15:
+   - `pvc_twin_earth` → `4D1A` (only)
+   - `pvc_singles` → `4D2A` (or `4D4A` if multicore variant)
+   - `pvc_multicore` → `4D4A`
+   - `pvc_swa` → `4D5A` (only)
+   - `xlpe_swa` → `4E5A`
+   - `xlpe_lszh` → `4E2A` or `4E4A`
+   - `thwn_2`/`thhn` → `nec_310_16_75` (or `nec_310_16_60` if direct-buried)
+   - `xhhw_2` → `nec_310_16_90`
+   - `pvc_singles`/`pvc_multicore` in IEC → `iec_60364_5_52_b1` or
+     `iec_60364_5_52_e`
+   - `xlpe_swa`/`xlpe_lszh` in IEC → `iec_60364_5_52_f`
+   Mismatch (e.g. `cable_type: pvc_twin_earth` with `table_used: 4D5A`)
+   is a HIGH violation.
+
+2. **Method validity:** The chosen `table_used` must list
+   `route.installation_method` in its `installation_methods` block (per
+   the source table file under `shared/standards/electrical/BS7671/` or
+   `shared/standards/electrical/IEC60364/` or
+   `shared/standards/electrical/NFPA70/`). For example, `4D1A` lists
+   `{C, A1, 100, 101, 102, 103}` — a cable claiming `table_used: 4D1A`
+   with `installation_method: F` is invalid.
+
+3. **Citation:** Every cable's `selection._source` cites the same
+   `table_used` + `installation_method` (string-match required). Format:
+   `"BS 7671:2018+A2:2022 App 4 Table {table_used} method {installation_method}"`
+   (or NEC/IEC equivalent).
+
+4. **Engineer-transcription disclosure:** When
+   `table_used ∈ {4D1A, 4D5A}`, the example's `reasoning.md` MUST include
+   a sentence citing the Sprint C.2 transcription disclosure
+   (`verification_status: engineer_transcription_C2`). This is a content
+   check on reasoning.md, not on the IR — but a HIGH violation if absent,
+   because the runtime consumer of these examples must surface the
+   honesty disclosure to the engineer.
+
+**Validator action:** for each cascade node with both `cable_type` and
+`installation_method`, walk the compatibility matrix; check `table_used`
+is in the allowed set; verify method belongs to that table; verify
+`selection._source` cites the same pair; for 4D1A / 4D5A consumers,
+check reasoning.md contains the disclosure phrase.
+
+**Rationale:** Tables 4D1A + 4D5A were transcribed in Sprint C.2 but
+shipped without consumers for 4 days. The `table_used` field makes the
+chosen table audit-traceable, prevents the silent mismatch (cable
+physically T&E but cited against generic `pvc_singles` table), and
+forces the honest Sprint C.2 disclosure to surface on every example
+that consumes the engineer-transcribed tables.
+
+**Fail message format:**
+```
+INV-12: Node <NODE_ID> cable_type=<CT> with table_used=<TU> violates
+the D2.1 compatibility matrix — expected <EXPECTED_TU> for cable_type
+<CT>. Rule <1|2|3|4> failed.
+```
+
+---
+
 ### 3. Intent extraction validation
 
-After all 11 INV checks pass, run one final structural check:
+After all 12 INV checks pass, run one final structural check:
 
 - The count of `intent.circuits[]` entries MUST equal the count of IR
   cascade nodes that are final_circuit OR feeder OR sub_feeder (in v1.0

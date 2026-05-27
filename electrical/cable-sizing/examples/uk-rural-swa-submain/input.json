@@ -1,0 +1,47 @@
+{
+  "project_id": "uk-rural-swa-submain",
+  "jurisdiction": "GB",
+  "site_brief": "Rural UK property. 100 A single-phase 230 V supply at the main service entrance head. Standalone outbuilding 100 m from the main dwelling requires its own 100 A sub-distribution board (SDB). The submain runs direct-buried (0.6 m depth, undisturbed soil, thermal resistivity 2.5 K·m/W per BS 7671 App 4 §2.4) from the main service to the outbuilding SDB. This study sizes the SWA submain per BS 7671:2018+A2:2022 Appendix 4 Table 4D5A.",
+  "supply": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "system_type": "TN-S"
+  },
+  "circuits_declared": [
+    {
+      "node_id": "SERVICE-IN",
+      "parent_node_id": null,
+      "node_kind": "service_entrance",
+      "designation": "Main service entrance — 100 A SP&N",
+      "load": {"ib_a": 80, "in_a": 100, "phases": "single", "load_type": "mixed", "pf": 0.9}
+    },
+    {
+      "node_id": "SUBMAIN-CABLE",
+      "parent_node_id": "SERVICE-IN",
+      "node_kind": "sub_feeder",
+      "designation": "100 m direct-buried PVC SWA submain to outbuilding SDB",
+      "load": {"ib_a": 80, "in_a": 100, "phases": "single", "load_type": "mixed", "pf": 0.9},
+      "route": {
+        "length_m": 100,
+        "installation_method": "D1",
+        "ambient_c": 15,
+        "soil_thermal_resistivity_k_m_w": 2.5,
+        "burial_depth_m": 0.6,
+        "grouping_count": 1
+      },
+      "parent_node_ifault_ka": 6.0,
+      "t_clear_s": 0.4
+    },
+    {
+      "node_id": "OUT-DB",
+      "parent_node_id": "SUBMAIN-CABLE",
+      "node_kind": "feeder",
+      "designation": "Outbuilding SDB — 100 A SP&N",
+      "load": {"ib_a": 80, "in_a": 100, "phases": "single", "load_type": "mixed", "pf": 0.9}
+    }
+  ],
+  "design_intent": {
+    "cable_type_preference": "pvc_swa",
+    "calculation_method": "BS 7671:2018+A2:2022 Appendix 4 Table 4D5A Method D (direct-buried, two-core PVC SWA, copper). Voltage drop per Appendix 12. Adiabatic CPC check per Reg 543.1.3 using the SWA armour as CPC per Reg 543.2.5."
+  }
+}

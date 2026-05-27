@@ -489,6 +489,58 @@ Project the IR down to the **slim intent shape** declared by
 Every circuit MUST carry the 2 Zs helper fields. The intent schema enforces
 this via `required` — Step 12 above shows where they come from.
 
+### Step 15 — Table selection walk (D2.1)
+
+For every cable-bearing cascade node (i.e. every node with a
+`selection.cable_type` set), explicitly identify the reference ampacity
+table consulted. Emit the `selection.table_used` enum value AND cite it
+in the sibling `selection._source` field for that cable.
+
+**cable_type → table_used compatibility matrix (BS 7671 / IEC 60364-5-52):**
+
+| cable_type | Primary table | Methods supported |
+|---|---|---|
+| `pvc_twin_earth` (UK domestic T&E) | **4D1A** | C, A1 (=A), 100, 101, 102, 103 |
+| `pvc_singles` (single insulated cores in conduit) | **4D2A** | B1, B2 |
+| `pvc_multicore` (multicore PVC) | **4D4A** | C, E, F |
+| `pvc_swa` (multicore PVC SWA armoured) | **4D5A** | C (clipped), D (direct-buried), E (cable tray) |
+| `xlpe_swa` (multicore XLPE SWA armoured) | **4E5A** | C, D, E |
+| `xlpe_lszh` (multicore XLPE LSZH) | **4E2A** or **4E4A** | B1, C, E, F |
+| `epr_swa` | **4E5A** (EPR uses XLPE ampacity bands) | C, D, E |
+| `mineral_micc` | bespoke MICC tables (not 4D-series) | engineer-declared |
+
+**For NEC jurisdictions (US):**
+
+| cable_type | Primary table | Methods supported |
+|---|---|---|
+| `thwn_2` / `thhn` (75°C insulation conduit-installed) | **nec_310_16_75** | nec_conduit |
+| `xhhw_2` (90°C insulation cable-tray) | **nec_310_16_90** | nec_cable_tray, nec_free_air |
+| `thwn_2` direct-buried | **nec_310_16_60** | nec_direct_burial (60°C-corrected per NEC §310.15(B)) |
+
+**For IEC jurisdictions (INT/EU):**
+
+| cable_type | Primary table | Methods supported |
+|---|---|---|
+| `pvc_singles` / `pvc_multicore` | **iec_60364_5_52_b1** (conduit) or **iec_60364_5_52_e** (cable tray) | B1, E |
+| `xlpe_swa` / `xlpe_lszh` | **iec_60364_5_52_f** (free air / cable tray) | F, E |
+
+**Set `selection.table_used`** to the table identifier from the matrix
+above. Set `selection._source` to
+`"BS 7671:2018+A2:2022 App 4 Table {table_used} method {installation_method}"`
+(or NEC/IEC equivalent for those jurisdictions).
+
+**Honest disclosure (Sprint C.2 transcription):** Tables 4D1A + 4D5A
+under `shared/standards/electrical/BS7671/` carry
+`verification_status: engineer_transcription_C2` per the Sprint C.2
+transcription pass. When the example consumes these tables, the
+example's `reasoning.md` MUST cite this status honestly (e.g. "Per
+Sprint C.2 disclosure, 4D1A values were engineer-transcribed from
+industry-standard references; verify against the published BS
+7671:2018+A2:2022 edition before runtime use.").
+
+**Validator INV-12 enforces** the cable_type ↔ table_used pairing +
+the method-compatibility check + citation match + honest disclosure.
+
 ## What You Never Do
 
 - Invent Iz, Vd, or impedance values — always cite a table (BS 7671 App 4,

@@ -1,9 +1,9 @@
 {
   "drawing_type": "cable_sizing_study",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "meta": {
     "project_id": "uk-domestic-eg01",
-    "skill_version": "1.0.0",
+    "skill_version": "1.1.0",
     "produced_at": "2026-05-20T00:00:00Z",
     "consumed_intents": []
   },
@@ -28,7 +28,7 @@
       },
       "route": {
         "length_m": 32,
-        "installation_method": "B1",
+        "installation_method": "C",
         "ambient_c": 30,
         "grouping_count": 2
       },
@@ -39,21 +39,23 @@
         "cpc_csa": 1.5,
         "material": "copper",
         "insulation": "pvc_70",
-        "cable_type": "pvc_singles",
+        "cable_type": "pvc_twin_earth",
+        "table_used": "4D1A",
+        "_source": "BS 7671:2018+A2:2022 App 4 Table 4D1A method C",
         "parallel_count": 1,
         "binding_constraint": "iz_vs_in",
         "walk_up_trail": [
           {
             "csa_attempted": 2.5,
             "accepted": true,
-            "iz_corrected_a": 32.0,
+            "iz_corrected_a": 27.0,
             "vd_segment_pct": 1.6,
             "vd_cumulative_pct": 1.6
           }
         ]
       },
       "checks": {
-        "iz_corrected_a": 32.0,
+        "iz_corrected_a": 27.0,
         "iz_vs_in_pass": true,
         "vd_segment_pct": 1.6,
         "vd_cumulative_pct": 1.6,
@@ -81,7 +83,7 @@
       },
       "route": {
         "length_m": 28,
-        "installation_method": "B1",
+        "installation_method": "C",
         "ambient_c": 30,
         "grouping_count": 1
       },
@@ -92,21 +94,23 @@
         "cpc_csa": 1.5,
         "material": "copper",
         "insulation": "pvc_70",
-        "cable_type": "pvc_singles",
+        "cable_type": "pvc_twin_earth",
+        "table_used": "4D1A",
+        "_source": "BS 7671:2018+A2:2022 App 4 Table 4D1A method C",
         "parallel_count": 1,
         "binding_constraint": "iz_vs_in",
         "walk_up_trail": [
           {
             "csa_attempted": 2.5,
             "accepted": true,
-            "iz_corrected_a": 32.0,
+            "iz_corrected_a": 27.0,
             "vd_segment_pct": 1.1,
             "vd_cumulative_pct": 1.1
           }
         ]
       },
       "checks": {
-        "iz_corrected_a": 32.0,
+        "iz_corrected_a": 27.0,
         "iz_vs_in_pass": true,
         "vd_segment_pct": 1.1,
         "vd_cumulative_pct": 1.1,
@@ -145,7 +149,9 @@
         "cpc_csa": 1.0,
         "material": "copper",
         "insulation": "pvc_70",
-        "cable_type": "pvc_singles",
+        "cable_type": "pvc_twin_earth",
+        "table_used": "4D1A",
+        "_source": "BS 7671:2018+A2:2022 App 4 Table 4D1A method A1",
         "parallel_count": 1,
         "binding_constraint": "vd_cumulative",
         "walk_up_trail": [
@@ -206,21 +212,23 @@
         "cpc_csa": 2.5,
         "material": "copper",
         "insulation": "pvc_70",
-        "cable_type": "pvc_singles",
+        "cable_type": "pvc_twin_earth",
+        "table_used": "4D1A",
+        "_source": "BS 7671:2018+A2:2022 App 4 Table 4D1A method C",
         "parallel_count": 1,
         "binding_constraint": "iz_vs_in",
         "walk_up_trail": [
           {
             "csa_attempted": 6,
             "accepted": true,
-            "iz_corrected_a": 47.0,
+            "iz_corrected_a": 46.0,
             "vd_segment_pct": 0.27,
             "vd_cumulative_pct": 0.27
           }
         ]
       },
       "checks": {
-        "iz_corrected_a": 47.0,
+        "iz_corrected_a": 46.0,
         "iz_vs_in_pass": true,
         "vd_segment_pct": 0.27,
         "vd_cumulative_pct": 0.27,
@@ -259,7 +267,9 @@
         "cpc_csa": 1.5,
         "material": "copper",
         "insulation": "pvc_70",
-        "cable_type": "pvc_singles",
+        "cable_type": "pvc_twin_earth",
+        "table_used": "4D1A",
+        "_source": "BS 7671:2018+A2:2022 App 4 Table 4D1A method C",
         "parallel_count": 1,
         "binding_constraint": "iz_vs_in",
         "walk_up_trail": [
@@ -364,6 +374,12 @@
       "passes": true,
       "severity": "critical",
       "evidence": "CPC adiabatic check passes per BS 7671 §543.1.3: cpc_csa=1.5 mm² with k=115 (Cu/PVC) clears the adiabatic test S²·k² ≥ I²·t for the parent fault current applied for t_clear at the protective device's pre-arcing characteristic."
+    },
+    {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All 5 final circuits use cable_type pvc_twin_earth → table_used 4D1A per BS 7671:2018+A2:2022 App 4 + Sprint D2.1 compatibility matrix (Rule 1 PASS). Method C (clipped direct, C01/C02/C04/C05) and Method A1 (in thermally insulating wall, C03 lighting radial) are both listed in 4D1A.installation_methods (Rule 2 PASS). Each selection._source string matches the (table_used, method) pair (Rule 3 PASS). reasoning.md cites the Sprint C.2 engineer_transcription_C2 honesty disclosure for 4D1A (Rule 4 PASS)."
     }
   ]
 }

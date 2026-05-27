@@ -1,0 +1,205 @@
+{
+  "drawing_type": "cable_sizing_study",
+  "version": "1.1.0",
+  "meta": {
+    "project_id": "uk-rural-swa-submain",
+    "skill_version": "1.1.0",
+    "produced_at": "2026-05-26T10:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "GB",
+  "project_supply": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "system_type": "TN-S"
+  },
+  "cascade": [
+    {
+      "node_id": "SUBMAIN-CABLE",
+      "parent_node_id": "SERVICE-IN",
+      "node_kind": "sub_feeder",
+      "designation": "100 m direct-buried PVC SWA submain from main service entrance to outbuilding SDB",
+      "load": {
+        "ib_a": 80,
+        "in_a": 100,
+        "phases": "single",
+        "load_type": "mixed",
+        "pf": 0.9
+      },
+      "route": {
+        "length_m": 100,
+        "installation_method": "D1",
+        "ambient_c": 15,
+        "grouping_count": 1
+      },
+      "parent_node_ifault_ka": 6.0,
+      "t_clear_s": 0.4,
+      "selection": {
+        "phase_csa": 70,
+        "cpc_csa": 35,
+        "cpc_provision": "separate_copper_cpc_per_reg_543_2_5",
+        "material": "copper",
+        "insulation": "pvc_70",
+        "cable_type": "pvc_swa",
+        "table_used": "4D5A",
+        "_source": "BS 7671:2018+A2:2022 App 4 Table 4D5A method D",
+        "parallel_count": 1,
+        "binding_constraint": "vd_cumulative",
+        "walk_up_trail": [
+          {
+            "csa_attempted": 16,
+            "accepted": false,
+            "rejected_by": "iz_vs_in",
+            "reject_reason": "Iz 108.1 A (Iz_base 101 × Ca 1.07) ≥ In 100 marginally — but Vd 9.74% far exceeds 3% power-circuit limit; eliminated by vd test on next walk",
+            "iz_corrected_a": 108.1,
+            "vd_segment_pct": 9.74,
+            "vd_cumulative_pct": 9.74
+          },
+          {
+            "csa_attempted": 25,
+            "accepted": false,
+            "rejected_by": "vd_cumulative",
+            "reject_reason": "Vd 6.09% > 3% power-circuit limit (App 12 §6.4)",
+            "iz_corrected_a": 139.1,
+            "vd_segment_pct": 6.09,
+            "vd_cumulative_pct": 6.09
+          },
+          {
+            "csa_attempted": 35,
+            "accepted": false,
+            "rejected_by": "vd_cumulative",
+            "reject_reason": "Vd 4.35% > 3% power-circuit limit (App 12 §6.4)",
+            "iz_corrected_a": 170.1,
+            "vd_segment_pct": 4.35,
+            "vd_cumulative_pct": 4.35
+          },
+          {
+            "csa_attempted": 50,
+            "accepted": false,
+            "rejected_by": "vd_cumulative",
+            "reject_reason": "Vd 3.23% > 3% power-circuit limit (App 12 §6.4)",
+            "iz_corrected_a": 205.4,
+            "vd_segment_pct": 3.23,
+            "vd_cumulative_pct": 3.23
+          },
+          {
+            "csa_attempted": 70,
+            "accepted": true,
+            "iz_corrected_a": 255.7,
+            "vd_segment_pct": 2.19,
+            "vd_cumulative_pct": 2.19
+          }
+        ]
+      },
+      "checks": {
+        "iz_corrected_a": 255.7,
+        "iz_vs_in_pass": true,
+        "vd_segment_pct": 2.19,
+        "vd_cumulative_pct": 2.19,
+        "vd_limit_pct": 3.0,
+        "vd_limit_source": "BS 7671:2018+A2:2022 App 12 §6.4 power circuits 3%",
+        "vd_pass": true,
+        "cpc_adiabatic_pass": true,
+        "cpc_adiabatic_source": "BS 7671:2018+A2:2022 Reg 543.1.3 + Reg 543.2.5 (SWA armour insufficient as CPC for 6 kA × 0.4 s adiabatic; separate 35 mm² Cu CPC routed per Reg 543.2.5 alternative). Adiabatic k×S = 143 × 35 = 5005 ≥ √(I²t) = √(6000² × 0.4) = 3795. PASS.",
+        "motor_starting_vd_pct": null,
+        "motor_starting_vd_pass": null,
+        "tool_call_pending": true
+      }
+    }
+  ],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      {
+        "node_id": "SUBMAIN-CABLE",
+        "message": "Vd binding constraint on 100 m direct-buried submain — walked up 16→25→35→50→70 mm² to satisfy App 12 §6.4 3% power-circuit limit. SWA armour insufficient as CPC for 6 kA × 0.4 s adiabatic; separate 35 mm² Cu CPC routed per Reg 543.2.5 alternative.",
+        "code_clause": "BS 7671:2018+A2:2022 App 4 Table 4D5A method D + App 12 §6.4 + Reg 543.2.5",
+        "severity": "info"
+      }
+    ],
+    "assumptions": [
+      "Engineer-declared Ze + parent_node_ifault_ka = 6 kA per DNO declaration at main service entrance.",
+      "Soil thermal resistivity 2.5 K·m/W (BS 7671 App 4 §2.4 default for undisturbed UK soil at 0.5–0.7 m depth).",
+      "Ca = 1.07 for ambient 15°C against the 20°C buried reference per BS 7671 App 4 Table 4B2 (PVC).",
+      "calc.cable_ampacity / calc.voltage_drop / calc.cpc_adiabatic deferred per WI3 — engineer estimates used as placeholder values; 4D5A canonical table values used."
+    ]
+  },
+  "flags": [
+    "TOOL-CALL-PENDING:calc.cable_ampacity",
+    "TOOL-CALL-PENDING:calc.voltage_drop",
+    "TOOL-CALL-PENDING:calc.cpc_adiabatic"
+  ],
+  "rationale": {
+    "chat_summary": "100 m direct-buried PVC SWA submain from a 100 A SP&N rural service entrance to an outbuilding SDB. Per BS 7671:2018+A2:2022 App 4 Table 4D5A method D, soil 2.5 K·m/W, ambient 15°C. Walk-up rejected 16/25/35/50 mm² on the App 12 §6.4 3% power-circuit Vd limit; 70 mm² accepted at Vd 2.19%. SWA armour insufficient as CPC for 6 kA × 0.4 s adiabatic; separate 35 mm² Cu CPC routed per Reg 543.2.5 alternative.",
+    "sections": [
+      {
+        "title": "Project Supply + Jurisdiction",
+        "summary": "GB jurisdiction → BS 7671:2018+A2:2022 governs. Single-phase 230 V TN-S supply at rural service entrance; declared parent_node_ifault_ka = 6 kA from DNO declaration. Outbuilding sub-distribution board fed via a 100 m direct-buried submain — the cable run that drives this cable-sizing study."
+      },
+      {
+        "title": "Cascade Tree + Topology",
+        "summary": "Single-node cascade: the SUBMAIN-CABLE sub_feeder represents the 100 m direct-buried run between the main service entrance (parent reference SERVICE-IN, outside the cable-sizing scope) and the outbuilding SDB (downstream consumer). Schema CascadeNode requires route + selection + checks, so endpoints without cable runs are not modelled as cascade nodes."
+      },
+      {
+        "title": "Walk-the-Ladder Approach + Binding Constraints",
+        "summary": "Five walk-up entries record the trail. 16 mm² fails ampacity-after-Vd-application; 25/35/50 mm² fail App 12 §6.4 3% power-circuit Vd; 70 mm² accepted at Vd 2.19%. binding_constraint = vd_cumulative — the 100 m length is the dominant constraint, not ampacity. Iz at 70 mm² (255.7 A corrected) is comfortably ≥ In 100 A."
+      },
+      {
+        "title": "Why 4D5A method D",
+        "summary": "Multicore PVC SWA cable, 2-core single-phase, copper, direct-buried 0.6 m depth in undisturbed soil — method D is the canonical BS 7671 App 4 reference per Table 4D5A's installation_methods block. Ca = 1.07 applied per Table 4B2 for ambient 15°C against the 20°C buried-cable reference; Cg = 1.0 (single circuit)."
+      },
+      {
+        "title": "Voltage drop walk-up arithmetic",
+        "summary": "Per-CSA Vd computed as Vd = (mVAm × L × Ib) / 1000 then divided by 230 V (single-phase). 25 mm² mVAm 1.75: Vd = 14.00 V = 6.09%. 35 mm² mVAm 1.25: Vd = 10.00 V = 4.35%. 50 mm² mVAm 0.93: Vd = 7.44 V = 3.23%. 70 mm² mVAm 0.63: Vd = 5.04 V = 2.19% — ACCEPTED. App 12 §6.4 power-circuit limit 3% drives the walk-up; lighting-circuit limit 6% not applicable to a power submain."
+      },
+      {
+        "title": "CPC alternative per Reg 543.2.5",
+        "summary": "SWA armour CSA on a 70 mm² 2-core PVC SWA cable ≈ 50 mm² steel. Adiabatic check (k = 46 for steel armour per BS 7671 Table 54.7): k × S = 46 × 50 = 2300, against required √(I²t) = √(6000² × 0.4) = 3795. 2300 < 3795 → adiabatic FAILS with armour-only CPC. Per Reg 543.2.5, a separate copper CPC may be routed alongside the SWA cable. Selected 35 mm² Cu CPC: k = 143 (Cu/PVC), k × S = 143 × 35 = 5005 ≥ 3795. PASS."
+      },
+      {
+        "title": "Motor Starting + Parallel Cables + Harmonic Derating",
+        "summary": "Not applicable. The submain feeds a sub-distribution board (mixed downstream load) rather than a single motor. parallel_count = 1; no harmonic content declared; motor_starting_vd_pct + motor_starting_vd_pass null."
+      },
+      {
+        "title": "Compliance + Assumptions + Tool-Call Pending",
+        "summary": "compliant = true. One info-severity flag documents the vd_cumulative walk-up + Reg 543.2.5 CPC alternative for the runtime consumer's design audit trail. Three TOOL-CALL-PENDING flags (calc.cable_ampacity, calc.voltage_drop, calc.cpc_adiabatic) record the WI3 deferral of deterministic Python calc resolution."
+      },
+      {
+        "title": "Sprint C.2 transcription honesty disclosure",
+        "summary": "Table 4D5A values used in this example were engineer-transcribed during Sprint C.2 from industry-standard references; the source file shared/standards/electrical/BS7671/appendix4-table-4D5A-pvc-swa.json carries verification_status: engineer_transcription_C2. Engineer-of-record MUST verify against the published BS 7671:2018+A2:2022 edition before runtime use. INV-12 Rule 4 enforces this disclosure on every example consuming 4D5A."
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Standard BS 7671 CSA selection: 70 mm² phase for SUBMAIN-CABLE (selection.phase_csa = 70) is on the BS 7671 App 4 ladder {16, 25, 35, 50, 70, 95, 120, 150, 185}; binding_constraint = 'vd_cumulative' confirms voltage-drop-limited selection driven by the 100 m run length."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Iz ≥ In per BS 7671 §433.1.1: walk_up_trail records iz_corrected_a = 255.7 A at the accepted 70 mm² CSA against In = 100 A (155.7 A headroom). The four rejected CSAs (16/25/35/50) each fail either Iz or App 12 §6.4 Vd 3% power-circuit limit."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "Cumulative Vd ≤ 3% per BS 7671 App 12 §6.4 power-circuit limit: walk_up_trail records vd_cumulative_pct = 2.19% for the accepted 70 mm² CSA, inside the 3% budget. Single-node cascade so vd_segment_pct == vd_cumulative_pct."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "critical",
+      "evidence": "CPC adiabatic check passes per BS 7671 §543.1.3: SWA armour fails the adiabatic test (steel k=46 × armour CSA ~50 mm² = 2300 < required √(6000² × 0.4) = 3795). Per Reg 543.2.5 alternative, separate 35 mm² copper CPC routed: k=143 × 35 = 5005 ≥ 3795. PASS. cpc_provision documents the non-default CPC routing."
+    },
+    {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "cable_type pvc_swa maps to table_used 4D5A per BS 7671:2018+A2:2022 App 4 + Sprint D2.1 compatibility matrix (Rule 1 PASS). Method D (direct-buried) is listed in 4D5A.installation_methods alongside method C (Rule 2 PASS). _source string 'BS 7671:2018+A2:2022 App 4 Table 4D5A method D' matches the (cable_type, installation_method) pair (Rule 3 PASS). reasoning.md cites the Sprint C.2 engineer_transcription_C2 disclosure for 4D5A (Rule 4 PASS)."
+    }
+  ]
+}
