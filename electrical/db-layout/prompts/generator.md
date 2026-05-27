@@ -148,19 +148,10 @@ Per `rules/busbar-sizing.yaml`:
 
 ### Diversity computation per IET OSG Appendix A + BS 7671 § 311.1
 
-Apply diversity per LOAD TYPE, not a blanket factor. The published OSG App A
-table gives:
-
-| Load type | Diversity factor | Notes |
-|---|---|---|
-| Lighting (domestic) | 0.66 | 66% of total connected |
-| Lighting (other) | 0.90 | 90% of total connected |
-| Cooking appliances | 10 A + 30% of remainder + 5 A if socket on unit | Per OSG App A |
-| Instantaneous water heaters | **1.00** (no diversity) | Single load applied at full demand — never derated |
-| Showers (instantaneous, ≥ 7.2 kW) | **1.00** (no diversity) | Per BS 7671 § 311.1 |
-| Storage water heaters | 1.00 (no diversity) | Continuous load |
-| Standard socket-outlet circuits | 100% of largest + 40% of remainder | Per OSG App A |
-| Motors | 100% of largest + 50% of remainder | Industrial |
+Apply diversity per LOAD TYPE, not a blanket factor. The full per-load-type
+table (with citations + method_params) is the D2.3 extended table further
+below — see **"Per-load-type diversity table"** under the *Per-circuit
+diversity_basis* heading.
 
 **CRITICAL:** Instantaneous loads (showers, instant water heaters) get NO
 diversity. Citing BS 7671 Appendix 1 for diversity is wrong — Appendix 1
@@ -192,10 +183,10 @@ standards):**
 | Shower (≥7.2 kW instantaneous) | 1.00 | — | BS 7671:2018+A2:2022 § 311.1 |
 | Storage water heater | 1.00 | — | IET OSG App A (continuous load) |
 | Standard socket-outlet | 100% largest + 40% remainder | {largest:100, remainder:40} | IET OSG App A |
-| **Lift / lift motor** | **1.00** | — | **BS 7671:2018+A2:2022 Reg 559 + IET Wiring Matters WR9 + EN 81-20:2020 §5.10** |
-| **EV charging point** | **1.00** | — | **BS 7671:2018+A2:2022 Reg 722 + OZEV CoP for EV Charging Equipment Installation §4.3 + IET CoP for EVCI 4th ed. §8.5** |
-| **AC unit — single** | **1.00** | — | **CIBSE TM50:2014 §4.2 + BS 7671:2018+A2:2022 Reg 552** |
-| **AC group (multi-split)** | **100% largest + 75% remainder** | {largest:100, remainder:75} | **CIBSE TM50:2014 Table 4.3** |
+| **Lift / lift motor** | **1.00** | — | **EN 81-20:2020 §5.10 (electrical installation requirements for lifts) + BS 7671:2018+A2:2022 Section 552 (rotating machines / motors)** |
+| **EV charging point** | **1.00** | — | **BS 7671:2018+A2:2022 Reg 722 (statutory) + IET Code of Practice for EV Charging Equipment Installation (4th Ed) §8.5** |
+| **AC unit — single** | **1.00** | — | **BS 7671:2018+A2:2022 Section 552 (motor circuits, by analogy for compressor) + engineer-declared (single compressor at full demand; no pinpoint clause in published guidance)** |
+| **AC group (multi-split)** | **100% largest + 75% remainder** | {largest:100, remainder:75} | **BS 7671:2018+A2:2022 Reg 552 (motor diversity, by analogy) + IET OSG App A motor section + industry practice — engineer-declared; no single authoritative pinpoint clause for multi-split AC groups** |
 | Motor — single (tighten citation) | 1.00 | — | BS 7671:2018+A2:2022 Reg 552.1.1 |
 | Motor group (tighten citation) | 100% largest + 50% remainder | {largest:100, remainder:50} | BS 7671:2018+A2:2022 Reg 552 + IET OSG App A motor section |
 | Lighting (continuous) | 1.00 | — | IET OSG App A |
@@ -215,34 +206,40 @@ standards):**
 
 **Critical regulation-driven cases (cite the regulation directly):**
 
-- **Lifts: factor = 1.00.** Per BS 7671 Reg 559 + IET WR9. Lift
-  motors have starting transients 3–5× running current — applying
+- **Lifts: factor = 1.00.** Per EN 81-20:2020 §5.10 (lift electrical
+  installation) + BS 7671:2018+A2:2022 Section 552 (motor circuits).
+  Lift motors have starting transients 3–5× running current — applying
   any diversity downstream understates the cable + protective device
-  requirement.
+  requirement. BS 7671 has no dedicated lift regulation; the safety
+  envelope comes from EN 81-20 and the motor-circuit aspect comes from
+  Section 552.
 
-- **EV chargers: factor = 1.00.** Per BS 7671 Reg 722 + the OZEV
-  Code of Practice for EV Charging Equipment Installation (industry
-  guidance referenced by Reg 722) + IET CoP for EVCI 4th ed. EV
-  charging is treated as continuous load at full demand — no
-  diversity per the OZEV CoP §4.3.
+- **EV chargers: factor = 1.00.** Per BS 7671 Reg 722 (statutory) +
+  the IET Code of Practice for EV Charging Equipment Installation
+  (4th Ed) §8.5 (industry guidance referenced by Reg 722). EV charging
+  is treated as continuous load at full demand — no diversity.
 
-- **AC grouped: 100% largest + 75% remainder.** Per CIBSE TM50:2014
-  Table 4.3. Multi-split AC installations may apply this factor
-  because simultaneous full-load operation of N units is rare under
-  typical building thermal load profiles. SINGLE AC unit gets no
-  diversity.
+- **AC grouped: 100% largest + 75% remainder.** Engineer-declared
+  industry practice; no single authoritative pinpoint clause exists
+  in published UK guidance. The closest published anchor is BS 7671
+  Section 552 motor diversity applied by analogy. Multi-split AC
+  installations may apply this factor because simultaneous full-load
+  operation of N units is rare under typical building thermal load
+  profiles. SINGLE AC unit gets no diversity. Engineer-of-record
+  must validate against project-specific load profile.
 
-**Honest disclosure (OZEV industry-guidance status):** The OZEV Code
-of Practice for EV Charging Equipment Installation is INDUSTRY
-GUIDANCE, not statutory law. However, BS 7671 Reg 722 IS statutory
-and references the OZEV CoP. Examples consuming this row MUST
-distinguish the two in reasoning.md (Reg 722 statutory + OZEV CoP
-industry guidance).
+**Honest disclosure (IET CoP for EVCI status):** the IET Code of
+Practice for EV Charging Equipment Installation (4th Ed, 2020;
+updated 5th Ed, 2023) is industry guidance, not statutory law.
+However, BS 7671 Reg 722 IS statutory and the IET CoP is the
+industry-standard reference for Reg 722 compliance. Both citations
+appear in every EV circuit's diversity_basis.citation field.
 
-**Honest disclosure (CIBSE TM50 paywall):** CIBSE TM50:2014 is
-behind the CIBSE publication paywall. Cite the table number
-explicitly (TM50:2014 Table 4.3) so the engineer-of-record can
-verify against the published edition.
+**Honest disclosure (AC group diversity):** the 100% largest + 75%
+remainder rule for multi-split AC groups is engineering practice
+without a single authoritative pinpoint clause. Citations on
+consuming examples flag this; engineer-of-record must validate
+against project load profile.
 
 **Validator INV-15 enforces** diversity_basis presence + factor
 range + citation marker + the lift/EV factor=1.00 hard rules.

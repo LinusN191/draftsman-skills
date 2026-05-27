@@ -60,7 +60,7 @@
         "load_type": "lift",
         "factor_applied": 1.00,
         "method": "no_diversity",
-        "citation": "BS 7671:2018+A2:2022 Reg 559 + IET WR9 + EN 81-20:2020 §5.10 — lift motors take full demand, no diversity"
+        "citation": "EN 81-20:2020 §5.10 + BS 7671:2018+A2:2022 Section 552 (motors) — lift motors take full demand: starting transients (3-5× running current) plus emergency/fire-mode duty cycle preclude diversity"
       }
     },
     {
@@ -82,7 +82,7 @@
         "load_type": "ev_charger",
         "factor_applied": 1.00,
         "method": "no_diversity",
-        "citation": "BS 7671:2018+A2:2022 Reg 722 + OZEV CoP §4.3 + IET CoP for EVCI 4th ed. §8.5 — EV charging treated as continuous load at full demand, no diversity"
+        "citation": "BS 7671:2018+A2:2022 Reg 722 (statutory) + IET Code of Practice for EV Charging Equipment Installation (4th Ed) §8.5 — EV charging treated as continuous load at full demand, no diversity"
       }
     },
     {
@@ -104,7 +104,7 @@
         "load_type": "ev_charger",
         "factor_applied": 1.00,
         "method": "no_diversity",
-        "citation": "BS 7671:2018+A2:2022 Reg 722 + OZEV CoP §4.3 + IET CoP for EVCI 4th ed. §8.5"
+        "citation": "BS 7671:2018+A2:2022 Reg 722 (statutory) + IET Code of Practice for EV Charging Equipment Installation (4th Ed) §8.5"
       }
     },
     {
@@ -126,7 +126,7 @@
         "load_type": "ev_charger",
         "factor_applied": 1.00,
         "method": "no_diversity",
-        "citation": "BS 7671:2018+A2:2022 Reg 722 + OZEV CoP §4.3 + IET CoP for EVCI 4th ed. §8.5"
+        "citation": "BS 7671:2018+A2:2022 Reg 722 (statutory) + IET Code of Practice for EV Charging Equipment Installation (4th Ed) §8.5"
       }
     },
     {
@@ -148,7 +148,7 @@
         "load_type": "ev_charger",
         "factor_applied": 1.00,
         "method": "no_diversity",
-        "citation": "BS 7671:2018+A2:2022 Reg 722 + OZEV CoP §4.3 + IET CoP for EVCI 4th ed. §8.5"
+        "citation": "BS 7671:2018+A2:2022 Reg 722 (statutory) + IET Code of Practice for EV Charging Equipment Installation (4th Ed) §8.5"
       }
     },
     {
@@ -170,7 +170,7 @@
         "load_type": "ac_single",
         "factor_applied": 1.00,
         "method": "no_diversity",
-        "citation": "CIBSE TM50:2014 §4.2 + BS 7671:2018+A2:2022 Reg 552 — single AC unit at full demand"
+        "citation": "BS 7671:2018+A2:2022 Section 552 (motor circuits, applied by analogy for compressor) + engineer-declared — single AC unit at full demand; no pinpoint clause in published guidance, engineer-of-record must validate"
       }
     },
     {
@@ -193,7 +193,7 @@
         "factor_applied": 0.81,
         "method": "largest_plus_remainder_pct",
         "method_params": {"largest_pct": 100, "remainder_pct": 75},
-        "citation": "CIBSE TM50:2014 Table 4.3 — multi-split AC group: 100% largest + 75% remainder. 4 × 3.5 kW: 3.5 + 0.75×10.5 = 11.375 kW → factor = 11.375/14 = 0.81. Cite TM50 paywall-published table."
+        "citation": "BS 7671:2018+A2:2022 Reg 552 (motor diversity, by analogy) + IET OSG App A motor section + industry practice — 100% largest + 75% remainder for multi-split AC groups; no single CIBSE pinpoint clause verified, engineer-of-record must validate against project load profile. 4 × 3.5 kW: 3.5 + 0.75×10.5 = 11.375 kW → factor = 11.375/14 = 0.81"
       }
     },
     {
@@ -235,10 +235,10 @@
       },
       "diversity_basis": {
         "load_type": "socket_general",
-        "factor_applied": 0.55,
+        "factor_applied": 0.50,
         "method": "largest_plus_remainder_pct",
         "method_params": {"largest_pct": 100, "remainder_pct": 40},
-        "citation": "IET OSG App A — socket-outlets: 100% largest + 40% remainder. 6 × 1.5 kW: 1.5 + 0.4×4.5 = 3.3 kW → factor = 3.3/6 = 0.55."
+        "citation": "IET OSG App A — socket-outlets: 100% largest + 40% remainder. 6 × 1.0 kW = 6.0 kW total; largest 1.0 kW: 1.0 + 0.4×5.0 = 3.0 kW → factor = 3.0/6 = 0.50."
       }
     }
   ],
@@ -247,23 +247,23 @@
     "compliant": true,
     "non_compliance_flags": [],
     "assumptions": [
-      "Diversity computed per IET OSG App A + BS 7671:2018+A2:2022 § 311.1 (NOT a blanket factor). Per-load-type diversity_basis is surfaced on every circuit. 5 distinct load types covered: lift (Reg 559, 1.00), EV (Reg 722 + OZEV CoP §4.3, 1.00), AC single (TM50 §4.2, 1.00), AC group (TM50 Table 4.3, 100+75 → 0.81), socket_general (OSG App A, 100+40 → 0.55), lighting_continuous (OSG App A, 1.00).",
-      "Total board demand = 11.0 + 4 × 7.36 + 5.0 + 11.375 + 2.0 + 3.30 = 62.115 kW. At 400 V TPN 0.9 pf: I = 62115 / (√3 × 400 × 0.9) ≈ 99.7 A — 200 A TPN main provides ~50% headroom.",
-      "OZEV CoP is industry guidance (BS 7671 Reg 722 references it); CIBSE TM50:2014 Table 4.3 is paywalled — both disclosures preserved per [[feedback-no-trim-non-consequential]].",
+      "Diversity computed per IET OSG App A + BS 7671:2018+A2:2022 § 311.1 (NOT a blanket factor). Per-load-type diversity_basis is surfaced on every circuit. 6 distinct load types covered: lift (EN 81-20 §5.10 + BS 7671 Section 552, 1.00), EV (Reg 722 + IET CoP for EVCI 4th Ed §8.5, 1.00), AC single (Section 552 by analogy, 1.00), AC group (engineer-declared 100+75 by analogy to Reg 552 → 0.81), socket_general (OSG App A 100+40 → 0.50), lighting_continuous (OSG App A, 1.00).",
+      "Total board demand = 11.0 + 4 × 7.36 + 5.0 + 11.375 + 2.0 + 3.0 = 61.815 kW. At 400 V TPN 0.9 pf: I = 61815 / (√3 × 400 × 0.9) ≈ 99.2 A — 200 A TPN main provides ~50% headroom.",
+      "IET CoP for EVCI is industry guidance (BS 7671 Reg 722 statutory references industry compliance against it); AC group 100+75 rule is engineer-declared industry practice with no single authoritative pinpoint clause — both flagged inline on each citation per [[feedback-no-trim-non-consequential]].",
       "Cable ampacity check assumes BS 7671 Appendix 4 Reference Method C (clipped direct)."
     ]
   },
   "flags": [],
   "rationale": {
-    "chat_summary": "UK mixed-use SDB feeding 1 lift + 4 EV chargers + AC (single + grouped 4-unit multi-split) + lighting + general sockets. Per-circuit diversity_basis populated for all 9 circuits demonstrating 5 distinct load types: lift (Reg 559, 1.00), EV (Reg 722 + OZEV CoP, 1.00), AC single (TM50 §4.2, 1.00), AC group (TM50 Table 4.3, 100+75), sockets (OSG App A, 100+40), lighting (OSG App A, 1.00). Total demand = 62.115 kW = 99.7 A on 200 A TPN main (~50% headroom).",
+    "chat_summary": "UK mixed-use SDB feeding 1 lift + 4 EV chargers + AC (single + grouped 4-unit multi-split) + lighting + general sockets. Per-circuit diversity_basis populated for all 9 circuits demonstrating 6 distinct load types: lift (EN 81-20 §5.10 + BS 7671 Section 552, 1.00), EV (Reg 722 + IET CoP for EVCI 4th Ed §8.5, 1.00), AC single (Section 552 by analogy, 1.00), AC group (engineer-declared 100+75 by analogy → 0.81), sockets (OSG App A 100+40 → 0.50), lighting (OSG App A, 1.00). Total demand = 61.815 kW = 99.2 A on 200 A TPN main (~50% headroom).",
     "sections": [
       {"title": "Why these load types", "summary": "Example chosen to demonstrate all 4 new diversity rows added in Sprint D2.3 (lifts + EV + AC single + AC group) plus tightened motor + socket citations. Mixed-use ground-floor common-area board is realistic UK scenario where all 5 load types coexist."},
-      {"title": "Lift diversity (Reg 559 + WR9)", "summary": "C01 lift: factor 1.00. BS 7671 Reg 559 + IET WR9 + EN 81-20:2020 §5.10. Lift motors take full demand because starting transients (3-5× running current) plus emergency/fire-mode duty cycle preclude diversity. Type B RCD required for VFD-driven lift motors per Reg 559.5."},
-      {"title": "EV diversity (Reg 722 + OZEV CoP)", "summary": "C02-C05 EV: factor 1.00 each. BS 7671 Reg 722 (statutory) references the OZEV CoP for EV Charging Equipment Installation (industry guidance). Per OZEV CoP §4.3, EV charging is treated as continuous load at full demand — no diversity. IET CoP for EVCI 4th ed. §8.5 concurs. Type B RCD required per Reg 722.531.3.101 (DC fault current detection)."},
-      {"title": "AC diversity (TM50 §4.2 vs Table 4.3)", "summary": "C06 AC single: factor 1.00 (no diversity — single compressor at full demand). C07 AC multi-split group of 4 × 3.5 kW: factor 0.81 via CIBSE TM50:2014 Table 4.3 (100% largest + 75% remainder). Multi-split installations may apply this factor because simultaneous full-load operation under typical building thermal load profiles is rare. CIBSE TM50:2014 is paywalled — engineer-of-record must verify against the published edition."},
-      {"title": "OZEV CoP industry-guidance status (honest disclosure)", "summary": "The OZEV Code of Practice for EV Charging Equipment Installation is INDUSTRY GUIDANCE, not statutory law. However, BS 7671 Reg 722 IS statutory and references the OZEV CoP. Both citations appear in every EV circuit's diversity_basis.citation field per the [[feedback-no-trim-non-consequential]] honest-disclosure rule."},
-      {"title": "CIBSE TM50 paywall (honest disclosure)", "summary": "CIBSE TM50:2014 Table 4.3 is behind the CIBSE publication paywall. The diversity_basis.citation on C07 cites the table number explicitly so the engineer-of-record can verify against the published edition. INV-15 Rule 2 (citation contains a recognisable clause marker) enforces this disclosure on every TM-cited circuit."},
-      {"title": "Board-level demand", "summary": "Sum of per-circuit demands: lift 11.0 + EV 4 × 7.36 + AC single 5.0 + AC group 11.375 + lighting 2.0 + sockets 3.30 = 62.115 kW. At 400 V TPN 0.9 pf: I = 99.7 A balanced on 200 A main — 50% headroom. Per-phase loading reasonably balanced (EV phases rotated by design)."}
+      {"title": "Lift diversity (EN 81-20 + BS 7671 Section 552)", "summary": "C01 lift: factor 1.00. EN 81-20:2020 §5.10 (lift electrical installation) + BS 7671:2018+A2:2022 Section 552 (motor circuits). BS 7671 has no dedicated lift regulation; the safety envelope comes from EN 81-20 and the motor-circuit aspect from Section 552. Lift motors take full demand because starting transients (3-5× running current) plus emergency/fire-mode duty cycle preclude diversity. Type B RCD required for VFD-driven lift motors per BS 7671 Reg 531.3.3 (RCD type selection when DC residual current components are present)."},
+      {"title": "EV diversity (Reg 722 + IET CoP for EVCI)", "summary": "C02-C05 EV: factor 1.00 each. BS 7671 Reg 722 (statutory) is the legal basis; IET Code of Practice for EV Charging Equipment Installation (4th Ed) §8.5 is the industry-standard reference for Reg 722 compliance. EV charging is treated as continuous load at full demand — no diversity. Type B RCD required per Reg 722.531.3.101 (DC fault current detection)."},
+      {"title": "AC diversity (single vs multi-split group)", "summary": "C06 AC single: factor 1.00 (no diversity — single compressor at full demand; engineer-declared by analogy to BS 7671 Section 552 motor-circuit rules). C07 AC multi-split group of 4 × 3.5 kW: factor 0.81 via engineer-declared 100% largest + 75% remainder, by analogy to BS 7671 Reg 552 motor diversity + IET OSG App A motor section + industry practice. No single authoritative pinpoint clause for multi-split AC diversity exists in published UK guidance — engineer-of-record must validate against project-specific load profile."},
+      {"title": "IET CoP for EVCI industry-guidance status (honest disclosure)", "summary": "The IET Code of Practice for EV Charging Equipment Installation (4th Ed, 2020; updated 5th Ed, 2023) is INDUSTRY GUIDANCE, not statutory law. However, BS 7671 Reg 722 IS statutory and the IET CoP is the industry-standard reference for Reg 722 compliance. Both citations appear in every EV circuit's diversity_basis.citation field per the [[feedback-no-trim-non-consequential]] honest-disclosure rule."},
+      {"title": "AC group diversity uncertainty (honest disclosure)", "summary": "The 100% largest + 75% remainder rule for multi-split AC groups is engineering practice without a single authoritative pinpoint clause in published UK guidance. The closest published anchor is BS 7671 Section 552 motor diversity applied by analogy. The C07 citation flags this inline; engineer-of-record must validate against project-specific load profile. INV-15 Rule 2 (citation contains a recognisable clause marker) is still satisfied via the Reg / § / OSG markers in the citation string."},
+      {"title": "Board-level demand", "summary": "Sum of per-circuit demands: lift 11.0 + EV 4 × 7.36 + AC single 5.0 + AC group 11.375 + lighting 2.0 + sockets 3.0 = 61.815 kW. At 400 V TPN 0.9 pf: I = 99.2 A balanced on 200 A main — 50% headroom. Per-phase loading reasonably balanced (EV phases rotated by design)."}
     ]
   },
   "invariants": [
@@ -283,7 +283,7 @@
       "id": "INV-15",
       "passes": true,
       "severity": "high",
-      "evidence": "All 9 circuits carry diversity_basis. load_types: lift (×1), ev_charger (×4), ac_single (×1), ac_group (×1), lighting_continuous (×1), socket_general (×1) — all valid enum (Rule 1 PASS). Citations all ≥20 chars with clause markers (Reg, §, OSG, CoP, TM, Table) (Rule 2 PASS). Lift + 4 EV all factor=1.00 per regulation (Rule 3 PASS). C07 AC group method_params {largest:100, remainder:75} sums 175 ∈ [100,200]; C09 sockets {100,40} sums 140 ∈ [100,200] (Rule 4 PASS)."
+      "evidence": "INV-15 board SDB-COMMON (GB): all 9 circuits carry diversity_basis. load_types: lift (×1), ev_charger (×4), ac_single (×1), ac_group (×1), lighting_continuous (×1), socket_general (×1) — all valid enum (Rule 1 PASS). Citations all ≥20 chars with recognisable clause markers (Reg / § / OSG / CoP — citations point to BS 7671 + EN 81-20 + IET CoP for EVCI 4th Ed + IET OSG App A) (Rule 2 PASS). Lift factor=1.00 method=no_diversity per EN 81-20 §5.10 + BS 7671 Section 552; 4 EV factor=1.00 method=no_diversity per Reg 722 + IET CoP EVCI §8.5 (Rule 3 PASS). C07 AC group method_params {100,75} sums 175 ∈ [100,200]; C09 sockets {100,40} sums 140 ∈ [100,200] (Rule 4 PASS)."
     }
   ]
 }

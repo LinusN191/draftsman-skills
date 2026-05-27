@@ -175,7 +175,7 @@ For every circuit on every board:
 
 2. **Citation includes a recognisable clause marker.** `diversity_basis.citation` is ≥20 chars AND contains at least one of: `Reg`, `§`, `Table`, `OSG`, `CoP`, `TM`. Pure prose without a clause marker is a HIGH violation.
 
-3. **Regulation-driven hard rules.** If `load_type == "lift"`, then `factor_applied == 1.00` AND `method == "no_diversity"` (per BS 7671 Reg 559 + WR9). If `load_type == "ev_charger"`, then `factor_applied == 1.00` AND `method == "no_diversity"` (per BS 7671 Reg 722 + OZEV CoP §4.3). Mismatch (e.g. an EV circuit with factor 0.5) is a HIGH violation — these regulations forbid diversity on these loads.
+3. **Regulation-driven hard rules.** If `load_type == "lift"`, then `factor_applied == 1.00` AND `method == "no_diversity"` (per EN 81-20:2020 §5.10 + BS 7671 Section 552 motors). If `load_type == "ev_charger"`, then `factor_applied == 1.00` AND `method == "no_diversity"` (per BS 7671 Reg 722 + IET CoP for EVCI 4th Ed §8.5). Mismatch (e.g. an EV circuit with factor 0.5) is a HIGH violation — these regulations forbid diversity on these loads.
 
 4. **method_params consistency.** If `method == "largest_plus_remainder_pct"`, then `method_params.largest_pct` AND `method_params.remainder_pct` must be present, both ∈ [0, 100], AND their sum ∈ [100, 200]. Documented industry sums: sockets 100+40=140; motor group 100+50=150; AC group 100+75=175. Engineer-declared edge cases outside [100, 200] must use `method: "engineer_declared"` (which bypasses Rule 4).
 

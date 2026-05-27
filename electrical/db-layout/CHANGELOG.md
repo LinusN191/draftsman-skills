@@ -22,9 +22,10 @@
   with load_type (13-enum) + factor_applied [0.0, 1.0] + method enum +
   optional method_params + citation (≥20c with clause marker).
 - **Generator prompt per-load-type table extended** with 4 new rows:
-  lift (Reg 559 + WR9 + EN 81-20, factor 1.00), ev_charger (Reg 722 +
-  OZEV CoP §4.3, factor 1.00), ac_single (TM50 §4.2, factor 1.00),
-  ac_group (TM50 Table 4.3, 100% largest + 75% remainder). Motor +
+  lift (EN 81-20:2020 §5.10 + BS 7671 Section 552, factor 1.00),
+  ev_charger (Reg 722 + IET CoP for EVCI 4th Ed §8.5, factor 1.00),
+  ac_single (Section 552 by analogy, factor 1.00), ac_group (engineer-
+  declared 100% largest + 75% remainder by analogy to Reg 552). Motor +
   socket existing rows tightened with explicit Reg 552.1.1 / OSG App
   A motor section citations.
 - **Validator INV-15: Diversity basis cited per circuit** (HIGH, 4
@@ -43,11 +44,18 @@
   on 200 A TPN main.
 
 ### Honest disclosures
-- OZEV CoP for EV Charging Equipment Installation is INDUSTRY GUIDANCE,
-  not statutory. BS 7671 Reg 722 IS statutory and references OZEV.
+- IET Code of Practice for EV Charging Equipment Installation (4th Ed)
+  is INDUSTRY GUIDANCE, not statutory. BS 7671 Reg 722 IS statutory and
+  the IET CoP is the industry-standard reference for Reg 722 compliance.
   Both citations appear in every EV circuit's diversity_basis.citation.
-- CIBSE TM50:2014 is behind the CIBSE publication paywall. Table 4.3
-  cited explicitly so engineer-of-record can verify.
+- Multi-split AC group 100% largest + 75% remainder rule is engineering
+  practice with no single authoritative pinpoint clause in published UK
+  guidance — closest anchor is BS 7671 Section 552 motor diversity by
+  analogy. Citation flags this inline; engineer-of-record must validate.
+- BS 7671 has NO dedicated lift regulation. Lift safety envelope comes
+  from EN 81-20:2020 §5.10 + the motor-circuit aspect from BS 7671
+  Section 552. (Sprint D2.3 originally cited a non-existent Reg 559;
+  D2.3 fix-pass corrected this across all 5 lift-touched locations.)
 - Templates/ directory deferred SVG-to-PDF rasterisation to runtime
   per [[runtime-project-boundary]]; tool_call_pending_for_pdf_png=true
   on every label entry.
