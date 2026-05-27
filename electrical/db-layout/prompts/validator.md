@@ -113,6 +113,38 @@ Rationale: phase balance is the classic 3-phase board failure mode; H6
 defect class. Per IEC 60364-5-52 § 524.2.2 the neutral current depends on
 per-phase unbalance.
 
+---
+
+**INV-14: Label format compliance (D2.2).**
+
+**Severity:** HIGH
+
+**Rule:** For every board:
+
+1. **label_format_standard present + jurisdictional alignment.** `label_format_standard ∈ {"BS", "NEC", "IEC"}`. Expected mapping: GB/KE → BS, US → NEC, INT/EU → IEC. Mismatch emits an INFO (not HIGH) — engineer may override for multi-jurisdiction projects.
+
+2. **board_label populated.** `board_label.text` non-empty, ≤120 chars. `board_label.svg` ≥50 chars AND contains NO `{{` placeholder remnants (substring `"{{"` is forbidden — indicates the template was not populated).
+
+3. **board_label.text matches the format-pattern regex for label_format_standard:**
+   - BS regex: `^[\w.-]+\s*\|\s*\d+\s*V\s+\S+\s*\|\s*Main\s+Switch\s+\d+\s*A\s*\|.*$`
+   - NEC regex: `^[\w.-]+\s*—\s*\d+V\s+\S+\s*\d+-wire\s*—\s*Main:\s*\d+A\s+\S+\s*—.*$`
+   - IEC regex: `^[\w.-]+\s*\|\s*U=\d+\s*V\s+\S+\s*\|\s*I_n=\d+\s*A\s*\|.*$`
+
+For every circuit on every board:
+
+4. **circuit_label populated.** `circuit_label.text` non-empty, ≤80 chars. `circuit_label.svg` ≥50 chars AND contains NO `{{` placeholder remnants.
+
+5. **circuit_label.text matches the format-pattern regex:**
+   - BS: `^[\w.]+\s*\|\s*.+\s*\|\s*(L1|L2|L3|N|L1L2|L1L2L3)\s*\|.*\d+A.*\|.*mm².*\|.+$`
+   - NEC: `^\d+\s+—\s+.+\s+—\s+.+\s+—\s+\d+A$`
+   - IEC: `^[\w.]+\s*\|\s*.+\s*\|\s*\d+(\.\d+)?\s*A\s*\|\s*\d+(\.\d+)?\s*mm²$`
+
+6. **tool_call_pending_for_pdf_png set.** Both `board_label.tool_call_pending_for_pdf_png` and every `circuit_label.tool_call_pending_for_pdf_png` are present and boolean. Typically `true` (LLM-emitted SVG before runtime rasterisation); `false` only after runtime renders PDF/PNG.
+
+**Validator action:** for each board, check label_format_standard + board_label fields per Rules 1–3; for each circuit, check circuit_label per Rules 4–5; verify all SVG fields contain no `{{` substring; verify all tool_call_pending flags are present.
+
+**Rationale:** Panel-schedule IR is not field-usable without circuit labels (BS 7671 §514 / NEC §408.4(A) / IEC 60364-5-51 §514 all require legible identification at the panel). Labels are the field-engineer's only documentation pulled directly from the panel directory pocket; their format must be jurisdiction-correct + machine-checkable so the runtime can rasterise them onto adhesive label stock.
+
 ### 3. Intent extraction validation
 
 Project the IR down to:

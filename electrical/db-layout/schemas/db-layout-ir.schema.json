@@ -9,6 +9,8 @@
     "version",
     "meta",
     "jurisdiction",
+    "label_format_standard",
+    "board_label",
     "board",
     "incoming_supply",
     "main_switch",
@@ -79,6 +81,34 @@
         "US",
         "KE"
       ]
+    },
+    "label_format_standard": {
+      "type": "string",
+      "enum": ["BS", "NEC", "IEC"],
+      "description": "Jurisdiction-bound label format. BS = BS 7671:2018+A2:2022 §514 + IET OSG Appendix B. NEC = NEC §408.4(A). IEC = IEC 60364-5-51 §514 + IEC 61439-1 §5.5. Maps from jurisdiction: GB/KE → BS; US → NEC; INT/EU → IEC. Engineer override permitted (INV-14 Rule 1 emits INFO not HIGH). Added Sprint D2.2."
+    },
+    "board_label": {
+      "type": "object",
+      "required": ["text", "svg", "tool_call_pending_for_pdf_png"],
+      "additionalProperties": false,
+      "description": "Per-board headline label per BS 7671 §514.13 / NEC §408.4 / IEC 60364-5-51 §514. Affixed to the panel face for field identification. SVG content is LLM-writable from templates/<standard>-board-label.svg.template; PDF/PNG rasterisation deferred to runtime via shared/calculations/electrical/render-label.json. Added Sprint D2.2.",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Formatted per label_format_standard. Includes board designation + supply voltage + main switch rating + dual-source warning if applicable."
+        },
+        "svg": {
+          "type": "string",
+          "minLength": 50,
+          "description": "Populated SVG markup (no {{placeholder}} remnants). LLM-readable; runtime-rasterisable via calc.render_label."
+        },
+        "tool_call_pending_for_pdf_png": {
+          "type": "boolean",
+          "description": "true until calc.render_label runs in the DraftsMan runtime. SVG content is browser-previewable inline."
+        }
+      }
     },
     "board": {
       "type": "object",
@@ -284,7 +314,8 @@
           "circuit_id",
           "way_module_id",
           "designation",
-          "ocpd"
+          "ocpd",
+          "circuit_label"
         ],
         "properties": {
           "circuit_id": {
@@ -441,6 +472,22 @@
                 "type": "number",
                 "exclusiveMinimum": 0
               }
+            }
+          },
+          "circuit_label": {
+            "type": "object",
+            "required": ["text", "svg", "tool_call_pending_for_pdf_png"],
+            "additionalProperties": false,
+            "description": "Per-circuit strip-label per BS 7671 §514 / NEC §408.4(A) / IEC 60364-5-51 §514. Affixed to the directory pocket inside the panel door. Added Sprint D2.2.",
+            "properties": {
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80,
+                "description": "Formatted per board.label_format_standard. ≤80 chars to fit strip-label width."
+              },
+              "svg": {"type": "string", "minLength": 50, "description": "Populated SVG markup (no {{placeholder}} remnants)."},
+              "tool_call_pending_for_pdf_png": {"type": "boolean", "description": "true until calc.render_label runs."}
             }
           }
         }

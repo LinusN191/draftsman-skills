@@ -450,6 +450,99 @@ Emit two JSON documents per board:
 
 **Do not skip the rationale.** It is the engineer's audit trail.
 
+## Step 14: Board + circuit labelling per BS 7671 §514 / NEC §408.4 / IEC 60364-5-51 §514 (D2.2)
+
+For every board, populate the headline label + every circuit's strip-label.
+
+**Step 5.1 — Determine label_format_standard from jurisdiction:**
+
+| Jurisdiction | label_format_standard | Clause |
+|---|---|---|
+| GB | BS | BS 7671:2018+A2:2022 §514 + IET OSG App B |
+| KE | BS | KS 1700 §313 routes to BS 7671 §514 |
+| US | NEC | NEC 2023 §408.4(A) |
+| INT / EU | IEC | IEC 60364-5-51:2020 §514 + IEC 61439-1 §5.5 |
+
+Engineer override permitted (e.g. multi-jurisdiction project picking
+one format); INV-14 Rule 1 emits INFO not HIGH for jurisdictional
+mismatch.
+
+**Step 5.2 — Populate board_label.text per label_format_standard:**
+
+- **BS:**
+  ```
+  <board.db_id> | <incoming_supply.voltage_v> V <incoming_supply.phase_arrangement> | Main Switch <main_switch.rating_a> A | <dual_supply_warning_if_applicable>
+  ```
+  Example: `DB-L1 | 230 V TPN | Main Switch 100 A | —`
+  Dual-supply warning: `CAUTION: More than one source of supply (genset)` when the board is fed by a transfer scheme.
+
+- **NEC:**
+  ```
+  <board.db_id> — <incoming_supply.voltage_v>V <phase> <wire_count>-wire — Main: <main_switch.rating_a>A <main_switch.type> — <warning>
+  ```
+  Example: `MSP — 208V 3-phase 4-wire — Main: 200A MCB — —`
+
+- **IEC:**
+  ```
+  <board.db_id> | U=<incoming_supply.voltage_v> V <phase_arrangement> | I_n=<main_switch.rating_a> A | <warning>
+  ```
+  Example: `MSB-1 | U=400 V TPN | I_n=630 A | —`
+
+**Step 5.3 — Populate board_label.svg:**
+
+Read `electrical/db-layout/templates/<standard-lowercased>-board-label.svg.template` (e.g. `bs-7671-board-label.svg.template`). Substitute every `{{placeholder}}`:
+
+- `{{board_designation}}` ← `board.db_id` (or `board.designation` if more descriptive)
+- `{{voltage_v}}` ← `incoming_supply.voltage_v`
+- `{{phase_arrangement}}` ← `incoming_supply.phase_arrangement`
+- `{{system_type}}` ← `incoming_supply.system_type` (TN-S, TN-C-S, etc.)
+- `{{main_switch_rating_a}}` ← `main_switch.rating_a`
+- `{{main_switch_type}}` ← `main_switch.type`
+- `{{ways_used}}` ← `board.ways_used`
+- `{{ways_total}}` ← `board.ways_total`
+- `{{dual_supply_warning_if_applicable}}` ← `"CAUTION: More than one source of supply"` if dual-source, else empty string `""`
+
+For NEC template, also derive:
+- `{{phase}}` ← `"single-phase"` / `"3-phase"` from `incoming_supply.phase_arrangement`
+- `{{wire_count}}` ← `2`/`3`/`4` from phase arrangement + neutral presence
+
+Emit the populated SVG as `board_label.svg`. Set `board_label.tool_call_pending_for_pdf_png: true`.
+
+**Step 5.4 — Populate every circuits[*].circuit_label:**
+
+For each circuit:
+
+- **BS circuit_label.text** format:
+  ```
+  <circuit_id> | <designation> | <phase> | <ocpd.type> <ocpd.rating_a>A | <cable.csa_mm2_or_awg> <cable_type_short> | <rcd_if_any>
+  ```
+  Example: `C01 | Ground floor lighting | L1 | MCB 6A | 1.5mm² T&E | RCD 30mA Type A`
+  Where:
+  - `<phase>` ← `circuits[*].phase` (L1/L2/L3/N/L1L2/L1L2L3 for TPN multi-phase circuits)
+  - `<ocpd.type> <ocpd.rating_a>A` ← e.g. `MCB 6A`, `MCCB 100A`, `RCBO 32A`
+  - `<cable_type_short>` ← short-name e.g. `T&E` for pvc_twin_earth, `SWA` for pvc_swa, `singles` for pvc_singles
+  - `<rcd_if_any>` ← `RCD <type> <sensitivity_ma>mA` if `circuits[*].rcd.required == true`; else `—`
+
+- **NEC circuit_label.text** format:
+  ```
+  <circuit_id_number> — <designation> — <load_served> — <ocpd.rating_a>A
+  ```
+  Example: `12 — Receptacles East — General use — 20A`
+
+- **IEC circuit_label.text** format:
+  ```
+  <circuit_id> | <function> | <ocpd.rating_a> A | <cable.csa_mm2> mm²
+  ```
+  Example: `Q1.1 | Lighting bank A | 16 A | 1.5 mm²`
+
+For each circuit, read `templates/<standard-lowercased>-circuit-label.svg.template` and substitute placeholders. Set `tool_call_pending_for_pdf_png: true`.
+
+**Step 5.5 — Set board.label_format_standard at root.**
+
+**Output rule:** every board MUST have `label_format_standard` + `board_label`; every circuit MUST have `circuit_label`. INV-14 enforces.
+
+---
+
 ## Step (final) — Populate the `invariants` array
 
 For every invariant declared in `prompts/validator.md` (INV-01, INV-02, ...),

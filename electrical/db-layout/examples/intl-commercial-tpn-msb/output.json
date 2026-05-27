@@ -53,7 +53,12 @@
         "cores": 5,
         "length_m": 35
       },
-      "phase": "L1+L2+L3"
+      "phase": "L1+L2+L3",
+      "circuit_label": {
+        "text": "F01 | Feeder to Lighting DB-L1 | 250 A | 150 mm²",
+        "svg": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\" version=\"1.1\"><title>Circuit label per IEC 60364-5-51 sect514 - F01</title><desc>Per-circuit strip-label for IEC-jurisdiction installation.</desc><rect x=\"0\" y=\"0\" width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" font-weight=\"bold\" fill=\"#000000\">F01</text><text x=\"8\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" fill=\"#000000\">Feeder to Lighting DB-L1</text><text x=\"2\" y=\"7\" font-family=\"Arial, sans-serif\" font-size=\"2\" fill=\"#000000\">250 A | 150 mm2</text></svg>",
+        "tool_call_pending_for_pdf_png": true
+      }
     },
     {
       "circuit_id": "F02",
@@ -72,7 +77,12 @@
         "cores": 5,
         "length_m": 40
       },
-      "phase": "L1+L2+L3"
+      "phase": "L1+L2+L3",
+      "circuit_label": {
+        "text": "F02 | Feeder to Small-Power DB-P1 | 400 A | 240 mm²",
+        "svg": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\" version=\"1.1\"><title>Circuit label per IEC 60364-5-51 sect514 - F02</title><desc>Per-circuit strip-label for IEC-jurisdiction installation.</desc><rect x=\"0\" y=\"0\" width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" font-weight=\"bold\" fill=\"#000000\">F02</text><text x=\"8\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" fill=\"#000000\">Feeder to Small-Power DB-P1</text><text x=\"2\" y=\"7\" font-family=\"Arial, sans-serif\" font-size=\"2\" fill=\"#000000\">400 A | 240 mm2</text></svg>",
+        "tool_call_pending_for_pdf_png": true
+      }
     },
     {
       "circuit_id": "F03",
@@ -91,7 +101,12 @@
         "cores": 5,
         "length_m": 45
       },
-      "phase": "L1+L2+L3"
+      "phase": "L1+L2+L3",
+      "circuit_label": {
+        "text": "F03 | Feeder to Mechanical DB-M1 | 250 A | 150 mm²",
+        "svg": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\" version=\"1.1\"><title>Circuit label per IEC 60364-5-51 sect514 - F03</title><desc>Per-circuit strip-label for IEC-jurisdiction installation.</desc><rect x=\"0\" y=\"0\" width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" font-weight=\"bold\" fill=\"#000000\">F03</text><text x=\"8\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" fill=\"#000000\">Feeder to Mechanical DB-M1</text><text x=\"2\" y=\"7\" font-family=\"Arial, sans-serif\" font-size=\"2\" fill=\"#000000\">250 A | 150 mm2</text></svg>",
+        "tool_call_pending_for_pdf_png": true
+      }
     },
     {
       "circuit_id": "F04",
@@ -110,7 +125,12 @@
         "cores": 5,
         "length_m": 60
       },
-      "phase": "L1+L2+L3"
+      "phase": "L1+L2+L3",
+      "circuit_label": {
+        "text": "F04 | Feeder to Fire Alarm DB-FA1 | 63 A | 16 mm²",
+        "svg": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\" version=\"1.1\"><title>Circuit label per IEC 60364-5-51 sect514 - F04</title><desc>Per-circuit strip-label for IEC-jurisdiction installation.</desc><rect x=\"0\" y=\"0\" width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" font-weight=\"bold\" fill=\"#000000\">F04</text><text x=\"8\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" fill=\"#000000\">Feeder to Fire Alarm DB-FA1</text><text x=\"2\" y=\"7\" font-family=\"Arial, sans-serif\" font-size=\"2\" fill=\"#000000\">63 A | 16 mm2</text></svg>",
+        "tool_call_pending_for_pdf_png": true
+      }
     }
   ],
   "selectivity_results": [
@@ -281,5 +301,24 @@
     "L3": 493.6
   },
   "neutral_current_a": 0.0,
-  "invariants": []
+  "invariants": [
+    {
+      "id": "INV-14",
+      "passes": true,
+      "severity": "high",
+      "evidence": "label_format_standard set; board_label.text matches jurisdictional format-pattern regex; board_label.svg populated (no placeholder remnants); circuit_label.text matches format-pattern regex on every circuit; circuit_label.svg populated (no placeholder remnants); tool_call_pending_for_pdf_png=true on all label objects (PDF/PNG rasterisation deferred to DraftsMan runtime). Sprint D2.2."
+    },
+    {
+      "id": "INV-14",
+      "passes": true,
+      "severity": "high",
+      "evidence": "label_format_standard set; board_label.text matches jurisdictional format-pattern regex; board_label.svg populated (no placeholder remnants); circuit_label.text matches format-pattern regex on every circuit; circuit_label.svg populated (no placeholder remnants); tool_call_pending_for_pdf_png=true on all label objects (PDF/PNG rasterisation deferred to DraftsMan runtime). Sprint D2.2."
+    }
+  ],
+  "label_format_standard": "IEC",
+  "board_label": {
+    "text": "MSB-01 | U=400 V TPN | I_n=800 A | Modules: 12/20",
+    "svg": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100mm\" height=\"60mm\" viewBox=\"0 0 100 60\" version=\"1.1\"><title>Board label per IEC 60364-5-51 sect514 - MSB-01</title><desc>Board headline label for IEC-jurisdiction installation.</desc><rect x=\"0\" y=\"0\" width=\"100\" height=\"60\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.5\"/><rect x=\"0\" y=\"0\" width=\"100\" height=\"14\" fill=\"#003399\" stroke=\"#000000\" stroke-width=\"0.5\"/><text x=\"50\" y=\"9\" font-family=\"Arial, sans-serif\" font-size=\"6\" font-weight=\"bold\" fill=\"#FFFFFF\" text-anchor=\"middle\">MSB-01</text><text x=\"4\" y=\"22\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" font-weight=\"bold\" fill=\"#000000\">U:</text><text x=\"10\" y=\"22\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" fill=\"#000000\">400 V TPN</text><text x=\"4\" y=\"29\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" font-weight=\"bold\" fill=\"#000000\">I_n:</text><text x=\"10\" y=\"29\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" fill=\"#000000\">800 A</text><text x=\"4\" y=\"36\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" font-weight=\"bold\" fill=\"#000000\">Modules:</text><text x=\"22\" y=\"36\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" fill=\"#000000\">12 / 20</text><text x=\"4\" y=\"46\" font-family=\"Arial, sans-serif\" font-size=\"3\" fill=\"#CC0000\" font-weight=\"bold\"></text><text x=\"4\" y=\"56\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" fill=\"#000000\">Per IEC 60364-5-51:2020 sect514 + IEC 61439-1 sect5.5</text></svg>",
+    "tool_call_pending_for_pdf_png": true
+  }
 }
