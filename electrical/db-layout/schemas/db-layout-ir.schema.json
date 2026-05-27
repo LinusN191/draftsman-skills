@@ -315,7 +315,8 @@
           "way_module_id",
           "designation",
           "ocpd",
-          "circuit_label"
+          "circuit_label",
+          "diversity_basis"
         ],
         "properties": {
           "circuit_id": {
@@ -488,6 +489,62 @@
               },
               "svg": {"type": "string", "minLength": 50, "description": "Populated SVG markup (no {{placeholder}} remnants)."},
               "tool_call_pending_for_pdf_png": {"type": "boolean", "description": "true until calc.render_label runs."}
+            }
+          },
+          "diversity_basis": {
+            "type": "object",
+            "required": ["load_type", "factor_applied", "method", "citation"],
+            "additionalProperties": false,
+            "description": "Per-circuit diversity factor + the regulation/standard that authorises it. Surfaces the audit trail of which clause was applied so a downstream reviewer can verify without inferring from designation alone. Added Sprint D2.3.",
+            "properties": {
+              "load_type": {
+                "type": "string",
+                "enum": [
+                  "instantaneous_water_heater",
+                  "shower",
+                  "storage_water_heater",
+                  "socket_general",
+                  "motor_single",
+                  "motor_group",
+                  "lift",
+                  "ev_charger",
+                  "ac_single",
+                  "ac_group",
+                  "lighting_continuous",
+                  "fixed_resistive",
+                  "other_declared"
+                ]
+              },
+              "factor_applied": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0,
+                "description": "Diversity factor 0.0–1.00. 1.00 means no diversity (load takes full demand)."
+              },
+              "method": {
+                "type": "string",
+                "enum": [
+                  "no_diversity",
+                  "largest_plus_remainder_pct",
+                  "table_factor",
+                  "engineer_declared"
+                ]
+              },
+              "method_params": {
+                "type": "object",
+                "additionalProperties": false,
+                "description": "Required when method == 'largest_plus_remainder_pct'. Sockets: 100/40; motor group: 100/50; AC group: 100/75.",
+                "properties": {
+                  "largest_pct": {"type": "number", "minimum": 0, "maximum": 100},
+                  "remainder_pct": {"type": "number", "minimum": 0, "maximum": 100}
+                }
+              },
+              "citation": {
+                "type": "string",
+                "minLength": 20,
+                "maxLength": 300,
+                "description": "Names the clause (Reg / § / Table / OSG / CoP / TM). INV-15 enforces presence of a recognisable clause marker."
+              }
             }
           }
         }

@@ -1,0 +1,289 @@
+{
+  "$schema": "../../schemas/db-layout-ir.schema.json",
+  "drawing_type": "db_layout_schedule_and_schematic",
+  "version": "1.4.0",
+  "meta": {
+    "project_id": "uk-mixed-use-lifts-and-ev",
+    "skill_version": "db-layout/1.4.0",
+    "produced_at": "2026-05-26T11:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "GB",
+  "label_format_standard": "BS",
+  "board": {
+    "db_id": "SDB-COMMON",
+    "designation": "Ground-floor common-area sub-distribution board",
+    "location": "GF plant room",
+    "enclosure_form_iec61439": "2b",
+    "ip_rating": "IP4X",
+    "ways_total": 12,
+    "ways_used": 9,
+    "ways_spare": 3,
+    "board_kind": "main_switchboard"
+  },
+  "board_label": {
+    "text": "SDB-COMMON | 400 V TPN | Main Switch 200 A | —",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100mm\" height=\"60mm\" viewBox=\"0 0 100 60\" version=\"1.1\"><title>Board headline label per BS 7671:2018+A2:2022 §514.13 — SDB-COMMON</title><rect x=\"0\" y=\"0\" width=\"100\" height=\"60\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.5\"/><rect x=\"0\" y=\"0\" width=\"100\" height=\"14\" fill=\"#003478\"/><text x=\"50\" y=\"9\" font-family=\"Arial\" font-size=\"6\" font-weight=\"bold\" fill=\"#FFFFFF\" text-anchor=\"middle\">SDB-COMMON</text><text x=\"4\" y=\"22\" font-family=\"Arial\" font-size=\"3.5\" font-weight=\"bold\" fill=\"#000000\">Supply:</text><text x=\"20\" y=\"22\" font-family=\"Arial\" font-size=\"3.5\" fill=\"#000000\">400 V TPN TN-S</text><text x=\"4\" y=\"29\" font-family=\"Arial\" font-size=\"3.5\" font-weight=\"bold\" fill=\"#000000\">Main Switch:</text><text x=\"28\" y=\"29\" font-family=\"Arial\" font-size=\"3.5\" fill=\"#000000\">200 A MCCB</text><text x=\"4\" y=\"36\" font-family=\"Arial\" font-size=\"3.5\" font-weight=\"bold\" fill=\"#000000\">Ways:</text><text x=\"16\" y=\"36\" font-family=\"Arial\" font-size=\"3.5\" fill=\"#000000\">9 / 12</text><text x=\"4\" y=\"56\" font-family=\"Arial\" font-size=\"2.5\" fill=\"#000000\">Per BS 7671:2018+A2:2022 §514.13</text></svg>",
+    "tool_call_pending_for_pdf_png": true
+  },
+  "incoming_supply": {
+    "voltage_v": 400,
+    "phase_arrangement": "TPN",
+    "supply_rating_a": 200,
+    "fed_from": "MSB-MAIN",
+    "supply_class": "non_essential",
+    "declared_pfc_ka": 16
+  },
+  "main_switch": {
+    "type": "MCCB",
+    "rating_a": 200,
+    "breaking_capacity_ka": 36
+  },
+  "spare_ways": 3,
+  "circuits": [
+    {
+      "circuit_id": "C01",
+      "way_module_id": "W1",
+      "designation": "Lift motor + lift controller (BS EN 81-20)",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 11,
+      "phase": "L1+L2+L3",
+      "ocpd": {"type": "MCCB", "rating_a": 32, "curve": "D", "breaking_capacity_ka": 36},
+      "rcd": {"required": true, "type": "B", "sensitivity_ma": 300},
+      "cable": {"csa_mm2_or_awg": "10mm²", "cores": 5, "length_m": 22},
+      "circuit_label": {
+        "text": "C01 | Lift motor + controller | L1L2L3 | MCCB 32A | 10mm² T&E | RCD 300mA Type B",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\"><rect x=\"0\" y=\"0\" width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\" font-weight=\"bold\">C01</text><text x=\"6\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\">Lift motor + controller</text><text x=\"2\" y=\"7\" font-family=\"Arial\" font-size=\"2\">L1L2L3 | MCCB 32A | 10mm² T&amp;E</text><text x=\"2\" y=\"10.5\" font-family=\"Arial\" font-size=\"2\">RCD 300mA Type B</text></svg>",
+        "tool_call_pending_for_pdf_png": true
+      },
+      "diversity_basis": {
+        "load_type": "lift",
+        "factor_applied": 1.00,
+        "method": "no_diversity",
+        "citation": "BS 7671:2018+A2:2022 Reg 559 + IET WR9 + EN 81-20:2020 §5.10 — lift motors take full demand, no diversity"
+      }
+    },
+    {
+      "circuit_id": "C02",
+      "way_module_id": "W2",
+      "designation": "EV charge point #1 (7 kW Mode 3 Type 2)",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 7.36,
+      "phase": "L1",
+      "ocpd": {"type": "MCB", "rating_a": 32, "curve": "C", "breaking_capacity_ka": 6},
+      "rcd": {"required": true, "type": "B", "sensitivity_ma": 30},
+      "cable": {"csa_mm2_or_awg": "6mm²", "cores": 3, "length_m": 28},
+      "circuit_label": {
+        "text": "C02 | EV CP#1 7kW Mode 3 | L1 | MCB 32A | 6mm² T&E | RCD 30mA Type B",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\"><rect width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\" font-weight=\"bold\">C02</text><text x=\"6\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\">EV CP#1 7kW Mode 3</text><text x=\"2\" y=\"7\" font-family=\"Arial\" font-size=\"2\">L1 | MCB 32A | 6mm² T&amp;E</text><text x=\"2\" y=\"10.5\" font-family=\"Arial\" font-size=\"2\">RCD 30mA Type B</text></svg>",
+        "tool_call_pending_for_pdf_png": true
+      },
+      "diversity_basis": {
+        "load_type": "ev_charger",
+        "factor_applied": 1.00,
+        "method": "no_diversity",
+        "citation": "BS 7671:2018+A2:2022 Reg 722 + OZEV CoP §4.3 + IET CoP for EVCI 4th ed. §8.5 — EV charging treated as continuous load at full demand, no diversity"
+      }
+    },
+    {
+      "circuit_id": "C03",
+      "way_module_id": "W3",
+      "designation": "EV charge point #2 (7 kW Mode 3 Type 2)",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 7.36,
+      "phase": "L2",
+      "ocpd": {"type": "MCB", "rating_a": 32, "curve": "C", "breaking_capacity_ka": 6},
+      "rcd": {"required": true, "type": "B", "sensitivity_ma": 30},
+      "cable": {"csa_mm2_or_awg": "6mm²", "cores": 3, "length_m": 30},
+      "circuit_label": {
+        "text": "C03 | EV CP#2 7kW Mode 3 | L2 | MCB 32A | 6mm² T&E | RCD 30mA Type B",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\"><rect width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\" font-weight=\"bold\">C03</text><text x=\"6\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\">EV CP#2 7kW Mode 3</text><text x=\"2\" y=\"7\" font-family=\"Arial\" font-size=\"2\">L2 | MCB 32A | 6mm² T&amp;E</text><text x=\"2\" y=\"10.5\" font-family=\"Arial\" font-size=\"2\">RCD 30mA Type B</text></svg>",
+        "tool_call_pending_for_pdf_png": true
+      },
+      "diversity_basis": {
+        "load_type": "ev_charger",
+        "factor_applied": 1.00,
+        "method": "no_diversity",
+        "citation": "BS 7671:2018+A2:2022 Reg 722 + OZEV CoP §4.3 + IET CoP for EVCI 4th ed. §8.5"
+      }
+    },
+    {
+      "circuit_id": "C04",
+      "way_module_id": "W4",
+      "designation": "EV charge point #3 (7 kW Mode 3 Type 2)",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 7.36,
+      "phase": "L3",
+      "ocpd": {"type": "MCB", "rating_a": 32, "curve": "C", "breaking_capacity_ka": 6},
+      "rcd": {"required": true, "type": "B", "sensitivity_ma": 30},
+      "cable": {"csa_mm2_or_awg": "6mm²", "cores": 3, "length_m": 32},
+      "circuit_label": {
+        "text": "C04 | EV CP#3 7kW Mode 3 | L3 | MCB 32A | 6mm² T&E | RCD 30mA Type B",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\"><rect width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\" font-weight=\"bold\">C04</text><text x=\"6\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\">EV CP#3 7kW Mode 3</text><text x=\"2\" y=\"7\" font-family=\"Arial\" font-size=\"2\">L3 | MCB 32A | 6mm² T&amp;E</text><text x=\"2\" y=\"10.5\" font-family=\"Arial\" font-size=\"2\">RCD 30mA Type B</text></svg>",
+        "tool_call_pending_for_pdf_png": true
+      },
+      "diversity_basis": {
+        "load_type": "ev_charger",
+        "factor_applied": 1.00,
+        "method": "no_diversity",
+        "citation": "BS 7671:2018+A2:2022 Reg 722 + OZEV CoP §4.3 + IET CoP for EVCI 4th ed. §8.5"
+      }
+    },
+    {
+      "circuit_id": "C05",
+      "way_module_id": "W5",
+      "designation": "EV charge point #4 (7 kW Mode 3 Type 2)",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 7.36,
+      "phase": "L1",
+      "ocpd": {"type": "MCB", "rating_a": 32, "curve": "C", "breaking_capacity_ka": 6},
+      "rcd": {"required": true, "type": "B", "sensitivity_ma": 30},
+      "cable": {"csa_mm2_or_awg": "6mm²", "cores": 3, "length_m": 26},
+      "circuit_label": {
+        "text": "C05 | EV CP#4 7kW Mode 3 | L1 | MCB 32A | 6mm² T&E | RCD 30mA Type B",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\"><rect width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\" font-weight=\"bold\">C05</text><text x=\"6\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\">EV CP#4 7kW Mode 3</text><text x=\"2\" y=\"7\" font-family=\"Arial\" font-size=\"2\">L1 | MCB 32A | 6mm² T&amp;E</text><text x=\"2\" y=\"10.5\" font-family=\"Arial\" font-size=\"2\">RCD 30mA Type B</text></svg>",
+        "tool_call_pending_for_pdf_png": true
+      },
+      "diversity_basis": {
+        "load_type": "ev_charger",
+        "factor_applied": 1.00,
+        "method": "no_diversity",
+        "citation": "BS 7671:2018+A2:2022 Reg 722 + OZEV CoP §4.3 + IET CoP for EVCI 4th ed. §8.5"
+      }
+    },
+    {
+      "circuit_id": "C06",
+      "way_module_id": "W6",
+      "designation": "AC unit — single split (5 kW)",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 5,
+      "phase": "L2",
+      "ocpd": {"type": "MCB", "rating_a": 25, "curve": "C", "breaking_capacity_ka": 6},
+      "rcd": {"required": true, "type": "A", "sensitivity_ma": 30},
+      "cable": {"csa_mm2_or_awg": "4mm²", "cores": 3, "length_m": 18},
+      "circuit_label": {
+        "text": "C06 | AC single split 5kW | L2 | MCB 25A | 4mm² T&E | RCD 30mA Type A",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\"><rect width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\" font-weight=\"bold\">C06</text><text x=\"6\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\">AC single split 5kW</text><text x=\"2\" y=\"7\" font-family=\"Arial\" font-size=\"2\">L2 | MCB 25A | 4mm² T&amp;E</text><text x=\"2\" y=\"10.5\" font-family=\"Arial\" font-size=\"2\">RCD 30mA Type A</text></svg>",
+        "tool_call_pending_for_pdf_png": true
+      },
+      "diversity_basis": {
+        "load_type": "ac_single",
+        "factor_applied": 1.00,
+        "method": "no_diversity",
+        "citation": "CIBSE TM50:2014 §4.2 + BS 7671:2018+A2:2022 Reg 552 — single AC unit at full demand"
+      }
+    },
+    {
+      "circuit_id": "C07",
+      "way_module_id": "W7",
+      "designation": "AC multi-split bank — 4 units × 3.5 kW each",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 14,
+      "phase": "L1+L2+L3",
+      "ocpd": {"type": "MCCB", "rating_a": 40, "curve": "D", "breaking_capacity_ka": 36},
+      "rcd": {"required": true, "type": "A", "sensitivity_ma": 30},
+      "cable": {"csa_mm2_or_awg": "10mm²", "cores": 5, "length_m": 25},
+      "circuit_label": {
+        "text": "C07 | AC multi-split 4×3.5kW | L1L2L3 | MCCB 40A | 10mm² T&E | RCD 30mA Type A",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\"><rect width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\" font-weight=\"bold\">C07</text><text x=\"6\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\">AC multi-split 4x3.5kW</text><text x=\"2\" y=\"7\" font-family=\"Arial\" font-size=\"2\">L1L2L3 | MCCB 40A | 10mm² T&amp;E</text><text x=\"2\" y=\"10.5\" font-family=\"Arial\" font-size=\"2\">RCD 30mA Type A</text></svg>",
+        "tool_call_pending_for_pdf_png": true
+      },
+      "diversity_basis": {
+        "load_type": "ac_group",
+        "factor_applied": 0.81,
+        "method": "largest_plus_remainder_pct",
+        "method_params": {"largest_pct": 100, "remainder_pct": 75},
+        "citation": "CIBSE TM50:2014 Table 4.3 — multi-split AC group: 100% largest + 75% remainder. 4 × 3.5 kW: 3.5 + 0.75×10.5 = 11.375 kW → factor = 11.375/14 = 0.81. Cite TM50 paywall-published table."
+      }
+    },
+    {
+      "circuit_id": "C08",
+      "way_module_id": "W8",
+      "designation": "Common-area lighting (continuous)",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 2,
+      "phase": "L3",
+      "ocpd": {"type": "MCB", "rating_a": 10, "curve": "B", "breaking_capacity_ka": 6},
+      "rcd": {"required": true, "type": "A", "sensitivity_ma": 30},
+      "cable": {"csa_mm2_or_awg": "1.5mm²", "cores": 3, "length_m": 35},
+      "circuit_label": {
+        "text": "C08 | Common-area lighting | L3 | MCB 10A | 1.5mm² T&E | RCD 30mA Type A",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\"><rect width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\" font-weight=\"bold\">C08</text><text x=\"6\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\">Common-area lighting</text><text x=\"2\" y=\"7\" font-family=\"Arial\" font-size=\"2\">L3 | MCB 10A | 1.5mm² T&amp;E</text><text x=\"2\" y=\"10.5\" font-family=\"Arial\" font-size=\"2\">RCD 30mA Type A</text></svg>",
+        "tool_call_pending_for_pdf_png": true
+      },
+      "diversity_basis": {
+        "load_type": "lighting_continuous",
+        "factor_applied": 1.00,
+        "method": "no_diversity",
+        "citation": "IET OSG App A — continuous lighting load, no diversity"
+      }
+    },
+    {
+      "circuit_id": "C09",
+      "way_module_id": "W9",
+      "designation": "General sockets — 6 outlets",
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 6,
+      "phase": "L1",
+      "ocpd": {"type": "MCB", "rating_a": 32, "curve": "B", "breaking_capacity_ka": 6},
+      "rcd": {"required": true, "type": "A", "sensitivity_ma": 30},
+      "cable": {"csa_mm2_or_awg": "2.5mm²", "cores": 3, "length_m": 40},
+      "circuit_label": {
+        "text": "C09 | General sockets 6× | L1 | MCB 32A | 2.5mm² T&E | RCD 30mA Type A",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\"><rect width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\" font-weight=\"bold\">C09</text><text x=\"6\" y=\"3.5\" font-family=\"Arial\" font-size=\"2.5\">General sockets 6x</text><text x=\"2\" y=\"7\" font-family=\"Arial\" font-size=\"2\">L1 | MCB 32A | 2.5mm² T&amp;E</text><text x=\"2\" y=\"10.5\" font-family=\"Arial\" font-size=\"2\">RCD 30mA Type A</text></svg>",
+        "tool_call_pending_for_pdf_png": true
+      },
+      "diversity_basis": {
+        "load_type": "socket_general",
+        "factor_applied": 0.55,
+        "method": "largest_plus_remainder_pct",
+        "method_params": {"largest_pct": 100, "remainder_pct": 40},
+        "citation": "IET OSG App A — socket-outlets: 100% largest + 40% remainder. 6 × 1.5 kW: 1.5 + 0.4×4.5 = 3.3 kW → factor = 3.3/6 = 0.55."
+      }
+    }
+  ],
+  "selectivity_results": [],
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Diversity computed per IET OSG App A + BS 7671:2018+A2:2022 § 311.1 (NOT a blanket factor). Per-load-type diversity_basis is surfaced on every circuit. 5 distinct load types covered: lift (Reg 559, 1.00), EV (Reg 722 + OZEV CoP §4.3, 1.00), AC single (TM50 §4.2, 1.00), AC group (TM50 Table 4.3, 100+75 → 0.81), socket_general (OSG App A, 100+40 → 0.55), lighting_continuous (OSG App A, 1.00).",
+      "Total board demand = 11.0 + 4 × 7.36 + 5.0 + 11.375 + 2.0 + 3.30 = 62.115 kW. At 400 V TPN 0.9 pf: I = 62115 / (√3 × 400 × 0.9) ≈ 99.7 A — 200 A TPN main provides ~50% headroom.",
+      "OZEV CoP is industry guidance (BS 7671 Reg 722 references it); CIBSE TM50:2014 Table 4.3 is paywalled — both disclosures preserved per [[feedback-no-trim-non-consequential]].",
+      "Cable ampacity check assumes BS 7671 Appendix 4 Reference Method C (clipped direct)."
+    ]
+  },
+  "flags": [],
+  "rationale": {
+    "chat_summary": "UK mixed-use SDB feeding 1 lift + 4 EV chargers + AC (single + grouped 4-unit multi-split) + lighting + general sockets. Per-circuit diversity_basis populated for all 9 circuits demonstrating 5 distinct load types: lift (Reg 559, 1.00), EV (Reg 722 + OZEV CoP, 1.00), AC single (TM50 §4.2, 1.00), AC group (TM50 Table 4.3, 100+75), sockets (OSG App A, 100+40), lighting (OSG App A, 1.00). Total demand = 62.115 kW = 99.7 A on 200 A TPN main (~50% headroom).",
+    "sections": [
+      {"title": "Why these load types", "summary": "Example chosen to demonstrate all 4 new diversity rows added in Sprint D2.3 (lifts + EV + AC single + AC group) plus tightened motor + socket citations. Mixed-use ground-floor common-area board is realistic UK scenario where all 5 load types coexist."},
+      {"title": "Lift diversity (Reg 559 + WR9)", "summary": "C01 lift: factor 1.00. BS 7671 Reg 559 + IET WR9 + EN 81-20:2020 §5.10. Lift motors take full demand because starting transients (3-5× running current) plus emergency/fire-mode duty cycle preclude diversity. Type B RCD required for VFD-driven lift motors per Reg 559.5."},
+      {"title": "EV diversity (Reg 722 + OZEV CoP)", "summary": "C02-C05 EV: factor 1.00 each. BS 7671 Reg 722 (statutory) references the OZEV CoP for EV Charging Equipment Installation (industry guidance). Per OZEV CoP §4.3, EV charging is treated as continuous load at full demand — no diversity. IET CoP for EVCI 4th ed. §8.5 concurs. Type B RCD required per Reg 722.531.3.101 (DC fault current detection)."},
+      {"title": "AC diversity (TM50 §4.2 vs Table 4.3)", "summary": "C06 AC single: factor 1.00 (no diversity — single compressor at full demand). C07 AC multi-split group of 4 × 3.5 kW: factor 0.81 via CIBSE TM50:2014 Table 4.3 (100% largest + 75% remainder). Multi-split installations may apply this factor because simultaneous full-load operation under typical building thermal load profiles is rare. CIBSE TM50:2014 is paywalled — engineer-of-record must verify against the published edition."},
+      {"title": "OZEV CoP industry-guidance status (honest disclosure)", "summary": "The OZEV Code of Practice for EV Charging Equipment Installation is INDUSTRY GUIDANCE, not statutory law. However, BS 7671 Reg 722 IS statutory and references the OZEV CoP. Both citations appear in every EV circuit's diversity_basis.citation field per the [[feedback-no-trim-non-consequential]] honest-disclosure rule."},
+      {"title": "CIBSE TM50 paywall (honest disclosure)", "summary": "CIBSE TM50:2014 Table 4.3 is behind the CIBSE publication paywall. The diversity_basis.citation on C07 cites the table number explicitly so the engineer-of-record can verify against the published edition. INV-15 Rule 2 (citation contains a recognisable clause marker) enforces this disclosure on every TM-cited circuit."},
+      {"title": "Board-level demand", "summary": "Sum of per-circuit demands: lift 11.0 + EV 4 × 7.36 + AC single 5.0 + AC group 11.375 + lighting 2.0 + sockets 3.30 = 62.115 kW. At 400 V TPN 0.9 pf: I = 99.7 A balanced on 200 A main — 50% headroom. Per-phase loading reasonably balanced (EV phases rotated by design)."}
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Diversity factor for shower-equivalent loads on this board: N/A (no instantaneous loads present). For the loads that ARE present, per-load-type factors applied per generator step; no blanket factor used. INV-12 Sprint B M1 rule (instantaneous loads must use 1.00) not triggered because no instantaneous-load circuits exist on this SDB."
+    },
+    {
+      "id": "INV-14",
+      "passes": true,
+      "severity": "high",
+      "evidence": "label_format_standard=BS matches jurisdiction=GB (Rule 1 PASS). board_label.text 'SDB-COMMON | 400 V TPN | Main Switch 200 A | —' matches BS regex (Rule 2-3 PASS). All 9 circuit_label entries populated with text + svg per BS template; no {{placeholders}} remain in any svg (Rules 4-5 PASS). tool_call_pending_for_pdf_png=true on board_label + all 9 circuits (Rule 6 PASS)."
+    },
+    {
+      "id": "INV-15",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All 9 circuits carry diversity_basis. load_types: lift (×1), ev_charger (×4), ac_single (×1), ac_group (×1), lighting_continuous (×1), socket_general (×1) — all valid enum (Rule 1 PASS). Citations all ≥20 chars with clause markers (Reg, §, OSG, CoP, TM, Table) (Rule 2 PASS). Lift + 4 EV all factor=1.00 per regulation (Rule 3 PASS). C07 AC group method_params {largest:100, remainder:75} sums 175 ∈ [100,200]; C09 sockets {100,40} sums 140 ∈ [100,200] (Rule 4 PASS)."
+    }
+  ]
+}

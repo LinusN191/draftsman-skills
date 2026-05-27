@@ -1,0 +1,58 @@
+{
+  "$schema": "../../inputs.json",
+  "skill": "db-layout",
+  "example_id": "uk-mixed-use-lifts-and-ev",
+  "jurisdiction": "GB",
+  "items": [
+    {
+      "id": "I-1",
+      "category": "site_brief",
+      "label": "Site description",
+      "value": "UK mixed-use building — 4-storey commercial ground + residential upper. Sub-distribution board serves the ground-floor commercial common areas: 1 passenger lift (BS EN 81-20:2020), 4 × 7 kW EV charge points (residential parking — Mode 3 Type 2 per BS 7671 Reg 722 + OZEV CoP), 2 × split AC units (single + grouped multi-split pair), general sockets, and lighting. Per BS 7671:2018+A2:2022 § 311.1 per-load-type diversity table (NOT blanket factor)."
+    },
+    {
+      "id": "I-2",
+      "category": "board",
+      "label": "Board specification",
+      "value": {
+        "db_id": "SDB-COMMON",
+        "designation": "Ground-floor common-area sub-distribution board",
+        "location": "GF plant room",
+        "enclosure_form_iec61439": "2b",
+        "ip_rating": "IP4X",
+        "ways_total": 12,
+        "board_kind": "main_switchboard"
+      }
+    },
+    {
+      "id": "I-3",
+      "category": "incoming_supply",
+      "label": "Incoming supply",
+      "value": {
+        "voltage_v": 400,
+        "phase_arrangement": "TPN",
+        "system_type": "TN-S",
+        "declared_pfc_ka": 16,
+        "main_switch_rating_a": 200,
+        "fed_from": "MSB-MAIN",
+        "supply_class": "non_essential"
+      }
+    },
+    {
+      "id": "I-4",
+      "category": "circuits",
+      "label": "Load schedule",
+      "value": [
+        {"id": "C01", "designation": "Lift motor + lift controller (BS EN 81-20)", "load_kw": 11, "load_type": "lift", "phase": "L1+L2+L3"},
+        {"id": "C02", "designation": "EV charge point #1 (7 kW Mode 3)", "load_kw": 7.36, "load_type": "ev_charger", "phase": "L1"},
+        {"id": "C03", "designation": "EV charge point #2 (7 kW Mode 3)", "load_kw": 7.36, "load_type": "ev_charger", "phase": "L2"},
+        {"id": "C04", "designation": "EV charge point #3 (7 kW Mode 3)", "load_kw": 7.36, "load_type": "ev_charger", "phase": "L3"},
+        {"id": "C05", "designation": "EV charge point #4 (7 kW Mode 3)", "load_kw": 7.36, "load_type": "ev_charger", "phase": "L1"},
+        {"id": "C06", "designation": "AC unit — single split (5 kW)", "load_kw": 5, "load_type": "ac_single", "phase": "L2"},
+        {"id": "C07", "designation": "AC multi-split bank — 4 units × 3.5 kW each", "load_kw": 14, "load_type": "ac_group", "phase": "L1+L2+L3", "items_in_group": 4, "largest_item_kw": 3.5},
+        {"id": "C08", "designation": "Common-area lighting (continuous)", "load_kw": 2, "load_type": "lighting_continuous", "phase": "L3"},
+        {"id": "C09", "designation": "General sockets — 6 circuits", "load_kw": 6, "load_type": "socket_general", "phase": "L1", "items_in_group": 6, "largest_item_kw": 1.5}
+      ]
+    }
+  ]
+}

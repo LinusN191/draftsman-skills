@@ -174,6 +174,79 @@ tabulation applies (IEC 60364 Annex E / NFPA 70 Art 220 for US load
 calculations). Do NOT apply a blanket `inputs.diversity_factor_main` to
 instantaneous loads even if the engineer declared one.
 
+### Per-circuit diversity_basis (Sprint D2.3 — surfaces the audit trail)
+
+In addition to the board-level diversity computation above, every circuit
+MUST carry a `diversity_basis` object declaring (a) the load type, (b) the
+factor applied, (c) the method used, and (d) the regulation/standard that
+authorises it. This surfaces the per-circuit audit trail so a downstream
+reviewer (TCS / panel-builder / building-control) can verify each circuit
+independently without inferring from designation prose.
+
+**Per-load-type diversity table (BS 7671 + IET OSG App A + sector
+standards):**
+
+| Load type | Factor / method | Method params | Citation |
+|---|---|---|---|
+| Instantaneous water heater | 1.00 | — | BS 7671:2018+A2:2022 § 311.1 + IET OSG App A |
+| Shower (≥7.2 kW instantaneous) | 1.00 | — | BS 7671:2018+A2:2022 § 311.1 |
+| Storage water heater | 1.00 | — | IET OSG App A (continuous load) |
+| Standard socket-outlet | 100% largest + 40% remainder | {largest:100, remainder:40} | IET OSG App A |
+| **Lift / lift motor** | **1.00** | — | **BS 7671:2018+A2:2022 Reg 559 + IET Wiring Matters WR9 + EN 81-20:2020 §5.10** |
+| **EV charging point** | **1.00** | — | **BS 7671:2018+A2:2022 Reg 722 + OZEV CoP for EV Charging Equipment Installation §4.3 + IET CoP for EVCI 4th ed. §8.5** |
+| **AC unit — single** | **1.00** | — | **CIBSE TM50:2014 §4.2 + BS 7671:2018+A2:2022 Reg 552** |
+| **AC group (multi-split)** | **100% largest + 75% remainder** | {largest:100, remainder:75} | **CIBSE TM50:2014 Table 4.3** |
+| Motor — single (tighten citation) | 1.00 | — | BS 7671:2018+A2:2022 Reg 552.1.1 |
+| Motor group (tighten citation) | 100% largest + 50% remainder | {largest:100, remainder:50} | BS 7671:2018+A2:2022 Reg 552 + IET OSG App A motor section |
+| Lighting (continuous) | 1.00 | — | IET OSG App A |
+| Fixed resistive (e.g. immersion heater bank) | 1.00 | — | IET OSG App A |
+
+**For every circuit**, populate `circuits[*].diversity_basis`:
+
+```json
+"diversity_basis": {
+  "load_type": "<one of enum>",
+  "factor_applied": <0.0-1.0>,
+  "method": "<no_diversity | largest_plus_remainder_pct | table_factor | engineer_declared>",
+  "method_params": {<largest_pct, remainder_pct> if method=largest_plus_remainder_pct},
+  "citation": "<≥20 char clause reference>"
+}
+```
+
+**Critical regulation-driven cases (cite the regulation directly):**
+
+- **Lifts: factor = 1.00.** Per BS 7671 Reg 559 + IET WR9. Lift
+  motors have starting transients 3–5× running current — applying
+  any diversity downstream understates the cable + protective device
+  requirement.
+
+- **EV chargers: factor = 1.00.** Per BS 7671 Reg 722 + the OZEV
+  Code of Practice for EV Charging Equipment Installation (industry
+  guidance referenced by Reg 722) + IET CoP for EVCI 4th ed. EV
+  charging is treated as continuous load at full demand — no
+  diversity per the OZEV CoP §4.3.
+
+- **AC grouped: 100% largest + 75% remainder.** Per CIBSE TM50:2014
+  Table 4.3. Multi-split AC installations may apply this factor
+  because simultaneous full-load operation of N units is rare under
+  typical building thermal load profiles. SINGLE AC unit gets no
+  diversity.
+
+**Honest disclosure (OZEV industry-guidance status):** The OZEV Code
+of Practice for EV Charging Equipment Installation is INDUSTRY
+GUIDANCE, not statutory law. However, BS 7671 Reg 722 IS statutory
+and references the OZEV CoP. Examples consuming this row MUST
+distinguish the two in reasoning.md (Reg 722 statutory + OZEV CoP
+industry guidance).
+
+**Honest disclosure (CIBSE TM50 paywall):** CIBSE TM50:2014 is
+behind the CIBSE publication paywall. Cite the table number
+explicitly (TM50:2014 Table 4.3) so the engineer-of-record can
+verify against the published edition.
+
+**Validator INV-15 enforces** diversity_basis presence + factor
+range + citation marker + the lift/EV factor=1.00 hard rules.
+
 ### Phase preservation for TPN boards
 
 For three-phase-and-neutral (TPN / TPN_plus_E) boards, every circuit MUST

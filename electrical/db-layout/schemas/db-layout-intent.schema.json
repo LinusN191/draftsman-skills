@@ -48,7 +48,12 @@
           "cable_cores":        { "type": "integer", "minimum": 2, "maximum": 5 },
           "voltage_class":      { "enum": ["LV_power", "ELV_control", "comms_data", "fire_alarm", "emergency_lighting"] },
           "downstream_load_kw": { "type": "number", "minimum": 0 },
-          "approximate_route_length_m": { "type": "number", "exclusiveMinimum": 0 }
+          "approximate_route_length_m": { "type": "number", "exclusiveMinimum": 0 },
+          "diversity_basis": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Optional per-circuit diversity audit trail propagated from the IR. Permissive — downstream consumers may inspect load_type + factor_applied to verify which regulation/standard authorises the diversity factor on each circuit. Added Sprint D2.3."
+          }
         }
       }
     },

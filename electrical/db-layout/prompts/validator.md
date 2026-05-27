@@ -163,6 +163,26 @@ For every circuit on every board:
 
 **Rationale:** Panel-schedule IR is not field-usable without circuit labels (BS 7671 §514 / NEC §408.4(A) / IEC 60364-5-51 §514 all require legible identification at the panel). Labels are the field-engineer's only documentation pulled directly from the panel directory pocket; their format must be jurisdiction-correct + machine-checkable so the runtime can rasterise them onto adhesive label stock. The D2.2 fix-pass loosened the original regexes to accept legitimate variations engineers encounter in practice — RCBO labels with the rating embedded in the device name, multi-pole circuit numbering (`1,3,5` or `2-4-6`), TPN-with-N phase tokens (`L1N`, `L1L2N`, `L1L2L3N`), and IEC cable-type suffixes after the csa (`2.5 mm² 5C`) — while keeping the placeholder / pure-whitespace failure modes blocked by Rules 2 + 4.
 
+---
+
+**INV-15: Diversity basis cited per circuit (D2.3).**
+
+**Severity:** HIGH
+
+**Rule:** For every circuit on every board:
+
+1. **diversity_basis present + valid enum values.** Every circuit has `diversity_basis` with `load_type ∈` the 13-value enum, `factor_applied ∈ [0.0, 1.0]`, `method ∈ {no_diversity, largest_plus_remainder_pct, table_factor, engineer_declared}`.
+
+2. **Citation includes a recognisable clause marker.** `diversity_basis.citation` is ≥20 chars AND contains at least one of: `Reg`, `§`, `Table`, `OSG`, `CoP`, `TM`. Pure prose without a clause marker is a HIGH violation.
+
+3. **Regulation-driven hard rules.** If `load_type == "lift"`, then `factor_applied == 1.00` AND `method == "no_diversity"` (per BS 7671 Reg 559 + WR9). If `load_type == "ev_charger"`, then `factor_applied == 1.00` AND `method == "no_diversity"` (per BS 7671 Reg 722 + OZEV CoP §4.3). Mismatch (e.g. an EV circuit with factor 0.5) is a HIGH violation — these regulations forbid diversity on these loads.
+
+4. **method_params consistency.** If `method == "largest_plus_remainder_pct"`, then `method_params.largest_pct` AND `method_params.remainder_pct` must be present, both ∈ [0, 100], AND their sum ∈ [100, 200]. Documented industry sums: sockets 100+40=140; motor group 100+50=150; AC group 100+75=175. Engineer-declared edge cases outside [100, 200] must use `method: "engineer_declared"` (which bypasses Rule 4).
+
+**Validator action:** for each circuit, check diversity_basis presence; assert factor_applied in range; verify citation contains a clause marker; for load_type ∈ {lift, ev_charger}, assert factor_applied == 1.00; for method == largest_plus_remainder_pct, assert sum of pct in [100, 200].
+
+**Rationale:** Sprint B INV-12 caught the instantaneous-load misapplication (blanket 0.4 factor on a shower load) but did not enforce per-circuit basis citation. The Sprint D2.3 audit trail closes the gap: every circuit now declares (a) which load-type it falls under, (b) what factor applies, (c) what regulation/standard authorises it. A downstream reviewer (TCS / panel-builder / building-control) can verify each circuit independently without inferring from designation prose.
+
 ### 3. Intent extraction validation
 
 Project the IR down to:
@@ -184,4 +204,4 @@ Emit a single JSON object:
 }
 ```
 
-`valid: true` requires ALL of: schema pass, all 13 invariants pass, both intent projections valid.
+`valid: true` requires ALL of: schema pass, all 15 invariants pass, both intent projections valid.

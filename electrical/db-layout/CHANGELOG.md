@@ -1,5 +1,63 @@
 # Changelog — db-layout
 
+## [1.4.0] - 2026-05-26 — Sprint D2.2 + D2.3 (labels + diversity edge cases)
+
+### Added (Sprint D2.2 — labels)
+- **label_format_standard at root**: enum BS|NEC|IEC; jurisdiction-mapped
+  GB/KE→BS, US→NEC, INT/EU→IEC; engineer override permitted.
+- **board_label at root**: text (≤120c, formatted per std) + svg
+  (populated from templates/) + tool_call_pending_for_pdf_png.
+- **circuit_label per circuit**: text (≤80c) + svg + tool_call_pending.
+  Required on every circuits[].items entry.
+- **NEW templates/ directory** with 6 .svg.template files mirroring the
+  arc-flash-labelling pattern: BS / NEC / IEC × circuit / board.
+- **Validator INV-14: Label format compliance** (HIGH, 6 rules).
+- Generator prompt step covering label_format_standard derivation +
+  per-jurisdiction text format + svg template population.
+- shared/calculations/electrical/render-label.json added to manifest
+  calculations[] (reuses arc-flash-labelling's calc contract).
+
+### Added (Sprint D2.3 — diversity edge cases)
+- **diversity_basis per circuit**: required object on every circuit
+  with load_type (13-enum) + factor_applied [0.0, 1.0] + method enum +
+  optional method_params + citation (≥20c with clause marker).
+- **Generator prompt per-load-type table extended** with 4 new rows:
+  lift (Reg 559 + WR9 + EN 81-20, factor 1.00), ev_charger (Reg 722 +
+  OZEV CoP §4.3, factor 1.00), ac_single (TM50 §4.2, factor 1.00),
+  ac_group (TM50 Table 4.3, 100% largest + 75% remainder). Motor +
+  socket existing rows tightened with explicit Reg 552.1.1 / OSG App
+  A motor section citations.
+- **Validator INV-15: Diversity basis cited per circuit** (HIGH, 4
+  rules — presence + range + citation marker + lift/EV factor==1.00
+  hard rules + method_params sum range [100, 200]).
+
+### Examples
+- **D2.2 backport**: 20 existing examples gained label_format_standard
+  + board_label + per-circuit circuit_label. No IE/load/OCPD value
+  changes; labels derived from existing content.
+- **D2.3 backport**: 20 existing examples gained diversity_basis on
+  every circuit, inferring load_type from designation.
+- **NEW example uk-mixed-use-lifts-and-ev**: demonstrates 5 new
+  diversity rows in one mixed-use SDB (lift + 4 EV chargers + AC
+  single + AC group + sockets + lighting). Total demand 62.115 kW
+  on 200 A TPN main.
+
+### Honest disclosures
+- OZEV CoP for EV Charging Equipment Installation is INDUSTRY GUIDANCE,
+  not statutory. BS 7671 Reg 722 IS statutory and references OZEV.
+  Both citations appear in every EV circuit's diversity_basis.citation.
+- CIBSE TM50:2014 is behind the CIBSE publication paywall. Table 4.3
+  cited explicitly so engineer-of-record can verify.
+- Templates/ directory deferred SVG-to-PDF rasterisation to runtime
+  per [[runtime-project-boundary]]; tool_call_pending_for_pdf_png=true
+  on every label entry.
+
+### Schema migration impact
+- circuit_label, diversity_basis, board_label become required after
+  1.4.0. v1.3 IR consumers reading 1.4.0 outputs without awareness of
+  these fields are unaffected (additive); consumers that DO consume
+  them must be aware of the schema bump.
+
 ## [1.3.3] - 2026-05-25
 
 ### Added
