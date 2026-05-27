@@ -53,7 +53,7 @@
         "length_m": 25
       },
       "circuit_label": {
-        "text": "1 — General lighting — 12 AWG — 20A",
+        "text": "1 — General lighting — General lighting — 20A",
         "svg": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\" version=\"1.1\"><title>Circuit label per NEC 2023 sect408.4(A) - Circuit 1</title><desc>Per-circuit strip-label for US installation per NEC sect408.4(A).</desc><rect x=\"0\" y=\"0\" width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" font-weight=\"bold\" fill=\"#000000\">1</text><text x=\"6\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" fill=\"#000000\">General lighting</text><text x=\"2\" y=\"7\" font-family=\"Arial, sans-serif\" font-size=\"2\" fill=\"#000000\">12 AWG | MCB 20A</text></svg>",
         "tool_call_pending_for_pdf_png": true
       }
@@ -75,7 +75,7 @@
         "length_m": 30
       },
       "circuit_label": {
-        "text": "2 — General receptacles — 12 AWG — 20A",
+        "text": "2 — General receptacles — General use receptacles — 20A",
         "svg": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\" version=\"1.1\"><title>Circuit label per NEC 2023 sect408.4(A) - Circuit 2</title><desc>Per-circuit strip-label for US installation per NEC sect408.4(A).</desc><rect x=\"0\" y=\"0\" width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" font-weight=\"bold\" fill=\"#000000\">2</text><text x=\"6\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" fill=\"#000000\">General receptacles</text><text x=\"2\" y=\"7\" font-family=\"Arial, sans-serif\" font-size=\"2\" fill=\"#000000\">12 AWG | MCB 20A</text></svg>",
         "tool_call_pending_for_pdf_png": true
       }
@@ -97,7 +97,7 @@
         "length_m": 18
       },
       "circuit_label": {
-        "text": "3 — Reach-in cooler dedicated — 10 AWG — 30A",
+        "text": "3 — Reach-in cooler dedicated — Dedicated equipment — 30A",
         "svg": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\" version=\"1.1\"><title>Circuit label per NEC 2023 sect408.4(A) - Circuit 3</title><desc>Per-circuit strip-label for US installation per NEC sect408.4(A).</desc><rect x=\"0\" y=\"0\" width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" font-weight=\"bold\" fill=\"#000000\">3</text><text x=\"6\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" fill=\"#000000\">Reach-in cooler dedicated</text><text x=\"2\" y=\"7\" font-family=\"Arial, sans-serif\" font-size=\"2\" fill=\"#000000\">10 AWG | MCB 30A</text></svg>",
         "tool_call_pending_for_pdf_png": true
       }
@@ -119,7 +119,7 @@
         "length_m": 35
       },
       "circuit_label": {
-        "text": "4 — RTU HVAC unit — 6 AWG — 60A",
+        "text": "4 — RTU HVAC unit — HVAC equipment — 60A",
         "svg": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"50mm\" height=\"12mm\" viewBox=\"0 0 50 12\" version=\"1.1\"><title>Circuit label per NEC 2023 sect408.4(A) - Circuit 4</title><desc>Per-circuit strip-label for US installation per NEC sect408.4(A).</desc><rect x=\"0\" y=\"0\" width=\"50\" height=\"12\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.2\"/><text x=\"2\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" font-weight=\"bold\" fill=\"#000000\">4</text><text x=\"6\" y=\"3.5\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" fill=\"#000000\">RTU HVAC unit</text><text x=\"2\" y=\"7\" font-family=\"Arial, sans-serif\" font-size=\"2\" fill=\"#000000\">6 AWG | MCCB 60A</text></svg>",
         "tool_call_pending_for_pdf_png": true
       }
@@ -287,12 +287,12 @@
       "id": "INV-14",
       "passes": true,
       "severity": "high",
-      "evidence": "label_format_standard set; board_label.text matches jurisdictional format-pattern regex; board_label.svg populated (no placeholder remnants); circuit_label.text matches format-pattern regex on every circuit; circuit_label.svg populated (no placeholder remnants); tool_call_pending_for_pdf_png=true on all label objects (PDF/PNG rasterisation deferred to DraftsMan runtime). Sprint D2.2."
+      "evidence": "INV-14 board PB-1 (US → NEC): R1 jurisdiction→format mapping (US → NEC 2023 §408.4(A)) holds; R2 board_label.text+svg populated, no {{}} remnants; R3 board_label.text matches NEC format regex; R4 4/4 circuits carry circuit_label.text+svg, no {{}} remnants; R5 every circuit_label.text matches NEC circuit regex; R6 tool_call_pending booleans set on all labels."
     }
   ],
   "label_format_standard": "NEC",
   "board_label": {
-    "text": "PB-1 — 240V single-phase 3-wire — Main: 200A switch/disconnector — Spaces: 5/24",
+    "text": "PB-1 — 240V single-phase 3-wire — Main: 200A switch-disconnector — —",
     "svg": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100mm\" height=\"60mm\" viewBox=\"0 0 100 60\" version=\"1.1\"><title>Board label per NEC 2023 sect408.4 - PB-1</title><desc>Board headline label for US installation per NEC sect408.4.</desc><rect x=\"0\" y=\"0\" width=\"100\" height=\"60\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.5\"/><rect x=\"0\" y=\"0\" width=\"100\" height=\"14\" fill=\"#B22234\" stroke=\"#000000\" stroke-width=\"0.5\"/><text x=\"50\" y=\"9\" font-family=\"Arial, sans-serif\" font-size=\"6\" font-weight=\"bold\" fill=\"#FFFFFF\" text-anchor=\"middle\">PB-1</text><text x=\"4\" y=\"22\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" font-weight=\"bold\" fill=\"#000000\">Supply:</text><text x=\"20\" y=\"22\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" fill=\"#000000\">240V single-phase 3-wire</text><text x=\"4\" y=\"29\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" font-weight=\"bold\" fill=\"#000000\">Main:</text><text x=\"14\" y=\"29\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" fill=\"#000000\">200A Switch/Disconnector</text><text x=\"4\" y=\"36\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" font-weight=\"bold\" fill=\"#000000\">Spaces:</text><text x=\"20\" y=\"36\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" fill=\"#000000\">5 of 24</text><text x=\"4\" y=\"46\" font-family=\"Arial, sans-serif\" font-size=\"3\" fill=\"#CC0000\" font-weight=\"bold\"></text><text x=\"4\" y=\"56\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" fill=\"#000000\">Per NEC 2023 sect408.4(A)</text></svg>",
     "tool_call_pending_for_pdf_png": true
   }

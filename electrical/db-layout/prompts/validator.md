@@ -123,27 +123,45 @@ per-phase unbalance.
 
 1. **label_format_standard present + jurisdictional alignment.** `label_format_standard ∈ {"BS", "NEC", "IEC"}`. Expected mapping: GB/KE → BS, US → NEC, INT/EU → IEC. Mismatch emits an INFO (not HIGH) — engineer may override for multi-jurisdiction projects.
 
-2. **board_label populated.** `board_label.text` non-empty, ≤120 chars. `board_label.svg` ≥50 chars AND contains NO `{{` placeholder remnants (substring `"{{"` is forbidden — indicates the template was not populated).
+2. **board_label populated.** `board_label.text` non-empty, ≤120 chars, AND contains NO `{{` placeholder remnants. `board_label.svg` ≥50 chars AND contains NO `{{` placeholder remnants (substring `"{{"` is forbidden in either field — indicates the template was not populated).
 
 3. **board_label.text matches the format-pattern regex for label_format_standard:**
-   - BS regex: `^[\w.-]+\s*\|\s*\d+\s*V\s+\S+\s*\|\s*Main\s+Switch\s+\d+\s*A\s*\|.*$`
-   - NEC regex: `^[\w.-]+\s*—\s*\d+V\s+\S+\s*\d+-wire\s*—\s*Main:\s*\d+A\s+\S+\s*—.*$`
-   - IEC regex: `^[\w.-]+\s*\|\s*U=\d+\s*V\s+\S+\s*\|\s*I_n=\d+\s*A\s*\|.*$`
+   - BS regex: `^[\w.-]+\s*\|\s*\d+\s*V\s+\S+\s*\|\s*Main\s+Switch\s+\d+\s*A\s*\|\s*\S.*\S\s*$`
+   - NEC regex: `^[\w.-]+\s*—\s*\d+V\s+\S+\s*\d+-wire\s*—\s*Main:\s*\d+A\s+\S+\s*—\s*\S.*\S\s*$`
+   - IEC regex: `^[\w.-]+\s*\|\s*U=\d+\s*V\s+\S+\s*\|\s*I_n=\d+\s*A\s*\|\s*\S.*\S\s*$`
+
+   The terminal `\s*\S.*\S\s*$` clause (instead of `.*$`) requires at least one
+   non-whitespace token in the warning slot, so a board_label whose 4th field
+   is pure whitespace OR an unfilled `{{...}}` placeholder string is rejected.
 
 For every circuit on every board:
 
-4. **circuit_label populated.** `circuit_label.text` non-empty, ≤80 chars. `circuit_label.svg` ≥50 chars AND contains NO `{{` placeholder remnants.
+4. **circuit_label populated.** `circuit_label.text` non-empty, ≤120 chars, AND contains NO `{{` placeholder remnants. `circuit_label.svg` ≥50 chars AND contains NO `{{` placeholder remnants. The 120-char cap accommodates two-line strip-label layouts (real panel directories routinely wrap onto a second line for NEC dedicated/life-safety circuits whose designation already spans the strip).
 
 5. **circuit_label.text matches the format-pattern regex:**
-   - BS: `^[\w.]+\s*\|\s*.+\s*\|\s*(L1|L2|L3|N|L1L2|L1L2L3)\s*\|.*\d+A.*\|.*mm².*\|.+$`
-   - NEC: `^\d+\s+—\s+.+\s+—\s+.+\s+—\s+\d+A$`
-   - IEC: `^[\w.]+\s*\|\s*.+\s*\|\s*\d+(\.\d+)?\s*A\s*\|\s*\d+(\.\d+)?\s*mm²$`
+   - BS: `^[\w.]+\s*\|\s*\S.*\S\s*\|\s*(L1|L2|L3|N|L1N|L1L2|L1L2N|L1L2L3|L1L2L3N)\s*\|\s*\S.*\S\s*\|\s*\S.*\S\s*\|\s*\S.*\S\s*$`
+   - NEC: `^[\d,\-]+\s+—\s+\S.*\S\s+—\s+\S.*\S\s+—\s+\d+A$`
+   - IEC: `^[\w.]+\s*\|\s*\S.*\S\s*\|\s*\d+(\.\d+)?\s*A\s*\|\s*\d+(\.\d+)?\s*mm²(\s+\S.*\S)?\s*$`
+
+   **Variations accepted by the loosened regexes:**
+   - BS: RCBOs whose rating is carried in the device-name token (e.g.
+     `RCBO B6 30mA`) — the 4th field no longer requires a literal `\d+A`
+     anywhere; any non-empty token passes. The phase token list now also
+     accepts `L1N`, `L1L2N`, and `L1L2L3N` (TPN-with-N variants).
+   - NEC: multi-pole circuit numbering like `1,3,5` or `2-4-6` is accepted in
+     the leading id slot (previously only a single integer).
+   - IEC: an optional trailing cable-type suffix after the csa (e.g.
+     `2.5 mm² 5C`, `2.5 mm² Cu/PVC`) is accepted.
+
+   Every field still requires at least one non-whitespace character, so a
+   string of pure whitespace fails Rule 5. A literal `{{designation}}`
+   placeholder fails Rule 4 (the `{{`-substring guard).
 
 6. **tool_call_pending_for_pdf_png set.** Both `board_label.tool_call_pending_for_pdf_png` and every `circuit_label.tool_call_pending_for_pdf_png` are present and boolean. Typically `true` (LLM-emitted SVG before runtime rasterisation); `false` only after runtime renders PDF/PNG.
 
 **Validator action:** for each board, check label_format_standard + board_label fields per Rules 1–3; for each circuit, check circuit_label per Rules 4–5; verify all SVG fields contain no `{{` substring; verify all tool_call_pending flags are present.
 
-**Rationale:** Panel-schedule IR is not field-usable without circuit labels (BS 7671 §514 / NEC §408.4(A) / IEC 60364-5-51 §514 all require legible identification at the panel). Labels are the field-engineer's only documentation pulled directly from the panel directory pocket; their format must be jurisdiction-correct + machine-checkable so the runtime can rasterise them onto adhesive label stock.
+**Rationale:** Panel-schedule IR is not field-usable without circuit labels (BS 7671 §514 / NEC §408.4(A) / IEC 60364-5-51 §514 all require legible identification at the panel). Labels are the field-engineer's only documentation pulled directly from the panel directory pocket; their format must be jurisdiction-correct + machine-checkable so the runtime can rasterise them onto adhesive label stock. The D2.2 fix-pass loosened the original regexes to accept legitimate variations engineers encounter in practice — RCBO labels with the rating embedded in the device name, multi-pole circuit numbering (`1,3,5` or `2-4-6`), TPN-with-N phase tokens (`L1N`, `L1L2N`, `L1L2L3N`), and IEC cable-type suffixes after the csa (`2.5 mm² 5C`) — while keeping the placeholder / pure-whitespace failure modes blocked by Rules 2 + 4.
 
 ### 3. Intent extraction validation
 

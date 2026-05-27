@@ -19,7 +19,7 @@
     "shared/standards/electrical/ANSI-Z535-4/panel-format.json",
     "shared/standards/electrical/ANSI-Z535-4/letter-height-requirements.json"
   ],
-  "verification_status": "verified-against-source",
-  "implementation_note": "Contract only — runtime implementation deferred per WI3 until DraftsMan runtime ships. Until then, consumer skills emit `tool_call_pending_for_pdf_png: true` on every label entry. SVG content IS produced inline (LLM-writable), so engineers can preview labels in a browser without the runtime tool.",
+  "verification_status": "contract-only",
+  "implementation_note": "Contract only — runtime implementation lives in the separate DraftsMan runtime project (calc executors + renderers are NOT shipped by this skills repo per the runtime-project boundary). Until the runtime ships, consumer skills emit `tool_call_pending_for_pdf_png: true` on every label entry. SVG content IS produced inline (LLM-writable), so engineers can preview labels in a browser without the runtime tool.",
   "license_note": "Tool contract; no copyrighted standards content reproduced."
 }

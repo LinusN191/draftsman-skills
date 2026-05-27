@@ -483,8 +483,8 @@
               "text": {
                 "type": "string",
                 "minLength": 1,
-                "maxLength": 80,
-                "description": "Formatted per board.label_format_standard. ≤80 chars to fit strip-label width."
+                "maxLength": 120,
+                "description": "Formatted per board.label_format_standard. ≤120 chars — accommodates two-line strip-label layouts and NEC labels where designation + load_served + OCPD rating together exceed a single line."
               },
               "svg": {"type": "string", "minLength": 50, "description": "Populated SVG markup (no {{placeholder}} remnants)."},
               "tool_call_pending_for_pdf_png": {"type": "boolean", "description": "true until calc.render_label runs."}

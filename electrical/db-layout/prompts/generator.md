@@ -454,7 +454,7 @@ Emit two JSON documents per board:
 
 For every board, populate the headline label + every circuit's strip-label.
 
-**Step 5.1 — Determine label_format_standard from jurisdiction:**
+**Step 14.1 — Determine label_format_standard from jurisdiction:**
 
 | Jurisdiction | label_format_standard | Clause |
 |---|---|---|
@@ -467,28 +467,59 @@ Engineer override permitted (e.g. multi-jurisdiction project picking
 one format); INV-14 Rule 1 emits INFO not HIGH for jurisdictional
 mismatch.
 
-**Step 5.2 — Populate board_label.text per label_format_standard:**
+**Step 14.2 — Populate board_label.text per label_format_standard:**
+
+The text field is the human-readable headline. It is rendered separately from
+the SVG (which carries ways / system_type / warning in dedicated slots). The
+text format intentionally surfaces only the 4 fields a field engineer scans
+first: id, supply, main switch, and any safety warning.
+
+Apply this humanisation table when emitting enum values into the text field
+(the schema enum values remain machine-readable; only the rendered text changes):
+
+| Enum value | Display form |
+|---|---|
+| `single_phase` | `1-ph` |
+| `single_phase_split` | `1-ph split` |
+| `three_phase_4w` | `3-ph 4w` |
+| `TPN` | `TPN` |
+| `TPN_plus_E` | `TPN+E` |
+| `TN-S`, `TN-C-S`, `TT`, `IT` | as-is |
+
 
 - **BS:**
   ```
-  <board.db_id> | <incoming_supply.voltage_v> V <incoming_supply.phase_arrangement> | Main Switch <main_switch.rating_a> A | <dual_supply_warning_if_applicable>
+  <board.db_id> | <incoming_supply.voltage_v> V <phase_arrangement_display> | Main Switch <main_switch.rating_a> A | <dual_supply_warning_if_applicable>
   ```
-  Example: `DB-L1 | 230 V TPN | Main Switch 100 A | —`
-  Dual-supply warning: `CAUTION: More than one source of supply (genset)` when the board is fed by a transfer scheme.
+  Example (single-source): `DB-L1 | 230 V TPN | Main Switch 100 A | —`
+  Example (dual-source): `MSB-MAIN | 400 V TPN+E | Main Switch 400 A | CAUTION: More than one source of supply (genset)`
 
 - **NEC:**
   ```
-  <board.db_id> — <incoming_supply.voltage_v>V <phase> <wire_count>-wire — Main: <main_switch.rating_a>A <main_switch.type> — <warning>
+  <board.db_id> — <incoming_supply.voltage_v>V <phase> <wire_count>-wire — Main: <main_switch.rating_a>A <main_switch.type> — <dual_supply_warning_if_applicable>
   ```
   Example: `MSP — 208V 3-phase 4-wire — Main: 200A MCB — —`
 
 - **IEC:**
   ```
-  <board.db_id> | U=<incoming_supply.voltage_v> V <phase_arrangement> | I_n=<main_switch.rating_a> A | <warning>
+  <board.db_id> | U=<incoming_supply.voltage_v> V <phase_arrangement_display> | I_n=<main_switch.rating_a> A | <dual_supply_warning_if_applicable>
   ```
   Example: `MSB-1 | U=400 V TPN | I_n=630 A | —`
 
-**Step 5.3 — Populate board_label.svg:**
+The 4th slot is the **warning slot** — emit the literal `—` (em-dash) when no
+warning applies; emit `CAUTION: More than one source of supply (<source>)` when
+the board is fed by a transfer scheme OR backed by a UPS whose output stays
+live when the normal supply trips. Source token examples: `genset`, `UPS`,
+`alternate utility feed`. **Do NOT** emit ways/modules in the text field — the
+SVG template carries `{{ways_used}}` / `{{ways_total}}` placeholders in
+dedicated slots.
+
+Dual-source triggers (populate the warning):
+- `incoming_supply.fed_from` mentions a genset, ATS, transfer switch, alternate utility feed, or generator.
+- `incoming_supply.supply_class` is `ups_plus_essential` OR `fed_from` mentions a UPS output (UPS-backed boards remain energised when normal supply trips).
+- Any board with `role` containing `ats_changeover` or `ups_backed`.
+
+**Step 14.3 — Populate board_label.svg:**
 
 Read `electrical/db-layout/templates/<standard-lowercased>-board-label.svg.template` (e.g. `bs-7671-board-label.svg.template`). Substitute every `{{placeholder}}`:
 
@@ -500,7 +531,7 @@ Read `electrical/db-layout/templates/<standard-lowercased>-board-label.svg.templ
 - `{{main_switch_type}}` ← `main_switch.type`
 - `{{ways_used}}` ← `board.ways_used`
 - `{{ways_total}}` ← `board.ways_total`
-- `{{dual_supply_warning_if_applicable}}` ← `"CAUTION: More than one source of supply"` if dual-source, else empty string `""`
+- `{{dual_supply_warning_if_applicable}}` ← `"CAUTION: More than one source of supply (<source>)"` if dual-source per the triggers in Step 14.2 above (e.g. `(genset)`, `(UPS)`, `(alternate utility feed)`); else empty string `""`
 
 For NEC template, also derive:
 - `{{phase}}` ← `"single-phase"` / `"3-phase"` from `incoming_supply.phase_arrangement`
@@ -508,7 +539,7 @@ For NEC template, also derive:
 
 Emit the populated SVG as `board_label.svg`. Set `board_label.tool_call_pending_for_pdf_png: true`.
 
-**Step 5.4 — Populate every circuits[*].circuit_label:**
+**Step 14.4 — Populate every circuits[*].circuit_label:**
 
 For each circuit:
 
@@ -529,6 +560,27 @@ For each circuit:
   ```
   Example: `12 — Receptacles East — General use — 20A`
 
+  The **3rd slot is `<load_served>`** — the function being served, NOT the
+  conductor AWG. Derive it from `circuits[*].designation` semantics and
+  `circuits[*].voltage_class`. Use NEC §408.4(A) functional categories:
+
+  | Designation pattern | load_served |
+  |---|---|
+  | lighting (general / track / emergency egress) | `General lighting` |
+  | general / convenience receptacles | `General use receptacles` |
+  | dedicated receptacle (cash register, POS, freezer, cooler) | `Dedicated equipment` |
+  | EV charging / EVSE | `EV charging` |
+  | HVAC / RTU / split / heat pump / package unit | `HVAC equipment` |
+  | tenant subpanel / tenant feed | `Tenant feed` |
+  | water heater | `Water heater` |
+  | motor / pump / fan | `Motor load` |
+  | sign / signage | `Sign circuit` |
+  | spare | `Spare` |
+
+  Cable AWG is captured in `circuits[*].cable.csa_mm2_or_awg` and rendered into
+  the SVG via the `{{cable_csa}}` placeholder — do not duplicate it into the
+  text field.
+
 - **IEC circuit_label.text** format:
   ```
   <circuit_id> | <function> | <ocpd.rating_a> A | <cable.csa_mm2> mm²
@@ -537,7 +589,7 @@ For each circuit:
 
 For each circuit, read `templates/<standard-lowercased>-circuit-label.svg.template` and substitute placeholders. Set `tool_call_pending_for_pdf_png: true`.
 
-**Step 5.5 — Set board.label_format_standard at root.**
+**Step 14.5 — Set board.label_format_standard at root.**
 
 **Output rule:** every board MUST have `label_format_standard` + `board_label`; every circuit MUST have `circuit_label`. INV-14 enforces.
 

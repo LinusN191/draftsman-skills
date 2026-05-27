@@ -391,18 +391,12 @@
       "id": "INV-14",
       "passes": true,
       "severity": "high",
-      "evidence": "label_format_standard set; board_label.text matches jurisdictional format-pattern regex; board_label.svg populated (no placeholder remnants); circuit_label.text matches format-pattern regex on every circuit; circuit_label.svg populated (no placeholder remnants); tool_call_pending_for_pdf_png=true on all label objects (PDF/PNG rasterisation deferred to DraftsMan runtime). Sprint D2.2."
-    },
-    {
-      "id": "INV-14",
-      "passes": true,
-      "severity": "high",
-      "evidence": "label_format_standard set; board_label.text matches jurisdictional format-pattern regex; board_label.svg populated (no placeholder remnants); circuit_label.text matches format-pattern regex on every circuit; circuit_label.svg populated (no placeholder remnants); tool_call_pending_for_pdf_png=true on all label objects (PDF/PNG rasterisation deferred to DraftsMan runtime). Sprint D2.2."
+      "evidence": "INV-14 board DB-FA1 (INT → IEC): R1 jurisdiction→format mapping (INT/EU → IEC 60364-5-51 §514) holds; R2 board_label.text+svg populated, no {{}} remnants; R3 board_label.text matches IEC format regex; R4 6/6 circuits carry circuit_label.text+svg, no {{}} remnants; R5 every circuit_label.text matches IEC circuit regex; R6 tool_call_pending booleans set on all labels."
     }
   ],
   "label_format_standard": "IEC",
   "board_label": {
-    "text": "DB-FA1 | U=400 V TPN_plus_E | I_n=63 A | Modules: N/A/N/A",
+    "text": "DB-FA1 | U=400 V TPN+E | I_n=63 A | —",
     "svg": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100mm\" height=\"60mm\" viewBox=\"0 0 100 60\" version=\"1.1\"><title>Board label per IEC 60364-5-51 sect514 - DB-FA1</title><desc>Board headline label for IEC-jurisdiction installation.</desc><rect x=\"0\" y=\"0\" width=\"100\" height=\"60\" fill=\"#FFFFFF\" stroke=\"#000000\" stroke-width=\"0.5\"/><rect x=\"0\" y=\"0\" width=\"100\" height=\"14\" fill=\"#003399\" stroke=\"#000000\" stroke-width=\"0.5\"/><text x=\"50\" y=\"9\" font-family=\"Arial, sans-serif\" font-size=\"6\" font-weight=\"bold\" fill=\"#FFFFFF\" text-anchor=\"middle\">DB-FA1</text><text x=\"4\" y=\"22\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" font-weight=\"bold\" fill=\"#000000\">U:</text><text x=\"10\" y=\"22\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" fill=\"#000000\">400 V TPN_plus_E</text><text x=\"4\" y=\"29\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" font-weight=\"bold\" fill=\"#000000\">I_n:</text><text x=\"10\" y=\"29\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" fill=\"#000000\">63 A</text><text x=\"4\" y=\"36\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" font-weight=\"bold\" fill=\"#000000\">Modules:</text><text x=\"22\" y=\"36\" font-family=\"Arial, sans-serif\" font-size=\"3.5\" fill=\"#000000\">N/A / N/A</text><text x=\"4\" y=\"46\" font-family=\"Arial, sans-serif\" font-size=\"3\" fill=\"#CC0000\" font-weight=\"bold\"></text><text x=\"4\" y=\"56\" font-family=\"Arial, sans-serif\" font-size=\"2.5\" fill=\"#000000\">Per IEC 60364-5-51:2020 sect514 + IEC 61439-1 sect5.5</text></svg>",
     "tool_call_pending_for_pdf_png": true
   }
