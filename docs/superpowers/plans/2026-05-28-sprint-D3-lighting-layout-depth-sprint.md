@@ -2876,3 +2876,1580 @@ EOF
 ```
 
 ---
+
+## Phase C — Examples + Ship (4 tasks, sequential)
+
+C.1–C.3 build 6 examples (2 promoted + 3 failure-mode + 1 canonical re-test). C.4 ships.
+
+---
+
+## Task C.1: Promote reception-lobby + warehouse-highbay stub examples (Opus)
+
+**Why Opus:** Engineering judgment to produce realistic lobby + warehouse photometric scenarios.
+
+**Files:**
+- Modify: `electrical/lighting-layout/examples/reception-lobby/output.json` — 104 → ~400 lines (calc_only → full_drawing)
+- Modify: `electrical/lighting-layout/examples/reception-lobby/reasoning.md` — 11 → ~150 lines
+- Create: `electrical/lighting-layout/examples/reception-lobby/intent-out.json`
+- Modify: `electrical/lighting-layout/examples/warehouse-highbay/output.json` — 89 → ~400 lines (calc_only → full_drawing)
+- Modify: `electrical/lighting-layout/examples/warehouse-highbay/reasoning.md` — 14 → ~150 lines
+- Create: `electrical/lighting-layout/examples/warehouse-highbay/intent-out.json`
+
+- [ ] **Step 1: Read existing reception-lobby stub**
+
+```bash
+cat electrical/lighting-layout/examples/reception-lobby/output.json
+cat electrical/lighting-layout/examples/reception-lobby/input.json
+```
+
+Note the existing room dimensions (likely 8×5 m reception lobby), target lux, and that `mode: "calc_only"` with `calc_only_reason` populated. Promotion strategy: keep all engineering values (don't change the room or the target lux); switch `mode` to `full_drawing` (or remove — default is full_drawing); populate all required fields.
+
+- [ ] **Step 2: Promote reception-lobby/output.json to full_drawing**
+
+Build the full IR for an 8×5 m reception lobby, 300 lux target (BS EN 12464-1 Table 5.3 reception_lobby), 2.7 m ceiling, LED_DOWNLIGHT @ 1000 lm each. Lumen method:
+
+- A = 40 m², Em = 300 lux
+- Hm = 2700 − 0 (lobby has reception desk at variable height; default working_plane = 0) = 2700 mm = 2.7 m
+- RI = (8 × 5) / (2.7 × (8 + 5)) = 40 / 35.1 = 1.14 → table key 1.0
+- LED_DOWNLIGHT ontology defaults at RI=1.0, reflectances 0.7_0.5_0.2: UF = 0.48
+- MF = 0.88 × 0.95 = 0.836 ≈ 0.84
+- N = (300 × 40) / (1000 × 0.48 × 0.84) = 12000 / 403 = 29.77 → round UP to 30
+
+S/H ratio check: 30 luminaires factor → 5×6 or 6×5. For 8×5 m room with edge clearance 300 mm: 5×6 gives S_x = (8000 − 600) / 5 = 1480, S_y = (5000 − 600) / 4 = 1100. SHR_max for LED_DOWNLIGHT = 1.4; limit = 1.4 × 2700 = 3780 mm. Both PASS (1480 + 1100 << 3780).
+
+Build the IR:
+
+```json
+{
+  "drawing_type": "lighting_layout",
+  "version": "1.4.0",
+  "room": {
+    "length_mm": 8000,
+    "width_mm": 5000,
+    "area_m2": 40,
+    "ceiling_height_mm": 2700,
+    "working_plane_mm": 0,
+    "hm_mm": 2700,
+    "room_index": 1.14,
+    "room_type": "reception_lobby",
+    "environment_type": "normal",
+    "ip_required": "IP20",
+    "has_windows": true
+  },
+  "luminaire_type": {
+    "symbol": "LED_DOWNLIGHT",
+    "description": "100mm diameter recessed LED downlight, prismatic lens",
+    "lumens": 1000,
+    "lumen_type": "design",
+    "llmf_applied": true,
+    "wattage_w": 10,
+    "cct_k": 3000,
+    "cri_ra": 90,
+    "ip_rating": "IP20",
+    "lamp_efficacy_lm_per_w": 100.0
+  },
+  "selection_source": {
+    "photometric_source": "ontology_default",
+    "citation": "CIBSE LG7 §6.2 (recessed downlight typical values; narrow beam) + BS EN 12464-1:2021 §4.4"
+  },
+  "zones": [
+    {
+      "zone_id": "Z1",
+      "label": "Perimeter — glazed entrance wall",
+      "zone_type": "perimeter",
+      "control": "daylight_linked",
+      "luminaire_ids": ["L01", "L02", "L03", "L04", "L05", "L06"],
+      "circuit_ids": ["C-L01"],
+      "luminaire_count": 6,
+      "total_load_w": 60
+    },
+    {
+      "zone_id": "Z2",
+      "label": "Interior — main lobby",
+      "zone_type": "interior",
+      "control": "occupancy",
+      "luminaire_ids": ["L07", "L08", ..., "L30"],
+      "circuit_ids": ["C-L02", "C-L03", "C-L04", "C-L05"],
+      "luminaire_count": 24,
+      "total_load_w": 240
+    }
+  ],
+  "luminaires": [
+    /* 30 LED_DOWNLIGHT entries in 5×6 grid */
+    {"id": "L01", "x_mm": 800,  "y_mm": 500, "zone_id": "Z1", "circuit_id": "C-L01"},
+    /* ... rest computed via 5×6 grid: x_mm ∈ {800, 2280, 3760, 5240, 6720, 8200-snapped}, y_mm ∈ {500, 1600, 2700, 3800, 4500} (snap to nearest 50) */
+  ],
+  "switches": [
+    {
+      "id": "SW01",
+      "type": "2_gang",
+      "x_mm": 2700,
+      "y_mm": 0,
+      "height_aff_mm": 1200,
+      "controls_circuit": "C-L01,C-L02",
+      "door_swing": "inward_latch_right",
+      "switch_side": "latch"
+    }
+  ],
+  "circuits": [
+    {
+      "circuit_id": "C-L01",
+      "zone_id": "Z1",
+      "luminaire_ids": ["L01", "L02", "L03", "L04", "L05", "L06"],
+      "row_index": 0,
+      "total_load_w": 60,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 500, "wall": "W"}
+    },
+    /* ... 4 more circuits, one per row of Z2 */
+  ],
+  "controls": {
+    "dimming_protocol": "0-10V",
+    "occupancy_sensing": true,
+    "daylight_linking": true,
+    "part_l_assessed": true,
+    "part_l_compliant": true,
+    "part_l_efficacy_target_lm_per_w": 95,
+    "lamp_efficacy_lm_per_w": 100.0,
+    "perimeter_zones": [{"wall": "S", "depth_mm": 1500}],
+    "required": ["occupancy", "daylight_linking"]
+  },
+  "calculation_summary": {
+    "target_illuminance_lux": 300,
+    "achieved_illuminance_lux": 302.1,
+    "utilisation_factor": 0.48,
+    "maintenance_factor": 0.84,
+    "lamp_efficacy_lm_per_w": 100.0,
+    "part_l_efficacy_target_lm_per_w": 95,
+    "ugr_status": "≤19 (lobby)",
+    "compliant": true,
+    "discovery_status": "complete",
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Reflectances ceiling/wall/floor = 0.7/0.5/0.2 typical clean lobby",
+      "Working plane = floor level (0 mm) for lobby circulation/general lighting",
+      "LLMF=0.88 (clean office environment, 6000h design hours)"
+    ]
+  },
+  "drawing_notes": [
+    "Z1 perimeter daylight-linked dimming via 0-10V driver",
+    "All circuits 6A MCB curve B per IET OSG App C lighting standard"
+  ],
+  "flags": [],
+  "rationale": {
+    "chat_summary": "8×5 m UK reception lobby — 300 lux target per BS EN 12464-1 Table 5.3. 30 LED downlights @ 1000 lm in 5×6 grid achieve 302 lux (INV-1 PASS). Z1 perimeter (6 luminaires along glazed entrance wall, daylight-linked dimming) + Z2 interior (24 luminaires, 4 row circuits, occupancy controlled). 2_gang switch at entrance latch side at 1200 mm AFF.",
+    "sections": [
+      {"title": "Lumen-method walk", "summary": "RI = 40 / (2.7 × 13) = 1.14 → table key 1.0. UF=0.48 (LED_DOWNLIGHT ontology, RI=1.0, refs 0.7_0.5_0.2). MF=0.84. N = (300 × 40) / (1000 × 0.48 × 0.84) = 29.77 → round UP to 30. Achieved = 30 × 1000 × 0.48 × 0.84 / 40 = 302.1 lux ≥ 300 target (INV-1 PASS)."},
+      {"title": "S/H ratio enforcement", "summary": "30 luminaires in 5×6 grid: S_x=1480 mm, S_y=1100 mm. Hm=2700 mm, SHR_max=1.4 (LED_DOWNLIGHT ontology), limit=3780 mm. Both directions PASS (INV-2)."},
+      {"title": "Part L zoning", "summary": "Glazed entrance wall (S) → Z1 perimeter zone (6 luminaires, ≤1500 mm depth) on daylight-linked 0-10V dimming. Z2 interior on occupancy detection. controls.required = ['occupancy', 'daylight_linking'] satisfies Part L 2021 §6.2."},
+      {"title": "Switch placement", "summary": "Single entrance on S wall at offset_mm=2500, door_swing=inward_latch_right. Latch at (2500+900, 5000)=(3400, 5000). Switch placed 200 mm inside the room at (2700, 0) on N wall opposite entrance — corrected to S wall offset+200 for adjacency. 2_gang switch controls Z1 (daylight-linked) + Z2 (occupancy master)."}
+    ]
+  },
+  "invariants": [
+    /* INV-1..INV-10 entries with evidence specific to this example */
+  ],
+  "drafting_furniture": {
+    "title_block": {"project_name": "Reception lobby — UK commercial",
+                    "drawing_number": "EL-002", "revision": "A",
+                    "date": "2026-05-28", "scale": "1:50", "sheet_size": "A3",
+                    "font_family": "Arial", "font_size_pt": 10},
+    "scale_bar": {"origin_x_mm": 6000, "origin_y_mm": 5500,
+                  "total_length_mm": 2000, "tick_interval_mm": 500,
+                  "font_family": "Arial", "font_size_pt": 8},
+    "dimensions": [
+      {"axis": "horizontal", "start_x_mm": 0, "start_y_mm": -300,
+       "end_x_mm": 8000, "end_y_mm": -300, "text": "8000 mm",
+       "font_family": "Arial", "font_size_pt": 10},
+      {"axis": "vertical", "start_x_mm": -300, "start_y_mm": 0,
+       "end_x_mm": -300, "end_y_mm": 5000, "text": "5000 mm",
+       "font_family": "Arial", "font_size_pt": 10}
+    ],
+    "luminaire_schedule": {
+      "columns": ["Ref", "Manufacturer", "Lumens", "Wattage", "Count"],
+      "rows": [["LED_DOWNLIGHT", "Generic", "1000", "10W", "30"]],
+      "font_family": "Arial", "font_size_pt": 8
+    }
+  }
+}
+```
+
+**Note**: the implementer must compute and populate every luminaire's exact (x, y) on the 5×6 grid + populate all 10 INV invariants entries with example-specific evidence (board id, citation, factor values).
+
+- [ ] **Step 3: Write reception-lobby/reasoning.md (~150 lines)**
+
+Sections:
+1. Site brief (8×5 m reception lobby, glazed entrance wall)
+2. Lumen-method walk (RI=1.14 → 30 luminaires)
+3. S/H ratio enforcement (5×6 grid, both directions PASS)
+4. Part L zoning (Z1 perimeter daylight-linked + Z2 interior occupancy)
+5. Switch placement (single entrance, 2_gang at latch side)
+6. INV walkthrough (10 INVs, all PASS)
+7. Engineer notes (CCT 3000K appropriate for lobby ambience; CRI 90 for art/display lighting; 0-10V dimming vs DALI cost trade-off)
+
+- [ ] **Step 4: Write reception-lobby/intent-out.json**
+
+```json
+{
+  "$schema": "../../schemas/lighting-layout-intent.schema.json",
+  "intent_type": "lighting-layout",
+  "intent_version": "1.0.0",
+  "produced_by": "electrical/lighting-layout/v1.4.0",
+  "payload": {
+    "room": {"length_mm": 8000, "width_mm": 5000},
+    "zones": [
+      {"zone_id": "Z1", "zone_type": "perimeter", "control": "daylight_linked",
+       "luminaire_ids": ["L01","L02","L03","L04","L05","L06"],
+       "circuit_ids": ["C-L01"]},
+      {"zone_id": "Z2", "zone_type": "interior", "control": "occupancy",
+       "luminaire_ids": [/* 24 ids */],
+       "circuit_ids": ["C-L02","C-L03","C-L04","C-L05"]}
+    ],
+    "circuits": [
+      {"circuit_id": "C-L01", "zone_id": "Z1", "row_index": 0,
+       "total_load_w": 60, "mcb_rating_a": 6, "mcb_curve": "B",
+       "homerun_endpoint": {"x_mm": 0, "y_mm": 500, "wall": "W"}},
+      /* 4 more circuits */
+    ],
+    "switches": [
+      {"id": "SW01", "type": "2_gang", "x_mm": 2700, "y_mm": 0,
+       "height_aff_mm": 1200, "controls_circuit": "C-L01,C-L02"}
+    ],
+    "total_load_per_circuit_w": [60, 60, 60, 60, 60]
+  }
+}
+```
+
+- [ ] **Step 5: Promote warehouse-highbay/output.json to full_drawing**
+
+Build the full IR for a 30×20 m warehouse main floor, 200 lux target (BS EN 12464-1 Table 5.3 warehouse main aisle), 8 m mounting height, HIGHBAY @ 22000 lm each. Lumen method:
+
+- A = 600 m², Em = 200 lux
+- Hm = 8000 − 0 (warehouse working plane = floor) = 8 m
+- RI = (30 × 20) / (8 × 50) = 600 / 400 = 1.50 → table key 1.5
+- HIGHBAY ontology defaults at RI=1.5, reflectances 0.3_0.3_0.2 (industrial typical): UF = 0.62
+- MF = 0.85 × 0.78 = 0.66 (industrial environment, 6000h design hours)
+- N = (200 × 600) / (22000 × 0.62 × 0.66) = 120000 / 9002 = 13.3 → round UP to 14
+
+S/H ratio check: HIGHBAY SHR_max = 1.0 (narrow beam). Limit = 1.0 × 8000 = 8000 mm. 14 in 2×7 grid: S_x = (30000 − 600) / 6 = 4900 mm, S_y = (20000 − 600) / 1 = 19400 mm — y-axis FAILS (way too wide). Bump to 4×4 grid (N=16): S_x = 9800, S_y = 6467 — both at/under limit (9800 > 8000 actually FAIL). Bump to 4×5 (N=20): S_x = (29400) / 4 = 7350, S_y = 19400 / 3 = 6467 — both PASS. Use N=20 highbays in 4×5 grid.
+
+The full IR follows the same pattern as reception-lobby but with:
+- 20 HIGHBAY luminaires
+- 4 row circuits (5 luminaires each × 22000 lm × ~250 W = 1250 W per row → still on 10 A MCB, NOT 6 A because 1250 > 1104)
+- No glazed walls → no perimeter zone
+- 5 emergency luminaires (anti-panic per BS 5266-1 §5.3 for open area >60 m²) in Z3 zone
+
+Build the IR per the same shape as reception-lobby with these values. Implementer to fill in luminaire positions per the 4×5 grid + 5 EMERGENCY luminaires for anti-panic coverage.
+
+- [ ] **Step 6: Write warehouse-highbay/reasoning.md (~150 lines)**
+
+Sections similar to reception-lobby but warehouse-specific:
+1. Site brief (30×20 m warehouse main floor, industrial environment)
+2. Lumen-method walk (RI=1.5 → 14 luminaires, bumped to 20 for S/H)
+3. S/H ratio enforcement showing iterative bump 14→16→20
+4. Anti-panic emergency coverage (BS 5266-1 §5.3, 0.5 lux floor, 5 luminaires in Z3)
+5. Circuit topology (4 row circuits at 1250 W each on 10 A MCBs)
+6. INV walkthrough
+7. Engineer notes (CRI 70 acceptable for warehouse; 4000K appropriate for picking-task visibility)
+
+- [ ] **Step 7: Write warehouse-highbay/intent-out.json**
+
+Same shape as reception-lobby intent — populate with warehouse values.
+
+- [ ] **Step 8: Run gates**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -10
+```
+
+Expected: `AGGREGATE: 229/229 pass (0 failures)` (+4 from reception-lobby intent-out.json + warehouse-highbay intent-out.json + reasoning.md regen for both — though reasoning.md isn't directly validated, the existing intent-out absence in stubs means +2 validations).
+
+Actually verify the exact count by listing examples:
+
+```bash
+ls electrical/lighting-layout/examples/*/output.json electrical/lighting-layout/examples/*/intent-out.json 2>/dev/null | wc -l
+```
+
+Expected after C.1: 6 (3 output.json + 3 intent-out.json).
+
+- [ ] **Step 9: Commit C.1**
+
+```bash
+git add electrical/lighting-layout/examples/reception-lobby/ \
+        electrical/lighting-layout/examples/warehouse-highbay/
+git commit -m "$(cat <<'EOF'
+feat(lighting-layout): D3.C.1 promote reception-lobby + warehouse-highbay to full examples
+
+Sprint D3 Phase C examples — first of four. Promotes the two stub
+examples from calc_only to full_drawing depth matching office-open-plan.
+
+reception-lobby/output.json (104 → ~400 lines, calc_only → full_drawing):
+- 8×5 m UK commercial reception lobby, 300 lux target (BS EN 12464-1
+  Table 5.3 reception_lobby)
+- 30 LED_DOWNLIGHT in 5×6 grid; lumen method walked (RI=1.14, UF=0.48,
+  MF=0.84, N=30 achieves 302 lux INV-1 PASS)
+- 2 zones: Z1 perimeter (6 luminaires daylight-linked along glazed
+  entrance wall) + Z2 interior (24 luminaires occupancy)
+- 5 row circuits, all 6A MCBs (60W each, well under 1104W limit)
+- 2_gang switch at primary entrance, 1200 mm AFF, latch side per
+  door_swing
+- All 10 INVs populated and PASS
+
+warehouse-highbay/output.json (89 → ~400 lines, calc_only → full_drawing):
+- 30×20 m UK industrial warehouse main floor, 200 lux target
+- 20 HIGHBAY luminaires in 4×5 grid; lumen method bumped 14 → 16 → 20
+  to satisfy S/H ratio (HIGHBAY SHR_max=1.0 narrow beam, Hm=8m, limit
+  8000mm)
+- 5 EMERGENCY luminaires (Z3 anti-panic per BS 5266-1 §5.3, 0.5 lux
+  floor minimum, open area >60m²)
+- 4 row circuits at 1250W each on 10A MCBs (5 × 250W highbays)
+- 1_gang switch at entrance (warehouse manual control; emergency
+  self-test independent)
+- All 10 INVs populated and PASS
+
+NEW: intent-out.json for both examples (previously absent — stubs had
+only output.json). Populated with zones + circuits (homerun) + switches
++ total_load_per_circuit_w per the extended intent schema from D3.A.3.
+
+NEW: reasoning.md upgraded from 11/14 lines to ~150 lines each with
+worked lumen-method math, S/H iterative bump walks, Part L zoning
+rationale, INV walkthrough.
+
+Gates: validate-examples 225 → ~229 (+4 from 2 new intent-out.json
+files + reasoning.md regen; exact count verified by implementer);
+functional_audit 1 finding unchanged.
+
+Next: D3.C.2 3 failure-mode examples.
+EOF
+)"
+```
+
+---
+
+## Task C.2: 3 new failure-mode examples (Opus)
+
+**Why Opus:** Hand-walked failure-mode arithmetic + regulation citations.
+
+**Files:**
+- Create: `electrical/lighting-layout/examples/uk-undersized-lighting-vs-target/{input,output,intent-out}.json + reasoning.md`
+- Create: `electrical/lighting-layout/examples/uk-multi-entrance-classroom/{input,output,intent-out}.json + reasoning.md`
+- Create: `electrical/lighting-layout/examples/uk-part-l-fail-incandescent/{input,output,intent-out}.json + reasoning.md`
+
+- [ ] **Step 1: Create uk-undersized-lighting-vs-target example**
+
+8×6 m office, 500 lux target, but engineer sizes only 12 LED panels when math says 15 — INV-1 fires HIGH.
+
+`input.json`:
+
+```json
+{
+  "$schema": "../../inputs.json",
+  "skill": "lighting-layout",
+  "example_id": "uk-undersized-lighting-vs-target",
+  "jurisdiction": "GB",
+  "items": [
+    {"id": "I-1", "category": "site_brief", "label": "Site description",
+     "value": "UK private office 8×6 m, suspended ceiling 2.7 m. Engineer specified 12 LED panels @ 4500 lm — lumen method shows 15 needed. INV-1 catches the under-provision before construction."},
+    {"id": "room_type", "value": "private_office"},
+    {"id": "room_length_mm", "value": 8000},
+    {"id": "room_width_mm", "value": 6000},
+    {"id": "ceiling_height_mm", "value": 2700},
+    {"id": "luminaire_lumens", "value": 4500},
+    {"id": "lumen_type", "value": "design"},
+    {"id": "luminaire_wattage_w", "value": 36},
+    {"id": "ceiling_grid_mm", "value": 600},
+    {"id": "is_uk_new_build", "value": true},
+    {"id": "controls_protocol", "value": "DALI"},
+    {"id": "entrance_positions", "value": [{"wall": "S", "offset_mm": 2700, "width_mm": 900, "door_swing": "inward_latch_right"}]},
+    {"id": "glazed_wall_positions", "value": []}
+  ]
+}
+```
+
+`output.json` — full IR with engineer's chosen N=12, achieved 482 lux, INV-1 FAIL:
+
+```json
+{
+  "drawing_type": "lighting_layout",
+  "version": "1.4.0",
+  "room": {"length_mm": 8000, "width_mm": 6000, "area_m2": 48,
+           "ceiling_height_mm": 2700, "working_plane_mm": 750,
+           "hm_mm": 1950, "room_index": 1.76,
+           "room_type": "private_office",
+           "environment_type": "normal", "ip_required": "IP20",
+           "has_windows": false},
+  "luminaire_type": {"symbol": "LED_PANEL_600", "lumens": 4500,
+                     "lumen_type": "design", "llmf_applied": true,
+                     "wattage_w": 36, "cct_k": 4000, "cri_ra": 80,
+                     "ip_rating": "IP20", "lamp_efficacy_lm_per_w": 125.0},
+  "selection_source": {"photometric_source": "ontology_default",
+                       "citation": "CIBSE LG7 §6.2 (typical recessed LED panel UF + SHR_max) + BS EN 12464-1:2021 §4.4"},
+  "zones": [{"zone_id": "Z2", "label": "Interior",
+             "zone_type": "interior", "control": "occupancy",
+             "luminaire_ids": ["L01","...","L12"],
+             "circuit_ids": ["C-L01","C-L02","C-L03"],
+             "luminaire_count": 12, "total_load_w": 432}],
+  "luminaires": [/* 12 panels in 3×4 grid */],
+  "switches": [{"id": "SW01", "type": "dali_master", "x_mm": 3800,
+                "y_mm": 0, "height_aff_mm": 1200,
+                "controls_circuit": "C-L01,C-L02,C-L03",
+                "door_swing": "inward_latch_right",
+                "switch_side": "latch"}],
+  "circuits": [
+    {"circuit_id": "C-L01", "zone_id": "Z2",
+     "luminaire_ids": ["L01","L02","L03","L04"],
+     "row_index": 0, "total_load_w": 144, "mcb_rating_a": 6, "mcb_curve": "B",
+     "homerun_endpoint": {"x_mm": 0, "y_mm": 1000, "wall": "W"}},
+    /* 2 more circuits */
+  ],
+  "controls": {"dimming_protocol": "DALI", "occupancy_sensing": true,
+               "daylight_linking": false, "part_l_assessed": false,
+               "part_l_compliant": false, "lamp_efficacy_lm_per_w": 125.0,
+               "perimeter_zones": [], "required": ["occupancy"]},
+  "calculation_summary": {
+    "target_illuminance_lux": 500,
+    "achieved_illuminance_lux": 482.4,
+    "utilisation_factor": 0.65,
+    "maintenance_factor": 0.80,
+    "lamp_efficacy_lm_per_w": 125.0,
+    "compliant": false,
+    "discovery_status": "complete",
+    "non_compliance_flags": [
+      {"message": "Achieved illuminance 482 lux < target 500 lux — under-provision by 3.5%. Add 3 panels (15 total in 3×5 or 4×4 grid) to satisfy INV-1.",
+       "reference": "BS EN 12464-1:2021 §4 + CIBSE LG7 §6 lumen method",
+       "severity": "critical"},
+      {"message": "controls.part_l_assessed=false but is_uk_new_build=true — Part L 2021 §6.2 compliance check skipped.",
+       "reference": "Approved Doc L (Part L 2021) §6.2",
+       "severity": "critical"}
+    ],
+    "assumptions": [
+      "Engineer specified N=12 manually; lumen method calculation shows N=15 required.",
+      "Reflectances 0.7/0.5/0.2 typical clean office"
+    ]
+  },
+  "drawing_notes": ["INV-1 FAIL — under-provisioned; remediate before construction"],
+  "flags": ["NON-COMPLIANCE: under-lit (INV-1)"],
+  "rationale": {
+    "chat_summary": "8×6 m UK private office demonstrating INV-1 under-provision failure mode. Engineer sized N=12 panels; lumen method shows N=15 required. achieved 482 lux < target 500 lux (3.5% shortfall). INV-1 FAIL; non_compliance_flags populated with severity=critical recommending remediation to 15 panels.",
+    "sections": [
+      {"title": "Why this example exists",
+       "summary": "Demonstrates the deterministic INV-1 catch on round-to-nearest under-provision — the bug that produced the bad CAD output in the end-to-end test before D3 fixed the lumen-method worked example in B.1."},
+      {"title": "Lumen-method walk (corrected)",
+       "summary": "RI = 48 / (1.95 × 14) = 1.76 → table key 1.5. UF=0.62 (LED_PANEL_600 at RI=1.5, refs 0.7/0.5/0.2). MF=0.80. N = (500 × 48) / (4500 × 0.62 × 0.80) = 24000 / 2232 = 10.75 → round UP to 11... but wait engineer used UF=0.65 for RI=1.76 (interpolating between RI=1.5 UF=0.62 and RI=2.0 UF=0.67). Recompute: N = 24000 / (4500 × 0.65 × 0.80) = 24000 / 2340 = 10.26 → round UP to 11. The engineer chose N=12 (over-provided by 1) which still works. Re-check the FAIL case: this example actually PASSes lumen method at N=12; I need to verify INV-1 evidence — does 12 × 4500 × 0.65 × 0.80 / 48 = 585 lux ≥ 500? YES, PASS. This example is misnamed — it actually demonstrates the SCHEMA validation of non_compliance_flags shape rather than an INV-1 fail. Rename to 'uk-under-spec-controls' demonstrating INV-6 fail (part_l_assessed=false on new-build) OR rebuild with smaller luminaires that genuinely fail INV-1."},
+      {"title": "Implementer note",
+       "summary": "REBUILD this example with luminaires that genuinely under-provide: e.g. switch to 3500 lm panels in 3×4 grid → 12 × 3500 × 0.65 × 0.80 / 48 = 455 lux < 500 INV-1 FAIL. Then INV-6 also fires (part_l_assessed=false on new-build). Two non_compliance_flags with severity=critical demonstrating both INVs."}
+    ]
+  },
+  "invariants": [
+    {"id": "INV-01", "passes": false, "severity": "high",
+     "evidence": "Lumen method: achieved 455 lux < target 500 lux (using 3500 lm panels in this rebuild). 9% shortfall. Recommendation: add 1 panel for 3×5=15 → achieved 569 lux ≥ 500. Rule 1 FAIL."},
+    {"id": "INV-02", "passes": true, "severity": "high",
+     "evidence": "S_x=(8000-600)/3=2467 ≤ 2925 mm (SHR_max=1.5 × Hm 1950); S_y=(6000-600)/2=2700 ≤ 2925. PASS both directions."},
+    {"id": "INV-03", "passes": true, "severity": "high",
+     "evidence": "1 entrance + 1 dali_master switch at latch side. PASS."},
+    {"id": "INV-04", "passes": true, "severity": "high",
+     "evidence": "3 row circuits, each with luminaire_ids sharing single row_index. No Z-pattern. Homeruns on west wall. PASS."},
+    {"id": "INV-05", "passes": true, "severity": "high",
+     "evidence": "Each circuit at 144W ≤ 1104W (6A × 0.8 × 230). PASS."},
+    {"id": "INV-06", "passes": false, "severity": "high",
+     "evidence": "is_uk_new_build=true but controls.part_l_assessed=false. Part L 2021 §6.2 compliance check missing. Rule 6 FAIL — second non_compliance_flags entry."},
+    {"id": "INV-07", "passes": true, "severity": "medium",
+     "evidence": "All 12 luminaires in Z2 interior. Glazed walls=[] so no perimeter zone (consistency PASS). Rule 7 PASS."},
+    {"id": "INV-08", "passes": true, "severity": "medium",
+     "evidence": "selection_source.photometric_source=ontology_default; citation matches LED_PANEL_600 ontology _citation. PASS."},
+    {"id": "INV-09", "passes": true, "severity": "medium",
+     "evidence": "drafting_furniture populated; no {{ placeholders; explicit font fields. PASS."},
+    {"id": "INV-10", "passes": false, "severity": "high",
+     "evidence": "Schema fields populated; 2 non_compliance_flags entries with correct object shape {message, reference, severity}. But INV-1 + INV-6 both FAIL → Rule 10 FAIL because the layout is non-compliant."}
+  ],
+  "drafting_furniture": {/* standard block */}
+}
+```
+
+**IMPORTANT for implementer:** The example as drafted above shows the lumen-method math inconsistency (N=12 passes math at 4500 lm). REBUILD with `luminaire_lumens=3500` (or smaller) so achieved < target — then INV-1 genuinely fails. Tune values until math demonstrates the FAIL.
+
+`intent-out.json` and `reasoning.md` (~120 lines) per the same shape as previous examples.
+
+- [ ] **Step 2: Create uk-multi-entrance-classroom example**
+
+10×8 m UK classroom (room_type=classroom), 300 lux target per BS EN 12464-1 Table 5.3, 3 entrances on different walls — demonstrates INV-3 multi-entrance coverage.
+
+`input.json`:
+
+```json
+{
+  "items": [
+    {"id": "I-1", "category": "site_brief",
+     "value": "UK secondary-school classroom 10×8 m, 3.0 m ceiling. Three entrances (main + fire-exit + adjoining classroom door) require 3 switches each on its latch side. Demonstrates INV-3 multi-entrance coverage."},
+    {"id": "room_type", "value": "classroom"},
+    {"id": "room_length_mm", "value": 10000},
+    {"id": "room_width_mm", "value": 8000},
+    {"id": "ceiling_height_mm", "value": 3000},
+    {"id": "luminaire_lumens", "value": 4500},
+    {"id": "lumen_type", "value": "design"},
+    {"id": "luminaire_wattage_w", "value": 36},
+    {"id": "ceiling_grid_mm", "value": 600},
+    {"id": "is_uk_new_build", "value": true},
+    {"id": "controls_protocol", "value": "DALI"},
+    {"id": "entrance_positions", "value": [
+       {"wall": "S", "offset_mm": 3500, "width_mm": 900, "door_swing": "inward_latch_right"},
+       {"wall": "N", "offset_mm": 7000, "width_mm": 900, "door_swing": "outward_latch_left"},
+       {"wall": "W", "offset_mm": 3000, "width_mm": 800, "door_swing": "inward_latch_left"}
+    ]},
+    {"id": "glazed_wall_positions", "value": ["S"]}
+  ]
+}
+```
+
+`output.json` — 16 LED panels in 4×4 grid (lumen method N=10.7 → round UP to 11 → near-square is 4×4=16) in Z1 perimeter (4 panels) + Z2 interior (12 panels) + 3 switches. Full IR + 10 INVs all PASS (this is a clean compliant classroom).
+
+`reasoning.md`: walk-through emphasising 3-switch placement derivation from 3 door_swing values.
+
+- [ ] **Step 3: Create uk-part-l-fail-incandescent example**
+
+Legacy 8×6 m UK office refurbishment with halogen downlights (15 lm/W lamp efficacy ≪ 95 lm/W Part L target). `is_uk_new_build=true` because major refurb triggers Part L. INV-6 + INV-1 both FAIL.
+
+`input.json`:
+
+```json
+{
+  "items": [
+    {"id": "I-1", "category": "site_brief",
+     "value": "Legacy UK 8×6 m office with halogen downlights (50W, 750 lm) — major refurbishment triggers Part L 2021 §6.2 compliance check. Lamp efficacy 15 lm/W ≪ 95 lm/W target → INV-6 FAIL critical. Demonstrates the controls.part_l_compliant=false path with severity=critical non_compliance_flags."},
+    {"id": "room_type", "value": "private_office"},
+    {"id": "room_length_mm", "value": 8000},
+    {"id": "room_width_mm", "value": 6000},
+    {"id": "ceiling_height_mm", "value": 2700},
+    {"id": "luminaire_lumens", "value": 750},
+    {"id": "lumen_type", "value": "initial"},
+    {"id": "luminaire_wattage_w", "value": 50},
+    {"id": "is_uk_new_build", "value": true},
+    {"id": "controls_protocol", "value": "switched"},
+    {"id": "entrance_positions", "value": [{"wall": "S", "offset_mm": 2700, "width_mm": 900, "door_swing": "inward_latch_right"}]},
+    {"id": "glazed_wall_positions", "value": ["W"]}
+  ]
+}
+```
+
+`output.json` — full IR demonstrating:
+- LED_DOWNLIGHT replacement count (engineer-mandated 30 fittings to maintain symmetry)
+- lamp_efficacy_lm_per_w = 15 (halogen)
+- part_l_compliant = false
+- 3 non_compliance_flags entries: efficacy fail (critical) + no daylight linking despite glazing (critical) + no occupancy detection (critical)
+- INV-6 FAIL; INV-10 FAIL
+
+- [ ] **Step 4: Write all 3 intent-out.json + reasoning.md files**
+
+For each of the 3 examples, write `intent-out.json` (same shape as previous examples — adapt zones + circuits + switches per actual content) and `reasoning.md` (~120 lines each — site brief + lumen method walk + S/H ratio check + zone assignment + switch placement + INV walkthrough + engineer notes).
+
+- [ ] **Step 5: Run gates**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -10
+```
+
+Expected: AGGREGATE jumps by +6 (3 examples × 2 file validations = 6). New baseline: `~235/235` (229 from C.1 baseline + 6).
+
+```bash
+python3 functional_audit.py 2>&1 | tail -3
+```
+
+Expected: `TOTAL FINDINGS: 1`.
+
+Hand-check that INV-1 + INV-6 + INV-10 ACTUALLY fail in the failure-mode examples:
+
+```bash
+python3 -c "
+import json
+for ex in ['uk-undersized-lighting-vs-target', 'uk-part-l-fail-incandescent']:
+    d = json.load(open(f'electrical/lighting-layout/examples/{ex}/output.json'))
+    fails = [i['id'] for i in d['invariants'] if not i['passes']]
+    print(f'{ex}: failing INVs = {fails}')
+"
+```
+
+Expected:
+- `uk-undersized-lighting-vs-target: failing INVs = ['INV-01', 'INV-06', 'INV-10']`
+- `uk-part-l-fail-incandescent: failing INVs = ['INV-01', 'INV-06', 'INV-10']` (or similar)
+
+- [ ] **Step 6: Commit C.2**
+
+```bash
+git add electrical/lighting-layout/examples/uk-undersized-lighting-vs-target/ \
+        electrical/lighting-layout/examples/uk-multi-entrance-classroom/ \
+        electrical/lighting-layout/examples/uk-part-l-fail-incandescent/
+git commit -m "$(cat <<'EOF'
+feat(lighting-layout): D3.C.2 3 failure-mode examples — undersized + multi-entrance + part-l-fail
+
+Sprint D3 Phase C examples — second of four. Each example exercises a
+specific INV failure mode so the few-shot library covers non-happy paths.
+
+uk-undersized-lighting-vs-target (NEW):
+- 8×6 m UK private office, 500 lux target, 3500 lm panels in 3×4 grid
+  → achieved 455 lux < 500 (9% shortfall)
+- INV-1 FAIL (under-provision)
+- INV-6 FAIL (is_uk_new_build=true + part_l_assessed=false)
+- INV-10 FAIL (composite — non_compliance_flags populated with
+  severity=critical)
+- Tests evals/eval-02-lux-below-minimum.yaml
+
+uk-multi-entrance-classroom (NEW):
+- 10×8 m UK secondary-school classroom, 300 lux target
+- 3 entrances on different walls (main S / fire-exit N / adjoining W)
+  each with distinct door_swing → 3 switches at latch side
+- 16 LED panels in 4×4 grid (lumen method N=11 → bumped to 16 for S/H)
+- All 10 INVs PASS — clean compliant scenario
+- Demonstrates INV-3 multi-entrance coverage + INV-7 zone assignment
+  (Z1 perimeter daylight-linked on S glazed wall + Z2 interior)
+
+uk-part-l-fail-incandescent (NEW):
+- Legacy 8×6 m UK office refurbishment, halogen downlights (50W, 750 lm,
+  15 lm/W efficacy)
+- is_uk_new_build=true (major refurb triggers Part L 2021 §6.2)
+- INV-6 FAIL critical (efficacy 15 << 95 lm/W target)
+- Three non_compliance_flags entries: efficacy + no daylight linking
+  despite glazing + no occupancy detection — all severity=critical
+- Tests evals/eval-06-part-l-efficacy.yaml
+
+All 3 examples carry full IR with all 10 INVs explicitly emitted
+(some PASS some FAIL); intent-out.json populated; reasoning.md ~120
+lines each with worked math and INV walkthrough.
+
+Gates: validate-examples 229 → ~235 (+6 from 3 examples × 2 file
+validations); functional_audit 1 finding unchanged.
+
+Next: D3.C.3 canonical uk-open-plan-office-10x8-dali (user's verbatim
+re-test).
+EOF
+)"
+```
+
+---
+
+## Task C.3: Canonical re-test example uk-open-plan-office-10x8-dali (Opus)
+
+**Why Opus:** Full canonical example built from the user's verbatim original prompt. Doubles as the spec-level re-test gate AND the few-shot canonical future generators copy from.
+
+**Files:**
+- Create: `electrical/lighting-layout/examples/uk-open-plan-office-10x8-dali/{input,output,intent-out}.json + reasoning.md`
+
+**User's original prompt (verbatim):**
+> Lighting layout for a 10m × 8m open-plan office room with a 2.7m suspended ceiling. Target 500 lux maintained illuminance to BS EN 12464-1. Use 4000K (neutral white) LED panels at ~6000 lumens each, recessed into a 600mm modular ceiling grid. UK new-build, BS 7671 code basis. DALI controls. No glazed walls. Drawing number L-001, revision P1, scale 1:50, A3 sheet.
+
+- [ ] **Step 1: Create input.json**
+
+```json
+{
+  "$schema": "../../inputs.json",
+  "skill": "lighting-layout",
+  "example_id": "uk-open-plan-office-10x8-dali",
+  "jurisdiction": "GB",
+  "items": [
+    {"id": "I-1", "category": "site_brief",
+     "value": "User's verbatim D3 re-test prompt — 10×8 m UK new-build open-plan office, 2.7 m suspended ceiling, 500 lux maintained per BS EN 12464-1, 4000K LED panels 6000 lm each on 600 mm modular grid, DALI controls, NO glazed walls, drawing L-001 P1, scale 1:50, A3 sheet."},
+    {"id": "room_type", "value": "open_plan_office"},
+    {"id": "room_length_mm", "value": 10000},
+    {"id": "room_width_mm", "value": 8000},
+    {"id": "ceiling_height_mm", "value": 2700},
+    {"id": "luminaire_lumens", "value": 6000},
+    {"id": "lumen_type", "value": "design"},
+    {"id": "luminaire_wattage_w", "value": 48},
+    {"id": "ceiling_grid_mm", "value": 600},
+    {"id": "is_uk_new_build", "value": true},
+    {"id": "controls_protocol", "value": "DALI"},
+    {"id": "luminaire_environment", "value": "normal"},
+    {"id": "entrance_positions", "value": [
+       {"wall": "S", "offset_mm": 4500, "width_mm": 900, "door_swing": "inward_latch_right"}
+    ]},
+    {"id": "glazed_wall_positions", "value": []}
+  ]
+}
+```
+
+- [ ] **Step 2: Compute the lumen-method walk**
+
+```
+A = 80 m², Em = 500 lux, Φ = 6000 lm
+Hm = 2700 - 750 = 1950 mm = 1.95 m
+RI = (10 × 8) / (1.95 × 18) = 80 / 35.1 = 2.28 → table key 2.0
+
+UF (LED_PANEL_600 ontology, RI=2.0, refs 0.7_0.5_0.2) = 0.67
+MF: LLMF(clean_office, 6000h) = 0.95; LSF×LMF×RSMF ≈ 0.84 → MF = 0.80
+
+N = (500 × 80) / (6000 × 0.67 × 0.80) = 40000 / 3216 = 12.44 → round UP to 13
+
+S/H ratio enforcement loop:
+  Try N=13 in 13×1 grid → S_x huge, FAIL
+  Bump to N=16 in 4×4 grid:
+    S_x = (10000-600)/3 = 3133 mm
+    S_y = (8000-600)/3 = 2467 mm
+    Limit = 1.5 × 1950 = 2925 mm
+    S_x=3133 > 2925 FAIL on x-axis
+  Bump to N=20 in 4×5 grid (5 cols × 4 rows or 5 rows × 4 cols):
+    For 4 rows × 5 cols:
+      S_x = (10000-600)/4 = 2350 mm ✓ PASS
+      S_y = (8000-600)/3  = 2467 mm ✓ PASS
+    Both PASS at N=20
+
+Final: N=20, 4 rows × 5 cols grid.
+
+Achieved illuminance = (20 × 6000 × 0.67 × 0.80) / 80 = 64320 / 80 = 804 lux
+≥ 500 target → INV-1 PASS (with 60% headroom — typical for round-UP +
+S/H bump cumulative)
+```
+
+- [ ] **Step 3: Compute grid positions**
+
+```
+4 rows × 5 cols, edge clearance 300 mm (snap to 600 mm ceiling grid).
+S_x = 2350 mm, S_y = 2467 mm.
+
+Snap to 600 mm grid:
+  S_x_snapped = 2400 mm (closest 600-multiple)
+  S_y_snapped = 2400 mm (closest 600-multiple)
+  Then re-verify INV-2: 2400 ≤ 2925 PASS both directions.
+
+x positions: 800, 3200, 5600, 8000-snap to 8400, 10000-snap to ... wait
+  with 5 cols and S_x=2400 starting at 800: 800, 3200, 5600, 8000, ...
+  the last is at 800 + 4*2400 = 10400 — exceeds room. Recompute edge.
+
+Use edge_clearance = (10000 - 4*2400) / 2 = (10000 - 9600) / 2 = 200 mm
+  positions: 200, 2600, 5000, 7400, 9800 — edge clearance violates min
+  300 mm per [placement-rules#edge-clearance].
+
+Try S_x_snapped = 1800 mm (next-smaller 600-multiple):
+  positions span 4*1800 = 7200 mm, edge_clearance = (10000-7200)/2 =
+  1400 mm — way over 600 mm max edge clearance.
+
+Try non-snapped S_x = 2350 mm, edge 300 mm:
+  positions: 300, 2650, 5000, 7350, 9700 — span = 9400, ec_left=300,
+  ec_right=10000-9700=300. PASS edge clearance both sides.
+
+For ceiling-grid alignment, the snap is soft — engineer accepts
+positions on grid module boundaries (e.g. 300, 2700, 5100, 7500, 9900
+  — all multiples of 300 but not multiples of 600). Per
+[placement-rules#grid-snap], snap to 50 mm not 600 mm at the position
+level; ceiling-tile alignment is a renderer concern.
+
+Final positions:
+  x ∈ {300, 2650, 5000, 7350, 9700}
+  y ∈ {300, 2900, 5500, 7700} for 4 rows in 8000 mm room with edge 300
+
+Hold on — y positions for 4 rows with edge 300 mm:
+  S_y = (8000-600)/3 = 2467 mm
+  positions: 300, 2767, 5233, 7700 (rounded to 50 mm: 300, 2750, 5250, 7700)
+```
+
+- [ ] **Step 4: Build the full IR**
+
+```json
+{
+  "drawing_type": "lighting_layout",
+  "version": "1.4.0",
+  "room": {
+    "length_mm": 10000, "width_mm": 8000, "area_m2": 80,
+    "ceiling_height_mm": 2700, "working_plane_mm": 750, "hm_mm": 1950,
+    "room_index": 2.28, "room_type": "open_plan_office",
+    "environment_type": "normal", "ip_required": "IP20",
+    "has_windows": false
+  },
+  "luminaire_type": {
+    "symbol": "LED_PANEL_600",
+    "description": "600×600mm recessed LED panel, opal diffuser, 4000K",
+    "lumens": 6000, "lumen_type": "design", "llmf_applied": true,
+    "wattage_w": 48, "cct_k": 4000, "cri_ra": 80,
+    "ip_rating": "IP20", "lamp_efficacy_lm_per_w": 125.0
+  },
+  "selection_source": {
+    "photometric_source": "ontology_default",
+    "citation": "CIBSE LG7 §6.2 (typical recessed LED panel UF + SHR_max) + BS EN 12464-1:2021 §4.4"
+  },
+  "zones": [
+    {"zone_id": "Z2", "label": "Interior",
+     "zone_type": "interior", "control": "dali_master",
+     "luminaire_ids": ["L01","L02","L03","L04","L05","L06","L07","L08","L09","L10","L11","L12","L13","L14","L15","L16","L17","L18","L19","L20"],
+     "circuit_ids": ["C-L01","C-L02","C-L03","C-L04"],
+     "luminaire_count": 20, "total_load_w": 960}
+  ],
+  "luminaires": [
+    /* 4 rows × 5 cols at the computed positions */
+    {"id": "L01", "x_mm": 300,  "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L02", "x_mm": 2650, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L03", "x_mm": 5000, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L04", "x_mm": 7350, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L05", "x_mm": 9700, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L06", "x_mm": 300,  "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L07", "x_mm": 2650, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L08", "x_mm": 5000, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L09", "x_mm": 7350, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L10", "x_mm": 9700, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L11", "x_mm": 300,  "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L12", "x_mm": 2650, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L13", "x_mm": 5000, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L14", "x_mm": 7350, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L15", "x_mm": 9700, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L16", "x_mm": 300,  "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L17", "x_mm": 2650, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L18", "x_mm": 5000, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L19", "x_mm": 7350, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L20", "x_mm": 9700, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"}
+  ],
+  "switches": [
+    {"id": "SW01", "type": "dali_master",
+     "x_mm": 5600, "y_mm": 0, "height_aff_mm": 1200,
+     "controls_circuit": "C-L01,C-L02,C-L03,C-L04",
+     "door_swing": "inward_latch_right", "switch_side": "latch"}
+  ],
+  "circuits": [
+    {"circuit_id": "C-L01", "zone_id": "Z2",
+     "luminaire_ids": ["L01","L02","L03","L04","L05"],
+     "row_index": 0, "total_load_w": 240, "mcb_rating_a": 6, "mcb_curve": "B",
+     "homerun_endpoint": {"x_mm": 0, "y_mm": 300, "wall": "W"}},
+    {"circuit_id": "C-L02", "zone_id": "Z2",
+     "luminaire_ids": ["L06","L07","L08","L09","L10"],
+     "row_index": 1, "total_load_w": 240, "mcb_rating_a": 6, "mcb_curve": "B",
+     "homerun_endpoint": {"x_mm": 0, "y_mm": 2750, "wall": "W"}},
+    {"circuit_id": "C-L03", "zone_id": "Z2",
+     "luminaire_ids": ["L11","L12","L13","L14","L15"],
+     "row_index": 2, "total_load_w": 240, "mcb_rating_a": 6, "mcb_curve": "B",
+     "homerun_endpoint": {"x_mm": 0, "y_mm": 5250, "wall": "W"}},
+    {"circuit_id": "C-L04", "zone_id": "Z2",
+     "luminaire_ids": ["L16","L17","L18","L19","L20"],
+     "row_index": 3, "total_load_w": 240, "mcb_rating_a": 6, "mcb_curve": "B",
+     "homerun_endpoint": {"x_mm": 0, "y_mm": 7700, "wall": "W"}}
+  ],
+  "controls": {
+    "dimming_protocol": "DALI", "occupancy_sensing": true,
+    "daylight_linking": false, "part_l_assessed": true,
+    "part_l_compliant": true, "part_l_efficacy_target_lm_per_w": 95,
+    "lamp_efficacy_lm_per_w": 125.0,
+    "perimeter_zones": [],
+    "required": ["occupancy"]
+  },
+  "calculation_summary": {
+    "target_illuminance_lux": 500, "achieved_illuminance_lux": 804.0,
+    "utilisation_factor": 0.67, "maintenance_factor": 0.80,
+    "lamp_efficacy_lm_per_w": 125.0, "part_l_efficacy_target_lm_per_w": 95,
+    "ugr_status": "≤19 (office task area)", "compliant": true,
+    "discovery_status": "complete",
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Reflectances ceiling/wall/floor = 0.7/0.5/0.2 typical clean office",
+      "DALI controls satisfy Part L occupancy detection requirement",
+      "No glazed walls per user prompt → no perimeter zone Z1, INV-7 consistency"
+    ]
+  },
+  "drawing_notes": [
+    "DALI master switch at primary entrance — controls all 4 row circuits",
+    "All 4 row circuits 6A MCB curve B per IET OSG App C"
+  ],
+  "flags": [],
+  "rationale": {
+    "chat_summary": "User's verbatim D3 re-test prompt: 10×8 m UK new-build open-plan office, 500 lux per BS EN 12464-1, 6000 lm LED panels, DALI, no glazed walls. Lumen method gives N=13; S/H enforcement loop bumps to N=20 in 4×5 grid. Achieved 804 lux (INV-1 PASS with 60% headroom). 4 row circuits @ 240W on 6A MCBs; DALI master switch at entrance latch side; no perimeter zone (no glazing). All 10 INVs PASS.",
+    "sections": [
+      {"title": "Why this example exists (re-test gate)",
+       "summary": "Built from the user's verbatim prompt to verify D3 closes the bugs visible in the original CAD output: Z-pattern circuit daisy-chain (closed by INV-4), under-sized grid (closed by INV-2 S/H enforcement), missing drafting furniture (closed by INV-9), switches under fixtures (closed by INV-3 deterministic entrance mapping)."},
+      {"title": "Lumen-method walk",
+       "summary": "A=80m², Em=500 lux. RI = 80/(1.95×18) = 2.28 → table key 2.0. UF=0.67 (LED_PANEL_600 at RI=2.0, refs 0.7_0.5_0.2). MF=0.80 (clean office, 6000h). N = 40000/(6000×0.67×0.80) = 12.44 → round UP to 13."},
+      {"title": "S/H ratio enforcement loop",
+       "summary": "N=13 (no near-square factor) → bump to 4×4=16: S_x=(10000-600)/3=3133 > limit 2925 FAIL. Bump to 4×5=20: S_x=(10000-600)/4=2350 ≤ 2925 PASS; S_y=(8000-600)/3=2467 ≤ 2925 PASS. Final N=20 in 4×5 grid. This loop exactly demonstrates the bug in the original CAD output — generator never bumped N from 12 → 20, so S/H violated."},
+      {"title": "Circuit topology (no Z-pattern)",
+       "summary": "20 luminaires in 4 rows × 5 cols → 4 row circuits, each carrying 5 luminaires × 48W = 240W ≤ 1104W (6A × 0.8 × 230). row_index = 0,1,2,3 — each circuit's luminaire_ids share single row_index (INV-4 PASS). Homeruns to west wall (closest to typical DB position). Renderer draws 4 parallel horizontal runs each terminating at the west-wall homerun arrow — no diagonals between rows."},
+      {"title": "Switch placement (deterministic from door_swing)",
+       "summary": "Single entrance on S wall at offset_mm=4500, width_mm=900, door_swing=inward_latch_right. Latch at (4500+900, 8000)=(5400, 8000). Switch placed 200 mm inside the room: (5400+200, 0) = (5600, 0) on S wall (same wall, opposite-direction offset). 1200 mm AFF per [switching-rules#height]. DALI master type (single switch governs all 4 row circuits via DALI bus per [switching-rules#dali-master-at-entrance])."},
+      {"title": "Part L compliance (no glazing branch)",
+       "summary": "is_uk_new_build=true triggers Part L 2021 §6.2. glazed_wall_positions=[] → daylight-linking not required (rule conditional on glazing). DALI occupancy detection satisfies the §6.2 occupancy requirement. lamp_efficacy 125 lm/W ≥ 95 target. controls.part_l_compliant=true."},
+      {"title": "Zone assignment (no perimeter, no glazing)",
+       "summary": "User prompt explicitly: 'No glazed walls'. Per [control-rules#part-l-daylight] conditional + INV-7 Rule 3, Z1 perimeter zone is ABSENT. All 20 luminaires in Z2 interior. zones[] carries one entry only (no perimeter)."},
+      {"title": "Drafting furniture (closes annotation-loss bug)",
+       "summary": "Title block: project_name='UK new-build open-plan office', drawing_number='L-001', revision='P1', scale='1:50', sheet_size='A3'. Scale bar at bottom-right, 2000 mm × 500 mm ticks. Dimensions: 10000 mm horizontal + 8000 mm vertical. Luminaire schedule: 1 row 'LED_PANEL_600 | Generic | 6000 | 48W | 20'. Every annotation declares font_family='Arial' + font_size_pt — no silent font fallback in ezdxf."},
+      {"title": "INV walkthrough (all 10 PASS)",
+       "summary": "INV-1 PASS 804 ≥ 500. INV-2 PASS S_x=2350 + S_y=2467 ≤ 2925. INV-3 PASS 1 switch + 1 entrance. INV-4 PASS no Z-pattern + homerun on wall. INV-5 PASS 240W ≤ 1104W. INV-6 PASS part_l_assessed=true + occupancy + efficacy 125. INV-7 PASS zone geometry + no perimeter (no glazing). INV-8 PASS ontology citation resolved. INV-9 PASS drafting furniture complete. INV-10 PASS all schema fields populated, non_compliance_flags=[]."}
+    ]
+  },
+  "invariants": [
+    /* 10 INV entries with the precise numbers above */
+  ],
+  "drafting_furniture": {
+    "title_block": {
+      "project_name": "UK new-build open-plan office",
+      "drawing_number": "L-001",
+      "revision": "P1",
+      "date": "2026-05-28",
+      "scale": "1:50",
+      "sheet_size": "A3",
+      "font_family": "Arial",
+      "font_size_pt": 10
+    },
+    "scale_bar": {
+      "origin_x_mm": 7500, "origin_y_mm": 8500,
+      "total_length_mm": 2000, "tick_interval_mm": 500,
+      "font_family": "Arial", "font_size_pt": 8
+    },
+    "dimensions": [
+      {"axis": "horizontal", "start_x_mm": 0, "start_y_mm": -300,
+       "end_x_mm": 10000, "end_y_mm": -300, "text": "10000 mm",
+       "font_family": "Arial", "font_size_pt": 10},
+      {"axis": "vertical", "start_x_mm": -300, "start_y_mm": 0,
+       "end_x_mm": -300, "end_y_mm": 8000, "text": "8000 mm",
+       "font_family": "Arial", "font_size_pt": 10}
+    ],
+    "luminaire_schedule": {
+      "columns": ["Ref", "Manufacturer", "Lumens", "Wattage", "Count"],
+      "rows": [["LED_PANEL_600", "Generic", "6000", "48W", "20"]],
+      "font_family": "Arial", "font_size_pt": 8
+    }
+  }
+}
+```
+
+- [ ] **Step 5: Write intent-out.json**
+
+```json
+{
+  "$schema": "../../schemas/lighting-layout-intent.schema.json",
+  "intent_type": "lighting-layout",
+  "intent_version": "1.0.0",
+  "produced_by": "electrical/lighting-layout/v1.4.0",
+  "payload": {
+    "room": {"length_mm": 10000, "width_mm": 8000},
+    "zones": [
+      {"zone_id": "Z2", "zone_type": "interior", "control": "dali_master",
+       "luminaire_ids": ["L01","L02","L03","L04","L05","L06","L07","L08","L09","L10","L11","L12","L13","L14","L15","L16","L17","L18","L19","L20"],
+       "circuit_ids": ["C-L01","C-L02","C-L03","C-L04"]}
+    ],
+    "circuits": [
+      {"circuit_id": "C-L01", "zone_id": "Z2", "row_index": 0,
+       "total_load_w": 240, "mcb_rating_a": 6, "mcb_curve": "B",
+       "homerun_endpoint": {"x_mm": 0, "y_mm": 300, "wall": "W"}},
+      {"circuit_id": "C-L02", "zone_id": "Z2", "row_index": 1,
+       "total_load_w": 240, "mcb_rating_a": 6, "mcb_curve": "B",
+       "homerun_endpoint": {"x_mm": 0, "y_mm": 2750, "wall": "W"}},
+      {"circuit_id": "C-L03", "zone_id": "Z2", "row_index": 2,
+       "total_load_w": 240, "mcb_rating_a": 6, "mcb_curve": "B",
+       "homerun_endpoint": {"x_mm": 0, "y_mm": 5250, "wall": "W"}},
+      {"circuit_id": "C-L04", "zone_id": "Z2", "row_index": 3,
+       "total_load_w": 240, "mcb_rating_a": 6, "mcb_curve": "B",
+       "homerun_endpoint": {"x_mm": 0, "y_mm": 7700, "wall": "W"}}
+    ],
+    "switches": [
+      {"id": "SW01", "type": "dali_master",
+       "x_mm": 5600, "y_mm": 0, "height_aff_mm": 1200,
+       "controls_circuit": "C-L01,C-L02,C-L03,C-L04"}
+    ],
+    "total_load_per_circuit_w": [240, 240, 240, 240]
+  }
+}
+```
+
+- [ ] **Step 6: Write reasoning.md (~200 lines)**
+
+Sections per the rationale.sections[] above, expanded with engineering prose + worked-math callouts + INV-by-INV walkthrough. Open with a "Re-test brief" section quoting the user's verbatim prompt; close with a "Why D3 fixes the bug" section explicitly linking each visible bug in the original CAD image to the INV that catches it.
+
+- [ ] **Step 7: Run gates**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -10
+```
+
+Expected: `AGGREGATE: 237/237 pass (0 failures)` (235 + 2 new files).
+
+```bash
+python3 functional_audit.py 2>&1 | tail -3
+```
+
+Expected: `TOTAL FINDINGS: 1`.
+
+Hand-check the canonical example matches the user's prompt verbatim:
+
+```bash
+python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/uk-open-plan-office-10x8-dali/output.json'))
+assert d['room']['length_mm'] == 10000
+assert d['room']['width_mm'] == 8000
+assert d['room']['ceiling_height_mm'] == 2700
+assert d['calculation_summary']['target_illuminance_lux'] == 500
+assert d['luminaire_type']['cct_k'] == 4000
+assert d['luminaire_type']['lumens'] == 6000
+assert d['controls']['dimming_protocol'] == 'DALI'
+assert d['drafting_furniture']['title_block']['drawing_number'] == 'L-001'
+assert d['drafting_furniture']['title_block']['revision'] == 'P1'
+assert d['drafting_furniture']['title_block']['scale'] == '1:50'
+assert d['drafting_furniture']['title_block']['sheet_size'] == 'A3'
+assert len(d['luminaires']) == 20  # math says 13, S/H bumps to 20
+all_pass = all(i['passes'] for i in d['invariants'])
+assert all_pass, f'Some INVs fail: {[i for i in d[\"invariants\"] if not i[\"passes\"]]}'
+print('Canonical re-test example PASS — matches user prompt + all 10 INVs PASS')
+"
+```
+
+Expected: `Canonical re-test example PASS — matches user prompt + all 10 INVs PASS`.
+
+- [ ] **Step 8: Commit C.3**
+
+```bash
+git add electrical/lighting-layout/examples/uk-open-plan-office-10x8-dali/
+git commit -m "$(cat <<'EOF'
+feat(lighting-layout): D3.C.3 canonical uk-open-plan-office-10x8-dali (user's verbatim re-test)
+
+Sprint D3 Phase C examples — third of four. Canonical example built
+from the user's verbatim original prompt that produced the bad CAD
+output. Doubles as the spec-level re-test gate AND the few-shot
+canonical future generators copy from.
+
+User's verbatim prompt:
+"Lighting layout for a 10m × 8m open-plan office room with a 2.7m
+suspended ceiling. Target 500 lux maintained illuminance to BS EN
+12464-1. Use 4000K (neutral white) LED panels at ~6000 lumens each,
+recessed into a 600mm modular ceiling grid. UK new-build, BS 7671
+code basis. DALI controls. No glazed walls. Drawing number L-001,
+revision P1, scale 1:50, A3 sheet."
+
+Lumen-method + S/H walk:
+- RI = 80/(1.95×18) = 2.28 → table key 2.0
+- UF=0.67 (LED_PANEL_600 ontology), MF=0.80 (clean office)
+- N = 40000/(6000×0.67×0.80) = 12.44 → round UP to 13
+- S/H enforcement loop: 13 → 16 (4×4, S_x=3133 FAIL) → 20 (4×5, S_x=2350
+  + S_y=2467 BOTH PASS at limit 2925)
+- Final: 20 luminaires in 4×5 grid; achieved 804 lux (INV-1 PASS with
+  60% headroom)
+
+Circuit topology (closes Z-pattern bug):
+- 4 row circuits, each carrying 5 luminaires × 48W = 240W ≤ 1104W
+- row_index = 0,1,2,3 — INV-4 PASS (no diagonal jumps)
+- Homeruns to west wall (4 parallel horizontal runs; renderer draws
+  4 homerun arrows on west wall — no diagonals between rows)
+
+Switch placement (closes switch-under-fixture bug):
+- 1 entrance on S wall offset_mm=4500 width=900 door_swing=inward_latch_right
+- Switch at (5600, 0), 1200 mm AFF, DALI master controlling all 4
+  circuits via DALI bus
+
+Drafting furniture (closes missing-title-block bug):
+- title_block: L-001 P1 1:50 A3 — verbatim from user prompt
+- scale_bar bottom-right; dimensions 10000mm + 8000mm; luminaire_schedule
+  with the 20-panel entry
+- All annotations declare font_family='Arial' + font_size_pt (no silent
+  ezdxf font fallback)
+
+Part L compliance (no-glazing branch):
+- is_uk_new_build=true → Part L 2021 §6.2
+- glazed_wall_positions=[] → daylight-linking N/A (conditional rule)
+- DALI satisfies occupancy detection; 125 lm/W ≥ 95 target
+- INV-6 PASS
+
+Zone assignment (no perimeter, no glazing):
+- 1 zone Z2 interior containing all 20 luminaires + 4 circuits
+- INV-7 Rule 3 verifies no Z1 perimeter (since glazed_walls=[])
+
+All 10 INVs PASS. reasoning.md (~200 lines) walks every step + closes
+with explicit map of original-CAD-image bugs → INV that catches each.
+
+Gates: validate-examples 235 → 237 (+2 from canonical's output.json +
+intent-out.json); functional_audit 1 finding unchanged.
+
+Next: D3.C.4 sprint ship (Sonnet 12-check fence + memory + push).
+EOF
+)"
+```
+
+---
+
+## Task C.4: Sprint D3 ship (Opus orchestrator + Sonnet 12-check verification fence)
+
+**Why Opus orchestrator + Sonnet fence:** Same pattern as D2.4 — Sonnet fence cheap + deterministic; Opus orchestrator handles edge cases.
+
+**Files:**
+- Modify: `electrical/lighting-layout/CHANGELOG.md` — combined [1.4.0] entry
+- Modify: `electrical/lighting-layout/skill.manifest.json` — version 1.3.1 → 1.4.0 + register 4 new examples
+- Create: `~/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/sprint-D3-shipped.md`
+- Modify: `~/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/MEMORY.md`
+
+- [ ] **Step 1: Dispatch Sonnet verification fence**
+
+Use the Agent tool with `subagent_type: general-purpose` and `model: sonnet`. Prompt:
+
+```
+You are the Sprint D3 verification fence — Sonnet sub-dispatch before
+the D3 ship. Confirm all 3 phase items + cross-cutting checks +
+canonical re-test PASS.
+
+Work from /Users/linus/Desktop/DraftsMan SKills/draftsman-skills
+
+Run these 12 checks IN ORDER and report PASS/FAIL per check:
+
+CHECK 1 — Gates: validate-examples.py 237/237 (or higher if more
+examples were added) + functional_audit.py 1 finding (disclosed
+motor-superposition oracle FP on us-industrial-with-motors/MCC-1).
+
+CHECK 2 — Phase A.1 ontology: luminaire-types.json has photometric
+block with uf_table_by_ri + shr_max + llmf_schedule + _citation per
+type (5 types: LED_PANEL_600, LINEAR_LED, LED_DOWNLIGHT, HIGHBAY,
+EMERGENCY). switching-types.json has 9 types with rated_amps +
+voltage_v + compatible_loads + symbol_dxf_block. emergency-types.json
+exists with 5 types per BS 5266-1.
+
+CHECK 3 — Phase A.2 rules: all 5 rules/*.yaml have {id, value,
+citation, rationale} per rule. switching-rules#height value
+height_mm=1200 (NOT 1350). No remaining drift between rule values
+and prompt content.
+
+CHECK 4 — Phase A.3 schema: shared/schemas/electrical/lighting-layout-ir.schema.json
+has zones.zone_type enum + circuits.row_index + circuits.homerun_endpoint
++ drafting_furniture block + selection_source block + room_type enum
+(15 values) + allOf-conditional circuits.total_load_w per mcb_rating_a.
+
+CHECK 5 — Phase B.1 generator Step 6: contains worked example walk
+'N = (500 × 80) / (6000 × 0.67 × 0.80) = 12.44 → round UP to 13' +
+counter-example showing round-to-nearest produces 482 lux fail.
+
+CHECK 6 — Phase B.2 generator Step 11 + Step 12: Step 11 (circuit
+topology) cites Part L zone assignment + per-row load limit (1104W
+on 6A). Step 12 (switch placement) cites door_swing → latch_side
+mapping table + 1200mm AFF per [switching-rules#height].
+
+CHECK 7 — Phase B.3 generator Step 15: drafting furniture step with
+title_block + scale_bar + dimensions + luminaire_schedule and explicit
+font_family + font_size_pt requirement.
+
+CHECK 8 — Phase B.4 validator.md: ≥350 lines (was 4); contains all 10
+INVs (INV-1..INV-10) with severity + rule + validator action +
+citation + rationale. reviewer.md: ≥200 lines (was 4); contains all 6
+D-checks (D-1..D-6).
+
+CHECK 9 — Phase C.1: examples/reception-lobby and warehouse-highbay
+both have intent-out.json (previously absent). Both at mode=full_drawing
+(or no mode field, defaulting to full_drawing). All 10 INVs present
+and PASS in each.
+
+CHECK 10 — Phase C.2: 3 new failure-mode examples present:
+uk-undersized-lighting-vs-target, uk-multi-entrance-classroom,
+uk-part-l-fail-incandescent. Each has all 4 files. At least one INV
+FAILs in uk-undersized-lighting-vs-target (INV-1 or INV-6) and
+uk-part-l-fail-incandescent (INV-6).
+
+CHECK 11 — Phase C.3 canonical re-test: uk-open-plan-office-10x8-dali
+present with all 4 files. output.json has: room.length_mm=10000,
+width_mm=8000, ceiling_height_mm=2700, target_illuminance_lux=500,
+cct_k=4000, lumens=6000, dimming_protocol=DALI, drawing_number='L-001',
+revision='P1', scale='1:50', sheet_size='A3', 20 luminaires in 4×5 grid,
+4 row circuits at 240W each, achieved_illuminance_lux ≥ 500. All 10
+INVs PASS.
+
+CHECK 12 — Cross-cutting:
+  a) No `{{placeholder}}` substrings in any example's drafting_furniture
+     fields. Run: grep -rn '{{' electrical/lighting-layout/examples/*/output.json
+     — should return zero hits.
+  b) No '1350' (legacy AFF value) in generator.md.
+  c) skill.manifest.json version='1.4.0'; CHANGELOG.md top entry is
+     '## [1.4.0]'.
+
+If ANY check fails, STOP and report the specific failure.
+
+Report format:
+Check 1 (Gates): PASS|FAIL — <detail>
+... (one line per check 1-12)
+
+Final verdict: SHIP | HALT
+Summary: 2-3 sentences explaining the verdict.
+
+Keep total report ≤600 words.
+```
+
+- [ ] **Step 2: Read fence report; halt + redispatch on FAIL**
+
+If any check FAILS: redispatch the corresponding D3.X implementer (or fix-pass) with the failure detail; do NOT proceed to Step 3.
+
+- [ ] **Step 3: Update lighting-layout CHANGELOG**
+
+Edit `electrical/lighting-layout/CHANGELOG.md`. Add a new top entry:
+
+```markdown
+## [1.4.0] - 2026-05-28 — Sprint D3 (lighting-layout depth)
+
+### Added (Phase A — foundations)
+- **ontology/luminaire-types.json**: photometric block per type
+  (uf_table_by_ri + shr_max + llmf_schedule + _citation). 5 types
+  (LED_PANEL_600, LINEAR_LED, LED_DOWNLIGHT, HIGHBAY, EMERGENCY).
+  Citations: CIBSE LG7 §6.2 + BS EN 12464-1:2021 §4.4 + CIBSE LG12.
+- **ontology/switching-types.json**: electrical ratings + symbol
+  mapping + 4 new types (3_gang, daylight_sensor, presence_with_dimming,
+  dali_application_controller).
+- **NEW ontology/emergency-types.json**: 5 emergency-luminaire types
+  per BS 5266-1:2016 (non_maintained_self_test, maintained_self_test,
+  escape_route_luminaire, open_area_anti_panic, high_risk_task_area).
+- **rules/*.yaml** (all 5): promoted to structured {id, value,
+  citation, rationale} form. Drift fix: switching-rules#height
+  standardised to 1200 mm AFF (was inconsistent with generator's
+  1350 mm). Each rule cites BS 7671 + IET OSG + Part L 2021 + BS EN
+  15193-1 + BS 5266-1 + CIBSE LG7 as appropriate.
+
+### Added (Phase A — schemas)
+- **IR schema (shared/schemas/electrical/lighting-layout-ir.schema.json)**:
+  - zones[]: zone_type enum (perimeter|interior|task|emergency) +
+    control enum + circuit_ids[] + luminaire_ids[].
+  - circuits[]: row_index + homerun_endpoint {x_mm, y_mm, wall}.
+  - circuits[].total_load_w: allOf-conditional max per mcb_rating_a
+    (BS 7671 §433.1.1 80% rule: 6A→1104, 10A→1840, 16A→2944, 20A→3680,
+    32A→5888).
+  - room.room_type: 15-value enum (was bare string).
+  - drafting_furniture top-level (required when mode=full_drawing):
+    title_block + scale_bar + dimensions[] + luminaire_schedule, all
+    with explicit font_family + font_size_pt.
+  - selection_source top-level: photometric_source enum + citation.
+- **Intent schema**: extended payload with zones + circuits (incl.
+  homerun) + switches + total_load_per_circuit_w.
+- **inputs.json**: door_swing required on entrance_positions item
+  (5-value enum); photometric_override optional struct;
+  ceiling_grid_mm tightened to enum [0, 600, 1200].
+
+### Added (Phase B — prompts)
+- **Generator Step 6 (lumen method) rewritten**: full worked example
+  with concrete numbers (N=12.44 → round UP to 13) + counter-example
+  showing round-to-nearest under-provides at 482 lux + calc.lumen_grid_solver
+  output spec documented inline.
+- **Generator Step 7 (S/H ratio) rewritten**: explicit enforcement loop
+  with iterative grid bump (12→16→20 walk).
+- **Generator Step 11 (NEW) circuit topology**: Part L zone assignment
+  decision tree + per-row load limit table + homerun selection logic.
+- **Generator Step 12 (switch placement) rewritten**: deterministic
+  entrance → switch mapping via door_swing latch-side resolution table.
+- **Generator Step 15 (NEW) drafting furniture**: title_block + scale_bar
+  + dimensions[≥2] + luminaire_schedule emission with explicit font fields.
+- **Generator Step 16 (NEW) intent payload emission**: zones + circuits
+  + switches per extended intent schema.
+- **Validator prompt (4 → ~400 lines)**: full INV-1..INV-10 catalogue.
+- **Reviewer prompt (4 → ~250 lines)**: D-1..D-6 quality checks.
+
+### Added (Phase C — examples)
+- **reception-lobby promoted**: calc_only → full_drawing (104 → ~400
+  lines). 30 LED_DOWNLIGHT in 5×6 grid; 2 zones (Z1 perimeter
+  daylight-linked + Z2 interior); all 10 INVs PASS.
+- **warehouse-highbay promoted**: calc_only → full_drawing (89 → ~400
+  lines). 20 HIGHBAY in 4×5 grid + 5 EMERGENCY anti-panic; 4 row
+  circuits at 1250W on 10A MCBs; all 10 INVs PASS.
+- **NEW uk-undersized-lighting-vs-target**: demonstrates INV-1 FAIL
+  (455 < 500 lux) + INV-6 FAIL (part_l_assessed=false on new-build).
+- **NEW uk-multi-entrance-classroom**: demonstrates INV-3 multi-entrance
+  coverage (3 switches at 3 latch sides).
+- **NEW uk-part-l-fail-incandescent**: demonstrates INV-6 FAIL critical
+  (halogen 15 lm/W ≪ 95 lm/W Part L target).
+- **NEW uk-open-plan-office-10x8-dali (canonical re-test)**: user's
+  verbatim original prompt; 20 luminaires in 4×5 grid + 4 row circuits
+  + DALI master + L-001 P1 1:50 A3 drafting furniture; all 10 INVs PASS.
+
+### New INVs (10 total in validator.md)
+- INV-1 (HIGH): achieved_illuminance_lux ≥ target_illuminance_lux
+- INV-2 (HIGH): S_x ≤ SHR_max × Hm AND S_y ≤ SHR_max × Hm
+- INV-3 (HIGH): switch coverage + 1200 mm AFF + latch placement
+- INV-4 (HIGH): no Z-pattern + homerun on wall
+- INV-5 (HIGH): circuit total_load_w ≤ 80% × mcb × 230V
+- INV-6 (HIGH): Part L compliance when is_uk_new_build
+- INV-7 (MEDIUM): zone assignment + perimeter ↔ glazing consistency
+- INV-8 (MEDIUM): photometric source resolved (no improvisation)
+- INV-9 (MEDIUM/HIGH): drafting furniture complete with font fields
+- INV-10 (HIGH): schema fields populated + non_compliance_flags shape
+
+### Honest disclosures
+- Photometric ontology values flagged verification_status=engineer_typical_C2
+  — values are industry-typical per CIBSE LG7; engineer-of-record must
+  verify against manufacturer photometric file for project-critical
+  installations.
+- BS5266 standards directory absent from repo; emergency-types.json
+  citations reference the published BS 5266-1:2016 directly.
+
+### Gates
+- validate-examples.py: 225 → 237 (+12 across phases).
+- functional_audit.py: 1 finding unchanged (motor-superposition oracle
+  FP, disclosed in D1.1).
+
+### Schema migration impact
+- IR schema adds 7 new required-in-full-drawing-mode fields (zones,
+  drafting_furniture, selection_source) + tightens circuits.total_load_w
+  per mcb_rating_a. Existing v1.3.x consumers reading 1.4.0 outputs:
+  additive fields are ignored if unrecognised. Consumers that DO need
+  zones / homerun / drafting_furniture must be aware of the schema bump.
+```
+
+- [ ] **Step 4: Update lighting-layout manifest**
+
+Edit `electrical/lighting-layout/skill.manifest.json`:
+1. Bump `"version": "1.3.1"` → `"version": "1.4.0"`.
+2. Register the 4 new examples in `examples[]` (preserving existing 3):
+
+```json
+"examples": [
+  "electrical/lighting-layout/examples/office-open-plan/",
+  "electrical/lighting-layout/examples/reception-lobby/",
+  "electrical/lighting-layout/examples/warehouse-highbay/",
+  "electrical/lighting-layout/examples/uk-undersized-lighting-vs-target/",
+  "electrical/lighting-layout/examples/uk-multi-entrance-classroom/",
+  "electrical/lighting-layout/examples/uk-part-l-fail-incandescent/",
+  "electrical/lighting-layout/examples/uk-open-plan-office-10x8-dali/"
+]
+```
+
+- [ ] **Step 5: Write sprint-D3-shipped.md memory file**
+
+Create `~/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/sprint-D3-shipped.md`:
+
+```markdown
+---
+name: sprint-D3-shipped
+description: Sprint D3 (lighting-layout depth) shipped 2026-05-28 — last within-skill-depth sprint before breadth-first pivot. lighting-layout v1.3.1→v1.4.0 closes every gap surfaced by the end-to-end test that produced the bad CAD output + the 5-section audit + 3 structural issues the audit missed (circuit topology Z-pattern, stub validator/reviewer prompts, intent payload extension). 10 new INVs + 4 new examples + canonical user-prompt re-test. Gates 237/237 + 1 disclosed FP. Original D3 (small-power depth) pushed to D4.
+metadata:
+  type: project
+---
+
+Sprint D3 (lighting-layout depth) shipped 2026-05-28. Last
+within-skill-depth sprint per [[within-skill-depth-plan]]. Three
+sequential phases (A foundations → B prompts → C examples+ship) with
+11 implementer tasks total. Mirrors D1/D2 shipped pattern.
+
+## Items shipped
+
+**Phase A — Foundations (3 tasks)**
+
+A.1 — Ontology backfill (Opus)
+- luminaire-types.json (10 → ~250 lines): photometric block per type
+  with UF table indexed by RI + reflectance triplet; SHR_max; LLMF
+  schedule by environment.
+- switching-types.json (9 → ~80 lines): electrical ratings + 9 types
+  (4 new: 3_gang, daylight_sensor, presence_with_dimming,
+  dali_application_controller).
+- emergency-types.json (NEW): 5 BS 5266-1 emergency-luminaire types.
+- All flagged verification_status=engineer_typical_C2.
+
+A.2 — Rules YAML SoT expansion (Opus)
+- All 5 rules/*.yaml expanded from 7-13 line skeletons to full
+  {id, value, citation, rationale} structures. Generator prompt cites
+  rule IDs (zero-drift by design).
+- switching-rules#height fixed to 1200 mm AFF (was 1350 in prompt).
+- All citations cross-checked against shared/standards/electrical/
+  per the D2.3 Reg 559 lesson.
+
+A.3 — Schema extensions (Sonnet)
+- IR schema: zones.zone_type enum + circuits.row_index +
+  circuits.homerun_endpoint + drafting_furniture + selection_source +
+  room_type enum (15 values) + allOf-conditional circuits.total_load_w
+  per mcb_rating_a.
+- Intent schema: extended payload with zones + circuits + switches +
+  total_load_per_circuit_w for downstream consumption.
+- inputs.json: door_swing required + photometric_override optional +
+  ceiling_grid_mm enum.
+
+**Phase B — Prompts (4 tasks)**
+
+B.1 — Generator lumen method + S/H ratio + photometric lookup (Opus)
+- Step 6 rewrite: full worked example (N=12.44 → 13) + counter-example
+  + calc.lumen_grid_solver output spec
+- Step 7 rewrite: explicit S/H enforcement loop with iterative grid bump
+- INV-1/INV-2/INV-8 introduced
+
+B.2 — Generator circuit topology + switch placement (Opus)
+- Step 11 NEW: Part L zone assignment + row circuits + homerun
+- Step 12 rewrite: deterministic entrance → switch mapping
+- INV-3/INV-4/INV-5/INV-7 introduced
+
+B.3 — Generator drafting furniture (Sonnet)
+- Step 15 NEW: title_block + scale_bar + dimensions + luminaire_schedule
+  with explicit font fields
+- INV-9 introduced
+
+B.4 — Validator + reviewer prompts + intent wiring (Opus)
+- validator.md 4 → ~400 lines (full INV-1..INV-10 catalogue)
+- reviewer.md 4 → ~250 lines (D-1..D-6 quality checks)
+- Step 16 NEW: intent payload emission
+- INV-6/INV-10 introduced (final 2 of 10)
+
+**Phase C — Examples + Ship (4 tasks)**
+
+C.1 — Promote stub examples (Opus)
+- reception-lobby: calc_only → full_drawing, 30 LED_DOWNLIGHT in 5×6
+- warehouse-highbay: calc_only → full_drawing, 20 HIGHBAY in 4×5 +
+  5 EMERGENCY anti-panic
+
+C.2 — 3 failure-mode examples (Opus)
+- uk-undersized-lighting-vs-target: INV-1 + INV-6 FAIL
+- uk-multi-entrance-classroom: INV-3 multi-entrance PASS
+- uk-part-l-fail-incandescent: INV-6 FAIL critical (halogen efficacy)
+
+C.3 — Canonical re-test (Opus)
+- uk-open-plan-office-10x8-dali: user's verbatim original prompt
+- 20 luminaires in 4×5 grid (lumen method N=13 → S/H loop bumps to 20)
+- 4 row circuits at 240W on 6A MCBs
+- DALI master at entrance + drafting furniture L-001 P1 1:50 A3
+- All 10 INVs PASS — closes every bug visible in the original CAD output
+
+C.4 — Sprint D3 ship (Opus orchestrator + Sonnet 12-check fence)
+- Combined CHANGELOG [1.4.0] entry covering phases A+B+C
+- Manifest 1.3.1 → 1.4.0 + 4 new examples registered
+
+## Gates final state
+
+- validate-examples.py: 225 → **237** (+12 from C.1 promotions + C.2
+  3 examples + C.3 canonical, exact count verified by fence)
+- functional_audit.py: **1 finding unchanged** (motor-superposition
+  oracle FP on us-industrial-with-motors/MCC-1; disclosed D1.1)
+
+## Honest disclosures preserved
+
+- Photometric ontology values flagged verification_status=engineer_typical_C2
+  — industry-typical per CIBSE LG7; engineer-of-record must verify
+  against manufacturer IES file for project-critical installations
+- BS5266 standards directory absent from repo; emergency-types.json
+  citations reference published BS 5266-1:2016 directly
+- All ontology + rules + new example citations cross-checked against
+  shared/standards/electrical/ per the [[remediation-program-shipped]]
+  pattern (Reg 559 lesson)
+
+## Commits shipped (Sprint D3 chronological)
+
+```
+833e188  docs: Sprint D3 (lighting-layout depth) design spec
+<a05a9e5 + c51f984 + portion3 + portion4>  docs: Sprint D3 implementation plan
+<commits>  feat(lighting-layout): D3.A.1 ontology backfill — photometric defaults
+<commit>   feat(lighting-layout): D3.A.2 rules YAML SoT expansion
+<commit>   feat(lighting-layout): D3.A.3 schema extensions — zones + topology
+<commits>  feat(lighting-layout): D3.B.1 generator lumen-method worked example
+<commit>   feat(lighting-layout): D3.B.2 generator circuit topology + switch placement
+<commit>   feat(lighting-layout): D3.B.3 generator drafting furniture
+<commit>   feat(lighting-layout): D3.B.4 validator + reviewer + intent wiring
+<commit>   feat(lighting-layout): D3.C.1 promote reception-lobby + warehouse-highbay
+<commit>   feat(lighting-layout): D3.C.2 3 failure-mode examples
+<commit>   feat(lighting-layout): D3.C.3 canonical uk-open-plan-office-10x8-dali
+<commit>   feat(lighting-layout): D3.C.4 sprint ship — manifest 1.3.1→1.4.0
+```
+
+Plus any FIX-NEXT commits from two-stage Opus review per task.
+
+## Process lessons applied + added
+
+From D2.3:
+- Every clause citation cross-checked against shared/standards/electrical/
+  BEFORE writing into plan template (Reg 559 lesson).
+
+New from D3:
+- 4-line stub prompts (validator.md + reviewer.md) silently lose the
+  INV/D catalogue across many skills — Sprint D-followup must audit
+  every skill's validator/reviewer prompts and fix where stubs remain.
+  See user's note "most of the validator and reviewer prompts being
+  stubs is a cross-skill issue".
+- End-to-end testing (running the live skill from a user prompt)
+  surfaces bugs that schema validation + functional_audit cannot.
+  Worth running the live skill against canonical examples in CI when
+  the runtime ships.
+
+## Next
+
+Within-skill-depth program COMPLETE after D3. Build pivots breadth-first
+per [[build-strategy-breadth-first]].
+
+Next sprint candidates (user direction):
+- **D4 (small-power depth)** — the original D3 pushed: special-locations
+  §702/§710/§722 + building-level diversity (NOT TM50:2014 per D2.3
+  lesson; use CIBSE Guide F + IET OSG App A)
+- **Cross-skill validator/reviewer stub audit** — surveys every skill's
+  prompts/validator.md + prompts/reviewer.md; quantifies which are
+  stubs vs. real; sequences a remediation sprint
+- **Breadth-first pivot** — begin filling the 92 stubs across electrical
+  / mechanical / plumbing / fire-protection / commissioning / compliance
+  / documents / coordination directories
+
+Related: [[within-skill-depth-plan]], [[sprint-D1-shipped]],
+[[sprint-D2-shipped]], [[remediation-program-shipped]],
+[[build-strategy-breadth-first]], [[feedback-no-trim-non-consequential]],
+[[runtime-project-boundary]].
+```
+
+- [ ] **Step 6: Append memory index entry**
+
+Edit `~/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/MEMORY.md`. After the existing `[Sprint D2 shipped]` line, append:
+
+```markdown
+- [Sprint D3 shipped (lighting-layout depth)](sprint-D3-shipped.md) — 2026-05-28: last within-skill-depth sprint; lighting-layout v1.3.1→v1.4.0 closes the bad-CAD-output bugs + 5-section audit + 3 structural issues (Z-pattern topology, stub validator/reviewer prompts, intent payload extension); 10 new INVs + 4 new examples including canonical re-test of user's verbatim prompt; gates 237/237 + 1 disclosed FP. Original D3 small-power depth pushed to D4. Build pivots breadth-first next per [[build-strategy-breadth-first]].
+```
+
+- [ ] **Step 7: Run final gates**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+python3 functional_audit.py 2>&1 | tail -3
+```
+
+Expected:
+- `AGGREGATE: 237/237 pass (0 failures)`
+- `TOTAL FINDINGS: 1`
+
+- [ ] **Step 8: Commit C.4 — sprint ship**
+
+```bash
+git add electrical/lighting-layout/CHANGELOG.md \
+        electrical/lighting-layout/skill.manifest.json
+git commit -m "$(cat <<'EOF'
+feat(lighting-layout): D3.C.4 sprint ship — manifest 1.3.1→1.4.0 + combined CHANGELOG + memory
+
+Sprint D3 ship — last task. Combined [1.4.0] CHANGELOG entry covering
+Phase A (ontology + rules + schema) + Phase B (generator + validator +
+reviewer + intent) + Phase C (4 new examples + 2 promoted stubs).
+
+Manifest bumped 1.3.1 → 1.4.0. 4 new examples registered:
+- uk-undersized-lighting-vs-target (INV-1 + INV-6 FAIL demo)
+- uk-multi-entrance-classroom (INV-3 multi-entrance PASS)
+- uk-part-l-fail-incandescent (INV-6 FAIL critical demo)
+- uk-open-plan-office-10x8-dali (canonical re-test of user's prompt)
+
+Sonnet 12-check verification fence PASSED. Sprint D3 SHIP confirmed:
+- validate-examples 237/237 (was 225, +12 from phases)
+- functional_audit 1 finding unchanged (disclosed FP)
+- Every bug visible in the user's original CAD output closed by an
+  INV that the validator catalogue enforces
+
+within-skill-depth program COMPLETE after D3. Build pivots breadth-first
+per [[build-strategy-breadth-first]]. Original D3 (small-power depth)
+moved to D4 per user direction at sprint start.
+
+Process lesson preserved for D4 + future sprints:
+- 4-line stub prompts silently lose INV/D catalogues across many
+  skills — cross-skill validator/reviewer stub audit is a candidate
+  follow-up sprint after D4
+
+Memory file sprint-D3-shipped.md written; MEMORY.md index updated.
+EOF
+)"
+```
+
+- [ ] **Step 9: Tag + push (confirm with user before pushing)**
+
+```bash
+git tag -a sprint-D3-shipped -m "Sprint D3 (lighting-layout depth) shipped — see sprint-D3-shipped.md memory + CHANGELOG.md for full content"
+```
+
+DO NOT auto-push. Ask the user to confirm push (same pattern as D2.4):
+
+> Sprint D3 shipped locally. Tag `sprint-D3-shipped` created at HEAD.
+> Want me to push commits + tag to origin/main, or hold for review?
+
+- [ ] **Step 10: Sprint D3 done**
+
+Within-skill-depth program (D1 + D2 + D3) complete. Build pivots breadth-first per `[[build-strategy-breadth-first]]`. Original D3 (small-power depth) pushed to D4.
+
+---
+
+## Cross-references
+
+- Sprint D3 design spec: `docs/superpowers/specs/2026-05-28-sprint-D3-lighting-layout-depth-design.md` (commit `833e188`)
+- Sprint D2 plan (closest pattern parent): `docs/superpowers/plans/2026-05-26-sprint-D2-sizing-boards-sprint.md`
+- Sprint D2 shipped memory: `~/.claude/projects/.../memory/sprint-D2-shipped.md`
+- Within-skill depth plan: `~/.claude/projects/.../memory/within-skill-depth-plan.md`
+- Model selection rule: `~/.claude/projects/.../memory/feedback-no-haiku-sonnet-opus-only.md`
+- No-trim policy: `~/.claude/projects/.../memory/feedback-no-trim-non-consequential.md`
+- Runtime boundary: `~/.claude/projects/.../memory/runtime-project-boundary.md`
+- Citation accuracy lesson (D2.3): `~/.claude/projects/.../memory/sprint-D2-shipped.md` (D2.3 fix-pass section)
+- Pattern parent for INV catalogues: `electrical/db-layout/prompts/validator.md` (post-D2.3)
+- Canonical SVG template pattern: `electrical/db-layout/templates/`
+- Reused calc contracts: `shared/calculations/electrical/render-label.json`,
+  `shared/calculations/electrical/lumen-method.json`,
+  `shared/calculations/electrical/voltage-drop.json`
+
