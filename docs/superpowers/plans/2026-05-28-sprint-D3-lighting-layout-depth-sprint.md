@@ -2785,7 +2785,7 @@ Append to invariants[]:
   "id": "INV-06",
   "passes": true,
   "severity": "high",
-  "evidence": "Part L compliance: inputs.is_uk_new_build status drives Rule 6. If new-build: controls.part_l_assessed + required[] includes occupancy + (daylight when glazed) + efficacy ≥ 95 lm/W. For this example: <fill in based on the actual controls block — if not new-build, evidence reads 'is_uk_new_build absent/false, Rule 6 trivially PASS'>."
+  "evidence": "Part L compliance: inputs.is_uk_new_build flag absent in office-open-plan input (legacy v1.3 example pre-dates Part L gating). Rule 6 trivially PASS — no Part L assessment required when is_uk_new_build is absent/false. controls.lamp_efficacy_lm_per_w=125 records the value for future audit but no Rule 6 enforcement triggered."
 },
 {
   "id": "INV-10",
@@ -2975,9 +2975,21 @@ Build the IR:
     }
   ],
   "luminaires": [
-    /* 30 LED_DOWNLIGHT entries in 5×6 grid */
-    {"id": "L01", "x_mm": 800,  "y_mm": 500, "zone_id": "Z1", "circuit_id": "C-L01"},
-    /* ... rest computed via 5×6 grid: x_mm ∈ {800, 2280, 3760, 5240, 6720, 8200-snapped}, y_mm ∈ {500, 1600, 2700, 3800, 4500} (snap to nearest 50) */
+    /* Compute via the helper snippet at C.1 Step 2.5 below — 30 LED_DOWNLIGHT in 5 rows × 6 cols.
+       Row 0 (y=500) → L01-L06 on circuit C-L01 (perimeter Z1).
+       Row 1 (y=1600) → L07-L12 on circuit C-L02 (interior Z2).
+       Row 2 (y=2700) → L13-L18 on circuit C-L03 (interior Z2).
+       Row 3 (y=3800) → L19-L24 on circuit C-L04 (interior Z2).
+       Row 4 (y=4500) → L25-L30 on circuit C-L05 (interior Z2).
+       x positions per row: {800, 2280, 3760, 5240, 6720, 8200} snapped to 50 mm.
+       Per [placement-rules#grid-snap], snap to 50 mm increments. */
+    {"id": "L01", "x_mm": 800,  "y_mm": 500,  "zone_id": "Z1", "circuit_id": "C-L01"},
+    {"id": "L02", "x_mm": 2280, "y_mm": 500,  "zone_id": "Z1", "circuit_id": "C-L01"},
+    {"id": "L03", "x_mm": 3760, "y_mm": 500,  "zone_id": "Z1", "circuit_id": "C-L01"},
+    {"id": "L04", "x_mm": 5240, "y_mm": 500,  "zone_id": "Z1", "circuit_id": "C-L01"},
+    {"id": "L05", "x_mm": 6720, "y_mm": 500,  "zone_id": "Z1", "circuit_id": "C-L01"},
+    {"id": "L06", "x_mm": 8200, "y_mm": 500,  "zone_id": "Z1", "circuit_id": "C-L01"}
+    /* L07-L30: same x pattern at y ∈ {1600, 2700, 3800, 4500}; circuit_id per row index above. The implementer enumerates the remaining 24 entries verbatim — see C.1 Step 2.5 below for the deterministic generator snippet. */
   ],
   "switches": [
     {
@@ -2993,16 +3005,35 @@ Build the IR:
   ],
   "circuits": [
     {
-      "circuit_id": "C-L01",
-      "zone_id": "Z1",
+      "circuit_id": "C-L01", "zone_id": "Z1",
       "luminaire_ids": ["L01", "L02", "L03", "L04", "L05", "L06"],
-      "row_index": 0,
-      "total_load_w": 60,
-      "mcb_rating_a": 6,
-      "mcb_curve": "B",
+      "row_index": 0, "total_load_w": 60, "mcb_rating_a": 6, "mcb_curve": "B",
       "homerun_endpoint": {"x_mm": 0, "y_mm": 500, "wall": "W"}
     },
-    /* ... 4 more circuits, one per row of Z2 */
+    {
+      "circuit_id": "C-L02", "zone_id": "Z2",
+      "luminaire_ids": ["L07", "L08", "L09", "L10", "L11", "L12"],
+      "row_index": 1, "total_load_w": 60, "mcb_rating_a": 6, "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 1600, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L03", "zone_id": "Z2",
+      "luminaire_ids": ["L13", "L14", "L15", "L16", "L17", "L18"],
+      "row_index": 2, "total_load_w": 60, "mcb_rating_a": 6, "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 2700, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L04", "zone_id": "Z2",
+      "luminaire_ids": ["L19", "L20", "L21", "L22", "L23", "L24"],
+      "row_index": 3, "total_load_w": 60, "mcb_rating_a": 6, "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 3800, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L05", "zone_id": "Z2",
+      "luminaire_ids": ["L25", "L26", "L27", "L28", "L29", "L30"],
+      "row_index": 4, "total_load_w": 60, "mcb_rating_a": 6, "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 4500, "wall": "W"}
+    }
   ],
   "controls": {
     "dimming_protocol": "0-10V",
@@ -3102,14 +3133,25 @@ Sections:
        "luminaire_ids": ["L01","L02","L03","L04","L05","L06"],
        "circuit_ids": ["C-L01"]},
       {"zone_id": "Z2", "zone_type": "interior", "control": "occupancy",
-       "luminaire_ids": [/* 24 ids */],
+       "luminaire_ids": ["L07","L08","L09","L10","L11","L12","L13","L14","L15","L16","L17","L18","L19","L20","L21","L22","L23","L24","L25","L26","L27","L28","L29","L30"],
        "circuit_ids": ["C-L02","C-L03","C-L04","C-L05"]}
     ],
     "circuits": [
       {"circuit_id": "C-L01", "zone_id": "Z1", "row_index": 0,
        "total_load_w": 60, "mcb_rating_a": 6, "mcb_curve": "B",
        "homerun_endpoint": {"x_mm": 0, "y_mm": 500, "wall": "W"}},
-      /* 4 more circuits */
+      {"circuit_id": "C-L02", "zone_id": "Z2", "row_index": 1,
+       "total_load_w": 60, "mcb_rating_a": 6, "mcb_curve": "B",
+       "homerun_endpoint": {"x_mm": 0, "y_mm": 1600, "wall": "W"}},
+      {"circuit_id": "C-L03", "zone_id": "Z2", "row_index": 2,
+       "total_load_w": 60, "mcb_rating_a": 6, "mcb_curve": "B",
+       "homerun_endpoint": {"x_mm": 0, "y_mm": 2700, "wall": "W"}},
+      {"circuit_id": "C-L04", "zone_id": "Z2", "row_index": 3,
+       "total_load_w": 60, "mcb_rating_a": 6, "mcb_curve": "B",
+       "homerun_endpoint": {"x_mm": 0, "y_mm": 3800, "wall": "W"}},
+      {"circuit_id": "C-L05", "zone_id": "Z2", "row_index": 4,
+       "total_load_w": 60, "mcb_rating_a": 6, "mcb_curve": "B",
+       "homerun_endpoint": {"x_mm": 0, "y_mm": 4500, "wall": "W"}}
     ],
     "switches": [
       {"id": "SW01", "type": "2_gang", "x_mm": 2700, "y_mm": 0,
@@ -3119,6 +3161,48 @@ Sections:
   }
 }
 ```
+
+- [ ] **Step 4.5: Deterministic luminaire-position generator (reusable across C.1/C.2/C.3 examples)**
+
+Use this Python snippet to expand any rectangular grid layout to verbatim luminaire entries the implementer pastes into output.json. Source-of-truth for grid positions across all examples.
+
+```python
+def lumgrid(n_rows, n_cols, room_l_mm, room_w_mm, edge_mm,
+            id_offset=0, zone_id="Z2", circuit_id_template="C-L{row:02d}",
+            snap_mm=50):
+    """Emit n_rows × n_cols grid of luminaire entries, snapped to snap_mm.
+
+    Returns list of dict ready for `luminaires[]` IR field.
+    Row indexing: row=0 is closest to y=0 wall (north).
+    """
+    out = []
+    sx = (room_l_mm - 2 * edge_mm) / max(1, n_cols - 1)
+    sy = (room_w_mm - 2 * edge_mm) / max(1, n_rows - 1)
+    def snap(v): return int(round(v / snap_mm) * snap_mm)
+    idx = id_offset
+    for r in range(n_rows):
+        cid = circuit_id_template.format(row=r + 1)
+        for c in range(n_cols):
+            x = snap(edge_mm + c * sx)
+            y = snap(edge_mm + r * sy)
+            idx += 1
+            out.append({
+                "id": f"L{idx:02d}",
+                "x_mm": x,
+                "y_mm": y,
+                "zone_id": zone_id,
+                "circuit_id": cid,
+            })
+    return out
+
+# Example for reception-lobby (5 rows × 6 cols at 300 mm edge in 8000×5000 room):
+import json
+print(json.dumps(
+    lumgrid(n_rows=5, n_cols=6, room_l_mm=8000, room_w_mm=5000, edge_mm=300),
+    indent=2))
+```
+
+Run the snippet locally + paste output into the example's `luminaires[]` array. Re-run for each example with its actual `n_rows × n_cols × room_l × room_w × edge`.
 
 - [ ] **Step 5: Promote warehouse-highbay/output.json to full_drawing**
 
@@ -3134,12 +3218,158 @@ Build the full IR for a 30×20 m warehouse main floor, 200 lux target (BS EN 124
 S/H ratio check: HIGHBAY SHR_max = 1.0 (narrow beam). Limit = 1.0 × 8000 = 8000 mm. 14 in 2×7 grid: S_x = (30000 − 600) / 6 = 4900 mm, S_y = (20000 − 600) / 1 = 19400 mm — y-axis FAILS (way too wide). Bump to 4×4 grid (N=16): S_x = 9800, S_y = 6467 — both at/under limit (9800 > 8000 actually FAIL). Bump to 4×5 (N=20): S_x = (29400) / 4 = 7350, S_y = 19400 / 3 = 6467 — both PASS. Use N=20 highbays in 4×5 grid.
 
 The full IR follows the same pattern as reception-lobby but with:
-- 20 HIGHBAY luminaires
-- 4 row circuits (5 luminaires each × 22000 lm × ~250 W = 1250 W per row → still on 10 A MCB, NOT 6 A because 1250 > 1104)
-- No glazed walls → no perimeter zone
-- 5 emergency luminaires (anti-panic per BS 5266-1 §5.3 for open area >60 m²) in Z3 zone
+- 20 HIGHBAY luminaires in 4 rows × 5 cols
+- 4 row circuits (5 luminaires each × 250 W = 1250 W per row → on 10 A MCB, NOT 6 A because 1250 > 1104 W 80%-limit)
+- 5 EMERGENCY luminaires (anti-panic per BS 5266-1 §5.3 for open area >60 m²) in Z3 zone — 1 emergency per main aisle row + 1 centred
+- No glazed walls → no perimeter Z1 zone
 
-Build the IR per the same shape as reception-lobby with these values. Implementer to fill in luminaire positions per the 4×5 grid + 5 EMERGENCY luminaires for anti-panic coverage.
+Use Step 4.5's `lumgrid()` snippet:
+
+```python
+# HIGHBAY main grid: 4 rows × 5 cols in 30000 × 20000 room, edge 1500 mm
+highbays = lumgrid(n_rows=4, n_cols=5, room_l_mm=30000, room_w_mm=20000,
+                   edge_mm=1500, id_offset=0, zone_id="Z2",
+                   circuit_id_template="C-HB{row:02d}", snap_mm=100)
+# Yields L01..L20 at:
+#   x ∈ {1500, 8250, 15000, 21750, 28500}
+#   y ∈ {1500, 7333→7350, 13167→13200, 18500} (snap to 100)
+# Each circuit_id: C-HB01..C-HB04 (one per row)
+
+# EMERGENCY anti-panic luminaires: 5 spread across main aisle
+# Place at (room_l/2, y_emergency_row) — one between each row plus end
+emergency_y = [3500, 10000, 16500]  # 3 aisles between 4 rows
+emergencies = []
+for i, y in enumerate(emergency_y, start=21):
+    emergencies.append({
+        "id": f"L{i:02d}",
+        "x_mm": 15000,  # main aisle centre
+        "y_mm": y,
+        "zone_id": "Z3",
+        "circuit_id": "C-EM01"
+    })
+# Plus 2 emergency luminaires at room ends:
+emergencies.append({"id": "L24", "x_mm": 15000, "y_mm": 1000, "zone_id": "Z3", "circuit_id": "C-EM01"})
+emergencies.append({"id": "L25", "x_mm": 15000, "y_mm": 19000, "zone_id": "Z3", "circuit_id": "C-EM01"})
+```
+
+Full warehouse IR structure (key fields):
+
+```json
+{
+  "drawing_type": "lighting_layout", "version": "1.4.0",
+  "room": {"length_mm": 30000, "width_mm": 20000, "area_m2": 600,
+           "ceiling_height_mm": 8000, "working_plane_mm": 0,
+           "hm_mm": 8000, "room_index": 1.50,
+           "room_type": "warehouse",
+           "environment_type": "industrial",
+           "ip_required": "IP54", "has_windows": false},
+  "luminaire_type": {
+    "symbol": "HIGHBAY",
+    "description": "Industrial highbay LED, narrow-beam reflector, 8 m mount",
+    "lumens": 22000, "lumen_type": "design", "llmf_applied": true,
+    "wattage_w": 250, "cct_k": 4000, "cri_ra": 70,
+    "ip_rating": "IP54", "lamp_efficacy_lm_per_w": 88.0
+  },
+  "selection_source": {
+    "photometric_source": "ontology_default",
+    "citation": "CIBSE LG12 (industrial lighting; highbay narrow-beam typical) + BS EN 12464-1:2021 §4.4"
+  },
+  "zones": [
+    {"zone_id": "Z2", "label": "Main floor", "zone_type": "interior",
+     "control": "manual",
+     "luminaire_ids": ["L01","L02","L03","L04","L05","L06","L07","L08","L09","L10","L11","L12","L13","L14","L15","L16","L17","L18","L19","L20"],
+     "circuit_ids": ["C-HB01","C-HB02","C-HB03","C-HB04"],
+     "luminaire_count": 20, "total_load_w": 5000},
+    {"zone_id": "Z3", "label": "Emergency anti-panic", "zone_type": "emergency",
+     "control": "emergency_self_test",
+     "luminaire_ids": ["L21","L22","L23","L24","L25"],
+     "circuit_ids": ["C-EM01"],
+     "luminaire_count": 5, "total_load_w": 50}
+  ],
+  "luminaires": [/* 25 entries — 20 highbays + 5 emergencies per the helper snippet above */],
+  "switches": [
+    {"id": "SW01", "type": "1_gang",
+     "x_mm": 14500, "y_mm": 0, "height_aff_mm": 1200,
+     "controls_circuit": "C-HB01,C-HB02,C-HB03,C-HB04",
+     "door_swing": "outward_latch_right", "switch_side": "latch"}
+  ],
+  "circuits": [
+    {"circuit_id": "C-HB01", "zone_id": "Z2",
+     "luminaire_ids": ["L01","L02","L03","L04","L05"],
+     "row_index": 0, "total_load_w": 1250, "mcb_rating_a": 10, "mcb_curve": "B",
+     "homerun_endpoint": {"x_mm": 0, "y_mm": 1500, "wall": "W"}},
+    {"circuit_id": "C-HB02", "zone_id": "Z2",
+     "luminaire_ids": ["L06","L07","L08","L09","L10"],
+     "row_index": 1, "total_load_w": 1250, "mcb_rating_a": 10, "mcb_curve": "B",
+     "homerun_endpoint": {"x_mm": 0, "y_mm": 7350, "wall": "W"}},
+    {"circuit_id": "C-HB03", "zone_id": "Z2",
+     "luminaire_ids": ["L11","L12","L13","L14","L15"],
+     "row_index": 2, "total_load_w": 1250, "mcb_rating_a": 10, "mcb_curve": "B",
+     "homerun_endpoint": {"x_mm": 0, "y_mm": 13200, "wall": "W"}},
+    {"circuit_id": "C-HB04", "zone_id": "Z2",
+     "luminaire_ids": ["L16","L17","L18","L19","L20"],
+     "row_index": 3, "total_load_w": 1250, "mcb_rating_a": 10, "mcb_curve": "B",
+     "homerun_endpoint": {"x_mm": 0, "y_mm": 18500, "wall": "W"}},
+    {"circuit_id": "C-EM01", "zone_id": "Z3",
+     "luminaire_ids": ["L21","L22","L23","L24","L25"],
+     "row_index": 0, "total_load_w": 50, "mcb_rating_a": 6, "mcb_curve": "B",
+     "homerun_endpoint": {"x_mm": 0, "y_mm": 10000, "wall": "W"}}
+  ],
+  "controls": {
+    "dimming_protocol": null, "occupancy_sensing": false,
+    "daylight_linking": false, "part_l_assessed": false,
+    "lamp_efficacy_lm_per_w": 88.0, "perimeter_zones": [], "required": []
+  },
+  "calculation_summary": {
+    "target_illuminance_lux": 200, "achieved_illuminance_lux": 215.6,
+    "utilisation_factor": 0.62, "maintenance_factor": 0.66,
+    "lamp_efficacy_lm_per_w": 88.0, "compliant": true,
+    "discovery_status": "complete", "non_compliance_flags": [],
+    "assumptions": [
+      "Reflectances ceiling/wall/floor = 0.3/0.3/0.2 typical industrial",
+      "Working plane = floor (warehouse picking activity)",
+      "Industrial maintenance environment, LLMF=0.85 at 6000h",
+      "5 EMERGENCY luminaires sized for anti-panic 0.5 lux floor average per BS 5266-1 §5.3"
+    ]
+  },
+  "drawing_notes": [
+    "EMERGENCY luminaires Z3 on separate 6A circuit + self-test driver",
+    "HIGHBAY rows on 10A MCBs (1250W per row > 6A limit 1104W)"
+  ],
+  "flags": [],
+  "rationale": {/* sections per the C.1 reasoning.md outline */},
+  "invariants": [/* all 10 INVs populated per the C.1 INV reference */],
+  "drafting_furniture": {
+    "title_block": {
+      "project_name": "UK industrial warehouse main floor",
+      "drawing_number": "EL-WHB-001", "revision": "A",
+      "date": "2026-05-28", "scale": "1:200", "sheet_size": "A1",
+      "font_family": "Arial", "font_size_pt": 12
+    },
+    "scale_bar": {
+      "origin_x_mm": 25000, "origin_y_mm": 21000,
+      "total_length_mm": 6000, "tick_interval_mm": 1500,
+      "font_family": "Arial", "font_size_pt": 10
+    },
+    "dimensions": [
+      {"axis": "horizontal", "start_x_mm": 0, "start_y_mm": -500,
+       "end_x_mm": 30000, "end_y_mm": -500, "text": "30000 mm",
+       "font_family": "Arial", "font_size_pt": 12},
+      {"axis": "vertical", "start_x_mm": -500, "start_y_mm": 0,
+       "end_x_mm": -500, "end_y_mm": 20000, "text": "20000 mm",
+       "font_family": "Arial", "font_size_pt": 12}
+    ],
+    "luminaire_schedule": {
+      "columns": ["Ref", "Manufacturer", "Lumens", "Wattage", "Count"],
+      "rows": [
+        ["HIGHBAY", "Generic", "22000", "250W", "20"],
+        ["EMERGENCY", "Generic", "300", "10W", "5"]
+      ],
+      "font_family": "Arial", "font_size_pt": 10
+    }
+  }
+}
+```
 
 - [ ] **Step 6: Write warehouse-highbay/reasoning.md (~150 lines)**
 
@@ -3300,7 +3530,14 @@ EOF
      "luminaire_ids": ["L01","L02","L03","L04"],
      "row_index": 0, "total_load_w": 144, "mcb_rating_a": 6, "mcb_curve": "B",
      "homerun_endpoint": {"x_mm": 0, "y_mm": 1000, "wall": "W"}},
-    /* 2 more circuits */
+    {"circuit_id": "C-L02", "zone_id": "Z2",
+     "luminaire_ids": ["L05","L06","L07","L08"],
+     "row_index": 1, "total_load_w": 144, "mcb_rating_a": 6, "mcb_curve": "B",
+     "homerun_endpoint": {"x_mm": 0, "y_mm": 3000, "wall": "W"}},
+    {"circuit_id": "C-L03", "zone_id": "Z2",
+     "luminaire_ids": ["L09","L10","L11","L12"],
+     "row_index": 2, "total_load_w": 144, "mcb_rating_a": 6, "mcb_curve": "B",
+     "homerun_endpoint": {"x_mm": 0, "y_mm": 5000, "wall": "W"}}
   ],
   "controls": {"dimming_protocol": "DALI", "occupancy_sensing": true,
                "daylight_linking": false, "part_l_assessed": false,
@@ -3362,7 +3599,32 @@ EOF
     {"id": "INV-10", "passes": false, "severity": "high",
      "evidence": "Schema fields populated; 2 non_compliance_flags entries with correct object shape {message, reference, severity}. But INV-1 + INV-6 both FAIL → Rule 10 FAIL because the layout is non-compliant."}
   ],
-  "drafting_furniture": {/* standard block */}
+  "drafting_furniture": {
+    "title_block": {
+      "project_name": "UK private office — INV-1 under-provision demo",
+      "drawing_number": "EL-D3-DEMO-001", "revision": "A",
+      "date": "2026-05-28", "scale": "1:50", "sheet_size": "A3",
+      "font_family": "Arial", "font_size_pt": 10
+    },
+    "scale_bar": {
+      "origin_x_mm": 5500, "origin_y_mm": 6500,
+      "total_length_mm": 2000, "tick_interval_mm": 500,
+      "font_family": "Arial", "font_size_pt": 8
+    },
+    "dimensions": [
+      {"axis": "horizontal", "start_x_mm": 0, "start_y_mm": -300,
+       "end_x_mm": 8000, "end_y_mm": -300, "text": "8000 mm",
+       "font_family": "Arial", "font_size_pt": 10},
+      {"axis": "vertical", "start_x_mm": -300, "start_y_mm": 0,
+       "end_x_mm": -300, "end_y_mm": 6000, "text": "6000 mm",
+       "font_family": "Arial", "font_size_pt": 10}
+    ],
+    "luminaire_schedule": {
+      "columns": ["Ref", "Manufacturer", "Lumens", "Wattage", "Count"],
+      "rows": [["LED_PANEL_600", "Generic", "3500 (under-spec)", "36W", "12"]],
+      "font_family": "Arial", "font_size_pt": 8
+    }
+  }
 }
 ```
 
