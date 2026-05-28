@@ -80,7 +80,7 @@
 
 Closes DEFECT_REGISTER M3 (Reviewer 1: "PVC and SWA cables sized from values not present in shipped XLPE-only tables; 1.0 mm² absent entirely").
 
-## [next-patch] - 2026-05-25 — M1 hybrid eval-vs-IR fix
+## [1.0.1+M1] - 2026-05-25 — Sprint B M1 hybrid eval-vs-IR fix
 
 ### Added
 - `invariants[]` field added to the IR root (required). Each entry is
