@@ -605,6 +605,10 @@ Decision tree:
 OR field absent, Z1 (perimeter) is absent — `zones[]` carries no
 perimeter entry. INV-7 enforces this consistency.
 
+**Conversely**, if `inputs.glazed_wall_positions != []`, Z1 MUST be
+present (INV-7 enforces this iff relationship; a generator emitting
+empty Z1 with non-empty glazing fails INV-7).
+
 #### 11.2 — Group luminaires into row circuits
 
 Per zone (in the order Z1, Z2, Z3, Z4 — perimeter first because daylight
@@ -740,22 +744,32 @@ Resolve LATCH side from `door_swing` per [switching-rules#latch-side]:
 | outward_latch_right       | right edge of door span                 |
 | sliding                   | use offset_mm + 200 mm (no swing)       |
 
-Switch placement: 200 mm INSIDE the room from the latch frame, on the
-WALL adjacent to the latch side (NOT on the door wall). Specifically:
+**Switch placement:** 200 mm INSIDE the room from the latch frame, on the
+same wall as the entrance (standard UK/IET convention — adjacent-wall
+placement is rare and only used when a stub wall is genuinely available).
+Specifically, for the latch-side position derived above, the switch sits at:
 
-- For a door on wall "N" with `door_swing="inward_latch_right"`: latch
-  position = (offset_mm + width_mm, 0). Adjacent wall = "E" (if room
-  permits) OR same wall "N" offset 200 mm to the inside. Default:
-  same-wall placement at `(offset_mm + width_mm + 200, 0)` because most
-  rooms don't have a side wall close to the door.
+- For a door on wall "N" / "S" (door span horizontal): switch at
+  `(latch_x ± 200, door_y)` — 200 mm horizontally from the latch frame,
+  on the SAME wall as the door
+- For a door on wall "E" / "W" (door span vertical): switch at
+  `(door_x, latch_y ± 200)` — 200 mm vertically from the latch frame,
+  on the SAME wall as the door
 
-- For sliding doors: switch at the wall point 200 mm to the side of the
-  door opening, OR on a stub wall if available.
+The "+200" direction is INTO the room from the latch frame (away from
+the door swing). For an inward_latch_right door on wall "N" with
+latch at (1400, 0), the switch goes to (1600, 0) — 200 mm to the right
+along wall N, where a person entering would naturally reach.
 
-Mounting height: 1200 mm AFF to centre of switch plate per
-[switching-rules#height] (BS 7671:2018+A2:2022 §553.1.1 + IET OSG
-App E §E1.2). Accessible spaces (accessible WCs, classrooms) override
-to 900–1100 mm per BS 8300-2:2018 with explicit input override.
+Switch mounting height: 1200 mm AFF per [switching-rules#height]
+(BS 7671:2018+A2:2022 §553.1.1 + IET OSG App E §E1.2). Accessible
+spaces (accessible WCs, classrooms) override to 900–1100 mm per
+BS 8300-2:2018 with explicit input override.
+
+**Adjacent-wall variant (rare):** if the room has a genuine stub wall
+within 600 mm of the latch side (e.g. a column-formed alcove), the
+switch MAY sit on the stub-wall face instead. Engineer-override only;
+generator default is same-wall placement above.
 
 **Worked example (door at wall="N", offset_mm=500, width_mm=900,
 door_swing="inward_latch_right"):**
@@ -763,6 +777,9 @@ door_swing="inward_latch_right"):**
 - Latch at (1400, 0)
 - Switch placed at (1400 + 200, 0) = (1600, 0) on wall N, mounted at
   1200 mm AFF per [switching-rules#height]
+
+- For sliding doors: switch at the wall point 200 mm to the side of the
+  door opening on the same wall, OR on a stub wall if available.
 
 #### 12.3 — Emit switches[] block
 
@@ -795,7 +812,8 @@ open door.]
 #### 12.4 — DALI override
 
 If `inputs.controls_protocol ∈ {DALI, DALI-2}`: emit ONE
-`dali_master` switch at the primary entrance per
+`dali_master` switch at the primary entrance (= `inputs.entrance_positions[0]`
+per the convention set in Step 11.3) per
 [switching-rules#dali-master-at-entrance], and emit ZERO 1_gang/2_gang
 switches (DALI master replaces individual switches; wall controllers at
 secondary entrances are optional and emitted only if
