@@ -77,7 +77,7 @@
     {
       "id": "SW01",
       "type": "2_gang",
-      "x_mm": 3500,
+      "x_mm": 4600,
       "y_mm": 200,
       "height_aff_mm": 1200,
       "controls_circuit": "C-L01,C-L02",
@@ -87,7 +87,7 @@
     {
       "id": "SW02",
       "type": "1_gang",
-      "x_mm": 7000,
+      "x_mm": 6800,
       "y_mm": 7800,
       "height_aff_mm": 1200,
       "controls_circuit": "C-L04",
@@ -98,7 +98,7 @@
       "id": "SW03",
       "type": "1_gang",
       "x_mm": 200,
-      "y_mm": 3000,
+      "y_mm": 2800,
       "height_aff_mm": 1200,
       "controls_circuit": "C-L03",
       "door_swing": "inward_latch_left",
@@ -222,7 +222,7 @@
       },
       {
         "title": "Multi-entrance switch coverage (INV-3 PASS)",
-        "summary": "3 entrances on 3 walls + controls_protocol=switched (NOT DALI) → INV-3 Rule 1 requires switches.length ≥ entrances.length. Emitted 3 switches: SW01 2-gang at S main entrance (controls Z1 daylight + Z2 occupancy master), SW02 1-gang at N fire-exit (controls C-L04 row local), SW03 1-gang at W adjoining-room door (controls C-L03 row local). Each switch placed 200 mm from latch frame on the latch side at 1200 mm AFF per [switching-rules#height] + [switching-rules#latch-side]. door_swing values drive latch-side derivation per entrance.",
+        "summary": "3 entrances on 3 walls + controls_protocol=switched (NOT DALI) → INV-3 Rule 1 requires switches.length ≥ entrances.length. Emitted 3 switches: SW01 2-gang at S main entrance position (4600, 200) controlling Z1 daylight + Z2 occupancy master; SW02 1-gang at N fire-exit position (6800, 7800) controlling C-L04 row local; SW03 1-gang at W adjoining-room door position (200, 2800) controlling C-L03 row local. Each switch placed 200 mm PAST the latch frame on the latch side at 1200 mm AFF per [switching-rules#height] + [switching-rules#latch-side] (IET OSG App E §E1.4). door_swing values drive latch-side derivation per entrance.",
         "decisions": [
           {
             "label": "3 switches for 3 entrances (no DALI consolidation)",
@@ -238,7 +238,7 @@
       },
       {
         "title": "Switch placement detail",
-        "summary": "Per-entrance switch placement derivation: SW01 at S main entrance, door_swing=inward_latch_right, latch frame at x=3500+900=4400, switch at x=3500 (door's left frame edge; convention reused from reception-lobby example), y=200 (200 mm inside S wall). SW02 at N fire-exit, door_swing=outward_latch_left, switch at x=7000 (offset), y=7800 (200 mm inside N wall). SW03 at W adjoining-room door, door_swing=inward_latch_left, switch at x=200 (200 mm inside W wall), y=3000 (offset). Each switch_side='latch'. height_aff_mm=1200 for all three within [1150, 1250] band."
+        "summary": "Per-entrance switch placement derivation per [switching-rules#latch-side] (IET OSG App E §E1.4 — switch sits 200 mm past the latch frame on the latch side, INSIDE the room). SW01 at S main entrance, door_swing=inward_latch_right, door spans x∈[3500,4400], latch frame at x=4400, +200 mm to the right (latch side) → x=4600, y=200 (200 mm inside S wall edge at y=0). SW02 at N fire-exit, door_swing=outward_latch_left, door spans x∈[7000,7900], latch frame at x=7000, −200 mm to the left (latch side) → x=6800, y=7800 (200 mm inside N wall edge at y=8000). SW03 at W adjoining-room door, door_swing=inward_latch_left, door spans y∈[3000,3800], latch frame at y=3000, −200 mm down (latch side) → y=2800, x=200 (200 mm inside W wall edge at x=0). Each switch_side='latch'. height_aff_mm=1200 for all three within [1150, 1250] band."
       },
       {
         "title": "Circuit topology (INV-4 + INV-5 PASS)",
@@ -281,7 +281,7 @@
       "id": "INV-03",
       "passes": true,
       "severity": "high",
-      "evidence": "Switch coverage: 3 entrances declared (S main, N fire-exit, W adjoining-room — each on a different wall with distinct door_swing). controls_protocol=switched (NOT DALI) → INV-3 Rule 1 sub-check requires switches.length ≥ entrances.length: 3 ≥ 3 PASS. SW01 2-gang at S latch side (x=3500, y=200) controls Z1+Z2; SW02 1-gang at N latch side (x=7000, y=7800) controls C-L04; SW03 1-gang at W latch side (x=200, y=3000) controls C-L03. All three at 1200 mm AFF within [1150, 1250] band per [switching-rules#height] (BS 7671 §553.1.1 + IET OSG App E §E1.4). All three switch_side='latch'. Rule 3 PASS."
+      "evidence": "Switch coverage: 3 entrances on 3 different walls (S main, N fire-exit, W adjoining-room) with distinct door_swing. controls_protocol=switched (NOT DALI) → INV-3 Rule 1: switches.length ≥ entrances.length → 3 ≥ 3 PASS. Per [switching-rules#latch-side] (IET OSG App E §E1.4) each switch sits 200 mm PAST the latch frame on the latch side: SW01 (4600, 200) — S latch at x=3500+900=4400, +200 right; SW02 (6800, 7800) — N latch at x=7000, −200 left; SW03 (200, 2800) — W latch at y=3000, −200 down. All at 1200 mm AFF within [1150, 1250] band per [switching-rules#height] (BS 7671 §553.1.1 + IET OSG App E §E1.4). All three switch_side='latch'. Rule 3 PASS."
     },
     {
       "id": "INV-04",

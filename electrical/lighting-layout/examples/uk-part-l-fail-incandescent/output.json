@@ -188,8 +188,8 @@
     "discovery_status": "complete",
     "non_compliance_flags": [
       {
-        "message": "Lamp efficacy 15 lm/W ≪ 95 lm/W Approved Doc L (Part L 2021) §6 Table 6 target — 50W GU10 halogen non-compliant for new-build / major-refurb commercial. Remediation: replace with 8W GU10 LED retrofit lamp at 800 lm (100 lm/W) keeping same fitting + transformer; OR full luminaire-replacement with LED_DOWNLIGHT 10W/1000 lm canonical (100 lm/W) cutting connected load from 2500 W to 500 W (80 % energy saving).",
-        "reference": "Approved Doc L (Part L 2021) § 6 + BS EN 15193-1:2017 § 6",
+        "message": "Lamp efficacy 15 lm/W ≪ 95 lm/W Approved Doc L (Part L 2021) §6 Table 6.2 target — 50W GU10 halogen non-compliant for new-build / major-refurb commercial. Remediation: replace with 8W GU10 LED retrofit lamp at 800 lm (100 lm/W) keeping same fitting + transformer; OR full luminaire-replacement with LED_DOWNLIGHT 10W/1000 lm canonical (100 lm/W) cutting connected load from 2500 W to 500 W (80 % energy saving).",
+        "reference": "Approved Doc L (Part L 2021) §6 Table 6.2 + BS EN 15193-1:2017 § 6",
         "severity": "critical"
       },
       {
@@ -256,9 +256,9 @@
         "decisions": [
           {
             "label": "Efficacy 15 lm/W ≪ 95 lm/W (INV-6 sub-check 4 FAIL)",
-            "summary": "50W GU10 halogen produces 750 initial lm = 15 lm/W. Approved Doc L (Part L 2021) §6 Table 6 sets the office luminaire efficacy target at 95 lm/W (general office display lighting). Remediation: replace each lamp with GU10 LED retrofit at 8W / 800 lm = 100 lm/W (PASS), keeping the existing fitting body + transformer + cabling. Connected lighting load drops 2500 W → 400 W (84 % saving) with negligible disruption.",
-            "rule": "Part L 2021 §6 lamp efficacy ≥ 95 lm/W",
-            "code_clause": "Approved Doc L (Part L 2021) § 6 + BS EN 15193-1:2017 § 6"
+            "summary": "50W GU10 halogen produces 750 initial lm = 15 lm/W. Approved Doc L (Part L 2021) §6 Table 6.2 sets the office luminaire efficacy target at 95 lm/W (general office display lighting). Remediation: replace each lamp with GU10 LED retrofit at 8W / 800 lm = 100 lm/W (PASS), keeping the existing fitting body + transformer + cabling. Connected lighting load drops 2500 W → 400 W (84 % saving) with negligible disruption.",
+            "rule": "Approved Doc L (Part L 2021) §6 Table 6.2 lamp efficacy ≥ 95 lm/W",
+            "code_clause": "Approved Doc L (Part L 2021) §6 Table 6.2 + BS EN 15193-1:2017 § 6"
           },
           {
             "label": "No daylight-linking despite W glazing (INV-6 sub-check 3 FAIL)",
@@ -331,7 +331,7 @@
       "id": "INV-06",
       "passes": false,
       "severity": "high",
-      "evidence": "Part L compliance: inputs.new_build=true (major refurbishment triggers Part L 2021 §6) AND jurisdiction=england_wales triggers enforcement. (1) controls.part_l_assessed=true PASS. (2) controls.required=[] does NOT include 'occupancy' → sub-check 2 FAIL. (3) glazed_walls=['west'] non-empty AND controls.required does NOT include 'daylight_linking' → sub-check 3 FAIL. (4) controls.lamp_efficacy_lm_per_w=15 < 95 → sub-check 4 FAIL critical. Three of four sub-checks FAIL → Rule 6 FAIL. Per validator.md: emit non_compliance_flags entries with severity=critical AND set INV to FAIL — three entries emitted. controls.part_l_compliant=false. Per Approved Doc L 2021 §6 + BS EN 15193-1:2017 §6."
+      "evidence": "Part L compliance: inputs.new_build=true (major refurbishment triggers Part L 2021 §6) AND jurisdiction=england_wales triggers enforcement. (1) controls.part_l_assessed=true PASS. (2) controls.required=[] does NOT include 'occupancy' → sub-check 2 FAIL. (3) glazed_walls=['west'] non-empty AND controls.required does NOT include 'daylight_linking' → sub-check 3 FAIL. (4) controls.lamp_efficacy_lm_per_w=15 < 95 → sub-check 4 FAIL critical (efficacy target per Approved Doc L (Part L 2021) §6 Table 6.2). Three of four sub-checks FAIL → Rule 6 FAIL. Per validator.md: emit non_compliance_flags entries with severity=critical AND set INV to FAIL — three entries emitted. controls.part_l_compliant=false. Per Approved Doc L 2021 §6 + BS EN 15193-1:2017 §6."
     },
     {
       "id": "INV-07",

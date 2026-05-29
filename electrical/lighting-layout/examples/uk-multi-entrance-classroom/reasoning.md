@@ -109,17 +109,27 @@ S_y = 2467 mm  ≤  3450 mm  → PASS (72 % of limit)
 INV-3 Rule 1 sub-check requires switches.length ≥ entrances.length:
 3 ≥ 3 PASS.
 
-| Switch | Entrance       | Wall | Latch derivation                         | Position       | Type   | Controls    |
-|--------|----------------|------|------------------------------------------|----------------|--------|-------------|
-| SW01   | Main           | S    | door_swing=inward_latch_right → latch L  | (3500, 200)    | 2_gang | C-L01,C-L02 |
-| SW02   | Fire-exit      | N    | door_swing=outward_latch_left → latch L  | (7000, 7800)   | 1_gang | C-L04       |
-| SW03   | Adjoining-room | W    | door_swing=inward_latch_left → latch L   | (200, 3000)    | 1_gang | C-L03       |
+Per [switching-rules#latch-side] (IET OSG App E §E1.4) each switch sits
+200 mm PAST the latch frame on the latch side, INSIDE the room. The
+latch frame is on the right of a `*_latch_right` door, left of a
+`*_latch_left` door, and the "200 mm past" offset is taken along the
+wall in the latch-side direction (the wall-parallel coordinate); the
+wall-perpendicular coordinate is set 200 mm INTO the room from the
+wall edge.
+
+| Switch | Entrance       | Wall | Door span (mm)     | Latch frame | Wall-parallel: +/-200 mm | Position     | Type   | Controls    |
+|--------|----------------|------|--------------------|-------------|--------------------------|--------------|--------|-------------|
+| SW01   | Main           | S    | x∈[3500, 4400]     | x=4400 (R)  | +200 → x=4600            | (4600, 200)  | 2_gang | C-L01,C-L02 |
+| SW02   | Fire-exit      | N    | x∈[7000, 7900]     | x=7000 (L)  | −200 → x=6800            | (6800, 7800) | 1_gang | C-L04       |
+| SW03   | Adjoining-room | W    | y∈[3000, 3800]     | y=3000 (L)  | −200 → y=2800            | (200, 2800)  | 1_gang | C-L03       |
 
 All three switches:
 - `switch_side = "latch"` per [switching-rules#latch-side]
 - `height_aff_mm = 1200` within [1150, 1250] band per [switching-rules#height]
   (BS 7671 §553.1.1 + IET OSG App E §E1.4)
-- Placed 200 mm inside the room from the door's latch frame
+- Placed 200 mm PAST the latch frame on the latch side, with the
+  wall-perpendicular coordinate set 200 mm INSIDE the room from the
+  wall edge (canonical pattern reused from example 1 SW01 at (4600, 200))
 
 **Why SW01 is 2-gang vs SW02/SW03 1-gang**: the main entrance is the
 primary control point for the whole room. The 2-gang gives independent
