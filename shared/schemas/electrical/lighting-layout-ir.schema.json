@@ -590,8 +590,8 @@
           "required": ["origin_x_mm", "origin_y_mm", "total_length_mm", "tick_interval_mm", "font_family", "font_size_pt"],
           "additionalProperties": false,
           "properties": {
-            "origin_x_mm":      {"type": "integer", "minimum": 0},
-            "origin_y_mm":      {"type": "integer", "minimum": 0},
+            "origin_x_mm":      {"type": "integer", "description": "X-coordinate of scale bar origin. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."},
+            "origin_y_mm":      {"type": "integer", "description": "Y-coordinate of scale bar origin. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."},
             "total_length_mm":  {"type": "integer", "minimum": 1000},
             "tick_interval_mm": {"type": "integer", "minimum": 100},
             "font_family":      {"type": "string", "default": "Arial"},
@@ -608,10 +608,10 @@
             "additionalProperties": false,
             "properties": {
               "axis":         {"enum": ["horizontal", "vertical"]},
-              "start_x_mm":   {"type": "integer", "minimum": 0},
-              "start_y_mm":   {"type": "integer", "minimum": 0},
-              "end_x_mm":     {"type": "integer", "minimum": 0},
-              "end_y_mm":     {"type": "integer", "minimum": 0},
+              "start_x_mm":   {"type": "integer", "description": "X-coordinate of dimension line start. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."},
+              "start_y_mm":   {"type": "integer", "description": "Y-coordinate of dimension line start. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."},
+              "end_x_mm":     {"type": "integer", "description": "X-coordinate of dimension line end. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."},
+              "end_y_mm":     {"type": "integer", "description": "Y-coordinate of dimension line end. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."},
               "text":         {"type": "string", "minLength": 1, "maxLength": 30},
               "font_family":  {"type": "string", "default": "Arial"},
               "font_size_pt": {"type": "number", "minimum": 6, "maximum": 14}

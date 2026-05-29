@@ -875,8 +875,10 @@ If the runtime rejects your IR for one of these, re-read this section — most o
 The IR `drafting_furniture` block is required per the schema's allOf
 clause when `mode = full_drawing` (default). Emit four annotation
 objects: title_block + scale_bar + dimensions + luminaire_schedule.
-Every annotation declares explicit `font_family` + `font_size_pt` so
-the renderer's ezdxf font fallback can resolve without losing tags.
+Every annotation declares `font_family: 'Arial'` as the DXF style name.
+DXF viewers without Arial typically substitute LiberationSans
+(metric-compatible) — the substitution happens at the viewer/renderer
+layer, not in the IR emission.
 
 #### 15.1 — title_block
 
@@ -908,8 +910,8 @@ If `inputs.drawing_metadata` is absent, set placeholder values:
 
 #### 15.2 — scale_bar
 
-Place in the bottom-right corner of the drawing area, 500 mm × 100 mm
-above the sheet's bottom edge:
+Place above the room rectangle in the dimension margin (top side;
+y = room.width_mm + 500), aligned toward the right edge of the room:
 
 ```json
 "scale_bar": {
@@ -922,9 +924,9 @@ above the sheet's bottom edge:
 }
 ```
 
-For 1:50 scale, total_length_mm 2000 (4 ticks × 500 mm = 2 m at full
-scale = 40 mm on paper). For 1:100, double the total_length_mm; for
-1:200, triple.
+`total_length_mm` is the real-world distance the scale bar represents.
+Scale with drawing scale: 2000 mm at 1:50, 4000 mm at 1:100, 6000 mm
+at 1:200. (Paper-space length stays ~30-40 mm.)
 
 #### 15.3 — dimensions[]
 
