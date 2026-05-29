@@ -1,12 +1,61 @@
 {
   "skill": "photometric-analysis",
-  "version": "0.1.0",
-  "status": "stub",
+  "version": "1.0.0",
   "discipline": "electrical",
-  "description": "DIALux-grade photometric point-grid calculation producing UGR (glare), uniformity (Emin/Eavg), and per-point illuminance maps. Consumes lighting-layout intent + room geometry. Closes the BS EN 12464-1 \u00a76.6 UGR + uniformity gap that the lumen-method alone cannot verify.",
-  "standards": [],
-  "inputs": [],
-  "outputs": [],
+  "subdiscipline": "lighting",
+  "chat_type": "calculation",
+  "description": "DIALux-grade photometric point-grid + uniformity U₀ + UGR computation per BS EN 12464-1:2021 §4.4/§6.2/§6.6 + CIE 117. Calc-primitive skill wrapping calc.lumen_grid_solver runtime tool. Consumes lighting-layout intent + per-luminaire IES files (LM-63-2002); produces photometric_grid intent consumed by lighting-layout INV-11 + emergency-lighting + daylight (Wave 3/4). Full v1.0 — IES required, no ontology UF fallback at production.",
+  "status": "production",
+  "licence": "MIT",
+  "inputs_path": "inputs.json",
+  "outputs": [
+    "photometric-analysis-ir"
+  ],
+  "output_schema": "electrical/photometric-analysis/schemas/photometric-analysis-ir.schema.json",
+  "produces_intents": [
+    {
+      "name": "photometric-grid",
+      "version": "1.0.0",
+      "schema_path": "electrical/photometric-analysis/schemas/photometric-grid-intent.schema.json"
+    }
+  ],
+  "produces_intent_schema": "electrical/photometric-analysis/schemas/photometric-grid-intent.schema.json",
+  "consumes_intents": [
+    {
+      "skill_id": "lighting-layout",
+      "intent_name": "lighting-layout",
+      "version_constraint": "^1.0"
+    }
+  ],
+  "standards": [
+    "BS EN 12464-1:2021 §4.4 (uniformity)",
+    "BS EN 12464-1:2021 §6.2 (grid spacing formula)",
+    "BS EN 12464-1:2021 §6.6 (UGR limits)",
+    "BS EN 12464-1:2021 Table 5.3 (task minima per room_type)",
+    "ANSI/IES LM-63-2002 (IES file format)",
+    "CIE 117 (UGR formula + observer geometry)",
+    "CIBSE LG7 §6 (UF/MF reference)"
+  ],
+  "calculations": [
+    "shared/calculations/lighting/lumen-grid-solver.json"
+  ],
+  "rules": [
+    "electrical/photometric-analysis/rules/grid-spacing-rules.yaml",
+    "electrical/photometric-analysis/rules/ugr-rules.yaml",
+    "electrical/photometric-analysis/rules/ies-provenance-rules.yaml"
+  ],
+  "examples": [
+    "electrical/photometric-analysis/examples/uk-open-plan-office-10x8-dali-photometric/",
+    "electrical/photometric-analysis/examples/uk-office-uniformity-fail-perimeter-cold-spots/",
+    "electrical/photometric-analysis/examples/uk-drawing-office-strict-ugr/",
+    "electrical/photometric-analysis/examples/cascade-office-open-plan/",
+    "electrical/photometric-analysis/examples/cascade-reception-lobby/",
+    "electrical/photometric-analysis/examples/cascade-warehouse-highbay/",
+    "electrical/photometric-analysis/examples/cascade-uk-undersized-lighting-vs-target/",
+    "electrical/photometric-analysis/examples/cascade-uk-multi-entrance-classroom/",
+    "electrical/photometric-analysis/examples/cascade-uk-part-l-fail-incandescent/",
+    "electrical/photometric-analysis/examples/cascade-uk-open-plan-office-10x8-dali/"
+  ],
   "compatible_runtimes": [
     "DraftsMan >= 1.0",
     "Claude Code",
