@@ -870,6 +870,131 @@ The IR schema is strict about field names. The LLM has a tendency to generalise 
 
 If the runtime rejects your IR for one of these, re-read this section — most of the time it's a field-naming or type-precision slip, not a structural problem.
 
+### Step 15 — Drafting Furniture Emission (required when mode = full_drawing)
+
+The IR `drafting_furniture` block is required per the schema's allOf
+clause when `mode = full_drawing` (default). Emit four annotation
+objects: title_block + scale_bar + dimensions + luminaire_schedule.
+Every annotation declares explicit `font_family` + `font_size_pt` so
+the renderer's ezdxf font fallback can resolve without losing tags.
+
+#### 15.1 — title_block
+
+Populate from `inputs.drawing_metadata` (project_name + drawing_number +
+revision + date) and from the lumen-method calculation context (scale +
+sheet_size):
+
+```json
+"title_block": {
+  "project_name":  "<inputs.drawing_metadata.project_name>",
+  "drawing_number": "<inputs.drawing_metadata.drawing_number>",
+  "revision":      "<inputs.drawing_metadata.revision>",
+  "date":          "<YYYY-MM-DD today's date>",
+  "scale":         "1:50",
+  "sheet_size":    "A3",
+  "font_family":   "Arial",
+  "font_size_pt":  10
+}
+```
+
+If `inputs.drawing_metadata` is absent, set placeholder values:
+- project_name: derived from `inputs.room_type` + room dimensions
+  (e.g. "Open-plan office 10×8 m — lighting layout")
+- drawing_number: "EL-001"
+- revision: "A"
+- date: today
+- scale: pick the largest scale that fits the room on the sheet
+  (1:50 for ≤15×10 m on A3; 1:100 for larger; 1:200 for warehouse)
+
+#### 15.2 — scale_bar
+
+Place in the bottom-right corner of the drawing area, 500 mm × 100 mm
+above the sheet's bottom edge:
+
+```json
+"scale_bar": {
+  "origin_x_mm":      <room.length_mm − 2500>,
+  "origin_y_mm":      <room.width_mm + 500>,
+  "total_length_mm":  2000,
+  "tick_interval_mm": 500,
+  "font_family":      "Arial",
+  "font_size_pt":     8
+}
+```
+
+For 1:50 scale, total_length_mm 2000 (4 ticks × 500 mm = 2 m at full
+scale = 40 mm on paper). For 1:100, double the total_length_mm; for
+1:200, triple.
+
+#### 15.3 — dimensions[]
+
+At minimum: room length (horizontal at top or bottom) + room width
+(vertical at left or right). Position 300 mm OUTSIDE the room rectangle
+(negative coordinate; the renderer handles negative-space layout):
+
+```json
+"dimensions": [
+  {
+    "axis":          "horizontal",
+    "start_x_mm":    0,
+    "start_y_mm":    -300,
+    "end_x_mm":      <room.length_mm>,
+    "end_y_mm":      -300,
+    "text":          "<room.length_mm> mm",
+    "font_family":   "Arial",
+    "font_size_pt":  10
+  },
+  {
+    "axis":          "vertical",
+    "start_x_mm":    -300,
+    "start_y_mm":    0,
+    "end_x_mm":      -300,
+    "end_y_mm":      <room.width_mm>,
+    "text":          "<room.width_mm> mm",
+    "font_family":   "Arial",
+    "font_size_pt":  10
+  }
+]
+```
+
+For rooms with multiple luminaire rows, optionally add per-row dimension
+lines showing inter-row spacing. Not required by INV-9 (which checks
+only minimum 2 dimensions).
+
+#### 15.4 — luminaire_schedule
+
+Required columns: Ref + Manufacturer + Lumens + Wattage + Count. One
+row per unique luminaire type used in the layout:
+
+```json
+"luminaire_schedule": {
+  "columns": ["Ref", "Manufacturer", "Lumens", "Wattage", "Count"],
+  "rows": [
+    ["<luminaire_type.symbol>", "<inputs.manufacturer ?? 'Generic'>",
+     "<luminaire_type.lumens>", "<luminaire_type.wattage_w>W",
+     "<luminaires.length>"]
+  ],
+  "font_family":  "Arial",
+  "font_size_pt": 8
+}
+```
+
+For multi-type layouts (e.g. general lighting LED_PANEL_600 +
+emergency EMERGENCY luminaires), emit one row per distinct type.
+
+#### 15.5 — calc_only path
+
+If `mode = calc_only`, skip Step 15 entirely. The schema's allOf clause
+only requires drafting_furniture for full_drawing mode.
+
+**INV enforced by this step:**
+- INV-9 (MEDIUM): drafting_furniture.{title_block, scale_bar,
+  dimensions[≥2], luminaire_schedule} all present with explicit
+  font_family + font_size_pt. No `{{placeholder}}` remnants in any text
+  field. INV-9 enforces presence + font fields + no {{remnants}} (Rule 9).
+
+---
+
 ## Output Format
 
 After showing working in chat, emit this JSON block. This is passed directly
