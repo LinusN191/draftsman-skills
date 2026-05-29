@@ -3704,3 +3704,953 @@ EOF
 ```
 
 ---
+
+## Phase D — lighting-layout cascade integration + sprint ship (3 tasks, sequential)
+
+D.1 wires the cascade contract (schema + manifest + INV-11 rewrite); D.2 retrofits the 7
+existing lighting-layout examples to consume the photometric_grid intent; D.3 ships the
+sprint with Sonnet verification fence + manifest bump + CHANGELOG + memory + push.
+
+---
+
+## Task D.1: lighting-layout schema + manifest + INV-11 rewrite (Sonnet)
+
+**Why Sonnet:** Mechanical schema + manifest edits + INV-11 prompt rewrite (verbatim text per spec §10.3).
+
+**Files:**
+- Modify: `shared/schemas/electrical/lighting-layout-ir.schema.json` — add `consumed_intents` top-level block + extend `allOf` `else` branch
+- Modify: `electrical/lighting-layout/skill.manifest.json` — bump 1.4.0 → 1.5.0 + populate `consumes_intents[]`
+- Modify: `electrical/lighting-layout/prompts/validator.md` — replace D3 INV-11 placeholder with the 4-sub-check cascade rule
+
+- [ ] **Step 1: Read current lighting-layout IR schema state**
+
+```bash
+python3 -c "
+import json
+d = json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))
+print(f'Top-level required: {d[\"required\"]}')
+print(f'Has consumed_intents: {\"consumed_intents\" in d[\"properties\"]}')
+print(f'allOf clauses: {len(d.get(\"allOf\", []))}')"
+```
+
+Expected: `consumed_intents` NOT yet in properties; `allOf` has 1 clause (the D3.A.3
+mode-conditional).
+
+- [ ] **Step 2: Add `consumed_intents` top-level block**
+
+Edit `shared/schemas/electrical/lighting-layout-ir.schema.json`. Find the top-level
+`properties` block. Add a new property (alphabetical-ish placement, between
+`calculation_summary` and `drafting_furniture` is fine):
+
+```json
+"consumed_intents": {
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Intent payloads consumed from companion skills per skill.manifest.json consumes_intents[]. Required when mode == full_drawing. Currently carries photometric_grid (from photometric-analysis v1.0+, Wave 1); future waves add emergency_coverage (Wave 3) and daylight_model (Wave 4).",
+  "properties": {
+    "photometric_grid": {
+      "type": "object",
+      "required": ["intent_version", "source_path", "payload"],
+      "additionalProperties": false,
+      "properties": {
+        "intent_version": {"type": "string"},
+        "source_path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Path to photometric-analysis intent-out.json (typically electrical/photometric-analysis/examples/cascade-<this-example-name>/intent-out.json for shipped examples; project-specific path for real projects)"
+        },
+        "payload": {
+          "$ref": "../../../electrical/photometric-analysis/schemas/photometric-grid-intent.schema.json#/properties/photometric_grid"
+        }
+      }
+    }
+  }
+}
+```
+
+- [ ] **Step 3: Extend `allOf` `else` branch to require consumed_intents.photometric_grid in full_drawing**
+
+Find the existing `allOf` clause (D3.A.3 mode-conditional). The `else` branch currently
+lists drafting_furniture + zones + selection_source as required when mode != calc_only.
+Add `consumed_intents` to the required array AND add a nested clause requiring
+`consumed_intents.photometric_grid` specifically.
+
+The simplest way: extend the existing `else.required` to include `consumed_intents`, AND
+add a second clause to the allOf array:
+
+```json
+"allOf": [
+  {
+    "description": "D3.A.3: mode-conditional required fields. full_drawing requires layout + intent + consumed cascade.",
+    "if": {"properties": {"mode": {"const": "calc_only"}}, "required": ["mode"]},
+    "then": {},
+    "else": {
+      "required": ["drafting_furniture", "zones", "selection_source", "consumed_intents"]
+    }
+  },
+  {
+    "description": "Wave 1 / photometric-analysis: when mode == full_drawing, consumed_intents.photometric_grid MUST be populated. INV-11 enforces semantic content; this allOf clause enforces structural presence.",
+    "if": {"properties": {"mode": {"const": "calc_only"}}, "required": ["mode"]},
+    "then": {},
+    "else": {
+      "properties": {
+        "consumed_intents": {
+          "required": ["photometric_grid"]
+        }
+      }
+    }
+  }
+]
+```
+
+- [ ] **Step 4: Update lighting-layout manifest**
+
+Edit `electrical/lighting-layout/skill.manifest.json`:
+1. Bump `"version": "1.4.0"` → `"version": "1.5.0"`
+2. Populate the (currently empty) `"consumes_intents": []`:
+
+```json
+"consumes_intents": [
+  {
+    "skill_id": "photometric-analysis",
+    "intent_name": "photometric-grid",
+    "version_constraint": "^1.0",
+    "trigger": "mode == 'full_drawing'",
+    "consumed_fields": [
+      "achieved_avg_illuminance_lux",
+      "achieved_min_illuminance_lux",
+      "achieved_uniformity_u0",
+      "ugr_max",
+      "task_area_compliant",
+      "non_compliance_flags"
+    ]
+  }
+]
+```
+
+The `trigger` + `consumed_fields` are new fields extending the established
+`{skill_id, intent_name, version_constraint}` shape from cable-sizing. Cluster roadmap
+§6.7 documents this as the cascade DSL the runtime evaluates.
+
+- [ ] **Step 5: Rewrite lighting-layout INV-11 in validator.md**
+
+Find the current INV-11 placeholder in `electrical/lighting-layout/prompts/validator.md`
+(the D3-era placeholder). Replace verbatim per spec §10.3:
+
+```markdown
+## INV-11 — Photometric verification cascade resolved (HIGH)
+
+**Severity:** HIGH when `mode == 'full_drawing'`; N/A when `mode == 'calc_only'`
+
+**Rule (4 sub-checks):**
+
+1. `consumed_intents.photometric_grid` is present (cascade triggered + resolved).
+2. `consumed_intents.photometric_grid.payload.task_area_compliant == true` (photometric-
+   analysis's own INV-1 + INV-2 + INV-3 all PASS upstream).
+3. `consumed_intents.photometric_grid.payload.achieved_avg_illuminance_lux >= calculation_summary.target_illuminance_lux`
+   (photometric verification confirms the lighting-layout target is actually met per-point;
+   not just the lumen-method average estimation).
+4. Flag cascading: if `consumed_intents.photometric_grid.payload.non_compliance_flags[]` is
+   non-empty, lighting-layout's own `calculation_summary.non_compliance_flags[]` MUST include
+   every flag with provenance attribution to `photometric-analysis`. No silent suppression.
+
+When `mode == 'calc_only'`: trivially PASS (cascade not triggered per the manifest trigger
+expression `"mode == 'full_drawing'"`).
+
+**Validator action:**
+- Read `consumed_intents.photometric_grid.payload` (sub-check 1: existence; structural
+  presence enforced by the IR schema `allOf` clause added in Wave 1 / photometric-analysis
+  D.1 task).
+- Verify `task_area_compliant == true` (sub-check 2).
+- Verify lux agreement (sub-check 3): `payload.achieved_avg_illuminance_lux >=
+  calculation_summary.target_illuminance_lux`.
+- Walk `payload.non_compliance_flags[]`. For each entry: verify the same message exists in
+  `calculation_summary.non_compliance_flags[]` with a `_cascaded_from: "photometric-analysis"`
+  attribution field. If any flag missing: INV-11 FAIL HIGH.
+
+**Citation:** Cluster roadmap §6.7 cascade contract + photometric-analysis INV-1 + INV-2 +
+INV-3 upstream + spec `2026-05-30-photometric-analysis-design.md` §10.3.
+
+**Rationale:** Lumen-method gives average illuminance; photometric-analysis gives per-point
+min + uniformity + UGR + glare detection from IES luminous intensity distributions. INV-11
+binds the two so lighting-layout cannot ship a full_drawing without per-point verification.
+The cascade is the structural enforcement of the "lumen-method is necessary but not
+sufficient" engineering principle that motivated the whole photometric companion skill.
+```
+
+- [ ] **Step 6: Run gates + validate cascade contract structure**
+
+```bash
+python3 -c "
+import json
+m = json.load(open('electrical/lighting-layout/skill.manifest.json'))
+ir = json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))
+
+assert m['version'] == '1.5.0', f'manifest version mismatch: {m[\"version\"]}'
+assert len(m['consumes_intents']) == 1
+ci = m['consumes_intents'][0]
+assert ci['skill_id'] == 'photometric-analysis'
+assert ci['trigger'] == \"mode == 'full_drawing'\"
+
+assert 'consumed_intents' in ir['properties']
+assert 'photometric_grid' in ir['properties']['consumed_intents']['properties']
+assert len(ir['allOf']) == 2
+print('Cascade contract OK: manifest 1.5.0 + consumes_intents[1] + IR consumed_intents block + 2 allOf clauses')"
+
+python3 scripts/validate-examples.py 2>&1 | tail -3
+python3 functional_audit.py 2>&1 | tail -3
+```
+
+Expected:
+- `Cascade contract OK: manifest 1.5.0 + consumes_intents[1] + IR consumed_intents block + 2 allOf clauses`
+- validate-examples: **DROP — many lighting-layout examples will now FAIL the new allOf
+  clause until D.2 retrofits them.** Expected drop from ~262 to ~255 (7 lighting-layout
+  example outputs fail the new `consumed_intents.photometric_grid` requirement until
+  retrofit lands in D.2).
+- functional_audit: 1 finding unchanged.
+
+This temporary gate regression is expected — D.2 restores green by populating the
+consumed_intents in each lighting-layout example.
+
+- [ ] **Step 7: Commit D.1 (with explicit "gate-regression-expected" note in commit message)**
+
+```bash
+git add shared/schemas/electrical/lighting-layout-ir.schema.json \
+        electrical/lighting-layout/skill.manifest.json \
+        electrical/lighting-layout/prompts/validator.md
+git commit -m "$(cat <<'EOF'
+feat(lighting-layout): D.1 cascade contract wired — schema + manifest + INV-11 rewrite (1.4.0→1.5.0)
+
+Eleventh task of photometric-analysis v1.0 sprint. Phase D cascade
+integration — first of three.
+
+Wires the photometric-grid cascade contract from photometric-analysis
+v1.0 into lighting-layout v1.5.0.
+
+IR schema (shared/schemas/electrical/lighting-layout-ir.schema.json):
+- NEW consumed_intents top-level block with photometric_grid sub-object
+  (intent_version + source_path + payload via $ref to
+  photometric-grid-intent.schema.json)
+- Extended D3.A.3 allOf else-branch: required[] now includes
+  consumed_intents alongside drafting_furniture + zones + selection_source
+- NEW 2nd allOf clause: when mode == full_drawing,
+  consumed_intents.photometric_grid is structurally required (the
+  semantic content is enforced by INV-11 below)
+
+Manifest (electrical/lighting-layout/skill.manifest.json):
+- Version bump 1.4.0 → 1.5.0 (additive; backward-compatible IR additions)
+- consumes_intents[] populated with photometric-grid cascade entry
+- Extended cable-sizing's {skill_id, intent_name, version_constraint}
+  shape with new {trigger, consumed_fields} fields per cluster roadmap
+  §6.7. trigger = "mode == 'full_drawing'" (cascade triggered for full
+  drawings, skipped for calc_only early-design pre-checks).
+
+Validator (electrical/lighting-layout/prompts/validator.md):
+- INV-11 rewritten from D3 placeholder to real 4-sub-check rule:
+  1. consumed_intents.photometric_grid present
+  2. payload.task_area_compliant == true
+  3. payload.achieved_avg_illuminance_lux >= target_illuminance_lux
+  4. non_compliance_flags cascading with _cascaded_from attribution
+- Severity HIGH when mode == full_drawing; N/A when calc_only
+
+EXPECTED GATE REGRESSION (temporary):
+- validate-examples drops from ~262 to ~255 (7 lighting-layout example
+  outputs fail the new allOf consumed_intents.photometric_grid requirement
+  until retrofit lands in D.2 next task).
+- functional_audit 1 finding unchanged.
+
+D.2 restores green by populating consumed_intents in each of the 7
+lighting-layout examples + adding INV-11 evidence entries.
+
+Cascade now structurally enforced: lighting-layout cannot emit a
+full_drawing IR without consuming a photometric-grid intent. The
+"lumen-method is necessary but not sufficient" engineering principle
+is now schema-level binding.
+
+Next: D.2 7 lighting-layout example retrofits.
+EOF
+)"
+```
+
+---
+
+## Task D.2: 7 lighting-layout example retrofits (Opus)
+
+**Why Opus:** Engineering per example + per-INV evidence customisation + non_compliance_flags cascade preservation.
+
+**Files:**
+- Modify: 7 × `electrical/lighting-layout/examples/<example>/input.json` — add `photometric_ies_paths[]`
+- Modify: 7 × `electrical/lighting-layout/examples/<example>/output.json` — add `consumed_intents.photometric_grid` + rewrite INV-11 evidence
+- Modify: 7 × `electrical/lighting-layout/examples/<example>/intent-out.json` — add `consumed_intents.photometric_grid`
+
+Per spec §10.4 retrofit mapping table (same as C.2 cascade dirs):
+
+| # | lighting-layout example | IES file consumed |
+|---|---|---|
+| 1 | office-open-plan | LED_PANEL_600-4500lm.ies |
+| 2 | reception-lobby | LED_DOWNLIGHT.ies |
+| 3 | warehouse-highbay | HIGHBAY.ies + EMERGENCY.ies |
+| 4 | uk-undersized-lighting-vs-target | LED_PANEL_600-3500lm.ies |
+| 5 | uk-multi-entrance-classroom | LED_PANEL_600-4500lm.ies |
+| 6 | uk-part-l-fail-incandescent | HALOGEN_DOWNLIGHT.ies |
+| 7 | uk-open-plan-office-10x8-dali | LED_PANEL_600.ies |
+
+For each of the 7 examples, apply the retrofit pattern documented below verbatim.
+
+### Retrofit pattern per example (apply 7×)
+
+**input.json**: append a new item to `items[]` array:
+
+```json
+{
+  "id": "photometric_ies_paths",
+  "value": [
+    {
+      "luminaire_type": "<TYPE FROM TABLE>",
+      "path": "shared/photometric/ies/<FILE FROM TABLE>",
+      "_source": "Synthetic <description matching ies-provenance.json>. verification_status: synthetic_reference_C3. Cascade retrofit per photometric-analysis v1.0 sprint D.2; engineer-of-record substitutes project IES before final design freeze."
+    }
+  ]
+}
+```
+
+For warehouse-highbay (2 luminaire types): the `value` array carries 2 entries.
+
+**output.json**: add a new top-level `consumed_intents` block:
+
+```json
+"consumed_intents": {
+  "photometric_grid": {
+    "intent_version": "1.0.0",
+    "source_path": "electrical/photometric-analysis/examples/cascade-<example-name>/intent-out.json",
+    "payload": {
+      "achieved_avg_illuminance_lux": <copy from cascade example's intent-out.json>,
+      "achieved_min_illuminance_lux": <copy>,
+      "achieved_uniformity_u0": <copy>,
+      "ugr_max": <copy>,
+      "ugr_target": <copy>,
+      "uniformity_target": <copy>,
+      "target_illuminance_lux": <copy>,
+      "task_area_compliant": <copy>,
+      "grid_point_count": <copy>,
+      "non_compliance_flags": <copy if non-empty>,
+      "ies_source_summary": {
+        "all_verified": false,
+        "verification_status_lowest": "synthetic_reference_C3"
+      }
+    }
+  }
+}
+```
+
+**output.json INV-11 evidence rewrite**: locate the existing INV-11 entry in
+`invariants[]` (D3 placeholder) and replace its `evidence` field with:
+
+```json
+{
+  "id": "INV-11",
+  "passes": <true OR false per cascade result>,
+  "severity": "high",
+  "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from cascade-<example-name>/intent-out.json. payload.task_area_compliant=<true/false>; payload.achieved_avg_illuminance_lux=<value> vs target=<value> (sub-check 3 PASS/FAIL); <N> non_compliance_flags cascaded to lighting-layout calculation_summary with _cascaded_from=photometric-analysis attribution (sub-check 4 PASS). Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
+}
+```
+
+**intent-out.json**: same `consumed_intents.photometric_grid` block added to the
+intent-out.json file (downstream consumers see the cascade chain).
+
+For under-spec example (#4) + halogen example (#6), if the photometric cascade FAILS, the
+non_compliance_flags from the cascade are added to lighting-layout's own
+`calculation_summary.non_compliance_flags[]` with `_cascaded_from: "photometric-analysis"`
+attribution per INV-11 sub-check 4.
+
+### Per-example step (apply 7×)
+
+- [ ] **Step 1: Retrofit office-open-plan** (LED_PANEL_600 4500lm; expected all 9 cascade INVs PASS; INV-11 PASS)
+- [ ] **Step 2: Retrofit reception-lobby** (LED_DOWNLIGHT; verify cascade INV-1 against narrow-beam scalloping; INV-11 PASS or FAIL per cascade output)
+- [ ] **Step 3: Retrofit warehouse-highbay** (HIGHBAY + EMERGENCY 2-type cascade; INV-11 PASS expected)
+- [ ] **Step 4: Retrofit uk-undersized-lighting-vs-target** (LED_PANEL_600 3500lm; INV-11 FAIL HIGH expected — cascade non_compliance_flags entry "Under-provisioned layout per photometric INV-1" added to lighting-layout flags with _cascaded_from attribution)
+- [ ] **Step 5: Retrofit uk-multi-entrance-classroom** (LED_PANEL_600 4500lm; INV-11 PASS)
+- [ ] **Step 6: Retrofit uk-part-l-fail-incandescent** (HALOGEN_DOWNLIGHT; INV-11 PASS at photometric level; the Part-L INV-6 failure remains independent)
+- [ ] **Step 7: Retrofit uk-open-plan-office-10x8-dali** (LED_PANEL_600 6000lm; INV-11 PASS)
+
+- [ ] **Step 8: Run gates + verify cascade resolution**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+python3 functional_audit.py 2>&1 | tail -3
+```
+
+Expected:
+- validate-examples restored from temporary D.1 drop to **~262-264/262-264** (matching
+  C.3 baseline). The 7 retrofits don't add files — they modify existing files. So count
+  unchanged from C.3 baseline once the allOf failures clear.
+- functional_audit: 1 finding unchanged.
+
+Per-example hand-check:
+
+```bash
+python3 -c "
+import json
+for ex in ['office-open-plan', 'reception-lobby', 'warehouse-highbay',
+           'uk-undersized-lighting-vs-target', 'uk-multi-entrance-classroom',
+           'uk-part-l-fail-incandescent', 'uk-open-plan-office-10x8-dali']:
+    out = json.load(open(f'electrical/lighting-layout/examples/{ex}/output.json'))
+    assert 'consumed_intents' in out, f'{ex}: missing consumed_intents'
+    assert 'photometric_grid' in out['consumed_intents'], f'{ex}: missing photometric_grid'
+    inv11 = next((i for i in out['invariants'] if i['id'] == 'INV-11'), None)
+    assert inv11 is not None, f'{ex}: missing INV-11'
+    print(f'{ex}: consumed_intents.photometric_grid present; INV-11 passes={inv11[\"passes\"]}')"
+```
+
+Expected: 7 lines, all showing consumed_intents present + INV-11 passes value (5 PASS
+for compliant layouts; 1 FAIL for under-spec; 1 PASS for halogen since photometric is
+independent of Part-L).
+
+- [ ] **Step 9: Commit D.2**
+
+```bash
+git add electrical/lighting-layout/examples/office-open-plan/ \
+        electrical/lighting-layout/examples/reception-lobby/ \
+        electrical/lighting-layout/examples/warehouse-highbay/ \
+        electrical/lighting-layout/examples/uk-undersized-lighting-vs-target/ \
+        electrical/lighting-layout/examples/uk-multi-entrance-classroom/ \
+        electrical/lighting-layout/examples/uk-part-l-fail-incandescent/ \
+        electrical/lighting-layout/examples/uk-open-plan-office-10x8-dali/
+git commit -m "$(cat <<'EOF'
+feat(lighting-layout): D.2 7 example retrofits (consumed_intents.photometric_grid + INV-11 evidence)
+
+Twelfth task of photometric-analysis v1.0 sprint. Phase D cascade
+integration — second of three. Restores validate-examples green after
+D.1 schema-tightening temporary regression.
+
+7 lighting-layout examples retrofitted with photometric cascade:
+1. office-open-plan (LED_PANEL_600-4500lm) — INV-11 PASS
+2. reception-lobby (LED_DOWNLIGHT) — INV-11 PASS or FAIL per actual
+   cascade (narrow-beam scalloping verification)
+3. warehouse-highbay (HIGHBAY + EMERGENCY 2-type) — INV-11 PASS
+4. uk-undersized-lighting-vs-target (LED_PANEL_600-3500lm) — INV-11
+   FAIL HIGH (cascade failure-mode demo end-to-end; non_compliance_flags
+   from cascade added to lighting-layout's calculation_summary with
+   _cascaded_from: "photometric-analysis" attribution per INV-11
+   sub-check 4)
+5. uk-multi-entrance-classroom (LED_PANEL_600-4500lm) — INV-11 PASS
+6. uk-part-l-fail-incandescent (HALOGEN_DOWNLIGHT) — INV-11 PASS at
+   photometric level; the Part-L INV-6 failure remains independent
+   (demonstrates photometric/Part-L compliance independence engineering
+   nuance)
+7. uk-open-plan-office-10x8-dali (LED_PANEL_600 6000lm) — INV-11 PASS
+
+Per-example modifications:
+- input.json: appended photometric_ies_paths item with luminaire_type
+  + path + _source provenance (≥40 chars + synthetic_reference_C3
+  verification_status)
+- output.json: added consumed_intents.photometric_grid block with
+  intent_version + source_path + payload (copied from corresponding
+  cascade-<name>/intent-out.json from C.2)
+- output.json: rewrote INV-11 evidence from D3 placeholder to real
+  4-sub-check cascade evidence citing payload values + flag cascading
+- intent-out.json: added consumed_intents.photometric_grid block
+
+Honest disclosure preserved per example:
+- All cascades use verification_status: synthetic_reference_C3
+- Failure-mode cascades preserve flag attribution (engineer sees both
+  the photometric origin AND the lighting-layout consumption)
+
+Gates: validate-examples restored to ~262-264/262-264 (D.1's temporary
+drop cleared); functional_audit 1 finding unchanged.
+
+Next: D.3 sprint ship (Sonnet 11-check fence + manifest bump + CHANGELOG
++ memory + push confirmation).
+EOF
+)"
+```
+
+---
+
+## Task D.3: Sprint ship — fence + memory + push (Opus orchestrator + Sonnet fence)
+
+**Files:**
+- Modify: `electrical/photometric-analysis/CHANGELOG.md` — final v1.0.0 entry confirmation (already largely populated in A.2; D.3 confirms final state)
+- Modify: `electrical/lighting-layout/CHANGELOG.md` — add [1.5.0] entry
+- Create: `~/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/photometric-analysis-shipped.md`
+- Modify: `~/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/MEMORY.md` — append index entry
+
+- [ ] **Step 1: Dispatch Sonnet 11-check verification fence**
+
+Use the Agent tool with `subagent_type: general-purpose` and `model: sonnet`. Prompt:
+
+```
+You are the photometric-analysis v1.0 sprint verification fence — Sonnet sub-dispatch
+before the sprint ship. Confirm all 12 implementer tasks shipped correctly.
+
+Work from /Users/linus/Desktop/DraftsMan SKills/draftsman-skills
+
+Run these 11 checks IN ORDER and report PASS/FAIL per check:
+
+CHECK 1 — Gates baseline:
+- python3 scripts/validate-examples.py 2>&1 | tail -3 → AGGREGATE in [255, 270] range (target ~262-264)
+- python3 functional_audit.py 2>&1 | tail -3 → TOTAL FINDINGS: 1 (disclosed motor-superposition oracle FP)
+
+CHECK 2 — Phase A.1 shared IES library:
+- scripts/generate_reference_ies.py exists + parses Python syntax
+- shared/photometric/ies/ contains 8 .ies files matching the spec inventory
+- shared/photometric/ies-provenance.json parses + validates against
+  shared/schemas/core/photometric-provenance.schema.json with 8 file entries
+- shared/photometric/README.md exists with verification_status policy
+
+CHECK 3 — Phase A.2 skill scaffolding:
+- electrical/photometric-analysis/skill.manifest.json: version 1.0.0; status production;
+  ≥7 standards entries; 1 produces_intents (photometric-grid); 1 consumes_intents
+  (lighting-layout); ≥10 examples registered
+- README.md ≥80 lines (real body, not stub)
+- CHANGELOG.md top entry is [1.0.0]
+
+CHECK 4 — Phase A.3 schemas:
+- electrical/photometric-analysis/schemas/photometric-analysis-ir.schema.json parses;
+  ≥11 top-level properties; allOf mode-conditional present
+- electrical/photometric-analysis/schemas/photometric-grid-intent.schema.json parses;
+  FLAT shape (no envelope wrap); 10 payload fields
+
+CHECK 5 — Phase A.4 inputs + rules:
+- inputs.json has 5 items per spec §4
+- rules/grid-spacing-rules.yaml, ugr-rules.yaml, ies-provenance-rules.yaml all parse + carry
+  {id, value, citation, rationale} per rule
+- No §714 in any rules file (D3 citation-hygiene precedent)
+
+CHECK 6 — Phase B prompts:
+- prompts/generator.md ≥400 lines (target ~520 per plan B.1)
+- prompts/validator.md ≥280 lines with 9 INVs (INV-1..INV-9)
+- prompts/reviewer.md ≥170 lines with 5 D-checks (D-1..D-5)
+- No §714 anywhere in prompts
+
+CHECK 7 — Phase C.1 3 standalone examples:
+- examples/uk-open-plan-office-10x8-dali-photometric/ has 4 files; all 9 INVs PASS
+- examples/uk-office-uniformity-fail-perimeter-cold-spots/ has 4 files; INV-1 + INV-2 FAIL
+- examples/uk-drawing-office-strict-ugr/ has 4 files; INV-3 FAIL
+
+CHECK 8 — Phase C.2 7 cascade examples:
+- examples/cascade-office-open-plan/, cascade-reception-lobby/, cascade-warehouse-highbay/,
+  cascade-uk-undersized-lighting-vs-target/, cascade-uk-multi-entrance-classroom/,
+  cascade-uk-part-l-fail-incandescent/, cascade-uk-open-plan-office-10x8-dali/ all exist
+  with 4 files each
+- cascade-warehouse-highbay/ has 2-luminaire-type IES list
+
+CHECK 9 — Phase C.3 evals:
+- evals/eval-01..eval-05 all exist + parse against shared/schemas/core/eval.schema.json
+
+CHECK 10 — Phase D.1 + D.2 cascade integration:
+- shared/schemas/electrical/lighting-layout-ir.schema.json has consumed_intents block;
+  allOf has 2 clauses
+- electrical/lighting-layout/skill.manifest.json version 1.5.0 + consumes_intents[1]
+  populated
+- electrical/lighting-layout/prompts/validator.md INV-11 ≥30 lines (real rule, not D3
+  placeholder)
+- All 7 lighting-layout examples have consumed_intents.photometric_grid populated +
+  INV-11 evidence rewritten (no placeholder text remaining)
+
+CHECK 11 — Cross-cutting:
+- No §714 in any sprint file: grep -rn '§714' electrical/photometric-analysis/ shared/photometric/
+- No `{{placeholder}}` remnants in any example: grep -rn '{{' electrical/photometric-analysis/examples/*/output.json
+- All INV evidence ≤800 chars per schema constraint
+- All ies_files[]._source ≥40 chars per INV-8
+
+If ANY check fails, STOP and report the specific failure detail. Do NOT redispatch;
+the orchestrator handles redispatch.
+
+Report format:
+Check 1 (Gates): PASS|FAIL — <detail>
+... (one line per check 1-11)
+
+Final verdict: SHIP | HALT
+Summary: 2-3 sentences explaining the verdict.
+
+Keep total report ≤700 words.
+```
+
+- [ ] **Step 2: Read fence report; halt + redispatch on FAIL**
+
+If any check FAILS: redispatch the corresponding implementer (A.1/A.2/A.3/A.4/B.1/B.2/B.3/
+C.1/C.2/C.3/D.1/D.2) with the failure detail; do NOT proceed to Step 3.
+
+- [ ] **Step 3: Update lighting-layout CHANGELOG.md with [1.5.0] entry**
+
+Add to top of `electrical/lighting-layout/CHANGELOG.md`:
+
+```markdown
+## [1.5.0] - 2026-05-30 — Photometric cascade contract activation (Wave 1)
+
+### Changed
+- `skill.manifest.json` version 1.4.0 → 1.5.0 (additive; backward-compatible IR additions)
+- `consumes_intents[]` populated with photometric-grid cascade entry (trigger:
+  `mode == 'full_drawing'`; consumed fields: achieved_avg_illuminance_lux,
+  achieved_min_illuminance_lux, achieved_uniformity_u0, ugr_max, task_area_compliant,
+  non_compliance_flags) — first downstream-cascade consumer for this skill.
+
+### Added (IR schema — shared/schemas/electrical/lighting-layout-ir.schema.json)
+- NEW `consumed_intents` top-level block with `photometric_grid` sub-object
+  (intent_version + source_path + payload via $ref to photometric-grid-intent.schema.json)
+- Extended D3.A.3 `allOf` else-branch: required[] now includes `consumed_intents` alongside
+  drafting_furniture + zones + selection_source
+- NEW 2nd `allOf` clause: when mode == full_drawing, `consumed_intents.photometric_grid`
+  is structurally required (semantic content enforced by INV-11)
+
+### Changed (validator — prompts/validator.md)
+- INV-11 rewritten from D3 placeholder to real 4-sub-check rule:
+  1. consumed_intents.photometric_grid present
+  2. payload.task_area_compliant == true
+  3. payload.achieved_avg_illuminance_lux ≥ target_illuminance_lux
+  4. non_compliance_flags cascading with _cascaded_from attribution
+- Severity HIGH when mode == full_drawing; N/A when calc_only
+
+### Changed (7 examples retrofit)
+- All 7 existing examples (office-open-plan, reception-lobby, warehouse-highbay,
+  uk-undersized-lighting-vs-target, uk-multi-entrance-classroom,
+  uk-part-l-fail-incandescent, uk-open-plan-office-10x8-dali) now consume the
+  photometric_grid intent from corresponding cascade-<example-name>/ in
+  electrical/photometric-analysis/examples/
+- input.json: added photometric_ies_paths[] referencing shared/photometric/ies/<type>.ies
+- output.json: added consumed_intents.photometric_grid block + rewrote INV-11 evidence
+- intent-out.json: added consumed_intents.photometric_grid block
+
+### Failure-mode cascade demonstrations
+- uk-undersized-lighting-vs-target now demonstrates end-to-end failure cascade: photometric
+  INV-1 + INV-2 FAIL → cascade non_compliance_flags → lighting-layout INV-11 FAIL HIGH +
+  cascade attribution
+- uk-part-l-fail-incandescent demonstrates photometric/Part-L compliance independence:
+  INV-11 PASS at photometric level + lighting-layout INV-6 FAIL at Part-L level
+
+### Honest disclosures preserved
+- All cascades use synthetic_reference_C3 IES files from shared/photometric/ies/
+- Engineer-of-record substitutes project IES before final design freeze per
+  [ies-provenance-rules#substitution-policy]
+- Flag _cascaded_from attribution makes the photometric origin traceable end-to-end
+
+### Cross-references
+- photometric-analysis spec: docs/superpowers/specs/2026-05-30-photometric-analysis-design.md
+- photometric-analysis sprint plan: docs/superpowers/plans/2026-05-30-photometric-analysis-sprint.md
+- Cluster roadmap: docs/superpowers/specs/2026-05-29-lighting-cluster-roadmap.md
+
+### Gates
+- validate-examples.py: 236/236 (post-D3) → ~262-264/262-264 (+~26 across Wave 1 sprint)
+- functional_audit.py: 1 finding unchanged (disclosed motor-superposition oracle FP)
+```
+
+- [ ] **Step 4: Write photometric-analysis-shipped.md memory file**
+
+Create `~/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/photometric-analysis-shipped.md`:
+
+```markdown
+---
+name: photometric-analysis-shipped
+description: photometric-analysis v1.0.0 shipped 2026-05-30 (Wave 1 first deliverable of lighting skill family roadmap). Calc-primitive wrapper of calc.lumen_grid_solver computing per-point illuminance + U₀ + UGR per BS EN 12464-1 §4.4 + §6.2 + §6.6 + CIE 117. Full v1.0 — IES files required per luminaire_type; no ontology UF fallback at production. 13 implementer tasks across A foundations + B prompts + C examples + D cascade integration. 8 new shared IES files at shared/photometric/ies/ (synthetic_reference_C3 — engineer substitutes project IES). 7 lighting-layout examples retrofitted; lighting-layout v1.4.0→v1.5.0 with INV-11 cascade contract activated. Gates 236→~262 (+~26). Wave 1 second deliverable (special-locations) is the parallel skill brainstormed separately.
+metadata:
+  type: project
+---
+
+photometric-analysis v1.0.0 shipped 2026-05-30 as Wave 1 first deliverable of the lighting
+skill family roadmap (`docs/superpowers/specs/2026-05-29-lighting-cluster-roadmap.md`).
+Calc-primitive companion skill to lighting-layout; wraps the runtime calc.lumen_grid_solver
+tool to compute per-point illuminance + U₀ uniformity + UGR (glare) that lumen-method
+alone cannot verify.
+
+## Skill identity
+- Path: electrical/photometric-analysis/
+- Version: 0.1.0 (stub since 2026-05-25) → 1.0.0 (production)
+- Standards: BS EN 12464-1:2021 §4.4 + §6.2 + §6.6 + Table 5.3; ANSI/IES LM-63-2002; CIE 117; CIBSE LG7 §6
+- consumes_intents: lighting-layout v1.x
+- produces_intents: photometric-grid v1.0.0
+
+## Items shipped (13 tasks across 4 phases)
+
+Phase A — Foundations:
+- A.1 Shared IES library + LM-63 generator (Opus): scripts/generate_reference_ies.py
+  (stdlib-only Python, 3 analytical models) + 8 synthetic IES files at
+  shared/photometric/ies/ (LED_PANEL_600 + 4500lm + 3500lm variants + LED_DOWNLIGHT +
+  HIGHBAY + LINEAR_LED + EMERGENCY + HALOGEN_DOWNLIGHT) + ies-provenance.json
+  (machine-readable) + README + new shared/schemas/core/photometric-provenance.schema.json
+  with verification_status enum extended to include synthetic_reference_C3.
+- A.2 Skill scaffolding (Sonnet): stub manifest → production v1.0.0 with 7 standards +
+  produces/consumes intents + 10 examples registered.
+- A.3 IR + intent schemas (Sonnet): photometric-analysis-ir.schema.json (11 top-level
+  properties, mode-conditional allOf) + photometric-grid-intent.schema.json (FLAT shape,
+  10 payload fields).
+- A.4 inputs.json + 3 rules YAML (Sonnet): 5 input items + grid-spacing-rules +
+  ugr-rules + ies-provenance-rules per D3.A.2 SoT pattern.
+
+Phase B — Prompts:
+- B.1 Generator prompt (Opus, ~520 lines, 13 numbered steps): validate upstream → resolve
+  IES → compute task area → §6.2 adaptive grid → per-point illuminance → U₀ → UGR per
+  CIE 117 → calc invocation → verify → emit IR + intent + invariants. Also expanded
+  calc.lumen_grid_solver contract from 5-line stub to full I/O schema.
+- B.2 Validator prompt (Opus, ~340 lines, 9 INVs): INV-1..INV-9 with severity + formal
+  rule + validator action + citation + rationale per D3.B.4 catalogue pattern.
+- B.3 Reviewer prompt (Opus, ~200 lines, 5 D-checks): D-1 headroom + D-2 IES age +
+  project-stage substitution + D-3 UGR-vs-task-type + D-4 reflectance plausibility +
+  D-5 task-area coverage envelope.
+
+Phase C — Examples + evals:
+- C.1 3 standalone examples (Opus): uk-open-plan-office-10x8-dali-photometric (happy
+  path) + uk-office-uniformity-fail-perimeter-cold-spots (INV-1+INV-2 FAIL) +
+  uk-drawing-office-strict-ugr (INV-3 FAIL).
+- C.2 7 cascade retrofit examples (Opus): cascade-<lighting-layout-name>/ for each of
+  the 7 D3-shipped lighting-layout examples; each carries the full cascade evidence.
+- C.3 5 evals YAML (Sonnet): eval-01 grid-spacing-formula + eval-02 ugr-default-observers
+  + eval-03 ies-required + eval-04 uniformity-failure-detection + eval-05
+  provenance-disclosure.
+
+Phase D — lighting-layout cascade integration + ship:
+- D.1 lighting-layout schema + manifest + INV-11 rewrite (Sonnet): lighting-layout v1.4.0
+  → v1.5.0; IR schema gains consumed_intents.photometric_grid block (required when
+  mode == full_drawing per extended allOf); manifest consumes_intents populated with
+  trigger expression; INV-11 rewritten from D3 placeholder to 4-sub-check cascade rule.
+- D.2 7 lighting-layout example retrofits (Opus): each example gains
+  photometric_ies_paths input + consumed_intents output + INV-11 evidence rewrite.
+  uk-undersized + uk-part-l-fail examples demonstrate failure-mode cascade end-to-end.
+- D.3 Sprint ship: Sonnet 11-check fence + manifest bump confirmation + CHANGELOG +
+  this memory file + push.
+
+## Gates final state
+- validate-examples.py: 236 → ~262-264 (+~26 across sprint)
+- functional_audit.py: 1 finding unchanged (disclosed motor-superposition oracle FP)
+
+## Honest disclosures preserved
+- All shared IES files flagged synthetic_reference_C3 — generated by analytical archetype
+  (Lambertian/Gaussian per CIBSE LG7 §6.2), NOT manufacturer-measured. Engineer-of-record
+  substitutes project IES before final design freeze.
+- calc.lumen_grid_solver runtime executor lives in runtime project per
+  [[runtime-project-boundary]]; skill ships contract + IR + cascade only.
+- D2.3 + A.1 + A.2 citation-hygiene lessons applied: every clause cross-checked against
+  shared/standards/electrical/ before plan shipped; no §714 misattributions; Table 6.1 vs
+  6.2 disambiguation preserved.
+
+## Cascade contract validated end-to-end
+- lighting-layout INV-11 cascade resolves: 6 of 7 retrofitted examples produce INV-11
+  PASS; 1 (uk-undersized-lighting-vs-target) produces INV-11 FAIL HIGH with
+  non_compliance_flags cascaded from photometric origin via _cascaded_from attribution
+- Halogen example demonstrates photometric/Part-L independence (INV-11 photometric PASS;
+  Part-L INV-6 FAIL); engineering nuance documented in cascade-uk-part-l-fail-incandescent
+  reasoning.md
+
+## Process discipline preserved
+- Per-task two-stage Opus review (spec compliance + code quality)
+- Fix-pass commits where review surfaces issues
+- Pre-ship Sonnet 11-check verification fence
+- Honest disclosure on every fabricated-citation risk
+- Schema additions additive (backward-compatible v1.4.x consumers unaffected)
+
+## Commits shipped (chronological)
+
+```
+e5c6556  docs: photometric-analysis v1.0.0 design spec
+6b4dc76  docs(plan): photometric-analysis sprint — portion 1
+7802b1f  docs(plan): photometric-analysis sprint — portion 2
+c09c2a1  docs(plan): photometric-analysis sprint — portion 3
+<portion 4 commit>
+<A.1 commit>  feat(shared/photometric): A.1 shared IES library
+<A.2 commit>  feat(photometric-analysis): A.2 skill scaffolding
+<A.3 commit>  feat(photometric-analysis): A.3 IR + intent schemas
+<A.4 commit>  feat(photometric-analysis): A.4 inputs.json + 3 rules YAML
+<B.1 commit>  feat(photometric-analysis): B.1 generator prompt + calc contract
+<B.2 commit>  feat(photometric-analysis): B.2 validator prompt 9 INVs
+<B.3 commit>  feat(photometric-analysis): B.3 reviewer prompt 5 D-checks
+<C.1 commit>  feat(photometric-analysis): C.1 3 standalone examples
+<C.2 commit>  feat(photometric-analysis): C.2 7 cascade retrofit examples
+<C.3 commit>  feat(photometric-analysis): C.3 5 evals
+<D.1 commit>  feat(lighting-layout): D.1 cascade contract wired
+<D.2 commit>  feat(lighting-layout): D.2 7 example retrofits
+<D.3 commit>  feat(photometric-analysis): D.3 sprint ship — manifest + CHANGELOG + memory
+```
+
+(Plus any per-task fix-pass commits where two-stage review surfaced issues — D2/D3 pattern.)
+
+## Next
+
+Wave 1 second deliverable: **special-locations v1.0** — brainstormed in a separate session
+per cluster roadmap §5. Builds in parallel worktree after this skill's brainstorm + plan
+land. Then Wave 2 (small-power D4 + lighting-layout v1.6.0 in-skill extensions in parallel).
+
+Related: [[sprint-D3-shipped]] (predecessor — lighting-layout v1.4.0 + INV-11 placeholder),
+[[within-skill-depth-plan]] (depth program complete; cluster build is breadth-first pivot),
+[[runtime-project-boundary]] (calc executor in runtime), [[feedback-no-haiku-sonnet-opus-only]],
+[[feedback-no-trim-non-consequential]].
+```
+
+- [ ] **Step 5: Append MEMORY.md index entry**
+
+Append to `~/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/MEMORY.md`
+(after the existing `[Sprint D3 shipped]` line):
+
+```markdown
+- [photometric-analysis shipped (Wave 1 first deliverable)](photometric-analysis-shipped.md) — 2026-05-30: v0.1.0 stub→v1.0.0 production; calc-primitive wrapper of calc.lumen_grid_solver per BS EN 12464-1 §4.4+§6.2+§6.6+CIE 117; Full v1.0 IES required (no ontology UF fallback); 13 tasks across A foundations + B prompts + C examples + D cascade integration; 8 synthetic IES files at shared/photometric/ies/ (synthetic_reference_C3 — engineer substitutes); 7 lighting-layout examples retrofitted; lighting-layout v1.4.0→v1.5.0 with INV-11 cascade activated; gates 236→~262 (+~26); 1 failure-mode cascade end-to-end (uk-undersized) + 1 photometric/Part-L independence demo (uk-part-l-fail). Wave 1 second deliverable = special-locations brainstormed separately.
+```
+
+- [ ] **Step 6: Run final gates + verify everything green**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+python3 functional_audit.py 2>&1 | tail -3
+git status
+```
+
+Expected: validate-examples ~262-264/262-264; functional_audit 1 finding; working tree
+clean (all D.3 edits committed before push confirmation).
+
+- [ ] **Step 7: Commit D.3 (sprint ship)**
+
+```bash
+git add electrical/lighting-layout/CHANGELOG.md
+git commit -m "$(cat <<'EOF'
+feat(photometric-analysis): D.3 sprint ship — Sonnet fence + lighting-layout CHANGELOG [1.5.0] + memory
+
+Thirteenth and final task of photometric-analysis v1.0 sprint. Phase D
+cascade integration — third of three. Sprint complete.
+
+Sonnet 11-check verification fence cleared (D.3 Step 1-2):
+- Gates: validate-examples ~262-264/262-264 + functional_audit 1 finding
+- All 12 prior implementer tasks verified (A.1-A.4, B.1-B.3, C.1-C.3,
+  D.1-D.2)
+- Cross-cutting: no §714, no {{placeholder}} remnants, INV evidence
+  ≤800 chars, ies_files[]._source ≥40 chars
+
+electrical/lighting-layout/CHANGELOG.md [1.5.0] entry added covering:
+- IR schema additions (consumed_intents + extended allOf)
+- Manifest version bump + consumes_intents activation
+- INV-11 rewrite from D3 placeholder to real cascade rule
+- 7 example retrofits with cascade evidence + INV-11 customisation
+- Failure-mode cascade demos + photometric/Part-L independence demo
+- Honest disclosures preserved (synthetic_reference_C3, attribution)
+
+Memory file ~/.../memory/photometric-analysis-shipped.md written with
+full sprint summary + commit log + cascade contract validation
+evidence + next-skill pointer (special-locations Wave 1 second
+deliverable brainstormed in separate session).
+
+MEMORY.md index entry appended after Sprint D3 line.
+
+Cluster roadmap Wave 1 first deliverable COMPLETE. Wave 1 second
+deliverable = special-locations v1.0 (brainstorm pending). Wave 2 =
+small-power D4 + lighting-layout v1.6.0 extensions in parallel.
+Wave 3 = emergency-lighting + lighting-controls in parallel. Wave 4
+= daylight → energy-leni sequential.
+
+Push deferred to user confirmation per CLAUDE.md "shared state" rule.
+
+Sprint commit chain: e5c6556 (spec) + 6b4dc76 + 7802b1f + c09c2a1 +
+<portion 4> (plan portions) + 13 implementer commits + this ship
+commit = ~18 commits ahead of origin/main.
+EOF
+)"
+```
+
+- [ ] **Step 8: Push deferred to user confirmation**
+
+Per CLAUDE.md "shared state" rule: pushing requires explicit user authorisation. After D.3
+Step 7 commits, orchestrator asks the user:
+
+> "photometric-analysis v1.0 sprint shipped locally. ~18 commits + cascade integration
+> ready. Want me to push to origin/main, or hold for review?"
+
+If user confirms push:
+
+```bash
+git push origin main
+```
+
+If user chooses to tag first: tag `photometric-analysis-v1.0.0` at HEAD, then push commits + tag.
+
+- [ ] **Step 9: Wave 1 first deliverable done**
+
+photometric-analysis v1.0.0 lives on `origin/main`. Cluster roadmap Wave 1 first
+deliverable complete. Next: dispatch the parallel special-locations brainstorm session
+(per cluster roadmap §5 Wave 1 second deliverable + §9 next-action).
+
+---
+
+## Cross-references
+
+- Sprint design spec: `docs/superpowers/specs/2026-05-30-photometric-analysis-design.md` (commit `e5c6556`)
+- Cluster roadmap: `docs/superpowers/specs/2026-05-29-lighting-cluster-roadmap.md`
+- Sprint D3 shipped memory: `~/.claude/projects/.../memory/sprint-D3-shipped.md`
+- Within-skill depth plan: `~/.claude/projects/.../memory/within-skill-depth-plan.md`
+- Build strategy: `~/.claude/projects/.../memory/build-strategy-breadth-first.md`
+- Model selection: `~/.claude/projects/.../memory/feedback-no-haiku-sonnet-opus-only.md`
+- No-trim policy: `~/.claude/projects/.../memory/feedback-no-trim-non-consequential.md`
+- Runtime boundary: `~/.claude/projects/.../memory/runtime-project-boundary.md`
+- Pattern parent (calc primitive): `electrical/cable-sizing/`
+- Pattern parent (downstream consumer): `electrical/lighting-layout/` (post-D3 v1.4.0; this sprint bumps to v1.5.0)
+- Reused calc contract: `shared/calculations/lighting/lumen-grid-solver.json` (expanded in B.1)
+- D3 process lessons applied: D2.3 Reg 559 fix-pass + D3.A.1 §714 fix-pass + D3.A.2 Table 6.1 vs 6.2 fix-pass + D3.B.3 schema-vs-prompt coord conflict fix-pass + D3.C.2 multi-example inconsistency fix-pass
+
+---
+
+## Plan self-review
+
+### Spec coverage check
+Walked the spec sections; each maps to a task:
+- §1 Background → plan header + cross-references
+- §2 6 architecture decisions → A.1 (decisions 1-2), A.3+B.1 (3-5), A.4 (3+5+6), C.2 (retrofit)
+- §3 Skill identity → A.2
+- §4 Inputs taxonomy (5 items) → A.4
+- §5 Output IR + intent payload → A.3
+- §6 9 INVs → B.2
+- §7 5 D-checks → B.3
+- §8 Shared IES library → A.1
+- §9 3 standalone examples → C.1
+- §10 lighting-layout INV-11 cascade integration → D.1 (schema+manifest+validator) + D.2 (7 retrofits)
+- §11 Files modified + created → distributed across A/B/C/D tasks
+- §12 Gate targets → cited in per-task commit messages + D.3 fence
+- §13 Out of scope → not actioned (correctly deferred)
+- §14 Process lessons → applied across plan (Sonnet/Opus per model rule; citation cross-check before plan; honest disclosure pattern)
+- §15 Cross-references → plan cross-references section
+
+No spec requirement without a task. PASS.
+
+### Placeholder scan
+- `<example-name>` in D.2 retrofit pattern: documented placeholder for the per-example substitution; expected per-example-loop literal substitution by the implementer.
+- `<copy from cascade example's intent-out.json>` in D.2 output.json template: directive for the implementer to copy values from C.2's outputs into D.2's modifications. Acceptable as the cascade values are computed by C.2's calc.lumen_grid_solver run + the implementer has the C.2 outputs available.
+- `<value>` / `<true/false>` / `<N>` in D.2 INV-11 evidence template: directives for the implementer to substitute actual numbers per the cascade result. Same acceptability.
+- `<portion 4 commit>` + `<A.1 commit>` etc. in D.3 memory file commit log: filled in by the implementer after each implementer commit lands. Standard convention.
+
+No real placeholders (no `TBD` / `TODO` / `fill in later` / `similar to Task N`). PASS.
+
+### Type consistency check
+- `consumed_intents.photometric_grid.payload` field name: used consistently across D.1 IR schema + D.1 INV-11 rule + D.2 retrofit + D.3 CHANGELOG.
+- `verification_status` enum values (`synthetic_reference_C3`, `engineer_typical_C2`, `manufacturer_supplied_project_specific`): used consistently across A.1 metaschema + A.4 ies-provenance-rules + B.2 INV-8 + intent payload schema + memory file.
+- `INV-1` through `INV-9` in validator catalogue + `INV-01` through `INV-09` zero-padded in example output.json invariants[]: schema enforces zero-padded form via `pattern: ^INV-[0-9]{2,3}$`; both forms refer to the same INVs. Consistent.
+- Sprint commit count "~18": 13 implementer tasks + 4 plan portions + 1 sprint ship commit = 18; matches D.3 commit message.
+- IES file inventory (8 files) consistent across A.1 generator + A.1 README + A.2 manifest examples count.
+
+No type inconsistencies found. PASS.
+
+### Final self-review outcome
+
+Plan complete + ready for execution. 13 implementer tasks across 4 phases; each task ≤
+500 lines of plan content; verbatim content for all schemas + INV catalogue + D-check
+catalogue + example output.json template + manifest changes + INV-11 rewrite; per-task
+commit messages provided verbatim with HEREDOC formatting.
+
+Expected total commits across the sprint: ~18 (4 plan portions + 13 implementer tasks +
+1 final ship commit). Per-task fix-pass commits (D2/D3 pattern) may add ~5-8 more if
+two-stage review surfaces issues.
+
+Wall-clock estimate: ~2-3 days if all 13 tasks run sequentially with two-stage review +
+fix-pass discipline per the D3 cadence (~3-4 hr per task implementer + review combined).
+
+---
+
+## Execution Handoff
+
+Plan complete and saved to `docs/superpowers/plans/2026-05-30-photometric-analysis-sprint.md`.
+Two execution options:
+
+**1. Subagent-Driven (recommended)** — I dispatch a fresh subagent per task with full task
+text inline (no plan-file reading required), two-stage Opus review between tasks (spec
+compliance + code quality), fix-pass commit when review surfaces issues. Mirrors the D3
+13-task cadence (10/11 tasks needed fix-passes; pre-ship Sonnet fence caught 3 cross-cutting
+issues per-task reviewers missed).
+
+**2. Inline Execution** — Execute tasks in this session using executing-plans, batch
+execution with checkpoints for review.
+
+Which approach?
+
