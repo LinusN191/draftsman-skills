@@ -330,13 +330,13 @@
           },
           "homerun_endpoint": {
             "type": "object",
-            "required": ["x_mm", "y_mm"],
+            "required": ["x_mm", "y_mm", "wall"],
             "additionalProperties": false,
-            "description": "Wall endpoint where this circuit's homerun cable exits the room toward the DB. Renderer draws a homerun arrow from this point. INV-4 verifies this point is on one of the four room walls.",
+            "description": "Wall endpoint where this circuit's homerun cable exits the room toward the DB. Renderer draws a homerun arrow from this point. INV-4 verifies (a) the point sits on the named wall and (b) the wall is one of the four room walls.",
             "properties": {
               "x_mm": {"type": "integer", "minimum": 0},
               "y_mm": {"type": "integer", "minimum": 0},
-              "wall": {"enum": ["N", "S", "E", "W"], "description": "Which wall the endpoint sits on (derived; renderer can read directly)."}
+              "wall": {"enum": ["N", "S", "E", "W"], "description": "Which wall the endpoint sits on. Required; not derived. Renderer + INV-4 read this field directly."}
             }
           }
         },
