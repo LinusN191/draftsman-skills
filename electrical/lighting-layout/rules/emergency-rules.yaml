@@ -1,7 +1,45 @@
 id: emergency-rules
-description: Emergency lighting trigger rules
+description: Emergency lighting per BS 5266-1:2016 + BS 7671 §710 (medical) + escape route design
+_verification_status: engineer_typical_C2
+_note: "BS5266 standards directory is a stub in this repo (shared/standards/electrical/BS5266/ — README + meta.json only, no transcribed clauses). Citations reference the published British Standard directly; consumers should verify against the current BS 5266-1 edition. BSEN1838 is also a stub in shared/standards/electrical/BSEN1838/."
+
 rules:
-  - id: escape-route
-    description: All escape routes require maintained emergency luminaires
-  - id: open-area
-    description: Open areas >60m² require anti-panic emergency lighting
+  - id: emergency-rules#escape-route-illuminance
+    value:
+      min_lux_on_centre_line: 1.0
+      uniformity_min_ratio: 0.025
+      duration_min: 180
+    citation: "BS 5266-1:2016 §5.2.1 (escape route illuminance) + §5.2.4 (uniformity ratio)"
+    rationale: "Escape routes ≤2m wide require 1 lux minimum on the centre line. Wider routes treated as anti-panic / open-area zones. Duration 3h (180min) for offices; can be reduced to 1h for premises evacuated within 1h."
+
+  - id: emergency-rules#anti-panic-illuminance
+    value:
+      min_lux_on_floor: 0.5
+      uniformity_min_ratio: 0.025
+      duration_min: 60
+      area_threshold_m2: 60
+    citation: "BS 5266-1:2016 §5.3 (anti-panic / open area emergency lighting)"
+    rationale: "Open areas >60m² require 0.5 lux minimum on the unobstructed floor area excluding a 0.5m border. Duration ≥1h."
+
+  - id: emergency-rules#high-risk-task-area
+    value:
+      min_lux_or_pct_of_task: "max(15, 0.10 * task_illuminance_lux)"
+      uniformity_min_ratio: 0.1
+      duration_required: "duration_of_residual_risk_after_mains_failure"
+    citation: "BS 5266-1:2016 §5.4 (high-risk task area emergency lighting)"
+    rationale: "Areas with safety-critical processes (machine shops, kitchens, labs) need 15 lux OR 10% of normal task illuminance (whichever higher), to enable safe shutdown."
+
+  - id: emergency-rules#test-regime
+    value:
+      monthly_function_test_required: true
+      annual_full_duration_test_required: true
+      logging_required: true
+    citation: "BS 5266-1:2016 §10 (testing) + BS EN 62034:2012 (automatic test systems)"
+    rationale: "Monthly: brief function test (simulate mains failure, verify lamps light). Annual: full-duration test (3h or rated duration). Self-test luminaires log automatically; manual systems log via maintenance schedule."
+
+  - id: emergency-rules#exit-sign-placement
+    value:
+      max_viewing_distance_m: 30
+      illuminance_on_face_min_lux: 5
+    citation: "BS 5266-1:2016 §7 + BS EN 1838:2013 (lighting applications — emergency lighting)"
+    rationale: "Exit signs must be visible from all parts of an escape route. Internally-illuminated signs need 5 lux on the face; externally-illuminated need 1 lux from an emergency luminaire."

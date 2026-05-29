@@ -1,9 +1,30 @@
 id: placement-rules
-description: Luminaire placement rules for lighting-layout
+description: Luminaire placement constraints per BS EN 12464-1 + CIBSE LG7
+_verification_status: engineer_typical_C2
+
 rules:
-  - id: grid-snap
-    description: All positions must snap to 50mm grid minimum; 600mm grid if ceiling grid present
-  - id: edge-clearance
-    description: Edge luminaires minimum 0.5 × row-spacing from wall
-  - id: door-clearance
-    description: No luminaire within 300mm of door leaf sweep arc
+  - id: placement-rules#edge-clearance
+    value:
+      min_clearance_mm_from_wall: 300
+      max_clearance_mm_from_wall: 600
+    citation: "CIBSE LG7 §5.2 (uniformity practice) + BS EN 12464-1:2021 §4.4 indirect (uniformity on task area)"
+    rationale: "First/last row of luminaires must sit 300-600mm from the wall — closer creates hot-spots on the wall, farther sacrifices working-plane uniformity at the room perimeter. CAD-standard 300mm minimum."
+
+  - id: placement-rules#grid-snap
+    value:
+      snap_mm: 50
+      snap_to_ceiling_grid: true
+    citation: "Industry CAD convention + BS 1192:2007 §4 (drawing presentation)"
+    rationale: "Luminaire positions snap to 50mm grid for renderer + builder accuracy. When ceiling_grid_mm declared (600 or 1200), luminaires further snap to grid module centres for ceiling-tile alignment."
+
+  - id: placement-rules#door-clearance
+    value:
+      min_clearance_mm_from_door_swing_arc: 300
+    citation: "BS EN 12464-1:2021 §5 (lighting design — avoid placing fixtures inside door swing arc)"
+    rationale: "Luminaires inside the door-swing arc create a glare hazard when the door opens. 300mm clearance from the swept arc."
+
+  - id: placement-rules#row-spacing-uniform
+    value:
+      row_spacing_mm_max_variance_pct: 5
+    citation: "BS EN 12464-1:2021 §4.4 (uniformity ratio U₀)"
+    rationale: "Row spacing variance ≤5% to keep working-plane uniformity within EN 12464-1 task-area tolerance."

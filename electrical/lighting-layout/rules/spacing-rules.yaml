@@ -1,7 +1,42 @@
 id: spacing-rules
-description: Max spacing-to-height ratio rules
+description: Luminaire spacing per Lumen Method + CIBSE LG7
+_verification_status: engineer_typical_C2
+
 rules:
-  - id: shr-check
-    formula: "S ≤ SHR_max × Hm"
-    default_shr_max: 1.5
-    note: SHR_max from photometric data; 1.5 is conservative default
+  - id: spacing-rules#shr-max-default
+    value:
+      shr_max_default: 1.5
+      override_via_ontology: true
+    citation: "CIBSE LG7 §6.2 (Spacing-to-Height Ratio limits)"
+    rationale: "Default SHR_max is 1.5 for typical recessed LED panels. Per-luminaire override via ontology/luminaire-types.json (e.g. LED_DOWNLIGHT=1.4, HIGHBAY=1.0, LINEAR_LED=1.6). The lumen-method check is S_x ≤ SHR_max × Hm AND S_y ≤ SHR_max × Hm."
+
+  - id: spacing-rules#lumen-method-formula
+    value:
+      formula: "N = (Em × A) / (Φ × UF × MF)"
+      rounding: "round_up"
+      MF: "MF = LLMF × LSF × LMF × RSMF (typical 0.80 for clean office; 0.65 for industrial)"
+    citation: "CIBSE LG7 §6 + BS EN 12464-1:2021 §4.3 (illuminance calculation)"
+    rationale: "Lumen method: N = number of luminaires; Em = target illuminance (lux); A = room area (m²); Φ = luminaire design lumens; UF = utilisation factor from photometric table indexed by RI + reflectances; MF = total maintenance factor. Always round UP — never under-provide light."
+
+  - id: spacing-rules#room-index
+    value:
+      formula: "RI = (L × W) / (Hm × (L + W))"
+      Hm: "Hm = ceiling_height_mm − working_plane_mm"
+    citation: "CIBSE LG7 §6.2 + BS EN 12464-1:2021 §4.3"
+    rationale: "Room index drives UF table lookup. Hm = mounting height above working plane (typically working_plane_mm = 750 for offices, 0 for warehouses where task is at floor)."
+
+  - id: spacing-rules#working-plane-defaults
+    value:
+      open_plan_office: 750
+      private_office: 750
+      meeting_room: 750
+      corridor: 0
+      warehouse: 0
+      classroom: 700
+      consulting_room: 800
+      ward: 800
+      kitchen_commercial: 900
+      bathroom: 0
+      reception_lobby: 0
+    citation: "BS EN 12464-1:2021 Table 5.3 (task area working planes)"
+    rationale: "Per-room-type working plane heights. Lookup table for generator Step 5 (compute Hm + RI)."

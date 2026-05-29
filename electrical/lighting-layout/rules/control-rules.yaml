@@ -1,13 +1,43 @@
 id: control-rules
-description: Controls specification rules per AD Part L 2021
+description: Lighting controls per Approved Doc L (Part L 2021) §6 + BS EN 15193-1 + IEC 62386 (DALI)
+_verification_status: engineer_typical_C2
+_note: "Sprint D3 §714 misattribution guard — BS 7671 §714 is *External Lighting installations* only; controls for INDOOR lighting are governed by Approved Doc L (Part L 2021) §6 + BS EN 15193-1 + manual-switch interfaces by BS EN 60669-2-1. Do NOT cite §714 for indoor occupancy or daylight controls."
+
 rules:
-  - id: occupancy-sensing
-    applies_to: [open_plan_office, private_office, meeting_room]
-    requirement: Required per AD Part L 2021
-  - id: daylight-linking
-    applies_to: perimeter_zone
-    condition: glazed wall present
-    requirement: Required per AD Part L 2021
-  - id: perimeter-separate-circuit
-    applies_to: perimeter_zone
-    requirement: Perimeter zone must be on separate controllable circuit
+  - id: control-rules#part-l-occupancy
+    value:
+      required_when: "is_uk_new_build == true AND room_type != 'corridor'"
+      detection_protocol: "presence_or_absence"
+      hold_off_min: 10
+    citation: "Approved Doc L (Part L 2021) §6.2 + BS EN 15193-1:2017 §6"
+    rationale: "Part L 2021 mandates occupancy detection (absence-detection preferred per BS EN 15193) for new-build offices ≥30m². Corridors typically use timed-control rather than occupancy (continuous traffic)."
+
+  - id: control-rules#part-l-daylight
+    value:
+      required_when: "is_uk_new_build == true AND glazed_wall_positions != []"
+      perimeter_zone_depth_mm: 6000
+      control_protocol: "daylight_linked_dimming_or_switching"
+    citation: "Approved Doc L (Part L 2021) §6.2 + BS EN 15193-1:2017 §6.2"
+    rationale: "Perimeter zone (within 6m of any glazed wall) must be separately switched/dimmed with daylight linking. Interior zone (>6m from glazing) uses occupancy-only."
+
+  - id: control-rules#part-l-efficacy-target
+    value:
+      target_lm_per_w: 95
+      averaged_across_luminaires: true
+      per_space_minimum_lm_per_w: "see Table 6.1 (e.g. 65 office, 75 industrial, 45 hotel bedrooms)"
+    citation: "Approved Doc L (Part L 2021) §6 + Table 6.1 (per-space lamp efficacy minima) — repo cross-reference: shared/standards/electrical/BS7671/part-l-controls-reference.md"
+    rationale: "Part L 2021 Table 6.1 sets per-space-type MINIMUM lamp efficacy (e.g. 65 lm/W office; 75 lm/W industrial). The 95 lm/W averaged target is the LENI-aligned industry design aspiration (per BS EN 15193-1 LENI methodology) for general lighting in non-domestic new-build — failing the per-space minimum triggers non_compliance_flags with severity=critical; failing the 95 averaged target triggers severity=warning."
+
+  - id: control-rules#manual-switch-override
+    value:
+      manual_override_required: true
+      switch_position_per_zone: "at_room_entrance"
+    citation: "Approved Doc L (Part L 2021) §6 (automatic control override) + BS EN 15193-1:2017 §6.2 + BS EN 60669-2-1 (manual switch interfaces)"
+    rationale: "Automatic controls (DALI / occupancy / daylight) must allow manual override at the room entrance for safety / user preference. NOTE: BS 7671 §714 covers EXTERNAL lighting only and is NOT the correct citation for indoor manual-override switching — use Part L §6 + BS EN 60669-2-1."
+
+  - id: control-rules#dali-line-capacity
+    value:
+      max_devices_per_dali_line: 64
+      recommended_per_dali_line: 50
+    citation: "IEC 62386-101 §4 (DALI bus capacity) — repo cross-reference: shared/standards/electrical/BS7671/part-l-controls-reference.md (DALI System Sizing Reference)"
+    rationale: "DALI bus supports up to 64 short-addresses per line; design for 50 to leave headroom for scenes/groups. Above 50, add a second DALI line + application controller."

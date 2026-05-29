@@ -1,9 +1,35 @@
 id: switching-rules
-description: Switch placement and zoning rules
+description: Switch placement and zoning per BS 7671 §553 + IET On-Site Guide
+_verification_status: engineer_typical_C2
+_note: "Drift fix Sprint D3 — height value standardised to 1200mm AFF per BS 7671 §553.1.1 (was inconsistent with generator.md which had 1350mm)."
+
 rules:
-  - id: latch-side
-    description: Switch on latch side of door, 200mm clearance from frame
-  - id: height
-    description: Switch at 1200mm AFF to centre
-  - id: perimeter-circuit
-    description: Perimeter zone (Z1) on separate circuit from interior (Z2)
+  - id: switching-rules#height
+    value:
+      height_mm: 1200
+      tolerance_mm: 50
+      reference_point: "centre_of_switch_to_finished_floor_level"
+    citation: "BS 7671:2018+A2:2022 §553.1.1 (accessory mounting heights) + IET On-Site Guide App E §E1.2"
+    rationale: "1200mm AFF is the IET-recommended height for general-purpose switches in offices and dwellings. Equality Act 2010 / BS 8300-2:2018 require accessible switches in accessible WCs / classrooms to be 900-1100mm range — engineer overrides for accessible spaces with explicit override and citation."
+
+  - id: switching-rules#latch-side
+    value:
+      offset_mm_from_frame: 200
+      side: "latch"
+      door_swing_aware: true
+    citation: "IET On-Site Guide App E §E1.4 (switch placement at room entrance)"
+    rationale: "Switch on latch side (opposite the hinge) avoids reaching across an opening door. door_swing field on entrance_positions[] determines which side is latch for each door."
+
+  - id: switching-rules#perimeter-circuit
+    value:
+      perimeter_zone_separate_circuit: true
+      max_zone_depth_mm: 6000
+    citation: "Approved Doc L (Part L 2021) §6.2 (daylight-linked perimeter dimming) + BS EN 15193-1:2017 §6.2 (LENI calculation method)"
+    rationale: "Perimeter zone (within 6m of glazed wall) must be on a separately switched / dimmed circuit from interior zone, so daylight-linked dimming can operate without affecting interior task illuminance."
+
+  - id: switching-rules#dali-master-at-entrance
+    value:
+      dali_master_position: "within_2m_of_primary_entrance"
+      override_allowed: true
+    citation: "IEC 62386-101 §6 (DALI bus topology — master at convenient access point)"
+    rationale: "DALI master controller positioned for primary user access; secondary entrances may use DALI wall controllers slaved to the master line."
