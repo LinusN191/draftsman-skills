@@ -159,7 +159,7 @@ All 5 `rules/*.yaml` files expanded from skeleton to full structured documents. 
 - `placement-rules#edge_clearance` = 300mm (per BS EN 12464-1 §4.4 indirect; cite CIBSE LG7)
 - `placement-rules#grid_snap` = 50mm (industry CAD convention)
 - `spacing-rules#shr_max_default` = 1.5 (per CIBSE LG7; per-luminaire override via ontology)
-- `control-rules`: occupancy + daylight zone requirements per Part L 2021 + BS 7671 §714
+- `control-rules`: occupancy + daylight zone requirements per Approved Doc L (Part L 2021) §6 + BS EN 15193-1 (NOT BS 7671 §714 — that section is External Lighting installations)
 
 **Why Opus**: citation accuracy. Every clause cross-checked against `shared/standards/electrical/` BEFORE writing.
 

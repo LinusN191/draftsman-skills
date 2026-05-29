@@ -37,7 +37,7 @@
 - `electrical/lighting-layout/rules/switching-rules.yaml` — A.2: 9 → ~50 lines (full structured rules with citations + rationale)
 - `electrical/lighting-layout/rules/placement-rules.yaml` — A.2: 9 → ~50 lines
 - `electrical/lighting-layout/rules/spacing-rules.yaml` — A.2: 7 → ~45 lines
-- `electrical/lighting-layout/rules/control-rules.yaml` — A.2: 13 → ~60 lines (Part L 2021 + BS 7671 §714)
+- `electrical/lighting-layout/rules/control-rules.yaml` — A.2: 13 → ~60 lines (Approved Doc L 2021 §6 + BS EN 15193-1 + IEC 62386 DALI)
 - `electrical/lighting-layout/rules/emergency-rules.yaml` — A.2: 7 → ~50 lines (BS 5266-1)
 - `electrical/lighting-layout/prompts/generator.md` — B.1/B.2/B.3: rewrite Step 6 (lumen-method worked example) + Step 7 (S/H ratio loop) + Step 11 (circuit topology) + Step 12 (switch placement) + new Step 15 (drafting furniture); add rule-ID citations throughout
 - `electrical/lighting-layout/prompts/validator.md` — B.4: 4 → ~400 lines (full INV-1..INV-10 catalogue)
@@ -258,7 +258,7 @@ Replace the existing 10-line file with:
       "voltage_v": 230,
       "compatible_loads": ["lighting_max_1380w"],
       "symbol_dxf_block": "SW_PRESENCE",
-      "_citation": "BS EN 60669-2-2 (electronic detection switches) + BS 7671:2018+A2:2022 §714 (occupancy controls)"
+      "_citation": "BS EN 60669-2-2 (electronic detection switches) + Approved Doc L (Part L 2021) §6 (automatic occupancy controls in non-domestic buildings)"
     },
     "daylight_sensor": {
       "description": "Photocell for daylight-linked dimming/switching",
@@ -436,10 +436,10 @@ EOF
 - [ ] **Step 1: Verify citation sources exist in repo**
 
 ```bash
-grep -rn "553\.1\.1\|714\|EN 60598\|EN 12464-1\|EN 15193" shared/standards/electrical/ | head -20
+grep -rn "553\.1\.1\|Part L\|EN 60598\|EN 12464-1\|EN 15193" shared/standards/electrical/ | head -20
 ```
 
-Expected: §553 + §714 visible in `shared/standards/electrical/BS7671/`. EN 12464-1 + EN 15193 may appear in references but not have dedicated files — cite the published standards directly per the D2.3 honest-disclosure pattern (`"no repo-internal cross-reference exists for this standard"` note where applicable).
+Expected: §553 + Part L controls reference visible in `shared/standards/electrical/BS7671/` (see `part-l-controls-reference.md`). EN 12464-1 + EN 15193 may appear in references but not have dedicated files — cite the published standards directly per the D2.3 honest-disclosure pattern (`"no repo-internal cross-reference exists for this standard"` note where applicable). Note: BS 7671 §714 is *External Lighting installations* — do NOT cite §714 for indoor occupancy controls; use Approved Doc L (Part L 2021) §6 instead.
 
 - [ ] **Step 2: Rewrite switching-rules.yaml**
 
@@ -470,7 +470,7 @@ rules:
     value:
       perimeter_zone_separate_circuit: true
       max_zone_depth_mm: 6000
-    citation: "Approved Doc L (Part L 2021) §6.2 + BS 7671:2018+A2:2022 §714 (lighting control zones) + BS EN 15193-1:2017 §6.2"
+    citation: "Approved Doc L (Part L 2021) §6.2 (daylight-linked perimeter dimming) + BS EN 15193-1:2017 §6.2 (LENI calculation method)"
     rationale: "Perimeter zone (within 6m of glazed wall) must be on a separately switched / dimmed circuit from interior zone, so daylight-linked dimming can operate without affecting interior task illuminance."
 
   - id: switching-rules#dali-master-at-entrance
@@ -567,7 +567,7 @@ rules:
 
 ```yaml
 id: control-rules
-description: Lighting controls per Approved Doc L (Part L 2021) + BS 7671 §714 + BS EN 15193-1
+description: Lighting controls per Approved Doc L (Part L 2021) §6 + BS EN 15193-1 + IEC 62386 (DALI)
 _verification_status: engineer_typical_C2
 
 rules:
@@ -598,7 +598,7 @@ rules:
     value:
       manual_override_required: true
       switch_position_per_zone: "at_room_entrance"
-    citation: "BS 7671:2018+A2:2022 §714 + Approved Doc L §6.2"
+    citation: "Approved Doc L (Part L 2021) §6.2 + BS EN 60669-2-1 (manual switch interfaces)"
     rationale: "Automatic controls (DALI / occupancy / daylight) must allow manual override at the room entrance for safety / user preference."
 
   - id: control-rules#dali-line-capacity
@@ -702,7 +702,7 @@ switching-rules.yaml (9 → ~50 lines):
 - height: 1200mm AFF (BS 7671 §553.1.1 + IET OSG App E §E1.2) — resolves
   the audit drift with generator.md which had 1350mm
 - latch-side: 200mm from frame, door_swing-aware (IET OSG App E §E1.4)
-- perimeter-circuit: separately switched (Part L §6.2 + BS 7671 §714)
+- perimeter-circuit: separately switched (Approved Doc L 2021 §6.2 + BS EN 15193-1 §6.2)
 - dali-master-at-entrance: within 2m of primary entrance (IEC 62386-101)
 
 placement-rules.yaml (9 → ~50 lines):
@@ -726,7 +726,7 @@ control-rules.yaml (13 → ~60 lines):
 - part-l-daylight: perimeter zone 6m deep with daylight linking when
   glazing present (Part L 2021 §6.2 + BS EN 15193 §6.2)
 - part-l-efficacy-target: ≥95 lm/W averaged (Part L 2021 Table 6.2)
-- manual-switch-override: required at entrance (BS 7671 §714)
+- manual-switch-override: required at entrance (Approved Doc L 2021 §6.2)
 - dali-line-capacity: 64 max, 50 recommended (IEC 62386-101 §4)
 
 emergency-rules.yaml (7 → ~50 lines):
