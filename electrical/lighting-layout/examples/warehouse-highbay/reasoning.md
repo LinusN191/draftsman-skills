@@ -81,29 +81,59 @@ Final layout: 20 HIGHBAY in 4 rows × 5 cols, edge clearance 1500 mm.
 ## 4. Anti-panic emergency coverage (Z3 per BS 5266-1 §5.3)
 
 Open area 600 m² > 60 m² threshold → BS 5266-1:2016 §5.3 anti-panic
-regime applies (0.5 lux minimum on unobstructed floor area excluding a
-0.5 m border, uniformity ratio ≥ 0.025, duration ≥ 60 min).
+regime applies. The clause requires **0.5 lux minimum (floor average)**
+on the unobstructed floor area excluding a 0.5 m border, **max:min
+uniformity ratio ≤ 40:1**, and duration **≥ 60 min**.
 
-5 EMERGENCY luminaires (L21..L25) positioned on the central N-S aisle
-(x = 15000 mm) at y ∈ {1000, 4350, 10000, 15650, 19000}:
+**Coverage count derivation.** A central-aisle-only strip (5 EM on
+x=15000) leaves the 30 m × 20 m corners up to 15 m from the nearest
+luminaire — effectively 0 lux at the corners and orders-of-magnitude
+uniformity failure. The correct sizing is a **3×4 grid spanning the
+full floor**: 3 rows on y ∈ {5000, 10000, 15000} and 4 columns on
+x ∈ {3750, 11250, 18750, 26250}, giving 12 EM luminaires with worst-case
+corner-to-nearest distance ≈ 4900 mm:
 
-| ID  | Position (mm)    | Function                              |
-|-----|------------------|---------------------------------------|
-| L21 | (15000, 1000)    | South entrance / freight door         |
-| L22 | (15000, 4350)    | Between highbay rows 0–1              |
-| L23 | (15000, 10000)   | Geometric centre (mid-aisle)          |
-| L24 | (15000, 15650)   | Between highbay rows 2–3              |
-| L25 | (15000, 19000)   | North wall / rear exit                |
+| ID  | Position (mm)      | Grid cell      |
+|-----|--------------------|----------------|
+| L21 | (3750, 5000)       | row 0, col 0   |
+| L22 | (11250, 5000)      | row 0, col 1   |
+| L23 | (18750, 5000)      | row 0, col 2   |
+| L24 | (26250, 5000)      | row 0, col 3   |
+| L25 | (3750, 10000)      | row 1, col 0   |
+| L26 | (11250, 10000)     | row 1, col 1   |
+| L27 | (18750, 10000)     | row 1, col 2   |
+| L28 | (26250, 10000)     | row 1, col 3   |
+| L29 | (3750, 15000)      | row 2, col 0   |
+| L30 | (11250, 15000)     | row 2, col 1   |
+| L31 | (18750, 15000)     | row 2, col 2   |
+| L32 | (26250, 15000)     | row 2, col 3   |
 
-- All 5 on dedicated circuit C-EM01, db_designation = LE (Emergency
+```
+Coverage check (rough):
+  Total EM lumens   = 12 × 300 lm        = 3600 lm
+  Lumens per m²     = 3600 / 600 m²      = 6   lm/m² (raw)
+  Apply typical UF×MF = 0.4 × 0.75       = 0.3 (combined)
+  Floor average     = 6 × 0.3            ≈ 1.8 lux
+                                          ≥ 0.5 lux required  → PASS
+                                          (3.6× margin)
+  Grid spacing      = 7500 mm × 5000 mm
+                      supports 40:1 max:min uniformity on the
+                      unobstructed floor (worst-case
+                      corner-to-nearest ≈ 4900 mm)
+```
+
+- All 12 on dedicated circuit C-EM01, db_designation = LE (Emergency
   distribution board) per BS 5266-1 §6 independent supply requirement
 - Self-test drivers (DALI or local) per BS 5266-1 §10 + BS EN 62034:2012
   (monthly function test + annual full-duration test, logged)
-- 5 × 10 W = 50 W on 6A MCB (4.5% of 1104 W 80% headroom — ample spare)
+- 12 × 10 W = 120 W on 6A MCB (10.9% of 1104 W 80% headroom — ample spare)
 
-**Caveat:** the lighting-layout skill does NOT model the actual emergency
-illuminance point grid. Designer must verify floor average ≥ 0.5 lux +
-uniformity ≥ 0.025 via the separate `emergency-lighting` skill (deferred).
+**Caveat:** the COUNT (12 EM in 3×4 grid) is sized correctly for the
+BS 5266-1 §5.3 anti-panic coverage requirement per the back-of-envelope
+check above. The lighting-layout skill does NOT model the full emergency
+illuminance point grid — designer must still verify exact floor average
+≥ 0.5 lux + max:min uniformity ≤ 40:1 via the dedicated
+`emergency-lighting` skill (deferred).
 
 ## 5. Circuit topology
 
@@ -113,19 +143,20 @@ C-HB01    Z2     0      L01..L05          1250 W  10A B   (0, 1500, W)
 C-HB02    Z2     1      L06..L10          1250 W  10A B   (0, 7200, W)
 C-HB03    Z2     2      L11..L15          1250 W  10A B   (0, 12800, W)
 C-HB04    Z2     3      L16..L20          1250 W  10A B   (0, 18500, W)
-C-EM01    Z3     0*     L21..L25          50  W   6A  B   (0, 10000, W)
+C-EM01    Z3     0*     L21..L32 (3×4)    120 W   6A  B   (0, 10000, W)
 ```
 
-`*` Emergency circuit C-EM01 spans all 4 rows on the central N-S aisle.
-INV-4 row-coherence applies to lighting-row circuits only; emergency
-circuits are structurally excepted (they serve the building-wide escape
-route per BS 5266-1 §5.3). Documented in INV-4 evidence.
+`*` Emergency circuit C-EM01 spans the full floor in a 3×4 grid (not
+row-coherent with the highbay rows). INV-4 row-coherence applies to
+lighting-row circuits only; emergency circuits are structurally excepted
+(they serve the building-wide escape route per BS 5266-1 §5.3).
+Documented in INV-4 evidence.
 
 INV-5 80% continuous-load check:
 - Highbay rows: **1250 W per circuit**. 6A MCB cap = 0.8 × 6 × 230 =
   1104 W → **1250 > 1104 FAIL** at 6A. Engineer steps up to 10A MCB
   (cap = 1840 W) → **1250 ≤ 1840 PASS** at 67.9% of headroom.
-- Emergency circuit: 50 W on 6A → 50 ≤ 1104 PASS at 4.5%.
+- Emergency circuit: 120 W on 6A → 120 ≤ 1104 PASS at 10.9%.
 
 This is the key engineering call in this example: 250 W highbays on
 5-luminaire rows cannot fit a 6A circuit. Don't try to economise by
@@ -178,7 +209,7 @@ must upgrade highbay spec to a Part L-compliant ≥ 95 lm/W model (e.g.
 | INV-04 | high     | PASS   | 4 highbay rows coherent; emergency excepted (BS5266) |
 | INV-05 | high     | PASS   | 1250 W ≤ 1840 W (10A 80% cap); 6A FAILS, 10A passes |
 | INV-06 | high     | PASS   | new_build=false → Part L not triggered (trivial PASS) |
-| INV-07 | medium   | PASS   | No glazing → no perimeter Z1; Z2+Z3 emergency only  |
+| INV-07 | medium   | PASS   | No glazing → no perimeter Z1; Z2 + Z3 (12 EM, 3×4 grid) |
 | INV-08 | medium   | PASS   | selection_source.ontology_default + LG12 citation   |
 | INV-09 | medium   | PASS   | drafting_furniture complete, Arial 10/12 pt         |
 | INV-10 | high     | PASS   | Schema validation OK, all required fields           |

@@ -39,7 +39,7 @@ N          = (Em × A) / (Φ × UF × MF)
            → round UP to 30  (never under-provide light)
 Achieved   = (N × Φ × UF × MF) / A
            = (30 × 1000 × 0.48 × 0.84) / 40
-           = 302.1 lux                      ≥ 300 target  → INV-1 PASS
+           = 302.4 lux                      ≥ 300 target  → INV-1 PASS
 ```
 
 Reference: `[spacing-rules#lumen-method-formula]`, `[spacing-rules#room-index]`.
@@ -136,7 +136,7 @@ spare for future fixture additions. PASS per BS 7671:2018+A2:2022 §433.1.1
 
 | INV    | Severity | Status | Evidence                                      |
 |--------|----------|--------|-----------------------------------------------|
-| INV-01 | high     | PASS   | 302.1 lux ≥ 300 target (lumen method)         |
+| INV-01 | high     | PASS   | 302.4 lux ≥ 300 target (lumen method)         |
 | INV-02 | high     | PASS   | S_x=1480, S_y=1100 ≤ 3780 (SHR limit)         |
 | INV-03 | high     | PASS   | 1 entrance / 1 switch, 1200 AFF, latch side   |
 | INV-04 | high     | PASS   | 5 row circuits, no Z-pattern, homerun on W    |

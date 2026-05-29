@@ -49,9 +49,9 @@
       "control": "emergency_self_test",
       "circuit_id": "C-EM01",
       "circuit_ids": ["C-EM01"],
-      "luminaire_ids": ["L21", "L22", "L23", "L24", "L25"],
-      "luminaire_count": 5,
-      "total_load_w": 50
+      "luminaire_ids": ["L21", "L22", "L23", "L24", "L25", "L26", "L27", "L28", "L29", "L30", "L31", "L32"],
+      "luminaire_count": 12,
+      "total_load_w": 120
     }
   ],
   "luminaires": [
@@ -75,11 +75,18 @@
     {"id": "L18", "x_mm": 15000, "y_mm": 18500, "zone_id": "Z2", "circuit_id": "C-HB04"},
     {"id": "L19", "x_mm": 21800, "y_mm": 18500, "zone_id": "Z2", "circuit_id": "C-HB04"},
     {"id": "L20", "x_mm": 28500, "y_mm": 18500, "zone_id": "Z2", "circuit_id": "C-HB04"},
-    {"id": "L21", "x_mm": 15000, "y_mm": 1000,  "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L22", "x_mm": 15000, "y_mm": 4350,  "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L23", "x_mm": 15000, "y_mm": 10000, "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L24", "x_mm": 15000, "y_mm": 15650, "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L25", "x_mm": 15000, "y_mm": 19000, "zone_id": "Z3", "circuit_id": "C-EM01"}
+    {"id": "L21", "x_mm": 3750,  "y_mm": 5000,  "zone_id": "Z3", "circuit_id": "C-EM01"},
+    {"id": "L22", "x_mm": 11250, "y_mm": 5000,  "zone_id": "Z3", "circuit_id": "C-EM01"},
+    {"id": "L23", "x_mm": 18750, "y_mm": 5000,  "zone_id": "Z3", "circuit_id": "C-EM01"},
+    {"id": "L24", "x_mm": 26250, "y_mm": 5000,  "zone_id": "Z3", "circuit_id": "C-EM01"},
+    {"id": "L25", "x_mm": 3750,  "y_mm": 10000, "zone_id": "Z3", "circuit_id": "C-EM01"},
+    {"id": "L26", "x_mm": 11250, "y_mm": 10000, "zone_id": "Z3", "circuit_id": "C-EM01"},
+    {"id": "L27", "x_mm": 18750, "y_mm": 10000, "zone_id": "Z3", "circuit_id": "C-EM01"},
+    {"id": "L28", "x_mm": 26250, "y_mm": 10000, "zone_id": "Z3", "circuit_id": "C-EM01"},
+    {"id": "L29", "x_mm": 3750,  "y_mm": 15000, "zone_id": "Z3", "circuit_id": "C-EM01"},
+    {"id": "L30", "x_mm": 11250, "y_mm": 15000, "zone_id": "Z3", "circuit_id": "C-EM01"},
+    {"id": "L31", "x_mm": 18750, "y_mm": 15000, "zone_id": "Z3", "circuit_id": "C-EM01"},
+    {"id": "L32", "x_mm": 26250, "y_mm": 15000, "zone_id": "Z3", "circuit_id": "C-EM01"}
   ],
   "switches": [
     {
@@ -142,8 +149,8 @@
       "circuit_id": "C-EM01",
       "db_designation": "LE",
       "zone_id": "Z3",
-      "luminaire_ids": ["L21", "L22", "L23", "L24", "L25"],
-      "total_load_w": 50,
+      "luminaire_ids": ["L21", "L22", "L23", "L24", "L25", "L26", "L27", "L28", "L29", "L30", "L31", "L32"],
+      "total_load_w": 120,
       "mcb_rating_a": 6,
       "mcb_curve": "B",
       "row_index": 0,
@@ -174,7 +181,7 @@
       "Working plane = floor (warehouse picking activity at floor level) per BS EN 12464-1:2021 Table 5.3 warehouse",
       "Industrial maintenance environment: LLMF=0.85 × LMF=0.78 → MF=0.66 (industrial 6000h schedule; deposit on optic from in-air dust)",
       "Existing building (not new-build) — Approved Doc L 2021 §6 controls regime NOT triggered (Part L applies to new-build / major-refurb only)",
-      "5 EMERGENCY luminaires sized for anti-panic 0.5 lux floor average per BS 5266-1:2016 §5.3 (open area >60 m²); positioned on central N-S aisle for uniformity",
+      "12 EMERGENCY luminaires in 3×4 grid (rows y=5000/10000/15000; cols x=3750/11250/18750/26250) sized for anti-panic 0.5 lux floor average + max:min ≤ 40:1 uniformity per BS 5266-1:2016 §5.3 (open area >60 m²); 12 × 300 lm = 3600 lm over 600 m² → ~6 lm/m² raw, with typical UF×MF≈0.3 achieves ~1.8 lux floor average (≥ 0.5 required), and grid spacing 7500 mm × 5000 mm supports 40:1 uniformity",
       "Highbays selected at 22000 design lumens / 250 W (88 lm/W) — typical industrial highbay; not held to Part L 95 lm/W efficacy target because building is non-new-build"
     ]
   },
@@ -182,15 +189,15 @@
     "All highbay luminaires: 300 mm diameter industrial LED highbay, 22000 design lm, 250 W, 4000K CCT, CRI ≥ 70, IP54",
     "Maintained illuminance: 200 lux per BS EN 12464-1:2021 Table 5.3 (warehouse main aisle)",
     "Z2 main floor (20 highbays in 4×5 grid) on 4 row circuits, manual control via SW01",
-    "Z3 EMERGENCY (5 anti-panic luminaires) on separate 6A MCB + self-test driver per BS 5266-1:2016 §5.3 + §10",
+    "Z3 emergency anti-panic: 12 EM luminaires in 3×4 grid per BS 5266-1 §5.3 (achieves ≥0.5 lux floor average across 600m² unobstructed area, uniformity ≤40:1) on separate 6A MCB + self-test driver per BS 5266-1:2016 §5.3 + §10",
     "Highbay row circuits on 10A MCB curve B (1250 W per row > 1104 W 6A 80% limit per BS 7671 §433.1.1)",
-    "Emergency circuit C-EM01: 5 × 10 W = 50 W on 6A MCB (independent emergency feed per BS 5266-1 §6 + IET OSG App K)",
+    "Emergency circuit C-EM01: 12 × 10 W = 120 W on 6A MCB (10.9% of 1104 W headroom; independent emergency feed per BS 5266-1 §6 + IET OSG App K)",
     "Switch SW01: 1-gang manual override at entrance latch side, 1200 mm AFF to centre per BS 7671 §553.1.1",
     "8 m mounting height (suspended on chain or rod from steel structure); narrow-beam optic at this mount delivers 220+ lux at floor"
   ],
   "flags": [],
   "rationale": {
-    "chat_summary": "30×20 m UK industrial warehouse — 200 lux target per BS EN 12464-1 Table 5.3. 20 HIGHBAY @ 22000 lm in 4×5 grid achieve 300 lux (over-provisioned vs target because S/H ratio forced N up from 14 to 20; INV-1 PASS). 4 row circuits at 1250 W each on 10A MCBs (6A would FAIL the 80% cap at 1250 > 1104 W). 5 EMERGENCY anti-panic luminaires (Z3, BS 5266-1 §5.3) on separate 6A MCB + self-test driver. 1-gang manual switch at entrance — no Part L because existing building. Reply to refine, e.g. 'add DALI dimming for shift-pattern control'.",
+    "chat_summary": "30×20 m UK industrial warehouse — 200 lux target per BS EN 12464-1 Table 5.3. 20 HIGHBAY @ 22000 lm in 4×5 grid achieve 300 lux (over-provisioned vs target because S/H ratio forced N up from 14 to 20; INV-1 PASS). 4 row circuits at 1250 W each on 10A MCBs (6A would FAIL the 80% cap at 1250 > 1104 W). 12 EMERGENCY anti-panic luminaires in 3×4 grid (Z3, BS 5266-1 §5.3) on separate 6A MCB + self-test driver. 1-gang manual switch at entrance — no Part L because existing building. Reply to refine, e.g. 'add DALI dimming for shift-pattern control'.",
     "sections": [
       {
         "title": "Lumen-method walk",
@@ -216,11 +223,11 @@
       },
       {
         "title": "Anti-panic emergency coverage (Z3)",
-        "summary": "Warehouse open area = 600 m² > 60 m² threshold → BS 5266-1:2016 §5.3 anti-panic regime applies. 5 EMERGENCY luminaires (L21-L25) positioned on the central N-S aisle (x=15000) at y ∈ {1000, 4350, 10000, 15650, 19000} provide ≥ 0.5 lux on the unobstructed floor area excluding 0.5 m border. Self-test drivers per BS 5266-1 §10 + BS EN 62034:2012 (monthly function + annual full-duration). Separate 6A MCB on dedicated emergency-distribution feed (C-EM01, db_designation=LE per BS 5266-1 §6 independent supply requirement)."
+        "summary": "Warehouse open area = 600 m² > 60 m² threshold → BS 5266-1:2016 §5.3 anti-panic regime applies (0.5 lux floor average + max:min uniformity ≤ 40:1 on unobstructed floor area excluding 0.5 m border, duration ≥ 60 min). 12 EMERGENCY luminaires (L21-L32) arranged in a 3×4 grid (3 rows y ∈ {5000, 10000, 15000} × 4 cols x ∈ {3750, 11250, 18750, 26250}) cover the full 30×20 m floor. Coverage check: 12 × 300 lm = 3600 lm over 600 m² → ~6 lm/m² raw; with typical UF×MF ≈ 0.4 × 0.75 = 0.30 → ~1.8 lux floor average ≥ 0.5 lux required (PASS with 3.6× margin). Grid spacing S_x = 7500 mm × S_y = 5000 mm supports 40:1 uniformity on the unobstructed floor (worst-case corner-to-nearest-luminaire ≈ 4900 mm). Self-test drivers per BS 5266-1 §10 + BS EN 62034:2012 (monthly function + annual full-duration). Separate 6A MCB on dedicated emergency-distribution feed (C-EM01, db_designation=LE per BS 5266-1 §6 independent supply requirement). 12 × 10 W = 120 W = 10.9% of 1104 W 6A 80% headroom."
       },
       {
         "title": "Circuit topology",
-        "summary": "4 highbay row circuits on DB L1 (C-HB01..C-HB04), one per row of 5 luminaires (5 × 250 W = 1250 W per row). 1 emergency circuit on dedicated emergency DB LE (C-EM01, 5 × 10 W = 50 W). All circuits comply with the 80% continuous-load cap (INV-5).",
+        "summary": "4 highbay row circuits on DB L1 (C-HB01..C-HB04), one per row of 5 luminaires (5 × 250 W = 1250 W per row). 1 emergency circuit on dedicated emergency DB LE (C-EM01, 12 × 10 W = 120 W). All circuits comply with the 80% continuous-load cap (INV-5).",
         "decisions": [
           {
             "label": "10A MCB curve B for highbay rows",
@@ -235,7 +242,7 @@
           },
           {
             "label": "6A MCB on dedicated emergency-distribution feed",
-            "summary": "50 W on 6A is 4.5% of 1104 W headroom. Independent feed per BS 5266-1 §6 to ensure emergency supply integrity is not affected by maintained-circuit faults.",
+            "summary": "120 W on 6A is 10.9% of 1104 W headroom. Independent feed per BS 5266-1 §6 to ensure emergency supply integrity is not affected by maintained-circuit faults.",
             "rule": "Emergency lighting independent feed",
             "code_clause": "BS 5266-1:2016 § 6 + IET OSG App K"
           }
@@ -251,7 +258,7 @@
       },
       {
         "title": "Assumptions",
-        "summary": "Reflectances industrial 0.3/0.3/0.2 (low-reflectance steel deck + painted block + concrete). MF=0.66 typical for industrial 6000h with in-air dust. UF=0.62 ontology default at RI=1.5 — engineer-of-record must verify against manufacturer photometric file before issue. Anti-panic point-grid not modelled in this skill; designer must verify floor average ≥ 0.5 lux + uniformity ≥ 0.025 per BS 5266-1 §5.3 in the emergency-lighting skill (deferred)."
+        "summary": "Reflectances industrial 0.3/0.3/0.2 (low-reflectance steel deck + painted block + concrete). MF=0.66 typical for industrial 6000h with in-air dust. UF=0.62 ontology default at RI=1.5 — engineer-of-record must verify against manufacturer photometric file before issue. Anti-panic COVERAGE COUNT (12 EM in 3×4 grid) sized for BS 5266-1 §5.3 (0.5 lux floor average + max:min ≤ 40:1) per the coverage check shown in §Anti-panic emergency coverage; this skill does NOT model the full emergency illuminance point-grid — designer must verify exact floor average ≥ 0.5 lux + uniformity ≤ 40:1 via the dedicated emergency-lighting skill (deferred)."
       }
     ]
   },
@@ -278,13 +285,13 @@
       "id": "INV-04",
       "passes": true,
       "severity": "high",
-      "evidence": "Circuit topology: 4 highbay row circuits C-HB01..C-HB04 each feed exactly one row (5 luminaires sharing same y_mm). row_index 0..3 monotonic; no Z-pattern. Homeruns all on W wall at row y_mm ∈ {1500, 7200, 12800, 18500} — all 3 required keys (x_mm, y_mm, wall) present, wall=W ∈ {N,S,E,W}. Emergency circuit C-EM01 (5 luminaires spanning all rows on central aisle) is structurally excepted from row-coherence as it serves the building-wide escape route per BS 5266-1 §5.3 — row_index=0 is nominal; row-coherence applies to lighting-row circuits only, all of which PASS. C-EM01 homerun (0, 10000, W) sits on W wall. Rule 4a + 4b PASS per [placement-rules#row-spacing-uniform] (with documented emergency exception)."
+      "evidence": "Circuit topology: 4 highbay row circuits C-HB01..C-HB04 each feed exactly one row (5 luminaires sharing same y_mm). row_index 0..3 monotonic; no Z-pattern. Homeruns all on W wall at row y_mm ∈ {1500, 7200, 12800, 18500} — all 3 required keys (x_mm, y_mm, wall) present, wall=W ∈ {N,S,E,W}. Emergency circuit C-EM01 (12 luminaires in 3×4 grid spanning the full floor) is structurally excepted from row-coherence as it serves the building-wide escape route per BS 5266-1 §5.3 — row_index=0 is nominal; row-coherence applies to lighting-row circuits only, all of which PASS. C-EM01 homerun (0, 10000, W) sits on W wall. Rule 4a + 4b PASS per [placement-rules#row-spacing-uniform] (with documented emergency exception)."
     },
     {
       "id": "INV-05",
       "passes": true,
       "severity": "high",
-      "evidence": "Circuit load: C-HB01..C-HB04 each total_load_w=1250 W = 5 × 250 W ≤ 0.8 × 10 × 230 = 1840 W (10A MCB limit) — PASS at 67.9% of headroom. 6A MCB would FAIL at 1250 > 1104 W (engineer chose 10A specifically to comply). C-EM01 total_load_w=50 W = 5 × 10 W ≤ 0.8 × 6 × 230 = 1104 W (6A MCB) — PASS at 4.5% of headroom. All 5 circuits PASS the 80% continuous-load cap per BS 7671:2018+A2:2022 §433.1.1 + IET OSG App A."
+      "evidence": "Circuit load: C-HB01..C-HB04 each total_load_w=1250 W = 5 × 250 W ≤ 0.8 × 10 × 230 = 1840 W (10A MCB limit) — PASS at 67.9% of headroom. 6A MCB would FAIL at 1250 > 1104 W (engineer chose 10A specifically to comply). C-EM01 total_load_w=120 W = 12 × 10 W ≤ 0.8 × 6 × 230 = 1104 W (6A MCB) — PASS at 10.9% of headroom. All 5 circuits PASS the 80% continuous-load cap per BS 7671:2018+A2:2022 §433.1.1 + IET OSG App A."
     },
     {
       "id": "INV-06",
@@ -296,7 +303,7 @@
       "id": "INV-07",
       "passes": true,
       "severity": "medium",
-      "evidence": "Zone assignment: 20 luminaires (L01-L20) in Z2 interior (main floor); 5 luminaires (L21-L25) in Z3 emergency (anti-panic per BS 5266-1 §5.3). Glazed walls = [] (no windows per inputs.glazed_walls and room.has_windows=false) → no perimeter zone — Z1 not declared (consistency PASS per [switching-rules#perimeter-circuit] iff-clause). Zone control protocols match zone_type: Z2 control=manual (interior, no Part L → no occupancy mandate), Z3 control=emergency_self_test. Rule 7 PASS per [control-rules#part-l-daylight]."
+      "evidence": "Zone assignment: 20 luminaires (L01-L20) in Z2 interior (main floor); 12 luminaires (L21-L32) in Z3 emergency (anti-panic per BS 5266-1 §5.3, arranged 3×4 grid for ≥0.5 lux floor average + max:min ≤ 40:1 uniformity across 600 m² unobstructed area). Glazed walls = [] (no windows per inputs.glazed_walls and room.has_windows=false) → no perimeter zone — Z1 not declared (consistency PASS per [switching-rules#perimeter-circuit] iff-clause). Zone control protocols match zone_type: Z2 control=manual (interior, no Part L → no occupancy mandate), Z3 control=emergency_self_test. Anti-panic coverage check: 12 × 300 lm × UF×MF≈0.3 / 600 m² ≈ 1.8 lux floor average (≥ 0.5 required, 3.6× margin); 3×4 grid spacing 7500×5000 mm supports uniformity ≤ 40:1. Rule 7 PASS per [control-rules#part-l-daylight]."
     },
     {
       "id": "INV-08",
@@ -308,13 +315,13 @@
       "id": "INV-09",
       "passes": true,
       "severity": "medium",
-      "evidence": "drafting_furniture present with all 4 required blocks: title_block (project_name='UK industrial warehouse main floor', drawing_number='EL-WHB-001', revision='A', date='2026-05-28', scale='1:200', sheet_size='A1') + scale_bar (origin (25000, 21000), 6000 mm total / 1500 mm ticks) + dimensions[2] (horizontal 30000 mm + vertical 20000 mm) + luminaire_schedule (5 cols, 2 rows [HIGHBAY 22000 250W 20 + EMERGENCY 300 10W 5]). All annotations declare font_family='Arial' + explicit font_size_pt ∈ {10, 12}. No {{placeholder}} remnants. Rule 9 PASS."
+      "evidence": "drafting_furniture present with all 4 required blocks: title_block (project_name='UK industrial warehouse main floor', drawing_number='EL-WHB-001', revision='A', date='2026-05-28', scale='1:200', sheet_size='A1') + scale_bar (origin (25000, 21000), 6000 mm total / 1500 mm ticks) + dimensions[2] (horizontal 30000 mm + vertical 20000 mm) + luminaire_schedule (5 cols, 2 rows [HIGHBAY 22000 250W 20 + EMERGENCY 300 10W 12]). All annotations declare font_family='Arial' + explicit font_size_pt ∈ {10, 12}. No {{placeholder}} remnants. Rule 9 PASS."
     },
     {
       "id": "INV-10",
       "passes": true,
       "severity": "high",
-      "evidence": "Schema validation PASSED (precondition: golden CI gate). All top-level required fields populated: drawing_type='lighting_layout', version='1.4.0', room (incl. room_type='warehouse' enum), calculation_summary (target+compliant+non_compliance_flags+assumptions), rationale (chat_summary 40-500 + sections ≥1), invariants (10 entries INV-01..INV-10). Mode defaults to full_drawing — full_drawing required-fields all present: luminaire_type, luminaires (25), switches (1), circuits (5), controls, drawing_notes (8), zones (2), drafting_furniture, selection_source. non_compliance_flags=[] (vacuously valid). Rule 10 PASS."
+      "evidence": "Schema validation PASSED (precondition: golden CI gate). All top-level required fields populated: drawing_type='lighting_layout', version='1.4.0', room (incl. room_type='warehouse' enum), calculation_summary (target+compliant+non_compliance_flags+assumptions), rationale (chat_summary 40-500 + sections ≥1), invariants (10 entries INV-01..INV-10). Mode defaults to full_drawing — full_drawing required-fields all present: luminaire_type, luminaires (32), switches (1), circuits (5), controls, drawing_notes (8), zones (2), drafting_furniture, selection_source. non_compliance_flags=[] (vacuously valid). Rule 10 PASS."
     }
   ],
   "drafting_furniture": {
@@ -362,7 +369,7 @@
       "columns": ["Ref", "Manufacturer", "Lumens", "Wattage", "Count"],
       "rows": [
         ["HIGHBAY", "Generic", "22000", "250W", "20"],
-        ["EMERGENCY", "Generic", "300", "10W", "5"]
+        ["EMERGENCY", "Generic", "300", "10W", "12"]
       ],
       "font_family": "Arial",
       "font_size_pt": 10

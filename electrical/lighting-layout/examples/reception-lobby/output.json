@@ -168,7 +168,7 @@
   },
   "calculation_summary": {
     "target_illuminance_lux": 300,
-    "achieved_illuminance_lux": 302.1,
+    "achieved_illuminance_lux": 302.4,
     "utilisation_factor": 0.48,
     "maintenance_factor": 0.84,
     "lamp_efficacy_lm_per_w": 100.0,
@@ -200,7 +200,7 @@
     "sections": [
       {
         "title": "Lumen-method walk",
-        "summary": "Area 8 × 5 = 40 m². Hm = 2700 − 0 = 2700 mm (lobby working plane = floor per BS EN 12464-1 Table 5.3). RI = (8 × 5) / (2.7 × 13) = 40 / 35.1 = 1.14 → ontology table key 1.0. UF=0.48 (LED_DOWNLIGHT ontology at RI=1.0, reflectances 0.7_0.5_0.2 per CIBSE LG7 §6.2). MF = 0.88 × 0.95 = 0.836 ≈ 0.84. N = (300 × 40) / (1000 × 0.48 × 0.84) = 12000 / 403 = 29.77 → round UP to 30. Achieved = 30 × 1000 × 0.48 × 0.84 / 40 = 302.1 lux ≥ 300 target (INV-1 PASS).",
+        "summary": "Area 8 × 5 = 40 m². Hm = 2700 − 0 = 2700 mm (lobby working plane = floor per BS EN 12464-1 Table 5.3). RI = (8 × 5) / (2.7 × 13) = 40 / 35.1 = 1.14 → ontology table key 1.0. UF=0.48 (LED_DOWNLIGHT ontology at RI=1.0, reflectances 0.7_0.5_0.2 per CIBSE LG7 §6.2). MF = 0.88 × 0.95 = 0.836 ≈ 0.84. N = (300 × 40) / (1000 × 0.48 × 0.84) = 12000 / 403 = 29.77 → round UP to 30. Achieved = 30 × 1000 × 0.48 × 0.84 / 40 = 302.4 lux ≥ 300 target (INV-1 PASS).",
         "decisions": [
           {
             "label": "Lux target 300 lx maintained",
@@ -277,7 +277,7 @@
       "id": "INV-01",
       "passes": true,
       "severity": "high",
-      "evidence": "Lumen method: N=30 LED_DOWNLIGHT × 1000 lm × UF=0.48 × MF=0.84 / 40 m² = achieved_illuminance_lux=302.1 lux ≥ target 300 lux (Rule 1 PASS). Calculation per [spacing-rules#lumen-method-formula] + ontology LED_DOWNLIGHT UF table at RI=1.0 (room RI=1.14, table key 1.0), reflectances 0.7_0.5_0.2."
+      "evidence": "Lumen method: N=30 LED_DOWNLIGHT × 1000 lm × UF=0.48 × MF=0.84 / 40 m² = achieved_illuminance_lux=302.4 lux ≥ target 300 lux (Rule 1 PASS). Calculation per [spacing-rules#lumen-method-formula] + ontology LED_DOWNLIGHT UF table at RI=1.0 (room RI=1.14, table key 1.0), reflectances 0.7_0.5_0.2."
     },
     {
       "id": "INV-02",
