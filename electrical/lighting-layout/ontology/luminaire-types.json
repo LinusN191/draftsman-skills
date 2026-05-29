@@ -1,10 +1,119 @@
 {
-  "_version": "1.0.0",
+  "_version": "1.4.0",
+  "_note": "Reference photometric defaults per luminaire type. Engineer override via inputs.photometric_override block; generator falls back to these defaults if override absent. UF tables indexed by RI (room index) and reflectance triplet (ceiling_wall_floor). LLMF schedules by maintenance environment. Citations verifiable against CIBSE LG7 and BS EN 12464-1 industry-typical values; engineer-of-record must verify against manufacturer photometric file for project-critical installations.",
+  "_verification_status": "engineer_typical_C2",
   "types": {
-    "LED_PANEL_600":   {"shape": "rectangle", "dims_mm": [600, 600]},
-    "LINEAR_LED":      {"shape": "rectangle", "dims_mm": [1200, 100]},
-    "LED_DOWNLIGHT":   {"shape": "circle",    "diameter_mm": 100},
-    "HIGHBAY":         {"shape": "circle",    "diameter_mm": 300},
-    "EMERGENCY":       {"shape": "rectangle", "dims_mm": [300, 100]}
+    "LED_PANEL_600": {
+      "description": "600×600mm recessed LED panel, opal diffuser",
+      "shape": "rectangle",
+      "dims_mm": [600, 600],
+      "photometric": {
+        "uf_table_by_ri": {
+          "0.6":  {"0.7_0.5_0.2": 0.45, "0.5_0.3_0.2": 0.40, "0.3_0.3_0.2": 0.35},
+          "1.0":  {"0.7_0.5_0.2": 0.55, "0.5_0.3_0.2": 0.50, "0.3_0.3_0.2": 0.45},
+          "1.5":  {"0.7_0.5_0.2": 0.62, "0.5_0.3_0.2": 0.57, "0.3_0.3_0.2": 0.52},
+          "2.0":  {"0.7_0.5_0.2": 0.67, "0.5_0.3_0.2": 0.62, "0.3_0.3_0.2": 0.57},
+          "2.5":  {"0.7_0.5_0.2": 0.71, "0.5_0.3_0.2": 0.66, "0.3_0.3_0.2": 0.60},
+          "3.0":  {"0.7_0.5_0.2": 0.74, "0.5_0.3_0.2": 0.68, "0.3_0.3_0.2": 0.62},
+          "5.0":  {"0.7_0.5_0.2": 0.80, "0.5_0.3_0.2": 0.73, "0.3_0.3_0.2": 0.67}
+        },
+        "shr_max": 1.5,
+        "llmf_schedule": {
+          "clean_office":    {"6000h": 0.95, "12000h": 0.90, "24000h": 0.85},
+          "normal_indoor":   {"6000h": 0.90, "12000h": 0.83, "24000h": 0.75},
+          "industrial":      {"6000h": 0.85, "12000h": 0.75, "24000h": 0.65}
+        },
+        "_citation": "CIBSE LG7 §6.2 (typical recessed LED panel UF + SHR_max) + BS EN 12464-1:2021 §4.4 (LLMF maintenance categories)",
+        "_verification_status": "engineer_typical_C2"
+      }
+    },
+    "LINEAR_LED": {
+      "description": "1200×100mm linear LED batten, opal diffuser",
+      "shape": "rectangle",
+      "dims_mm": [1200, 100],
+      "photometric": {
+        "uf_table_by_ri": {
+          "0.6":  {"0.7_0.5_0.2": 0.42, "0.5_0.3_0.2": 0.38, "0.3_0.3_0.2": 0.33},
+          "1.0":  {"0.7_0.5_0.2": 0.52, "0.5_0.3_0.2": 0.47, "0.3_0.3_0.2": 0.42},
+          "1.5":  {"0.7_0.5_0.2": 0.60, "0.5_0.3_0.2": 0.54, "0.3_0.3_0.2": 0.49},
+          "2.0":  {"0.7_0.5_0.2": 0.65, "0.5_0.3_0.2": 0.59, "0.3_0.3_0.2": 0.54},
+          "2.5":  {"0.7_0.5_0.2": 0.69, "0.5_0.3_0.2": 0.63, "0.3_0.3_0.2": 0.57},
+          "3.0":  {"0.7_0.5_0.2": 0.72, "0.5_0.3_0.2": 0.66, "0.3_0.3_0.2": 0.60},
+          "5.0":  {"0.7_0.5_0.2": 0.78, "0.5_0.3_0.2": 0.71, "0.3_0.3_0.2": 0.65}
+        },
+        "shr_max": 1.6,
+        "llmf_schedule": {
+          "clean_office":    {"6000h": 0.95, "12000h": 0.90, "24000h": 0.85},
+          "normal_indoor":   {"6000h": 0.90, "12000h": 0.83, "24000h": 0.75},
+          "industrial":      {"6000h": 0.85, "12000h": 0.75, "24000h": 0.65}
+        },
+        "_citation": "CIBSE LG7 §6.2 (linear LED batten typical values) + BS EN 12464-1:2021 §4.4",
+        "_verification_status": "engineer_typical_C2"
+      }
+    },
+    "LED_DOWNLIGHT": {
+      "description": "100mm diameter recessed LED downlight, prismatic lens",
+      "shape": "circle",
+      "diameter_mm": 100,
+      "photometric": {
+        "uf_table_by_ri": {
+          "0.6":  {"0.7_0.5_0.2": 0.38, "0.5_0.3_0.2": 0.34, "0.3_0.3_0.2": 0.30},
+          "1.0":  {"0.7_0.5_0.2": 0.48, "0.5_0.3_0.2": 0.43, "0.3_0.3_0.2": 0.38},
+          "1.5":  {"0.7_0.5_0.2": 0.55, "0.5_0.3_0.2": 0.49, "0.3_0.3_0.2": 0.44},
+          "2.0":  {"0.7_0.5_0.2": 0.60, "0.5_0.3_0.2": 0.54, "0.3_0.3_0.2": 0.49},
+          "2.5":  {"0.7_0.5_0.2": 0.64, "0.5_0.3_0.2": 0.58, "0.3_0.3_0.2": 0.52},
+          "3.0":  {"0.7_0.5_0.2": 0.67, "0.5_0.3_0.2": 0.61, "0.3_0.3_0.2": 0.55},
+          "5.0":  {"0.7_0.5_0.2": 0.73, "0.5_0.3_0.2": 0.66, "0.3_0.3_0.2": 0.60}
+        },
+        "shr_max": 1.4,
+        "llmf_schedule": {
+          "clean_office":    {"6000h": 0.93, "12000h": 0.86, "24000h": 0.80},
+          "normal_indoor":   {"6000h": 0.88, "12000h": 0.80, "24000h": 0.72},
+          "industrial":      {"6000h": 0.82, "12000h": 0.72, "24000h": 0.62}
+        },
+        "_citation": "CIBSE LG7 §6.2 (recessed downlight typical values; narrow beam) + BS EN 12464-1:2021 §4.4",
+        "_verification_status": "engineer_typical_C2"
+      }
+    },
+    "HIGHBAY": {
+      "description": "Industrial highbay LED, narrow-beam reflector for 6-12m mounting",
+      "shape": "circle",
+      "diameter_mm": 300,
+      "photometric": {
+        "uf_table_by_ri": {
+          "0.6":  {"0.5_0.3_0.2": 0.50, "0.3_0.3_0.2": 0.45, "0.3_0.1_0.1": 0.40},
+          "1.0":  {"0.5_0.3_0.2": 0.62, "0.3_0.3_0.2": 0.55, "0.3_0.1_0.1": 0.50},
+          "1.5":  {"0.5_0.3_0.2": 0.70, "0.3_0.3_0.2": 0.62, "0.3_0.1_0.1": 0.56},
+          "2.0":  {"0.5_0.3_0.2": 0.75, "0.3_0.3_0.2": 0.67, "0.3_0.1_0.1": 0.60},
+          "2.5":  {"0.5_0.3_0.2": 0.79, "0.3_0.3_0.2": 0.70, "0.3_0.1_0.1": 0.63},
+          "3.0":  {"0.5_0.3_0.2": 0.82, "0.3_0.3_0.2": 0.73, "0.3_0.1_0.1": 0.66},
+          "5.0":  {"0.5_0.3_0.2": 0.87, "0.3_0.3_0.2": 0.77, "0.3_0.1_0.1": 0.69}
+        },
+        "shr_max": 1.0,
+        "llmf_schedule": {
+          "industrial":      {"6000h": 0.85, "12000h": 0.75, "24000h": 0.65},
+          "warehouse_dusty": {"6000h": 0.78, "12000h": 0.65, "24000h": 0.55}
+        },
+        "_citation": "CIBSE LG12 (industrial lighting; highbay narrow-beam typical) + BS EN 12464-1:2021 §4.4",
+        "_verification_status": "engineer_typical_C2"
+      }
+    },
+    "EMERGENCY": {
+      "description": "Emergency luminaire 300×100mm (escape route / open area / high risk task area)",
+      "shape": "rectangle",
+      "dims_mm": [300, 100],
+      "photometric": {
+        "uf_table_by_ri": {
+          "1.0":  {"0.5_0.3_0.2": 0.40, "0.3_0.3_0.2": 0.36, "0.3_0.1_0.1": 0.32},
+          "1.5":  {"0.5_0.3_0.2": 0.46, "0.3_0.3_0.2": 0.41, "0.3_0.1_0.1": 0.36}
+        },
+        "shr_max": 1.4,
+        "llmf_schedule": {
+          "emergency_standby": {"6000h": 0.90, "12000h": 0.82, "24000h": 0.75}
+        },
+        "_citation": "BS 5266-1:2016 §5.2 (emergency lighting design illuminance: 1 lux escape route minimum; 0.5 lux anti-panic open area; 15 lux high-risk task)",
+        "_verification_status": "engineer_typical_C2"
+      }
+    }
   }
 }

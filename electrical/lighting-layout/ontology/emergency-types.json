@@ -1,0 +1,49 @@
+{
+  "_version": "1.0.0",
+  "_note": "Emergency luminaire ontology backing rules/emergency-rules.yaml. Citations reference BS 5266-1:2016 (published British Standard). No repo-internal BS5266 cross-reference file exists yet; engineer-of-record must verify against the published edition.",
+  "_verification_status": "engineer_typical_C2",
+  "types": {
+    "non_maintained_self_test": {
+      "description": "Non-maintained: lights only on mains failure. Self-test = monthly + annual auto duration test logged by driver.",
+      "operation_mode": "non_maintained",
+      "duration_min": 180,
+      "test_protocol": "self_test_DALI_or_local",
+      "applicable_areas": ["escape_route", "office_interior", "warehouse_interior"],
+      "symbol_dxf_block": "EM_NON_MAINT_ST",
+      "_citation": "BS 5266-1:2016 §4.3.2 (non-maintained luminaires) + §10 (testing regime)"
+    },
+    "maintained_self_test": {
+      "description": "Maintained: lit during normal operation; remains lit on mains failure. Used where occupants need to see exit signs at all times (e.g. cinemas, lecture halls).",
+      "operation_mode": "maintained",
+      "duration_min": 180,
+      "test_protocol": "self_test_DALI_or_local",
+      "applicable_areas": ["exit_sign_continuous_view", "high_occupancy_assembly"],
+      "symbol_dxf_block": "EM_MAINT_ST",
+      "_citation": "BS 5266-1:2016 §4.3.1 (maintained luminaires)"
+    },
+    "escape_route_luminaire": {
+      "description": "Escape route luminaire — 1 lux minimum on the centre line of escape route per BS 5266-1 §5.2.1",
+      "design_illuminance_lux_min": 1.0,
+      "design_uniformity_min": 0.025,
+      "applicable_areas": ["corridor", "stairwell", "lobby", "exit_route"],
+      "symbol_dxf_block": "EM_ESCAPE",
+      "_citation": "BS 5266-1:2016 §5.2.1 (escape route illuminance) + §5.2.4 (uniformity)"
+    },
+    "open_area_anti_panic": {
+      "description": "Anti-panic open area luminaire — 0.5 lux minimum on floor area excluding 0.5m border per BS 5266-1 §5.3",
+      "design_illuminance_lux_min": 0.5,
+      "design_uniformity_min": 0.025,
+      "applicable_areas": ["open_plan_office_>60m2", "warehouse_main_aisle", "shopping_floor"],
+      "symbol_dxf_block": "EM_ANTIPANIC",
+      "_citation": "BS 5266-1:2016 §5.3 (anti-panic / open area emergency lighting)"
+    },
+    "high_risk_task_area": {
+      "description": "High-risk task area emergency luminaire — 15 lux or 10% of normal task illuminance (whichever higher), per BS 5266-1 §5.4",
+      "design_illuminance_lux_min": 15.0,
+      "design_uniformity_min": 0.1,
+      "applicable_areas": ["machine_shop", "lab", "kitchen_commercial_hot_zone", "medical_operating"],
+      "symbol_dxf_block": "EM_HIGHRISK",
+      "_citation": "BS 5266-1:2016 §5.4 (high-risk task area emergency lighting)"
+    }
+  }
+}

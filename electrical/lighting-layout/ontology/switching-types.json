@@ -1,9 +1,78 @@
 {
-  "_version": "1.0.0",
+  "_version": "1.4.0",
+  "_note": "Switching device ontology — electrical ratings + symbol mapping (DXF block name) + compatible load types. Generator selects switch type from inputs.controls_protocol + load count.",
   "types": {
-    "1_gang":   {"description": "Single switch, one circuit"},
-    "2_gang":   {"description": "Two switches, two circuits"},
-    "dimmer":   {"description": "Rotary or push dimmer"},
-    "presence": {"description": "Presence/occupancy detector with override"}
+    "1_gang": {
+      "description": "Single switch, one circuit",
+      "rated_amps": 10,
+      "voltage_v": 230,
+      "compatible_loads": ["lighting_max_2300w"],
+      "symbol_dxf_block": "SW_1GANG",
+      "_citation": "BS 1363-4 + BS EN 60669-1"
+    },
+    "2_gang": {
+      "description": "Two switches, two independent circuits",
+      "rated_amps": 10,
+      "voltage_v": 230,
+      "compatible_loads": ["lighting_max_2300w_each"],
+      "symbol_dxf_block": "SW_2GANG",
+      "_citation": "BS 1363-4 + BS EN 60669-1"
+    },
+    "3_gang": {
+      "description": "Three switches, three independent circuits",
+      "rated_amps": 10,
+      "voltage_v": 230,
+      "compatible_loads": ["lighting_max_2300w_each"],
+      "symbol_dxf_block": "SW_3GANG",
+      "_citation": "BS 1363-4 + BS EN 60669-1"
+    },
+    "dimmer": {
+      "description": "Rotary or push dimmer (trailing edge for LED)",
+      "rated_amps": 6,
+      "voltage_v": 230,
+      "compatible_loads": ["dimmable_led_max_400w"],
+      "symbol_dxf_block": "SW_DIMMER",
+      "_citation": "BS EN 60669-2-1 (electronic dimmers)"
+    },
+    "presence": {
+      "description": "Presence/occupancy detector with manual override",
+      "rated_amps": 6,
+      "voltage_v": 230,
+      "compatible_loads": ["lighting_max_1380w"],
+      "symbol_dxf_block": "SW_PRESENCE",
+      "_citation": "BS EN 60669-2-2 (electronic detection switches) + BS 7671:2018+A2:2022 §714 (occupancy controls)"
+    },
+    "daylight_sensor": {
+      "description": "Photocell for daylight-linked dimming/switching",
+      "rated_amps": 6,
+      "voltage_v": 230,
+      "compatible_loads": ["dimmable_lighting_max_1380w"],
+      "symbol_dxf_block": "SW_DAYLIGHT",
+      "_citation": "BS EN 15193-1:2017 + Approved Doc L (Part L 2021) §6.2 daylight-linking"
+    },
+    "presence_with_dimming": {
+      "description": "Combined presence detector + daylight sensor + dimming output",
+      "rated_amps": 6,
+      "voltage_v": 230,
+      "compatible_loads": ["dimmable_lighting_max_1380w"],
+      "symbol_dxf_block": "SW_PRESENCE_DIM",
+      "_citation": "BS EN 60669-2-2 + BS EN 15193-1:2017 + Approved Doc L §6.2"
+    },
+    "dali_master": {
+      "description": "DALI master switch / wall controller (entry-point control for a DALI line)",
+      "rated_amps": 6,
+      "voltage_v": 230,
+      "compatible_loads": ["dali_addressable_lighting"],
+      "symbol_dxf_block": "SW_DALI_MASTER",
+      "_citation": "IEC 62386-101 + BS EN 62386-102 (DALI bus + control device)"
+    },
+    "dali_application_controller": {
+      "description": "DALI application controller (panel-mount; orchestrates scenes/zones across multiple lines)",
+      "rated_amps": 6,
+      "voltage_v": 230,
+      "compatible_loads": ["dali_addressable_lighting", "dali_2_groups"],
+      "symbol_dxf_block": "SW_DALI_AC",
+      "_citation": "IEC 62386-103 (DALI application controllers)"
+    }
   }
 }
