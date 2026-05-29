@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/photometric-analysis/schemas/photometric-grid-intent.schema.json",
+  "title": "Photometric Grid Intent Payload",
+  "description": "Flat intent payload (no envelope wrap) produced by photometric-analysis v1.0.0. Consumed by lighting-layout INV-11 + emergency-lighting + daylight. Per spec §5.2.",
+  "type": "object",
+  "required": [
+    "intent_version",
+    "skill",
+    "consumed_lighting_layout_intent",
+    "photometric_grid"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "intent_version": {"const": "1.0.0"},
+    "skill": {"const": "photometric-analysis"},
+    "consumed_lighting_layout_intent": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Path to upstream lighting-layout intent-out.json that this analysis verifies."
+    },
+    "photometric_grid": {
+      "type": "object",
+      "required": [
+        "achieved_avg_illuminance_lux",
+        "achieved_min_illuminance_lux",
+        "achieved_uniformity_u0",
+        "ugr_max",
+        "ugr_target",
+        "uniformity_target",
+        "target_illuminance_lux",
+        "task_area_compliant",
+        "grid_point_count",
+        "ies_source_summary"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "achieved_avg_illuminance_lux": {"type": "number", "minimum": 0},
+        "achieved_min_illuminance_lux": {"type": "number", "minimum": 0},
+        "achieved_uniformity_u0": {"type": "number", "minimum": 0, "maximum": 1.0},
+        "ugr_max": {"type": "number"},
+        "ugr_target": {"type": "integer", "minimum": 10, "maximum": 30},
+        "uniformity_target": {"type": "number", "minimum": 0.1, "maximum": 1.0},
+        "target_illuminance_lux": {"type": "integer", "minimum": 1},
+        "task_area_compliant": {"type": "boolean"},
+        "grid_point_count": {"type": "integer", "minimum": 0},
+        "non_compliance_flags": {
+          "type": "array",
+          "description": "Mirror of full-IR non_compliance_flags subset relevant to cascade consumer (INV-11 cascades flags upstream per spec §10.3 sub-check 4).",
+          "items": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message": {"type": "string"},
+              "reference": {"type": "string"},
+              "severity": {"enum": ["critical", "warning", "info"]}
+            }
+          }
+        },
+        "ies_source_summary": {
+          "type": "object",
+          "required": ["all_verified", "verification_status_lowest"],
+          "additionalProperties": false,
+          "properties": {
+            "all_verified": {
+              "type": "boolean",
+              "description": "true iff every ies_files[].verification_status == manufacturer_supplied_project_specific"
+            },
+            "verification_status_lowest": {
+              "enum": ["synthetic_reference_C3", "engineer_typical_C2", "manufacturer_supplied_project_specific"],
+              "description": "Worst (lowest-confidence) verification_status across all consumed IES files. Used by reviewer D-2 to gate project-stage substitution."
+            }
+          }
+        }
+      }
+    }
+  }
+}

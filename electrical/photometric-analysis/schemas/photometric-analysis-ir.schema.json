@@ -1,0 +1,238 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "electrical/photometric-analysis/schemas/photometric-analysis-ir.schema.json",
+  "title": "Photometric Analysis IR",
+  "description": "Full IR produced by photometric-analysis v1.0.0. Per-point illuminance grid + UGR results + provenance + cascade evidence. Per spec §5.1.",
+  "type": "object",
+  "required": [
+    "drawing_type",
+    "version",
+    "mode",
+    "room",
+    "consumed_intents",
+    "photometric_inputs",
+    "calculation_summary",
+    "rationale",
+    "invariants"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "drawing_type": {"const": "photometric_analysis"},
+    "version": {"type": "string"},
+    "mode": {
+      "enum": ["full_analysis", "screening_only"],
+      "description": "full_analysis = per-point grid + UGR (default; production output). screening_only = scalar target-vs-predicted only (early-design Part L pre-check when IES files pending). Mirrors lighting-layout's mode: full_drawing | calc_only pattern."
+    },
+    "_note": {"type": "string", "description": "Optional engineer or implementer note — runtime-readable, no semantic effect."},
+    "room": {
+      "type": "object",
+      "required": ["length_mm", "width_mm", "area_m2", "ceiling_height_mm", "room_type"],
+      "additionalProperties": false,
+      "properties": {
+        "length_mm": {"type": "integer", "minimum": 500},
+        "width_mm": {"type": "integer", "minimum": 500},
+        "area_m2": {"type": "number", "exclusiveMinimum": 0},
+        "ceiling_height_mm": {"type": "integer", "minimum": 2000},
+        "working_plane_mm": {"type": "integer", "minimum": 0},
+        "room_type": {
+          "enum": [
+            "open_plan_office", "private_office", "meeting_room", "corridor",
+            "warehouse", "warehouse_aisle", "classroom", "consulting_room",
+            "ward", "kitchen_commercial", "bathroom", "reception_lobby",
+            "escape_route", "plantroom", "external",
+            "drawing_office", "technical_drawing", "fine_assembly", "precision_work"
+          ],
+          "description": "15 lighting-layout values + 4 drawing-office-grade types per BS EN 12464-1 Table 5.3 row 5.34 (stricter UGR limit 16)."
+        }
+      }
+    },
+    "consumed_intents": {
+      "type": "object",
+      "required": ["lighting_layout"],
+      "additionalProperties": false,
+      "properties": {
+        "lighting_layout": {
+          "type": "object",
+          "required": ["intent_version", "source_path"],
+          "additionalProperties": false,
+          "properties": {
+            "intent_version": {"type": "string"},
+            "source_path": {"type": "string", "minLength": 1},
+            "consumed_summary": {
+              "type": "object",
+              "description": "Subset of upstream intent fields actually consumed (room dims + luminaire positions + luminaire_type symbol). Aids debugging without re-reading upstream file."
+            }
+          }
+        }
+      }
+    },
+    "photometric_inputs": {
+      "type": "object",
+      "required": ["ies_files", "grid_metadata", "reflectances"],
+      "additionalProperties": false,
+      "properties": {
+        "ies_files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["luminaire_type", "path", "_source", "verification_status"],
+            "additionalProperties": false,
+            "properties": {
+              "luminaire_type": {"type": "string", "minLength": 3},
+              "path": {"type": "string", "minLength": 1},
+              "_source": {"type": "string", "minLength": 40},
+              "verification_status": {
+                "enum": ["engineer_typical_C2", "manufacturer_supplied_project_specific", "synthetic_reference_C3"]
+              },
+              "parsed_summary": {
+                "type": "object",
+                "description": "LM-63 parser summary: total_lumens, max_intensity_cd, beam_angle_deg, ies_test_distance_m. Populated by runtime calc.lumen_grid_solver parser.",
+                "additionalProperties": false,
+                "properties": {
+                  "total_lumens": {"type": "integer"},
+                  "max_intensity_cd": {"type": "number"},
+                  "beam_angle_deg": {"type": "integer"},
+                  "ies_test_distance_m": {"type": "number"}
+                }
+              }
+            }
+          }
+        },
+        "grid_metadata": {
+          "type": "object",
+          "required": ["task_area_bounds", "grid_spacing_mm", "grid_spacing_formula", "point_count"],
+          "additionalProperties": false,
+          "properties": {
+            "task_area_bounds": {
+              "type": "object",
+              "required": ["x_min_mm", "y_min_mm", "x_max_mm", "y_max_mm"],
+              "additionalProperties": false,
+              "properties": {
+                "x_min_mm": {"type": "integer"},
+                "y_min_mm": {"type": "integer"},
+                "x_max_mm": {"type": "integer"},
+                "y_max_mm": {"type": "integer"}
+              }
+            },
+            "grid_spacing_mm": {"type": "integer", "minimum": 50, "maximum": 1000},
+            "grid_spacing_formula": {"type": "string", "minLength": 20},
+            "point_count": {"type": "integer", "minimum": 1}
+          }
+        },
+        "reflectances": {
+          "type": "object",
+          "required": ["ceiling", "wall", "floor", "_source"],
+          "additionalProperties": false,
+          "properties": {
+            "ceiling": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "wall": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "floor": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "_source": {"type": "string", "minLength": 10}
+          }
+        }
+      }
+    },
+    "calculation_summary": {
+      "type": "object",
+      "required": [
+        "target_illuminance_lux", "uniformity_u0_target", "ugr_limit",
+        "compliant", "tool_call_pending", "_calc_tool"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target_illuminance_lux": {"type": "integer", "minimum": 1},
+        "uniformity_u0_target": {"type": "number", "minimum": 0.1, "maximum": 1.0},
+        "ugr_limit": {"type": "integer", "minimum": 10, "maximum": 30},
+        "achieved_avg_illuminance_lux": {"type": "number"},
+        "achieved_min_illuminance_lux": {"type": "number"},
+        "achieved_max_illuminance_lux": {"type": "number"},
+        "achieved_uniformity_u0": {"type": "number"},
+        "max_ugr_across_view_positions": {"type": "number"},
+        "compliant": {"type": "boolean"},
+        "non_compliance_flags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message": {"type": "string"},
+              "reference": {"type": "string"},
+              "severity": {"enum": ["critical", "warning", "info"]}
+            }
+          }
+        },
+        "tool_call_pending": {"type": "boolean"},
+        "_calc_tool": {"const": "calc.lumen_grid_solver"},
+        "_calc_engine_version": {"type": "string"}
+      }
+    },
+    "illuminance_grid": {
+      "type": "array",
+      "description": "Flat list of {x_mm, y_mm, illuminance_lux} per spec §5.1 + Q5 brainstorm decision. Required when mode == full_analysis; omitted when mode == screening_only.",
+      "items": {
+        "type": "object",
+        "required": ["x_mm", "y_mm", "illuminance_lux"],
+        "additionalProperties": false,
+        "properties": {
+          "x_mm": {"type": "integer", "minimum": 0},
+          "y_mm": {"type": "integer", "minimum": 0},
+          "illuminance_lux": {"type": "number", "minimum": 0}
+        }
+      }
+    },
+    "ugr_results": {
+      "type": "array",
+      "description": "Per-observer UGR values. Required when mode == full_analysis. Minimum 4 entries (CIE 117 defaults) plus optional engineer-supplied overrides.",
+      "items": {
+        "type": "object",
+        "required": ["label", "position", "azimuth_deg", "ugr_value", "_source"],
+        "additionalProperties": false,
+        "properties": {
+          "label": {"type": "string", "minLength": 1},
+          "position": {
+            "type": "object",
+            "required": ["x_mm", "y_mm", "height_mm"],
+            "additionalProperties": false,
+            "properties": {
+              "x_mm": {"type": "integer", "minimum": 0},
+              "y_mm": {"type": "integer", "minimum": 0},
+              "height_mm": {"type": "integer", "minimum": 0, "maximum": 3000}
+            }
+          },
+          "azimuth_deg": {"type": "integer", "minimum": 0, "maximum": 359},
+          "ugr_value": {"type": "number"},
+          "_source": {"enum": ["cie_117_default", "engineer_supplied"]}
+        }
+      }
+    },
+    "rationale": {"$ref": "../../../shared/schemas/core/rationale.schema.json"},
+    "invariants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "passes", "severity", "evidence"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^INV-[0-9]{2,3}$"},
+          "passes": {"type": "boolean"},
+          "severity": {"enum": ["critical", "high", "medium", "low"]},
+          "evidence": {"type": "string", "minLength": 20, "maxLength": 800}
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "description": "mode-conditional required fields per spec §5.1. full_analysis requires illuminance_grid + ugr_results; screening_only does not.",
+      "if": {
+        "properties": {"mode": {"const": "screening_only"}},
+        "required": ["mode"]
+      },
+      "then": {},
+      "else": {
+        "required": ["illuminance_grid", "ugr_results"]
+      }
+    }
+  ]
+}
