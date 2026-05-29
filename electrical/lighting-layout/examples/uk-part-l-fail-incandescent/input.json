@@ -1,0 +1,27 @@
+{
+  "_note": "D3.C.2 failure-mode example #3 — legacy UK office refurbishment with 50W halogen downlights (750 lm, 15 lm/W lamp efficacy). is_uk_new_build=true because major refurbishment triggers Part L 2021 §6. Lamp efficacy 15 lm/W ≪ 95 lm/W target → INV-6 FAIL critical. Plus no daylight-linking despite glazed W wall + no occupancy detection → INV-6 sub-checks 2+3 also FAIL. INV-10 composite FAIL. INV-1 still PASSes (343 lux ≥ 300) because the engineer over-provisioned fittings to compensate for halogen's low efficacy.",
+  "room_type": "private_office",
+  "room_length_m": 8,
+  "room_width_m": 6,
+  "ceiling_height_m": 2.7,
+  "working_plane_m": 0.75,
+  "luminaire": {
+    "type": "50W GU10 halogen recessed downlight — legacy refurbishment",
+    "symbol": "LED_DOWNLIGHT",
+    "lumen_output": 750,
+    "lumen_type": "initial",
+    "wattage_w": 50,
+    "cct_k": 2800,
+    "cri_ra": 100,
+    "ip_rating": "IP20"
+  },
+  "ceiling_grid_mm": null,
+  "new_build": true,
+  "jurisdiction": "england_wales",
+  "glazed_walls": ["west"],
+  "entrance_positions": [
+    {"wall": "S", "offset_mm": 3500, "width_mm": 900, "door_swing": "inward_latch_right"}
+  ],
+  "controls_protocol": "switched",
+  "db_designation": "L1"
+}

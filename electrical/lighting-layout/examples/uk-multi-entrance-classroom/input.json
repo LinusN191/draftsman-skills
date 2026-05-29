@@ -1,0 +1,29 @@
+{
+  "_note": "D3.C.2 example #2 — clean compliant secondary-school classroom with 3 entrances on different walls. Exercises INV-3 multi-entrance coverage + INV-7 zone assignment (Z1 perimeter on glazed S wall + Z2 interior). All 10 INVs PASS — demonstrates the happy path for multi-entrance + perimeter-zone scenarios.",
+  "room_type": "classroom",
+  "room_length_m": 10,
+  "room_width_m": 8,
+  "ceiling_height_m": 3.0,
+  "working_plane_m": 0.7,
+  "luminaire": {
+    "type": "600x600 LED Recessed Panel",
+    "symbol": "LED_PANEL_600",
+    "lumen_output": 4500,
+    "lumen_type": "design",
+    "wattage_w": 36,
+    "cct_k": 4000,
+    "cri_ra": 80,
+    "ip_rating": "IP20"
+  },
+  "ceiling_grid_mm": 600,
+  "new_build": true,
+  "jurisdiction": "england_wales",
+  "glazed_walls": ["south"],
+  "entrance_positions": [
+    {"wall": "S", "offset_mm": 3500, "width_mm": 900, "door_swing": "inward_latch_right"},
+    {"wall": "N", "offset_mm": 7000, "width_mm": 900, "door_swing": "outward_latch_left"},
+    {"wall": "W", "offset_mm": 3000, "width_mm": 800, "door_swing": "inward_latch_left"}
+  ],
+  "controls_protocol": "switched",
+  "db_designation": "L1"
+}

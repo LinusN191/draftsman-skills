@@ -1,0 +1,410 @@
+{
+  "_note": "D3.C.2 failure-mode example #3. Legacy UK office major refurbishment with 50W GU10 halogen downlights (750 initial lm, 15 lm/W lamp efficacy). is_uk_new_build=true on a major refurb triggers Part L 2021 §6 enforcement. 50 fittings in 5×10 grid maintain 343 lux (INV-1 PASS via brute-force fitting count) but lamp efficacy 15 lm/W ≪ 95 lm/W Part L target → INV-6 FAIL critical. Three non_compliance_flags entries with severity=critical. INV-10 composite FAIL. This is the canonical 'inherited halogen estate' refurb where the engineer needs three changes (efficacy + daylight zoning + occupancy) before Part L sign-off.",
+  "drawing_type": "lighting_layout",
+  "version": "1.4.0",
+  "room": {
+    "length_mm": 8000,
+    "width_mm": 6000,
+    "area_m2": 48,
+    "ceiling_height_mm": 2700,
+    "working_plane_mm": 750,
+    "hm_mm": 1950,
+    "room_index": 1.76,
+    "room_type": "private_office",
+    "environment_type": "normal",
+    "ip_required": "IP20",
+    "has_windows": true
+  },
+  "luminaire_type": {
+    "symbol": "LED_DOWNLIGHT",
+    "description": "50W GU10 halogen recessed downlight — legacy refurbishment (LED_DOWNLIGHT ontology used for photometric geometry proxy; lumen + efficacy values are the actual halogen specification)",
+    "lumens": 750,
+    "lumen_type": "initial",
+    "llmf_applied": false,
+    "wattage_w": 50,
+    "cct_k": 2800,
+    "cri_ra": 100,
+    "ip_rating": "IP20",
+    "lamp_efficacy_lm_per_w": 15.0
+  },
+  "selection_source": {
+    "photometric_source": "ontology_default",
+    "citation": "CIBSE LG7 §6.2 (recessed downlight typical values; narrow beam) + BS EN 12464-1:2021 §4.4 — LED_DOWNLIGHT ontology used as photometric geometry proxy for the halogen fitting (similar 100 mm aperture, similar narrow beam optic). Lumen + efficacy fields override ontology defaults with the actual halogen specification."
+  },
+  "zones": [
+    {
+      "zone_id": "Z2",
+      "label": "Interior — legacy halogen estate (no perimeter zoning despite W glazing)",
+      "zone_type": "interior",
+      "control": "manual",
+      "circuit_id": "C-L01",
+      "circuit_ids": ["C-L01", "C-L02", "C-L03", "C-L04", "C-L05"],
+      "luminaire_ids": ["L01","L02","L03","L04","L05","L06","L07","L08","L09","L10","L11","L12","L13","L14","L15","L16","L17","L18","L19","L20","L21","L22","L23","L24","L25","L26","L27","L28","L29","L30","L31","L32","L33","L34","L35","L36","L37","L38","L39","L40","L41","L42","L43","L44","L45","L46","L47","L48","L49","L50"],
+      "luminaire_count": 50,
+      "total_load_w": 2500
+    }
+  ],
+  "luminaires": [
+    {"id": "L01", "x_mm": 300,  "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L02", "x_mm": 1122, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L03", "x_mm": 1944, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L04", "x_mm": 2767, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L05", "x_mm": 3589, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L06", "x_mm": 4411, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L07", "x_mm": 5233, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L08", "x_mm": 6056, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L09", "x_mm": 6878, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L10", "x_mm": 7700, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L11", "x_mm": 300,  "y_mm": 1650, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L12", "x_mm": 1122, "y_mm": 1650, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L13", "x_mm": 1944, "y_mm": 1650, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L14", "x_mm": 2767, "y_mm": 1650, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L15", "x_mm": 3589, "y_mm": 1650, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L16", "x_mm": 4411, "y_mm": 1650, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L17", "x_mm": 5233, "y_mm": 1650, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L18", "x_mm": 6056, "y_mm": 1650, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L19", "x_mm": 6878, "y_mm": 1650, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L20", "x_mm": 7700, "y_mm": 1650, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L21", "x_mm": 300,  "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L22", "x_mm": 1122, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L23", "x_mm": 1944, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L24", "x_mm": 2767, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L25", "x_mm": 3589, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L26", "x_mm": 4411, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L27", "x_mm": 5233, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L28", "x_mm": 6056, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L29", "x_mm": 6878, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L30", "x_mm": 7700, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L31", "x_mm": 300,  "y_mm": 4350, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L32", "x_mm": 1122, "y_mm": 4350, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L33", "x_mm": 1944, "y_mm": 4350, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L34", "x_mm": 2767, "y_mm": 4350, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L35", "x_mm": 3589, "y_mm": 4350, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L36", "x_mm": 4411, "y_mm": 4350, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L37", "x_mm": 5233, "y_mm": 4350, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L38", "x_mm": 6056, "y_mm": 4350, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L39", "x_mm": 6878, "y_mm": 4350, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L40", "x_mm": 7700, "y_mm": 4350, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L41", "x_mm": 300,  "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L05"},
+    {"id": "L42", "x_mm": 1122, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L05"},
+    {"id": "L43", "x_mm": 1944, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L05"},
+    {"id": "L44", "x_mm": 2767, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L05"},
+    {"id": "L45", "x_mm": 3589, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L05"},
+    {"id": "L46", "x_mm": 4411, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L05"},
+    {"id": "L47", "x_mm": 5233, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L05"},
+    {"id": "L48", "x_mm": 6056, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L05"},
+    {"id": "L49", "x_mm": 6878, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L05"},
+    {"id": "L50", "x_mm": 7700, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L05"}
+  ],
+  "switches": [
+    {
+      "id": "SW01",
+      "type": "1_gang",
+      "x_mm": 3500,
+      "y_mm": 200,
+      "height_aff_mm": 1200,
+      "controls_circuit": "C-L01,C-L02,C-L03,C-L04,C-L05",
+      "door_swing": "inward_latch_right",
+      "switch_side": "latch"
+    }
+  ],
+  "circuits": [
+    {
+      "circuit_id": "C-L01",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L01","L02","L03","L04","L05","L06","L07","L08","L09","L10"],
+      "total_load_w": 500,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 0,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 300, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L02",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L11","L12","L13","L14","L15","L16","L17","L18","L19","L20"],
+      "total_load_w": 500,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 1,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 1650, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L03",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L21","L22","L23","L24","L25","L26","L27","L28","L29","L30"],
+      "total_load_w": 500,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 2,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 3000, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L04",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L31","L32","L33","L34","L35","L36","L37","L38","L39","L40"],
+      "total_load_w": 500,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 3,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 4350, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L05",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L41","L42","L43","L44","L45","L46","L47","L48","L49","L50"],
+      "total_load_w": 500,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 4,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 5700, "wall": "W"}
+    }
+  ],
+  "controls": {
+    "dimming_protocol": null,
+    "occupancy_sensing": false,
+    "daylight_linking": false,
+    "part_l_assessed": true,
+    "part_l_compliant": false,
+    "part_l_efficacy_target_lm_per_w": 95,
+    "lamp_efficacy_lm_per_w": 15.0,
+    "perimeter_zones": [],
+    "required": []
+  },
+  "calculation_summary": {
+    "target_illuminance_lux": 300,
+    "achieved_illuminance_lux": 343.75,
+    "utilisation_factor": 0.55,
+    "maintenance_factor": 0.80,
+    "lamp_efficacy_lm_per_w": 15.0,
+    "part_l_efficacy_target_lm_per_w": 95,
+    "ugr_status": "UGR > 19 likely — narrow-beam halogen downlight at 1:1 density typically produces UGR 22-25 at desk plane; confirm from photometric data",
+    "compliant": false,
+    "discovery_status": "complete",
+    "non_compliance_flags": [
+      {
+        "message": "Lamp efficacy 15 lm/W ≪ 95 lm/W Approved Doc L (Part L 2021) §6 Table 6 target — 50W GU10 halogen non-compliant for new-build / major-refurb commercial. Remediation: replace with 8W GU10 LED retrofit lamp at 800 lm (100 lm/W) keeping same fitting + transformer; OR full luminaire-replacement with LED_DOWNLIGHT 10W/1000 lm canonical (100 lm/W) cutting connected load from 2500 W to 500 W (80 % energy saving).",
+        "reference": "Approved Doc L (Part L 2021) § 6 + BS EN 15193-1:2017 § 6",
+        "severity": "critical"
+      },
+      {
+        "message": "controls.daylight_linking=false despite inputs.glazed_walls=['west'] — Part L 2021 §6 requires daylight-linked dimming on luminaires within 6 m of glazed wall. Remediation: split column 0 (L01, L11, L21, L31, L41 at x=300, all within 1500 mm of W wall) into perimeter zone Z1 on 0-10V dimming or DALI with photocell feedback.",
+        "reference": "Approved Doc L (Part L 2021) § 6 + BS EN 15193-1:2017 § 6 + [control-rules#part-l-daylight]",
+        "severity": "critical"
+      },
+      {
+        "message": "controls.occupancy_sensing=false on a new-build / major-refurb private office — Part L 2021 §6 requires automatic occupancy detection (presence-with-absence-detection) for office spaces. Remediation: add a PIR sensor wired to the C-L02..C-L05 interior circuits with manual override via SW01.",
+        "reference": "Approved Doc L (Part L 2021) § 6 + [control-rules#part-l-occupancy]",
+        "severity": "critical"
+      }
+    ],
+    "assumptions": [
+      "UF = 0.55 from LED_DOWNLIGHT ontology proxy at RI=1.5, reflectances 0.7/0.5/0.2 — halogen and LED downlight share similar 100 mm aperture geometry and narrow beam optic, so UF table is a reasonable proxy. Engineer must confirm against the actual halogen photometric file before issue.",
+      "MF = 0.80 with LLMF generous (halogen LLMF degrades faster than LED; a stricter assessment would use 0.70). Achieved value would drop from 343 to 301 lux at MF=0.70 — still ≥ 300 target but with no margin.",
+      "Initial lumens 750 used at face value; design lumens after burn-in would be ~600 (halogen depreciates 20 % in first 200 h).",
+      "Engineer over-provisioned to 50 fittings on a 48 m² floor (1 fitting/m²) — typical inherited halogen 'wash' density. INV-1 PASSes by brute-force fitting count, not by efficient design."
+    ]
+  },
+  "drawing_notes": [
+    "All luminaires: 50W GU10 halogen recessed downlight, 750 initial lm, 2800K (warm), CRI 100, IP20",
+    "NON-COMPLIANT LAYOUT — DO NOT ISSUE FOR PART L SIGN-OFF (lamp efficacy 15 lm/W ≪ 95 lm/W target + no automatic controls)",
+    "Remediation path: GU10 LED retrofit (8W / 800 lm / 100 lm/W) keeps fitting + transformer + cabling but cuts connected load 84 %",
+    "5 row circuits C-L01..C-L05 on DB L1; 10 fittings × 50 W = 500 W per circuit on 6A Type B MCB (45 % of 1104 W 80 % headroom — limiting factor is lamp-load, not OCPD)",
+    "Total connected lighting load 2500 W in a 48 m² private office — 52 W/m² density (vs Part L 2021 NIA reference 8 W/m²)",
+    "Single 1-gang switch SW01 at S entrance latch side, 1200 mm AFF — no occupancy or daylight automation",
+    "Glazed W wall (windows) present but no perimeter daylight zone declared — Part L gap",
+    "Ceiling grid not specified — confirm against existing reflected ceiling plan during survey"
+  ],
+  "flags": [
+    "NON-COMPLIANCE: Part L lamp efficacy critical (INV-6) — 15 lm/W vs 95 lm/W target",
+    "NON-COMPLIANCE: Part L no daylight-linking (INV-6) — glazed wall + dim controls absent",
+    "NON-COMPLIANCE: Part L no occupancy detection (INV-6) — manual switch only"
+  ],
+  "rationale": {
+    "chat_summary": "Legacy 8×6 m UK private office major refurbishment with inherited 50W GU10 halogen downlights — 50 fittings in 5×10 grid maintain 343 lux (INV-1 PASSes by brute-force density) but lamp efficacy 15 lm/W ≪ 95 lm/W Part L 2021 §6 target → INV-6 FAIL critical. Plus no daylight-linking despite glazed W wall + no occupancy detection — three severity=critical non_compliance_flags entries. Remediation: GU10 LED retrofit (8W / 800 lm) + perimeter daylight zone + PIR. INV-10 composite FAIL.",
+    "sections": [
+      {
+        "title": "Why this example exists",
+        "summary": "Demonstrates the canonical 'inherited halogen estate' refurb where the engineer-of-record gets handed a working but non-compliant existing layout and needs to surface the Part L gap before signing off. Three severity=critical non_compliance_flags entries exercise INV-6 sub-checks 2, 3, 4 simultaneously (the only INV-6 sub-check that PASSes is sub-check 1: controls.part_l_assessed=true — the engineer DID assess Part L, just got a fail). INV-10 composite FAIL flags the layout-level non-compliance honestly."
+      },
+      {
+        "title": "Lumen-method walk (PASS by brute-force fitting count)",
+        "summary": "A=48 m². Hm=1950 mm. RI=1.76 → table key 1.5. UF=0.55 (LED_DOWNLIGHT ontology proxy at RI=1.5; halogen GU10 has similar 100 mm aperture + narrow beam optic). MF=0.80 (generous; halogen LLMF degrades faster than LED — stricter assessment would use 0.70 giving achieved 301 lux). Engineer specified N=50 (1 fitting per m² — typical inherited halogen 'wash' density). Achieved = (50×750×0.55×0.80)/48 = 16500/48 = 343.75 lux ≥ 300 target → INV-1 PASS with 14.6 % headroom. The PASS is real but unprincipled — 50 halogen fittings consume 2500 W of connected lighting load (52 W/m² density vs Part L 2021 reference 8 W/m²). The engineer over-provisioned fittings to compensate for halogen's low efficacy.",
+        "decisions": [
+          {
+            "label": "Lux target 300 lx maintained",
+            "summary": "BS EN 12464-1:2021 Table 5.3 entry for private_office sets 300-500 lx maintained depending on task. Using 300 lx as the lower bound — refurbishment retains the inherited 'general office lighting' brief rather than the higher 500 lx task-focused target.",
+            "rule": "BS EN 12464-1 Table 5.3 private_office (general)",
+            "code_clause": "BS EN 12464-1:2021 § 5.3.3"
+          },
+          {
+            "label": "N=50 by inherited fitting count (not lumen-method derived)",
+            "summary": "The existing halogen estate has 50 fittings in a 5×10 grid. Engineer chose to retain the layout (refurbishment, not new build) and over-provision rather than re-lay out. INV-1 PASSes but the design is energy-inefficient by design.",
+            "rule": "Refurbishment retain-existing layout",
+            "code_clause": "Approved Doc L (Part L 2021) § 6 + CIBSE TM 50:2020 retrofit guidance"
+          }
+        ]
+      },
+      {
+        "title": "Part L assessment — three critical failures (INV-6)",
+        "summary": "inputs.new_build=true (major refurbishment triggers Part L 2021 §6 per Approved Doc L Vol 2 §0.4) AND jurisdiction=england_wales triggers Part L enforcement. Four sub-checks per validator.md INV-6: (1) controls.part_l_assessed=true PASS — the engineer did run the assessment. (2) controls.required=[] does NOT include 'occupancy' FAIL critical. (3) inputs.glazed_walls=['west'] non-empty AND controls.required does NOT include 'daylight_linking' FAIL critical. (4) controls.lamp_efficacy_lm_per_w=15 ≥ 95 → 15 < 95 FAIL critical. Three of four sub-checks FAIL → Rule 6 FAIL with non_compliance_flags entries per validator.md instruction.",
+        "decisions": [
+          {
+            "label": "Efficacy 15 lm/W ≪ 95 lm/W (INV-6 sub-check 4 FAIL)",
+            "summary": "50W GU10 halogen produces 750 initial lm = 15 lm/W. Approved Doc L (Part L 2021) §6 Table 6 sets the office luminaire efficacy target at 95 lm/W (general office display lighting). Remediation: replace each lamp with GU10 LED retrofit at 8W / 800 lm = 100 lm/W (PASS), keeping the existing fitting body + transformer + cabling. Connected lighting load drops 2500 W → 400 W (84 % saving) with negligible disruption.",
+            "rule": "Part L 2021 §6 lamp efficacy ≥ 95 lm/W",
+            "code_clause": "Approved Doc L (Part L 2021) § 6 + BS EN 15193-1:2017 § 6"
+          },
+          {
+            "label": "No daylight-linking despite W glazing (INV-6 sub-check 3 FAIL)",
+            "summary": "Column 0 (L01, L11, L21, L31, L41 at x=300) sits within 1500 mm of the glazed W wall. Part L 2021 §6 requires daylight-linked dimming on those fittings. Remediation: split column 0 into perimeter zone Z1 on 0-10V dimming with photocell feedback at the W window head.",
+            "rule": "Part L 2021 §6 daylight-linked perimeter dimming",
+            "code_clause": "Approved Doc L (Part L 2021) § 6 + [control-rules#part-l-daylight]"
+          },
+          {
+            "label": "No occupancy detection (INV-6 sub-check 2 FAIL)",
+            "summary": "Private office requires automatic presence-with-absence-detection per Part L 2021 §6. Remediation: add PIR sensor wired to the C-L02..C-L05 interior circuits with manual override via SW01.",
+            "rule": "Part L 2021 §6 occupancy detection",
+            "code_clause": "Approved Doc L (Part L 2021) § 6 + [control-rules#part-l-occupancy]"
+          }
+        ]
+      },
+      {
+        "title": "S/H ratio check (PASS — halogen wash density)",
+        "summary": "50 luminaires in 5×10 grid in 8000×6000 room, 300 mm edge clearance. S_x=(8000−600)/9=822 mm. S_y=(6000−600)/4=1350 mm. Hm=1950 mm. SHR_max=1.4 (LED_DOWNLIGHT narrow-beam ontology default; halogen GU10 ≤ 1.4 also). Limit=1.4×1950=2730 mm. S_x=822 ≤ 2730 PASS (30 % of limit); S_y=1350 ≤ 2730 PASS (49 % of limit). INV-2 PASS comfortably — the halogen wash density is far denser than SHR would allow at minimum."
+      },
+      {
+        "title": "Zone assignment (INV-7 PASS — but the perimeter gap is a Part L issue)",
+        "summary": "All 50 luminaires in single Z2 interior zone with control='manual'. inputs.glazed_walls=['west'] non-empty. zones[] contains NO perimeter zone — INV-7 Rule 3 contrapositive ('if glazed=[], no perimeter zone') trivially PASSes because there IS a glazed wall but the structural test only forbids the reverse case. INV-7 PASS structurally. However the missing perimeter zone IS a Part L violation, surfaced by INV-6 sub-check 3 (daylight_linking absent). Two INVs cooperate: INV-7 confirms no broken zone definitions; INV-6 catches the missing zone."
+      },
+      {
+        "title": "Switch + circuit topology (INV-3 + INV-4 + INV-5 PASS)",
+        "summary": "Single S-wall entrance + controls_protocol=switched → 1 switch required, 1 emitted (SW01 1-gang at S latch side). INV-3 PASS. 5 row circuits C-L01..C-L05, each carrying 10 fittings × 50 W = 500 W on 6A Type B MCB (500 ≤ 1104 W = 0.8 × 6 × 230) — INV-5 PASS at 45 % of headroom (limiting factor is lamp load not OCPD). Each circuit's luminaires share single row_index → INV-4 PASS (no Z-pattern). Homeruns all on W wall."
+      },
+      {
+        "title": "Composite INV-10 FAIL",
+        "summary": "Schema validation PASSED. non_compliance_flags[] populated with 3 severity=critical entries (efficacy + daylight + occupancy — all three reference Part L). Rule 10 sub-check 3 satisfied: controls.part_l_compliant=false AND ≥1 non_compliance_flags entry with severity=critical referencing Part L. But the layout is non-compliant overall (compliant=false) so INV-10 composite FAIL HIGH reflects the failed state honestly. Downstream consumers reading intent-out.json see controls_summary.part_l_compliant=false and skip Part L sign-off gating."
+      },
+      {
+        "title": "Remediation summary (engineer notes)",
+        "summary": "Three changes needed for Part L sign-off: (1) GU10 LED retrofit lamps (8W/800lm/100 lm/W) cutting connected load 84 % — cheapest fix, retains fitting bodies. (2) Split column 0 into perimeter zone Z1 with 0-10V dimming + photocell at W window head. (3) Add PIR sensor wired to interior circuits with manual override via SW01. Total cost estimate: ~£3-5k for 50-fitting office (lamp swap + photocell + PIR + new dimming-capable driver on Z1). Payback period <2 years from energy savings alone (2100 W reduction × 2500 hours/year × £0.30/kWh = £1575/year)."
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Lumen method: N=50 halogen downlights × 750 lm × UF=0.55 × MF=0.80 / 48 m² = achieved_illuminance_lux=343.75 lux ≥ target 300 lux (Rule 1 PASS). 14.6 % headroom. PASS achieved by brute-force fitting count (50 fittings, 1 per m²); a principled LED-based design would reach 300 lux with ~5 fittings at 1000 lm + 100 lm/W. Per [spacing-rules#lumen-method-formula] + ontology LED_DOWNLIGHT UF table at RI=1.5 (proxy for halogen GU10 similar geometry)."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "S/H ratio: Hm=1950 mm, SHR_max=1.4 (LED_DOWNLIGHT narrow-beam ontology default), limit=2730 mm. 10 cols × 5 rows grid: S_x=(8000−600)/9=822 mm ≤ 2730 PASS (30 % of limit); S_y=(6000−600)/4=1350 mm ≤ 2730 PASS (49 % of limit). Per [spacing-rules#shr-max-default] + CIBSE LG7 §6.2. PASS comfortably — halogen wash density is far denser than SHR minimum."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Switch coverage: 1 entrance declared (S wall, offset 3500, width 900, door_swing=inward_latch_right) + controls_protocol=switched → INV-3 Rule 1 sub-check requires switches.length ≥ entrances.length: 1 ≥ 1 PASS. SW01 1-gang at (3500, 200) sits 200 mm to the latch side at door's left frame, controls_circuit='C-L01,C-L02,C-L03,C-L04,C-L05' (all five rows from one switch). height_aff_mm=1200 within [1150, 1250] band per [switching-rules#height] (BS 7671 §553.1.1 + IET OSG App E §E1.4). switch_side='latch'. Rule 3 PASS."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Circuit topology: 5 row circuits C-L01..C-L05 each feed exactly one row of 10 luminaires sharing single row_index (0, 1, 2, 3, 4 respectively). max(row_indices) − min(row_indices) = 0 per circuit ≤ 1 → no Z-pattern, no diagonal jumps. homerun_endpoints all on W wall (x_mm=0) at row y_mm ∈ {300, 1650, 3000, 4350, 5700} — all four required keys (x_mm, y_mm, wall) present, wall ∈ {N,S,E,W}. Rule 4a + 4b PASS."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Circuit load: each of C-L01..C-L05 has total_load_w=500 W = 10 × 50 W ≤ 0.8 × 6 A × 230 V = 1104 W (6A MCB limit). All five circuits PASS the 80% continuous-load cap per BS 7671:2018+A2:2022 §433.1.1 + IET OSG App A. 500 W is 45 % of headroom each — limiting factor is the inherited halogen lamp wattage rather than the OCPD."
+    },
+    {
+      "id": "INV-06",
+      "passes": false,
+      "severity": "high",
+      "evidence": "Part L compliance: inputs.new_build=true (major refurbishment triggers Part L 2021 §6) AND jurisdiction=england_wales triggers enforcement. (1) controls.part_l_assessed=true PASS. (2) controls.required=[] does NOT include 'occupancy' → sub-check 2 FAIL. (3) glazed_walls=['west'] non-empty AND controls.required does NOT include 'daylight_linking' → sub-check 3 FAIL. (4) controls.lamp_efficacy_lm_per_w=15 < 95 → sub-check 4 FAIL critical. Three of four sub-checks FAIL → Rule 6 FAIL. Per validator.md: emit non_compliance_flags entries with severity=critical AND set INV to FAIL — three entries emitted. controls.part_l_compliant=false. Per Approved Doc L 2021 §6 + BS EN 15193-1:2017 §6."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "Zone assignment: all 50 luminaires reference zone_id=Z2 (interior); 1:1 referential integrity. zones[]=[Z2] only — no perimeter zone declared. inputs.glazed_walls=['west'] non-empty, but INV-7 Rule 3 only forbids the case where zone_type='perimeter' exists without matching glazed wall, OR perimeter exists when glazed_walls=[]. The structural check trivially PASSes here. The missing perimeter zone IS a Part L violation, surfaced by INV-6 sub-check 3 — INV-6 + INV-7 cooperate to catch both the structural (INV-7) and the regulatory (INV-6) layer."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "selection_source.photometric_source='ontology_default'; citation references 'CIBSE LG7 §6.2 (recessed downlight typical values; narrow beam) + BS EN 12464-1:2021 §4.4' — matches ontology LED_DOWNLIGHT.photometric._citation as the photometric geometry proxy. Lumen + efficacy fields override ontology defaults with the actual halogen specification. The override is honest (engineer notes the substitution in selection_source.citation). Rule 8 PASS."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "drafting_furniture present with all 4 required blocks (title_block + scale_bar + dimensions[2] + luminaire_schedule). All annotations declare font_family='Arial' + explicit font_size_pt ∈ {8, 10}. No {{placeholder}} substrings in any text field. dimensions.length=2 ≥ 2 minimum. Rule 9 PASS."
+    },
+    {
+      "id": "INV-10",
+      "passes": false,
+      "severity": "high",
+      "evidence": "Schema validation PASSED (precondition: golden CI gate). All top-level required fields populated. non_compliance_flags[] populated with 3 entries, all correct object shape {message, reference, severity=critical}, all three reference Approved Doc L 2021 §6. Rule 10 sub-check 3 cross-check: controls.part_l_compliant=false AND ≥1 non_compliance_flags entry with severity=critical referencing Part L — PASS (three such entries). But the layout is non-compliant overall (calculation_summary.compliant=false, with INV-6 FAIL) so INV-10 composite FAIL HIGH per the populated non_compliance_flags + compliant=false signalling pair."
+    }
+  ],
+  "drafting_furniture": {
+    "title_block": {
+      "project_name": "UK private office — D3.C.2 Part L halogen-refurb FAIL demo",
+      "drawing_number": "EL-D3-DEMO-003",
+      "revision": "A",
+      "date": "2026-05-28",
+      "scale": "1:50",
+      "sheet_size": "A3",
+      "font_family": "Arial",
+      "font_size_pt": 10
+    },
+    "scale_bar": {
+      "origin_x_mm": 5500,
+      "origin_y_mm": 6500,
+      "total_length_mm": 2000,
+      "tick_interval_mm": 500,
+      "font_family": "Arial",
+      "font_size_pt": 8
+    },
+    "dimensions": [
+      {
+        "axis": "horizontal",
+        "start_x_mm": 0,
+        "start_y_mm": -300,
+        "end_x_mm": 8000,
+        "end_y_mm": -300,
+        "text": "8000 mm",
+        "font_family": "Arial",
+        "font_size_pt": 10
+      },
+      {
+        "axis": "vertical",
+        "start_x_mm": -300,
+        "start_y_mm": 0,
+        "end_x_mm": -300,
+        "end_y_mm": 6000,
+        "text": "6000 mm",
+        "font_family": "Arial",
+        "font_size_pt": 10
+      }
+    ],
+    "luminaire_schedule": {
+      "columns": ["Ref", "Manufacturer", "Lumens", "Wattage", "Count"],
+      "rows": [["GU10 halogen 50W (inherited)", "Generic", "750", "50W", "50"]],
+      "font_family": "Arial",
+      "font_size_pt": 8
+    }
+  },
+  "mode": "full_drawing"
+}

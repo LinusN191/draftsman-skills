@@ -1,0 +1,27 @@
+{
+  "_note": "D3.C.2 failure-mode example #1 — engineer under-spec'd 12 × 3500 lm panels in a 3×4 grid for a 500 lux target. Lumen method shows N=14 required (round up). Achieved 434 lux < 500 → INV-1 FAIL HIGH. Plus is_uk_new_build=true but controls.part_l_assessed=false → INV-6 FAIL HIGH. Plus INV-10 composite FAIL because non_compliance_flags is populated.",
+  "room_type": "private_office",
+  "room_length_m": 8,
+  "room_width_m": 6,
+  "ceiling_height_m": 2.7,
+  "working_plane_m": 0.75,
+  "luminaire": {
+    "type": "600x600 LED Recessed Panel — under-specified 3500 lm variant",
+    "symbol": "LED_PANEL_600",
+    "lumen_output": 3500,
+    "lumen_type": "design",
+    "wattage_w": 36,
+    "cct_k": 4000,
+    "cri_ra": 80,
+    "ip_rating": "IP20"
+  },
+  "ceiling_grid_mm": 600,
+  "new_build": true,
+  "jurisdiction": "england_wales",
+  "glazed_walls": [],
+  "entrance_positions": [
+    {"wall": "S", "offset_mm": 3500, "width_mm": 900, "door_swing": "inward_latch_right"}
+  ],
+  "controls_protocol": "DALI",
+  "db_designation": "L1"
+}

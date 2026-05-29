@@ -1,0 +1,347 @@
+{
+  "_note": "D3.C.2 failure-mode example #1. Engineer under-specified 12 × 3500 lm panels in 4×3 grid for a 500 lux target — achieved 434 lux < 500 (13% shortfall). INV-1 + INV-6 + INV-10 all FAIL. Layout otherwise drawable so the renderer + downstream consumers can still react to the recorded failures (intent emission carries part_l_compliant=false + non_compliance_flags so db-layout sees the under-loaded circuits and skips diversity uplift).",
+  "drawing_type": "lighting_layout",
+  "version": "1.4.0",
+  "room": {
+    "length_mm": 8000,
+    "width_mm": 6000,
+    "area_m2": 48,
+    "ceiling_height_mm": 2700,
+    "working_plane_mm": 750,
+    "hm_mm": 1950,
+    "room_index": 1.76,
+    "room_type": "private_office",
+    "environment_type": "normal",
+    "ip_required": "IP20",
+    "has_windows": false
+  },
+  "luminaire_type": {
+    "symbol": "LED_PANEL_600",
+    "description": "600×600 LED Recessed Panel — under-specified 3500 lm variant",
+    "lumens": 3500,
+    "lumen_type": "design",
+    "llmf_applied": false,
+    "wattage_w": 36,
+    "cct_k": 4000,
+    "cri_ra": 80,
+    "ip_rating": "IP20",
+    "lamp_efficacy_lm_per_w": 97.2
+  },
+  "selection_source": {
+    "photometric_source": "ontology_default",
+    "citation": "CIBSE LG7 §6.2 (typical recessed LED panel UF + SHR_max) + BS EN 12464-1:2021 §4.4 (LLMF maintenance categories)"
+  },
+  "zones": [
+    {
+      "zone_id": "Z2",
+      "label": "Interior — open private office (no glazing)",
+      "zone_type": "interior",
+      "control": "dali_master",
+      "circuit_id": "C-L01",
+      "circuit_ids": ["C-L01", "C-L02", "C-L03"],
+      "luminaire_ids": ["L01","L02","L03","L04","L05","L06","L07","L08","L09","L10","L11","L12"],
+      "luminaire_count": 12,
+      "total_load_w": 432
+    }
+  ],
+  "luminaires": [
+    {"id": "L01", "x_mm": 300,  "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L02", "x_mm": 2767, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L03", "x_mm": 5233, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L04", "x_mm": 7700, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L05", "x_mm": 300,  "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L06", "x_mm": 2767, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L07", "x_mm": 5233, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L08", "x_mm": 7700, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L09", "x_mm": 300,  "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L10", "x_mm": 2767, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L11", "x_mm": 5233, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L12", "x_mm": 7700, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L03"}
+  ],
+  "switches": [
+    {
+      "id": "SW01",
+      "type": "dali_master",
+      "x_mm": 4600,
+      "y_mm": 200,
+      "height_aff_mm": 1200,
+      "controls_circuit": "C-L01,C-L02,C-L03",
+      "door_swing": "inward_latch_right",
+      "switch_side": "latch"
+    }
+  ],
+  "circuits": [
+    {
+      "circuit_id": "C-L01",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L01", "L02", "L03", "L04"],
+      "total_load_w": 144,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 0,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 300, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L02",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L05", "L06", "L07", "L08"],
+      "total_load_w": 144,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 1,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 3000, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L03",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L09", "L10", "L11", "L12"],
+      "total_load_w": 144,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 2,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 5700, "wall": "W"}
+    }
+  ],
+  "controls": {
+    "dimming_protocol": "DALI",
+    "occupancy_sensing": true,
+    "daylight_linking": false,
+    "part_l_assessed": false,
+    "part_l_compliant": false,
+    "part_l_efficacy_target_lm_per_w": 95,
+    "lamp_efficacy_lm_per_w": 97.2,
+    "perimeter_zones": [],
+    "required": ["occupancy"]
+  },
+  "calculation_summary": {
+    "target_illuminance_lux": 500,
+    "achieved_illuminance_lux": 434.0,
+    "utilisation_factor": 0.62,
+    "maintenance_factor": 0.80,
+    "lamp_efficacy_lm_per_w": 97.2,
+    "part_l_efficacy_target_lm_per_w": 95,
+    "ugr_status": "UGR ≤ 19 — confirm from photometric data",
+    "compliant": false,
+    "discovery_status": "complete",
+    "non_compliance_flags": [
+      {
+        "message": "Achieved illuminance 434 lux < target 500 lux — under-provision by 13.2%. Lumen method requires N = (500×48)/(3500×0.62×0.80) = 13.82, round UP to 14. Remediation: bump to 16 panels in a 4×4 grid (achieved 579 lux) OR upgrade to 4500 lm panels and keep the 12-fitting layout (achieved 558 lux).",
+        "reference": "BS EN 12464-1:2021 §4 (illuminance criteria) + CIBSE LG7 §6 (lumen method) + [spacing-rules#lumen-method-formula]",
+        "severity": "critical"
+      },
+      {
+        "message": "controls.part_l_assessed=false but inputs.new_build=true — Part L 2021 §6 compliance assessment skipped. Remediation: run Part L §6 lighting compliance check (efficacy target ≥ 95 lm/W + automatic controls + daylight-linked perimeter where glazing present) and set part_l_assessed=true with part_l_compliant reflecting the result.",
+        "reference": "Approved Doc L (Part L 2021) §6 + BS EN 15193-1:2017 §6",
+        "severity": "critical"
+      }
+    ],
+    "assumptions": [
+      "UF = 0.62 from CIBSE LG7 §6.2 standard reflectance table 0.7/0.5/0.2 at RI=1.5 (next-lower band for actual RI=1.76)",
+      "MF = 0.80 for clean office LED on a 3-year cleaning cycle (CIBSE TM 3-25)",
+      "Engineer specified luminaire = 3500 lm under-spec'd variant of LED_PANEL_600; standard ontology entry is 4500 lm. Specification likely a value-engineering substitution that bypassed lumen-method re-check."
+    ]
+  },
+  "drawing_notes": [
+    "All luminaires: 600×600 LED recessed panel, 3500 design lm, 36W, 4000K, CRI ≥ 80",
+    "NON-COMPLIANT LAYOUT — DO NOT ISSUE FOR CONSTRUCTION (achieved 434 lux < 500 lux target; bump to 16 panels or 4500 lm fittings)",
+    "DALI master switch SW01 at S entrance latch side, 1200 mm AFF — controls all 3 row circuits",
+    "Three 6A Type B MCBs on DB L1, one per row, 144W per circuit (well below 1104W 80%-rule headroom)",
+    "Part L 2021 §6 compliance NOT assessed — must be completed before issue (efficacy + automatic controls)",
+    "Ceiling grid: 600 mm module assumed — confirm from architect's reflected ceiling plan"
+  ],
+  "flags": [
+    "NON-COMPLIANCE: under-lit (INV-1) — 434 lx vs 500 lx target",
+    "NON-COMPLIANCE: Part L not assessed (INV-6) — new-build flag set but assessment skipped"
+  ],
+  "rationale": {
+    "chat_summary": "8×6 m UK private office demonstrating INV-1 under-provision failure mode. Engineer specified 12 × 3500 lm LED panels in a 4×3 grid; lumen method shows N=14 required (round UP). Achieved 434 lux < 500 lux target (13% shortfall) → INV-1 FAIL HIGH. Plus is_uk_new_build=true yet controls.part_l_assessed=false → INV-6 FAIL HIGH. Plus INV-10 composite FAIL (non_compliance_flags populated). Two severity=critical flags emitted with remediation guidance.",
+    "sections": [
+      {
+        "title": "Why this example exists",
+        "summary": "Demonstrates the deterministic INV-1 catch on under-provision — the single most common bug in LLM-driven lighting layouts (round-to-nearest or value-engineered luminaire swap without re-running the lumen method). Also exercises the INV-6 Part-L-gating path on a new-build with controls.part_l_assessed=false, and the INV-10 composite path where non_compliance_flags is populated. Three of ten INVs FAIL — engineer-of-record must act on the recorded flags before issue."
+      },
+      {
+        "title": "Lumen-method walk",
+        "summary": "A=48 m². Hm=2700−750=1950 mm. RI=(8×6)/(1.95×14)=48/27.3=1.76 → ontology table key 1.5 (next-lower band per LG7 §6.2). UF=0.62 (LED_PANEL_600 at RI=1.5, reflectances 0.7/0.5/0.2). MF=0.80 (clean office LED). Required N = (Em×A)/(Φ×UF×MF) = (500×48)/(3500×0.62×0.80) = 24000/1736 = 13.82 → round UP to 14. Engineer chose N=12 → achieved = (12×3500×0.62×0.80)/48 = 20832/48 = 434 lux < 500 → INV-1 FAIL.",
+        "decisions": [
+          {
+            "label": "Lux target 500 lx maintained",
+            "summary": "BS EN 12464-1:2021 Table 5.3 entry for private_office sets 500 lx maintained.",
+            "rule": "BS EN 12464-1 Table 5.3 entry for private_office",
+            "code_clause": "BS EN 12464-1:2021 § 5.3.3"
+          },
+          {
+            "label": "Engineer N=12 vs lumen-method N=14 (under-provision)",
+            "summary": "Engineer specified 12 panels in a 4×3 grid; lumen method requires 14 (round UP from 13.82). The engineer-of-record likely value-engineered down from the original 4500 lm specification to 3500 lm without re-running the lumen-method check — INV-1 catches this deterministically.",
+            "rule": "Round up; never round down",
+            "code_clause": "CIBSE LG7 §6 + BS EN 12464-1:2021 §4.3"
+          }
+        ]
+      },
+      {
+        "title": "S/H ratio check (still PASS despite under-provision)",
+        "summary": "4 cols × 3 rows in 8000×6000 room, 300 mm edge clearance. S_x=(8000−600)/3=2467 mm. S_y=(6000−600)/2=2700 mm. Hm=1950 mm. SHR_max=1.5 (LED_PANEL_600 ontology default). Limit = 1.5 × 1950 = 2925 mm. S_x=2467 ≤ 2925 PASS; S_y=2700 ≤ 2925 PASS. INV-2 PASS. Note: bumping to 4×4=16 panels for remediation would still PASS S/H (S_y becomes 1800 mm, well within limit)."
+      },
+      {
+        "title": "Part L assessment gap (INV-6 FAIL)",
+        "summary": "inputs.new_build=true triggers Part L 2021 §6 enforcement. controls.part_l_assessed=false → INV-6 FAIL HIGH. The DALI controls are present (occupancy sensing wired through the master) but no formal Part L assessment was recorded. controls.part_l_compliant=false reflects the unassessed state. Lamp efficacy 3500/36=97.2 lm/W ≥ 95 lm/W target — the efficacy check would PASS once assessed, but the missing assessment itself blocks compliance.",
+        "decisions": [
+          {
+            "label": "Part L 2021 §6 assessment recorded as not_done",
+            "summary": "Approved Doc L 2021 §6 requires a documented lighting compliance check on new-build commercial spaces. Setting controls.part_l_assessed=false on a new_build=true input records the gap honestly rather than silently asserting compliance.",
+            "rule": "Part L 2021 §6 assessment record",
+            "code_clause": "Approved Doc L (Part L 2021) § 6"
+          }
+        ]
+      },
+      {
+        "title": "Switch placement (INV-3 PASS)",
+        "summary": "Single S-wall entrance (offset 3500 mm, width 900 mm, door_swing=inward_latch_right). Latch frame at x=3500+900=4400. Switch SW01 placed 200 mm to the latch side at (4600, 200), 1200 mm AFF. controls_protocol=DALI → single dali_master switch satisfies INV-3's DALI exception (one master sufficient). switch_side='latch' per [switching-rules#latch-side]. INV-3 PASS."
+      },
+      {
+        "title": "Circuit topology (INV-4 + INV-5 PASS)",
+        "summary": "3 row circuits C-L01..C-L03, one per row of 4 luminaires. Each circuit's luminaire_ids share a single row_index (0, 1, 2 respectively) — no Z-pattern, INV-4 PASS. Each circuit at 4×36=144W ≤ 1104W (6A × 0.8 × 230) — INV-5 PASS, ~13% of headroom. Homeruns all exit on W wall at the row's y_mm."
+      },
+      {
+        "title": "Composite INV-10 FAIL",
+        "summary": "non_compliance_flags[] populated with 2 severity=critical entries (under-lit + Part-L-not-assessed). Per validator.md INV-10 Rule 3: 'if controls.part_l_compliant == false: at least one non_compliance_flags entry with severity == critical referencing Part L' — satisfied (the Part-L-not-assessed entry references Approved Doc L 2021 §6). But the overall layout is non-compliant (compliant=false), so INV-10 FAIL HIGH composite reflects the failed state honestly. Downstream consumers see the failure in intent-out.json and skip drawing-issue gating."
+      },
+      {
+        "title": "Remediation guidance",
+        "summary": "Two viable paths: (a) Bump to 16 panels in a 4×4 grid — achieved 16×3500×0.62×0.80/48 = 17360/30 = 579 lux ≥ 500 (15.7% over-provision). (b) Upgrade to 4500 lm panels and keep 12-fitting 4×3 layout — achieved 12×4500×0.62×0.80/48 = 26784/48 = 558 lux ≥ 500. Path (a) costs ~33% more fittings + extra DALI addresses + 4 extra rows of cable; path (b) is the canonical fix (the original 4500 lm spec). Engineer-of-record decision."
+      },
+      {
+        "title": "Assumptions",
+        "summary": "UF + SHR_max from CIBSE LG7 standard ontology defaults; engineer must confirm against manufacturer photometric file before issue. MF=0.80 assumes a 3-year cleaning cycle in a clean office. The 3500 lm value-engineered specification is itself a flagged risk — the original 4500 lm spec is the canonical LED_PANEL_600 ontology entry.",
+        "decisions": [
+          {
+            "label": "UF = 0.62 (RI=1.5 next-lower band for actual RI=1.76)",
+            "summary": "CIBSE LG7 §6.2 standard reflectance table 0.7/0.5/0.2 for indoor office.",
+            "rule": "Standard CIBSE reflectance table; next-lower RI band",
+            "code_clause": "CIBSE LG7 §6.2 + BS EN 12464-1:2021 §4.4"
+          },
+          {
+            "label": "MF = 0.80",
+            "summary": "Clean office LED on a 3-year cleaning cycle.",
+            "rule": "CIBSE TM 3-25 standard MF for clean office LED",
+            "code_clause": "CIBSE TM 3-25"
+          }
+        ]
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": false,
+      "severity": "high",
+      "evidence": "Lumen method: N=12 LED_PANEL_600 × 3500 lm × UF=0.62 × MF=0.80 / 48 m² = achieved_illuminance_lux=434 lux < target 500 lux (Rule 1 FAIL). Shortfall = 66 lux (13.2%). Required N = (500×48)/(3500×0.62×0.80) = 24000/1736 = 13.82 → round UP to 14. Remediation: bump to 16 panels in 4×4 grid (achieved 579 lux) OR upgrade to 4500 lm panels (achieved 558 lux). Per [spacing-rules#lumen-method-formula] + BS EN 12464-1:2021 §4."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "S/H ratio: Hm=1950 mm, SHR_max=1.5 (LED_PANEL_600 ontology default), limit=2925 mm. 4 cols × 3 rows grid: S_x=(8000−600)/3=2467 mm ≤ 2925 PASS; S_y=(6000−600)/2=2700 mm ≤ 2925 PASS. Per [spacing-rules#shr-max-default] + CIBSE LG7 §6.2."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Switch coverage: 1 entrance declared (S wall, offset 3500, width 900, door_swing=inward_latch_right), 1 switch emitted (SW01 dali_master). controls_protocol=DALI → INV-3 Rule 1 DALI exception satisfied (one master sufficient). Position (4600, 200) sits 200 mm to the latch side of the latch frame (x=4400); height_aff_mm=1200 within [1150, 1250] band per [switching-rules#height] (BS 7671 §553.1.1 + IET OSG App E §E1.4); switch_side='latch'. Rule 3 PASS."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Circuit topology: 3 row circuits C-L01..C-L03 each feed exactly one row of 4 luminaires sharing single row_index (0, 1, 2 respectively). max(row_indices) − min(row_indices) = 0 per circuit ≤ 1 → no Z-pattern. homerun_endpoints all on W wall (x_mm=0) at row y_mm ∈ {300, 3000, 5700} — all four required keys (x_mm, y_mm, wall) present, wall ∈ {N,S,E,W}. Rule 4a + 4b PASS."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Circuit load: each of C-L01..C-L03 has total_load_w=144 W = 4 × 36 W ≤ 0.8 × 6 A × 230 V = 1104 W (6A MCB limit). All three circuits PASS the 80% continuous-load cap per BS 7671:2018+A2:2022 §433.1.1 + IET OSG App A. 144 W is 13% of headroom — generous spare for future DALI-addressable fixture additions."
+    },
+    {
+      "id": "INV-06",
+      "passes": false,
+      "severity": "high",
+      "evidence": "Part L compliance: inputs.new_build=true (private office, new-build commercial) AND jurisdiction=england_wales triggers Part L 2021 §6 enforcement. controls.part_l_assessed=false → Rule 6 sub-check 1 FAIL. Per validator.md INV-6: emit non_compliance_flags entry with severity=critical AND set this INV to FAIL — both done. Note: lamp efficacy 3500/36=97.2 lm/W ≥ 95 lm/W Part L target would PASS Rule 6 sub-check 4 once assessed, but the missing assessment itself blocks the rule. Per Approved Doc L 2021 §6 + BS EN 15193-1:2017 §6."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "Zone assignment: all 12 luminaires reference zone_id=Z2 (interior); 1:1 referential integrity. inputs.glazed_walls=[] → no perimeter zone may exist; zones[]=[Z2] only — consistency PASS per [switching-rules#perimeter-circuit] iff-clause. Zone Z2 control='dali_master' matches interior zone_type. Rule 7 PASS."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "selection_source.photometric_source='ontology_default'; citation='CIBSE LG7 §6.2 (typical recessed LED panel UF + SHR_max) + BS EN 12464-1:2021 §4.4 (LLMF maintenance categories)' — matches ontology LED_PANEL_600.photometric._citation exactly. No inputs.photometric_override supplied; generator fell back to ontology defaults. Rule 8 PASS per ontology._verification_status=engineer_typical_C2."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "drafting_furniture present with all 4 required blocks (title_block + scale_bar + dimensions[2] + luminaire_schedule). All annotations declare font_family='Arial' + explicit font_size_pt ∈ {8, 10}. No {{placeholder}} substrings in any text field. dimensions.length=2 ≥ 2 minimum. Rule 9 PASS."
+    },
+    {
+      "id": "INV-10",
+      "passes": false,
+      "severity": "high",
+      "evidence": "Schema validation PASSED (precondition: golden CI gate). Schema-required fields populated. non_compliance_flags[] populated with 2 entries, both correct object shape {message, reference, severity ∈ {critical,warning,info}} — severity=critical on both, referencing the under-provision + Part L gap. Rule 10 sub-check 3 cross-check: controls.part_l_compliant=false AND non_compliance_flags contains a severity=critical entry referencing 'Part L' — PASS. But the layout is non-compliant overall (calculation_summary.compliant=false, with INV-1 + INV-6 FAIL) so INV-10 composite FAIL HIGH per the populated non_compliance_flags + compliant=false signalling pair."
+    }
+  ],
+  "drafting_furniture": {
+    "title_block": {
+      "project_name": "UK private office — D3.C.2 INV-1 + INV-6 under-provision demo",
+      "drawing_number": "EL-D3-DEMO-001",
+      "revision": "A",
+      "date": "2026-05-28",
+      "scale": "1:50",
+      "sheet_size": "A3",
+      "font_family": "Arial",
+      "font_size_pt": 10
+    },
+    "scale_bar": {
+      "origin_x_mm": 5500,
+      "origin_y_mm": 6500,
+      "total_length_mm": 2000,
+      "tick_interval_mm": 500,
+      "font_family": "Arial",
+      "font_size_pt": 8
+    },
+    "dimensions": [
+      {
+        "axis": "horizontal",
+        "start_x_mm": 0,
+        "start_y_mm": -300,
+        "end_x_mm": 8000,
+        "end_y_mm": -300,
+        "text": "8000 mm",
+        "font_family": "Arial",
+        "font_size_pt": 10
+      },
+      {
+        "axis": "vertical",
+        "start_x_mm": -300,
+        "start_y_mm": 0,
+        "end_x_mm": -300,
+        "end_y_mm": 6000,
+        "text": "6000 mm",
+        "font_family": "Arial",
+        "font_size_pt": 10
+      }
+    ],
+    "luminaire_schedule": {
+      "columns": ["Ref", "Manufacturer", "Lumens", "Wattage", "Count"],
+      "rows": [["LED_PANEL_600 (under-spec)", "Generic", "3500", "36W", "12"]],
+      "font_family": "Arial",
+      "font_size_pt": 8
+    }
+  },
+  "mode": "full_drawing"
+}
