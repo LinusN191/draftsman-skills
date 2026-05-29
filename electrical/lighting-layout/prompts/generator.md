@@ -256,48 +256,189 @@ proportional to fixture count; an over-optimistic MF produces a dim room.]
 [ASSUMPTION: MF = [value] assumed for [environment] with [cleaning interval]
 cleaning. Confirm cleaning regime and LED rated life from specification.]
 
-### Step 6 — Calculate number of luminaires
+### Step 6 — Lumen Method (N count calculation per [spacing-rules#lumen-method-formula])
+
+#### 6.1 — Compute room index RI
+
+`RI = (L × W) / (Hm × (L + W))` per [spacing-rules#room-index].
+
+`Hm = ceiling_height_mm − working_plane_mm` (working plane from
+[spacing-rules#working-plane-defaults] by `room_type`).
+
+**Example (10×8 m open-plan office, 2.7 m ceiling):**
+- L = 10 m, W = 8 m
+- working_plane = 750 mm (open_plan_office), ceiling = 2700 mm
+- Hm = 2700 − 750 = 1950 mm = 1.95 m
+- RI = (10 × 8) / (1.95 × (10 + 8)) = 80 / 35.1 = 2.28 → look up at RI=2.0
+  (round down to ontology table key)
+
+#### 6.2 — Resolve photometric values (UF, SHR_max, MF)
+
+**Lookup order (override-first):**
 
 ```
-N = (Em × A) / (Φ × UF × MF)
+uf = inputs.photometric_override?.uf_table_by_ri?.[RI]?.[reflectance_triplet]
+     ?? ontology[luminaire_type].photometric.uf_table_by_ri[RI][reflectance_triplet]
 
-Em = target maintained illuminance (lux)
-A  = room area = L × W (m²)
-Φ  = luminaire design lumen output (lm) — after applying LLMF if initial lumens were given
-N  = number of luminaires — always round UP
+shr_max = inputs.photometric_override?.shr_max
+          ?? ontology[luminaire_type].photometric.shr_max
+
+llmf = inputs.photometric_override?.llmf_at_design_hours
+       ?? ontology[luminaire_type].photometric.llmf_schedule[environment][design_hours]
 ```
 
-Show the calculation with numbers. Never round down. State achieved illuminance
-with N (rounded up) luminaires:
+Record which path won in `selection_source.photometric_source` (=
+`"input_override"` OR `"ontology_default"`) and `selection_source.citation`
+(= override `_source` OR ontology `_citation`). **INV-8 enforces this.**
 
+**Reflectance triplet** = `<ceiling>_<wall>_<floor>`. Default for offices
+is `0.7_0.5_0.2` (per BS EN 12464-1:2021 Annex C typical interior
+reflectances).
+
+**Example (LED_PANEL_600 at RI=2.0, reflectances 0.7_0.5_0.2):**
+- From `ontology/luminaire-types.json`: UF = 0.67, SHR_max = 1.5
+- environment = "clean_office", design_hours = "6000h" → LLMF = 0.95
+- LSF × LMF × RSMF (luminaire survival × luminaire maintenance ×
+  room surface maintenance) ≈ 0.84 (typical clean office; cite
+  CIBSE LG7 §6.2)
+- MF = LLMF × LSF × LMF × RSMF ≈ 0.95 × 0.84 = 0.80
+- selection_source = {photometric_source: "ontology_default",
+  citation: "CIBSE LG7 §6.2 + BS EN 12464-1:2021 §4.4"}
+
+#### 6.3 — Compute N (round UP)
+
+Per [spacing-rules#lumen-method-formula]:
+
+`N = (Em × A) / (Φ × UF × MF)` — round UP.
+
+**Worked example (continued — 10×8 m office, 500 lux target, 6000 lm
+LED panels):**
+- Em = 500 lux, A = 80 m², Φ = 6000 lm, UF = 0.67, MF = 0.80
+- N = (500 × 80) / (6000 × 0.67 × 0.80)
+    = 40000 / 3216
+    = 12.44
+- **Round UP → N = 13** (never under-provide; one luminaire of headroom
+  buys ~3% extra illuminance margin)
+
+**Counter-example (under-counted bug from end-to-end test):**
+If the generator computed `N = 12` (round to nearest), achieved_lux =
+12 × 6000 × 0.67 × 0.80 / 80 = **482 lux < 500 target**. INV-1 fires
+HIGH. Always round UP per the rule.
+
+#### 6.4 — Compute achieved_illuminance_lux
+
+After fixing N, recompute the achieved illuminance:
+
+`achieved = (N × Φ × UF × MF) / A`
+
+For 13 panels: `achieved = (13 × 6000 × 0.67 × 0.80) / 80 = 41808 / 80 = 522.6 lux`. **≥ target_illuminance_lux** — INV-1 PASS.
+
+Emit in `calculation_summary.achieved_illuminance_lux`. **INV-1 enforces
+`achieved_illuminance_lux ≥ target_illuminance_lux`.**
+
+#### 6.5 — `calc.lumen_grid_solver` tool call (when runtime ships it)
+
+Generator MAY call `calc.lumen_grid_solver` to verify the hand-computed
+result point-grid-wise. Expected output spec:
+
+```json
+{
+  "achieved_illuminance_lux": <number>,
+  "uniformity_u0": <number 0..1>,
+  "point_grid": [
+    {"x_mm": <int>, "y_mm": <int>, "lux": <number>}
+  ],
+  "calc_method": "lumen_method_simplified | full_point_grid"
+}
 ```
-E_achieved = (N × Φ × UF × MF) / A
-```
 
-Confirm E_achieved ≥ Em.
+If the tool's `achieved_illuminance_lux` differs from the hand-computed
+value by >5%, prefer the tool result and update `calculation_summary`
+accordingly. If the tool is unavailable at runtime, set
+`tool_call_pending: true` on `calculation_summary` and emit the
+hand-computed value.
 
-### Step 7 — Determine grid arrangement
+### Step 7 — S/H Ratio Enforcement Loop (per [spacing-rules#shr-max-default])
 
-Choose rows × columns that:
-1. Achieves spacing S ≤ SHR_max × Hm in both directions
-2. Maintains edge spacing S_edge ≤ 0.5 × SHR_max × Hm for perimeter fixtures
-3. Aligns with ceiling grid module (600mm or 1200mm typical)
-4. Uses a whole-number symmetric grid where possible
+After Step 6 fixes N, lay out the grid and check the spacing. **Loop
+until both directions PASS or until adding rows/columns is no longer
+feasible.**
 
-If the lumen-method N doesn't produce a clean grid, round up to the nearest
-clean grid (e.g. 16 becomes 18 in a 3×6 grid) and confirm the achieved lux
-with the new N.
+#### 7.1 — Initial grid layout
 
-Check spacing compliance:
-```
-S_max = SHR_max × Hm
-S_edge_max = 0.5 × S_max
-```
+Given N luminaires + room L × W, pick the closest `n_rows × n_cols`
+factorisation favouring near-square cells:
 
-State uniformity estimate: for a regular grid, U0 ≈ 0.65–0.75 is achievable.
-Flag if the grid produces S > S_max:
-[NON-COMPLIANCE RISK: Spacing X mm exceeds S_max Y mm. Increase fixture count
-or select luminaire with higher SHR_max.]
+- For N=13: `n_rows × n_cols ∈ {1×13, 13×1}` — neither is square.
+  Bump N→14 to get {2×7, 7×2} or N→15 for {3×5}. Round UP at this
+  step too: pick the next-larger N that allows a near-square
+  factorisation if the original N forces a strip layout.
+- For N=12: {3×4, 4×3, 2×6, 6×2}. Pick {3×4} for a 10×8 m room
+  (long axis takes more luminaires).
+
+#### 7.2 — Compute S_x and S_y
+
+For a grid with edge clearance e (from [placement-rules#edge-clearance],
+default 300 mm) and ceiling-grid snap (from [placement-rules#grid-snap]):
+
+- `S_x = (L − 2e) / (n_cols − 1)`  if n_cols ≥ 2; else `S_x = L − 2e`
+- `S_y = (W − 2e) / (n_rows − 1)`  if n_rows ≥ 2; else `S_y = W − 2e`
+
+**Worked example (10×8 m office, 12 panels in 3×4 grid):**
+- e = 300 mm, n_cols = 4, n_rows = 3
+- S_x = (10000 − 600) / 3 = 9400 / 3 = 3133 mm
+- S_y = (8000 − 600) / 2 = 7400 / 2 = 3700 mm
+
+#### 7.3 — Enforce SHR_max constraint
+
+From [spacing-rules#shr-max-default] (default SHR_max = 1.5) and ontology
+[`LED_PANEL_600`].photometric.shr_max:
+
+`S_x ≤ SHR_max × Hm AND S_y ≤ SHR_max × Hm`
+
+**Worked example (continued, Hm = 1.95 m, SHR_max = 1.5):**
+- Limit = 1.5 × 1950 = 2925 mm
+- S_x = 3133 > 2925 ❌ FAIL
+- S_y = 3700 > 2925 ❌ FAIL
+
+**Both fail → add a row AND a column** (one cycle): N goes 12 → next
+factorisation that satisfies. Try N = 16 in 4×4 grid:
+- S_x = 9400 / 3 = 3133 mm (n_cols still 4)
+- S_y = 7400 / 3 = 2467 mm ✓ now PASS for y-axis
+
+Still fail x-axis. Bump n_cols → 5, N=20 in 4×5 grid:
+- S_x = 9400 / 4 = 2350 mm ✓ PASS
+- S_y = 7400 / 3 = 2467 mm ✓ PASS
+
+**INV-2 enforces** `S_x ≤ SHR_max × Hm AND S_y ≤ SHR_max × Hm` on every
+shipped layout.
+
+#### 7.4 — Snap to ceiling grid
+
+Per [placement-rules#grid-snap]: if `ceiling_grid_mm ∈ {600, 1200}`,
+snap each luminaire's centre to the nearest grid-module centre. May
+shift the S_x / S_y by up to half a grid module — re-check INV-2 after
+snapping.
+
+#### 7.5 — Edge cases
+
+- **If even N=20 fails SHR**: the room is too tall for this luminaire
+  (Hm × SHR_max < minimum feasible spacing). Switch to a luminaire with
+  a higher SHR_max (LINEAR_LED has SHR_max=1.6) OR drop ceiling height
+  via suspended luminaires (reduces Hm). Emit `non_compliance_flags`
+  with `severity: warning` if unable to satisfy; INV-2 fires.
+- **If room is very small (N < 4)**: use N=4 minimum (one luminaire per
+  quadrant) — single-luminaire rooms have uniformity issues.
+
+### Step 7.6 — Emit `selection_source` block
+
+Per Step 6.2, populate `selection_source` at the IR root:
+
+- `photometric_source`: `"input_override"` if `inputs.photometric_override`
+  was non-null AND used; else `"ontology_default"`.
+- `citation`: matches the path taken. **NO improvisation** — the
+  citation must come from either inputs OR ontology, not be paraphrased
+  by the generator. INV-8 enforces.
 
 **Perimeter zone identification:**
 

@@ -412,8 +412,14 @@
     {
       "id": "INV-01",
       "passes": true,
-      "severity": "critical",
-      "evidence": "Target illuminance 500 lx achieved at 603 lx per BS EN 12464-1:2021 Table 5.3 (office, writing/typing/reading task) with maintenance factor applied. UGR within limit and uniformity assumed compliant (default ratios per §6.3)."
+      "severity": "high",
+      "evidence": "Lumen method: N=20 luminaires × 4500 lm × UF=0.67 × MF=0.80 / 80 m² = achieved_illuminance_lux=603 lux ≥ target 500 lux (Rule 1 PASS). Calculation per [spacing-rules#lumen-method-formula] + ontology LED_PANEL_600 UF table at RI=1.98, reflectances 0.7_0.5_0.2."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "S/H ratio: Hm=2250 mm, SHR_max=1.5 (LED_PANEL_600 ontology default), limit=3375 mm. S_x=2400 mm ≤ 3375 PASS; S_y=1600 mm ≤ 3375 PASS. Per [spacing-rules#shr-max-default]."
     },
     {
       "id": "INV-04",
@@ -426,6 +432,12 @@
       "passes": true,
       "severity": "medium",
       "evidence": "Controls strategy includes daylight_linking + occupancy_sensing + dimming_protocol per BS EN 12464-1 §4.10 recommendations for offices >100 m² with perimeter daylight zones (zones array populated)."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "selection_source.photometric_source='ontology_default'; citation='CIBSE LG7 §6.2 (typical recessed LED panel UF + SHR_max) + BS EN 12464-1:2021 §4.4 (LLMF maintenance categories)'. No inputs.photometric_override supplied for this example. Rule 8 PASS."
     }
   ],
   "mode": "full_drawing"
