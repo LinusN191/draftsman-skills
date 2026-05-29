@@ -32,6 +32,7 @@
     "BS EN 12464-1:2021 §6.2 (grid spacing formula)",
     "BS EN 12464-1:2021 §6.6 (UGR limits)",
     "BS EN 12464-1:2021 Table 5.3 (task minima per room_type)",
+    "shared/standards/lighting/BSEN12464/lux-levels.json",
     "ANSI/IES LM-63-2002 (IES file format)",
     "CIE 117 (UGR formula + observer geometry)",
     "CIBSE LG7 §6 (UF/MF reference)"
@@ -44,6 +45,13 @@
     "electrical/photometric-analysis/rules/ugr-rules.yaml",
     "electrical/photometric-analysis/rules/ies-provenance-rules.yaml"
   ],
+  "prompts": {
+    "generator": "electrical/photometric-analysis/prompts/generator.md",
+    "validator": "electrical/photometric-analysis/prompts/validator.md",
+    "reviewer": "electrical/photometric-analysis/prompts/reviewer.md"
+  },
+  "ontology": [],
+  "_ontology_note": "photometric-analysis is a calc-primitive skill — its photometric data comes from per-luminaire IES files (LM-63-2002) referenced via inputs.photometric_ies_paths[]. No fixed ontology is required at the skill level; per-project luminaire distributions live in the IES file library at shared/photometric/ies/ (synthetic_reference_C3) or engineer-supplied project IES files.",
   "examples": [
     "electrical/photometric-analysis/examples/uk-open-plan-office-10x8-dali-photometric/",
     "electrical/photometric-analysis/examples/uk-office-uniformity-fail-perimeter-cold-spots/",
