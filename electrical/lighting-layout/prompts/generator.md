@@ -997,6 +997,124 @@ only requires drafting_furniture for full_drawing mode.
 
 ---
 
+### Step 16 — Emit lighting-layout intent payload
+
+Per `electrical/lighting-layout/schemas/lighting-layout-intent.schema.json`
+(extended in D3.A.3), emit the intent block downstream consumers
+(db-layout, cable-sizing, small-power) read. Pre-D3 payload fields
+(`circuits[]`, `luminaire_summary`, `controls_summary`,
+`emergency_lighting_present`) remain unchanged for v1.3.x backward
+compatibility; D3 adds NEW sibling fields `zones[]`,
+`circuits_topology[]`, `switches[]`, and `total_load_per_circuit_w[]`.
+
+#### 16.1 — Intent block template
+
+```json
+{
+  "intent_type":    "lighting-layout",
+  "intent_version": "1.0.0",
+  "produced_by":    "electrical/lighting-layout/v1.4.0",
+  "payload": {
+    "room_id":   "<echo of room.id or fallback>",
+    "room_type": "<echo of room.room_type>",
+    "luminaire_summary": {
+      "luminaire_count":          <integer>,
+      "luminaire_wattage_w_each": <integer>,
+      "luminaire_lumens_each":    <integer>,
+      "lumen_type":               "design",
+      "ip_rating":                "<string>"
+    },
+    "circuits": [
+      {
+        "circuit_id":             "C-L01",
+        "voltage_class":          "LV_power",
+        "load_w":                 144,
+        "luminaire_count":        4,
+        "mcb_rating_a_suggested": 6
+      }
+    ],
+    "emergency_lighting_present": <boolean>,
+    "controls_summary": {
+      "occupancy_sensing": <boolean>,
+      "daylight_linking":  <boolean>,
+      "dimming_protocol":  "<one of null|none|switched|0-10V|DALI|DALI-2>",
+      "part_l_assessed":   <boolean>,
+      "part_l_compliant":  <boolean>
+    },
+    "zones": [
+      {
+        "zone_id":       "Z2",
+        "zone_type":     "interior",
+        "control":       "occupancy",
+        "luminaire_ids": ["L01", "L02", "L03", "L04"],
+        "circuit_ids":   ["C-L01", "C-L02", "C-L03"]
+      }
+    ],
+    "circuits_topology": [
+      {
+        "circuit_id":      "C-L01",
+        "zone_id":         "Z2",
+        "row_index":       0,
+        "total_load_w":    144,
+        "mcb_rating_a":    6,
+        "mcb_curve":       "B",
+        "homerun_endpoint": {"x_mm": 0, "y_mm": 800, "wall": "W"}
+      }
+    ],
+    "switches": [
+      {
+        "id":               "SW01",
+        "type":             "1_gang",
+        "x_mm":             1600,
+        "y_mm":             0,
+        "height_aff_mm":    1200,
+        "controls_circuit": "C-L01"
+      }
+    ]
+  }
+}
+```
+
+> **Note on `total_load_per_circuit_w`:** the D3 plan template referenced
+> a `total_load_per_circuit_w` array, but the intent schema's payload
+> uses `additionalProperties: false` at the root and that field is not
+> declared — emitting it WOULD fail Pass-4 intent validation. The
+> per-circuit total is already carried by `circuits_topology[].total_load_w`
+> AND by `circuits[].load_w`; a separate flat array is redundant. Do not
+> emit `total_load_per_circuit_w` until the intent schema declares it.
+
+#### 16.2 — Field naming note (avoid collision with legacy `circuits`)
+
+The intent schema's pre-D3 `circuits[]` (with `voltage_class` +
+`load_w` + `mcb_rating_a_suggested`) is REQUIRED and must remain
+populated for backward compatibility. The NEW D3 field is named
+`circuits_topology[]` (NOT `circuits[]`) — it carries `row_index` +
+`homerun_endpoint` + `mcb_curve` + the unrounded `total_load_w`. Both
+arrays SHOULD reference the same `circuit_id` values one-to-one so
+consumers can join.
+
+#### 16.3 — Downstream consumption
+
+- **db-layout** reads `circuits_topology[].mcb_rating_a` +
+  `total_load_w` to size the lighting MCB on the consumer unit;
+  consumes `homerun_endpoint` to position the lighting circuit
+  termination on the board.
+- **cable-sizing** reads `circuits_topology[].total_load_w` +
+  `mcb_rating_a` to size cable CSA from the homerun endpoint to each
+  row.
+- **small-power** is not a direct consumer but may reference `zones[]`
+  positions for socket-vs-lighting coordination.
+
+#### 16.4 — calc_only path
+
+If `mode = calc_only`, omit `zones[]`, `circuits_topology[]`,
+`switches[]`, and `total_load_per_circuit_w[]` from the payload (the
+generator did not lay out luminaires; downstream skills will not have
+useful data to consume). The pre-D3 `circuits[]`, `luminaire_summary`,
+and `controls_summary` blocks remain.
+
+---
+
 ## Output Format
 
 After showing working in chat, emit this JSON block. This is passed directly

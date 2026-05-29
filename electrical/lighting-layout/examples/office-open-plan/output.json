@@ -456,6 +456,18 @@
       "passes": true,
       "severity": "medium",
       "evidence": "drafting_furniture present with all 4 required blocks (title_block + scale_bar + dimensions[2] + luminaire_schedule). All annotations declare font_family='Arial' + explicit font_size_pt ∈ {8, 10}. No {{placeholder}} remnants in any text field. Rule 9 PASS."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Part L compliance: inputs.is_uk_new_build flag absent in office-open-plan input (legacy v1.3 example pre-dates Part L gating). Rule 6 trivially PASS — no Part L assessment required when is_uk_new_build is absent/false. controls.lamp_efficacy_lm_per_w=125 records the value for future audit but no Rule 6 enforcement triggered."
+    },
+    {
+      "id": "INV-10",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Schema validation PASSED (precondition: golden CI gate 225/225). All top-level required fields populated: drawing_type, version, room, calculation_summary, rationale, invariants, plus full_drawing-mode required: luminaire_type, luminaires, switches, circuits, controls, drawing_notes, zones, drafting_furniture, selection_source. non_compliance_flags = [] (vacuously valid). Rule 10 PASS."
     }
   ],
   "mode": "full_drawing"
