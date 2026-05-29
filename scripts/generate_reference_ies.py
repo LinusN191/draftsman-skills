@@ -17,7 +17,6 @@ Usage:
 
 import json
 import math
-import os
 from datetime import date
 from pathlib import Path
 
@@ -27,7 +26,7 @@ LUMINAIRES = [
         "filename": "LED_PANEL_600.ies",
         "luminaire_type": "LED_PANEL_600",
         "lumens": 6000, "wattage_w": 48, "cct_k": 4000,
-        "beam_angle_deg": 110, "width_m": 0.6,
+        "beam_angle_deg": 110, "shape": "rect", "width_m": 0.6, "length_m": 0.6,
         "distribution_model": "lambertian_panel",
         "_source": "Synthetic 600x600mm recessed LED panel, opal diffuser, 4000K. Distribution: Lambertian cos(theta) per CIBSE LG7 §6.2 typical opal panel. Engineer-of-record MUST substitute project IES before final design freeze."
     },
@@ -35,7 +34,7 @@ LUMINAIRES = [
         "filename": "LED_PANEL_600-4500lm.ies",
         "luminaire_type": "LED_PANEL_600",
         "lumens": 4500, "wattage_w": 36, "cct_k": 4000,
-        "beam_angle_deg": 110, "width_m": 0.6,
+        "beam_angle_deg": 110, "shape": "rect", "width_m": 0.6, "length_m": 0.6,
         "distribution_model": "lambertian_panel",
         "_source": "Synthetic 600x600mm recessed LED panel, opal diffuser, 4000K, 4500lm variant. Distribution: Lambertian per CIBSE LG7 §6.2. Engineer must substitute project IES."
     },
@@ -43,7 +42,7 @@ LUMINAIRES = [
         "filename": "LED_PANEL_600-3500lm.ies",
         "luminaire_type": "LED_PANEL_600",
         "lumens": 3500, "wattage_w": 28, "cct_k": 4000,
-        "beam_angle_deg": 110, "width_m": 0.6,
+        "beam_angle_deg": 110, "shape": "rect", "width_m": 0.6, "length_m": 0.6,
         "distribution_model": "lambertian_panel",
         "_source": "Synthetic 600x600mm recessed LED panel, opal diffuser, 4000K, 3500lm variant (under-spec demo). Engineer must substitute project IES."
     },
@@ -51,7 +50,7 @@ LUMINAIRES = [
         "filename": "LED_DOWNLIGHT.ies",
         "luminaire_type": "LED_DOWNLIGHT",
         "lumens": 1000, "wattage_w": 12, "cct_k": 3000,
-        "beam_angle_deg": 60, "width_m": 0.1,
+        "beam_angle_deg": 60, "shape": "circle", "width_m": 0.1, "length_m": 0.1,
         "distribution_model": "gaussian_narrow",
         "_source": "Synthetic 100mm narrow-beam recessed LED downlight, 3000K, prismatic lens. Distribution: Gaussian sigma=FWHM/2.355 per CIBSE LG7 §6.2 typical reflector luminaire. Engineer must substitute project IES."
     },
@@ -59,7 +58,7 @@ LUMINAIRES = [
         "filename": "HIGHBAY.ies",
         "luminaire_type": "HIGHBAY",
         "lumens": 22000, "wattage_w": 150, "cct_k": 5000,
-        "beam_angle_deg": 90, "width_m": 0.3,
+        "beam_angle_deg": 90, "shape": "circle", "width_m": 0.3, "length_m": 0.3,
         "distribution_model": "gaussian_narrow",
         "_source": "Synthetic industrial highbay LED, 5000K, narrow-beam reflector for 8m+ mounting. Distribution: Gaussian per CIBSE LG7 §6.2 typical industrial highbay. Engineer must substitute project IES."
     },
@@ -67,7 +66,7 @@ LUMINAIRES = [
         "filename": "LINEAR_LED.ies",
         "luminaire_type": "LINEAR_LED",
         "lumens": 5000, "wattage_w": 40, "cct_k": 4000,
-        "beam_angle_deg": 120, "width_m": 1.2,
+        "beam_angle_deg": 120, "shape": "rect", "width_m": 0.1, "length_m": 1.2,
         "distribution_model": "lambertian_batten",
         "_source": "Synthetic 1200x100mm linear LED batten, 4000K. Distribution: asymmetric Lambertian with along-axis weighting per CIBSE LG7 §6.2 typical batten. Engineer must substitute project IES."
     },
@@ -75,7 +74,7 @@ LUMINAIRES = [
         "filename": "EMERGENCY.ies",
         "luminaire_type": "EMERGENCY",
         "lumens": 300, "wattage_w": 5, "cct_k": 4000,
-        "beam_angle_deg": 120, "width_m": 0.3,
+        "beam_angle_deg": 120, "shape": "rect", "width_m": 0.3, "length_m": 0.1,
         "distribution_model": "lambertian_panel",
         "_source": "Synthetic 300x100mm emergency luminaire (self-contained 3h duration, anti-panic), 4000K. Distribution: Lambertian. Per BS 5266-1:2016 §5.3 anti-panic minimum 0.5 lux floor. Engineer must verify against actual emergency luminaire IES."
     },
@@ -83,7 +82,7 @@ LUMINAIRES = [
         "filename": "HALOGEN_DOWNLIGHT.ies",
         "luminaire_type": "HALOGEN_DOWNLIGHT",
         "lumens": 750, "wattage_w": 50, "cct_k": 2800,
-        "beam_angle_deg": 36, "width_m": 0.1,
+        "beam_angle_deg": 36, "shape": "circle", "width_m": 0.1, "length_m": 0.1,
         "distribution_model": "gaussian_narrow",
         "_source": "Synthetic 50W GU10 halogen downlight, 2800K, 36-degree beam (legacy retrofit demo for uk-part-l-fail-incandescent). 15 lm/W efficacy, fails Approved Doc L 2021 §6 Table 6.2 95 lm/W minimum. Engineer must substitute project IES."
     }
@@ -137,13 +136,21 @@ def normalise_to_total_lumens(intensities_2d, v_angles_deg, h_angles_deg, target
     return [[v * scale for v in row] for row in intensities_2d]
 
 
+def chunk(lst, n):
+    """Yield successive n-sized chunks from lst (LM-63 candela value packing)."""
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
+
+
 def emit_ies_lm63(spec):
     """Build LM-63-2002 ASCII content for one luminaire spec."""
     lumens = spec["lumens"]
     wattage = spec["wattage_w"]
     cct = spec["cct_k"]
     beam = spec["beam_angle_deg"]
+    shape = spec["shape"]
     width = spec["width_m"]
+    length = spec["length_m"]
     model = spec["distribution_model"]
 
     if model == "lambertian_batten":
@@ -189,10 +196,19 @@ def emit_ies_lm63(spec):
         "substitute project IES before final design freeze."
     )
     lines.append("TILT=NONE")
-    # Line 10: 1 <lumens> 1.0 <n_v> <n_h> 1 2 -<w> -<w> 0
+    # Line 10 luminous-opening dims per LM-63-2002 §3.1.1:
+    #   - circular/elliptical: NEGATIVE values (|value| = diameter)
+    #   - rectangular: POSITIVE values (width × length)
+    # Field 10 is height; 0 = treated as 2D source.
+    if shape == "circle":
+        dim_w = -width
+        dim_l = -width
+    else:  # rect
+        dim_w = width
+        dim_l = length
     lines.append(
         f"1 {lumens} 1.0 {len(V_ANGLES)} {len(h_angles)} 1 2 "
-        f"{-width:.2f} {-width:.2f} 0"
+        f"{dim_w:.2f} {dim_l:.2f} 0"
     )
     # Line 11: <ballast_factor> <input_watts> <future>
     lines.append(f"1.0 {wattage} 1.0")
@@ -200,9 +216,16 @@ def emit_ies_lm63(spec):
     lines.append(" ".join(f"{a}" for a in V_ANGLES))
     # Horizontal angles
     lines.append(" ".join(f"{a}" for a in h_angles))
-    # Candela values, row-major (one row per vertical angle, all horizontal angles per row)
-    for row in intensities:
-        lines.append(" ".join(f"{v:.2f}" for v in row))
+    # Candela values:
+    #   - axisymmetric (n_h == 1): flatten + pack 10 per line (parser-robust)
+    #   - multi-azimuth (n_h > 1): one row per vertical angle, all horizontal angles per row
+    if len(h_angles) == 1:
+        flat = [row[0] for row in intensities]
+        for group in chunk(flat, 10):
+            lines.append(" ".join(f"{v:.2f}" for v in group))
+    else:
+        for row in intensities:
+            lines.append(" ".join(f"{v:.2f}" for v in row))
 
     return "\n".join(lines) + "\n"
 

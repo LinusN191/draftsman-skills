@@ -25,7 +25,8 @@ Gaussian analytical models). No file is a manufacturer-specific photometric meas
 - Before any project-specific UGR / U₀ claim in a tender response
 
 ## File format
-ANSI/IES LM-63-2002 ASCII format. Each file 800-1500 chars. Validated by
+ANSI/IES LM-63-2002 ASCII format. Each file 700-2500 chars (axisymmetric files ~700-740
+chars; LINEAR_LED batten ~2500 chars due to 13 horizontal angles). Validated by
 `calc.lumen_grid_solver` LM-63 parser at runtime.
 
 ## Inventory (8 files, all synthetic_reference_C3)
