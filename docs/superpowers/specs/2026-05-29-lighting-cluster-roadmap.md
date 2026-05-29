@@ -298,31 +298,122 @@ Each section below is a SKELETON for the per-skill brainstorm to expand. Open qu
 
 Both extensions ship as `lighting-layout v1.5.0` — a single minor bump after the v1.4.0 D3 ship.
 
-## 5. Suggested build order (dependency-driven)
+## 5. Build sequence — locked
 
-Build order minimises blocked dependencies and pushes user-visible value earliest:
+Optimised for: maximum parallelisation, minimum blocked-deps, safety-relevant + cross-discipline skills front-loaded, D4 interleaved at the point where its dependencies resolve.
 
-1. **lighting-photometric** — unblocks INV-11 + is consumed by emergency-lighting + daylight. Calc-only skill, smallest scope.
-2. **lighting-layout v1.5.0 in-skill extensions** — task/ambient split + 3D placement. Tiny scope, ships while companions are in flight.
-3. **emergency-lighting** — direct safety-relevant, BS 5266-1 partial ontology already in place from D3.A.1, photometric companion now available.
-4. **electrical-special-locations** (renamed from "lighting-special-locations" per §3.4 — cross-discipline scope) — unblocks small-power + db-layout INV cross-checks too.
-5. **lighting-controls** — DALI scene + commissioning prep.
-6. **daylight** — heaviest skill; needs photometric companion + likely needs new `architecture-massing` upstream dependency.
-7. **energy-leni** — last, integrates all of the above + cross-discipline.
+### Wave 1 — parallel pair (no file overlap)
+- **`special-locations`** — cross-discipline (consumed by small-power D4 + lighting + db-layout); ship first so D4 can consume its intent
+- **`lighting-photometric`** — calc primitive; unblocks `lighting-layout` INV-11 + 2 downstream cluster skills
 
-Build cycle per skill: brainstorm session (1 user iteration) → plan portions → execute via subagent-driven-development → review-and-fix-pass discipline → ship. D3 averaged 10 implementer commits per skill + 8 fix-pass commits + a sweep + a ship — call it ~20 commits per companion skill. 6 companions × 20 = ~120 commits. ~3-4 weeks if sequenced; ~1-2 weeks if some can be parallelised in worktrees.
+### Wave 2 — parallel pair (Wave 1 deps now satisfied)
+- **`small-power` v1.2.0 D4 (depth)** — special-locations §702/§710/§722 + building-level diversity; NOW consumes `special-locations` intent properly
+- **`lighting-layout` v1.5.0 extensions** — task/ambient split + 3D placement; minor bump (~2 days)
 
-## 6. Open cluster-level questions
+### Wave 3 — parallel pair (safety + controls)
+- **`emergency-lighting`** — BS 5266-1 escape + anti-panic + high-risk; consumes `lighting-photometric` + `special-locations`
+- **`lighting-controls`** — DALI scenes + commissioning prep; consumes `lighting-layout` zones only
 
-Need user input before per-skill brainstorms start:
+### Wave 4 — sequential (heaviest + integration)
+- **`daylight`** — DF + sDA + ASE; ships with self-contained building-envelope inputs (see §6.2)
+- **`energy-leni`** — LENI v1.0 lighting-only; consumes lighting-layout + lighting-controls + daylight; full-building LENI v2.0 deferred (see §6.3)
 
-- **Cluster name vs per-skill names.** "Lighting cluster" is a working title — would the user prefer `electrical-lighting-suite` or similar? Affects manifest naming.
-- **Architecture-massing dependency** for daylight. Does this skill exist or should daylight bring its own building-envelope inputs?
-- **mechanical-systems dependency** for energy-leni. Same question.
-- **Special-locations rename.** Generic `special-locations` vs `part7-zones` vs `electrical-special-locations`?
-- **Companion vs D4 priority.** D4 (small-power depth, originally D3-pushed) was the previously-queued sprint. Does the cluster build come before or after D4? Or interleaved?
-- **Parallelisation policy.** Cluster sequencing above assumes sequential. Some companions (photometric + special-locations) have no dependency overlap and could run in parallel worktrees. Worth the orchestration complexity?
-- **Cross-skill INV cascade.** When lighting-photometric ships INV-11 in lighting-layout's validator, it implicitly creates a dependency the runtime gates on. Confirm runtime project-graph supports conditional INV cascades.
+### Cost estimate
+D3 averaged ~20 commits per skill (10 implementer + 8 fix-pass + sweep + ship). 8 deliverables in the wave plan × ~20 commits = ~160 commits. Wave parallelisation reduces wall-clock from sequential ~3-4 weeks to ~2 weeks. Each per-skill brainstorm → plan → execute cycle stays intact — parallelism is between pairs, not within a single skill's discipline.
+
+## 6. Cluster-level decisions — RESOLVED
+
+Applying the "most enhanced + most scalable" rubric: prefer in-repo conventions, prefer self-contained skills, prefer parallel-able work, prefer existing runtime patterns over new ones.
+
+### 6.1 Cluster naming — RESOLVED
+**Decision:** No new namespace. Skills live as siblings under existing discipline folders (`electrical/`, `mechanical/`, `plumbing/` etc.) with `lighting-*` prefix where lighting-specific. The word "cluster" is documentation shorthand only — no manifest-level grouping.
+
+**Final names + folder paths:**
+| Skill | Folder path | Discipline scope |
+|---|---|---|
+| lighting-layout | `electrical/lighting-layout/` | existing — lighting interior |
+| lighting-photometric | `electrical/lighting-photometric/` | NEW — lighting calc primitive |
+| emergency-lighting | `electrical/emergency-lighting/` | NEW — life-safety |
+| lighting-controls | `electrical/lighting-controls/` | NEW — DALI + KNX |
+| daylight | `electrical/daylight/` | NEW — folder under electrical because Part L LENI compliance is electrical sign-off scope |
+| special-locations | `electrical/special-locations/` | NEW — discipline folder does the scoping; skill name stays clean |
+| energy-leni | `electrical/energy-leni/` v1.0 → `compliance/energy-leni/` v2.0 | NEW — moves to compliance/ when full-building LENI lands per §6.3 |
+
+**Why:** matches existing repo convention (`electrical/earthing/` not `electrical-earthing/`); folder placement is the discipline namespace; no new naming layer to maintain.
+
+### 6.2 architecture-massing dependency for daylight — RESOLVED
+**Decision:** daylight ships with **self-contained building-envelope inputs** v1.0. No upstream architecture-massing dependency.
+
+**Inputs taxonomy added to daylight v1.0:**
+- `building_orientation_deg` (0–359 from true north)
+- `glazing_areas[]` per façade (already partial in lighting-layout via glazed_walls)
+- `obstruction_polygons[]` (other buildings, trees — engineer-supplied as ≥3-vertex polygons with height)
+- `internal_reflectances` (per room, per surface — ceiling/wall/floor split)
+- `external_reflectance` (ground albedo default 0.2)
+
+**Honest disclosure** in skill README + inputs.json `_note`: "v1.0 ships self-contained building-envelope inputs. When `architecture-massing` skill ships, daylight v2.0 will consume its intent; manual inputs become fallback."
+
+**Why scalable:** no blocking dependency on a not-yet-built upstream skill; v2.0 migration path declared; manual inputs are the engineer's reality anyway in early-design phases when architecture is fluid.
+
+### 6.3 mechanical-systems dependency for energy-leni — RESOLVED
+**Decision:** energy-leni ships **v1.0 lighting-only LENI** under `electrical/energy-leni/`. Full-building LENI (lighting + HVAC + small-power + DHW) deferred to v2.0 + folder migration to `compliance/energy-leni/`.
+
+**v1.0 scope (electrical/energy-leni/):**
+- Lighting-only LENI per Part L 2021 §6 (the formal LENI formula for the lighting component)
+- Consumes: `lighting-layout.intent` + `lighting-controls.intent` + `daylight.intent`
+- Outputs: `leni_lighting_kwh_per_m2_per_year` + `meets_lighting_lpd_target` + `lighting_annual_kwh` + `lighting_annual_carbon`
+
+**v2.0 deferred** (waits on shipped mechanical-systems + small-power intents to expose annual energy):
+- Full-building LENI + HVAC LPD + DHW + plug-load
+- Migrates to `compliance/energy-leni/`
+- Same honest disclosure pattern
+
+**Why scalable:** delivers user-visible value immediately (lighting LENI is the most common project requirement); does not block on mechanical-systems which doesn't yet exist; folder migration v1→v2 is a documented expectation, not surprise rework.
+
+### 6.4 special-locations skill rename — RESOLVED
+**Decision:** Skill name = `special-locations` at folder path `electrical/special-locations/`. Discipline scoping via folder placement (matches `electrical/earthing/` precedent). NOT `part7-zones` (BS-specific) and NOT `electrical-special-locations` (folder already conveys discipline).
+
+**v1.0 standards scope:**
+- BS 7671 Part 7: §701 (baths/showers), §710 (medical Group 1/2/3), §714 (external lighting — the real one), §753 (floor/ceiling heating)
+- IEC 60364-7-XXX parallel parts for INT jurisdiction
+- KS 1700 §313 route-to-BS for KE jurisdiction
+
+**v1.1 deferred:** §702 (swimming pools), §703 (saunas), §721 (caravan parks). Build when first project requirement lands.
+
+**US NEC parallel** (Article 680 pools, Article 517 healthcare) — separate sibling skill `electrical/special-locations-us/` when first US project requirement lands. Same shape, different standards stack.
+
+### 6.5 Cluster vs D4 priority — RESOLVED (interleaved per Wave plan)
+**Decision:** **Interleaved per §5 wave plan.** D4 (small-power depth) ships in **Wave 2**, after `special-locations` lands in Wave 1. This is strictly better than either pure ordering:
+- D4-first would build small-power depth without consuming special-locations intent (would need rework)
+- Cluster-first would defer D4 indefinitely (within-skill-depth program closure waits)
+- Interleaved: D4's natural dependency (special-locations) is already shipped when D4 starts; D4 closes the depth program cleanly; cluster build continues without pause
+
+**Updated within-skill-depth program closure narrative:** D1 + D2 + D3 shipped; D4 ships in Wave 2 of the lighting skill family build, consuming the `special-locations` companion shipped in Wave 1. After D4, the within-skill-depth program is fully complete AND the lighting family has the first 4 deliverables shipped.
+
+### 6.6 Parallelisation policy — RESOLVED (yes, per Wave plan)
+**Decision:** YES — parallelise within each Wave per §5. Specifically:
+
+- **Wave 1**: `special-locations` + `lighting-photometric` parallel (zero file overlap — different folders, different shared paths)
+- **Wave 2**: `small-power` D4 + `lighting-layout` v1.5.0 parallel (different skills, different schemas)
+- **Wave 3**: `emergency-lighting` + `lighting-controls` parallel (minimal overlap — both consume from lighting-layout intent but write to different folders + different validator INVs)
+- **Wave 4**: sequential (daylight → energy-leni — strict dependency)
+
+**Mechanism:** Per `superpowers:using-git-worktrees`, each parallel skill builds in its own worktree branch off `main`; merge back to `main` at Wave completion. Two-stage Opus review discipline held per task within each worktree. Cross-worktree integration check at Wave completion runs the validate-examples + functional_audit gates on the merged result.
+
+**Risk surface:** shared schemas under `shared/schemas/electrical/` could collide. Mitigate by declaring at Wave start which shared files each parallel skill will touch; if overlap is detected, serialise that pair.
+
+### 6.7 Cross-skill INV cascade — RESOLVED (existing runtime pattern reused)
+**Decision:** Reuse the existing manifest `consumes_intents[]` cascade pattern that cable-sizing → db-layout-rollup already uses today. No new runtime machinery required.
+
+**Implementation:**
+- Each companion's manifest declares it `produces_intents[]`
+- `lighting-layout/skill.manifest.json` declares `consumes_intents[]` with `{name, version_pin, trigger}` per companion
+- The `trigger` field is a **JSONPath-style expression** over the IR (e.g. `"glazed_walls != []"` for the daylight conditional, `"room_type IN [bathroom, swimming_pool, medical_group2]"` for special-locations). Same DSL the runtime already evaluates for cable-sizing's `tool_call_pending` conditional fields.
+- If runtime DSL doesn't yet support a particular trigger expression: skill ships with **unconditional** consumes declaration + the IR-level INV handles the conditional check (cascade dependency unconditional, but the failure scope is conditional). Skills repo loses nothing; runtime gets a future-enhancement TODO.
+
+**Verification before Wave 1 ships:** cluster-roadmap appendix documents the 5 trigger expressions needed (INV-11 always-on; INV-12/13/14/15 conditional). Coordinate with runtime team via spec doc handoff. Expected: 4 of 5 expressions are existing DSL primitives (set membership + non-empty array); 1 (`is_uk_new_build AND glazed_walls != []`) needs AND-conjunction support which may be new.
+
+## 7. What's NOT in the lighting skill family (scope guard)
 
 ## 7. What's NOT in the cluster (scope guard)
 
@@ -342,8 +433,22 @@ Need user input before per-skill brainstorms start:
 - `[[feedback-no-trim-non-consequential]]` — preserve engineering content; raise schema caps when needed
 - `[[drafting-standards-deferred-sprint]]` — drafting-furniture cross-skill harmonisation remains deferred; cluster does NOT subsume it
 
-## 9. Next action
+## 9. Next action — Wave 1 starts
 
-For each of the 6 companion skills, run a dedicated brainstorm session (per CLAUDE.md sprint workflow: `superpowers:brainstorming`) to expand the §3.X skeleton into a full design spec resolving the per-skill open questions. The in-skill v1.5.0 extensions (§4) can ship as a single combined brainstorm.
+Per §5 + §6.5 + §6.6: **Wave 1 = `special-locations` + `lighting-photometric` in parallel worktrees.** Per CLAUDE.md sprint workflow:
 
-Priority order per §5. First brainstorm: **`lighting-photometric`** (highest leverage, unblocks 2 downstream companions).
+1. **Two parallel brainstorm sessions** (`superpowers:brainstorming` per skill):
+   - `special-locations` v1.0 brainstorm — resolve per-skill open questions in §3.4: per-part scope (§701 + §710 + §714-real + §753 in v1.0), zone-derivation algorithm choice, US NEC parallel timing, etc.
+   - `lighting-photometric` brainstorm — resolve per-skill open questions in §3.1: grid resolution policy, UGR view-position heuristic, IES file ingestion path, output shape.
+
+2. **Two parallel writing-plans sessions** after each brainstorm approves.
+
+3. **Two parallel executing sessions** in separate worktrees per `superpowers:using-git-worktrees`.
+
+4. **Wave 1 ship** = both skills merged to `main` + cross-skill integration check (validate-examples + functional_audit both green).
+
+5. **Wave 2 dispatch** = `small-power` D4 + `lighting-layout` v1.5.0 in parallel, now consuming Wave 1 deliverables.
+
+**Repeat the wave pattern for Waves 3 and 4.** Expected total wall-clock from Wave 1 start to energy-leni v1.0 ship: ~2 weeks with 4 wave-pairs running in parallel.
+
+**Process discipline preserved:** per-skill two-stage Opus review + fix-pass on each task per the D2/D3 pattern; pre-ship Sonnet fence at each Wave completion; honest disclosure on every fabricated-citation risk; citation cross-check against `shared/standards/electrical/` BEFORE every plan template ships.
