@@ -58,7 +58,24 @@
           "exclusiveMinimum": 0
         },
         "room_type": {
-          "type": "string"
+          "enum": [
+            "open_plan_office",
+            "private_office",
+            "meeting_room",
+            "corridor",
+            "warehouse",
+            "warehouse_aisle",
+            "classroom",
+            "consulting_room",
+            "ward",
+            "kitchen_commercial",
+            "bathroom",
+            "reception_lobby",
+            "escape_route",
+            "plantroom",
+            "external"
+          ],
+          "description": "15-value enum per BS EN 12464-1:2021 Table 5.3 task categories. Matches inputs.json items[room_type].options + 4 added (warehouse_aisle, escape_route, plantroom, external)."
         },
         "environment_type": {
           "type": "string"
@@ -127,7 +144,7 @@
         "type": "object",
         "required": [
           "zone_id",
-          "circuit_id"
+          "zone_type"
         ],
         "properties": {
           "zone_id": {
@@ -136,8 +153,38 @@
           "label": {
             "type": "string"
           },
+          "zone_type": {
+            "enum": [
+              "perimeter",
+              "interior",
+              "task",
+              "emergency"
+            ],
+            "description": "Part L 2021 / BS EN 15193-1 zone classification. perimeter = within 6m of glazed wall (daylight-linked); interior = >6m from glazing (occupancy-only); task = high-illuminance task area; emergency = escape route / anti-panic / high-risk (BS 5266-1)."
+          },
+          "control": {
+            "enum": [
+              "daylight_linked",
+              "occupancy",
+              "manual",
+              "dali_master",
+              "emergency_self_test"
+            ],
+            "description": "Primary control protocol for this zone."
+          },
           "circuit_id": {
-            "type": "string"
+            "type": "string",
+            "description": "Backward-compat: single circuit feeding the zone. Use circuit_ids[] for multi-circuit zones (D3.A.3+)."
+          },
+          "circuit_ids": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "FK to circuits[].circuit_id. A zone may contain multiple circuits (e.g. zone Z2 interior has 3 row circuits in a 12-luminaire grid)."
+          },
+          "luminaire_ids": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "FK to luminaires[].id. The full set of luminaires in this zone."
           },
           "luminaire_count": {
             "type": "integer",
@@ -253,7 +300,7 @@
           "total_load_w": {
             "type": "number",
             "minimum": 0,
-            "maximum": 1840
+            "description": "Sum of luminaire wattages on this circuit. Capped by allOf conditional per mcb_rating_a (80% continuous-load factor per BS 7671 §433.1.1 + IET OSG App A): 6A→1104W, 10A→1840W, 16A→2944W, 20A→3680W, 32A→5888W."
           },
           "mcb_rating_a": {
             "type": "integer",
@@ -275,8 +322,47 @@
           "spare_ways_provided": {
             "type": "integer",
             "minimum": 0
+          },
+          "row_index": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Row index this circuit feeds (0 = first row from north wall). Used by INV-4 to verify no Z-pattern daisy-chain — all luminaires on a circuit must share row_index OR be on adjacent rows (|delta| ≤ 1)."
+          },
+          "homerun_endpoint": {
+            "type": "object",
+            "required": ["x_mm", "y_mm"],
+            "additionalProperties": false,
+            "description": "Wall endpoint where this circuit's homerun cable exits the room toward the DB. Renderer draws a homerun arrow from this point. INV-4 verifies this point is on one of the four room walls.",
+            "properties": {
+              "x_mm": {"type": "integer", "minimum": 0},
+              "y_mm": {"type": "integer", "minimum": 0},
+              "wall": {"enum": ["N", "S", "E", "W"], "description": "Which wall the endpoint sits on (derived; renderer can read directly)."}
+            }
           }
-        }
+        },
+        "allOf": [
+          {
+            "description": "BS 7671 §433.1.1 + IET OSG App A: continuous load ≤ 80% × ocpd_rating × 230V on each circuit",
+            "if": {"properties": {"mcb_rating_a": {"const": 6}}, "required": ["mcb_rating_a"]},
+            "then": {"properties": {"total_load_w": {"maximum": 1104}}}
+          },
+          {
+            "if": {"properties": {"mcb_rating_a": {"const": 10}}, "required": ["mcb_rating_a"]},
+            "then": {"properties": {"total_load_w": {"maximum": 1840}}}
+          },
+          {
+            "if": {"properties": {"mcb_rating_a": {"const": 16}}, "required": ["mcb_rating_a"]},
+            "then": {"properties": {"total_load_w": {"maximum": 2944}}}
+          },
+          {
+            "if": {"properties": {"mcb_rating_a": {"const": 20}}, "required": ["mcb_rating_a"]},
+            "then": {"properties": {"total_load_w": {"maximum": 3680}}}
+          },
+          {
+            "if": {"properties": {"mcb_rating_a": {"const": 32}}, "required": ["mcb_rating_a"]},
+            "then": {"properties": {"total_load_w": {"maximum": 5888}}}
+          }
+        ]
       }
     },
     "controls": {
@@ -477,11 +563,108 @@
       "minLength": 20,
       "maxLength": 500,
       "description": "Explanation for why this example is calc_only rather than full_drawing. Required when mode == calc_only."
+    },
+    "drafting_furniture": {
+      "type": "object",
+      "description": "Annotation objects emitted alongside the layout for renderer to draw title block, scale bar, dimensions, and luminaire schedule. Required when mode == full_drawing. Every annotation declares explicit font_family + font_size_pt so ezdxf font fallback can resolve without losing tags.",
+      "required": ["title_block", "scale_bar", "dimensions", "luminaire_schedule"],
+      "additionalProperties": false,
+      "properties": {
+        "title_block": {
+          "type": "object",
+          "required": ["project_name", "drawing_number", "revision", "date", "scale", "sheet_size", "font_family", "font_size_pt"],
+          "additionalProperties": false,
+          "properties": {
+            "project_name":   {"type": "string", "minLength": 1, "maxLength": 120},
+            "drawing_number": {"type": "string", "minLength": 1, "maxLength": 30},
+            "revision":       {"type": "string", "minLength": 1, "maxLength": 8},
+            "date":           {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+            "scale":          {"type": "string", "pattern": "^1:\\d+$"},
+            "sheet_size":     {"enum": ["A0", "A1", "A2", "A3", "A4"]},
+            "font_family":    {"type": "string", "default": "Arial"},
+            "font_size_pt":   {"type": "number", "minimum": 6, "maximum": 24}
+          }
+        },
+        "scale_bar": {
+          "type": "object",
+          "required": ["origin_x_mm", "origin_y_mm", "total_length_mm", "tick_interval_mm", "font_family", "font_size_pt"],
+          "additionalProperties": false,
+          "properties": {
+            "origin_x_mm":      {"type": "integer", "minimum": 0},
+            "origin_y_mm":      {"type": "integer", "minimum": 0},
+            "total_length_mm":  {"type": "integer", "minimum": 1000},
+            "tick_interval_mm": {"type": "integer", "minimum": 100},
+            "font_family":      {"type": "string", "default": "Arial"},
+            "font_size_pt":     {"type": "number", "minimum": 6, "maximum": 12}
+          }
+        },
+        "dimensions": {
+          "type": "array",
+          "minItems": 2,
+          "description": "At minimum room length + width dimension lines.",
+          "items": {
+            "type": "object",
+            "required": ["axis", "start_x_mm", "start_y_mm", "end_x_mm", "end_y_mm", "text", "font_family", "font_size_pt"],
+            "additionalProperties": false,
+            "properties": {
+              "axis":         {"enum": ["horizontal", "vertical"]},
+              "start_x_mm":   {"type": "integer", "minimum": 0},
+              "start_y_mm":   {"type": "integer", "minimum": 0},
+              "end_x_mm":     {"type": "integer", "minimum": 0},
+              "end_y_mm":     {"type": "integer", "minimum": 0},
+              "text":         {"type": "string", "minLength": 1, "maxLength": 30},
+              "font_family":  {"type": "string", "default": "Arial"},
+              "font_size_pt": {"type": "number", "minimum": 6, "maximum": 14}
+            }
+          }
+        },
+        "luminaire_schedule": {
+          "type": "object",
+          "required": ["columns", "rows", "font_family", "font_size_pt"],
+          "additionalProperties": false,
+          "properties": {
+            "columns": {
+              "type": "array",
+              "minItems": 5,
+              "description": "Schedule columns. Required minimum: ref + manufacturer + lumens + wattage + count.",
+              "items": {"type": "string"}
+            },
+            "rows": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            },
+            "font_family":  {"type": "string", "default": "Arial"},
+            "font_size_pt": {"type": "number", "minimum": 6, "maximum": 12}
+          }
+        }
+      }
+    },
+    "selection_source": {
+      "type": "object",
+      "description": "Records which photometric data path (input override vs ontology default) was used by the lumen-method calculation. INV-8 enforces presence.",
+      "required": ["photometric_source", "citation"],
+      "additionalProperties": false,
+      "properties": {
+        "photometric_source": {
+          "enum": ["input_override", "ontology_default"],
+          "description": "input_override = inputs.photometric_override block was supplied and used. ontology_default = generator fell back to ontology/luminaire-types.json defaults."
+        },
+        "citation": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 500,
+          "description": "Either the inputs.photometric_override._source string OR the ontology[type].photometric._citation string. Resolves which document authorises the UF + SHR_max + LLMF values used."
+        }
+      }
     }
   },
   "allOf": [
     {
-      "description": "Sprint D reviewer follow-up: conditional required-fields by mode. Top-level required is the always-true subset; mode-specific fields are enforced here via if/then/else. full_drawing (default) requires luminaire_type/luminaires/switches/circuits/controls/drawing_notes; calc_only requires calc_only_reason.",
+      "description": "Sprint D reviewer follow-up + D3.A.3: conditional required-fields by mode. Top-level required is the always-true subset; mode-specific fields are enforced here via if/then/else. full_drawing (default) requires luminaire_type/luminaires/switches/circuits/controls/drawing_notes/zones/drafting_furniture/selection_source; calc_only requires calc_only_reason.",
       "if": {
         "properties": {
           "mode": {
@@ -504,7 +687,10 @@
           "switches",
           "circuits",
           "controls",
-          "drawing_notes"
+          "drawing_notes",
+          "zones",
+          "drafting_furniture",
+          "selection_source"
         ]
       }
     }

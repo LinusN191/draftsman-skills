@@ -1,7 +1,7 @@
 {
   "drawing_type": "lighting_layout",
   "room": {
-    "room_type": "lobby",
+    "room_type": "reception_lobby",
     "length_mm": 8000,
     "width_mm": 5000,
     "area_m2": 40,
@@ -18,11 +18,15 @@
     {
       "zone_id": "Z1",
       "label": "Perimeter (north glazing)",
+      "zone_type": "perimeter",
+      "control": "daylight_linked",
       "circuit_id": "L1-Z1"
     },
     {
       "zone_id": "Z2",
       "label": "Interior",
+      "zone_type": "interior",
+      "control": "manual",
       "circuit_id": "L1-Z2"
     }
   ],

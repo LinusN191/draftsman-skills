@@ -14,12 +14,16 @@
         "meeting_room",
         "corridor",
         "warehouse",
+        "warehouse_aisle",
         "classroom",
         "consulting_room",
         "ward",
         "kitchen_commercial",
         "bathroom",
-        "reception_lobby"
+        "reception_lobby",
+        "escape_route",
+        "plantroom",
+        "external"
       ],
       "required": true,
       "project_fact_candidate": false
@@ -80,11 +84,37 @@
       "id": "ceiling_grid_mm",
       "label": "Ceiling grid module (mm)",
       "hint": "Common modules: 600 (UK suspended), 1200 (modular), 0 = no grid",
-      "answer_type": "int",
-      "default": 600,
+      "answer_type": "enum",
+      "options": ["0", "600", "1200"],
+      "default": "600",
       "required": false,
-      "validator": "non_negative_int",
       "project_fact_candidate": true
+    },
+    {
+      "id": "photometric_override",
+      "label": "Manufacturer-specific photometric data (override ontology defaults)",
+      "hint": "Optional. Supply when an IES/LDT file is available for the specific luminaire. Generator falls back to ontology/luminaire-types.json defaults if absent.",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "uf_table_by_ri": {
+            "type": "object",
+            "description": "UF table indexed by room_index string key (e.g. '1.0', '2.0') then reflectance triplet string key (e.g. '0.7_0.5_0.2'). Same shape as ontology[type].photometric.uf_table_by_ri."
+          },
+          "shr_max": {"type": "number", "minimum": 0.5, "maximum": 3.0},
+          "llmf_at_design_hours": {"type": "number", "minimum": 0.5, "maximum": 1.0},
+          "_source": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 500,
+            "description": "Citation: manufacturer name + photometric file name + IES/LDT reference"
+          }
+        }
+      },
+      "project_fact_candidate": false
     },
     {
       "id": "is_uk_new_build",
@@ -133,17 +163,18 @@
     },
     {
       "id": "entrance_positions",
-      "label": "Entrance / door positions (wall + offset_mm)",
-      "hint": "List of doorways used to place switching per BS 7671 559.5 (within reach of entry)",
+      "label": "Entrance / door positions (wall + offset_mm + door_swing)",
+      "hint": "List of doorways used to place switching per BS 7671 §553.1.1 + IET OSG App E §E1.4. door_swing determines latch side for switch placement.",
       "answer_type": "struct_list",
       "required": false,
       "item_schema": {
         "type": "object",
-        "required": ["wall", "offset_mm"],
+        "required": ["wall", "offset_mm", "door_swing"],
         "properties": {
-          "wall":      { "enum": ["N", "S", "E", "W"] },
-          "offset_mm": { "type": "integer", "minimum": 0 },
-          "width_mm":  { "type": "integer", "minimum": 600, "maximum": 2400 }
+          "wall":       { "enum": ["N", "S", "E", "W"] },
+          "offset_mm":  { "type": "integer", "minimum": 0 },
+          "width_mm":   { "type": "integer", "minimum": 600, "maximum": 2400 },
+          "door_swing": { "enum": ["inward_latch_left", "inward_latch_right", "outward_latch_left", "outward_latch_right", "sliding"] }
         }
       },
       "project_fact_candidate": false

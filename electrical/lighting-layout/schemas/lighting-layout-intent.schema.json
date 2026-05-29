@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "electrical/lighting-layout/schemas/lighting-layout-intent.schema.json",
   "title": "Lighting Layout Intent",
-  "description": "Stable subset of the lighting-layout IR that downstream skills (db-layout, cable-containment, panel-schedule, earthing) consume. The full IR includes per-luminaire positions and drawing notes — downstream skills do NOT need those. Wrapped in shared/schemas/core/intent.schema.json envelope at runtime. Forward-compat: optional fields may be added freely; required fields require a major intent_version bump.",
+  "description": "Stable subset of the lighting-layout IR that downstream skills (db-layout, cable-containment, panel-schedule, earthing) consume. The full IR includes per-luminaire positions and drawing notes — downstream skills do NOT need those. Wrapped in shared/schemas/core/intent.schema.json envelope at runtime. Forward-compat: optional fields may be added freely; required fields require a major intent_version bump. D3.A.3: extended payload with zones + circuits (incl. row_index + homerun) + switches.",
   "type": "object",
   "required": ["room_id", "circuits"],
   "additionalProperties": false,
@@ -57,6 +57,62 @@
         "dimming_protocol":          { "type": ["string", "null"], "enum": [null, "none", "switched", "0-10V", "DALI", "DALI-2"] },
         "part_l_assessed":           { "type": "boolean" },
         "part_l_compliant":          { "type": "boolean" }
+      }
+    },
+    "zones": {
+      "type": "array",
+      "description": "D3.A.3: zone topology for downstream circuit planning and controls wiring.",
+      "items": {
+        "type": "object",
+        "required": ["zone_id", "zone_type", "luminaire_ids", "circuit_ids"],
+        "properties": {
+          "zone_id":       {"type": "string"},
+          "zone_type":     {"enum": ["perimeter", "interior", "task", "emergency"]},
+          "control":       {"type": "string"},
+          "luminaire_ids": {"type": "array", "items": {"type": "string"}},
+          "circuit_ids":   {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "circuits_topology": {
+      "type": "array",
+      "description": "D3.A.3: extended circuit topology with row_index + homerun_endpoint for downstream routing.",
+      "items": {
+        "type": "object",
+        "required": ["circuit_id", "row_index", "total_load_w", "mcb_rating_a", "homerun_endpoint"],
+        "properties": {
+          "circuit_id":      {"type": "string"},
+          "zone_id":         {"type": "string"},
+          "row_index":       {"type": "integer", "minimum": 0},
+          "total_load_w":    {"type": "number", "minimum": 0},
+          "mcb_rating_a":    {"enum": [6, 10, 16, 20, 32]},
+          "mcb_curve":       {"enum": ["B", "C", "D"]},
+          "homerun_endpoint": {
+            "type": "object",
+            "required": ["x_mm", "y_mm"],
+            "properties": {
+              "x_mm": {"type": "integer", "minimum": 0},
+              "y_mm": {"type": "integer", "minimum": 0},
+              "wall": {"enum": ["N", "S", "E", "W"]}
+            }
+          }
+        }
+      }
+    },
+    "switches": {
+      "type": "array",
+      "description": "D3.A.3: switch positions for downstream controls wiring.",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "x_mm", "y_mm", "controls_circuit"],
+        "properties": {
+          "id":               {"type": "string"},
+          "type":             {"type": "string"},
+          "x_mm":             {"type": "integer", "minimum": 0},
+          "y_mm":             {"type": "integer", "minimum": 0},
+          "height_aff_mm":    {"type": "integer"},
+          "controls_circuit": {"type": "string"}
+        }
       }
     }
   }

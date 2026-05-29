@@ -30,7 +30,11 @@
     {
       "zone_id": "Z2",
       "label": "Interior",
+      "zone_type": "interior",
+      "control": "manual",
       "circuit_id": "L1-Z2",
+      "circuit_ids": ["L1-Z2"],
+      "luminaire_ids": ["L01","L02","L03","L04","L05","L06","L07","L08","L09","L10","L11","L12","L13","L14","L15","L16","L17","L18","L19","L20"],
       "luminaire_count": 20,
       "total_load_w": 720
     }
@@ -219,7 +223,13 @@
       "total_load_w": 720,
       "mcb_rating_a": 6,
       "mcb_curve": "C",
-      "spare_ways_provided": 1
+      "spare_ways_provided": 1,
+      "row_index": 2,
+      "homerun_endpoint": {
+        "x_mm": 0,
+        "y_mm": 4000,
+        "wall": "W"
+      }
     }
   ],
   "controls": {
@@ -252,6 +262,60 @@
     "Switch heights: 1200mm AFF to centre",
     "Circuit L1-Z2: 20 × 36W = 720W on DB L1"
   ],
+  "selection_source": {
+    "photometric_source": "ontology_default",
+    "citation": "CIBSE LG7 §6.2 (typical recessed LED panel UF + SHR_max) + BS EN 12464-1:2021 §4.4 (LLMF maintenance categories)"
+  },
+  "drafting_furniture": {
+    "title_block": {
+      "project_name": "Sprint D3 schema ripple — office-open-plan",
+      "drawing_number": "EL-001",
+      "revision": "A",
+      "date": "2026-05-28",
+      "scale": "1:50",
+      "sheet_size": "A3",
+      "font_family": "Arial",
+      "font_size_pt": 10
+    },
+    "scale_bar": {
+      "origin_x_mm": 9000,
+      "origin_y_mm": 7500,
+      "total_length_mm": 2000,
+      "tick_interval_mm": 500,
+      "font_family": "Arial",
+      "font_size_pt": 8
+    },
+    "dimensions": [
+      {
+        "axis": "horizontal",
+        "start_x_mm": 0,
+        "start_y_mm": 0,
+        "end_x_mm": 10000,
+        "end_y_mm": 0,
+        "text": "10000 mm",
+        "font_family": "Arial",
+        "font_size_pt": 10
+      },
+      {
+        "axis": "vertical",
+        "start_x_mm": 0,
+        "start_y_mm": 0,
+        "end_x_mm": 0,
+        "end_y_mm": 8000,
+        "text": "8000 mm",
+        "font_family": "Arial",
+        "font_size_pt": 10
+      }
+    ],
+    "luminaire_schedule": {
+      "columns": ["Ref", "Manufacturer", "Lumens", "Wattage", "Count"],
+      "rows": [
+        ["LED_PANEL_600", "Generic", "4500", "36W", "20"]
+      ],
+      "font_family": "Arial",
+      "font_size_pt": 8
+    }
+  },
   "rationale": {
     "chat_summary": "20 × 600×600 LED panel layout for 80 m² open-plan office. Target 500 lx achieved at 603 lx (UF=0.67, MF=0.80); single 6 A Type C circuit on DB L1 at 720 W. Two assumptions on UF and MF flagged — confirm against the luminaire's photometric datasheet. Reply to refine, e.g. 'use LED downlights instead'.",
     "sections": [
