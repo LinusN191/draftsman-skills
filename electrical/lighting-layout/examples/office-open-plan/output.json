@@ -422,16 +422,28 @@
       "evidence": "S/H ratio: Hm=2250 mm, SHR_max=1.5 (LED_PANEL_600 ontology default), limit=3375 mm. S_x=2400 mm ≤ 3375 PASS; S_y=1600 mm ≤ 3375 PASS. Per [spacing-rules#shr-max-default]."
     },
     {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Switch coverage: 1 entrance declared, 1 switch emitted (SW01 at <x,y>, 1200 mm AFF, latch side per door_swing). switches.length >= entrances.length (Rule 3a PASS). Height + latch placement per [switching-rules#height] + [switching-rules#latch-side] (Rule 3b PASS)."
+    },
+    {
       "id": "INV-04",
       "passes": true,
-      "severity": "critical",
-      "evidence": "Part L 2021 efficacy check: lamp_efficacy_lm_per_w=125.0 (in calculation_summary) exceeds the office target of 65 lm/W; controls.part_l_compliant=true. Cited under Approved Document L2 §6.3."
+      "severity": "high",
+      "evidence": "Circuit topology: all 20 luminaires on circuit L1-Z2 share row_index spans 0..4 — this example pre-D3 used single-circuit layout; INV-4 trivially PASS (all luminaires on one circuit; no Z-pattern possible). homerun_endpoint = (0, 4000, W) sits on west wall (Rule 4b PASS). Canonical 5-row-circuit re-tested example lands in C.3 (uk-open-plan-office-10x8-dali)."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Circuit load: total_load_w = 720 W <= 0.8 x 6 x 230 = 1104 W (6 A MCB, per circuits[0].mcb_rating_a). Rule 5 PASS per BS 7671 §433.1.1 + IET OSG App A 80% continuous-load rule."
     },
     {
       "id": "INV-07",
       "passes": true,
       "severity": "medium",
-      "evidence": "Controls strategy includes daylight_linking + occupancy_sensing + dimming_protocol per BS EN 12464-1 §4.10 recommendations for offices >100 m² with perimeter daylight zones (zones array populated)."
+      "evidence": "Zone assignment: 20 luminaires all in Z2 (interior). Glazed walls = [] -> no perimeter zone (consistency PASS per [switching-rules#perimeter-circuit]). No task or emergency zones declared for this example. Rule 7 PASS per [control-rules#part-l-daylight]."
     },
     {
       "id": "INV-08",

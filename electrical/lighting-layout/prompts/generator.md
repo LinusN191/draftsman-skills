@@ -582,17 +582,52 @@ x_snapped = round(x / 50) × 50
 After positioning, confirm zone membership for each luminaire (perimeter vs interior)
 based on x/y distance from glazed walls identified in Step 7.
 
-### Step 11 — Assign circuits
+### Step 11 — Circuit Topology: Part L Zones + Row Circuits + Homerun
 
-Rules per BS 7671:2018:
-- Maximum circuit load on 10A MCB: 2300W at 230V. Apply 80% diversity → 1840W per circuit.
-- Do not mix emergency luminaires on general lighting circuits.
-- Do not mix zones (Z1, Z2, etc. from Step 8) on the same circuit.
-- Label by zone: `L1-Z1`, `L1-Z2`, `L2-Z1` for general; `EL1`, `EL2` for emergency.
+#### 11.1 — Part L zone assignment
 
-```
-Max luminaires per 10A circuit = floor(1840 / luminaire_wattage)
-```
+Each luminaire belongs to exactly one zone per [control-rules#part-l-daylight].
+Decision tree:
+
+1. **Z4 (emergency)** — luminaires with `symbol = "EMERGENCY"` go to Z4
+   regardless of position. Control: `emergency_self_test`.
+2. **Z1 (perimeter)** — luminaires within
+   [switching-rules#perimeter-circuit].max_zone_depth_mm (6000 mm by
+   default) of ANY wall declared in `inputs.glazed_wall_positions`.
+   Control: `daylight_linked`.
+3. **Z3 (task)** — luminaires placed at engineer-declared task locations
+   (rare for general lighting layouts; explicit input
+   `task_area_positions` if supplied). Control: `manual` or `dali_master`.
+4. **Z2 (interior)** — everything else. Control: `occupancy` if
+   `is_uk_new_build == true`; else `manual`.
+
+**Edge case: no glazed walls.** If `inputs.glazed_wall_positions == []`
+OR field absent, Z1 (perimeter) is absent — `zones[]` carries no
+perimeter entry. INV-7 enforces this consistency.
+
+#### 11.2 — Group luminaires into row circuits
+
+Per zone (in the order Z1, Z2, Z3, Z4 — perimeter first because daylight
+linking takes priority), group its `luminaire_ids[]` by `row_index`:
+
+- A row = luminaires sharing the same y_mm (within snap tolerance
+  ±50 mm per [placement-rules#grid-snap]).
+- `row_index` numbered 0 from the north (low y_mm) wall.
+
+Each row → one circuit IF the row's total wattage is within the OCPD
+limit per [control-rules#part-l-efficacy-target] x [BS 7671
+§433.1.1 + IET OSG App A 80% rule]:
+
+| MCB rating | 80% × rating × 230V | Per-row example |
+|---|---|---|
+|  6 A | 1104 W | 30 × 36 W LED panels |
+| 10 A | 1840 W | 51 × 36 W LED panels |
+| 16 A | 2944 W | 81 × 36 W LED panels |
+
+Most office rows fit a 6 A MCB. If a row exceeds 1104 W on a 6 A circuit,
+either (a) split into two circuits of half the row, OR (b) upgrade
+MCB to 10 A (rare — 6 A is the standard lighting circuit per IET OSG
+App C).
 
 **MCB curve selection:**
 - Type C default for all DALI and 0-10V dimmed circuits — handles LED driver inrush
@@ -608,39 +643,168 @@ spare_ways = max(1, ceil(N_circuits × 0.20))
 State in drawing notes:
 "Distribution board: [N] ways used, [spare] spare ways provided for future additions."
 
-Group circuits by zone. Name wiring path as an ordered list of [x, y]
-coordinates connecting luminaires in a circuit.
+**Circuit labelling:** Label by zone — `L1-Z1`, `L1-Z2`, `L2-Z1` for
+general; `EL1`, `EL2` for emergency (Z4). Do not mix emergency luminaires
+on general lighting circuits. Do not mix zones (Z1, Z2, Z3, Z4) on the
+same circuit.
 
-### Step 12 — Determine switch positions
+#### 11.3 — Compute homerun endpoint per circuit
 
-- One switch per entrance to the space.
-- Multi-way switching if more than one entrance (state wiring type).
-- Height: 1350mm AFF to centre of switch plate (BS 7671:2018 Clause 411).
-- Position switch on the **latch side** of the door (opposite to hinge),
-  minimum 200mm from door frame edge.
-- Clear of door sweep arc: for inward-opening doors, the switch must not
-  sit within the arc the door sweeps when opening.
-- Label: SW1, SW2 ...
-- State which circuits each switch controls.
+For each circuit, pick the nearest wall endpoint to the project's
+`db_designation` reference point. If no DB position is supplied via
+`inputs.db_designation`, default to the wall adjacent to the primary
+entrance (from `inputs.entrance_positions[0].wall`).
 
-**Using door swing data:**
+Homerun rules:
+- The endpoint MUST sit on one of the four room walls (x_mm = 0 OR
+  x_mm = room.length_mm OR y_mm = 0 OR y_mm = room.width_mm). INV-4
+  Rule (b) enforces.
+- The endpoint defaults to the row's midpoint projected to the chosen
+  wall, snapped to 50 mm.
 
-If door swing direction is provided:
-  - `inward_latch_left`: switch on left side of opening, outside swing arc
-  - `inward_latch_right`: switch on right side of opening, outside swing arc
-  - `outward_*`: switch can be placed closer to frame (door opens away from room)
-  - `sliding`: no swing constraint — place at latch end of travel
-  - Place switch x/y coordinates accordingly and set `switch_side` in JSON
+**Worked example (10×8 m office, 12 panels in 3×4 grid, DB on west
+wall):**
+- Row 0 (y=800): 4 panels @ x ∈ {1200, 3600, 6000, 8400}
+- Row 1 (y=4000): same x positions
+- Row 2 (y=7200): same x positions
+- Each row → 1 circuit at 4 × 36 W = 144 W (well under 1104 W).
+- Homerun for each row: project x-midpoint (4800 mm) to west wall →
+  `(x_mm=0, y_mm=<row's y>, wall="W")`.
 
-If door swing is unknown:
-[ASSUMPTION: Door swing direction not provided. Switch positioned on assumed
-latch side, 200mm clear of door frame. Confirm door swing with architect
-before issuing for construction to avoid placing switch behind open door.]
+#### 11.4 — Emit IR
 
-If room has multiple zones, use separate switch gangs or a multi-gang plate.
-A 2-gang switch allows perimeter (Z1) and interior (Z2) zones to be switched
-independently. For DALI/0-10V: wall controllers are typically scene plates —
-note the scene controller type and protocol address range.
+Per circuit:
+
+```json
+{
+  "circuit_id":      "C-L01",
+  "zone_id":         "Z2",
+  "luminaire_ids":   ["L01", "L02", "L03", "L04"],
+  "row_index":       0,
+  "total_load_w":    144,
+  "mcb_rating_a":    6,
+  "mcb_curve":       "B",
+  "homerun_endpoint": {"x_mm": 0, "y_mm": 800, "wall": "W"}
+}
+```
+
+Per zone:
+
+```json
+{
+  "zone_id":       "Z2",
+  "label":         "Interior",
+  "zone_type":     "interior",
+  "control":       "occupancy",
+  "luminaire_ids": ["L01", "L02", "...", "L12"],
+  "circuit_ids":   ["C-L01", "C-L02", "C-L03"],
+  "luminaire_count": 12,
+  "total_load_w":  432
+}
+```
+
+**INVs enforced by this step:**
+- INV-4 (HIGH): every circuit's `luminaire_ids` all share row_index OR
+  are on adjacent rows (`|row_a − row_b| ≤ 1`); homerun_endpoint on a
+  room wall. Kills Z-pattern daisy-chain bug.
+- INV-5 (HIGH): `circuit.total_load_w ≤ 0.8 × mcb_rating_a × 230` per
+  BS 7671 §433.1.1.
+- INV-7 (MEDIUM): every luminaire belongs to exactly one zone;
+  zone_type matches geometry (perimeter zone present iff glazed_walls
+  non-empty).
+
+### Step 12 — Switch Placement (deterministic from entrance_positions)
+
+#### 12.1 — Extract entrance data
+
+From `inputs.entrance_positions[]`, every entrance carries `wall +
+offset_mm + door_swing` (door_swing required per D3.A.3 input schema).
+
+#### 12.2 — For each entrance, compute switch (x, y)
+
+Map `wall + offset_mm` to a room coordinate (the door's hinge-side
+frame post position):
+
+- `wall == "N"` (y=0):    door spans (offset_mm, 0) — (offset_mm + width_mm, 0)
+- `wall == "S"` (y=W):    door spans (offset_mm, W) — (offset_mm + width_mm, W)
+- `wall == "E"` (x=L):    door spans (L, offset_mm) — (L, offset_mm + width_mm)
+- `wall == "W"` (x=0):    door spans (0, offset_mm) — (0, offset_mm + width_mm)
+
+Resolve LATCH side from `door_swing` per [switching-rules#latch-side]:
+
+| door_swing                | latch side position                     |
+|---|---|
+| inward_latch_left         | left edge of door span                  |
+| inward_latch_right        | right edge of door span                 |
+| outward_latch_left        | left edge of door span                  |
+| outward_latch_right       | right edge of door span                 |
+| sliding                   | use offset_mm + 200 mm (no swing)       |
+
+Switch placement: 200 mm INSIDE the room from the latch frame, on the
+WALL adjacent to the latch side (NOT on the door wall). Specifically:
+
+- For a door on wall "N" with `door_swing="inward_latch_right"`: latch
+  position = (offset_mm + width_mm, 0). Adjacent wall = "E" (if room
+  permits) OR same wall "N" offset 200 mm to the inside. Default:
+  same-wall placement at `(offset_mm + width_mm + 200, 0)` because most
+  rooms don't have a side wall close to the door.
+
+- For sliding doors: switch at the wall point 200 mm to the side of the
+  door opening, OR on a stub wall if available.
+
+Mounting height: 1200 mm AFF to centre of switch plate per
+[switching-rules#height] (BS 7671:2018+A2:2022 §553.1.1 + IET OSG
+App E §E1.2). Accessible spaces (accessible WCs, classrooms) override
+to 900–1100 mm per BS 8300-2:2018 with explicit input override.
+
+**Worked example (door at wall="N", offset_mm=500, width_mm=900,
+door_swing="inward_latch_right"):**
+- Door spans (500, 0) — (1400, 0)
+- Latch at (1400, 0)
+- Switch placed at (1400 + 200, 0) = (1600, 0) on wall N, mounted at
+  1200 mm AFF per [switching-rules#height]
+
+#### 12.3 — Emit switches[] block
+
+Per entrance, emit one switch entry:
+
+```json
+{
+  "id":              "SW01",
+  "type":            "1_gang",
+  "x_mm":            1600,
+  "y_mm":            0,
+  "height_aff_mm":   1200,
+  "controls_circuit": "C-L01",
+  "door_swing":      "inward_latch_right",
+  "switch_side":     "latch"
+}
+```
+
+If the entrance serves a multi-circuit zone, use a `2_gang` / `3_gang`
+type from `ontology/switching-types.json` and emit one switch entry
+with the controlled circuit IDs in a comma-separated `controls_circuit`
+string OR set `type: "dali_master"` for DALI-controlled zones.
+
+If door swing is unknown for any entrance:
+[ASSUMPTION: Door swing direction not provided. Switch positioned on
+assumed latch side, 200 mm clear of door frame. Confirm door swing with
+architect before issuing for construction to avoid placing switch behind
+open door.]
+
+#### 12.4 — DALI override
+
+If `inputs.controls_protocol ∈ {DALI, DALI-2}`: emit ONE
+`dali_master` switch at the primary entrance per
+[switching-rules#dali-master-at-entrance], and emit ZERO 1_gang/2_gang
+switches (DALI master replaces individual switches; wall controllers at
+secondary entrances are optional and emitted only if
+`inputs.entrance_positions.length > 1`).
+
+**INVs enforced by this step:**
+- INV-3 (HIGH): `switches.length ≥ entrances.length` (or 1 if DALI
+  master); each switch at correct latch_side + offset + height per
+  rules cited.
 
 ### Step 13 — Emergency lighting note
 
