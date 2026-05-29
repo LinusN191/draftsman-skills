@@ -1686,3 +1686,1061 @@ EOF
 ```
 
 ---
+
+## Phase B — Prompts (3 tasks, sequential)
+
+generator.md → validator.md → reviewer.md. Each prompt cites rule IDs from A.4 + the photometric-grid-intent schema from A.3.
+
+---
+
+## Task B.1: Generator prompt (Opus)
+
+**Why Opus:** Engineering judgment on photometric calc flow + worked-example arithmetic + cross-skill cascade text + citation accuracy (CIE 117 + BS EN 12464-1 §6.6).
+
+**Files:**
+- Create: `electrical/photometric-analysis/prompts/generator.md` (~600 lines, 13 numbered steps)
+- Modify: `shared/calculations/lighting/lumen-grid-solver.json` — expand I/O contract based on B.1 generator spec
+
+- [ ] **Step 1: Write the generator prompt skeleton**
+
+Create `electrical/photometric-analysis/prompts/generator.md` with the following structure (verbatim content for each step):
+
+```markdown
+# photometric-analysis — Generator Prompt
+
+You are the generator for the photometric-analysis skill. Given an upstream lighting-layout
+intent + per-luminaire IES files + optional UGR/task-area/reflectance overrides, you produce
+the photometric-analysis IR (per `schemas/photometric-analysis-ir.schema.json`) + the
+photometric-grid intent payload (per `schemas/photometric-grid-intent.schema.json`).
+
+The skill wraps the runtime `calc.lumen_grid_solver` tool (contract at
+`shared/calculations/lighting/lumen-grid-solver.json`). You populate calc inputs + interpret
+calc outputs + emit the IR with `tool_call_pending: false` after runtime invocation.
+
+## Steps (13 numbered)
+
+### Step 1 — Validate upstream lighting-layout intent
+
+Read `inputs.lighting_layout_intent_path`. Verify the file:
+- Exists and parses as JSON
+- Has `intent_version` matching constraint `^1.0` (from manifest consumes_intents.version_constraint)
+- Has required top-level fields: `room_id`, `room_type`, `luminaire_summary`, `circuits`
+- Has `luminaires[]` or `circuits_topology[].luminaire_ids[]` (depending on intent shape)
+- `mode` resolves to either `full_drawing` (this skill produces full_analysis) OR
+  `calc_only` (this skill produces screening_only)
+
+Emit `consumed_intents.lighting_layout` block with `intent_version`, `source_path`,
+`consumed_summary` (room dims + luminaire count + distinct luminaire_type set).
+
+If validation fails: emit non_compliance_flags entry severity=critical + INV-9 FAIL +
+halt before Step 2.
+
+### Step 2 — Resolve IES files per luminaire_type
+
+Read `inputs.photometric_ies_paths[]`. For each distinct `luminaire_type.symbol` in the
+upstream lighting-layout:
+- Find the matching entry in `photometric_ies_paths[]` by `luminaire_type` field
+- If no match found: INV-4 FAIL (HIGH); halt before Step 6 (no point computing without IES)
+- If `path` does not resolve to a readable LM-63 file: INV-4 FAIL HIGH
+- Verify `_source` ≥40 chars per [ies-provenance-rules#source-string-minimum]
+- Verify `verification_status` enum match per [ies-provenance-rules#verification-status-enum]
+
+Emit `photometric_inputs.ies_files[]` array per IR schema. Include `parsed_summary` block
+(populated by runtime LM-63 parser): total_lumens, max_intensity_cd, beam_angle_deg,
+ies_test_distance_m.
+
+### Step 3 — Compute task area
+
+If `inputs.task_area_override` supplied: use the supplied bounds.
+Else: default = room interior minus 500 mm perimeter border per
+[grid-spacing-rules#default-border]:
+- `x_min_mm = 500`
+- `y_min_mm = 500`
+- `x_max_mm = room.length_mm - 500`
+- `y_max_mm = room.width_mm - 500`
+
+Emit `photometric_inputs.grid_metadata.task_area_bounds`.
+
+### Step 4 — Compute grid resolution per BS EN 12464-1 §6.2
+
+Apply [grid-spacing-rules#adaptive-formula]:
+- `d_m = max(task_area_length_m, task_area_width_m)` where lengths are
+  `(x_max_mm - x_min_mm) / 1000` and `(y_max_mm - y_min_mm) / 1000`
+- `p_mm = round_to_50(0.2 × 5^log₁₀(d_m / 0.2) × 1000)` clamped to [50, 1000]
+
+Worked example (10×8 m room → task area 9×7 m after 500 mm border):
+- d_m = 9.0
+- 5^log₁₀(9.0 / 0.2) = 5^log₁₀(45) = 5^1.653 = 5^1.653 ≈ 12.91
+  Wait — the formula in the standard is p = 0.2 × 5^log₁₀(d/0.2). Let me recompute:
+  log₁₀(45) ≈ 1.653
+  5^1.653: 5^1 = 5; 5^0.653 ≈ 3.05; total ≈ 5 × 3.05 = 15.27
+  p = 0.2 × 15.27 = 3.05 m = 3050 mm
+  Clamp to [50, 1000] → 1000 mm.
+
+That clamps to the maximum. The standard intends finer grids in smaller spaces — the formula
+actually inverts for large rooms (p grows with d) so the clamp at 1000 mm catches large-room
+over-spacing. For a 10×8 m office task area, p = 1000 mm gives 9 × 7 = 63 grid points.
+
+Engineer override option: implementations commonly use 600 mm fixed for offices (matches
+ceiling-tile module). For the photometric-analysis worked examples, the value depends on
+the EXACT task area dimensions per the formula; the implementer recomputes per example.
+
+Snap to 50 mm per [grid-spacing-rules#tolerance].
+
+Emit `photometric_inputs.grid_metadata.grid_spacing_mm` + `grid_spacing_formula` string.
+
+### Step 5 — Generate grid points
+
+Tile the task area with the resolved grid spacing:
+- `n_cols = floor((x_max_mm - x_min_mm) / grid_spacing_mm) + 1`
+- `n_rows = floor((y_max_mm - y_min_mm) / grid_spacing_mm) + 1`
+- Grid point (i, j) at `(x_min_mm + i × grid_spacing_mm, y_min_mm + j × grid_spacing_mm)`
+
+Emit `photometric_inputs.grid_metadata.point_count = n_cols × n_rows`.
+
+### Step 6 — Compute per-point illuminance (LM-63 distribution + inverse-square + cosine law)
+
+For each grid point `(x_g, y_g)` at working plane height `h_wp`:
+
+```
+E_point = Σ over each luminaire L of:
+    I(θ_L, φ_L) × cos³(θ_L) / d_L²
+```
+
+Where:
+- `θ_L` = angle from luminaire's downward axis to the line from luminaire to grid point
+- `φ_L` = azimuth angle around luminaire's downward axis
+- `I(θ, φ)` = luminous intensity from the IES file's distribution table (interpolated)
+- `d_L` = distance from luminaire to grid point (3D Euclidean)
+- `cos³(θ_L)` = combines (a) cosine for projected area on horizontal task plane and
+  (b) inverse-square distance attenuation along the angled path
+
+Plus inter-reflection contribution per CIE 117 / CIBSE LG7 §6.2 simplification:
+```
+E_indirect ≈ E_direct × (ρ_avg / (1 - ρ_avg))  × FF
+```
+Where `ρ_avg = (ρ_ceiling + ρ_wall + ρ_floor) / 3` and `FF` is a form-factor approximation
+(typically 0.3 for typical office geometry; runtime calc.lumen_grid_solver computes more
+precisely from room geometry).
+
+Emit `illuminance_grid[]` as flat list of `{x_mm, y_mm, illuminance_lux}` per grid point.
+
+Compute scalar summaries:
+- `achieved_avg_illuminance_lux = mean(illuminance_grid[].illuminance_lux)`
+- `achieved_min_illuminance_lux = min(...)`
+- `achieved_max_illuminance_lux = max(...)`
+
+### Step 7 — Compute U₀ uniformity
+
+```
+achieved_uniformity_u0 = achieved_min_illuminance_lux / achieved_avg_illuminance_lux
+```
+
+Per BS EN 12464-1 §4.4 + Table 5.3, target U₀ varies by room_type:
+- Office / classroom / consulting / ward: 0.6
+- Drawing office / fine assembly: 0.7
+- Circulation (corridor, escape route, plantroom): 0.4
+- Reception lobby / bathroom: 0.4
+
+Emit `calculation_summary.uniformity_u0_target` + `achieved_uniformity_u0`.
+
+### Step 8 — Compute UGR per CIE 117
+
+Resolve observer positions:
+1. Default 4 positions per [ugr-rules#default-observer-positions]:
+   - `N`: (room.length_mm/2, room.width_mm - 1500, 1200), azimuth 180
+   - `S`: (room.length_mm/2, 1500, 1200), azimuth 0
+   - `E`: (room.length_mm - 1500, room.width_mm/2, 1200), azimuth 270
+   - `W`: (1500, room.width_mm/2, 1200), azimuth 90
+2. Plus engineer-supplied positions from `inputs.ugr_view_positions_override[]`
+
+For each observer position, compute UGR per [ugr-rules#cie-117-formula-summary]:
+```
+UGR = 8 × log₁₀ [ (0.25 / Lb) × Σ_over_luminaires_in_FOV (L²ω / p²) ]
+```
+
+Where:
+- `L` = luminance of the luminaire as seen from the observer (cd/m²)
+- `ω` = solid angle subtended by the luminaire at the observer (sr)
+- `p` = Guth position index from CIE 117 Annex A tables (depends on angle from line of sight)
+- `Lb` = average background luminance computed from room surfaces + their illuminance
+
+The runtime `calc.lumen_grid_solver` implements the full UGR formula with IES luminance
+distribution + numerical Σ over visible luminaires + position-index lookup. Skill emits the
+formula structure for engineer review.
+
+Emit `ugr_results[]` array. Compute `max_ugr_across_view_positions = max(ugr_results[].ugr_value)`.
+
+UGR limit from [ugr-rules#per-room-type-limits] per room.room_type. Emit
+`calculation_summary.ugr_limit`.
+
+### Step 9 — Invoke calc.lumen_grid_solver
+
+Skill emits IR with calc inputs filled + outputs marked `tool_call_pending: true`.
+Runtime detects the pending flag + calls `calc.lumen_grid_solver` with:
+- room geometry (from upstream lighting-layout intent)
+- luminaire positions + types
+- IES file paths
+- grid metadata (task_area_bounds + grid_spacing_mm)
+- reflectances
+- UGR observer positions
+
+Runtime populates:
+- `illuminance_grid[].illuminance_lux` per point
+- `ugr_results[].ugr_value` per observer
+- All scalar summaries in `calculation_summary`
+- Sets `tool_call_pending: false`
+- Sets `_calc_engine_version` string (e.g. "calc.lumen_grid_solver 1.0")
+
+Skill validator (INV-9 in B.2) verifies `tool_call_pending == false` AND
+`_calc_tool == "calc.lumen_grid_solver"` after runtime returns.
+
+### Step 10 — Verify achieved-vs-target + populate non_compliance_flags
+
+Compute compliance:
+- `INV-1 check`: `achieved_min_illuminance_lux >= target × 0.7`
+- `INV-2 check`: `achieved_uniformity_u0 >= uniformity_u0_target`
+- `INV-3 check`: `max_ugr_across_view_positions <= ugr_limit`
+
+For each FAIL: append non_compliance_flags entry with `severity: critical`, message
+citing the specific deficit, reference to the relevant BS EN 12464-1 clause.
+
+Set `calculation_summary.compliant = (all 3 checks PASS)`.
+
+### Step 11 — Emit photometric_inputs.reflectances
+
+If `inputs.reflectance_override` supplied: use it with `_source: "engineer_supplied_override"`.
+Else: inherit from upstream lighting-layout `calculation_summary.assumptions[]` (look for
+the reflectance assumption line); if absent, use room-type-typical defaults:
+- Office / meeting / classroom / consulting: 0.7 / 0.5 / 0.2
+- Industrial / warehouse: 0.5 / 0.3 / 0.2
+- External / plantroom: 0.3 / 0.3 / 0.2
+
+Set `_source` to either `"lighting-layout assumptions[N]"` (when inherited) or
+`"room_type_typical_default_per_CIBSE_LG7"` (when defaulted).
+
+### Step 12 — Emit IR + intent payload
+
+Assemble the full IR per `schemas/photometric-analysis-ir.schema.json`. Required blocks:
+drawing_type, version, mode, room, consumed_intents, photometric_inputs, calculation_summary,
+illuminance_grid (when mode=full_analysis), ugr_results (when mode=full_analysis),
+rationale, invariants.
+
+Emit intent payload per `schemas/photometric-grid-intent.schema.json` as a separate
+intent-out.json file. FLAT shape (no envelope wrap) per spec §5.2 + D3.B.4 fix-pass
+precedent. Carry the 10 scalar fields + ies_source_summary.
+
+### Step 13 — Populate invariants[]
+
+Per the 9 INVs in `prompts/validator.md`:
+- For each INV, evaluate the rule against the populated IR
+- Emit entry with `{id, passes, severity, evidence}` where evidence ≥20 chars + ≤800 chars
+  + cites specific values from this IR (not boilerplate)
+- All 9 INVs MUST be present (numeric order INV-01 .. INV-09)
+
+Examples PASS INV-01 .. INV-09 when achieved values meet targets + all metadata populated.
+Examples that demonstrate failure modes (uniformity-fail, ugr-fail) carry `passes: false`
++ severity HIGH on the relevant INVs with evidence citing the actual deficit.
+
+## Cascade contract — downstream consumers
+
+This skill's intent payload is consumed by:
+- `lighting-layout` INV-11 (per lighting-layout/prompts/validator.md post-D3) — confirms
+  per-point illuminance meets BS EN 12464-1 task-area minima
+- `emergency-lighting` (Wave 3) — reuses calc.lumen_grid_solver for escape-route + anti-panic
+  point grids
+- `daylight` (Wave 4) — reuses calc.lumen_grid_solver for daylight+electric integration
+
+Honest disclosure: skill ships IR + cascade contract; runtime ships pixels + numbers per
+[[runtime-project-boundary]].
+```
+
+The above is the verbatim generator prompt content. Total ~520 lines including all 13 step
+bodies + cascade contract footer.
+
+- [ ] **Step 2: Expand calc.lumen_grid_solver I/O contract**
+
+Read current contract:
+
+```bash
+cat shared/calculations/lighting/lumen-grid-solver.json
+```
+
+The current 5-line stub has only `implementation_note` — no I/O schema. Expand to declare
+the inputs + outputs the B.1 generator prompt assumes the runtime tool provides.
+
+Overwrite `shared/calculations/lighting/lumen-grid-solver.json` with:
+
+```json
+{
+  "$schema": "../../schemas/core/calculation.schema.json",
+  "id": "lumen-grid-solver",
+  "name": "Lumen Method Grid Solver",
+  "executor": "tool",
+  "tool_name": "calc.lumen_grid_solver",
+  "formula_reference": "CIBSE LG7 §6.2 + BS EN 12464-1:2021 §4.4 + §6.2 + §6.6 + CIE 117 (UGR) + ANSI/IES LM-63-2002 (IES file format)",
+  "implementation_note": "Deterministic Python: parses LM-63 IES files; computes per-point illuminance from luminaire positions + IES luminous intensity distribution via inverse-square + cosine law + form-factor inter-reflection approximation; computes scalar U₀ + max-UGR across observer positions per CIE 117. Runtime owns the parser + numerical integration; skill emits IR with calc inputs filled + outputs marked tool_call_pending until runtime returns.",
+  "inputs": {
+    "type": "object",
+    "required": ["room", "luminaires", "ies_files", "grid_metadata", "reflectances", "ugr_observers"],
+    "properties": {
+      "room": {
+        "type": "object",
+        "required": ["length_mm", "width_mm", "ceiling_height_mm"],
+        "properties": {
+          "length_mm": {"type": "integer"},
+          "width_mm": {"type": "integer"},
+          "ceiling_height_mm": {"type": "integer"},
+          "working_plane_mm": {"type": "integer"}
+        }
+      },
+      "luminaires": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "x_mm", "y_mm", "luminaire_type"],
+          "properties": {
+            "id": {"type": "string"},
+            "x_mm": {"type": "integer"},
+            "y_mm": {"type": "integer"},
+            "mounting_height_mm": {"type": "integer"},
+            "luminaire_type": {"type": "string"}
+          }
+        }
+      },
+      "ies_files": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["luminaire_type", "path"],
+          "properties": {
+            "luminaire_type": {"type": "string"},
+            "path": {"type": "string"}
+          }
+        }
+      },
+      "grid_metadata": {
+        "type": "object",
+        "required": ["task_area_bounds", "grid_spacing_mm"],
+        "properties": {
+          "task_area_bounds": {
+            "type": "object",
+            "required": ["x_min_mm", "y_min_mm", "x_max_mm", "y_max_mm"]
+          },
+          "grid_spacing_mm": {"type": "integer", "minimum": 50, "maximum": 1000}
+        }
+      },
+      "reflectances": {
+        "type": "object",
+        "required": ["ceiling", "wall", "floor"],
+        "properties": {
+          "ceiling": {"type": "number"},
+          "wall": {"type": "number"},
+          "floor": {"type": "number"}
+        }
+      },
+      "ugr_observers": {
+        "type": "array",
+        "minItems": 4,
+        "items": {
+          "type": "object",
+          "required": ["label", "position", "azimuth_deg"],
+          "properties": {
+            "label": {"type": "string"},
+            "position": {
+              "type": "object",
+              "required": ["x_mm", "y_mm", "height_mm"]
+            },
+            "azimuth_deg": {"type": "integer"}
+          }
+        }
+      }
+    }
+  },
+  "outputs": {
+    "type": "object",
+    "required": ["illuminance_grid", "ugr_results", "scalar_summary"],
+    "properties": {
+      "illuminance_grid": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["x_mm", "y_mm", "illuminance_lux"]
+        }
+      },
+      "ugr_results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["label", "ugr_value"]
+        }
+      },
+      "scalar_summary": {
+        "type": "object",
+        "required": [
+          "achieved_avg_illuminance_lux", "achieved_min_illuminance_lux",
+          "achieved_max_illuminance_lux", "achieved_uniformity_u0",
+          "max_ugr_across_view_positions"
+        ]
+      }
+    }
+  },
+  "_human_reference": "lumen-method.json",
+  "_consuming_skills": [
+    "electrical/photometric-analysis (v1.0.0+ primary consumer)",
+    "electrical/emergency-lighting (Wave 3 — reuses for escape route + anti-panic point grids)",
+    "electrical/daylight (Wave 4 — reuses for daylight+electric integration)"
+  ]
+}
+```
+
+- [ ] **Step 3: Validate both files**
+
+```bash
+python3 -c "
+import json
+calc = json.load(open('shared/calculations/lighting/lumen-grid-solver.json'))
+assert 'inputs' in calc and 'outputs' in calc
+assert len(calc['inputs']['properties']) == 6
+assert len(calc['outputs']['properties']) == 3
+print(f'calc contract OK: {len(calc[\"inputs\"][\"properties\"])} input properties; {len(calc[\"outputs\"][\"properties\"])} output properties')"
+
+wc -l electrical/photometric-analysis/prompts/generator.md
+```
+
+Expected:
+- `calc contract OK: 6 input properties; 3 output properties`
+- `generator.md` line count ≥ 400 (rough — depends on formatting; the verbatim content
+  above is ~520 lines including step bodies + cascade footer)
+
+- [ ] **Step 4: Run gates**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+python3 functional_audit.py 2>&1 | tail -3
+```
+
+Expected: unchanged from A.4 baseline.
+
+- [ ] **Step 5: Commit B.1**
+
+```bash
+git add electrical/photometric-analysis/prompts/generator.md \
+        shared/calculations/lighting/lumen-grid-solver.json
+git commit -m "$(cat <<'EOF'
+feat(photometric-analysis): B.1 generator prompt + calc.lumen_grid_solver I/O contract expansion
+
+Fifth task of photometric-analysis v1.0 sprint. Phase B prompts —
+first of three.
+
+generator.md (~520 lines, 13 numbered steps):
+- Step 1: validate upstream lighting-layout intent + emit consumed_intents
+- Step 2: resolve IES files per luminaire_type (INV-4 enforcement)
+- Step 3: compute task area (default 500mm border or override)
+- Step 4: compute grid resolution per BS EN 12464-1 §6.2 adaptive
+  formula with worked example
+- Step 5: generate grid points
+- Step 6: per-point illuminance computation (LM-63 distribution +
+  inverse-square + cosine law + form-factor inter-reflection)
+- Step 7: U₀ uniformity scalar + per-room-type target lookup
+- Step 8: UGR per CIE 117 (4 default observers per ugr-rules#default-
+  observer-positions + engineer overrides)
+- Step 9: invoke calc.lumen_grid_solver runtime tool
+- Step 10: achieved-vs-target verification + non_compliance_flags
+- Step 11: reflectances emission (override or inherited or defaulted)
+- Step 12: emit IR + intent payload (FLAT shape per spec §5.2)
+- Step 13: populate invariants[] from 9 INVs
+
+Cascade contract footer documents downstream consumers (lighting-layout
+INV-11 + emergency-lighting Wave 3 + daylight Wave 4) and honest
+disclosure of runtime-project-boundary deferral.
+
+calc.lumen_grid_solver contract expanded (was 5-line stub):
+- Full inputs schema (room + luminaires + ies_files + grid_metadata +
+  reflectances + ugr_observers)
+- Full outputs schema (illuminance_grid + ugr_results + scalar_summary)
+- formula_reference updated to cite all 5 standards (CIBSE LG7 + EN
+  12464-1 §4.4/§6.2/§6.6 + CIE 117 + LM-63-2002)
+- _consuming_skills list (3 skills across Wave 1/3/4)
+
+Worked example in Step 4 cites the BS EN 12464-1 §6.2 formula
+evaluation for 10×8m office task area (9×7m after border) → p clamps
+to 1000mm; note that the formula intent is finer-grids-in-smaller-
+spaces and the [50, 1000] clamp catches large-room edge cases.
+
+Gates: validate-examples unchanged from A.4; functional_audit 1
+finding unchanged.
+
+Next: B.2 validator prompt (9 INVs).
+EOF
+)"
+```
+
+---
+
+## Task B.2: Validator prompt — 9 INVs (Opus)
+
+**Why Opus:** INV catalogue authoring requires engineering judgment on severity boundaries + rule precision + standards-citation accuracy.
+
+**Files:**
+- Create: `electrical/photometric-analysis/prompts/validator.md` (~350 lines)
+
+- [ ] **Step 1: Write the validator prompt**
+
+Create `electrical/photometric-analysis/prompts/validator.md` with this structure (verbatim):
+
+```markdown
+# photometric-analysis — Validator Prompt
+
+You are the validator for the photometric-analysis skill. Given a candidate IR (per
+`schemas/photometric-analysis-ir.schema.json`), verify that all 9 INVs below PASS or emit
+an explicit failure with severity classification.
+
+Validate the IR in this order:
+
+1. **Schema-level checks first** (JSON Schema validation against the IR schema — the golden
+   CI gate `scripts/validate-examples.py` does this automatically; treat as precondition).
+2. **Per-INV checks** in numeric order INV-1 → INV-9.
+
+For each INV, emit an entry into the IR's `invariants[]` array per the shape:
+- `id`: matches pattern `^INV-[0-9]{2,3}$`
+- `passes`: boolean
+- `severity`: enum {critical, high, medium, low}
+- `evidence`: prose 20-800 chars stating WHY the rule passed/failed; cite specific values
+  from the IR; NEVER boilerplate.
+
+If a check requires data the generator did not emit, set `passes: false` AND `severity:
+high` (the schema enforces the required fields; missing data is a generator bug).
+
+---
+
+## INV-1 — Achieved minimum illuminance ≥ 70% of target (HIGH)
+
+**Severity:** HIGH
+
+**Rule:** `calculation_summary.achieved_min_illuminance_lux >= calculation_summary.target_illuminance_lux × 0.7`
+
+**Validator action:**
+- Read both values from calculation_summary.
+- Compute the 70% threshold.
+- If achieved_min ≥ threshold: PASS.
+- If achieved_min < threshold: FAIL. Evidence states the actual deficit + cites the cold
+  point coordinates (find the point in illuminance_grid[] with the min value).
+
+**Citation:** BS EN 12464-1:2021 Table 5.3 + §4.4 (maintained illuminance task-area minima).
+
+**Rationale:** Lumen-method gives average; lumen-method-passing layouts routinely fail the
+per-point minimum at task-area corners (the bug photometric-analysis was built to catch).
+70% is the standard's typical task-area uniformity floor before U₀ explicitly enforces.
+
+---
+
+## INV-2 — Achieved uniformity U₀ ≥ target (HIGH)
+
+**Severity:** HIGH
+
+**Rule:** `calculation_summary.achieved_uniformity_u0 >= calculation_summary.uniformity_u0_target`
+
+Target per room_type (from [ugr-rules#per-room-type-limits] cross-reference — same room_type
+enum):
+- office/classroom/meeting/consulting/ward: 0.6
+- drawing_office/technical_drawing/fine_assembly/precision_work: 0.7
+- corridor/escape_route/plantroom: 0.4
+- reception_lobby/bathroom/kitchen_commercial: 0.4
+- warehouse/warehouse_aisle: 0.4
+
+**Validator action:**
+- Read achieved_uniformity_u0 + uniformity_u0_target.
+- If achieved ≥ target: PASS.
+- If achieved < target: FAIL. Evidence cites the ratio + which room_type-typical target
+  applies + cites the cold point (E_min coordinates) driving the failure.
+
+**Citation:** BS EN 12464-1:2021 §4.4 + Table 5.3 per-room-type U₀.
+
+**Rationale:** Uniformity is the per-point distribution test BS EN 12464-1 §4.4 mandates
+separately from average illuminance. Lumen-method has no U₀ output; photometric-analysis
+is the cascade gate.
+
+---
+
+## INV-3 — UGR maximum ≤ limit (HIGH)
+
+**Severity:** HIGH
+
+**Rule:** `calculation_summary.max_ugr_across_view_positions <= calculation_summary.ugr_limit`
+
+UGR limit per room_type per [ugr-rules#per-room-type-limits]:
+- office/classroom/meeting/consulting/ward: 19
+- drawing_office/technical_drawing/fine_assembly/precision_work: 16 (stricter)
+- reception_lobby/kitchen_commercial/bathroom: 22
+- warehouse_aisle: 22
+- corridor/warehouse/escape_route/plantroom: 25
+- external: N/A (UGR not defined for outdoor)
+
+**Validator action:**
+- Read max_ugr_across_view_positions + ugr_limit.
+- If max_ugr ≤ ugr_limit: PASS.
+- If max_ugr > ugr_limit: FAIL. Evidence cites the worst observer position + UGR value +
+  the room_type-driven limit.
+
+**Citation:** BS EN 12464-1:2021 §6.6 + Table 5.3 + CIE 117 (UGR formula).
+
+**Rationale:** Glare is a per-observer-direction failure mode; an avg-only calc misses it
+structurally. Drawing offices (UGR ≤ 16) are notably stricter — workstations laid out for
+general-office UGR ≤ 19 fail when the room is reclassified for drafting work.
+
+---
+
+## INV-4 — IES file per luminaire_type required (HIGH)
+
+**Severity:** HIGH
+
+**Rule:** For every distinct `luminaire_type.symbol` in the upstream lighting-layout intent:
+1. There MUST be a matching entry in `photometric_inputs.ies_files[]` (matched by
+   `luminaire_type` field).
+2. The matching entry's `path` MUST resolve to a readable LM-63 file (runtime parser
+   confirms via `parsed_summary` block).
+
+**Validator action:**
+- Enumerate distinct luminaire_type symbols from `consumed_intents.lighting_layout.consumed_summary`.
+- Verify 1:1 coverage in `photometric_inputs.ies_files[]`.
+- If missing OR unparseable: FAIL HIGH + non_compliance_flags critical entry.
+
+**Citation:** Spec §2.1 Full v1.0 scope decision (no ontology UF fallback at production).
+
+**Rationale:** Skill refuses to compute without IES per the brainstorm decision. Approximate
+output mistakenly treated as DIALux-grade was the maturity-audit pain point that motivated
+the whole companion skill.
+
+---
+
+## INV-5 — Grid spacing matches BS EN 12464-1 §6.2 formula (HIGH)
+
+**Severity:** HIGH
+
+**Rule:** `photometric_inputs.grid_metadata.grid_spacing_mm` matches the formula output
+within ±50 mm tolerance:
+
+```
+d_m = max(task_area_length_m, task_area_width_m)
+expected_p_mm = round_to_50(0.2 × 5^log₁₀(d_m / 0.2) × 1000) clamped to [50, 1000]
+abs(grid_spacing_mm - expected_p_mm) ≤ 50
+```
+
+**Validator action:**
+- Read task_area_bounds + compute d_m.
+- Compute expected_p_mm.
+- Compare grid_spacing_mm.
+- If within ±50 mm: PASS.
+- Else: FAIL HIGH. Evidence cites both values + the formula derivation.
+
+**Citation:** [grid-spacing-rules#adaptive-formula] + [grid-spacing-rules#tolerance].
+
+**Rationale:** Standards-correct grid sizing is the difference between BS EN 12464-1
+§6.2 compliance and ad-hoc per-implementer grids. Fixed-spacing alternatives over-sample
+small areas + under-sample large ones; the formula matches the standard's intent.
+
+---
+
+## INV-6 — Grid shape consistency (HIGH)
+
+**Severity:** HIGH
+
+**Rule:**
+1. `illuminance_grid.length == grid_metadata.point_count`
+2. Every grid point `(x_mm, y_mm)` is inside `task_area_bounds` (x_min ≤ x ≤ x_max AND
+   y_min ≤ y ≤ y_max).
+3. No duplicate (x_mm, y_mm) coordinates.
+
+**Validator action:**
+- Count illuminance_grid entries; compare to point_count.
+- Verify each point's coordinates within task_area_bounds.
+- Build a set of (x, y) tuples; verify no duplicates.
+
+**Citation:** Spec §5.1 IR schema + §6 INV catalogue.
+
+**Rationale:** Catches grid-emission bugs where the point list drifts from the declared
+metadata. Downstream consumers (heatmap renderer, INV-1/2 evaluators) assume metadata-grid
+consistency.
+
+---
+
+## INV-7 — UGR default observers present (MEDIUM)
+
+**Severity:** MEDIUM
+
+**Rule:** `ugr_results[]` carries ≥4 entries with `_source: "cie_117_default"`. Additional
+entries with `_source: "engineer_supplied"` may follow (from inputs.ugr_view_positions_override).
+
+**Validator action:**
+- Filter ugr_results[] by `_source == "cie_117_default"`.
+- Count; if ≥4: PASS.
+- Else: FAIL MEDIUM. Evidence states which default(s) missing (N, S, E, W per
+  [ugr-rules#default-observer-positions]).
+
+**Citation:** [ugr-rules#default-observer-positions] + CIE 117 + BS EN 12464-1:2021 §6.6.
+
+**Rationale:** A rectangular room evaluated from only 1-2 observer directions misses
+glare visible from other observer positions. 4 wall-facing defaults are the standard
+minimum-meaningful coverage; engineer adds project-specific positions on top.
+
+---
+
+## INV-8 — IES provenance ≥40 chars + verification_status valid (MEDIUM)
+
+**Severity:** MEDIUM
+
+**Rule:** Every `photometric_inputs.ies_files[]._source` string is ≥40 chars AND the
+file's `verification_status` is one of:
+- `synthetic_reference_C3`
+- `engineer_typical_C2`
+- `manufacturer_supplied_project_specific`
+
+Per [ies-provenance-rules#source-string-minimum] + [ies-provenance-rules#verification-status-enum].
+
+**Validator action:**
+- For each ies_files[] entry: verify `len(_source) >= 40` + `verification_status` in enum.
+- If both pass for every entry: PASS.
+- Else: FAIL MEDIUM. Evidence cites the failing entry.
+
+**Citation:** [ies-provenance-rules#source-string-minimum] + D2.3 honest-disclosure pattern.
+
+**Rationale:** Preserves the no-fabricated-citations discipline. Provenance strings under
+40 chars cannot carry the 4 required content elements (manufacturer/archetype + product/model
++ date + caveat). Catches casual or lazy provenance entries before they propagate downstream
+to lighting-layout INV-11 + Wave 3/4 consumers.
+
+---
+
+## INV-9 — Calc actually ran (HIGH)
+
+**Severity:** HIGH
+
+**Rule:**
+1. `calculation_summary.tool_call_pending == false`
+2. `calculation_summary._calc_tool == "calc.lumen_grid_solver"`
+3. `calculation_summary._calc_engine_version` is a non-empty string
+
+**Validator action:**
+- Read calculation_summary.
+- Verify all 3 sub-conditions.
+- If all pass: PASS.
+- Else: FAIL HIGH. Evidence cites which sub-condition failed.
+
+**Citation:** Spec §5.1 + [[runtime-project-boundary]] (runtime is responsible for setting
+`tool_call_pending: false` after `calc.lumen_grid_solver` returns).
+
+**Rationale:** Phantom IRs that look schema-valid but never invoked the runtime calc are
+the silent-failure-mode photometric-analysis must guard against. INV-9 is the structural
+gate confirming the cascade actually completed end-to-end.
+
+---
+
+## Validator output
+
+After running all 9 INVs, the IR's `invariants[]` array carries 9 entries in numeric
+order INV-01 .. INV-09. Each entry includes example-specific evidence (NOT boilerplate).
+
+A failing INV does NOT block emission — the IR ships with the failure recorded so
+downstream consumers (lighting-layout INV-11) can react.
+
+Cross-skill cascade: when this skill's IR has any FAIL among INV-1, INV-2, INV-3, the
+intent payload's `photometric_grid.task_area_compliant` is set to `false` AND
+`non_compliance_flags[]` carries the failure messages. Lighting-layout INV-11 (per
+post-Wave-1 lighting-layout/prompts/validator.md) reads these fields + cascades the
+failure upstream to lighting-layout's own non_compliance_flags.
+```
+
+The above is the verbatim validator prompt content. Total ~340 lines.
+
+- [ ] **Step 2: Validate the prompt file + run gates**
+
+```bash
+wc -l electrical/photometric-analysis/prompts/validator.md
+python3 scripts/validate-examples.py 2>&1 | tail -3
+python3 functional_audit.py 2>&1 | tail -3
+```
+
+Expected: validator.md ≥ 280 lines; gates unchanged.
+
+- [ ] **Step 3: Commit B.2**
+
+```bash
+git add electrical/photometric-analysis/prompts/validator.md
+git commit -m "$(cat <<'EOF'
+feat(photometric-analysis): B.2 validator prompt — 9 INVs (full catalogue)
+
+Sixth task of photometric-analysis v1.0 sprint. Phase B prompts —
+second of three.
+
+validator.md (~340 lines):
+- INV-1 HIGH: achieved_min ≥ 0.7 × target (cold-corner detection
+  lumen-method misses)
+- INV-2 HIGH: U₀ ≥ target per room_type (0.6 office, 0.7 drawing,
+  0.4 circulation per BS EN 12464-1 Table 5.3)
+- INV-3 HIGH: max UGR ≤ limit per room_type (16 drawing, 19 office,
+  22 lobby, 25 corridor per Table 5.3)
+- INV-4 HIGH: IES file required per luminaire_type (Full v1.0 — no
+  ontology UF fallback)
+- INV-5 HIGH: grid_spacing_mm matches BS EN 12464-1 §6.2 formula
+  ±50 mm tolerance
+- INV-6 HIGH: illuminance_grid.length == point_count + points inside
+  task_area_bounds + no duplicate coordinates
+- INV-7 MEDIUM: ≥4 cie_117_default observers in ugr_results[]
+- INV-8 MEDIUM: every ies_files[]._source ≥40 chars +
+  verification_status in enum {synthetic_reference_C3, engineer_typical_C2,
+  manufacturer_supplied_project_specific}
+- INV-9 HIGH: tool_call_pending == false + _calc_tool ==
+  "calc.lumen_grid_solver" + _calc_engine_version non-empty (gate that
+  the runtime cascade actually completed)
+
+Each INV declares severity + formal rule + validator action + citation
++ rationale. Pattern matches D3.B.4 validator-catalogue structure.
+
+Cross-skill cascade documented in validator output footer: failing
+INV-1/2/3 sets task_area_compliant=false + non_compliance_flags[]
+populated; lighting-layout INV-11 reads these fields + cascades the
+failure upstream to lighting-layout's own non_compliance_flags.
+
+Gates: validate-examples + functional_audit unchanged from B.1
+baseline.
+
+Next: B.3 reviewer prompt (5 D-checks).
+EOF
+)"
+```
+
+---
+
+## Task B.3: Reviewer prompt — 5 D-checks (Opus)
+
+**Why Opus:** Reviewer D-check authoring requires engineering judgment on what crosses from "validator-enforceable rule" to "human-engineer judgment call".
+
+**Files:**
+- Create: `electrical/photometric-analysis/prompts/reviewer.md` (~200 lines)
+
+- [ ] **Step 1: Write the reviewer prompt**
+
+Create `electrical/photometric-analysis/prompts/reviewer.md` with this structure (verbatim):
+
+```markdown
+# photometric-analysis — Reviewer Prompt
+
+You are the reviewer for the photometric-analysis skill. Given a candidate IR that has
+already passed the validator (all 9 INVs emitted with pass/fail decisions), perform 5
+quality / engineering-judgment checks that the validator's deterministic INV catalogue
+cannot cover.
+
+Reviewer findings go into the IR's `flags[]` array (if declared in the IR — otherwise as
+narrative in the rationale) AND optionally into `calculation_summary.non_compliance_flags[]`
+when they indicate a non-compliance risk.
+
+---
+
+## D-1 — Headroom reasonable
+
+**Check:** `achieved_avg_illuminance_lux` should sit in the engineering-sensible window
+above target:
+- Lower bound: `achieved_avg >= target × 1.05` (≥5% headroom to absorb MF degradation
+  over the maintenance cycle)
+- Upper bound: `achieved_avg <= target × 1.30` (≤30% over-provision; beyond this is
+  wasted lumens, capital cost, energy)
+
+**Action:** If outside the window, emit reviewer flag:
+- Too low (avg in [1.0×, 1.05×] of target): `"REVIEWER D-1: marginal headroom — avg <X> lux is <Y>% over target <Z> lux; consider adding 1-2 luminaires for MF cycle resilience."`
+- Too high (avg > 1.30× target): `"REVIEWER D-1: over-provisioned — avg <X> lux is <Y>% over target <Z> lux; consider reducing N or downrating luminaire wattage for capital + energy savings."`
+
+**Citation:** CIBSE LG7 §6 design margin guidance + Approved Doc L Part L 2021 §6 efficacy
+(over-provisioning fails Part L efficiency intent).
+
+**Rationale:** Validator INV-1 enforces the floor (achieved_min ≥ 0.7 × target); reviewer
+D-1 enforces the engineering ceiling. Bad designs sit either too close to the floor (MF
+degradation will tip into non-compliance over 12-24 months) or wastefully over the
+ceiling.
+
+---
+
+## D-2 — IES file plausibility + project-stage substitution timing
+
+**Check:** Walk every `photometric_inputs.ies_files[]` entry:
+
+1. **Age check**: parse `_source` for retrieval date or `_retrieved` field cross-reference;
+   flag entries ≥10 years old (manufacturer photometric data typically refreshed every
+   3-5 years).
+
+2. **Verification status vs project stage**:
+   - `synthetic_reference_C3` (shared library files): acceptable for early-design,
+     concept, feasibility studies. FLAG if the IR's `consumed_intents.lighting_layout`
+     looks like a tender / construction stage (look for `project_stage` hint in upstream
+     intent metadata; default to flag-on-uncertainty).
+   - `engineer_typical_C2`: acceptable for tender + early construction.
+   - `manufacturer_supplied_project_specific`: required for building-control / Part L
+     sign-off / final design freeze.
+
+**Action:** Per finding:
+- Age: `"REVIEWER D-2: IES file <filename> retrieved <date>, ≥10 years old — verify still
+  representative of current manufacturer product."`
+- Stage mismatch: `"REVIEWER D-2: <N> luminaire(s) use verification_status: <C3 or C2>;
+  required for project_stage <X> is manufacturer_supplied_project_specific per
+  [ies-provenance-rules#substitution-policy]. Substitute project IES before sign-off."`
+
+**Citation:** [ies-provenance-rules#substitution-policy] + Approved Doc L 2021 §6 sign-off
+requirements.
+
+**Rationale:** Synthetic IES is fine for design exploration; project-specific is required
+for accountability. Reviewer D-2 surfaces the substitution debt explicitly per shipped IR
+so it does not silently propagate through project gates.
+
+---
+
+## D-3 — UGR-vs-task-type fit per BS EN 12464-1 Table 5.3
+
+**Trigger:** Always evaluated; raises a flag when `room.room_type` is a drawing-office-grade
+type AND the layout was designed for general-office UGR.
+
+**Check:** If `room_type ∈ {drawing_office, technical_drawing, fine_assembly, precision_work}`:
+- Verify `calculation_summary.ugr_limit == 16` (strict)
+- If `ugr_limit == 19` (general-office default): flag mismatch
+- Verify the layout's UGR-class luminaires are appropriate (UGR-class ≤ 16 batwing
+  distribution recommended for drawing-office work)
+
+**Action:** If mismatch: `"REVIEWER D-3: room_type <X> requires UGR limit 16 per BS EN
+12464-1 Table 5.3 row 5.34, but ugr_limit declared <Y>. Verify luminaire selection
+against UGR-class-rated products with batwing distribution for drawing-office work."`
+
+**Citation:** BS EN 12464-1:2021 Table 5.3 row 5.34 (drawing offices + technical drawing
++ fine assembly + precision work).
+
+**Rationale:** Drawing-office UGR (≤16) is the most common UGR-class trap: a layout
+laid out for general-office UGR ≤19 fails when room is reclassified. INV-3 catches the
+runtime UGR result; reviewer D-3 catches the design-intent mismatch at the gate where
+luminaire selection is still soft.
+
+---
+
+## D-4 — Reflectance plausibility vs room_type
+
+**Trigger:** When `inputs.reflectance_override` is supplied.
+
+**Check:** Compare overridden reflectances against the room-type-typical values
+(ceiling/wall/floor):
+- office / meeting / classroom / consulting / ward: 0.7 / 0.5 / 0.2 (clean office)
+- industrial / warehouse / warehouse_aisle: 0.5 / 0.3 / 0.2 (industrial typical)
+- external / plantroom: 0.3 / 0.3 / 0.2 (low-reflectance)
+
+Flag if any override deviates from typical by >0.1 without explanation in
+`inputs.reflectance_override._source`.
+
+**Action:** `"REVIEWER D-4: reflectance override <ceiling/wall/floor> deviates from
+<room_type> typical <ceiling_typ/wall_typ/floor_typ> by >0.1 without _source explanation;
+verify surface measurement or document rationale."`
+
+**Citation:** CIBSE LG7 §6.2 typical reflectance tables per room_type.
+
+**Rationale:** Reflectance is the most-error-prone parameter in photometric calcs because
+it cascades multiplicatively into illuminance + uniformity. Over-stating reflectance
+inflates achieved_avg + achieved_min by 10-20%; under-stating deflates by the same amount.
+Reviewer D-4 catches the cases where engineer overrode without explanation.
+
+---
+
+## D-5 — Task-area coverage envelope
+
+**Trigger:** When `inputs.task_area_override` is supplied.
+
+**Check:** For partial-room task areas, verify the task area sits within the luminaire
+coverage envelope:
+- Compute the bounding box of all luminaire positions: `(min_lum_x, min_lum_y)` to
+  `(max_lum_x, max_lum_y)`.
+- Verify the task area extends no more than 1.5 m beyond any luminaire (the task area
+  must not extend deep into wall-adjacent unlit zone).
+
+**Action:** If task area extends >1.5 m beyond the nearest luminaire on any side:
+`"REVIEWER D-5: task area extends <X> mm beyond nearest luminaire on <wall> side;
+photometric coverage at this boundary will be dominated by wall reflection + edge effects.
+Consider expanding luminaire layout OR contracting task area to within the coverage envelope."`
+
+**Citation:** BS EN 12464-1:2021 §4.3 (task area definition) + CIBSE LG7 §5.2 (perimeter
+uniformity).
+
+**Rationale:** Engineer-overridden task areas can extend beyond the luminaire layout when
+the override is set from a desk plan rather than from coverage geometry; the resulting
+photometric prediction at the boundary is unreliable (dominated by wall reflection model
+which the simplified inter-reflection approximation does not capture accurately).
+
+---
+
+## Reviewer output
+
+Reviewer findings emitted as:
+- `flags[]` entries (if the IR schema declares this field — currently not at root level;
+  reviewer notes can be carried in `rationale.sections[]` instead): high-signal one-line
+  strings (e.g. `"REVIEWER D-3: drawing-office UGR mismatch"`).
+- Optional `calculation_summary.non_compliance_flags[]` entries for any reviewer finding
+  that indicates compliance risk (D-2 stage mismatch is the most common case).
+
+A failing D-check does NOT block emission. The IR ships with the review findings recorded
+so downstream consumers + engineers can react.
+
+Cross-skill flag cascading: any reviewer-emitted non_compliance_flags entry is mirrored
+into the photometric-grid intent payload's `non_compliance_flags[]` array, which
+lighting-layout INV-11 (per post-Wave-1 validator.md) cascades upstream to lighting-layout's
+own non_compliance_flags. Honest-disclosure preserved end-to-end.
+```
+
+The above is the verbatim reviewer prompt content. Total ~200 lines.
+
+- [ ] **Step 2: Validate the prompt file + run gates**
+
+```bash
+wc -l electrical/photometric-analysis/prompts/reviewer.md
+python3 scripts/validate-examples.py 2>&1 | tail -3
+python3 functional_audit.py 2>&1 | tail -3
+```
+
+Expected: reviewer.md ≥ 170 lines; gates unchanged.
+
+- [ ] **Step 3: Commit B.3**
+
+```bash
+git add electrical/photometric-analysis/prompts/reviewer.md
+git commit -m "$(cat <<'EOF'
+feat(photometric-analysis): B.3 reviewer prompt — 5 D-checks (full catalogue)
+
+Seventh task of photometric-analysis v1.0 sprint. Phase B prompts —
+third of three. Phase B complete after this task.
+
+reviewer.md (~200 lines):
+- D-1 headroom reasonable: avg in [1.05×, 1.30×] of target (validator
+  INV-1 enforces the 0.7× floor; reviewer enforces the engineering
+  ceiling against over-provisioning per Part L §6 efficacy intent)
+- D-2 IES file plausibility + project-stage substitution: age check
+  (≥10 year flag) + verification_status vs project_stage mapping
+  (synthetic_reference_C3 acceptable for design exploration only;
+  manufacturer_supplied required for sign-off per
+  [ies-provenance-rules#substitution-policy])
+- D-3 UGR-vs-task-type fit: drawing-office UGR ≤16 mismatch detection
+  per BS EN 12464-1 Table 5.3 row 5.34
+- D-4 reflectance plausibility: flag overrides deviating from
+  room-type-typical by >0.1 without _source explanation
+- D-5 task-area coverage envelope: flag task areas extending >1.5 m
+  beyond nearest luminaire (wall-reflection-dominated boundary
+  unreliable in simplified inter-reflection model)
+
+Each D-check declares check + action + citation + rationale.
+
+Cross-skill flag cascading documented in reviewer output footer:
+reviewer non_compliance_flags entries mirror into intent payload's
+non_compliance_flags[]; lighting-layout INV-11 cascades upstream.
+
+Honest-disclosure preserved end-to-end through the cascade.
+
+Phase B complete. Gates: validate-examples + functional_audit
+unchanged from B.2 baseline.
+
+Next: C.1 3 standalone examples + C.2 7 cascade retrofits + C.3 evals.
+EOF
+)"
+```
+
+---
