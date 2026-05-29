@@ -430,7 +430,7 @@ snapping.
 - **If room is very small (N < 4)**: use N=4 minimum (one luminaire per
   quadrant) — single-luminaire rooms have uniformity issues.
 
-### Step 7.6 — Emit `selection_source` block
+#### 7.6 — Emit `selection_source` block
 
 Per Step 6.2, populate `selection_source` at the IR root:
 
@@ -440,7 +440,7 @@ Per Step 6.2, populate `selection_source` at the IR root:
   citation must come from either inputs OR ontology, not be paraphrased
   by the generator. INV-8 enforces.
 
-**Perimeter zone identification:**
+#### 7.7 — Perimeter zone identification
 
 If the room has windows, identify perimeter zone luminaires after placing the grid:
 - Perimeter zone: luminaires whose x or y centre falls within 2000mm of a glazed wall
