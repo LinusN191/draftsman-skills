@@ -51,7 +51,7 @@ construction.
 | BS EN 1838:2013 | Clause 4.3 | Anti-panic area: 0.5 lux minimum |
 | BS EN 1838:2013 | Clause 4.4 | Duration: 3 hours minimum |
 | BS 7671:2018 | Appendix 4 | Circuit protection and maximum circuit load |
-| BS 7671:2018 | Clause 411 | Switch height: 1350mm AFF centre |
+| BS 7671:2018 | Clause 411 | Switch height: 1200mm AFF centre |
 | BS EN 60529 | Table 1 | IP ratings for wet, external, and exposed locations |
 | Approved Document L | Table 6.1 | Lighting efficacy targets (lm/W) for UK new-build |
 | Approved Document L | Section 6 | Automatic controls requirements for UK new-build |
@@ -1263,7 +1263,7 @@ to the ezdxf renderer. All dimensions in millimetres.
       "x_mm": 0,
       "y_mm": 0,
       "wall": "south",
-      "height_aff_mm": 1350,
+      "height_aff_mm": 1200,
       "door_swing": "unknown",
       "switch_side": "latch",
       "controls_circuits": ["L1-Z1"],

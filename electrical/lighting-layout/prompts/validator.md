@@ -97,15 +97,15 @@ PASS iff `S_x <= SHR_max * Hm AND S_y <= SHR_max * Hm`.
 
 **Severity:** HIGH
 
-**Rule:** For every circuit in `circuits[]`:
-1. Derive `row_indices = { luminaires[id].row_index | id ∈ circuit.luminaire_ids }`.
-2. PASS iff `max(row_indices) - min(row_indices) <= 1` (same row or adjacent rows only — no diagonal jumps across non-adjacent rows).
+**Rule:** Each circuit declares a single `row_index` (the row this circuit feeds). For every circuit in `circuits[]`:
+1. Derive the circuit's actual luminaire rows by sorting unique `y_mm` values from `{ luminaires[id].y_mm | id ∈ circuit.luminaire_ids }` and mapping each unique `y_mm` to a row ordinal (0, 1, 2, …) using the room's grid.
+2. PASS iff `max(actual_rows) - min(actual_rows) <= 1` (the circuit's luminaires occupy the same row or two adjacent rows only — no diagonal jumps across non-adjacent rows). Typical PASS case: all luminaire_ids share one `y_mm` ⇒ span = 0 ⇒ matches `circuit.row_index`.
 3. `circuit.homerun_endpoint.{x_mm, y_mm}` sits on one of the four room walls (x_mm=0 OR x_mm=room.length_mm OR y_mm=0 OR y_mm=room.width_mm).
 
 **Validator action:**
-- For each circuit, project its luminaire_ids to row_indices, compute span.
+- For each circuit, project its luminaire_ids to their unique `y_mm` values, compute the row span, and confirm it ≤ 1 against the declared `circuit.row_index`.
 - Verify homerun_endpoint sits on a wall.
-- Emit evidence per circuit (e.g. `"C-L01: rows {0}, homerun (0,800) on wall W — PASS"`).
+- Emit evidence per circuit (e.g. `"C-L01: row_index=0, luminaires share y_mm=300 (span 0), homerun (0,300) on wall W — PASS"`).
 
 **Citation:** Sprint D3 design spec §3.2 + BS 7671 §433 (circuit topology engineering practice).
 
