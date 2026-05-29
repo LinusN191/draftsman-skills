@@ -7,27 +7,27 @@ rules:
   - id: emergency-rules#escape-route-illuminance
     value:
       min_lux_on_centre_line: 1.0
-      uniformity_min_ratio: 0.025
+      min_to_max_ratio: 0.025
       duration_min: 180
     citation: "BS 5266-1:2016 §5.2.1 (escape route illuminance) + §5.2.4 (uniformity ratio)"
-    rationale: "Escape routes ≤2m wide require 1 lux minimum on the centre line. Wider routes treated as anti-panic / open-area zones. Duration 3h (180min) for offices; can be reduced to 1h for premises evacuated within 1h."
+    rationale: "Escape routes ≤2m wide require 1 lux minimum on the centre line. Wider routes treated as anti-panic / open-area zones. Duration 3h (180min) for offices; can be reduced to 1h for premises evacuated within 1h. ratio = E_min / E_max along the escape-route centre line — equivalent to BS 5266-1 §5.2.4 max:min ≤ 40:1 (i.e. 1/40 = 0.025)."
 
   - id: emergency-rules#anti-panic-illuminance
     value:
       min_lux_on_floor: 0.5
-      uniformity_min_ratio: 0.025
+      min_to_max_ratio: 0.025
       duration_min: 60
       area_threshold_m2: 60
     citation: "BS 5266-1:2016 §5.3 (anti-panic / open area emergency lighting)"
-    rationale: "Open areas >60m² require 0.5 lux minimum on the unobstructed floor area excluding a 0.5m border. Duration ≥1h."
+    rationale: "Open areas >60m² require 0.5 lux minimum on the unobstructed floor area excluding a 0.5m border. Duration ≥1h. ratio = E_min / E_max over the unobstructed floor area — equivalent to BS 5266-1 §5.3 max:min ≤ 40:1."
 
   - id: emergency-rules#high-risk-task-area
     value:
       min_lux_or_pct_of_task: "max(15, 0.10 * task_illuminance_lux)"
-      uniformity_min_ratio: 0.1
+      min_to_max_ratio: 0.1
       duration_required: "duration_of_residual_risk_after_mains_failure"
     citation: "BS 5266-1:2016 §5.4 (high-risk task area emergency lighting)"
-    rationale: "Areas with safety-critical processes (machine shops, kitchens, labs) need 15 lux OR 10% of normal task illuminance (whichever higher), to enable safe shutdown."
+    rationale: "Areas with safety-critical processes (machine shops, kitchens, labs) need 15 lux OR 10% of normal task illuminance (whichever higher), to enable safe shutdown. ratio = E_min / E_max — equivalent to BS 5266-1 §5.4 max:min ≤ 10:1 (10× more uniform than escape routes)."
 
   - id: emergency-rules#test-regime
     value:
