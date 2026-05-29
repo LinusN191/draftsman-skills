@@ -38,14 +38,19 @@ file source."`
   (oversized MCBs reduce protection coordination effectiveness).
 - For LED panels at 36-50 W each, expect 6 A MCBs on most circuits.
   A 10 A MCB on a circuit carrying <500 W is over-sized.
-- `mcb_curve == "B"` for general lighting (per BS 7671 §433.2).
-  Curve C only justified if the luminaire has high inrush (DALI drivers
-  with large bulk caps); curve D never for lighting circuits.
+- `mcb_curve == "B"` for general lighting (instantaneous-tripping
+  range 3–5×In per IEC 60898-1:2015 §5.3.5 suits resistive/low-inrush
+  loads). Curve C (5–10×In) only justified if the luminaire has high
+  inrush (DALI drivers with large bulk caps); curve D (10–20×In) never
+  for lighting circuits.
 
 **Action:** flag over-sized MCBs and non-B curves with justification
 prompt.
 
-**Citation:** BS 7671:2018+A2:2022 §433 + IET OSG App C.
+**Citation:** IEC 60898-1:2015 §5.3.5 (instantaneous-tripping ranges
+B/C/D) + IET On-Site Guide App C (curve-selection application
+guidance) + BS 7671:2018+A2:2022 §433.1 (general overload protection
+requirements).
 
 ---
 

@@ -440,6 +440,12 @@
       "evidence": "Circuit load: total_load_w = 720 W <= 0.8 x 6 x 230 = 1104 W (6 A MCB, per circuits[0].mcb_rating_a). Rule 5 PASS per BS 7671 §433.1.1 + IET OSG App A 80% continuous-load rule."
     },
     {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Part L compliance: inputs.is_uk_new_build flag absent in office-open-plan input (legacy v1.3 example pre-dates Part L gating). Rule 6 trivially PASS — no Part L assessment required when is_uk_new_build is absent/false. controls.lamp_efficacy_lm_per_w=125 records the value for future audit but no Rule 6 enforcement triggered."
+    },
+    {
       "id": "INV-07",
       "passes": true,
       "severity": "medium",
@@ -456,12 +462,6 @@
       "passes": true,
       "severity": "medium",
       "evidence": "drafting_furniture present with all 4 required blocks (title_block + scale_bar + dimensions[2] + luminaire_schedule). All annotations declare font_family='Arial' + explicit font_size_pt ∈ {8, 10}. No {{placeholder}} remnants in any text field. Rule 9 PASS."
-    },
-    {
-      "id": "INV-06",
-      "passes": true,
-      "severity": "high",
-      "evidence": "Part L compliance: inputs.is_uk_new_build flag absent in office-open-plan input (legacy v1.3 example pre-dates Part L gating). Rule 6 trivially PASS — no Part L assessment required when is_uk_new_build is absent/false. controls.lamp_efficacy_lm_per_w=125 records the value for future audit but no Rule 6 enforcement triggered."
     },
     {
       "id": "INV-10",
