@@ -1,0 +1,114 @@
+{
+  "room_id": "uk-open-plan-office-10x8-dali",
+  "room_type": "open_plan_office",
+  "luminaire_summary": {
+    "luminaire_count": 20,
+    "luminaire_wattage_w_each": 48,
+    "luminaire_lumens_each": 6000,
+    "lumen_type": "design",
+    "ip_rating": "IP20"
+  },
+  "circuits": [
+    {
+      "circuit_id": "C-L01",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "voltage_class": "LV_power",
+      "load_w": 240,
+      "luminaire_count": 5,
+      "mcb_rating_a_suggested": 6
+    },
+    {
+      "circuit_id": "C-L02",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "voltage_class": "LV_power",
+      "load_w": 240,
+      "luminaire_count": 5,
+      "mcb_rating_a_suggested": 6
+    },
+    {
+      "circuit_id": "C-L03",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "voltage_class": "LV_power",
+      "load_w": 240,
+      "luminaire_count": 5,
+      "mcb_rating_a_suggested": 6
+    },
+    {
+      "circuit_id": "C-L04",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "voltage_class": "LV_power",
+      "load_w": 240,
+      "luminaire_count": 5,
+      "mcb_rating_a_suggested": 6
+    }
+  ],
+  "emergency_lighting_present": false,
+  "controls_summary": {
+    "occupancy_sensing": true,
+    "daylight_linking": false,
+    "dimming_protocol": "DALI",
+    "part_l_assessed": true,
+    "part_l_compliant": true
+  },
+  "zones": [
+    {
+      "zone_id": "Z2",
+      "zone_type": "interior",
+      "control": "dali_master",
+      "luminaire_ids": ["L01","L02","L03","L04","L05","L06","L07","L08","L09","L10","L11","L12","L13","L14","L15","L16","L17","L18","L19","L20"],
+      "circuit_ids": ["C-L01", "C-L02", "C-L03", "C-L04"]
+    }
+  ],
+  "circuits_topology": [
+    {
+      "circuit_id": "C-L01",
+      "zone_id": "Z2",
+      "row_index": 0,
+      "total_load_w": 240,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 300, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L02",
+      "zone_id": "Z2",
+      "row_index": 1,
+      "total_load_w": 240,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 2750, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L03",
+      "zone_id": "Z2",
+      "row_index": 2,
+      "total_load_w": 240,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 5250, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L04",
+      "zone_id": "Z2",
+      "row_index": 3,
+      "total_load_w": 240,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 7700, "wall": "W"}
+    }
+  ],
+  "switches": [
+    {
+      "id": "SW01",
+      "type": "dali_master",
+      "x_mm": 5600,
+      "y_mm": 200,
+      "height_aff_mm": 1200,
+      "controls_circuit": "C-L01,C-L02,C-L03,C-L04"
+    }
+  ]
+}

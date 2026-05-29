@@ -1,0 +1,375 @@
+{
+  "_note": "D3.C.3 canonical re-test example — UK new-build open-plan office 10×8 m, 500 lux target, 20 LED panels @ 6000 lm × 48 W in a 4-row × 5-col grid (achieved 804 lux), 4 row circuits 6A curve B, single DALI master switch at S entrance, drawing L-001 P1 1:50 A3 per the user's verbatim original prompt. Closes the bad CAD output: no Z-pattern (4 row circuits all share row_index), no edge-collision (cols at 300/2650/5000/7350/9700), homerun arrows on W wall, full title block + scale bar + dimensions + luminaire schedule emitted. All 10 INVs PASS.",
+  "drawing_type": "lighting_layout",
+  "version": "1.4.0",
+  "room": {
+    "length_mm": 10000,
+    "width_mm": 8000,
+    "area_m2": 80,
+    "ceiling_height_mm": 2700,
+    "working_plane_mm": 750,
+    "hm_mm": 1950,
+    "room_index": 2.28,
+    "room_type": "open_plan_office",
+    "environment_type": "normal",
+    "ip_required": "IP20",
+    "has_windows": false
+  },
+  "luminaire_type": {
+    "symbol": "LED_PANEL_600",
+    "description": "600×600 LED Recessed Panel — 6000 lm, 48 W, 4000 K, DALI-dimmable",
+    "lumens": 6000,
+    "lumen_type": "design",
+    "llmf_applied": false,
+    "wattage_w": 48,
+    "cct_k": 4000,
+    "cri_ra": 80,
+    "ip_rating": "IP20",
+    "lamp_efficacy_lm_per_w": 125.0
+  },
+  "selection_source": {
+    "photometric_source": "ontology_default",
+    "citation": "CIBSE LG7 §6.2 (typical recessed LED panel UF + SHR_max) + BS EN 12464-1:2021 §4.4 (LLMF maintenance categories)"
+  },
+  "zones": [
+    {
+      "zone_id": "Z2",
+      "label": "Interior — open-plan office (no glazed walls → no perimeter zone)",
+      "zone_type": "interior",
+      "control": "dali_master",
+      "circuit_id": "C-L01",
+      "circuit_ids": ["C-L01", "C-L02", "C-L03", "C-L04"],
+      "luminaire_ids": ["L01", "L02", "L03", "L04", "L05", "L06", "L07", "L08", "L09", "L10", "L11", "L12", "L13", "L14", "L15", "L16", "L17", "L18", "L19", "L20"],
+      "luminaire_count": 20,
+      "total_load_w": 960
+    }
+  ],
+  "luminaires": [
+    {"id": "L01", "x_mm": 300,  "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L02", "x_mm": 2650, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L03", "x_mm": 5000, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L04", "x_mm": 7350, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L05", "x_mm": 9700, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
+    {"id": "L06", "x_mm": 300,  "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L07", "x_mm": 2650, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L08", "x_mm": 5000, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L09", "x_mm": 7350, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L10", "x_mm": 9700, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
+    {"id": "L11", "x_mm": 300,  "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L12", "x_mm": 2650, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L13", "x_mm": 5000, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L14", "x_mm": 7350, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L15", "x_mm": 9700, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
+    {"id": "L16", "x_mm": 300,  "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L17", "x_mm": 2650, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L18", "x_mm": 5000, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L19", "x_mm": 7350, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
+    {"id": "L20", "x_mm": 9700, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"}
+  ],
+  "switches": [
+    {
+      "id": "SW01",
+      "type": "dali_master",
+      "x_mm": 5600,
+      "y_mm": 200,
+      "height_aff_mm": 1200,
+      "controls_circuit": "C-L01,C-L02,C-L03,C-L04",
+      "door_swing": "inward_latch_right",
+      "switch_side": "latch"
+    }
+  ],
+  "circuits": [
+    {
+      "circuit_id": "C-L01",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L01", "L02", "L03", "L04", "L05"],
+      "total_load_w": 240,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 0,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 300, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L02",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L06", "L07", "L08", "L09", "L10"],
+      "total_load_w": 240,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 1,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 2750, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L03",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L11", "L12", "L13", "L14", "L15"],
+      "total_load_w": 240,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 2,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 5250, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L04",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L16", "L17", "L18", "L19", "L20"],
+      "total_load_w": 240,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 3,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 7700, "wall": "W"}
+    }
+  ],
+  "controls": {
+    "dimming_protocol": "DALI",
+    "occupancy_sensing": true,
+    "daylight_linking": false,
+    "part_l_assessed": true,
+    "part_l_compliant": true,
+    "part_l_efficacy_target_lm_per_w": 95,
+    "lamp_efficacy_lm_per_w": 125.0,
+    "required": ["occupancy"]
+  },
+  "calculation_summary": {
+    "target_illuminance_lux": 500,
+    "achieved_illuminance_lux": 804.0,
+    "utilisation_factor": 0.67,
+    "maintenance_factor": 0.80,
+    "lamp_efficacy_lm_per_w": 125.0,
+    "part_l_efficacy_target_lm_per_w": 95,
+    "ugr_status": "UGR ≤ 19 — confirm from photometric data (open-plan office task per BS EN 12464-1 Table 5.26.1)",
+    "compliant": true,
+    "discovery_status": "complete",
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Reflectances 0.7 / 0.5 / 0.2 (ceiling / wall / floor) — standard CIBSE LG7 office surfaces; engineer to confirm against actual finishes schedule",
+      "Working plane = 750 mm AFFL (BS EN 12464-1:2021 Table 5.26.1 office task at desk plane per [spacing-rules#working-plane-defaults])",
+      "LLMF = 0.95 at 6000 h clean-office category × LMF/RSMF combined → overall MF = 0.80 (CIBSE TM 3-25 standard cleaning interval); engineer to confirm against FM cleaning schedule",
+      "DALI master with PIR occupancy detector satisfies Approved Doc L 2021 §6 user-control + automatic-control requirements",
+      "No glazed walls → daylight-linking is N/A and not required by Part L 2021 §6 (perimeter zone Rule 7 vacuously satisfied)",
+      "Lumen-method N = 12.438 rounded UP to 13; bumped to 20 (4 rows × 5 cols) after S/H enforcement loop rejected 13-strip and 16 (4×4) — see reasoning.md §3"
+    ]
+  },
+  "drawing_notes": [
+    "All luminaires: 600×600 LED recessed panel, 6000 design lm, 48 W, 4000 K, CRI ≥ 80, DALI-dimmable",
+    "Maintained illuminance 500 lux per BS EN 12464-1:2021 Table 5.26.1 (open-plan office task at desk plane)",
+    "20 luminaires in 4 rows × 5 columns; row spacing 2467 mm (snapped to 2450/2500), column spacing 2350 mm, 300 mm edge clearance — all S/H ratios ≤ 1.5×Hm = 2925 mm per CIBSE LG7 §6.2",
+    "Achieved 804 lux ≥ 500 target — 60 % headroom (round-UP + grid-symmetry bump combined)",
+    "Single zone Z2 interior on DALI master (no glazed walls → no perimeter zone, daylight-linking N/A)",
+    "4 row circuits C-L01..C-L04, each 5 × 48 W = 240 W on a 6 A MCB curve B (per BS 7671 §433.1.1 + IET OSG App A: 240 W = 22 % of 1104 W 80%-continuous-load cap)",
+    "All four homeruns exit on W wall at row y_mm ∈ {300, 2750, 5250, 7700} for parallel routing back to DB L1 — no diagonals, no Z-pattern",
+    "Single SW01 DALI master at S entrance latch side (x = 5600 mm, y = 200 mm, 1200 mm AFFL) controls all 4 circuits via the DALI bus per [switching-rules#latch-side] + IET OSG App E §E1.4",
+    "Lamp efficacy 125 lm/W ≥ Part L 2021 Table 6.x target 95 lm/W (PASS); DALI + PIR occupancy detection satisfies Part L §6 user-control + automatic-control"
+  ],
+  "flags": [],
+  "rationale": {
+    "chat_summary": "10×8 m UK new-build open-plan office — 500 lux target per BS EN 12464-1 Table 5.26.1. 20 × 6000 lm LED panels in 4-row × 5-col grid achieve 804 lux (INV-1 PASS, 60 % headroom). Lumen-method N=12.438 → round UP to 13 (prime, would force strip layout) → bumped to 16 (4×4 S_x=3133 FAILS the 1.5×Hm=2925 mm limit) → bumped to 20 (4×5 S_x=2350 + S_y=2467 both PASS). 4 row circuits 6A curve B, all luminaires share row_index per circuit → no Z-pattern (INV-4 PASS). Single SW01 DALI master at S entrance latch side controls all 4 circuits via DALI bus. No glazed walls → no perimeter zone, daylight-linking N/A. Drawing L-001 P1 1:50 A3 per user prompt; full drafting furniture (title block + scale bar + dimensions + luminaire schedule) emitted. All 10 INVs PASS.",
+    "sections": [
+      {
+        "title": "Why this example exists",
+        "summary": "Built verbatim from the original user prompt that produced the bad CAD output (the spec-level re-test gate AND the few-shot canonical future generators copy from). The original CAD showed a Z-pattern daisy-chain, a fourth column flush with the east wall, missing homerun arrow, missing luminaire schedule, missing title block, missing dimensions and scale bar, uneven row spacing, and only 12 luminaires when the lumen-method math demands more. Every one of those visible bugs is closed by a specific D3 invariant — §10 of reasoning.md maps each bug to the INV that catches it."
+      },
+      {
+        "title": "Lumen-method walk",
+        "summary": "A = 80 m². Hm = 2700 − 750 = 1950 mm = 1.95 m. RI = (10 × 8) / (1.95 × 18) = 80 / 35.1 = 2.279 → ontology table key 2.0 (closest band per LG7 §6.2). UF = 0.67 (LED_PANEL_600 at RI=2.0, reflectances 0.7_0.5_0.2). MF = 0.80 (clean office, 3-year cleaning cycle, CIBSE TM 3-25). N = (500 × 80) / (6000 × 0.67 × 0.80) = 40000 / 3216 = 12.438 → round UP to 13. Achieved with final N=20: (20 × 6000 × 0.67 × 0.80) / 80 = 64320 / 80 = 804.0 lux ≥ 500 → INV-1 PASS with 60 % headroom (round-UP from 12.438 + S/H grid-symmetry bump from 13 to 20 combined).",
+        "decisions": [
+          {
+            "label": "Lux target 500 lx maintained",
+            "summary": "BS EN 12464-1:2021 Table 5.26.1 open-plan office task category sets 500 lx maintained at desk plane (matches user prompt verbatim).",
+            "rule": "BS EN 12464-1 Table 5.26.1 office",
+            "code_clause": "BS EN 12464-1:2021 § 5"
+          },
+          {
+            "label": "20 luminaires from N=12.438 → 13 (prime, strip) → 16 (4×4 FAIL S/H) → 20 (4×5 PASS)",
+            "summary": "Lumen method gives 12.438; round UP to 13. 13 is prime → only a strip layout fits (1×13 or 13×1) which would FAIL S/H on the long axis. Bump to 16 (4×4) — see §3 for the FAIL walk. Bump to 20 (4×5) — S_x=2350 + S_y=2467 both PASS limit=2925. 60 % headroom is acceptable for an open-plan office (uniformity matters more than exact target lux).",
+            "rule": "Round up; never round down; bump for grid symmetry + S/H compliance",
+            "code_clause": "CIBSE LG7 §6 + BS EN 12464-1:2021 §4.3 (uniformity Uo ≥ 0.6 office task)"
+          }
+        ]
+      },
+      {
+        "title": "S/H ratio enforcement loop",
+        "summary": "Hm = 1950 mm; SHR_max = 1.5 (LED_PANEL_600 ontology default); limit = 1.5 × 1950 = 2925 mm. Step 1: N=13 prime → strip → REJECT. Step 2: N=16 (4 cols × 4 rows); S_x = (10000 − 600) / 3 = 3133 mm > 2925 → FAIL (col spacing exceeds limit by 7 %). Step 3: N=20 (5 cols × 4 rows); S_x = (10000 − 600) / 4 = 2350 mm ≤ 2925 PASS (80 % of limit); S_y = (8000 − 600) / 3 = 2467 mm ≤ 2925 PASS (84 % of limit). Final N=20 in 4-row × 5-col layout → INV-2 PASS.",
+        "decisions": [
+          {
+            "label": "Reject 4×4 layout despite the round-UP suggesting N=16 is plausible",
+            "summary": "16 luminaires looks attractive because 16 ≥ 13 (lumen-method N rounded UP), and 4×4 is a tidy square grid. But S_x = 3133 mm violates SHR_max × Hm = 2925 mm by 7 %. Bumping to 20 is the next layout up that satisfies both INV-1 and INV-2 simultaneously — the round-UP + S/H loop is the canonical workflow per [spacing-rules#grid-symmetry-bump].",
+            "rule": "S/H enforcement loop — bump grid until S_x AND S_y both ≤ SHR_max × Hm",
+            "code_clause": "CIBSE LG7 §6.2 (SHR_max) + BS EN 12464-1:2021 §4.3 (uniformity)"
+          }
+        ]
+      },
+      {
+        "title": "Circuit topology — 4 row circuits, no Z-pattern",
+        "summary": "4 row circuits C-L01..C-L04, one per row. Each circuit's luminaire_ids share single row_index (0, 1, 2, 3 respectively): C-L01 = {L01..L05} row 0; C-L02 = {L06..L10} row 1; C-L03 = {L11..L15} row 2; C-L04 = {L16..L20} row 3. max(row_indices) − min(row_indices) = 0 per circuit ≤ 1 → no Z-pattern, no diagonal jumps. INV-4 Rule 4a PASS. Homeruns all exit on W wall (x_mm=0) at row y_mm ∈ {300, 2750, 5250, 7700} — all four required keys (x_mm, y_mm, wall) present, wall ∈ {N,S,E,W}. INV-4 Rule 4b PASS. INV-5: 240 W per circuit ≤ 1104 W (6A × 0.8 × 230V) → 22 % of headroom — ample spare for future ergonomic task lighting additions.",
+        "decisions": [
+          {
+            "label": "4 row circuits instead of one big circuit (closes Z-pattern bug from original CAD)",
+            "summary": "One circuit feeding all 20 luminaires (240 × 4 = 960 W still fits a 6A MCB at 87 % of headroom) is technically legal but invites a Z-pattern daisy-chain when the renderer draws the homerun, which is exactly what the original bad CAD did. Splitting into 4 row circuits forces each circuit's luminaires to share a single row_index — INV-4 then verifies it structurally rather than relying on the renderer to draw the right cable run. Also gives the DB extra spare-way granularity for future zoning.",
+            "rule": "INV-4 row-share rule (max−min ≤ 1) + INV-5 80 % cap",
+            "code_clause": "BS 7671:2018+A2:2022 §433.1.1 + IET OSG App A + [circuit-topology-rules#row-share]"
+          }
+        ]
+      },
+      {
+        "title": "Switch placement — deterministic from door_swing",
+        "summary": "Single entrance on S wall, offset_mm=4500, width_mm=900, door_swing=inward_latch_right. Door spans x ∈ [4500, 5400]; latch frame at x=5400 (right end of door because door_swing latch=right). Switch placed 200 mm PAST the latch frame on the latch side (to the right) and 200 mm INSIDE the room (y=200) per [switching-rules#latch-side] (IET OSG App E §E1.4). Resulting position: (5600, 200), 1200 mm AFFL — within the [1150, 1250] band per [switching-rules#height] (BS 7671 §553.1.1). switch_side='latch'. type='dali_master' controls all 4 circuits via the DALI bus (no per-circuit gangs needed because DALI logical grouping handles zoning in software).",
+        "decisions": [
+          {
+            "label": "Single DALI master at the only entrance (closes switch-under-fixture bug)",
+            "summary": "controls_protocol=DALI consolidates per-circuit switching into one master at the entrance. INV-3 Rule 1 (switches.length ≥ entrances.length) is vacuously satisfied — 1 switch for 1 entrance. The DALI master itself implements occupancy + manual override + scene recall on the bus. No need for 4 separate wall switches.",
+            "rule": "INV-3 Rule 1 DALI consolidation (single master per entrance group)",
+            "code_clause": "IET OSG App E §E1.4 + DALI-2 IEC 62386"
+          }
+        ]
+      },
+      {
+        "title": "Part L 2021 compliance — no-glazing branch",
+        "summary": "inputs.new_build=true + jurisdiction=england_wales → Approved Doc L 2021 §6 applies. (1) controls.part_l_assessed=true PASS. (2) controls.required=['occupancy'] includes occupancy → DALI + PIR satisfies the automatic-control requirement PASS. (3) glazed_walls=[] (empty) → daylight-linking requirement vacuously satisfied; Part L 2021 §6.5 only requires daylight zoning for windowed perimeters PASS. (4) controls.lamp_efficacy_lm_per_w = 6000 / 48 = 125 ≥ 95 lm/W target PASS. All four sub-checks PASS → controls.part_l_compliant=true → INV-6 PASS.",
+        "decisions": [
+          {
+            "label": "No daylight-linking required because glazed_walls=[]",
+            "summary": "Approved Doc L 2021 §6.5 conditions daylight-linking on the presence of a window. With glazed_walls=[], the rule is vacuously satisfied — INV-6 sub-check 3 does NOT require daylight_linking=true when there is no glazing. The corollary is that controls.required only needs ['occupancy'], not ['occupancy', 'daylight_linking']. This is the cleanest no-glazing branch of Part L compliance.",
+            "rule": "Part L 2021 §6.5 conditional daylight-linking — iff glazing present",
+            "code_clause": "Approved Document L 2021 § 6.5 + BS EN 15193-1:2017 § 6"
+          }
+        ]
+      },
+      {
+        "title": "Zone assignment — no perimeter (no glazing)",
+        "summary": "1 zone Z2 interior containing all 20 luminaires, fed by 4 row circuits. Z2.zone_type='interior'; Z2.control='dali_master'. INV-7 Rule 3 (perimeter consistency) is vacuously satisfied because glazed_walls=[] AND zones contains no Z1 perimeter — the iff-clause holds in both directions (no glazing ⇔ no perimeter zone). INV-7 Rule 1 (1:1 luminaire→zone referential integrity) PASS — 20 luminaires each reference exactly Z2."
+      },
+      {
+        "title": "Drafting furniture — every annotation from the user prompt",
+        "summary": "title_block carries the exact values from the user's verbatim prompt: drawing_number='L-001', revision='P1', scale='1:50', sheet_size='A3'. project_name='UK new-build open-plan office'. scale_bar at (7500, 8500) — sits in the negative-space margin to the right of the room. dimensions[2] = horizontal '10000 mm' at y=−300 (below the room) + vertical '8000 mm' at x=−300 (left of the room) — both use the negative-coordinate convention allowed by the schema since B.3 fix-pass. luminaire_schedule with the required 5 columns (Ref / Manufacturer / Lumens / Wattage / Count) + 1 row for LED_PANEL_600 × 20. All annotations declare font_family='Arial' and explicit font_size_pt ∈ {8, 10}.",
+        "decisions": [
+          {
+            "label": "Negative-coordinate dimensions sit in the margin outside the room",
+            "summary": "Per B.3 fix-pass: dimension lines and the scale bar conventionally sit OUTSIDE the room rectangle in negative space (model-space origin at room SW corner). Horizontal dimension '10000 mm' anchored at y=−300; vertical dimension '8000 mm' anchored at x=−300; scale bar at (7500, 8500) (above the room because the room is 8000 tall). This is the renderer-portable convention for ezdxf paper-space / SVG margins.",
+            "rule": "Negative-coordinate annotation margins per schema D3.B.3",
+            "code_clause": "BS 1192 + ISO 7200 (title-block + dimension placement conventions)"
+          }
+        ]
+      },
+      {
+        "title": "Assumptions",
+        "summary": "UF + SHR_max from CIBSE LG7 §6.2 ontology defaults (LED_PANEL_600 @ RI=2.0, 0.7/0.5/0.2 reflectances); engineer-of-record must verify against manufacturer photometric file before issue. MF=0.80 assumes a 3-year cleaning cycle in a clean office (CIBSE TM 3-25). DALI + PIR occupancy detection assumed to satisfy Part L §6 — confirm against project lighting controls schedule. Lamp efficacy 125 lm/W derived from inputs lumen_output/wattage_w = 6000/48 (vendor-typical for a mid-range 6000 lm DALI panel)."
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Lumen method: N=20 LED_PANEL_600 × 6000 lm × UF=0.67 × MF=0.80 / 80 m² = achieved_illuminance_lux=804.0 lux ≥ target 500 lux (Rule 1 PASS, 60 % headroom). Lumen-method required N = (500×80)/(6000×0.67×0.80) = 40000/3216 = 12.438 → round UP to 13; engineer bumped to 20 (4×5) after S/H loop rejected 13 (prime, strip-only) and 16 (4×4, S_x=3133 > 2925). Per [spacing-rules#lumen-method-formula] + ontology LED_PANEL_600 UF table at RI=2.0 (closest band for actual RI=2.28), reflectances 0.7_0.5_0.2."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "S/H ratio: Hm=1950 mm, SHR_max=1.5 (LED_PANEL_600 ontology default), limit=2925 mm. 5 cols × 4 rows grid: S_x=(10000−600)/4=2350 mm ≤ 2925 PASS (80 % of limit); S_y=(8000−600)/3=2467 mm ≤ 2925 PASS (84 % of limit). S/H loop walked 13 (prime, REJECT) → 16 (4×4, S_x=3133 > 2925 FAIL) → 20 (PASS); see reasoning.md §3. Per [spacing-rules#shr-max-default] + CIBSE LG7 §6.2."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Switch coverage: 1 entrance on S wall (offset_mm=4500, width_mm=900, door_swing=inward_latch_right). controls_protocol=DALI → INV-3 Rule 1 DALI consolidation: a single dali_master at each entrance group is sufficient. SW01 (5600, 200) — S latch frame at x=4500+900=5400, +200 mm right (latch side), +200 mm inside the room → (5600, 200). 1200 mm AFFL within [1150, 1250] band per [switching-rules#height] (BS 7671 §553.1.1 + IET OSG App E §E1.4). switch_side='latch'. controls_circuit='C-L01,C-L02,C-L03,C-L04' — DALI master logically groups all 4 row circuits via the DALI bus. Rules 1, 2 and 3 PASS."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Circuit topology: 4 row circuits C-L01..C-L04 each feed exactly one row of 5 luminaires sharing single row_index (0, 1, 2, 3 respectively). max(row_indices) − min(row_indices) = 0 per circuit ≤ 1 → no Z-pattern possible, no diagonal jumps. homerun_endpoints all on W wall (x_mm=0) at row y_mm ∈ {300, 2750, 5250, 7700} — all four required keys (x_mm, y_mm, wall) present, wall ∈ {N,S,E,W}. Rule 4a PASS (row-share Δ=0); Rule 4b PASS (homerun endpoints valid)."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Circuit load: each of C-L01..C-L04 has total_load_w=240 W = 5 × 48 W ≤ 0.8 × 6 A × 230 V = 1104 W (6A MCB limit). All four circuits PASS the 80 % continuous-load cap per BS 7671:2018+A2:2022 §433.1.1 + IET OSG App A. 240 W is 22 % of headroom each — ample spare for future ergonomic task lighting + auxiliary fittings."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Part L compliance: inputs.new_build=true (UK new-build open-plan office) AND jurisdiction=england_wales triggers Part L 2021 §6 enforcement. (1) controls.part_l_assessed=true PASS. (2) controls.required=['occupancy'] includes 'occupancy' — DALI + PIR satisfies automatic-control PASS. (3) glazed_walls=[] empty → daylight-linking vacuously satisfied; Part L 2021 §6.5 only requires daylight zoning when glazing is present PASS. (4) controls.lamp_efficacy_lm_per_w = 6000/48 = 125 ≥ 95 PASS. All four sub-checks PASS. controls.part_l_compliant=true. Per Approved Doc L 2021 §6 + BS EN 15193-1:2017 §6."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "Zone assignment: 20 luminaires reference {Z2} only; 1:1 referential integrity (each luminaire to exactly one zone) PASS. Z2 interior has all 20 luminaires (L01-L20) fed by 4 row circuits (C-L01..C-L04). inputs.glazed_walls=[] empty AND zones contains no Z1 perimeter — iff-clause perimeter consistency PASS (no glazing ⇔ no perimeter zone) per [switching-rules#perimeter-circuit]. Zone control protocol matches zone_type: Z2.control='dali_master' is valid for interior with DALI controls_protocol per [control-rules#dali-zoning]."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "selection_source.photometric_source='ontology_default'; citation='CIBSE LG7 §6.2 (typical recessed LED panel UF + SHR_max) + BS EN 12464-1:2021 §4.4 (LLMF maintenance categories)' — matches ontology LED_PANEL_600.photometric._citation exactly. No inputs.photometric_override supplied; generator fell back to ontology defaults at RI=2.0 (closest band for actual RI=2.28). Rule 8 PASS per ontology._verification_status=engineer_typical_C2."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "drafting_furniture present with all 4 required blocks (title_block + scale_bar + dimensions[2] + luminaire_schedule). title_block carries the verbatim user-prompt values: drawing_number='L-001', revision='P1', scale='1:50', sheet_size='A3'. All annotations declare font_family='Arial' and explicit font_size_pt ∈ {8, 10}. dimensions.length=2 ≥ 2 minimum (horizontal 10000 mm + vertical 8000 mm). No {{placeholder}} substrings in any text field. Rule 9 PASS."
+    },
+    {
+      "id": "INV-10",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Schema validation PASSED (precondition: golden CI gate). All top-level required fields populated: drawing_type='lighting_layout', version='1.4.0', room (incl. room_type='open_plan_office' enum), calculation_summary (target+compliant+non_compliance_flags+assumptions), rationale (chat_summary 40-500 + sections ≥1), invariants (10 entries INV-01..INV-10). Mode=full_drawing — full_drawing required-fields all present: luminaire_type, luminaires (20), switches (1), circuits (4), controls, drawing_notes (9), zones (1), drafting_furniture, selection_source. non_compliance_flags=[] (vacuously valid). controls.part_l_compliant=true so Rule 3 cross-check trivially PASS. Rule 10 PASS."
+    }
+  ],
+  "drafting_furniture": {
+    "title_block": {
+      "project_name": "UK new-build open-plan office",
+      "drawing_number": "L-001",
+      "revision": "P1",
+      "date": "2026-05-28",
+      "scale": "1:50",
+      "sheet_size": "A3",
+      "font_family": "Arial",
+      "font_size_pt": 10
+    },
+    "scale_bar": {
+      "origin_x_mm": 7500,
+      "origin_y_mm": 8500,
+      "total_length_mm": 2000,
+      "tick_interval_mm": 500,
+      "font_family": "Arial",
+      "font_size_pt": 8
+    },
+    "dimensions": [
+      {
+        "axis": "horizontal",
+        "start_x_mm": 0,
+        "start_y_mm": -300,
+        "end_x_mm": 10000,
+        "end_y_mm": -300,
+        "text": "10000 mm",
+        "font_family": "Arial",
+        "font_size_pt": 10
+      },
+      {
+        "axis": "vertical",
+        "start_x_mm": -300,
+        "start_y_mm": 0,
+        "end_x_mm": -300,
+        "end_y_mm": 8000,
+        "text": "8000 mm",
+        "font_family": "Arial",
+        "font_size_pt": 10
+      }
+    ],
+    "luminaire_schedule": {
+      "columns": ["Ref", "Manufacturer", "Lumens", "Wattage", "Count"],
+      "rows": [["LED_PANEL_600", "Generic", "6000", "48W", "20"]],
+      "font_family": "Arial",
+      "font_size_pt": 8
+    }
+  },
+  "mode": "full_drawing"
+}
