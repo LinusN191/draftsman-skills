@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "shared/schemas/core/photometric-provenance.schema.json",
+  "title": "Photometric IES Provenance",
+  "description": "Machine-readable provenance for shared/photometric/ies/ reference files. Validates ies-provenance.json shape.",
+  "type": "object",
+  "required": ["_note", "files"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {"type": "string"},
+    "_note": {
+      "type": "string",
+      "minLength": 60,
+      "description": "Library-level honest disclosure of verification_status policy."
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "filename", "luminaire_type", "lumens", "wattage_w", "cct_k",
+          "verification_status", "_source", "_retrieved", "_lm63_version"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "filename": {"type": "string", "pattern": "^[A-Z][A-Za-z0-9_-]*\\.ies$"},
+          "luminaire_type": {"type": "string", "minLength": 3},
+          "lumens": {"type": "integer", "minimum": 100, "maximum": 200000},
+          "wattage_w": {"type": "number", "exclusiveMinimum": 0},
+          "cct_k": {"type": "integer", "minimum": 2000, "maximum": 8000},
+          "beam_angle_deg": {"type": "integer", "minimum": 5, "maximum": 180},
+          "verification_status": {
+            "enum": ["engineer_typical_C2", "manufacturer_supplied_project_specific", "synthetic_reference_C3"]
+          },
+          "_source": {
+            "type": "string",
+            "minLength": 40,
+            "description": "Provenance string: archetype name + intended use + verification caveats + substitution policy."
+          },
+          "_retrieved": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+          "_lm63_version": {"enum": ["LM-63-1995", "LM-63-2002", "LM-63-2019"]}
+        }
+      }
+    }
+  }
+}
