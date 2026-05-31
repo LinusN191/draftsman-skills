@@ -40,11 +40,15 @@ the calc primitive `calc.lumen_grid_solver` is shared.
 - Intent: flat `photometric_grid.*` payload with scalar summary fields
 
 ## Validator (9 INVs)
-HIGH: INV-1 min lux ≥ 0.7×target; INV-2 U₀ ≥ target; INV-3 UGR ≤ limit; INV-4 IES per
-luminaire_type required; INV-5 grid formula adherence ±50 mm; INV-6 grid shape consistency;
-INV-9 calc actually ran.
-MEDIUM: INV-7 ≥4 CIE 117 default observers; INV-8 _source provenance ≥40 chars +
-verification_status enum match.
+HIGH: INV-01 min lux ≥ 0.7×target; INV-02 U₀ ≥ target; INV-03 UGR ≤ limit; INV-04 IES per
+luminaire_type required; INV-05 grid formula adherence ±50 mm; INV-06 grid shape consistency;
+INV-09 calc actually ran.
+MEDIUM: INV-07 ≥4 CIE 117 default observers; INV-08 `_source` provenance ≥40 chars +
+`verification_status` enum match.
+
+INV ids are two-digit (`INV-01..INV-09`) per the IR schema `^INV-[0-9]{2,3}$` regex —
+distinct from lighting-layout's one-digit `INV-1..INV-11`. Cross-references via
+`matches_inv` in the C.3 eval YAMLs use the two-digit form.
 
 ## Reviewer (5 D-checks)
 D-1 headroom reasonable; D-2 IES file age + plausibility; D-3 UGR-vs-task-type fit;
@@ -61,6 +65,18 @@ D-4 reflectance plausibility; D-5 task-area coverage envelope.
   project-specific IES before final design freeze.
 - `calc.lumen_grid_solver` executor lives in runtime project per `[[runtime-project-boundary]]`.
   Skill ships contract + IR; runtime ships pixels + numbers.
+
+## Standards cross-reference
+
+| Clause | Used for | Cited in |
+|---|---|---|
+| BS EN 12464-1:2021 §4.4 (per-point requirement) | INV-01 min-lux floor; INV-02 U₀ floor | Generator Step 8; INV-01/02 rule body |
+| BS EN 12464-1:2021 §6.2 (grid spacing) | Adaptive `p = 0.2 × 5^log₁₀(d)` clamp [50, 1000] mm | `rules/grid-spacing-rules.yaml`; INV-05 |
+| BS EN 12464-1:2021 §6.6 (UGR) | UGR ≤ task-type limit; default observer positions | INV-03; INV-07 |
+| BS EN 12464-1:2021 Table 5.3 | Per-task-type lux + UGR + U₀ targets | `rules/ugr-rules.yaml`; reviewer D-3 |
+| ANSI/IES LM-63-2002 | IES file parsing + luminous-opening shape encoding | Generator Step 2; INV-04 |
+| CIE 117:1995 | UGR formula + Guth position index | Generator Step 8 |
+| CIBSE LG7 §6.2 | Analytical archetype for synthetic IES; FF=0.3 assumption | `scripts/generate_reference_ies.py`; B.1 generator |
 
 ## Why this skill exists
 Created 2026-05-25 as a depth-extension stub during the post-remediation within-skill-scope
