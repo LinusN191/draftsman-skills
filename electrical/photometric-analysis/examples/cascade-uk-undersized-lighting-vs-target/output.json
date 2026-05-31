@@ -1,0 +1,121 @@
+{
+  "drawing_type": "photometric_analysis",
+  "version": "1.0.0",
+  "mode": "full_analysis",
+  "_note": "Cascade retrofit of lighting-layout/examples/uk-undersized-lighting-vs-target. 12 LED_PANEL_600 (3500 lm value-engineered substitution) in 8×6 m private office. Upstream lumen-method already FAILS (434 < 500). Photometric verification confirms achieved_min 275 lux < 350 (0.7×500) → INV-01 FAIL HIGH. task_area_compliant=false propagates upstream to lighting-layout INV-11 with cascaded critical flag. Failure-mode demo end-to-end.",
+  "room": {
+    "length_mm": 8000,
+    "width_mm": 6000,
+    "area_m2": 48,
+    "ceiling_height_mm": 2700,
+    "working_plane_mm": 750,
+    "room_type": "private_office"
+  },
+  "consumed_intents": {
+    "lighting_layout": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/lighting-layout/examples/uk-undersized-lighting-vs-target/intent-out.json",
+      "consumed_summary": {
+        "room_length_mm": 8000,
+        "room_width_mm": 6000,
+        "luminaire_count": 12,
+        "luminaire_types": ["LED_PANEL_600"],
+        "_layout_note": "12 panels in 3×4 grid: x ∈ {1000, 3000, 5000, 7000} × y ∈ {1000, 3000, 5000}. The value-engineered 3500 lm panel (vs 4500 lm ontology default) was specified without a lumen-method re-check; upstream INV-1 already FAILS. Photometric-analysis confirms the failure cascades to per-point: cold-corner min 275 lux < 350 threshold."
+      }
+    }
+  },
+  "photometric_inputs": {
+    "ies_files": [
+      {
+        "luminaire_type": "LED_PANEL_600",
+        "path": "shared/photometric/ies/LED_PANEL_600-3500lm.ies",
+        "_source": "Synthetic 600x600mm recessed LED panel, value-engineered 3500lm variant (vs 4500lm ontology default), 4000K, opal diffuser. Distribution: Lambertian cos(theta) per CIBSE LG7 §6.2. verification_status: synthetic_reference_C3 — used to demonstrate the per-point failure cascade for under-spec'd luminaire substitutions.",
+        "verification_status": "synthetic_reference_C3",
+        "parsed_summary": {
+          "total_lumens": 3500,
+          "max_intensity_cd": 1080,
+          "beam_angle_deg": 110,
+          "ies_test_distance_m": 25
+        }
+      }
+    ],
+    "grid_metadata": {
+      "task_area_bounds": {"x_min_mm": 500, "y_min_mm": 500, "x_max_mm": 7500, "y_max_mm": 5500},
+      "grid_spacing_mm": 800,
+      "grid_spacing_formula": "BS EN 12464-1:2021 §6.2 adaptive: p = 0.2 × 5^log₁₀(d) clamped [50, 1000] mm; for d=7.0m task area: p ≈ 0.2 × 5^0.845 × 1000 ≈ 779 mm → snapped to nominal 800 mm. Grid fitted to task area: 10 cols × 7 rows = 70 points (x-step ~778 mm to fit 7000mm extent across 9 intervals; y-step ~833 mm to fit 5000mm extent across 6 intervals).",
+      "point_count": 70
+    },
+    "reflectances": {
+      "ceiling": 0.7,
+      "wall": 0.5,
+      "floor": 0.2,
+      "_source": "CIBSE LG7 §6.2 clean office reflectances (0.7/0.5/0.2) — matches lighting-layout assumptions."
+    }
+  },
+  "calculation_summary": {
+    "target_illuminance_lux": 500,
+    "uniformity_u0_target": 0.6,
+    "ugr_limit": 19,
+    "achieved_avg_illuminance_lux": 434,
+    "achieved_min_illuminance_lux": 275,
+    "achieved_max_illuminance_lux": 552,
+    "achieved_uniformity_u0": 0.63,
+    "max_ugr_across_view_positions": 17.4,
+    "compliant": false,
+    "non_compliance_flags": [
+      {
+        "message": "Achieved min illuminance 275 lux at NW corner (500, 5500) FAILS BS EN 12464-1 §4.4: per-point min must be ≥ 0.7 × target 500 = 350 lux. Gap 75 lux (21% under threshold). Root cause: value-engineered 3500 lm panel substitution from 4500 lm ontology default reduces total room lumens by 22%; the cold-corner sees the full reduction in addition to the wall-shadow effect. Remediation (matches upstream lumen-method advice): bump to 16 panels in 4×4 grid OR upgrade to 4500 lm panels and keep the 12-fitting layout.",
+        "reference": "BS EN 12464-1:2021 §4.4 per-point requirement + Table 5.3 row 5.34 private_office",
+        "severity": "critical"
+      },
+      {
+        "message": "Achieved avg illuminance 434 lux FAILS the 500 lux target (cross-check: matches upstream lumen-method achieved_illuminance_lux=434.0). This skill does NOT independently flag avg-below-target — that's the lighting-layout INV-1 flag, which is already raised upstream. Carried here for engineer visibility in the cascade walkthrough.",
+        "reference": "BS EN 12464-1:2021 §4.4 illuminance criterion (informational — upstream lighting-layout INV-1 owns this flag)",
+        "severity": "info"
+      }
+    ],
+    "tool_call_pending": false,
+    "_calc_tool": "calc.lumen_grid_solver",
+    "_calc_engine_version": "calc.lumen_grid_solver 1.0"
+  },
+  "illuminance_grid": [
+    {"x_mm": 500, "y_mm": 500, "illuminance_lux": 285.4},
+    {"x_mm": 3800, "y_mm": 500, "illuminance_lux": 412.7},
+    {"x_mm": 7500, "y_mm": 500, "illuminance_lux": 291.2},
+    {"x_mm": 500, "y_mm": 3000, "illuminance_lux": 358.6},
+    {"x_mm": 3800, "y_mm": 3000, "illuminance_lux": 535.1},
+    {"x_mm": 7500, "y_mm": 3000, "illuminance_lux": 362.4},
+    {"x_mm": 500, "y_mm": 5500, "illuminance_lux": 274.8},
+    {"x_mm": 3800, "y_mm": 5500, "illuminance_lux": 401.5},
+    {"x_mm": 7500, "y_mm": 5500, "illuminance_lux": 278.3},
+    {"x_mm": 2300, "y_mm": 3000, "illuminance_lux": 488.9}
+  ],
+  "ugr_results": [
+    {"label": "auto_N_wall", "position": {"x_mm": 4000, "y_mm": 5000, "height_mm": 1200}, "azimuth_deg": 180, "ugr_value": 17.0, "_source": "cie_117_default"},
+    {"label": "auto_S_wall", "position": {"x_mm": 4000, "y_mm": 1000, "height_mm": 1200}, "azimuth_deg": 0,   "ugr_value": 17.4, "_source": "cie_117_default"},
+    {"label": "auto_E_wall", "position": {"x_mm": 7000, "y_mm": 3000, "height_mm": 1200}, "azimuth_deg": 270, "ugr_value": 16.6, "_source": "cie_117_default"},
+    {"label": "auto_W_wall", "position": {"x_mm": 1000, "y_mm": 3000, "height_mm": 1200}, "azimuth_deg": 90,  "ugr_value": 16.8, "_source": "cie_117_default"}
+  ],
+  "rationale": {
+    "chat_summary": "FAILURE-MODE CASCADE DEMO. lighting-layout uk-undersized already FAILED upstream lumen-method (avg 434 < 500). Photometric-analysis confirms the failure cascades to per-point: achieved_min 275 lux < 350 (0.7×500) → INV-01 FAIL HIGH. U₀ 0.63 ≥ 0.6 → INV-02 PASS (uniformity itself is OK; the layout is uniformly under-bright). UGR 17.4 ≤ 19 → INV-03 PASS. Intent payload sets task_area_compliant=false and propagates 1 critical non_compliance_flag upstream to lighting-layout INV-11 via the _cascaded_from attribution mechanism (post-D.2 retrofit).",
+    "sections": [
+      {"title": "Cascade context — failure-mode end-to-end", "summary": "Consumes electrical/lighting-layout/examples/uk-undersized-lighting-vs-target/intent-out.json. The upstream is the canonical 'value-engineered substitution that broke lumen-method' example — the engineer substituted 3500 lm panels for 4500 lm panels without re-running the lumen calc, and the upstream INV-1 caught it. This cascade confirms the failure also manifests as a per-point BS EN 12464-1 §4.4 violation, demonstrating that the upstream + downstream verification layers agree on the failure diagnosis."},
+      {"title": "Grid resolution derivation", "summary": "Task area 7×5 m after 500mm border. d=7m; corrected §6.2 formula p ≈ 779 mm snapped to 800 mm per [grid-spacing-rules#adaptive-formula]. 10×7 = 70 grid points (x-step ~778 mm to fit 7000mm, y-step ~833 mm to fit 5000mm extent)."},
+      {"title": "Per-point illuminance — the failure", "summary": "achieved_avg 434 lux (matches upstream lumen-method exactly). achieved_min 275 lux at NW corner (500, 5500); 75 lux below the 350 threshold (21% deficit). The cold-corner deficit is the combination of (a) overall room under-provision (22% lumen reduction from the substitution) plus (b) wall-shadow effect at the perimeter. achieved_max 552 lux at room centre directly under the central panel cluster. U₀ 0.63 is acceptable — the failure is in absolute level not in spatial distribution."},
+      {"title": "UGR + uniformity PASS — INDEPENDENCE demonstrated", "summary": "Even though INV-01 (per-point illuminance) FAILS, INV-02 (uniformity) and INV-03 (UGR) PASS. Lesson: under-provision is NOT a uniformity problem — the layout is uniformly under-bright, not unevenly bright. The 0.63 U₀ matches the geometry of a 3×4 uniform panel grid (typical 0.7-0.8 U₀); the UGR 17.4 ≤ 19 limit is similarly geometry-driven (luminance-per-fixture × area-projection toward eye) and unaffected by total lumen reduction."},
+      {"title": "Cascade signal — propagation", "summary": "Intent payload sets task_area_compliant=false AND non_compliance_flags carries 1 critical entry (INV-01 cold-corner). When lighting-layout INV-11 reads this (post-D.2 retrofit): (1) consumed_intents.photometric_grid present ✓; (2) payload.task_area_compliant == false → INV-11 FAIL HIGH; (3) the critical flag is mirrored into lighting-layout's own non_compliance_flags with _cascaded_from='photometric-analysis' attribution. Engineer-of-record sees both the upstream INV-1 (lumen-method) flag AND the cascaded INV-11 flag — confirming the diagnosis from two independent verification paths."},
+      {"title": "Honest disclosure — synthetic IES + remediation", "summary": "IES file LED_PANEL_600-3500lm.ies is synthetic_reference_C3 — the same Lambertian distribution as the 4500 lm reference but scaled to 3500 lm output. Real value-engineered panels may have different distributions (sometimes tighter beam at the lower lumen output, which would worsen the cold-corner deficit further). Engineer-of-record substitutes project IES before final design freeze. Remediation per upstream lumen-method flag: bump to 16 panels in 4×4 grid (achieved 579 lux per upstream) OR upgrade to 4500 lm and keep the 12-fitting layout (achieved 558 lux per upstream); either gives photometric INV-01 PASS on re-run."}
+    ]
+  },
+  "invariants": [
+    {"id": "INV-01", "passes": false, "severity": "high", "evidence": "Achieved min 275 lux at NW corner (500, 5500) < 0.7 × target 500 = 350 lux. FAIL by 75 lux (21% deficit). Per BS EN 12464-1:2021 §4.4 + Table 5.3 row 5.34 private_office. Cross-check: upstream lumen-method INV-1 also FAILs (avg 434 < 500). Two-layer verification agrees the layout is under-provisioned."},
+    {"id": "INV-02", "passes": true, "severity": "high", "evidence": "Achieved U₀ = 275/434 = 0.634 ≥ 0.6 private_office target per [ugr-rules#per-room-type-limits]. The 3×4 uniform grid produces acceptable uniformity — the under-provision is in absolute level, not spatial distribution. PASS by 0.034 margin (slim but valid)."},
+    {"id": "INV-03", "passes": true, "severity": "high", "evidence": "Max UGR 17.4 (auto_S_wall observer at (4000, 1000)) ≤ 19 private_office limit per BS EN 12464-1 Table 5.3 row 5.34. UGR depends on per-luminaire luminance × geometry, not on total room lumens; the substitution to 3500 lm doesn't affect UGR (each panel is still well below glare threshold from observer angles). 1.6 margin."},
+    {"id": "INV-04", "passes": true, "severity": "high", "evidence": "1 distinct luminaire_type (LED_PANEL_600) in upstream lighting-layout consumed_summary; 1 ies_files[] entry matches; LM-63 parser returns total_lumens=3500 (the value-engineered figure, distinct from the 4500 lm 4500lm.ies file used in other cascades)."},
+    {"id": "INV-05", "passes": true, "severity": "high", "evidence": "grid_spacing_mm=800 matches BS EN 12464-1 §6.2 formula output p ≈ 779 mm within ±50 mm tolerance. d=7.0m task area."},
+    {"id": "INV-06", "passes": true, "severity": "high", "evidence": "illuminance_grid.length (full runtime emission) = point_count=70. 10-sample slice in this IR; every (x_mm, y_mm) inside task_area_bounds [500,7500]×[500,5500]. No duplicate coordinates."},
+    {"id": "INV-07", "passes": true, "severity": "medium", "evidence": "4 ugr_results entries with _source=cie_117_default (N, S, E, W wall-facing per [ugr-rules#default-observer-positions], positions adapted to 8×6 m room). No engineer overrides supplied."},
+    {"id": "INV-08", "passes": true, "severity": "medium", "evidence": "ies_files[0]._source length=298 chars ≥ 40 minimum; verification_status=synthetic_reference_C3 in enum per [ies-provenance-rules#verification-status-enum]."},
+    {"id": "INV-09", "passes": true, "severity": "high", "evidence": "tool_call_pending=false; _calc_tool='calc.lumen_grid_solver'; _calc_engine_version='calc.lumen_grid_solver 1.0'. Runtime cascade completed successfully — the calc ran; the result is non-compliant by design (under-provisioned layout)."}
+  ]
+}

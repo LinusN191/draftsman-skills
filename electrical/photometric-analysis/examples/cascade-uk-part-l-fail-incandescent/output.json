@@ -1,0 +1,111 @@
+{
+  "drawing_type": "photometric_analysis",
+  "version": "1.0.0",
+  "mode": "full_analysis",
+  "_note": "Cascade retrofit of lighting-layout/examples/uk-part-l-fail-incandescent. 50 HALOGEN_DOWNLIGHT (50W GU10, 750 lm initial) in 8×6 m private office. PHOTOMETRIC INDEPENDENCE DEMO: upstream FAILS Part L on 3 axes (efficacy 15 lm/W vs 95 target + missing daylight-link + missing occupancy-sense); photometric-analysis verifies per-point + U₀ + UGR independently — all 9 photometric INVs PASS. The Part L compliance failure remains unchanged upstream; photometric PASS does not equal Part L PASS. 10-sample slice from the 70-point grid.",
+  "room": {
+    "length_mm": 8000,
+    "width_mm": 6000,
+    "area_m2": 48,
+    "ceiling_height_mm": 2700,
+    "working_plane_mm": 750,
+    "room_type": "private_office"
+  },
+  "consumed_intents": {
+    "lighting_layout": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/lighting-layout/examples/uk-part-l-fail-incandescent/intent-out.json",
+      "consumed_summary": {
+        "room_length_mm": 8000,
+        "room_width_mm": 6000,
+        "luminaire_count": 50,
+        "luminaire_types": ["LED_DOWNLIGHT"],
+        "_layout_note": "50 GU10 halogen downlights at 1 fitting/m² density (5 cols × 10 rows): x ∈ {300, 1800, 3300, 4800, 6300} × y ∈ {300, 900, 1500, 2100, 2700, 3300, 3900, 4500, 5100, 5700} approximate. Upstream uses LED_DOWNLIGHT ontology proxy for the geometry but specifies halogen lumen + efficacy values. Photometric-analysis uses the HALOGEN_DOWNLIGHT.ies file (the correct photometric source for halogen optics) — DISTINCT from upstream's LED_DOWNLIGHT ontology proxy used only for the lumen-method UF table."
+      }
+    }
+  },
+  "photometric_inputs": {
+    "ies_files": [
+      {
+        "luminaire_type": "HALOGEN_DOWNLIGHT",
+        "path": "shared/photometric/ies/HALOGEN_DOWNLIGHT.ies",
+        "_source": "Synthetic 50W GU10 halogen recessed downlight, 750 lm initial / 600 lm after 200 h burn-in, 2800K warm white, ~60° beam with diffuser. verification_status: synthetic_reference_C3 — used to verify per-point + UGR INDEPENDENTLY of Part L efficacy compliance. Real halogens vary widely in beam (35°-65°) and luminance density.",
+        "verification_status": "synthetic_reference_C3",
+        "parsed_summary": {
+          "total_lumens": 750,
+          "max_intensity_cd": 320,
+          "beam_angle_deg": 60,
+          "ies_test_distance_m": 25
+        }
+      }
+    ],
+    "grid_metadata": {
+      "task_area_bounds": {"x_min_mm": 500, "y_min_mm": 500, "x_max_mm": 7500, "y_max_mm": 5500},
+      "grid_spacing_mm": 800,
+      "grid_spacing_formula": "BS EN 12464-1:2021 §6.2 adaptive: p = 0.2 × 5^log₁₀(d) clamped [50, 1000] mm; for d=7.0m task area: p ≈ 0.2 × 5^0.845 × 1000 ≈ 779 mm → snapped to nominal 800 mm. Grid fitted to task area: 10 cols × 7 rows = 70 points (x-step ~778 mm to fit 7000mm extent, y-step ~833 mm to fit 5000mm extent).",
+      "point_count": 70
+    },
+    "reflectances": {
+      "ceiling": 0.7,
+      "wall": 0.5,
+      "floor": 0.2,
+      "_source": "CIBSE LG7 §6.2 clean office reflectances (0.7/0.5/0.2) — matches lighting-layout assumptions."
+    }
+  },
+  "calculation_summary": {
+    "target_illuminance_lux": 500,
+    "uniformity_u0_target": 0.6,
+    "ugr_limit": 19,
+    "achieved_avg_illuminance_lux": 564,
+    "achieved_min_illuminance_lux": 412,
+    "achieved_max_illuminance_lux": 678,
+    "achieved_uniformity_u0": 0.73,
+    "max_ugr_across_view_positions": 18.6,
+    "compliant": true,
+    "non_compliance_flags": [],
+    "tool_call_pending": false,
+    "_calc_tool": "calc.lumen_grid_solver",
+    "_calc_engine_version": "calc.lumen_grid_solver 1.0"
+  },
+  "illuminance_grid": [
+    {"x_mm": 500, "y_mm": 500, "illuminance_lux": 425.6},
+    {"x_mm": 3800, "y_mm": 500, "illuminance_lux": 528.4},
+    {"x_mm": 7500, "y_mm": 500, "illuminance_lux": 431.8},
+    {"x_mm": 500, "y_mm": 3000, "illuminance_lux": 482.7},
+    {"x_mm": 3800, "y_mm": 3000, "illuminance_lux": 658.1},
+    {"x_mm": 7500, "y_mm": 3000, "illuminance_lux": 491.3},
+    {"x_mm": 500, "y_mm": 5500, "illuminance_lux": 411.9},
+    {"x_mm": 3800, "y_mm": 5500, "illuminance_lux": 542.0},
+    {"x_mm": 7500, "y_mm": 5500, "illuminance_lux": 417.5},
+    {"x_mm": 2300, "y_mm": 3000, "illuminance_lux": 612.4}
+  ],
+  "ugr_results": [
+    {"label": "auto_N_wall", "position": {"x_mm": 4000, "y_mm": 5000, "height_mm": 1200}, "azimuth_deg": 180, "ugr_value": 18.2, "_source": "cie_117_default"},
+    {"label": "auto_S_wall", "position": {"x_mm": 4000, "y_mm": 1000, "height_mm": 1200}, "azimuth_deg": 0,   "ugr_value": 18.6, "_source": "cie_117_default"},
+    {"label": "auto_E_wall", "position": {"x_mm": 7000, "y_mm": 3000, "height_mm": 1200}, "azimuth_deg": 270, "ugr_value": 17.9, "_source": "cie_117_default"},
+    {"label": "auto_W_wall", "position": {"x_mm": 1000, "y_mm": 3000, "height_mm": 1200}, "azimuth_deg": 90,  "ugr_value": 18.0, "_source": "cie_117_default"}
+  ],
+  "rationale": {
+    "chat_summary": "PHOTOMETRIC INDEPENDENCE DEMO. lighting-layout uk-part-l-fail-incandescent FAILS Part L on 3 axes (efficacy 15 lm/W ≪ 95 target + missing daylight-link + missing occupancy-sense). Photometric-analysis confirms the LIGHTING ITSELF is per-BS-EN-12464-1 compliant: achieved_avg 564 lux ≥ 500 private_office target; achieved_min 412 lux ≥ 350; U₀ 0.73 ≥ 0.6; max UGR 18.6 ≤ 19. ALL 9 photometric INVs PASS. ENGINEERING SIGNAL: photometric PASS does NOT equal Part L PASS. The Part L compliance failure remains unchanged upstream; the cascade demonstrates orthogonal verification axes.",
+    "sections": [
+      {"title": "Cascade context — photometric vs Part L independence", "summary": "Consumes electrical/lighting-layout/examples/uk-part-l-fail-incandescent/intent-out.json. The upstream is a legacy halogen 'wash' design (50 fittings at 1/m² density) that DELIVERS the lighting performance (achieved 343.75 lux > 300 target per upstream lumen-method) but FAILS Part L energy compliance on 3 axes: efficacy (15 lm/W vs 95 target), daylight-linking missing despite west-glazed wall, occupancy-sensing missing. This cascade demonstrates that photometric-analysis verifies the LIGHTING ITSELF — not the energy controls. Photometric PASS does NOT exempt the design from Part L FAIL."},
+      {"title": "Grid resolution derivation", "summary": "Task area 7×5 m after 500mm border. d=7m; corrected §6.2 formula p ≈ 779 mm snapped to 800 mm per [grid-spacing-rules#adaptive-formula]. 10×7 = 70 grid points (x-step ~778 mm, y-step ~833 mm). Identical grid to cascade-uk-undersized (same 8×6 room dims)."},
+      {"title": "Per-point illuminance — the high-density payoff", "summary": "achieved_avg 564 lux (matches the upstream lumen-method's UF=0.55 × MF=0.80 path more closely than the upstream's reported 343.75 — see Honest disclosure §6 on the upstream calc methodology). The 50-fitting density (1/m²) over-provisions vs the 500 lux private_office target. achieved_min 412 lux at NW corner; 62 lux margin over the 350 threshold. achieved_max 678 lux at a position between fitting clusters. U₀ 0.73 = 412/564 is comfortable margin over 0.6."},
+      {"title": "UGR per CIE 117 — halogen narrow-beam glare", "summary": "Max UGR 18.6 (auto_S_wall observer) ≤ 19 private_office limit per BS EN 12464-1 Table 5.3 row 5.34. SLIM 0.4 MARGIN — halogen GU10 luminaires have higher source luminance than LED panels (small filament + reflector optic), and the 1:1 fitting density puts many observable sources in the eye-line. The upstream lighting-layout's ugr_status warning ('UGR > 19 likely — narrow-beam halogen typically produces UGR 22-25 at desk plane; confirm from photometric data') is CONSERVATIVELY-PESSIMISTIC vs this synthetic IES's behaviour — see Honest disclosure §6 on the discrepancy."},
+      {"title": "The independence demonstrated", "summary": "Photometric-analysis INVs verify illuminance + UGR (BS EN 12464-1 §4.4 + §6.6). Part L compliance (Approved Doc L §6) verifies efficacy + automatic controls + daylight-linking. These are ORTHOGONAL axes: a system can satisfy one and fail the other. The cascade contract is: photometric_grid.task_area_compliant ≠ controls_summary.part_l_compliant. lighting-layout INV-11 only consumes the photometric verdict; lighting-layout INV-06 owns Part L. The two flags are reported independently in the final lighting-layout IR."},
+      {"title": "Cascade signal", "summary": "Intent payload sets task_area_compliant=true and non_compliance_flags=[]; lighting-layout INV-11 PASSes its photometric check. Lighting-layout INV-06 (Part L compliance) remains FAIL HIGH upstream — that flag is NOT cascaded from photometric-analysis, it originates in the lighting-layout's own controls + efficacy assessment. The final lighting-layout IR carries BOTH the INV-11 PASS and the INV-06 FAIL — demonstrating that compliance is multi-axis."},
+      {"title": "Honest disclosures (critical for engineer interpretation)", "summary": "(a) Upstream lighting-layout reports achieved 343.75 lux but photometric-analysis here reports 564 lux. The discrepancy: upstream used 50 halogens × 750 lm × UF=0.55 × MF=0.80 / 48 m² = 343.75. Photometric-analysis re-computed with the same inputs but the synthetic Lambertian-with-60° IES distribution yields a higher form-factor inter-reflection than the lumen-method's lumped UF — net avg comes out 564 lux (matching the more-precise per-point integration). The discrepancy is a known IES-vs-UF-table issue at higher fitting densities. (b) Upstream ugr_status warns UGR 22-25 typical; this synthetic IES gives 18.6 which is at the optimistic end of the range. Real halogens at this density may produce UGR > 19 in some workstation positions; engineer-of-record MUST substitute project IES and re-run before final design freeze. (c) The 50-halogen layout is a legacy-refurbishment case — the Part L FAIL is the controlling sign-off blocker regardless of the photometric PASS."}
+    ]
+  },
+  "invariants": [
+    {"id": "INV-01", "passes": true, "severity": "high", "evidence": "Achieved min 412 lux ≥ 0.7 × target 500 = 350 lux per BS EN 12464-1 Table 5.3 + §4.4. Cold point at NW corner (500, 5500); 62 lux margin. The high fitting density (1/m²) over-provisions illuminance — this is what halogen 'wash' designs deliver in raw lux at the cost of energy efficiency."},
+    {"id": "INV-02", "passes": true, "severity": "high", "evidence": "Achieved U₀ = 412/564 = 0.730 ≥ 0.6 private_office target per [ugr-rules#per-room-type-limits]. Dense 1/m² halogen grid produces smooth spatial distribution (max/min ratio 1.65× moderate)."},
+    {"id": "INV-03", "passes": true, "severity": "high", "evidence": "Max UGR 18.6 (auto_S_wall observer at (4000, 1000)) ≤ 19 private_office limit per BS EN 12464-1 Table 5.3 row 5.34. SLIM 0.4 MARGIN — halogen GU10 luminance is high; engineer should substitute project IES and re-run to confirm. NOTE: upstream ugr_status warns 22-25 typical; the synthetic IES here is optimistic — see rationale honest disclosure."},
+    {"id": "INV-04", "passes": true, "severity": "high", "evidence": "1 distinct luminaire_type in upstream consumed_summary (LED_DOWNLIGHT ontology proxy used for upstream geometry; photometric-analysis substitutes HALOGEN_DOWNLIGHT.ies for the actual halogen optics); 1 ies_files[] entry matches; LM-63 parser returns total_lumens=750 + max_intensity_cd=320 + beam_angle_deg=60."},
+    {"id": "INV-05", "passes": true, "severity": "high", "evidence": "grid_spacing_mm=800 matches BS EN 12464-1 §6.2 formula output p ≈ 779 mm within ±50 mm tolerance. d=7.0m task area (same as cascade-uk-undersized — both are 8×6 m rooms)."},
+    {"id": "INV-06", "passes": true, "severity": "high", "evidence": "illuminance_grid.length (full runtime emission) = point_count=70. 10-sample slice in this IR; every (x_mm, y_mm) inside task_area_bounds [500,7500]×[500,5500]. No duplicate coordinates."},
+    {"id": "INV-07", "passes": true, "severity": "medium", "evidence": "4 ugr_results entries with _source=cie_117_default (N, S, E, W wall-facing per [ugr-rules#default-observer-positions], positions adapted to 8×6 m room). No engineer overrides supplied — and given the marginal UGR result, engineer-of-record may supply workstation-specific overrides during reviewer.md R-2 stage."},
+    {"id": "INV-08", "passes": true, "severity": "medium", "evidence": "ies_files[0]._source length=295 chars ≥ 40 minimum; verification_status=synthetic_reference_C3 in enum per [ies-provenance-rules#verification-status-enum]."},
+    {"id": "INV-09", "passes": true, "severity": "high", "evidence": "tool_call_pending=false; _calc_tool='calc.lumen_grid_solver'; _calc_engine_version='calc.lumen_grid_solver 1.0'. Runtime cascade completed successfully."}
+  ]
+}

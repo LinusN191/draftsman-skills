@@ -1,0 +1,28 @@
+{
+  "$schema": "../../inputs.json",
+  "skill": "photometric-analysis",
+  "example_id": "cascade-uk-undersized-lighting-vs-target",
+  "jurisdiction": "GB",
+  "items": [
+    {
+      "id": "I-1",
+      "category": "site_brief",
+      "label": "Site description",
+      "value": "Cascade retrofit of lighting-layout uk-undersized-lighting-vs-target example. 48 m² private office (8×6 m); 12 × LED_PANEL_600 at 3500 lm each (value-engineered substitution from the 4500 lm ontology default). Upstream lumen-method already FAILS (achieved 434 < target 500). Photometric verification confirms the failure cascades to per-point: INV-01 FAIL HIGH. Demonstrates failure-mode cascade end-to-end."
+    },
+    {
+      "id": "lighting_layout_intent_path",
+      "value": "../../../lighting-layout/examples/uk-undersized-lighting-vs-target/intent-out.json"
+    },
+    {
+      "id": "photometric_ies_paths",
+      "value": [
+        {
+          "luminaire_type": "LED_PANEL_600",
+          "path": "shared/photometric/ies/LED_PANEL_600-3500lm.ies",
+          "_source": "Synthetic 600x600mm recessed LED panel, value-engineered 3500lm variant (vs 4500lm ontology default), 4000K, opal diffuser. Distribution: Lambertian cos(theta) per CIBSE LG7 §6.2. verification_status: synthetic_reference_C3 — used to demonstrate the per-point failure cascade for under-spec'd luminaire substitutions."
+        }
+      ]
+    }
+  ]
+}

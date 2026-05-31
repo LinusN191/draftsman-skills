@@ -1,0 +1,28 @@
+{
+  "$schema": "../../inputs.json",
+  "skill": "photometric-analysis",
+  "example_id": "cascade-uk-part-l-fail-incandescent",
+  "jurisdiction": "GB",
+  "items": [
+    {
+      "id": "I-1",
+      "category": "site_brief",
+      "label": "Site description",
+      "value": "Cascade retrofit of lighting-layout uk-part-l-fail-incandescent example. 48 m² private office (8×6 m); 50 × HALOGEN_DOWNLIGHT 50W GU10 at 750 lm initial each (1 fitting/m² inherited halogen 'wash' density). Upstream FAILS Part L on 3 axes (efficacy + daylight-linking + occupancy-sensing); photometric-analysis verifies the per-point + UGR cascade INDEPENDENTLY — all 9 photometric INVs PASS. Demonstrates the photometric vs Part-L independence."
+    },
+    {
+      "id": "lighting_layout_intent_path",
+      "value": "../../../lighting-layout/examples/uk-part-l-fail-incandescent/intent-out.json"
+    },
+    {
+      "id": "photometric_ies_paths",
+      "value": [
+        {
+          "luminaire_type": "HALOGEN_DOWNLIGHT",
+          "path": "shared/photometric/ies/HALOGEN_DOWNLIGHT.ies",
+          "_source": "Synthetic 50W GU10 halogen recessed downlight, 750 lm initial / 600 lm after 200 h burn-in, 2800K warm white, ~60° beam with diffuser. verification_status: synthetic_reference_C3 — used to verify per-point + UGR INDEPENDENTLY of Part L efficacy compliance. Real halogens vary widely in beam (35°-65°) and luminance density."
+        }
+      ]
+    }
+  ]
+}

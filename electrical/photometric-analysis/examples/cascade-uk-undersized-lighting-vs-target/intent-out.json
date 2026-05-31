@@ -1,0 +1,27 @@
+{
+  "intent_version": "1.0.0",
+  "skill": "photometric-analysis",
+  "consumed_lighting_layout_intent": "electrical/lighting-layout/examples/uk-undersized-lighting-vs-target/intent-out.json",
+  "photometric_grid": {
+    "achieved_avg_illuminance_lux": 434,
+    "achieved_min_illuminance_lux": 275,
+    "achieved_uniformity_u0": 0.63,
+    "ugr_max": 17.4,
+    "ugr_target": 19,
+    "uniformity_target": 0.6,
+    "target_illuminance_lux": 500,
+    "task_area_compliant": false,
+    "grid_point_count": 70,
+    "non_compliance_flags": [
+      {
+        "message": "Achieved min illuminance 275 lux at NW corner FAILS BS EN 12464-1 §4.4 per-point requirement: must be ≥ 0.7 × target 500 = 350 lux. Gap 75 lux (21% deficit). Root cause: value-engineered 3500 lm panel substitution. Remediation: bump to 16 panels OR upgrade to 4500 lm.",
+        "reference": "BS EN 12464-1:2021 §4.4 + Table 5.3 row 5.34 private_office",
+        "severity": "critical"
+      }
+    ],
+    "ies_source_summary": {
+      "all_verified": false,
+      "verification_status_lowest": "synthetic_reference_C3"
+    }
+  }
+}
