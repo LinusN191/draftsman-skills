@@ -4,7 +4,117 @@
   "name": "Lumen Method Grid Solver",
   "executor": "tool",
   "tool_name": "calc.lumen_grid_solver",
-  "formula_reference": "CIBSE SLL Code for Lighting 2012; BS EN 12464-1:2021 Clause 5",
-  "implementation_note": "Deterministic Python: computes baseline luminaire grid (rows × cols, x/y positions, spacing) for a rectangular room from room dims, ceiling height, target lux, design lumens, UF, MF, ceiling-grid module, and SHR_max. Returns positions list + spacing trace.",
-  "_human_reference": "lumen-method.json"
+  "formula_reference": "CIBSE LG7 §6.2 + BS EN 12464-1:2021 §4.4 + §6.2 + §6.6 + CIE 117 (UGR) + ANSI/IES LM-63-2002 (IES file format)",
+  "implementation_note": "Deterministic Python: parses LM-63 IES files; computes per-point illuminance from luminaire positions + IES luminous intensity distribution via inverse-square + cosine law + form-factor inter-reflection approximation; computes scalar U₀ + max-UGR across observer positions per CIE 117. Runtime owns the parser + numerical integration; skill emits IR with calc inputs filled + outputs marked tool_call_pending until runtime returns.",
+  "inputs": {
+    "type": "object",
+    "required": ["room", "luminaires", "ies_files", "grid_metadata", "reflectances", "ugr_observers"],
+    "properties": {
+      "room": {
+        "type": "object",
+        "required": ["length_mm", "width_mm", "ceiling_height_mm"],
+        "properties": {
+          "length_mm": {"type": "integer"},
+          "width_mm": {"type": "integer"},
+          "ceiling_height_mm": {"type": "integer"},
+          "working_plane_mm": {"type": "integer"}
+        }
+      },
+      "luminaires": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "x_mm", "y_mm", "luminaire_type"],
+          "properties": {
+            "id": {"type": "string"},
+            "x_mm": {"type": "integer"},
+            "y_mm": {"type": "integer"},
+            "mounting_height_mm": {"type": "integer"},
+            "luminaire_type": {"type": "string"}
+          }
+        }
+      },
+      "ies_files": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["luminaire_type", "path"],
+          "properties": {
+            "luminaire_type": {"type": "string"},
+            "path": {"type": "string"}
+          }
+        }
+      },
+      "grid_metadata": {
+        "type": "object",
+        "required": ["task_area_bounds", "grid_spacing_mm"],
+        "properties": {
+          "task_area_bounds": {
+            "type": "object",
+            "required": ["x_min_mm", "y_min_mm", "x_max_mm", "y_max_mm"]
+          },
+          "grid_spacing_mm": {"type": "integer", "minimum": 50, "maximum": 1000}
+        }
+      },
+      "reflectances": {
+        "type": "object",
+        "required": ["ceiling", "wall", "floor"],
+        "properties": {
+          "ceiling": {"type": "number"},
+          "wall": {"type": "number"},
+          "floor": {"type": "number"}
+        }
+      },
+      "ugr_observers": {
+        "type": "array",
+        "minItems": 4,
+        "items": {
+          "type": "object",
+          "required": ["label", "position", "azimuth_deg"],
+          "properties": {
+            "label": {"type": "string"},
+            "position": {
+              "type": "object",
+              "required": ["x_mm", "y_mm", "height_mm"]
+            },
+            "azimuth_deg": {"type": "integer"}
+          }
+        }
+      }
+    }
+  },
+  "outputs": {
+    "type": "object",
+    "required": ["illuminance_grid", "ugr_results", "scalar_summary"],
+    "properties": {
+      "illuminance_grid": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["x_mm", "y_mm", "illuminance_lux"]
+        }
+      },
+      "ugr_results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["label", "ugr_value"]
+        }
+      },
+      "scalar_summary": {
+        "type": "object",
+        "required": [
+          "achieved_avg_illuminance_lux", "achieved_min_illuminance_lux",
+          "achieved_max_illuminance_lux", "achieved_uniformity_u0",
+          "max_ugr_across_view_positions"
+        ]
+      }
+    }
+  },
+  "_human_reference": "lumen-method.json",
+  "_consuming_skills": [
+    "electrical/photometric-analysis (v1.0.0+ primary consumer)",
+    "electrical/emergency-lighting (Wave 3 — reuses for escape route + anti-panic point grids)",
+    "electrical/daylight (Wave 4 — reuses for daylight+electric integration)"
+  ]
 }
