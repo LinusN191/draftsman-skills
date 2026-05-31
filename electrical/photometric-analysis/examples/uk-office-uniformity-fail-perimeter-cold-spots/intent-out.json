@@ -1,0 +1,32 @@
+{
+  "intent_version": "1.0.0",
+  "skill": "photometric-analysis",
+  "consumed_lighting_layout_intent": "electrical/photometric-analysis/examples/uk-office-uniformity-fail-perimeter-cold-spots/synthetic-upstream-intent.json",
+  "photometric_grid": {
+    "achieved_avg_illuminance_lux": 478,
+    "achieved_min_illuminance_lux": 150,
+    "achieved_uniformity_u0": 0.31,
+    "ugr_max": 17.6,
+    "ugr_target": 19,
+    "uniformity_target": 0.6,
+    "target_illuminance_lux": 500,
+    "task_area_compliant": false,
+    "grid_point_count": 99,
+    "non_compliance_flags": [
+      {
+        "message": "Achieved min illuminance 150 lux at SE corner fails BS EN 12464-1 §4.4 per-point requirement (must be ≥ 0.7 × target 500 = 350 lux). Cause: 16 panels clustered in central 4.5×4.5 m area; perimeter 2 m strip unlit. Redistribute into uniform 4×5 grid OR add 4 perimeter panels.",
+        "reference": "BS EN 12464-1:2021 §4.4 + Table 5.3 row 5.34 open_plan_office",
+        "severity": "critical"
+      },
+      {
+        "message": "Achieved U₀ = 0.31 fails the 0.6 open_plan_office target. 6× max-to-min ratio (908 lux centre vs 150 lux corners) is the clustered-grid signature. Engineer-of-record must redistribute luminaires before lighting-layout full_drawing sign-off.",
+        "reference": "BS EN 12464-1:2021 §4.4 uniformity requirement + Table 5.3 row 5.34",
+        "severity": "critical"
+      }
+    ],
+    "ies_source_summary": {
+      "all_verified": false,
+      "verification_status_lowest": "synthetic_reference_C3"
+    }
+  }
+}
