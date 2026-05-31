@@ -136,6 +136,12 @@
         "message": "controls.part_l_assessed=false but inputs.new_build=true — Part L 2021 §6 compliance assessment skipped. Remediation: run Part L §6 lighting compliance check (efficacy target ≥ 95 lm/W + automatic controls + daylight-linked perimeter where glazing present) and set part_l_assessed=true with part_l_compliant reflecting the result.",
         "reference": "Approved Doc L (Part L 2021) §6 + BS EN 15193-1:2017 §6",
         "severity": "critical"
+      },
+      {
+        "message": "Achieved min illuminance 275 lux at NW corner FAILS BS EN 12464-1 §4.4 per-point requirement: must be ≥ 0.7 × target 500 = 350 lux. Gap 75 lux (21% deficit). Root cause: value-engineered 3500 lm panel substitution. Remediation: bump to 16 panels OR upgrade to 4500 lm.",
+        "reference": "BS EN 12464-1:2021 §4.4 + Table 5.3 row 5.34 private_office",
+        "severity": "critical",
+        "_cascaded_from": "photometric-analysis"
       }
     ],
     "assumptions": [
@@ -292,9 +298,43 @@
       "id": "INV-10",
       "passes": false,
       "severity": "high",
-      "evidence": "Schema validation PASSED (precondition: golden CI gate). Schema-required fields populated. non_compliance_flags[] populated with 2 entries, both correct object shape {message, reference, severity ∈ {critical,warning,info}} — severity=critical on both, referencing the under-provision + Part L gap. Rule 10 sub-check 3 cross-check: controls.part_l_compliant=false AND non_compliance_flags contains a severity=critical entry referencing 'Part L' — PASS. But the layout is non-compliant overall (calculation_summary.compliant=false, with INV-1 + INV-6 FAIL) so INV-10 composite FAIL HIGH per the populated non_compliance_flags + compliant=false signalling pair."
+      "evidence": "Schema validation PASSED (precondition: golden CI gate). Schema-required fields populated. non_compliance_flags[] populated with 3 entries (2 native + 1 cascaded from photometric-analysis), all correct object shape {message, reference, severity ∈ {critical,warning,info}} — severity=critical on all, referencing the under-provision + Part L gap + photometric per-point failure. Rule 10 sub-check 3 cross-check: controls.part_l_compliant=false AND non_compliance_flags contains a severity=critical entry referencing 'Part L' — PASS. But the layout is non-compliant overall (calculation_summary.compliant=false, with INV-1 + INV-6 + INV-11 FAIL) so INV-10 composite FAIL HIGH per the populated non_compliance_flags + compliant=false signalling pair."
+    },
+    {
+      "id": "INV-11",
+      "passes": false,
+      "severity": "high",
+      "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from cascade-uk-undersized-lighting-vs-target/intent-out.json. payload.task_area_compliant=false; payload.achieved_avg_illuminance_lux=434 vs target=500 (sub-check 3 FAIL — 13% deficit; under-spec'd 3500 lm panel substitution); 1 non_compliance_flag cascaded to lighting-layout calculation_summary.non_compliance_flags[] with _cascaded_from='photometric-analysis' attribution (sub-check 4 PASS — flag preserved and attributed). Demonstrates failure-mode end-to-end: lumen-method INV-1 FAIL (avg lux) compounds with photometric INV-11 FAIL (per-point min lux 275 < 0.7×target=350 at NW corner). Engineer-of-record must remediate per cascaded flag's remediation advice before issue. Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
     }
   ],
+  "consumed_intents": {
+    "photometric_grid": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/photometric-analysis/examples/cascade-uk-undersized-lighting-vs-target/intent-out.json",
+      "payload": {
+        "achieved_avg_illuminance_lux": 434,
+        "achieved_min_illuminance_lux": 275,
+        "achieved_uniformity_u0": 0.63,
+        "ugr_max": 17.4,
+        "ugr_target": 19,
+        "uniformity_target": 0.6,
+        "target_illuminance_lux": 500,
+        "task_area_compliant": false,
+        "grid_point_count": 70,
+        "non_compliance_flags": [
+          {
+            "message": "Achieved min illuminance 275 lux at NW corner FAILS BS EN 12464-1 §4.4 per-point requirement: must be ≥ 0.7 × target 500 = 350 lux. Gap 75 lux (21% deficit). Root cause: value-engineered 3500 lm panel substitution. Remediation: bump to 16 panels OR upgrade to 4500 lm.",
+            "reference": "BS EN 12464-1:2021 §4.4 + Table 5.3 row 5.34 private_office",
+            "severity": "critical"
+          }
+        ],
+        "ies_source_summary": {
+          "all_verified": false,
+          "verification_status_lowest": "synthetic_reference_C3"
+        }
+      }
+    }
+  },
   "drafting_furniture": {
     "title_block": {
       "project_name": "UK private office — D3.C.2 INV-1 + INV-6 under-provision demo",

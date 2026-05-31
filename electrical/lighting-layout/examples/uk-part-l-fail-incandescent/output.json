@@ -356,8 +356,36 @@
       "passes": false,
       "severity": "high",
       "evidence": "Schema validation PASSED (precondition: golden CI gate). All top-level required fields populated. non_compliance_flags[] populated with 3 entries, all correct object shape {message, reference, severity=critical}, all three reference Approved Doc L 2021 §6. Rule 10 sub-check 3 cross-check: controls.part_l_compliant=false AND ≥1 non_compliance_flags entry with severity=critical referencing Part L — PASS (three such entries). But the layout is non-compliant overall (calculation_summary.compliant=false, with INV-6 FAIL) so INV-10 composite FAIL HIGH per the populated non_compliance_flags + compliant=false signalling pair."
+    },
+    {
+      "id": "INV-11",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from cascade-uk-part-l-fail-incandescent/intent-out.json. payload.task_area_compliant=true; payload.achieved_avg_illuminance_lux=564 vs target=500 (sub-check 3 PASS — engineer over-provisioned 50 halogen fittings to compensate for 15 lm/W lamp efficacy); 0 non_compliance_flags cascaded to lighting-layout calculation_summary (sub-check 4 PASS, vacuously). Engineering nuance: photometric INV-11 PASSes (brute-force fitting count delivers lux on the working plane) — the Part-L INV-6 FAIL remains structurally INDEPENDENT (Part L 2021 §6 efficacy target is a regulation, not a photometric grid measurement). This is the canonical 'photometrically compliant but regulatorily non-compliant' refurb. Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
     }
   ],
+  "consumed_intents": {
+    "photometric_grid": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/photometric-analysis/examples/cascade-uk-part-l-fail-incandescent/intent-out.json",
+      "payload": {
+        "achieved_avg_illuminance_lux": 564,
+        "achieved_min_illuminance_lux": 412,
+        "achieved_uniformity_u0": 0.73,
+        "ugr_max": 18.6,
+        "ugr_target": 19,
+        "uniformity_target": 0.6,
+        "target_illuminance_lux": 500,
+        "task_area_compliant": true,
+        "grid_point_count": 70,
+        "non_compliance_flags": [],
+        "ies_source_summary": {
+          "all_verified": false,
+          "verification_status_lowest": "synthetic_reference_C3"
+        }
+      }
+    }
+  },
   "drafting_furniture": {
     "title_block": {
       "project_name": "UK private office — D3.C.2 Part L halogen-refurb FAIL demo",

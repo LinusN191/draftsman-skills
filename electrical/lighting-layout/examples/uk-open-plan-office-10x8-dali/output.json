@@ -321,8 +321,36 @@
       "passes": true,
       "severity": "high",
       "evidence": "Schema validation PASSED (precondition: golden CI gate). All top-level required fields populated: drawing_type='lighting_layout', version='1.4.0', room (incl. room_type='open_plan_office' enum), calculation_summary (target+compliant+non_compliance_flags+assumptions), rationale (chat_summary 40-500 + sections ≥1), invariants (10 entries INV-01..INV-10). Mode=full_drawing — full_drawing required-fields all present: luminaire_type, luminaires (20), switches (1), circuits (4), controls, drawing_notes (9), zones (1), drafting_furniture, selection_source. non_compliance_flags=[] (vacuously valid). controls.part_l_compliant=true so Rule 3 cross-check trivially PASS. Rule 10 PASS."
+    },
+    {
+      "id": "INV-11",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from cascade-uk-open-plan-office-10x8-dali/intent-out.json. payload.task_area_compliant=true; payload.achieved_avg_illuminance_lux=752 vs target=500 (sub-check 3 PASS, 150% — 6000 lm LED panels with DALI control deliver healthy headroom); 0 non_compliance_flags cascaded to lighting-layout calculation_summary with _cascaded_from=photometric-analysis attribution (sub-check 4 PASS, vacuously). Canonical re-test example from user's verbatim prompt — confirms the pre-D3 bad-CAD bug is fixed across lumen-method (INV-1) + photometric (INV-11) cascade. Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
     }
   ],
+  "consumed_intents": {
+    "photometric_grid": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/photometric-analysis/examples/cascade-uk-open-plan-office-10x8-dali/intent-out.json",
+      "payload": {
+        "achieved_avg_illuminance_lux": 752,
+        "achieved_min_illuminance_lux": 612,
+        "achieved_uniformity_u0": 0.81,
+        "ugr_max": 18.2,
+        "ugr_target": 19,
+        "uniformity_target": 0.6,
+        "target_illuminance_lux": 500,
+        "task_area_compliant": true,
+        "grid_point_count": 99,
+        "non_compliance_flags": [],
+        "ies_source_summary": {
+          "all_verified": false,
+          "verification_status_lowest": "synthetic_reference_C3"
+        }
+      }
+    }
+  },
   "drafting_furniture": {
     "title_block": {
       "project_name": "UK new-build open-plan office",

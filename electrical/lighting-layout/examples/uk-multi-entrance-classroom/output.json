@@ -324,8 +324,36 @@
       "passes": true,
       "severity": "high",
       "evidence": "Schema validation PASSED (precondition: golden CI gate). All top-level required fields populated: drawing_type='lighting_layout', version='1.4.0', room (incl. room_type='classroom' enum), calculation_summary (target+compliant+non_compliance_flags+assumptions), rationale (chat_summary 40-500 + sections ≥1), invariants (10 entries INV-01..INV-10). Mode=full_drawing — full_drawing required-fields all present: luminaire_type, luminaires (16), switches (3), circuits (4), controls, drawing_notes (8), zones (2), drafting_furniture, selection_source. non_compliance_flags=[] (vacuously valid). controls.part_l_compliant=true so Rule 3 cross-check trivially PASS. Rule 10 PASS."
+    },
+    {
+      "id": "INV-11",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from cascade-uk-multi-entrance-classroom/intent-out.json. payload.task_area_compliant=true; payload.achieved_avg_illuminance_lux=482 vs target=300 (sub-check 3 PASS, 161% — classroom over-spec acceptable for visual-task strain headroom); 0 non_compliance_flags cascaded to lighting-layout calculation_summary with _cascaded_from=photometric-analysis attribution (sub-check 4 PASS, vacuously). Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
     }
   ],
+  "consumed_intents": {
+    "photometric_grid": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/photometric-analysis/examples/cascade-uk-multi-entrance-classroom/intent-out.json",
+      "payload": {
+        "achieved_avg_illuminance_lux": 482,
+        "achieved_min_illuminance_lux": 380,
+        "achieved_uniformity_u0": 0.79,
+        "ugr_max": 17.8,
+        "ugr_target": 19,
+        "uniformity_target": 0.6,
+        "target_illuminance_lux": 300,
+        "task_area_compliant": true,
+        "grid_point_count": 99,
+        "non_compliance_flags": [],
+        "ies_source_summary": {
+          "all_verified": false,
+          "verification_status_lowest": "synthetic_reference_C3"
+        }
+      }
+    }
+  },
   "drafting_furniture": {
     "title_block": {
       "project_name": "UK secondary-school classroom — D3.C.2 multi-entrance PASS demo",
