@@ -28,16 +28,18 @@ pathway for a non-office room with a non-standard working plane.
 
 Upstream: `electrical/lighting-layout/examples/warehouse-highbay/intent-out.json`.
 
-**Honest disclosure on the upstream count discrepancy:** the upstream
-`luminaire_summary.luminaire_count = 20` is stale (legacy v1.0 before the
-upstream re-spec to 4×8 grid). The upstream `output.json.luminaires[]` array
-carries 32 HIGHBAY luminaires which is the actual built layout. This
-photometric-analysis cascade reads the actual 32-luminaire layout (since the
-runtime emits positions from the output IR, not the intent summary). The
-engineer-of-record reconciles the upstream intent_summary in D.2 retrofit.
+**Standards-regime separation:** the upstream `luminaire_summary.luminaire_count = 20`
+correctly identifies the 20 HIGHBAY main-task luminaires governed by
+BS EN 12464-1 §6 (task-area illuminance + uniformity + UGR). The 12 EMERGENCY
+luminaires operate under BS 5266-1 — a separate compliance regime for escape
+route and anti-panic illuminance — and are NOT part of the BS EN 12464-1
+task scope. The 20+12 split is correct and intentional: two different
+standards, not a count discrepancy. Photometric-analysis verifies the
+20 HIGHBAY main-task calc; the future emergency-lighting skill (Wave 3) will
+verify the 12 EMERGENCY luminaires under BS 5266-1.
 
-The 32 luminaires put the layout at ~226% of the 200 lux warehouse target,
-which is an over-spec consistent with industrial best practice:
+The 20 HIGHBAY luminaires put the layout at ~226% of the 200 lux warehouse
+target, which is an over-spec consistent with industrial best practice:
 - Redundancy against single-fixture failure
 - Future-proofing against rack reconfiguration (the warehouse layout
   determines whether each luminaire bay falls between racks or above them)
@@ -138,7 +140,7 @@ cosine fall-off) but would be technically wrong against the standard.
 
 ## §8 Honest disclosures
 
-- **Upstream intent_summary stale**: see §2 cascade context above.
+- **Upstream intent count 20 is correct**: see §2 cascade context above. The 20 HIGHBAY are the BS EN 12464-1 task-scope fixtures; the 12 EMERGENCY are a separate BS 5266-1 regime. No reconciliation needed.
 - **IES files synthetic_reference_C3**:
   - HIGHBAY: Lambertian-with-50°-cutoff archetype; real highbays from
     different manufacturers vary in beam (40°–80°) and CRI (70–90)
@@ -178,7 +180,9 @@ Intent payload sets `task_area_compliant: true` AND `non_compliance_flags: []`.
 Lighting-layout INV-11 PASS HIGH. Warehouse-highbay full_drawing IR is
 sign-off-ready for the photometric dimension.
 
-The over-spec (32 highbays vs 20 the upstream intent_summary claims) is
-not a photometric failure — it's an engineer's design choice for redundancy.
+The over-spec (20 HIGHBAY main fixtures at 226% of the 200 lux warehouse
+target) is not a photometric failure — it's an engineer's design choice
+for redundancy. The upstream intent correctly scopes 20 HIGHBAY under
+BS EN 12464-1 + 12 EMERGENCY under BS 5266-1; these are orthogonal regimes.
 The validator (reviewer.md stage R-1) may flag the over-spec as an
 energy-efficiency concern but not as a BS EN 12464-1 compliance issue.

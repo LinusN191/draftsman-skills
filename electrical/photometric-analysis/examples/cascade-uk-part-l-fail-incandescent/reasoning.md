@@ -76,6 +76,16 @@ fitting count to meet illuminance if the per-fitting efficacy is too low.
 
 ## §5 The achieved_avg discrepancy with upstream lumen-method
 
+**Target divergence disclosure:** this cascade applied the current
+BS EN 12464-1:2021 Table 5.36 target for `private_office` (500 lux)
+instead of the upstream's declared 300 lux. The upstream's 300 lux
+predates the current standard OR was scoped to a different sub-task
+category (e.g. circulation within the office). Engineer-of-record must
+reconcile: if project sign-off cites the current standard, 500 lux is
+the correct task plane minimum; if upstream's 300 lux is the binding
+compliance value, this cascade's INV-01 evaluation should be re-run
+with target=300 (achieved_avg 564 lux would PASS more comfortably).
+
 Upstream lighting-layout reports `achieved_illuminance_lux = 343.75`
 (50 × 750 × 0.55 × 0.80 / 48 = 343.75). Photometric-analysis here
 reports 564 lux. The discrepancy is materially larger than other
