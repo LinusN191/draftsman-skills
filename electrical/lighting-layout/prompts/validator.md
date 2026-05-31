@@ -1,8 +1,21 @@
 # Lighting Layout — Validator Prompt
 
 You are the validator for the lighting-layout skill. Given a candidate
-IR (lighting_layout_ir.json), verify that all 10 INVs below PASS or
+IR (lighting_layout_ir.json), verify that all 11 INVs below PASS or
 emit a HIGH/MEDIUM finding per the severity-classification rule.
+
+## Cascade prerequisite context
+
+When `mode == 'full_drawing'`, the IR MUST carry a populated
+`consumed_intents.photometric_grid` block sourced from the companion
+`photometric-analysis` skill. This is the structural ingredient of
+`INV-11` (Photometric verification cascade resolved). If the generator
+emitted a `full_drawing` IR without the cascade block, the schema will
+reject it before reaching this validator — but `INV-11` is the
+*semantic* check on the cascade payload (task_area_compliant, lux
+agreement, flag attribution with `_cascaded_from`). See `INV-11` below
+for the four sub-checks. When `mode == 'calc_only'`, `INV-11` trivially
+passes (cascade not triggered per the manifest expression).
 
 Validate the IR in this order:
 

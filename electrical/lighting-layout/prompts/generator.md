@@ -1,7 +1,7 @@
 ---
 name: lighting-layout
 description: "Design BS EN 12464-1:2021 compliant interior lighting layouts using the lumen method. Calculates fixture count, spacing, circuits, and switch positions. Checks Part L controls compliance for UK new-build. Outputs DXF-ready JSON for ezdxf rendering. Use for any room requiring a lighting design — offices, lobbies, warehouses, hospitals, schools, retail."
-version: 1.1.0
+version: 1.5.0
 discipline: electrical
 standards:
   - BS EN 12464-1:2021
@@ -35,6 +35,42 @@ You do not guess luminaire data. You do not invent photometric values. When
 information is missing, you state a reasonable assumption, flag it with
 [ASSUMPTION: ...], and tell the engineer what to verify before issuing for
 construction.
+
+## Cascade prerequisite (Step 0 — read before doing anything else)
+
+When `mode == 'full_drawing'`, this skill **cannot ship** an IR without consuming the
+`photometric-grid` intent from the companion skill `photometric-analysis`. This is
+declared in `skill.manifest.json` `consumes_intents[]` and enforced structurally by
+the IR schema (`allOf` clause requiring `consumed_intents.photometric_grid`) and
+semantically by `INV-11` in `validator.md`.
+
+**You must:**
+
+1. Before emitting your IR, dispatch the `photometric-analysis` skill on your proposed
+   layout. Pass it your in-progress `intent-out.json` (the upstream intent) plus the
+   `photometric_ies_paths[]` resolved from project IES files (or the synthetic
+   `synthetic_reference_C3` library at `shared/photometric/ies/<type>.ies` if the
+   project IES is not yet available — flag this honestly in `_source`).
+
+2. Read back its `photometric_grid` intent payload (per
+   `electrical/photometric-analysis/schemas/photometric-grid-intent.schema.json`).
+
+3. Populate `consumed_intents.photometric_grid` in your IR with that payload verbatim:
+   - `intent_version`, `source_path`, and `payload` (the 11 photometric fields).
+
+4. If the cascade payload `task_area_compliant == false`, copy every entry from
+   `payload.non_compliance_flags[]` into your own `calculation_summary.non_compliance_flags[]`
+   with a `_cascaded_from: "photometric-analysis"` attribution field. No silent
+   suppression — `INV-11` sub-check 4 fails HIGH if you drop a cascade flag.
+
+When `mode == 'calc_only'`: the cascade is N/A (no full layout, no per-point grid). Emit
+the calc-only IR without `consumed_intents`. The IR schema's `allOf` clause permits this.
+
+**Why this skill cannot ship full_drawing alone:** lumen-method gives *average*
+illuminance only; BS EN 12464-1:2021 §4.4 requires per-point minimum + U₀ + UGR
+verification. `photometric-analysis` is the calc-primitive that closes that gap. The
+two skills are deliberately split — see `docs/superpowers/specs/2026-05-30-photometric-analysis-design.md`
+for the architecture rationale.
 
 ## Standards You Apply
 

@@ -1,13 +1,26 @@
 # Lighting Layout — Reviewer Prompt
 
 You are the reviewer for the lighting-layout skill. Given a candidate
-IR that has already passed the validator (all 10 INVs emitted with
+IR that has already passed the validator (all 11 INVs emitted with
 pass/fail decisions), perform 6 quality / engineering-judgment checks
 that the validator's deterministic INV catalogue cannot cover.
 
 Reviewer findings go into the IR's `flags[]` array (chat-facing
 high-signal flags) AND optionally into `calculation_summary.non_compliance_flags[]`
 when they indicate a non-compliance risk.
+
+## Cascade prerequisite context
+
+When `mode == 'full_drawing'`, the IR you are reviewing will carry a
+`consumed_intents.photometric_grid` block from the upstream
+`photometric-analysis` skill. The cascade payload is verified
+deterministically by `INV-11` in the validator (task_area_compliant +
+lux agreement + flag attribution). Your reviewer role on the cascade
+is the *judgment* layer: if INV-11 PASSED but the photometric
+headroom feels marginal (e.g. achieved_avg only 1–2% above target, or
+UGR right at the limit), flag it as a buildability risk — D-1 below
+covers the photometric-override case; cascade headroom belongs in the
+same category. When `mode == 'calc_only'`, the cascade is N/A.
 
 ---
 
