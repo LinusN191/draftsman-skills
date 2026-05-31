@@ -10,7 +10,7 @@ Validate the IR in this order:
    `shared/schemas/electrical/lighting-layout-ir.schema.json` — the
    golden CI gate `scripts/validate-examples.py` does this
    automatically; treat as a precondition).
-2. **Per-INV checks** in numeric order INV-1 → INV-10.
+2. **Per-INV checks** in numeric order INV-1 → INV-11.
 
 For each INV, emit an entry into the IR's `invariants[]` array:
 
@@ -236,7 +236,50 @@ When `mode == calc_only`: PASS trivially (rule does not apply).
 
 ## Output
 
-After running all 10 INVs, emit the populated `invariants[]` array as
+## INV-11 — Photometric verification cascade resolved (HIGH)
+
+**Severity:** HIGH when `mode == 'full_drawing'`; N/A when `mode == 'calc_only'`
+
+**Rule (4 sub-checks):**
+
+1. `consumed_intents.photometric_grid` is present (cascade triggered + resolved).
+2. `consumed_intents.photometric_grid.payload.task_area_compliant == true` (photometric-
+   analysis's own INV-1 + INV-2 + INV-3 all PASS upstream).
+3. `consumed_intents.photometric_grid.payload.achieved_avg_illuminance_lux >= calculation_summary.target_illuminance_lux`
+   (photometric verification confirms the lighting-layout target is actually met per-point;
+   not just the lumen-method average estimation).
+4. Flag cascading: if `consumed_intents.photometric_grid.payload.non_compliance_flags[]` is
+   non-empty, lighting-layout's own `calculation_summary.non_compliance_flags[]` MUST include
+   every flag with provenance attribution to `photometric-analysis`. No silent suppression.
+
+When `mode == 'calc_only'`: trivially PASS (cascade not triggered per the manifest trigger
+expression `"mode == 'full_drawing'"`).
+
+**Validator action:**
+- Read `consumed_intents.photometric_grid.payload` (sub-check 1: existence; structural
+  presence enforced by the IR schema `allOf` clause added in Wave 1 / photometric-analysis
+  D.1 task).
+- Verify `task_area_compliant == true` (sub-check 2).
+- Verify lux agreement (sub-check 3): `payload.achieved_avg_illuminance_lux >=
+  calculation_summary.target_illuminance_lux`.
+- Walk `payload.non_compliance_flags[]`. For each entry: verify the same message exists in
+  `calculation_summary.non_compliance_flags[]` with a `_cascaded_from: "photometric-analysis"`
+  attribution field. If any flag missing: INV-11 FAIL HIGH.
+
+**Citation:** Cluster roadmap §6.7 cascade contract + photometric-analysis INV-1 + INV-2 +
+INV-3 upstream + spec `2026-05-30-photometric-analysis-design.md` §10.3.
+
+**Rationale:** Lumen-method gives average illuminance; photometric-analysis gives per-point
+min + uniformity + UGR + glare detection from IES luminous intensity distributions. INV-11
+binds the two so lighting-layout cannot ship a full_drawing without per-point verification.
+The cascade is the structural enforcement of the "lumen-method is necessary but not
+sufficient" engineering principle that motivated the whole photometric companion skill.
+
+---
+
+## Output
+
+After running all 11 INVs, emit the populated `invariants[]` array as
 part of the IR. A failing INV does NOT block emission — the IR ships
 with the failure recorded so downstream skills can react (e.g.
 db-layout sees `INV-5: FAIL` and re-sizes the lighting circuit MCB).

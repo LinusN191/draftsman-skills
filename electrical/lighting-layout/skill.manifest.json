@@ -1,6 +1,6 @@
 {
   "skill": "lighting-layout",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "discipline": "electrical",
   "subdiscipline": "lighting",
   "chat_type": "drawing",
@@ -20,7 +20,22 @@
     }
   ],
   "produces_intent_schema": "electrical/lighting-layout/schemas/lighting-layout-intent.schema.json",
-  "consumes_intents": [],
+  "consumes_intents": [
+    {
+      "skill_id": "photometric-analysis",
+      "intent_name": "photometric-grid",
+      "version_constraint": "^1.0",
+      "trigger": "mode == 'full_drawing'",
+      "consumed_fields": [
+        "achieved_avg_illuminance_lux",
+        "achieved_min_illuminance_lux",
+        "achieved_uniformity_u0",
+        "ugr_max",
+        "task_area_compliant",
+        "non_compliance_flags"
+      ]
+    }
+  ],
   "standards": [
     "shared/standards/lighting/BSEN12464/lux-levels.json",
     "shared/standards/electrical/BS7671/circuit-requirements.json",

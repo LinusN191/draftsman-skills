@@ -660,26 +660,36 @@
           "description": "Either the inputs.photometric_override._source string OR the ontology[type].photometric._citation string. Resolves which document authorises the UF + SHR_max + LLMF values used."
         }
       }
+    },
+    "consumed_intents": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Intent payloads consumed from companion skills per skill.manifest.json consumes_intents[]. Required when mode == full_drawing. Currently carries photometric_grid (from photometric-analysis v1.0+, Wave 1); future waves add emergency_coverage (Wave 3) and daylight_model (Wave 4).",
+      "properties": {
+        "photometric_grid": {
+          "type": "object",
+          "required": ["intent_version", "source_path", "payload"],
+          "additionalProperties": false,
+          "properties": {
+            "intent_version": {"type": "string"},
+            "source_path": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Path to photometric-analysis intent-out.json (typically electrical/photometric-analysis/examples/cascade-<this-example-name>/intent-out.json for shipped examples; project-specific path for real projects)"
+            },
+            "payload": {
+              "$ref": "../../../electrical/photometric-analysis/schemas/photometric-grid-intent.schema.json#/properties/photometric_grid"
+            }
+          }
+        }
+      }
     }
   },
   "allOf": [
     {
-      "description": "Sprint D reviewer follow-up + D3.A.3: conditional required-fields by mode. Top-level required is the always-true subset; mode-specific fields are enforced here via if/then/else. full_drawing (default) requires luminaire_type/luminaires/switches/circuits/controls/drawing_notes/zones/drafting_furniture/selection_source; calc_only requires calc_only_reason.",
-      "if": {
-        "properties": {
-          "mode": {
-            "const": "calc_only"
-          }
-        },
-        "required": [
-          "mode"
-        ]
-      },
-      "then": {
-        "required": [
-          "calc_only_reason"
-        ]
-      },
+      "description": "D3.A.3: mode-conditional required fields. full_drawing requires layout + intent + consumed cascade.",
+      "if": {"properties": {"mode": {"const": "calc_only"}}, "required": ["mode"]},
+      "then": {"required": ["calc_only_reason"]},
       "else": {
         "required": [
           "luminaire_type",
@@ -690,8 +700,21 @@
           "drawing_notes",
           "zones",
           "drafting_furniture",
-          "selection_source"
+          "selection_source",
+          "consumed_intents"
         ]
+      }
+    },
+    {
+      "description": "Wave 1 / photometric-analysis: when mode == full_drawing, consumed_intents.photometric_grid MUST be populated. INV-11 enforces semantic content; this allOf clause enforces structural presence.",
+      "if": {"properties": {"mode": {"const": "calc_only"}}, "required": ["mode"]},
+      "then": {},
+      "else": {
+        "properties": {
+          "consumed_intents": {
+            "required": ["photometric_grid"]
+          }
+        }
       }
     }
   ]
