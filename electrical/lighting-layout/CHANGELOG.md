@@ -1,5 +1,80 @@
 # Changelog — lighting-layout
 
+## [1.5.0] - 2026-05-30 — Photometric cascade contract activation (Wave 1)
+
+### Changed
+- `skill.manifest.json` version 1.4.0 → 1.5.0 (additive; backward-compatible IR additions)
+- `consumes_intents[]` populated with photometric-grid cascade entry (trigger:
+  `mode == 'full_drawing'`; consumed fields: `achieved_avg_illuminance_lux`,
+  `achieved_min_illuminance_lux`, `achieved_uniformity_u0`, `ugr_max`,
+  `task_area_compliant`, `non_compliance_flags`) — first downstream-cascade
+  consumer for this skill.
+
+### Added (IR schema — `shared/schemas/electrical/lighting-layout-ir.schema.json`)
+- NEW `consumed_intents` top-level block with `photometric_grid` sub-object
+  (`intent_version` + `source_path` + `payload` via `$ref` to
+  `photometric-grid-intent.schema.json`).
+- Extended D3.A.3 `allOf` else-branch: `required[]` now includes `consumed_intents`
+  alongside the 9 existing fields (10 entries total).
+- NEW 2nd `allOf` clause: when `mode == full_drawing`,
+  `consumed_intents.photometric_grid` is structurally required (semantic content
+  enforced by INV-11).
+- `invariants[].evidence` `maxLength` raised 800 → 1200 per
+  `[[feedback-no-trim-non-consequential]]`: failure-mode INV-11 evidence carries
+  cascade source path + lux comparison numbers + flag attribution + remediation
+  guidance, which legitimately exceeds the prior style cap (833–849 chars).
+
+### Added (intent schema — `electrical/lighting-layout/schemas/lighting-layout-intent.schema.json`)
+- NEW `consumed_intents.photometric_grid` permissive sub-object so the cascade
+  block mirrored on the intent-out side passes Pass-4 validation. Semantic
+  gating remains on the IR side via the typed `$ref`.
+
+### Changed (validator — `prompts/validator.md`)
+- INV-11 appended (no prior placeholder existed) — 4 sub-check cascade rule:
+  1. `consumed_intents.photometric_grid` present
+  2. `payload.task_area_compliant == true`
+  3. `payload.achieved_avg_illuminance_lux >= target_illuminance_lux`
+  4. `non_compliance_flags` cascading with `_cascaded_from` attribution
+- Severity HIGH when `mode == full_drawing`; N/A when `calc_only`.
+
+### Changed (7 examples retrofit)
+- All 7 existing examples (office-open-plan, reception-lobby, warehouse-highbay,
+  uk-undersized-lighting-vs-target, uk-multi-entrance-classroom,
+  uk-part-l-fail-incandescent, uk-open-plan-office-10x8-dali) now consume the
+  photometric-grid intent from the corresponding
+  `electrical/photometric-analysis/examples/cascade-<example-name>/intent-out.json`.
+- `input.json`: added `photometric_ies_paths[]` top-level key referencing
+  `shared/photometric/ies/<type>.ies`.
+- `output.json`: added `consumed_intents.photometric_grid` block + appended
+  INV-11 evidence entry citing all 4 sub-checks with real cascade values.
+- `intent-out.json`: mirrored `consumed_intents.photometric_grid` block.
+
+### Failure-mode cascade demonstrations
+- `uk-undersized-lighting-vs-target` demonstrates end-to-end failure cascade:
+  photometric INV-01 + INV-02 FAIL → cascade `non_compliance_flags` → lighting-
+  layout INV-11 FAIL HIGH + cascade attribution via `_cascaded_from:
+  "photometric-analysis"` (no silent suppression).
+- `uk-part-l-fail-incandescent` demonstrates photometric/Part-L compliance
+  independence: INV-11 PASS at photometric level + lighting-layout INV-6 FAIL
+  at Part-L level (the two compliance regimes are evaluated separately).
+
+### Honest disclosures preserved
+- All cascades use `synthetic_reference_C3` IES files from
+  `shared/photometric/ies/`.
+- Engineer-of-record substitutes project IES before final design freeze per
+  `[ies-provenance-rules#substitution-policy]`.
+- Flag `_cascaded_from` attribution makes the photometric origin traceable
+  end-to-end through the lighting-layout `calculation_summary.non_compliance_flags[]`.
+
+### Cross-references
+- photometric-analysis spec: `docs/superpowers/specs/2026-05-30-photometric-analysis-design.md`
+- photometric-analysis sprint plan: `docs/superpowers/plans/2026-05-30-photometric-analysis-sprint.md`
+- Cluster roadmap: `docs/superpowers/specs/2026-05-29-lighting-cluster-roadmap.md`
+
+### Gates
+- `validate-examples.py`: 236/236 (post-D3) → 262/262 (+26 across Wave 1 sprint).
+- `functional_audit.py`: 1 finding unchanged (disclosed motor-superposition oracle FP).
+
 ## [1.4.0] - 2026-05-29 — Sprint D3 (lighting-layout depth)
 
 ### Added (Phase A — foundations)
