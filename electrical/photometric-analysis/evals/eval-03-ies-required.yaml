@@ -1,0 +1,27 @@
+name: photometric-analysis requires IES file per upstream luminaire_type
+skill: photometric-analysis
+description: |
+  Verify INV-04 — every distinct luminaire_type from the upstream lighting-layout
+  consumed intent MUST have a matching photometric_inputs.ies_files[] entry. Uses the
+  cascade-warehouse-highbay fixture which has 2 distinct types (HIGHBAY + EMERGENCY).
+  Also verifies that the LM-63 parser successfully populated parsed_summary for each
+  file. Acts as a validation_trap: if INV-04 were missing or bypassed the skill would
+  silently omit luminaire IES data, breaking the photometric calc entirely.
+category: validation_trap
+input_fixture: examples/cascade-warehouse-highbay/output.json
+checks:
+  - assertion: |
+      set(ir.consumed_intents.lighting_layout.consumed_summary.luminaire_types) <= {f.luminaire_type for f in ir.photometric_inputs.ies_files}
+    description: |
+      Cascade-warehouse-highbay consumes lighting-layout with 2 luminaire_types
+      (HIGHBAY + EMERGENCY); both must appear in photometric_inputs.ies_files[].
+      Uses set subset test: upstream types ⊆ ies_files luminaire_type set.
+    severity: critical
+    matches_inv: INV-04
+
+  - assertion: all(f.parsed_summary.total_lumens > 0 for f in ir.photometric_inputs.ies_files)
+    description: |
+      LM-63 parser must populate parsed_summary.total_lumens > 0 for every IES file
+      (proves the file was readable and parsed, not just referenced on disk).
+    severity: critical
+    matches_inv: INV-04

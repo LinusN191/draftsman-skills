@@ -1,0 +1,34 @@
+name: photometric-analysis emits ≥4 CIE 117 default UGR observers
+skill: photometric-analysis
+description: |
+  Verify that every full_analysis IR carries ≥4 ugr_results entries with
+  _source: "cie_117_default" (one per wall facing inward), each at the CIE 117
+  seated observer height of 1.2 m, and covering all four cardinal azimuths
+  (0°, 90°, 180°, 270°). Tests INV-07.
+category: skill_specific
+input_fixture: examples/uk-open-plan-office-10x8-dali-photometric/output.json
+checks:
+  - assertion: len([r for r in ir.ugr_results if r._source == "cie_117_default"]) >= 4
+    description: |
+      CIE 117 requires at least four default observer positions — one facing inward
+      from each wall — for a rectangular room. All four must appear in ugr_results
+      with _source == "cie_117_default".
+    severity: warning
+    standard_ref: CIE 117:1995
+    matches_inv: INV-07
+
+  - assertion: all(r.position.height_mm == 1200 for r in ir.ugr_results if r._source == "cie_117_default")
+    description: |
+      CIE 117 default observer is a seated person with eye height 1.2 m (1200 mm).
+      Every cie_117_default observer must have position.height_mm == 1200.
+    severity: warning
+    standard_ref: CIE 117:1995
+    matches_inv: INV-07
+
+  - assertion: "{r.azimuth_deg for r in ir.ugr_results if r._source == 'cie_117_default'} >= {0, 90, 180, 270}"
+    description: |
+      Four cardinal azimuths — 0°(S-facing), 90°(W-facing), 180°(N-facing),
+      270°(E-facing) — must each be present so all wall directions are covered.
+    severity: warning
+    standard_ref: CIE 117:1995
+    matches_inv: INV-07

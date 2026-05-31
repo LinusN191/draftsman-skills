@@ -1,0 +1,35 @@
+name: photometric-analysis enforces IES provenance disclosure
+skill: photometric-analysis
+description: |
+  Verify INV-08 — every ies_files[]._source string must be ≥ 40 characters AND
+  verification_status must be one of the three-tier enum values:
+  {synthetic_reference_C3, engineer_typical_C2, manufacturer_supplied_project_specific}.
+  Also verifies that synthetic_reference_C3 files explicitly mention "synthetic" or
+  "C3" in their _source string for human-readable provenance disclosure.
+  Tests the D2.3 honest-disclosure pattern carried into Wave 1 of photometric-analysis.
+category: skill_specific
+input_fixture: examples/uk-open-plan-office-10x8-dali-photometric/output.json
+checks:
+  - assertion: all(len(f._source) >= 40 for f in ir.photometric_inputs.ies_files)
+    description: |
+      Every ies_files[]._source must be at least 40 characters so it provides
+      meaningful provenance context (not just a placeholder string).
+    severity: warning
+    matches_inv: INV-08
+
+  - assertion: |
+      all(f.verification_status in {"synthetic_reference_C3", "engineer_typical_C2", "manufacturer_supplied_project_specific"} for f in ir.photometric_inputs.ies_files)
+    description: |
+      verification_status must be one of the three-tier enum (C3/C2/project-specific).
+      No other value is permitted — prevents undisclosed or unlabelled IES provenance.
+    severity: warning
+    matches_inv: INV-08
+
+  - assertion: |
+      all(("synthetic" in f._source.lower() or "C3" in f._source) for f in ir.photometric_inputs.ies_files if f.verification_status == "synthetic_reference_C3")
+    description: |
+      synthetic_reference_C3 IES files must explicitly mention "synthetic" or "C3"
+      in the _source string so engineers reading the IR immediately understand the
+      data is reference-quality, not measured manufacturer data.
+    severity: info
+    matches_inv: INV-08

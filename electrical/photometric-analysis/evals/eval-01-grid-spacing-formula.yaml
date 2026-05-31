@@ -1,0 +1,33 @@
+name: photometric-analysis grid spacing matches BS EN 12464-1 §6.2 formula
+skill: photometric-analysis
+description: |
+  Verify that emitted grid_spacing_mm matches the BS EN 12464-1 §6.2 adaptive formula
+  output (with ±50 mm tolerance) for the standalone happy-path example. For the 9×7 m
+  task area of uk-open-plan-office-10x8-dali-photometric, the formula computes p ≈ 922 mm
+  which snaps to the nominal 900 mm value. Tests INV-05 (grid spacing) and INV-06
+  (point count consistency).
+category: skill_specific
+input_fixture: examples/uk-open-plan-office-10x8-dali-photometric/output.json
+checks:
+  - assertion: ir.photometric_inputs.grid_metadata.grid_spacing_mm == 900
+    description: |
+      For the 9×7 m task area, BS EN 12464-1:2021 §6.2 adaptive formula yields
+      p ≈ 922 mm → snapped to nominal 900 mm. grid_spacing_mm must equal 900.
+    severity: critical
+    standard_ref: BS EN 12464-1:2021 §6.2
+    matches_inv: INV-05
+
+  - assertion: "'BS EN 12464-1' in ir.photometric_inputs.grid_metadata.grid_spacing_formula"
+    description: |
+      The grid_spacing_formula field must cite BS EN 12464-1 to show the formula
+      provenance is preserved in the IR for auditor review.
+    severity: warning
+    standard_ref: BS EN 12464-1:2021 §6.2
+    matches_inv: INV-05
+
+  - assertion: ir.photometric_inputs.grid_metadata.point_count == 99
+    description: |
+      For the 9×7 m task area at 900 mm spacing, the fitted grid is 11 cols × 9 rows = 99
+      measurement points. point_count must equal 99 (INV-06 verifies full grid coverage).
+    severity: critical
+    matches_inv: INV-06

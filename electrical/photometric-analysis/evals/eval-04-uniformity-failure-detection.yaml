@@ -1,0 +1,36 @@
+name: photometric-analysis catches uniformity failure that lumen-method passes
+skill: photometric-analysis
+description: |
+  Verify that the U₀ failure-mode example (uk-office-uniformity-fail-perimeter-cold-spots)
+  correctly fires INV-01 (per-point min < 0.7 × target) and INV-02 (U₀ < 0.6 office
+  target) and cascades both failures into non_compliance_flags. Tests the core
+  engineering value of the skill: the lumen method alone would pass this scenario
+  (average 478 lux ≥ 500 target) whereas the point-by-point grid catches the
+  perimeter cold-spot defect. Represents a BS EN 12464-1 compliance failure.
+category: compliance_failure
+input_fixture: examples/uk-office-uniformity-fail-perimeter-cold-spots/output.json
+checks:
+  - assertion: any(i.id == "INV-01" and not i.passes for i in ir.invariants)
+    description: |
+      Synthetic clustered-grid layout drives achieved_min ≈ 150 lux at perimeter corners;
+      INV-01 threshold is 0.7 × 500 lux = 350 lux per BS EN 12464-1 §4.4.
+      INV-01 MUST be marked passes=false.
+    severity: critical
+    standard_ref: BS EN 12464-1:2021 §4.4
+    matches_inv: INV-01
+
+  - assertion: any(i.id == "INV-02" and not i.passes for i in ir.invariants)
+    description: |
+      Achieved U₀ = 150/478 = 0.31 is below the 0.6 open_plan_office target required
+      by BS EN 12464-1 §4.4. INV-02 MUST be marked passes=false.
+    severity: critical
+    standard_ref: BS EN 12464-1:2021 §4.4
+    matches_inv: INV-02
+
+  - assertion: len(ir.calculation_summary.non_compliance_flags) >= 2
+    description: |
+      Both INV-01 and INV-02 failures must produce separate non_compliance_flags entries
+      (each with severity: critical) so the cascade signal reaches the upstream
+      lighting-layout INV-11 check.
+    severity: critical
+    matches_inv: INV-02
