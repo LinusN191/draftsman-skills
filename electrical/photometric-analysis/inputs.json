@@ -1,0 +1,87 @@
+{
+  "$schema": "../../shared/schemas/core/inputs.schema.json",
+  "skill": "photometric-analysis",
+  "version": "1.0.0",
+  "items": [
+    {
+      "id": "lighting_layout_intent_path",
+      "label": "Path to upstream lighting-layout intent-out.json",
+      "hint": "Photometric-analysis is a downstream consumer of lighting-layout. In runtime cascade context auto-populated by manifest consumes_intents trigger; in standalone context engineer-supplied.",
+      "answer_type": "text",
+      "required": true,
+      "validator": "non_empty_string",
+      "project_fact_candidate": true
+    },
+    {
+      "id": "photometric_ies_paths",
+      "label": "IES files per luminaire type (ANSI/IES LM-63-2002 format)",
+      "hint": "Required for every distinct luminaire_type.symbol in the upstream lighting-layout intent. Reference library at shared/photometric/ies/ for engineer_typical / synthetic distributions; substitute project-specific manufacturer IES before final design freeze.",
+      "answer_type": "struct_list",
+      "required": true,
+      "item_schema": {
+        "type": "object",
+        "required": ["luminaire_type", "path", "_source"],
+        "properties": {
+          "luminaire_type": {"type": "string", "minLength": 3, "description": "Must match a luminaire_type.symbol in the upstream lighting-layout intent"},
+          "path": {"type": "string", "minLength": 1, "description": "Filesystem path to LM-63-2002 IES file (typically shared/photometric/ies/<type>.ies for examples; project path for real projects)"},
+          "_source": {"type": "string", "minLength": 40, "description": "Provenance: manufacturer + product code + retrieval date + verification_status caveat"}
+        }
+      },
+      "project_fact_candidate": true
+    },
+    {
+      "id": "ugr_view_positions_override",
+      "label": "Engineer-supplied UGR observer positions (extends 4 CIE 117 defaults)",
+      "hint": "Skill auto-emits 4 default observers per CIE 117 (one per wall facing inward at 1.2m). Use this field to add specific workstations / control rooms / operator chairs / display-facing observers.",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "required": ["label", "x_mm", "y_mm", "view_azimuth_deg"],
+        "properties": {
+          "label": {"type": "string", "minLength": 1, "description": "Unique per position (e.g. 'Operator desk A1', 'Drafting station 14 N')"},
+          "x_mm": {"type": "integer", "minimum": 0},
+          "y_mm": {"type": "integer", "minimum": 0},
+          "height_mm": {"type": "integer", "minimum": 0, "maximum": 3000, "default": 1200, "description": "Per CIE 117 seated observer; 1500 for standing"},
+          "view_azimuth_deg": {"type": "integer", "minimum": 0, "maximum": 359}
+        }
+      },
+      "project_fact_candidate": false
+    },
+    {
+      "id": "task_area_override",
+      "label": "Task-area rectangle override (default = room interior minus 500mm perimeter border)",
+      "hint": "BS EN 12464-1 §4.3 defines task area for U₀/UGR evaluation. Default = room interior minus 500mm border. Override for partial-room task areas (e.g. desk cluster in a large open office).",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "required": ["x_min_mm", "y_min_mm", "x_max_mm", "y_max_mm"],
+        "properties": {
+          "x_min_mm": {"type": "integer", "minimum": 0},
+          "y_min_mm": {"type": "integer", "minimum": 0},
+          "x_max_mm": {"type": "integer", "minimum": 0},
+          "y_max_mm": {"type": "integer", "minimum": 0}
+        }
+      },
+      "project_fact_candidate": false
+    },
+    {
+      "id": "reflectance_override",
+      "label": "Surface reflectances (default = room-type-typical from upstream lighting-layout calculation_summary.assumptions)",
+      "hint": "Default reflectances ceiling/wall/floor = 0.7/0.5/0.2 for clean office (per upstream lighting-layout). Override for verified surface measurements.",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "required": ["ceiling", "wall", "floor"],
+        "properties": {
+          "ceiling": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+          "wall": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+          "floor": {"type": "number", "minimum": 0.0, "maximum": 1.0}
+        }
+      },
+      "project_fact_candidate": false
+    }
+  ]
+}

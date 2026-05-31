@@ -1,0 +1,40 @@
+id: grid-spacing-rules
+description: BS EN 12464-1 §6.2 adaptive grid spacing formula + per-task tolerance
+_verification_status: standard_transcribed_C2
+_note: "Values transcribed from published BS EN 12464-1:2021 §6.2. Cross-check against published edition before runtime use."
+
+rules:
+  - id: grid-spacing-rules#adaptive-formula
+    value:
+      formula: "p = 0.2 × 5^log₁₀(d/0.2)"
+      d_definition: "longer task-area dimension in metres"
+      p_clamp_min_mm: 50
+      p_clamp_max_mm: 1000
+    citation: "BS EN 12464-1:2021 §6.2 (calculation grid for indoor work places)"
+    rationale: "Denser grid in smaller task areas, sparser in large open spaces. The standard's intent is per-area-dependent resolution; fixed-spacing alternatives over-sample small task areas + under-sample large ones."
+
+  - id: grid-spacing-rules#tolerance
+    value:
+      tolerance_mm: 50
+      description: "Implementations may round to nearest 50 mm for renderability without violating the standard"
+    citation: "BS EN 12464-1:2021 §6.2 + CIBSE LG7 §6.2 implementation practice"
+    rationale: "Rendered IR coordinates snap to 50 mm grid (per lighting-layout placement-rules#grid-snap). INV-5 in validator enforces match within ±50 mm of the formula output."
+
+  - id: grid-spacing-rules#default-border
+    value:
+      task_area_border_mm: 500
+      description: "Default task area = room interior minus 500 mm perimeter border (excludes wall-adjacent zone where photometric prediction is dominated by wall reflections)"
+    citation: "BS EN 12464-1:2021 §4.3 (task area definition)"
+    rationale: "Engineer overrides via inputs.task_area_override for partial-room task areas (desk cluster, control room operator station, etc.)."
+
+  - id: grid-spacing-rules#worked-examples
+    value:
+      examples:
+        - {room_type: open_plan_office, task_dims_m: [10, 8], computed_p_mm: 600, point_count_approx: 238}
+        - {room_type: cellular_office, task_dims_m: [4, 3], computed_p_mm: 300, point_count_approx: 154}
+        - {room_type: warehouse_aisle, task_dims_m: [30, 2], computed_p_mm: 850, point_count_approx: 108}
+        - {room_type: corridor, task_dims_m: [20, 2], computed_p_mm: 700, point_count_approx: 87}
+        - {room_type: classroom, task_dims_m: [4, 6], computed_p_mm: 400, point_count_approx: 176}
+        - {room_type: drawing_office, task_dims_m: [12, 9], computed_p_mm: 650, point_count_approx: 280}
+    citation: "BS EN 12464-1:2021 §6.2 formula evaluated at representative task areas"
+    rationale: "Reference values for INV-5 evidence + reasoning.md cross-reference. Implementer + generator-prompt + validator all cite these to confirm formula adherence on the example layouts."

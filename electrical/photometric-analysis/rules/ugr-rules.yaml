@@ -1,0 +1,62 @@
+id: ugr-rules
+description: CIE 117 UGR observer geometry + per-room UGR limits per BS EN 12464-1 Table 5.3
+_verification_status: standard_transcribed_C2
+_note: "UGR limits transcribed from BS EN 12464-1:2021 Table 5.3. CIE 117 observer geometry per published standard. Engineer-of-record must verify against published editions before runtime use."
+
+rules:
+  - id: ugr-rules#default-observer-positions
+    value:
+      count: 4
+      placement_rule: "One default observer per wall facing inward toward room centre"
+      observer_height_mm: 1200
+      observer_offset_from_wall_mm: 1500
+      view_azimuth_per_wall:
+        N: 180
+        S: 0
+        E: 270
+        W: 90
+    citation: "CIE 117 Discomfort glare in interior lighting + BS EN 12464-1:2021 §6.6 (UGR evaluation)"
+    rationale: "CIE 117 specifies the standard observer geometry (1.2 m seated; observer-luminaire viewing angles drive G discomfort glare). 4 wall-facing defaults provide minimum-meaningful coverage of a rectangular room; engineer adds workstation-specific positions via inputs.ugr_view_positions_override."
+
+  - id: ugr-rules#per-room-type-limits
+    value:
+      open_plan_office: 19
+      private_office: 19
+      meeting_room: 19
+      reception_lobby: 22
+      classroom: 19
+      consulting_room: 19
+      ward: 19
+      kitchen_commercial: 22
+      bathroom: 22
+      corridor: 25
+      warehouse: 25
+      warehouse_aisle: 22
+      escape_route: 25
+      plantroom: 25
+      external: null
+      drawing_office: 16
+      technical_drawing: 16
+      fine_assembly: 16
+      precision_work: 16
+    citation: "BS EN 12464-1:2021 Table 5.3 (UGR limits per indoor work-place task)"
+    rationale: "Stricter UGR limit (16) for visually demanding tasks (drawing, fine assembly, precision work) per Table 5.3 row 5.34. INV-3 + reviewer D-3 enforce. external = null (UGR not defined for outdoor spaces per BS EN 12464-1 scope)."
+
+  - id: ugr-rules#cie-117-formula-summary
+    value:
+      formula: "UGR = 8 × log₁₀ [ (0.25/Lb) × Σ (L²ω/p²) ]"
+      L_definition: "luminance of each glare source (cd/m²) in the field of view"
+      omega_definition: "solid angle of glare source seen by observer (sr)"
+      p_definition: "Guth position index per CIE 117 Annex A"
+      Lb_definition: "average background luminance (cd/m²)"
+    citation: "CIE 117 §3 + Annex A (Guth position index tables) + BS EN 12464-1:2021 §6.6"
+    rationale: "Reference formula for generator-prompt Step 7 + validator INV-3 evidence. Runtime calc.lumen_grid_solver implements the full formula with IES luminance distribution + numerical Σ; skill emits the formula structure for engineer review."
+
+  - id: ugr-rules#observer-geometry-honest-disclosure
+    value:
+      simplifications_in_synthetic_ies:
+        - "Synthetic IES files (verification_status: synthetic_reference_C3) use analytical Lambertian / Gaussian distributions"
+        - "UGR computed from synthetic IES is approximate-but-bounded; manufacturer-specific IES produces project-grade UGR"
+        - "Engineer-of-record must substitute project IES + verify UGR against manufacturer-published values before final design freeze"
+    citation: "Spec §3 honest-disclosure pattern (D2.3 + A.1 lessons)"
+    rationale: "Preserves the no-fabrication discipline. INV-8 + reviewer D-2 enforce on every shipped IR."
