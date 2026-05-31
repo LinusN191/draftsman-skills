@@ -1,0 +1,41 @@
+name: photometric-analysis verifies calc.lumen_grid_solver actually executed
+skill: photometric-analysis
+description: |
+  Verify INV-09 — calc.lumen_grid_solver runtime tool must have actually run, not just
+  been declared. Tests calculation_summary.tool_call_pending == false (the deferred-call
+  flag is cleared) AND _calc_tool + _calc_engine_version fingerprints are populated.
+  Distinguishes a shipped IR with real calc results from a stub IR that emitted the
+  contract but never invoked the runtime. Closes the INV-09 (HIGH) eval-coverage gap
+  flagged in the cross-sprint review.
+category: skill_specific
+input_fixture: examples/uk-open-plan-office-10x8-dali-photometric/output.json
+checks:
+  - assertion: ir.calculation_summary.tool_call_pending == false
+    description: |
+      INV-09 core check — the deferred-call sentinel must be cleared. tool_call_pending=true
+      means the IR was emitted before calc.lumen_grid_solver actually ran (a stub IR);
+      tool_call_pending=false confirms the runtime call resolved and per-point illuminance,
+      U₀, and UGR values are real, not placeholder.
+    severity: critical
+    matches_inv: INV-09
+  - assertion: ir.calculation_summary._calc_tool == "calc.lumen_grid_solver"
+    description: |
+      Tool fingerprint must name the canonical calc primitive. Runtime executor lives in
+      the runtime project per [[runtime-project-boundary]]; skill emits the contract and
+      the resolved fingerprint after invocation.
+    severity: critical
+    matches_inv: INV-09
+  - assertion: len(ir.calculation_summary._calc_engine_version) > 0
+    description: |
+      Engine version string must be populated (semver or tool-version label). Empty/missing
+      version means the runtime didn't write its fingerprint back into the IR — likely a
+      stub or interrupted run.
+    severity: warning
+    matches_inv: INV-09
+  - assertion: ir.calculation_summary.achieved_avg_illuminance_lux > 0
+    description: |
+      Sanity guard: a successful calc run produces a positive achieved_avg_illuminance_lux.
+      Zero or missing would indicate the runtime ran but emitted no usable result — INV-09
+      should catch this as the "calc didn't actually solve" failure mode.
+    severity: warning
+    matches_inv: INV-09

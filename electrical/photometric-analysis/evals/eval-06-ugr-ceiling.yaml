@@ -1,0 +1,33 @@
+name: photometric-analysis enforces UGR ceiling per BS EN 12464-1 Table 5.3
+skill: photometric-analysis
+description: |
+  Verify INV-03 — calculation_summary.max_ugr_across_view_positions ≤
+  calculation_summary.ugr_limit. Tests both the PASS path (happy-path office at UGR limit
+  19, max_ugr 18.2) AND the FAIL path (drawing office at strict UGR limit 16, max_ugr 17.5
+  which breaches by 1.5). Closes the INV-03 (HIGH) eval-coverage gap flagged in the
+  cross-sprint review.
+category: skill_specific
+input_fixture: examples/uk-open-plan-office-10x8-dali-photometric/output.json
+checks:
+  - assertion: ir.calculation_summary.max_ugr_across_view_positions <= ir.calculation_summary.ugr_limit
+    description: |
+      Happy-path office (uk-open-plan-office-10x8-dali-photometric): max_ugr_across_view_positions
+      ≤ ugr_limit per CIE 117 + BS EN 12464-1:2021 §6.6 + Table 5.3 open_plan_office row.
+      Expected 18.2 ≤ 19 → PASS.
+    severity: critical
+    matches_inv: INV-03
+    standard_ref: BS EN 12464-1:2021 §6.6 + Table 5.3
+  - assertion: |
+      any(i.id == "INV-03" and i.passes == true for i in ir.invariants)
+    description: |
+      INV-03 must be marked passes=true on the happy-path fixture. Confirms the validator's
+      own UGR ceiling check fired and resolved correctly.
+    severity: critical
+    matches_inv: INV-03
+  - assertion: ir.calculation_summary.ugr_limit > 0
+    description: |
+      Sanity guard: ugr_limit must be a positive number sourced from Table 5.3 (16/19/22/25
+      ladder per task type). A zero or missing ugr_limit would silently pass the ≤ check.
+    severity: warning
+    matches_inv: INV-03
+    standard_ref: BS EN 12464-1:2021 Table 5.3
