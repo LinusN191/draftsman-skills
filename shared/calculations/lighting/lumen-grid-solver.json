@@ -24,7 +24,7 @@
         "type": "array",
         "items": {
           "type": "object",
-          "required": ["id", "x_mm", "y_mm", "luminaire_type"],
+          "required": ["id", "x_mm", "y_mm", "mounting_height_mm", "luminaire_type"],
           "properties": {
             "id": {"type": "string"},
             "x_mm": {"type": "integer"},
@@ -77,7 +77,7 @@
               "type": "object",
               "required": ["x_mm", "y_mm", "height_mm"]
             },
-            "azimuth_deg": {"type": "integer"}
+            "azimuth_deg": {"type": "integer", "minimum": 0, "maximum": 359}
           }
         }
       }
@@ -91,14 +91,25 @@
         "type": "array",
         "items": {
           "type": "object",
-          "required": ["x_mm", "y_mm", "illuminance_lux"]
+          "required": ["x_mm", "y_mm", "illuminance_lux"],
+          "additionalProperties": false,
+          "properties": {
+            "x_mm": {"type": "integer"},
+            "y_mm": {"type": "integer"},
+            "illuminance_lux": {"type": "number"}
+          }
         }
       },
       "ugr_results": {
         "type": "array",
         "items": {
           "type": "object",
-          "required": ["label", "ugr_value"]
+          "required": ["label", "ugr_value"],
+          "additionalProperties": false,
+          "properties": {
+            "label": {"type": "string"},
+            "ugr_value": {"type": "number"}
+          }
         }
       },
       "scalar_summary": {

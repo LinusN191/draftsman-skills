@@ -6,7 +6,7 @@ _note: "Values transcribed from published BS EN 12464-1:2021 §6.2. Cross-check 
 rules:
   - id: grid-spacing-rules#adaptive-formula
     value:
-      formula: "p = 0.2 × 5^log₁₀(d/0.2)"
+      formula: "p = 0.2 × 5^log₁₀(d)"
       d_definition: "longer task-area dimension in metres"
       p_clamp_min_mm: 50
       p_clamp_max_mm: 1000
@@ -30,11 +30,9 @@ rules:
   - id: grid-spacing-rules#worked-examples
     value:
       examples:
-        - {room_type: open_plan_office, task_dims_m: [10, 8], computed_p_mm: 600, point_count_approx: 238}
-        - {room_type: cellular_office, task_dims_m: [4, 3], computed_p_mm: 300, point_count_approx: 154}
-        - {room_type: warehouse_aisle, task_dims_m: [30, 2], computed_p_mm: 850, point_count_approx: 108}
-        - {room_type: corridor, task_dims_m: [20, 2], computed_p_mm: 700, point_count_approx: 87}
-        - {room_type: classroom, task_dims_m: [4, 6], computed_p_mm: 400, point_count_approx: 176}
-        - {room_type: drawing_office, task_dims_m: [12, 9], computed_p_mm: 650, point_count_approx: 280}
+        - {room_type: cellular_office, task_dims_m: [4, 3], d_m: 4, computed_p_mm: 530, snapped_p_mm: 550, point_count_approx: 54}
+        - {room_type: open_plan_office, task_dims_m: [10, 8], d_m: 9, computed_p_mm: 910, snapped_p_mm: 900, point_count_approx: 88}
+        - {room_type: open_plan_office_large, task_dims_m: [15, 12], d_m: 14, computed_p_mm: 1273, snapped_p_mm: 1000, point_count_approx: 195}
+        - {room_type: drawing_office, task_dims_m: [12, 9], d_m: 11, computed_p_mm: 1058, snapped_p_mm: 1000, point_count_approx: 144}
     citation: "BS EN 12464-1:2021 §6.2 formula evaluated at representative task areas"
-    rationale: "Reference values for INV-5 evidence + reasoning.md cross-reference. Implementer + generator-prompt + validator all cite these to confirm formula adherence on the example layouts."
+    rationale: "Reference values for INV-5 evidence + reasoning.md cross-reference. Implementer + generator-prompt + validator all cite these to confirm formula adherence. Small task areas (d < 5m) produce sub-1000mm grids; large task areas (d > 10m) clamp at 1000mm per the [50, 1000] mm bounds. INV-5 enforces ±50 mm tolerance against the formula output."

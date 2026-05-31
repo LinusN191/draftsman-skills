@@ -24,7 +24,7 @@ Read `inputs.lighting_layout_intent_path`. Verify the file:
 Emit `consumed_intents.lighting_layout` block with `intent_version`, `source_path`,
 `consumed_summary` (room dims + luminaire count + distinct luminaire_type set).
 
-If validation fails: emit non_compliance_flags entry severity=critical + INV-9 FAIL +
+If validation fails: emit non_compliance_flags entry severity=critical + INV-09 FAIL +
 halt before Step 2.
 
 ### Step 2 — Resolve IES files per luminaire_type
@@ -32,8 +32,8 @@ halt before Step 2.
 Read `inputs.photometric_ies_paths[]`. For each distinct `luminaire_type.symbol` in the
 upstream lighting-layout:
 - Find the matching entry in `photometric_ies_paths[]` by `luminaire_type` field
-- If no match found: INV-4 FAIL (HIGH); halt before Step 6 (no point computing without IES)
-- If `path` does not resolve to a readable LM-63 file: INV-4 FAIL HIGH
+- If no match found: INV-04 FAIL (HIGH); halt before Step 6 (no point computing without IES)
+- If `path` does not resolve to a readable LM-63 file: INV-04 FAIL HIGH
 - Verify `_source` ≥40 chars per [ies-provenance-rules#source-string-minimum]
 - Verify `verification_status` enum match per [ies-provenance-rules#verification-status-enum]
 
@@ -56,30 +56,23 @@ Emit `photometric_inputs.grid_metadata.task_area_bounds`.
 ### Step 4 — Compute grid resolution per BS EN 12464-1 §6.2
 
 Apply [grid-spacing-rules#adaptive-formula]:
-- `d_m = max(task_area_length_m, task_area_width_m)` where lengths are
-  `(x_max_mm - x_min_mm) / 1000` and `(y_max_mm - y_min_mm) / 1000`
-- `p_mm = round_to_50(0.2 × 5^log₁₀(d_m / 0.2) × 1000)` clamped to [50, 1000]
+- `d_m = max(task_area_length_m, task_area_width_m)` where lengths are `(x_max_mm - x_min_mm) / 1000` and `(y_max_mm - y_min_mm) / 1000`
+- `p_m = 0.2 × 5^log₁₀(d_m)`
+- `p_mm = round_to_50(p_m × 1000)` clamped to [50, 1000]
 
-Worked example (10×8 m room → task area 9×7 m after 500 mm border):
-- d_m = 9.0
-- 5^log₁₀(9.0 / 0.2) = 5^log₁₀(45) = 5^1.653 = 5^1.653 ≈ 12.91
-  Wait — the formula in the standard is p = 0.2 × 5^log₁₀(d/0.2). Let me recompute:
-  log₁₀(45) ≈ 1.653
-  5^1.653: 5^1 = 5; 5^0.653 ≈ 3.05; total ≈ 5 × 3.05 = 15.27
-  p = 0.2 × 15.27 = 3.05 m = 3050 mm
-  Clamp to [50, 1000] → 1000 mm.
+**Worked example** (10×8 m room → task area 9×7 m after 500 mm border):
+- d_m = max(9, 7) = 9.0
+- p_m = 0.2 × 5^log₁₀(9.0) = 0.2 × 5^0.954 = 0.2 × 4.55 = 0.910 m
+- p_mm = round_to_50(910) = 900 mm
+- Within clamp [50, 1000] mm → final grid_spacing_mm = 900
 
-That clamps to the maximum. The standard intends finer grids in smaller spaces — the formula
-actually inverts for large rooms (p grows with d) so the clamp at 1000 mm catches large-room
-over-spacing. For a 10×8 m office task area, p = 1000 mm gives 9 × 7 = 63 grid points.
+Grid: `(9500 - 500) / 900 + 1 = 11` columns; `(7500 - 500) / 900 + 1 = 9` rows = 99 grid points.
 
-Engineer override option: implementations commonly use 600 mm fixed for offices (matches
-ceiling-tile module). For the photometric-analysis worked examples, the value depends on
-the EXACT task area dimensions per the formula; the implementer recomputes per example.
+**Engineer override**: ceiling-tile-aligned grids (600 mm for typical UK suspended ceiling) are common in practice. If `inputs.grid_spacing_override_mm` is supplied, use it and emit a non_compliance_flags warning if the override deviates from formula output by >100 mm.
 
 Snap to 50 mm per [grid-spacing-rules#tolerance].
 
-Emit `photometric_inputs.grid_metadata.grid_spacing_mm` + `grid_spacing_formula` string.
+Emit `photometric_inputs.grid_metadata.grid_spacing_mm` + `grid_spacing_formula` string citing the §6.2 formula.
 
 ### Step 5 — Generate grid points
 
@@ -107,13 +100,11 @@ Where:
 - `cos³(θ_L)` = combines (a) cosine for projected area on horizontal task plane and
   (b) inverse-square distance attenuation along the angled path
 
-Plus inter-reflection contribution per CIE 117 / CIBSE LG7 §6.2 simplification:
+Plus inter-reflection contribution per CIBSE LG7 §6.2 simplification:
 ```
-E_indirect ≈ E_direct × (ρ_avg / (1 - ρ_avg))  × FF
+E_indirect ≈ E_direct × (ρ_avg / (1 - ρ_avg)) × FF
 ```
-Where `ρ_avg = (ρ_ceiling + ρ_wall + ρ_floor) / 3` and `FF` is a form-factor approximation
-(typically 0.3 for typical office geometry; runtime calc.lumen_grid_solver computes more
-precisely from room geometry).
+Where `ρ_avg = (ρ_ceiling + ρ_wall + ρ_floor) / 3` and `FF` is a form-factor approximation. **[ASSUMPTION: FF≈0.3 for typical office geometry (CIBSE LG7 §6.2 illustrative); runtime calc.lumen_grid_solver computes geometry-specific FF from explicit room/luminaire/task plane geometry]**. The skill emits the simplification in IR `_form_factor_approximation` field for engineer audit; runtime's geometry-specific result overrides at calc time.
 
 Emit `illuminance_grid[]` as flat list of `{x_mm, y_mm, illuminance_lux}` per grid point.
 
@@ -157,6 +148,8 @@ Where:
 - `p` = Guth position index from CIE 117 Annex A tables (depends on angle from line of sight)
 - `Lb` = average background luminance computed from room surfaces + their illuminance
 
+**Note on `p` symbol**: In this Step 8, `p` is the **Guth position index** (dimensionless, per CIE 117 Annex A) — distinct from the **grid spacing `p`** (in mm) used in Step 4. The CIE 117 formula's `p²` term in the denominator weights luminaires by their angular position relative to the observer's line of sight; it has nothing to do with the BS EN 12464-1 §6.2 grid resolution.
+
 The runtime `calc.lumen_grid_solver` implements the full UGR formula with IES luminance
 distribution + numerical Σ over visible luminaires + position-index lookup. Skill emits the
 formula structure for engineer review.
@@ -184,15 +177,15 @@ Runtime populates:
 - Sets `tool_call_pending: false`
 - Sets `_calc_engine_version` string (e.g. "calc.lumen_grid_solver 1.0")
 
-Skill validator (INV-9 in B.2) verifies `tool_call_pending == false` AND
+Skill validator (INV-09 in B.2) verifies `tool_call_pending == false` AND
 `_calc_tool == "calc.lumen_grid_solver"` after runtime returns.
 
 ### Step 10 — Verify achieved-vs-target + populate non_compliance_flags
 
 Compute compliance:
-- `INV-1 check`: `achieved_min_illuminance_lux >= target × 0.7`
-- `INV-2 check`: `achieved_uniformity_u0 >= uniformity_u0_target`
-- `INV-3 check`: `max_ugr_across_view_positions <= ugr_limit`
+- `INV-01 check`: `achieved_min_illuminance_lux >= target × 0.7`
+- `INV-02 check`: `achieved_uniformity_u0 >= uniformity_u0_target`
+- `INV-03 check`: `max_ugr_across_view_positions <= ugr_limit`
 
 For each FAIL: append non_compliance_flags entry with `severity: critical`, message
 citing the specific deficit, reference to the relevant BS EN 12464-1 clause.
