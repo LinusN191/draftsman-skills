@@ -251,16 +251,17 @@ a tender audit trail?
 - Validating the upstream db-layout-rollup or fault-level intent's
   correctness (that's the respective skill's reviewer).
 
-## Architectural state (Sprint 4-AB)
+## Floor plan context
 
-When the prompt context includes `architectural_state`, this skill is
-**context-only** and the reviewer SHOULD flag:
+When the prompt context includes a `## Floor plan context` markdown
+block, this skill is **context-only** and the reviewer SHOULD flag:
 
-1. IRs that attempt geometric placement against the architectural state
-   (this skill should not produce coordinates from room polygons).
-2. IRs that don't reference `building.label` in titles when the
-   building model is confirmed.
-3. IRs that ignore meaningful room metadata (names, types, ceiling
-   heights) where the skill should use it for labelling or calculation.
-
-See `shared/architectural_state_contract.md` for the full contract.
+1. IR that attempts geometric placement derived from the block (this
+   skill does not own placement).
+2. IR that does not reference the building label in titles when the
+   block carries one.
+3. IR that ignores meaningful room metadata (names, types, ceiling
+   heights) where the skill should use it for labelling or
+   calculation.
+4. IR that omits `floor_plan_context_consumed: true` when the block
+   was present.
