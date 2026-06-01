@@ -1,0 +1,124 @@
+id: zone-derivation-rules
+description: Per-section zone geometry derivation rules for BS 7671 special locations (§701 bathrooms, §702 pools, §703 saunas, §710 medical, §715 ELV)
+_verification_status: standard_transcribed_C2
+_note: "Values transcribed from published BS 7671:2018+A2:2022 and BS EN 61558-2-6 / BS EN 61557-8. Cross-check against published editions before runtime use. Sub-clause numbers not cited where the verified-file constraint prohibits them (noted per rule)."
+
+rules:
+  - id: zone-derivation-rules#bath_zone_0_basin_volume
+    value:
+      description: "Zone 0 is defined as the interior volume of the bath basin. Polygon is the basin plan footprint; height_min = z_floor_mm (basin base); height_max = basin top (z_floor_mm + dimensions.height_mm)."
+      derivation_method: "rectangular basin polygon from anchor dimensions"
+      height_min_ref: "z_floor_mm"
+      height_max_ref: "z_floor_mm + dimensions.height_mm"
+    citation: "BS 7671:2018 §701"
+    rationale: "Zone 0 is defined as the interior of the bath/shower basin per §701 zoning table. No sub-clause for basin geometry derivation exists in the verified file; generic §701 citation applies. The rectangular footprint from anchor.dimensions is the minimum correct approximation."
+
+  - id: zone-derivation-rules#bath_zone_1_above_zone_0
+    value:
+      description: "Zone 1 extends above Zone 0 from basin top to max(2250, shower_head_height_mm) AFF, with horizontal boundary matching Zone 0 plan footprint."
+      height_min_ref: "basin_top_z (= z_floor_mm + dimensions.height_mm)"
+      height_max_formula: "max(2250, shower_head_height_mm) mm AFF"
+      plan_boundary: "Zone 0 plan footprint"
+    citation: "BS 7671:2018 §701"
+    rationale: "§701 zone table defines Zone 1 as the space above and around the basin to 2.25 m AFF, extended to the shower head height when this exceeds 2.25 m. Sub-clause for the ceiling formula is not individually cited in the verified file; generic §701 zone-table common-knowledge applies."
+
+  - id: zone-derivation-rules#bath_zone_2_horizontal_extension
+    value:
+      description: "Zone 2 is a 600 mm horizontal extension beyond the Zone 1 plan boundary, from floor level to Zone 1 ceiling (max 2250 mm or shower_head_height_mm AFF)."
+      horizontal_extension_mm: 600
+      height_min_mm: 0
+      height_max_ref: "same as zone_1 ceiling"
+    citation: "BS 7671:2018 §701"
+    rationale: "§701 zone table defines Zone 2 as the 600 mm horizontal band outside Zone 1. No sub-clause for the 600 mm dimension is individually cited in the verified file; generic §701 citation applies."
+
+  - id: zone-derivation-rules#bath_zone_1_wet_room_expansion
+    value:
+      description: "When is_wet_room = true, Zone 1 expands to the full room floor area polygon at height 0 to 2250 mm AFF. This supersedes the bath_zone_1_above_zone_0 derivation for the horizontal extent."
+      height_max_mm: 2250
+      plan_boundary: "full room_polygon_mm"
+      trigger: "room.is_wet_room == true"
+    citation: "BS 7671:2018 §701 + IET GN7 wet-room commentary"
+    rationale: "The wet-room expansion to full floor area at 2.25 m AFF is IET GN7 commentary interpretation — no §701 sub-clause for this expansion exists in the verified file. Generic §701 citation plus explicit IET GN7 reference used. Engineer must confirm applicability for non-standard wet-room geometry."
+
+  - id: zone-derivation-rules#pool_zone_0_basin
+    value:
+      description: "Zone 0 is the interior of the pool basin. Polygon is derived from pool_basin anchor shape_kind: cylinder → circular polygon approximated with ≥12 sides; rectangular → basin plan footprint. Vertical extent: basin base to water surface."
+      derivation_method: "cylinder or rectangular from anchor shape_kind"
+      height_min_ref: "z_floor_mm"
+      height_max_ref: "water_surface_z (= z_floor_mm + dimensions.height_mm or radius-implied depth)"
+    citation: "BS 7671:2018 §702"
+    rationale: "Zone 0 for swimming pools is the interior of the pool basin per §702 zoning table. No individual sub-clause for basin geometry derivation in the verified file; generic §702 citation applies."
+
+  - id: zone-derivation-rules#pool_zone_1_vertical_column
+    value:
+      description: "Zone 1 is a vertical column above Zone 0 from water surface to water_surface_z + 2500 mm, with the same plan boundary as Zone 0."
+      height_min_ref: "water_surface_z"
+      height_max_formula: "water_surface_z + 2500 mm"
+      plan_boundary: "Zone 0 plan footprint"
+    citation: "BS 7671:2018 §702"
+    rationale: "§702 zone table defines Zone 1 as the vertical column above the basin to 2.5 m above the water surface. No individual sub-clause for the 2500 mm dimension is cited in the verified file; generic §702 applies."
+
+  - id: zone-derivation-rules#pool_zone_2_horizontal_extension
+    value:
+      description: "Zone 2 extends the Zone 0 plan boundary outward by 2000 mm horizontally. Vertical extent: floor level to water_surface_z + 1500 mm."
+      horizontal_extension_mm: 2000
+      height_min_mm: 0
+      height_max_formula: "water_surface_z + 1500 mm"
+    citation: "BS 7671:2018 §702"
+    rationale: "§702 zone table defines Zone 2 as the 2000 mm horizontal band outside Zone 0/1 from floor to 1.5 m above water surface. No individual sub-clause for these dimensions is cited in the verified file; generic §702 applies."
+
+  - id: zone-derivation-rules#pool_changing_room_adjacency_check
+    value:
+      description: "If any Zone 2 boundary vertex lies within 200 mm of an adjacent room polygon edge, raise D-2 reviewer flag for changing-room adjacency splash risk."
+      adjacency_threshold_mm: 200
+      flag: "D-2"
+      flag_severity: "MEDIUM"
+    citation: "BS 7671:2018 §702.55.4"
+    rationale: "§702.55.4 addresses wiring systems in the proximity of pool zones and adjacent changing facilities. A 200 mm adjacency threshold triggers a reviewer flag for splash ingress review; stricter treatment may apply depending on pool type and changing-room relationship."
+
+  - id: zone-derivation-rules#sauna_zone_1_heater_proximity
+    value:
+      description: "Zone 1 (heater proximity zone) is a rectangular footprint around the sauna_heater anchor padded by 500 mm on all sides in plan, from floor to ceiling."
+      pad_mm: 500
+      height_min_mm: 0
+      height_max_ref: "ceiling_height_mm"
+      plan_boundary: "heater_anchor_footprint + 500 mm pad on all sides"
+    citation: "BS 7671:2018 §703"
+    rationale: "§703 zone table defines Zone 1 as the area immediately around the sauna heater. No individual sub-clause for the 500 mm pad dimension is cited in the verified file; generic §703 applies. The 500 mm pad is conservative minimum."
+
+  - id: zone-derivation-rules#sauna_zone_2_sauna_body
+    value:
+      description: "Zone 2 is the sauna room polygon minus Zone 1 (heater proximity), from floor to 1000 mm AFF."
+      plan_boundary: "room_polygon_mm minus zone_1 polygon"
+      height_min_mm: 0
+      height_max_mm: 1000
+    citation: "BS 7671:2018 §703"
+    rationale: "§703 zone table defines the lower sauna volume (below 1000 mm AFF, outside Zone 1) as Zone 2. No individual sub-clause for the 1000 mm threshold is cited in the verified file; generic §703 applies."
+
+  - id: zone-derivation-rules#sauna_zone_3_above_1500mm
+    value:
+      description: "Zone 3 is the sauna room polygon (full plan area) from 1500 mm AFF to ceiling. Represents the high-temperature upper zone."
+      plan_boundary: "room_polygon_mm (full area)"
+      height_min_mm: 1500
+      height_max_ref: "ceiling_height_mm"
+    citation: "BS 7671:2018 §703"
+    rationale: "§703 zone table defines the upper sauna zone (above 1500 mm AFF) as Zone 3, subject to highest temperature de-rating requirements. No individual sub-clause for the 1500 mm threshold is cited in the verified file; generic §703 applies. Ambient temperature_c from room input drives §703 de-rating for equipment sited in this zone."
+
+  - id: zone-derivation-rules#medical_envelope_cylinder
+    value:
+      description: "The patient environment envelope for §710 is a 1.5 m radius cylinder around each medical_patient_position anchor, approximated as a ≥12-sided polygon. Vertical extent: 0 mm (floor) to 2500 mm AFF."
+      radius_mm: 1500
+      polygon_approximation_sides_min: 12
+      height_min_mm: 0
+      height_max_mm: 2500
+    citation: "BS 7671:2018 §710 + BS EN 61557-8"
+    rationale: "§710 defines the patient environment as the volume within 1.5 m of the patient support surface (bed, operating table, treatment chair). BS EN 61557-8 references the IMD alarm monitoring requirement within this envelope. The cylinder is approximated as ≥12 sides for IR polygon compatibility."
+
+  - id: zone-derivation-rules#elv_barrier_zone
+    value:
+      description: "For ELV §715 luminaire circuit anchors, the ELV barrier zone spans from the anchor position along the cable routing, with width = cable_spacing_mm each side. Used to verify separation from non-ELV circuits."
+      plan_boundary: "polygon spanning cable_spacing_mm from elv_anchor centroid along declared cable route"
+      height_min_ref: "z_floor_mm"
+      height_max_ref: "z_floor_mm + fixture_mounting_height_mm"
+    citation: "BS 7671:2018 §715 + BS EN 61558-2-6"
+    rationale: "§715 requires that ELV lighting circuits maintain separation from other voltage circuits to preserve SELV/PELV safety benefits. BS EN 61558-2-6 defines isolation requirements for the safety isolating transformer supplying the ELV circuit. The barrier zone flags where separation may be breached."

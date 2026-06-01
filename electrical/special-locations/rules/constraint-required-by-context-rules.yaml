@@ -1,0 +1,67 @@
+id: constraint-required-by-context-rules
+description: Mapping of INV-03..INV-07 invariant triggers to BS 7671 special-location constraints — each rule defines the context condition that makes the constraint mandatory
+_verification_status: standard_transcribed_C2
+_note: "Citations verified against published BS 7671:2018+A2:2022 and BS EN 61557-8. Banned sub-clause list enforced: §701.32, §701.55, §702.55.1, §702.55.2, §702.32, §703.55, §703.512, §703.413, §710.413.1.5, §710.314, §710.411.3.3, §715.560.4, §715.521, §715.422 are NOT cited anywhere in this file."
+
+rules:
+  - id: constraint-required-by-context-rules#medical_group_2_requires_it_system
+    value:
+      invariant: "INV-03"
+      trigger_condition: "At least one anchor with type = medical_patient_position AND medical_group = 2 is present"
+      required_condition: "medical_it_system_override present AND insulation_monitoring_device_present = true AND supplementary_bonding_verified = true"
+      failure_action: "INV-03 CRITICAL non_compliance_flag — Group 2 IT system data missing for operating/ICU area"
+      failure_description: "BS 7671:2018 §710 requires an IT system with IMD (per BS EN 61557-8) and verified supplementary equipotential bonding for all Group 2 medical locations. Absence of this data is a CRITICAL compliance gap requiring engineer resolution before any electrical works proceed."
+    citation: "BS 7671:2018 §710 + BS EN 61557-8 + HTM 06-01"
+    rationale: "Group 2 medical locations (operating theatres, cardiac catheterisation labs, ICUs) carry the highest risk of electrocution hazard to patients whose normal cardiac/skin resistance may be bypassed. The §710 IT system with IMD is mandatory; HTM 06-01 NHS technical memorandum classifies safety service categories 1/2/3 for switchover time requirements."
+
+  - id: constraint-required-by-context-rules#bathroom_requires_rcd_blanket
+    value:
+      invariant: "INV-04"
+      trigger_condition: "room_type = bathroom OR room_type = shower_room AND jurisdiction = GB"
+      required_condition: "All circuits supplying fixtures in Zone 1 or Zone 2 must have RCD protection (≤30 mA rated residual current)"
+      failure_action: "INV-04 HIGH non_compliance_flag — RCD blanket protection absent for bathroom/shower circuits"
+      failure_description: "All circuits in bathroom/shower zones (except SELV circuits) require RCD protection to ≤30 mA per §701.411.3.3. Any fixture in Zone 1 or Zone 2 not declared is_rcd_protected triggers this flag."
+    citation: "BS 7671:2018 §701.411.3.3"
+    rationale: "§701.411.3.3 mandates 30 mA RCD protection for all circuits in bathroom and shower room zones (except SELV). The damp/wet environment elevates shock risk; RCD is the principal additional protection measure. Validator checks is_rcd_protected on every existing_fixture whose position maps to Zone 1 or Zone 2."
+
+  - id: constraint-required-by-context-rules#sauna_requires_rcd_blanket_with_heater_exemption
+    value:
+      invariant: "INV-04"
+      trigger_condition: "room_type = sauna AND jurisdiction = GB"
+      required_condition: "All circuits in sauna zones must have RCD protection EXCEPT the sauna heater circuit where local heater control provides equivalent protection"
+      failure_action: "INV-04 HIGH non_compliance_flag — sauna circuit RCD check failed"
+      failure_description: "§703.411.3.3 requires RCD protection for sauna circuits. The sauna heater circuit may be exempt where the heater manufacturer's integral protective device provides equivalent protection — engineer must declare this explicitly."
+      heater_exemption_flag: "D-3 — heater exemption claimed: verify manufacturer documentation"
+    citation: "BS 7671:2018 §703.411.3.3"
+    rationale: "§703.411.3.3 applies the same RCD blanket requirement as §701.411.3.3 but acknowledges the sauna heater circuit as a potential exemption where integral protection is demonstrated. Validator emits D-3 when the heater circuit is claimed as exempt to prompt documentation verification."
+
+  - id: constraint-required-by-context-rules#pool_requires_main_bonding
+    value:
+      invariant: "INV-05"
+      trigger_condition: "room_type = swimming_pool_hall AND any pool_basin anchor present"
+      required_condition: "Supplementary equipotential bonding declared for all simultaneously accessible conductive parts within Zone 0, Zone 1, and Zone 2"
+      failure_action: "INV-05 HIGH non_compliance_flag — supplementary bonding not declared for pool zones"
+      failure_description: "BS 7671:2018 §702.415.1 requires supplementary equipotential bonding connecting all simultaneously accessible extraneous-conductive-parts within pool zones 0, 1, and 2. Absence of a bonding declaration triggers INV-05."
+    citation: "BS 7671:2018 §702.415.1"
+    rationale: "§702.415.1 is the verified clause for supplementary bonding in swimming pool installations. This is NOT §702.55.1 — that sub-clause does not exist in the verified file. The supplementary bonding requirement is the primary safety measure for equalising potential between metallic pool structure, pipework, ladders, and electrical equipment."
+
+  - id: constraint-required-by-context-rules#whirlpool_requires_pump_circuit
+    value:
+      invariant: "INV-06"
+      trigger_condition: "anchor.type = bath_basin AND anchor.bath_kind = whirlpool"
+      required_condition: "A dedicated pump circuit with IPx5 rating is declared OR whirlpool_pump_position is present with associated circuit data"
+      failure_action: "INV-06 HIGH non_compliance_flag — whirlpool pump circuit not declared"
+      failure_description: "BS 7671:2018 §701 + §701.512.2 require that the whirlpool pump motor circuit is independently protected and that the pump enclosure achieves at least IPx5 rating where water jets are directed at it. Absence of pump circuit declaration triggers INV-06."
+      supplementary_flag: "D-3 — if whirlpool_pump_position absent, flag assumption that pump is at bath edge"
+    citation: "BS 7671:2018 §701 + §701.512.2"
+    rationale: "The whirlpool pump motor operates within the bath Zone 0/1 splash environment. §701.512.2 addresses selection and erection of wiring systems in bathroom zones, requiring appropriate IP ratings for equipment subject to water jet ingress (IPx5 where water jets used). The pump position is needed to verify zone membership and cable routing IP requirements."
+
+  - id: constraint-required-by-context-rules#elv_requires_separation
+    value:
+      invariant: "INV-07"
+      trigger_condition: "anchor.type = elv_lighting_circuit_anchor in any zone"
+      required_condition: "ELV circuit routing does not share conduit/trunking/cable tray with circuits at other voltage levels; safety isolating transformer per BS EN 61558-2-6 declared"
+      failure_action: "INV-07 HIGH non_compliance_flag — ELV circuit separation not demonstrated"
+      failure_description: "BS 7671:2018 §715 requires ELV lighting circuits to be separated from circuits at other voltages. BS EN 61558-2-6 specifies the safety isolating transformer requirements. Co-routing with 230 V circuits negates the SELV/PELV safety function."
+    citation: "BS 7671:2018 §715 + BS EN 61558-2-6"
+    rationale: "§715 ELV lighting systems achieve their safety advantage through electrical separation (SELV or PELV). Physical separation of cable routes from other voltage systems is mandatory to maintain that separation. BS EN 61558-2-6 covers the isolating transformer requirements underpinning the ELV system design."

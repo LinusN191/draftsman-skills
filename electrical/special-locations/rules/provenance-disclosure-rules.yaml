@@ -1,0 +1,49 @@
+id: provenance-disclosure-rules
+description: 3-tier _extraction_source provenance rules for anchor_fixtures[] — defines trust level, review obligations, and INV-09 trigger conditions for each tier
+_verification_status: standard_transcribed_C2
+_note: "These rules govern data-provenance disclosure for anchor_fixtures[]; they are engineering-process rules, not BS 7671 sub-clause citations. BS 7671 citations appear where the safety-critical zone driven by the anchor has a standard basis."
+
+rules:
+  - id: provenance-disclosure-rules#tier_a_architectural_extraction
+    value:
+      tier: "A"
+      _extraction_source_value: "architectural_drawing_extraction"
+      trust_level: "strongest"
+      manual_review_required: false
+      inv09_trigger: false
+      description: "Anchor position, type, and dimensions were extracted directly from a referenced architectural drawing (DWG, PDF, IFC, or equivalent). This is the preferred source. _provenance_note must identify the source drawing reference number, revision, and extraction date (≥40 chars)."
+      example_provenance_note: "Extracted from Arch Drawing A-201 Rev C (issued 2026-05-28) by DraftsMan architectural parser v2.3; bath position confirmed at grid B3."
+    citation: "BS 7671:2018 §701"
+    rationale: "Architectural-drawing extraction provides the most reliable geometric data for zone derivation. When anchor positions are extracted directly, zone polygons inherit the drawing accuracy. The 40-char minimum provenance note ensures traceability back to the source document and extraction event for audit purposes."
+
+  - id: provenance-disclosure-rules#tier_b_engineer_manual_entry
+    value:
+      tier: "B"
+      _extraction_source_value: "engineer_manual_entry"
+      trust_level: "medium"
+      manual_review_required: true
+      inv09_trigger: false
+      review_note: "Engineer-entered anchor data should be cross-checked against the current architectural drawing during design review. Discrepancies between engineer entry and issued drawings must be resolved before construction."
+      description: "Anchor position and type were entered manually by the engineer (e.g. from a site survey, client brief, or verbal specification). Acceptable for early-design pre-checks and projects without issued drawings. _provenance_note must identify the basis for the entry (site survey date, drawing reference, or other source ≥40 chars)."
+      example_provenance_note: "Engineer manual entry based on site survey 2026-05-15; bath position measured from north wall 850mm, east wall 300mm; to be confirmed against Arch Drawing A-201 when issued."
+    citation: "BS 7671:2018 §701"
+    rationale: "Engineer manual entry is necessary for early-design and pre-planning stages where architectural drawings are not yet issued. The medium trust level reflects that coordinate accuracy depends on the engineer's measurement skill and the source information quality. The cross-check obligation during review mitigates the risk of zone derivation errors propagating into construction."
+
+  - id: provenance-disclosure-rules#tier_c_inferred_from_room_type
+    value:
+      tier: "C"
+      _extraction_source_value: "inferred_from_room_type"
+      trust_level: "weakest"
+      manual_review_required: true
+      inv09_trigger: true
+      inv09_severity: "MEDIUM"
+      inv09_trigger_conditions:
+        - "tier_c anchor drives medical_envelope_cylinder derivation (medical_patient_position, medical_group = 2)"
+        - "tier_c anchor drives pool_zone_0_basin derivation (pool_basin)"
+        - "tier_c anchor drives bath_zone_0_basin_volume derivation (bath_basin)"
+      reviewer_flag: "D-1"
+      reviewer_flag_description: "Tier C anchor drives a safety-critical zone. Reviewer must flag for engineer resolution before sign-off."
+      description: "Anchor position, type, or dimensions were inferred from the declared room_type alone (e.g. room_type = bathroom implies a bath_basin anchor at a typical position). This tier is used ONLY when no architectural drawing and no engineer measurement is available. Zone polygons derived from tier-C anchors carry the lowest geometric confidence. _provenance_note must state the inference basis explicitly (≥40 chars)."
+      example_provenance_note: "Inferred from room_type = bathroom: bath_basin assumed at typical UK position 300mm from north wall, 200mm from east wall; no drawing or site measurement available — engineer must verify before design freeze."
+    citation: "BS 7671:2018 §701"
+    rationale: "Inferred anchors are acceptable only as a placeholder to allow early zone mapping when no better data source exists. When tier-C provenance drives safety-critical zones (Group 2 medical envelope, pool basin, bath basin), the zones directly affect protection requirements and bonding scope. INV-09 MEDIUM fires + D-1 reviewer flag ensures the engineer resolves the position uncertainty before the design is used for procurement or construction."

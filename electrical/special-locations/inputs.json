@@ -1,0 +1,315 @@
+{
+  "$schema": "../../shared/schemas/core/inputs.schema.json",
+  "skill": "special-locations",
+  "version": "1.0.0",
+  "items": [
+    {
+      "id": "anchor_fixtures",
+      "label": "Architectural anchor fixtures (baths, showers, pools, saunas, medical positions, ELV circuits)",
+      "hint": "List all special-location anchors extracted from architectural drawings. Each anchor drives automatic zone derivation. The DraftsMan runtime auto-populates from architectural extraction; engineer supplies manually for early-design pre-checks. Anchor type must be one of: bath_basin, shower_position, pool_basin, sauna_heater, medical_patient_position, elv_lighting_circuit_anchor. Each entry requires type, id, position (x_mm/y_mm/z_floor_mm), shape_kind, and 3-tier _extraction_source provenance. Conditional sub-fields: bath_kind (standard|whirlpool) for bath_basin; medical_group (0|1|2) for medical_patient_position; shower_head_height_mm for shower_position; whirlpool_pump_position for whirlpool bath_kind.",
+      "answer_type": "struct_list",
+      "required": true,
+      "item_schema": {
+        "type": "object",
+        "required": ["type", "id", "position", "shape_kind", "_extraction_source", "_provenance_note"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["bath_basin", "shower_position", "pool_basin", "sauna_heater", "medical_patient_position", "elv_lighting_circuit_anchor"],
+            "description": "Anchor classification — drives zone-derivation rule selection"
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Engineer-stable reference (e.g. bath_1, pool_main, shower_en_suite)"
+          },
+          "position": {
+            "type": "object",
+            "required": ["x_mm", "y_mm", "z_floor_mm"],
+            "properties": {
+              "x_mm": {"type": "integer"},
+              "y_mm": {"type": "integer"},
+              "z_floor_mm": {"type": "integer", "minimum": 0, "description": "Floor-to-anchor-base distance in mm"}
+            }
+          },
+          "shape_kind": {
+            "type": "string",
+            "enum": ["rectangular", "cylinder"],
+            "description": "rectangular for baths; cylinder for pool/medical/sauna_heater"
+          },
+          "dimensions": {
+            "type": "object",
+            "description": "Required when shape_kind = rectangular",
+            "properties": {
+              "length_mm": {"type": "integer", "minimum": 1},
+              "width_mm": {"type": "integer", "minimum": 1},
+              "height_mm": {"type": "integer", "minimum": 1}
+            }
+          },
+          "radius_mm": {
+            "type": "number",
+            "minimum": 1,
+            "description": "Required when shape_kind = cylinder"
+          },
+          "bath_kind": {
+            "type": "string",
+            "enum": ["standard", "whirlpool"],
+            "description": "Required when type = bath_basin. whirlpool triggers INV-06 + D-3 pump-circuit check per BS 7671:2018 §701 + §701.512.2"
+          },
+          "medical_group": {
+            "type": "integer",
+            "enum": [0, 1, 2],
+            "description": "Required when type = medical_patient_position. Group 2 triggers IT system check (INV-03)"
+          },
+          "shower_head_height_mm": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Required when type = shower_position. Drives Zone 1 ceiling height derivation per BS 7671:2018 §701 zone-table geometry"
+          },
+          "whirlpool_pump_position": {
+            "type": "object",
+            "description": "Optional when bath_kind = whirlpool. Defaults to bath edge if absent; absence flagged as assumption by reviewer D-3",
+            "properties": {
+              "x_mm": {"type": "integer"},
+              "y_mm": {"type": "integer"},
+              "z_mm": {"type": "integer", "minimum": 0}
+            }
+          },
+          "_extraction_source": {
+            "type": "string",
+            "enum": ["architectural_drawing_extraction", "engineer_manual_entry", "inferred_from_room_type"],
+            "description": "3-tier provenance: architectural_drawing_extraction (strongest), engineer_manual_entry (medium), inferred_from_room_type (weakest; triggers INV-09 MEDIUM + D-1 for safety-critical zones)"
+          },
+          "_provenance_note": {
+            "type": "string",
+            "minLength": 40,
+            "description": "Honest disclosure of how the anchor was located (≥40 chars). Drives INV-09 provenance audit."
+          }
+        }
+      },
+      "project_fact_candidate": true
+    },
+    {
+      "id": "room",
+      "label": "Room geometry, classification, and environmental properties",
+      "hint": "Room polygon in room-local coordinates, ceiling height, room_type from the 9-value enum, floor finish, and flags for external or wet-room conditions. room_type enum: bathroom, shower_room, swimming_pool_hall, sauna, medical_group_0_area, medical_group_1_ward, medical_group_2_theatre, external_landscape, other. room_polygon_mm must have ≥3 vertices. is_wet_room = true expands Zone 1 to full floor area per BS 7671:2018 §701 + IET GN7 wet-room commentary.",
+      "answer_type": "struct_list",
+      "required": true,
+      "item_schema": {
+        "type": "object",
+        "required": ["room_polygon_mm", "ceiling_height_mm", "room_type", "floor_finish", "is_external", "is_wet_room"],
+        "properties": {
+          "room_polygon_mm": {
+            "type": "array",
+            "minItems": 3,
+            "items": {
+              "type": "object",
+              "required": ["x_mm", "y_mm"],
+              "properties": {
+                "x_mm": {"type": "integer"},
+                "y_mm": {"type": "integer"}
+              }
+            },
+            "description": "Plan boundary vertices in room-local coordinates (≥3 vertices required)"
+          },
+          "ceiling_height_mm": {
+            "type": "integer",
+            "minimum": 1000,
+            "description": "Floor-to-ceiling height in mm"
+          },
+          "room_type": {
+            "type": "string",
+            "enum": ["bathroom", "shower_room", "swimming_pool_hall", "sauna", "medical_group_0_area", "medical_group_1_ward", "medical_group_2_theatre", "external_landscape", "other"],
+            "description": "9-value classification; drives BS 7671 section routing (§701/§702/§703/§710/§715)"
+          },
+          "floor_finish": {
+            "type": "string",
+            "enum": ["tiles", "vinyl", "carpet", "screed", "external_ground"],
+            "description": "Surface type; affects IP rating interpretation for floor-level fixtures"
+          },
+          "is_external": {
+            "type": "boolean",
+            "description": "True for outdoor/external_landscape; drives §715/§522 IP routing for ELV circuits"
+          },
+          "is_wet_room": {
+            "type": "boolean",
+            "description": "True when entire floor area is a wet zone. Expands Zone 1 to full room floor area at 2.25m AFF per BS 7671:2018 §701 + IET GN7 wet-room commentary (no §701 sub-clause for wet-room expansion in verified file — generic §701 citation applies)"
+          },
+          "ambient_temperature_c": {
+            "type": "number",
+            "minimum": -20,
+            "maximum": 120,
+            "description": "Optional. Drives ELV de-rating for §715 luminaires in high-temperature environments (sauna, steam room). Reviewer D-5 flags when absent for sauna or medical_group_2_theatre rooms."
+          }
+        }
+      },
+      "project_fact_candidate": true
+    },
+    {
+      "id": "jurisdiction",
+      "label": "Jurisdiction (GB / KE / INT)",
+      "hint": "Drives _clause_citation routing. GB → BS 7671:2018+A2:2022 §X. KE → KS 1700:2018 §313 (route to BS 7671 §X). INT → IEC 60364-7-XXX §Y.",
+      "answer_type": "enum",
+      "options": ["GB", "KE", "INT"],
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "existing_fixtures",
+      "label": "Existing fixtures for zone cross-check (used when no consumed lighting-layout intent is available)",
+      "hint": "Engineer-supplied fixture list for early-design pre-check. Each entry: type, position, ip_rating, voltage_v, is_rcd_protected, and optional source_skill / source_skill_intent_path. When a consumed lighting-layout intent IS present the skill reads existing_fixtures from the intent instead (intent is the more recent authoritative source). Skip this field in runtime cascade context where lighting-layout intent is available.",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "required": ["type", "position", "ip_rating", "voltage_v", "is_rcd_protected"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Luminaire or appliance type (e.g. downlight, wall_light, shaver_socket, heated_towel_rail)"
+          },
+          "position": {
+            "type": "object",
+            "required": ["x_mm", "y_mm", "z_floor_mm"],
+            "properties": {
+              "x_mm": {"type": "integer"},
+              "y_mm": {"type": "integer"},
+              "z_floor_mm": {"type": "integer", "minimum": 0}
+            }
+          },
+          "ip_rating": {
+            "type": "string",
+            "pattern": "^IP[0-9X]{2}$",
+            "description": "IEC 60529 IP code (e.g. IP44, IP65, IPX4)"
+          },
+          "voltage_v": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nominal voltage (e.g. 230, 12, 24)"
+          },
+          "is_rcd_protected": {
+            "type": "boolean",
+            "description": "True when the circuit supplying this fixture has RCD protection"
+          },
+          "source_skill": {
+            "type": "string",
+            "description": "Optional: originating skill id (e.g. lighting-layout, small-power)"
+          },
+          "source_skill_intent_path": {
+            "type": "string",
+            "description": "Optional: filesystem path to the intent file this fixture was read from"
+          }
+        }
+      },
+      "project_fact_candidate": false
+    },
+    {
+      "id": "zone_polygon_override",
+      "label": "Engineer zone polygon overrides for irregular geometry",
+      "hint": "Override auto-derived zone polygons for corner baths, L-shaped pools, or other non-standard geometry. Each entry replaces one derived zone polygon. The original auto-derived polygon is preserved in IR with _overridden_by_engineer: true. zone_id must match a zones[] id in the IR. _reason must be ≥40 chars.",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "required": ["zone_id", "replacement_polygon_mm", "_reason"],
+        "properties": {
+          "zone_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Must match a zones[].id in the derived IR zones output"
+          },
+          "replacement_polygon_mm": {
+            "type": "array",
+            "minItems": 3,
+            "items": {
+              "type": "object",
+              "required": ["x_mm", "y_mm"],
+              "properties": {
+                "x_mm": {"type": "integer"},
+                "y_mm": {"type": "integer"}
+              }
+            },
+            "description": "Replacement zone boundary vertices in room-local coordinates (≥3 vertices)"
+          },
+          "_reason": {
+            "type": "string",
+            "minLength": 40,
+            "description": "Prose explanation for the override (≥40 chars). Preserved in IR alongside _overridden_by_engineer flag."
+          }
+        }
+      },
+      "project_fact_candidate": false
+    },
+    {
+      "id": "medical_it_system_override",
+      "label": "§710 Group 2 IT system commissioning data (medical theatre/ICU)",
+      "hint": "Supply when §710 Group 2 rooms are present and IT system commissioning data is available ahead of compliance check. All sub-fields are optional within the object. Presence of this object requires at least one medical_patient_position anchor with medical_group = 2. Fields: isolating_transformer_va, insulation_monitoring_device_present, imd_alarm_response_time_s_observed (8 s typical per BS EN 61557-8), supplementary_bonding_verified, supplementary_bonding_resistance_ohm_observed (≤0.2 Ω per §710), safety_service_category (1|2|3 per HTM 06-01).",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "properties": {
+          "isolating_transformer_va": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Rated capacity of the §710 isolating transformer in VA"
+          },
+          "insulation_monitoring_device_present": {
+            "type": "boolean",
+            "description": "True when IMD is installed per BS EN 61557-8 requirement for Group 2"
+          },
+          "imd_alarm_response_time_s_observed": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Observed IMD alarm response time in seconds. 8 s typical per BS EN 61557-8."
+          },
+          "supplementary_bonding_verified": {
+            "type": "boolean",
+            "description": "True when supplementary equipotential bonding within the patient environment has been verified"
+          },
+          "supplementary_bonding_resistance_ohm_observed": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Measured bonding resistance in ohms. Must be ≤0.2 Ω per §710 body text requirement."
+          },
+          "safety_service_category": {
+            "type": "integer",
+            "enum": [1, 2, 3],
+            "description": "Safety service category per HTM 06-01 NHS technical memorandum (1 = >15 s, 2 = 0.5–15 s, 3 = <0.5 s). NOT a BS 7671 sub-clause."
+          }
+        }
+      },
+      "project_fact_candidate": false
+    },
+    {
+      "id": "ies_lookup_paths",
+      "label": "IES file paths for ELV §715 luminaire IP cross-check",
+      "hint": "For ELV §715 luminaire IP cross-check via consumed lighting-layout intent. Mirrors photometric-analysis IES handling at v1.0: provide manufacturer IES files or use synthetic fallback paths at shared/photometric/ies/<type>.ies. Each entry: luminaire_type (must match a type in lighting-layout intent) + path + _source provenance (≥40 chars). When no IES files are supplied, IP cross-check falls back to declared ip_rating on existing_fixtures[].",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "required": ["luminaire_type", "path", "_source"],
+        "properties": {
+          "luminaire_type": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Must match a luminaire type symbol in the upstream lighting-layout intent or existing_fixtures[] type"
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Filesystem path to LM-63-2002 IES file, OR synthetic fallback path shared/photometric/ies/<type>.ies"
+          },
+          "_source": {
+            "type": "string",
+            "minLength": 40,
+            "description": "Provenance: manufacturer + product code + retrieval date + verification_status caveat (≥40 chars)"
+          }
+        }
+      },
+      "project_fact_candidate": false
+    }
+  ]
+}
