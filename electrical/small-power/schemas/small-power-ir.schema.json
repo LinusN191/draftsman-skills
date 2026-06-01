@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "electrical/small-power/schemas/small-power-ir.schema.json",
   "title": "Small Power IR (Socket Outlet Layout)",
-  "description": "Intermediate Representation for the small-power skill v1.0. Hybrid model: circuits[] (with topology + ocpd + cable + RCD posture) + rooms[] (with sockets[] cross-referencing circuit_ids). Leaf skill v1.0 — no cross-skill intent consumption.",
+  "description": "Intermediate Representation for the small-power skill v1.0. Hybrid model: circuits[] (with topology + ocpd + cable + RCD posture) + rooms[] (with sockets[] cross-referencing circuit_ids). Leaf skill v1.0 \u2014 no cross-skill intent consumption.",
   "type": "object",
   "required": [
     "drawing_type",
@@ -277,14 +277,14 @@
           },
           "rcd_posture": {
             "enum": [
-              "type_a_30ma_per_§411_3_3",
-              "type_b_30ma_per_§531_3_3",
-              "no_rcd_with_documented_§411_exception"
+              "type_a_30ma_per_\u00a7411_3_3",
+              "type_b_30ma_per_\u00a7531_3_3",
+              "no_rcd_with_documented_\u00a7411_exception"
             ]
           },
           "rcd_exception_citation": {
             "type": "string",
-            "description": "Required when rcd_posture is no_rcd_with_documented_§411_exception"
+            "description": "Required when rcd_posture is no_rcd_with_documented_\u00a7411_exception"
           },
           "verified_zs_ohm": {
             "type": "number",
@@ -549,6 +549,11 @@
           }
         }
       }
+    },
+    "floor_plan_context_consumed": {
+      "type": "boolean",
+      "default": false,
+      "description": "True iff the IR generator consumed an injected '## Floor plan context' markdown block. False when the skill ran on engineer free-text only."
     }
   }
 }

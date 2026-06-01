@@ -307,3 +307,18 @@ Reviewer (per `prompts/reviewer.md`) runs after this validator. Reviewer D-check
 exercise engineering-judgment calls that sit beyond validator-enforceable rules
 (luminaire-archetype suitability, task-area-override defensibility, UGR-observer-coverage
 adequacy, IES-vintage caveats, cascade-narrative coherence).
+
+## Floor plan context
+
+When the prompt context includes a `## Floor plan context` markdown
+block, the validator MUST surface a finding for any of:
+
+1. IR includes coordinate-level geometric placement claims derived
+   from the block (this is a context-only skill).
+2. IR's `building_label` field (if present) does not match the
+   building label in the block.
+3. IR omits `floor_plan_context_consumed: true` when the block was
+   present.
+
+Findings should cite the room name and the block location so the
+reviewer can correlate.

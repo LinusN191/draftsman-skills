@@ -449,26 +449,31 @@ this skill's `validator.md`.
 This block is consumed by the runtime eval harness, which references INVs
 by id via JSONPath filters like `ir.invariants[?(@.id=="INV-04")].passes`.
 
-## Architectural state (Sprint 4-AB)
+## Floor plan context
 
-When this skill runs against a project with confirmed architectural
-state, an `architectural_state` JSON block precedes the rest of the
-project context. See `shared/architectural_state_contract.md` for the
-full shape.
+When this skill runs inside a building-services design platform that
+has captured an engineer-confirmed floor plan, an injected
+`## Floor plan context` markdown block precedes the rest of the
+project context. The block reports building label, floor labels,
+per-floor room labels with room type + area in m² + ceiling height,
+plus a count of unconfirmed rooms.
 
-This skill is **context-only**: it does NOT place anything geometrically.
-It uses architectural metadata for labelling and calculation only.
+This skill is **context-only**: it does not place anything in space.
+It consumes architectural metadata for labelling and calculation
+only.
 
-Required use:
+Required use when the block is present:
 
-1. Use `architectural_state.building.label` in titles and identifiers.
-2. Use `floors_in_scope[].rooms[].name` and `rooms[].type` in
-   circuit/equipment labels where appropriate.
-3. Use `rooms[].ceiling_height_m` for cable-route length estimation
-   or other calculation context where the skill needs it.
-4. Do NOT attempt geometric placement (no polygons, no coordinates).
-5. When `rooms[].confirmed === false`, list the affected room IDs in
-   the IR's `assumptions` array.
+1. Reference the building label in title-block and label fields.
+2. Use room names and types to label circuits, equipment, or
+   protection zones where the skill normally produces tags.
+3. Use room ceiling height and area for calculation context (cable
+   route length estimation, diversity, fault impedance context) where
+   relevant.
+4. Do NOT attempt geometric placement: the block does not carry
+   coordinates, and this skill is not the geometric authority.
+5. Set `floor_plan_context_consumed: true` at the top level of the
+   IR.
 
-If the block is absent, fall back to the engineer's free-text dimensions
-as before.
+If the block is absent, fall back to the engineer's free-text
+dimensions as before and set `floor_plan_context_consumed: false`.

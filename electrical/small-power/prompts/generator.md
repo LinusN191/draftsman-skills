@@ -544,29 +544,33 @@ this skill's `validator.md`.
 This block is consumed by the runtime eval harness, which references INVs
 by id via JSONPath filters like `ir.invariants[?(@.id=="INV-04")].passes`.
 
-## Architectural state (Sprint 4-AB)
+## Floor plan context
 
-When this skill runs against a project with confirmed architectural
-state, an `architectural_state` JSON block precedes the rest of the
-project context. See `shared/architectural_state_contract.md` for the
-full shape.
+When this skill runs inside a building-services design platform that
+has captured an engineer-confirmed floor plan, an injected
+`## Floor plan context` markdown block precedes the rest of the
+project context. The block reports building label, floor labels,
+per-floor room labels with room type + area in m² + ceiling height,
+plus a count of unconfirmed rooms.
 
-This skill is **geometry-aware**: it consumes the floor's room polygons
-to place fixtures/equipment in space.
+This skill is **geometry-aware**: it places fixtures or equipment
+within rooms.
 
-Required use:
+Required use when the block is present:
 
-1. Read `architectural_state.building.floors_in_scope[].rooms[].polygon`
-   and use it as the layout boundary for every placement.
-2. Reject any placement whose centroid falls outside every room polygon
-   in scope.
-3. Honour `rooms[].ceiling_height_m` when sizing for ceiling-mounted
+1. Reference the building label in title-block and label fields.
+2. Generate one IR per floor in the block (or per typical-group when
+   the block flags equivalent floors).
+3. Place fixtures or equipment only inside listed rooms; honour room
+   type when choosing where to put things (e.g. distribution boards
+   prefer plantrooms, downlights belong in office space).
+4. Honour each room's ceiling height when sizing ceiling-mounted
    equipment.
-4. When `rooms[].confirmed === false`, list the affected room IDs in
-   the IR's `assumptions` array with a note that the geometry is
-   unconfirmed.
-5. Reference `architectural_state.building.label` in any title-block
-   or label fields the IR produces.
+5. When the block flags unconfirmed rooms, list the affected room
+   names in the IR's `assumptions` array with a short note that the
+   geometry is unconfirmed.
+6. Set `floor_plan_context_consumed: true` at the top level of the
+   IR.
 
-If the block is absent, fall back to the engineer's free-text dimensions
-as before.
+If the block is absent, fall back to the engineer's free-text
+dimensions as before and set `floor_plan_context_consumed: false`.

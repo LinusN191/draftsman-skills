@@ -297,19 +297,19 @@ part of the IR. A failing INV does NOT block emission — the IR ships
 with the failure recorded so downstream skills can react (e.g.
 db-layout sees `INV-5: FAIL` and re-sizes the lighting circuit MCB).
 
-## Architectural state (Sprint 4-AB)
+## Floor plan context
 
-When `architectural_state` is present, the validator MUST surface a
-finding for any of:
+When the prompt context includes a `## Floor plan context` markdown
+block, the validator MUST surface a finding for any of:
 
-1. An entity whose centroid is not contained by any
-   `floors_in_scope[].rooms[].polygon` in scope.
-2. `unconfirmed_rooms_in_scope > 0` AND the IR's `assumptions` array
-   does not mention the unconfirmed rooms.
-3. The IR's `building_label` field (if present) does not match
-   `architectural_state.building.label`.
+1. IR places an entity in a room not listed in the block.
+2. The block flagged unconfirmed rooms AND the IR's `assumptions`
+   array does not mention the unconfirmed rooms when those rooms were
+   consumed.
+3. IR's `building_label` field (if present) does not match the
+   building label in the block.
+4. IR omits `floor_plan_context_consumed: true` when the block was
+   present.
 
-Findings should reference the room ID and the architectural state
-payload location so the reviewer can correlate.
-
-See `shared/architectural_state_contract.md` for the full contract.
+Findings should cite the room name and the block location so the
+reviewer can correlate.

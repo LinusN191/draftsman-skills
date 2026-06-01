@@ -279,3 +279,18 @@ After walking D1 → D6, aggregate **all** findings into a single report. Return
 `pass: true` iff no finding has `severity: "critical"`. The pipeline consumes the `pass` flag to decide whether to ship; the `findings[]` array is surfaced to the engineer for review and to the chat agent for explanation.
 
 The reviewer is the **final gate before render** — be honest. A missed engineering error here ships a defective schematic; a missed fabricated clause ships a non-compliant document. Both are real-world hazards, not stylistic concerns.
+
+## Floor plan context
+
+When the prompt context includes a `## Floor plan context` markdown
+block, this skill is **context-only** and the reviewer SHOULD flag:
+
+1. IR that attempts geometric placement derived from the block (this
+   skill does not own placement).
+2. IR that does not reference the building label in titles when the
+   block carries one.
+3. IR that ignores meaningful room metadata (names, types, ceiling
+   heights) where the skill should use it for labelling or
+   calculation.
+4. IR that omits `floor_plan_context_consumed: true` when the block
+   was present.

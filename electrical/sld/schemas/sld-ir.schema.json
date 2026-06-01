@@ -377,7 +377,7 @@
     },
     "drawing_layout": {
       "type": "object",
-      "description": "OPTIONAL spatial-intent layer (v1.5+). Functional grouping (layout_group enum) + routing intent + multi-sheet split judgment. CAD layer names resolved at render time via shared/standards/drafting/<jurisdiction>/cad-layers.json. No x/y coordinates — runtime renderer computes geometry.",
+      "description": "OPTIONAL spatial-intent layer (v1.5+). Functional grouping (layout_group enum) + routing intent + multi-sheet split judgment. CAD layer names resolved at render time via shared/standards/drafting/<jurisdiction>/cad-layers.json. No x/y coordinates \u2014 runtime renderer computes geometry.",
       "required": [
         "sheets",
         "boards"
@@ -513,6 +513,11 @@
           }
         }
       }
+    },
+    "floor_plan_context_consumed": {
+      "type": "boolean",
+      "default": false,
+      "description": "True iff the IR generator consumed an injected '## Floor plan context' markdown block. False when the skill ran on engineer free-text only."
     }
   }
 }

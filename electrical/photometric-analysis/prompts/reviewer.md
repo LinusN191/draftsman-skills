@@ -160,3 +160,18 @@ Cross-skill flag cascading: any reviewer-emitted non_compliance_flags entry is m
 into the photometric-grid intent payload's `non_compliance_flags[]` array, which
 lighting-layout INV-11 (per post-Wave-1 validator.md) cascades upstream to lighting-layout's
 own non_compliance_flags. Honest-disclosure preserved end-to-end.
+
+## Floor plan context
+
+When the prompt context includes a `## Floor plan context` markdown
+block, this skill is **context-only** and the reviewer SHOULD flag:
+
+1. IR that attempts geometric placement derived from the block (this
+   skill does not own placement).
+2. IR that does not reference the building label in titles when the
+   block carries one.
+3. IR that ignores meaningful room metadata (names, types, ceiling
+   heights) where the skill should use it for labelling or
+   calculation.
+4. IR that omits `floor_plan_context_consumed: true` when the block
+   was present.
