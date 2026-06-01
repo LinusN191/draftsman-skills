@@ -84,14 +84,22 @@
     },
     "label_format_standard": {
       "type": "string",
-      "enum": ["BS", "NEC", "IEC"],
-      "description": "Jurisdiction-bound label format. BS = BS 7671:2018+A2:2022 §514 + IET OSG Appendix B. NEC = NEC §408.4(A). IEC = IEC 60364-5-51 §514 + IEC 61439-1 §5.5. Maps from jurisdiction: GB/KE → BS; US → NEC; INT/EU → IEC. Engineer override permitted (INV-14 Rule 1 emits INFO not HIGH). Added Sprint D2.2."
+      "enum": [
+        "BS",
+        "NEC",
+        "IEC"
+      ],
+      "description": "Jurisdiction-bound label format. BS = BS 7671:2018+A2:2022 \u00a7514 + IET OSG Appendix B. NEC = NEC \u00a7408.4(A). IEC = IEC 60364-5-51 \u00a7514 + IEC 61439-1 \u00a75.5. Maps from jurisdiction: GB/KE \u2192 BS; US \u2192 NEC; INT/EU \u2192 IEC. Engineer override permitted (INV-14 Rule 1 emits INFO not HIGH). Added Sprint D2.2."
     },
     "board_label": {
       "type": "object",
-      "required": ["text", "svg", "tool_call_pending_for_pdf_png"],
+      "required": [
+        "text",
+        "svg",
+        "tool_call_pending_for_pdf_png"
+      ],
       "additionalProperties": false,
-      "description": "Per-board headline label per BS 7671 §514.13 / NEC §408.4 / IEC 60364-5-51 §514. Affixed to the panel face for field identification. SVG content is LLM-writable from templates/<standard>-board-label.svg.template; PDF/PNG rasterisation deferred to runtime via shared/calculations/electrical/render-label.json. Added Sprint D2.2.",
+      "description": "Per-board headline label per BS 7671 \u00a7514.13 / NEC \u00a7408.4 / IEC 60364-5-51 \u00a7514. Affixed to the panel face for field identification. SVG content is LLM-writable from templates/<standard>-board-label.svg.template; PDF/PNG rasterisation deferred to runtime via shared/calculations/electrical/render-label.json. Added Sprint D2.2.",
       "properties": {
         "text": {
           "type": "string",
@@ -477,23 +485,39 @@
           },
           "circuit_label": {
             "type": "object",
-            "required": ["text", "svg", "tool_call_pending_for_pdf_png"],
+            "required": [
+              "text",
+              "svg",
+              "tool_call_pending_for_pdf_png"
+            ],
             "additionalProperties": false,
-            "description": "Per-circuit strip-label per BS 7671 §514 / NEC §408.4(A) / IEC 60364-5-51 §514. Affixed to the directory pocket inside the panel door. Added Sprint D2.2.",
+            "description": "Per-circuit strip-label per BS 7671 \u00a7514 / NEC \u00a7408.4(A) / IEC 60364-5-51 \u00a7514. Affixed to the directory pocket inside the panel door. Added Sprint D2.2.",
             "properties": {
               "text": {
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 120,
-                "description": "Formatted per board.label_format_standard. ≤120 chars — accommodates two-line strip-label layouts and NEC labels where designation + load_served + OCPD rating together exceed a single line."
+                "description": "Formatted per board.label_format_standard. \u2264120 chars \u2014 accommodates two-line strip-label layouts and NEC labels where designation + load_served + OCPD rating together exceed a single line."
               },
-              "svg": {"type": "string", "minLength": 50, "description": "Populated SVG markup (no {{placeholder}} remnants)."},
-              "tool_call_pending_for_pdf_png": {"type": "boolean", "description": "true until calc.render_label runs."}
+              "svg": {
+                "type": "string",
+                "minLength": 50,
+                "description": "Populated SVG markup (no {{placeholder}} remnants)."
+              },
+              "tool_call_pending_for_pdf_png": {
+                "type": "boolean",
+                "description": "true until calc.render_label runs."
+              }
             }
           },
           "diversity_basis": {
             "type": "object",
-            "required": ["load_type", "factor_applied", "method", "citation"],
+            "required": [
+              "load_type",
+              "factor_applied",
+              "method",
+              "citation"
+            ],
             "additionalProperties": false,
             "description": "Per-circuit diversity factor + the regulation/standard that authorises it. Surfaces the audit trail of which clause was applied so a downstream reviewer can verify without inferring from designation alone. Added Sprint D2.3.",
             "properties": {
@@ -519,7 +543,7 @@
                 "type": "number",
                 "minimum": 0.0,
                 "maximum": 1.0,
-                "description": "Diversity factor 0.0–1.00. 1.00 means no diversity (load takes full demand)."
+                "description": "Diversity factor 0.0\u20131.00. 1.00 means no diversity (load takes full demand)."
               },
               "method": {
                 "type": "string",
@@ -535,15 +559,23 @@
                 "additionalProperties": false,
                 "description": "Required when method == 'largest_plus_remainder_pct'. Sockets: 100/40; motor group: 100/50; AC group: 100/75.",
                 "properties": {
-                  "largest_pct": {"type": "number", "minimum": 0, "maximum": 100},
-                  "remainder_pct": {"type": "number", "minimum": 0, "maximum": 100}
+                  "largest_pct": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "remainder_pct": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  }
                 }
               },
               "citation": {
                 "type": "string",
                 "minLength": 20,
                 "maxLength": 500,
-                "description": "Names the clause (Reg / § / Table / OSG / CoP / TM). INV-15 enforces presence of a recognisable clause marker. Cap raised 300→500 in D2.3 fix-pass to preserve engineering-content citations (e.g. multi-cite citations with inline arithmetic + honest-disclosure notes for engineer-declared rules) per [[feedback-no-trim-non-consequential]]."
+                "description": "Names the clause (Reg / \u00a7 / Table / OSG / CoP / TM). INV-15 enforces presence of a recognisable clause marker. Cap raised 300\u2192500 in D2.3 fix-pass to preserve engineering-content citations (e.g. multi-cite citations with inline arithmetic + honest-disclosure notes for engineer-declared rules) per [[feedback-no-trim-non-consequential]]."
               }
             }
           }
@@ -649,7 +681,7 @@
           }
         ]
       },
-      "description": "IEC 60617 symbol_id roll-up — each entry must resolve in symbol-index.json (string form) or be a richer object form for jurisdictions with extra symbol metadata"
+      "description": "IEC 60617 symbol_id roll-up \u2014 each entry must resolve in symbol-index.json (string form) or be a richer object form for jurisdictions with extra symbol metadata"
     },
     "flags": {
       "type": "array",
@@ -659,7 +691,7 @@
     },
     "per_phase_loading_a": {
       "type": "object",
-      "description": "Per-phase design current loading on TPN boards, summed from circuits[].phase (a 3-phase load contributes Ib/√3 to each phase). Required on TPN/TPN_plus_E boards.",
+      "description": "Per-phase design current loading on TPN boards, summed from circuits[].phase (a 3-phase load contributes Ib/\u221a3 to each phase). Required on TPN/TPN_plus_E boards.",
       "properties": {
         "L1": {
           "type": "number",
@@ -678,7 +710,7 @@
     "neutral_current_a": {
       "type": "number",
       "minimum": 0,
-      "description": "Worst-case unbalanced neutral current per IEC 60364-5-52 § 524.2.2: I_N = sqrt(IL1² + IL2² + IL3² − IL1·IL2 − IL2·IL3 − IL3·IL1). Required on TPN/TPN_plus_E boards with non-zero loads."
+      "description": "Worst-case unbalanced neutral current per IEC 60364-5-52 \u00a7 524.2.2: I_N = sqrt(IL1\u00b2 + IL2\u00b2 + IL3\u00b2 \u2212 IL1\u00b7IL2 \u2212 IL2\u00b7IL3 \u2212 IL3\u00b7IL1). Required on TPN/TPN_plus_E boards with non-zero loads."
     },
     "rationale": {
       "$ref": "../../../shared/schemas/core/rationale.schema.json"
@@ -719,6 +751,11 @@
           }
         }
       }
+    },
+    "floor_plan_context_consumed": {
+      "type": "boolean",
+      "default": false,
+      "description": "True iff the IR generator consumed an injected '## Floor plan context' markdown block. False when the skill ran on engineer free-text only."
     }
   }
 }
