@@ -151,3 +151,17 @@ When `meta.consumed_intents[]` does NOT contain a `cable-sizing` entry:
 - Modifying the IR (return verdict, never edits).
 - Style preferences not tied to a citable rule (e.g. preferring `MCB+RCD` over `RCBO` when both are jurisdictionally valid).
 - Validating upstream intent correctness — small-power v1.0 is a leaf skill with no upstream consumers. v1.1+ may add earthing + fault-level + db-layout consumption; the reviewer will gain cross-skill checks then.
+
+## Architectural state (Sprint 4-AB)
+
+When the prompt context includes `architectural_state`, this skill is
+**geometry-aware** and the reviewer SHOULD flag:
+
+1. Placements that ignore the room polygons (e.g. uniform-grid
+   placement that crosses corridor boundaries).
+2. IRs that don't reference `building.label` in titles when the
+   building model is confirmed.
+3. IRs that consume rooms with `confirmed=false` without surfacing
+   the dependency in `assumptions`.
+
+See `shared/architectural_state_contract.md` for the full contract.

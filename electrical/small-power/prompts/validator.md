@@ -261,3 +261,20 @@ Emit a single JSON object:
 Warnings from INV-06 (unjustified Type B) and INV-10 (drafting standard mismatch) do not block `valid: true` but appear in `warnings[]` for engineer review.
 
 `stage` records where validation stopped (or `"passed"` for full success).
+
+## Architectural state (Sprint 4-AB)
+
+When `architectural_state` is present, the validator MUST surface a
+finding for any of:
+
+1. An entity whose centroid is not contained by any
+   `floors_in_scope[].rooms[].polygon` in scope.
+2. `unconfirmed_rooms_in_scope > 0` AND the IR's `assumptions` array
+   does not mention the unconfirmed rooms.
+3. The IR's `building_label` field (if present) does not match
+   `architectural_state.building.label`.
+
+Findings should reference the room ID and the architectural state
+payload location so the reviewer can correlate.
+
+See `shared/architectural_state_contract.md` for the full contract.
