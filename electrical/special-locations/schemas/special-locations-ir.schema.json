@@ -503,6 +503,14 @@
         "is_wet_room": {
           "type": "boolean",
           "description": "When true, Zone 1 polygon spans full floor area (no bath tray anchor; full floor is Zone 1). BS 7671:2018 §701."
+        },
+        "is_external": {
+          "type": "boolean",
+          "description": "True when room is external (drives §715 IP routing + D-5 ambient flag). When true, ambient_temperature_c SHOULD be supplied or D-5 reviewer flag fires."
+        },
+        "ambient_temperature_c": {
+          "type": ["number", "null"],
+          "description": "Ambient design temperature in °C. Drives ELV cable de-rating per BS 7671 Appendix 4 Table 4B1 (for external installations) and sauna thermal cable rating per §703. Optional; defaults to 30°C with D-5 reviewer flag when room.is_external=true."
         }
       },
       "description": "Mirror of input room descriptor. Drives zone-derivation geometry and section selection."
