@@ -1,6 +1,6 @@
 # special-locations v1.0 — Design Spec (Wave 1 Second Deliverable)
 
-**Date:** 2026-06-01
+**Date:** 2026-06-01 (v1.0.1 — citation hygiene pass + §703 sauna re-zoning + §710 IT system depth correction)
 **Spec author:** brainstorm session via `superpowers:brainstorming`
 **Cluster context:** [2026-05-29-lighting-cluster-roadmap.md](2026-05-29-lighting-cluster-roadmap.md) Wave 1 second deliverable, parallel with `photometric-analysis` v1.0.0 (shipped 2026-05-30).
 **Predecessor:** [2026-05-30-photometric-analysis-design.md](2026-05-30-photometric-analysis-design.md) (Wave 1 first deliverable; established cascade-contract pattern this spec extends).
@@ -40,9 +40,9 @@
 |---|---|---|
 | §701 | Locations containing a bath or shower | Zone 0/1/2 + outside-zones; wet-room expansion; whirlpool variant |
 | §702 | Swimming pools and other basins | Zone 0/1/2 + adjacent-room overlap; pool_main_equipotential_bonding |
-| §703 | Saunas | Heater-proximity zones (cylindrical); heat-rated cable as zone field |
-| §710 | Medical locations | Groups 0/1/2 full coverage; full medical IT system architecture (transformer + LIM + 0.5 s switchover + supplementary bonding) |
-| §715 | Extra-low voltage lighting | ELV barrier zones + cable spacing + barrier/label requirements |
+| §703 | Saunas | **3 zones** (zone_1 around heater high-temp; zone_2 within sauna away from heater; zone_3 above 1.5 m for accessories); heat-rated cable as zone field; 30 mA RCD on all circuits except heater per §703.411.3.3 |
+| §710 | Medical locations | Groups 0/1/2 full coverage; full medical IT system architecture (isolating transformer per BS EN 61557-8 IMD + **8 s alarm response time** + supplementary bonding ≤0.2Ω); HTM 06-01 NHS precedence + BS EN 60601 equipment standards cross-referenced |
+| §715 | Extra-low voltage lighting | ELV barrier zones + cable spacing + barrier/label requirements; transformer short-circuit protection per BS EN 61558-2-6 (file-verified cross-reference) |
 
 ### Scope corrections from cluster roadmap §6.4 (auditable)
 
@@ -56,6 +56,40 @@ The cluster roadmap brief listed v1.0 scope as `§701 + §710 + §714 + §753`. 
 | §703 saunas | Real (§703 exists). Listed as v1.1 in roadmap; promoted to v1.0. | Included in v1.0. |
 
 Verified against `shared/standards/electrical/BS7671/part7-special-locations.json` (verification_status: `verified-against-source`). This avoids the D2.3 citation-misattribution class of bug at the brainstorm stage rather than the implementer stage.
+
+### Verified citation table (v1.0.1 — every clause the skill cites)
+
+Cross-checked against the verified standards file. **No other Part 7 sub-clause citations are valid** — if any prompt/INV/example needs to cite a clause not on this table, fall back to the section's top-level citation + a named cross-reference standard.
+
+| Citation | Section | Verified in file | Used for |
+|---|---|---|---|
+| `BS 7671:2018 §701` | §701 | yes (top-level) | Generic §701 scope reference |
+| `BS 7671:2018 §701.411.3.3` | §701 | yes | 30 mA RCD on all bathroom circuits |
+| `BS 7671:2018 §701.414.4.5` | §701 | yes | SELV ≤12 V in Zone 0 |
+| `BS 7671:2018 §701.415.2` | §701 | yes | Supplementary equipotential bonding |
+| `BS 7671:2018 §701.512.2` | §701 | yes | IPx5 where water jets used (drives whirlpool pump IP) |
+| `BS 7671:2018 §701.512.3` | §701 | yes | Socket outlet ≥3 m from zone 1 boundary |
+| `BS 7671:2018 §702` | §702 | yes (top-level) | Generic §702 scope reference |
+| `BS 7671:2018 §702.415.1` | §702 | yes | **Main equipotential bonding (NOT §702.55.1)** |
+| `BS 7671:2018 §702.415.2` | §702 | yes | Pool supplementary bonding |
+| `BS 7671:2018 §702.55.4` | §702 | yes | Zone 2 extension into changing rooms (barrier check) |
+| `BS 7671:2018 §703` | §703 | yes (top-level) | Generic §703 scope reference |
+| `BS 7671:2018 §703.411.3.3` | §703 | yes | 30 mA RCD on sauna circuits except heater |
+| `BS 7671:2018 §710` | §710 | yes (top-level) | Generic §710 scope (Group 0/1/2 definitions); no sub-clauses valid in this file |
+| `BS 7671:2018 §715` | §715 | yes (top-level) | Generic §715 scope (no sub-clauses valid in this file) |
+
+**Cross-reference standards verified in the file (cited by the skill where Part 7 itself lacks sub-clauses):**
+
+| Cross-reference | Used for |
+|---|---|
+| `HTM 06-01` (NHS technical memorandum) | Medical electrical services; takes precedence in NHS sites; safety service categories live here, NOT in §710 |
+| `BS EN 60601` series | Medical electrical equipment safety (cross-ref for §710 medical) |
+| `BS EN 61557-8` | Insulation monitoring devices (IMD) for medical IT systems — defines the 8 s alarm response time for §710 Group 2 |
+| `BS EN 61558-2-6` | Transformer short-circuit protection for §715 ELV lighting |
+| `BS 5266-1` + `HTM 06-01` | Emergency lighting in medical locations (3 h operating-light backup; 24 h escape) |
+| `BS 5489-1` | External road/area lighting (NOT a Part 7 section; routes external installations generically through BS 7671 §522 IP) |
+
+**Banned citations (would fail INV / fix-pass):** `§701.32`, `§701.55`, `§702.55.1`, `§702.55.2`, `§702.32`, `§703.55`, `§703.512`, `§703.413`, `§710.413.1.5`, `§710.314`, `§710.411.3.3`, `§715.560.4`, `§715.521`, `§715.422`. These were transcribed during brainstorm but do not exist in the verified file; using them would replicate the §714/Reg 559 class of error.
 
 ### v1.1 deferrals (declared, not built)
 
@@ -81,9 +115,9 @@ Verified against `shared/standards/electrical/BS7671/part7-special-locations.jso
 | Zone derivation | Auto-derive from upstream anchor positions | Matches DraftsMan calc-primitive pattern; engineering-judgment value at launch |
 | Anchor source | Top-level `anchor_fixtures[]` input (sourced by runtime from architectural extraction) | Skill stays independent of plumbing/medical-gas skill maturity; runtime provenance carried via `_extraction_source` field |
 | Cascade consumers | 3 (lighting-layout v1.6 + small-power v1.2 + db-layout v1.5) | Full cross-discipline coverage; replaces "lighting-only" misconception |
-| Intent shape | Single flat intent with `zone_type` discriminator (12 values) | Pure additive growth for v1.1+ sections; one cascade contract per consumer; mirrors db-layout `board_kind` pattern |
+| Intent shape | Single flat intent with `zone_type` discriminator (**14 values** — §703 sauna expanded to 3 zones per file) | Pure additive growth for v1.1+ sections; one cascade contract per consumer; mirrors db-layout `board_kind` pattern |
 | Geometry depth | 2.5D — plan polygon + height_min/max + parametric cylinder | Captures 3D accuracy where it matters (shower head height, medical envelope) without forcing 3D vertex authoring |
-| §710 medical depth | Groups 0/1/2 + full IT system (transformer + LIM + 0.5 s switchover) | Most engineering-valuable scope at launch; sibling skill split deferred to v2.0 only if needed |
+| §710 medical depth | Groups 0/1/2 + full IT system (isolating transformer + IMD per **BS EN 61557-8 8 s alarm response** + supplementary bonding ≤0.2Ω + HTM 06-01 NHS precedence) | Most engineering-valuable scope at launch; sibling skill split deferred to v2.0 only if needed |
 | Cross-check pattern | Hybrid (authoritative source + thin consumer cross-check) | Defense in depth without re-evaluation drift; matches photometric INV-11 sub-check 3 pattern |
 
 ---
@@ -113,10 +147,10 @@ medical_patient_position | elv_lighting_circuit_anchor
 | `dimensions` | `{length_mm, width_mm, height_mm}` | conditional | Required when `shape_kind = rectangular` |
 | `shape_kind` | `rectangular \| cylinder` | yes | `cylinder` for pool/medical/sauna_heater |
 | `radius_mm` | number | conditional | Required when `shape_kind = cylinder` |
-| `bath_kind` | `standard \| whirlpool` | conditional | Required when `type = bath_basin` (§701 + §701.55) |
+| `bath_kind` | `standard \| whirlpool` | conditional | Required when `type = bath_basin`. Whirlpool variant triggers INV-06 + D-3 (§701 + §701.512.2 IPx5 where water jets used; no §701.55 sub-clause in verified file) |
 | `medical_group` | `0 \| 1 \| 2` | conditional | Required when `type = medical_patient_position` |
-| `shower_head_height_mm` | number | conditional | Required when `type = shower_position`; drives Zone 1 ceiling per §701.32 |
-| `whirlpool_pump_position` | `{x_mm, y_mm, z_mm}` | optional | Per §701.55; defaulted to bath edge if absent + flagged as assumption by reviewer D-3 |
+| `shower_head_height_mm` | number | conditional | Required when `type = shower_position`; drives Zone 1 ceiling (per `BS 7671:2018 §701` — sub-clause not cited per verified-file constraint; ceiling math + 2.25 m floor per §701 zone-table common-knowledge) |
+| `whirlpool_pump_position` | `{x_mm, y_mm, z_mm}` | optional | Defaulted to bath edge if absent + flagged as assumption by reviewer D-3. Citation: `BS 7671:2018 §701 + §701.512.2` (IPx5 where water jets used) |
 | `_extraction_source` | enum (3 values) | yes | `architectural_drawing_extraction \| engineer_manual_entry \| inferred_from_room_type` |
 | `_provenance_note` | string (≥40 char) | yes | Honest disclosure (INV-09) |
 
@@ -132,7 +166,7 @@ medical_group_0_area | medical_group_1_ward | medical_group_2_theatre
 external_landscape | other
 ```
 
-**Per-room fields:** `room_polygon_mm` (plan boundary in room-local coords), `ceiling_height_mm`, `floor_finish` (`tiles | vinyl | carpet | screed | external_ground`), `is_external` (boolean — drives §715/§522 IP routing), `is_wet_room` (boolean — §701.32 expands Zone 1 to full floor area), `ambient_temperature_c` (optional — drives ELV de-rating per reviewer D-5).
+**Per-room fields:** `room_polygon_mm` (plan boundary in room-local coords), `ceiling_height_mm`, `floor_finish` (`tiles | vinyl | carpet | screed | external_ground`), `is_external` (boolean — drives §715/§522 IP routing), `is_wet_room` (boolean — expands Zone 1 to full floor area per `BS 7671:2018 §701` + IET GN7 wet-room commentary; no §701 sub-clause for this in the verified file, generic §701 citation applies), `ambient_temperature_c` (optional — drives ELV de-rating per reviewer D-5).
 
 ### 4.3 `jurisdiction` (REQUIRED)
 
@@ -158,10 +192,11 @@ For §710 Group 2 rooms when engineer has commissioned IT system data ahead of c
 ```yaml
 {
   isolating_transformer_va: <int>,
-  line_isolation_monitor_present: <bool>,
-  switchover_time_ms_observed: <int>,
+  insulation_monitoring_device_present: <bool>,
+  imd_alarm_response_time_s_observed: <int>,            # 8 s typical per BS EN 61557-8
   supplementary_bonding_verified: <bool>,
-  safety_service_category: 1 | 2 | 3   # per §710.314
+  supplementary_bonding_resistance_ohm_observed: <number>,  # ≤ 0.2 Ω per §710 verified-file body
+  safety_service_category: 1 | 2 | 3                    # per HTM 06-01 NHS technical memorandum (NOT a BS 7671 sub-clause)
 }
 ```
 
@@ -196,15 +231,17 @@ For ELV §715 luminaire-IP cross-check via consumed lighting-layout intent. Mirr
 
 Plus: `invariants[]` (validator INVs), `rationale` (chat_summary + sections per `[[rationale.schema.json]]`).
 
-### 5.2 `zones[]` discriminated by `zone_type` (12 values)
+### 5.2 `zones[]` discriminated by `zone_type` (14 values)
 
 ```
 bath_zone_0 | bath_zone_1 | bath_zone_2                            # §701
 pool_zone_0 | pool_zone_1 | pool_zone_2                            # §702
-sauna_heater_proximity                                              # §703
+sauna_zone_1 | sauna_zone_2 | sauna_zone_3                         # §703 (3 zones per verified file: zone_1 around heater high-temp; zone_2 within sauna away from heater; zone_3 above 1.5 m for accessories)
 medical_envelope_group_0 | medical_envelope_group_1 | medical_envelope_group_2  # §710 (separate values — see §3 decision)
 elv_barrier_zone                                                    # §715
 ```
+
+**§703 sauna zone geometry note:** The verified file specifies sauna_zone_1 = "around the heater (high temperature zone)" — small rectangular footprint near heater anchor; sauna_zone_2 = "within the sauna room, away from heater" — sauna room polygon minus zone_1; sauna_zone_3 = "above 1.5 m for accessories" — full sauna room footprint, height_min_mm = 1500. The zone-derivation library (A.4) implements this 3-zone split.
 
 **Per-zone common fields:**
 
@@ -213,7 +250,7 @@ elv_barrier_zone                                                    # §715
   zone_id: string,
   zone_type: <enum 12 values>,
   source_anchor_id: string,
-  derivation_clause: "BS 7671:2018 §701.32 / §702.55.4 / etc.",
+  derivation_clause: "BS 7671:2018 §701 / §702 / §702.415.1 / §702.55.4 / §703 / §703.411.3.3 / §710 / §715 — only verified clauses per §3 table",
   boundary_plan_polygon_mm: [[x,y], …],       # ≥3 vertices; ≥12 sides for cylindrical zones
   height_min_mm: number,
   height_max_mm: number,                       # height_min ≤ height_max enforced at schema level
@@ -237,6 +274,8 @@ elv_barrier_zone                                                    # §715
 | `medical_envelope_group_2` | sibling `electrical_constraints[]` entry with `constraint_type == "medical_it_system"` whose `applies_to_zone_ids[]` includes this `zone_id` |
 | `medical_envelope_group_1` | sibling `supplementary_equipotential_bonding` constraint |
 | `pool_zone_0 / 1 / 2` | sibling `pool_main_equipotential_bonding` constraint |
+| `sauna_zone_1` | heat-rated cable as zone field; 30 mA RCD-exempt-for-heater note per §703.411.3.3 |
+| `sauna_zone_2 / 3` | 30 mA RCD on all circuits per §703.411.3.3 |
 | `elv_barrier_zone` | sibling `elv_separation` constraint |
 | `bath_*` zones in `is_wet_room: true` room | Zone 1 polygon spans full floor area |
 
@@ -245,8 +284,8 @@ elv_barrier_zone                                                    # §715
 ```
 medical_it_system                        # §710 Group 2 only
 supplementary_equipotential_bonding      # §701 + §710 Group 1
-pool_main_equipotential_bonding          # §702.55.1
-whirlpool_pump_circuit                   # §701.55
+pool_main_equipotential_bonding          # §702.415.1 (verified)
+whirlpool_pump_circuit                   # §701 + §701.512.2 IPx5 (whirlpool sub-clause not in verified file)
 rcd_blanket_by_room                      # §701: 30 mA RCD on ALL circuits
 elv_separation                           # §715
 ```
@@ -257,33 +296,41 @@ elv_separation                           # §715
 
 ```yaml
 medical_it_system:
-  isolating_transformer_va_min: int       # typical 3.15-8 kVA (reviewer D-4)
-  line_isolation_monitor_required: bool
-  switchover_time_ms_max: int             # 500 per §710.413.1.5
-  safety_service_category: 1 | 2 | 3      # per §710.314
+  isolating_transformer_va_min: int                        # typical 3.15-8 kVA (reviewer D-4)
+  insulation_monitoring_device_required: bool              # IMD per BS EN 61557-8
+  imd_alarm_response_time_s_max: int                       # 8 per BS EN 61557-8 (NOT 0.5 s — that was a prior misattribution)
+  safety_service_category: 1 | 2 | 3                       # per HTM 06-01 NHS technical memorandum (NOT a BS 7671 sub-clause)
   supplementary_bonding_required: bool
+  supplementary_bonding_max_resistance_ohm: 0.2            # per §710 verified-file body
+  hospital_precedence: "HTM 06-01"                         # NHS-site mandatory cross-reference
+  equipment_standard: "BS EN 60601 series"                 # medical equipment cross-reference
+  _verified_cross_refs: ["BS EN 61557-8", "HTM 06-01", "BS EN 60601"]
 
 supplementary_equipotential_bonding:
   metallic_parts_listed: [string]
-  bonding_conductor_csa_min_mm2: number   # typical 2.5 / 4 mm²
+  bonding_conductor_csa_min_mm2: number                    # typical 2.5 / 4 mm² per §701.415.2
 
 pool_main_equipotential_bonding:
-  extraneous_parts_listed: [string]       # ladders, springboards, pipe fittings, pool surrounds, …
-  conductor_csa_min_mm2: 10               # per §702.55.1
+  extraneous_parts_listed: [string]                        # ladders, springboards, pipe fittings, pool surrounds, …
+  conductor_csa_min_mm2: 10                                # per §702.415.1 (NOT §702.55.1 — that does not exist in verified file)
 
 whirlpool_pump_circuit:
-  pump_position_zone: string              # zone_id where pump sits
+  pump_position_zone: string                               # zone_id where pump sits
   requires_local_isolation: bool
-  ip_rating_min: "IPx5"                   # typical for pump enclosure
+  ip_rating_min: "IPx5"                                    # per §701.512.2 (water jets clause)
+  _whirlpool_general_citation: "BS 7671:2018 §701 (no sub-clause for whirlpools in verified file)"
 
 rcd_blanket_by_room:
-  rcd_rating_ma: 30                       # per §701.411.3.3
+  rcd_rating_ma: 30                                        # per §701.411.3.3 (bathrooms) and §703.411.3.3 (saunas)
   applies_to_circuit_types: ["lighting", "sockets", "shower_unit", "fixed_equipment"]
+  sauna_heater_excluded: bool                              # per §703.411.3.3 the heater circuit is exempt
 
 elv_separation:
   lv_cable_spacing_mm_min: number
   barrier_required: bool
   label_required: bool
+  transformer_short_circuit_protected: bool                # per BS EN 61558-2-6 (verified-file cross-reference)
+  _elv_general_citation: "BS 7671:2018 §715 + BS EN 61558-2-6 (no §715 sub-clauses in verified file)"
 ```
 
 ### 5.4 `existing_fixtures_audit[]` (conditional)
@@ -317,7 +364,7 @@ Per-fixture-vs-zone analysis. **Populated only when `mode == full_analysis` AND 
   non_compliance_flags: [
     {flag, severity, fixture_id?, zone_id?, clause, message, _cascaded_from?}
   ],
-  assumptions: [string],                    # e.g. "Whirlpool pump position defaulted to bath edge per §701.55"
+  assumptions: [string],                    # e.g. "Whirlpool pump position defaulted to bath edge; IPx5 per BS 7671:2018 §701.512.2"
   _zone_derivation_engine: "auto_from_anchors_v1.0",
   _engineering_judgments: [string]          # reviewer flags surface here
 }
@@ -401,19 +448,19 @@ Every `existing_fixtures_audit[i].compliance_status == "violation"` has a corres
 ### 7.2 Compliance-required-by-context (5 INVs, all HIGH)
 
 **INV-03 — §710 Group 2 → medical IT system mandatory** | HIGH
-`medical_envelope_group_2` zone present ⇒ sibling `medical_it_system` constraint with `applies_to_zone_ids[]` containing the Group 2 zone id. Citation: BS 7671:2018 §710.413.1.5.
+`medical_envelope_group_2` zone present ⇒ sibling `medical_it_system` constraint with `applies_to_zone_ids[]` containing the Group 2 zone id AND `imd_alarm_response_time_s_max == 8` AND `supplementary_bonding_max_resistance_ohm == 0.2`. Citation: `BS 7671:2018 §710` + `BS EN 61557-8` (IMD alarm response 8 s) + `HTM 06-01` (NHS precedence).
 
-**INV-04 — §701 bathroom → 30 mA RCD blanket** | HIGH
-`room_type ∈ {bathroom, shower_room}` ⇒ `rcd_blanket_by_room` constraint with `rcd_rating_ma == 30`. Citation: BS 7671:2018 §701.411.3.3.
+**INV-04 — §701 bathroom + §703 sauna → 30 mA RCD blanket** | HIGH
+`room_type ∈ {bathroom, shower_room}` ⇒ `rcd_blanket_by_room` constraint with `rcd_rating_ma == 30` per `BS 7671:2018 §701.411.3.3`. `room_type == sauna` ⇒ same constraint with `sauna_heater_excluded: true` per `BS 7671:2018 §703.411.3.3` (heater circuit is exempt).
 
 **INV-05 — §702 pool → main equipotential bonding** | HIGH
-`room_type == swimming_pool_hall` ⇒ `pool_main_equipotential_bonding` constraint with `extraneous_parts_listed[]` non-empty AND `conductor_csa_min_mm2 >= 10`. Citation: BS 7671:2018 §702.55.1.
+`room_type == swimming_pool_hall` ⇒ `pool_main_equipotential_bonding` constraint with `extraneous_parts_listed[]` non-empty AND `conductor_csa_min_mm2 >= 10`. Citation: `BS 7671:2018 §702.415.1` (NOT §702.55.1 — that does not exist in the verified file).
 
 **INV-06 — Whirlpool bath → pump circuit constraint** | HIGH
-`bath_basin` anchor with `bath_kind == whirlpool` ⇒ `whirlpool_pump_circuit` constraint with `pump_position_zone`, `requires_local_isolation: true`, `ip_rating_min >= IPx5`. Citation: BS 7671:2018 §701.55.
+`bath_basin` anchor with `bath_kind == whirlpool` ⇒ `whirlpool_pump_circuit` constraint with `pump_position_zone`, `requires_local_isolation: true`, `ip_rating_min >= IPx5`. Citation: `BS 7671:2018 §701` + `§701.512.2` (IPx5 where water jets used).
 
 **INV-07 — ELV §715 anchor → separation constraint** | HIGH
-`elv_lighting_circuit_anchor` ⇒ `elv_separation` constraint with `lv_cable_spacing_mm_min`, `barrier_required`, `label_required`. Citation: BS 7671:2018 §715.560.4 + §715.521.
+`elv_lighting_circuit_anchor` ⇒ `elv_separation` constraint with `lv_cable_spacing_mm_min`, `barrier_required`, `label_required`, `transformer_short_circuit_protected: true`. Citation: `BS 7671:2018 §715` + `BS EN 61558-2-6` (transformer short-circuit protection).
 
 ### 7.3 Fixture-vs-zone compliance (1 INV, HIGH)
 
@@ -451,10 +498,10 @@ Anchor with `_extraction_source == "inferred_from_room_type"` driving a `medical
 `pool_zone_2` boundary within 200 mm of room polygon edge → check adjacent room's `pool_barrier_present` flag; flag if unknown (per §702.55.4).
 
 **D-3 — Whirlpool pump position assumption**
-`bath_kind == whirlpool` with no `whirlpool_pump_position` supplied → flag default-placement assumption (skill places pump at bath edge per §701.55 convention).
+`bath_kind == whirlpool` with no `whirlpool_pump_position` supplied → flag default-placement assumption (skill places pump at bath edge by §701 general convention; IPx5 required per `BS 7671:2018 §701.512.2`).
 
 **D-4 — Medical Group 2 isolating-transformer VA plausibility**
-`medical_it_system` constraint with `isolating_transformer_va_min < 3.15 kVA OR > 8 kVA` → flag possible under-/over-sizing. Citation: BS 7671 §710.413.1.5 + IEC 61557-8.
+`medical_it_system` constraint with `isolating_transformer_va_min < 3.15 kVA OR > 8 kVA` → flag possible under-/over-sizing (LIM threshold mis-tunes outside typical band, producing spurious alarms during procedures). Citation: `BS 7671:2018 §710` + `BS EN 61557-8` (IMD spec) + `HTM 06-01` (NHS technical memorandum).
 
 **D-5 — §715 ELV external-installation thermal de-rating**
 `room.is_external == true` AND `elv_lighting_circuit_anchor` present AND no `ambient_temperature_c` supplied → flag default 30°C assumption; direct engineer to BS 7671 Appendix 4 Table 4B1.
@@ -468,13 +515,13 @@ Anchor with `_extraction_source == "inferred_from_room_type"` driving a `medical
 | # | Example name | Jurisdiction | Section(s) | Demonstrates |
 |---|---|---|---|---|
 | 1 | `uk-bathroom-standard-bath-and-shower` | GB | §701 | Happy path — all 10 INVs PASS |
-| 2 | `uk-bathroom-whirlpool-with-pump` | GB | §701 + §701.55 | INV-06 + D-3 reviewer flag |
-| 3 | `uk-shower-room-wet-room-floor` | GB | §701 + §701.32 | Wet-room Zone 1 expansion |
-| 4 | `uk-pool-hall-with-changing-room-adjacency` | GB | §702 + §702.55.4 | D-2 reviewer flag + ≥10 mm² bonding |
-| 5 | `uk-sauna-with-heater-proximity-zones` | GB | §703 | Cylindrical heater zone |
-| 6 | `uk-medical-or-group-2-with-it-system` | GB | §710 Group 2 | Full medical_it_system constraint |
-| 7 | `uk-medical-ward-group-1-bonding` | GB | §710 Group 1 | supplementary_equipotential_bonding |
-| 8 | `uk-external-landscape-elv-lighting` | GB | §715 + §522 | D-5 reviewer flag + elv_separation |
+| 2 | `uk-bathroom-whirlpool-with-pump` | GB | §701 + §701.512.2 | INV-06 + D-3 reviewer flag (whirlpool IPx5 per water-jets clause) |
+| 3 | `uk-shower-room-wet-room-floor` | GB | §701 (wet-room expansion per IET GN7 commentary; no §701 sub-clause in verified file) | Wet-room Zone 1 expansion |
+| 4 | `uk-pool-hall-with-changing-room-adjacency` | GB | §702 + §702.415.1 + §702.55.4 | D-2 reviewer flag + ≥10 mm² main bonding |
+| 5 | `uk-sauna-with-3-zone-derivation` | GB | §703 + §703.411.3.3 | 3-zone sauna split (zone_1 heater + zone_2 sauna body + zone_3 above 1.5 m); RCD blanket with heater exemption |
+| 6 | `uk-medical-or-group-2-with-it-system` | GB | §710 + BS EN 61557-8 + HTM 06-01 | Full medical_it_system constraint (IMD 8 s alarm response + 0.2Ω supplementary bonding) |
+| 7 | `uk-medical-ward-group-1-bonding` | GB | §710 + §701.415.2 | supplementary_equipotential_bonding |
+| 8 | `uk-external-landscape-elv-lighting` | GB | §715 + BS EN 61558-2-6 + BS 7671 §522 IP | D-5 reviewer flag + elv_separation + transformer short-circuit protection |
 
 ### 9.2 Cascade (9)
 
@@ -530,9 +577,9 @@ Each consumer gets 3-part wiring: (a) IR schema `consumed_intents` + 2nd `allOf`
 1. Same as A
 2. Same as A
 3. Thin sanity cross-check: walk `sockets[] + isolators[] + connection_points[]`; specifically catches:
-   - 230V socket in bath_zone_1 / bath_zone_2 (≥3 m boundary rule per §701.512.3)
+   - 230V socket in bath_zone_1 / bath_zone_2 (≥3 m boundary rule per `BS 7671:2018 §701.512.3`)
    - Shaver socket missing BS EN 61558-2-5 compliance flag
-   - Pump/heater isolator outside local-isolation reach (§701.55 + §710 medical equipment)
+   - Pump/heater isolator outside local-isolation reach (`BS 7671:2018 §701` + `§710` medical equipment isolation)
 4. Same flag propagation as A
 
 **Important scope distinction:** This task wires the **cascade only** at v1.2.0. The full **D4 depth engineering content** (PVC/SWA tables, building-level diversity, EV-charge consumption per §722) is a separate Wave 2 sprint that brings small-power to v1.2.x via additional minor bumps.
