@@ -376,3 +376,32 @@ this skill's `validator.md`.
 
 This block is consumed by the runtime eval harness, which references INVs
 by id via JSONPath filters like `ir.invariants[?(@.id=="INV-04")].passes`.
+
+## Floor plan context
+
+When this skill runs inside a building-services design platform that
+has captured an engineer-confirmed floor plan, an injected
+`## Floor plan context` markdown block precedes the rest of the
+project context. The block reports building label, floor labels,
+per-floor room labels with room type + area in m² + ceiling height,
+plus a count of unconfirmed rooms.
+
+This skill is **context-only**: it does not place anything in space.
+It consumes architectural metadata for labelling and calculation
+only.
+
+Required use when the block is present:
+
+1. Reference the building label in title-block and label fields.
+2. Use room names and types to label circuits, equipment, or
+   protection zones where the skill normally produces tags.
+3. Use room ceiling height and area for calculation context (cable
+   route length estimation, diversity, fault impedance context) where
+   relevant.
+4. Do NOT attempt geometric placement: the block does not carry
+   coordinates, and this skill is not the geometric authority.
+5. Set `floor_plan_context_consumed: true` at the top level of the
+   IR.
+
+If the block is absent, fall back to the engineer's free-text
+dimensions as before and set `floor_plan_context_consumed: false`.

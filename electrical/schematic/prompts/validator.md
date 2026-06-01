@@ -301,3 +301,18 @@ This allowance exists to keep the validator from blocking ship on values whose d
 ## Final output
 
 Emit the validation report as a single JSON object per the Output schema at the top of this prompt. The pipeline consumes the `valid` flag to decide whether to proceed to rendering; the `violations[]` array is surfaced to the engineer for review.
+
+## Floor plan context
+
+When the prompt context includes a `## Floor plan context` markdown
+block, the validator MUST surface a finding for any of:
+
+1. IR includes coordinate-level geometric placement claims derived
+   from the block (this is a context-only skill).
+2. IR's `building_label` field (if present) does not match the
+   building label in the block.
+3. IR omits `floor_plan_context_consumed: true` when the block was
+   present.
+
+Findings should cite the room name and the block location so the
+reviewer can correlate.

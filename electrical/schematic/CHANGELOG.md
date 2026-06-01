@@ -1,5 +1,18 @@
 # Schematic Skill — Changelog
 
+## [1.1.0] - 2026-06-01 — Add floor plan context support
+
+### Added
+- `## Floor plan context` section added to
+  `prompts/{generator,reviewer,validator}.md`. This skill was missed
+  in the Sprint 4-AB pass. Prompt is portable across AI runtimes
+  that inject room-list markdown under the `## Floor plan context`
+  heading.
+- NEW optional top-level `floor_plan_context_consumed: boolean`
+  (default `false`) added to `schemas/schematic-ir.schema.json`.
+  IR sets `true` when the prompt context included a
+  `## Floor plan context` block.
+
 ## [1.0.1] - 2026-05-25 — M1 hybrid eval-vs-IR fix
 
 ### Added
