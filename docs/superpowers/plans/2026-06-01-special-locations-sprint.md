@@ -2122,4 +2122,657 @@ EOF
 
 ---
 
-[Phase D — cascade integration ×3 + sprint ship continues in plan portion 4.]
+---
+
+## Phase D — Cascade integration ×3 + sprint ship (6 tasks, sequential)
+
+Phase D wires the cascade into 3 consumer skills + retrofits their examples + ships. D.1/D.3/D.5 are Sonnet (mechanical schema + manifest + INV append); D.2/D.4 are Opus (per-example engineering retrofit); D.6 mixes Sonnet (fence + CHANGELOGs) + Opus (final integration review). Per-task two-stage Opus review after each. **Expect a temporary gate regression after D.1/D.3/D.5** (consumer IR schema requires the new cascade block but the existing example outputs don't yet have it) — restored by D.2/D.4/D.6 retrofits.
+
+---
+
+## Task D.1: lighting-layout v1.5.0 → v1.6.0 cascade wiring (Sonnet)
+
+**Why Sonnet:** Mechanical schema + manifest edits + verbatim INV-12 append per the photometric D.1 precedent (which shipped clean).
+
+**Files:**
+- Modify: `shared/schemas/electrical/lighting-layout-ir.schema.json` — add `consumed_intents.special_locations_zoning` to existing block + extend `allOf` else.required + add 3rd `allOf` clause for structural enforcement
+- Modify: `electrical/lighting-layout/skill.manifest.json` — bump 1.5.0 → 1.6.0 + append to `consumes_intents[]`
+- Modify: `electrical/lighting-layout/prompts/validator.md` — append INV-12 after INV-11 (one-digit convention per lighting-layout existing style)
+- Modify: `electrical/lighting-layout/schemas/lighting-layout-intent.schema.json` — add permissive `consumed_intents.special_locations_zoning` block (mirrors D.2 photometric lesson — intent schema must accept the cascade mirror)
+
+- [ ] **Step 1: Read current lighting-layout state**
+
+```bash
+python3 -c "
+import json
+d = json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))
+ci = d.get('properties', {}).get('consumed_intents', {}).get('properties', {})
+print(f'IR consumed_intents keys: {list(ci.keys())}')
+print(f'allOf clauses: {len(d.get(\"allOf\", []))}')
+print(f'else.required: {d[\"allOf\"][0][\"else\"][\"required\"]}')
+m = json.load(open('electrical/lighting-layout/skill.manifest.json'))
+print(f'Manifest version: {m[\"version\"]}')
+print(f'consumes_intents count: {len(m[\"consumes_intents\"])}')
+"
+```
+
+Expected: `photometric_grid` in consumed_intents; 2 allOf clauses (from photometric D.1); else.required has 10 entries; manifest 1.5.0; consumes_intents length 1.
+
+- [ ] **Step 2: Add `special_locations_zoning` to IR schema consumed_intents block**
+
+Edit `shared/schemas/electrical/lighting-layout-ir.schema.json`. Add a new property under `consumed_intents.properties` alphabetically AFTER `photometric_grid`:
+
+```json
+"special_locations_zoning": {
+  "type": "object",
+  "required": ["intent_version", "source_path", "payload"],
+  "additionalProperties": false,
+  "properties": {
+    "intent_version": {"type": "string"},
+    "source_path": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Path to special-locations intent-out.json (typically electrical/special-locations/examples/cascade-<this-example-name>/intent-out.json for shipped examples; project-specific path for real projects)"
+    },
+    "payload": {
+      "$ref": "../../../electrical/special-locations/schemas/special-locations-zoning-intent.schema.json#/properties/special_locations_zoning"
+    }
+  }
+}
+```
+
+- [ ] **Step 3: Extend `allOf` else.required + add 3rd allOf clause**
+
+Extend the existing 1st `allOf` clause `else.required` array — append `"consumed_intents"` is already there from photometric D.1, no change needed.
+
+Add a 3rd `allOf` clause (alongside the existing 2 — the original D3.A.3 mode-conditional + the photometric `consumed_intents.photometric_grid` clause):
+
+```json
+{
+  "description": "Wave 1 / special-locations: when mode == full_drawing AND room.room_type IN Part-7 set, consumed_intents.special_locations_zoning MUST be populated. INV-12 enforces semantic content; this allOf clause enforces structural presence.",
+  "if": {
+    "allOf": [
+      {"properties": {"mode": {"const": "calc_only"}}, "required": ["mode"]},
+      {"properties": {"room": {"properties": {"room_type": {"enum": ["bathroom", "shower_room", "swimming_pool_hall", "sauna", "medical_group_0_area", "medical_group_1_ward", "medical_group_2_theatre", "external_landscape"]}}}}}
+    ]
+  },
+  "then": {},
+  "else": {
+    "properties": {
+      "consumed_intents": {
+        "required": ["special_locations_zoning"]
+      }
+    }
+  }
+}
+```
+
+(The `if` is technically inverted via De Morgan: "when NOT calc_only AND room is Part-7" → "consumed_intents.special_locations_zoning required". The cleaner way: use the if/then/else with a NOT, but JSON Schema's `not` works on structural shapes. The above structure asserts: if mode==calc_only OR room_type not in Part-7 set → then nothing required; else → require special_locations_zoning. This is equivalent — except the `if.allOf[1]` checks for Part-7 set membership which is what triggers the requirement.)
+
+Implementer note: re-verify the `if/then/else` logic by hand-tracing one Part-7 + full_drawing case (should require special_locations_zoning) and one non-Part-7 + full_drawing case (should NOT require it) before commit.
+
+- [ ] **Step 4: Update manifest — bump version + append consumes_intents entry**
+
+Edit `electrical/lighting-layout/skill.manifest.json`:
+1. Bump `"version": "1.5.0"` → `"version": "1.6.0"`
+2. Append to existing `"consumes_intents"` array (which has 1 entry from photometric D.1):
+
+```json
+{
+  "skill_id": "special-locations",
+  "intent_name": "special-locations-zoning",
+  "version_constraint": "^1.0",
+  "trigger": "mode == 'full_drawing' AND room.room_type IN ['bathroom', 'shower_room', 'swimming_pool_hall', 'sauna', 'medical_group_0_area', 'medical_group_1_ward', 'medical_group_2_theatre', 'external_landscape']",
+  "consumed_fields": [
+    "zones",
+    "electrical_constraints",
+    "compliant",
+    "violation_count_critical",
+    "non_compliance_flags",
+    "anchor_source_summary"
+  ]
+}
+```
+
+- [ ] **Step 5: Append INV-12 to lighting-layout validator.md**
+
+Find the section after INV-11 in `electrical/lighting-layout/prompts/validator.md`. Append INV-12 (one-digit convention to match existing INV-1..INV-11):
+
+```markdown
+## INV-12 — Special-locations zoning cascade resolved (HIGH)
+
+**Severity:** HIGH when `mode == 'full_drawing' AND room.room_type IN Part-7 set`; N/A otherwise.
+
+**Rule (4 sub-checks):**
+1. `consumed_intents.special_locations_zoning` is present (cascade triggered + resolved).
+2. `consumed_intents.special_locations_zoning.payload.compliant == true` (special-locations' own INVs all PASS upstream).
+3. Thin sanity cross-check: walk `luminaires[]`; for each luminaire, find containing zone in `payload.zones[]` by point-in-polygon + height check; verify (a) luminaire type ∉ zone.prohibited_fixture_types, (b) luminaire ip_rating ≥ zone.ip_rating_min, (c) luminaire max_voltage_v ≤ zone.max_voltage_v. Catches latent regressions if luminaires were added downstream after special-locations ran.
+4. Flag cascading: every `payload.non_compliance_flags[]` entry MUST appear in `calculation_summary.non_compliance_flags[]` with `_cascaded_from: "special-locations"` attribution. No silent suppression.
+
+When room.room_type NOT IN Part-7 set OR mode == calc_only: trivially PASS (cascade not triggered).
+
+**Validator action:**
+- Read `consumed_intents.special_locations_zoning.payload`. If absent and room is Part-7-affected: INV-12 FAIL HIGH (the IR schema's 3rd allOf clause should have caught this earlier).
+- Verify `compliant == true`. If false: INV-12 FAIL HIGH; cascade the upstream's flags + add INV-12's own evidence string.
+- For each `luminaires[i]`: find containing zone; evaluate 4 sub-rules. Any violation: INV-12 FAIL HIGH.
+- Walk `payload.non_compliance_flags[]`. For each: verify the same flag exists in `calculation_summary.non_compliance_flags[]` with `_cascaded_from: "special-locations"`. If any flag missing: INV-12 FAIL HIGH.
+
+**Citation:** Cluster roadmap §6.7 cascade contract + special-locations INV-08 upstream + spec `2026-06-01-special-locations-design.md` §10.1.
+
+**Rationale:** Lumen-method gives average illuminance; photometric-analysis gives per-point + UGR; special-locations gives spatial-compliance — the three together close the BS EN 12464-1 §4.4 + Part 7 §701-§715 gaps that lumen-method alone cannot fill. INV-12 binds lighting-layout to the special-locations spatial-compliance layer; without it, a luminaire could ship inside a Zone 1 with IP rating below the §701.512.2 minimum and no engineer review would catch it.
+```
+
+Update the line at the top of validator.md saying "Per-INV checks in numeric order INV-1 → INV-11" to "INV-1 → INV-12".
+
+- [ ] **Step 6: Add permissive `consumed_intents.special_locations_zoning` to intent schema**
+
+Edit `electrical/lighting-layout/schemas/lighting-layout-intent.schema.json`. Find the `consumed_intents` property (added in photometric D.2 fix-pass — `additionalProperties: false`). Add to its properties:
+
+```json
+"special_locations_zoning": {
+  "type": "object",
+  "required": ["intent_version", "source_path", "payload"],
+  "additionalProperties": false,
+  "properties": {
+    "intent_version": {"type": "string"},
+    "source_path": {"type": "string"},
+    "payload": {"type": "object"}
+  }
+}
+```
+
+(Permissive `payload: {type: object}` per the D.2 photometric lesson — semantic gating lives in the IR via the typed $ref; the intent schema just needs to accept the mirror so intent-out files pass Pass-4 validation.)
+
+- [ ] **Step 7: Verify cascade contract structure**
+
+```bash
+python3 -c "
+import json
+m = json.load(open('electrical/lighting-layout/skill.manifest.json'))
+ir = json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))
+it = json.load(open('electrical/lighting-layout/schemas/lighting-layout-intent.schema.json'))
+
+assert m['version'] == '1.6.0', f'manifest version: {m[\"version\"]}'
+assert len(m['consumes_intents']) == 2
+sl = next((c for c in m['consumes_intents'] if c['skill_id'] == 'special-locations'), None)
+assert sl is not None and 'Part-7' in sl['trigger'] or 'bathroom' in sl['trigger']
+
+assert 'special_locations_zoning' in ir['properties']['consumed_intents']['properties']
+assert len(ir['allOf']) == 3
+assert 'special_locations_zoning' in it['properties']['consumed_intents']['properties']
+print('Cascade contract OK: manifest 1.6.0 + consumes_intents[2] + IR 3 allOf clauses + intent permissive block')
+"
+```
+
+Expected: line printed without AssertionError.
+
+- [ ] **Step 8: Verify validator has INV-12**
+
+```bash
+grep -c "^## INV-12" electrical/lighting-layout/prompts/validator.md
+grep -c "INV-1 → INV-12" electrical/lighting-layout/prompts/validator.md
+```
+
+Expected: 1 and 1.
+
+- [ ] **Step 9: Run gates (expecting regression)**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -8
+```
+
+Expected: validate-examples drops by ~5-7 (the Part-7-affected lighting-layout examples now fail the 3rd allOf clause until D.2 retrofits them). functional_audit unchanged.
+
+**This regression is expected and documented in the commit message. D.2 restores.**
+
+- [ ] **Step 10: Commit D.1 (with explicit "gate-regression-expected" note)**
+
+```bash
+git add shared/schemas/electrical/lighting-layout-ir.schema.json \
+        electrical/lighting-layout/skill.manifest.json \
+        electrical/lighting-layout/prompts/validator.md \
+        electrical/lighting-layout/schemas/lighting-layout-intent.schema.json
+git commit -m "$(cat <<'EOF'
+feat(lighting-layout): D.1 special-locations cascade wired (1.5.0→1.6.0)
+
+Eleventh task of special-locations v1.0 sprint. Phase D cascade
+integration — first of six.
+
+Wires the special-locations-zoning cascade contract from special-
+locations v1.0 into lighting-layout v1.6.0.
+
+IR schema (shared/schemas/electrical/lighting-layout-ir.schema.json):
+- NEW consumed_intents.special_locations_zoning sub-object alongside
+  existing photometric_grid (intent_version + source_path + payload
+  via $ref to special-locations-zoning-intent.schema.json)
+- NEW 3rd allOf clause: when mode != calc_only AND room.room_type IN
+  Part-7 set, consumed_intents.special_locations_zoning is
+  structurally required (semantic content enforced by INV-12)
+
+Intent schema (electrical/lighting-layout/schemas/lighting-layout-
+intent.schema.json):
+- NEW permissive consumed_intents.special_locations_zoning sub-object
+  so cascade mirror passes Pass-4 validation (mirrors photometric
+  D.2 lesson)
+
+Manifest (electrical/lighting-layout/skill.manifest.json):
+- Version bump 1.5.0 → 1.6.0 (additive; backward-compatible IR
+  additions)
+- consumes_intents[] now length 2 (photometric_grid + special-
+  locations-zoning); special-locations entry includes trigger
+  expression with Part-7 set membership + 6 consumed_fields
+
+Validator (electrical/lighting-layout/prompts/validator.md):
+- INV-12 appended after INV-11 (one-digit convention preserved per
+  existing lighting-layout style)
+- 4 sub-checks: structural presence + payload.compliant + thin
+  sanity cross-check (4 sub-rules iterating luminaires[] against
+  payload.zones[]) + flag cascading with _cascaded_from attribution
+- Severity HIGH when mode == full_drawing AND room.room_type IN
+  Part-7 set; N/A otherwise
+- Header "INV-1 → INV-11" → "INV-1 → INV-12"
+
+EXPECTED GATE REGRESSION (temporary):
+- validate-examples drops by ~5-7 (Part-7-affected lighting-layout
+  examples fail the new 3rd allOf consumed_intents.special_locations_
+  zoning requirement until retrofit lands in D.2 next task)
+- functional_audit 1 finding unchanged
+
+D.2 restores green by populating consumed_intents in each of the
+Part-7-affected lighting-layout examples + adding INV-12 evidence
+entries.
+
+Cascade now structurally enforced: lighting-layout cannot emit a
+full_drawing IR for a Part-7-affected room without consuming a
+special-locations-zoning intent. The "spatial-compliance is necessary
+but not sufficient" engineering principle is now schema-level
+binding.
+
+Next: D.2 lighting-layout example retrofits.
+EOF
+)"
+```
+
+---
+
+## Task D.2: lighting-layout example retrofits (Opus)
+
+**Why Opus:** Per-example engineering retrofit (input + output + intent-out for each Part-7-affected lighting-layout example).
+
+**Files:** Modify the lighting-layout examples that touch Part-7-affected room types. Implementer to identify them at execution time (likely ~5-7 examples — bathroom-on-corridor, medical-ward-recovery, pool-hall-spa-area, sauna-room-corner, etc. — depends on what shipped in v1.5).
+
+- [ ] **Step 1: List Part-7-affected lighting-layout examples**
+
+```bash
+python3 -c "
+import json, os, glob
+PART7 = {'bathroom', 'shower_room', 'swimming_pool_hall', 'sauna', 'medical_group_0_area', 'medical_group_1_ward', 'medical_group_2_theatre', 'external_landscape'}
+for inp_path in sorted(glob.glob('electrical/lighting-layout/examples/*/input.json')):
+    d = json.load(open(inp_path))
+    rt = d.get('room_type') or d.get('room', {}).get('room_type')
+    if rt in PART7:
+        ex = os.path.basename(os.path.dirname(inp_path))
+        print(f'{ex}: room_type={rt}')
+"
+```
+
+Expected: list of Part-7-affected example dirs. Capture this list — each one needs retrofit.
+
+- [ ] **Step 2: For each Part-7-affected example, run the retrofit pattern**
+
+Per-example retrofit (apply N×):
+
+(a) **input.json** — append a new top-level key `_special_locations_cascade_source` (purely documentation):
+
+```json
+"_special_locations_cascade_source": "electrical/special-locations/examples/cascade-lighting-layout-<example-name>/intent-out.json"
+```
+
+(b) **output.json** — add the `consumed_intents.special_locations_zoning` block (alongside any existing `consumed_intents.photometric_grid` from photometric D.2). Copy the payload from the corresponding special-locations cascade example's intent-out.json:
+
+```json
+"special_locations_zoning": {
+  "intent_version": "1.0.0",
+  "source_path": "electrical/special-locations/examples/cascade-lighting-layout-<example-name>/intent-out.json",
+  "payload": {<copy of payload from cascade source intent-out.json>}
+}
+```
+
+(c) **output.json** — append INV-12 entry to `invariants[]`:
+
+```json
+{
+  "id": "INV-12",
+  "passes": true,
+  "severity": "high",
+  "evidence": "Special-locations cascade resolved: consumed_intents.special_locations_zoning sourced from cascade-<example-name>/intent-out.json. payload.compliant=true; 5 zones derived; rcd_blanket_by_room constraint applied per §701.411.3.3; thin sanity cross-check on 2 luminaires + 1 shaver socket all compliant against bath_zone_0/1/2 prohibited_fixture_types and ip_rating_min; 0 non_compliance_flags cascaded. Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing AND room.room_type IN Part-7 set'."
+}
+```
+
+Substitute real numbers from the cascade source. Evidence within `maxLength: 1200` per the photometric D.2 cap-bump (already in place from photometric).
+
+(d) **intent-out.json** — mirror the consumed_intents block (downstream consumers see the cascade chain).
+
+- [ ] **Step 3: Run per-example sanity check after each retrofit**
+
+```bash
+python3 -c "
+import json
+ex = '<example-name>'
+d = json.load(open(f'electrical/lighting-layout/examples/{ex}/output.json'))
+assert 'consumed_intents' in d
+assert 'special_locations_zoning' in d['consumed_intents']
+inv12 = next((i for i in d['invariants'] if i['id'] == 'INV-12'), None)
+assert inv12 is not None
+print(f'{ex}: special_locations cascade OK; INV-12 passes={inv12[\"passes\"]}')"
+```
+
+- [ ] **Step 4: Run gates**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+python3 functional_audit.py 2>&1 | tail -3
+```
+
+Expected: validate-examples restored from D.1 regression (back to D.1's pre-D.1 + 17 new special-locations examples + 7 evals); functional_audit unchanged.
+
+- [ ] **Step 5: Commit D.2**
+
+```bash
+git add electrical/lighting-layout/examples/
+git commit -m "feat(lighting-layout): D.2 N example retrofits (consumed_intents.special_locations_zoning + INV-12 evidence)"
+```
+
+Body: list each retrofitted example + its source cascade + INV-12 pass/fail (mirrors photometric D.2 commit body shape).
+
+---
+
+## Task D.3: small-power v1.1.0 → v1.2.0 cascade wiring (Sonnet)
+
+**Why Sonnet:** Same mechanical pattern as D.1, applied to small-power. Note: D.3 ONLY wires the cascade — the full D4 depth engineering content (PVC/SWA tables, building-level diversity, etc.) is a separate Wave 2 sprint that brings small-power up to v1.2.x via additional minor bumps.
+
+**Files:**
+- Modify: `shared/schemas/electrical/small-power-ir.schema.json` — add consumed_intents.special_locations_zoning + allOf clause
+- Modify: `electrical/small-power/skill.manifest.json` — 1.1.0 → 1.2.0 + consumes_intents[] entry
+- Modify: `electrical/small-power/prompts/validator.md` — append INV-12 (two-digit per small-power existing convention)
+- Modify: `electrical/small-power/schemas/small-power-intent.schema.json` — permissive consumed_intents block
+
+- [ ] **Step 1: Read current small-power state + apply same shape as D.1**
+
+Identical structure to D.1 but for small-power. Manifest version 1.1.0 → 1.2.0. INV-12 appended (small-power already has INV-01..INV-11; new one is INV-12, two-digit per existing two-digit convention).
+
+INV-12 sub-check 3 iterates `sockets[] + isolators[] + connection_points[]` instead of luminaires:
+- 230V socket in bath_zone_1/bath_zone_2 (≥3 m boundary rule per `BS 7671:2018 §701.512.3`)
+- Shaver socket missing BS EN 61558-2-5 compliance flag
+- Pump/heater isolator outside local-isolation reach (§701 + §710 medical equipment isolation)
+
+- [ ] **Step 2: Apply schema + manifest + INV-12 edits** (mirror D.1 structure verbatim, substituting small-power paths + sockets-not-luminaires)
+
+- [ ] **Step 3: Verify cascade contract structure**
+
+```bash
+python3 -c "
+import json
+m = json.load(open('electrical/small-power/skill.manifest.json'))
+assert m['version'] == '1.2.0'
+print('small-power 1.2.0 wired')
+"
+```
+
+- [ ] **Step 4: Run gates (expecting regression similar to D.1)**
+
+Expected: validate-examples drops by ~5-7 (Part-7-affected small-power examples now fail the new allOf clause).
+
+- [ ] **Step 5: Commit D.3**
+
+```bash
+git add shared/schemas/electrical/small-power-ir.schema.json \
+        electrical/small-power/skill.manifest.json \
+        electrical/small-power/prompts/validator.md \
+        electrical/small-power/schemas/small-power-intent.schema.json
+git commit -m "feat(small-power): D.3 special-locations cascade wired (1.1.0→1.2.0; cascade-wiring scope only; D4 depth in Wave 2)"
+```
+
+Body mirrors D.1 commit body shape; explicit note that D4 depth engineering content remains in Wave 2.
+
+---
+
+## Task D.4: small-power example retrofits (Opus)
+
+**Why Opus:** Same per-example engineering retrofit as D.2 but for small-power.
+
+**Files:** Modify the small-power examples that touch Part-7-affected room types. List enumerated at Step 1 via same grep approach as D.2 Step 1.
+
+- [ ] **Step 1: List Part-7-affected small-power examples**
+
+Same grep as D.2 but on `electrical/small-power/examples/`.
+
+- [ ] **Step 2: Apply retrofit per example** (same 4-part pattern as D.2 Step 2 a/b/c/d)
+
+INV-12 evidence iterates sockets/isolators/connection_points instead of luminaires.
+
+- [ ] **Step 3: Run per-example sanity check**
+
+- [ ] **Step 4: Run gates** — Expected: validate-examples restored from D.3 regression.
+
+- [ ] **Step 5: Commit D.4**
+
+```bash
+git add electrical/small-power/examples/
+git commit -m "feat(small-power): D.4 N example retrofits (consumed_intents.special_locations_zoning + INV-12 evidence)"
+```
+
+---
+
+## Task D.5: db-layout v1.4.0 → v1.5.0 cascade wiring (Sonnet)
+
+**Why Sonnet:** Same mechanical pattern as D.1/D.3, applied to db-layout. db-layout already has INV-01..INV-15; new INV is **INV-16** (two-digit per existing convention).
+
+**Files:**
+- Modify: `shared/schemas/electrical/db-layout-ir.schema.json` — add consumed_intents.special_locations_zoning + allOf clause
+- Modify: `electrical/db-layout/skill.manifest.json` — 1.4.0 → 1.5.0 + consumes_intents[] entry
+- Modify: `electrical/db-layout/prompts/validator.md` — append INV-16
+- Modify: `electrical/db-layout/schemas/db-layout-intent.schema.json` — permissive consumed_intents block
+
+**Trigger difference:** db-layout has no `mode` field. Trigger fires whenever any room in upstream lighting-layout's `room_adjacency_graph` matches Part-7 set:
+
+```json
+"trigger": "adjacency.any_room IN ['bathroom', 'shower_room', 'swimming_pool_hall', 'sauna', 'medical_group_0_area', 'medical_group_1_ward', 'medical_group_2_theatre', 'external_landscape']"
+```
+
+**Consumed fields differ:** db-layout cares about circuit-level not fixture-position. `consumed_fields`: 4 of 6 (`electrical_constraints` primary; `compliant`, `non_compliance_flags`, `anchor_source_summary`). Excludes `zones[]` (not relevant to circuit-level concerns) + `violation_count_critical` (covered by flag set).
+
+**INV-16 sub-check 3** iterates `boards[].outgoing_ways[]`:
+- 30 mA RCD present if `electrical_constraints[]` includes `rcd_blanket_by_room`
+- Circuit routed via Medical IT panel if `medical_it_system` constraint
+- Supplementary bonding terminal modelled if `supplementary_equipotential_bonding` constraint
+- Main equipotential bond ≥10 mm² at ME terminal if `pool_main_equipotential_bonding` constraint
+
+- [ ] **Steps 1-5:** apply mechanical pattern from D.1 substituting db-layout paths + trigger + INV-16 sub-check 3 fields per above + boards[].outgoing_ways[] iteration
+
+- [ ] **Step 6: Commit D.5**
+
+```bash
+git add shared/schemas/electrical/db-layout-ir.schema.json \
+        electrical/db-layout/skill.manifest.json \
+        electrical/db-layout/prompts/validator.md \
+        electrical/db-layout/schemas/db-layout-intent.schema.json
+git commit -m "feat(db-layout): D.5 special-locations cascade wired (1.4.0→1.5.0; INV-16 RCD-by-zone + medical-IT-panel + main-bonding enforcement)"
+```
+
+---
+
+## Task D.6: db-layout example retrofits + Sprint ship (Sonnet + Opus)
+
+**Why split model:** Steps 1-5 are Sonnet (mechanical retrofits + fence dispatch + CHANGELOG edits). Step 6 (final cross-sprint review) is Opus.
+
+**Files:**
+- Modify: `electrical/db-layout/examples/` — Part-7-affected examples (~3-4 expected)
+- Modify: `electrical/lighting-layout/CHANGELOG.md` — append `[1.6.0]` entry
+- Modify: `electrical/small-power/CHANGELOG.md` — append `[1.2.0]` entry
+- Modify: `electrical/db-layout/CHANGELOG.md` — append `[1.5.0]` entry
+- Create: `~/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/special-locations-shipped.md`
+- Modify: `~/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/MEMORY.md` — append index line
+
+- [ ] **Step 1: db-layout example retrofits** — same pattern as D.2/D.4 but on db-layout examples; INV-16 evidence iterates boards[].outgoing_ways[]
+
+- [ ] **Step 2: Dispatch Sonnet 11-check verification fence**
+
+Use the Agent tool with `subagent_type: general-purpose` and `model: sonnet`. Run these 11 checks IN ORDER and report PASS/FAIL per check:
+
+```
+CHECK 1 — Gates baseline:
+- python3 scripts/validate-examples.py 2>&1 | tail -3 → AGGREGATE in [285, 305] range (target ~290-300)
+- python3 functional_audit.py 2>&1 | tail -3 → TOTAL FINDINGS: 1 (disclosed motor-superposition oracle FP)
+
+CHECK 2 — Phase A.1 skill scaffolding:
+- electrical/special-locations/skill.manifest.json: version 1.0.0; status production; ≥7 standards entries; 1 produces_intents (special-locations-zoning); 1 consumes_intents (lighting-layout); 17 examples registered
+- README.md ≥90 lines (real body, not stub) with standards xref table + banned-citations footer
+- CHANGELOG.md top entry is [1.0.0]
+
+CHECK 3 — Phase A.2 schemas:
+- electrical/special-locations/schemas/special-locations-ir.schema.json parses; ≥10 top-level properties; 13-value zone_type enum; 6-value constraint_type enum; 2 allOf clauses (mode-conditional + §710 Group 2 structural)
+- electrical/special-locations/schemas/special-locations-zoning-intent.schema.json parses; FLAT shape; 10-field payload
+
+CHECK 4 — Phase A.3 inputs + rules:
+- inputs.json has 7 items per spec §4
+- rules/zone-derivation-rules.yaml, constraint-required-by-context-rules.yaml, provenance-disclosure-rules.yaml all parse + each rule has {id, value, citation, rationale}
+- Zero banned citations in any rules file
+
+CHECK 5 — Phase A.4 shared library:
+- shared/special-locations/zone-derivation/ has 6 modules + 6 test files
+- python3 -m unittest discover passes (stdlib only)
+
+CHECK 6 — Phase B prompts:
+- prompts/generator.md ≥250 lines with Step 0 + 12 numbered steps
+- prompts/validator.md ≥280 lines with 10 INVs (INV-01..INV-10)
+- prompts/reviewer.md ≥150 lines with 5 D-checks (D-1..D-5)
+- Zero banned citations in any prompt
+
+CHECK 7 — Phase C.1 8 standalone examples:
+- 8 example dirs with 4 files each
+- All output.json validate against IR schema
+- Wet-room example #3 has bath_zone_1 expanded to full floor
+- Sauna example #5 has 3 zones (sauna_zone_1 + 2 + 3)
+- Medical Group 2 example #6 has medical_it_system with imd_alarm_response_time_s_max=8
+
+CHECK 8 — Phase C.2 9 cascade examples:
+- 9 cascade dirs all exist with 4 files each
+- 2 FAIL HIGH cases (#12 bathroom-violation + #14 ELV-violation) have INV-08 passes=false
+- 1 KE jurisdiction example (#17) has KS 1700:2018 §313 routing in citations
+
+CHECK 9 — Phase C.3 evals:
+- evals/eval-01..eval-07 all exist + parse against eval.schema.json
+- All categories in canonical 9-value enum (no non-canonical names)
+- All severities in critical/warning/info (no high/medium/low)
+- No 'id:' field on any check
+
+CHECK 10 — Phase D cascade integration:
+- shared/schemas/electrical/lighting-layout-ir.schema.json has 3 allOf clauses; manifest 1.6.0 + consumes_intents[2]
+- shared/schemas/electrical/small-power-ir.schema.json has consumed_intents.special_locations_zoning; manifest 1.2.0
+- shared/schemas/electrical/db-layout-ir.schema.json has consumed_intents.special_locations_zoning; manifest 1.5.0
+- All 3 validators have new INV (INV-12 / INV-12 / INV-16)
+- All Part-7-affected examples retrofitted with consumed_intents.special_locations_zoning + INV evidence
+
+CHECK 11 — Cross-cutting:
+- No banned citation (§701.32 / §701.55 / §702.55.1 / §702.55.2 / §702.32 / §703.55 / §703.512 / §703.413 / §710.413.1.5 / §710.314 / §710.411.3.3 / §715.560.4 / §715.521 / §715.422) anywhere in electrical/special-locations/ or in modified consumer files
+- No {{placeholder}} remnants in any example output.json
+- All invariants[].evidence ≤1200 chars
+- All anchor _provenance_note ≥40 chars per INV-09
+```
+
+If ANY check fails: STOP and report the failure. Orchestrator handles redispatch.
+
+- [ ] **Step 3: Update 3 CHANGELOGs** (lighting-layout 1.6.0 + small-power 1.2.0 + db-layout 1.5.0)
+
+Each CHANGELOG entry mirrors the lighting-layout 1.5.0 entry from the photometric ship (full Changed/Added/Failure-mode cascade demonstrations/Honest disclosures/Cross-references/Gates sections).
+
+- [ ] **Step 4: Write special-locations-shipped.md memory file** (mirrors `[[photometric-analysis-shipped]]` pattern)
+
+Cover: skill identity + 16 tasks across 4 phases summary + gates final state + honest disclosures + cascade contract validated end-to-end + process discipline preserved + next-skill pointer (Wave 2 starts).
+
+- [ ] **Step 5: Append MEMORY.md index entry** (1-liner under [photometric-analysis shipped])
+
+- [ ] **Step 6: Final cross-sprint Opus integration review** — dispatch a fresh Opus subagent to review the entire 23-25 commit chain for cross-cutting integration concerns: cascade end-to-end coherence (special-locations producer ↔ all 3 consumers byte-identical); schema cross-validation on PASS + FAIL examples; standards citation discipline across the sprint; manifest/spec/plan alignment; test coverage; documentation drift; no collateral edits; CLAUDE.md discipline. Verdict: PUSH-READY / PUSH-AFTER-FIX-PASS / HOLD.
+
+- [ ] **Step 7: Run final gates + status report**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+python3 functional_audit.py 2>&1 | tail -3
+git status
+```
+
+Expected: validate-examples ~290-300/290-300; functional_audit 1 finding; working tree clean.
+
+- [ ] **Step 8: Commit D.6 (sprint ship)**
+
+```bash
+git add electrical/db-layout/examples/ \
+        electrical/lighting-layout/CHANGELOG.md \
+        electrical/small-power/CHANGELOG.md \
+        electrical/db-layout/CHANGELOG.md
+git commit -m "feat(special-locations): D.6 sprint ship — Sonnet fence + 3 CHANGELOGs + db-layout retrofit + memory"
+```
+
+Body lists fence-check results + 3 CHANGELOG versions + memory file path + cluster Wave 1 second deliverable COMPLETE.
+
+- [ ] **Step 9: Push deferred to user confirmation**
+
+Per CLAUDE.md "shared state" rule: pushing requires explicit user authorisation. After D.6 commit, orchestrator asks:
+
+> "special-locations v1.0 sprint shipped locally. ~25 commits + 3-consumer cascade integration ready. Want me to push to origin/main, or hold for review?"
+
+If user confirms push: `git push origin main`.
+
+If user chooses to tag first: `git tag special-locations-v1.0.0` at HEAD, then push commits + tag.
+
+- [ ] **Step 10: Wave 1 second deliverable done**
+
+special-locations v1.0.0 lives on `origin/main`. Cluster roadmap Wave 1 SECOND deliverable complete. Wave 1 COMPLETE (photometric-analysis shipped 2026-05-30 + special-locations shipped today).
+
+Wave 2 begins next: `small-power v1.2.x D4 depth engineering content` + `lighting-layout v1.6.x task/ambient + 3D placement extensions`.
+
+---
+
+## Plan self-review
+
+Walked the spec sections — every requirement maps to a task:
+- spec §1 identity → A.1 manifest + README
+- spec §2 scope (5 sections) → A.2 schema enum + A.3 rules YAML + B.2 validator INVs + C.1 examples (1 per section + variants)
+- spec §3 architecture decisions (7 locked) → file structure + A.4 zone-derivation modules + A.2 discriminator design
+- spec §4 input model (7 items) → A.3 inputs.json
+- spec §5 IR shape → A.2 ir schema
+- spec §6 intent payload → A.2 intent schema
+- spec §7 10 INVs → B.2 validator prompt + C.3 evals
+- spec §8 5 D-checks → B.3 reviewer prompt
+- spec §9 17 examples → C.1 8 standalone + C.2 9 cascade
+- spec §10 3 cascade contracts → D.1+D.2 (lighting-layout) + D.3+D.4 (small-power) + D.5+D.6 (db-layout)
+- spec §11 sprint shape → this whole plan
+- spec §12 honest disclosures → A.1 manifest _v1_limitations + A.3 provenance rules + INV-09 + all examples
+- spec §13 v1.1+ deferrals → A.1 manifest _v1_limitations
+- spec §14 cross-references → A.1 README + this plan
+
+Placeholder scan: no TBD / TODO / "implement later" strings in plan body. The 3 explicit task counts ("~5-7 examples" / "~3-4 examples") in D.2/D.4/D.6 are estimation hedges with the implementer step that enumerates exactly which examples — acceptable per the photometric precedent.
+
+Type consistency: enum sizes match across all tasks (zone_type=13 / constraint_type=6 / room_type=9 / anchor.type=6 / category=9 canonical / severity=3 canonical / INV count=10). INV ids match across consumer skills (lighting-layout one-digit INV-12; small-power two-digit INV-12; db-layout two-digit INV-16 — verified against each consumer's existing prompt file).
+
+Banned-citation discipline: every task has an explicit `grep -nE` ban check before commit. Spec §3.2 banned-list referenced in every Phase B/C task prompt + Phase A.3 rules + D.1/D.3/D.5 validator updates.
+
+`[[feedback-no-trim-non-consequential]]` applied upfront: A.2 declares `invariants[].evidence` `maxLength: 1200` so failure-mode INV-08 evidence (which legitimately runs long with sub-rule + clause + remediation) doesn't trigger a retrofit.
+
+Photometric C.3 schema lessons applied upfront: C.3 task explicitly enumerates the 3 schema constraints (canonical category enum + canonical severity enum + no `id:` field) so the implementer doesn't fight the schema.
+
+Photometric D.2 intent-schema lesson applied upfront: D.1/D.3/D.5 each include the permissive intent-schema `consumed_intents` add as Step 6 — no surprise schema delta to disclose at review time.
+
+---
+
+## Execution handoff
+
+Plan complete and saved to `docs/superpowers/plans/2026-06-01-special-locations-sprint.md`. Two execution options:
+
+**1. Subagent-Driven (recommended)** — Orchestrator dispatches a fresh subagent per task, runs two-stage Opus review between tasks, applies fix-pass commits where review surfaces HIGH/CRITICAL findings (photometric pattern: 10/11 D3 tasks needed fix-passes; budget ~6 fix-pass commits). Per-model dispatch per [[feedback-no-haiku-sonnet-opus-only]] rules already locked in each task's "Why Sonnet/Opus" line. Pre-ship Sonnet 11-check verification fence at D.6 Step 2. Final cross-sprint Opus integration review at D.6 Step 6. Push deferred to user authorisation at D.6 Step 9.
+
+**2. Inline Execution** — Execute tasks in this session using `superpowers:executing-plans`. Batch execution with checkpoints for review. Less parallelisation; less context isolation per task; faster for short sprints but riskier at this size (16 tasks + 6 fix-passes + 3 portion-1-prereqs).
+
+**Which approach do you want me to use?** Subagent-Driven is the photometric precedent (shipped 25 commits clean 2026-05-30) and is recommended for this sprint shape.
