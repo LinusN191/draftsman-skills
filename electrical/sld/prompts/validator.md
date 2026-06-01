@@ -365,3 +365,21 @@ If the fault-level intent's `source_summary.type == "mixed"` (utility + genset d
 ### Backward compatibility
 
 If `drawing_layout` is absent, skip INV-12, INV-13, and INV-14 entirely. v1.3/v1.4 examples remain valid under v1.5 validation rules.
+
+## Architectural state (Sprint 4-AB)
+
+When `architectural_state` is present, the validator MUST surface a
+finding for any of:
+
+1. The IR includes geometric placement coordinates derived from the
+   architectural state (this is a context-only skill).
+2. `unconfirmed_rooms_in_scope > 0` AND the IR's `assumptions` array
+   does not mention the unconfirmed rooms when the skill consumed
+   them.
+3. The IR's `building_label` field (if present) does not match
+   `architectural_state.building.label`.
+
+Findings should reference the room ID and the architectural state
+payload location so the reviewer can correlate.
+
+See `shared/architectural_state_contract.md` for the full contract.

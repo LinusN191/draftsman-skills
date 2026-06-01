@@ -250,3 +250,17 @@ a tender audit trail?
 - Engineering style preferences not tied to a citable rule.
 - Validating the upstream db-layout-rollup or fault-level intent's
   correctness (that's the respective skill's reviewer).
+
+## Architectural state (Sprint 4-AB)
+
+When the prompt context includes `architectural_state`, this skill is
+**context-only** and the reviewer SHOULD flag:
+
+1. IRs that attempt geometric placement against the architectural state
+   (this skill should not produce coordinates from room polygons).
+2. IRs that don't reference `building.label` in titles when the
+   building model is confirmed.
+3. IRs that ignore meaningful room metadata (names, types, ceiling
+   heights) where the skill should use it for labelling or calculation.
+
+See `shared/architectural_state_contract.md` for the full contract.

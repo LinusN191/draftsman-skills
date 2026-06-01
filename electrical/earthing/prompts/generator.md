@@ -556,3 +556,30 @@ this skill's `validator.md`.
 
 This block is consumed by the runtime eval harness, which references INVs
 by id via JSONPath filters like `ir.invariants[?(@.id=="INV-04")].passes`.
+
+## Architectural state (Sprint 4-AB)
+
+When this skill runs against a project with confirmed architectural
+state, an `architectural_state` JSON block precedes the rest of the
+project context. See `shared/architectural_state_contract.md` for the
+full shape.
+
+This skill is **geometry-aware**: it consumes the floor's room polygons
+to place fixtures/equipment in space.
+
+Required use:
+
+1. Read `architectural_state.building.floors_in_scope[].rooms[].polygon`
+   and use it as the layout boundary for every placement.
+2. Reject any placement whose centroid falls outside every room polygon
+   in scope.
+3. Honour `rooms[].ceiling_height_m` when sizing for ceiling-mounted
+   equipment.
+4. When `rooms[].confirmed === false`, list the affected room IDs in
+   the IR's `assumptions` array with a note that the geometry is
+   unconfirmed.
+5. Reference `architectural_state.building.label` in any title-block
+   or label fields the IR produces.
+
+If the block is absent, fall back to the engineer's free-text dimensions
+as before.

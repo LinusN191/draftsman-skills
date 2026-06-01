@@ -86,3 +86,17 @@ Per-jurisdiction citation-form requirements (must match the validator's INV-10 +
 - **fail**: any dimension at 1–2, or D1/D3/D4/D8 below 4.
 
 Be honest. A failing earthing design risks electric shock — this is not a place for false positives.
+
+## Architectural state (Sprint 4-AB)
+
+When the prompt context includes `architectural_state`, this skill is
+**geometry-aware** and the reviewer SHOULD flag:
+
+1. Placements that ignore the room polygons (e.g. uniform-grid
+   placement that crosses corridor boundaries).
+2. IRs that don't reference `building.label` in titles when the
+   building model is confirmed.
+3. IRs that consume rooms with `confirmed=false` without surfacing
+   the dependency in `assumptions`.
+
+See `shared/architectural_state_contract.md` for the full contract.

@@ -99,3 +99,17 @@ For each clause cited, does the clause actually support the decision the IR clai
 - **fail**: any dimension at 1–2, or D1/D3/D6/D9 below 4.
 
 Be honest. A failing db-layout design risks unsafe fault currents — this is not a place for false positives.
+
+## Architectural state (Sprint 4-AB)
+
+When the prompt context includes `architectural_state`, this skill is
+**geometry-aware** and the reviewer SHOULD flag:
+
+1. Placements that ignore the room polygons (e.g. uniform-grid
+   placement that crosses corridor boundaries).
+2. IRs that don't reference `building.label` in titles when the
+   building model is confirmed.
+3. IRs that consume rooms with `confirmed=false` without surfacing
+   the dependency in `assumptions`.
+
+See `shared/architectural_state_contract.md` for the full contract.

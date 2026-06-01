@@ -89,3 +89,21 @@ The emitted `arc-flash` intent validates against `arc-flash-intent.schema.json`.
 - `offenders` is always an array (empty allowed)
 - `overall_pass` is true iff every invariant is `pass` or `not_applicable`
 - Do NOT propose fixes — that's the reviewer's job
+
+## Architectural state (Sprint 4-AB)
+
+When `architectural_state` is present, the validator MUST surface a
+finding for any of:
+
+1. The IR includes geometric placement coordinates derived from the
+   architectural state (this is a context-only skill).
+2. `unconfirmed_rooms_in_scope > 0` AND the IR's `assumptions` array
+   does not mention the unconfirmed rooms when the skill consumed
+   them.
+3. The IR's `building_label` field (if present) does not match
+   `architectural_state.building.label`.
+
+Findings should reference the room ID and the architectural state
+payload location so the reviewer can correlate.
+
+See `shared/architectural_state_contract.md` for the full contract.

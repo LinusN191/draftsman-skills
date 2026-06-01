@@ -464,3 +464,21 @@ or on failure:
 
 *Generator: prompts/generator.md | Reviewer: prompts/reviewer.md |
 Schemas: schemas/*.json | Evaluation criteria: evals/*
+
+## Architectural state (Sprint 4-AB)
+
+When `architectural_state` is present, the validator MUST surface a
+finding for any of:
+
+1. The IR includes geometric placement coordinates derived from the
+   architectural state (this is a context-only skill).
+2. `unconfirmed_rooms_in_scope > 0` AND the IR's `assumptions` array
+   does not mention the unconfirmed rooms when the skill consumed
+   them.
+3. The IR's `building_label` field (if present) does not match
+   `architectural_state.building.label`.
+
+Findings should reference the room ID and the architectural state
+payload location so the reviewer can correlate.
+
+See `shared/architectural_state_contract.md` for the full contract.

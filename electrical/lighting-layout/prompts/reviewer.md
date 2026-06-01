@@ -156,3 +156,17 @@ Reviewer findings emitted as:
 
 A failing D-check does NOT block emission. The IR ships with the
 review findings recorded so downstream skills + engineers can react.
+
+## Architectural state (Sprint 4-AB)
+
+When the prompt context includes `architectural_state`, this skill is
+**geometry-aware** and the reviewer SHOULD flag:
+
+1. Placements that ignore the room polygons (e.g. uniform-grid
+   placement that crosses corridor boundaries).
+2. IRs that don't reference `building.label` in titles when the
+   building model is confirmed.
+3. IRs that consume rooms with `confirmed=false` without surfacing
+   the dependency in `assumptions`.
+
+See `shared/architectural_state_contract.md` for the full contract.
