@@ -115,3 +115,20 @@ Emit a single JSON object:
 ```
 
 `valid: true` requires ALL of: schema pass, all 11 invariants pass, intent extraction valid.
+
+## Architectural state (Sprint 4-AB)
+
+When `architectural_state` is present, the validator MUST surface a
+finding for any of:
+
+1. An entity whose centroid is not contained by any
+   `floors_in_scope[].rooms[].polygon` in scope.
+2. `unconfirmed_rooms_in_scope > 0` AND the IR's `assumptions` array
+   does not mention the unconfirmed rooms.
+3. The IR's `building_label` field (if present) does not match
+   `architectural_state.building.label`.
+
+Findings should reference the room ID and the architectural state
+payload location so the reviewer can correlate.
+
+See `shared/architectural_state_contract.md` for the full contract.
