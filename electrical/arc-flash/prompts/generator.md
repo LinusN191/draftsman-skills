@@ -221,3 +221,27 @@ For every cascade node, the engineer must declare `equipment_condition`. Default
 For `working_distance_basis == "custom_mm"`, the engineer-declared distance in `geometry.working_distance_mm` overrides regardless of posture.
 
 **Project-level basis:** populate `equipment_condition_basis` at IR root for every project (defaults: `default_condition="normal"`, `default_worker_position="standing"`, `working_distance_basis="standard_18in"`, `abnormal_ie_adjustment_factor_default=1.25`, `abnormal_ie_adjustment_source` cited industry source). The basis MUST be populated if ANY node carries `equipment_condition.condition == "abnormal"`.
+
+## Architectural state (Sprint 4-AB)
+
+When this skill runs against a project with confirmed architectural
+state, an `architectural_state` JSON block precedes the rest of the
+project context. See `shared/architectural_state_contract.md` for the
+full shape.
+
+This skill is **context-only**: it does NOT place anything geometrically.
+It uses architectural metadata for labelling and calculation only.
+
+Required use:
+
+1. Use `architectural_state.building.label` in titles and identifiers.
+2. Use `floors_in_scope[].rooms[].name` and `rooms[].type` in
+   circuit/equipment labels where appropriate.
+3. Use `rooms[].ceiling_height_m` for cable-route length estimation
+   or other calculation context where the skill needs it.
+4. Do NOT attempt geometric placement (no polygons, no coordinates).
+5. When `rooms[].confirmed === false`, list the affected room IDs in
+   the IR's `assumptions` array.
+
+If the block is absent, fall back to the engineer's free-text dimensions
+as before.
