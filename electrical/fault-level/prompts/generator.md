@@ -448,3 +448,27 @@ this skill's `validator.md`.
 
 This block is consumed by the runtime eval harness, which references INVs
 by id via JSONPath filters like `ir.invariants[?(@.id=="INV-04")].passes`.
+
+## Architectural state (Sprint 4-AB)
+
+When this skill runs against a project with confirmed architectural
+state, an `architectural_state` JSON block precedes the rest of the
+project context. See `shared/architectural_state_contract.md` for the
+full shape.
+
+This skill is **context-only**: it does NOT place anything geometrically.
+It uses architectural metadata for labelling and calculation only.
+
+Required use:
+
+1. Use `architectural_state.building.label` in titles and identifiers.
+2. Use `floors_in_scope[].rooms[].name` and `rooms[].type` in
+   circuit/equipment labels where appropriate.
+3. Use `rooms[].ceiling_height_m` for cable-route length estimation
+   or other calculation context where the skill needs it.
+4. Do NOT attempt geometric placement (no polygons, no coordinates).
+5. When `rooms[].confirmed === false`, list the affected room IDs in
+   the IR's `assumptions` array.
+
+If the block is absent, fall back to the engineer's free-text dimensions
+as before.
