@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "electrical/special-locations/schemas/special-locations-zoning-intent.schema.json",
+  "title": "Special Locations Zoning Intent Payload",
+  "description": "Flat intent payload (no envelope wrap) produced by special-locations v1.0.0. Consumed by lighting-layout v1.6 (INV zone-fixture cross-check), small-power v1.2 (socket zone exclusion + isolation enforcement), and db-layout v1.5 (RCD allocation + medical IT distribution). Per spec §6.",
+  "type": "object",
+  "required": [
+    "intent_version",
+    "skill",
+    "consumed_lighting_layout_intent",
+    "special_locations_zoning"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "intent_version": {
+      "const": "1.0.0",
+      "description": "Intent payload schema version."
+    },
+    "skill": {
+      "const": "special-locations",
+      "description": "Skill that produced this intent payload."
+    },
+    "consumed_lighting_layout_intent": {
+      "type": ["string", "null"],
+      "description": "Path to the upstream lighting-layout intent-out.json consumed when mode == full_analysis and a lighting-layout intent was available. null if no upstream intent was consumed (standalone run or screening_only mode)."
+    },
+    "special_locations_zoning": {
+      "type": "object",
+      "required": [
+        "zones",
+        "electrical_constraints",
+        "compliant",
+        "zone_count",
+        "constraint_count",
+        "violation_count_critical",
+        "violation_count_high",
+        "non_compliance_flags",
+        "anchor_source_summary"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "zones": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "type": "object",
+            "required": [
+              "zone_id",
+              "zone_type",
+              "source_anchor_id",
+              "derivation_clause",
+              "boundary_plan_polygon_mm",
+              "height_min_mm",
+              "height_max_mm",
+              "ip_rating_min",
+              "max_voltage_v",
+              "rcd_required_ma",
+              "isolation_required",
+              "allowed_equipment_classes",
+              "prohibited_fixture_types",
+              "switch_position_min_distance_mm",
+              "overlapping_with_zone_ids",
+              "_clause_citation",
+              "_derivation_note"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "zone_id": {"type": "string", "minLength": 1},
+              "zone_type": {
+                "enum": [
+                  "bath_zone_0",
+                  "bath_zone_1",
+                  "bath_zone_2",
+                  "pool_zone_0",
+                  "pool_zone_1",
+                  "pool_zone_2",
+                  "sauna_zone_1",
+                  "sauna_zone_2",
+                  "sauna_zone_3",
+                  "medical_envelope_group_0",
+                  "medical_envelope_group_1",
+                  "medical_envelope_group_2",
+                  "elv_barrier_zone"
+                ]
+              },
+              "source_anchor_id": {"type": "string", "minLength": 1},
+              "derivation_clause": {"type": "string", "minLength": 1},
+              "boundary_plan_polygon_mm": {
+                "type": "array",
+                "minItems": 3,
+                "items": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {"type": "number"}
+                }
+              },
+              "height_min_mm": {"type": "number", "minimum": 0},
+              "height_max_mm": {"type": "number", "minimum": 0},
+              "ip_rating_min": {"enum": ["IPx0", "IPx4", "IPx5", "IPx7", "IPx8"]},
+              "max_voltage_v": {"type": ["integer", "null"], "enum": [12, 25, 50, 230, null]},
+              "rcd_required_ma": {"type": ["integer", "null"], "enum": [30, null]},
+              "isolation_required": {"type": "boolean"},
+              "allowed_equipment_classes": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "prohibited_fixture_types": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "switch_position_min_distance_mm": {"type": ["number", "null"]},
+              "overlapping_with_zone_ids": {
+                "type": "array",
+                "items": {"type": "string"},
+                "default": []
+              },
+              "_clause_citation": {"type": "string", "minLength": 1},
+              "_derivation_note": {"type": "string", "minLength": 40, "maxLength": 800}
+            }
+          },
+          "description": "Full zone entries from the IR. Consumer skills use zone polygons + height bounds for per-fixture zone placement cross-checks (thin sanity check per spec §6)."
+        },
+        "electrical_constraints": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "type": "object",
+            "required": [
+              "constraint_type",
+              "applies_to_room_polygon",
+              "applies_to_zone_ids",
+              "_clause_citation",
+              "_derivation_note"
+            ],
+            "additionalProperties": true,
+            "properties": {
+              "constraint_type": {
+                "enum": [
+                  "medical_it_system",
+                  "supplementary_equipotential_bonding",
+                  "pool_main_equipotential_bonding",
+                  "whirlpool_pump_circuit",
+                  "rcd_blanket_by_room",
+                  "elv_separation"
+                ]
+              },
+              "applies_to_room_polygon": {"type": "boolean"},
+              "applies_to_zone_ids": {"type": ["array", "null"], "items": {"type": "string"}},
+              "_clause_citation": {"type": "string", "minLength": 1},
+              "_derivation_note": {"type": "string", "minLength": 40, "maxLength": 800}
+            }
+          },
+          "description": "Electrical constraints from the IR. Consumers use these to enforce RCD allocation, isolation requirements, and medical IT system distribution board placement."
+        },
+        "compliant": {
+          "type": "boolean",
+          "description": "Overall compliance flag from the special-locations analysis. Consumers surface this in their own INV sub-checks."
+        },
+        "zone_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of derived zones."
+        },
+        "constraint_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of electrical constraints."
+        },
+        "violation_count_critical": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of critical-severity fixture violations from the analysis."
+        },
+        "violation_count_high": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of high-severity fixture violations from the analysis."
+        },
+        "non_compliance_flags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["flag", "severity", "clause", "message"],
+            "additionalProperties": false,
+            "properties": {
+              "flag": {"type": "string", "minLength": 1},
+              "severity": {"enum": ["critical", "high", "warning", "info"]},
+              "fixture_id": {"type": "string"},
+              "zone_id": {"type": "string"},
+              "clause": {"type": "string"},
+              "message": {"type": "string", "minLength": 1},
+              "_cascaded_from": {
+                "type": "string",
+                "const": "special-locations",
+                "description": "Cascade provenance marker. Always 'special-locations' for flags emitted by this skill."
+              }
+            }
+          },
+          "description": "Non-compliance flags cascaded to consumers. Consumers forward these upstream via their own intent payloads, preserving _cascaded_from provenance."
+        },
+        "anchor_source_summary": {
+          "type": "object",
+          "required": ["all_extracted", "extraction_source_lowest"],
+          "additionalProperties": false,
+          "properties": {
+            "all_extracted": {
+              "type": "boolean",
+              "description": "true if every anchor_fixture came from architectural_drawing_extraction. false if any anchor used engineer_manual_entry or inferred_from_room_type."
+            },
+            "extraction_source_lowest": {
+              "enum": [
+                "architectural_drawing_extraction",
+                "engineer_manual_entry",
+                "inferred_from_room_type"
+              ],
+              "description": "Weakest (lowest-confidence) _extraction_source across all anchor_fixtures. architectural_drawing_extraction = strongest; inferred_from_room_type = weakest. Used by reviewer D-1 to gate safety-critical zone provenance warnings."
+            }
+          },
+          "description": "Anchor provenance summary. Consumed by downstream skills for D-1-style provenance gating."
+        }
+      },
+      "description": "Special locations zoning payload. Contains full zone geometry + constraints + compliance summary. Consumer skills require full zones[] array (not just count) to run per-fixture zone placement cross-checks per spec §6."
+    }
+  }
+}

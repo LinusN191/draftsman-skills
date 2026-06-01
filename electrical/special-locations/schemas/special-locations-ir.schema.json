@@ -1,0 +1,797 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "electrical/special-locations/schemas/special-locations-ir.schema.json",
+  "title": "Special Locations Zoning IR",
+  "description": "Full IR produced by special-locations v1.0.0. Zone derivation + electrical constraints + fixture compliance audit for BS 7671:2018 Part 7 special locations (§701 baths, §702 pools, §703 saunas, §710 medical, §715 ELV). Per spec §5.",
+  "type": "object",
+  "required": [
+    "drawing_type",
+    "version",
+    "mode",
+    "jurisdiction",
+    "room",
+    "anchor_fixtures",
+    "zones",
+    "calculation_summary",
+    "invariants",
+    "rationale"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "zone": {
+      "type": "object",
+      "required": [
+        "zone_id",
+        "zone_type",
+        "source_anchor_id",
+        "derivation_clause",
+        "boundary_plan_polygon_mm",
+        "height_min_mm",
+        "height_max_mm",
+        "ip_rating_min",
+        "max_voltage_v",
+        "rcd_required_ma",
+        "isolation_required",
+        "allowed_equipment_classes",
+        "prohibited_fixture_types",
+        "switch_position_min_distance_mm",
+        "overlapping_with_zone_ids",
+        "_clause_citation",
+        "_derivation_note"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique identifier for this zone within the IR."
+        },
+        "zone_type": {
+          "enum": [
+            "bath_zone_0",
+            "bath_zone_1",
+            "bath_zone_2",
+            "pool_zone_0",
+            "pool_zone_1",
+            "pool_zone_2",
+            "sauna_zone_1",
+            "sauna_zone_2",
+            "sauna_zone_3",
+            "medical_envelope_group_0",
+            "medical_envelope_group_1",
+            "medical_envelope_group_2",
+            "elv_barrier_zone"
+          ],
+          "description": "13-value discriminator: 3 bath (BS 7671:2018 §701) + 3 pool (§702) + 3 sauna (§703) + 3 medical (§710 Groups 0/1/2) + 1 ELV (§715)."
+        },
+        "source_anchor_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "ID of the anchor_fixture from which this zone was derived."
+        },
+        "derivation_clause": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Top-level verified clause from which zone was derived (e.g. 'BS 7671:2018 §701'). Only use verified citations per spec §3.2 cross-reference table."
+        },
+        "boundary_plan_polygon_mm": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {"type": "number"},
+            "description": "[x_mm, y_mm] coordinate pair."
+          },
+          "description": "Plan polygon vertices in mm. minItems: 3 for any zone; cylindrical zones use ≥12-sided regular polygon centred on anchor. All coords in mm."
+        },
+        "height_min_mm": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Bottom of zone above floor level in mm."
+        },
+        "height_max_mm": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Top of zone above floor level in mm. Must be ≥ height_min_mm."
+        },
+        "ip_rating_min": {
+          "enum": ["IPx0", "IPx4", "IPx5", "IPx7", "IPx8"],
+          "description": "Minimum IP ingress protection rating for fixtures in this zone."
+        },
+        "max_voltage_v": {
+          "type": ["integer", "null"],
+          "enum": [12, 25, 50, 230, null],
+          "description": "Maximum permitted circuit voltage in this zone. 12 = SELV only (§701.414.4.5 Zone 0). null = no voltage restriction applies."
+        },
+        "rcd_required_ma": {
+          "type": ["integer", "null"],
+          "enum": [30, null],
+          "description": "Required RCD residual operating current in mA. 30 = 30 mA RCD required per §701.411.3.3 or §703.411.3.3. null = no blanket RCD requirement from zone type alone."
+        },
+        "isolation_required": {
+          "type": "boolean",
+          "description": "Whether local isolation is required for circuits serving this zone."
+        },
+        "allowed_equipment_classes": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Equipment protection classes permitted in this zone (e.g. 'class_1', 'class_2', 'class_3_SELV')."
+        },
+        "prohibited_fixture_types": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Fixture types explicitly prohibited in this zone (e.g. 'socket_230v', 'switch_230v', 'luminaire_non_ip_rated')."
+        },
+        "switch_position_min_distance_mm": {
+          "type": ["number", "null"],
+          "description": "Minimum distance from zone boundary to switch position in mm. null if no switch-distance constraint applies. Socket outlets ≥3000 mm from Zone 1 boundary per BS 7671:2018 §701.512.3."
+        },
+        "overlapping_with_zone_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "default": [],
+          "description": "zone_id values of sibling zones whose plan polygon overlaps this zone. Populated by zone-derivation engine for INV-01 overlap audit."
+        },
+        "_clause_citation": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Jurisdiction-routed clause citation for this zone. GB: 'BS 7671:2018 §701'. KE: 'KS 1700:2018 §313 (route to BS 7671 §701)'. INT: 'IEC 60364-7-701'. Only use verified clauses from the README cross-reference table."
+        },
+        "_derivation_note": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 800,
+          "description": "Honest-disclosure engineering note explaining how zone geometry was derived from the anchor fixture. ≥40 chars required; zone derivation assumptions recorded here."
+        }
+      }
+    },
+    "constraint": {
+      "type": "object",
+      "required": [
+        "constraint_type",
+        "applies_to_room_polygon",
+        "applies_to_zone_ids",
+        "_clause_citation",
+        "_derivation_note"
+      ],
+      "properties": {
+        "constraint_type": {
+          "enum": [
+            "medical_it_system",
+            "supplementary_equipotential_bonding",
+            "pool_main_equipotential_bonding",
+            "whirlpool_pump_circuit",
+            "rcd_blanket_by_room",
+            "elv_separation"
+          ],
+          "description": "6-value constraint type discriminator."
+        },
+        "applies_to_room_polygon": {
+          "type": "boolean",
+          "description": "Whether this constraint applies to the full room polygon (vs. specific zone_ids only)."
+        },
+        "applies_to_zone_ids": {
+          "type": ["array", "null"],
+          "items": {"type": "string"},
+          "description": "zone_id values this constraint applies to. null if applies_to_room_polygon is true and constraint has no zone-specific binding."
+        },
+        "_clause_citation": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Jurisdiction-routed clause citation for this constraint. Only use verified clauses from the README cross-reference table."
+        },
+        "_derivation_note": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 800,
+          "description": "Honest-disclosure engineering note for this constraint."
+        }
+      },
+      "oneOf": [
+        {
+          "description": "medical_it_system — BS 7671:2018 §710 Group 2. IMD per BS EN 61557-8 (8 s alarm response). NHS sites: HTM 06-01 takes precedence.",
+          "properties": {
+            "constraint_type": {"const": "medical_it_system"},
+            "applies_to_room_polygon": {"type": "boolean"},
+            "applies_to_zone_ids": {"type": ["array", "null"], "items": {"type": "string"}},
+            "_clause_citation": {"type": "string", "minLength": 1},
+            "_derivation_note": {"type": "string", "minLength": 40, "maxLength": 800},
+            "isolating_transformer_va_min": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Minimum isolating transformer rating in VA. Typical 3150–8000 VA for medical IT systems."
+            },
+            "insulation_monitoring_device_required": {
+              "type": "boolean",
+              "description": "Whether an IMD is required per BS EN 61557-8."
+            },
+            "imd_alarm_response_time_s_max": {
+              "type": "integer",
+              "const": 8,
+              "description": "Maximum IMD alarm response time in seconds. Const 8 per BS EN 61557-8. NOT 0.5 s — that was a prior misattribution."
+            },
+            "safety_service_category": {
+              "type": "integer",
+              "enum": [1, 2, 3],
+              "description": "NHS safety service category per HTM 06-01. 1 = no-break, 2 = short-break, 3 = long-break. This is NOT a BS 7671 sub-clause value."
+            },
+            "supplementary_bonding_required": {
+              "type": "boolean",
+              "description": "Whether supplementary equipotential bonding is required in this medical location."
+            },
+            "supplementary_bonding_max_resistance_ohm": {
+              "type": "number",
+              "const": 0.2,
+              "description": "Maximum resistance of supplementary equipotential bonding conductors in ohms. Const 0.2 Ω per BS 7671:2018 §710."
+            },
+            "hospital_precedence": {
+              "type": "string",
+              "description": "Mandatory cross-reference for NHS sites where HTM 06-01 takes precedence. Should be 'HTM 06-01'."
+            },
+            "equipment_standard": {
+              "type": "string",
+              "description": "Equipment safety standard cross-reference. Should be 'BS EN 60601 series'."
+            },
+            "_verified_cross_refs": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Verified external cross-references for this constraint. Expected: ['BS EN 61557-8', 'HTM 06-01', 'BS EN 60601']."
+            }
+          },
+          "required": [
+            "constraint_type",
+            "applies_to_room_polygon",
+            "applies_to_zone_ids",
+            "_clause_citation",
+            "_derivation_note",
+            "isolating_transformer_va_min",
+            "insulation_monitoring_device_required",
+            "imd_alarm_response_time_s_max",
+            "safety_service_category",
+            "supplementary_bonding_required",
+            "supplementary_bonding_max_resistance_ohm",
+            "hospital_precedence",
+            "equipment_standard",
+            "_verified_cross_refs"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "description": "supplementary_equipotential_bonding — BS 7671:2018 §701.415.2 (bathrooms) and §710 Group 1 (medical).",
+          "properties": {
+            "constraint_type": {"const": "supplementary_equipotential_bonding"},
+            "applies_to_room_polygon": {"type": "boolean"},
+            "applies_to_zone_ids": {"type": ["array", "null"], "items": {"type": "string"}},
+            "_clause_citation": {"type": "string", "minLength": 1},
+            "_derivation_note": {"type": "string", "minLength": 40, "maxLength": 800},
+            "metallic_parts_listed": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "List of metallic parts requiring supplementary equipotential bonding (e.g. bath taps, radiators, exposed pipework)."
+            },
+            "bonding_conductor_csa_min_mm2": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Minimum cross-sectional area of bonding conductors in mm². Typical 2.5 or 4 mm² per BS 7671:2018 §701.415.2."
+            }
+          },
+          "required": [
+            "constraint_type",
+            "applies_to_room_polygon",
+            "applies_to_zone_ids",
+            "_clause_citation",
+            "_derivation_note",
+            "metallic_parts_listed",
+            "bonding_conductor_csa_min_mm2"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "description": "pool_main_equipotential_bonding — BS 7671:2018 §702.415.1. Conductor ≥10 mm² per verified clause. Use §702.415.1 only; the alternate clause number does not exist in the verified standards file.",
+          "properties": {
+            "constraint_type": {"const": "pool_main_equipotential_bonding"},
+            "applies_to_room_polygon": {"type": "boolean"},
+            "applies_to_zone_ids": {"type": ["array", "null"], "items": {"type": "string"}},
+            "_clause_citation": {"type": "string", "minLength": 1},
+            "_derivation_note": {"type": "string", "minLength": 40, "maxLength": 800},
+            "extraneous_parts_listed": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Extraneous conductive parts requiring main equipotential bonding (e.g. ladders, springboards, pipe fittings, pool surrounds)."
+            },
+            "conductor_csa_min_mm2": {
+              "type": "number",
+              "minimum": 10,
+              "description": "Minimum CSA of main equipotential bonding conductor in mm². ≥10 mm² per BS 7671:2018 §702.415.1."
+            }
+          },
+          "required": [
+            "constraint_type",
+            "applies_to_room_polygon",
+            "applies_to_zone_ids",
+            "_clause_citation",
+            "_derivation_note",
+            "extraneous_parts_listed",
+            "conductor_csa_min_mm2"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "description": "whirlpool_pump_circuit — BS 7671:2018 §701 + §701.512.2 (IPx5 where water jets used). No specific whirlpool sub-clause exists in the verified standards file.",
+          "properties": {
+            "constraint_type": {"const": "whirlpool_pump_circuit"},
+            "applies_to_room_polygon": {"type": "boolean"},
+            "applies_to_zone_ids": {"type": ["array", "null"], "items": {"type": "string"}},
+            "_clause_citation": {"type": "string", "minLength": 1},
+            "_derivation_note": {"type": "string", "minLength": 40, "maxLength": 800},
+            "pump_position_zone": {
+              "type": "string",
+              "description": "zone_id of the zone where the whirlpool pump is positioned."
+            },
+            "requires_local_isolation": {
+              "type": "boolean",
+              "description": "Whether a local isolation switch is required for the pump circuit."
+            },
+            "ip_rating_min": {
+              "type": "string",
+              "const": "IPx5",
+              "description": "Minimum IP rating for pump/fixture where water jets used. Const IPx5 per BS 7671:2018 §701.512.2."
+            },
+            "_whirlpool_general_citation": {
+              "type": "string",
+              "description": "Honest disclosure: no specific whirlpool sub-clause in verified BS 7671:2018+A2:2022 file. Citation format: 'BS 7671:2018 §701 (no sub-clause for whirlpools in verified file)'."
+            }
+          },
+          "required": [
+            "constraint_type",
+            "applies_to_room_polygon",
+            "applies_to_zone_ids",
+            "_clause_citation",
+            "_derivation_note",
+            "pump_position_zone",
+            "requires_local_isolation",
+            "ip_rating_min",
+            "_whirlpool_general_citation"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "description": "rcd_blanket_by_room — 30 mA RCD on all circuits per BS 7671:2018 §701.411.3.3 (bathrooms) and §703.411.3.3 (saunas). Sauna heater circuit is exempt per §703.411.3.3 clause body.",
+          "properties": {
+            "constraint_type": {"const": "rcd_blanket_by_room"},
+            "applies_to_room_polygon": {"type": "boolean"},
+            "applies_to_zone_ids": {"type": ["array", "null"], "items": {"type": "string"}},
+            "_clause_citation": {"type": "string", "minLength": 1},
+            "_derivation_note": {"type": "string", "minLength": 40, "maxLength": 800},
+            "rcd_rating_ma": {
+              "type": "integer",
+              "const": 30,
+              "description": "RCD residual operating current in mA. Const 30 per BS 7671:2018 §701.411.3.3 and §703.411.3.3."
+            },
+            "applies_to_circuit_types": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Circuit types subject to the RCD blanket requirement (e.g. 'lighting', 'sockets', 'shower_unit', 'fixed_equipment')."
+            },
+            "sauna_heater_excluded": {
+              "type": "boolean",
+              "description": "Whether the sauna heater circuit is excluded from the RCD blanket. Set true for §703 rooms per §703.411.3.3 clause body."
+            }
+          },
+          "required": [
+            "constraint_type",
+            "applies_to_room_polygon",
+            "applies_to_zone_ids",
+            "_clause_citation",
+            "_derivation_note",
+            "rcd_rating_ma",
+            "applies_to_circuit_types",
+            "sauna_heater_excluded"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "description": "elv_separation — BS 7671:2018 §715 + BS EN 61558-2-6 transformer short-circuit protection. No §715 sub-clauses present in verified standards file.",
+          "properties": {
+            "constraint_type": {"const": "elv_separation"},
+            "applies_to_room_polygon": {"type": "boolean"},
+            "applies_to_zone_ids": {"type": ["array", "null"], "items": {"type": "string"}},
+            "_clause_citation": {"type": "string", "minLength": 1},
+            "_derivation_note": {"type": "string", "minLength": 40, "maxLength": 800},
+            "lv_cable_spacing_mm_min": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Minimum separation between ELV and LV cables in mm."
+            },
+            "barrier_required": {
+              "type": "boolean",
+              "description": "Whether a physical barrier is required between ELV and LV wiring."
+            },
+            "label_required": {
+              "type": "boolean",
+              "description": "Whether ELV circuit labelling is required to identify separation."
+            },
+            "transformer_short_circuit_protected": {
+              "type": "boolean",
+              "description": "Whether the ELV safety isolating transformer has short-circuit protection. Required per BS EN 61558-2-6."
+            },
+            "_elv_general_citation": {
+              "type": "string",
+              "description": "Honest disclosure: no §715 sub-clauses in verified BS 7671:2018+A2:2022 file. Citation format: 'BS 7671:2018 §715 + BS EN 61558-2-6 (no §715 sub-clauses in verified file)'."
+            }
+          },
+          "required": [
+            "constraint_type",
+            "applies_to_room_polygon",
+            "applies_to_zone_ids",
+            "_clause_citation",
+            "_derivation_note",
+            "lv_cable_spacing_mm_min",
+            "barrier_required",
+            "label_required",
+            "transformer_short_circuit_protected",
+            "_elv_general_citation"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "non_compliance_flag": {
+      "type": "object",
+      "required": ["flag", "severity", "clause", "message"],
+      "additionalProperties": false,
+      "properties": {
+        "flag": {"type": "string", "minLength": 1},
+        "severity": {"enum": ["critical", "high", "warning", "info"]},
+        "fixture_id": {"type": "string"},
+        "zone_id": {"type": "string"},
+        "clause": {"type": "string"},
+        "message": {"type": "string", "minLength": 1},
+        "_cascaded_from": {"type": "string"}
+      }
+    }
+  },
+  "properties": {
+    "drawing_type": {
+      "const": "special_locations_zoning",
+      "description": "Schema-level constant identifying this IR type."
+    },
+    "version": {
+      "type": "string",
+      "description": "Skill version that produced this IR (e.g. '1.0.0')."
+    },
+    "mode": {
+      "enum": ["full_analysis", "screening_only"],
+      "description": "full_analysis = zone derivation + electrical constraints + fixture compliance audit. screening_only = zone derivation only; no fixture audit (early-design pre-check when fixture layout is pending)."
+    },
+    "jurisdiction": {
+      "enum": ["GB", "KE", "INT"],
+      "description": "Jurisdiction driving clause routing. GB = BS 7671:2018+A2:2022. KE = KS 1700:2018 §313 (route to BS 7671). INT = IEC 60364-7-XXX."
+    },
+    "room": {
+      "type": "object",
+      "required": [
+        "room_id",
+        "room_type",
+        "length_mm",
+        "width_mm",
+        "area_m2",
+        "ceiling_height_mm"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "room_id": {"type": "string", "minLength": 1},
+        "room_type": {
+          "enum": [
+            "bathroom",
+            "shower_room",
+            "swimming_pool_hall",
+            "sauna",
+            "medical_group_0_area",
+            "medical_group_1_ward",
+            "medical_group_2_theatre",
+            "external_landscape"
+          ],
+          "description": "Room type driving Part 7 section selection."
+        },
+        "length_mm": {"type": "integer", "minimum": 500},
+        "width_mm": {"type": "integer", "minimum": 500},
+        "area_m2": {"type": "number", "exclusiveMinimum": 0},
+        "ceiling_height_mm": {"type": "integer", "minimum": 1500},
+        "is_wet_room": {
+          "type": "boolean",
+          "description": "When true, Zone 1 polygon spans full floor area (no bath tray anchor; full floor is Zone 1). BS 7671:2018 §701."
+        }
+      },
+      "description": "Mirror of input room descriptor. Drives zone-derivation geometry and section selection."
+    },
+    "anchor_fixtures": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": [
+          "anchor_id",
+          "fixture_type",
+          "position_xyz",
+          "_extraction_source",
+          "_provenance_note"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "anchor_id": {"type": "string", "minLength": 1},
+          "fixture_type": {
+            "enum": [
+              "bath_tray",
+              "shower_tray",
+              "shower_head",
+              "pool_basin",
+              "diving_platform",
+              "water_jet_fitting",
+              "sauna_heater",
+              "medical_bed",
+              "medical_examination_point",
+              "elv_luminaire",
+              "whirlpool_pump"
+            ],
+            "description": "Anchor fixture type driving zone geometry derivation."
+          },
+          "position_xyz": {
+            "type": "object",
+            "required": ["x_mm", "y_mm", "z_mm"],
+            "additionalProperties": false,
+            "properties": {
+              "x_mm": {"type": "number", "description": "X position in mm from room origin."},
+              "y_mm": {"type": "number", "description": "Y position in mm from room origin."},
+              "z_mm": {"type": "number", "minimum": 0, "description": "Z height above floor in mm."}
+            }
+          },
+          "dimensions_mm": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "length_mm": {"type": "number", "minimum": 0},
+              "width_mm": {"type": "number", "minimum": 0},
+              "diameter_mm": {"type": "number", "minimum": 0}
+            },
+            "description": "Optional fixture footprint dimensions used by zone-derivation geometry engine."
+          },
+          "_extraction_source": {
+            "enum": [
+              "architectural_drawing_extraction",
+              "engineer_manual_entry",
+              "inferred_from_room_type"
+            ],
+            "description": "Provenance tier of this anchor position. architectural_drawing_extraction = strongest; inferred_from_room_type = weakest. Used by reviewer D-1 and INV-09."
+          },
+          "_provenance_note": {
+            "type": "string",
+            "minLength": 40,
+            "description": "Honest-disclosure note explaining how anchor position was determined. ≥40 chars required per INV-09."
+          }
+        }
+      },
+      "description": "Echo of input anchor_fixtures with resolved sub-fields. Source of truth for zone-derivation geometry."
+    },
+    "zones": {
+      "type": "array",
+      "minItems": 0,
+      "items": {"$ref": "#/definitions/zone"},
+      "description": "Derived zones, discriminated by zone_type (13-value enum). Output of the zone-derivation engine."
+    },
+    "electrical_constraints": {
+      "type": "array",
+      "minItems": 0,
+      "items": {"$ref": "#/definitions/constraint"},
+      "description": "Electrical constraints applying to the room or specific zones. Required when mode == full_analysis or §710 Group 2 medical zone is present. Discriminated by constraint_type (6-value enum)."
+    },
+    "existing_fixtures_audit": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": [
+          "fixture_id",
+          "fixture_type",
+          "position_xyz",
+          "derived_zone_id",
+          "compliance_status",
+          "violation_sub_rule",
+          "violation_clause",
+          "severity"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "fixture_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Identifier matching the upstream consumed intent's fixture record."
+          },
+          "fixture_type": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Fixture type from upstream (e.g. 'socket_230v', 'luminaire', 'isolator', 'shower_unit')."
+          },
+          "position_xyz": {
+            "type": "object",
+            "required": ["x_mm", "y_mm", "z_mm"],
+            "additionalProperties": false,
+            "properties": {
+              "x_mm": {"type": "number"},
+              "y_mm": {"type": "number"},
+              "z_mm": {"type": "number", "minimum": 0}
+            }
+          },
+          "derived_zone_id": {
+            "type": ["string", "null"],
+            "description": "zone_id of the zone this fixture falls within. null if outside all derived zones."
+          },
+          "compliance_status": {
+            "enum": ["compliant", "violation"],
+            "description": "Whether the fixture placement complies with zone requirements."
+          },
+          "violation_sub_rule": {
+            "type": ["string", "null"],
+            "enum": [
+              "type_prohibited",
+              "ip_below_min",
+              "voltage_above_max",
+              "switch_distance_too_close",
+              null
+            ],
+            "description": "Sub-rule violated. null when compliance_status == 'compliant'."
+          },
+          "violation_clause": {
+            "type": ["string", "null"],
+            "description": "Jurisdiction-routed citation for the violated clause. null when compliant."
+          },
+          "severity": {
+            "type": ["string", "null"],
+            "enum": ["critical", "high", null],
+            "description": "Violation severity. null when compliance_status == 'compliant'."
+          }
+        }
+      },
+      "description": "Per-fixture compliance audit. Populated only when mode == full_analysis AND fixture data is available from consumed intent or explicit input. Every violation entry MUST have a corresponding non_compliance_flags entry (INV-02 drift guard)."
+    },
+    "calculation_summary": {
+      "type": "object",
+      "required": [
+        "compliant",
+        "zone_count",
+        "constraint_count",
+        "violation_count_critical",
+        "violation_count_high",
+        "non_compliance_flags",
+        "assumptions",
+        "_zone_derivation_engine",
+        "_engineering_judgments"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "compliant": {
+          "type": "boolean",
+          "description": "AND of (no unflagged zone overlaps, all required constraints present, all fixtures compliant)."
+        },
+        "zone_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of zones derived."
+        },
+        "constraint_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of electrical constraints in this IR."
+        },
+        "violation_count_critical": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of critical-severity fixture violations."
+        },
+        "violation_count_high": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of high-severity fixture violations."
+        },
+        "non_compliance_flags": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/non_compliance_flag"},
+          "description": "Structured compliance flags. One-to-one with existing_fixtures_audit violation entries per INV-02."
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Engineering assumptions recorded during zone derivation (e.g. 'Whirlpool pump position defaulted to bath edge; IPx5 per BS 7671:2018 §701.512.2')."
+        },
+        "_zone_derivation_engine": {
+          "type": "string",
+          "description": "Zone derivation engine identifier. Should be 'auto_from_anchors_v1.0' for v1.0 IR output."
+        },
+        "_engineering_judgments": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Reviewer-surfaced engineering judgment flags. Populated by reviewer D-checks."
+        }
+      },
+      "description": "Rollup summary of zone derivation + compliance analysis. Per spec §5.5."
+    },
+    "invariants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "passes", "severity", "evidence"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^INV-[0-9]{2,3}$",
+            "description": "Invariant identifier (e.g. INV-01)."
+          },
+          "passes": {
+            "type": "boolean",
+            "description": "Whether this invariant check passes."
+          },
+          "severity": {
+            "enum": ["high", "medium"],
+            "description": "Severity of this invariant check."
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 1200,
+            "description": "Evidence string for this invariant. maxLength: 1200 declared upfront per [[feedback-no-trim-non-consequential]] — INV-08 evidence legitimately carries fixture-id + zone-id + violation sub-rule + clause + remediation guidance across multi-violation cases."
+          }
+        }
+      },
+      "description": "Validator INV entries. Each INV check populates one entry."
+    },
+    "rationale": {
+      "$ref": "../../../shared/schemas/core/rationale.schema.json",
+      "description": "Skill rationale: chat_summary (40–500 chars) + sections[] with engineering decisions."
+    }
+  },
+  "allOf": [
+    {
+      "description": "Mode-conditional fixture audit + constraint requirement: full_analysis requires both existing_fixtures_audit and electrical_constraints; screening_only relaxes to zones-only (no fixture audit).",
+      "if": {
+        "properties": {"mode": {"const": "screening_only"}},
+        "required": ["mode"]
+      },
+      "then": {
+        "not": {"required": ["existing_fixtures_audit"]}
+      },
+      "else": {
+        "required": ["existing_fixtures_audit", "electrical_constraints"]
+      }
+    },
+    {
+      "description": "§710 Group 2 medical envelope mandates a sibling medical_it_system constraint per BS 7671:2018 §710 + BS EN 61557-8 (IMD 8 s alarm response). Enforced declaratively at schema level.",
+      "if": {
+        "properties": {
+          "zones": {
+            "contains": {
+              "properties": {
+                "zone_type": {"const": "medical_envelope_group_2"}
+              },
+              "required": ["zone_type"]
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "electrical_constraints": {
+            "contains": {
+              "properties": {
+                "constraint_type": {"const": "medical_it_system"}
+              },
+              "required": ["constraint_type"]
+            }
+          }
+        }
+      }
+    }
+  ]
+}
