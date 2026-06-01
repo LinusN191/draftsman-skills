@@ -85,3 +85,17 @@ If any node has wrong format-jurisdiction pairing without explicit override, fai
 - Modifying the IR (return verdict, never edits)
 - Style preferences not tied to a citable rule
 - Validating the upstream arc-flash intent's correctness (that's the arc-flash skill's reviewer)
+
+## Architectural state (Sprint 4-AB)
+
+When the prompt context includes `architectural_state`, this skill is
+**geometry-aware** and the reviewer SHOULD flag:
+
+1. Placements that ignore the room polygons (e.g. uniform-grid
+   placement that crosses corridor boundaries).
+2. IRs that don't reference `building.label` in titles when the
+   building model is confirmed.
+3. IRs that consume rooms with `confirmed=false` without surfacing
+   the dependency in `assumptions`.
+
+See `shared/architectural_state_contract.md` for the full contract.
