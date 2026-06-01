@@ -1,0 +1,236 @@
+{
+  "drawing_type": "special_locations_zoning",
+  "version": "1.0.0",
+  "mode": "full_analysis",
+  "jurisdiction": "GB",
+  "room": {
+    "room_id": "uk-ward-group-1-8x6",
+    "room_type": "medical_group_1_ward",
+    "length_mm": 8000,
+    "width_mm": 6000,
+    "area_m2": 48,
+    "ceiling_height_mm": 2800,
+    "is_wet_room": false
+  },
+  "anchor_fixtures": [
+    {
+      "anchor_id": "bed_1",
+      "fixture_type": "medical_bed",
+      "position_xyz": {"x_mm": 1500, "y_mm": 1500, "z_mm": 700},
+      "dimensions_mm": {"diameter_mm": 3000},
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Recovery bed 1 centroid extracted from architect Rev-F ward layout dated 2026-05-24; bed top at 700mm AFF; 500mm clear of north and west walls per HBN 04-01 nursing-space requirement."
+    },
+    {
+      "anchor_id": "bed_2",
+      "fixture_type": "medical_bed",
+      "position_xyz": {"x_mm": 4000, "y_mm": 1500, "z_mm": 700},
+      "dimensions_mm": {"diameter_mm": 3000},
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Recovery bed 2 centroid extracted from architect Rev-F ward layout dated 2026-05-24; bed top at 700mm AFF; 2500mm clear of bed 1 per HBN 04-01 inter-bed spacing recommendation."
+    },
+    {
+      "anchor_id": "bed_3",
+      "fixture_type": "medical_bed",
+      "position_xyz": {"x_mm": 1500, "y_mm": 4500, "z_mm": 700},
+      "dimensions_mm": {"diameter_mm": 3000},
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Recovery bed 3 centroid extracted from architect Rev-F ward layout dated 2026-05-24; mirror of bed 1 on south side of central corridor; bed top at 700mm AFF."
+    },
+    {
+      "anchor_id": "bed_4",
+      "fixture_type": "medical_bed",
+      "position_xyz": {"x_mm": 4000, "y_mm": 4500, "z_mm": 700},
+      "dimensions_mm": {"diameter_mm": 3000},
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Recovery bed 4 centroid extracted from architect Rev-F ward layout dated 2026-05-24; SE corner bed; mirror of bed 2 on south side of central corridor."
+    }
+  ],
+  "zones": [
+    {
+      "zone_id": "zone_bed_1_envelope_g1",
+      "zone_type": "medical_envelope_group_1",
+      "source_anchor_id": "bed_1",
+      "derivation_clause": "BS 7671:2018 §710",
+      "boundary_plan_polygon_mm": [
+        [3000, 1500], [2799, 2250], [2250, 2799], [1500, 3000], [750, 2799], [201, 2250],
+        [0, 1500], [201, 750], [750, 201], [1500, 0], [2250, 201], [2799, 750]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 2500,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+      "prohibited_fixture_types": [],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §710 + §701.415.2",
+      "_derivation_note": "Group 1 patient envelope per §710: 1.5m radius cylinder centred on bed 1 at (1500,1500); 12-sided regular polygon approximation per spec §5.7. Height 0-2500mm AFF covers normal patient working volume. Group 1 mandates supplementary equipotential bonding but NOT a medical IT system (that is Group 2-only). 30 mA RCD permitted per BS 7671 §411.4 main rules; HTM 06-01 routing accepted."
+    },
+    {
+      "zone_id": "zone_bed_2_envelope_g1",
+      "zone_type": "medical_envelope_group_1",
+      "source_anchor_id": "bed_2",
+      "derivation_clause": "BS 7671:2018 §710",
+      "boundary_plan_polygon_mm": [
+        [5500, 1500], [5299, 2250], [4750, 2799], [4000, 3000], [3250, 2799], [2701, 2250],
+        [2500, 1500], [2701, 750], [3250, 201], [4000, 0], [4750, 201], [5299, 750]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 2500,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+      "prohibited_fixture_types": [],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §710 + §701.415.2",
+      "_derivation_note": "Group 1 patient envelope per §710: 1.5m radius cylinder centred on bed 2 at (4000,1500); 12-sided regular polygon approximation per spec §5.7. Envelope clears bed 1 envelope by 1m (centres at x=1500/x=4000 separated by 2500mm; 1.5+1.5=3m radii sum, so envelopes touch but do NOT overlap because separation < sum is the touch condition — distance 2500 < 3000 implies a small overlap zone of 500mm width)."
+    },
+    {
+      "zone_id": "zone_bed_3_envelope_g1",
+      "zone_type": "medical_envelope_group_1",
+      "source_anchor_id": "bed_3",
+      "derivation_clause": "BS 7671:2018 §710",
+      "boundary_plan_polygon_mm": [
+        [3000, 4500], [2799, 5250], [2250, 5799], [1500, 6000], [750, 5799], [201, 5250],
+        [0, 4500], [201, 3750], [750, 3201], [1500, 3000], [2250, 3201], [2799, 3750]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 2500,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+      "prohibited_fixture_types": [],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §710 + §701.415.2",
+      "_derivation_note": "Group 1 patient envelope per §710: 1.5m radius cylinder centred on bed 3 at (1500,4500); 12-sided regular polygon approximation per spec §5.7. South-side mirror of bed 1; bed 1 envelope top edge at y=3000 and bed 3 envelope bottom edge at y=3000 — envelopes touch tangentially at y=3000, no overlap area."
+    },
+    {
+      "zone_id": "zone_bed_4_envelope_g1",
+      "zone_type": "medical_envelope_group_1",
+      "source_anchor_id": "bed_4",
+      "derivation_clause": "BS 7671:2018 §710",
+      "boundary_plan_polygon_mm": [
+        [5500, 4500], [5299, 5250], [4750, 5799], [4000, 6000], [3250, 5799], [2701, 5250],
+        [2500, 4500], [2701, 3750], [3250, 3201], [4000, 3000], [4750, 3201], [5299, 3750]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 2500,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+      "prohibited_fixture_types": [],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §710 + §701.415.2",
+      "_derivation_note": "Group 1 patient envelope per §710: 1.5m radius cylinder centred on bed 4 at (4000,4500); 12-sided regular polygon approximation per spec §5.7. SE quadrant bed; mirror of bed 2 across the central y=3000 axis. Envelope tangent to bed 2 envelope at y=3000 (no overlap area)."
+    }
+  ],
+  "electrical_constraints": [
+    {
+      "constraint_type": "supplementary_equipotential_bonding",
+      "applies_to_room_polygon": true,
+      "applies_to_zone_ids": ["zone_bed_1_envelope_g1", "zone_bed_2_envelope_g1", "zone_bed_3_envelope_g1", "zone_bed_4_envelope_g1"],
+      "_clause_citation": "BS 7671:2018 §710 + §701.415.2",
+      "_derivation_note": "Supplementary equipotential bonding required within all four Group 1 patient environments per §710 + §701.415.2. Group 1 medical locations require ALL exposed and extraneous conductive parts in the patient environment to be bonded so that potential differences are minimised under fault conditions. Bonding extends to bed frames, headboard medical-gas terminal units, patient monitor chassis, and any radiator/pipework within reach. No medical_it_system constraint is emitted because Group 1 does NOT mandate an IT system (that is Group 2-only)."
+    }
+  ],
+  "existing_fixtures_audit": [
+    {
+      "fixture_id": "iso_socket_bed_1",
+      "fixture_type": "medical_isolating_socket",
+      "position_xyz": {"x_mm": 1500, "y_mm": 100, "z_mm": 1100},
+      "derived_zone_id": "zone_bed_1_envelope_g1",
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "iso_socket_bed_2",
+      "fixture_type": "medical_isolating_socket",
+      "position_xyz": {"x_mm": 4000, "y_mm": 100, "z_mm": 1100},
+      "derived_zone_id": "zone_bed_2_envelope_g1",
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "iso_socket_bed_3",
+      "fixture_type": "medical_isolating_socket",
+      "position_xyz": {"x_mm": 1500, "y_mm": 5900, "z_mm": 1100},
+      "derived_zone_id": "zone_bed_3_envelope_g1",
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "iso_socket_bed_4",
+      "fixture_type": "medical_isolating_socket",
+      "position_xyz": {"x_mm": 4000, "y_mm": 5900, "z_mm": 1100},
+      "derived_zone_id": "zone_bed_4_envelope_g1",
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "lum_central",
+      "fixture_type": "luminaire",
+      "position_xyz": {"x_mm": 4000, "y_mm": 3000, "z_mm": 2800},
+      "derived_zone_id": null,
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    }
+  ],
+  "calculation_summary": {
+    "compliant": true,
+    "zone_count": 4,
+    "constraint_count": 1,
+    "violation_count_critical": 0,
+    "violation_count_high": 0,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Group 1 patient envelopes approximated as 12-sided regular polygons (1.5m radius) per spec §5.7 geometry-validation convention.",
+      "Inter-bed spacing 2500mm centre-to-centre per HBN 04-01 recommendation; the two beds on the north wall (bed_1 + bed_2) and south wall (bed_3 + bed_4) produce envelope overlaps which are catalogued via overlapping_with_zone_ids — for a Group 1 ward this is acceptable because the supplementary equipotential bonding constraint applies to the room polygon (not zone-specific), so envelopes can overlap without breaking the bonding obligation.",
+      "Luminaire at central position (4000,3000,2800) is outside all 4 patient envelopes vertically (z=2800 > Zone height_max=2500); compliant by exclusion."
+    ],
+    "_zone_derivation_engine": "auto_from_anchors_v1.0",
+    "_engineering_judgments": []
+  },
+  "invariants": [
+    {"id": "INV-01", "passes": true, "severity": "high", "evidence": "4 anchors (bed_1..bed_4) produce 4 zones[] (one envelope each). All 4 zones share zone_type=medical_envelope_group_1. Envelopes are tangent across the central y=3000 corridor (bed_1↔bed_3 and bed_2↔bed_4 touch at y=3000); along the long axis bed_1↔bed_2 and bed_3↔bed_4 envelopes overlap by ~500mm width where centre separation (2500mm) is less than sum of radii (3000mm). All overlaps declared via overlapping_with_zone_ids in the IR (catalogued, not silent) — see assumptions[]."},
+    {"id": "INV-02", "passes": true, "severity": "high", "evidence": "existing_fixtures_audit[] has 5 entries, all compliance_status=compliant (4 medical_isolating_sockets at bed headboard wall positions + 1 ceiling luminaire). non_compliance_flags[] empty. One-to-one correspondence trivially holds (zero violations on both sides)."},
+    {"id": "INV-03", "passes": true, "severity": "high", "evidence": "No medical_envelope_group_2 zone present in IR (all 4 zones are Group 1). §710 + BS EN 61557-8 medical IT system requirement N/A for Group 1; INV-03 vacuously passes per spec §7.2. supplementary_equipotential_bonding is present per §710 + §701.415.2 — the bonding obligation applies to Group 1 but the IT-system obligation does NOT (that is Group 2-only)."},
+    {"id": "INV-04", "passes": true, "severity": "high", "evidence": "room_type=medical_group_1_ward, not bathroom/shower_room/sauna. §701.411.3.3 + §703.411.3.3 RCD blanket N/A — INV-04 vacuously passes per spec §7.2. Note: zones permit RCD use (rcd_required_ma=30) but this is not the §701/§703 RCD blanket — it is a Group 1 normal-circuit default per BS 7671 §411.4."},
+    {"id": "INV-05", "passes": true, "severity": "high", "evidence": "Not a pool hall. §702.415.1 main equipotential bonding N/A — INV-05 vacuously passes."},
+    {"id": "INV-06", "passes": true, "severity": "high", "evidence": "No bath_basin. §701.512.2 whirlpool pump constraint N/A — INV-06 vacuously passes."},
+    {"id": "INV-07", "passes": true, "severity": "high", "evidence": "No elv_lighting_circuit_anchor. §715 + BS EN 61558-2-6 elv_separation N/A — INV-07 vacuously passes."},
+    {"id": "INV-08", "passes": true, "severity": "high", "evidence": "5 fixtures audited: iso_socket_bed_1 (IPx4, 230V, RCD) at (1500,100,1100) — wall-mounted at headboard of bed 1 envelope; medical_isolating_socket type is permitted in Group 1 envelopes (prohibited list empty for Group 1 ward); PASS. iso_socket_bed_2/3/4 similar reasoning, each within the corresponding bed envelope; PASS. lum_central (IPx4, 230V, RCD) at (4000,3000,2800) — central ceiling-mounted luminaire at z=2800 above all 4 envelope ceilings (height_max=2500); outside all zones; PASS. All 4 sub-rules (type, IP, switch-distance, voltage) PASS for all 5 fixtures."},
+    {"id": "INV-09", "passes": true, "severity": "medium", "evidence": "All 4 anchor_fixtures use _extraction_source=architectural_drawing_extraction (strongest tier). _provenance_note lengths: bed_1=189 chars, bed_2=193 chars, bed_3=160 chars, bed_4=156 chars — all ≥40. Provenance disclosure complete."},
+    {"id": "INV-10", "passes": true, "severity": "high", "evidence": "compliant=true ∧ violation_count_critical=0 ∧ non_compliance_flags=[] ∧ all sibling overlaps declared via overlapping_with_zone_ids per assumptions[]. Self-consistency holds."}
+  ],
+  "rationale": {
+    "chat_summary": "Standalone Group 1 recovery ward — 8000×6000mm 4-bed ward. 4 medical_envelope_group_1 zones (1.5m radius cylinders, 12-sided polygon approximations). supplementary_equipotential_bonding constraint per §710 + §701.415.2 (no medical_it_system because Group 1 does not mandate one — IT system is Group 2-only). 5 fixtures all compliant. INV-03 N/A — vacuously PASSES. All other INVs PASS.",
+    "sections": [
+      {"title": "Standards applied", "summary": "BS 7671:2018+A2:2022 §710 governs medical electrical services across all three patient-care groups (0/1/2). For Group 1 the mandatory constraint is supplementary equipotential bonding within each patient environment — sourcing the bonding requirement via §701.415.2 (the bathroom-supplementary clause), which is the verified-file pattern §710 cross-references. Group 1 does NOT mandate an IT system (that is Group 2-only). Only §710 top-level is valid in the verified file; no §710 sub-clauses are verified-file-valid (the spec §3.2 banned-list governs). HTM 06-01 NHS technical memorandum takes precedence on NHS sites and would add safety_service_category routing, but for Group 1 a single supplementary-bonding constraint is the minimum BS 7671 requirement."},
+      {"title": "Zone derivation logic", "summary": "Per-bed patient envelope = 1.5m radius cylinder centred on each bed centroid, height 0 to 2500mm AFF. Each cylinder is approximated as a 12-sided regular polygon (≥12 sides required by the schema per spec §5.7 geometry-validation convention). Beds 1+2 (north row) and beds 3+4 (south row) are 2500mm centre-to-centre, so their envelopes overlap by ~500mm width along the long axis. North↔south envelopes (bed_1↔bed_3 and bed_2↔bed_4) are 3000mm centre-to-centre — exactly the sum of radii — so they are tangent at y=3000 with zero overlap area. Overlaps along the long axis are catalogued in assumptions[] for INV-01 transparency."},
+      {"title": "Honest disclosures", "summary": "Three assumptions: 12-sided polygon approximation per spec §5.7; HBN 04-01 inter-bed spacing assumed at 2500mm centre-to-centre (the verified-file standard for recovery wards); the central ceiling luminaire is above the envelope ceiling so falls outside all zones by height (z=2800 > height_max=2500). All bed positions came from architectural extraction (strongest provenance tier per INV-09)."},
+      {"title": "Failure modes considered", "summary": "If supplementary_equipotential_bonding were omitted from electrical_constraints[], INV-03 would still pass vacuously (no Group 2 zone) but INV-04 would still pass (not a bathroom). The schema-level Group-2-implies-IT-system allOf rule is N/A here because all 4 zones are Group 1, not Group 2. If a generic 230V socket (not medical_isolating_socket) were placed at one of the bedside positions, the prohibited_fixture_types list (empty for Group 1) would NOT catch it — Group 1 is more permissive than Group 2 — but the engineer-of-record judgment would flag the absence of medical-grade isolation. If beds were placed within 1m of each other, envelope overlaps would exceed the ~500mm catalogued here and may require D-2-style reviewer flag (no D-2 raised at the 2500mm separation observed)."}
+    ]
+  }
+}

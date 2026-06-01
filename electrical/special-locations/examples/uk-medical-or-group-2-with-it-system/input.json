@@ -1,0 +1,55 @@
+{
+  "_note": "Standalone medical Group 2 example. 6000x5000mm operating room with single medical_patient_position anchor (Group 2). Triggers full medical_it_system constraint per BS 7671:2018 §710 + BS EN 61557-8 (IMD 8 s alarm response) + HTM 06-01 (NHS precedence). Also includes supplementary_equipotential_bonding constraint. INV-03 PASS. D-4 flag NOT raised because 5kVA transformer sits inside 3.15-8kVA plausibility band.",
+  "jurisdiction": "GB",
+  "anchor_fixtures": [
+    {
+      "id": "patient_1",
+      "type": "medical_patient_position",
+      "position": {"x_mm": 3000, "y_mm": 2500, "z_floor_mm": 1000},
+      "shape_kind": "cylinder",
+      "radius_mm": 1500,
+      "medical_group": 2,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Operating table centroid extracted from architect Rev-E theatre layout dated 2026-05-22; central position with surgical luminaire pendant; bed top at 1000mm AFF per equipment schedule."
+    }
+  ],
+  "room": {
+    "room_polygon_mm": [
+      {"x_mm": 0, "y_mm": 0},
+      {"x_mm": 6000, "y_mm": 0},
+      {"x_mm": 6000, "y_mm": 5000},
+      {"x_mm": 0, "y_mm": 5000}
+    ],
+    "ceiling_height_mm": 3000,
+    "room_type": "medical_group_2_theatre",
+    "floor_finish": "vinyl",
+    "is_external": false,
+    "is_wet_room": false
+  },
+  "medical_it_system_override": [
+    {
+      "isolating_transformer_va": 5000,
+      "insulation_monitoring_device_present": true,
+      "imd_alarm_response_time_s_observed": 8,
+      "supplementary_bonding_verified": true,
+      "supplementary_bonding_resistance_ohm_observed": 0.15,
+      "safety_service_category": 1
+    }
+  ],
+  "existing_fixtures": [
+    {
+      "type": "surgical_luminaire",
+      "position": {"x_mm": 3000, "y_mm": 2500, "z_floor_mm": 3000},
+      "ip_rating": "IPX2",
+      "voltage_v": 230,
+      "is_rcd_protected": false
+    },
+    {
+      "type": "medical_isolating_socket",
+      "position": {"x_mm": 4500, "y_mm": 2500, "z_floor_mm": 1100},
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": false
+    }
+  ]
+}

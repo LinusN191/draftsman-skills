@@ -1,0 +1,44 @@
+{
+  "_note": "Standalone pool hall example. 12000x6000mm hall with single rectangular pool 10000x5000mm. Adjacent 4000x3000mm changing room shares the SOUTH wall (y=0). Pool zone_2 extends 2m horizontally and 1.5m above water level — reaches within 200mm of the changing-room boundary, triggering reviewer D-2 flag per BS 7671:2018 §702.55.4. Pool main equipotential bonding ≥10mm² per §702.415.1.",
+  "jurisdiction": "GB",
+  "anchor_fixtures": [
+    {
+      "id": "pool_main",
+      "type": "pool_basin",
+      "position": {"x_mm": 1000, "y_mm": 500, "z_floor_mm": 0},
+      "shape_kind": "rectangular",
+      "dimensions": {"length_mm": 10000, "width_mm": 5000, "height_mm": 1800},
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Pool basin extracted from architect Rev-D plan dated 2026-05-20; rectangular 10x5m pool; basin floor 1800mm below pool deck level; water surface at 200mm above pool deck per architect's hydraulic schedule."
+    }
+  ],
+  "room": {
+    "room_polygon_mm": [
+      {"x_mm": 0, "y_mm": 0},
+      {"x_mm": 12000, "y_mm": 0},
+      {"x_mm": 12000, "y_mm": 6000},
+      {"x_mm": 0, "y_mm": 6000}
+    ],
+    "ceiling_height_mm": 4500,
+    "room_type": "swimming_pool_hall",
+    "floor_finish": "tiles",
+    "is_external": false,
+    "is_wet_room": false
+  },
+  "existing_fixtures": [
+    {
+      "type": "luminaire",
+      "position": {"x_mm": 6000, "y_mm": 3000, "z_floor_mm": 4500},
+      "ip_rating": "IPX5",
+      "voltage_v": 230,
+      "is_rcd_protected": true
+    },
+    {
+      "type": "lifeguard_station",
+      "position": {"x_mm": 11500, "y_mm": 3000, "z_floor_mm": 1200},
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": true
+    }
+  ]
+}

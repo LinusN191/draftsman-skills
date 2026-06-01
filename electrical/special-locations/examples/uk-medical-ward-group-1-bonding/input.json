@@ -1,0 +1,96 @@
+{
+  "_note": "Standalone Group 1 recovery ward example. 8000x6000mm 4-bed ward with 4 medical_patient_position anchors (Group 1 each). 4 medical_envelope_group_1 zones derived. Single supplementary_equipotential_bonding constraint (no medical_it_system because Group 1 does not mandate IT system — that is Group 2-only). INV-03 vacuously PASSES (no Group 2 zone). All other INVs PASS.",
+  "jurisdiction": "GB",
+  "anchor_fixtures": [
+    {
+      "id": "bed_1",
+      "type": "medical_patient_position",
+      "position": {"x_mm": 1500, "y_mm": 1500, "z_floor_mm": 700},
+      "shape_kind": "cylinder",
+      "radius_mm": 1500,
+      "medical_group": 1,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Recovery bed 1 centroid extracted from architect Rev-F ward layout dated 2026-05-24; bed top at 700mm AFF; bed positioned 500mm from north and west walls per nursing-space requirement."
+    },
+    {
+      "id": "bed_2",
+      "type": "medical_patient_position",
+      "position": {"x_mm": 4000, "y_mm": 1500, "z_floor_mm": 700},
+      "shape_kind": "cylinder",
+      "radius_mm": 1500,
+      "medical_group": 1,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Recovery bed 2 centroid extracted from architect Rev-F ward layout dated 2026-05-24; bed top at 700mm AFF; 2500mm clear from bed 1 per HBN 04-01 spacing recommendation."
+    },
+    {
+      "id": "bed_3",
+      "type": "medical_patient_position",
+      "position": {"x_mm": 1500, "y_mm": 4500, "z_floor_mm": 700},
+      "shape_kind": "cylinder",
+      "radius_mm": 1500,
+      "medical_group": 1,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Recovery bed 3 centroid extracted from architect Rev-F ward layout dated 2026-05-24; mirror of bed 1 on south side of central corridor."
+    },
+    {
+      "id": "bed_4",
+      "type": "medical_patient_position",
+      "position": {"x_mm": 4000, "y_mm": 4500, "z_floor_mm": 700},
+      "shape_kind": "cylinder",
+      "radius_mm": 1500,
+      "medical_group": 1,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Recovery bed 4 centroid extracted from architect Rev-F ward layout dated 2026-05-24; SE corner bed; mirror of bed 2 on south side of central corridor."
+    }
+  ],
+  "room": {
+    "room_polygon_mm": [
+      {"x_mm": 0, "y_mm": 0},
+      {"x_mm": 8000, "y_mm": 0},
+      {"x_mm": 8000, "y_mm": 6000},
+      {"x_mm": 0, "y_mm": 6000}
+    ],
+    "ceiling_height_mm": 2800,
+    "room_type": "medical_group_1_ward",
+    "floor_finish": "vinyl",
+    "is_external": false,
+    "is_wet_room": false
+  },
+  "existing_fixtures": [
+    {
+      "type": "medical_isolating_socket",
+      "position": {"x_mm": 1500, "y_mm": 100, "z_floor_mm": 1100},
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": true
+    },
+    {
+      "type": "medical_isolating_socket",
+      "position": {"x_mm": 4000, "y_mm": 100, "z_floor_mm": 1100},
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": true
+    },
+    {
+      "type": "medical_isolating_socket",
+      "position": {"x_mm": 1500, "y_mm": 5900, "z_floor_mm": 1100},
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": true
+    },
+    {
+      "type": "medical_isolating_socket",
+      "position": {"x_mm": 4000, "y_mm": 5900, "z_floor_mm": 1100},
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": true
+    },
+    {
+      "type": "luminaire",
+      "position": {"x_mm": 4000, "y_mm": 3000, "z_floor_mm": 2800},
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": true
+    }
+  ]
+}

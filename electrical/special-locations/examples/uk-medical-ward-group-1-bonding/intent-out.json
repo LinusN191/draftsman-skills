@@ -1,0 +1,118 @@
+{
+  "intent_version": "1.0.0",
+  "skill": "special-locations",
+  "consumed_lighting_layout_intent": null,
+  "special_locations_zoning": {
+    "zones": [
+      {
+        "zone_id": "zone_bed_1_envelope_g1",
+        "zone_type": "medical_envelope_group_1",
+        "source_anchor_id": "bed_1",
+        "derivation_clause": "BS 7671:2018 §710",
+        "boundary_plan_polygon_mm": [
+          [3000, 1500], [2799, 2250], [2250, 2799], [1500, 3000], [750, 2799], [201, 2250],
+          [0, 1500], [201, 750], [750, 201], [1500, 0], [2250, 201], [2799, 750]
+        ],
+        "height_min_mm": 0,
+        "height_max_mm": 2500,
+        "ip_rating_min": "IPx4",
+        "max_voltage_v": 230,
+        "rcd_required_ma": 30,
+        "isolation_required": false,
+        "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+        "prohibited_fixture_types": [],
+        "switch_position_min_distance_mm": null,
+        "overlapping_with_zone_ids": [],
+        "_clause_citation": "BS 7671:2018 §710 + §701.415.2",
+        "_derivation_note": "Group 1 envelope = 1.5m radius cylinder around bed 1 (1500,1500); 12-sided polygon per spec §5.7. Supplementary bonding mandatory; no IT system needed (Group 1)."
+      },
+      {
+        "zone_id": "zone_bed_2_envelope_g1",
+        "zone_type": "medical_envelope_group_1",
+        "source_anchor_id": "bed_2",
+        "derivation_clause": "BS 7671:2018 §710",
+        "boundary_plan_polygon_mm": [
+          [5500, 1500], [5299, 2250], [4750, 2799], [4000, 3000], [3250, 2799], [2701, 2250],
+          [2500, 1500], [2701, 750], [3250, 201], [4000, 0], [4750, 201], [5299, 750]
+        ],
+        "height_min_mm": 0,
+        "height_max_mm": 2500,
+        "ip_rating_min": "IPx4",
+        "max_voltage_v": 230,
+        "rcd_required_ma": 30,
+        "isolation_required": false,
+        "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+        "prohibited_fixture_types": [],
+        "switch_position_min_distance_mm": null,
+        "overlapping_with_zone_ids": [],
+        "_clause_citation": "BS 7671:2018 §710 + §701.415.2",
+        "_derivation_note": "Group 1 envelope around bed 2 (4000,1500); 12-sided polygon. Long-axis overlap with bed_1 envelope (~500mm); catalogued in IR assumptions."
+      },
+      {
+        "zone_id": "zone_bed_3_envelope_g1",
+        "zone_type": "medical_envelope_group_1",
+        "source_anchor_id": "bed_3",
+        "derivation_clause": "BS 7671:2018 §710",
+        "boundary_plan_polygon_mm": [
+          [3000, 4500], [2799, 5250], [2250, 5799], [1500, 6000], [750, 5799], [201, 5250],
+          [0, 4500], [201, 3750], [750, 3201], [1500, 3000], [2250, 3201], [2799, 3750]
+        ],
+        "height_min_mm": 0,
+        "height_max_mm": 2500,
+        "ip_rating_min": "IPx4",
+        "max_voltage_v": 230,
+        "rcd_required_ma": 30,
+        "isolation_required": false,
+        "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+        "prohibited_fixture_types": [],
+        "switch_position_min_distance_mm": null,
+        "overlapping_with_zone_ids": [],
+        "_clause_citation": "BS 7671:2018 §710 + §701.415.2",
+        "_derivation_note": "Group 1 envelope around bed 3 (1500,4500); 12-sided polygon. South-side mirror of bed_1; envelopes tangent at y=3000 (no overlap area)."
+      },
+      {
+        "zone_id": "zone_bed_4_envelope_g1",
+        "zone_type": "medical_envelope_group_1",
+        "source_anchor_id": "bed_4",
+        "derivation_clause": "BS 7671:2018 §710",
+        "boundary_plan_polygon_mm": [
+          [5500, 4500], [5299, 5250], [4750, 5799], [4000, 6000], [3250, 5799], [2701, 5250],
+          [2500, 4500], [2701, 3750], [3250, 3201], [4000, 3000], [4750, 3201], [5299, 3750]
+        ],
+        "height_min_mm": 0,
+        "height_max_mm": 2500,
+        "ip_rating_min": "IPx4",
+        "max_voltage_v": 230,
+        "rcd_required_ma": 30,
+        "isolation_required": false,
+        "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+        "prohibited_fixture_types": [],
+        "switch_position_min_distance_mm": null,
+        "overlapping_with_zone_ids": [],
+        "_clause_citation": "BS 7671:2018 §710 + §701.415.2",
+        "_derivation_note": "Group 1 envelope around bed 4 (4000,4500); 12-sided polygon. SE quadrant; mirror of bed_2 across central y=3000 axis; tangent to bed_2 envelope at y=3000."
+      }
+    ],
+    "electrical_constraints": [
+      {
+        "constraint_type": "supplementary_equipotential_bonding",
+        "applies_to_room_polygon": true,
+        "applies_to_zone_ids": ["zone_bed_1_envelope_g1", "zone_bed_2_envelope_g1", "zone_bed_3_envelope_g1", "zone_bed_4_envelope_g1"],
+        "_clause_citation": "BS 7671:2018 §710 + §701.415.2",
+        "_derivation_note": "Supplementary bonding within all 4 Group 1 patient environments per §710 + §701.415.2; bonds bed frames, headboard medical-gas terminals, patient monitor chassis, radiators/pipework.",
+        "metallic_parts_listed": ["bed_1 frame", "bed_1 headboard medical-gas terminal", "bed_2 frame", "bed_2 headboard medical-gas terminal", "bed_3 frame", "bed_3 headboard medical-gas terminal", "bed_4 frame", "bed_4 headboard medical-gas terminal", "ward radiator", "patient monitor chassis (×4)"],
+        "bonding_conductor_csa_min_mm2": 4
+      }
+    ],
+    "compliant": true,
+    "zone_count": 4,
+    "constraint_count": 1,
+    "violation_count_critical": 0,
+    "violation_count_high": 0,
+    "non_compliance_flags": [],
+    "anchor_source_summary": {
+      "all_extracted": true,
+      "extraction_source_lowest": "architectural_drawing_extraction"
+    }
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "_note": "Standalone external landscape ELV lighting example. 20000x15000mm garden/landscape area with 6 ELV bollard luminaires fed from a SELV isolating transformer (12V). 6 elv_barrier_zone entries derived per BS 7671:2018 §715 + BS EN 61558-2-6. room.is_external: true. ambient_temperature_c NOT supplied → reviewer D-5 flag fires (default 30°C de-rating assumed; engineer-of-record must verify). elv_separation constraint enforces ≥100mm cable spacing + physical barrier + label + transformer short-circuit protection. INV-07 PASSES.",
+  "jurisdiction": "GB",
+  "anchor_fixtures": [
+    {
+      "id": "elv_bollard_1",
+      "type": "elv_luminaire",
+      "position": {"x_mm": 3000, "y_mm": 3000, "z_floor_mm": 1000},
+      "shape_kind": "cylinder",
+      "diameter_mm": 100,
+      "elv_voltage_v": 12,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Path bollard 1 extracted from landscape architect Rev-A garden lighting layout dated 2026-05-26; 1000mm tall stainless cylindrical bollard, IP65 SELV LED luminaire, 12V feed."
+    },
+    {
+      "id": "elv_bollard_2",
+      "type": "elv_luminaire",
+      "position": {"x_mm": 7000, "y_mm": 3000, "z_floor_mm": 1000},
+      "shape_kind": "cylinder",
+      "diameter_mm": 100,
+      "elv_voltage_v": 12,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Path bollard 2 extracted from landscape architect Rev-A garden lighting layout dated 2026-05-26; 4m east of bollard_1 along the main east-west path; same SELV 12V feed."
+    },
+    {
+      "id": "elv_bollard_3",
+      "type": "elv_luminaire",
+      "position": {"x_mm": 11000, "y_mm": 3000, "z_floor_mm": 1000},
+      "shape_kind": "cylinder",
+      "diameter_mm": 100,
+      "elv_voltage_v": 12,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Path bollard 3 extracted from landscape architect Rev-A garden lighting layout dated 2026-05-26; 4m east of bollard_2 along the main east-west path; same SELV 12V feed."
+    },
+    {
+      "id": "elv_bollard_4",
+      "type": "elv_luminaire",
+      "position": {"x_mm": 5000, "y_mm": 10000, "z_floor_mm": 1000},
+      "shape_kind": "cylinder",
+      "diameter_mm": 100,
+      "elv_voltage_v": 12,
+      "_extraction_source": "engineer_manual_entry",
+      "_provenance_note": "Bollard 4 added by lighting engineer at first review (north terrace edge) to balance the photometric pattern; not on architect Rev-A; engineer-manual-entry provenance honest-disclosed for INV-09."
+    },
+    {
+      "id": "elv_bollard_5",
+      "type": "elv_luminaire",
+      "position": {"x_mm": 10000, "y_mm": 10000, "z_floor_mm": 1000},
+      "shape_kind": "cylinder",
+      "diameter_mm": 100,
+      "elv_voltage_v": 12,
+      "_extraction_source": "engineer_manual_entry",
+      "_provenance_note": "Bollard 5 added by lighting engineer at first review (north terrace edge) symmetric to bollard 4; engineer-manual-entry provenance honest-disclosed for INV-09."
+    },
+    {
+      "id": "elv_bollard_6",
+      "type": "elv_luminaire",
+      "position": {"x_mm": 15000, "y_mm": 7500, "z_floor_mm": 1000},
+      "shape_kind": "cylinder",
+      "diameter_mm": 100,
+      "elv_voltage_v": 12,
+      "_extraction_source": "inferred_from_room_type",
+      "_provenance_note": "Bollard 6 inferred at the east-feature-tree position based on landscape typology (illuminated feature tree); position assumed at the tree centroid from arboricultural survey; weakest provenance tier — engineer-of-record to verify final position."
+    }
+  ],
+  "room": {
+    "room_polygon_mm": [
+      {"x_mm": 0, "y_mm": 0},
+      {"x_mm": 20000, "y_mm": 0},
+      {"x_mm": 20000, "y_mm": 15000},
+      {"x_mm": 0, "y_mm": 15000}
+    ],
+    "ceiling_height_mm": 3000,
+    "room_type": "external_landscape",
+    "floor_finish": "soft_landscape",
+    "is_external": true,
+    "is_wet_room": false
+  },
+  "existing_fixtures": [
+    {
+      "type": "elv_luminaire",
+      "position": {"x_mm": 3000, "y_mm": 3000, "z_floor_mm": 1000},
+      "ip_rating": "IPX5",
+      "voltage_v": 12,
+      "is_rcd_protected": false
+    },
+    {
+      "type": "elv_luminaire",
+      "position": {"x_mm": 7000, "y_mm": 3000, "z_floor_mm": 1000},
+      "ip_rating": "IPX5",
+      "voltage_v": 12,
+      "is_rcd_protected": false
+    },
+    {
+      "type": "elv_luminaire",
+      "position": {"x_mm": 11000, "y_mm": 3000, "z_floor_mm": 1000},
+      "ip_rating": "IPX5",
+      "voltage_v": 12,
+      "is_rcd_protected": false
+    },
+    {
+      "type": "elv_luminaire",
+      "position": {"x_mm": 5000, "y_mm": 10000, "z_floor_mm": 1000},
+      "ip_rating": "IPX5",
+      "voltage_v": 12,
+      "is_rcd_protected": false
+    },
+    {
+      "type": "elv_luminaire",
+      "position": {"x_mm": 10000, "y_mm": 10000, "z_floor_mm": 1000},
+      "ip_rating": "IPX5",
+      "voltage_v": 12,
+      "is_rcd_protected": false
+    },
+    {
+      "type": "elv_luminaire",
+      "position": {"x_mm": 15000, "y_mm": 7500, "z_floor_mm": 1000},
+      "ip_rating": "IPX5",
+      "voltage_v": 12,
+      "is_rcd_protected": false
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "drawing_type": "special_locations_zoning",
+  "version": "1.0.0",
+  "mode": "full_analysis",
+  "jurisdiction": "GB",
+  "room": {
+    "room_id": "uk-or-group-2-6x5",
+    "room_type": "medical_group_2_theatre",
+    "length_mm": 6000,
+    "width_mm": 5000,
+    "area_m2": 30,
+    "ceiling_height_mm": 3000,
+    "is_wet_room": false
+  },
+  "anchor_fixtures": [
+    {
+      "anchor_id": "patient_1",
+      "fixture_type": "medical_examination_point",
+      "position_xyz": {"x_mm": 3000, "y_mm": 2500, "z_mm": 1000},
+      "dimensions_mm": {"diameter_mm": 3000},
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Operating table centroid extracted from architect Rev-E theatre layout dated 2026-05-22; central position with surgical luminaire pendant; bed top at 1000mm AFF per equipment schedule."
+    }
+  ],
+  "zones": [
+    {
+      "zone_id": "zone_patient_1_envelope_g2",
+      "zone_type": "medical_envelope_group_2",
+      "source_anchor_id": "patient_1",
+      "derivation_clause": "BS 7671:2018 §710",
+      "boundary_plan_polygon_mm": [
+        [4500, 2500], [4299, 3250], [3750, 3799], [3000, 4000], [2250, 3799], [1701, 3250],
+        [1500, 2500], [1701, 1750], [2250, 1201], [3000, 1000], [3750, 1201], [4299, 1750]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 2500,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": null,
+      "isolation_required": false,
+      "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+      "prohibited_fixture_types": ["socket_230v_non_medical", "switch_230v_non_medical", "tnc_circuit"],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §710 + HTM 06-01",
+      "_derivation_note": "Group 2 patient envelope per §710: 1.5m radius cylinder around the patient position, 12-sided regular polygon approximation centred at (3000,2500). Height_min=0, height_max=2500mm covers the surgical working volume. RCD-protection NOT applied inside the envelope — Group 2 mandates a medical IT (insulated) system instead per §710. Sockets and switches in the envelope MUST be medical-isolating-socket type connected to the IT system."
+    }
+  ],
+  "electrical_constraints": [
+    {
+      "constraint_type": "medical_it_system",
+      "applies_to_room_polygon": false,
+      "applies_to_zone_ids": ["zone_patient_1_envelope_g2"],
+      "_clause_citation": "BS 7671:2018 §710 + BS EN 61557-8 (IMD 8 s alarm response) + HTM 06-01 (NHS precedence)",
+      "_derivation_note": "Medical IT system required for the Group 2 patient envelope per §710 (no Part 7 sub-clauses valid; §710 top-level only). IMD per BS EN 61557-8 with 8 s alarm response. Isolating transformer at 5 kVA — within the 3.15-8 kVA plausibility band per D-4 (no flag raised). Supplementary bonding ≤0.2 Ω per §710. HTM 06-01 NHS technical memorandum takes precedence in NHS sites and defines safety_service_category 1 (no-break).",
+      "isolating_transformer_va_min": 5000,
+      "insulation_monitoring_device_required": true,
+      "imd_alarm_response_time_s_max": 8,
+      "safety_service_category": 1,
+      "supplementary_bonding_required": true,
+      "supplementary_bonding_max_resistance_ohm": 0.2,
+      "hospital_precedence": "HTM 06-01",
+      "equipment_standard": "BS EN 60601 series",
+      "_verified_cross_refs": ["BS EN 61557-8", "HTM 06-01", "BS EN 60601"]
+    },
+    {
+      "constraint_type": "supplementary_equipotential_bonding",
+      "applies_to_room_polygon": false,
+      "applies_to_zone_ids": ["zone_patient_1_envelope_g2"],
+      "_clause_citation": "BS 7671:2018 §710 + §701.415.2",
+      "_derivation_note": "Supplementary equipotential bonding within the Group 2 patient environment per §710 + §701.415.2. Resistance ≤0.2 Ω (measured 0.15 Ω per input override). Bonding extends to operating table frame, anaesthesia machine ground, scrub sink, and any other metallic touchable surface in the envelope.",
+      "metallic_parts_listed": ["operating table frame", "anaesthesia machine ground", "scrub sink", "surgical pendant arm", "patient monitor chassis"],
+      "bonding_conductor_csa_min_mm2": 4
+    }
+  ],
+  "existing_fixtures_audit": [
+    {
+      "fixture_id": "surg_lum_1",
+      "fixture_type": "surgical_luminaire",
+      "position_xyz": {"x_mm": 3000, "y_mm": 2500, "z_mm": 3000},
+      "derived_zone_id": null,
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "iso_socket_1",
+      "fixture_type": "medical_isolating_socket",
+      "position_xyz": {"x_mm": 4500, "y_mm": 2500, "z_mm": 1100},
+      "derived_zone_id": "zone_patient_1_envelope_g2",
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    }
+  ],
+  "calculation_summary": {
+    "compliant": true,
+    "zone_count": 1,
+    "constraint_count": 2,
+    "violation_count_critical": 0,
+    "violation_count_high": 0,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Group 2 patient envelope approximated as 12-sided regular polygon (1.5m radius cylinder) per the geometry-validation convention recorded in spec §5.7.",
+      "Isolating transformer sized at 5 kVA per input medical_it_system_override; within the 3.15-8 kVA plausibility band so no D-4 flag is raised.",
+      "Safety service category 1 (no-break) sourced from HTM 06-01 NHS technical memorandum, NOT from BS 7671 §710 (no such sub-clause exists in the verified file)."
+    ],
+    "_zone_derivation_engine": "auto_from_anchors_v1.0",
+    "_engineering_judgments": []
+  },
+  "invariants": [
+    {"id": "INV-01", "passes": true, "severity": "high", "evidence": "1 anchor (patient_1) produces 1 zone (medical_envelope_group_2). No overlaps with sibling zones (single zone)."},
+    {"id": "INV-02", "passes": true, "severity": "high", "evidence": "existing_fixtures_audit[] has 2 compliant entries; non_compliance_flags[] empty. One-to-one trivially holds."},
+    {"id": "INV-03", "passes": true, "severity": "high", "evidence": "medical_envelope_group_2 zone present; sibling medical_it_system constraint present with applies_to_zone_ids=[zone_patient_1_envelope_g2] AND imd_alarm_response_time_s_max=8 AND supplementary_bonding_max_resistance_ohm=0.2 per BS 7671:2018 §710 + BS EN 61557-8. Also satisfies the schema-level allOf if/then enforcing this combination."},
+    {"id": "INV-04", "passes": true, "severity": "high", "evidence": "room_type=medical_group_2_theatre, not bathroom/shower_room/sauna. §701.411.3.3 + §703.411.3.3 RCD blanket N/A — INV-04 vacuously passes per spec §7.2."},
+    {"id": "INV-05", "passes": true, "severity": "high", "evidence": "Not a pool hall. §702.415.1 main bonding N/A."},
+    {"id": "INV-06", "passes": true, "severity": "high", "evidence": "No bath_basin. §701.512.2 whirlpool N/A."},
+    {"id": "INV-07", "passes": true, "severity": "high", "evidence": "No elv_lighting_circuit_anchor. §715 elv_separation N/A."},
+    {"id": "INV-08", "passes": true, "severity": "high", "evidence": "2 fixtures audited: surg_lum_1 (surgical luminaire IPx2, 230V, NON-RCD because IT-system circuit) at (3000,2500,3000) — ceiling-mounted at z=3000 > Zone height_max=2500 → outside envelope; surgical luminaires are medical-equipment-of-trade per HTM 06-01 with IT system feed bypassing RCD; PASS. iso_socket_1 (medical_isolating_socket IPx4, 230V, NON-RCD) at (4500,2500,1100) inside the envelope — type medical_isolating_socket explicitly permitted (not in prohibited_fixture_types); the no-RCD is correct because the IT system replaces RCD per §710; PASS."},
+    {"id": "INV-09", "passes": true, "severity": "medium", "evidence": "patient_1 _extraction_source=architectural_drawing_extraction; _provenance_note 173 chars (≥40)."},
+    {"id": "INV-10", "passes": true, "severity": "high", "evidence": "compliant=true ∧ violation_count_critical=0 ∧ non_compliance_flags=[] ∧ no silent overlaps. Self-consistency holds."}
+  ],
+  "rationale": {
+    "chat_summary": "Standalone Group 2 operating theatre — 6000×5000mm with single patient envelope (1.5m radius cylinder, 12-sided polygon). FULL medical_it_system constraint per §710 + BS EN 61557-8 (IMD 8s alarm) + HTM 06-01 (5kVA transformer, safety category 1, 0.2Ω bonding). supplementary_equipotential_bonding to patient-environment metalwork. 2 fixtures both compliant. INV-03 PASSES. D-4 not raised because 5kVA sits inside 3.15-8kVA plausibility band.",
+    "sections": [
+      {"title": "Standards applied", "summary": "BS 7671:2018+A2:2022 §710 governs medical electrical services; only the top-level §710 citation is valid in the verified file (no §710 sub-clauses are verified-file-valid per the spec §3.2 banned-list). BS EN 61557-8 defines IMD with 8 s alarm response time. HTM 06-01 is the NHS technical memorandum where safety_service_category 1/2/3 actually lives (NOT BS 7671). BS EN 60601 governs medical-electrical-equipment safety."},
+      {"title": "Zone derivation logic", "summary": "Group 2 patient envelope = 1.5m radius cylinder centred on the patient position, height 0 to 2500mm AFF. The schema requires polygons (cannot store a cylinder primitive directly), so the runtime emits a 12-sided regular polygon approximation per spec §5.7 geometry-validation convention. Vertices computed at 30° intervals from (3000,2500) with r=1500."},
+      {"title": "Honest disclosures", "summary": "Three assumptions: 12-sided polygon approximation per spec §5.7; 5 kVA isolating transformer inside 3.15-8 kVA plausibility band so D-4 not flagged; safety_service_category 1 sourced from HTM 06-01, NOT from BS 7671 §710. The 8 s IMD alarm-response figure is the BS EN 61557-8 constant (NOT 0.5 s, which was a prior misattribution corrected during the brainstorm). 0.2 Ω supplementary bonding resistance is the §710 maximum."},
+      {"title": "Failure modes considered", "summary": "If imd_alarm_response_time_s_max were set to anything other than 8, the schema-level const enforcement would FAIL — INV-03 would FAIL. If supplementary_bonding_max_resistance_ohm were != 0.2, schema enforcement would FAIL. If isolating_transformer_va_min were <3150 or >8000, D-4 would fire (5000 sits inside the band so no flag). If a generic 230V socket were placed inside the envelope (instead of a medical_isolating_socket), INV-08 sub-rule type_prohibited would FAIL."}
+    ]
+  }
+}

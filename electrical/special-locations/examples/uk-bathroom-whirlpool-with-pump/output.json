@@ -1,0 +1,222 @@
+{
+  "drawing_type": "special_locations_zoning",
+  "version": "1.0.0",
+  "mode": "full_analysis",
+  "jurisdiction": "GB",
+  "room": {
+    "room_id": "uk-bathroom-whirlpool",
+    "room_type": "bathroom",
+    "length_mm": 2700,
+    "width_mm": 2100,
+    "area_m2": 5.67,
+    "ceiling_height_mm": 2400,
+    "is_wet_room": false
+  },
+  "anchor_fixtures": [
+    {
+      "anchor_id": "bath_1",
+      "fixture_type": "bath_tray",
+      "position_xyz": {"x_mm": 500, "y_mm": 0, "z_mm": 0},
+      "dimensions_mm": {"length_mm": 1700, "width_mm": 700},
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Whirlpool bath position extracted from architect Rev-C plan dated 2026-05-15; specified as 1700x700 acrylic whirlpool with integral jets per client schedule. Pump location NOT shown on architectural drawing."
+    },
+    {
+      "anchor_id": "shower_1",
+      "fixture_type": "shower_head",
+      "position_xyz": {"x_mm": 1050, "y_mm": 350, "z_mm": 2100},
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Shower-over-whirlpool-bath head at 2100mm AFF from architect Rev-C plumbing schedule; thermostatic mixer at midpoint of bath length."
+    }
+  ],
+  "zones": [
+    {
+      "zone_id": "zone_bath_1_z0",
+      "zone_type": "bath_zone_0",
+      "source_anchor_id": "bath_1",
+      "derivation_clause": "BS 7671:2018 §701",
+      "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+      "height_min_mm": 0,
+      "height_max_mm": 550,
+      "ip_rating_min": "IPx7",
+      "max_voltage_v": 12,
+      "rcd_required_ma": 30,
+      "isolation_required": true,
+      "allowed_equipment_classes": ["class_3_SELV"],
+      "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated", "shaver_socket", "fixed_heater_230v"],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §701.414.4.5 (SELV ≤12 V in Zone 0) + §701.411.3.3 (30 mA RCD)",
+      "_derivation_note": "Zone 0 = interior volume of whirlpool bath basin per §701 zone-table convention. Whirlpool jets do not change the Zone 0 geometry — SELV-only rule still applies."
+    },
+    {
+      "zone_id": "zone_bath_1_z1",
+      "zone_type": "bath_zone_1",
+      "source_anchor_id": "bath_1",
+      "derivation_clause": "BS 7671:2018 §701",
+      "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+      "height_min_mm": 550,
+      "height_max_mm": 2250,
+      "ip_rating_min": "IPx5",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+      "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": ["zone_shower_1_z1"],
+      "_clause_citation": "BS 7671:2018 §701 + §701.411.3.3 (30 mA RCD) + §701.512.2 (IPx5 where water jets used)",
+      "_derivation_note": "Zone 1 is the vertical projection above the whirlpool to 2250mm AFF. IPx5 raised from baseline IPx4 because whirlpool jets count as water jets per BS 7671:2018 §701.512.2. Overlaps shower_1 Zone 1."
+    },
+    {
+      "zone_id": "zone_shower_1_z1",
+      "zone_type": "bath_zone_1",
+      "source_anchor_id": "shower_1",
+      "derivation_clause": "BS 7671:2018 §701",
+      "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+      "height_min_mm": 0,
+      "height_max_mm": 2100,
+      "ip_rating_min": "IPx5",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+      "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": ["zone_bath_1_z1"],
+      "_clause_citation": "BS 7671:2018 §701 + §701.512.2 (IPx5 — water jets)",
+      "_derivation_note": "Zone 1 from shower_1 head at 2100mm AFF; ceiling capped by shower head per §701 zone-table. IPx5 inherited because shower zone coincides with whirlpool zone and the stricter minimum prevails."
+    },
+    {
+      "zone_id": "zone_bath_1_z2",
+      "zone_type": "bath_zone_2",
+      "source_anchor_id": "bath_1",
+      "derivation_clause": "BS 7671:2018 §701",
+      "boundary_plan_polygon_mm": [[-100, -600], [2800, -600], [2800, 1300], [-100, 1300]],
+      "height_min_mm": 0,
+      "height_max_mm": 2250,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+      "prohibited_fixture_types": ["socket_230v"],
+      "switch_position_min_distance_mm": 3000,
+      "overlapping_with_zone_ids": ["zone_shower_1_z2"],
+      "_clause_citation": "BS 7671:2018 §701 + §701.512.3",
+      "_derivation_note": "Zone 2 = 600mm horizontal extension of Zone 1 per §701 zone-table. Sockets prohibited within 3m of Zone 1 per §701.512.3. Polygon shown unclipped; runtime clips to room polygon."
+    },
+    {
+      "zone_id": "zone_shower_1_z2",
+      "zone_type": "bath_zone_2",
+      "source_anchor_id": "shower_1",
+      "derivation_clause": "BS 7671:2018 §701",
+      "boundary_plan_polygon_mm": [[-100, -600], [2800, -600], [2800, 1300], [-100, 1300]],
+      "height_min_mm": 0,
+      "height_max_mm": 2100,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+      "prohibited_fixture_types": ["socket_230v"],
+      "switch_position_min_distance_mm": 3000,
+      "overlapping_with_zone_ids": ["zone_bath_1_z2"],
+      "_clause_citation": "BS 7671:2018 §701 + §701.512.3",
+      "_derivation_note": "Zone 2 from shower_1: 600mm horizontal extension; vertical ceiling 2100mm. Coincides with bath_1 zone_2."
+    }
+  ],
+  "electrical_constraints": [
+    {
+      "constraint_type": "rcd_blanket_by_room",
+      "applies_to_room_polygon": true,
+      "applies_to_zone_ids": null,
+      "_clause_citation": "BS 7671:2018 §701.411.3.3",
+      "_derivation_note": "30 mA RCD on all bathroom LV circuits per §701.411.3.3. Heater exemption is sauna-specific (§703.411.3.3) and does not apply to whirlpool pump — pump must be RCD-protected like all other bathroom circuits.",
+      "rcd_rating_ma": 30,
+      "applies_to_circuit_types": ["lighting", "sockets", "shower_unit", "fixed_equipment", "shaver_socket", "whirlpool_pump"],
+      "sauna_heater_excluded": false
+    },
+    {
+      "constraint_type": "whirlpool_pump_circuit",
+      "applies_to_room_polygon": false,
+      "applies_to_zone_ids": ["zone_bath_1_z1"],
+      "_clause_citation": "BS 7671:2018 §701 + §701.512.2 (IPx5 where water jets used)",
+      "_derivation_note": "Whirlpool pump circuit constraint per §701 + §701.512.2 IPx5 water-jets rule. Pump position defaulted to bath edge (zone_bath_1_z1) because input did not specify whirlpool_pump_position — engineer-of-record to confirm. Local isolation required to allow safe maintenance access without isolating the whole bathroom.",
+      "pump_position_zone": "zone_bath_1_z1",
+      "requires_local_isolation": true,
+      "ip_rating_min": "IPx5",
+      "_whirlpool_general_citation": "BS 7671:2018 §701 (no sub-clause for whirlpools in verified file) — IPx5 derived from §701.512.2 water-jets clause"
+    }
+  ],
+  "existing_fixtures_audit": [
+    {
+      "fixture_id": "lum_1",
+      "fixture_type": "luminaire",
+      "position_xyz": {"x_mm": 1350, "y_mm": 1400, "z_mm": 2400},
+      "derived_zone_id": null,
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "lum_2",
+      "fixture_type": "luminaire",
+      "position_xyz": {"x_mm": 1050, "y_mm": 350, "z_mm": 2400},
+      "derived_zone_id": null,
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "shaver_1",
+      "fixture_type": "shaver_socket",
+      "position_xyz": {"x_mm": 2400, "y_mm": 1800, "z_mm": 1400},
+      "derived_zone_id": null,
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    }
+  ],
+  "calculation_summary": {
+    "compliant": true,
+    "zone_count": 5,
+    "constraint_count": 2,
+    "violation_count_critical": 0,
+    "violation_count_high": 0,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Whirlpool pump position defaulted to bath edge (zone_bath_1_z1) because whirlpool_pump_position not supplied — IPx5 per BS 7671:2018 §701.512.2.",
+      "Bath rim height defaulted to 550mm AFF (typical UK acrylic bath).",
+      "Shower head at 2100mm AFF treated as Zone 1 ceiling per §701 zone-table convention."
+    ],
+    "_zone_derivation_engine": "auto_from_anchors_v1.0",
+    "_engineering_judgments": [
+      "REVIEWER D-3: bath_kind=whirlpool with no whirlpool_pump_position supplied in input. Skill placed pump at bath edge (zone_bath_1_z1) with IPx5 per BS 7671:2018 §701.512.2 water-jets clause. Engineer-of-record must confirm actual pump location against installer drawing and verify access for maintenance isolation. No specific whirlpool sub-clause exists in the verified BS 7671:2018+A2:2022 file — IPx5 derivation routed through §701.512.2 (water jets)."
+    ]
+  },
+  "invariants": [
+    {"id": "INV-01", "passes": true, "severity": "high", "evidence": "2 anchors (bath_1 + shower_1) produce 5 zones; overlapping pairs catalogued. No silent merges."},
+    {"id": "INV-02", "passes": true, "severity": "high", "evidence": "existing_fixtures_audit[] has 3 compliant entries; non_compliance_flags[] empty. One-to-one correspondence trivially holds."},
+    {"id": "INV-03", "passes": true, "severity": "high", "evidence": "No medical_envelope_group_2 zone present. §710 medical IT system requirement N/A."},
+    {"id": "INV-04", "passes": true, "severity": "high", "evidence": "room_type=bathroom; rcd_blanket_by_room constraint present with rcd_rating_ma=30 and sauna_heater_excluded=false per §701.411.3.3. Whirlpool pump explicitly included in applies_to_circuit_types[]."},
+    {"id": "INV-05", "passes": true, "severity": "high", "evidence": "Not a swimming_pool_hall. §702.415.1 main equipotential bonding N/A."},
+    {"id": "INV-06", "passes": true, "severity": "high", "evidence": "bath_kind=whirlpool triggers whirlpool_pump_circuit constraint: pump_position_zone=zone_bath_1_z1, requires_local_isolation=true, ip_rating_min=IPx5 per BS 7671:2018 §701 + §701.512.2. Honest-disclosure cross-reference recorded in _whirlpool_general_citation."},
+    {"id": "INV-07", "passes": true, "severity": "high", "evidence": "No elv_lighting_circuit_anchor. §715 elv_separation N/A."},
+    {"id": "INV-08", "passes": true, "severity": "high", "evidence": "3 fixtures audited: lum_1 (IPx4 ceiling, outside zones), lum_2 (IPx4 ceiling above Zone 1), shaver_1 (BS EN 61558-2-5 shaver socket outside Zone 2 y-range). All 4 sub-rules (type/IP/voltage/switch-distance) PASS."},
+    {"id": "INV-09", "passes": true, "severity": "medium", "evidence": "Both anchors use _extraction_source=architectural_drawing_extraction. Provenance notes 161 and 145 chars — both ≥40."},
+    {"id": "INV-10", "passes": true, "severity": "high", "evidence": "compliant=true; violation_count_critical=0; non_compliance_flags=[]; declared overlaps are not silent. Self-consistency holds."}
+  ],
+  "rationale": {
+    "chat_summary": "Standalone whirlpool variant — 2700×2100mm bathroom with whirlpool bath + shower-over-bath. Whirlpool bath_kind triggers INV-06 + D-3 reviewer flag. 5 zones derived (Zone 1 IPx5 raised per §701.512.2 water-jets clause); 2 constraints (rcd_blanket §701.411.3.3 + whirlpool_pump_circuit §701 + §701.512.2). 3 fixtures all compliant. All 10 INVs PASS.",
+    "sections": [
+      {"title": "Standards applied", "summary": "BS 7671:2018+A2:2022 §701 governs bathroom zoning. §701.411.3.3 mandates 30 mA RCD blanket. §701.512.2 raises Zone 1 IP minimum to IPx5 wherever water jets are used — whirlpool jets satisfy this trigger. §701.414.4.5 fixes Zone 0 at 12 V SELV. §701.512.3 keeps generic 230 V sockets ≥3 m from Zone 1. No §701 sub-clause for whirlpool specifically — routing through §701.512.2 is the honest disclosure."},
+      {"title": "Zone derivation logic", "summary": "Identical plan polygon to the standard-bath case (5 zones); the whirlpool differs only in zone IPx5 minimum on Zone 1 (raised from baseline IPx4) per §701.512.2 water-jets clause. Whirlpool pump constraint adds a 2nd electrical_constraint entry binding to zone_bath_1_z1 with requires_local_isolation=true."},
+      {"title": "Honest disclosures", "summary": "Reviewer D-3 flag raised: whirlpool_pump_position not supplied — skill defaulted pump to bath edge. _whirlpool_general_citation field explicitly records that no §701 sub-clause for whirlpools exists in the verified file; IPx5 derivation routed through §701.512.2 (water jets). Engineer-of-record must verify actual pump position against installer drawing."},
+      {"title": "Failure modes considered", "summary": "If whirlpool_pump_position were supplied outside zone_bath_1_z1, the constraint pump_position_zone would re-bind. If pump IP were under-specified at IPx4 instead of IPx5, INV-06 would FAIL (sub-rule: ip_rating_min violation). Local isolation requirement is hard-coded to true to enable safe motor service without isolating the whole bathroom RCD."}
+    ]
+  }
+}

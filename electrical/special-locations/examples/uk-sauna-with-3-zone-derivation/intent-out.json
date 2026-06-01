@@ -1,0 +1,88 @@
+{
+  "intent_version": "1.0.0",
+  "skill": "special-locations",
+  "consumed_lighting_layout_intent": null,
+  "special_locations_zoning": {
+    "zones": [
+      {
+        "zone_id": "zone_heater_1_z1",
+        "zone_type": "sauna_zone_1",
+        "source_anchor_id": "heater_1",
+        "derivation_clause": "BS 7671:2018 §703",
+        "boundary_plan_polygon_mm": [[0, 1100], [1100, 1100], [1100, 2000], [0, 2000]],
+        "height_min_mm": 0,
+        "height_max_mm": 2400,
+        "ip_rating_min": "IPx4",
+        "max_voltage_v": 230,
+        "rcd_required_ma": null,
+        "isolation_required": true,
+        "allowed_equipment_classes": ["class_1", "class_2"],
+        "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated", "non_heat_rated_cable_load"],
+        "switch_position_min_distance_mm": null,
+        "overlapping_with_zone_ids": ["zone_heater_1_z2"],
+        "_clause_citation": "BS 7671:2018 §703 + §703.411.3.3 (heater excluded)",
+        "_derivation_note": "Zone 1 = heater footprint padded 500mm per §703 zone-table; heat-rated cable; heater circuit excluded from RCD blanket per §703.411.3.3."
+      },
+      {
+        "zone_id": "zone_heater_1_z2",
+        "zone_type": "sauna_zone_2",
+        "source_anchor_id": "heater_1",
+        "derivation_clause": "BS 7671:2018 §703",
+        "boundary_plan_polygon_mm": [[0, 0], [2400, 0], [2400, 2000], [0, 2000]],
+        "height_min_mm": 0,
+        "height_max_mm": 2400,
+        "ip_rating_min": "IPx4",
+        "max_voltage_v": 230,
+        "rcd_required_ma": 30,
+        "isolation_required": false,
+        "allowed_equipment_classes": ["class_1", "class_2"],
+        "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+        "switch_position_min_distance_mm": null,
+        "overlapping_with_zone_ids": ["zone_heater_1_z1", "zone_heater_1_z3"],
+        "_clause_citation": "BS 7671:2018 §703 + §703.411.3.3",
+        "_derivation_note": "Zone 2 = sauna body polygon (full room minus Zone 1); runtime subtracts Zone 1 for plan rendering."
+      },
+      {
+        "zone_id": "zone_heater_1_z3",
+        "zone_type": "sauna_zone_3",
+        "source_anchor_id": "heater_1",
+        "derivation_clause": "BS 7671:2018 §703",
+        "boundary_plan_polygon_mm": [[0, 0], [2400, 0], [2400, 2000], [0, 2000]],
+        "height_min_mm": 1500,
+        "height_max_mm": 2400,
+        "ip_rating_min": "IPx4",
+        "max_voltage_v": 230,
+        "rcd_required_ma": 30,
+        "isolation_required": false,
+        "allowed_equipment_classes": ["class_1", "class_2"],
+        "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+        "switch_position_min_distance_mm": null,
+        "overlapping_with_zone_ids": ["zone_heater_1_z2"],
+        "_clause_citation": "BS 7671:2018 §703",
+        "_derivation_note": "Zone 3 = full sauna polygon at height_min=1500mm to ceiling; upper-volume zone for accessories."
+      }
+    ],
+    "electrical_constraints": [
+      {
+        "constraint_type": "rcd_blanket_by_room",
+        "applies_to_room_polygon": true,
+        "applies_to_zone_ids": null,
+        "_clause_citation": "BS 7671:2018 §703.411.3.3",
+        "_derivation_note": "30 mA RCD on all sauna LV circuits EXCEPT sauna heater per §703.411.3.3.",
+        "rcd_rating_ma": 30,
+        "applies_to_circuit_types": ["lighting", "sockets", "control_gear", "thermostat", "extract_fan"],
+        "sauna_heater_excluded": true
+      }
+    ],
+    "compliant": true,
+    "zone_count": 3,
+    "constraint_count": 1,
+    "violation_count_critical": 0,
+    "violation_count_high": 0,
+    "non_compliance_flags": [],
+    "anchor_source_summary": {
+      "all_extracted": true,
+      "extraction_source_lowest": "architectural_drawing_extraction"
+    }
+  }
+}

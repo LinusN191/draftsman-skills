@@ -1,0 +1,61 @@
+{
+  "_note": "Standalone whirlpool example. Same 2700x2100mm bathroom as the standard-bath example but bath_kind='whirlpool'. Triggers INV-06 (whirlpool_pump_circuit constraint) + reviewer D-3 flag (default pump position assumed). Pump position NOT supplied — skill defaults to bath edge with IPx5 per BS 7671:2018 §701.512.2.",
+  "jurisdiction": "GB",
+  "anchor_fixtures": [
+    {
+      "id": "bath_1",
+      "type": "bath_basin",
+      "position": {"x_mm": 500, "y_mm": 0, "z_floor_mm": 0},
+      "shape_kind": "rectangular",
+      "dimensions": {"length_mm": 1700, "width_mm": 700, "height_mm": 550},
+      "bath_kind": "whirlpool",
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Whirlpool bath position extracted from architect Rev-C plan dated 2026-05-15; specified as 1700x700 acrylic whirlpool with integral jets per client schedule. Pump location NOT shown on architectural drawing."
+    },
+    {
+      "id": "shower_1",
+      "type": "shower_position",
+      "position": {"x_mm": 1050, "y_mm": 350, "z_floor_mm": 0},
+      "shape_kind": "rectangular",
+      "shower_head_height_mm": 2100,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Shower-over-whirlpool-bath head at 2100mm AFF from architect Rev-C plumbing schedule; thermostatic mixer at midpoint of bath length."
+    }
+  ],
+  "room": {
+    "room_polygon_mm": [
+      {"x_mm": 0, "y_mm": 0},
+      {"x_mm": 2700, "y_mm": 0},
+      {"x_mm": 2700, "y_mm": 2100},
+      {"x_mm": 0, "y_mm": 2100}
+    ],
+    "ceiling_height_mm": 2400,
+    "room_type": "bathroom",
+    "floor_finish": "tiles",
+    "is_external": false,
+    "is_wet_room": false
+  },
+  "existing_fixtures": [
+    {
+      "type": "luminaire",
+      "position": {"x_mm": 1350, "y_mm": 1400, "z_floor_mm": 2400},
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": true
+    },
+    {
+      "type": "luminaire",
+      "position": {"x_mm": 1050, "y_mm": 350, "z_floor_mm": 2400},
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": true
+    },
+    {
+      "type": "shaver_socket",
+      "position": {"x_mm": 2400, "y_mm": 1800, "z_floor_mm": 1400},
+      "ip_rating": "IPX0",
+      "voltage_v": 230,
+      "is_rcd_protected": true
+    }
+  ]
+}

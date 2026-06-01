@@ -1,0 +1,44 @@
+{
+  "_note": "Standalone wet-room shower-room example. 1800x1500mm shower room with is_wet_room=true. Bath_zone_1 expands to the FULL floor area to 2.25m AFF per BS 7671:2018 §701 + IET GN7 wet-room commentary (no §701 sub-clause for wet-room expansion in verified file; generic §701 citation applies). 1 anchor (shower_position only — no bath). 2 existing fixtures, both compliant.",
+  "jurisdiction": "GB",
+  "anchor_fixtures": [
+    {
+      "id": "shower_1",
+      "type": "shower_position",
+      "position": {"x_mm": 900, "y_mm": 750, "z_floor_mm": 0},
+      "shape_kind": "rectangular",
+      "shower_head_height_mm": 2150,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Wet-room shower head extracted from architect Rev-B plan dated 2026-05-12; central position with linear floor drain; thermostatic mixer at 1500mm AFF on east wall."
+    }
+  ],
+  "room": {
+    "room_polygon_mm": [
+      {"x_mm": 0, "y_mm": 0},
+      {"x_mm": 1800, "y_mm": 0},
+      {"x_mm": 1800, "y_mm": 1500},
+      {"x_mm": 0, "y_mm": 1500}
+    ],
+    "ceiling_height_mm": 2300,
+    "room_type": "shower_room",
+    "floor_finish": "tiles",
+    "is_external": false,
+    "is_wet_room": true
+  },
+  "existing_fixtures": [
+    {
+      "type": "luminaire",
+      "position": {"x_mm": 900, "y_mm": 750, "z_floor_mm": 2300},
+      "ip_rating": "IPX5",
+      "voltage_v": 230,
+      "is_rcd_protected": true
+    },
+    {
+      "type": "wall_extract_fan",
+      "position": {"x_mm": 1750, "y_mm": 750, "z_floor_mm": 2100},
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": true
+    }
+  ]
+}

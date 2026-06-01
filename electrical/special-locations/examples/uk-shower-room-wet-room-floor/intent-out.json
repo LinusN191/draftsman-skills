@@ -1,0 +1,50 @@
+{
+  "intent_version": "1.0.0",
+  "skill": "special-locations",
+  "consumed_lighting_layout_intent": null,
+  "special_locations_zoning": {
+    "zones": [
+      {
+        "zone_id": "zone_shower_1_z1_wetroom",
+        "zone_type": "bath_zone_1",
+        "source_anchor_id": "shower_1",
+        "derivation_clause": "BS 7671:2018 §701",
+        "boundary_plan_polygon_mm": [[0, 0], [1800, 0], [1800, 1500], [0, 1500]],
+        "height_min_mm": 0,
+        "height_max_mm": 2250,
+        "ip_rating_min": "IPx4",
+        "max_voltage_v": 230,
+        "rcd_required_ma": 30,
+        "isolation_required": false,
+        "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+        "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+        "switch_position_min_distance_mm": null,
+        "overlapping_with_zone_ids": [],
+        "_clause_citation": "BS 7671:2018 §701 (wet-room expansion per IET GN7 commentary)",
+        "_derivation_note": "Zone 1 expands to full floor area to 2.25m AFF for wet-room (is_wet_room=true). Citation routed through generic §701 + IET GN7 — no §701 sub-clause in verified file for wet-room expansion."
+      }
+    ],
+    "electrical_constraints": [
+      {
+        "constraint_type": "rcd_blanket_by_room",
+        "applies_to_room_polygon": true,
+        "applies_to_zone_ids": null,
+        "_clause_citation": "BS 7671:2018 §701.411.3.3",
+        "_derivation_note": "30 mA RCD on all shower-room LV circuits per §701.411.3.3.",
+        "rcd_rating_ma": 30,
+        "applies_to_circuit_types": ["lighting", "sockets", "shower_unit", "fixed_equipment", "extract_fan"],
+        "sauna_heater_excluded": false
+      }
+    ],
+    "compliant": true,
+    "zone_count": 1,
+    "constraint_count": 1,
+    "violation_count_critical": 0,
+    "violation_count_high": 0,
+    "non_compliance_flags": [],
+    "anchor_source_summary": {
+      "all_extracted": true,
+      "extraction_source_lowest": "architectural_drawing_extraction"
+    }
+  }
+}

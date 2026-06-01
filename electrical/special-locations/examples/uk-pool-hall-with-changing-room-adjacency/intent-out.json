@@ -1,0 +1,87 @@
+{
+  "intent_version": "1.0.0",
+  "skill": "special-locations",
+  "consumed_lighting_layout_intent": null,
+  "special_locations_zoning": {
+    "zones": [
+      {
+        "zone_id": "zone_pool_main_z0",
+        "zone_type": "pool_zone_0",
+        "source_anchor_id": "pool_main",
+        "derivation_clause": "BS 7671:2018 §702",
+        "boundary_plan_polygon_mm": [[1000, 500], [11000, 500], [11000, 5500], [1000, 5500]],
+        "height_min_mm": 0,
+        "height_max_mm": 200,
+        "ip_rating_min": "IPx8",
+        "max_voltage_v": 12,
+        "rcd_required_ma": 30,
+        "isolation_required": true,
+        "allowed_equipment_classes": ["class_3_SELV"],
+        "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated", "luminaire_non_submersible"],
+        "switch_position_min_distance_mm": null,
+        "overlapping_with_zone_ids": [],
+        "_clause_citation": "BS 7671:2018 §702",
+        "_derivation_note": "Zone 0 = pool basin interior; SELV-only ≤12V; IPx8 submersible required."
+      },
+      {
+        "zone_id": "zone_pool_main_z1",
+        "zone_type": "pool_zone_1",
+        "source_anchor_id": "pool_main",
+        "derivation_clause": "BS 7671:2018 §702",
+        "boundary_plan_polygon_mm": [[-1000, -1500], [13000, -1500], [13000, 7500], [-1000, 7500]],
+        "height_min_mm": 200,
+        "height_max_mm": 2500,
+        "ip_rating_min": "IPx5",
+        "max_voltage_v": 230,
+        "rcd_required_ma": 30,
+        "isolation_required": false,
+        "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+        "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+        "switch_position_min_distance_mm": null,
+        "overlapping_with_zone_ids": [],
+        "_clause_citation": "BS 7671:2018 §702",
+        "_derivation_note": "Zone 1 = pool polygon + 2m horizontal extension; water surface to 2.5m AFF; IPx5."
+      },
+      {
+        "zone_id": "zone_pool_main_z2",
+        "zone_type": "pool_zone_2",
+        "source_anchor_id": "pool_main",
+        "derivation_clause": "BS 7671:2018 §702",
+        "boundary_plan_polygon_mm": [[-2500, -3000], [14500, -3000], [14500, 9000], [-2500, 9000]],
+        "height_min_mm": 200,
+        "height_max_mm": 2500,
+        "ip_rating_min": "IPx4",
+        "max_voltage_v": 230,
+        "rcd_required_ma": 30,
+        "isolation_required": false,
+        "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+        "prohibited_fixture_types": ["socket_230v"],
+        "switch_position_min_distance_mm": null,
+        "overlapping_with_zone_ids": [],
+        "_clause_citation": "BS 7671:2018 §702 + §702.55.4",
+        "_derivation_note": "Zone 2 = further 1.5m extension; south boundary enters changing-room polygon → §702.55.4 fixed-barrier check required (D-2)."
+      }
+    ],
+    "electrical_constraints": [
+      {
+        "constraint_type": "pool_main_equipotential_bonding",
+        "applies_to_room_polygon": true,
+        "applies_to_zone_ids": ["zone_pool_main_z0", "zone_pool_main_z1", "zone_pool_main_z2"],
+        "_clause_citation": "BS 7671:2018 §702.415.1",
+        "_derivation_note": "Main equipotential bonding for extraneous conductive parts per §702.415.1; conductor ≥10mm².",
+        "extraneous_parts_listed": ["pool ladder rails", "pool pipe fittings", "pool surrounds", "metallic balustrade", "deck drain grilles"],
+        "conductor_csa_min_mm2": 10
+      }
+    ],
+    "compliant": true,
+    "zone_count": 3,
+    "constraint_count": 1,
+    "violation_count_critical": 0,
+    "violation_count_high": 0,
+    "non_compliance_flags": [],
+    "anchor_source_summary": {
+      "all_extracted": true,
+      "extraction_source_lowest": "architectural_drawing_extraction"
+    }
+  }
+}
