@@ -1,0 +1,58 @@
+{
+  "id": "special-locations",
+  "name": "Special Locations (BS 7671 Part 7)",
+  "version": "1.0.0",
+  "status": "production",
+  "discipline": "electrical",
+  "subdiscipline": "compliance",
+  "description": "Auto-derives BS 7671:2018+A2:2022 Part 7 zoning + electrical constraints from upstream architectural-extracted anchor fixtures. Covers §701 (baths/showers), §702 (swimming pools), §703 (saunas), §710 (medical Groups 0/1/2 + IT system), §715 (extra-low voltage lighting). Calc-primitive companion skill: emits intent + IR; does NOT produce a primary drawing. Three downstream cascade consumers (lighting-layout v1.6, small-power v1.2, db-layout v1.5) enforce per-zone fixture-placement compliance.",
+  "standards": [
+    {"id": "BS 7671:2018+A2:2022", "scope": "Part 7 §701 + §702 + §703 + §710 + §715", "ref": "shared/standards/electrical/BS7671/part7-special-locations.json"},
+    {"id": "IEC 60364-7-XXX", "scope": "INT jurisdiction parallel parts (citation routing only at v1.0; full INT examples deferred to v1.1)"},
+    {"id": "KS 1700:2018", "scope": "KE jurisdiction §313 route to BS 7671 Part 7"},
+    {"id": "HTM 06-01", "scope": "NHS technical memorandum — medical electrical services; takes precedence in NHS sites for §710 safety service categories"},
+    {"id": "BS EN 60601 series", "scope": "Medical electrical equipment safety (cross-reference for §710)"},
+    {"id": "BS EN 61557-8", "scope": "Insulation Monitoring Devices (IMD) for medical IT systems — 8 s alarm response time"},
+    {"id": "BS EN 61558-2-6", "scope": "Transformer short-circuit protection for §715 ELV lighting"},
+    {"id": "BS 5266-1", "scope": "Emergency lighting in medical locations (cross-reference)"}
+  ],
+  "produces_intents": [
+    {"intent_name": "special-locations-zoning", "version": "1.0.0", "schema_ref": "schemas/special-locations-zoning-intent.schema.json"}
+  ],
+  "consumes_intents": [
+    {"skill_id": "lighting-layout", "intent_name": "lighting-layout", "version_constraint": "^1.5", "trigger": "room.room_type IN ['bathroom', 'shower_room', 'swimming_pool_hall', 'sauna', 'medical_group_0_area', 'medical_group_1_ward', 'medical_group_2_theatre', 'external_landscape']", "consumed_fields": ["luminaires", "switches", "sockets", "room"]}
+  ],
+  "examples": [
+    "examples/uk-bathroom-standard-bath-and-shower",
+    "examples/uk-bathroom-whirlpool-with-pump",
+    "examples/uk-shower-room-wet-room-floor",
+    "examples/uk-pool-hall-with-changing-room-adjacency",
+    "examples/uk-sauna-with-3-zone-derivation",
+    "examples/uk-medical-or-group-2-with-it-system",
+    "examples/uk-medical-ward-group-1-bonding",
+    "examples/uk-external-landscape-elv-lighting",
+    "examples/cascade-lighting-layout-uk-bathroom",
+    "examples/cascade-lighting-layout-uk-pool-hall",
+    "examples/cascade-lighting-layout-uk-medical-group-2",
+    "examples/cascade-small-power-uk-bathroom-violation",
+    "examples/cascade-small-power-uk-medical-group-2-isolation",
+    "examples/cascade-small-power-uk-external-elv-with-violation",
+    "examples/cascade-db-layout-uk-bathroom-rcd-enforcement",
+    "examples/cascade-db-layout-uk-medical-group-2-it-distribution",
+    "examples/cascade-multi-jurisdiction-ke-bathroom-route-to-bs"
+  ],
+  "prompts": {
+    "generator": "prompts/generator.md",
+    "validator": "prompts/validator.md",
+    "reviewer": "prompts/reviewer.md"
+  },
+  "ontology": [],
+  "_ontology_note": "v1.0 has no ontology library — zone derivation is parametric from anchor geometry, not lookup-table-based. Future v1.1+ may add a fixture-IP-classification ontology if engineer demand surfaces.",
+  "_v1_limitations": [
+    "MRI rooms NOT in scope (IEC 60601-1 + Faraday cage specs different stack — separate sibling skill when first MRI project)",
+    "US NEC parallel NOT in scope (Article 680 / 517 — separate sibling skill electrical/special-locations-us/ when first US project)",
+    "§722 EV charging NOT in scope (intersects with EV-Charge skill; defer until that skill matures)",
+    "Embedded heating (former §753) NOT in scope (no §753 in BS 7671:2018+A2:2022; v1.1 candidate via §415 + §522 routing)",
+    "INT jurisdiction worked examples NOT in scope at v1.0 (citation routing supported via _clause_citation; full examples in v1.1)"
+  ]
+}
