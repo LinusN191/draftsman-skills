@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build `electrical/special-locations/` v1.0.0 production — a calc-primitive companion skill that auto-derives BS 7671:2018+A2:2022 Part 7 zones (§701/§702/§703/§710/§715) + electrical constraints from upstream architectural-extracted anchor fixtures, produces a single flat intent (`special_locations_zoning`) with a 14-value `zone_type` discriminator + 6-value `constraint_type` discriminator, and wires that intent into three downstream consumers (`lighting-layout` v1.6, `small-power` v1.2 cascade-wiring, `db-layout` v1.5) so engineers cannot ship a Part-7-affected drawing without per-zone fixture-placement verification.
+**Goal:** Build `electrical/special-locations/` v1.0.0 production — a calc-primitive companion skill that auto-derives BS 7671:2018+A2:2022 Part 7 zones (§701/§702/§703/§710/§715) + electrical constraints from upstream architectural-extracted anchor fixtures, produces a single flat intent (`special_locations_zoning`) with a 13-value `zone_type` discriminator + 6-value `constraint_type` discriminator, and wires that intent into three downstream consumers (`lighting-layout` v1.6, `small-power` v1.2 cascade-wiring, `db-layout` v1.5) so engineers cannot ship a Part-7-affected drawing without per-zone fixture-placement verification.
 
 **Architecture:** Calc-primitive companion (same role class as `photometric-analysis` shipped 2026-05-30). Skill emits IR + intent; does NOT produce a primary drawing. Auto-zone-derivation from `anchor_fixtures[]` input (sourced by runtime from architectural-drawing extraction; `_extraction_source` provenance carried per anchor). Single flat intent with `zone_type` discriminator means one cascade contract per consumer + additive growth for v1.1+ sections. Three consumer skills get version bumps + new cascade-INV (INV-12 / INV-12 / INV-16). Sprint shape mirrors photometric (4 phases × per-task two-stage Opus review + pre-ship Sonnet 11-check fence + final Opus integration review), expanded for triple cascade.
 
@@ -52,7 +52,7 @@ electrical/special-locations/
 ├── skill.manifest.json                # production status; 5+ standards; 1 produces_intents; 1 consumes_intents (lighting-layout); 17 examples registered
 ├── inputs.json                        # 7 WI1 input items per shared/schemas/core/inputs.schema.json
 ├── schemas/
-│   ├── special-locations-ir.schema.json            # 10 top-level properties; 14-value zone_type discriminator; 6-value constraint_type discriminator; mode-conditional allOf; invariants[].evidence maxLength=1200
+│   ├── special-locations-ir.schema.json            # 10 top-level properties; 13-value zone_type discriminator; 6-value constraint_type discriminator; mode-conditional allOf; invariants[].evidence maxLength=1200
 │   └── special-locations-zoning-intent.schema.json # FLAT shape; payload mirrors IR exportable subset
 ├── prompts/
 │   ├── generator.md                   # ~280 lines; Step 0 cascade-prereq + 12 numbered steps
@@ -343,7 +343,7 @@ Top-level shape: 10 properties (`drawing_type`, `version`, `mode`, `jurisdiction
 
 `additionalProperties: false` on every object block. Banned per CLAUDE.md to omit.
 
-`zone_type` discriminator (14 values) at `zones[].properties.zone_type.enum`:
+`zone_type` discriminator (13 values = 3 bath + 3 pool + 3 sauna + 3 medical + 1 ELV) at `zones[].properties.zone_type.enum`:
 
 ```json
 ["bath_zone_0", "bath_zone_1", "bath_zone_2",
@@ -352,8 +352,6 @@ Top-level shape: 10 properties (`drawing_type`, `version`, `mode`, `jurisdiction
  "medical_envelope_group_0", "medical_envelope_group_1", "medical_envelope_group_2",
  "elv_barrier_zone"]
 ```
-
-Wait — that's 13 values. The spec §5.2 says 14. Counting: 3 bath + 3 pool + 3 sauna + 3 medical + 1 elv = 13. The spec heading says 14 but the enum body shows 13. **Implementer note for A.2:** confirm count is 13 (3+3+3+3+1) before writing the schema; reach back to the spec §5.2 header math if discrepancy persists.
 
 `constraint_type` discriminator (6 values) at `electrical_constraints[].properties.constraint_type.enum`:
 
@@ -450,7 +448,7 @@ IR schema (electrical/special-locations/schemas/special-locations-ir.schema.json
   existing_fixtures_audit, calculation_summary) + invariants[] + rationale
 - 8 required at top level (electrical_constraints + existing_fixtures_audit
   mode-conditional via allOf)
-- 14-value zone_type discriminator (3 bath + 3 pool + 3 sauna + 3 medical
+- 13-value zone_type discriminator (3 bath + 3 pool + 3 sauna + 3 medical
   + 1 ELV); discriminator-conditional required fields per spec §5.2
 - 6-value constraint_type discriminator with oneOf branches per type
   (medical_it_system imd_alarm_response_time_s_max: 8 per BS EN 61557-8;

@@ -115,7 +115,7 @@ Cross-checked against the verified standards file. **No other Part 7 sub-clause 
 | Zone derivation | Auto-derive from upstream anchor positions | Matches DraftsMan calc-primitive pattern; engineering-judgment value at launch |
 | Anchor source | Top-level `anchor_fixtures[]` input (sourced by runtime from architectural extraction) | Skill stays independent of plumbing/medical-gas skill maturity; runtime provenance carried via `_extraction_source` field |
 | Cascade consumers | 3 (lighting-layout v1.6 + small-power v1.2 + db-layout v1.5) | Full cross-discipline coverage; replaces "lighting-only" misconception |
-| Intent shape | Single flat intent with `zone_type` discriminator (**14 values** — §703 sauna expanded to 3 zones per file) | Pure additive growth for v1.1+ sections; one cascade contract per consumer; mirrors db-layout `board_kind` pattern |
+| Intent shape | Single flat intent with `zone_type` discriminator (**13 values** = 3 bath + 3 pool + 3 sauna + 3 medical + 1 ELV) | Pure additive growth for v1.1+ sections; one cascade contract per consumer; mirrors db-layout `board_kind` pattern |
 | Geometry depth | 2.5D — plan polygon + height_min/max + parametric cylinder | Captures 3D accuracy where it matters (shower head height, medical envelope) without forcing 3D vertex authoring |
 | §710 medical depth | Groups 0/1/2 + full IT system (isolating transformer + IMD per **BS EN 61557-8 8 s alarm response** + supplementary bonding ≤0.2Ω + HTM 06-01 NHS precedence) | Most engineering-valuable scope at launch; sibling skill split deferred to v2.0 only if needed |
 | Cross-check pattern | Hybrid (authoritative source + thin consumer cross-check) | Defense in depth without re-evaluation drift; matches photometric INV-11 sub-check 3 pattern |
@@ -231,7 +231,7 @@ For ELV §715 luminaire-IP cross-check via consumed lighting-layout intent. Mirr
 
 Plus: `invariants[]` (validator INVs), `rationale` (chat_summary + sections per `[[rationale.schema.json]]`).
 
-### 5.2 `zones[]` discriminated by `zone_type` (14 values)
+### 5.2 `zones[]` discriminated by `zone_type` (13 values)
 
 ```
 bath_zone_0 | bath_zone_1 | bath_zone_2                            # §701
