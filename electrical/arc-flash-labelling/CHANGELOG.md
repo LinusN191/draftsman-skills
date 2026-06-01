@@ -2,6 +2,21 @@
 
 All notable changes. Follows [Keep a Changelog](https://keepachangelog.com).
 
+## [1.1.0] - 2026-06-01 — Floor plan context portability
+
+### Changed
+- Replaced previous Sprint 4-AB `architectural_state` section in
+  `prompts/{generator,reviewer,validator}.md` with the generic
+  `## Floor plan context` contract. Prompt is now portable across AI
+  runtimes that inject room-list markdown under that heading.
+- Inlined the contract per-file; deleted the previous
+  `shared/architectural_state_contract.md` dependency.
+
+### Added (IR schema — `schemas/labels-ir.schema.json`)
+- NEW optional top-level `floor_plan_context_consumed: boolean`
+  (default `false`). IR sets `true` when the prompt context included
+  a `## Floor plan context` block.
+
 ## [1.0.2] - 2026-05-25 — M4 non-provisional provenance worked example
 
 ### Added
