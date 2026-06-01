@@ -238,3 +238,31 @@ This skill's intent payload is consumed by:
 
 Honest disclosure: skill ships IR + cascade contract; runtime ships pixels + numbers per
 [[runtime-project-boundary]].
+
+## Floor plan context
+
+When this skill runs inside a building-services design platform that
+has captured an engineer-confirmed floor plan, an injected
+`## Floor plan context` markdown block precedes the rest of the
+project context. The block reports building label, floor labels,
+per-floor room labels with room type + area in m² + ceiling height,
+plus a count of unconfirmed rooms.
+
+This skill is **calc-with-geometry-input**: it consumes room
+dimensions to compute a photometric grid, but does not place
+anything. Output is a calculation result, not a layout.
+
+Required use when the block is present:
+
+1. Reference the building label in title-block and label fields.
+2. Use the listed room area and ceiling height as inputs to the
+   point-grid solver; do not invent geometry.
+3. Use room type to pick the BS EN 12464-1 task-plane height and
+   target illuminance default.
+4. When the block flags unconfirmed rooms, list the affected room
+   names in the IR's `assumptions` array.
+5. Set `floor_plan_context_consumed: true` at the top level of the
+   IR.
+
+If the block is absent, fall back to the engineer's free-text
+dimensions as before and set `floor_plan_context_consumed: false`.
