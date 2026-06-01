@@ -192,14 +192,14 @@
           },
           "decrement_profile": {
             "type": "object",
-            "description": "Machine-side decrement profile parameters per IEC 60909-0:2016 §4.3 (Park's equations). Required for synchronous_generator + ups + large motor_aggregate sources contributing to near-source nodes. Populated Sprint D1.3.",
+            "description": "Machine-side decrement profile parameters per IEC 60909-0:2016 \u00a74.3 (Park's equations). Required for synchronous_generator + ups + large motor_aggregate sources contributing to near-source nodes. Populated Sprint D1.3.",
             "additionalProperties": false,
             "properties": {
               "subtransient_time_constant_td_pp_ms": {
                 "type": "number",
                 "exclusiveMinimum": 0,
                 "maximum": 500,
-                "description": "Td'' subtransient time constant per IEC 60909 §4.3 (typical 30-50 ms for synchronous generators). Upper bound 500 ms catches s-vs-ms unit confusion."
+                "description": "Td'' subtransient time constant per IEC 60909 \u00a74.3 (typical 30-50 ms for synchronous generators). Upper bound 500 ms catches s-vs-ms unit confusion."
               },
               "transient_time_constant_td_p_ms": {
                 "type": "number",
@@ -216,22 +216,46 @@
               "machine_reactances_pu": {
                 "type": "object",
                 "additionalProperties": false,
-                "required": ["xd_pp_pu", "xd_p_pu", "xd_pu"],
+                "required": [
+                  "xd_pp_pu",
+                  "xd_p_pu",
+                  "xd_pu"
+                ],
                 "properties": {
-                  "xd_pp_pu": {"type": "number", "minimum": 0.05, "maximum": 0.40, "description": "Xd'' subtransient reactance (typical 0.10-0.20)."},
-                  "xd_p_pu": {"type": "number", "minimum": 0.10, "maximum": 0.50, "description": "Xd' transient reactance (typical 0.15-0.30)."},
-                  "xd_pu": {"type": "number", "minimum": 0.5, "maximum": 3.0, "description": "Xd synchronous reactance (typical 1.0-2.0)."}
+                  "xd_pp_pu": {
+                    "type": "number",
+                    "minimum": 0.05,
+                    "maximum": 0.4,
+                    "description": "Xd'' subtransient reactance (typical 0.10-0.20)."
+                  },
+                  "xd_p_pu": {
+                    "type": "number",
+                    "minimum": 0.1,
+                    "maximum": 0.5,
+                    "description": "Xd' transient reactance (typical 0.15-0.30)."
+                  },
+                  "xd_pu": {
+                    "type": "number",
+                    "minimum": 0.5,
+                    "maximum": 3.0,
+                    "description": "Xd synchronous reactance (typical 1.0-2.0)."
+                  }
                 }
               },
               "machine_data_source": {
                 "type": "string",
-                "enum": ["engineer_declared", "nameplate", "typical_iec_50050", "typical_ieee_c50_13"]
+                "enum": [
+                  "engineer_declared",
+                  "nameplate",
+                  "typical_iec_50050",
+                  "typical_ieee_c50_13"
+                ]
               }
             }
           },
           "contributes_to_nodes": {
             "type": "object",
-            "description": "Per-node fault current contribution from this source in kA. Keys are cascade node_ids; values are the source's contribution to ifault_ka_max at that node. The sum across all contributing sources for a node equals the node's ifault_ka_max within 1%. Per IEC 60909-0:2016 §4.5 (multiple-source superposition). Added Sprint D1.2.",
+            "description": "Per-node fault current contribution from this source in kA. Keys are cascade node_ids; values are the source's contribution to ifault_ka_max at that node. The sum across all contributing sources for a node equals the node's ifault_ka_max within 1%. Per IEC 60909-0:2016 \u00a74.5 (multiple-source superposition). Added Sprint D1.2.",
             "additionalProperties": {
               "type": "number",
               "minimum": 0,
@@ -240,7 +264,7 @@
           },
           "_source_aggregation": {
             "type": "string",
-            "description": "Optional citation for how this source's ik3_at_source_ka was aggregated (e.g. 'Sum of I_LR for declared motors per IEC 60909 §3.8' or 'IEC 60909 §3.3.2 declared PSCC')."
+            "description": "Optional citation for how this source's ik3_at_source_ka was aggregated (e.g. 'Sum of I_LR for declared motors per IEC 60909 \u00a73.8' or 'IEC 60909 \u00a73.3.2 declared PSCC')."
           }
         }
       }
@@ -331,7 +355,7 @@
           "ipk_ka": {
             "type": "number",
             "minimum": 0,
-            "description": "κ × √2 × Ik\"max"
+            "description": "\u03ba \u00d7 \u221a2 \u00d7 Ik\"max"
           },
           "x_over_r_at_node": {
             "type": "number",
@@ -343,7 +367,7 @@
           },
           "calculation_basis": {
             "type": "string",
-            "description": "Provenance string documenting which IEC 60909 formula branch was used: 'declared' (utility PSCC anchor, c already applied), 'computed' (physical impedance recompute per §3.3), or 'back_calculated' (z derived from declared Ik downstream). May include section citation (e.g. 'IEC 60909-0:2016 §6 single-phase TN L-N')."
+            "description": "Provenance string documenting which IEC 60909 formula branch was used: 'declared' (utility PSCC anchor, c already applied), 'computed' (physical impedance recompute per \u00a73.3), or 'back_calculated' (z derived from declared Ik downstream). May include section citation (e.g. 'IEC 60909-0:2016 \u00a76 single-phase TN L-N')."
           },
           "tool_call_pending": {
             "type": "boolean",
@@ -351,12 +375,28 @@
           },
           "breaking_capacity": {
             "type": "object",
-            "description": "Breaking-capacity verdict for the protective device at this node. Hybrid consumer pattern: when consumed_intents includes db-layout, generator reads device data from db-layout intent's main_switch.breaking_capacity_ka + circuits[*].breaker_breaking_capacity_ka. When db-layout intent absent, engineer declares device per-node. Verdict thresholds: ok >= 10% headroom; marginal 0-10%; inadequate < 0%. Per BS 7671:2018+A2:2022 Reg 432.1.2 / NEC 2023 §110.9 / IEC 60947-2.",
+            "description": "Breaking-capacity verdict for the protective device at this node. Hybrid consumer pattern: when consumed_intents includes db-layout, generator reads device data from db-layout intent's main_switch.breaking_capacity_ka + circuits[*].breaker_breaking_capacity_ka. When db-layout intent absent, engineer declares device per-node. Verdict thresholds: ok >= 10% headroom; marginal 0-10%; inadequate < 0%. Per BS 7671:2018+A2:2022 Reg 432.1.2 / NEC 2023 \u00a7110.9 / IEC 60947-2.",
             "additionalProperties": false,
-            "required": ["device_id", "device_type", "ik3_node_ka", "headroom_pct", "verdict", "verdict_basis", "data_source"],
+            "required": [
+              "device_id",
+              "device_type",
+              "ik3_node_ka",
+              "headroom_pct",
+              "verdict",
+              "verdict_basis",
+              "data_source"
+            ],
             "anyOf": [
-              {"required": ["device_icn_ka"]},
-              {"required": ["device_icu_ka"]}
+              {
+                "required": [
+                  "device_icn_ka"
+                ]
+              },
+              {
+                "required": [
+                  "device_icu_ka"
+                ]
+              }
             ],
             "properties": {
               "device_id": {
@@ -365,7 +405,15 @@
               },
               "device_type": {
                 "type": "string",
-                "enum": ["MCB", "MCCB", "ACB", "fuse_BS88", "fuse_NEC", "air_circuit_breaker", "switch_disconnector"]
+                "enum": [
+                  "MCB",
+                  "MCCB",
+                  "ACB",
+                  "fuse_BS88",
+                  "fuse_NEC",
+                  "air_circuit_breaker",
+                  "switch_disconnector"
+                ]
               },
               "device_icn_ka": {
                 "type": "number",
@@ -380,7 +428,7 @@
               "device_ics_ka": {
                 "type": "number",
                 "exclusiveMinimum": 0,
-                "description": "Service short-circuit breaking capacity per IEC 60947-2 (typically 0.5-1.0 × Icu). Optional."
+                "description": "Service short-circuit breaking capacity per IEC 60947-2 (typically 0.5-1.0 \u00d7 Icu). Optional."
               },
               "device_icw_ka_1s": {
                 "type": "number",
@@ -394,30 +442,42 @@
               },
               "ik3_basis": {
                 "type": "string",
-                "enum": ["formula_from_z", "ifault_ka_max_with_motor_superposition", "ifault_ka_max_with_ups_superposition", "ifault_ka_max_multi_source"],
-                "description": "How ik3_node_ka was derived. For single-source nodes use 'formula_from_z' (c·U/(div·Z) reconciles to stored ifault_ka_max within INV-11 1% tolerance). For multi-source nodes (motor/UPS superposition per IEC 60909-0:2016 §4.5) use the appropriate '..._superposition' enum — ik3_node_ka equals stored ifault_ka_max which includes the contributions. Sprint D1.2 makes superposition contributions fully explicit."
+                "enum": [
+                  "formula_from_z",
+                  "ifault_ka_max_with_motor_superposition",
+                  "ifault_ka_max_with_ups_superposition",
+                  "ifault_ka_max_multi_source"
+                ],
+                "description": "How ik3_node_ka was derived. For single-source nodes use 'formula_from_z' (c\u00b7U/(div\u00b7Z) reconciles to stored ifault_ka_max within INV-11 1% tolerance). For multi-source nodes (motor/UPS superposition per IEC 60909-0:2016 \u00a74.5) use the appropriate '..._superposition' enum \u2014 ik3_node_ka equals stored ifault_ka_max which includes the contributions. Sprint D1.2 makes superposition contributions fully explicit."
               },
               "headroom_pct": {
                 "type": "number",
-                "description": "((min(device_icn_ka, device_icu_ka) − ik3_node_ka) / ik3_node_ka) × 100. Negative values mean inadequate."
+                "description": "((min(device_icn_ka, device_icu_ka) \u2212 ik3_node_ka) / ik3_node_ka) \u00d7 100. Negative values mean inadequate."
               },
               "verdict": {
                 "type": "string",
-                "enum": ["ok", "marginal", "inadequate"]
+                "enum": [
+                  "ok",
+                  "marginal",
+                  "inadequate"
+                ]
               },
               "verdict_basis": {
                 "type": "string",
-                "description": "Citation: BS 7671:2018+A2:2022 Reg 432.1.2 / NEC 2023 §110.9 / IEC 60947-2."
+                "description": "Citation: BS 7671:2018+A2:2022 Reg 432.1.2 / NEC 2023 \u00a7110.9 / IEC 60947-2."
               },
               "data_source": {
                 "type": "string",
-                "enum": ["db_layout_intent", "engineer_declared"]
+                "enum": [
+                  "db_layout_intent",
+                  "engineer_declared"
+                ]
               }
             }
           },
           "superposition_contribution_ka": {
             "type": "object",
-            "description": "Per-node breakdown of fault current contributions per source. The 'total' key holds the aggregated kA at this node; all other keys are per-source entries named '<source_kind>_<source_id>' (e.g. 'utility_S1', 'motor_aggregate_S2') whose values sum to 'total' within 1%. 'total' must reconcile to this node's ifault_ka_max within 1%. Read-convenience map; canonical authority is sources[].contributes_to_nodes. Per IEC 60909-0:2016 §4.5. Added Sprint D1.2.",
+            "description": "Per-node breakdown of fault current contributions per source. The 'total' key holds the aggregated kA at this node; all other keys are per-source entries named '<source_kind>_<source_id>' (e.g. 'utility_S1', 'motor_aggregate_S2') whose values sum to 'total' within 1%. 'total' must reconcile to this node's ifault_ka_max within 1%. Read-convenience map; canonical authority is sources[].contributes_to_nodes. Per IEC 60909-0:2016 \u00a74.5. Added Sprint D1.2.",
             "properties": {
               "total": {
                 "type": "number",
@@ -430,13 +490,21 @@
               "minimum": 0,
               "description": "Per-source contribution in kA. Key format: '<source_kind>_<source_id>'."
             },
-            "required": ["total"]
+            "required": [
+              "total"
+            ]
           },
           "decrement_curve": {
             "type": "object",
-            "description": "Time-series fault-current decrement at this node per IEC 60909-0:2016 §4.3 Park's equations. REQUIRED only on cascade nodes downstream of a synchronous_generator OR large induction motor (>1000 kW) source in fault-feed mode. Omit on nodes where utility is the sole contributor (decrement is negligible at the far-source limit). Added Sprint D1.3.",
+            "description": "Time-series fault-current decrement at this node per IEC 60909-0:2016 \u00a74.3 Park's equations. REQUIRED only on cascade nodes downstream of a synchronous_generator OR large induction motor (>1000 kW) source in fault-feed mode. Omit on nodes where utility is the sole contributor (decrement is negligible at the far-source limit). Added Sprint D1.3.",
             "additionalProperties": false,
-            "required": ["ik_initial_subtransient_ka", "ik_transient_ka", "ik_steady_state_ka", "time_series_samples", "decrement_model"],
+            "required": [
+              "ik_initial_subtransient_ka",
+              "ik_transient_ka",
+              "ik_steady_state_ka",
+              "time_series_samples",
+              "decrement_model"
+            ],
             "properties": {
               "applies_when": {
                 "type": "string",
@@ -445,17 +513,17 @@
               "ik_initial_subtransient_ka": {
                 "type": "number",
                 "exclusiveMinimum": 0,
-                "description": "Ik'' at t=0+ — used for switchgear rating + arc-flash IE."
+                "description": "Ik'' at t=0+ \u2014 used for switchgear rating + arc-flash IE."
               },
               "ik_transient_ka": {
                 "type": "number",
                 "exclusiveMinimum": 0,
-                "description": "Ik' at ~Td' (~1 second typically) — used for protection coordination."
+                "description": "Ik' at ~Td' (~1 second typically) \u2014 used for protection coordination."
               },
               "ik_steady_state_ka": {
                 "type": "number",
                 "exclusiveMinimum": 0,
-                "description": "Ik at >3 × Td' — used for thermal sizing."
+                "description": "Ik at >3 \u00d7 Td' \u2014 used for thermal sizing."
               },
               "time_series_samples": {
                 "type": "array",
@@ -464,21 +532,37 @@
                 "items": {
                   "type": "object",
                   "additionalProperties": false,
-                  "required": ["t_ms", "ik_ka"],
+                  "required": [
+                    "t_ms",
+                    "ik_ka"
+                  ],
                   "properties": {
-                    "t_ms": {"type": "number", "minimum": 0},
-                    "ik_ka": {"type": "number", "exclusiveMinimum": 0},
-                    "x_over_r": {"type": "number", "exclusiveMinimum": 0}
+                    "t_ms": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "ik_ka": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "x_over_r": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    }
                   }
                 }
               },
               "decrement_model": {
                 "type": "string",
-                "enum": ["iec_60909_4_3_full_park", "iec_60909_4_3_simple", "engineer_declared"]
+                "enum": [
+                  "iec_60909_4_3_full_park",
+                  "iec_60909_4_3_simple",
+                  "engineer_declared"
+                ]
               },
               "_source": {
                 "type": "string",
-                "description": "Citation for the model + machine data (e.g. 'IEC 60909-0:2016 §4.3 + IEEE C50.13 typical synchronous-machine characteristics')."
+                "description": "Citation for the model + machine data (e.g. 'IEC 60909-0:2016 \u00a74.3 + IEEE C50.13 typical synchronous-machine characteristics')."
               }
             }
           }
@@ -613,6 +697,11 @@
           }
         }
       }
+    },
+    "floor_plan_context_consumed": {
+      "type": "boolean",
+      "default": false,
+      "description": "True iff the IR generator consumed an injected '## Floor plan context' markdown block. False when the skill ran on engineer free-text only."
     }
   }
 }
