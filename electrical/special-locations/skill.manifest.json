@@ -1,26 +1,43 @@
 {
-  "id": "special-locations",
-  "name": "Special Locations (BS 7671 Part 7)",
+  "skill": "special-locations",
   "version": "1.0.0",
-  "status": "production",
   "discipline": "electrical",
   "subdiscipline": "compliance",
+  "chat_type": "calculation",
   "description": "Auto-derives BS 7671:2018+A2:2022 Part 7 zoning + electrical constraints from upstream architectural-extracted anchor fixtures. Covers §701 (baths/showers), §702 (swimming pools), §703 (saunas), §710 (medical Groups 0/1/2 + IT system), §715 (extra-low voltage lighting). Calc-primitive companion skill: emits intent + IR; does NOT produce a primary drawing. Three downstream cascade consumers (lighting-layout v1.6, small-power v1.2, db-layout v1.5) enforce per-zone fixture-placement compliance.",
-  "standards": [
-    {"id": "BS 7671:2018+A2:2022", "scope": "Part 7 §701 + §702 + §703 + §710 + §715", "ref": "shared/standards/electrical/BS7671/part7-special-locations.json"},
-    {"id": "IEC 60364-7-XXX", "scope": "INT jurisdiction parallel parts (citation routing only at v1.0; full INT examples deferred to v1.1)"},
-    {"id": "KS 1700:2018", "scope": "KE jurisdiction §313 route to BS 7671 Part 7"},
-    {"id": "HTM 06-01", "scope": "NHS technical memorandum — medical electrical services; takes precedence in NHS sites for §710 safety service categories"},
-    {"id": "BS EN 60601 series", "scope": "Medical electrical equipment safety (cross-reference for §710)"},
-    {"id": "BS EN 61557-8", "scope": "Insulation Monitoring Devices (IMD) for medical IT systems — 8 s alarm response time"},
-    {"id": "BS EN 61558-2-6", "scope": "Transformer short-circuit protection for §715 ELV lighting"},
-    {"id": "BS 5266-1", "scope": "Emergency lighting in medical locations (cross-reference)"}
+  "status": "production",
+  "licence": "MIT",
+  "inputs_path": "inputs.json",
+  "outputs": [
+    "special-locations-ir"
   ],
+  "output_schema": "electrical/special-locations/schemas/special-locations-ir.schema.json",
   "produces_intents": [
-    {"intent_name": "special-locations-zoning", "version": "1.0.0", "schema_ref": "schemas/special-locations-zoning-intent.schema.json"}
+    {
+      "name": "special-locations-zoning",
+      "version": "1.0.0",
+      "schema_path": "electrical/special-locations/schemas/special-locations-zoning-intent.schema.json"
+    }
   ],
+  "produces_intent_schema": "electrical/special-locations/schemas/special-locations-zoning-intent.schema.json",
   "consumes_intents": [
-    {"skill_id": "lighting-layout", "intent_name": "lighting-layout", "version_constraint": "^1.5", "trigger": "room.room_type IN ['bathroom', 'shower_room', 'swimming_pool_hall', 'sauna', 'medical_group_0_area', 'medical_group_1_ward', 'medical_group_2_theatre', 'external_landscape']", "consumed_fields": ["luminaires", "switches", "sockets", "room"]}
+    {
+      "skill_id": "lighting-layout",
+      "intent_name": "lighting-layout",
+      "version_constraint": "^1.5",
+      "trigger": "room.room_type IN ['bathroom', 'shower_room', 'swimming_pool_hall', 'sauna', 'medical_group_0_area', 'medical_group_1_ward', 'medical_group_2_theatre', 'external_landscape']",
+      "consumed_fields": ["luminaires", "switches", "sockets", "room"]
+    }
+  ],
+  "standards": [
+    "BS 7671:2018+A2:2022 Part 7 §701 + §702 + §703 + §710 + §715",
+    "IEC 60364-7-XXX (INT jurisdiction parallel parts — citation routing only at v1.0)",
+    "KS 1700:2018 §313 (KE jurisdiction route to BS 7671 Part 7)",
+    "HTM 06-01 (NHS technical memorandum — medical electrical services + §710 safety service categories)",
+    "BS EN 60601 series (medical electrical equipment safety)",
+    "BS EN 61557-8 (IMD for medical IT systems — 8 s alarm response time)",
+    "BS EN 61558-2-6 (transformer short-circuit protection for §715 ELV)",
+    "BS 5266-1 (emergency lighting in medical locations)"
   ],
   "examples": [
     "examples/uk-bathroom-standard-bath-and-shower",
@@ -42,9 +59,9 @@
     "examples/cascade-multi-jurisdiction-ke-bathroom-route-to-bs"
   ],
   "prompts": {
-    "generator": "prompts/generator.md",
-    "validator": "prompts/validator.md",
-    "reviewer": "prompts/reviewer.md"
+    "generator": "electrical/special-locations/prompts/generator.md",
+    "validator": "electrical/special-locations/prompts/validator.md",
+    "reviewer": "electrical/special-locations/prompts/reviewer.md"
   },
   "ontology": [],
   "_ontology_note": "v1.0 has no ontology library — zone derivation is parametric from anchor geometry, not lookup-table-based. Future v1.1+ may add a fixture-IP-classification ontology if engineer demand surfaces.",
