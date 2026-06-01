@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "electrical/earthing/schemas/earthing-ir.schema.json",
   "title": "Earthing IR (Stage 1: Schematic)",
-  "description": "Intermediate Representation for the earthing schematic skill. Stage 1 carries logical topology (supply → MET → bonding → electrode → CPC routes) but no x/y coordinates. The runtime renders a basic single-line from the topology + IEC 60617 symbol library.",
+  "description": "Intermediate Representation for the earthing schematic skill. Stage 1 carries logical topology (supply \u2192 MET \u2192 bonding \u2192 electrode \u2192 CPC routes) but no x/y coordinates. The runtime renders a basic single-line from the topology + IEC 60617 symbol library.",
   "type": "object",
   "required": [
     "drawing_type",
@@ -402,7 +402,7 @@
         "type": "string",
         "pattern": "^[A-Z][A-Z0-9_]*$"
       },
-      "description": "Roll-up of IEC 60617 symbol_ids — every entry must resolve in IEC60617/symbol-index.json"
+      "description": "Roll-up of IEC 60617 symbol_ids \u2014 every entry must resolve in IEC60617/symbol-index.json"
     },
     "flags": {
       "type": "array",
@@ -574,6 +574,11 @@
           }
         }
       }
+    },
+    "floor_plan_context_consumed": {
+      "type": "boolean",
+      "default": false,
+      "description": "True iff the IR generator consumed an injected '## Floor plan context' markdown block. False when the skill ran on engineer free-text only."
     }
   }
 }
