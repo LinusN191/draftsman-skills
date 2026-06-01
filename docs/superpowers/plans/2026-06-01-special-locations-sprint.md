@@ -1410,4 +1410,716 @@ EOF
 
 ---
 
-[Phase C examples/evals + Phase D cascade integration + ship continue in subsequent plan portions.]
+---
+
+## Phase C — Examples + evals (3 tasks, sequential)
+
+Phase C produces 8 standalone examples + 9 cascade examples + 7 evals. C.1 + C.2 are Opus (engineering content per example); C.3 is Sonnet (mechanical YAML authoring). Per-task two-stage Opus review after each. Phase C complete after C.3 ships green.
+
+---
+
+## Task C.1: 8 standalone examples (Opus)
+
+**Why Opus:** Each example demands engineering judgment — anchor positions, zone derivation verification, INV pass/fail evidence, rationale prose.
+
+**Files (8 example dirs × 4 files each = 32 files):**
+
+```
+electrical/special-locations/examples/uk-bathroom-standard-bath-and-shower/{input,output,intent-out}.json + reasoning.md
+electrical/special-locations/examples/uk-bathroom-whirlpool-with-pump/...
+electrical/special-locations/examples/uk-shower-room-wet-room-floor/...
+electrical/special-locations/examples/uk-pool-hall-with-changing-room-adjacency/...
+electrical/special-locations/examples/uk-sauna-with-3-zone-derivation/...
+electrical/special-locations/examples/uk-medical-or-group-2-with-it-system/...
+electrical/special-locations/examples/uk-medical-ward-group-1-bonding/...
+electrical/special-locations/examples/uk-external-landscape-elv-lighting/...
+```
+
+- [ ] **Step 1: Read spec §9.1 + photometric C.1 examples for shape reference**
+
+```bash
+sed -n '/^### 9\.1 Standalone/,/^### 9\.2 Cascade/p' docs/superpowers/specs/2026-06-01-special-locations-design.md
+ls electrical/photometric-analysis/examples/ | head -3
+cat electrical/photometric-analysis/examples/uk-open-plan-office-10x8-dali-photometric/input.json
+```
+
+- [ ] **Step 2: Build example #1 — `uk-bathroom-standard-bath-and-shower/`** (happy path)
+
+`input.json` — flat object instance shape (NOT items[] taxonomy — see lighting-layout precedent):
+
+```json
+{
+  "_note": "Standalone happy-path example. Standard 2700×2100mm bathroom with single bath + shower over bath. All 10 INVs PASS. No fixture violations.",
+  "anchor_fixtures": [
+    {
+      "id": "bath_1",
+      "type": "bath_basin",
+      "position": {"x_mm": 200, "y_mm": 1700, "z_floor_mm": 0},
+      "dimensions": {"length_mm": 1700, "width_mm": 700, "height_mm": 550},
+      "shape_kind": "rectangular",
+      "bath_kind": "standard",
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Bath position extracted from architectural Rev-C plan dated 2026-05-15; standard 1700x700 acrylic bath with integral shower over per typical UK domestic layout."
+    },
+    {
+      "id": "shower_1",
+      "type": "shower_position",
+      "position": {"x_mm": 1050, "y_mm": 2050, "z_floor_mm": 0},
+      "shape_kind": "rectangular",
+      "shower_head_height_mm": 2100,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Shower-over-bath head position at 2100mm AFF per architect's Rev-C plumbing schedule (shower at narrow-end of bath)."
+    }
+  ],
+  "room": {
+    "room_type": "bathroom",
+    "room_polygon_mm": [[0,0],[2700,0],[2700,2100],[0,2100]],
+    "ceiling_height_mm": 2400,
+    "floor_finish": "tiles",
+    "is_external": false,
+    "is_wet_room": false
+  },
+  "jurisdiction": "GB",
+  "existing_fixtures": [
+    {"id": "lum_1", "type": "luminaire", "position": {"x_mm": 1350, "y_mm": 1050, "z_floor_mm": 2400}, "ip_rating": "IPx4", "voltage_v": 230, "is_rcd_protected": true, "_note": "Bathroom IPx4 LED downlight"},
+    {"id": "lum_2", "type": "luminaire", "position": {"x_mm": 1050, "y_mm": 1900, "z_floor_mm": 2400}, "ip_rating": "IPx4", "voltage_v": 230, "is_rcd_protected": true, "_note": "Above-shower IPx4 LED downlight"},
+    {"id": "shaver_1", "type": "shaver_socket", "position": {"x_mm": 2400, "y_mm": 800, "z_floor_mm": 1400}, "ip_rating": "IPx0", "voltage_v": 230, "is_rcd_protected": true, "_note": "Shaver socket BS EN 61558-2-5 compliant; placed in zone 2"}
+  ]
+}
+```
+
+`output.json` — full IR per spec §5. Must satisfy:
+- 5 zones[] entries (bath_zone_0, bath_zone_1, bath_zone_2, plus shower-derived bath_zone_1 expansion, plus outside-zones is implicit)
+- 1 electrical_constraints[] entry: rcd_blanket_by_room (rcd_rating_ma: 30, sauna_heater_excluded: false, citation: BS 7671:2018 §701.411.3.3)
+- 3 existing_fixtures_audit[] entries all compliance_status: compliant
+- calculation_summary.compliant: true; non_compliance_flags: []
+- All 10 INVs passes: true
+- rationale with chat_summary + "Standards applied" + "Honest disclosures" sections
+
+`reasoning.md` — ≥150 lines walking through each step of the generator procedure with calculated values; cites verified clauses only.
+
+`intent-out.json` — special_locations_zoning intent payload with 10 fields populated; non_compliance_flags: []; anchor_source_summary.all_extracted: true.
+
+- [ ] **Step 3: Build example #2 — `uk-bathroom-whirlpool-with-pump/`**
+
+Same room geometry as #1; `bath_kind: "whirlpool"`. Triggers INV-06 + D-3 reviewer flag.
+
+Key differences in output.json:
+- electrical_constraints[] adds whirlpool_pump_circuit entry (pump_position_zone: "bath_zone_1", requires_local_isolation: true, ip_rating_min: "IPx5", citation: "BS 7671:2018 §701 + §701.512.2")
+- flags[] contains D-3 reviewer flag about default pump placement
+- assumptions[] contains "Whirlpool pump position defaulted to bath edge; IPx5 per BS 7671:2018 §701.512.2"
+- INV-06 passes: true (constraint present)
+- All other INVs passes: true
+
+- [ ] **Step 4: Build example #3 — `uk-shower-room-wet-room-floor/`**
+
+Wet-room variant. Smaller 1800×1500mm; shower position only (no bath); `is_wet_room: true`. Bath_zone_1 expands to full floor area per §701 + IET GN7 commentary.
+
+Key differences:
+- 1 anchor (shower_position only)
+- zones[]: bath_zone_0 (shower tray basin) + bath_zone_1 (full floor area to 2.25m AFF — wet-room expansion) + bath_zone_2 (none; consumed by Zone 1 expansion)
+- _derivation_note on bath_zone_1: explicit wet-room expansion explanation citing GN7 (not §701.32)
+- Same RCD constraint
+
+- [ ] **Step 5: Build example #4 — `uk-pool-hall-with-changing-room-adjacency/`**
+
+Pool hall 12000×6000mm + adjacent 4000×3000mm changing room (south edge). Pool_zone_2 extends 2m horizontally, 1.5m above water — touches changing room boundary within 200mm threshold.
+
+Key differences:
+- 1 anchor: pool_basin (10000×5000mm pool; water_surface_z 200mm above floor)
+- zones[]: pool_zone_0 (basin) + pool_zone_1 (vertical above) + pool_zone_2 (2m horizontal extension; intersects changing room polygon)
+- electrical_constraints[]: pool_main_equipotential_bonding (extraneous_parts_listed: ["ladder rails", "pipe fittings", "pool surrounds"], conductor_csa_min_mm2: 10, citation: BS 7671:2018 §702.415.1)
+- D-2 reviewer flag: "REVIEWER D-2: pool_zone_2 boundary within 100mm of changing room. Engineer-of-record must confirm fixed barrier per BS 7671:2018 §702.55.4."
+- INV-05 passes: true
+
+- [ ] **Step 6: Build example #5 — `uk-sauna-with-3-zone-derivation/`**
+
+Sauna 2400×2000mm with single heater anchor (400×400mm) at one corner.
+
+Key differences (THIS IS THE 3-ZONE EXAMPLE):
+- 1 anchor: sauna_heater (cylinder or rectangular; 400×400 footprint; z_floor_mm: 0)
+- zones[]: **3 entries** —
+  - sauna_zone_1 (around heater; 500mm padded footprint; height_min: 0, height_max: 2400; IPx4 + heat-rated cable required)
+  - sauna_zone_2 (sauna room polygon minus sauna_zone_1; height_min: 0, height_max: 2400; IPx4)
+  - sauna_zone_3 (sauna room polygon at height_min: 1500, height_max: 2400; for accessories like control gear if any)
+- electrical_constraints[]: rcd_blanket_by_room with sauna_heater_excluded: true, citation: BS 7671:2018 §703.411.3.3
+- All 10 INVs passes: true
+
+- [ ] **Step 7: Build example #6 — `uk-medical-or-group-2-with-it-system/`**
+
+Operating room 6000×5000mm with 1 medical_patient_position anchor (Group 2; centred).
+
+Key differences (THE FULL IT-SYSTEM EXAMPLE):
+- 1 anchor: medical_patient_position (Group 2)
+- zones[]: 1 entry — medical_envelope_group_2 (1.5m radius cylinder around patient_position, 12-sided polygon approximation; height_min: 0, height_max: 2500)
+- electrical_constraints[]: 2 entries —
+  1. medical_it_system (isolating_transformer_va_min: 5000, insulation_monitoring_device_required: true, imd_alarm_response_time_s_max: 8 per BS EN 61557-8, safety_service_category: 1 per HTM 06-01, supplementary_bonding_required: true, supplementary_bonding_max_resistance_ohm: 0.2, hospital_precedence: "HTM 06-01", equipment_standard: "BS EN 60601 series", citation: BS 7671:2018 §710 + BS EN 61557-8 + HTM 06-01)
+  2. supplementary_equipotential_bonding (metallic_parts_listed: ["operating table frame", "anaesthesia machine ground", "scrub sink"], bonding_conductor_csa_min_mm2: 4, citation: BS 7671:2018 §710 + §701.415.2)
+- INV-03 passes: true (medical_it_system constraint present and applies_to_zone_ids includes the Group 2 zone)
+- D-4 reviewer flag possible if VA outside 3.15-8 kVA band (suppressed in this example since 5 kVA is in band)
+
+- [ ] **Step 8: Build example #7 — `uk-medical-ward-group-1-bonding/`**
+
+Recovery ward 8000×6000mm with 4 medical_patient_position anchors (Group 1).
+
+Key differences:
+- 4 anchors (Group 1 each)
+- zones[]: 4 entries — medical_envelope_group_1 per patient bed
+- electrical_constraints[]: 1 entry — supplementary_equipotential_bonding (per §710 + §701.415.2)
+- INV-03 N/A (no Group 2 zone) — passes: true vacuously
+- All other INVs passes: true
+
+- [ ] **Step 9: Build example #8 — `uk-external-landscape-elv-lighting/`**
+
+External landscape garden 20000×15000mm with 6 ELV bollard luminaires.
+
+Key differences:
+- 6 anchors: elv_lighting_circuit_anchor (each with 12V SELV)
+- zones[]: 6 entries — elv_barrier_zone per anchor
+- electrical_constraints[]: 1 entry — elv_separation (lv_cable_spacing_mm_min: 100, barrier_required: true, label_required: true, transformer_short_circuit_protected: true, citation: BS 7671:2018 §715 + BS EN 61558-2-6)
+- room.is_external: true; no ambient_temperature_c supplied
+- D-5 reviewer flag: "REVIEWER D-5: external installation without ambient_temperature_c. Default 30°C de-rating assumed; engineer-of-record must verify per BS 7671:2018 Appendix 4 Table 4B1."
+- INV-07 passes: true
+
+- [ ] **Step 10: Validate all 8 example output.json against the IR schema**
+
+```bash
+python3 -c "
+import json, jsonschema, os
+schema = json.load(open('electrical/special-locations/schemas/special-locations-ir.schema.json'))
+examples_dir = 'electrical/special-locations/examples'
+for ex in sorted(os.listdir(examples_dir)):
+    p = os.path.join(examples_dir, ex, 'output.json')
+    if os.path.exists(p):
+        d = json.load(open(p))
+        jsonschema.validate(instance=d, schema=schema)
+        invs = d.get('invariants', [])
+        passing = sum(1 for i in invs if i.get('passes'))
+        print(f'{ex}: OK ({len(invs)} INVs; {passing} passing; compliant={d[\"calculation_summary\"][\"compliant\"]})')"
+```
+
+Expected: 8 OK lines, all 10 INVs per example (some N/A passing=true vacuously).
+
+- [ ] **Step 11: Run gates**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+python3 functional_audit.py 2>&1 | tail -3
+```
+
+Expected: validate-examples bumps by 8 (one per example output.json validated by Pass 1).
+
+- [ ] **Step 12: Verify zero banned citations across all 8 example directories**
+
+```bash
+grep -rnE "(§701\.32|§701\.55|§702\.55\.1|§702\.55\.2|§702\.32|§703\.55|§703\.512|§703\.413|§710\.413|§710\.314|§710\.411|§715\.560|§715\.521|§715\.422)" electrical/special-locations/examples/ && echo "FAIL: banned citation found" || echo "PASS: clean"
+```
+
+Expected: PASS.
+
+- [ ] **Step 13: Commit C.1**
+
+```bash
+git add electrical/special-locations/examples/
+git commit -m "$(cat <<'EOF'
+feat(special-locations): C.1 8 standalone examples per spec §9.1
+
+Eighth task of special-locations v1.0 sprint. Phase C examples/evals —
+first of three.
+
+8 standalone examples (32 files: input.json + output.json +
+reasoning.md + intent-out.json per dir):
+
+1. uk-bathroom-standard-bath-and-shower — happy path; 5 zones;
+   rcd_blanket §701.411.3.3; all 10 INVs PASS
+2. uk-bathroom-whirlpool-with-pump — whirlpool_pump_circuit
+   (§701 + §701.512.2 IPx5); INV-06 + D-3 reviewer flag
+3. uk-shower-room-wet-room-floor — wet-room Zone 1 expansion to
+   full floor (§701 + IET GN7 commentary; NOT §701.32)
+4. uk-pool-hall-with-changing-room-adjacency — §702.415.1 main
+   equipotential bonding ≥10mm² + §702.55.4 D-2 changing-room
+   overlap flag
+5. uk-sauna-with-3-zone-derivation — §703 3-zone split per verified
+   file (sauna_zone_1 + sauna_zone_2 + sauna_zone_3); rcd_blanket
+   with sauna_heater_excluded=true per §703.411.3.3
+6. uk-medical-or-group-2-with-it-system — full medical_it_system
+   constraint (5kVA transformer + IMD 8s alarm response per
+   BS EN 61557-8 + 0.2Ω supplementary bonding + safety_service_
+   category 1 per HTM 06-01); INV-03 PASS
+7. uk-medical-ward-group-1-bonding — 4 patient envelopes;
+   supplementary_equipotential_bonding only
+8. uk-external-landscape-elv-lighting — 6 ELV bollard zones with
+   elv_separation (BS EN 61558-2-6 transformer short-circuit
+   protection); D-5 reviewer flag for external ambient
+
+All 8 examples:
+- input.json flat-object instance shape (NOT items[] taxonomy)
+- output.json validates against ir-schema; 10 INVs each
+- reasoning.md ≥150 lines walking generator procedure with
+  calculated values
+- intent-out.json with 10-field payload; anchor_source_summary
+  populated; non_compliance_flags propagated
+
+Honest disclosures preserved in every example:
+- Anchor _extraction_source explicit per anchor
+- Default assumptions in calculation_summary.assumptions[]
+- Reviewer D-flags surface engineer-judgment concerns
+
+Zero banned citations (grep-verified across all 32 example files).
+
+Gates: validate-examples +8 (Pass 1 picks up 8 new example outputs);
+functional_audit 1 finding unchanged.
+
+Next: C.2 9 cascade retrofit examples.
+EOF
+)"
+```
+
+---
+
+## Task C.2: 9 cascade retrofit examples (Opus)
+
+**Why Opus:** Each cascade demonstrates a different consumer-side INV firing (lighting-layout INV-12 / small-power INV-12 / db-layout INV-16). 2 of 9 are failure-mode demos (the central engineering value). 1 is KE jurisdiction routing.
+
+**Files (9 example dirs × 4 files each = 36 files):**
+
+```
+electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom/...
+electrical/special-locations/examples/cascade-lighting-layout-uk-pool-hall/...
+electrical/special-locations/examples/cascade-lighting-layout-uk-medical-group-2/...
+electrical/special-locations/examples/cascade-small-power-uk-bathroom-violation/...        (FAIL HIGH)
+electrical/special-locations/examples/cascade-small-power-uk-medical-group-2-isolation/...
+electrical/special-locations/examples/cascade-small-power-uk-external-elv-with-violation/...(FAIL HIGH)
+electrical/special-locations/examples/cascade-db-layout-uk-bathroom-rcd-enforcement/...
+electrical/special-locations/examples/cascade-db-layout-uk-medical-group-2-it-distribution/...
+electrical/special-locations/examples/cascade-multi-jurisdiction-ke-bathroom-route-to-bs/...
+```
+
+- [ ] **Step 1: Read spec §9.2 + photometric C.2 cascade examples**
+
+```bash
+sed -n '/^### 9\.2 Cascade/,/^### 9\.3/p' docs/superpowers/specs/2026-06-01-special-locations-design.md
+ls electrical/photometric-analysis/examples/ | grep ^cascade-
+```
+
+- [ ] **Step 2: Build cascades #9–#11 (lighting-layout consumer, all PASS)**
+
+Each cascade example #9–#11 mirrors the corresponding standalone source (#1 → cascade #9; #4 → cascade #10; #6 → cascade #11). The cascade output.json carries:
+- All fields of the source standalone IR
+- Additional `consumed_intent_path` field pointing to lighting-layout's intent-out.json (synthetic for the example)
+- existing_fixtures_audit[] populated with the consumed lighting-layout fixtures cross-checked against derived zones
+- non_compliance_flags[] empty (PASS case)
+
+reasoning.md walks the cascade explicitly: which lighting-layout fixtures were consumed; how each was cross-checked against derived zones; INV-08 sub-rule (a)(b)(c)(d) evaluations.
+
+- [ ] **Step 3: Build cascade #12 — `cascade-small-power-uk-bathroom-violation/` (FAIL HIGH)**
+
+This is the central engineering value demo. Source = standalone #1 (uk-bathroom-standard-bath-and-shower) but consumed lighting-layout intent ADDS a 230V socket inside bath_zone_1.
+
+Key differences vs #9:
+- existing_fixtures[] (in input.json) includes a "violating" 230V socket at position {x_mm: 1200, y_mm: 1800, z_floor_mm: 1100} — that position is inside bath_zone_1 (above bath, ≤2250mm AFF)
+- output.json existing_fixtures_audit[] for that fixture: compliance_status: "violation", violation_sub_rule: "type_prohibited", violation_clause: "BS 7671:2018 §701.512.3", severity: "critical"
+- output.json non_compliance_flags[]: 1 entry citing the violation, with severity: critical, clause: "§701.512.3", message ≥40 chars + remediation hint
+- calculation_summary.compliant: false; violation_count_critical: 1
+- INV-08 passes: false; evidence: 200-600 char prose stating the violation
+
+reasoning.md walks the failure end-to-end: where the socket was placed, why it violates §701.512.3 (3m boundary rule), and how the consumer-side INV-12 will fire HIGH when this intent is consumed by small-power.
+
+- [ ] **Step 4: Build cascade #13 — `cascade-small-power-uk-medical-group-2-isolation/` (PASS)**
+
+Source = standalone #6. Consumed small-power intent (synthetic) shows sockets fed from a separate Medical IT panel (isolation_path: "via medical_it_panel"). All sockets compliant; non_compliance_flags[] empty.
+
+- [ ] **Step 5: Build cascade #14 — `cascade-small-power-uk-external-elv-with-violation/` (FAIL HIGH)**
+
+Source = standalone #8. Consumed small-power intent ADDS a 230V LV socket in the ELV barrier zone (boundary violation).
+
+Key differences:
+- existing_fixtures_audit[] entry: compliance_status: violation, violation_sub_rule: "voltage_above_max", citation: BS 7671:2018 §715
+- non_compliance_flags[]: 1 entry; severity: critical
+- INV-07 still passes: true (the elv_separation constraint IS present); INV-08 passes: false (the fixture violates the zone)
+- calculation_summary.compliant: false
+
+- [ ] **Step 6: Build cascades #15 + #16 (db-layout consumer, both PASS)**
+
+#15: source = standalone #1. Cascade demonstrates db-layout INV-16 sub-check 3 — every bathroom-serving circuit verified routed through 30mA RCD per the rcd_blanket_by_room constraint.
+
+#16: source = standalone #6. Cascade demonstrates Medical IT panel modeling — isolation_transformer modeled as a board node; supplementary bonding terminal modeled at ME terminal per the medical_it_system constraint.
+
+- [ ] **Step 7: Build cascade #17 — `cascade-multi-jurisdiction-ke-bathroom-route-to-bs/`**
+
+Jurisdiction: KE. Same room as #1 bathroom but every clause citation routes through KS 1700 §313:
+
+- _clause_citation on each zone: "KS 1700:2018 §313 (route to BS 7671:2018+A2:2022 §701.411.3.3)"
+- All other behavior identical to #1
+- rationale.sections[] adds a "KE jurisdiction routing" section explaining the §313 route
+
+reasoning.md walks the KE jurisdiction routing per CLAUDE.md citation form.
+
+- [ ] **Step 8: Validate all 9 cascade outputs against IR schema + Verify banned citations absent**
+
+```bash
+python3 -c "
+import json, jsonschema, glob
+schema = json.load(open('electrical/special-locations/schemas/special-locations-ir.schema.json'))
+for p in sorted(glob.glob('electrical/special-locations/examples/cascade-*/output.json')):
+    d = json.load(open(p))
+    jsonschema.validate(instance=d, schema=schema)
+    cm = d.get('calculation_summary', {})
+    print(f'{p}: OK; compliant={cm.get(\"compliant\")}; flags={len(cm.get(\"non_compliance_flags\", []))}')"
+
+grep -rnE "(§701\.32|§701\.55|§702\.55\.1|§702\.55\.2|§702\.32|§703\.55|§703\.512|§703\.413|§710\.413|§710\.314|§710\.411|§715\.560|§715\.521|§715\.422)" electrical/special-locations/examples/cascade-*/ && echo "FAIL" || echo "PASS"
+```
+
+Expected: 9 OK lines; PASS on banned citations.
+
+- [ ] **Step 9: Run gates**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+Expected: validate-examples bumps by another 9 (total +17 from C.1+C.2 baseline).
+
+- [ ] **Step 10: Commit C.2**
+
+```bash
+git add electrical/special-locations/examples/cascade-*/
+git commit -m "$(cat <<'EOF'
+feat(special-locations): C.2 9 cascade retrofit examples per spec §9.2
+
+Ninth task of special-locations v1.0 sprint. Phase C examples/evals —
+second of three.
+
+9 cascade examples (36 files; 4 per dir):
+
+PASS cases (7):
+- cascade-lighting-layout-uk-bathroom (source #1; INV-08 PASS)
+- cascade-lighting-layout-uk-pool-hall (source #4; INV-08 PASS)
+- cascade-lighting-layout-uk-medical-group-2 (source #6; INV-08 PASS)
+- cascade-small-power-uk-medical-group-2-isolation (medical IT
+  panel isolation; PASS)
+- cascade-db-layout-uk-bathroom-rcd-enforcement (RCD-by-zone per
+  §701.411.3.3 enforcement; PASS)
+- cascade-db-layout-uk-medical-group-2-it-distribution (Medical IT
+  panel + ME terminal modelled per §710 + BS EN 61557-8; PASS)
+- cascade-multi-jurisdiction-ke-bathroom-route-to-bs (KE
+  jurisdiction routing via KS 1700:2018 §313 → BS 7671 §701)
+
+FAIL HIGH (2 — central engineering value demos):
+- cascade-small-power-uk-bathroom-violation (230V socket inside
+  bath_zone_1 violates §701.512.3 3m boundary rule; INV-08
+  passes=false; compliant=false; 1 critical non_compliance_flag)
+- cascade-small-power-uk-external-elv-with-violation (230V LV
+  socket in ELV barrier zone violates §715 voltage rule;
+  INV-08 passes=false; compliant=false; 1 critical flag)
+
+Each cascade output.json carries:
+- consumed_intent_path pointing to synthetic upstream intent
+- existing_fixtures_audit[] populated with cross-checked fixtures
+- non_compliance_flags[] populated for FAIL cases with verified
+  clause citations + ≥40 char message + remediation hints
+- reasoning.md walks the cascade end-to-end + INV-08 sub-rule
+  evaluations + consumer-side INV-12/INV-16 hand-off expectations
+
+Honest disclosures end-to-end. Zero banned citations (grep-verified
+across all 36 cascade example files).
+
+Gates: validate-examples +9 (total +17 across C.1+C.2);
+functional_audit 1 finding unchanged.
+
+Next: C.3 7 evals YAML.
+EOF
+)"
+```
+
+---
+
+## Task C.3: 7 evals YAML (Sonnet)
+
+**Why Sonnet:** Mechanical YAML authoring per the photometric C.3 precedent.
+
+**Files:**
+- Create: `electrical/special-locations/evals/eval-01-anchor-zone-integrity.yaml`
+- Create: `electrical/special-locations/evals/eval-02-drift-guard.yaml`
+- Create: `electrical/special-locations/evals/eval-03-medical-it-required.yaml`
+- Create: `electrical/special-locations/evals/eval-04-fixture-violation-failure.yaml`
+- Create: `electrical/special-locations/evals/eval-05-provenance-disclosure.yaml`
+- Create: `electrical/special-locations/evals/eval-06-pool-main-bonding.yaml`
+- Create: `electrical/special-locations/evals/eval-07-elv-separation.yaml`
+
+**CRITICAL — Photometric C.3 lesson applied upfront:** The canonical `shared/schemas/core/eval.schema.json` v2 enforces these THREE constraints — the implementer must honor them:
+
+1. **category** enum (9 canonical values): `happy_path / edge_case / compliance_failure / cross_validation / skill_specific / validation_trap / rationale_block / jurisdiction_switch / missing_input`. No others allowed.
+2. **severity** enum: `critical / warning / info`. NOT `high / medium / low`.
+3. **Check additionalProperties: false** — no `id:` field on checks. Required check fields: `assertion + description`. Allowed: `assertion + description + severity + standard_ref + matches_inv + matches_nec`.
+
+**Per-eval category + severity mapping (orchestrator-provided):**
+
+| File | Category (canonical) | Notes |
+|---|---|---|
+| eval-01-anchor-zone-integrity | `skill_specific` | INV-01 + INV-10 self-consistency |
+| eval-02-drift-guard | `skill_specific` | INV-02 audit↔flags |
+| eval-03-medical-it-required | `validation_trap` | INV-03 fires when §710 Group 2 + missing IT system |
+| eval-04-fixture-violation-failure | `compliance_failure` | INV-08 catches §701.512.3 violation — central engineering value |
+| eval-05-provenance-disclosure | `skill_specific` | INV-09 honest-disclosure |
+| eval-06-pool-main-bonding | `validation_trap` | INV-05 fires when §702 + missing bonding |
+| eval-07-elv-separation | `skill_specific` | INV-07 §715 + BS EN 61558-2-6 |
+
+Severity mapping: `HIGH → critical`, `MEDIUM → warning`.
+
+- [ ] **Step 1: Inspect existing eval shape**
+
+```bash
+head -40 electrical/photometric-analysis/evals/eval-01-grid-spacing-formula.yaml
+```
+
+- [ ] **Step 2: Write eval-01-anchor-zone-integrity.yaml**
+
+```yaml
+name: special-locations anchor-zone catalogue integrity
+skill: special-locations
+description: |
+  Verifies INV-01: every anchor_fixtures[] entry produces ≥1
+  corresponding zones[] entry. Detected overlaps flagged via
+  overlapping_with_zone_ids[]. Plus INV-10: compliant rollup
+  self-consistency.
+category: skill_specific
+input_fixture: examples/uk-bathroom-standard-bath-and-shower/output.json
+checks:
+  - assertion: len(ir.anchor_fixtures) > 0 implies len(ir.zones) >= len(ir.anchor_fixtures)
+    description: Every anchor produces at least one zone per INV-01
+    severity: critical
+    matches_inv: INV-01
+  - assertion: ir.calculation_summary.compliant == true implies ir.calculation_summary.violation_count_critical == 0
+    description: Self-consistency — compliant=true requires zero critical violations per INV-10
+    severity: critical
+    matches_inv: INV-10
+  - assertion: all(len(z.overlapping_with_zone_ids) == 0 for z in ir.zones) implies ir.calculation_summary.compliant == true
+    description: No unflagged overlaps when compliant=true
+    severity: warning
+    matches_inv: INV-01
+```
+
+- [ ] **Step 3: Write eval-02-drift-guard.yaml**
+
+```yaml
+name: special-locations fixture_audit ↔ flags drift guard
+skill: special-locations
+description: |
+  Verifies INV-02: every existing_fixtures_audit[i].compliance_status==
+  "violation" has a corresponding entry in calculation_summary.
+  non_compliance_flags[] and vice versa. One-to-one drift guard.
+category: skill_specific
+input_fixture: examples/cascade-small-power-uk-bathroom-violation/output.json
+checks:
+  - assertion: sum(1 for a in ir.existing_fixtures_audit if a.compliance_status == "violation") == len([f for f in ir.calculation_summary.non_compliance_flags if f._cascaded_from != "lighting-layout"])
+    description: One-to-one correspondence between violation audits and skill-emitted flags
+    severity: critical
+    matches_inv: INV-02
+```
+
+- [ ] **Step 4: Write eval-03-medical-it-required.yaml**
+
+```yaml
+name: special-locations §710 Group 2 → medical IT system mandatory
+skill: special-locations
+description: |
+  Verifies INV-03 (validation_trap): when any zone has zone_type ==
+  medical_envelope_group_2, a sibling electrical_constraints[] entry
+  with constraint_type == medical_it_system MUST exist with
+  imd_alarm_response_time_s_max == 8 (per BS EN 61557-8) and
+  applies_to_zone_ids[] containing the Group 2 zone id.
+category: validation_trap
+input_fixture: examples/uk-medical-or-group-2-with-it-system/output.json
+checks:
+  - assertion: any(c.constraint_type == "medical_it_system" for c in ir.electrical_constraints) given any(z.zone_type == "medical_envelope_group_2" for z in ir.zones)
+    description: §710 Group 2 mandates medical_it_system constraint per INV-03
+    severity: critical
+    matches_inv: INV-03
+    standard_ref: BS 7671:2018+A2:2022 §710 + BS EN 61557-8 + HTM 06-01
+  - assertion: any(c.constraint_type == "medical_it_system" and c.imd_alarm_response_time_s_max == 8 for c in ir.electrical_constraints)
+    description: IMD alarm response time MUST be 8 s per BS EN 61557-8 (not the historic 0.5 s misattribution from IEC 60364-7-710)
+    severity: critical
+    matches_inv: INV-03
+    standard_ref: BS EN 61557-8
+```
+
+- [ ] **Step 5: Write eval-04-fixture-violation-failure.yaml** (central engineering eval)
+
+```yaml
+name: special-locations catches §701 Zone 1 fixture violation
+skill: special-locations
+description: |
+  Compliance failure eval — verifies that the 230V-socket-in-bath_zone_1
+  failure-mode example correctly fires INV-08 + populates ≥1 critical
+  non_compliance_flag for cascade to small-power INV-12. The core
+  engineering value test (what BS 7671 §701.512.3 alone cannot catch
+  by reading a 2D plan).
+category: compliance_failure
+input_fixture: examples/cascade-small-power-uk-bathroom-violation/output.json
+checks:
+  - assertion: any(i.id == "INV-08" and i.passes == false for i in ir.invariants)
+    description: INV-08 MUST fire on the violation
+    severity: critical
+    matches_inv: INV-08
+  - assertion: any(f.severity == "critical" for f in ir.calculation_summary.non_compliance_flags)
+    description: At least one critical flag emitted for cascade propagation
+    severity: critical
+    matches_inv: INV-08
+    standard_ref: BS 7671:2018+A2:2022 §701.512.3
+  - assertion: ir.calculation_summary.compliant == false
+    description: Compliant rollup MUST flip to false on critical violation
+    severity: critical
+    matches_inv: INV-10
+```
+
+- [ ] **Step 6: Write eval-05-provenance-disclosure.yaml**
+
+```yaml
+name: special-locations enforces anchor extraction provenance disclosure
+skill: special-locations
+description: |
+  Verifies INV-09: every anchor_fixtures[i]._extraction_source is in
+  the 3-tier enum AND every _provenance_note is ≥40 chars. Tests the
+  D2.3 honest-disclosure pattern carried into special-locations.
+category: skill_specific
+input_fixture: examples/uk-bathroom-standard-bath-and-shower/output.json
+checks:
+  - assertion: all(a._extraction_source in ["architectural_drawing_extraction", "engineer_manual_entry", "inferred_from_room_type"] for a in ir.anchor_fixtures)
+    description: _extraction_source enum compliance per INV-09
+    severity: warning
+    matches_inv: INV-09
+  - assertion: all(len(a._provenance_note) >= 40 for a in ir.anchor_fixtures)
+    description: _provenance_note length floor ≥40 chars per INV-09
+    severity: warning
+    matches_inv: INV-09
+```
+
+- [ ] **Step 7: Write eval-06-pool-main-bonding.yaml**
+
+```yaml
+name: special-locations §702 swimming pool requires main equipotential bonding
+skill: special-locations
+description: |
+  Validation trap eval — verifies INV-05: when room_type ==
+  swimming_pool_hall, a pool_main_equipotential_bonding constraint
+  MUST exist with extraneous_parts_listed[] non-empty AND
+  conductor_csa_min_mm2 >= 10. Citation routed to §702.415.1
+  (the verified clause; NOT §702.55.1 which does not exist in
+  BS 7671:2018+A2:2022).
+category: validation_trap
+input_fixture: examples/uk-pool-hall-with-changing-room-adjacency/output.json
+checks:
+  - assertion: any(c.constraint_type == "pool_main_equipotential_bonding" for c in ir.electrical_constraints) given ir.room.room_type == "swimming_pool_hall"
+    description: §702.415.1 mandates main equipotential bonding per INV-05
+    severity: critical
+    matches_inv: INV-05
+    standard_ref: BS 7671:2018+A2:2022 §702.415.1
+  - assertion: any(c.constraint_type == "pool_main_equipotential_bonding" and c.conductor_csa_min_mm2 >= 10 for c in ir.electrical_constraints)
+    description: Conductor CSA ≥10 mm² per §702.415.1
+    severity: critical
+    matches_inv: INV-05
+```
+
+- [ ] **Step 8: Write eval-07-elv-separation.yaml**
+
+```yaml
+name: special-locations §715 ELV anchor requires separation constraint
+skill: special-locations
+description: |
+  Verifies INV-07: when an elv_lighting_circuit_anchor is present, an
+  elv_separation constraint MUST exist with barrier_required +
+  label_required + transformer_short_circuit_protected (per
+  BS EN 61558-2-6 verified-file cross-reference).
+category: skill_specific
+input_fixture: examples/uk-external-landscape-elv-lighting/output.json
+checks:
+  - assertion: any(c.constraint_type == "elv_separation" for c in ir.electrical_constraints) given any(a.type == "elv_lighting_circuit_anchor" for a in ir.anchor_fixtures)
+    description: ELV anchor mandates elv_separation constraint per INV-07
+    severity: critical
+    matches_inv: INV-07
+    standard_ref: BS 7671:2018+A2:2022 §715 + BS EN 61558-2-6
+  - assertion: any(c.constraint_type == "elv_separation" and c.transformer_short_circuit_protected == true for c in ir.electrical_constraints)
+    description: Transformer short-circuit protection per BS EN 61558-2-6
+    severity: critical
+    matches_inv: INV-07
+    standard_ref: BS EN 61558-2-6
+```
+
+- [ ] **Step 9: Validate all 7 eval YAMLs against eval.schema.json**
+
+```bash
+python3 -c "
+import yaml, json, jsonschema, glob
+schema = json.load(open('shared/schemas/core/eval.schema.json'))
+for p in sorted(glob.glob('electrical/special-locations/evals/eval-*.yaml')):
+    d = yaml.safe_load(open(p))
+    jsonschema.validate(instance=d, schema=schema)
+    print(f'{p}: OK ({len(d[\"checks\"])} checks; category={d.get(\"category\")})')"
+```
+
+Expected: 7 OK lines, all categories from the canonical 9-value enum, every check has assertion + description (no `id:` field).
+
+- [ ] **Step 10: Verify no banned citations**
+
+```bash
+grep -nE "(§701\.32|§701\.55|§702\.55\.1|§702\.55\.2|§702\.32|§703\.55|§703\.512|§703\.413|§710\.413|§710\.314|§710\.411|§715\.560|§715\.521|§715\.422)" electrical/special-locations/evals/ && echo "FAIL" || echo "PASS"
+```
+
+Expected: PASS.
+
+- [ ] **Step 11: Run gates**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+Expected: validate-examples bumps by 7 (Pass 2 picks up 7 eval YAMLs).
+
+- [ ] **Step 12: Commit C.3**
+
+```bash
+git add electrical/special-locations/evals/
+git commit -m "$(cat <<'EOF'
+feat(special-locations): C.3 7 evals YAML (Phase C complete)
+
+Tenth task of special-locations v1.0 sprint. Phase C examples/evals —
+third of three. Phase C complete after this task.
+
+7 eval YAMLs per shared/schemas/core/eval.schema.json v2 (canonical
+9-value category enum + critical/warning/info severity enum + no id:
+field on checks — photometric C.3 schema lessons applied upfront):
+
+- eval-01-anchor-zone-integrity (skill_specific) — INV-01 + INV-10
+  self-consistency; 3 checks
+- eval-02-drift-guard (skill_specific) — INV-02 audit↔flags
+  one-to-one; 1 check
+- eval-03-medical-it-required (validation_trap) — INV-03 §710
+  Group 2 mandates medical_it_system + imd_alarm_response_time_s_max
+  == 8 per BS EN 61557-8; 2 checks
+- eval-04-fixture-violation-failure (compliance_failure) — INV-08
+  catches §701.512.3 violation; central engineering value test;
+  3 checks
+- eval-05-provenance-disclosure (skill_specific) — INV-09 _extraction_
+  source enum + _provenance_note ≥40 chars; 2 checks
+- eval-06-pool-main-bonding (validation_trap) — INV-05 §702.415.1
+  main equipotential bonding ≥10mm² (NOT §702.55.1); 2 checks
+- eval-07-elv-separation (skill_specific) — INV-07 §715 +
+  BS EN 61558-2-6 transformer short-circuit protection; 2 checks
+
+All input_fixture references resolve to shipped C.1/C.2 example
+output.json files. All citations verified. Zero banned citations
+(grep-verified). All categories canonical per CLAUDE.md 9-value
+enum.
+
+Phase C complete. Gates: validate-examples +7 (Pass 2 picks up
+7 evals); functional_audit 1 finding unchanged.
+
+Next: Phase D — cascade integration ×3 + sprint ship.
+EOF
+)"
+```
+
+---
+
+[Phase D — cascade integration ×3 + sprint ship continues in plan portion 4.]
