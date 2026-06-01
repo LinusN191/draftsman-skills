@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "shared/schemas/electrical/lighting-layout-ir.schema.json",
   "title": "Lighting Layout IR",
-  "description": "Canonical IR schema produced by the lighting-layout skill. Consumed by the DraftsMan runtime renderer (DXF / SVG / PDF). Source-of-truth — per-skill schemas $ref this file.",
+  "description": "Canonical IR schema produced by the lighting-layout skill. Consumed by the DraftsMan runtime renderer (DXF / SVG / PDF). Source-of-truth \u2014 per-skill schemas $ref this file.",
   "type": "object",
   "required": [
     "drawing_type",
@@ -178,12 +178,16 @@
           },
           "circuit_ids": {
             "type": "array",
-            "items": {"type": "string"},
+            "items": {
+              "type": "string"
+            },
             "description": "FK to circuits[].circuit_id. A zone may contain multiple circuits (e.g. zone Z2 interior has 3 row circuits in a 12-luminaire grid)."
           },
           "luminaire_ids": {
             "type": "array",
-            "items": {"type": "string"},
+            "items": {
+              "type": "string"
+            },
             "description": "FK to luminaires[].id. The full set of luminaires in this zone."
           },
           "luminaire_count": {
@@ -300,7 +304,7 @@
           "total_load_w": {
             "type": "number",
             "minimum": 0,
-            "description": "Sum of luminaire wattages on this circuit. Capped by allOf conditional per mcb_rating_a (80% continuous-load factor per BS 7671 §433.1.1 + IET OSG App A): 6A→1104W, 10A→1840W, 16A→2944W, 20A→3680W, 32A→5888W."
+            "description": "Sum of luminaire wattages on this circuit. Capped by allOf conditional per mcb_rating_a (80% continuous-load factor per BS 7671 \u00a7433.1.1 + IET OSG App A): 6A\u21921104W, 10A\u21921840W, 16A\u21922944W, 20A\u21923680W, 32A\u21925888W."
           },
           "mcb_rating_a": {
             "type": "integer",
@@ -326,41 +330,134 @@
           "row_index": {
             "type": "integer",
             "minimum": 0,
-            "description": "Row index this circuit feeds (0 = first row from north wall). Used by INV-4 to verify no Z-pattern daisy-chain — all luminaires on a circuit must share row_index OR be on adjacent rows (|delta| ≤ 1)."
+            "description": "Row index this circuit feeds (0 = first row from north wall). Used by INV-4 to verify no Z-pattern daisy-chain \u2014 all luminaires on a circuit must share row_index OR be on adjacent rows (|delta| \u2264 1)."
           },
           "homerun_endpoint": {
             "type": "object",
-            "required": ["x_mm", "y_mm", "wall"],
+            "required": [
+              "x_mm",
+              "y_mm",
+              "wall"
+            ],
             "additionalProperties": false,
             "description": "Wall endpoint where this circuit's homerun cable exits the room toward the DB. Renderer draws a homerun arrow from this point. INV-4 verifies (a) the point sits on the named wall and (b) the wall is one of the four room walls.",
             "properties": {
-              "x_mm": {"type": "integer", "minimum": 0},
-              "y_mm": {"type": "integer", "minimum": 0},
-              "wall": {"enum": ["N", "S", "E", "W"], "description": "Which wall the endpoint sits on. Required; not derived. Renderer + INV-4 read this field directly."}
+              "x_mm": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "y_mm": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "wall": {
+                "enum": [
+                  "N",
+                  "S",
+                  "E",
+                  "W"
+                ],
+                "description": "Which wall the endpoint sits on. Required; not derived. Renderer + INV-4 read this field directly."
+              }
             }
           }
         },
         "allOf": [
           {
-            "description": "BS 7671 §433.1.1 + IET OSG App A: continuous load ≤ 80% × ocpd_rating × 230V on each circuit",
-            "if": {"properties": {"mcb_rating_a": {"const": 6}}, "required": ["mcb_rating_a"]},
-            "then": {"properties": {"total_load_w": {"maximum": 1104}}}
+            "description": "BS 7671 \u00a7433.1.1 + IET OSG App A: continuous load \u2264 80% \u00d7 ocpd_rating \u00d7 230V on each circuit",
+            "if": {
+              "properties": {
+                "mcb_rating_a": {
+                  "const": 6
+                }
+              },
+              "required": [
+                "mcb_rating_a"
+              ]
+            },
+            "then": {
+              "properties": {
+                "total_load_w": {
+                  "maximum": 1104
+                }
+              }
+            }
           },
           {
-            "if": {"properties": {"mcb_rating_a": {"const": 10}}, "required": ["mcb_rating_a"]},
-            "then": {"properties": {"total_load_w": {"maximum": 1840}}}
+            "if": {
+              "properties": {
+                "mcb_rating_a": {
+                  "const": 10
+                }
+              },
+              "required": [
+                "mcb_rating_a"
+              ]
+            },
+            "then": {
+              "properties": {
+                "total_load_w": {
+                  "maximum": 1840
+                }
+              }
+            }
           },
           {
-            "if": {"properties": {"mcb_rating_a": {"const": 16}}, "required": ["mcb_rating_a"]},
-            "then": {"properties": {"total_load_w": {"maximum": 2944}}}
+            "if": {
+              "properties": {
+                "mcb_rating_a": {
+                  "const": 16
+                }
+              },
+              "required": [
+                "mcb_rating_a"
+              ]
+            },
+            "then": {
+              "properties": {
+                "total_load_w": {
+                  "maximum": 2944
+                }
+              }
+            }
           },
           {
-            "if": {"properties": {"mcb_rating_a": {"const": 20}}, "required": ["mcb_rating_a"]},
-            "then": {"properties": {"total_load_w": {"maximum": 3680}}}
+            "if": {
+              "properties": {
+                "mcb_rating_a": {
+                  "const": 20
+                }
+              },
+              "required": [
+                "mcb_rating_a"
+              ]
+            },
+            "then": {
+              "properties": {
+                "total_load_w": {
+                  "maximum": 3680
+                }
+              }
+            }
           },
           {
-            "if": {"properties": {"mcb_rating_a": {"const": 32}}, "required": ["mcb_rating_a"]},
-            "then": {"properties": {"total_load_w": {"maximum": 5888}}}
+            "if": {
+              "properties": {
+                "mcb_rating_a": {
+                  "const": 32
+                }
+              },
+              "required": [
+                "mcb_rating_a"
+              ]
+            },
+            "then": {
+              "properties": {
+                "total_load_w": {
+                  "maximum": 5888
+                }
+              }
+            }
           }
         ]
       }
@@ -567,35 +664,108 @@
     "drafting_furniture": {
       "type": "object",
       "description": "Annotation objects emitted alongside the layout for renderer to draw title block, scale bar, dimensions, and luminaire schedule. Required when mode == full_drawing. Every annotation declares explicit font_family + font_size_pt so ezdxf font fallback can resolve without losing tags.",
-      "required": ["title_block", "scale_bar", "dimensions", "luminaire_schedule"],
+      "required": [
+        "title_block",
+        "scale_bar",
+        "dimensions",
+        "luminaire_schedule"
+      ],
       "additionalProperties": false,
       "properties": {
         "title_block": {
           "type": "object",
-          "required": ["project_name", "drawing_number", "revision", "date", "scale", "sheet_size", "font_family", "font_size_pt"],
+          "required": [
+            "project_name",
+            "drawing_number",
+            "revision",
+            "date",
+            "scale",
+            "sheet_size",
+            "font_family",
+            "font_size_pt"
+          ],
           "additionalProperties": false,
           "properties": {
-            "project_name":   {"type": "string", "minLength": 1, "maxLength": 120},
-            "drawing_number": {"type": "string", "minLength": 1, "maxLength": 30},
-            "revision":       {"type": "string", "minLength": 1, "maxLength": 8},
-            "date":           {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
-            "scale":          {"type": "string", "pattern": "^1:\\d+$"},
-            "sheet_size":     {"enum": ["A0", "A1", "A2", "A3", "A4"]},
-            "font_family":    {"type": "string", "default": "Arial"},
-            "font_size_pt":   {"type": "number", "minimum": 6, "maximum": 24}
+            "project_name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "drawing_number": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 30
+            },
+            "revision": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8
+            },
+            "date": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "scale": {
+              "type": "string",
+              "pattern": "^1:\\d+$"
+            },
+            "sheet_size": {
+              "enum": [
+                "A0",
+                "A1",
+                "A2",
+                "A3",
+                "A4"
+              ]
+            },
+            "font_family": {
+              "type": "string",
+              "default": "Arial"
+            },
+            "font_size_pt": {
+              "type": "number",
+              "minimum": 6,
+              "maximum": 24
+            }
           }
         },
         "scale_bar": {
           "type": "object",
-          "required": ["origin_x_mm", "origin_y_mm", "total_length_mm", "tick_interval_mm", "font_family", "font_size_pt"],
+          "required": [
+            "origin_x_mm",
+            "origin_y_mm",
+            "total_length_mm",
+            "tick_interval_mm",
+            "font_family",
+            "font_size_pt"
+          ],
           "additionalProperties": false,
           "properties": {
-            "origin_x_mm":      {"type": "integer", "description": "X-coordinate of scale bar origin. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."},
-            "origin_y_mm":      {"type": "integer", "description": "Y-coordinate of scale bar origin. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."},
-            "total_length_mm":  {"type": "integer", "minimum": 1000},
-            "tick_interval_mm": {"type": "integer", "minimum": 100},
-            "font_family":      {"type": "string", "default": "Arial"},
-            "font_size_pt":     {"type": "number", "minimum": 6, "maximum": 12}
+            "origin_x_mm": {
+              "type": "integer",
+              "description": "X-coordinate of scale bar origin. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."
+            },
+            "origin_y_mm": {
+              "type": "integer",
+              "description": "Y-coordinate of scale bar origin. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."
+            },
+            "total_length_mm": {
+              "type": "integer",
+              "minimum": 1000
+            },
+            "tick_interval_mm": {
+              "type": "integer",
+              "minimum": 100
+            },
+            "font_family": {
+              "type": "string",
+              "default": "Arial"
+            },
+            "font_size_pt": {
+              "type": "number",
+              "minimum": 6,
+              "maximum": 12
+            }
           }
         },
         "dimensions": {
@@ -604,41 +774,94 @@
           "description": "At minimum room length + width dimension lines.",
           "items": {
             "type": "object",
-            "required": ["axis", "start_x_mm", "start_y_mm", "end_x_mm", "end_y_mm", "text", "font_family", "font_size_pt"],
+            "required": [
+              "axis",
+              "start_x_mm",
+              "start_y_mm",
+              "end_x_mm",
+              "end_y_mm",
+              "text",
+              "font_family",
+              "font_size_pt"
+            ],
             "additionalProperties": false,
             "properties": {
-              "axis":         {"enum": ["horizontal", "vertical"]},
-              "start_x_mm":   {"type": "integer", "description": "X-coordinate of dimension line start. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."},
-              "start_y_mm":   {"type": "integer", "description": "Y-coordinate of dimension line start. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."},
-              "end_x_mm":     {"type": "integer", "description": "X-coordinate of dimension line end. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."},
-              "end_y_mm":     {"type": "integer", "description": "Y-coordinate of dimension line end. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."},
-              "text":         {"type": "string", "minLength": 1, "maxLength": 30},
-              "font_family":  {"type": "string", "default": "Arial"},
-              "font_size_pt": {"type": "number", "minimum": 6, "maximum": 14}
+              "axis": {
+                "enum": [
+                  "horizontal",
+                  "vertical"
+                ]
+              },
+              "start_x_mm": {
+                "type": "integer",
+                "description": "X-coordinate of dimension line start. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."
+              },
+              "start_y_mm": {
+                "type": "integer",
+                "description": "Y-coordinate of dimension line start. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."
+              },
+              "end_x_mm": {
+                "type": "integer",
+                "description": "X-coordinate of dimension line end. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."
+              },
+              "end_y_mm": {
+                "type": "integer",
+                "description": "Y-coordinate of dimension line end. May be negative; annotations conventionally sit in negative-space margins outside the room rectangle (model-space origin at room SW corner)."
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 30
+              },
+              "font_family": {
+                "type": "string",
+                "default": "Arial"
+              },
+              "font_size_pt": {
+                "type": "number",
+                "minimum": 6,
+                "maximum": 14
+              }
             }
           }
         },
         "luminaire_schedule": {
           "type": "object",
-          "required": ["columns", "rows", "font_family", "font_size_pt"],
+          "required": [
+            "columns",
+            "rows",
+            "font_family",
+            "font_size_pt"
+          ],
           "additionalProperties": false,
           "properties": {
             "columns": {
               "type": "array",
               "minItems": 5,
               "description": "Schedule columns. Required minimum: ref + manufacturer + lumens + wattage + count.",
-              "items": {"type": "string"}
+              "items": {
+                "type": "string"
+              }
             },
             "rows": {
               "type": "array",
               "minItems": 1,
               "items": {
                 "type": "array",
-                "items": {"type": "string"}
+                "items": {
+                  "type": "string"
+                }
               }
             },
-            "font_family":  {"type": "string", "default": "Arial"},
-            "font_size_pt": {"type": "number", "minimum": 6, "maximum": 12}
+            "font_family": {
+              "type": "string",
+              "default": "Arial"
+            },
+            "font_size_pt": {
+              "type": "number",
+              "minimum": 6,
+              "maximum": 12
+            }
           }
         }
       }
@@ -646,11 +869,17 @@
     "selection_source": {
       "type": "object",
       "description": "Records which photometric data path (input override vs ontology default) was used by the lumen-method calculation. INV-8 enforces presence.",
-      "required": ["photometric_source", "citation"],
+      "required": [
+        "photometric_source",
+        "citation"
+      ],
       "additionalProperties": false,
       "properties": {
         "photometric_source": {
-          "enum": ["input_override", "ontology_default"],
+          "enum": [
+            "input_override",
+            "ontology_default"
+          ],
           "description": "input_override = inputs.photometric_override block was supplied and used. ontology_default = generator fell back to ontology/luminaire-types.json defaults."
         },
         "citation": {
@@ -668,10 +897,16 @@
       "properties": {
         "photometric_grid": {
           "type": "object",
-          "required": ["intent_version", "source_path", "payload"],
+          "required": [
+            "intent_version",
+            "source_path",
+            "payload"
+          ],
           "additionalProperties": false,
           "properties": {
-            "intent_version": {"type": "string"},
+            "intent_version": {
+              "type": "string"
+            },
             "source_path": {
               "type": "string",
               "minLength": 1,
@@ -683,13 +918,31 @@
           }
         }
       }
+    },
+    "floor_plan_context_consumed": {
+      "type": "boolean",
+      "default": false,
+      "description": "True iff the IR generator consumed an injected '## Floor plan context' markdown block. False when the skill ran on engineer free-text only."
     }
   },
   "allOf": [
     {
       "description": "D3.A.3: mode-conditional required fields. full_drawing requires layout + intent + consumed cascade.",
-      "if": {"properties": {"mode": {"const": "calc_only"}}, "required": ["mode"]},
-      "then": {"required": ["calc_only_reason"]},
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "calc_only"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "then": {
+        "required": [
+          "calc_only_reason"
+        ]
+      },
       "else": {
         "required": [
           "luminaire_type",
@@ -707,12 +960,23 @@
     },
     {
       "description": "Wave 1 / photometric-analysis: when mode == full_drawing, consumed_intents.photometric_grid MUST be populated. INV-11 enforces semantic content; this allOf clause enforces structural presence.",
-      "if": {"properties": {"mode": {"const": "calc_only"}}, "required": ["mode"]},
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "calc_only"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
       "then": {},
       "else": {
         "properties": {
           "consumed_intents": {
-            "required": ["photometric_grid"]
+            "required": [
+              "photometric_grid"
+            ]
           }
         }
       }

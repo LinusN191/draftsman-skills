@@ -157,16 +157,17 @@ Reviewer findings emitted as:
 A failing D-check does NOT block emission. The IR ships with the
 review findings recorded so downstream skills + engineers can react.
 
-## Architectural state (Sprint 4-AB)
+## Floor plan context
 
-When the prompt context includes `architectural_state`, this skill is
-**geometry-aware** and the reviewer SHOULD flag:
+When the prompt context includes a `## Floor plan context` markdown
+block, this skill is **geometry-aware** and the reviewer SHOULD flag:
 
-1. Placements that ignore the room polygons (e.g. uniform-grid
-   placement that crosses corridor boundaries).
-2. IRs that don't reference `building.label` in titles when the
-   building model is confirmed.
-3. IRs that consume rooms with `confirmed=false` without surfacing
-   the dependency in `assumptions`.
-
-See `shared/architectural_state_contract.md` for the full contract.
+1. IR that ignores the room list (e.g. fixtures placed in rooms not
+   listed in the block, or one IR per skill instead of one per
+   floor).
+2. IR that does not reference the building label in titles when the
+   block carries one.
+3. IR that consumes a flagged unconfirmed room without surfacing the
+   dependency in `assumptions`.
+4. IR that omits `floor_plan_context_consumed: true` when the block
+   was present.
