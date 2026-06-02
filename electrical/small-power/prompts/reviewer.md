@@ -30,7 +30,7 @@ You read jurisdiction-aware. A BS 7671 citation in a US example is a fail. A NEC
 }
 ```
 
-## The 7 D dimensions
+## The 10 D dimensions
 
 ### D-1 — Rationale chat_summary captures essential engineering story
 
@@ -138,6 +138,79 @@ When `meta.consumed_intents[]` does NOT contain a `cable-sizing` entry:
 - Rationale §6 documents the v1.0 deferral path
 
 **Flag when:** Mixed states detected — e.g., some circuits resolved while others deferred, without engineer-documented justification in `assumptions[]`. Also flag if the cable-sizing intent is consumed but the TOOL-CALL-PENDING flag was not dropped from `flags[]` (book-keeping leak).
+
+### D-8 — building_diversity density outside standards-file band (REVIEWER FLAG)
+
+**Trigger:** when `building_diversity` is present AND
+`design_density_w_per_m2` is outside the standards-file range for the
+declared `building_type`. Verified ranges (per diversity-factors.json):
+- office: 65-100 W/m²
+- industrial: 80-150 W/m²
+- healthcare: 100-150 W/m²
+
+**Reviewer action:** emit a finding into
+`compliance_summary._engineering_judgments[]` along the lines of:
+
+> "REVIEWER D-8: building_diversity.design_density_w_per_m2=<value>
+> outside the standards-file range [<low>, <high>] for
+> building_type=<type>. The engineer override is permitted but MUST
+> be backed by project-specific data (e.g. metered tenant fit-out, BMS
+> baseline study, BCO/IET Wiring Matters local guidance). Document the
+> evidence in the project compliance file."
+
+Reviewer does NOT toggle compliant=false; the override is a legitimate
+engineering judgment call when backed by data. The flag is a follow-up
+prompt for the engineer's design record.
+
+**Citation:** IET On-Site Guide 8th Edition Appendix A — Table A1
+(verified standards-file ranges) + IET Guidance Note 1 §4 (commercial
+diversity context). Pairs with rules BLD-01..BLD-03.
+
+### D-9 — EV RCD Type A vs Type B borderline (REVIEWER FLAG)
+
+**Trigger:** when any EV charge circuit's
+`ev_charge_metadata.charging_unit_dc_detection_a == 6` exactly (right
+on the threshold).
+
+**Reviewer action:** emit a finding:
+
+> "REVIEWER D-9: EV charge circuit <circuit_id> declares
+> charging_unit_dc_detection_a=6 exactly — at the Reg 722.531.3.101
+> Type-A/Type-B boundary. Engineer-of-record MUST confirm the
+> manufacturer's declared 6 mA DC detection threshold is BACKED by a
+> certified test report (IEC 62752 or equivalent) AND that the
+> declared value is the WORST-CASE under test conditions (not the
+> typical value)."
+
+The 6 mA threshold is the legal boundary; a unit at exactly 6 mA
+declared could fall below 6 mA under voltage sag or temperature drift,
+silently shifting from Type A safe to Type B required.
+
+**Citation:** Reg 722.531.3.101 + IET Code of Practice for EV Charging
+Equipment Installation (4th Ed). Pairs with rule EV-03.
+
+### D-10 — Ring vs radial topology choice on edge floor area (REVIEWER FLAG)
+
+**Trigger:** when any ring final circuit has `circuit.floor_area_m2` ∈
+[95, 100] m² (right at the IET OSG §8.4.4 ring 100 m² ceiling).
+
+**Reviewer action:** emit a finding:
+
+> "REVIEWER D-10: ring final circuit <circuit_id> serves <m²> m² —
+> within 5% of the 100 m² ring ceiling per IET OSG §8.4.4. Ring is
+> technically permitted up to 100 m² but radial gives more headroom for
+> future spur additions. Engineer should document the topology choice
+> rationale (e.g. existing kitchen ring, tenant lease constraint,
+> renovation scope-locked) so future iterations don't accidentally split
+> the ring."
+
+Reviewer does NOT toggle compliant=false; ring at 95-100 m² is
+compliant. The flag prompts the engineer to document the choice for
+maintainability.
+
+**Citation:** IET On-Site Guide §8.4.4 (8th Edition). Pairs with rule
+TOP-09 (note: existing topology-rules.yaml has TOP-09..TOP-12 not
+TOP-06..09 as the plan template said).
 
 ## Severity + verdict
 
