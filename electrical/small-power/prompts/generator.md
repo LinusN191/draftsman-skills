@@ -370,7 +370,205 @@ If the skill's input declares a consumed `cable-sizing` intent path, resolve eve
 ```
 (`intent_version` reflects the actual cable-sizing intent semver read from its `intent_version` field; default `"1.0.0"` if absent in the source intent.)
 
-### Step 13 — Build the intent-out
+### Step 13 — Resolve building_diversity (when inputs.building_diversity_inputs is supplied)
+
+When `inputs.building_diversity_inputs` is present, emit a top-level
+`building_diversity` block on the IR. When absent, skip this step (validator
+INV-13 emits "skipped — input not supplied" and passes vacuously).
+
+**13.1 Resolve building_type → standards-file profile**
+
+Read the verified standards file at
+`shared/standards/electrical/BS7671/diversity-factors.json`. For
+`building_type` ∈ {office, industrial, healthcare}, look up the profile:
+- `applies_load_types[]` — the load-type filter for which DIV-NN factors compose into building_diversified_demand
+- `design_density_w_per_m2_range` — the verified range
+- `future_expansion_pct_default` — the standards-file default
+
+When `inputs.building_diversity_inputs.design_density_w_per_m2_override` is
+supplied AND falls outside `design_density_w_per_m2_range`, emit the value
+AND a reviewer D-8 flag (handled at the reviewer prompt stage; do not
+mark INV-13 fail here — the override may be legitimate engineer judgment
+based on project-specific data).
+
+**13.2 Apply `applies_after: per_load_diversity` ordering**
+
+The building_diversity factor multiplies the SUM of per-circuit
+DIV-NN-diversified currents — NOT the raw connected loads. Per the IET OSG
+8th Edition App A computation order (rule BLD-04):
+
+```
+For each circuit in scope (per applies_load_types filter):
+    circuit_diversified_a = circuit_connected_a × circuit_DIV_factor
+Σ_circuits = Σ(circuit_diversified_a) for matching applies_load_types
+building_diversified_demand_a = Σ_circuits × building_factor
+```
+
+The building_factor is computed from the standards-file profile per
+building_type — for office, the relevant entries (e.g. office_lift_single
+100% vs office_lift_two 80% vs office_lift_three_or_more 70% per DIV-07
+lift table) compose into the building_factor based on the project's lift
+count.
+
+**13.3 Emit `per_circuit_demand_inputs[]` for INV-19 cascade integration**
+
+For each circuit contributing to building_diversified_demand_a, append one
+entry to `building_diversity.per_circuit_demand_inputs[]`:
+
+```json
+{
+  "circuit_id": "<the circuit's id>",
+  "post_per_load_diversity_a": <the DIV-NN-diversified current>,
+  "building_factor_applied": <the building factor for this circuit's
+                                applies_load_types match>
+}
+```
+
+This array is the cascade-integration ingredient that INV-19 verifies
+against `consumed_intents.cable_sizing.payload.circuits[]` — every entry
+here MUST have a matching circuit in the cable-sizing cascade source.
+
+**13.4 Emit `_clause_citation` + `_derivation_note`**
+
+Per CLAUDE.md citation form for the GB jurisdiction:
+
+```yaml
+_clause_citation: "IET On-Site Guide 8th Edition Appendix A — Table A1 (<building_type>) + diversity-factors.json"
+_derivation_note: "≥40 char prose explaining: which standards-file profile was used; whether engineer overrode design_density or future_expansion_pct; what building_factor was computed; how it composes with per-circuit diversity."
+```
+
+**13.5 Banned in this step (per spec §11.1):**
+- Never cite Reg 559 for lift diversity (correct: IET OSG App A — Table A1, applied via rule DIV-07)
+- Never cite §526.2 or §433.2 (NOT transcribed in verified file; correct
+  anchor is IET OSG §8.4.4 for ring/radial concerns, but those are Step 14
+  not Step 13)
+- Never invent building types beyond {office, industrial, healthcare} at
+  v2.0 (retail/residential/data-center/hospitality deferred to v2.1 per
+  spec §2 deferrals)
+
+### Step 14 — Verify ring final circuit continuity (when inputs.ring_continuity_endpoints is supplied)
+
+When `inputs.ring_continuity_endpoints` is present, emit
+`circuits[i].ring_endpoints` on each circuit where `topology == "ring"`.
+The IR schema's allOf clause REQUIRES `ring_endpoints` when topology=ring;
+emitting an empty/missing block on a ring circuit will fail Pass-1 schema
+validation before INV-14 even runs.
+
+**14.1 Match circuit_id from inputs.ring_continuity_endpoints to circuits[]**
+
+For each ring circuit, find the matching entry in
+`inputs.ring_continuity_endpoints` by `circuit_id`. If found, populate
+`endpoint_a_xy`, `endpoint_b_xy`, `mcb_way_id`, and set
+`continuity_verified: true` only when:
+  - both endpoints exist (no null coordinates)
+  - `mcb_way_id` is a non-empty string AND matches the circuit's declared
+    way_id at the consumer unit board (rule TOP-09)
+
+When `continuity_verified: false`, emit non_compliance_flag entry — INV-14
+catches this at validator stage but emitting the explicit false flag at
+generator stage gives the engineer reasoning early.
+
+**14.2 Cite IET OSG §8.4.4 + BS 7671 §526 top-level (rule TOP-09)**
+
+The _citation field on each ring_endpoints block must read:
+
+```
+"IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 (top-level — sub-clause §526.2 not transcribed in verified file)"
+```
+
+Spec §2.3 verified-citation table is authoritative; never cite §526.2
+directly (it's on the banned list per the spec amendment v1.0.1).
+
+**14.3 fcu_spurs (when present, per rule TOP-12)**
+
+When the engineer's design includes FCU spurs on a ring final circuit
+(common in domestic kitchens — under-cabinet FCUs feed permanent appliances),
+emit one entry per FCU into `circuits[i].fcu_spurs[]`:
+
+```json
+{
+  "location_xy": {"x_mm": <pos>, "y_mm": <pos>},
+  "fcu_rating_a": <3 | 5 | 13>,
+  "downstream_loads_w": <sum of all loads on this FCU>,
+  "_citation": "IET On-Site Guide §8.4.4 (8th Edition, AMD 2 update) + BS 7671:2018+A2:2022 §433 (top-level)"
+}
+```
+
+INV-17 verifies `downstream_loads_w ≤ fcu_rating_a × 230 V` (rule TOP-12).
+
+**14.4 Cross-check per-circuit floor area (rule TOP-10 / INV-15)**
+
+For each circuit with `rooms_covered[]` populated, verify:
+  `circuit.floor_area_m2 == Σ(rooms_covered[].floor_area_m2)` within ±5%.
+
+When the values drift more than 5%, emit a non_compliance_flag and let
+INV-15 catch it at validator stage.
+
+**14.5 Cross-check OCPD-topology coordination (rule TOP-11 / INV-16)**
+
+For each circuit, verify the MCB rating matches the topology:
+  - `topology=ring` → MCB ≤ 32 A
+  - `topology=radial AND cable_csa_mm2=2.5` → MCB ≤ 20 A
+  - `topology=radial AND cable_csa_mm2=4` → MCB ≤ 32 A
+  - `topology=dedicated_radial` → MCB sized by load (cable-sizing's domain)
+
+An over-rating breaks the cable thermal protection assumption. INV-16
+catches at validator stage.
+
+### Step 15 — Emit ev_charge_metadata (when load_type matches ev_charge_*)
+
+For every circuit where `circuits[i].load_type` matches the pattern
+`ev_charge_*` (e.g. `ev_charge_domestic`, `ev_charge_commercial`), the IR
+schema's allOf clause REQUIRES the `ev_charge_metadata` block. Emitting
+without it will fail Pass-1 schema validation.
+
+**15.1 Resolve RCD type per Reg 722.531.3.101 (rule EV-03)**
+
+Read `inputs.ev_charge_metadata[i].charging_unit_dc_detection_a` (the
+manufacturer's declared 6mA DC residual current detection threshold).
+The rule (EV-03):
+  - `charging_unit_dc_detection_a ≥ 6` → `rcd_type: type_a` (DEFAULT per
+    Reg 722.531.3.101)
+  - `charging_unit_dc_detection_a < 6` → `rcd_type: type_b` (REQUIRED per
+    Reg 722.531.3.101 — Type A cannot detect DC fault current)
+
+NEVER default to Type A when the manufacturer has not declared 6mA DC
+detection — Type A on a 0mA-detection unit is a HIGH safety failure (DC
+fault current blinds the Type A; only Type B detects).
+
+**15.2 Emit Mode + standards (rules EV-01, EV-04)**
+
+```json
+{
+  "rcd_type": "<type_a | type_b per 15.1>",
+  "charging_unit_dc_detection_a": <from inputs>,
+  "mode": <3 for AC up to 22 kW; 4 for DC rapid 50-350 kW>,
+  "charging_unit_standard": "BS EN 61851-1",
+  "socket_standard": "<BS EN 62196 Type 2 Mennekes for Mode 3 AC | BS EN 62196 CCS Combo 2 for Mode 4 DC>",
+  "dedicated_circuit": true,
+  "_citation": "BS 7671:2018+A2:2022 §722.531.3.101 + IET Code of Practice for EV Charging Equipment Installation (4th Ed)"
+}
+```
+
+The `dedicated_circuit: true` is a CONST in the IR schema — the EV-01 rule
+in `electrical/small-power/rules/ev-charge-rules.yaml` enforces no shared
+loads on EV circuits.
+
+**15.3 EV demand — NO diversity (rule EV-02; per IET CoP for EV 4th Ed)**
+
+When applying building_diversity (Step 13), every EV circuit contributes
+100% of its rated current to the building_diversified_demand calculation
+— NO diversity factor applies. Append the full rated current (not a
+diversified value) to `per_circuit_demand_inputs[]` for INV-19 traceability.
+
+**15.4 Banned in this step:**
+- NEVER cite "OZEV Code of Practice" or "IET CoP for EV 3rd Edition"
+  (these are the spec §11.1 banned-list catches; correct name is
+  "IET Code of Practice for EV Charging Equipment Installation (4th Ed)")
+- NEVER cite Mode 1 or Mode 2 as permissible at v2.0 (DEPRECATED per
+  §722; only Mode 3 + Mode 4 permitted per rule EV-04)
+
+### Step 16 — Build the intent-out
 
 Project the IR down to the intent shape declared by
 `small-power-intent.schema.json`. The intent is the **slim subset**
@@ -475,7 +673,7 @@ the engineer estimate is replaced by the deterministic calc output.
 
 ---
 
-## Step 14 (final) — Emit `rationale` block (WI2)
+## Step 17 (final) — Emit `rationale` block (WI2)
 
 After computing the IR (supply, parent_db, circuits, rooms, drawing_layout,
 compliance_summary), populate a `rationale` block at the IR root. Conforms
