@@ -1,0 +1,792 @@
+{
+  "drawing_type": "special_locations_zoning",
+  "version": "1.0.0",
+  "mode": "full_analysis",
+  "jurisdiction": "GB",
+  "room": {
+    "room_id": "uk-elv-landscape-cascade-violation",
+    "room_type": "external_landscape",
+    "length_mm": 20000,
+    "width_mm": 15000,
+    "area_m2": 300,
+    "ceiling_height_mm": 3000,
+    "is_external": true,
+    "ambient_temperature_c": null
+  },
+  "anchor_fixtures": [
+    {
+      "anchor_id": "elv_bollard_1",
+      "fixture_type": "elv_luminaire",
+      "position_xyz": {
+        "x_mm": 3000,
+        "y_mm": 3000,
+        "z_mm": 1000
+      },
+      "dimensions_mm": {
+        "diameter_mm": 100
+      },
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Path bollard 1 extracted from landscape architect Rev-A garden lighting layout dated 2026-05-26; 1000mm tall stainless cylindrical bollard, IP65 SELV LED luminaire, 12V SELV feed."
+    },
+    {
+      "anchor_id": "elv_bollard_2",
+      "fixture_type": "elv_luminaire",
+      "position_xyz": {
+        "x_mm": 7000,
+        "y_mm": 3000,
+        "z_mm": 1000
+      },
+      "dimensions_mm": {
+        "diameter_mm": 100
+      },
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Path bollard 2 extracted from landscape architect Rev-A garden lighting layout dated 2026-05-26; 4m east of bollard 1 along the main east-west path; same SELV 12V feed."
+    },
+    {
+      "anchor_id": "elv_bollard_3",
+      "fixture_type": "elv_luminaire",
+      "position_xyz": {
+        "x_mm": 11000,
+        "y_mm": 3000,
+        "z_mm": 1000
+      },
+      "dimensions_mm": {
+        "diameter_mm": 100
+      },
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Path bollard 3 extracted from landscape architect Rev-A garden lighting layout dated 2026-05-26; 4m east of bollard 2 along the main east-west path; same SELV 12V feed."
+    },
+    {
+      "anchor_id": "elv_bollard_4",
+      "fixture_type": "elv_luminaire",
+      "position_xyz": {
+        "x_mm": 5000,
+        "y_mm": 10000,
+        "z_mm": 1000
+      },
+      "dimensions_mm": {
+        "diameter_mm": 100
+      },
+      "_extraction_source": "engineer_manual_entry",
+      "_provenance_note": "Bollard 4 added by lighting engineer at first review (north terrace edge) to balance the photometric pattern; not on architect Rev-A; engineer-manual-entry tier honest-disclosed for INV-09."
+    },
+    {
+      "anchor_id": "elv_bollard_5",
+      "fixture_type": "elv_luminaire",
+      "position_xyz": {
+        "x_mm": 10000,
+        "y_mm": 10000,
+        "z_mm": 1000
+      },
+      "dimensions_mm": {
+        "diameter_mm": 100
+      },
+      "_extraction_source": "engineer_manual_entry",
+      "_provenance_note": "Bollard 5 added by lighting engineer at first review (north terrace edge) symmetric to bollard 4; engineer-manual-entry tier honest-disclosed for INV-09."
+    },
+    {
+      "anchor_id": "elv_bollard_6",
+      "fixture_type": "elv_luminaire",
+      "position_xyz": {
+        "x_mm": 15000,
+        "y_mm": 7500,
+        "z_mm": 1000
+      },
+      "dimensions_mm": {
+        "diameter_mm": 100
+      },
+      "_extraction_source": "inferred_from_room_type",
+      "_provenance_note": "Bollard 6 inferred at the east feature-tree position based on landscape typology (illuminated feature tree); position assumed at the tree centroid from arboricultural survey; weakest provenance tier — engineer-of-record to verify final position."
+    }
+  ],
+  "zones": [
+    {
+      "zone_id": "zone_elv_bollard_1_barrier",
+      "zone_type": "elv_barrier_zone",
+      "source_anchor_id": "elv_bollard_1",
+      "derivation_clause": "BS 7671:2018 §715",
+      "boundary_plan_polygon_mm": [
+        [
+          3500,
+          3000
+        ],
+        [
+          3433,
+          3250
+        ],
+        [
+          3250,
+          3433
+        ],
+        [
+          3000,
+          3500
+        ],
+        [
+          2750,
+          3433
+        ],
+        [
+          2567,
+          3250
+        ],
+        [
+          2500,
+          3000
+        ],
+        [
+          2567,
+          2750
+        ],
+        [
+          2750,
+          2567
+        ],
+        [
+          3000,
+          2500
+        ],
+        [
+          3250,
+          2567
+        ],
+        [
+          3433,
+          2750
+        ]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 1500,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 12,
+      "rcd_required_ma": null,
+      "isolation_required": false,
+      "allowed_equipment_classes": [
+        "class_3_SELV"
+      ],
+      "prohibited_fixture_types": [
+        "socket_230v",
+        "luminaire_lv_non_selv"
+      ],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §715 + BS EN 61558-2-6 (no §715 sub-clauses in verified file)",
+      "_derivation_note": "ELV barrier zone for bollard 1: 500mm radius separation buffer per spec §5.4 ELV barrier-zone convention; 12-sided regular polygon approximation per spec §5.7. Inside the buffer ELV (12 V SELV) and LV (230 V) cables must be separated by ≥100mm OR by a physical barrier. The buffer is height-limited to 1500mm because bollard height is 1000mm and the cable-rise zone tops out at the bollard head."
+    },
+    {
+      "zone_id": "zone_elv_bollard_2_barrier",
+      "zone_type": "elv_barrier_zone",
+      "source_anchor_id": "elv_bollard_2",
+      "derivation_clause": "BS 7671:2018 §715",
+      "boundary_plan_polygon_mm": [
+        [
+          7500,
+          3000
+        ],
+        [
+          7433,
+          3250
+        ],
+        [
+          7250,
+          3433
+        ],
+        [
+          7000,
+          3500
+        ],
+        [
+          6750,
+          3433
+        ],
+        [
+          6567,
+          3250
+        ],
+        [
+          6500,
+          3000
+        ],
+        [
+          6567,
+          2750
+        ],
+        [
+          6750,
+          2567
+        ],
+        [
+          7000,
+          2500
+        ],
+        [
+          7250,
+          2567
+        ],
+        [
+          7433,
+          2750
+        ]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 1500,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 12,
+      "rcd_required_ma": null,
+      "isolation_required": false,
+      "allowed_equipment_classes": [
+        "class_3_SELV"
+      ],
+      "prohibited_fixture_types": [
+        "socket_230v",
+        "luminaire_lv_non_selv"
+      ],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §715 + BS EN 61558-2-6 (no §715 sub-clauses in verified file)",
+      "_derivation_note": "ELV barrier zone for bollard 2: 500mm radius separation buffer; 12-sided polygon approximation. Bollard 2 at (7000,3000) — 4000mm clear of bollard 1; no overlap (sum of radii = 1000mm < 4000mm separation)."
+    },
+    {
+      "zone_id": "zone_elv_bollard_3_barrier",
+      "zone_type": "elv_barrier_zone",
+      "source_anchor_id": "elv_bollard_3",
+      "derivation_clause": "BS 7671:2018 §715",
+      "boundary_plan_polygon_mm": [
+        [
+          11500,
+          3000
+        ],
+        [
+          11433,
+          3250
+        ],
+        [
+          11250,
+          3433
+        ],
+        [
+          11000,
+          3500
+        ],
+        [
+          10750,
+          3433
+        ],
+        [
+          10567,
+          3250
+        ],
+        [
+          10500,
+          3000
+        ],
+        [
+          10567,
+          2750
+        ],
+        [
+          10750,
+          2567
+        ],
+        [
+          11000,
+          2500
+        ],
+        [
+          11250,
+          2567
+        ],
+        [
+          11433,
+          2750
+        ]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 1500,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 12,
+      "rcd_required_ma": null,
+      "isolation_required": false,
+      "allowed_equipment_classes": [
+        "class_3_SELV"
+      ],
+      "prohibited_fixture_types": [
+        "socket_230v",
+        "luminaire_lv_non_selv"
+      ],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §715 + BS EN 61558-2-6 (no §715 sub-clauses in verified file)",
+      "_derivation_note": "ELV barrier zone for bollard 3: 500mm radius separation buffer; 12-sided polygon. Bollard 3 at (11000,3000) — 4000mm clear of bollard 2; no overlap."
+    },
+    {
+      "zone_id": "zone_elv_bollard_4_barrier",
+      "zone_type": "elv_barrier_zone",
+      "source_anchor_id": "elv_bollard_4",
+      "derivation_clause": "BS 7671:2018 §715",
+      "boundary_plan_polygon_mm": [
+        [
+          5500,
+          10000
+        ],
+        [
+          5433,
+          10250
+        ],
+        [
+          5250,
+          10433
+        ],
+        [
+          5000,
+          10500
+        ],
+        [
+          4750,
+          10433
+        ],
+        [
+          4567,
+          10250
+        ],
+        [
+          4500,
+          10000
+        ],
+        [
+          4567,
+          9750
+        ],
+        [
+          4750,
+          9567
+        ],
+        [
+          5000,
+          9500
+        ],
+        [
+          5250,
+          9567
+        ],
+        [
+          5433,
+          9750
+        ]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 1500,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 12,
+      "rcd_required_ma": null,
+      "isolation_required": false,
+      "allowed_equipment_classes": [
+        "class_3_SELV"
+      ],
+      "prohibited_fixture_types": [
+        "socket_230v",
+        "luminaire_lv_non_selv"
+      ],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §715 + BS EN 61558-2-6 (no §715 sub-clauses in verified file)",
+      "_derivation_note": "ELV barrier zone for bollard 4: 500mm radius separation buffer; 12-sided polygon. North terrace edge position; provenance is engineer_manual_entry (not architectural drawing) — surfaced in INV-09 and contributes to D-1 / D-5 reviewer judgment."
+    },
+    {
+      "zone_id": "zone_elv_bollard_5_barrier",
+      "zone_type": "elv_barrier_zone",
+      "source_anchor_id": "elv_bollard_5",
+      "derivation_clause": "BS 7671:2018 §715",
+      "boundary_plan_polygon_mm": [
+        [
+          10500,
+          10000
+        ],
+        [
+          10433,
+          10250
+        ],
+        [
+          10250,
+          10433
+        ],
+        [
+          10000,
+          10500
+        ],
+        [
+          9750,
+          10433
+        ],
+        [
+          9567,
+          10250
+        ],
+        [
+          9500,
+          10000
+        ],
+        [
+          9567,
+          9750
+        ],
+        [
+          9750,
+          9567
+        ],
+        [
+          10000,
+          9500
+        ],
+        [
+          10250,
+          9567
+        ],
+        [
+          10433,
+          9750
+        ]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 1500,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 12,
+      "rcd_required_ma": null,
+      "isolation_required": false,
+      "allowed_equipment_classes": [
+        "class_3_SELV"
+      ],
+      "prohibited_fixture_types": [
+        "socket_230v",
+        "luminaire_lv_non_selv"
+      ],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §715 + BS EN 61558-2-6 (no §715 sub-clauses in verified file)",
+      "_derivation_note": "ELV barrier zone for bollard 5: 500mm radius separation buffer; 12-sided polygon. Symmetric mirror of bollard 4 across x=7500; same engineer_manual_entry provenance tier."
+    },
+    {
+      "zone_id": "zone_elv_bollard_6_barrier",
+      "zone_type": "elv_barrier_zone",
+      "source_anchor_id": "elv_bollard_6",
+      "derivation_clause": "BS 7671:2018 §715",
+      "boundary_plan_polygon_mm": [
+        [
+          15500,
+          7500
+        ],
+        [
+          15433,
+          7750
+        ],
+        [
+          15250,
+          7933
+        ],
+        [
+          15000,
+          8000
+        ],
+        [
+          14750,
+          7933
+        ],
+        [
+          14567,
+          7750
+        ],
+        [
+          14500,
+          7500
+        ],
+        [
+          14567,
+          7250
+        ],
+        [
+          14750,
+          7067
+        ],
+        [
+          15000,
+          7000
+        ],
+        [
+          15250,
+          7067
+        ],
+        [
+          15433,
+          7250
+        ]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 1500,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 12,
+      "rcd_required_ma": null,
+      "isolation_required": false,
+      "allowed_equipment_classes": [
+        "class_3_SELV"
+      ],
+      "prohibited_fixture_types": [
+        "socket_230v",
+        "luminaire_lv_non_selv"
+      ],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §715 + BS EN 61558-2-6 (no §715 sub-clauses in verified file)",
+      "_derivation_note": "ELV barrier zone for bollard 6: 500mm radius separation buffer; 12-sided polygon. East feature-tree position; provenance is inferred_from_room_type — weakest tier — engineer-of-record to verify final position. Surfaced in INV-09 and primary trigger for D-1 reviewer flag (suppressed in this example because D-5 already covers the missing ambient temperature)."
+    }
+  ],
+  "electrical_constraints": [
+    {
+      "constraint_type": "elv_separation",
+      "applies_to_room_polygon": true,
+      "applies_to_zone_ids": [
+        "zone_elv_bollard_1_barrier",
+        "zone_elv_bollard_2_barrier",
+        "zone_elv_bollard_3_barrier",
+        "zone_elv_bollard_4_barrier",
+        "zone_elv_bollard_5_barrier",
+        "zone_elv_bollard_6_barrier"
+      ],
+      "_clause_citation": "BS 7671:2018 §715 + BS EN 61558-2-6 (no §715 sub-clauses in verified file)",
+      "_derivation_note": "ELV separation requirement per §715 + BS EN 61558-2-6: 12 V SELV bollard circuits must be separated from any 230 V LV cabling by ≥100 mm OR by an insulated barrier OR by routing in a separate conduit. The safety isolating transformer must be short-circuit protected per BS EN 61558-2-6 §17 (transformer-secondary side fault tolerance). Cable labelling required on every ELV circuit so future maintainers do not confuse 12 V with 230 V. All conditions enforced room-wide; no §715 sub-clauses exist in the verified file so honest disclosure stamped in _elv_general_citation.",
+      "lv_cable_spacing_mm_min": 100,
+      "barrier_required": true,
+      "label_required": true,
+      "transformer_short_circuit_protected": true,
+      "_elv_general_citation": "BS 7671:2018 §715 + BS EN 61558-2-6 (no §715 sub-clauses in verified file)"
+    }
+  ],
+  "existing_fixtures_audit": [
+    {
+      "fixture_id": "elv_bollard_1",
+      "fixture_type": "elv_luminaire",
+      "position_xyz": {
+        "x_mm": 3000,
+        "y_mm": 3000,
+        "z_mm": 1000
+      },
+      "derived_zone_id": "zone_elv_bollard_1_barrier",
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "elv_bollard_2",
+      "fixture_type": "elv_luminaire",
+      "position_xyz": {
+        "x_mm": 7000,
+        "y_mm": 3000,
+        "z_mm": 1000
+      },
+      "derived_zone_id": "zone_elv_bollard_2_barrier",
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "elv_bollard_3",
+      "fixture_type": "elv_luminaire",
+      "position_xyz": {
+        "x_mm": 11000,
+        "y_mm": 3000,
+        "z_mm": 1000
+      },
+      "derived_zone_id": "zone_elv_bollard_3_barrier",
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "elv_bollard_4",
+      "fixture_type": "elv_luminaire",
+      "position_xyz": {
+        "x_mm": 5000,
+        "y_mm": 10000,
+        "z_mm": 1000
+      },
+      "derived_zone_id": "zone_elv_bollard_4_barrier",
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "elv_bollard_5",
+      "fixture_type": "elv_luminaire",
+      "position_xyz": {
+        "x_mm": 10000,
+        "y_mm": 10000,
+        "z_mm": 1000
+      },
+      "derived_zone_id": "zone_elv_bollard_5_barrier",
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "elv_bollard_6",
+      "fixture_type": "elv_luminaire",
+      "position_xyz": {
+        "x_mm": 15000,
+        "y_mm": 7500,
+        "z_mm": 1000
+      },
+      "derived_zone_id": "zone_elv_bollard_6_barrier",
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "lv_socket_violation_1",
+      "fixture_type": "socket_230v",
+      "position_xyz": {
+        "x_mm": 3200,
+        "y_mm": 3000,
+        "z_mm": 800
+      },
+      "derived_zone_id": "zone_elv_bollard_1_barrier",
+      "compliance_status": "violation",
+      "violation_sub_rule": "voltage_above_max",
+      "violation_clause": "BS 7671:2018 §715",
+      "severity": "critical"
+    }
+  ],
+  "calculation_summary": {
+    "compliant": false,
+    "zone_count": 6,
+    "constraint_count": 1,
+    "violation_count_critical": 1,
+    "violation_count_high": 0,
+    "non_compliance_flags": [
+      {
+        "flag": "lv_socket_in_elv_barrier_zone",
+        "severity": "critical",
+        "fixture_id": "lv_socket_violation_1",
+        "zone_id": "zone_elv_bollard_1_barrier",
+        "clause": "BS 7671:2018 §715",
+        "message": "230V LV socket_violation_1 placed at (3200, 3000, 800) sits INSIDE the elv_barrier_zone of elv_bollard_1 (500mm radius around bollard at (3000, 3000); z=800 within height range 0-1500). socket_230v at 230V is in zone.prohibited_fixture_types per BS 7671:2018 §715 (ELV/LV separation barrier) — max_voltage_v in this zone is 12V SELV. Remediation: relocate the LV socket OUTSIDE the 500mm barrier radius around every elv_bollard AND ensure ≥100mm cable separation between ELV and LV cabling per §715 + BS EN 61558-2-6.",
+        "_cascaded_from": "special-locations"
+      }
+    ],
+    "assumptions": [
+      "Cascade source: standalone C.1 example uk-external-landscape-elv-lighting. Synthetic upstream small-power intent ADDS a violating 230V LV socket at (3200, 3000, 800) INSIDE the elv_barrier_zone of elv_bollard_1.",
+      "Violation: socket_230v (230V LV) inside ELV barrier zone (max_voltage_v=12 SELV) — voltage_above_max sub-rule fires per §715.",
+      "INV-07 still PASSes: elv_separation constraint IS present in the IR (the constraint is still derived correctly).",
+      "External installation; ambient_temperature_c NOT supplied → D-5 reviewer flag carries forward.",
+      "elv_bollard_6 sourced via inferred_from_room_type → D-1 (informational) carries forward."
+    ],
+    "_zone_derivation_engine": "auto_from_anchors_v1.0",
+    "_engineering_judgments": [
+      "REVIEWER D-5: external installation (room.is_external=true) without ambient_temperature_c supplied. Default 30°C cable de-rating per BS 7671:2018 Appendix 4 Table 4B1 assumed; engineer-of-record to verify against installation-site temperature data before sign-off.",
+      "REVIEWER D-1 (informational, not blocking): elv_bollard_6 sourced via inferred_from_room_type (weakest provenance tier per INV-09). Engineer-of-record to verify final feature-tree centroid position before installation. D-5 is the primary reviewer flag for this example; D-1 noted here for transparency."
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "6 anchors (elv_bollard_1..6) produce 6 zones[] (one elv_barrier_zone each). Pairwise centre-to-centre distances 4000mm (1↔2, 2↔3) and >5000mm (4↔5, others) — all exceed sum-of-radii (1000mm) → no overlaps; overlapping_with_zone_ids empty on every zone. No silent merges."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "existing_fixtures_audit[] has 7 entries: 6 compliant elv_luminaires + 1 violation (lv_socket_violation_1). non_compliance_flags[] has 1 entry citing lv_socket_violation_1 with severity=critical, clause=BS 7671:2018 §715. One-to-one correspondence: 1 violation entry ↔ 1 non_compliance_flag entry. PASS (catalogue integrity holds; cascade compliant=false is the core failure signal)."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No medical_envelope_group_2 zone present in IR. §710 + BS EN 61557-8 medical IT system requirement N/A; INV-03 vacuously passes per spec §7.2."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "room_type=external_landscape, not bathroom/shower_room/sauna. §701.411.3.3 + §703.411.3.3 RCD blanket N/A — INV-04 vacuously passes per spec §7.2."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Not a swimming_pool_hall. §702.415.1 pool main equipotential bonding N/A — INV-05 vacuously passes."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No bath_basin (no bath_tray fixture_type). §701.512.2 whirlpool pump IPx5 constraint N/A — INV-06 vacuously passes."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "high",
+      "evidence": "6 elv_lighting_circuit_anchors in anchor_fixtures (elv_bollard_1 through elv_bollard_6); 6 elv_barrier_zones derived; elv_separation constraint PRESENT in electrical_constraints[]. INV-07 verifies the constraint IS present in the IR — and it IS — so INV-07 PASSes. The §715 zone-table fixture-audit (sub-rule (a)/(d)) is where the lv_socket_violation_1 issue is caught, NOT at the constraint-derivation level."
+    },
+    {
+      "id": "INV-08",
+      "passes": false,
+      "severity": "high",
+      "evidence": "7 existing fixtures audited against §715 derived elv_barrier_zones. 6 compliant elv_luminaires (each sits ON the bollard centroid; SELV 12V; permitted in own barrier zone). FAILURE: lv_socket_violation_1 at (3200, 3000, 800) — position INSIDE the 500mm barrier radius of elv_bollard_1 (distance to bollard centroid (3000,3000) = 200mm < 500mm radius) AND z=800 INSIDE barrier height range 0-1500mm. Sub-rule (d) voltage_above_max FIRES: 230V > zone.max_voltage_v 12V SELV per §715. (a) type_prohibited would also fire (socket_230v in barrier zone's prohibited_fixture_types). violation_sub_rule recorded as voltage_above_max (the primary fail per §715 ELV/LV separation rationale — the barrier zone EXISTS to enforce voltage separation). violation_clause: BS 7671:2018 §715. severity: critical. 1 violation; INV-08 FAILS."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "Mixed provenance: bollards 1/2/3 use architectural_drawing_extraction (strongest); 4/5 use engineer_manual_entry; 6 uses inferred_from_room_type (weakest). All 6 _provenance_note strings ≥40 chars (lengths range 156-189). Provenance disclosure complete; mixed-tier honestly surfaced via D-1 informational flag in _engineering_judgments[]."
+    },
+    {
+      "id": "INV-10",
+      "passes": false,
+      "severity": "high",
+      "evidence": "compliant=false because violation_count_critical=1 > 0. Self-consistency check: compliant ⟺ (violation_count_critical==0 ∧ violation_count_high==0 ∧ non_compliance_flags==[]). The compliant=false verdict correctly reflects the 1 critical violation + 1 non_compliance_flag. The cascade hand-off correctly propagates: downstream small-power INV-12 will FAIL HIGH on consumption."
+    }
+  ],
+  "rationale": {
+    "chat_summary": "FAIL HIGH cascade — violating 230V LV socket placed INSIDE the elv_barrier_zone of elv_bollard_1 at (3200, 3000, 800). socket_230v at 230V violates the zone max_voltage_v=12 SELV per BS 7671:2018 §715. INV-07 still PASSes (constraint IS present); INV-08 + INV-10 FAIL. compliant=false; 1 critical non_compliance_flag. D-5 + D-1 reviewer judgments carry forward.",
+    "sections": [
+      {
+        "title": "Cascade context — FAIL HIGH",
+        "summary": "Failure-mode cascade — the synthetic upstream small-power intent ADDS a violating 230V LV socket at (3200, 3000, 800) inside the 500mm-radius elv_barrier_zone of elv_bollard_1 (centroid 3000, 3000; barrier height 0-1500mm). The 6 compliant ELV luminaires + the elv_separation constraint are unchanged from the C.1 source. This is the central failure-mode demonstration for §715 ELV/LV separation enforcement at the cascade-consumer boundary."
+      },
+      {
+        "title": "Standards applied",
+        "summary": "BS 7671:2018+A2:2022 §715 governs ELV (SELV) lighting installations. §715 + BS EN 61558-2-6 mandate (1) SELV isolating transformer with short-circuit protection on the primary side; (2) ≥100mm physical separation OR a physical barrier between ELV and LV cabling; (3) labelling at every isolating transformer (HSE convention). The elv_barrier_zone enforces (2): zone.max_voltage_v=12 prohibits LV cabling/fixtures inside the buffer radius. The barrier zone IS the §715 separation rule encoded geometrically."
+      },
+      {
+        "title": "INV-07 PASS — constraint IS present",
+        "summary": "INV-07 verifies the elv_separation constraint is present in electrical_constraints[] when ELV anchors exist. The constraint IS present (carried forward from C.1 source) — the §715 + BS EN 61558-2-6 separation rule is correctly derived. INV-07 PASSes. The violation is at the FIXTURE-AUDIT layer (INV-08 sub-rule), not at the constraint-derivation layer."
+      },
+      {
+        "title": "INV-08 sub-rule walk-through (the FAILURE)",
+        "summary": "Sub-rule (d) voltage_above_max FIRES on lv_socket_violation_1: 230V > zone.max_voltage_v=12V SELV per §715. The position (3200, 3000, 800) sits inside the 500mm barrier radius of elv_bollard_1 (Euclidean distance to bollard centroid (3000, 3000) = 200mm) AND inside the barrier vertical envelope (z=800 < 1500). Sub-rule (a) type_prohibited would also fire (socket_230v in barrier zone's prohibited_fixture_types) — the audit records voltage_above_max as the primary sub-rule because §715 is fundamentally a VOLTAGE separation rule. violation_clause: BS 7671:2018 §715. severity: critical."
+      },
+      {
+        "title": "Consumer-side hand-off — small-power INV-12 FAIL HIGH",
+        "summary": "When small-power v1.2 consumes this special-locations intent, INV-12 sub-check 1 (zone exclusion) FIRES on lv_socket_violation_1: the consumed LV socket position is inside an ELV barrier zone. small-power INV-12 FAILS HIGH, propagating a non_compliance_flag with severity=critical, clause=BS 7671:2018 §715, and _cascaded_from: special-locations preserved. small-power's output IR's compliant flag flips to false; its calculation_summary.violation_count_critical bumps to 1."
+      },
+      {
+        "title": "Remediation",
+        "summary": "Per non_compliance_flags[0].message: relocate the LV socket OUTSIDE the 500mm barrier radius around EVERY elv_bollard (6 barriers total in this installation) AND ensure ≥100mm cable separation between ELV and LV cabling per §715 + BS EN 61558-2-6. Typical landscape practice: route LV cabling along a separate trench/duct or via a fixed barrier (concrete edging) from the ELV bollard circuit."
+      },
+      {
+        "title": "D-5 + D-1 reviewer judgments — carried forward",
+        "summary": "D-5: external installation without ambient_temperature_c → default 30°C de-rating per BS 7671:2018 Appendix 4 Table 4B1 assumed; engineer-of-record to verify. D-1 (informational): elv_bollard_6 sourced via inferred_from_room_type (weakest provenance tier). Both flags carry forward from C.1 source — they do NOT change the compliant=false verdict (which is driven by the §715 ELV/LV separation critical violation, not the reviewer judgments)."
+      },
+      {
+        "title": "Honest disclosures",
+        "summary": "Synthetic upstream small-power intent. The FAIL HIGH outcome is the CENTRAL ENGINEERING VALUE — the cascade chain catches the §715 voltage-separation violation at the special-locations layer with proper _cascaded_from provenance. INV-07 PASS while INV-08 FAIL is the design-intended behaviour: constraint-derivation and fixture-audit are decoupled invariants per spec §7.2."
+      }
+    ]
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "_note": "Cascade retrofit of standalone uk-medical-or-group-2-with-it-system for the db-layout consumer. db-layout intent models Medical IT panel (5kVA isolating transformer) + ME terminal supplementary bonding per §710. All 10 INVs PASS.",
+  "_special_locations_cascade_source": {
+    "standalone_example_dir": "electrical/special-locations/examples/uk-medical-or-group-2-with-it-system",
+    "consumer_skill": "db-layout",
+    "consumer_invariant_signalled": "INV-16 sub-check 4 (medical IT distribution: panel + IMD + ME terminal modelled per §710 + BS EN 61557-8 + IEC 60364-7-710)",
+    "upstream_consumer_intent_location": "electrical/db-layout/examples/uk-medical-or-cascade-source/intent-out.json"
+  },
+  "jurisdiction": "GB",
+  "anchor_fixtures": [
+    {
+      "id": "patient_1",
+      "type": "medical_patient_position",
+      "position": {
+        "x_mm": 3000,
+        "y_mm": 2500,
+        "z_floor_mm": 1000
+      },
+      "shape_kind": "cylinder",
+      "radius_mm": 1500,
+      "medical_group": 2,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Operating table centroid extracted from architect Rev-E theatre layout dated 2026-05-22; central position with surgical luminaire pendant; bed top at 1000mm AFF per equipment schedule."
+    }
+  ],
+  "room": {
+    "room_polygon_mm": [
+      {
+        "x_mm": 0,
+        "y_mm": 0
+      },
+      {
+        "x_mm": 6000,
+        "y_mm": 0
+      },
+      {
+        "x_mm": 6000,
+        "y_mm": 5000
+      },
+      {
+        "x_mm": 0,
+        "y_mm": 5000
+      }
+    ],
+    "ceiling_height_mm": 3000,
+    "room_type": "medical_group_2_theatre",
+    "floor_finish": "vinyl",
+    "is_external": false,
+    "is_wet_room": false
+  },
+  "medical_it_system_override": [
+    {
+      "isolating_transformer_va": 5000,
+      "insulation_monitoring_device_present": true,
+      "imd_alarm_response_time_s_observed": 8,
+      "supplementary_bonding_verified": true,
+      "supplementary_bonding_resistance_ohm_observed": 0.15,
+      "safety_service_category": 1
+    }
+  ],
+  "existing_fixtures": [
+    {
+      "fixture_id": "med_socket_1",
+      "type": "medical_isolating_socket",
+      "position": {
+        "x_mm": 1000,
+        "y_mm": 1000,
+        "z_floor_mm": 1100
+      },
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": false,
+      "isolation_path": "medical_it_panel",
+      "_consumed_from": "db-layout intent (uk-medical-or-cascade-source); routed via medical_it_panel per §710"
+    },
+    {
+      "fixture_id": "surgical_lum_1",
+      "type": "surgical_luminaire",
+      "position": {
+        "x_mm": 3000,
+        "y_mm": 2500,
+        "z_floor_mm": 3000
+      },
+      "ip_rating": "IPX2",
+      "voltage_v": 230,
+      "is_rcd_protected": false,
+      "isolation_path": "medical_it_panel",
+      "_consumed_from": "db-layout intent (uk-medical-or-cascade-source); routed via medical_it_panel per §710"
+    }
+  ]
+}

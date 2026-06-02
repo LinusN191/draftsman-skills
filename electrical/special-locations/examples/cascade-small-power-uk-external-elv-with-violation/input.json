@@ -1,0 +1,214 @@
+{
+  "_note": "FAIL HIGH cascade retrofit of standalone uk-external-landscape-elv-lighting. Adds a 230V LV socket inside the elv_barrier_zone of elv_bollard_1. compliant=false; 1 critical non_compliance_flag per §715. INV-07 PASS; INV-08 + INV-10 FAIL. D-5 + D-1 reviewer flags carry forward.",
+  "_special_locations_cascade_source": {
+    "standalone_example_dir": "electrical/special-locations/examples/uk-external-landscape-elv-lighting",
+    "consumer_skill": "small-power",
+    "consumer_invariant_signalled": "INV-12 (zone exclusion — FAIL HIGH expected; §715 ELV/LV separation)",
+    "upstream_consumer_intent_location": "electrical/small-power/examples/uk-elv-violation-cascade-source/intent-out.json"
+  },
+  "jurisdiction": "GB",
+  "anchor_fixtures": [
+    {
+      "id": "elv_bollard_1",
+      "type": "elv_luminaire",
+      "position": {
+        "x_mm": 3000,
+        "y_mm": 3000,
+        "z_floor_mm": 1000
+      },
+      "shape_kind": "cylinder",
+      "diameter_mm": 100,
+      "elv_voltage_v": 12,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Path bollard 1 extracted from landscape architect Rev-A garden lighting layout dated 2026-05-26; 1000mm tall stainless cylindrical bollard, IP65 SELV LED luminaire, 12V feed."
+    },
+    {
+      "id": "elv_bollard_2",
+      "type": "elv_luminaire",
+      "position": {
+        "x_mm": 7000,
+        "y_mm": 3000,
+        "z_floor_mm": 1000
+      },
+      "shape_kind": "cylinder",
+      "diameter_mm": 100,
+      "elv_voltage_v": 12,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Path bollard 2 extracted from landscape architect Rev-A garden lighting layout dated 2026-05-26; 4m east of bollard_1 along the main east-west path; same SELV 12V feed."
+    },
+    {
+      "id": "elv_bollard_3",
+      "type": "elv_luminaire",
+      "position": {
+        "x_mm": 11000,
+        "y_mm": 3000,
+        "z_floor_mm": 1000
+      },
+      "shape_kind": "cylinder",
+      "diameter_mm": 100,
+      "elv_voltage_v": 12,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Path bollard 3 extracted from landscape architect Rev-A garden lighting layout dated 2026-05-26; 4m east of bollard_2 along the main east-west path; same SELV 12V feed."
+    },
+    {
+      "id": "elv_bollard_4",
+      "type": "elv_luminaire",
+      "position": {
+        "x_mm": 5000,
+        "y_mm": 10000,
+        "z_floor_mm": 1000
+      },
+      "shape_kind": "cylinder",
+      "diameter_mm": 100,
+      "elv_voltage_v": 12,
+      "_extraction_source": "engineer_manual_entry",
+      "_provenance_note": "Bollard 4 added by lighting engineer at first review (north terrace edge) to balance the photometric pattern; not on architect Rev-A; engineer-manual-entry provenance honest-disclosed for INV-09."
+    },
+    {
+      "id": "elv_bollard_5",
+      "type": "elv_luminaire",
+      "position": {
+        "x_mm": 10000,
+        "y_mm": 10000,
+        "z_floor_mm": 1000
+      },
+      "shape_kind": "cylinder",
+      "diameter_mm": 100,
+      "elv_voltage_v": 12,
+      "_extraction_source": "engineer_manual_entry",
+      "_provenance_note": "Bollard 5 added by lighting engineer at first review (north terrace edge) symmetric to bollard 4; engineer-manual-entry provenance honest-disclosed for INV-09."
+    },
+    {
+      "id": "elv_bollard_6",
+      "type": "elv_luminaire",
+      "position": {
+        "x_mm": 15000,
+        "y_mm": 7500,
+        "z_floor_mm": 1000
+      },
+      "shape_kind": "cylinder",
+      "diameter_mm": 100,
+      "elv_voltage_v": 12,
+      "_extraction_source": "inferred_from_room_type",
+      "_provenance_note": "Bollard 6 inferred at the east-feature-tree position based on landscape typology (illuminated feature tree); position assumed at the tree centroid from arboricultural survey; weakest provenance tier — engineer-of-record to verify final position."
+    }
+  ],
+  "room": {
+    "room_polygon_mm": [
+      {
+        "x_mm": 0,
+        "y_mm": 0
+      },
+      {
+        "x_mm": 20000,
+        "y_mm": 0
+      },
+      {
+        "x_mm": 20000,
+        "y_mm": 15000
+      },
+      {
+        "x_mm": 0,
+        "y_mm": 15000
+      }
+    ],
+    "ceiling_height_mm": 3000,
+    "room_type": "external_landscape",
+    "floor_finish": "soft_landscape",
+    "is_external": true,
+    "is_wet_room": false
+  },
+  "existing_fixtures": [
+    {
+      "fixture_id": "elv_bollard_1",
+      "type": "elv_luminaire",
+      "position": {
+        "x_mm": 3000,
+        "y_mm": 3000,
+        "z_floor_mm": 1000
+      },
+      "ip_rating": "IPX5",
+      "voltage_v": 12,
+      "is_rcd_protected": false,
+      "_consumed_from": "small-power intent (uk-elv-violation-cascade-source); compliant ELV bollard luminaire"
+    },
+    {
+      "fixture_id": "elv_bollard_2",
+      "type": "elv_luminaire",
+      "position": {
+        "x_mm": 7000,
+        "y_mm": 3000,
+        "z_floor_mm": 1000
+      },
+      "ip_rating": "IPX5",
+      "voltage_v": 12,
+      "is_rcd_protected": false,
+      "_consumed_from": "small-power intent (uk-elv-violation-cascade-source); compliant ELV bollard luminaire"
+    },
+    {
+      "fixture_id": "elv_bollard_3",
+      "type": "elv_luminaire",
+      "position": {
+        "x_mm": 11000,
+        "y_mm": 3000,
+        "z_floor_mm": 1000
+      },
+      "ip_rating": "IPX5",
+      "voltage_v": 12,
+      "is_rcd_protected": false,
+      "_consumed_from": "small-power intent (uk-elv-violation-cascade-source); compliant ELV bollard luminaire"
+    },
+    {
+      "fixture_id": "elv_bollard_4",
+      "type": "elv_luminaire",
+      "position": {
+        "x_mm": 5000,
+        "y_mm": 10000,
+        "z_floor_mm": 1000
+      },
+      "ip_rating": "IPX5",
+      "voltage_v": 12,
+      "is_rcd_protected": false,
+      "_consumed_from": "small-power intent (uk-elv-violation-cascade-source); compliant ELV bollard luminaire"
+    },
+    {
+      "fixture_id": "elv_bollard_5",
+      "type": "elv_luminaire",
+      "position": {
+        "x_mm": 10000,
+        "y_mm": 10000,
+        "z_floor_mm": 1000
+      },
+      "ip_rating": "IPX5",
+      "voltage_v": 12,
+      "is_rcd_protected": false,
+      "_consumed_from": "small-power intent (uk-elv-violation-cascade-source); compliant ELV bollard luminaire"
+    },
+    {
+      "fixture_id": "elv_bollard_6",
+      "type": "elv_luminaire",
+      "position": {
+        "x_mm": 15000,
+        "y_mm": 7500,
+        "z_floor_mm": 1000
+      },
+      "ip_rating": "IPX5",
+      "voltage_v": 12,
+      "is_rcd_protected": false,
+      "_consumed_from": "small-power intent (uk-elv-violation-cascade-source); compliant ELV bollard luminaire"
+    },
+    {
+      "fixture_id": "lv_socket_violation_1",
+      "type": "socket_230v",
+      "position": {
+        "x_mm": 3200,
+        "y_mm": 3000,
+        "z_floor_mm": 800
+      },
+      "ip_rating": "IPX5",
+      "voltage_v": 230,
+      "is_rcd_protected": true,
+      "_consumed_from": "small-power intent (uk-elv-violation-cascade-source); VIOLATING LV socket — inside elv_bollard_1 barrier zone per failure-mode demo"
+    }
+  ]
+}

@@ -1,0 +1,347 @@
+{
+  "drawing_type": "special_locations_zoning",
+  "version": "1.0.0",
+  "mode": "full_analysis",
+  "jurisdiction": "GB",
+  "room": {
+    "room_id": "uk-pool-hall-cascade-lighting",
+    "room_type": "swimming_pool_hall",
+    "length_mm": 12000,
+    "width_mm": 6000,
+    "area_m2": 72,
+    "ceiling_height_mm": 4500,
+    "is_wet_room": false
+  },
+  "anchor_fixtures": [
+    {
+      "anchor_id": "pool_main",
+      "fixture_type": "pool_basin",
+      "position_xyz": {
+        "x_mm": 1000,
+        "y_mm": 500,
+        "z_mm": 0
+      },
+      "dimensions_mm": {
+        "length_mm": 10000,
+        "width_mm": 5000
+      },
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Pool basin extracted from architect Rev-D plan dated 2026-05-20; rectangular 10x5m pool; basin floor 1800mm below pool deck level; water surface at 200mm above pool deck per architect's hydraulic schedule."
+    }
+  ],
+  "zones": [
+    {
+      "zone_id": "zone_pool_main_z0",
+      "zone_type": "pool_zone_0",
+      "source_anchor_id": "pool_main",
+      "derivation_clause": "BS 7671:2018 §702",
+      "boundary_plan_polygon_mm": [
+        [
+          1000,
+          500
+        ],
+        [
+          11000,
+          500
+        ],
+        [
+          11000,
+          5500
+        ],
+        [
+          1000,
+          5500
+        ]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 200,
+      "ip_rating_min": "IPx8",
+      "max_voltage_v": 12,
+      "rcd_required_ma": 30,
+      "isolation_required": true,
+      "allowed_equipment_classes": [
+        "class_3_SELV"
+      ],
+      "prohibited_fixture_types": [
+        "socket_230v",
+        "switch_230v",
+        "luminaire_non_ip_rated",
+        "luminaire_non_submersible"
+      ],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §702",
+      "_derivation_note": "Zone 0 = pool basin interior (water volume) per §702 zone-table. SELV-only (≤12V) per §702. IPx8 (submersible) required for underwater luminaires. Polygon = pool basin footprint (1000,500)-(11000,5500). Height 0 to water surface (200mm above pool deck = floor reference 0)."
+    },
+    {
+      "zone_id": "zone_pool_main_z1",
+      "zone_type": "pool_zone_1",
+      "source_anchor_id": "pool_main",
+      "derivation_clause": "BS 7671:2018 §702",
+      "boundary_plan_polygon_mm": [
+        [
+          -1000,
+          -1500
+        ],
+        [
+          13000,
+          -1500
+        ],
+        [
+          13000,
+          7500
+        ],
+        [
+          -1000,
+          7500
+        ]
+      ],
+      "height_min_mm": 200,
+      "height_max_mm": 2500,
+      "ip_rating_min": "IPx5",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": [
+        "class_1",
+        "class_2",
+        "class_3_SELV"
+      ],
+      "prohibited_fixture_types": [
+        "socket_230v",
+        "switch_230v",
+        "luminaire_non_ip_rated"
+      ],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §702",
+      "_derivation_note": "Zone 1 = pool basin polygon extended 2m horizontally on all sides per §702 zone-table; vertically from water surface (200mm) to 2.5m AFF. Polygon shown unclipped — runtime intersects with room polygon. IPx5 minimum (splash + jets typical in pool hall)."
+    },
+    {
+      "zone_id": "zone_pool_main_z2",
+      "zone_type": "pool_zone_2",
+      "source_anchor_id": "pool_main",
+      "derivation_clause": "BS 7671:2018 §702",
+      "boundary_plan_polygon_mm": [
+        [
+          -2500,
+          -3000
+        ],
+        [
+          14500,
+          -3000
+        ],
+        [
+          14500,
+          9000
+        ],
+        [
+          -2500,
+          9000
+        ]
+      ],
+      "height_min_mm": 200,
+      "height_max_mm": 2500,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": [
+        "class_1",
+        "class_2",
+        "class_3_SELV"
+      ],
+      "prohibited_fixture_types": [
+        "socket_230v"
+      ],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §702 + §702.55.4 (Zone 2 extension into changing rooms — barrier check)",
+      "_derivation_note": "Zone 2 = further 1.5m horizontal extension of Zone 1 (total 3.5m from pool edge) per §702 zone-table. Vertically from water surface (200mm) to 2.5m AFF. Polygon shown unclipped — south edge at y=-3000 enters the adjacent changing-room polygon (located at y=-3000 to 0). Within 200mm threshold triggers reviewer D-2 (§702.55.4 changing-room barrier check)."
+    }
+  ],
+  "electrical_constraints": [
+    {
+      "constraint_type": "pool_main_equipotential_bonding",
+      "applies_to_room_polygon": true,
+      "applies_to_zone_ids": [
+        "zone_pool_main_z0",
+        "zone_pool_main_z1",
+        "zone_pool_main_z2"
+      ],
+      "_clause_citation": "BS 7671:2018 §702.415.1",
+      "_derivation_note": "Main equipotential bonding required for all extraneous conductive parts within the pool hall per §702.415.1. Conductor CSA ≥10mm² (the §702 minimum). Bonding extends to ladder rails, pipe fittings, pool surrounds, and any other extraneous metalwork.",
+      "extraneous_parts_listed": [
+        "pool ladder rails",
+        "pool pipe fittings",
+        "pool surrounds",
+        "metallic balustrade",
+        "deck drain grilles"
+      ],
+      "conductor_csa_min_mm2": 10
+    }
+  ],
+  "existing_fixtures_audit": [
+    {
+      "fixture_id": "lum_1",
+      "fixture_type": "luminaire",
+      "position_xyz": {
+        "x_mm": 3000,
+        "y_mm": 1500,
+        "z_mm": 4500
+      },
+      "derived_zone_id": null,
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "lum_2",
+      "fixture_type": "luminaire",
+      "position_xyz": {
+        "x_mm": 3000,
+        "y_mm": 4500,
+        "z_mm": 4500
+      },
+      "derived_zone_id": null,
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "lum_3",
+      "fixture_type": "luminaire",
+      "position_xyz": {
+        "x_mm": 9000,
+        "y_mm": 1500,
+        "z_mm": 4500
+      },
+      "derived_zone_id": null,
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "lum_4",
+      "fixture_type": "luminaire",
+      "position_xyz": {
+        "x_mm": 9000,
+        "y_mm": 4500,
+        "z_mm": 4500
+      },
+      "derived_zone_id": null,
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    }
+  ],
+  "calculation_summary": {
+    "compliant": true,
+    "zone_count": 3,
+    "constraint_count": 1,
+    "violation_count_critical": 0,
+    "violation_count_high": 0,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Cascade source: standalone C.1 example uk-pool-hall-with-changing-room-adjacency. Synthetic upstream lighting-layout intent supplies 4 IPx5 ceiling luminaires consumed for cross-check.",
+      "Water surface at 200mm above pool deck per architect's hydraulic schedule; runtime intersects unclipped zone polygons with the room polygon for plan rendering.",
+      "Extraneous parts list expanded beyond the architectural drawing — engineer-of-record to confirm against pool-installer's bonding schedule.",
+      "Zone 2 extension uses the §702 zone-table 1.5m-beyond-Zone-1 figure (total 3.5m from pool edge); §702.55.4 changing-room barrier rule check requires engineer confirmation."
+    ],
+    "_zone_derivation_engine": "auto_from_anchors_v1.0",
+    "_engineering_judgments": [
+      "REVIEWER D-2: pool_zone_2 south boundary at y=-3000 enters the adjacent 4x3m changing room (located at y=-3000 to 0, x=4000 to 8000 per architectural plan note). The pool_zone_2 boundary extends INTO the changing-room polygon and overlaps it. Per BS 7671:2018 §702.55.4, Zone 2 extension into a changing room is permitted ONLY where a fixed barrier of height ≥2.5m AFF separates the changing room from the pool zone. Engineer-of-record must confirm the presence and compliance of a §702.55.4 fixed barrier. If absent, the changing-room electrical installation inherits Zone 2 IPx4 minimum and the §702.415.1 main equipotential bonding obligation."
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "1 anchor (pool_main) produces 3 zones (z0+z1+z2). No internal overlaps between pool_zone_0/1/2 declared (concentric zones, treated as nested rings — derivation engine emits separate entries per zone). overlapping_with_zone_ids[] empty for each."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "existing_fixtures_audit[] has 4 entries (consumed from upstream lighting-layout intent: 4 IPx5 ceiling luminaires), all compliance_status=compliant. non_compliance_flags[] is empty. One-to-one correspondence holds vacuously (zero violations on both sides)."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No medical_envelope_group_2 zone. §710 medical IT system N/A."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "room_type=swimming_pool_hall, not bathroom/shower_room/sauna. §701.411.3.3 + §703.411.3.3 RCD blanket rule N/A by this room type — INV-04 covers bath/shower/sauna only per spec §7.2; pool RCD obligation rides on §702 + INV-05 main bonding instead."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "room_type=swimming_pool_hall; pool_main_equipotential_bonding constraint present with extraneous_parts_listed[] = 5 items, conductor_csa_min_mm2 = 10 per BS 7671:2018 §702.415.1 (the verified main-bonding clause; the alternate clause number for the same rule is on the spec §3.2 banned-list)."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No bath_basin anchor. §701.512.2 whirlpool pump constraint N/A."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No elv_lighting_circuit_anchor. §715 elv_separation N/A."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "high",
+      "evidence": "4 existing ceiling luminaires consumed from upstream lighting-layout intent + audited against §702 derived zones. Sub-rule (a) type_prohibited: all 4 are luminaire (permitted in pool_zone_1/2 when IPx5+). Sub-rule (b) ip_below_min: all IPx5 ≥ pool_zone_1 IPx5 minimum per §702 zone-table. Sub-rule (c) switch_distance_too_close: N/A — luminaires not sockets. Sub-rule (d) voltage_above_max: 230V ≤ pool_zone_1 max_voltage 230V. All 16 sub-rule evaluations (4 fixtures × 4 sub-rules) PASS. Vertically each fixture sits at z=4500mm ABOVE pool_zone_1 height_max 2500mm — ceiling-mounted outside §702 zone vertical extent — so derived_zone_id=null."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "pool_main _extraction_source=architectural_drawing_extraction; _provenance_note 199 chars (≥40)."
+    },
+    {
+      "id": "INV-10",
+      "passes": true,
+      "severity": "high",
+      "evidence": "compliant=true ∧ violation_count_critical=0 ∧ non_compliance_flags=[] ∧ no silent zone overlaps. Self-consistency holds (D-2 reviewer judgment surfaced separately in _engineering_judgments[], not as a silent violation)."
+    }
+  ],
+  "rationale": {
+    "chat_summary": "Cascade retrofit of C.1 example #4 (uk-pool-hall-with-changing-room-adjacency). Synthetic upstream lighting-layout intent supplies 4 IPx5 ceiling luminaires; all compliant against §702 derived zones (ceiling-mounted above pool_zone_1 height_max). Demonstrates lighting-layout INV-12 PASS hand-off. D-2 changing-room boundary judgment carried forward.",
+    "sections": [
+      {
+        "title": "Cascade context",
+        "summary": "Cascade retrofit of C.1 standalone uk-pool-hall-with-changing-room-adjacency. Synthetic upstream lighting-layout intent supplies 4 IPx5 ceiling luminaires (at z=4500mm) for cross-check against §702 pool zones. The pool zone derivation, constraints, and D-2 changing-room boundary judgment are identical to the C.1 source. The cascade hand-off contract: existing_fixtures_audit[] mirrors the consumed luminaire catalogue and the special-locations intent payload propagates non_compliance_flags=[] downstream so lighting-layout INV-12 (cross-check) PASSes."
+      },
+      {
+        "title": "Standards applied",
+        "summary": "BS 7671:2018+A2:2022 §702 governs swimming pool zoning. §702.415.1 mandates pool main equipotential bonding ≥10mm² to all extraneous-conductive-parts. §702.55.4 governs Zone 2 extension into adjacent changing rooms — requires fixed barrier ≥2.5m AFF for separation."
+      },
+      {
+        "title": "INV-08 sub-rule walk-through",
+        "summary": "Sub-rule (a) type_prohibited: all 4 luminaires permitted in pool_zone_1/2 when IPx5+. Sub-rule (b) ip_below_min: IPx5 = IPx5 minimum (pool_zone_1 splash-resistant). Sub-rule (c) switch_distance_too_close: N/A (not sockets). Sub-rule (d) voltage_above_max: 230V ≤ 230V. Vertically all 4 sit at z=4500mm > pool_zone_1 height_max 2500mm — ceiling-mounted, technically outside §702 zone vertical envelope; derived_zone_id=null. All 16 sub-rule evaluations PASS."
+      },
+      {
+        "title": "Consumer-side hand-off",
+        "summary": "When lighting-layout v1.6 consumes this special-locations intent, INV-12 iterates over each consumed_summary luminaire and verifies it does NOT violate any derived §702 zone. All 4 fixtures audit as compliant; lighting-layout INV-12 PASSes. The D-2 reviewer flag for the changing-room boundary is propagated via calculation_summary._engineering_judgments[] — downstream consumers should surface this to the engineer-of-record but it does NOT downgrade the cascade compliant=true verdict."
+      },
+      {
+        "title": "Honest disclosures",
+        "summary": "Synthetic upstream intent — lighting-layout v1.6 hand-off not yet shipped. D-2 boundary judgment carried forward from C.1 source: pool_zone_2 polygon extends into the adjacent 4x3m changing room at y<0; engineer-of-record must verify §702.55.4 fixed barrier presence. The D-2 flag is informational on the lighting cascade because no luminaire is placed in the boundary-suspect region."
+      }
+    ]
+  }
+}

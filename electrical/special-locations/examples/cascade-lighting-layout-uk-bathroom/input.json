@@ -1,0 +1,109 @@
+{
+  "_note": "Cascade retrofit of standalone uk-bathroom-standard-bath-and-shower. lighting-layout intent supplies 3 existing fixtures (2 IPx4 luminaires + 1 shaver socket) consumed by special-locations for cross-checking against derived §701 zones. All 10 INVs PASS. Demonstrates lighting-layout INV-12 PASS on hand-off — every consumed luminaire is recorded in existing_fixtures_audit[] with compliance_status=compliant. This is the post-D.2 retrofit version of standalone C.1 Example 1.",
+  "_special_locations_cascade_source": {
+    "standalone_example_dir": "electrical/special-locations/examples/uk-bathroom-standard-bath-and-shower",
+    "consumer_skill": "lighting-layout",
+    "consumer_invariant_signalled": "INV-12 (cross-check special-locations zoning against luminaire positions)",
+    "upstream_consumer_intent_location": "electrical/lighting-layout/examples/uk-bathroom-cascade-source/intent-out.json"
+  },
+  "jurisdiction": "GB",
+  "anchor_fixtures": [
+    {
+      "id": "bath_1",
+      "type": "bath_basin",
+      "position": {
+        "x_mm": 500,
+        "y_mm": 0,
+        "z_floor_mm": 0
+      },
+      "shape_kind": "rectangular",
+      "dimensions": {
+        "length_mm": 1700,
+        "width_mm": 700,
+        "height_mm": 550
+      },
+      "bath_kind": "standard",
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Bath position extracted from architect Rev-C plan dated 2026-05-15; standard 1700x700 acrylic bath sited along the long north wall per typical UK domestic en-suite layout. Same bath geometry as C.1 standalone source."
+    },
+    {
+      "id": "shower_1",
+      "type": "shower_position",
+      "position": {
+        "x_mm": 1050,
+        "y_mm": 350,
+        "z_floor_mm": 0
+      },
+      "shape_kind": "rectangular",
+      "shower_head_height_mm": 2100,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Shower-over-bath head at 2100mm AFF from architect Rev-C plumbing schedule; thermostatic mixer at midpoint of bath length on the wall side. Same shower geometry as C.1 standalone source."
+    }
+  ],
+  "room": {
+    "room_polygon_mm": [
+      {
+        "x_mm": 0,
+        "y_mm": 0
+      },
+      {
+        "x_mm": 2700,
+        "y_mm": 0
+      },
+      {
+        "x_mm": 2700,
+        "y_mm": 2100
+      },
+      {
+        "x_mm": 0,
+        "y_mm": 2100
+      }
+    ],
+    "ceiling_height_mm": 2400,
+    "room_type": "bathroom",
+    "floor_finish": "tiles",
+    "is_external": false,
+    "is_wet_room": false
+  },
+  "existing_fixtures": [
+    {
+      "fixture_id": "lum_1",
+      "type": "luminaire",
+      "position": {
+        "x_mm": 1350,
+        "y_mm": 1400,
+        "z_floor_mm": 2400
+      },
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": true,
+      "_consumed_from": "lighting-layout intent (uk-bathroom-cascade-source)"
+    },
+    {
+      "fixture_id": "lum_2",
+      "type": "luminaire",
+      "position": {
+        "x_mm": 1050,
+        "y_mm": 350,
+        "z_floor_mm": 2400
+      },
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": true,
+      "_consumed_from": "lighting-layout intent (uk-bathroom-cascade-source)"
+    },
+    {
+      "fixture_id": "shaver_1",
+      "type": "shaver_socket",
+      "position": {
+        "x_mm": 2400,
+        "y_mm": 1800,
+        "z_floor_mm": 1400
+      },
+      "ip_rating": "IPX0",
+      "voltage_v": 230,
+      "is_rcd_protected": true,
+      "_consumed_from": "lighting-layout intent (uk-bathroom-cascade-source); shaver_socket type explicitly recorded for §701 zone-table BS EN 61558-2-5 derogation handling"
+    }
+  ]
+}

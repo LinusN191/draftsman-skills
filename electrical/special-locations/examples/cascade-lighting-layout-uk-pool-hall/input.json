@@ -1,0 +1,108 @@
+{
+  "_note": "Cascade retrofit of standalone uk-pool-hall-with-changing-room-adjacency. lighting-layout intent supplies 4 IPx5 ceiling luminaires consumed by special-locations for cross-checking against §702 derived zones. All 10 INVs PASS. D-2 changing-room boundary judgment carried forward.",
+  "_special_locations_cascade_source": {
+    "standalone_example_dir": "electrical/special-locations/examples/uk-pool-hall-with-changing-room-adjacency",
+    "consumer_skill": "lighting-layout",
+    "consumer_invariant_signalled": "INV-12 (cross-check special-locations zoning against luminaire positions)",
+    "upstream_consumer_intent_location": "electrical/lighting-layout/examples/uk-pool-hall-cascade-source/intent-out.json"
+  },
+  "jurisdiction": "GB",
+  "anchor_fixtures": [
+    {
+      "id": "pool_main",
+      "type": "pool_basin",
+      "position": {
+        "x_mm": 1000,
+        "y_mm": 500,
+        "z_floor_mm": 0
+      },
+      "shape_kind": "rectangular",
+      "dimensions": {
+        "length_mm": 10000,
+        "width_mm": 5000,
+        "height_mm": 1800
+      },
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Pool basin extracted from architect Rev-D plan dated 2026-05-20; rectangular 10x5m pool; basin floor 1800mm below pool deck level; water surface at 200mm above pool deck per architect's hydraulic schedule."
+    }
+  ],
+  "room": {
+    "room_polygon_mm": [
+      {
+        "x_mm": 0,
+        "y_mm": 0
+      },
+      {
+        "x_mm": 12000,
+        "y_mm": 0
+      },
+      {
+        "x_mm": 12000,
+        "y_mm": 6000
+      },
+      {
+        "x_mm": 0,
+        "y_mm": 6000
+      }
+    ],
+    "ceiling_height_mm": 4500,
+    "room_type": "swimming_pool_hall",
+    "floor_finish": "tiles",
+    "is_external": false,
+    "is_wet_room": false
+  },
+  "existing_fixtures": [
+    {
+      "fixture_id": "lum_1",
+      "type": "luminaire",
+      "position": {
+        "x_mm": 3000,
+        "y_mm": 1500,
+        "z_floor_mm": 4500
+      },
+      "ip_rating": "IPX5",
+      "voltage_v": 230,
+      "is_rcd_protected": true,
+      "_consumed_from": "lighting-layout intent (uk-pool-hall-cascade-source)"
+    },
+    {
+      "fixture_id": "lum_2",
+      "type": "luminaire",
+      "position": {
+        "x_mm": 3000,
+        "y_mm": 4500,
+        "z_floor_mm": 4500
+      },
+      "ip_rating": "IPX5",
+      "voltage_v": 230,
+      "is_rcd_protected": true,
+      "_consumed_from": "lighting-layout intent (uk-pool-hall-cascade-source)"
+    },
+    {
+      "fixture_id": "lum_3",
+      "type": "luminaire",
+      "position": {
+        "x_mm": 9000,
+        "y_mm": 1500,
+        "z_floor_mm": 4500
+      },
+      "ip_rating": "IPX5",
+      "voltage_v": 230,
+      "is_rcd_protected": true,
+      "_consumed_from": "lighting-layout intent (uk-pool-hall-cascade-source)"
+    },
+    {
+      "fixture_id": "lum_4",
+      "type": "luminaire",
+      "position": {
+        "x_mm": 9000,
+        "y_mm": 4500,
+        "z_floor_mm": 4500
+      },
+      "ip_rating": "IPX5",
+      "voltage_v": 230,
+      "is_rcd_protected": true,
+      "_consumed_from": "lighting-layout intent (uk-pool-hall-cascade-source)"
+    }
+  ]
+}

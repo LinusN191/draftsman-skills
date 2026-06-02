@@ -1,0 +1,462 @@
+{
+  "drawing_type": "special_locations_zoning",
+  "version": "1.0.0",
+  "mode": "full_analysis",
+  "jurisdiction": "GB",
+  "room": {
+    "room_id": "uk-bathroom-cascade-violation",
+    "room_type": "bathroom",
+    "length_mm": 2700,
+    "width_mm": 2100,
+    "area_m2": 5.67,
+    "ceiling_height_mm": 2400,
+    "is_wet_room": false
+  },
+  "anchor_fixtures": [
+    {
+      "anchor_id": "bath_1",
+      "fixture_type": "bath_tray",
+      "position_xyz": {
+        "x_mm": 500,
+        "y_mm": 0,
+        "z_mm": 0
+      },
+      "dimensions_mm": {
+        "length_mm": 1700,
+        "width_mm": 700
+      },
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Bath position extracted from architect Rev-C plan dated 2026-05-15; standard 1700x700 acrylic bath sited along the long north wall per typical UK domestic en-suite layout."
+    },
+    {
+      "anchor_id": "shower_1",
+      "fixture_type": "shower_head",
+      "position_xyz": {
+        "x_mm": 1050,
+        "y_mm": 350,
+        "z_mm": 2100
+      },
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Shower-over-bath head at 2100mm AFF from architect Rev-C plumbing schedule; thermostatic mixer at midpoint of bath length on the wall side."
+    }
+  ],
+  "zones": [
+    {
+      "zone_id": "zone_bath_1_z0",
+      "zone_type": "bath_zone_0",
+      "source_anchor_id": "bath_1",
+      "derivation_clause": "BS 7671:2018 §701",
+      "boundary_plan_polygon_mm": [
+        [
+          500,
+          0
+        ],
+        [
+          2200,
+          0
+        ],
+        [
+          2200,
+          700
+        ],
+        [
+          500,
+          700
+        ]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 550,
+      "ip_rating_min": "IPx7",
+      "max_voltage_v": 12,
+      "rcd_required_ma": 30,
+      "isolation_required": true,
+      "allowed_equipment_classes": [
+        "class_3_SELV"
+      ],
+      "prohibited_fixture_types": [
+        "socket_230v",
+        "switch_230v",
+        "luminaire_non_ip_rated",
+        "shaver_socket",
+        "fixed_heater_230v"
+      ],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [],
+      "_clause_citation": "BS 7671:2018 §701.414.4.5 (SELV ≤12 V in Zone 0) + §701.411.3.3 (30 mA RCD blanket)",
+      "_derivation_note": "Zone 0 is the interior volume of the bath basin per BS 7671:2018 §701 zone-table convention. Bounded by the bath rim (~550mm AFF). SELV-only equipment permitted; no socket/switch/non-SELV fixtures. Polygon = bath_tray rectangular footprint (500-2200 × 0-700 mm)."
+    },
+    {
+      "zone_id": "zone_bath_1_z1",
+      "zone_type": "bath_zone_1",
+      "source_anchor_id": "bath_1",
+      "derivation_clause": "BS 7671:2018 §701",
+      "boundary_plan_polygon_mm": [
+        [
+          500,
+          0
+        ],
+        [
+          2200,
+          0
+        ],
+        [
+          2200,
+          700
+        ],
+        [
+          500,
+          700
+        ]
+      ],
+      "height_min_mm": 550,
+      "height_max_mm": 2250,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": [
+        "class_1",
+        "class_2",
+        "class_3_SELV"
+      ],
+      "prohibited_fixture_types": [
+        "socket_230v",
+        "switch_230v",
+        "luminaire_non_ip_rated"
+      ],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [
+        "zone_shower_1_z1"
+      ],
+      "_clause_citation": "BS 7671:2018 §701 + §701.411.3.3 (30 mA RCD)",
+      "_derivation_note": "Zone 1 is the vertical projection above the bath polygon, from rim level (550mm) to 2250mm AFF per §701 zone-table convention. IPx4 minimum; 230V class_1/2 permitted with RCD. Overlaps shower_1 zone_1 polygon — overlap recorded for INV-01 catalogue integrity."
+    },
+    {
+      "zone_id": "zone_shower_1_z1",
+      "zone_type": "bath_zone_1",
+      "source_anchor_id": "shower_1",
+      "derivation_clause": "BS 7671:2018 §701",
+      "boundary_plan_polygon_mm": [
+        [
+          500,
+          0
+        ],
+        [
+          2200,
+          0
+        ],
+        [
+          2200,
+          700
+        ],
+        [
+          500,
+          700
+        ]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 2100,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": [
+        "class_1",
+        "class_2",
+        "class_3_SELV"
+      ],
+      "prohibited_fixture_types": [
+        "socket_230v",
+        "switch_230v",
+        "luminaire_non_ip_rated"
+      ],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": [
+        "zone_bath_1_z1"
+      ],
+      "_clause_citation": "BS 7671:2018 §701",
+      "_derivation_note": "Zone 1 from shower_1 head at 2100mm AFF: zone extends vertically from floor to shower-head height per §701 zone-table where shower head fixes Zone 1 ceiling. Coincides with bath polygon (shower-over-bath). Overlap with zone_bath_1_z1 declared per INV-01."
+    },
+    {
+      "zone_id": "zone_bath_1_z2",
+      "zone_type": "bath_zone_2",
+      "source_anchor_id": "bath_1",
+      "derivation_clause": "BS 7671:2018 §701",
+      "boundary_plan_polygon_mm": [
+        [
+          -100,
+          -600
+        ],
+        [
+          2800,
+          -600
+        ],
+        [
+          2800,
+          1300
+        ],
+        [
+          -100,
+          1300
+        ]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 2250,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": [
+        "class_1",
+        "class_2",
+        "class_3_SELV"
+      ],
+      "prohibited_fixture_types": [
+        "socket_230v"
+      ],
+      "switch_position_min_distance_mm": 3000,
+      "overlapping_with_zone_ids": [
+        "zone_shower_1_z2"
+      ],
+      "_clause_citation": "BS 7671:2018 §701 + §701.512.3 (socket ≥3 m from Zone 1)",
+      "_derivation_note": "Zone 2 = 600mm horizontal extension of Zone 1 polygon per §701 zone-table; unclipped polygon shown for derivation transparency. In practice clipped to room polygon (intersection with [0,0]-[2700,2100] is [0,0]-[2700,1300]). Socket outlets prohibited within 3m of Zone 1 per §701.512.3."
+    },
+    {
+      "zone_id": "zone_shower_1_z2",
+      "zone_type": "bath_zone_2",
+      "source_anchor_id": "shower_1",
+      "derivation_clause": "BS 7671:2018 §701",
+      "boundary_plan_polygon_mm": [
+        [
+          -100,
+          -600
+        ],
+        [
+          2800,
+          -600
+        ],
+        [
+          2800,
+          1300
+        ],
+        [
+          -100,
+          1300
+        ]
+      ],
+      "height_min_mm": 0,
+      "height_max_mm": 2100,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": [
+        "class_1",
+        "class_2",
+        "class_3_SELV"
+      ],
+      "prohibited_fixture_types": [
+        "socket_230v"
+      ],
+      "switch_position_min_distance_mm": 3000,
+      "overlapping_with_zone_ids": [
+        "zone_bath_1_z2"
+      ],
+      "_clause_citation": "BS 7671:2018 §701 + §701.512.3",
+      "_derivation_note": "Zone 2 from shower_1: 600mm horizontal extension of Zone 1; vertical ceiling tied to shower head (2100mm) per §701 zone-table. Polygon coincides with bath_1 zone_2 because shower-over-bath shares the wet area. Overlap with zone_bath_1_z2 declared per INV-01."
+    }
+  ],
+  "electrical_constraints": [
+    {
+      "constraint_type": "rcd_blanket_by_room",
+      "applies_to_room_polygon": true,
+      "applies_to_zone_ids": null,
+      "_clause_citation": "BS 7671:2018 §701.411.3.3",
+      "_derivation_note": "30 mA RCD protection required for all low-voltage circuits serving locations containing a bath or shower per BS 7671:2018 §701.411.3.3. Heater exemption does not apply here — bathroom, not sauna.",
+      "rcd_rating_ma": 30,
+      "applies_to_circuit_types": [
+        "lighting",
+        "sockets",
+        "shower_unit",
+        "fixed_equipment",
+        "shaver_socket"
+      ],
+      "sauna_heater_excluded": false
+    }
+  ],
+  "existing_fixtures_audit": [
+    {
+      "fixture_id": "lum_1",
+      "fixture_type": "luminaire",
+      "position_xyz": {
+        "x_mm": 1350,
+        "y_mm": 1400,
+        "z_mm": 2400
+      },
+      "derived_zone_id": null,
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "lum_2",
+      "fixture_type": "luminaire",
+      "position_xyz": {
+        "x_mm": 1050,
+        "y_mm": 350,
+        "z_mm": 2400
+      },
+      "derived_zone_id": null,
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "shaver_1",
+      "fixture_type": "shaver_socket",
+      "position_xyz": {
+        "x_mm": 2400,
+        "y_mm": 1800,
+        "z_mm": 1400
+      },
+      "derived_zone_id": null,
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    },
+    {
+      "fixture_id": "socket_violation_1",
+      "fixture_type": "socket_230v",
+      "position_xyz": {
+        "x_mm": 1200,
+        "y_mm": 350,
+        "z_mm": 1100
+      },
+      "derived_zone_id": "zone_bath_1_z1",
+      "compliance_status": "violation",
+      "violation_sub_rule": "type_prohibited",
+      "violation_clause": "BS 7671:2018 §701.512.3",
+      "severity": "critical"
+    }
+  ],
+  "calculation_summary": {
+    "compliant": false,
+    "zone_count": 5,
+    "constraint_count": 1,
+    "violation_count_critical": 1,
+    "violation_count_high": 0,
+    "non_compliance_flags": [
+      {
+        "flag": "socket_in_zone_1",
+        "severity": "critical",
+        "fixture_id": "socket_violation_1",
+        "zone_id": "zone_bath_1_z1",
+        "clause": "BS 7671:2018 §701.512.3",
+        "message": "230V socket_violation_1 placed at (1200, 350, 1100) sits INSIDE bath_zone_1 polygon (above bath, within Zone 1 vertical range 550-2250mm). socket_230v is in the prohibited_fixture_types list for bath_zone_1 per BS 7671:2018 §701.512.3. Remediation: relocate the socket OUTSIDE Zone 2 polygon (≥3m horizontally from Zone 1 boundary y=0 or y=700) AND re-type as shaver_socket if it must remain in the bathroom (BS EN 61558-2-5 derogation).",
+        "_cascaded_from": "special-locations"
+      }
+    ],
+    "assumptions": [
+      "Cascade source: standalone C.1 example uk-bathroom-standard-bath-and-shower. Synthetic upstream small-power intent ADDS a violating 230V socket at (1200, 350, 1100) inside bath_zone_1.",
+      "Violation: socket_230v inside bath_zone_1 plan polygon — prohibited per BS 7671:2018 §701.512.3 + §701 zone-table prohibited_fixture_types.",
+      "Bath rim height defaulted to 550mm AFF; engineer-of-record to verify.",
+      "Shower head at 2100mm AFF treated as Zone 1 ceiling per §701."
+    ],
+    "_zone_derivation_engine": "auto_from_anchors_v1.0",
+    "_engineering_judgments": []
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "2 anchor_fixtures (bath_1 + shower_1) produce 5 zones[] (bath_1 → z0+z1+z2; shower_1 → z1+z2). Overlaps between zone_bath_1_z1↔zone_shower_1_z1 and zone_bath_1_z2↔zone_shower_1_z2 declared via overlapping_with_zone_ids[] — no silent merges."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "existing_fixtures_audit[] has 4 entries: 3 compliant (lum_1, lum_2, shaver_1) + 1 violation (socket_violation_1). non_compliance_flags[] has 1 entry citing socket_violation_1 with severity=critical, clause=BS 7671:2018 §701.512.3. One-to-one correspondence: 1 violation entry ↔ 1 non_compliance_flag entry. PASS (the 1:1 catalogue integrity holds; the cascade compliant=false verdict is the cascade-core failure signal)."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No medical_envelope_group_2 zone present in IR. §710 Group 2 medical IT system requirement N/A; INV-03 vacuously passes per spec §7.2."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "room_type=bathroom; rcd_blanket_by_room constraint present with rcd_rating_ma=30 and sauna_heater_excluded=false per BS 7671:2018 §701.411.3.3. RCD blanket applies to all bathroom circuits."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "room_type=bathroom, not swimming_pool_hall. §702.415.1 main equipotential bonding requirement N/A; INV-05 vacuously passes."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "high",
+      "evidence": "bath_1 has bath_kind=standard, not whirlpool. §701.512.2 IPx5 whirlpool pump constraint N/A; INV-06 vacuously passes."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No elv_lighting_circuit_anchor in anchor_fixtures. §715 + BS EN 61558-2-6 elv_separation constraint N/A; INV-07 vacuously passes."
+    },
+    {
+      "id": "INV-08",
+      "passes": false,
+      "severity": "high",
+      "evidence": "4 existing fixtures audited against §701 derived zones. 3 compliant (cascade #9 set). FAILURE: socket_violation_1 at (1200, 350, 1100) — position INSIDE bath_zone_1 polygon (500,0)-(2200,700) AND z=1100 INSIDE Zone 1 height range 550-2250mm. Sub-rule (a) type_prohibited FIRES: socket_230v is in bath_zone_1.prohibited_fixture_types per §701 zone-table (sockets prohibited in Zone 1 entirely). violation_clause: BS 7671:2018 §701.512.3 (the §701 zone-table sockets-prohibited rule). Severity: critical. compliance_status: violation. 1 violation; INV-08 FAILS."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "Both anchor_fixtures use _extraction_source=architectural_drawing_extraction (strongest tier). bath_1 _provenance_note 173 chars; shower_1 _provenance_note 164 chars — both ≥40. Provenance disclosure complete."
+    },
+    {
+      "id": "INV-10",
+      "passes": false,
+      "severity": "high",
+      "evidence": "compliant=false because violation_count_critical=1 > 0. Self-consistency check: compliant ⟺ (violation_count_critical==0 ∧ violation_count_high==0 ∧ non_compliance_flags==[]). The compliant=false verdict correctly reflects the 1 critical violation + 1 non_compliance_flag. The cascade hand-off correctly propagates: downstream small-power INV-12 will FAIL HIGH on consumption."
+    }
+  ],
+  "rationale": {
+    "chat_summary": "FAIL HIGH cascade — violating 230V socket placed INSIDE bath_zone_1 polygon at (1200, 350, 1100). socket_230v is in bath_zone_1.prohibited_fixture_types per BS 7671:2018 §701 zone-table. compliant=false; 1 critical non_compliance_flag carrying _cascaded_from: special-locations. INV-08 + INV-10 FAIL. Demonstrates the central failure-mode demo for the small-power consumer hand-off.",
+    "sections": [
+      {
+        "title": "Cascade context — FAIL HIGH",
+        "summary": "Failure-mode cascade — the synthetic upstream small-power intent ADDS a violating 230V socket at (1200, 350, 1100) on top of the 3 compliant fixtures from cascade #9. The socket sits INSIDE bath_zone_1 plan polygon (500,0)-(2200,700) AND vertically inside Zone 1 height range 550-2250mm. socket_230v is in bath_zone_1.prohibited_fixture_types per BS 7671:2018 §701 zone-table — sockets are prohibited in Zone 1 entirely. This is the central failure-mode demonstration for the small-power INV-12 cascade hand-off."
+      },
+      {
+        "title": "Standards applied",
+        "summary": "BS 7671:2018+A2:2022 §701 zone-table prohibits socket_230v in bath_zone_1 (entire zone). §701.512.3 also requires sockets in the bathroom to sit ≥3m from Zone 1 boundary. Both rules are violated by socket_violation_1 — the position is INSIDE Zone 1, not just within 3m of it. The §701 zone-table includes BS EN 61558-2-5 shaver-socket derogation for Zone 2 only; this socket type (socket_230v) does NOT receive the derogation."
+      },
+      {
+        "title": "INV-08 sub-rule walk-through (the FAILURE)",
+        "summary": "Sub-rule (a) type_prohibited FIRES on socket_violation_1: socket_230v is in bath_zone_1.prohibited_fixture_types per §701 zone-table; the §701.512.3 sockets-prohibited rule applies. violation_sub_rule: type_prohibited. violation_clause: BS 7671:2018 §701.512.3. severity: critical. Sub-rules (b) ip_below_min, (c) switch_distance_too_close, (d) voltage_above_max ALSO fail conceptually (IPx0 socket in Zone 1 which requires IPx4; 3m rule trivially violated by being IN Zone 1; voltage 230V > Zone 0 12V if the socket extended into Zone 0). But §701 fixture-audit reports the FIRST-fail per fixture; type_prohibited is the primary fail."
+      },
+      {
+        "title": "Consumer-side hand-off — small-power INV-12 FAIL HIGH",
+        "summary": "When small-power v1.2 consumes this special-locations intent, INV-12 sub-check 1 (zone exclusion) FIRES on socket_violation_1: the consumed socket position is inside bath_zone_1, prohibited per §701 zone-table. small-power INV-12 FAILS HIGH, propagating a non_compliance_flag with severity=critical, clause=BS 7671:2018 §701.512.3, and _cascaded_from: special-locations preserved. small-power's output IR's compliant flag flips to false; its calculation_summary.violation_count_critical bumps to 1. The cascade chain integrity is preserved end-to-end."
+      },
+      {
+        "title": "Remediation",
+        "summary": "Per non_compliance_flags[0].message: relocate the socket OUTSIDE Zone 2 polygon (≥3m horizontally from Zone 1 boundary y=0 or y=700 — i.e. y ≥ 3700 OR y ≤ -3000; the latter outside room) AND/OR re-type as shaver_socket if it must remain in the bathroom (the BS EN 61558-2-5 derogation permits IPx0 shaver sockets in Zone 2). For a typical UK domestic bathroom 2700×2100mm, relocation outside Zone 2 is geometrically impossible (the 3m rule from Zone 1 boundary y=700 → y≥3700 > room max y=2100); shaver_socket retype + Zone 2 placement is the standard remediation."
+      },
+      {
+        "title": "Honest disclosures",
+        "summary": "Synthetic upstream small-power intent. The FAIL HIGH outcome is the CENTRAL ENGINEERING VALUE of this cascade — it demonstrates that the cascade chain catches the §701 zone-table violation at the special-locations layer (NOT at the downstream small-power layer). The non_compliance_flag._cascaded_from: special-locations marker tells consumer skills 'this is the authoritative side of the rule; don't try to override'. The compliant=false verdict propagates faithfully."
+      }
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "intent_version": "1.0.0",
+  "skill": "special-locations",
+  "consumed_lighting_layout_intent": "electrical/db-layout/examples/uk-medical-or-cascade-source/intent-out.json",
+  "special_locations_zoning": {
+    "zones": [
+      {
+        "zone_id": "zone_patient_1_envelope_g2",
+        "zone_type": "medical_envelope_group_2",
+        "source_anchor_id": "patient_1",
+        "derivation_clause": "BS 7671:2018 §710",
+        "boundary_plan_polygon_mm": [
+          [
+            4500,
+            2500
+          ],
+          [
+            4299,
+            3250
+          ],
+          [
+            3750,
+            3799
+          ],
+          [
+            3000,
+            4000
+          ],
+          [
+            2250,
+            3799
+          ],
+          [
+            1701,
+            3250
+          ],
+          [
+            1500,
+            2500
+          ],
+          [
+            1701,
+            1750
+          ],
+          [
+            2250,
+            1201
+          ],
+          [
+            3000,
+            1000
+          ],
+          [
+            3750,
+            1201
+          ],
+          [
+            4299,
+            1750
+          ]
+        ],
+        "height_min_mm": 0,
+        "height_max_mm": 2500,
+        "ip_rating_min": "IPx4",
+        "max_voltage_v": 230,
+        "rcd_required_ma": null,
+        "isolation_required": false,
+        "allowed_equipment_classes": [
+          "class_1",
+          "class_2",
+          "class_3_SELV"
+        ],
+        "prohibited_fixture_types": [
+          "socket_230v_non_medical",
+          "switch_230v_non_medical",
+          "tnc_circuit"
+        ],
+        "switch_position_min_distance_mm": null,
+        "overlapping_with_zone_ids": [],
+        "_clause_citation": "BS 7671:2018 §710 + HTM 06-01",
+        "_derivation_note": "Group 2 patient envelope per §710: 1.5m radius cylinder around the patient position, 12-sided regular polygon approximation centred at (3000,2500). Height_min=0, height_max=2500mm covers the surgical working volume. RCD-protection NOT applied inside the envelope — Group 2 mandates a medical IT (insulated) system instead per §710. Sockets and switches in the envelope MUST be medical-isolating-socket type connected to the IT system."
+      }
+    ],
+    "electrical_constraints": [
+      {
+        "constraint_type": "medical_it_system",
+        "applies_to_room_polygon": false,
+        "applies_to_zone_ids": [
+          "zone_patient_1_envelope_g2"
+        ],
+        "_clause_citation": "BS 7671:2018 §710 + BS EN 61557-8 (IMD 8 s alarm response) + HTM 06-01 (NHS precedence)",
+        "_derivation_note": "Medical IT system required for the Group 2 patient envelope per §710 (no Part 7 sub-clauses valid; §710 top-level only). IMD per BS EN 61557-8 with 8 s alarm response. Isolating transformer at 5 kVA — within the 3.15-8 kVA plausibility band per D-4 (no flag raised). Supplementary bonding ≤0.2 Ω per §710. HTM 06-01 NHS technical memorandum takes precedence in NHS sites and defines safety_service_category 1 (no-break).",
+        "isolating_transformer_va_min": 5000,
+        "insulation_monitoring_device_required": true,
+        "imd_alarm_response_time_s_max": 8,
+        "safety_service_category": 1,
+        "supplementary_bonding_required": true,
+        "supplementary_bonding_max_resistance_ohm": 0.2,
+        "hospital_precedence": "HTM 06-01",
+        "equipment_standard": "BS EN 60601 series",
+        "_verified_cross_refs": [
+          "BS EN 61557-8",
+          "HTM 06-01",
+          "BS EN 60601"
+        ]
+      },
+      {
+        "constraint_type": "supplementary_equipotential_bonding",
+        "applies_to_room_polygon": false,
+        "applies_to_zone_ids": [
+          "zone_patient_1_envelope_g2"
+        ],
+        "_clause_citation": "BS 7671:2018 §710 + §701.415.2",
+        "_derivation_note": "Supplementary equipotential bonding within the Group 2 patient environment per §710 + §701.415.2. Resistance ≤0.2 Ω (measured 0.15 Ω per input override). Bonding extends to operating table frame, anaesthesia machine ground, scrub sink, and any other metallic touchable surface in the envelope.",
+        "metallic_parts_listed": [
+          "operating table frame",
+          "anaesthesia machine ground",
+          "scrub sink",
+          "surgical pendant arm",
+          "patient monitor chassis"
+        ],
+        "bonding_conductor_csa_min_mm2": 4
+      }
+    ],
+    "compliant": true,
+    "zone_count": 1,
+    "constraint_count": 2,
+    "violation_count_critical": 0,
+    "violation_count_high": 0,
+    "non_compliance_flags": [],
+    "anchor_source_summary": {
+      "all_extracted": true,
+      "extraction_source_lowest": "architectural_drawing_extraction"
+    }
+  }
+}

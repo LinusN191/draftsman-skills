@@ -1,0 +1,109 @@
+{
+  "_note": "Cascade retrofit of standalone uk-bathroom-standard-bath-and-shower for the db-layout consumer. Demonstrates db-layout INV-16 sub-check 3 (rcd_blanket_by_room enforcement) PASS. All 10 INVs PASS.",
+  "_special_locations_cascade_source": {
+    "standalone_example_dir": "electrical/special-locations/examples/uk-bathroom-standard-bath-and-shower",
+    "consumer_skill": "db-layout",
+    "consumer_invariant_signalled": "INV-16 sub-check 3 (rcd_blanket_by_room enforcement — every bathroom-serving circuit upstream protective device is a 30mA RCD or RCBO)",
+    "upstream_consumer_intent_location": "electrical/db-layout/examples/uk-bathroom-cascade-source/intent-out.json"
+  },
+  "jurisdiction": "GB",
+  "anchor_fixtures": [
+    {
+      "id": "bath_1",
+      "type": "bath_basin",
+      "position": {
+        "x_mm": 500,
+        "y_mm": 0,
+        "z_floor_mm": 0
+      },
+      "shape_kind": "rectangular",
+      "dimensions": {
+        "length_mm": 1700,
+        "width_mm": 700,
+        "height_mm": 550
+      },
+      "bath_kind": "standard",
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Bath position extracted from architect Rev-C plan dated 2026-05-15; standard 1700x700 acrylic bath sited along the long north wall per typical UK domestic en-suite layout."
+    },
+    {
+      "id": "shower_1",
+      "type": "shower_position",
+      "position": {
+        "x_mm": 1050,
+        "y_mm": 350,
+        "z_floor_mm": 0
+      },
+      "shape_kind": "rectangular",
+      "shower_head_height_mm": 2100,
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Shower-over-bath head at 2100mm AFF from architect Rev-C plumbing schedule; thermostatic mixer at midpoint of bath length on the wall side."
+    }
+  ],
+  "room": {
+    "room_polygon_mm": [
+      {
+        "x_mm": 0,
+        "y_mm": 0
+      },
+      {
+        "x_mm": 2700,
+        "y_mm": 0
+      },
+      {
+        "x_mm": 2700,
+        "y_mm": 2100
+      },
+      {
+        "x_mm": 0,
+        "y_mm": 2100
+      }
+    ],
+    "ceiling_height_mm": 2400,
+    "room_type": "bathroom",
+    "floor_finish": "tiles",
+    "is_external": false,
+    "is_wet_room": false
+  },
+  "existing_fixtures": [
+    {
+      "fixture_id": "lum_1",
+      "type": "luminaire",
+      "position": {
+        "x_mm": 1350,
+        "y_mm": 1400,
+        "z_floor_mm": 2400
+      },
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": true,
+      "_consumed_from": "db-layout intent (uk-bathroom-cascade-source); circuit upstream protective device: RCBO_30mA"
+    },
+    {
+      "fixture_id": "lum_2",
+      "type": "luminaire",
+      "position": {
+        "x_mm": 1050,
+        "y_mm": 350,
+        "z_floor_mm": 2400
+      },
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": true,
+      "_consumed_from": "db-layout intent (uk-bathroom-cascade-source); circuit upstream protective device: RCBO_30mA"
+    },
+    {
+      "fixture_id": "shaver_1",
+      "type": "shaver_socket",
+      "position": {
+        "x_mm": 2400,
+        "y_mm": 1800,
+        "z_floor_mm": 1400
+      },
+      "ip_rating": "IPX0",
+      "voltage_v": 230,
+      "is_rcd_protected": true,
+      "_consumed_from": "db-layout intent (uk-bathroom-cascade-source); circuit upstream protective device: RCBO_30mA"
+    }
+  ]
+}
