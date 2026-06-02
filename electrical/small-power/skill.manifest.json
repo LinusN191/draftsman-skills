@@ -1,11 +1,12 @@
 {
   "skill": "small-power",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "discipline": "electrical",
   "subdiscipline": "small-power",
   "chat_type": "drawing",
   "description": "Socket outlet layouts for general-purpose power circuits per BS 7671:2018+A2:2022 / IEC 60364 / KS 1700:2018 / NEC 2023 Article 210. Produces circuit topology (ring/radial/dedicated_radial), per-room socket placement, RCD posture, and circuit-to-room cross-references as structured IR. Hybrid model: circuits[] (with topology + ocpd + cable + RCD) + rooms[] (with sockets[] cross-referencing circuit_ids). Leaf skill v1.0 — produces small-power intent for downstream db-layout consumption; multi-skill consumption (earthing + fault-level) deferred to v1.1+.",
-  "status": "beta",
+  "status": "production",
+  "_v2_breaking_change_note": "v2.0.0 is a major bump as SIGNALING (NOT breakage). All v2.0 IR additions are additive: new building_diversity top-level field is OPTIONAL; new circuits[].ring_endpoints / fcu_spurs / ev_charge_metadata are conditional on existing fields (topology=ring / load_type=ev_charge_*). All v1.x examples were retrofitted at A.1 fix-pass with engineering-judgment ring_endpoints defaults + honest disclosure (3 examples: uk-3bed-dwelling, uk-3bed-with-cable-sizing, uk-bathroom-shaver-and-zone2-sockets). v1.x examples still validate against v2.0 schema. The bump signals: within-skill-depth program for small-power is CLOSED; small-power is now architecturally complete and PRODUCTION status. Pre-merge check at A.5 confirmed zero consumers of small-power were pinned to ^1.x at the time of the bump.",
   "licence": "MIT",
   "inputs_path": "inputs.json",
   "outputs": [
@@ -54,7 +55,12 @@
     "shared/standards/drafting/ISO19650/cad-layers.json",
     "shared/standards/drafting/ISO5457/sheet-sizes.json",
     "shared/standards/drafting/ISO5455/scales.json",
-    "shared/standards/drafting/ISO7200/title-block-fields.json"
+    "shared/standards/drafting/ISO7200/title-block-fields.json",
+    "IET On-Site Guide 8th Edition Appendix A — Table A1 (building diversity + lift table per BLD-NN + DIV-NN rules)",
+    "IET On-Site Guide 8th Edition §8.4.4 (ring final + radial topology, including AMD 2 FCU spur update per TOP-NN rules)",
+    "IET Code of Practice for EV Charging Equipment Installation (4th Ed) (verified anchor for EV-NN rules + INV-18)",
+    "BS EN 61851-1 + BS EN 62196 (EV charging equipment + plug/socket Type 2 Mennekes / CCS Combo 2)",
+    "HTM 06-01 (NHS healthcare medical electrical — taken with §710 for medical IT cascade integration)"
   ],
   "ontology": [
     "shared/ontology/equipment/socket-types.json",

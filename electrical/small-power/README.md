@@ -2,6 +2,34 @@
 
 Socket outlet layouts for general-purpose power circuits. Produces structured IR with circuit topology, per-room socket placement, RCD posture, and circuit-to-room cross-references.
 
+## v2.0.0 highlights (Wave 2 first deliverable, 2026-06-02)
+
+D4 closes the within-skill-depth program for small-power. Promoted from
+beta to **production**. Bump 1.2.0 → 2.0.0 is bump-as-signaling, not
+bump-as-breakage (see manifest `_v2_breaking_change_note`).
+
+### What's new in v2.0
+- NEW top-level optional `building_diversity` IR field mirroring verified
+  diversity-factors.json office/industrial/healthcare profiles (BLD-01..05)
+- NEW 4 Part-7 worked examples: pool (§702.415.1) + medical Group 2 (§710 IT)
+  + EV charging (§722) + sauna (§703.411.3.3)
+- NEW 4 topology depth rules: TOP-09 ring continuity + TOP-10 floor-area
+  cross-check + TOP-11 OCPD-topology coordination + TOP-12 AMD 2 FCU spur
+  (existing files had more rules than plan expected; rules ended up as
+  TOP-09..12 not TOP-06..09 — same engineering content)
+- NEW EV-charge demand coordination: RCD Type A/B selection per
+  Reg 722.531.3.101 + no-diversity per IET CoP for EV (4th Ed) +
+  dedicated-circuit rule + BS EN 61851-1 + BS EN 62196
+- NEW INV-13..INV-19 (7 new INVs); catalogue now 19 total
+- NEW D-8 / D-9 / D-10 reviewer judgment checks
+- INV-19 verifies cable-sizing cascade integration with building_diversity
+
+### Verified citation discipline (per spec §2.3)
+All citations trace to verified standards files. Banned at the spec stage:
+§526.2 + §433.2 (not transcribed in verified BS 7671 file — IET OSG §8.4.4
+is the anchor) + OZEV CoP (correct name is IET CoP for EV Charging
+Equipment Installation) + 3rd Edition EV CoP (correct is 4th Ed).
+
 ## What this skill produces
 
 For a given parent DB + jurisdiction + room briefs, the skill emits:
