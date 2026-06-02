@@ -76,3 +76,18 @@ rules:
       through DIV-05 for the applicable jurisdiction.
     applies_to: circuits
     enforcement: hard_fail
+
+  - id: DIV-07
+    jurisdiction: [GB, KE]
+    standard_reference: "IET On-Site Guide 8th Edition Appendix A — Table A1 (lifts) + diversity-factors.json"
+    rule_text: >
+      Lift diversity factors (verified standards-file values):
+        - office_lift_single:        100%  (no diversity; single lift runs full duty)
+        - office_lift_two:            80%  (two-lift parallel; one always available)
+        - office_lift_three_or_more:  70%  (three-or-more parallel; group control)
+      Applied at the building-level for the office building_diversity profile.
+      Cited via IET OSG App A, NOT Reg 559 (banned misattribution caught in
+      D2.3 fix-pass — luminaires-in-shops, NOT lift diversity). The verified diversity-factors.json carries the office_lift_*
+      keys with these percentages.
+    applies_to: building_diversity
+    enforcement: info

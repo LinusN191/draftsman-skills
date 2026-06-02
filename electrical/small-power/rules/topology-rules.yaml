@@ -92,3 +92,67 @@ rules:
       IEC 60364. Declaring topology=ring for INT or EU jurisdictions is a hard fail.
     applies_to: circuits
     enforcement: hard_fail
+
+  - id: TOP-09
+    jurisdiction: [GB, KE]
+    standard_reference: "IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 (top-level)"
+    rule_text: >
+      Ring final circuit continuity: when circuits[].topology == 'ring',
+      both endpoints of the ring (endpoint_a_xy and endpoint_b_xy) MUST land
+      at the same MCB way (mcb_way_id). A ring that lands at two different
+      ways is structurally broken — the supply is then two radials sharing
+      conductors, NOT a ring final, and the Zs / cable thermal protection
+      assumptions for ring topology no longer apply.
+      INV-14 enforces. Note: BS 7671 sub-clause §526.2 is not transcribed in
+      the verified standards file; the anchor citation is IET OSG §8.4.4
+      (which IS verified and already used by TOP-01..TOP-05 above).
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: TOP-10
+    jurisdiction: [GB, KE, INT]
+    standard_reference: "IET On-Site Guide §8.4.4 (8th Edition)"
+    rule_text: >
+      Per-circuit floor-area cross-check: circuit.floor_area_m2 (the
+      engineer-declared floor area served) MUST equal Σ(rooms_covered[].
+      floor_area_m2) (the sum of rooms the circuit actually feeds, derived
+      from circuit.rooms_covered). Drift between the two suggests one of:
+        (a) the engineer declared an area without listing the rooms,
+        (b) the rooms_covered list is stale (room added/removed in iteration),
+        (c) a typo in either field.
+      INV-15 enforces. Tolerance: ±5% (rounding in m² conversions).
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: TOP-11
+    jurisdiction: [GB, KE]
+    standard_reference: "BS 7671:2018+A2:2022 §433.1.1 + IET On-Site Guide §8.4.4"
+    rule_text: >
+      OCPD-topology coordination: the chosen MCB rating MUST be coordinated
+      with the topology and conductor csa:
+        - topology=ring          → MCB ≤ 32 A
+        - topology=radial AND cable_csa_mm2=2.5 → MCB ≤ 20 A
+        - topology=radial AND cable_csa_mm2=4   → MCB ≤ 32 A
+        - topology=dedicated_radial → MCB sized by connected load per §433.1.1
+      A 32 A MCB on a 2.5 mm² radial would breach Iz before tripping under
+      sustained 20-32 A; the cable overheats. INV-16 enforces.
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: TOP-12
+    jurisdiction: [GB, KE]
+    standard_reference: "IET On-Site Guide §8.4.4 (8th Edition, AMD 2 update) + BS 7671:2018+A2:2022 §433 (top-level)"
+    rule_text: >
+      Fused connection unit (FCU) spur modelling: when circuits[].fcu_spurs[]
+      is populated, every entry MUST have fcu_rating_a ∈ {3, 5, 13} AND
+      downstream_loads_w ≤ (fcu_rating_a × 230 V) — the FCU is the
+      load's OCPD and must not be over-loaded. AMD 2 corrigenda clarified
+      the 13 A FCU + ring final rules — the FCU is the spur's protection,
+      not the ring MCB. INV-17 enforces (MEDIUM severity; an over-loaded
+      FCU is a design defect but not a structural compliance breach because
+      the FCU would still trip under fault — the breach is engineering
+      best-practice).
+      Note: BS 7671 sub-clause §433.2 is not transcribed in the verified
+      standards file; the anchor citation is IET OSG §8.4.4 AMD 2.
+    applies_to: circuits
+    enforcement: warning
