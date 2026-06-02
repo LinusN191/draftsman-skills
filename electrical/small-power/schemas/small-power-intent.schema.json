@@ -10,6 +10,11 @@
     "project_id":         { "type": "string" },
     "intent_version":     { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
     "parent_db_designation": { "type": "string" },
+    "building_diversity": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "v2.0 cascade payload addition. Permissive (additionalProperties: true) so consumers receive the full building-level diversity context. Semantic gating remains on the IR side."
+    },
     "consumed_intents": {
       "type": "object",
       "description": "Optional mirror of upstream cascade inputs. Carried through for downstream traceability.",

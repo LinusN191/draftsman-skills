@@ -308,6 +308,64 @@
             "items": {
               "type": "string"
             }
+          },
+          "ring_endpoints": {
+            "type": "object",
+            "description": "Required when circuits[].topology == 'ring'. Captures both endpoints + the MCB way for continuity verification (INV-14). Citation: IET OSG §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 top-level (sub-clause §526.2 not transcribed in verified file).",
+            "additionalProperties": false,
+            "required": ["endpoint_a_xy", "endpoint_b_xy", "mcb_way_id", "continuity_verified", "_citation"],
+            "properties": {
+              "endpoint_a_xy": {
+                "type": "object",
+                "required": ["x_mm", "y_mm"],
+                "properties": {"x_mm": {"type": "number"}, "y_mm": {"type": "number"}},
+                "additionalProperties": false
+              },
+              "endpoint_b_xy": {
+                "type": "object",
+                "required": ["x_mm", "y_mm"],
+                "properties": {"x_mm": {"type": "number"}, "y_mm": {"type": "number"}},
+                "additionalProperties": false
+              },
+              "mcb_way_id": {"type": "string", "minLength": 1},
+              "continuity_verified": {"type": "boolean"},
+              "_citation": {"type": "string"}
+            }
+          },
+          "fcu_spurs": {
+            "type": "array",
+            "description": "AMD 2 modelling for fused connection unit spurs on ring final circuits. Each entry is one FCU. Citation: IET OSG §8.4.4 (8th Edition, AMD 2 update) + BS 7671:2018+A2:2022 §433 top-level.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["location_xy", "fcu_rating_a", "downstream_loads_w", "_citation"],
+              "properties": {
+                "location_xy": {
+                  "type": "object",
+                  "required": ["x_mm", "y_mm"],
+                  "properties": {"x_mm": {"type": "number"}, "y_mm": {"type": "number"}},
+                  "additionalProperties": false
+                },
+                "fcu_rating_a": {"type": "integer", "enum": [3, 5, 13]},
+                "downstream_loads_w": {"type": "number", "minimum": 0},
+                "_citation": {"type": "string"}
+              }
+            }
+          },
+          "ev_charge_metadata": {
+            "type": "object",
+            "description": "Required when circuits[].load_type matches ev_charge_*. Captures Reg 722.531.3.101 RCD type selection + BS EN 61851-1 charging unit standard + Mode 3/4 + IET CoP for EV (4th Ed) dedicated-circuit rule.",
+            "additionalProperties": false,
+            "required": ["rcd_type", "charging_unit_dc_detection_a", "mode", "charging_unit_standard", "socket_standard", "dedicated_circuit", "_citation"],
+            "properties": {
+              "rcd_type": {"type": "string", "enum": ["type_a", "type_b"]},
+              "charging_unit_dc_detection_a": {"type": "number", "minimum": 0},
+              "mode": {"type": "integer", "enum": [3, 4]},
+              "charging_unit_standard": {"const": "BS EN 61851-1"},
+              "socket_standard": {"type": "string", "enum": ["BS EN 62196 Type 2 Mennekes", "BS EN 62196 CCS Combo 2"]},
+              "dedicated_circuit": {"const": true},
+              "_citation": {"type": "string"}
+            }
           }
         }
       }
@@ -545,7 +603,7 @@
           "evidence": {
             "type": "string",
             "minLength": 20,
-            "maxLength": 800
+            "maxLength": 1200
           }
         }
       }
@@ -554,6 +612,37 @@
       "type": "boolean",
       "default": false,
       "description": "True iff the IR generator consumed an injected '## Floor plan context' markdown block. False when the skill ran on engineer free-text only."
+    },
+    "building_diversity": {
+      "type": "object",
+      "description": "Building-level diversity per IET OSG App A — Table A1 (verified standards file). Applies AFTER per-circuit diversity (DIV-01..DIV-04). v2.0 limited to office/industrial/healthcare per verified diversity-factors.json; retail/residential/data-center deferred to v2.1.",
+      "additionalProperties": false,
+      "required": ["building_type", "floor_count", "design_density_w_per_m2", "future_expansion_pct", "applies_after", "applies_load_types", "building_diversified_demand_a", "_clause_citation", "_derivation_note"],
+      "properties": {
+        "building_type": {"type": "string", "enum": ["office", "industrial", "healthcare"]},
+        "floor_count": {"type": "integer", "minimum": 1},
+        "design_density_w_per_m2": {"type": "number", "minimum": 0},
+        "future_expansion_pct": {"type": "number", "minimum": 0, "maximum": 100},
+        "applies_after": {"const": "per_load_diversity"},
+        "applies_load_types": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "building_diversified_demand_a": {"type": "number", "minimum": 0},
+        "per_circuit_demand_inputs": {
+          "type": "array",
+          "description": "Closes INV-19 cascade integration: every circuit driving the building_diversified_demand_a must be listed here with its post-per-load-diversity current + the building factor applied.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["circuit_id", "post_per_load_diversity_a", "building_factor_applied"],
+            "properties": {
+              "circuit_id": {"type": "string"},
+              "post_per_load_diversity_a": {"type": "number", "minimum": 0},
+              "building_factor_applied": {"type": "number", "minimum": 0, "maximum": 1}
+            }
+          }
+        },
+        "_clause_citation": {"type": "string"},
+        "_derivation_note": {"type": "string", "minLength": 40, "maxLength": 800}
+      }
     },
     "consumed_intents": {
       "type": "object",
