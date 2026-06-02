@@ -50,7 +50,7 @@ D4 is the **within-skill-depth sprint** that closes the small-power depth roadma
 |---|---|---|---|
 | 1 | `building_diversity` IR field — office/industrial/healthcare profiles mirroring `diversity-factors.json` | IET OSG App A — Table A1 + IET Guidance Note 1 §4 | Brainstorm Q on richness, locked at "Mirror standards" |
 | 2 | 4 new Part-7 worked examples: pool (§702) + medical Group 2 (§710 IT) + EV (§722) + sauna (§703) | Part-7 verified citations | Brainstorm Q on Part-7 count, locked at "Hybrid + 4" |
-| 3 | Topology comprehensive: ring continuity (§526.2) + floor-area cross-check + OCPD-topology coordination + AMD 2 FCU spur modelling | BS 7671 §433 + §526 + IET OSG §8.4.4 + AMD 2 corrigenda | Brainstorm Q on topology depth, locked at "Comprehensive" |
+| 3 | Topology comprehensive: ring continuity (IET OSG §8.4.4 + §526 top-level) + floor-area cross-check + OCPD-topology coordination + AMD 2 FCU spur modelling | IET OSG §8.4.4 (8th Edition) + BS 7671 §433 top-level + §526 top-level + AMD 2 corrigenda | Brainstorm Q on topology depth, locked at "Comprehensive". Plan-writing stage caught that BS 7671 sub-clauses §526.2 and §433.2 are NOT transcribed in the verified standards file — anchor citation is IET OSG §8.4.4 (which IS verified and already used by 4 existing TOP-NN rules). |
 | 4 | EV demand + RCD Type A/B selection per Reg 722.531.3.101 | Reg 722.531.3.101 + IET CoP for EV (4th Ed) | Brainstorm Q on EV depth, locked at "Demand + RCD" |
 | 5 | INV verifying cable_sizing intent feeds into building-level diversity calc | Skill-internal cross-skill integration | Brainstorm Q on cable-sizing cascade, locked at "Full integration INV" |
 
@@ -73,8 +73,8 @@ Cross-checked against verified standards files (`verification_status: verified-a
 | Citation | Verified in file | Used for |
 |---|---|---|
 | `BS 7671:2018+A2:2022 §433.1.1` | `reg433-overcurrent-protection.json` | Ib ≤ In ≤ Iz fundamental rule (referenced by INV-16; cable-sizing enforces) |
-| `BS 7671:2018+A2:2022 §433.2` | `reg433-overcurrent-protection.json` | FCU spur modelling rule (INV-17, AMD 2) |
-| `BS 7671:2018+A2:2022 §526.2` | `part7-special-locations.json` (referenced) | Ring final continuity rule (INV-14) |
+| `IET On-Site Guide §8.4.4 (8th Edition)` | `electrical/small-power/rules/topology-rules.yaml` (4 existing TOP-NN rules already cite it) | **Anchor citation for ring/radial topology** — covers INV-14 ring continuity + INV-17 FCU spur modelling (AMD 2). Brainstorm caught BS 7671 sub-clauses §526.2 + §433.2 are NOT transcribed in verified file; IET OSG §8.4.4 IS verified and is the proper anchor. |
+| `BS 7671:2018+A2:2022 §526` (top-level only) | (general connections section) | Top-level cross-reference for connection requirements; sub-clauses NOT verified |
 | `BS 7671:2018+A2:2022 §701.411.3.3` | `part7-special-locations.json` | Bathroom 30 mA RCD (cascade from special-locations) |
 | `BS 7671:2018+A2:2022 §702.415.1` | `part7-special-locations.json` | Pool main equipotential bonding (cascade demonstrated in example #1) |
 | `BS 7671:2018+A2:2022 §702.415.2` | `part7-special-locations.json` | Pool supplementary bonding |
@@ -134,7 +134,7 @@ The bump is **signaling**: small-power has closed within-skill-depth program and
 | Item id | Type | Required | Purpose |
 |---|---|---|---|
 | `building_diversity_inputs` | object | optional | Engineer-supplied building taxonomy: `{building_type, floor_count, design_density_w_per_m2_override?, future_expansion_pct_override?}`. Defaults to verified standards-file values when overrides absent. |
-| `ring_continuity_endpoints` | array | optional | Per-ring `{circuit_id, endpoint_a_xy, endpoint_b_xy, mcb_way_id}` for §526.2 ring continuity verification (INV-14) |
+| `ring_continuity_endpoints` | array | optional | Per-ring `{circuit_id, endpoint_a_xy, endpoint_b_xy, mcb_way_id}` for ring continuity verification per IET OSG §8.4.4 (INV-14) |
 | `ev_charge_metadata` | array | optional | Per-EV-circuit `{circuit_id, rcd_type, charging_unit_dc_detection_a, mode (3 or 4), charging_unit_standard}` for INV-18 |
 
 All 3 are optional. When absent, the validator emits `"INV-N skipped — input not supplied (engineer must verify manually)"` and the INV passes vacuously. Engineer-of-record bears responsibility per CLAUDE.md honest-disclosure discipline.
@@ -170,7 +170,7 @@ ring_endpoints:
   endpoint_b_xy: {x_mm, y_mm}
   mcb_way_id: string
   continuity_verified: boolean
-  _citation: "BS 7671:2018+A2:2022 §526.2"
+  _citation: "IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 (top-level)"
 ```
 
 **`circuits[].fcu_spurs[]`** (optional; for AMD 2 modelling):
@@ -180,7 +180,7 @@ fcu_spurs[]:
   - location_xy: {x_mm, y_mm}
     fcu_rating_a: enum(3 | 5 | 13)
     downstream_loads_w: number
-    _citation: "BS 7671:2018+A2:2022 §433.2 + IET OSG §8.4.4 (AMD 2)"
+    _citation: "IET On-Site Guide §8.4.4 (8th Edition, AMD 2 update) + BS 7671:2018+A2:2022 §433 (top-level)"
 ```
 
 **`circuits[].ev_charge_metadata`** (required when `circuits[].load_type` matches `ev_charge_*`):
@@ -201,10 +201,10 @@ ev_charge_metadata:
 | ID | Severity | Rule | Citation |
 |---|---|---|---|
 | INV-13 | HIGH | `building_diversity` self-consistency (density within standards range; floor_count × per_circuit_demand × building_factor matches building_diversified_demand_a; applies_load_types filtered to building_type) | IET OSG App A |
-| INV-14 | HIGH | Ring continuity: when topology=ring, both endpoints MUST land at same `mcb_way_id`; `continuity_verified == true` | BS 7671 §526.2 |
+| INV-14 | HIGH | Ring continuity: when topology=ring, both endpoints MUST land at same `mcb_way_id`; `continuity_verified == true` | IET OSG §8.4.4 + BS 7671 §526 (top-level) |
 | INV-15 | HIGH | Per-circuit floor-area cross-check: `circuit.floor_area_m2` = Σ(rooms_covered[].floor_area_m2) | BS 7671 §433 + IET OSG §8.4.4 |
 | INV-16 | HIGH | OCPD-topology coordination: ring → MCB ≤32A; 2.5mm² radial → ≤20A; 4mm² radial → ≤32A | BS 7671 §433.1.1 + IET OSG §8.4.4 |
-| INV-17 | MEDIUM | AMD 2 FCU spur modelling: every fcu_spurs[] entry has fcu_rating_a in {3,5,13} + downstream_loads ≤ (fcu_rating × 230V) | BS 7671 §433.2 |
+| INV-17 | MEDIUM | AMD 2 FCU spur modelling: every fcu_spurs[] entry has fcu_rating_a in {3,5,13} + downstream_loads ≤ (fcu_rating × 230V) | IET OSG §8.4.4 + BS 7671 §433 (top-level) |
 | INV-18 | HIGH | EV RCD Type selection: `rcd_type=type_a` when `charging_unit_dc_detection_a ≥ 6`; `rcd_type=type_b` otherwise | Reg 722.531.3.101 |
 | INV-19 | MEDIUM | Cable-sizing cascade ↔ building_diversity integration: every circuit in `building_diversity.per_circuit_demand_inputs[]` has a matching entry in consumed `cable_sizing.payload.circuits[]`; demand values reconcile within 5% tolerance | Skill-internal cross-skill integration |
 
