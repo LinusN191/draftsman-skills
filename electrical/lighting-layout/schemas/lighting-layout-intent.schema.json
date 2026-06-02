@@ -118,7 +118,7 @@
     "consumed_intents": {
       "type": "object",
       "additionalProperties": false,
-      "description": "D.2 photometric-analysis cascade integration: mirror of IR's consumed_intents block, surfaced on the intent so downstream consumers (db-layout, cable-containment, panel-schedule, earthing) see the full cascade chain without re-reading the upstream intent-out.json. Currently carries photometric_grid (Wave 1); future waves add emergency_coverage (Wave 3) and daylight_model (Wave 4).",
+      "description": "D.2 photometric-analysis + D.1 special-locations cascade integration: mirror of IR's consumed_intents block, surfaced on the intent so downstream consumers (db-layout, cable-containment, panel-schedule, earthing) see the full cascade chain without re-reading the upstream intent-out.json. Carries photometric_grid (Wave 1) and special_locations_zoning (Wave 1); future waves add emergency_coverage (Wave 3) and daylight_model (Wave 4).",
       "properties": {
         "photometric_grid": {
           "type": "object",
@@ -135,6 +135,16 @@
               "type": "object",
               "description": "Flat photometric_grid payload per electrical/photometric-analysis/schemas/photometric-grid-intent.schema.json#/properties/photometric_grid"
             }
+          }
+        },
+        "special_locations_zoning": {
+          "type": "object",
+          "required": ["intent_version", "source_path", "payload"],
+          "additionalProperties": false,
+          "properties": {
+            "intent_version": {"type": "string"},
+            "source_path": {"type": "string"},
+            "payload": {"type": "object"}
           }
         }
       }

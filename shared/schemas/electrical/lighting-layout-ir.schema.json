@@ -893,7 +893,7 @@
     "consumed_intents": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Intent payloads consumed from companion skills per skill.manifest.json consumes_intents[]. Required when mode == full_drawing. Currently carries photometric_grid (from photometric-analysis v1.0+, Wave 1); future waves add emergency_coverage (Wave 3) and daylight_model (Wave 4).",
+      "description": "Intent payloads consumed from companion skills per skill.manifest.json consumes_intents[]. Required when mode == full_drawing. Currently carries photometric_grid (Wave 1) and special_locations_zoning (Wave 1); future waves add emergency_coverage (Wave 3) and daylight_model (Wave 4).",
       "properties": {
         "photometric_grid": {
           "type": "object",
@@ -914,6 +914,22 @@
             },
             "payload": {
               "$ref": "../../../electrical/photometric-analysis/schemas/photometric-grid-intent.schema.json#/properties/photometric_grid"
+            }
+          }
+        },
+        "special_locations_zoning": {
+          "type": "object",
+          "required": ["intent_version", "source_path", "payload"],
+          "additionalProperties": false,
+          "properties": {
+            "intent_version": {"type": "string"},
+            "source_path": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Path to special-locations intent-out.json. For shipped examples: electrical/special-locations/examples/cascade-<this-example-name>/intent-out.json. For real projects: project-specific path."
+            },
+            "payload": {
+              "$ref": "../../../electrical/special-locations/schemas/special-locations-zoning-intent.schema.json#/properties/special_locations_zoning"
             }
           }
         }
@@ -977,6 +993,22 @@
             "required": [
               "photometric_grid"
             ]
+          }
+        }
+      }
+    },
+    {
+      "description": "Wave 1 / special-locations: when mode != calc_only AND room.room_type IN Part-7 set, consumed_intents.special_locations_zoning MUST be populated. INV-12 enforces semantic content; this allOf clause enforces structural presence.",
+      "if": {
+        "allOf": [
+          {"not": {"properties": {"mode": {"const": "calc_only"}}, "required": ["mode"]}},
+          {"properties": {"room": {"properties": {"room_type": {"enum": ["bathroom", "shower_room", "swimming_pool_hall", "sauna", "medical_group_0_area", "medical_group_1_ward", "medical_group_2_theatre", "external_landscape"]}}}}}
+        ]
+      },
+      "then": {
+        "properties": {
+          "consumed_intents": {
+            "required": ["special_locations_zoning"]
           }
         }
       }

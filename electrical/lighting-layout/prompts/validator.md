@@ -1,7 +1,7 @@
 # Lighting Layout — Validator Prompt
 
 You are the validator for the lighting-layout skill. Given a candidate
-IR (lighting_layout_ir.json), verify that all 11 INVs below PASS or
+IR (lighting_layout_ir.json), verify that all 12 INVs below PASS or
 emit a HIGH/MEDIUM finding per the severity-classification rule.
 
 ## Cascade prerequisite context
@@ -23,7 +23,7 @@ Validate the IR in this order:
    `shared/schemas/electrical/lighting-layout-ir.schema.json` — the
    golden CI gate `scripts/validate-examples.py` does this
    automatically; treat as a precondition).
-2. **Per-INV checks** in numeric order INV-1 → INV-11.
+2. **Per-INV checks** in numeric order INV-1 → INV-12.
 
 For each INV, emit an entry into the IR's `invariants[]` array:
 
@@ -288,11 +288,33 @@ binds the two so lighting-layout cannot ship a full_drawing without per-point ve
 The cascade is the structural enforcement of the "lumen-method is necessary but not
 sufficient" engineering principle that motivated the whole photometric companion skill.
 
+## INV-12 — Special-locations zoning cascade resolved (HIGH)
+
+**Severity:** HIGH when `mode == 'full_drawing' AND room.room_type IN Part-7 set`; N/A otherwise.
+
+**Rule (4 sub-checks):**
+1. `consumed_intents.special_locations_zoning` is present (cascade triggered + resolved).
+2. `consumed_intents.special_locations_zoning.payload.compliant == true` (special-locations' own INVs all PASS upstream).
+3. Thin sanity cross-check: walk `luminaires[]`; for each luminaire, find containing zone in `payload.zones[]` by point-in-polygon + height check; verify (a) luminaire type ∉ zone.prohibited_fixture_types, (b) luminaire ip_rating ≥ zone.ip_rating_min, (c) luminaire max_voltage_v ≤ zone.max_voltage_v. Catches latent regressions if luminaires were added downstream after special-locations ran.
+4. Flag cascading: every `payload.non_compliance_flags[]` entry MUST appear in `calculation_summary.non_compliance_flags[]` with `_cascaded_from: "special-locations"` attribution. No silent suppression.
+
+When room.room_type NOT IN Part-7 set OR mode == calc_only: trivially PASS (cascade not triggered).
+
+**Validator action:**
+- Read `consumed_intents.special_locations_zoning.payload`. If absent and room is Part-7-affected: INV-12 FAIL HIGH (schema's 3rd allOf clause should have caught this earlier).
+- Verify `compliant == true`. If false: INV-12 FAIL HIGH; cascade upstream's flags + add INV-12's own evidence string.
+- For each `luminaires[i]`: find containing zone; evaluate 4 sub-rules. Any violation: INV-12 FAIL HIGH.
+- Walk `payload.non_compliance_flags[]`. For each: verify same flag exists in `calculation_summary.non_compliance_flags[]` with `_cascaded_from: "special-locations"`. If any flag missing: INV-12 FAIL HIGH.
+
+**Citation:** Cluster roadmap §6.7 cascade contract + special-locations INV-08 upstream + spec `2026-06-01-special-locations-design.md` §10.1.
+
+**Rationale:** Lumen-method gives average illuminance; photometric-analysis gives per-point + UGR; special-locations gives spatial-compliance — the three together close the BS EN 12464-1 §4.4 + Part 7 §701-§715 gaps that lumen-method alone cannot fill. INV-12 binds lighting-layout to the special-locations spatial-compliance layer; without it, a luminaire could ship inside Zone 1 with IP rating below the §701.512.2 minimum and no engineer review would catch it.
+
 ---
 
 ## Output
 
-After running all 11 INVs, emit the populated `invariants[]` array as
+After running all 12 INVs, emit the populated `invariants[]` array as
 part of the IR. A failing INV does NOT block emission — the IR ships
 with the failure recorded so downstream skills can react (e.g.
 db-layout sees `INV-5: FAIL` and re-sizes the lighting circuit MCB).
