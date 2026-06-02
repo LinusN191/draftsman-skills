@@ -92,7 +92,7 @@ Strategy: breadth-first — finish every skill across disciplines before scaling
 - `electrical/` (6 new): electrode-design (consumed by earthing), photometric-analysis (UGR + uniformity + point-grid; consumed by lighting-layout), lighting-controls (DALI/KNX zoning + sensors), spd-coordination (BS 7671 §443 + IEC 61643; interfaces with lightning-protection), load-flow (steady-state power flow distinct from fault-level transient), control-sequence-design (relay/PLC logic adjacent to schematic)
 - `documents/` (3 new): bonding-schedule (consumed-from-earthing deliverable), energised-work-permit (HSE permit from arc-flash intent), accessory-schedule (consumed-from-small-power deliverable)
 
-Manifest tally: **103 total** = 11 shipped (10 beta + 1 production) + 92 stubs.
+Manifest tally: **104 total** = 13 shipped (10 beta + 3 production: lighting-layout v1.6.0 + photometric-analysis v1.1.0 + special-locations v1.0.0) + 91 stubs. Tally last updated 2026-06-02 after special-locations v1.0.0 ship (Wave 1 second deliverable).
 
 All other `electrical/<skill>/` folders are scaffolds — README + manifest + evals only, awaiting `inputs.json` and `schemas/` to be considered shipped.
 
