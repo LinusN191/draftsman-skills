@@ -1,46 +1,279 @@
 {
+  "$schema": "../../shared/schemas/core/inputs.schema.json",
   "skill": "small-power",
-  "input_groups": [
+  "version": "2.0.0",
+  "description": "WI1 interview taxonomy for small-power v2.0.0. Migrated from input_groups[] to canonical items[] in v2.0.0 to enable strict per-item validation. Three new optional D4-depth items appended: building_diversity_inputs (INV-13), ring_continuity_endpoints (INV-14), ev_charge_metadata (INV-18).",
+  "items": [
     {
-      "group": "jurisdiction-and-supply",
-      "fields": [
-        {"name": "jurisdiction",                "type": "enum",   "values": ["GB", "EU", "INT", "KE", "US"], "required": true},
-        {"name": "supply_voltage_v",            "type": "integer", "enum": [120, 208, 230, 240, 400, 415, 480], "required": true},
-        {"name": "supply_phase_arrangement",    "type": "enum",   "values": ["single_phase", "single_phase_split", "TPN", "TPN_plus_E"], "required": true},
-        {"name": "supply_system_type",          "type": "enum",   "values": ["TN-S", "TN-C-S", "TT"], "required": true,
-         "description": "Earthing system. Engineer-declared in v1.0 (v1.1+ will consume from earthing intent)."},
-        {"name": "supply_ze_declared_ohm",      "type": "float", "required": true,
-         "description": "Earth fault loop impedance at the consumer's origin (Ze). Engineer-declared."},
-        {"name": "supply_psc_declared_ka",      "type": "float", "required": true,
-         "description": "Prospective short-circuit current at the supply origin (PSCC). Engineer-declared (v1.1+ will consume from fault-level intent)."}
-      ]
+      "id": "jurisdiction",
+      "label": "Jurisdiction",
+      "hint": "Drives standard routing: GB → BS 7671:2018+A2:2022. KE → KS 1700:2018 §313 (route to BS 7671). INT → IEC 60364. US → NEC 2023. EU → IEC 60364 + local transposition.",
+      "answer_type": "enum",
+      "options": ["GB", "EU", "INT", "KE", "US"],
+      "required": true,
+      "project_fact_candidate": true
     },
     {
-      "group": "parent-db-context",
-      "fields": [
-        {"name": "parent_db_designation",       "type": "string", "required": true,
-         "description": "Parent distribution board designation (e.g. 'CU-MAIN', 'DB-P1'). Engineer-declared string reference. No db-layout intent consumption in v1.0."},
-        {"name": "parent_db_pfc_ka",            "type": "float", "required": true,
-         "description": "Available PFC at the parent DB busbar. Used to verify breaker breaking capacity (Icu)."}
-      ]
+      "id": "supply_voltage_v",
+      "label": "Supply voltage (V)",
+      "hint": "Nominal supply voltage at the origin. GB/KE/INT: 230 V single-phase or 400 V three-phase. US: 120/208/240/480 V.",
+      "answer_type": "enum",
+      "options": ["120", "208", "230", "240", "400", "415", "480"],
+      "required": true,
+      "project_fact_candidate": true
     },
     {
-      "group": "rooms",
-      "fields": [
-        {"name": "room_briefs",                 "type": "array",  "required": true,
-         "description": "Array of {room_id, room_type, dimensions_m, special_location, anticipated_loads, socket_count_target}. See room-types ontology for room_type enum."}
-      ]
+      "id": "supply_phase_arrangement",
+      "label": "Supply phase arrangement",
+      "hint": "single_phase = L+N+E. single_phase_split = US split-phase 120/240 V. TPN = 3-phase 4-wire. TPN_plus_E = 3-phase 5-wire.",
+      "answer_type": "enum",
+      "options": ["single_phase", "single_phase_split", "TPN", "TPN_plus_E"],
+      "required": true,
+      "project_fact_candidate": true
     },
     {
-      "group": "design-intent",
-      "fields": [
-        {"name": "preferred_topology",          "type": "enum",   "values": ["ring", "radial", "auto_by_jurisdiction"], "default": "auto_by_jurisdiction",
-         "description": "GB: auto picks ring for domestic + radial for commercial. Other jurisdictions: always radial. Engineer override permitted."},
-        {"name": "drawing_standard",            "type": "string",
-         "description": "Drafting standard reference. Defaults per jurisdiction (GB/KE: BS 1192:2007+A2:2016; INT: ISO 19650:2018; US: AIA CAD Layer Guidelines 2007)."},
-        {"name": "sheet_size",                  "type": "enum",   "values": ["A0", "A1", "A2", "A3", "Arch_E", "Arch_D", "Arch_C"], "default_by_jurisdiction": {"GB": "A1", "KE": "A1", "INT": "A1", "US": "Arch_D"}},
-        {"name": "drawing_scale",               "type": "string", "default_by_jurisdiction": {"GB": "1:50", "KE": "1:50", "INT": "1:100", "US": "1/4\"=1'"}}
-      ]
+      "id": "supply_system_type",
+      "label": "Earthing system type",
+      "hint": "Engineer-declared earthing system. GB/KE: TN-S or TN-C-S (PME) or TT. v1.1+ will consume from earthing intent. Drives Zs loop-impedance routing per BS 7671:2018+A2:2022 §411.",
+      "answer_type": "enum",
+      "options": ["TN-S", "TN-C-S", "TT"],
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "supply_ze_declared_ohm",
+      "label": "Declared Ze at origin (Ω)",
+      "hint": "Earth fault loop impedance at the consumer's origin. Engineer-declared; v1.1+ will consume from earthing intent. Used to compute Zs per circuit for disconnection time verification per BS 7671:2018+A2:2022 §411.3.2.",
+      "answer_type": "float",
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "supply_psc_declared_ka",
+      "label": "Declared PSCC at origin (kA)",
+      "hint": "Prospective short-circuit current at the supply origin. Engineer-declared; v1.1+ will consume from fault-level intent. Used to verify OCB breaking capacity (Icu) per BS 7671:2018+A2:2022 §434.",
+      "answer_type": "float",
+      "required": true,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "parent_db_designation",
+      "label": "Parent distribution board designation",
+      "hint": "Engineer-stable reference string for the parent DB (e.g. 'CU-MAIN', 'DB-P1', 'LP-GF'). No db-layout intent consumption in v1.0; engineer-declared string reference.",
+      "answer_type": "text",
+      "required": true,
+      "project_fact_candidate": false
+    },
+    {
+      "id": "parent_db_pfc_ka",
+      "label": "Available PFC at parent DB busbar (kA)",
+      "hint": "Prospective fault current at the parent DB busbar. Used to verify MCB/RCBO breaking capacity (Icu) per BS 7671:2018+A2:2022 §434.5.",
+      "answer_type": "float",
+      "required": true,
+      "project_fact_candidate": false
+    },
+    {
+      "id": "room_briefs",
+      "label": "Room briefs (per-room design inputs)",
+      "hint": "One entry per room. Each entry: room_id, room_type (from room-types ontology), dimensions_m {length, width, height}, special_location (boolean), anticipated_loads (array of load descriptions), socket_count_target (integer or 'auto'). room_type drives accessory pattern selection and ring/radial circuit topology.",
+      "answer_type": "struct_list",
+      "required": true,
+      "item_schema": {
+        "type": "object",
+        "required": ["room_id", "room_type", "dimensions_m"],
+        "properties": {
+          "room_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Engineer-stable room identifier (e.g. 'office-gf-01', 'kitchen-01')"
+          },
+          "room_type": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Room classification from room-types ontology (e.g. office, kitchen, warehouse, corridor). Drives socket pattern and topology selection."
+          },
+          "dimensions_m": {
+            "type": "object",
+            "required": ["length", "width"],
+            "properties": {
+              "length": {"type": "number", "minimum": 0.1, "description": "Room length in metres"},
+              "width": {"type": "number", "minimum": 0.1, "description": "Room width in metres"},
+              "height": {"type": "number", "minimum": 1.5, "description": "Floor-to-ceiling height in metres (default 2.7 m when absent)"}
+            }
+          },
+          "special_location": {
+            "type": "boolean",
+            "description": "True when BS 7671 Part 7 special location rules apply (bathroom, kitchen, external, etc.). Triggers special-locations intent consumption."
+          },
+          "anticipated_loads": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "List of known high-demand loads (e.g. 'dishwasher', 'EV charger', 'server rack'). Drives dedicated circuit planning."
+          },
+          "socket_count_target": {
+            "description": "Target socket outlet count or 'auto' for standard allowance per room type. Integer or string 'auto'.",
+            "oneOf": [
+              {"type": "integer", "minimum": 0},
+              {"type": "string", "enum": ["auto"]}
+            ]
+          }
+        }
+      },
+      "project_fact_candidate": false
+    },
+    {
+      "id": "preferred_topology",
+      "label": "Preferred circuit topology",
+      "hint": "GB: auto selects ring for domestic and radial for commercial per IET OSG 8th Ed. Other jurisdictions: always radial. Engineer override permitted. ring = ring final circuit per BS 7671:2018+A2:2022 §433.1.1.3 + Appendix 15. radial = radial circuit per §433.1.1.2.",
+      "answer_type": "enum",
+      "options": ["ring", "radial", "auto_by_jurisdiction"],
+      "default": "auto_by_jurisdiction",
+      "required": false,
+      "project_fact_candidate": false
+    },
+    {
+      "id": "drawing_standard",
+      "label": "Drafting standard",
+      "hint": "Defaults per jurisdiction: GB/KE = BS 1192:2007+A2:2016; INT = ISO 19650:2018; US = AIA CAD Layer Guidelines 2007. Supply to override.",
+      "answer_type": "text",
+      "required": false,
+      "project_fact_candidate": true
+    },
+    {
+      "id": "sheet_size",
+      "label": "Drawing sheet size",
+      "hint": "Defaults by jurisdiction: GB/KE/INT = A1; US = Arch D. Supply to override.",
+      "answer_type": "enum",
+      "options": ["A0", "A1", "A2", "A3", "Arch_E", "Arch_D", "Arch_C"],
+      "required": false,
+      "project_fact_candidate": false
+    },
+    {
+      "id": "drawing_scale",
+      "label": "Drawing scale",
+      "hint": "Defaults by jurisdiction: GB/KE/INT = 1:50; US = 1/4\"=1'. Supply to override.",
+      "answer_type": "text",
+      "required": false,
+      "project_fact_candidate": false
+    },
+    {
+      "id": "building_diversity_inputs",
+      "label": "Building-level diversity context",
+      "hint": "OPTIONAL — engineer-supplied building taxonomy that drives the building_diversity IR field (INV-13). Falls back to verified standards-file values when overrides absent. Per IET On-Site Guide 8th Edition Appendix A — Table A1. building_type limited to office / industrial / healthcare in v2.0; retail / residential / data-center / hospitality deferred to v2.1.",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "required": ["building_type", "floor_count"],
+        "properties": {
+          "building_type": {
+            "type": "string",
+            "enum": ["office", "industrial", "healthcare"],
+            "description": "Building classification driving diversity factor lookup from shared/calculations/diversity-factors.json. v2.0 limited to 3 types per verified values; retail/residential/data-center/hospitality deferred to v2.1."
+          },
+          "floor_count": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Total number of occupied floors. Used with building_type to select the correct diversity-factor row from IET OSG 8th Ed Appendix A Table A1."
+          },
+          "design_density_w_per_m2_override": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Engineer-declared design load density (W/m²) overriding the IET OSG Table A1 default for the building_type. When absent, skill reads from shared/calculations/diversity-factors.json."
+          },
+          "future_expansion_pct_override": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Future-expansion allowance percentage (0–100) overriding the IET OSG Table A1 default. When absent, skill reads from shared/calculations/diversity-factors.json."
+          }
+        }
+      },
+      "project_fact_candidate": true
+    },
+    {
+      "id": "ring_continuity_endpoints",
+      "label": "Ring final circuit continuity endpoints",
+      "hint": "OPTIONAL — per-ring endpoint coordinates and MCB way id so the validator can verify both ends of every ring final circuit land at the same MCB way per IET OSG 8th Edition §8.4.4 (INV-14). When circuits[].topology == 'ring' and this input is supplied, INV-14 verifies the cross-reference; when absent, INV-14 emits 'skipped — input not supplied' and passes vacuously (engineer-of-record must verify manually).",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "required": ["circuit_id", "endpoint_a_xy", "endpoint_b_xy", "mcb_way_id"],
+        "properties": {
+          "circuit_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Must match a circuits[].id in the IR output for the same run. Drives INV-14 cross-reference check."
+          },
+          "endpoint_a_xy": {
+            "type": "object",
+            "required": ["x_mm", "y_mm"],
+            "properties": {
+              "x_mm": {"type": "integer", "description": "X coordinate of ring endpoint A in floor-plan mm"},
+              "y_mm": {"type": "integer", "description": "Y coordinate of ring endpoint A in floor-plan mm"}
+            }
+          },
+          "endpoint_b_xy": {
+            "type": "object",
+            "required": ["x_mm", "y_mm"],
+            "properties": {
+              "x_mm": {"type": "integer", "description": "X coordinate of ring endpoint B in floor-plan mm"},
+              "y_mm": {"type": "integer", "description": "Y coordinate of ring endpoint B in floor-plan mm"}
+            }
+          },
+          "mcb_way_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The MCB way identifier (e.g. 'CU-MAIN:B6') that both endpoint_a and endpoint_b must terminate at per IET OSG 8th Ed §8.4.4. INV-14 verifies both ends share this way."
+          }
+        }
+      },
+      "project_fact_candidate": false
+    },
+    {
+      "id": "ev_charge_metadata",
+      "label": "EV charge circuit metadata",
+      "hint": "OPTIONAL — per-EV-circuit RCD type + charging unit standard per BS 7671:2018+A2:2022 §722.531.3.101 + BS EN 61851-1 + IET Code of Practice for EV Charging Equipment Installation (4th Ed). Drives INV-18 (RCD Type A/B selection). Type A is default per §722.531.3.101; Type B required when charging unit lacks built-in 6mA DC detection (charging_unit_dc_detection_a < 6).",
+      "answer_type": "struct_list",
+      "required": false,
+      "item_schema": {
+        "type": "object",
+        "required": ["circuit_id", "rcd_type", "mode", "charging_unit_standard"],
+        "properties": {
+          "circuit_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Must match a circuits[].id in the IR output where circuit_type == 'ev_charging'. Drives INV-18 RCD-type cross-check."
+          },
+          "rcd_type": {
+            "type": "string",
+            "enum": ["type_a", "type_b"],
+            "description": "RCD type per BS 7671:2018+A2:2022 §722.531.3.101. type_a is the default; type_b required when charging_unit_dc_detection_a < 6 (no built-in 6mA DC fault detection per IET CoP for EVSE 4th Ed)."
+          },
+          "charging_unit_dc_detection_a": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Built-in DC detection current threshold of the charging unit in amperes. 0 = no built-in DC detection (Type B RCD mandatory); 6 = meets the 6mA threshold allowing Type A per §722.531.3.101. Typical values: 0 or 6."
+          },
+          "mode": {
+            "type": "integer",
+            "enum": [3, 4],
+            "description": "IEC 62196 / BS EN 61851-1 charging mode. Mode 3 = AC conductive (Type 2 Mennekes socket). Mode 4 = DC fast charge (CCS Combo 2 socket). Mode 4 always requires Type B RCD per IET CoP for EVSE 4th Ed."
+          },
+          "charging_unit_standard": {
+            "type": "string",
+            "enum": ["BS EN 61851-1"],
+            "description": "Charging unit standard. BS EN 61851-1 is the only verified value at v2.0."
+          },
+          "socket_standard": {
+            "type": "string",
+            "enum": ["BS EN 62196 Type 2 Mennekes", "BS EN 62196 CCS Combo 2"],
+            "description": "Optional: socket/connector standard. Type 2 Mennekes for Mode 3; CCS Combo 2 for Mode 4 DC fast charge. When absent, derived from mode field."
+          }
+        }
+      },
+      "project_fact_candidate": false
     }
   ]
 }
