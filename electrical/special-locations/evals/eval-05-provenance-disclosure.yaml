@@ -1,0 +1,32 @@
+name: special-locations anchor fixture provenance disclosure
+skill: special-locations
+description: |
+  Verifies that every anchor_fixtures[] entry carries a recognised _extraction_source
+  enumeration value and a substantive _provenance_note of at least 40 characters
+  (INV-09). Provenance disclosure is mandatory so that a certifying engineer can
+  trace every zone derivation back to a source drawing or explicit engineering
+  judgment — without it the zone boundary cannot be audited. Uses the standard
+  bathroom fixture which has 2 anchors extracted from architectural drawings with
+  detailed provenance notes.
+category: skill_specific
+input_fixture: examples/uk-bathroom-standard-bath-and-shower/output.json
+checks:
+  - assertion: "all(ir.anchor_fixtures[*]._extraction_source in ['architectural_drawing_extraction', 'engineer_manual_entry', 'inferred_from_room_type'])"
+    description: |
+      Every anchor_fixtures entry must carry one of the three canonical
+      _extraction_source values. Any other value (or a missing field) means the
+      provenance chain is broken and the zone boundary cannot be traced to a
+      verifiable source. The bathroom fixture uses architectural_drawing_extraction
+      for both anchors — the most traceable provenance category.
+    severity: warning
+    matches_inv: INV-09
+
+  - assertion: "all(length(ir.anchor_fixtures[*]._provenance_note) >= 40)"
+    description: |
+      _provenance_note must be at least 40 characters to contain substantive
+      traceability information (drawing reference, revision, date, or engineering
+      rationale). A stub note shorter than 40 characters cannot support audit.
+      The bathroom fixture provides notes of 171 and 139 characters respectively —
+      both well above the minimum threshold.
+    severity: warning
+    matches_inv: INV-09

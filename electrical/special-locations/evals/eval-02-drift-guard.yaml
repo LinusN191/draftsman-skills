@@ -1,0 +1,34 @@
+name: special-locations audit–flag one-to-one drift guard
+skill: special-locations
+description: |
+  Verifies that every existing_fixtures_audit[] entry with compliance_status=="violation"
+  has exactly one corresponding entry in calculation_summary.non_compliance_flags[]
+  (INV-02 one-to-one drift guard). Uses the cascade violation fixture which contains
+  exactly 1 violation audit entry and 1 non_compliance_flag — providing a clean,
+  deterministic drift check. Any divergence between the two lists means the failure
+  catalogue is corrupted and the IR is unreliable for compliance decisions.
+category: skill_specific
+input_fixture: examples/cascade-small-power-uk-bathroom-violation/output.json
+checks:
+  - assertion: "count(ir.existing_fixtures_audit[?compliance_status=='violation']) == ir.calculation_summary.non_compliance_flags.length"
+    description: |
+      The count of audit entries flagged as violations must equal the count of
+      non_compliance_flags entries. The cascade-small-power-uk-bathroom-violation
+      fixture has exactly 1 violation (socket_violation_1 in bath_zone_1) and 1
+      non_compliance_flag (socket_in_zone_1, severity=critical). If this count
+      diverges the engine has either silently dropped a flag or introduced a phantom
+      flag with no matching audit entry.
+    severity: critical
+    matches_inv: INV-02
+    standard_ref: BS 7671:2018+A2:2022 §701.512.3
+
+  - assertion: "ir.calculation_summary.non_compliance_flags[0]._cascaded_from == 'special-locations'"
+    description: |
+      Every native (non-cascade-relayed) non_compliance_flag must carry
+      _cascaded_from='special-locations' to identify the originating skill. This
+      field also enables downstream cascade consumers to distinguish native
+      special-locations violations from flags re-emitted by other skills. The
+      socket_in_zone_1 flag in this fixture is generated natively and must carry
+      the correct _cascaded_from value.
+    severity: critical
+    matches_inv: INV-02

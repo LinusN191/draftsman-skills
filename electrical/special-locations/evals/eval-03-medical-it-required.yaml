@@ -1,0 +1,33 @@
+name: special-locations §710 Group 2 medical IT system required
+skill: special-locations
+description: |
+  Validation trap verifying that when a zone of type medical_envelope_group_2 is
+  present, the electrical_constraints[] array MUST contain a medical_it_system entry
+  (INV-03). Also verifies that the IMD alarm response time is 8 s per BS EN 61557-8
+  — a common misattribution error is to use 0.5 s (the protection relay trip time)
+  rather than the IMD alarm threshold. Uses the Group 2 medical fixture which contains
+  one medical_envelope_group_2 zone and a correctly populated medical_it_system constraint.
+category: validation_trap
+input_fixture: examples/uk-medical-or-group-2-with-it-system/output.json
+checks:
+  - assertion: "any(ir.zones[*].zone_type == 'medical_envelope_group_2') implies any(ir.electrical_constraints[*].constraint_type == 'medical_it_system')"
+    description: |
+      §710 requires a medical IT system (isolating transformer + IMD) for every
+      Group 2 patient envelope. When any zone is typed medical_envelope_group_2,
+      the electrical_constraints[] array must contain a medical_it_system entry.
+      Absence of this constraint would silently drop the most safety-critical
+      requirement in the §710 clause set and would constitute a C1 dangerous omission.
+    severity: critical
+    matches_inv: INV-03
+    standard_ref: BS 7671:2018+A2:2022 §710 + BS EN 61557-8 + HTM 06-01
+
+  - assertion: "ir.electrical_constraints[?constraint_type=='medical_it_system'].imd_alarm_response_time_s_max == 8"
+    description: |
+      BS EN 61557-8 specifies the IMD alarm response time as 8 s maximum. The value
+      must not be confused with the 0.5 s overcurrent protection trip time or any
+      other timing parameter. The Group 2 medical fixture correctly carries
+      imd_alarm_response_time_s_max=8; any deviation signals a citation error that
+      would under-specify the IMD and violate BS EN 61557-8 equipment requirements.
+    severity: critical
+    matches_inv: INV-03
+    standard_ref: BS EN 61557-8

@@ -1,0 +1,43 @@
+name: special-locations §701 socket-in-zone-1 compliance failure
+skill: special-locations
+description: |
+  Compliance failure test verifying that a 230 V socket installed inside bath_zone_1
+  triggers INV-08 (fixtures audited against zone rules), generates a critical
+  non_compliance_flag, and causes the overall IR to flip compliant=false (INV-10
+  rollup). Uses the cascade violation fixture which contains socket_violation_1 at
+  (1200, 350, 1100) — confirmed inside the bath_zone_1 polygon and height range.
+  This is the central engineering value test for the §701 zone enforcement pipeline.
+category: compliance_failure
+input_fixture: examples/cascade-small-power-uk-bathroom-violation/output.json
+checks:
+  - assertion: "any(ir.invariants[?id=='INV-08'].passes == false)"
+    description: |
+      The INV-08 invariant must record passes=false when at least one existing fixture
+      violates its derived zone rules. socket_violation_1 is type socket_230v positioned
+      inside bath_zone_1 where sockets are prohibited per §701 zone table. The invariant
+      evidence must explicitly record this failure with violation_clause referencing
+      §701.512.3; a passes=true result would mean the zone enforcement engine silently
+      ignored the prohibited fixture type.
+    severity: critical
+    matches_inv: INV-08
+    standard_ref: BS 7671:2018+A2:2022 §701.512.3
+
+  - assertion: "any(ir.calculation_summary.non_compliance_flags[*].severity == 'critical')"
+    description: |
+      A prohibited socket inside Zone 1 is a C1 (immediately dangerous) defect under
+      the §701 zone table. The non_compliance_flags[] entry for socket_in_zone_1 must
+      carry severity=critical, not warning or info. A lower severity would misrepresent
+      the risk to the certifying engineer reviewing the IR.
+    severity: critical
+    matches_inv: INV-08
+    standard_ref: BS 7671:2018+A2:2022 §701.512.3
+
+  - assertion: "ir.calculation_summary.compliant == false"
+    description: |
+      A critical zone violation must cause the overall compliant rollup to flip to
+      false. The cascade-small-power-uk-bathroom-violation fixture has violation_count_critical=1
+      and must resolve compliant=false. If compliant=true survives despite a critical
+      flag, the rollup logic is broken and the IR would silently pass a dangerous
+      installation to downstream drawing tools.
+    severity: critical
+    matches_inv: INV-10

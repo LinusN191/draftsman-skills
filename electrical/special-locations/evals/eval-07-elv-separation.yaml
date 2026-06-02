@@ -1,0 +1,35 @@
+name: special-locations §715 ELV separation constraint required
+skill: special-locations
+description: |
+  Verifies that when any anchor_fixtures[] entry has fixture_type=="elv_luminaire",
+  the electrical_constraints[] array must contain an elv_separation entry with
+  transformer_short_circuit_protected==true (INV-07). §715 + BS EN 61558-2-6
+  require physical separation of ELV and LV cables plus a short-circuit-protected
+  safety isolating transformer. Uses the external landscape ELV lighting fixture
+  which has 6 elv_luminaire anchors and a correctly populated elv_separation constraint.
+category: skill_specific
+input_fixture: examples/uk-external-landscape-elv-lighting/output.json
+checks:
+  - assertion: "any(ir.anchor_fixtures[*].fixture_type == 'elv_luminaire') implies any(ir.electrical_constraints[*].constraint_type == 'elv_separation')"
+    description: |
+      When any anchor fixture is an ELV luminaire, §715 + BS EN 61558-2-6 require
+      an elv_separation constraint to be declared in the IR. This constraint carries
+      the minimum LV-cable spacing, barrier requirement, labelling requirement, and
+      transformer protection status. Omission would silently drop all ELV safety
+      requirements from the IR, leaving the installation without the separation
+      mandate that prevents ELV and 230 V cables from sharing a common route.
+    severity: critical
+    matches_inv: INV-07
+    standard_ref: BS 7671:2018+A2:2022 §715 + BS EN 61558-2-6
+
+  - assertion: "ir.electrical_constraints[?constraint_type=='elv_separation'].transformer_short_circuit_protected == true"
+    description: |
+      BS EN 61558-2-6 §17 requires the safety isolating transformer on an ELV
+      circuit to be short-circuit protected on the secondary side. The
+      transformer_short_circuit_protected field on the elv_separation constraint
+      must be true. A false value would indicate that the transformer protection
+      requirement has been evaluated and found absent — a C2 dangerous defect
+      under BS EN 61558-2-6 that must be remediated before commissioning.
+    severity: critical
+    matches_inv: INV-07
+    standard_ref: BS EN 61558-2-6

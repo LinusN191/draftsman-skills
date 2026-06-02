@@ -1,0 +1,39 @@
+name: special-locations anchor–zone catalogue integrity
+skill: special-locations
+description: |
+  Verifies that every entry in anchor_fixtures[] produces at least one corresponding
+  zone in zones[] (INV-01 catalogue integrity), and that the compliant/violation_count
+  rollup is internally self-consistent (INV-10). Uses the standard bathroom fixture
+  (2 anchors → 5 zones, compliant=true, no critical violations) as the positive case.
+  A mismatch in either relationship signals a broken zone-derivation pipeline.
+category: skill_specific
+input_fixture: examples/uk-bathroom-standard-bath-and-shower/output.json
+checks:
+  - assertion: "ir.anchor_fixtures.length <= ir.zones.length"
+    description: |
+      Every anchor fixture must produce at least one derived zone, so the total zone
+      count must be >= the anchor count. For the 2-anchor bathroom case (bath_1 + shower_1)
+      the engine derives 5 zones (z0+z1+z2 from bath_1; z1+z2 from shower_1), so
+      zones.length (5) >= anchor_fixtures.length (2). A failure here means at least one
+      anchor produced zero zones — a derivation engine gap that breaks §701 enforcement.
+    severity: critical
+    matches_inv: INV-01
+    standard_ref: BS 7671:2018+A2:2022 §701 (zone-table derivation obligations)
+
+  - assertion: "ir.calculation_summary.compliant == true implies ir.calculation_summary.violation_count_critical == 0"
+    description: |
+      When compliant=true the violation_count_critical counter must be zero. If
+      violation_count_critical > 0 while compliant=true, the rollup logic is internally
+      contradictory and the IR cannot be trusted for engineering sign-off. The bathroom
+      fixture resolves compliant=true, violation_count_critical=0 — both must hold
+      simultaneously.
+    severity: critical
+    matches_inv: INV-10
+
+  - assertion: "ir.calculation_summary.compliant == true implies ir.calculation_summary.non_compliance_flags.length == 0"
+    description: |
+      Complementary self-consistency check: a compliant output must also have an
+      empty non_compliance_flags[] list. A non-empty flags list when compliant=true
+      is a contradictory state that would pass false assurance to downstream consumers.
+    severity: warning
+    matches_inv: INV-10

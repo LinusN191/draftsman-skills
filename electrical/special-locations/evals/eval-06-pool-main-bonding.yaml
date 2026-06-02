@@ -1,0 +1,33 @@
+name: special-locations §702.415.1 pool main equipotential bonding required
+skill: special-locations
+description: |
+  Validation trap verifying that when the room type is swimming_pool_hall, the
+  electrical_constraints[] array must contain a pool_main_equipotential_bonding
+  entry with conductor_csa_min_mm2 >= 10 (INV-05). §702.415.1 mandates main
+  equipotential bonding of all extraneous conductive parts in swimming pool locations
+  using a minimum 10 mm² conductor. Uses the pool hall fixture which correctly
+  declares the constraint with conductor_csa_min_mm2=10.
+category: validation_trap
+input_fixture: examples/uk-pool-hall-with-changing-room-adjacency/output.json
+checks:
+  - assertion: "ir.room.room_type == 'swimming_pool_hall' implies any(ir.electrical_constraints[*].constraint_type == 'pool_main_equipotential_bonding')"
+    description: |
+      §702.415.1 requires main equipotential bonding for all extraneous conductive
+      parts (ladder rails, pipe fittings, pool surrounds) in every swimming pool
+      installation. When room.room_type is swimming_pool_hall, the electrical_constraints
+      list must include a pool_main_equipotential_bonding entry. Omission of this
+      constraint would leave the pool hall without the primary shock-protection
+      measure mandated by §702.
+    severity: critical
+    matches_inv: INV-05
+    standard_ref: BS 7671:2018+A2:2022 §702.415.1
+
+  - assertion: "ir.electrical_constraints[?constraint_type=='pool_main_equipotential_bonding'].conductor_csa_min_mm2 >= 10"
+    description: |
+      §702.415.1 specifies a minimum 10 mm² bonding conductor for swimming pool
+      locations. The conductor_csa_min_mm2 field in the pool_main_equipotential_bonding
+      constraint must be >= 10. Any value below 10 violates the §702 minimum and
+      would result in under-sized bonding conductors on the installation.
+    severity: critical
+    matches_inv: INV-05
+    standard_ref: BS 7671:2018+A2:2022 §702.415.1
