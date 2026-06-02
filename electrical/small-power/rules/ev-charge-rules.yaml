@@ -1,0 +1,64 @@
+# EV charge installation rules per BS 7671:2018+A2:2022 §722 + IET Code of Practice
+# for EV Charging Equipment Installation (4th Ed)
+# Consumed by validator (INV-18 RCD Type A/B selection)
+#
+# IMPORTANT: D4 scope is intentionally narrow — RCD type + dedicated circuit + diversity
+# Open-PEN protection (§722.411.4.1), Mode 3/4 cable sizing, and smart charging are
+# DEFERRED to the dedicated EV-Charge skill (currently stub per CLAUDE.md)
+
+rules:
+  - id: EV-01
+    jurisdiction: [GB, KE]
+    standard_reference: "BS 7671:2018+A2:2022 §722 (top-level) + IET Code of Practice for EV Charging Equipment Installation (4th Ed)"
+    rule_text: >
+      Every EV charge circuit MUST be a dedicated circuit — no shared loads
+      with sockets, lighting, fixed equipment, or other distribution circuits.
+      Enforced at IR via circuits[].ev_charge_metadata.dedicated_circuit ==
+      true (const). This is the central engineering rule that distinguishes
+      EV charging from other small-power loads.
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: EV-02
+    jurisdiction: [GB, KE]
+    standard_reference: "IET Code of Practice for EV Charging Equipment Installation (4th Ed)"
+    rule_text: >
+      EV charge demand: NO diversity applied. Each charge point contributes
+      100% of its rated current to the building_diversified_demand calculation.
+      Rationale: EV charging is a contracted-load-bearing service; assuming
+      partial occupancy at sizing-time risks the supply tripping when fleet
+      usage spikes. Engineer can document load-management-based diversity
+      separately if smart-charging control is part of the design, but the
+      default at sizing-time is no diversity.
+    applies_to: circuits
+    enforcement: warning
+
+  - id: EV-03
+    jurisdiction: [GB, KE]
+    standard_reference: "BS 7671:2018+A2:2022 §722.531.3.101 (verified)"
+    rule_text: >
+      RCD type selection rule: Type A 30 mA per charge point is the DEFAULT
+      per §722.531.3.101. Type B is REQUIRED when the charging unit does not
+      have built-in 6 mA DC residual current detection. The IR
+      circuits[].ev_charge_metadata.charging_unit_dc_detection_a field captures
+      the manufacturer's declared detection threshold; INV-18 enforces:
+        rcd_type=type_a iff charging_unit_dc_detection_a ≥ 6;
+        rcd_type=type_b iff charging_unit_dc_detection_a <  6.
+      Type A on a unit without 6 mA DC detection is a HIGH safety failure
+      (DC fault current can blind a Type A RCD; only Type B detects DC).
+    applies_to: circuits
+    enforcement: hard_fail
+
+  - id: EV-04
+    jurisdiction: [GB, KE]
+    standard_reference: "BS EN 61851-1 + BS EN 62196 (verified in part7-special-locations.json)"
+    rule_text: >
+      Charging unit standard MUST be BS EN 61851-1 (const enforced at IR
+      schema). Socket/plug MUST be BS EN 62196 Type 2 'Mennekes' for AC
+      Mode 3 OR CCS Combo 2 for DC Mode 4. The mode field enforces the
+      typical Mode 3 (AC up to 22 kW 32A 3-ph) vs Mode 4 (DC rapid 50-350
+      kW) distinction; Mode 1 (AC unattended via standard socket) and
+      Mode 2 (AC with in-cable controlbox) are DEPRECATED in §722 and NOT
+      permitted at D4 v2.0 ship.
+    applies_to: circuits
+    enforcement: hard_fail

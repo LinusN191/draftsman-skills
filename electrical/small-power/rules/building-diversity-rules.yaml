@@ -1,0 +1,76 @@
+# Building-level diversity factors per IET On-Site Guide 8th Edition Appendix A — Table A1
+# Applied AFTER per-circuit diversity (DIV-01..DIV-04 in diversity-rules.yaml)
+# v2.0 limited to office/industrial/healthcare per verified diversity-factors.json
+# retail/residential/data-center/hospitality deferred to v2.1
+#
+# Consumed by validator (INV-13 building_diversity self-consistency)
+# Source of truth: shared/standards/electrical/BS7671/diversity-factors.json
+
+rules:
+  - id: BLD-01
+    jurisdiction: [GB, KE]
+    standard_reference: "IET On-Site Guide 8th Edition Appendix A — Table A1 (office) + diversity-factors.json"
+    rule_text: >
+      Office building diversity profile: applies_load_types =
+      [office_small_power_workstation, office_lighting, office_hvac_vav,
+      office_lift_single, office_lift_two, office_lift_three_or_more].
+      design_density range 65-100 W/m²; future_expansion_pct default 25%.
+      Apply per-circuit DIV-NN factors first, then sum the diversified currents
+      and apply the building-level factor for the building's lift count.
+      Formula: building_diversified_demand_a = Σ(circuit_post_per_load_diversity_a × building_factor)
+    applies_to: building_diversity
+    enforcement: hard_fail
+
+  - id: BLD-02
+    jurisdiction: [GB, KE]
+    standard_reference: "IET On-Site Guide 8th Edition Appendix A — Table A1 (industrial) + diversity-factors.json"
+    rule_text: >
+      Industrial building diversity profile: applies_load_types =
+      [industrial_motor_groups, industrial_process_loads, industrial_lighting,
+      industrial_compressors, industrial_welding_resistive].
+      design_density range 80-150 W/m² (varies widely by industry).
+      future_expansion_pct default 30% (industrial change rate higher than office).
+      Apply per-circuit DIV-NN factors first; for motor groups use 100% largest +
+      50% remainder per IET OSG App A.
+    applies_to: building_diversity
+    enforcement: hard_fail
+
+  - id: BLD-03
+    jurisdiction: [GB, KE]
+    standard_reference: "HTM 06-01 + IET On-Site Guide 8th Edition Appendix A — Table A1 (healthcare)"
+    rule_text: >
+      Healthcare building diversity profile: applies_load_types MUST include
+      healthcare_clinical_equipment (enforced by IR schema allOf clause).
+      Also typically includes: healthcare_general_lighting, healthcare_hvac,
+      healthcare_lift_essential_emergency, healthcare_uninterruptible_supply.
+      design_density range 100-150 W/m². future_expansion_pct default 20%
+      (healthcare load growth driven by clinical-tech roadmap, often planned).
+      Apply per-circuit DIV-NN factors first; HTM 06-01 takes precedence
+      over IET OSG for clinical-area diversity.
+    applies_to: building_diversity
+    enforcement: hard_fail
+
+  - id: BLD-04
+    jurisdiction: [GB, KE, INT]
+    standard_reference: "applies_after computation-order discipline"
+    rule_text: >
+      building_diversity.applies_after MUST equal "per_load_diversity" (const).
+      This documents the computation order: per-circuit diversity (DIV-01..04)
+      runs FIRST at each circuit; then the building-level factor multiplies
+      the sum of per-circuit demanded currents. Reversing the order produces
+      wrong answers (building factor would be applied to undiversified loads).
+    applies_to: building_diversity
+    enforcement: hard_fail
+
+  - id: BLD-05
+    jurisdiction: [GB, KE]
+    standard_reference: "IET Guidance Note 1 §4 (blocks / commercial diversity context)"
+    rule_text: >
+      Per-circuit demand traceability: every circuit contributing to
+      building_diversified_demand_a MUST appear in per_circuit_demand_inputs[]
+      with its post-per-load-diversity current AND the building factor applied.
+      This is the structural ingredient of INV-19 (cable-sizing cascade
+      integration): the cable_sizing.payload.circuits[] must contain matching
+      entries so the cascade is traceable end-to-end.
+    applies_to: building_diversity
+    enforcement: hard_fail
