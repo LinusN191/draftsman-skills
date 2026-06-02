@@ -370,6 +370,24 @@ If the skill's input declares a consumed `cable-sizing` intent path, resolve eve
 ```
 (`intent_version` reflects the actual cable-sizing intent semver read from its `intent_version` field; default `"1.0.0"` if absent in the source intent.)
 
+### v2.0 D4 — Part-7 cascade sources by example
+
+The 4 NEW Part-7 examples shipped at C.1-C.4 of the D4 sprint consume
+special-locations intent from these cascade source paths:
+
+| New D4 example | Consumes from |
+|---|---|
+| `uk-pool-hall-sockets-and-isolation` (C.1) | `electrical/special-locations/examples/cascade-lighting-layout-uk-pool-hall/intent-out.json` (REUSED — anchor-driven engineering equivalence; pool zones derived from the same pool_basin anchor regardless of consumer skill) |
+| `uk-medical-group-2-isolation-sockets` (C.2) | `electrical/special-locations/examples/cascade-small-power-uk-medical-group-2-isolation/intent-out.json` (REUSED — existing producer-side cascade fixture from special-locations sprint C.2; closes the producer-fixture-without-consumer integrity loop) |
+| `uk-ev-charge-domestic` (C.3) | `electrical/special-locations/examples/cascade-small-power-uk-ev-charge-domestic/intent-out.json` (NEW — authored at D.1 of D4 sprint, BEFORE C.3 ships) |
+| `uk-sauna-with-heater-exemption` (C.4) | `electrical/special-locations/examples/cascade-small-power-uk-sauna-heater-exemption/intent-out.json` (NEW — authored at D.1 of D4 sprint, BEFORE C.4 ships) |
+
+For REUSED cascade sources: the engineer-of-record MUST document the
+anchor-driven engineering equivalence in the example's `reasoning.md` +
+`compliance_summary.assumptions[]` per the D.4 special-locations pattern
+(the bathroom example reused the lighting-layout bathroom cascade with
+explicit disclosure in 4 places).
+
 ### Step 13 — Resolve building_diversity (when inputs.building_diversity_inputs is supplied)
 
 When `inputs.building_diversity_inputs` is present, emit a top-level
