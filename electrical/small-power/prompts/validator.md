@@ -259,6 +259,188 @@ Room(s) affected: <ROOM_IDs>. Socket/isolator: <ID>. Zone: <ZONE_NAME>.
 Fix: populate consumed_intents.special_locations_zoning from the upstream special-locations intent-out.json and ensure all non_compliance_flags are cascaded with _cascaded_from attribution.
 ```
 
+## INV-13 — building_diversity self-consistency (HIGH)
+
+**Severity:** HIGH when `building_diversity` is present; N/A and trivially
+PASS when absent (input not supplied).
+
+**Rule (3 sub-checks):**
+1. `building_type` is in the v2.0 enum {office, industrial, healthcare}.
+   Anything else fails — retail/residential/data-center/hospitality are
+   deferred to v2.1 per spec §2 deferrals.
+2. `design_density_w_per_m2` is within the verified standards-file range
+   for the building_type, OR an explicit reviewer D-8 flag is emitted in
+   `compliance_summary._engineering_judgments[]` documenting the engineer
+   override (don't FAIL INV-13 on override alone — the override is a
+   legitimate engineering call backed by project-specific data; just
+   enforce the disclosure).
+3. `building_diversified_demand_a` is computationally consistent:
+   `building_diversified_demand_a ≈ Σ(per_circuit_demand_inputs[i].post_per_load_diversity_a × per_circuit_demand_inputs[i].building_factor_applied)`
+   within ±5% tolerance (rounding).
+
+**Validator action:** read `building_diversity` block. For each sub-check,
+emit PASS or FAIL with concrete numbers + standards-file ranges in evidence.
+
+**Citation:** IET On-Site Guide 8th Edition Appendix A — Table A1 +
+diversity-factors.json (verified). Rules BLD-01..BLD-05 + DIV-07 lift
+table. NEVER cite the original within-skill-depth-plan floor_factor
+numbers (office 0.75 / retail 0.85 / industrial 0.90) — those are NOT in
+the verified file and are the spec §2 citation-hygiene catch at brainstorm.
+
+**Rationale:** Without INV-13, the engineer could declare a building type
+without using its verified diversity profile, OR could compute the
+building_diversified_demand without going through the per-circuit traceability.
+The cascade integration (INV-19) is impossible without per_circuit_demand_inputs[].
+
+## INV-14 — Ring final circuit continuity (HIGH)
+
+**Severity:** HIGH on circuits where `topology == "ring"` and
+`ring_endpoints` is populated; N/A and trivially PASS when topology is not
+ring OR ring_continuity_endpoints input was not supplied.
+
+**Rule (2 sub-checks per rule TOP-09):**
+1. Both endpoints of the ring (endpoint_a_xy and endpoint_b_xy) MUST
+   land at the same MCB way (mcb_way_id). A ring that lands at two
+   different ways is structurally broken — it's two radials sharing
+   conductors, and the Zs / cable thermal protection assumptions for ring
+   topology no longer apply.
+2. `continuity_verified: true` MUST be set; the engineer-of-record bears
+   responsibility for the verification (typically end-to-end resistance
+   ≤ Zs limit per Reg 411 + visual inspection per Part 6).
+
+**Validator action:** read `circuits[i].ring_endpoints` for every ring
+circuit. Verify mcb_way_id consistency + continuity_verified=true.
+Emit evidence citing the circuit_id + both mcb_way_ids (when divergent) +
+the topology.
+
+**Citation:** `IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022
+§526 (top-level — sub-clause §526.2 not transcribed in verified file)`.
+Rule TOP-09.
+
+**Rationale:** A broken ring continues to function until a fault occurs;
+the rule catches this at design stage before commissioning.
+
+## INV-15 — Per-circuit floor-area cross-check (HIGH)
+
+**Severity:** HIGH on any circuit where `floor_area_m2` and `rooms_covered[]`
+are both populated; N/A otherwise.
+
+**Rule (per rule TOP-10):** `circuit.floor_area_m2` MUST equal
+`Σ(rooms_covered[].floor_area_m2)` within ±5% tolerance. Drift between
+the declared circuit area and the sum of room areas the circuit covers
+indicates one of:
+  - engineer declared an area without listing all rooms,
+  - rooms_covered list is stale (room added/removed in iteration),
+  - typo in either field.
+
+**Validator action:** for each circuit, compute the Σ and compare. Emit
+evidence with concrete m² values + the % drift.
+
+**Citation:** IET On-Site Guide §8.4.4 (8th Edition). Rule TOP-10.
+
+**Rationale:** INV-01 ring max 100 m² (existing) relies on
+`circuit.floor_area_m2` being honest. INV-15 keeps the field honest.
+
+## INV-16 — OCPD-topology coordination (HIGH)
+
+**Severity:** HIGH on every circuit.
+
+**Rule (per rule TOP-11):** the chosen MCB rating MUST be coordinated with
+the topology and conductor csa:
+- `topology=ring` → MCB ≤ 32 A
+- `topology=radial AND cable_csa_mm2=2.5` → MCB ≤ 20 A
+- `topology=radial AND cable_csa_mm2=4` → MCB ≤ 32 A
+- `topology=dedicated_radial` → MCB sized by connected load per §433.1.1
+  (cable-sizing's domain; INV-16 trivially PASSES on dedicated_radial
+  because cable-sizing's INV-04 already coordinates the OCPD-cable pair)
+
+A 32 A MCB on a 2.5 mm² radial would breach Iz before tripping under
+sustained 20-32 A; the cable overheats.
+
+**Validator action:** for each circuit, read topology + mcb_rating_a +
+cable_csa_mm2; apply the rule. Emit evidence with the chosen rating + the
+permitted ceiling per topology.
+
+**Citation:** `BS 7671:2018+A2:2022 §433.1.1 (verified) + IET On-Site Guide
+§8.4.4 (8th Edition)`. Rule TOP-11.
+
+**Rationale:** the most common ring/radial misdesign is over-rating the MCB;
+INV-16 catches it.
+
+## INV-17 — AMD 2 FCU spur modelling (MEDIUM)
+
+**Severity:** MEDIUM on circuits where `fcu_spurs[]` is populated; N/A
+otherwise.
+
+**Rule (per rule TOP-12):** every entry in `circuits[i].fcu_spurs[]` MUST
+satisfy:
+- `fcu_rating_a` ∈ {3, 5, 13} (the standard FCU plug sizes)
+- `downstream_loads_w ≤ fcu_rating_a × 230 V` (the FCU is the
+  downstream load's OCPD; overloaded FCU would still trip under fault
+  but the design is breach of best practice)
+
+**Validator action:** iterate fcu_spurs[]; compute the 230 V × fcu_rating
+limit; emit evidence per FCU with the downstream load + limit + headroom %.
+
+**Citation:** `IET On-Site Guide §8.4.4 (8th Edition, AMD 2 update) +
+BS 7671:2018+A2:2022 §433 (top-level — sub-clause §433.2 not transcribed
+in verified file; the FCU spur rules are in IET OSG)`. Rule TOP-12.
+
+**Rationale:** an over-loaded FCU is a design defect but not a structural
+compliance breach (because the FCU would still trip under fault). MEDIUM
+severity reflects that — engineer fixes it in design iteration without
+blocking the IR ship.
+
+## INV-18 — EV RCD Type A/B selection (HIGH)
+
+**Severity:** HIGH on every EV charge circuit (every circuit where
+`load_type` matches `ev_charge_*` and `ev_charge_metadata` is present).
+
+**Rule (per rule EV-03):** RCD type MUST follow Reg 722.531.3.101:
+- `rcd_type == "type_a"` iff `charging_unit_dc_detection_a ≥ 6`
+- `rcd_type == "type_b"` iff `charging_unit_dc_detection_a < 6`
+
+Type A on a charging unit without built-in 6 mA DC residual detection is
+a HIGH safety failure (DC fault current blinds the Type A; only Type B
+detects DC).
+
+**Validator action:** for each EV circuit, read both fields; apply the
+rule; FAIL HIGH if mismatched. Emit evidence with the declared values +
+why the rule fired the way it did.
+
+**Citation:** `BS 7671:2018+A2:2022 §722.531.3.101 (verified) + IET Code
+of Practice for EV Charging Equipment Installation (4th Ed)`. Rule EV-03.
+
+**Rationale:** this is the most common EV install safety failure surfacing
+in real EICR findings — engineers default to Type A because it's cheaper
+without checking the charging unit's DC detection capability.
+
+## INV-19 — Cable-sizing cascade integration with building_diversity (MEDIUM)
+
+**Severity:** MEDIUM when both `building_diversity.per_circuit_demand_inputs[]`
+AND `consumed_intents.cable_sizing.payload.circuits[]` are present; N/A
+otherwise.
+
+**Rule (per rule BLD-05):** every entry in `building_diversity.
+per_circuit_demand_inputs[]` MUST have a matching entry in
+`consumed_intents.cable_sizing.payload.circuits[]` by `circuit_id`, AND
+the `post_per_load_diversity_a` value in small-power's IR MUST reconcile
+with cable-sizing's `design_current_a` field for that circuit within ±5%
+tolerance.
+
+**Validator action:** iterate per_circuit_demand_inputs[]; for each entry,
+find the matching cable-sizing circuit; compute the % drift; FAIL MEDIUM
+if any drift exceeds 5%.
+
+**Citation:** skill-internal cross-skill integration (cluster roadmap §6.7
+cascade DSL). Rule BLD-05.
+
+**Rationale:** without INV-19, the building_diversity output could diverge
+from the cable-sizing input that small-power consumes. INV-19 makes the
+cascade traceable end-to-end and catches the most common iteration
+defect — small-power updates its building_diversity numbers without
+re-consuming a fresh cable-sizing intent.
+
 ---
 
 ### 3. Intent extraction validation
