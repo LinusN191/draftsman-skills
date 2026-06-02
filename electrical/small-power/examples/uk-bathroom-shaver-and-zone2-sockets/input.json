@@ -1,0 +1,31 @@
+{
+  "_note": "Sprint D.4 example — UK domestic bathroom (2.7 m × 2.1 m) with a single BS EN 61558-2-5 shaver supply. The room is recorded as room_type = 'bathroom' (Part-7 enum exact-match) specifically to fire INV-12's special-locations cascade. The companion adjacent hall room provides a small ring final circuit so the IR is not single-circuit-only. PASS case: zero 230 V sockets are placed inside any Zone 0/1/2, so all 4 INV-12 sub-checks resolve to PASS.",
+  "project_id": "uk-bathroom-shaver-and-zone2-sockets-eg01",
+  "jurisdiction": "GB",
+  "site_brief": "UK domestic bathroom + adjacent hall. The bathroom is a Part 7-701 location with bath (500-2200 × 0-700 mm footprint, 550 mm rim) and overhead shower head at 2100 mm AFFL. Only a shaver supply (BS EN 61558-2-5) is provided inside the bathroom; no general-purpose 230 V sockets are placed in any §701 zone. The bathroom shaver and the hall ring are both fed via 30 mA RCD per §701.411.3.3 cascaded constraint.",
+  "supply": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.35,
+    "psc_declared_ka": 6.0
+  },
+  "parent_db": {
+    "designation": "CU-MAIN",
+    "pfc_at_busbar_ka": 6.0
+  },
+  "room_briefs": [
+    {"room_id": "bathroom", "room_type": "bathroom",          "dimensions_m": {"length": 2.7, "width": 2.1, "height": 2.4}, "special_location": "bathroom_zone_3", "anticipated_loads_kw": 0.5, "socket_count_target": 1},
+    {"room_id": "hall",     "room_type": "hall_domestic",     "dimensions_m": {"length": 3.0, "width": 1.5, "height": 2.4}, "special_location": null,              "anticipated_loads_kw": 1.0, "socket_count_target": 2}
+  ],
+  "design_intent": {
+    "preferred_topology": "auto_by_jurisdiction",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "sheet_size": "A3",
+    "drawing_scale": "1:50"
+  },
+  "_cascade_sources": {
+    "special_locations_zoning": "electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom/intent-out.json"
+  },
+  "_cascade_disclosure": "At v1.0 there is no dedicated cascade-small-power-uk-bathroom-pass example in special-locations (only the FAIL-case cascade-small-power-uk-bathroom-violation exists). This consumer example reuses the lighting-layout PASS cascade payload for the same UK bathroom geometry — the special-locations IR is fixture-anchor-agnostic (zones are derived from bath_1 + shower_1 anchors, not from luminaire vs socket layout), so the payload is engineering-equivalent for either downstream skill. A small-power-specific bathroom PASS cascade is deferred to the Wave 2 sprint that backfills cascade-small-power-uk-bathroom-pass on the special-locations side."
+}

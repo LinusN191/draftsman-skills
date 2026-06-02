@@ -1,0 +1,136 @@
+{
+  "project_id": "uk-bathroom-shaver-and-zone2-sockets-eg01",
+  "intent_version": "1.2.0",
+  "parent_db_designation": "CU-MAIN",
+  "consumed_intents": {
+    "special_locations_zoning": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom/intent-out.json",
+      "payload": {
+        "zones": [
+          {
+            "zone_id": "zone_bath_1_z0",
+            "zone_type": "bath_zone_0",
+            "source_anchor_id": "bath_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+            "height_min_mm": 0,
+            "height_max_mm": 550,
+            "ip_rating_min": "IPx7",
+            "max_voltage_v": 12,
+            "rcd_required_ma": 30,
+            "isolation_required": true,
+            "allowed_equipment_classes": ["class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated", "shaver_socket", "fixed_heater_230v"],
+            "switch_position_min_distance_mm": null,
+            "overlapping_with_zone_ids": [],
+            "_clause_citation": "BS 7671:2018 §701.414.4.5 (SELV ≤12 V in Zone 0) + §701.411.3.3 (30 mA RCD blanket)",
+            "_derivation_note": "Zone 0 is the interior volume of the bath basin per BS 7671:2018 §701 zone-table convention. SELV-only equipment permitted; no socket/switch/non-SELV fixtures permitted."
+          },
+          {
+            "zone_id": "zone_bath_1_z1",
+            "zone_type": "bath_zone_1",
+            "source_anchor_id": "bath_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+            "height_min_mm": 550,
+            "height_max_mm": 2250,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+            "switch_position_min_distance_mm": null,
+            "overlapping_with_zone_ids": ["zone_shower_1_z1"],
+            "_clause_citation": "BS 7671:2018 §701 + §701.411.3.3 (30 mA RCD)",
+            "_derivation_note": "Zone 1 is the vertical projection above the bath polygon to 2250mm AFF per §701 zone-table convention. Overlaps shower_1 zone_1 polygon."
+          },
+          {
+            "zone_id": "zone_shower_1_z1",
+            "zone_type": "bath_zone_1",
+            "source_anchor_id": "shower_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+            "height_min_mm": 0,
+            "height_max_mm": 2100,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+            "switch_position_min_distance_mm": null,
+            "overlapping_with_zone_ids": ["zone_bath_1_z1"],
+            "_clause_citation": "BS 7671:2018 §701",
+            "_derivation_note": "Zone 1 from shower_1 head at 2100mm AFF: zone extends vertically from floor to shower-head height per §701 zone-table."
+          },
+          {
+            "zone_id": "zone_bath_1_z2",
+            "zone_type": "bath_zone_2",
+            "source_anchor_id": "bath_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[-100, -600], [2800, -600], [2800, 1300], [-100, 1300]],
+            "height_min_mm": 0,
+            "height_max_mm": 2250,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v"],
+            "switch_position_min_distance_mm": 3000,
+            "overlapping_with_zone_ids": ["zone_shower_1_z2"],
+            "_clause_citation": "BS 7671:2018 §701 + §701.512.3 (socket ≥3 m from Zone 1)",
+            "_derivation_note": "Zone 2 = 600mm horizontal extension of Zone 1 polygon per §701 zone-table convention. Socket outlets prohibited within 3m of Zone 1."
+          },
+          {
+            "zone_id": "zone_shower_1_z2",
+            "zone_type": "bath_zone_2",
+            "source_anchor_id": "shower_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[-100, -600], [2800, -600], [2800, 1300], [-100, 1300]],
+            "height_min_mm": 0,
+            "height_max_mm": 2100,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v"],
+            "switch_position_min_distance_mm": 3000,
+            "overlapping_with_zone_ids": ["zone_bath_1_z2"],
+            "_clause_citation": "BS 7671:2018 §701 + §701.512.3",
+            "_derivation_note": "Zone 2 from shower_1: 600mm horizontal extension of Zone 1; vertical ceiling tied to shower head at 2100mm AFF per §701."
+          }
+        ],
+        "electrical_constraints": [
+          {
+            "constraint_type": "rcd_blanket_by_room",
+            "applies_to_room_polygon": true,
+            "applies_to_zone_ids": null,
+            "_clause_citation": "BS 7671:2018 §701.411.3.3",
+            "_derivation_note": "30 mA RCD protection required for all low-voltage circuits serving locations containing a bath or shower per BS 7671:2018 §701.411.3.3.",
+            "rcd_rating_ma": 30,
+            "applies_to_circuit_types": ["lighting", "sockets", "shower_unit", "fixed_equipment", "shaver_socket"],
+            "sauna_heater_excluded": false
+          }
+        ],
+        "compliant": true,
+        "zone_count": 5,
+        "constraint_count": 1,
+        "violation_count_critical": 0,
+        "violation_count_high": 0,
+        "non_compliance_flags": [],
+        "anchor_source_summary": {
+          "all_extracted": true,
+          "extraction_source_lowest": "architectural_drawing_extraction"
+        }
+      }
+    }
+  },
+  "circuits": [
+    {"circuit_id": "C01", "designation": "Hall ring final circuit", "topology": "ring", "breaker_rating_a": 32, "breaker_type": "RCBO", "breaker_curve": "B", "rcd_type": "A", "rcd_sensitivity_ma": 30, "cable_csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC", "estimated_max_load_kw": 1.0, "diversified_max_load_a": 4.5, "rooms_covered": ["hall"]},
+    {"circuit_id": "C02", "designation": "Bathroom shaver supply (BS EN 61558-2-5)", "topology": "dedicated_radial", "breaker_rating_a": 6, "breaker_type": "RCBO", "breaker_curve": "B", "rcd_type": "A", "rcd_sensitivity_ma": 30, "cable_csa_mm2_or_awg": "1.5mm² T+E", "estimated_max_load_kw": 0.5, "diversified_max_load_a": 2.2, "rooms_covered": ["bathroom"]}
+  ]
+}

@@ -1,0 +1,455 @@
+{
+  "drawing_type": "small_power_layout",
+  "version": "1.2.0",
+  "meta": {
+    "project_id": "uk-bathroom-shaver-and-zone2-sockets-eg01",
+    "skill_version": "1.2.0",
+    "produced_at": "2026-06-02T00:00:00Z",
+    "consumed_intents": [
+      {
+        "intent_type": "special-locations-zoning",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/special-locations"
+      }
+    ]
+  },
+  "jurisdiction": "GB",
+  "supply_origin": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.35,
+    "psc_declared_ka": 6.0
+  },
+  "parent_db": {
+    "designation": "CU-MAIN",
+    "pfc_at_busbar_ka": 6.0
+  },
+  "circuits": [
+    {
+      "circuit_id": "C01",
+      "designation": "Hall ring final circuit (serves the only general-purpose 13 A sockets in this scope; passes alongside the bathroom but no socket sits inside any §701 zone)",
+      "topology": "ring",
+      "ocpd": {
+        "rating_a": 32,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 6.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC",
+        "cores": 3,
+        "length_m_total": 14.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 1.0,
+      "diversified_max_load_a": 4.5,
+      "rooms_covered": [
+        "hall"
+      ]
+    },
+    {
+      "circuit_id": "C02",
+      "designation": "Bathroom shaver supply (BS EN 61558-2-5 isolating transformer) — dedicated radial; 30 mA RCD per cascaded §701.411.3.3 blanket constraint",
+      "topology": "dedicated_radial",
+      "ocpd": {
+        "rating_a": 6,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 6.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "1.5mm² T+E",
+        "cores": 3,
+        "length_m_total": 4.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 0.5,
+      "diversified_max_load_a": 2.2,
+      "rooms_covered": [
+        "bathroom"
+      ]
+    }
+  ],
+  "rooms": [
+    {
+      "room_id": "bathroom",
+      "room_type": "bathroom",
+      "dimensions_m": {
+        "length": 2.7,
+        "width": 2.1,
+        "height": 2.4
+      },
+      "special_location": "bathroom_zone_3",
+      "sockets": [
+        {
+          "id": "bathroom-S01",
+          "type": "BS_EN_61558_2_5_shaver_supply_unit",
+          "mount": "wall",
+          "height_mm": 1400,
+          "circuit_id": "C02",
+          "ip_rating": "IP44"
+        }
+      ]
+    },
+    {
+      "room_id": "hall",
+      "room_type": "hall_domestic",
+      "dimensions_m": {
+        "length": 3.0,
+        "width": 1.5,
+        "height": 2.4
+      },
+      "special_location": null,
+      "sockets": [
+        {
+          "id": "hall-S01",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "hall-S02",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        }
+      ]
+    }
+  ],
+  "drawing_layout": {
+    "sheet_size": "A3",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "drawing_scale": "1:50"
+  },
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      {
+        "message": "Bathroom (room_type=bathroom, Part 7-701 location) contains a single BS EN 61558-2-5 shaver supply unit on the room's south wall, outside Zone 0/1/2 horizontal extent and at 1400 mm AFFL (clear of Zone 1 vertical envelope). No general-purpose 230 V socket is placed inside the room — design choice keeps the §701.512.3 3 m boundary rule trivially satisfied.",
+        "code_clause": "BS 7671:2018+A2:2022 §701.512.3",
+        "severity": "info"
+      },
+      {
+        "message": "Cascaded from special-locations: 30 mA RCD blanket per BS 7671:2018+A2:2022 §701.411.3.3 applies to all low-voltage circuits serving the bathroom. C02 (shaver supply) is on a Type A 30 mA RCBO satisfying the blanket. C01 (hall ring) does not serve any fixture inside the bathroom room polygon but is also on a Type A 30 mA RCBO per the §411.3.3 default for sockets ≤32 A.",
+        "code_clause": "BS 7671:2018+A2:2022 §701.411.3.3",
+        "severity": "info"
+      },
+      {
+        "message": "All Zs verification deferred to calc.zs_loop_impedance per WI3; both circuits have tool_call_pending_for_zs_verification=true and TOOL-CALL-PENDING:calc.zs_loop_impedance is set in flags[].",
+        "code_clause": "BS 7671:2018+A2:2022 §411.4.5",
+        "severity": "info"
+      }
+    ],
+    "assumptions": [
+      "Ze=0.35Ω and PSCC=6 kA declared by DNO at the consumer cut-out; not yet measured on site.",
+      "Bathroom anchor geometry (bath 500-2200 × 0-700 mm, shower head at 2100 mm AFFL) cascaded from special-locations payload; consumer trusts the upstream zone polygons verbatim.",
+      "Shaver supply BS EN 61558-2-5 unit is rated IP44 per part-7 best practice for splash zones; the unit's secondary side provides electrical separation per §413.",
+      "Hall ring final circuit (~3.0 × 1.5 m floor area) is well within the IET OSG §8.4.4 100 m² recommended limit for a 32 A ring.",
+      "Cascade source reuses the lighting-layout shared bathroom payload; engineer-of-record reconciles with a project-specific small-power bathroom cascade when one is authored on the special-locations side (deferred Wave 2 sprint)."
+    ]
+  },
+  "flags": [
+    "TOOL-CALL-PENDING:calc.zs_loop_impedance"
+  ],
+  "drawing_notes": [
+    "Bathroom (Part 7-701): single BS EN 61558-2-5 shaver supply at 1400 mm AFFL on the south wall, outside Zone 0/1/2 horizontal polygon. No general-purpose 230 V sockets inside the bathroom — design avoids §701.512.3 3 m boundary issues entirely.",
+    "Hall ring (C01) 2.5 mm² + 1.5 mm² CPC PVC T+E; 32 A Type B RCBO with Type A 30 mA RCD per BS 7671 §411.3.3.",
+    "Shaver supply (C02) 1.5 mm² T+E; 6 A Type B RCBO with Type A 30 mA RCD per cascaded §701.411.3.3 blanket constraint."
+  ],
+  "rationale": {
+    "chat_summary": "UK domestic bathroom (Part 7-701 location, room_type=bathroom exact-match to fire INV-12) + adjacent hall. Single BS EN 61558-2-5 shaver supply on dedicated C02 radial inside the bathroom, located outside Zone 0/1/2 horizontal polygon. Hall has 2× BS 1363 double 13 A sockets on a C01 ring final. Both circuits Type A 30 mA RCBOs per cascaded §701.411.3.3 blanket. consumed_intents.special_locations_zoning is populated from the upstream PASS cascade payload (5 zones, compliant=true, zero flags). INV-12 PASS — all 4 sub-checks satisfied.",
+    "sections": [
+      {
+        "title": "Why room_type=bathroom (exact Part-7 enum match)",
+        "summary": "Sprint D.4's binding condition is that the cascade INV (INV-12) must actually fire on this example. The schema's allOf clause and INV-12's wording both pivot on room_type being one of the Part-7 set: {bathroom, shower_room, swimming_pool_hall, sauna, medical_group_0_area, medical_group_1_ward, medical_group_2_theatre, external_landscape}. The existing uk-3bed-dwelling example uses room_type=bathroom_domestic which is NOT in the set, so INV-12 was N/A there. This example uses the exact bathroom literal so the cascade fires end-to-end.",
+        "decisions": [
+          {
+            "label": "room_type literal selection",
+            "summary": "Set rooms[0].room_type=bathroom (no _domestic suffix). The Part 7-701 enum trigger then activates the schema's allOf clause requiring consumed_intents.special_locations_zoning to be populated.",
+            "rule": "Part-7 enum trigger in small-power IR schema allOf clause",
+            "code_clause": "small-power-ir.schema.json allOf"
+          }
+        ]
+      },
+      {
+        "title": "Cascade prerequisite (special-locations payload)",
+        "summary": "consumed_intents.special_locations_zoning carries the 5-zone bathroom payload (bath_z0, bath_z1, shower_z1, bath_z2, shower_z2) and 1 rcd_blanket_by_room electrical constraint. The cascade's compliant flag is true, zero non_compliance_flags. Source: electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom/intent-out.json. The payload is engineering-equivalent for either downstream skill — special-locations IR is anchor-driven (bath_1 + shower_1), not fixture-type-driven.",
+        "decisions": [
+          {
+            "label": "Reuse lighting-layout PASS cascade payload",
+            "summary": "No cascade-small-power-uk-bathroom-pass exists at v1.0. The lighting-layout PASS payload is reused since the bath_1 + shower_1 anchor geometry, the §701 zone polygons, and the rcd_blanket_by_room constraint are identical for both downstream skills.",
+            "rule": "Anchor-driven cascade engineering equivalence",
+            "code_clause": "BS 7671:2018+A2:2022 §701"
+          }
+        ]
+      },
+      {
+        "title": "Socket placement decisions",
+        "summary": "Zero 230 V sockets inside any §701 zone. The bathroom contains exactly one BS EN 61558-2-5 shaver supply on the south wall at (x=2400, y=800) — outside the bath/shower zone polygons (which span x=500..2200 and the bath_z2 polygon extends to x=-100..2800 only at y between -600..1300 around the bath, missing the south wall position at y=800 inside the room's 2700×2100 envelope). The shaver supply is at 1400 mm AFFL, which is inside Zone 2's vertical envelope (0..2250 mm) but Zone 2 explicitly permits shaver supplies (it only prohibits socket_230v).",
+        "decisions": [
+          {
+            "label": "Shaver supply outside socket prohibitions",
+            "summary": "BS EN 61558-2-5 shaver supply units are excluded from Zone 2's prohibited_fixture_types list (Zone 2 prohibits only socket_230v). Placement is therefore compliant.",
+            "rule": "Part 7-701 socket exception",
+            "code_clause": "BS 7671:2018+A2:2022 §701.512.3"
+          },
+          {
+            "label": "No general-purpose 230 V socket inside the bathroom",
+            "summary": "Design choice — keeps the §701.512.3 3 m boundary rule from any Zone 1 boundary trivially satisfied. Two BS 1363 sockets live in the adjacent hall (C01 ring) outside the bathroom room polygon.",
+            "rule": "§701.512.3 socket placement",
+            "code_clause": "BS 7671:2018+A2:2022 §701.512.3"
+          }
+        ]
+      },
+      {
+        "title": "Circuit topology + RCD posture",
+        "summary": "C01 hall ring final: 32 A Type B RCBO + 2.5 mm² + 1.5 mm² CPC PVC ring (14 m total run). C02 bathroom shaver radial: 6 A Type B RCBO + 1.5 mm² T+E (4 m). Both Type A 30 mA RCDs per the §701.411.3.3 cascaded blanket constraint — even though C01 does not serve the bathroom, the §411.3.3 default for sockets ≤32 A already mandates 30 mA RCD coverage, so the cascaded constraint is satisfied without imposing any additional design change.",
+        "decisions": [
+          {
+            "label": "Type A 30 mA on both circuits",
+            "summary": "Cascaded special-locations electrical_constraints[0] requires 30 mA RCD for all LV circuits serving the bathroom. The shaver supply circuit (C02) is in scope; the hall ring (C01) is out of scope of §701 but is on 30 mA by the §411.3.3 default rule.",
+            "rule": "Cascaded §701.411.3.3 blanket + §411.3.3 socket default",
+            "code_clause": "BS 7671:2018+A2:2022 §701.411.3.3"
+          },
+          {
+            "label": "Shaver supply isolating transformer (BS EN 61558-2-5)",
+            "summary": "Inherent electrical separation from secondary side per §413 — the shaver supply's primary is on a 6 A 30 mA RCBO and the secondary serves the user-facing socket via the isolating transformer.",
+            "rule": "Electrical separation via shaver isolating transformer",
+            "code_clause": "BS 7671:2018+A2:2022 §413"
+          }
+        ]
+      },
+      {
+        "title": "INV-12 cascade walk (4 sub-checks)",
+        "summary": "Sub-check 1 PASS (consumed_intents.special_locations_zoning present with payload). Sub-check 2 PASS (payload.compliant=true). Sub-check 3 PASS — walked sockets[] = [bathroom-S01 (shaver supply, type BS_EN_61558_2_5_shaver_supply_unit, not in any zone's prohibited list), hall-S01, hall-S02 (both BS 1363 13 A doubles in the hall room, outside the bathroom polygon, no §701 zone containment). No 230 V socket sits inside bath_zone_1 or bath_zone_2. Sub-check 4 PASS — payload.non_compliance_flags[] is empty so there is nothing to cascade. compliance_summary.non_compliance_flags[] contains only info-severity design notes (not failures), no _cascaded_from attribution required since nothing was cascaded.",
+        "decisions": [
+          {
+            "label": "Sub-check 3 cross-walk",
+            "summary": "3 sockets total: bathroom-S01 (shaver) clears Zone 2's prohibited list which only blocks socket_230v; hall-S01/S02 are outside the bathroom room polygon and therefore outside every §701 zone in the payload.",
+            "rule": "Point-in-polygon + zone prohibition check",
+            "code_clause": "BS 7671:2018+A2:2022 §701.512.3"
+          }
+        ]
+      },
+      {
+        "title": "Honest disclosures",
+        "summary": "(1) The cascade source is lighting-layout's PASS bathroom payload — anchor geometry is engineering-equivalent for either downstream skill, so reuse is acceptable. A small-power-specific bathroom PASS cascade is deferred to Wave 2. (2) Hall ring topology is on the smaller end of typical UK domestic — the C01 ring has a short run (14 m) and modest diversified load (4.5 A) by design.",
+        "decisions": []
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Ring (C01) cable composition is 2.5 mm² + 1.5 mm² CPC PVC T+E, matching BS 7671:2018+A2:2022 Table 7.1 for a 32 A ring final circuit; 1.5 mm² CPC ratio satisfies the standard ring composition rule."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Every circuit's ocpd.breaking_capacity_ka (6.0) is greater than or equal to parent_db.pfc_at_busbar_ka (6.0) per BS 7671:2018+A2:2022 §434.5.1 and IEC 60898-1 conditional short-circuit ratings."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All BS 1363 13 A socket outlets (hall-S01, hall-S02) are on circuits with Type A 30 mA RCD coverage per BS 7671:2018+A2:2022 §411.3.3 additional protection rule for socket outlets up to 32 A in domestic premises."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Bathroom (room_type=bathroom, Part 7-701 location) has zero 230 V socket outlets inside any §701 zone. The single shaver supply is BS EN 61558-2-5 compliant. Hall sockets sit outside the bathroom room polygon. §701.512.3 3 m boundary rule trivially satisfied."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 (ring) topology=ring with rooms_covered=[hall]; C02 (dedicated_radial) topology=dedicated_radial with rooms_covered=[bathroom]. All sockets cross-reference a circuit_id (C01 or C02) that exists in circuits[]."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "low",
+      "evidence": "Both circuits use Type B curve — domestic ring + shaver supply have no significant inrush. No Type C/D justification required."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "high",
+      "evidence": "diversified_max_load_a per circuit (C01: 4.5 A; C02: 2.2 A) is less than ocpd.rating_a (C01: 32 A; C02: 6 A). Diversity applied per IET OSG Appendix A general lighting + sockets profile."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Both circuits have tool_call_pending_for_zs_verification=true (deferred per WI3). flags[] carries TOOL-CALL-PENDING:calc.zs_loop_impedance accordingly."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Every room (bathroom, hall) appears in at least one circuit's rooms_covered[] (bathroom→C02; hall→C01). No orphan rooms; no circuit covers a room without sockets in that room."
+    },
+    {
+      "id": "INV-10",
+      "passes": true,
+      "severity": "low",
+      "evidence": "drawing_layout.drawing_standard=BS 1192:2007+A2:2016 matches the GB jurisdiction expected default for small-power layout drawings."
+    },
+    {
+      "id": "INV-11",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No cable-sizing intent consumed in this example (consumed_intents.cable_sizing absent). INV-11 is a no-op per the v1.1 conditional rule; both circuits carry tool_call_pending_for_zs_verification=true to defer Zs to calc.zs_loop_impedance."
+    },
+    {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Cascade source: electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom/intent-out.json. Sub-check 1 PASS (consumed_intents.special_locations_zoning present). Sub-check 2 PASS (payload.compliant=true, 5 zones, 1 rcd_blanket constraint, 0 flags). Sub-check 3 PASS — walked sockets: bathroom-S01 (BS_EN_61558_2_5_shaver_supply_unit, 1400 mm AFFL) sits in Zone 2 vertical envelope but BS EN 61558-2-5 is NOT in bath_zone_2.prohibited_fixture_types (which lists only socket_230v); hall-S01, hall-S02 are outside the bathroom polygon. Sub-check 4 PASS — payload.non_compliance_flags[]=[]; nothing to cascade so no _cascaded_from attribution required. BS 7671:2018+A2:2022 §701.411.3.3 + §701.512.3."
+    }
+  ],
+  "consumed_intents": {
+    "special_locations_zoning": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom/intent-out.json",
+      "payload": {
+        "zones": [
+          {
+            "zone_id": "zone_bath_1_z0",
+            "zone_type": "bath_zone_0",
+            "source_anchor_id": "bath_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+            "height_min_mm": 0,
+            "height_max_mm": 550,
+            "ip_rating_min": "IPx7",
+            "max_voltage_v": 12,
+            "rcd_required_ma": 30,
+            "isolation_required": true,
+            "allowed_equipment_classes": ["class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated", "shaver_socket", "fixed_heater_230v"],
+            "switch_position_min_distance_mm": null,
+            "overlapping_with_zone_ids": [],
+            "_clause_citation": "BS 7671:2018 §701.414.4.5 (SELV ≤12 V in Zone 0) + §701.411.3.3 (30 mA RCD blanket)",
+            "_derivation_note": "Zone 0 is the interior volume of the bath basin per BS 7671:2018 §701 zone-table convention. SELV-only equipment permitted; no socket/switch/non-SELV fixtures permitted."
+          },
+          {
+            "zone_id": "zone_bath_1_z1",
+            "zone_type": "bath_zone_1",
+            "source_anchor_id": "bath_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+            "height_min_mm": 550,
+            "height_max_mm": 2250,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+            "switch_position_min_distance_mm": null,
+            "overlapping_with_zone_ids": ["zone_shower_1_z1"],
+            "_clause_citation": "BS 7671:2018 §701 + §701.411.3.3 (30 mA RCD)",
+            "_derivation_note": "Zone 1 is the vertical projection above the bath polygon to 2250mm AFF per §701 zone-table convention. Overlaps shower_1 zone_1 polygon."
+          },
+          {
+            "zone_id": "zone_shower_1_z1",
+            "zone_type": "bath_zone_1",
+            "source_anchor_id": "shower_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+            "height_min_mm": 0,
+            "height_max_mm": 2100,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+            "switch_position_min_distance_mm": null,
+            "overlapping_with_zone_ids": ["zone_bath_1_z1"],
+            "_clause_citation": "BS 7671:2018 §701",
+            "_derivation_note": "Zone 1 from shower_1 head at 2100mm AFF: zone extends vertically from floor to shower-head height per §701 zone-table."
+          },
+          {
+            "zone_id": "zone_bath_1_z2",
+            "zone_type": "bath_zone_2",
+            "source_anchor_id": "bath_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[-100, -600], [2800, -600], [2800, 1300], [-100, 1300]],
+            "height_min_mm": 0,
+            "height_max_mm": 2250,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v"],
+            "switch_position_min_distance_mm": 3000,
+            "overlapping_with_zone_ids": ["zone_shower_1_z2"],
+            "_clause_citation": "BS 7671:2018 §701 + §701.512.3 (socket ≥3 m from Zone 1)",
+            "_derivation_note": "Zone 2 = 600mm horizontal extension of Zone 1 polygon per §701 zone-table convention. Socket outlets prohibited within 3m of Zone 1."
+          },
+          {
+            "zone_id": "zone_shower_1_z2",
+            "zone_type": "bath_zone_2",
+            "source_anchor_id": "shower_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[-100, -600], [2800, -600], [2800, 1300], [-100, 1300]],
+            "height_min_mm": 0,
+            "height_max_mm": 2100,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v"],
+            "switch_position_min_distance_mm": 3000,
+            "overlapping_with_zone_ids": ["zone_bath_1_z2"],
+            "_clause_citation": "BS 7671:2018 §701 + §701.512.3",
+            "_derivation_note": "Zone 2 from shower_1: 600mm horizontal extension of Zone 1; vertical ceiling tied to shower head at 2100mm AFF per §701."
+          }
+        ],
+        "electrical_constraints": [
+          {
+            "constraint_type": "rcd_blanket_by_room",
+            "applies_to_room_polygon": true,
+            "applies_to_zone_ids": null,
+            "_clause_citation": "BS 7671:2018 §701.411.3.3",
+            "_derivation_note": "30 mA RCD protection required for all low-voltage circuits serving locations containing a bath or shower per BS 7671:2018 §701.411.3.3.",
+            "rcd_rating_ma": 30,
+            "applies_to_circuit_types": ["lighting", "sockets", "shower_unit", "fixed_equipment", "shaver_socket"],
+            "sauna_heater_excluded": false
+          }
+        ],
+        "compliant": true,
+        "zone_count": 5,
+        "constraint_count": 1,
+        "violation_count_critical": 0,
+        "violation_count_high": 0,
+        "non_compliance_flags": [],
+        "anchor_source_summary": {
+          "all_extracted": true,
+          "extraction_source_lowest": "architectural_drawing_extraction"
+        }
+      }
+    }
+  }
+}
