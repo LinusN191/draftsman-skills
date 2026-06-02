@@ -770,7 +770,8 @@
           "evidence": {
             "type": "string",
             "minLength": 20,
-            "maxLength": 800
+            "maxLength": 1200,
+            "description": "Per-INV evidence string. Cap 800→1200 raised in Wave 1 (D.6) for INV-16 cascade evidence which walks 4 sub-checks + cascade source path + circuits walked + 4 distribution sub-rules — matches the lighting-layout shared-schema cap. Style-only cap raise per [[feedback-no-trim-non-consequential]]; engineering content preserved."
           }
         }
       }

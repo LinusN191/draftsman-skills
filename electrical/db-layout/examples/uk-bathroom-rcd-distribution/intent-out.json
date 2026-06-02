@@ -1,0 +1,47 @@
+{
+  "db_id": "DB-FF1",
+  "incoming_supply": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "supply_rating_a": 60,
+    "supply_class": "non_essential"
+  },
+  "circuits": [
+    {
+      "id": "C-B1",
+      "module_id": "W1",
+      "breaker_rating_a": 6,
+      "breaker_curve": "B",
+      "rcd_protected": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2": 1.5,
+      "cable_cores": 3,
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 0.4,
+      "approximate_route_length_m": 14,
+      "breaker_breaking_capacity_ka": 6
+    },
+    {
+      "id": "C-B2",
+      "module_id": "W2",
+      "breaker_rating_a": 16,
+      "breaker_curve": "B",
+      "rcd_protected": true,
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2": 2.5,
+      "cable_cores": 3,
+      "voltage_class": "LV_power",
+      "downstream_load_kw": 1.6,
+      "approximate_route_length_m": 16,
+      "breaker_breaking_capacity_ka": 6
+    }
+  ],
+  "spare_ways": 8,
+  "main_switch": {
+    "type": "switch-disconnector",
+    "rating_a": 60,
+    "breaking_capacity_ka": 10
+  }
+}

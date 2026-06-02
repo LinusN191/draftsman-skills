@@ -1,0 +1,44 @@
+{
+  "$schema": "../../inputs.json",
+  "project_meta": {
+    "project_id": "uk-bath-rcd-eg01",
+    "name": "17 Maple Drive — 3-bed Semi (Bathroom Distribution Cut)",
+    "client": "Private",
+    "designer": "DraftsMan Skills demo",
+    "date": "2026-06-02",
+    "revision": "P01"
+  },
+  "jurisdiction": "GB",
+  "board_type": "consumer_unit",
+  "db_designation": "DB-FF1",
+  "location": "first floor airing cupboard, alongside hot-water cylinder bulkhead",
+  "fed_from": "MAIN",
+  "supply_voltage_v": "230",
+  "phase_arrangement": "single_phase",
+  "supply_rating_a": 60,
+  "ze_ohm_at_origin": 0.35,
+  "ways_total": 10,
+  "ways_spare_minimum": 4,
+  "form_separation_iec61439": "1",
+  "ip_rating": "IP2X",
+  "diversity_factor_main": 0.5,
+  "rcd_type_default": "A",
+  "circuits_declared": [
+    { "id": "C-B1", "designation": "Bathroom luminaires (IPx4 downlights + extract fan)", "ocpd_rating_a": 6, "ocpd_curve": "B", "ocpd_type": "RCBO", "rcd_protected": true, "rcd_sensitivity_ma": 30, "phase_csa_mm2": 1.5, "length_m": 14, "load_kw": 0.4, "voltage_class": "LV_power" },
+    { "id": "C-B2", "designation": "Bathroom shaver socket (BS EN 61558-2-5) + shower-pump spur", "ocpd_rating_a": 16, "ocpd_curve": "B", "ocpd_type": "RCBO", "rcd_protected": true, "rcd_sensitivity_ma": 30, "phase_csa_mm2": 2.5, "length_m": 16, "load_kw": 1.6, "voltage_class": "LV_power" }
+  ],
+  "wi_inputs": {
+    "wi_id": "WI3-db-layout-cut",
+    "intent_inputs": {
+      "fault_level_intent_path": null,
+      "engineer_declared_ifault_ka": 1.5,
+      "special_locations_zoning_intent_path": "electrical/special-locations/examples/cascade-db-layout-uk-bathroom-rcd-enforcement/intent-out.json"
+    },
+    "room_context": {
+      "room_polygon_mm": [[0, 0], [2700, 0], [2700, 2100], [0, 2100]],
+      "room_type": "bathroom",
+      "comment": "UK 2700×2100 bathroom — recurring sprint fixture from D.2/D.4. This DB-FF1 example shows the BOARD-side concern: which circuits are required to be 30 mA RCD-protected to satisfy the §701 rcd_blanket cascaded constraint."
+    },
+    "scope_note": "Distribution board cut showing ONLY the two circuits serving the bathroom (C-B1 luminaires + C-B2 shaver + shower pump). DB-FF1 also serves 7 other first-floor circuits; out of scope for this Part-7 demonstration. The full board would carry C-L01..C-L05 + C-S01..C-S03 on the other ways — flagged as future deliverable."
+  }
+}
