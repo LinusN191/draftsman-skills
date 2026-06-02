@@ -2321,4 +2321,410 @@ Phase C complete. Next: Phase D ship.
 
 ---
 
-[Phase D continues in plan portion 4.]
+---
+
+## Phase D — Ship (6 tasks, Sonnet + Opus mix)
+
+Phase D adds the 2 NEW producer-side cascade fixtures in special-locations (D.1; Opus), does an honest-disclosure sweep across the sprint (D.2; Sonnet), runs the pre-ship Sonnet 11-check fence (D.3), writes 3 CHANGELOGs + memory + index (D.4; Sonnet), runs the final cross-sprint Opus integration review (D.5), and stops at the push-deferred-to-user gate (D.6).
+
+---
+
+## Task D.1: 2 NEW producer-side cascade fixtures in special-locations (Opus)
+
+**Why Opus:** New cascade producer fixtures need engineering content + verified citations + special-locations IR conformance.
+
+**Files:**
+- Create: `electrical/special-locations/examples/cascade-small-power-uk-ev-charge-domestic/{input,output,reasoning,intent-out}.{json,md}`
+- Create: `electrical/special-locations/examples/cascade-small-power-uk-sauna-heater-exemption/{input,output,reasoning,intent-out}.{json,md}`
+- Modify: `electrical/small-power/examples/uk-ev-charge-domestic/output.json` (repoint `consumed_intents.special_locations_zoning.source_path` from synthetic helper to D.1's new real cascade)
+- Modify: `electrical/small-power/examples/uk-sauna-with-heater-exemption/output.json` (same repoint)
+
+- [ ] **Step 1: Read existing C.2 producer-side fixtures for shape**
+
+```bash
+ls electrical/special-locations/examples/cascade-small-power-*/
+cat electrical/special-locations/examples/cascade-small-power-uk-medical-group-2-isolation/intent-out.json | python3 -m json.tool | head -60
+```
+
+- [ ] **Step 2: Build `cascade-small-power-uk-ev-charge-domestic/` (4 files)**
+
+Standard EV charge domestic scenario producer-side:
+- Outdoor anchor (driveway garage door area) at the dwelling boundary
+- `room_type: "external_landscape"` (per the §722 EV charging context; outdoor charge point)
+- `anchor_fixtures[]` includes an `elv_lighting_circuit_anchor` adjacent (typical install: charge point + LED step-down lighting)
+- 0 zones derived from the EV anchor alone (EV isn't a Part-7 spatial zone like bath/pool); cascade payload is primarily for the cable-sizing + RCD-type constraint propagation
+- 1 electrical_constraint: an EV-specific `dedicated_circuit_required` block per Reg 722 (extension of the existing constraint_type enum or a new entry in `_engineering_judgments[]` — choose approach that respects special-locations v1.0 schema; if no exact constraint_type fits, document in `_engineering_judgments[]` with full citation)
+
+Honest disclosure: the EV charge point cascade is at the boundary of small-power's scope and a future dedicated EV-Charge skill. The producer fixture documents this seam.
+
+- [ ] **Step 3: Build `cascade-small-power-uk-sauna-heater-exemption/` (4 files)**
+
+Standard sauna scenario producer-side (same geometry as special-locations C.1 #5 `uk-sauna-with-3-zone-derivation`, but consumer-targeted at small-power):
+- 2400×2000 mm sauna + 1 sauna_heater anchor at corner
+- 3 zones derived (sauna_zone_1 around heater + sauna_zone_2 sauna body + sauna_zone_3 above 1.5 m)
+- 1 electrical_constraint: `rcd_blanket_by_room` with `sauna_heater_excluded: true` per §703.411.3.3
+
+This is functionally identical to special-locations C.1 #5 but explicitly tagged as a small-power-consumer cascade source. The cascade source path naming (`cascade-small-power-uk-sauna-heater-exemption`) makes the producer-side intent of "this is the small-power-consumer source" auditable.
+
+- [ ] **Step 4: Validate both new cascade outputs against special-locations IR schema**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('electrical/special-locations/schemas/special-locations-ir.schema.json'))
+for ex in ['cascade-small-power-uk-ev-charge-domestic', 'cascade-small-power-uk-sauna-heater-exemption']:
+    d = json.load(open(f'electrical/special-locations/examples/{ex}/output.json'))
+    jsonschema.validate(instance=d, schema=schema)
+    print(f'{ex}: OK; zone_count={len(d.get(\"zones\", []))}; constraint_count={len(d.get(\"electrical_constraints\", []))}; compliant={d[\"calculation_summary\"][\"compliant\"]}')
+"
+```
+
+- [ ] **Step 5: Repoint small-power examples C.3 + C.4**
+
+For each of `uk-ev-charge-domestic` and `uk-sauna-with-heater-exemption`:
+- Update `consumed_intents.special_locations_zoning.source_path` to the new cascade dir path
+- Update `consumed_intents.special_locations_zoning.payload` with the cascade source's verbatim payload
+- Update `reasoning.md` honest disclosure to reflect that the cascade is now resolved (not synthetic/deferred)
+- Validate the small-power IR still passes against the v2.0 schema
+
+- [ ] **Step 6: Verify byte-identical payload diff (cascade source ↔ consumer's consumed_intents.payload)**
+
+```bash
+python3 -c "
+import json
+for pair in [('cascade-small-power-uk-ev-charge-domestic', 'uk-ev-charge-domestic'), ('cascade-small-power-uk-sauna-heater-exemption', 'uk-sauna-with-heater-exemption')]:
+    producer = json.load(open(f'electrical/special-locations/examples/{pair[0]}/intent-out.json'))
+    consumer = json.load(open(f'electrical/small-power/examples/{pair[1]}/output.json'))
+    pp = producer.get('special_locations_zoning', {})
+    cp = consumer['consumed_intents']['special_locations_zoning']['payload']
+    keys = ['compliant', 'zone_count', 'constraint_count', 'violation_count_critical']
+    matches = all(pp.get(k) == cp.get(k) for k in keys)
+    print(f'{pair[0]} ↔ {pair[1]}: {\"BYTE-IDENTICAL on 4 key fields\" if matches else \"DIFFER\"}')"
+```
+
+- [ ] **Step 7: Banned-citation grep + gates + commit**
+
+```bash
+grep -rnE "(OZEV|3rd Edition|§526\.2|§433\.2|Reg 559)" electrical/special-locations/examples/cascade-small-power-uk-ev-charge-domestic/ electrical/special-locations/examples/cascade-small-power-uk-sauna-heater-exemption/ | grep -v "do NOT\|never cite\|banned\|sub-clause\|not transcribed\|NOT §" && echo "FAIL" || echo "PASS"
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/special-locations/examples/cascade-small-power-uk-ev-charge-domestic/ \
+        electrical/special-locations/examples/cascade-small-power-uk-sauna-heater-exemption/ \
+        electrical/small-power/examples/uk-ev-charge-domestic/ \
+        electrical/small-power/examples/uk-sauna-with-heater-exemption/
+git commit -m "feat(small-power+special-locations): D.1 NEW 2 producer-side cascade fixtures (cascade-small-power-uk-ev-charge-domestic + uk-sauna-heater-exemption) + repoint C.3 + C.4 consumers"
+```
+
+Expected: gates 337 → 341 (+4: 2 new cascade outputs + 2 new cascade intent-outs).
+
+---
+
+## Task D.2: Honest disclosure sweep (Sonnet)
+
+**Why Sonnet:** Mechanical grep + diff verification.
+
+**Files:** Review-only, no edits — confirms the sprint's honest-disclosure end-to-end discipline.
+
+- [ ] **Step 1: Sprint-wide banned-citation grep**
+
+```bash
+grep -rnE "(§701\.32|§701\.55|§702\.55\.1|§702\.55\.2|§702\.32|§703\.55|§703\.512|§703\.413|§710\.413\.1\.5|§710\.314|§710\.411\.3\.3|§715\.560\.4|§715\.521|§715\.422|OZEV|3rd Edition|§526\.2|§433\.2|Reg 559)" electrical/small-power/ electrical/special-locations/examples/cascade-small-power-uk-ev-charge-domestic/ electrical/special-locations/examples/cascade-small-power-uk-sauna-heater-exemption/ 2>/dev/null | grep -v "do NOT\|never cite\|sub-clause\|not transcribed\|banned\|spec §11\|brainstorm catch\|D2.3 catch\|NOT §\|NEVER" | head -20
+```
+
+Expected: zero unfiltered hits. Every remaining grep result must be inside a disambiguation prose context.
+
+- [ ] **Step 2: Verified-citation density check**
+
+```bash
+grep -rE "(IET On-Site Guide|IET OSG|IET Code of Practice|BS 7671:2018+A2:2022|BS EN 61557-8|BS EN 60601|BS EN 61851-1|BS EN 62196|HTM 06-01|KS 1700:2018)" electrical/small-power/examples/uk-pool-hall-sockets-and-isolation/ electrical/small-power/examples/uk-medical-group-2-isolation-sockets/ electrical/small-power/examples/uk-ev-charge-domestic/ electrical/small-power/examples/uk-sauna-with-heater-exemption/ electrical/small-power/examples/uk-office-floor-with-building-diversity/ electrical/small-power/examples/uk-industrial-warehouse-with-building-diversity/ electrical/small-power/examples/uk-3bed-with-ring-continuity/ electrical/small-power/examples/uk-3bed-with-ring-continuity-VIOLATION/ | wc -l
+```
+
+Expected: each new example has ≥5 verified citations across its 4 files.
+
+- [ ] **Step 3: Cascade attribution audit**
+
+For each of the 4 Part-7 examples, verify the `_cascaded_from: "special-locations"` attribution is present in every flag that came from the cascade:
+
+```bash
+python3 -c "
+import json
+for ex in ['uk-pool-hall-sockets-and-isolation', 'uk-medical-group-2-isolation-sockets', 'uk-ev-charge-domestic', 'uk-sauna-with-heater-exemption']:
+    d = json.load(open(f'electrical/small-power/examples/{ex}/output.json'))
+    flags = d.get('calculation_summary', {}).get('non_compliance_flags', [])
+    cascaded = [f for f in flags if f.get('_cascaded_from') == 'special-locations']
+    print(f'{ex}: {len(flags)} total flags; {len(cascaded)} cascaded with _cascaded_from')"
+```
+
+- [ ] **Step 4: Commit D.2 disclosure sweep as a no-op verification commit (optional)**
+
+If sweep PASSES with zero findings: no commit needed; D.2 is a verification gate, not a content gate. Skip directly to D.3.
+
+If sweep FINDS any issues: surface them in the report + fix-pass before D.3.
+
+---
+
+## Task D.3: Sonnet 11-check verification fence
+
+**Why Sonnet:** Pre-ship verification matches the special-locations D.6 fence pattern.
+
+**Files:** Review-only; verification report only.
+
+Use the Agent tool with `subagent_type: general-purpose` and `model: sonnet`. Run these 11 checks IN ORDER:
+
+**CHECK 1 — Gates baseline:**
+- `python3 scripts/validate-examples.py 2>&1 | tail -3` → target 341/341 (+25 from special-locations baseline 316: 9 new example outputs × 2 files + 2 cascade producer fixtures × 2 files + 5 evals + intl-open-plan-floor retrofit no new files = 18 + 5 = 23 new entries; +2 unaccounted = the 2 cascade source repoints)
+- `python3 functional_audit.py 2>&1 | tail -3` → TOTAL FINDINGS: 1 (disclosed motor-superposition oracle FP, unchanged)
+
+**CHECK 2 — Phase A IR schema additions:**
+- `shared/schemas/electrical/small-power-ir.schema.json` has `building_diversity` top-level property
+- `circuits[].ring_endpoints` + `fcu_spurs[]` + `ev_charge_metadata` present
+- 3 new allOf clauses for conditional requirements
+- `invariants[].evidence.maxLength == 1200` unchanged
+- `additionalProperties: false` at every object level
+
+**CHECK 3 — Phase A inputs + rules:**
+- `inputs.json` 3 new items present
+- `building-diversity-rules.yaml` parses + 5 BLD-NN rules
+- `ev-charge-rules.yaml` parses + 4 EV-NN rules
+- `topology-rules.yaml` has 9 TOP-NN (existing 5 + 4 new)
+- `diversity-rules.yaml` has DIV-05 lift table appended
+
+**CHECK 4 — Phase A manifest:**
+- version 2.0.0 + status production + `_v2_breaking_change_note` present
+- standards[] grew by 5 entries
+- pre-merge consumer check confirmed zero v1.x consumers
+
+**CHECK 5 — Phase B prompts:**
+- `generator.md` Steps 13/14/15 appended (15 total steps now)
+- `validator.md` INV-13..INV-19 (19 total INVs now; 5 HIGH + 2 MEDIUM new + previous 7 HIGH + 5 MEDIUM = 12 HIGH + 7 MEDIUM)
+- `reviewer.md` D-8/D-9/D-10 appended (10 D-checks total)
+- Step 0 cascade-prereq enumerates 4 Part-7 cascade sources
+
+**CHECK 6 — Phase C examples (9 dirs):**
+- 8 NEW dirs exist + 1 retrofit (intl-open-plan-floor) updated
+- All 9 output.json validate against v2.0 IR schema
+- 2 FAIL HIGH demonstrations (uk-3bed-with-ring-continuity-VIOLATION INV-14 FAIL + the failure-mode within uk-ev-charge-domestic where D-9 borderline is documented)
+
+**CHECK 7 — Phase C evals (5 new files):**
+- eval-09..eval-13 parse against eval.schema.json
+- All categories in canonical 9-value enum (skill_specific / validation_trap / cross_validation)
+- All severities in critical/warning/info (no high/medium/low)
+- No `id:` field on any check
+- All `matches_inv` reference real INVs in INV-13..INV-19
+
+**CHECK 8 — Phase D cascade producer fixtures:**
+- `cascade-small-power-uk-ev-charge-domestic/` exists with 4 files
+- `cascade-small-power-uk-sauna-heater-exemption/` exists with 4 files
+- Both output.json validate against special-locations IR schema
+- Small-power C.3 + C.4 consumer examples repointed to consume from these new sources
+- Byte-identical payload diff: producer ↔ consumer matches on 4 key fields
+
+**CHECK 9 — Cross-cutting citation discipline:**
+- No `§701.32` / `§701.55` / `§702.55.1` / `§702.55.2` / `§702.32` / `§703.55` / `§703.512` / `§703.413` / `§710.413.1.5` / `§710.314` / `§710.411.3.3` / `§715.560.4` / `§715.521` / `§715.422` anywhere outside disambiguation prose
+- No `OZEV` outside disambiguation
+- No `3rd Edition` (EV CoP must always be 4th Ed)
+- No `§526.2` or `§433.2` (NOT transcribed in verified file)
+- No `Reg 559` (D2.3 lift misattribution catch)
+
+**CHECK 10 — INV evidence cap:**
+- Every `invariants[].evidence` string across all examples ≤1200 chars
+- minimum 20 chars
+- No `{{placeholder}}` strings anywhere
+
+**CHECK 11 — Cross-skill cascade attribution:**
+- Every cascaded `non_compliance_flag` entry has `_cascaded_from: "special-locations"`
+- 4 Part-7 examples each cite their cascade source path in `consumed_intents.special_locations_zoning.source_path`
+
+If ANY check fails: STOP and report the specific failure. Otherwise: SHIP.
+
+---
+
+## Task D.4: 3 CHANGELOGs + memory file + MEMORY.md index entry (Sonnet)
+
+**Why Sonnet:** Mechanical CHANGELOG + memory authoring per special-locations D.6 pattern.
+
+**Files:**
+- Modify: `electrical/small-power/CHANGELOG.md` (add `[2.0.0] - 2026-06-02` entry at top)
+- Modify: `electrical/special-locations/CHANGELOG.md` (add a `[1.0.1] - 2026-06-02` patch entry documenting the 2 new producer-side cascade fixtures added in D.1)
+- Modify: `CLAUDE.md` (manifest tally: 9 beta + 4 production instead of 10 beta + 3 production; small-power moved beta → production)
+- Create: `~/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/small-power-v2.0-d4-shipped.md`
+- Modify: `~/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/MEMORY.md` (append one-line index entry)
+
+- [ ] **Step 1: Write small-power CHANGELOG `[2.0.0]` entry**
+
+Sections:
+- **Added (IR schema):** `building_diversity` top-level optional field + `circuits[].ring_endpoints` + `circuits[].fcu_spurs[]` + `circuits[].ev_charge_metadata` + 7 new INV ids + 3 new allOf clauses
+- **Added (rules YAML):** 2 NEW files (building-diversity-rules + ev-charge-rules); 2 existing files extended (topology-rules + 4 new TOP-NN; diversity-rules + DIV-05 lift)
+- **Added (prompts):** Steps 13-15 in generator + INV-13..INV-19 in validator + D-8/D-9/D-10 in reviewer + cascade-prereq context update
+- **Added (examples):** 8 NEW + 1 RETROFIT; 2 producer-side cascade fixtures added to special-locations
+- **Added (evals):** eval-09..eval-13 (5 new files; closes INV-13..INV-19 eval coverage)
+- **Changed:** version 1.2.0 → 2.0.0 (bump-as-signaling); status beta → production; standards[] +5 entries
+- **Citation hygiene (per spec §11.1):** all citations trace to verified standards files; banned list inherited from special-locations + spec §2 brainstorm catches (§526.2, §433.2, OZEV CoP, 3rd Edition EV CoP)
+- **Gates:** validate-examples 316 → 341 (+25); functional_audit 1 finding unchanged
+
+- [ ] **Step 2: Write special-locations CHANGELOG `[1.0.1]` patch entry**
+
+Documents the 2 new producer-side cascade fixtures added in D.1 of the small-power D4 sprint:
+- `cascade-small-power-uk-ev-charge-domestic` (4 files) — producer source for small-power C.3 EV example
+- `cascade-small-power-uk-sauna-heater-exemption` (4 files) — producer source for small-power C.4 sauna example
+
+Mark as `[1.0.1]` patch (additive, no breaking changes).
+
+- [ ] **Step 3: Update CLAUDE.md manifest tally**
+
+Edit the line: `13 shipped (10 beta + 3 production: lighting-layout v1.6.0 + photometric-analysis v1.1.0 + special-locations v1.0.0)` → `13 shipped (9 beta + 4 production: lighting-layout v1.6.0 + photometric-analysis v1.1.0 + special-locations v1.0.1 + small-power v2.0.0)`. Note small-power's small-power moved from beta to production; total skill count unchanged.
+
+- [ ] **Step 4: Write memory file `small-power-v2.0-d4-shipped.md`**
+
+Frontmatter:
+```yaml
+---
+name: small-power-v2.0-d4-shipped
+description: small-power v2.0.0 shipped 2026-06-02 (Wave 2 first deliverable; closes within-skill-depth program for small-power). D4 depth: building_diversity field mirroring verified standards (office/industrial/healthcare), 4 Part-7 worked examples (pool/medical IT/EV/sauna), comprehensive topology depth (4 new INVs: ring continuity + floor-area cross-check + OCPD-topology + AMD 2 FCU spur), EV-charge demand + RCD Type A/B selection per Reg 722.531.3.101, INV-19 cable-sizing cascade integration. 25 implementer tasks + ~5 fix-passes. Version 1.2.0 → 2.0.0 + status beta → production. 7 new INVs (INV-13..INV-19; 5 HIGH + 2 MEDIUM). 5 new evals (10 total). 8 NEW + 1 RETROFIT examples + 2 producer-side cascade fixtures in special-locations.
+metadata:
+  type: project
+---
+```
+
+Body: cover skill identity + items shipped per phase (A/B/C/D) + gates final state + honest disclosures preserved + cascade contract validated end-to-end + 3 citation-hygiene catches (EV CoP 4th Ed, lift = IET OSG App A NOT Reg 559, §526.2/§433.2 NOT transcribed → IET OSG §8.4.4 anchor) + process discipline preserved + next sprint pointer (Wave 2 second deliverable = lighting-layout v1.6.x extensions).
+
+- [ ] **Step 5: Append MEMORY.md index entry**
+
+Single line under existing `[Special-locations shipped]` line:
+
+```markdown
+- [small-power v2.0.0 D4 shipped (Wave 2 first deliverable)](small-power-v2.0-d4-shipped.md) — 2026-06-02: v1.2.0 → v2.0.0 production (status beta → production); closes within-skill-depth program for small-power; 7 new INVs (INV-13..INV-19) + 5 new evals + 8 NEW + 1 RETROFIT examples + 2 producer-side cascade fixtures in special-locations; gates 316 → 341; 3 citation hygiene catches at brainstorm (§526.2 / §433.2 / OZEV / 3rd Edition EV CoP all banned). Next Wave 2 = lighting-layout v1.6.x extensions.
+```
+
+- [ ] **Step 6: Commit D.4**
+
+```bash
+git add electrical/small-power/CHANGELOG.md \
+        electrical/special-locations/CHANGELOG.md \
+        CLAUDE.md
+git commit -m "feat(small-power+special-locations): D.4 CHANGELOGs + CLAUDE.md tally bump + memory file + MEMORY.md index (Wave 2 first deliverable)"
+```
+
+---
+
+## Task D.5: Final cross-sprint Opus integration review
+
+**Why Opus:** Cross-sprint integration concerns that only surface end-to-end.
+
+Dispatch a fresh Opus subagent for cross-sprint integration review of the 30-commit chain (25 implementer + ~5 fix-pass + 4 portion + 1 ship = ~35 total expected).
+
+Review scope (per special-locations D.5 pattern):
+1. **Cascade contract end-to-end coherence** — small-power consumer ↔ 2 new special-locations cascade producers (byte-identical payload check; `_cascaded_from` attribution string consistent)
+2. **Schema cross-validation on PASS + FAIL examples** — pick 1 PASS (uk-pool-hall) + 1 FAIL (uk-3bed-with-ring-continuity-VIOLATION); diff field-by-field
+3. **Standards citation discipline** — walk 5 implementer-touched files for citation accuracy + verify each clause in spec §2.3 verified-citation table
+4. **Manifest / spec / plan alignment** — v2.0.0 + production + 9 examples + 5 evals + 7 INVs + 3 new D-checks all consistent across manifest + spec + plan + memory
+5. **Test coverage hygiene** — 10 evals cover 10 of 19 INVs (deferred coverage for INV-01..INV-08 from earlier sprints + INV-11 + INV-12; INV-13..INV-19 all covered)
+6. **Documentation drift** — README v2 + CHANGELOG v2 + memory match shipped state
+7. **No collateral edits** — touch only `electrical/small-power/` + `electrical/special-locations/examples/cascade-small-power-uk-{ev-charge-domestic,sauna-heater-exemption}/` + `electrical/special-locations/CHANGELOG.md` + `shared/schemas/electrical/small-power-ir.schema.json` + `CLAUDE.md`
+8. **CLAUDE.md global discipline** — no stubs, no §714, 9-value eval enum respected, manifest tally bumped
+9. **Honest disclosure end-to-end** — 4 Part-7 examples + 2 cascade producer fixtures + building_diversity v2.1 deferrals + 2.0 bump-as-signaling rationale all explicit
+
+**Severity ladder for findings:**
+- CRITICAL → DO NOT push; redispatch implementer or fix immediately
+- HIGH → fix-pass before push
+- MEDIUM → file as post-push follow-up
+- LOW → note for memory, push as-is
+
+Verdict format mirrors special-locations D.5: per-check findings table + cascade end-to-end coherence + PASS-case diff + FAIL-case diff + overall verdict (PUSH-READY / PUSH-AFTER-FIX-PASS / HOLD) + push recommendation phrasing + rationale ≤200 words.
+
+---
+
+## Task D.6: Push deferred to user authorisation
+
+**Why deferred:** CLAUDE.md "shared state" rule + special-locations sprint precedent (no push without explicit user authorisation).
+
+- [ ] **Step 1: Verify branch divergence vs origin/main**
+
+```bash
+git fetch origin main 2>&1 | tail -3
+git rev-list --left-right --count origin/main...HEAD
+```
+
+Expected outcome: 0 commits behind origin/main; N commits ahead (N = ~30-35 sprint commits).
+
+If behind by >0: rebase per the special-locations precedent (conflict resolution as needed). Surface to user for direction if conflicts get hairy.
+
+- [ ] **Step 2: Final gates verification**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+python3 functional_audit.py 2>&1 | tail -3
+git status
+```
+
+Expected: 341/341 + 1 finding unchanged + working tree clean.
+
+- [ ] **Step 3: Present push authorisation question to user**
+
+Per the special-locations pattern, present 3 options:
+- Push to origin/main (recommended)
+- Tag `small-power-v2.0.0` then push commits + tag
+- Hold for user review
+
+After user authorisation:
+
+```bash
+git push origin main
+```
+
+(Plus tag push if option B chosen.)
+
+- [ ] **Step 4: Wave 2 first deliverable done**
+
+small-power v2.0.0 lives on origin/main. Cluster roadmap Wave 2 FIRST deliverable complete. Within-skill-depth program CLOSED for small-power (final v1.x → v2.0 production transition shipped).
+
+**Next per cluster roadmap §5 Wave 2:** `lighting-layout v1.6.x extensions` (task/ambient luminaire split + 3D placement + upgraded zone scheduling). Brainstorm in a separate session per the cluster-roadmap precedent.
+
+After Wave 2 ships completely: Wave 3 (emergency-lighting + lighting-controls in parallel). Then Wave 4 (daylight → energy-leni sequential).
+
+---
+
+## Plan self-review
+
+Walked the spec sections; each maps to a task:
+
+- **Spec §1 identity** → A.5 manifest + README v2
+- **Spec §2 scope locked (5 items)** → A.1-A.5 (foundations) + B.1-B.4 (prompts) + C.1-C.10 (examples + evals) + D.1 (cascade producer fixtures) — each scope item maps to specific tasks
+- **Spec §2.3 verified citation table** → Every implementer task has a banned-citation grep guard + standards-file lookup step
+- **Spec §3 architecture decisions (7 locked)** → A.1 IR shape design + A.5 manifest bump-as-signaling
+- **Spec §4 input model (3 new items)** → A.2 inputs.json
+- **Spec §5 IR additions (top-level + per-circuit + 7 INVs)** → A.1 IR schema + B.2 validator INV sections
+- **Spec §6 cascade contract** → D.1 producer fixtures + C.1-C.4 consumer examples
+- **Spec §7 reviewer D-checks (3 new)** → B.3 reviewer.md
+- **Spec §8 examples taxonomy (9 dirs)** → C.1-C.9
+- **Spec §9 evals (5 new)** → C.10
+- **Spec §10 sprint shape (4 phases × 25 tasks)** → this whole plan
+- **Spec §11 honest disclosures** → D.2 sweep + every task's banned-citation grep
+- **Spec §12 v2.1+ deferrals** → A.1 schema docstring on building_type enum + manifest `_v2_breaking_change_note` + memory file `small-power-v2.0-d4-shipped.md`
+- **Spec §13 cross-references** → A.5 README v2 + memory file
+- **Spec §14 next action** → D.6 + post-D.6 Wave 2 second deliverable brainstorm pointer
+
+**Placeholder scan:** No TBD/TODO/incomplete sections in this plan. Each task carries concrete code/JSON/YAML snippets, exact file paths, exact verification queries, exact commit message scaffolding.
+
+**Type consistency:** Field names match across tasks (`building_diversity.building_type`, `circuits[].ring_endpoints.mcb_way_id`, `circuits[].ev_charge_metadata.charging_unit_dc_detection_a`, `circuits[].fcu_spurs[].fcu_rating_a`, `per_circuit_demand_inputs[]`, etc.). INV ids consistent (INV-13..INV-19 throughout). D-check ids consistent (D-8/D-9/D-10).
+
+**Citation discipline applied upfront:** every task has a verified-citation table reference + a banned-citation grep guard. The 3 citation-hygiene catches at brainstorm (§526.2 / §433.2 NOT transcribed; OZEV CoP misname; 3rd Edition EV CoP wrong version) propagate into every task's banned-list grep filter.
+
+**`[[feedback-no-trim-non-consequential]]`** maintained: `maxLength: 1200` declared in A.1 IR schema task + verified in D.3 fence Check 10.
+
+**Lessons applied from earlier sprints:**
+- Photometric C.3 + special-locations C.3 schema lessons applied at C.10 explicit constraint mapping (canonical category enum + critical/warning/info severity + no `id:` field)
+- Special-locations D.2 lesson applied at D.1 (real cascade producer fixtures BEFORE consumer examples repoint)
+- Special-locations rebase conflict resolution pattern documented in D.6 (rebase before push)
+- `[[sprint-D2-shipped]]` brainstorm citation-hygiene lesson applied at spec stage (3 catches) + plan stage (banned-list grep in every task)
+
+---
+
+## Execution handoff
+
+Plan complete and saved to `docs/superpowers/plans/2026-06-02-small-power-d4-depth-sprint.md`. Two execution options:
+
+**1. Subagent-Driven (recommended)** — Orchestrator dispatches a fresh subagent per task, runs two-stage Opus review between tasks, applies fix-pass commits where review surfaces HIGH/CRITICAL findings (special-locations precedent: 10/11 D3 tasks needed fix-passes; budget ~5-7 fix-pass commits). Per-model dispatch per `[[feedback-no-haiku-sonnet-opus-only]]` rules already locked in each task's "Why Sonnet/Opus" line. Pre-ship Sonnet 11-check verification fence at D.3. Final cross-sprint Opus integration review at D.5. Push deferred to user authorisation at D.6.
+
+**2. Inline Execution** — Execute tasks in this session using `superpowers:executing-plans`. Batch execution with checkpoints for review. Less parallelisation; less context isolation per task; faster for short sprints but riskier at this size (25 tasks + ~5-7 fix-passes + ~3 plan prerequisites).
+
+**Which approach?** Subagent-Driven is the established precedent (special-locations shipped 26 + 3 housekeeping commits clean on 2026-06-02; photometric-analysis shipped 25 commits clean before that) and is recommended for this sprint shape.
