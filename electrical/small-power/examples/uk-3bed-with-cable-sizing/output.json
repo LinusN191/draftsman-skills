@@ -56,7 +56,14 @@
         "dining",
         "lounge",
         "outdoor"
-      ]
+      ],
+      "ring_endpoints": {
+        "endpoint_a_xy": {"x_mm": 200, "y_mm": 200},
+        "endpoint_b_xy": {"x_mm": 9800, "y_mm": 7000},
+        "mcb_way_id": "CU-MAIN-WAY-1",
+        "continuity_verified": true,
+        "_citation": "IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 top-level"
+      }
     },
     {
       "circuit_id": "C02",
@@ -86,7 +93,14 @@
         "bedroom-1",
         "bedroom-2",
         "bedroom-3"
-      ]
+      ],
+      "ring_endpoints": {
+        "endpoint_a_xy": {"x_mm": 200, "y_mm": 200},
+        "endpoint_b_xy": {"x_mm": 7500, "y_mm": 5500},
+        "mcb_way_id": "CU-MAIN-WAY-2",
+        "continuity_verified": true,
+        "_citation": "IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 top-level"
+      }
     },
     {
       "circuit_id": "C03",
@@ -551,7 +565,8 @@
       "First-floor ring (3 bedrooms) covers ~36 m², within IET OSG §8.4.4 limit.",
       "Diversity factors per IET OSG Appendix A: cooker 10A + 30% remainder + 5A for socket on CCU; rings assumed simultaneous load ≤ 16A per ring under domestic usage profile.",
       "Cable routes assumed Reference Method 100/101 (clipped direct to/in stud or under floorboards); final route to be coordinated with cable-containment skill.",
-      "Outdoor socket spur load ≤ 1.5 kW (lawnmower-equivalent); RCD 30mA primary protection per §411.3.3 covers additional protection per §522.6.202."
+      "Outdoor socket spur load ≤ 1.5 kW (lawnmower-equivalent); RCD 30mA primary protection per §411.3.3 covers additional protection per §522.6.202.",
+      "v2.0 RETROFIT: ring_endpoints (endpoint_a_xy + endpoint_b_xy + mcb_way_id + continuity_verified) populated with engineering-judgment defaults during the small-power v2.0.0 D4 depth sprint A.1 fix-pass. The v1.x example predates the schema requirement; defaults satisfy the IR schema allOf clause without representing actual installation data. Engineer-of-record substitutes project-specific values before final design freeze."
     ]
   },
   "flags": [

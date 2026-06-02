@@ -715,6 +715,92 @@
         },
         "required": ["consumed_intents"]
       }
+    },
+    {
+      "description": "Wave 2 D4 / topology: when any circuit has topology=ring, that circuit MUST carry ring_endpoints.",
+      "if": {
+        "properties": {
+          "circuits": {
+            "contains": {
+              "properties": {
+                "topology": {"const": "ring"}
+              },
+              "required": ["topology"]
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "circuits": {
+            "items": {
+              "if": {
+                "properties": {
+                  "topology": {"const": "ring"}
+                }
+              },
+              "then": {
+                "required": ["ring_endpoints"]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "Wave 2 D4 / EV: when any circuit's load_type matches ev_charge_*, that circuit MUST carry ev_charge_metadata.",
+      "if": {
+        "properties": {
+          "circuits": {
+            "contains": {
+              "properties": {
+                "load_type": {"pattern": "^ev_charge_"}
+              },
+              "required": ["load_type"]
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "circuits": {
+            "items": {
+              "if": {
+                "properties": {
+                  "load_type": {"pattern": "^ev_charge_"}
+                }
+              },
+              "then": {
+                "required": ["ev_charge_metadata"]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "Wave 2 D4 / healthcare: when building_diversity.building_type == healthcare, applies_load_types MUST include healthcare_clinical_equipment per HTM 06-01.",
+      "if": {
+        "properties": {
+          "building_diversity": {
+            "properties": {
+              "building_type": {"const": "healthcare"}
+            },
+            "required": ["building_type"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "building_diversity": {
+            "properties": {
+              "applies_load_types": {
+                "contains": {"const": "healthcare_clinical_equipment"}
+              }
+            }
+          }
+        }
+      }
     }
   ]
 }

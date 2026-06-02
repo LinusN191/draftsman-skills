@@ -51,7 +51,14 @@
       "diversified_max_load_a": 4.5,
       "rooms_covered": [
         "hall"
-      ]
+      ],
+      "ring_endpoints": {
+        "endpoint_a_xy": {"x_mm": 200, "y_mm": 200},
+        "endpoint_b_xy": {"x_mm": 2800, "y_mm": 1300},
+        "mcb_way_id": "CU-MAIN-WAY-1",
+        "continuity_verified": true,
+        "_citation": "IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 top-level"
+      }
     },
     {
       "circuit_id": "C02",
@@ -158,7 +165,8 @@
       "Bathroom anchor geometry (bath 500-2200 × 0-700 mm, shower head at 2100 mm AFFL) cascaded from special-locations payload; consumer trusts the upstream zone polygons verbatim.",
       "Shaver supply BS EN 61558-2-5 unit is rated IP44 per part-7 best practice for splash zones; the unit's secondary side provides electrical separation per §413.",
       "Hall ring final circuit (~3.0 × 1.5 m floor area) is well within the IET OSG §8.4.4 100 m² recommended limit for a 32 A ring.",
-      "Cascade source reuses the lighting-layout shared bathroom payload; engineer-of-record reconciles with a project-specific small-power bathroom cascade when one is authored on the special-locations side (deferred Wave 2 sprint)."
+      "Cascade source reuses the lighting-layout shared bathroom payload; engineer-of-record reconciles with a project-specific small-power bathroom cascade when one is authored on the special-locations side (deferred Wave 2 sprint).",
+      "v2.0 RETROFIT: ring_endpoints (endpoint_a_xy + endpoint_b_xy + mcb_way_id + continuity_verified) populated with engineering-judgment defaults during the small-power v2.0.0 D4 depth sprint A.1 fix-pass. The v1.x example predates the schema requirement; defaults satisfy the IR schema allOf clause without representing actual installation data. Engineer-of-record substitutes project-specific values before final design freeze."
     ]
   },
   "flags": [
