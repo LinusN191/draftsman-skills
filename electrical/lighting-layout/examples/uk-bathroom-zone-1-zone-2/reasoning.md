@@ -175,21 +175,24 @@ fixed lighting circuits). **INV-6 PASS.**
 
 ## 11 Photometric cascade
 
-`consumed_intents.photometric_grid` is sourced from a synthetic
-helper file
-(`electrical/lighting-layout/examples/uk-bathroom-zone-1-zone-2/_synthetic_photometric_intent.json`)
-because the `photometric-analysis` skill has not yet been retrofitted
-to consume Part-7 bathroom inputs in the v1.0 sprint. The numbers in
-the synthetic payload are engineered to be internally consistent with
-the lumen-method calculation:
+`consumed_intents.photometric_grid` is sourced from the Part-7
+retrofit cascade
+(`electrical/photometric-analysis/examples/cascade-uk-bathroom-zone-1-zone-2/intent-out.json`).
+This is a production cascade source — the D.2 synthetic helper
+(`_synthetic_photometric_intent.json`) was a temporary substitution
+used at D.2 ship time when no Part-7 photometric cascade source
+existed; the Part-7 retrofit task ships the real cascade and deletes
+the helper. The headline numbers match the synthetic helper
+byte-for-byte so this walkthrough did not need to change:
 
 - `achieved_avg_illuminance_lux = 254` — matches IR's
   `calculation_summary.achieved_illuminance_lux`.
 - `target_illuminance_lux = 200` — matches IR target.
-- `ugr_max = 18.4 ≤ ugr_target = 22` (BS EN 12464-1 Table 5.x
-  bathroom UGR ceiling).
+- `ugr_max = 18.2 ≤ ugr_target = 19` (BS EN 12464-1:2021 Table 5.36
+  bathroom_domestic UGR ceiling per the photometric-analysis spec
+  design parameter).
 - `achieved_uniformity_u0 = 0.66 ≥ uniformity_target = 0.40` (Table
-  5.x bathroom U_0 floor).
+  5.36 bathroom_domestic U_0 floor).
 - `task_area_compliant = true`.
 - `non_compliance_flags = []` → nothing to cascade.
 - `ies_source_summary.verification_status_lowest =
@@ -229,12 +232,16 @@ All four sub-checks PASS → **INV-12 PASS HIGH**.
 
 ## 13 Honest disclosures
 
-- The `photometric_grid` cascade source is a local helper file
-  (`_synthetic_photometric_intent.json`) — the `photometric-analysis`
-  skill has not yet produced a real `cascade-uk-bathroom-zone-1-zone-2`
-  example. When that ships, repoint
-  `consumed_intents.photometric_grid.source_path` and delete the
-  helper.
+- The `photometric_grid` cascade source now resolves to a real
+  photometric-analysis example
+  (`electrical/photometric-analysis/examples/cascade-uk-bathroom-zone-1-zone-2/intent-out.json`)
+  shipped by the Part-7 retrofit task. The D.2 synthetic helper
+  (`_synthetic_photometric_intent.json`) has been deleted. The
+  cascade payload headline numbers are byte-identical to the previous
+  synthetic helper (254 / 168 / 0.66 / 18.2 / 200 / true), so the
+  INV-11 walkthrough did not change in substance — only the cascade
+  source path repoint and the UGR limit reference (22 → 19 to match
+  the photometric-analysis spec design parameter for bathrooms).
 - `UF = 0.60` and `MF = 0.80` are CIBSE-table defaults — neither
   was derived from a project-specific photometric file. The
   engineer-of-record must confirm before issue.

@@ -1,5 +1,5 @@
 {
-  "_note": "D.2 (special-locations sprint) — first lighting-layout example to fire INV-12 end-to-end. mode=full_drawing AND room.room_type=bathroom (∈ Part-7 set) triggers the lighting-layout-ir.schema.json third allOf clause, requiring consumed_intents.special_locations_zoning. INV-11 fires (Wave-1 photometric cascade) AND INV-12 fires (Wave-1 special-locations cascade). All 12 INVs PASS with concrete evidence. Cascade producer: electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom (C.2 deliverable). Synthetic photometric source: _synthetic_photometric_intent.json (helper).",
+  "_note": "D.2 (special-locations sprint) — first lighting-layout example to fire INV-12 end-to-end. mode=full_drawing AND room.room_type=bathroom (∈ Part-7 set) triggers the lighting-layout-ir.schema.json third allOf clause, requiring consumed_intents.special_locations_zoning. INV-11 fires (Wave-1 photometric cascade) AND INV-12 fires (Wave-1 special-locations cascade). All 12 INVs PASS with concrete evidence. Cascade producers: electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom (C.2 deliverable) and electrical/photometric-analysis/examples/cascade-uk-bathroom-zone-1-zone-2 (Part-7 retrofit deliverable — replaces the D.2 synthetic helper).",
   "drawing_type": "lighting_layout",
   "version": "1.6",
   "mode": "full_drawing",
@@ -102,12 +102,13 @@
     "maintenance_factor": 0.8,
     "lamp_efficacy_lm_per_w": 115.4,
     "part_l_efficacy_target_lm_per_w": 65,
-    "ugr_status": "UGR ≤ 22 verified by photometric cascade (UGR_max=18.4)",
+    "ugr_status": "UGR ≤ 19 verified by photometric cascade (UGR_max=18.2)",
     "compliant": true,
     "non_compliance_flags": [],
     "assumptions": [
       "UF = 0.60 from CIBSE SLL standard reflectance table for low-RI small bathroom (RI=0.79, reflectances 0.5/0.5/0.2 — light tiled walls + ceiling)",
-      "MF = 0.80 for clean domestic bathroom on a 3-year cleaning cycle (CIBSE TM 3-25)"
+      "MF = 0.80 for clean domestic bathroom on a 3-year cleaning cycle (CIBSE TM 3-25)",
+      "Photometric cascade resolved from electrical/photometric-analysis/examples/cascade-uk-bathroom-zone-1-zone-2 (Part-7 retrofit) — replaces the D.2 synthetic helper"
     ]
   },
   "drawing_notes": [
@@ -190,8 +191,8 @@
             "inputs": {"room_type": "bathroom"}
           },
           {
-            "label": "UGR ≤ 22 verified by photometric cascade",
-            "summary": "Lumen method cannot compute UGR; photometric-analysis cascade returns UGR_max=18.4 ≤ 22 limit (BS EN 12464-1 Table 5.x).",
+            "label": "UGR ≤ 19 verified by photometric cascade",
+            "summary": "Lumen method cannot compute UGR; photometric-analysis cascade returns UGR_max=18.2 ≤ 19 limit (BS EN 12464-1:2021 Table 5.36 bathroom_domestic).",
             "rule": "Photometric cascade ≥ Table-5 UGR ceiling",
             "code_clause": "BS EN 12464-1:2021 § 4"
           }
@@ -349,7 +350,7 @@
       "id": "INV-11",
       "passes": true,
       "severity": "high",
-      "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from _synthetic_photometric_intent.json (sub-check 1 PASS). payload.task_area_compliant=true (sub-check 2 PASS). achieved_avg_illuminance_lux=254 vs target=200 (sub-check 3 PASS — photometric matches IR's 254 lx); UGR_max=18.4 ≤ UGR_target=22 satisfies BS EN 12464-1 Table 5.x for bathrooms; uniformity U0=0.66 ≥ target 0.4 PASS. 0 non_compliance_flags cascaded to lighting-layout calculation_summary with _cascaded_from=photometric-analysis attribution (sub-check 4 PASS, vacuously). Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
+      "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from electrical/photometric-analysis/examples/cascade-uk-bathroom-zone-1-zone-2/intent-out.json (Part-7 retrofit deliverable — replaces the D.2 synthetic helper) (sub-check 1 PASS). payload.task_area_compliant=true (sub-check 2 PASS). achieved_avg_illuminance_lux=254 vs target=200 (sub-check 3 PASS — photometric matches IR's 254 lx); UGR_max=18.2 ≤ UGR_target=19 satisfies BS EN 12464-1:2021 Table 5.36 bathroom_domestic; uniformity U0=0.66 ≥ target 0.4 PASS. 0 non_compliance_flags cascaded to lighting-layout calculation_summary with _cascaded_from=photometric-analysis attribution (sub-check 4 PASS, vacuously). Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
     },
     {
       "id": "INV-12",
@@ -361,17 +362,17 @@
   "consumed_intents": {
     "photometric_grid": {
       "intent_version": "1.0.0",
-      "source_path": "electrical/lighting-layout/examples/uk-bathroom-zone-1-zone-2/_synthetic_photometric_intent.json",
+      "source_path": "electrical/photometric-analysis/examples/cascade-uk-bathroom-zone-1-zone-2/intent-out.json",
       "payload": {
         "achieved_avg_illuminance_lux": 254,
         "achieved_min_illuminance_lux": 168,
         "achieved_uniformity_u0": 0.66,
-        "ugr_max": 18.4,
-        "ugr_target": 22,
+        "ugr_max": 18.2,
+        "ugr_target": 19,
         "uniformity_target": 0.4,
         "target_illuminance_lux": 200,
         "task_area_compliant": true,
-        "grid_point_count": 48,
+        "grid_point_count": 30,
         "non_compliance_flags": [],
         "ies_source_summary": {
           "all_verified": false,
