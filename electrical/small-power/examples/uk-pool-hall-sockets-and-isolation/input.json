@@ -1,0 +1,32 @@
+{
+  "_note": "Sprint D4 Phase C.1 example — UK commercial swimming pool hall (12.0 × 6.0 m) with adjacent changing room (4.0 × 3.0 m). The pool hall is recorded as room_type='swimming_pool_hall' (Part-7 enum exact-match) specifically to fire INV-12's special-locations cascade. Two outdoor-rated IPx5 sockets (cleaning equipment plug-in) are placed on the south wall of the changing room, OUTSIDE the effective pool_zone_2 polygon per §702.55.4 changing-room overlap rule (which permits fixtures only beyond a fixed barrier ≥2.5 m AFF that separates the changing-room volume from the pool-side Zone 2 extension). A third dedicated radial serves the 3-phase pool pump, separately bonded to the ME terminal per §702.415.1 main equipotential bonding. The §702.55.4 fixed barrier is engineer-of-record's commissioning responsibility — declared as input metadata and surfaced via compliance_summary._engineering_judgments-style assumption text. PASS case: zero socket_230v outlets inside the unclipped Zone 2 polygon after §702.55.4 effective-clipping; all 4 INV-12 sub-checks resolve to PASS.",
+  "project_id": "uk-pool-hall-sockets-and-isolation-eg01",
+  "jurisdiction": "GB",
+  "site_brief": "UK commercial swimming pool hall + adjacent changing room. The pool hall is a Part 7-702 location with a single rectangular pool basin (footprint 1000–11000 mm × 500–5500 mm in room-local coordinates, water surface 200 mm above pool deck) and 4500 mm ceiling. The changing room (4000 × 3000 mm) sits on the south wall of the pool hall at y=-3000..0, x=4000..8000. Per the upstream lighting-layout cascade, pool_zone_2 polygon (-2500,-3000) → (14500,9000) overlaps the changing room polygon; §702.55.4 changing-room overlap rule permits 230 V sockets only BEYOND a fixed full-height barrier (≥2.5 m AFF) that effectively clips Zone 2 at the pool-hall side of the changing-room boundary. The design installs the barrier at y=-1500 mm inside the changing room (architect-coordinated full-height divider wall) and places 2 IPx5 BS EN 60309-2 industrial cleaning sockets on the south wall at y=-3000, well beyond the barrier. A 3-phase 16 A radial feeds the pool circulation pump (mounted in the plant room outside the pool hall), separately bonded to the ME terminal per §702.415.1.",
+  "supply": {
+    "voltage_v": 400,
+    "phase_arrangement": "TPN",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.30,
+    "psc_declared_ka": 10.0
+  },
+  "parent_db": {
+    "designation": "DB-POOL-1",
+    "pfc_at_busbar_ka": 10.0
+  },
+  "room_briefs": [
+    {"room_id": "pool_hall",     "room_type": "swimming_pool_hall", "dimensions_m": {"length": 12.0, "width": 6.0, "height": 4.5}, "special_location": "wet_area", "anticipated_loads_kw": 7.5, "socket_count_target": 0},
+    {"room_id": "changing_room", "room_type": "changing_room",      "dimensions_m": {"length": 4.0,  "width": 3.0, "height": 2.5}, "special_location": "wet_area", "anticipated_loads_kw": 2.0, "socket_count_target": 2}
+  ],
+  "design_intent": {
+    "preferred_topology": "auto_by_jurisdiction",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "sheet_size": "A2",
+    "drawing_scale": "1:50"
+  },
+  "_cascade_sources": {
+    "special_locations_zoning": "electrical/special-locations/examples/cascade-lighting-layout-uk-pool-hall/intent-out.json"
+  },
+  "_cascade_disclosure": "At v1.0 there is no dedicated cascade-small-power-uk-pool-hall-pass example in special-locations. This consumer example REUSES the cascade-lighting-layout-uk-pool-hall payload because special-locations IR is anchor-driven (3 zones derive from the pool_main anchor + 1 pool_main_equipotential_bonding constraint, neither of which depends on the downstream fixture type — luminaire vs socket). Engineering-equivalent reuse per the D.4 small-power cascade pattern; the lighting-layout consumer just happens to be the producer of record for the pool-hall geometry at v1.0. A future Wave 2 sprint will backfill cascade-small-power-uk-pool-hall-pass on the special-locations side once a small-power-anchor variant is needed by another downstream skill.",
+  "_barrier_declaration": "Architect-coordinated fixed barrier (≥2.5 m AFF full-height divider wall) installed at y=-1500 mm inside the changing room polygon. The barrier effectively clips the unclipped pool_zone_2 polygon at y=-1500 so the changing-room volume south of the barrier (y in [-3000, -1500]) is OUTSIDE the effective Zone 2 envelope per §702.55.4. The 2 IPx5 cleaning sockets sit on the changing-room south wall at y=-3000, ≥1500 mm beyond the barrier. Engineer-of-record verifies barrier compliance at commissioning per §702.55.4."
+}

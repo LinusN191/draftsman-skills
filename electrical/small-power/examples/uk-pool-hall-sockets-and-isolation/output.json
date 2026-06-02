@@ -1,0 +1,513 @@
+{
+  "drawing_type": "small_power_layout",
+  "version": "2.0.0",
+  "meta": {
+    "project_id": "uk-pool-hall-sockets-and-isolation-eg01",
+    "skill_version": "2.0.0",
+    "produced_at": "2026-06-03T00:00:00Z",
+    "consumed_intents": [
+      {
+        "intent_type": "special-locations-zoning",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/special-locations"
+      }
+    ]
+  },
+  "jurisdiction": "GB",
+  "supply_origin": {
+    "voltage_v": 400,
+    "phase_arrangement": "TPN",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.30,
+    "psc_declared_ka": 10.0
+  },
+  "parent_db": {
+    "designation": "DB-POOL-1",
+    "pfc_at_busbar_ka": 10.0
+  },
+  "circuits": [
+    {
+      "circuit_id": "C01",
+      "designation": "Changing-room cleaning-equipment ring final circuit (2× IPx5 BS EN 60309-2 blue 16A 230V sockets on the south wall of the changing room; barrier-clipped Zone 2 effective polygon places both sockets outside §702 Zone 2 per §702.55.4)",
+      "topology": "ring",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC",
+        "cores": 3,
+        "length_m_total": 22.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 2.0,
+      "diversified_max_load_a": 8.7,
+      "rooms_covered": [
+        "changing_room"
+      ],
+      "ring_endpoints": {
+        "endpoint_a_xy": {"x_mm": 4200, "y_mm": -2900},
+        "endpoint_b_xy": {"x_mm": 7800, "y_mm": -2900},
+        "mcb_way_id": "DB-POOL-1-WAY-1",
+        "continuity_verified": true,
+        "_citation": "IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 (top-level)"
+      }
+    },
+    {
+      "circuit_id": "C02",
+      "designation": "Pool circulation pump dedicated 3-phase radial (TP+N+CPC, 16 A, separately bonded to the ME terminal per §702.415.1; pump motor located in the adjacent plant room outside the pool hall §702 zones)",
+      "topology": "dedicated_radial",
+      "ocpd": {
+        "rating_a": 16,
+        "type": "RCBO",
+        "curve": "C",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² 5-core SWA",
+        "cores": 5,
+        "length_m_total": 18.0,
+        "material": "copper",
+        "insulation": "XLPE_90"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 5.5,
+      "diversified_max_load_a": 9.5,
+      "rooms_covered": [
+        "pool_hall"
+      ]
+    }
+  ],
+  "rooms": [
+    {
+      "room_id": "pool_hall",
+      "room_type": "swimming_pool_hall",
+      "dimensions_m": {
+        "length": 12.0,
+        "width": 6.0,
+        "height": 4.5
+      },
+      "special_location": "wet_area",
+      "sockets": []
+    },
+    {
+      "room_id": "changing_room",
+      "room_type": "changing_room",
+      "dimensions_m": {
+        "length": 4.0,
+        "width": 3.0,
+        "height": 2.5
+      },
+      "special_location": "wet_area",
+      "sockets": [
+        {
+          "id": "changing-S01",
+          "type": "BS_EN_60309_2_industrial_16A_230V_blue",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01",
+          "ip_rating": "IP55"
+        },
+        {
+          "id": "changing-S02",
+          "type": "BS_EN_60309_2_industrial_16A_230V_blue",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01",
+          "ip_rating": "IP55"
+        }
+      ]
+    }
+  ],
+  "drawing_layout": {
+    "sheet_size": "A2",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "drawing_scale": "1:50"
+  },
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      {
+        "message": "Pool hall (room_type=swimming_pool_hall, Part 7-702 location) contains ZERO 230 V socket outlets. The 2 IPx5 BS EN 60309-2 industrial cleaning sockets are installed in the adjacent changing room on the south wall (y=-3000 mm), beyond the architect-coordinated fixed barrier at y=-1500 mm (≥2.5 m AFF full-height divider wall). The barrier effectively clips pool_zone_2's unclipped polygon (south edge y=-3000) at y=-1500 per §702.55.4 changing-room overlap rule, so both sockets sit outside the effective Zone 2 envelope.",
+        "code_clause": "BS 7671:2018+A2:2022 §702.55.4",
+        "severity": "info"
+      },
+      {
+        "message": "Cascaded from special-locations: pool_main_equipotential_bonding constraint from payload electrical_constraints[0] applies to the pool hall room polygon (zone_pool_main_z0/z1/z2) per §702.415.1. ≥10 mm² main equipotential bonding conductor is required to pool ladder rails, pool pipe fittings, pool surrounds, metallic balustrade and deck drain grilles. The 3-phase pool pump (C02) has its motor frame separately bonded to the ME terminal via a 10 mm² supplementary bonding tail; bonding scheme is documented on the earthing-and-bonding drawing (out of scope for this IR).",
+        "code_clause": "BS 7671:2018+A2:2022 §702.415.1",
+        "severity": "info"
+      },
+      {
+        "message": "§702.55.4 fixed-barrier verification at commissioning: the architect-coordinated full-height divider wall at y=-1500 mm inside the changing room must be confirmed ≥2.5 m AFF and continuous (no openings, no permanent doorways below 2.5 m). Engineer-of-record signs off at first-inspection per Part 6. Until verified, the §702.55.4-clipped Zone 2 boundary is engineering-judgment, not measured.",
+        "code_clause": "BS 7671:2018+A2:2022 §702.55.4",
+        "severity": "info"
+      },
+      {
+        "message": "All Zs verification deferred to calc.zs_loop_impedance per WI3; both circuits have tool_call_pending_for_zs_verification=true and TOOL-CALL-PENDING:calc.zs_loop_impedance is set in flags[].",
+        "code_clause": "BS 7671:2018+A2:2022 §411.4.5",
+        "severity": "info"
+      }
+    ],
+    "assumptions": [
+      "Ze=0.30Ω and PSCC=10 kA declared by DNO at the consumer cut-out for the commercial 3-phase supply; not yet measured on site.",
+      "Pool basin geometry (10 m × 5 m, 1.8 m deep, footprint 1000–11000 × 500–5500 mm in room-local coordinates) cascaded from the upstream special-locations payload via the pool_main anchor.",
+      "BS EN 60309-2 industrial 16 A 230 V (blue) sockets selected for the cleaning equipment plug-in per typical commercial pool maintenance practice; IP55 rating exceeds the IPx4 minimum that pool_zone_2 would have required even if the sockets had been inside Zone 2 — defensive over-rating.",
+      "Pool circulation pump (C02) is a 3-phase 5.5 kW motor mounted in the plant room adjacent to but outside the pool hall §702 zone envelope; the motor frame is bonded to the ME terminal via a 10 mm² supplementary tail per §702.415.1 main equipotential bonding requirement. Plant-room location keeps the motor outside pool_zone_1/z2 vertical+horizontal extents.",
+      "§702.55.4 fixed barrier (≥2.5 m AFF full-height divider) at y=-1500 mm in the changing room is architect-coordinated; barrier compliance is engineer-of-record's commissioning responsibility per Part 6 first-inspection. The cascade-side D-2 reviewer judgment (`§702.55.4 changing-room barrier check`) is carried forward into compliance_summary.non_compliance_flags[2] as an info-severity engineering judgment.",
+      "Changing-room ring final circuit C01 floor area ≈12 m² (4×3 m), within the IET OSG §8.4.4 100 m² recommended limit for a 32 A ring. The 20 A breaker (versus the 32 A maximum) is sized to the diversified cleaning-equipment load (2 × 16 A BS EN 60309-2 outlets, peak coincident ≈8.7 A after diversity).",
+      "Cascade source REUSE disclosure: the consumed special-locations payload comes from `electrical/special-locations/examples/cascade-lighting-layout-uk-pool-hall/intent-out.json` (a lighting-layout consumer cascade). Special-locations IR is anchor-driven — 3 §702 zones derive from pool_main geometry and 1 pool_main_equipotential_bonding constraint, neither of which depends on the downstream fixture-type (luminaire vs socket). The payload is engineering-equivalent for the small-power consumer. A dedicated cascade-small-power-uk-pool-hall-pass on the special-locations producer side is deferred to Wave 2 sprint.",
+      "v2.0 retrofit context: this is a NEW example authored at v2.0.0 — no v1.x retrofit needed. The ring_endpoints (endpoint_a_xy/endpoint_b_xy/mcb_way_id/continuity_verified) are populated from the design directly (C01 ring lands at DB-POOL-1-WAY-1 with both ends in the changing room, continuity verified at commissioning).",
+      "INV-13 (building_diversity self-consistency) is N/A and vacuously PASSes because building_diversity is intentionally absent — the cleaning-equipment ring + pool-pump radial are a 2-circuit sub-IR for §702 demonstration, not a complete building demand calculation. INV-19 (cable-sizing cascade integration with building_diversity) is N/A for the same reason."
+    ]
+  },
+  "flags": [
+    "TOOL-CALL-PENDING:calc.zs_loop_impedance"
+  ],
+  "drawing_notes": [
+    "Pool hall (Part 7-702): ZERO 230 V sockets on the pool deck. Cleaning-equipment sockets relocated to the changing room south wall (y=-3000), beyond the architect-coordinated fixed barrier (≥2.5 m AFF) at y=-1500 per §702.55.4.",
+    "Changing-room ring C01: 2× IP55 BS EN 60309-2 16 A blue industrial sockets at 450 mm AFFL on the south wall; 20 A Type B RCBO + 2.5 mm² T+E ring (22 m), Type A 30 mA RCD per §702.415.1 cascaded constraint.",
+    "Pool pump dedicated radial C02: 3-phase 16 A Type C RCBO + 2.5 mm² 5-core SWA (XLPE/90°C), 18 m to plant-room MCC; Type A 30 mA RCD. Motor frame bonded to ME terminal via 10 mm² supplementary tail per §702.415.1.",
+    "§702.55.4 fixed barrier compliance is engineer-of-record's commissioning verification — see compliance_summary._cascaded engineering judgment."
+  ],
+  "rationale": {
+    "chat_summary": "UK commercial swimming pool hall (Part 7-702 location, room_type=swimming_pool_hall exact-match to fire INV-12) + adjacent changing room. Zero 230 V sockets inside the pool hall. Two IP55 BS EN 60309-2 blue 16 A industrial sockets on the changing-room south wall at y=-3000 mm, beyond an architect-coordinated fixed barrier at y=-1500 mm per §702.55.4 changing-room overlap rule (which effectively clips pool_zone_2's unclipped polygon). Pool circulation pump on a dedicated 3-phase 16 A radial (C02), separately bonded to the ME terminal per §702.415.1. consumed_intents.special_locations_zoning carries the cascade payload byte-identical to the lighting-layout pool-hall PASS source (3 zones, 1 pool_main_equipotential_bonding constraint, compliant=true). INV-12 PASS — all 4 sub-checks satisfied.",
+    "sections": [
+      {
+        "title": "Why room_type=swimming_pool_hall (exact Part-7 enum match)",
+        "summary": "Sprint D.4's binding condition is that the cascade INV (INV-12) must actually fire on this example. The schema's allOf clause and INV-12's wording both pivot on room_type being one of the Part-7 set: {bathroom, shower_room, swimming_pool_hall, sauna, medical_group_0_area, medical_group_1_ward, medical_group_2_theatre, external_landscape}. This example uses the exact swimming_pool_hall literal so the cascade fires end-to-end; the adjacent changing_room uses a non-Part-7 literal so the allOf clause is triggered solely by the pool hall.",
+        "decisions": [
+          {
+            "label": "room_type literal selection",
+            "summary": "Set rooms[0].room_type=swimming_pool_hall (no _commercial suffix). The Part 7-702 enum trigger then activates the schema's allOf clause requiring consumed_intents.special_locations_zoning to be populated.",
+            "rule": "Part-7 enum trigger in small-power IR schema allOf clause",
+            "code_clause": "small-power-ir.schema.json allOf"
+          }
+        ]
+      },
+      {
+        "title": "Cascade prerequisite (special-locations payload)",
+        "summary": "consumed_intents.special_locations_zoning carries the 3-zone pool-hall payload (zone_pool_main_z0/z1/z2, derived from the pool_main anchor) and 1 pool_main_equipotential_bonding electrical constraint. The cascade's compliant flag is true, zero non_compliance_flags. Source: electrical/special-locations/examples/cascade-lighting-layout-uk-pool-hall/intent-out.json. The payload is engineering-equivalent for either downstream skill — special-locations IR is anchor-driven (pool_main), not fixture-type-driven.",
+        "decisions": [
+          {
+            "label": "Reuse lighting-layout PASS cascade payload",
+            "summary": "No cascade-small-power-uk-pool-hall-pass exists at v1.0. The lighting-layout PASS payload is reused since the pool_main anchor geometry, the §702 zone polygons, and the pool_main_equipotential_bonding constraint are identical for both downstream skills.",
+            "rule": "Anchor-driven cascade engineering equivalence",
+            "code_clause": "BS 7671:2018+A2:2022 §702"
+          }
+        ]
+      },
+      {
+        "title": "Socket placement decisions",
+        "summary": "Zero 230 V sockets inside any §702 zone of the pool hall. The pool hall has sockets[]=[]. The 2 IP55 BS EN 60309-2 16 A blue industrial sockets sit on the changing-room south wall at room-local position (5000, -3000, 450) and (7000, -3000, 450). The unclipped pool_zone_2 polygon (-2500,-3000) → (14500,9000) would cover those positions; §702.55.4 changing-room overlap rule permits Zone 2 extension into a changing room only where a fixed barrier ≥2.5 m AFF separates the changing-room volume from the pool-zone side, so the architect-coordinated barrier at y=-1500 mm effectively clips Zone 2 north of y=-1500. Both sockets at y=-3000 are ≥1500 mm beyond the barrier and therefore OUTSIDE the effective Zone 2 envelope.",
+        "decisions": [
+          {
+            "label": "Changing-room socket placement beyond §702.55.4 barrier",
+            "summary": "Place both C01 sockets at y=-3000 mm (changing-room south wall), 1500 mm beyond the architect-coordinated full-height barrier at y=-1500. Effective Zone 2 (post-§702.55.4 clipping) terminates at y=-1500, so the sockets sit outside Zone 2's prohibited_fixture_types=[socket_230v] constraint.",
+            "rule": "§702.55.4 changing-room overlap clipping",
+            "code_clause": "BS 7671:2018+A2:2022 §702.55.4"
+          },
+          {
+            "label": "BS EN 60309-2 industrial socket selection",
+            "summary": "Blue 16 A 230 V single-phase IP55 industrial socket per BS EN 60309-2 — appropriate for cleaning-equipment plug-in (vacuum, scrubber, pressure washer at low duty). IP55 exceeds the IPx4 minimum that Zone 2 would have required even if the socket had been inside Zone 2, providing defensive over-rating.",
+            "rule": "Cleaning-equipment plug interface selection",
+            "code_clause": "BS EN 60309-2"
+          },
+          {
+            "label": "Pool pump (C02) location outside §702 zones",
+            "summary": "Pool circulation pump (5.5 kW 3-phase motor) mounted in the adjacent plant room, outside the pool-hall room polygon and therefore outside all §702 zones. The motor frame is separately bonded to the ME terminal via a 10 mm² supplementary tail per §702.415.1 main equipotential bonding requirement.",
+            "rule": "§702.415.1 main equipotential bonding",
+            "code_clause": "BS 7671:2018+A2:2022 §702.415.1"
+          }
+        ]
+      },
+      {
+        "title": "Circuit topology + RCD posture",
+        "summary": "C01 changing-room cleaning ring final: 20 A Type B RCBO + 2.5 mm² + 1.5 mm² CPC PVC ring (22 m total run, two endpoints at the DB-POOL-1-WAY-1 way). C02 pool-pump dedicated radial: 16 A Type C RCBO + 2.5 mm² 5-core SWA (XLPE 90 °C, 18 m). Both Type A 30 mA RCDs per the §702.415.1 cascaded blanket-equivalent constraint — the cascade payload only carries pool_main_equipotential_bonding (no rcd_blanket_by_room for §702 because §702 uses zone-specific RCD per the zone-table, not a room-blanket per §701.411.3.3), so the 30 mA RCD coverage is justified by the §702 zone-table's rcd_required_ma=30 field on each zone (z0/z1/z2) and §702.415.1.",
+        "decisions": [
+          {
+            "label": "C01 ring final 20 A (not 32 A)",
+            "summary": "Diversified load on the 2 cleaning sockets ≈8.7 A — well below 20 A. A 32 A ring would oversize the OCPD for this load profile and lose cable thermal margin. 20 A also keeps the IET OSG §8.4.4 floor-area headroom comfortable for the small ≈12 m² changing-room circuit footprint.",
+            "rule": "OCPD-topology coordination (INV-16)",
+            "code_clause": "BS 7671:2018+A2:2022 §433.1.1"
+          },
+          {
+            "label": "C02 Type C curve (not Type B)",
+            "summary": "The 5.5 kW 3-phase pool pump exhibits typical motor inrush (≈6× FLC at start). Type C curve (5–10× tripping band) handles the inrush without nuisance trip; Type B (3–5×) would trip on every start. Per BS EN 60898-1 and IET OSG.",
+            "rule": "BS EN 60898-1 curve selection for motor inrush",
+            "code_clause": "BS EN 60898-1"
+          }
+        ]
+      },
+      {
+        "title": "INV-12 cascade walk (4 sub-checks)",
+        "summary": "Sub-check 1 PASS (consumed_intents.special_locations_zoning present with payload). Sub-check 2 PASS (payload.compliant=true, 3 zones, 1 pool_main_equipotential_bonding constraint, 0 flags). Sub-check 3 PASS — walked sockets[]: pool_hall.sockets[]=[] (zero sockets in pool hall); changing-S01 and changing-S02 are BS_EN_60309_2_industrial_16A_230V_blue (type literal distinct from socket_230v) AND sit outside the effective Zone 2 envelope after §702.55.4 barrier clipping. Sub-check 4 PASS — payload.non_compliance_flags[]=[]; nothing to cascade. The compliance_summary.non_compliance_flags[] in this IR contains only info-severity engineering-judgment notes (the §702.55.4 barrier verification commitment is a forward-looking assumption, not a cascaded failure).",
+        "decisions": [
+          {
+            "label": "Sub-check 3 cross-walk (cleaning sockets only)",
+            "summary": "2 sockets total, both in the changing room. Pool hall sockets[]=[] (no sockets there). The 2 changing-room sockets are BS_EN_60309_2_industrial_16A_230V_blue, not socket_230v — distinct type literal, not in Zone 2's prohibited_fixture_types. Even if pattern-matched as 230 V sockets, the §702.55.4 barrier clipping places them outside the effective Zone 2 polygon.",
+            "rule": "Point-in-polygon + zone prohibition check + §702.55.4 barrier clip",
+            "code_clause": "BS 7671:2018+A2:2022 §702.55.4"
+          },
+          {
+            "label": "Sub-check 4 (no flags to cascade)",
+            "summary": "payload.non_compliance_flags=[]; the cascade carries zero failures from special-locations. The compliance_summary.non_compliance_flags[] entries in this IR are all info-severity design/engineering-judgment notes — not cascaded failures — and require no _cascaded_from attribution.",
+            "rule": "Cascade flag-cascading rule (vacuous)",
+            "code_clause": "BS 7671:2018+A2:2022 §702.415.1"
+          }
+        ]
+      },
+      {
+        "title": "INV-13..INV-19 evaluation",
+        "summary": "INV-13 (building_diversity self-consistency) N/A and vacuously PASS — building_diversity is intentionally absent (this is a 2-circuit §702 cascade demonstration, not a complete building demand calc). INV-14 (ring continuity) PASS — C01 ring_endpoints populated, both endpoints at mcb_way_id=DB-POOL-1-WAY-1, continuity_verified=true. INV-15 (floor-area cross-check) N/A — circuit.floor_area_m2 field is not populated on any circuit (per v2.0 optional field). INV-16 (OCPD-topology coordination) PASS — C01 ring 20 A on 2.5 mm² satisfies ring ≤32 A ceiling; C02 dedicated_radial 16 A on 2.5 mm² 5-core SWA sized by cable-sizing (rule trivially PASSes on dedicated_radial per validator INV-16 wording). INV-17 (FCU spurs) N/A — neither circuit has fcu_spurs[] populated. INV-18 (EV RCD) N/A — no EV-charge circuit. INV-19 (cable-sizing cascade with building_diversity) N/A — building_diversity absent and no cable-sizing intent consumed.",
+        "decisions": [
+          {
+            "label": "Intentional N/A for INV-13/15/17/18/19",
+            "summary": "This example's engineering scope is §702 special-locations cascade resolution + ring-vs-radial mix + 3-phase motor handling. building_diversity, FCU spurs, EV charging, and floor_area_m2 cross-checks are out of scope — they belong to other Phase A/B examples that exercise those features. The N/A-and-PASS treatment for INV-13/15/17/18/19 follows the validator prompt's explicit `N/A and trivially PASS` wording for each.",
+            "rule": "INV scope discipline",
+            "code_clause": "small-power validator.md (INV definitions)"
+          }
+        ]
+      },
+      {
+        "title": "Honest disclosures",
+        "summary": "(1) The cascade source is lighting-layout's PASS pool-hall payload — anchor geometry (pool_main) is engineering-equivalent for either downstream skill, so reuse is acceptable. A small-power-specific pool-hall PASS cascade is deferred to Wave 2. (2) The §702.55.4 fixed barrier is an architect-coordinated divider wall — its ≥2.5 m AFF height and full-width continuity are engineer-of-record's commissioning verification responsibility; the IR encodes the assumption + the verification action (assumption #5 + info flag #3). (3) The 2-circuit scope is intentionally minimal — this is a §702-cascade demonstration example, not a full pool-facility small-power design.",
+        "decisions": []
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 ring final circuit cable composition is 2.5 mm² + 1.5 mm² CPC PVC T+E (3-core T+E), matching BS 7671:2018+A2:2022 Table 7.1 for a ring final on a 20 A OCPD (the table-reference is for 32 A maximum; 20 A is well within the ring-circuit envelope). Cable composition + 1.5 mm² CPC ratio satisfies the standard ring composition rule."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Every circuit's ocpd.breaking_capacity_ka (C01: 10.0; C02: 10.0) is greater than or equal to parent_db.pfc_at_busbar_ka (10.0) per BS 7671:2018+A2:2022 §434.5.1 and IEC 60898-1 conditional short-circuit ratings. The 10 kA rating reflects the commercial-supply PFC declared by the DNO at the consumer cut-out."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Both changing-room industrial sockets (changing-S01, changing-S02) are on C01 with Type A 30 mA RCD coverage per BS 7671:2018+A2:2022 §411.3.3 default for sockets ≤32 A AND §702.415.1 (which mandates 30 mA RCD on all §702 zone-supplying circuits). C02 is dedicated to the pool pump (no socket outlet) but is also on Type A 30 mA RCD per §702.415.1."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Pool hall (room_type=swimming_pool_hall, Part 7-702 location) has zero 230 V socket outlets inside any §702 zone. sockets[]=[]. The 2 changing-room cleaning sockets sit at y=-3000 mm, beyond the architect-coordinated §702.55.4 fixed barrier at y=-1500 mm — outside the effective Zone 2 envelope after §702.55.4 clipping."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 (ring) topology=ring with rooms_covered=[changing_room]; C02 (dedicated_radial) topology=dedicated_radial with rooms_covered=[pool_hall]. All sockets in rooms[] cross-reference a circuit_id (C01) that exists in circuits[]. Pool hall has no sockets so no cross-ref check applies there."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "low",
+      "evidence": "C01 ring uses Type B curve — cleaning sockets have no significant inrush. C02 pool-pump dedicated radial uses Type C curve — justified by the 5.5 kW 3-phase motor's start-up inrush (typically 6× FLC, requiring the 5–10× Type C trip band)."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "high",
+      "evidence": "diversified_max_load_a per circuit (C01: 8.7 A; C02: 9.5 A) is less than ocpd.rating_a (C01: 20 A; C02: 16 A). Diversity applied per IET OSG Appendix A general-sockets profile for C01 (2 industrial sockets, peak coincident ≈50% × 16 A) and motor full-load current per IEC 60034 for C02 (5.5 kW / (√3 × 400 V × 0.85 PF × 0.88 η) ≈ 10.5 A nameplate, derated for steady-state to 9.5 A)."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Both circuits have tool_call_pending_for_zs_verification=true (deferred per WI3). flags[] carries TOOL-CALL-PENDING:calc.zs_loop_impedance accordingly."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Every room (pool_hall, changing_room) appears in at least one circuit's rooms_covered[] (pool_hall→C02; changing_room→C01). Pool hall has no sockets but is covered by C02 (pool pump radial); changing room has 2 sockets all served by C01. No orphan rooms."
+    },
+    {
+      "id": "INV-10",
+      "passes": true,
+      "severity": "low",
+      "evidence": "drawing_layout.drawing_standard=BS 1192:2007+A2:2016 matches the GB jurisdiction expected default for small-power layout drawings. Sheet size A2 + scale 1:50 appropriate for the 12 m × 9 m total facility extent (pool hall + changing room)."
+    },
+    {
+      "id": "INV-11",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No cable-sizing intent consumed in this example (consumed_intents.cable_sizing absent). INV-11 is a no-op per the v1.1 conditional rule; both circuits carry tool_call_pending_for_zs_verification=true to defer Zs to calc.zs_loop_impedance."
+    },
+    {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Cascade source: electrical/special-locations/examples/cascade-lighting-layout-uk-pool-hall/intent-out.json. Sub-check 1 PASS (consumed_intents.special_locations_zoning present). Sub-check 2 PASS (payload.compliant=true, 3 zones, 1 pool_main_equipotential_bonding constraint, 0 flags). Sub-check 3 PASS — walked sockets: pool_hall.sockets[]=[] (zero); changing-S01 + changing-S02 are BS_EN_60309_2 industrial type (not socket_230v literal) AND at y=-3000 sit ≥1500 mm beyond the §702.55.4 architect-coordinated fixed barrier at y=-1500, outside the effective Zone 2 envelope. Sub-check 4 PASS — payload.non_compliance_flags=[]; nothing to cascade. BS 7671:2018+A2:2022 §702.415.1 + §702.55.4."
+    },
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "low",
+      "evidence": "N/A and trivially PASS per validator INV-13 wording — building_diversity block is intentionally absent. This is a 2-circuit §702-cascade demonstration example, not a complete building demand calculation; building_diversity belongs to Phase A/B examples that exercise the demand cascade (office/healthcare/industrial profiles)."
+    },
+    {
+      "id": "INV-14",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 ring_endpoints populated: endpoint_a_xy=(4200,-2900) + endpoint_b_xy=(7800,-2900), both at mcb_way_id=DB-POOL-1-WAY-1, continuity_verified=true. Both endpoints land at the same MCB way per rule TOP-09 sub-check 1; continuity_verified=true per sub-check 2 (engineer-of-record signs off the end-to-end resistance ≤Zs limit at commissioning per Part 6). C02 is dedicated_radial — INV-14 N/A on radial circuits."
+    },
+    {
+      "id": "INV-15",
+      "passes": true,
+      "severity": "high",
+      "evidence": "N/A and trivially PASS per validator INV-15 wording — circuit.floor_area_m2 is not populated on any circuit (v2.0 optional field). The rule fires only when both floor_area_m2 AND rooms_covered[] are populated and demands Σ-tolerance reconciliation; with floor_area_m2 absent, no reconciliation is computed."
+    },
+    {
+      "id": "INV-16",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 ring 20 A on 2.5 mm² T+E — rule TOP-11 sub-rule `topology=ring → MCB ≤32 A` satisfied with comfortable headroom (20 A ≤32 A). C02 dedicated_radial 16 A on 2.5 mm² 5-core SWA — rule TOP-11 wording `topology=dedicated_radial → MCB sized by connected load per §433.1.1, validator trivially PASSES on dedicated_radial` is satisfied; cable-sizing's INV-04 (when consumed) coordinates the OCPD-cable pair, and even without cable-sizing here the 16 A MCB on 2.5 mm² SWA for the 9.5 A pump load has 6.5 A spare capacity well within Iz."
+    },
+    {
+      "id": "INV-17",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "N/A and trivially PASS per validator INV-17 wording — neither C01 nor C02 has fcu_spurs[] populated (the cleaning-equipment plug-in is via BS EN 60309-2 sockets, not via FCU; the pool pump is a direct-wired motor, not FCU-fed). Rule TOP-12 evaluates only when fcu_spurs[] is populated."
+    },
+    {
+      "id": "INV-18",
+      "passes": true,
+      "severity": "high",
+      "evidence": "N/A and trivially PASS per validator INV-18 wording — no circuit has load_type matching ev_charge_* (the cleaning-equipment ring is general-purpose sockets, the pump radial is a motor circuit). Rule EV-03 evaluates only on EV-charge circuits where ev_charge_metadata is required and the rcd_type ↔ charging_unit_dc_detection_a constraint applies."
+    },
+    {
+      "id": "INV-19",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "N/A and trivially PASS per validator INV-19 wording — both building_diversity.per_circuit_demand_inputs[] AND consumed_intents.cable_sizing.payload.circuits[] are absent. Rule BLD-05 evaluates only when both are present and reconciles post_per_load_diversity_a with cable-sizing's design_current_a within ±5% tolerance."
+    }
+  ],
+  "consumed_intents": {
+    "special_locations_zoning": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/special-locations/examples/cascade-lighting-layout-uk-pool-hall/intent-out.json",
+      "payload": {
+        "zones": [
+          {
+            "zone_id": "zone_pool_main_z0",
+            "zone_type": "pool_zone_0",
+            "source_anchor_id": "pool_main",
+            "derivation_clause": "BS 7671:2018 §702",
+            "boundary_plan_polygon_mm": [
+              [1000, 500],
+              [11000, 500],
+              [11000, 5500],
+              [1000, 5500]
+            ],
+            "height_min_mm": 0,
+            "height_max_mm": 200,
+            "ip_rating_min": "IPx8",
+            "max_voltage_v": 12,
+            "rcd_required_ma": 30,
+            "isolation_required": true,
+            "allowed_equipment_classes": ["class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated", "luminaire_non_submersible"],
+            "switch_position_min_distance_mm": null,
+            "overlapping_with_zone_ids": [],
+            "_clause_citation": "BS 7671:2018 §702",
+            "_derivation_note": "Zone 0 = pool basin interior (water volume) per §702 zone-table. SELV-only (≤12V) per §702. IPx8 (submersible) required for underwater luminaires. Polygon = pool basin footprint (1000,500)-(11000,5500). Height 0 to water surface (200mm above pool deck = floor reference 0)."
+          },
+          {
+            "zone_id": "zone_pool_main_z1",
+            "zone_type": "pool_zone_1",
+            "source_anchor_id": "pool_main",
+            "derivation_clause": "BS 7671:2018 §702",
+            "boundary_plan_polygon_mm": [
+              [-1000, -1500],
+              [13000, -1500],
+              [13000, 7500],
+              [-1000, 7500]
+            ],
+            "height_min_mm": 200,
+            "height_max_mm": 2500,
+            "ip_rating_min": "IPx5",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+            "switch_position_min_distance_mm": null,
+            "overlapping_with_zone_ids": [],
+            "_clause_citation": "BS 7671:2018 §702",
+            "_derivation_note": "Zone 1 = pool basin polygon extended 2m horizontally on all sides per §702 zone-table; vertically from water surface (200mm) to 2.5m AFF. Polygon shown unclipped — runtime intersects with room polygon. IPx5 minimum (splash + jets typical in pool hall)."
+          },
+          {
+            "zone_id": "zone_pool_main_z2",
+            "zone_type": "pool_zone_2",
+            "source_anchor_id": "pool_main",
+            "derivation_clause": "BS 7671:2018 §702",
+            "boundary_plan_polygon_mm": [
+              [-2500, -3000],
+              [14500, -3000],
+              [14500, 9000],
+              [-2500, 9000]
+            ],
+            "height_min_mm": 200,
+            "height_max_mm": 2500,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v"],
+            "switch_position_min_distance_mm": null,
+            "overlapping_with_zone_ids": [],
+            "_clause_citation": "BS 7671:2018 §702 + §702.55.4 (Zone 2 extension into changing rooms — barrier check)",
+            "_derivation_note": "Zone 2 = further 1.5m horizontal extension of Zone 1 (total 3.5m from pool edge) per §702 zone-table. Vertically from water surface (200mm) to 2.5m AFF. Polygon shown unclipped — south edge at y=-3000 enters the adjacent changing-room polygon (located at y=-3000 to 0). Within 200mm threshold triggers reviewer D-2 (§702.55.4 changing-room barrier check)."
+          }
+        ],
+        "electrical_constraints": [
+          {
+            "constraint_type": "pool_main_equipotential_bonding",
+            "applies_to_room_polygon": true,
+            "applies_to_zone_ids": ["zone_pool_main_z0", "zone_pool_main_z1", "zone_pool_main_z2"],
+            "_clause_citation": "BS 7671:2018 §702.415.1",
+            "_derivation_note": "Main equipotential bonding required for all extraneous conductive parts within the pool hall per §702.415.1. Conductor CSA ≥10mm² (the §702 minimum). Bonding extends to ladder rails, pipe fittings, pool surrounds, and any other extraneous metalwork.",
+            "extraneous_parts_listed": [
+              "pool ladder rails",
+              "pool pipe fittings",
+              "pool surrounds",
+              "metallic balustrade",
+              "deck drain grilles"
+            ],
+            "conductor_csa_min_mm2": 10
+          }
+        ],
+        "compliant": true,
+        "zone_count": 3,
+        "constraint_count": 1,
+        "violation_count_critical": 0,
+        "violation_count_high": 0,
+        "non_compliance_flags": [],
+        "anchor_source_summary": {
+          "all_extracted": true,
+          "extraction_source_lowest": "architectural_drawing_extraction"
+        }
+      }
+    }
+  }
+}
