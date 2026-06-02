@@ -970,4 +970,670 @@ EOF
 
 ---
 
-[Phase B + C + D continue in subsequent plan portions — committed sequentially per the special-locations precedent. Phase B covers the 4 prompt tasks (generator + validator + reviewer + cascade-prereq update); Phase C covers the 8 new + 1 retrofit examples + 5 evals; Phase D covers the 2 new producer-side cascade fixtures + Sonnet 11-check fence + 3 CHANGELOGs + memory + final integration review + push-deferred-to-user.]
+---
+
+## Phase B — Prompts (4 tasks, all Opus, sequential)
+
+Phase B produces the 3 prompt-file edits (generator + validator + reviewer) + a cross-skill cascade-prereq context update. Each is judgment-heavy and gets Opus. Per-task two-stage Opus review after each. Phase B complete after B.4 ships green.
+
+---
+
+## Task B.1: Generator prompt — Steps 13-15 (Opus)
+
+**Why Opus:** Engineering-judgment steps that walk an LLM through building_diversity computation order + ring endpoint emission + EV charge metadata derivation. Citation accuracy must be airtight.
+
+**Files:**
+- Modify: `electrical/small-power/prompts/generator.md` (append Steps 13-15 after existing Step 12)
+
+- [ ] **Step 1: Read current generator.md state**
+
+```bash
+wc -l electrical/small-power/prompts/generator.md
+grep -nE "^## Step " electrical/small-power/prompts/generator.md | tail -5
+```
+
+Expected: current Steps 1-12 enumerated.
+
+- [ ] **Step 2: Read spec §5 + §6 for the canonical IR shapes the new steps emit**
+
+```bash
+sed -n '/^## 5\. IR additions/,/^## 7\. Reviewer D-checks/p' docs/superpowers/specs/2026-06-02-small-power-d4-depth-design.md
+```
+
+- [ ] **Step 3: Append Step 13 — resolve `building_diversity`**
+
+After existing Step 12 in `electrical/small-power/prompts/generator.md`:
+
+````markdown
+## Step 13 — Resolve building_diversity (when inputs.building_diversity_inputs is supplied)
+
+When `inputs.building_diversity_inputs` is present, emit a top-level
+`building_diversity` block on the IR. When absent, skip this step (validator
+INV-13 emits "skipped — input not supplied" and passes vacuously).
+
+**13.1 Resolve building_type → standards-file profile**
+
+Read the verified standards file at
+`shared/standards/electrical/BS7671/diversity-factors.json`. For
+`building_type` ∈ {office, industrial, healthcare}, look up the profile:
+- `applies_load_types[]` — the load-type filter for which DIV-NN factors compose into building_diversified_demand
+- `design_density_w_per_m2_range` — the verified range
+- `future_expansion_pct_default` — the standards-file default
+
+When `inputs.building_diversity_inputs.design_density_w_per_m2_override` is
+supplied AND falls outside `design_density_w_per_m2_range`, emit the value
+AND a reviewer D-8 flag (handled at the reviewer prompt stage; do not
+mark INV-13 fail here — the override may be legitimate engineer judgment
+based on project-specific data).
+
+**13.2 Apply `applies_after: per_load_diversity` ordering**
+
+The building_diversity factor multiplies the SUM of per-circuit
+DIV-NN-diversified currents — NOT the raw connected loads. Per the IET OSG
+8th Edition App A computation order:
+
+```
+For each circuit in scope (per applies_load_types filter):
+    circuit_diversified_a = circuit_connected_a × circuit_DIV_factor
+Σ_circuits = Σ(circuit_diversified_a) for matching applies_load_types
+building_diversified_demand_a = Σ_circuits × building_factor
+```
+
+The building_factor is computed from the standards-file profile per
+building_type — for office, the relevant entries (e.g. office_lift_single
+100% vs office_lift_two 80% vs office_lift_three_or_more 70%) compose into
+the building_factor based on the project's lift count.
+
+**13.3 Emit `per_circuit_demand_inputs[]` for INV-19 cascade integration**
+
+For each circuit contributing to building_diversified_demand_a, append one
+entry to `building_diversity.per_circuit_demand_inputs[]`:
+
+```json
+{
+  "circuit_id": "<the circuit's id>",
+  "post_per_load_diversity_a": <the DIV-NN-diversified current>,
+  "building_factor_applied": <the building factor for this circuit's
+                                applies_load_types match>
+}
+```
+
+This array is the cascade-integration ingredient that INV-19 verifies
+against `consumed_intents.cable_sizing.payload.circuits[]` — every entry
+here MUST have a matching circuit in the cable-sizing cascade source.
+
+**13.4 Emit `_clause_citation` + `_derivation_note`**
+
+Per CLAUDE.md citation form for the GB jurisdiction:
+
+```yaml
+_clause_citation: "IET On-Site Guide 8th Edition Appendix A — Table A1 (<building_type>) + diversity-factors.json"
+_derivation_note: "≥40 char prose explaining: which standards-file profile was used; whether engineer overrode design_density or future_expansion_pct; what building_factor was computed; how it composes with per-circuit diversity."
+```
+
+**13.5 Banned in this step (per spec §11.1):**
+- Never cite Reg 559 for lift diversity (correct: IET OSG App A — Table A1)
+- Never cite §526.2 or §433.2 (NOT transcribed in verified file; correct
+  anchor is IET OSG §8.4.4 for ring/radial concerns, but those are Step 14
+  not Step 13)
+- Never invent building types beyond {office, industrial, healthcare} at
+  v2.0 (retail/residential/data-center/hospitality deferred to v2.1 per
+  spec §2 deferrals)
+````
+
+- [ ] **Step 4: Append Step 14 — verify ring endpoints**
+
+````markdown
+## Step 14 — Verify ring final circuit continuity (when inputs.ring_continuity_endpoints is supplied)
+
+When `inputs.ring_continuity_endpoints` is present, emit
+`circuits[i].ring_endpoints` on each circuit where `topology == "ring"`.
+The IR schema's allOf clause REQUIRES `ring_endpoints` when topology=ring;
+emitting an empty/missing block on a ring circuit will fail Pass-1 schema
+validation before INV-14 even runs.
+
+**14.1 Match circuit_id from inputs.ring_continuity_endpoints to circuits[]**
+
+For each ring circuit, find the matching entry in
+`inputs.ring_continuity_endpoints` by `circuit_id`. If found, populate
+`endpoint_a_xy`, `endpoint_b_xy`, `mcb_way_id`, and set
+`continuity_verified: true` only when:
+  - both endpoints exist (no null coordinates)
+  - `mcb_way_id` is a non-empty string AND matches the circuit's declared
+    way_id at the consumer unit board
+
+When `continuity_verified: false`, emit non_compliance_flag entry — INV-14
+catches this at validator stage but emitting the explicit false flag at
+generator stage gives the engineer reasoning early.
+
+**14.2 Cite IET OSG §8.4.4 + BS 7671 §526 top-level**
+
+The _citation field on each ring_endpoints block must read:
+
+```
+"IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 (top-level — sub-clause §526.2 not transcribed in verified file)"
+```
+
+Spec §2.3 verified-citation table is authoritative; never cite §526.2
+directly (it's on the banned list per the spec amendment v1.0.1).
+
+**14.3 fcu_spurs (when present)**
+
+When the engineer's design includes FCU spurs on a ring final circuit
+(common in domestic kitchens — under-cabinet FCUs feed permanent appliances),
+emit one entry per FCU into `circuits[i].fcu_spurs[]`:
+
+```json
+{
+  "location_xy": {"x_mm": <pos>, "y_mm": <pos>},
+  "fcu_rating_a": <3 | 5 | 13>,
+  "downstream_loads_w": <sum of all loads on this FCU>,
+  "_citation": "IET On-Site Guide §8.4.4 (8th Edition, AMD 2 update) + BS 7671:2018+A2:2022 §433 (top-level)"
+}
+```
+
+INV-17 verifies `downstream_loads_w ≤ fcu_rating_a × 230 V`.
+````
+
+- [ ] **Step 5: Append Step 15 — emit ev_charge_metadata**
+
+````markdown
+## Step 15 — Emit ev_charge_metadata (when load_type matches ev_charge_*)
+
+For every circuit where `circuits[i].load_type` matches the pattern
+`ev_charge_*` (e.g. `ev_charge_domestic`, `ev_charge_commercial`), the IR
+schema's allOf clause REQUIRES the `ev_charge_metadata` block. Emitting
+without it will fail Pass-1 schema validation.
+
+**15.1 Resolve RCD type per Reg 722.531.3.101**
+
+Read `inputs.ev_charge_metadata[i].charging_unit_dc_detection_a` (the
+manufacturer's declared 6mA DC residual current detection threshold).
+The rule (EV-03):
+  - `charging_unit_dc_detection_a ≥ 6` → `rcd_type: type_a` (DEFAULT per
+    Reg 722.531.3.101)
+  - `charging_unit_dc_detection_a < 6` → `rcd_type: type_b` (REQUIRED per
+    Reg 722.531.3.101 — Type A cannot detect DC fault current)
+
+NEVER default to Type A when the manufacturer has not declared 6mA DC
+detection — Type A on a 0mA-detection unit is a HIGH safety failure (DC
+fault current blinds the Type A; only Type B detects).
+
+**15.2 Emit Mode + standards**
+
+```json
+{
+  "rcd_type": "<type_a | type_b per 15.1>",
+  "charging_unit_dc_detection_a": <from inputs>,
+  "mode": <3 for AC up to 22 kW; 4 for DC rapid 50-350 kW>,
+  "charging_unit_standard": "BS EN 61851-1",
+  "socket_standard": "<BS EN 62196 Type 2 Mennekes for Mode 3 AC | BS EN 62196 CCS Combo 2 for Mode 4 DC>",
+  "dedicated_circuit": true,
+  "_citation": "BS 7671:2018+A2:2022 §722.531.3.101 + IET Code of Practice for EV Charging Equipment Installation (4th Ed)"
+}
+```
+
+The `dedicated_circuit: true` is a CONST in the IR schema — the EV-01 rule
+in `electrical/small-power/rules/ev-charge-rules.yaml` enforces no shared
+loads on EV circuits.
+
+**15.3 EV demand — NO diversity (per IET CoP for EV 4th Ed)**
+
+When applying building_diversity (Step 13), every EV circuit contributes
+100% of its rated current to the building_diversified_demand calculation
+— NO diversity factor applies (EV-02 rule). Append the full rated current
+(not a diversified value) to `per_circuit_demand_inputs[]` for INV-19
+traceability.
+
+**15.4 Banned in this step:**
+- NEVER cite "OZEV Code of Practice" or "IET CoP for EV 3rd Edition"
+  (these are the spec §11.1 banned-list catches; correct name is
+  "IET Code of Practice for EV Charging Equipment Installation (4th Ed)")
+- NEVER cite Mode 1 or Mode 2 as permissible at v2.0 (DEPRECATED per
+  §722; only Mode 3 + Mode 4 permitted)
+````
+
+- [ ] **Step 6: Verify line count + banned citations**
+
+```bash
+wc -l electrical/small-power/prompts/generator.md
+grep -c "^## Step " electrical/small-power/prompts/generator.md
+grep -nE "(§701\.32|§701\.55|§702\.55\.1|§702\.55\.2|§702\.32|§703\.55|§703\.512|§703\.413|§710\.413\.1\.5|§710\.314|§710\.411\.3\.3|§715\.560\.4|§715\.521|§715\.422|OZEV|3rd Edition|§526\.2|§433\.2|Reg 559)" electrical/small-power/prompts/generator.md | grep -v "NEVER cite\|do NOT\|banned\|never cite\|not transcribed\|sub-clause\|3rd-party\|the banned list\|spec §11" && echo "FAIL: banned-citation leak outside disambiguation context" || echo "PASS"
+```
+
+Expected: line count grew by ~150-200 lines; Step count went from 12 → 15; banned-citation grep PASS.
+
+- [ ] **Step 7: Run gates + commit B.1**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/small-power/prompts/generator.md
+git commit -m "feat(small-power): B.1 generator.md — Steps 13/14/15 (building_diversity + ring endpoints + ev_charge_metadata)"
+```
+
+Body should describe each step's purpose + the verified-citation discipline locked in (no §526.2, no §433.2, no OZEV, no 3rd Edition).
+
+---
+
+## Task B.2: Validator prompt — 7 new INVs (Opus)
+
+**Why Opus:** Per-INV severity ladder + rule precision + verified-citation accuracy + evidence ≤1200 chars per [[feedback-no-trim-non-consequential]] cap.
+
+**Files:**
+- Modify: `electrical/small-power/prompts/validator.md` (append INV-13..INV-19 sections after existing INV-12)
+
+- [ ] **Step 1: Read current validator.md state**
+
+```bash
+wc -l electrical/small-power/prompts/validator.md
+grep -nE "^## INV-" electrical/small-power/prompts/validator.md
+```
+
+Expected: existing INV-01..INV-12.
+
+- [ ] **Step 2: Append INV-13 (HIGH) — building_diversity self-consistency**
+
+````markdown
+## INV-13 — building_diversity self-consistency (HIGH)
+
+**Severity:** HIGH when `building_diversity` is present; N/A and trivially
+PASS when absent (input not supplied).
+
+**Rule (3 sub-checks):**
+1. `building_type` is in the v2.0 enum {office, industrial, healthcare}.
+   Anything else fails — retail/residential/data-center/hospitality are
+   deferred to v2.1 per spec §2 deferrals.
+2. `design_density_w_per_m2` is within the verified standards-file range
+   for the building_type, OR an explicit reviewer D-8 flag is emitted in
+   `_engineering_judgments[]` documenting the engineer override (don't
+   FAIL INV-13 on override alone — the override is a legitimate engineering
+   call backed by project-specific data; just enforce the disclosure).
+3. `building_diversified_demand_a` is computationally consistent:
+   `building_diversified_demand_a ≈ Σ(per_circuit_demand_inputs[i].post_per_load_diversity_a × per_circuit_demand_inputs[i].building_factor_applied)`
+   within ±5% tolerance (rounding).
+
+**Validator action:** read `building_diversity` block. For each sub-check,
+emit PASS or FAIL with concrete numbers + standards-file ranges in evidence.
+
+**Citation:** IET On-Site Guide 8th Edition Appendix A — Table A1 +
+diversity-factors.json (verified). NEVER cite the original
+within-skill-depth-plan floor_factor numbers (office 0.75 / retail 0.85 /
+industrial 0.90) — those are NOT in the verified file and are the spec
+§2 citation-hygiene catch at brainstorm.
+
+**Rationale:** Without INV-13, the engineer could declare a building type
+without using its verified diversity profile, OR could compute the
+building_diversified_demand without going through the per-circuit traceability.
+The cascade integration (INV-19) is impossible without per_circuit_demand_inputs[].
+````
+
+- [ ] **Step 3: Append INV-14 (HIGH) — ring continuity**
+
+````markdown
+## INV-14 — Ring final circuit continuity (HIGH)
+
+**Severity:** HIGH on circuits where `topology == "ring"` and
+`ring_endpoints` is populated; N/A and trivially PASS when topology is not
+ring OR ring_continuity_endpoints input was not supplied.
+
+**Rule (2 sub-checks):**
+1. Both endpoints of the ring (endpoint_a_xy and endpoint_b_xy) MUST
+   land at the same MCB way (mcb_way_id). A ring that lands at two
+   different ways is structurally broken — it's two radials sharing
+   conductors, and the Zs / cable thermal protection assumptions for ring
+   topology no longer apply.
+2. `continuity_verified: true` MUST be set; the engineer-of-record bears
+   responsibility for the verification (typically end-to-end resistance
+   ≤ Zs limit per Reg 411 + visual inspection per Part 6).
+
+**Validator action:** read `circuits[i].ring_endpoints` for every ring
+circuit. Verify mcb_way_id consistency + continuity_verified=true.
+Emit evidence citing the circuit_id + both mcb_way_ids (when divergent) +
+the topology.
+
+**Citation:** `IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022
+§526 (top-level — sub-clause §526.2 not transcribed in verified file)`.
+
+**Rationale:** A broken ring continues to function until a fault occurs;
+the rule catches this at design stage before commissioning.
+````
+
+- [ ] **Step 4: Append INV-15 (HIGH) — per-circuit floor-area cross-check**
+
+````markdown
+## INV-15 — Per-circuit floor-area cross-check (HIGH)
+
+**Severity:** HIGH on any circuit where `floor_area_m2` and `rooms_covered[]`
+are both populated; N/A otherwise.
+
+**Rule:** `circuit.floor_area_m2` MUST equal `Σ(rooms_covered[].floor_area_m2)`
+within ±5% tolerance. Drift between the declared circuit area and the sum
+of room areas the circuit covers indicates one of:
+  - engineer declared an area without listing all rooms,
+  - rooms_covered list is stale (room added/removed in iteration),
+  - typo in either field.
+
+**Validator action:** for each circuit, compute the Σ and compare. Emit
+evidence with concrete m² values + the % drift.
+
+**Citation:** IET On-Site Guide §8.4.4 (8th Edition).
+
+**Rationale:** INV-01 ring max 100 m² (existing) relies on
+`circuit.floor_area_m2` being honest. INV-15 keeps the field honest.
+````
+
+- [ ] **Step 5: Append INV-16 (HIGH) — OCPD-topology coordination**
+
+````markdown
+## INV-16 — OCPD-topology coordination (HIGH)
+
+**Severity:** HIGH on every circuit.
+
+**Rule:** the chosen MCB rating MUST be coordinated with the topology and
+conductor csa:
+- `topology=ring` → MCB ≤ 32 A
+- `topology=radial AND cable_csa_mm2=2.5` → MCB ≤ 20 A
+- `topology=radial AND cable_csa_mm2=4` → MCB ≤ 32 A
+- `topology=dedicated_radial` → MCB sized by connected load per §433.1.1
+  (cable-sizing's domain; INV-16 trivially PASSES on dedicated_radial
+  because cable-sizing's INV-04 already coordinates the OCPD-cable pair)
+
+A 32 A MCB on a 2.5 mm² radial would breach Iz before tripping under
+sustained 20-32 A; the cable overheats.
+
+**Validator action:** for each circuit, read topology + mcb_rating_a +
+cable_csa_mm2; apply the rule. Emit evidence with the chosen rating + the
+permitted ceiling per topology.
+
+**Citation:** `BS 7671:2018+A2:2022 §433.1.1 (verified) + IET On-Site Guide
+§8.4.4 (8th Edition)`.
+
+**Rationale:** the most common ring/radial misdesign is over-rating the MCB;
+INV-16 catches it.
+````
+
+- [ ] **Step 6: Append INV-17 (MEDIUM) — AMD 2 FCU spur modelling**
+
+````markdown
+## INV-17 — AMD 2 FCU spur modelling (MEDIUM)
+
+**Severity:** MEDIUM on circuits where `fcu_spurs[]` is populated; N/A
+otherwise.
+
+**Rule:** every entry in `circuits[i].fcu_spurs[]` MUST satisfy:
+- `fcu_rating_a` ∈ {3, 5, 13} (the standard FCU plug sizes)
+- `downstream_loads_w ≤ fcu_rating_a × 230 V` (the FCU is the
+  downstream load's OCPD; overloaded FCU would still trip under fault
+  but the design is breach of best practice)
+
+**Validator action:** iterate fcu_spurs[]; compute the 230 V × fcu_rating
+limit; emit evidence per FCU with the downstream load + limit + headroom %.
+
+**Citation:** `IET On-Site Guide §8.4.4 (8th Edition, AMD 2 update) +
+BS 7671:2018+A2:2022 §433 (top-level — sub-clause §433.2 not transcribed
+in verified file; the FCU spur rules are in IET OSG)`.
+
+**Rationale:** an over-loaded FCU is a design defect but not a structural
+compliance breach (because the FCU would still trip under fault). MEDIUM
+severity reflects that — engineer fixes it in design iteration without
+blocking the IR ship.
+````
+
+- [ ] **Step 7: Append INV-18 (HIGH) — EV RCD Type A/B selection**
+
+````markdown
+## INV-18 — EV RCD Type A/B selection (HIGH)
+
+**Severity:** HIGH on every EV charge circuit (every circuit where
+`load_type` matches `ev_charge_*` and `ev_charge_metadata` is present).
+
+**Rule:** RCD type MUST follow Reg 722.531.3.101:
+- `rcd_type == "type_a"` iff `charging_unit_dc_detection_a ≥ 6`
+- `rcd_type == "type_b"` iff `charging_unit_dc_detection_a < 6`
+
+Type A on a charging unit without built-in 6 mA DC residual detection is
+a HIGH safety failure (DC fault current blinds the Type A; only Type B
+detects DC).
+
+**Validator action:** for each EV circuit, read both fields; apply the
+rule; FAIL HIGH if mismatched. Emit evidence with the declared values +
+why the rule fired the way it did.
+
+**Citation:** `BS 7671:2018+A2:2022 §722.531.3.101 (verified) + IET Code
+of Practice for EV Charging Equipment Installation (4th Ed)`.
+
+**Rationale:** this is the most common EV install safety failure surfacing
+in real EICR findings — engineers default to Type A because it's cheaper
+without checking the charging unit's DC detection capability.
+````
+
+- [ ] **Step 8: Append INV-19 (MEDIUM) — cable-sizing cascade integration**
+
+````markdown
+## INV-19 — Cable-sizing cascade integration with building_diversity (MEDIUM)
+
+**Severity:** MEDIUM when both `building_diversity.per_circuit_demand_inputs[]`
+AND `consumed_intents.cable_sizing.payload.circuits[]` are present; N/A
+otherwise.
+
+**Rule:** every entry in `building_diversity.per_circuit_demand_inputs[]`
+MUST have a matching entry in `consumed_intents.cable_sizing.payload.
+circuits[]` by `circuit_id`, AND the `post_per_load_diversity_a` value
+in small-power's IR MUST reconcile with cable-sizing's
+`design_current_a` field for that circuit within ±5% tolerance.
+
+**Validator action:** iterate per_circuit_demand_inputs[]; for each entry,
+find the matching cable-sizing circuit; compute the % drift; FAIL MEDIUM
+if any drift exceeds 5%.
+
+**Citation:** skill-internal cross-skill integration (cluster roadmap §6.7
+cascade DSL).
+
+**Rationale:** without INV-19, the building_diversity output could diverge
+from the cable-sizing input that small-power consumes. INV-19 makes the
+cascade traceable end-to-end and catches the most common iteration
+defect — small-power updates its building_diversity numbers without
+re-consuming a fresh cable-sizing intent.
+````
+
+- [ ] **Step 9: Verify line count + banned citations + INV count**
+
+```bash
+wc -l electrical/small-power/prompts/validator.md
+grep -c "^## INV-" electrical/small-power/prompts/validator.md
+grep -nE "(§701\.32|§701\.55|§702\.55\.1|§702\.55\.2|§702\.32|§703\.55|§703\.512|§703\.413|§710\.413\.1\.5|§710\.314|§710\.411\.3\.3|§715\.560\.4|§715\.521|§715\.422|OZEV|3rd Edition|§526\.2|§433\.2|Reg 559)" electrical/small-power/prompts/validator.md | grep -v "NEVER cite\|never cite\|not transcribed\|sub-clause\|banned\|spec §11" && echo "FAIL" || echo "PASS"
+```
+
+Expected: line count grew by ~300-400; INV count went from 12 → 19; banned-citation grep PASS.
+
+- [ ] **Step 10: Run gates + commit B.2**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/small-power/prompts/validator.md
+git commit -m "feat(small-power): B.2 validator.md — 7 new INV sections (INV-13..INV-19; 5 HIGH + 2 MEDIUM)"
+```
+
+Body should list each INV id + severity + 1-line rationale + spec §2.3 verified-citation lineage.
+
+---
+
+## Task B.3: Reviewer prompt — 3 new D-checks (Opus)
+
+**Why Opus:** Judgment-layer D-checks need precise trigger conditions + engineer-friendly action language.
+
+**Files:**
+- Modify: `electrical/small-power/prompts/reviewer.md` (append D-8/D-9/D-10 sections after existing D-7)
+
+- [ ] **Step 1: Read current reviewer.md state**
+
+```bash
+wc -l electrical/small-power/prompts/reviewer.md
+grep -nE "^## D-" electrical/small-power/prompts/reviewer.md
+```
+
+Expected: existing D-1..D-7.
+
+- [ ] **Step 2: Append D-8 — building_diversity density outside-band**
+
+````markdown
+## D-8 — building_diversity density outside standards-file band (REVIEWER FLAG)
+
+**Trigger:** when `building_diversity` is present AND
+`design_density_w_per_m2` is outside the standards-file range for the
+declared `building_type`. Verified ranges (per diversity-factors.json):
+- office: 65-100 W/m²
+- industrial: 80-150 W/m²
+- healthcare: 100-150 W/m²
+
+**Reviewer action:** emit a finding into
+`calculation_summary._engineering_judgments[]` along the lines of:
+
+> "REVIEWER D-8: building_diversity.design_density_w_per_m2=<value>
+> outside the standards-file range [<low>, <high>] for
+> building_type=<type>. The engineer override is permitted but MUST
+> be backed by project-specific data (e.g. metered tenant fit-out, BMS
+> baseline study, BCO/IET Wiring Matters local guidance). Document the
+> evidence in the project compliance file."
+
+Reviewer does NOT toggle compliant=false; the override is a legitimate
+engineering judgment call when backed by data. The flag is a follow-up
+prompt for the engineer's design record.
+
+**Citation:** IET On-Site Guide 8th Edition Appendix A — Table A1
+(verified standards-file ranges) + IET Guidance Note 1 §4 (commercial
+diversity context).
+````
+
+- [ ] **Step 3: Append D-9 — EV Type A vs Type B borderline**
+
+````markdown
+## D-9 — EV RCD Type A vs Type B borderline (REVIEWER FLAG)
+
+**Trigger:** when any EV charge circuit's
+`ev_charge_metadata.charging_unit_dc_detection_a == 6` exactly (right
+on the threshold).
+
+**Reviewer action:** emit a finding:
+
+> "REVIEWER D-9: EV charge circuit <circuit_id> declares
+> charging_unit_dc_detection_a=6 exactly — at the Reg 722.531.3.101
+> Type-A/Type-B boundary. Engineer-of-record MUST confirm the
+> manufacturer's declared 6 mA DC detection threshold is BACKED by a
+> certified test report (IEC 62752 or equivalent) AND that the
+> declared value is the WORST-CASE under test conditions (not the
+> typical value)."
+
+The 6 mA threshold is the legal boundary; a unit at exactly 6 mA
+declared could fall below 6 mA under voltage sag or temperature drift,
+silently shifting from Type A safe to Type B required.
+
+**Citation:** Reg 722.531.3.101 + IET Code of Practice for EV Charging
+Equipment Installation (4th Ed).
+````
+
+- [ ] **Step 4: Append D-10 — ring vs radial choice on edge floor area**
+
+````markdown
+## D-10 — Ring vs radial topology choice on edge floor area (REVIEWER FLAG)
+
+**Trigger:** when any ring final circuit has `circuit.floor_area_m2` ∈
+[95, 100] m² (right at the IET OSG §8.4.4 ring 100 m² ceiling).
+
+**Reviewer action:** emit a finding:
+
+> "REVIEWER D-10: ring final circuit <circuit_id> serves <m²> m² —
+> within 5% of the 100 m² ring ceiling per IET OSG §8.4.4. Ring is
+> technically permitted up to 100 m² but radial gives more headroom for
+> future spur additions. Engineer should document the topology choice
+> rationale (e.g. existing kitchen ring, tenant lease constraint,
+> renovation scope-locked) so future iterations don't accidentally split
+> the ring."
+
+Reviewer does NOT toggle compliant=false; ring at 95-100 m² is
+compliant. The flag prompts the engineer to document the choice for
+maintainability.
+
+**Citation:** IET On-Site Guide §8.4.4 (8th Edition).
+````
+
+- [ ] **Step 5: Verify line count + D-check count + banned citations**
+
+```bash
+wc -l electrical/small-power/prompts/reviewer.md
+grep -c "^## D-" electrical/small-power/prompts/reviewer.md
+grep -nE "(§701\.32|§701\.55|§702\.55\.1|§702\.55\.2|§702\.32|§703\.55|§703\.512|§703\.413|§710\.413\.1\.5|§710\.314|§710\.411\.3\.3|§715\.560\.4|§715\.521|§715\.422|OZEV|3rd Edition|§526\.2|§433\.2|Reg 559)" electrical/small-power/prompts/reviewer.md | grep -v "NEVER\|never cite\|do NOT\|banned\|not transcribed\|sub-clause" && echo "FAIL" || echo "PASS"
+```
+
+Expected: line count grew by ~120-150; D-check count went from 7 → 10; banned-citation grep PASS.
+
+- [ ] **Step 6: Run gates + commit B.3**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/small-power/prompts/reviewer.md
+git commit -m "feat(small-power): B.3 reviewer.md — 3 new D-checks (D-8 density / D-9 EV borderline / D-10 ring edge floor area)"
+```
+
+---
+
+## Task B.4: Cascade-prereq context update (Opus)
+
+**Why Opus:** Small but cross-skill cascade discipline edit; needs verified-citation accuracy.
+
+**Files:**
+- Modify: `electrical/small-power/prompts/generator.md` (update existing Step 0 cascade-prereq block — small-power consumes special-locations AND cable-sizing intents)
+
+This task PREVIEWS the producer-side cascade fixtures that D.1 of Phase D will create (`cascade-small-power-uk-ev-charge-domestic` + `cascade-small-power-uk-sauna-heater-exemption`). The generator prompt's Step 0 needs to document that the EV and sauna Part-7 examples will consume those NEW cascade sources (not yet shipped at B.4 — D.1 ships them).
+
+- [ ] **Step 1: Read current Step 0 cascade-prereq block**
+
+```bash
+sed -n '/^## Step 0 /,/^## Step 1 /p' electrical/small-power/prompts/generator.md
+```
+
+- [ ] **Step 2: Update Step 0 to enumerate the 4 Part-7 cascade sources**
+
+Append to the existing Step 0 block (after the existing cascade prereq description):
+
+````markdown
+### v2.0 D4 — Part-7 cascade sources by example
+
+The 4 NEW Part-7 examples shipped at C.1-C.4 of the D4 sprint consume
+special-locations intent from these cascade source paths:
+
+| New D4 example | Consumes from |
+|---|---|
+| `uk-pool-hall-sockets-and-isolation` (C.1) | `electrical/special-locations/examples/cascade-lighting-layout-uk-pool-hall/intent-out.json` (REUSED — anchor-driven engineering equivalence; pool zones derived from the same pool_basin anchor regardless of consumer skill) |
+| `uk-medical-group-2-isolation-sockets` (C.2) | `electrical/special-locations/examples/cascade-small-power-uk-medical-group-2-isolation/intent-out.json` (REUSED — existing producer-side cascade fixture from special-locations sprint C.2; closes the producer-fixture-without-consumer integrity loop) |
+| `uk-ev-charge-domestic` (C.3) | `electrical/special-locations/examples/cascade-small-power-uk-ev-charge-domestic/intent-out.json` (NEW — authored at D.1 of D4 sprint, BEFORE C.3 ships) |
+| `uk-sauna-with-heater-exemption` (C.4) | `electrical/special-locations/examples/cascade-small-power-uk-sauna-heater-exemption/intent-out.json` (NEW — authored at D.1 of D4 sprint, BEFORE C.4 ships) |
+
+For REUSED cascade sources: the engineer-of-record MUST document the
+anchor-driven engineering equivalence in the example's `reasoning.md` +
+`calculation_summary.assumptions[]` per the D.4 special-locations pattern
+(the bathroom example reused the lighting-layout bathroom cascade with
+explicit disclosure in 4 places).
+````
+
+- [ ] **Step 3: Verify banned citations + run gates**
+
+```bash
+grep -nE "(§701\.32|§701\.55|§702\.55\.1|§702\.55\.2|§702\.32|§703\.55|§703\.512|§703\.413|§710\.413\.1\.5|§710\.314|§710\.411\.3\.3|§715\.560\.4|§715\.521|§715\.422|OZEV|3rd Edition|§526\.2|§433\.2|Reg 559)" electrical/small-power/prompts/generator.md | grep -v "NEVER\|never cite\|do NOT\|banned\|not transcribed\|sub-clause\|spec §11" && echo "FAIL" || echo "PASS"
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+Expected: PASS + 316/316.
+
+- [ ] **Step 4: Commit B.4**
+
+```bash
+git add electrical/small-power/prompts/generator.md
+git commit -m "feat(small-power): B.4 cascade-prereq context update — 4 Part-7 cascade sources enumerated (2 REUSED + 2 NEW at D.1)"
+```
+
+Phase B complete. Next: Phase C examples + evals.
+
+---
+
+[Phase C + D continue in plan portion 3 + portion 4.]
