@@ -1636,4 +1636,689 @@ Phase B complete. Next: Phase C examples + evals.
 
 ---
 
-[Phase C + D continue in plan portion 3 + portion 4.]
+---
+
+## Phase C — Examples + evals (10 tasks, Opus-heavy)
+
+Phase C produces 8 new example dirs + 1 retrofit + 5 evals. Tasks C.1–C.9 are Opus (engineering content per example); C.10 is Sonnet (mechanical YAML for the eval files). Per-task two-stage Opus review after each. Phase C complete after C.10 ships green.
+
+**Standard 4-file shape** for every example dir under `electrical/small-power/examples/<dir>/`:
+- `input.json` — flat-object instance shape per the existing pattern
+- `output.json` — full IR satisfying `shared/schemas/electrical/small-power-ir.schema.json` v2.0
+- `reasoning.md` — ≥150 lines walking generator procedure with calculated numeric values; cites verified clauses only
+- `intent-out.json` — small-power intent payload (carries `building_diversity` mirror when present + consumed_intents cascade chain)
+
+Pattern parent for shape: existing `electrical/small-power/examples/uk-bathroom-shaver-and-zone2-sockets/` (the Part-7 example shipped by special-locations D.4).
+
+---
+
+## Task C.1: uk-pool-hall-sockets-and-isolation example (Opus)
+
+**Why Opus:** Engineering content per Part-7 §702 + cascade consumption.
+
+**Files:**
+- Create: `electrical/small-power/examples/uk-pool-hall-sockets-and-isolation/{input,output,reasoning,intent-out}.{json,md}`
+
+- [ ] **Step 1: Read the cascade source payload**
+
+```bash
+cat electrical/special-locations/examples/cascade-lighting-layout-uk-pool-hall/intent-out.json | python3 -m json.tool | head -80
+```
+
+This is the REUSED producer-side cascade source. The pool zones derived from the same pool_basin anchor are valid regardless of consumer skill — engineer-of-record disclosure in 4 places per the D.4 special-locations pattern.
+
+- [ ] **Step 2: Build input.json**
+
+12000×6000 mm pool hall + adjacent 4000×3000 mm changing room (same room geometry as the cascade source). Small-power side concerns:
+- 2 outdoor-rated IPx5 socket outlets at the pool deck for cleaning equipment (positioned outside `pool_zone_2` per §702.55.4 changing-room overlap rule)
+- 1 ring final circuit serving pool-deck sockets, 30 mA RCD (per cascaded `pool_main_equipotential_bonding` constraint)
+- 1 dedicated radial circuit serving the pool pump (3-phase, separately bonded to ME terminal)
+
+```json
+{
+  "_note": "Pool hall small-power example exercising special-locations cascade for §702 zones + pool_main_equipotential_bonding constraint. NOT a swimming pool sub-skill — small-power's domain is the socket/circuit layer.",
+  "jurisdiction": "GB",
+  "rooms": [
+    {
+      "room_id": "POOL-1",
+      "room_type": "swimming_pool_hall",
+      "room_polygon_mm": [[0,0],[12000,0],[12000,6000],[0,6000]],
+      "ceiling_height_mm": 5000,
+      "_special_locations_cascade_source": "electrical/special-locations/examples/cascade-lighting-layout-uk-pool-hall/intent-out.json"
+    }
+  ],
+  "circuits": [<2 circuits per spec §5 + per-circuit ring_endpoints when applicable>],
+  "_engineering_judgments_input": ["Pool deck sockets MUST sit outside pool_zone_2 per §702.55.4. Engineer-of-record verifies dimensional clearance against architectural drawings."]
+}
+```
+
+- [ ] **Step 3: Build output.json — full IR**
+
+Must include:
+- `rooms[]` with `room_type: "swimming_pool_hall"` (Part-7 enum)
+- `consumed_intents.special_locations_zoning.payload` copied from `cascade-lighting-layout-uk-pool-hall/intent-out.json`'s `special_locations_zoning` field (5 zones + 1 constraint + compliant: true)
+- `consumed_intents.cable_sizing` (synthetic helper documented in §5 of reasoning.md OR pointing at a real cable-sizing example — engineer choice)
+- `circuits[]` — 2 entries (ring final pool-deck sockets + dedicated radial pool pump)
+- `invariants[]` — all 19 INVs emitted; INV-12 PASS (cascade), INV-13 N/A (no building_diversity in this example), INV-14 N/A or PASS (depending on ring presence), INV-15..INV-19 evaluated per applicable scope
+- `calculation_summary.compliant: true`; no non_compliance_flags
+
+Banned citation discipline: §702.55.1 is banned per spec §11.1; use §702.415.1 only. Sub-clause not transcribed: §526.2 / §433.2 — fall back to IET OSG §8.4.4 + BS 7671 §526 / §433 top-level.
+
+Validate as you build:
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/schemas/electrical/small-power-ir.schema.json'))
+d = json.load(open('electrical/small-power/examples/uk-pool-hall-sockets-and-isolation/output.json'))
+jsonschema.validate(instance=d, schema=schema)
+print('OK')
+"
+```
+
+- [ ] **Step 4: Build intent-out.json + reasoning.md**
+
+reasoning.md ≥150 lines: walk Step 0 (cascade prereq) → Steps 1-15 of the generator → cite the consumed cascade payload + verify §702.415.1 bonding constraint applies + emit pool-pump RCD + emit pool-deck IPx5 socket placement + INV-12 PASS narrative + honest disclosure of the cascade-payload reuse + 4-place disclosure pattern.
+
+- [ ] **Step 5: Banned-citation grep + gates**
+
+```bash
+grep -rnE "(§701\.32|§701\.55|§702\.55\.1|§702\.55\.2|§702\.32|§703\.55|§703\.512|§703\.413|§710\.413\.1\.5|§710\.314|§710\.411\.3\.3|§715\.560\.4|§715\.521|§715\.422|OZEV|3rd Edition|§526\.2|§433\.2|Reg 559)" electrical/small-power/examples/uk-pool-hall-sockets-and-isolation/ | grep -v "do NOT\|never cite\|sub-clause\|not transcribed\|banned\|NOT §" && echo "FAIL" || echo "PASS"
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+Expected: PASS; validate-examples 316 → 318 (+2: output.json + intent-out.json).
+
+- [ ] **Step 6: Commit C.1**
+
+```bash
+git add electrical/small-power/examples/uk-pool-hall-sockets-and-isolation/
+git commit -m "feat(small-power): C.1 NEW uk-pool-hall-sockets-and-isolation example (REUSES lighting-layout pool cascade per anchor-driven equivalence)"
+```
+
+---
+
+## Task C.2: uk-medical-group-2-isolation-sockets example (Opus)
+
+**Why Opus:** §710 Group 2 medical IT system is engineering-critical content.
+
+**Files:** Create `electrical/small-power/examples/uk-medical-group-2-isolation-sockets/{input,output,reasoning,intent-out}.{json,md}`.
+
+- [ ] **Step 1: Read the cascade source payload** (REUSED from C.2 of special-locations sprint — closes the producer-fixture-without-consumer integrity loop)
+
+```bash
+cat electrical/special-locations/examples/cascade-small-power-uk-medical-group-2-isolation/intent-out.json | python3 -m json.tool | head -80
+```
+
+- [ ] **Step 2: Build input.json**
+
+6000×5000 mm operating room (medical_group_2_theatre) with 1 medical_patient_position anchor (Group 2; centred). Small-power side concerns:
+- 6 BS EN 60884-1 isolation-monitored sockets fed from the **Medical IT panel** (per the cascaded `medical_it_system` constraint with `imd_alarm_response_time_s_max: 8`)
+- 1 dedicated radial circuit serving operating-table life-support sockets (UPS-backed per HTM 06-01)
+- Supplementary bonding terminal modelled per §710 + §701.415.2
+
+Same shape as C.1's input.json but with `room_type: "medical_group_2_theatre"`, `_special_locations_cascade_source` pointing at the C.2 producer fixture, 6 socket entries, and a `medical_it_system_evidence` block in `_engineering_judgments_input` documenting the IMD 8s alarm response.
+
+- [ ] **Step 3: Build output.json**
+
+- `rooms[].room_type: "medical_group_2_theatre"`
+- `consumed_intents.special_locations_zoning.payload` copied from the C.2 producer fixture (1 medical_envelope_group_2 zone + 2 constraints: medical_it_system + supplementary_equipotential_bonding)
+- `circuits[]` — 2 entries (6-socket IT-system ring + dedicated UPS radial)
+- Every socket fed from the Medical IT panel — circuit-level `isolation_path: "via_medical_it_panel"` attribute per the cascaded constraint
+- All 19 INVs emitted; INV-12 PASS (cascade); INV-13 N/A (no building_diversity); INV-14..INV-19 evaluated per scope; `calculation_summary.compliant: true`
+
+Citation discipline: §710 top-level only (no sub-clauses transcribed); cross-references BS EN 61557-8 (IMD 8s alarm response) + HTM 06-01 (NHS precedence) + BS EN 60601 series (medical equipment). NEVER cite §710.413.1.5 or §710.314 (banned).
+
+- [ ] **Step 4: Build intent-out.json + reasoning.md**
+
+reasoning.md ≥150 lines: cascade prereq + IT system isolation walkthrough + IMD 8s alarm response derivation + supplementary bonding cite + 4 INV-08 sub-rule evaluations on each socket + honest disclosure of the cascade payload source.
+
+- [ ] **Step 5: Banned-citation grep + gates + commit**
+
+```bash
+grep -rnE "(§710\.413\.1\.5|§710\.314|§710\.411\.3\.3|OZEV|3rd Edition|§526\.2|§433\.2)" electrical/small-power/examples/uk-medical-group-2-isolation-sockets/ | grep -v "do NOT\|never cite\|sub-clause\|not transcribed\|banned\|NOT §" && echo "FAIL" || echo "PASS"
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/small-power/examples/uk-medical-group-2-isolation-sockets/
+git commit -m "feat(small-power): C.2 NEW uk-medical-group-2-isolation-sockets example (REUSES C.2 producer fixture; closes integrity loop)"
+```
+
+Expected: gates 318 → 320.
+
+---
+
+## Task C.3: uk-ev-charge-domestic example (Opus)
+
+**Why Opus:** EV depth covers RCD Type A/B selection (INV-18) + Reg 722 + IET CoP 4th Ed dedicated circuit rule.
+
+**Files:** Create `electrical/small-power/examples/uk-ev-charge-domestic/{input,output,reasoning,intent-out}.{json,md}`.
+
+**Dependency:** This task ships AFTER D.1 of Phase D, which authors the NEW producer-side cascade fixture `electrical/special-locations/examples/cascade-small-power-uk-ev-charge-domestic/`. C.3 is ordered AFTER D.1 in the dispatch sequence even though it lives in Phase C — the cascade payload must exist before C.3 consumes it.
+
+**OR** implement the C.3 EV example FIRST as a standalone (no cascade), defer the cascade source_path repointing to D.1, and disclose the deferred-pointer state in honest disclosure prose. Plan choice: ship C.3 first as standalone (no cascade consumption); D.1 then adds the cascade source AND retrofits C.3 to consume it. This matches the D.2 special-locations pattern (synthetic photometric helper later replaced by real cascade).
+
+- [ ] **Step 1: Build input.json**
+
+Domestic dwelling consumer unit + 1 EV charge circuit:
+- 32 A Mode 3 AC charge point (typical UK domestic 7.4 kW)
+- `charging_unit_dc_detection_a: 6` (manufacturer declared)
+- `mode: 3`
+- `charging_unit_standard: "BS EN 61851-1"`
+- `socket_standard: "BS EN 62196 Type 2 Mennekes"`
+- `dedicated_circuit: true`
+
+Plus existing 3-bed dwelling small-power layout (carry over from `uk-3bed-dwelling` pattern but ADD the EV circuit + ensure `ev_charge_metadata` is populated per the new schema requirement).
+
+- [ ] **Step 2: Build output.json**
+
+`circuits[]` includes 1 EV charge circuit with full `ev_charge_metadata` block:
+```json
+{
+  "rcd_type": "type_a",
+  "charging_unit_dc_detection_a": 6,
+  "mode": 3,
+  "charging_unit_standard": "BS EN 61851-1",
+  "socket_standard": "BS EN 62196 Type 2 Mennekes",
+  "dedicated_circuit": true,
+  "_citation": "BS 7671:2018+A2:2022 §722.531.3.101 + IET Code of Practice for EV Charging Equipment Installation (4th Ed)"
+}
+```
+
+INV-18 PASS evidence: cites §722.531.3.101 verified + dc_detection_a=6 ≥ 6 threshold → type_a is correct.
+
+`calculation_summary._engineering_judgments[]` MAY carry a D-9 borderline flag (charging_unit_dc_detection_a == 6 exactly, right on the boundary).
+
+- [ ] **Step 3: Build intent-out.json + reasoning.md**
+
+reasoning.md ≥150 lines: walk Reg 722.531.3.101 + IET CoP 4th Ed + no-diversity rule + Mode 3 vs Mode 4 rationale + RCD Type A justification + D-9 reviewer flag walkthrough + honest disclosure that the cascade source will be retrofitted to point at the D.1-authored cascade fixture once D.1 ships.
+
+- [ ] **Step 4: Banned-citation grep (carefully — OZEV + 3rd Edition + Mode 1/2 are all banned in this example)**
+
+```bash
+grep -rnE "OZEV|3rd Edition|Mode 1|Mode 2" electrical/small-power/examples/uk-ev-charge-domestic/ | grep -v "DEPRECATED\|do NOT\|never cite\|banned\|NOT permitted" && echo "FAIL" || echo "PASS"
+```
+
+Expected: PASS. The only mentions of Mode 1/Mode 2 inside this example MUST be inside the disclosure prose explaining that they're deprecated/not permitted.
+
+- [ ] **Step 5: Gates + commit**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/small-power/examples/uk-ev-charge-domestic/
+git commit -m "feat(small-power): C.3 NEW uk-ev-charge-domestic example (INV-18 PASS Type A; D-9 borderline flag for dc_detection=6 exactly; cascade source pending D.1)"
+```
+
+Expected: gates 320 → 322.
+
+---
+
+## Task C.4: uk-sauna-with-heater-exemption example (Opus)
+
+**Why Opus:** §703 3-zone sauna + heater-exemption is engineering-judgment territory.
+
+**Files:** Create `electrical/small-power/examples/uk-sauna-with-heater-exemption/{input,output,reasoning,intent-out}.{json,md}`.
+
+**Dependency:** Same as C.3 — the cascade source `cascade-small-power-uk-sauna-heater-exemption` is authored at D.1. C.4 ships first as standalone (no cascade); D.1 retrofits the cascade source_path.
+
+- [ ] **Step 1: Build input.json**
+
+2400×2000 mm sauna room + 1 sauna_heater anchor at one corner. Small-power side concerns:
+- 0 sockets inside the sauna (sockets prohibited per §703.512 ELV/IPx4 restrictions; the sauna heater is the only fixed equipment)
+- 1 dedicated radial circuit serving the sauna heater (3-phase, EXEMPT from 30 mA RCD per §703.411.3.3 because heaters can trip RCDs on inrush)
+- 1 socket-outlet circuit in the changing area immediately outside the sauna door
+
+Same shape as C.1 + C.2 inputs but with `room_type: "sauna"` and the cascade source pointing at the D.1-authored `cascade-small-power-uk-sauna-heater-exemption` fixture (deferred until D.1).
+
+- [ ] **Step 2: Build output.json**
+
+- `rooms[].room_type: "sauna"`
+- `consumed_intents.special_locations_zoning.payload` will eventually copy from D.1's fixture (interim: synthetic helper with honest disclosure)
+- `circuits[]` — 2 entries (heater + changing-area sockets); heater circuit has `is_rcd_protected: false` per §703.411.3.3 (heater exempt)
+- INV-12 PASS (cascade structurally resolved); INV-04 (existing) verifies the heater exemption is documented
+- `calculation_summary._engineering_judgments[]` references the sauna 3-zone derivation (sauna_zone_1 around heater + sauna_zone_2 sauna body + sauna_zone_3 above 1.5 m) per the special-locations §703 3-zone correction
+
+Citation: §703.411.3.3 (verified) + §703 top-level. NEVER cite §703.55 / §703.512 / §703.413 (banned).
+
+- [ ] **Step 3: Build intent-out.json + reasoning.md** (≥150 lines; cascade prereq + heater-exemption + 3-zone walkthrough + honest disclosure)
+
+- [ ] **Step 4: Gates + commit**
+
+```bash
+grep -rnE "(§703\.55|§703\.512|§703\.413|OZEV|3rd Edition|§526\.2|§433\.2)" electrical/small-power/examples/uk-sauna-with-heater-exemption/ | grep -v "do NOT\|never cite\|sub-clause\|not transcribed\|banned\|NOT §" && echo "FAIL" || echo "PASS"
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/small-power/examples/uk-sauna-with-heater-exemption/
+git commit -m "feat(small-power): C.4 NEW uk-sauna-with-heater-exemption example (heater exempt from 30mA RCD per §703.411.3.3)"
+```
+
+Expected: gates 322 → 324.
+
+---
+
+## Task C.5: uk-office-floor-with-building-diversity example (Opus)
+
+**Why Opus:** Demonstrates the new building_diversity field on an office building per BLD-01 verified profile.
+
+**Files:** Create `electrical/small-power/examples/uk-office-floor-with-building-diversity/{input,output,reasoning,intent-out}.{json,md}`.
+
+- [ ] **Step 1: Build input.json**
+
+5-floor office building, ~1200 m² per floor, mixed open-plan + meeting rooms + reception.
+- `building_diversity_inputs`: `{"building_type": "office", "floor_count": 5, "design_density_w_per_m2_override": 75 (within 65-100 range so no D-8 flag), "future_expansion_pct_override": 25}`
+- ~15 circuits across the building (one per floor × 3 categories: workstations + lighting + lift)
+- 2 lifts (so the building_factor includes `office_lift_two: 80%`)
+- 0 EV circuits (so INV-18 N/A vacuously)
+
+- [ ] **Step 2: Build output.json — emit `building_diversity` block + per_circuit_demand_inputs[]**
+
+Walk Step 13 of the generator:
+- Resolve office profile from `diversity-factors.json` (verified)
+- Compute building_factor (depends on lift count): for 2 lifts → 80%
+- Apply per-load diversity per DIV-01..04 (existing) to each circuit's connected_a → post_per_load_diversity_a
+- Σ across applies_load_types-matching circuits × building_factor → building_diversified_demand_a
+- Populate `per_circuit_demand_inputs[]` with every circuit's contribution
+
+All 19 INVs PASS (INV-13 PASS; INV-19 PASS if cable-sizing cascade is consumed — if not, INV-19 N/A vacuously)
+
+Example arithmetic in reasoning.md: e.g. 14 circuits at 16 A each post-per-load-diversity × 80% building_factor / 3-phase 230 V = 50.4 A per phase building demanded current.
+
+- [ ] **Step 3: Build intent-out.json (carries `building_diversity` mirror block) + reasoning.md**
+
+reasoning.md ≥150 lines: standards lookup walkthrough + per-circuit DIV-NN application + Σ + building_factor application + cascade integration narrative + 4 INV PASS evidence strings + verified-citation discipline.
+
+- [ ] **Step 4: Banned-citation grep + gates + commit**
+
+```bash
+grep -rnE "(Reg 559|office 0\.75|retail 0\.85|industrial 0\.90|OZEV|3rd Edition|§526\.2|§433\.2)" electrical/small-power/examples/uk-office-floor-with-building-diversity/ | grep -v "do NOT\|never cite\|banned\|NOT in verified\|sub-clause\|brainstorm catch" && echo "FAIL" || echo "PASS"
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/small-power/examples/uk-office-floor-with-building-diversity/
+git commit -m "feat(small-power): C.5 NEW uk-office-floor-with-building-diversity (INV-13 PASS; office profile 5-floor + 2 lifts)"
+```
+
+Expected: gates 324 → 326.
+
+---
+
+## Task C.6: uk-industrial-warehouse-with-building-diversity example (Opus)
+
+**Why Opus:** Mirror C.5 shape but for industrial profile (BLD-02). Engineering content differs (motor groups + welding loads).
+
+**Files:** Create `electrical/small-power/examples/uk-industrial-warehouse-with-building-diversity/{input,output,reasoning,intent-out}.{json,md}`.
+
+- [ ] **Step 1: Build input.json**
+
+Single-floor 5000 m² industrial warehouse with:
+- `building_diversity_inputs`: `{"building_type": "industrial", "floor_count": 1, "design_density_w_per_m2_override": 100 (within 80-150 range), "future_expansion_pct_override": 30}`
+- Motor circuits: 2× 22 kW process motors (100% largest + 50% remainder per IET OSG App A motor diversity rule)
+- 1 compressed-air compressor circuit
+- General lighting + warehouse high-bay lighting
+- 0 EV / 0 lifts / 0 medical content
+
+- [ ] **Step 2: Build output.json — industrial building_factor computation**
+
+Walk Step 13: resolve industrial profile (applies_load_types = motor_groups, process_loads, lighting, compressors, welding); motor group diversity = 100% × 22 + 50% × 22 = 22 + 11 = 33 kW total motor demand (NOT 44 kW); compose with other circuit diversity; apply industrial building_factor.
+
+All 19 INVs PASS.
+
+- [ ] **Step 3: Build intent-out.json + reasoning.md** (≥150 lines)
+
+- [ ] **Step 4: Gates + commit**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/small-power/examples/uk-industrial-warehouse-with-building-diversity/
+git commit -m "feat(small-power): C.6 NEW uk-industrial-warehouse-with-building-diversity (INV-13 PASS; industrial profile + motor group 100% largest + 50% remainder)"
+```
+
+Expected: gates 326 → 328.
+
+---
+
+## Task C.7: Retrofit `intl-open-plan-floor` for building_diversity (Opus)
+
+**Why Opus:** RETROFIT — adds `building_diversity` to an existing example while preserving INT jurisdiction routing.
+
+**Files:** Modify `electrical/small-power/examples/intl-open-plan-floor/{input.json, output.json, reasoning.md, intent-out.json}`.
+
+- [ ] **Step 1: Read existing example state**
+
+```bash
+ls electrical/small-power/examples/intl-open-plan-floor/
+cat electrical/small-power/examples/intl-open-plan-floor/input.json | python3 -m json.tool | head -40
+```
+
+- [ ] **Step 2: Append `building_diversity_inputs` to input.json**
+
+Add the optional input block. Building type = office (for the INT jurisdiction, fall back to IEC 60364-1:2005 §132.12 design margin since the IET OSG isn't binding; the BLD-01 office profile is still used as engineering-equivalent guidance per DIV-04 existing rule).
+
+- [ ] **Step 3: Add `building_diversity` top-level field to output.json**
+
+Use the office profile + INT jurisdiction citation form. The intent-out.json mirrors the building_diversity block.
+
+- [ ] **Step 4: Update reasoning.md** — append a "§N — building_diversity retrofit" section documenting:
+- The retrofit is purely additive (no existing field renamed or removed)
+- INT jurisdiction routing for building_diversity (IEC 60364-1:2005 §132.12 anchor + IET OSG App A engineering-equivalent reference)
+- Honest disclosure of the retrofit pattern
+
+- [ ] **Step 5: Verify the example still validates against schema + INV count grew**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/schemas/electrical/small-power-ir.schema.json'))
+d = json.load(open('electrical/small-power/examples/intl-open-plan-floor/output.json'))
+jsonschema.validate(instance=d, schema=schema)
+print('OK')
+print(f'has building_diversity: {\"building_diversity\" in d}')
+print(f'invariants count: {len(d.get(\"invariants\", []))} (should be 19; previously 12)')
+"
+```
+
+Expected: OK + building_diversity present + invariants count 19.
+
+- [ ] **Step 6: Gates + commit**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/small-power/examples/intl-open-plan-floor/
+git commit -m "feat(small-power): C.7 RETROFIT intl-open-plan-floor — add building_diversity office profile + INT jurisdiction routing"
+```
+
+Expected: gates 328 unchanged (existing example was already counted; retrofit just upgrades it to v2.0 schema).
+
+---
+
+## Task C.8: uk-3bed-with-ring-continuity PASS example (Opus)
+
+**Why Opus:** Demonstrates INV-14 PASS + INV-17 PASS (AMD 2 FCU spur modelling).
+
+**Files:** Create `electrical/small-power/examples/uk-3bed-with-ring-continuity/{input,output,reasoning,intent-out}.{json,md}`.
+
+- [ ] **Step 1: Build input.json**
+
+3-bed UK dwelling + 1 ring final circuit (downstairs sockets) with both endpoints at the same MCB way + 2 FCU spurs (kitchen under-cabinet appliances).
+
+```json
+{
+  "ring_continuity_endpoints": [
+    {
+      "circuit_id": "DS-RING-01",
+      "endpoint_a_xy": {"x_mm": 200, "y_mm": 200},
+      "endpoint_b_xy": {"x_mm": 8500, "y_mm": 200},
+      "mcb_way_id": "CU-1-WAY-3"
+    }
+  ],
+  "_fcu_spur_intent": [
+    {"circuit_id": "DS-RING-01", "location_xy": {"x_mm": 4500, "y_mm": 200}, "fcu_rating_a": 13, "downstream_loads_w": 1800, "_purpose": "kitchen under-cabinet hood"}
+  ]
+}
+```
+
+Both endpoints at `CU-1-WAY-3` → INV-14 PASS. FCU 13 A × 230 V = 2990 W limit; 1800 W downstream → INV-17 PASS with 40% headroom.
+
+- [ ] **Step 2: Build output.json**
+
+`circuits[i].ring_endpoints` populated with `continuity_verified: true` + `mcb_way_id: "CU-1-WAY-3"` on both endpoints. `circuits[i].fcu_spurs[]` has 1 entry. INV-14 PASS + INV-17 PASS evidence.
+
+- [ ] **Step 3: Build intent-out.json + reasoning.md** (≥150 lines walking Step 14 of the generator + the fcu spur evaluation)
+
+- [ ] **Step 4: Gates + commit**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/small-power/examples/uk-3bed-with-ring-continuity/
+git commit -m "feat(small-power): C.8 NEW uk-3bed-with-ring-continuity (INV-14 PASS continuity + INV-17 PASS AMD 2 FCU spur)"
+```
+
+Expected: gates 328 → 330.
+
+---
+
+## Task C.9: uk-3bed-with-ring-continuity-VIOLATION example (FAIL HIGH demo, Opus)
+
+**Why Opus:** Central engineering value test — demonstrates INV-14 FAIL HIGH + INV-16 OCPD-topology mismatch end-to-end.
+
+**Files:** Create `electrical/small-power/examples/uk-3bed-with-ring-continuity-VIOLATION/{input,output,reasoning,intent-out}.{json,md}`.
+
+- [ ] **Step 1: Build input.json**
+
+Same 3-bed dwelling as C.8 but with the ring landing at TWO DIFFERENT MCB ways:
+- endpoint_a_xy at `mcb_way_id: "CU-1-WAY-3"` (the intended way)
+- endpoint_b_xy at `mcb_way_id: "CU-1-WAY-7"` (a wrong way — the engineer terminated the return conductor at the wrong slot)
+
+INV-14 FAIL HIGH because the two endpoints don't share `mcb_way_id`. Also INV-16 may fail because a 32 A MCB at WAY-3 + a separate connection at WAY-7 means the "ring" is structurally two radials sharing conductors — the OCPD coordination assumption broken.
+
+- [ ] **Step 2: Build output.json — INV-14 FAIL + INV-16 FAIL evidence + non_compliance_flag**
+
+- `invariants[]` INV-14 entry: `passes: false`, `severity: high`, evidence ≥40 char prose stating both mcb_way_ids + the ring continuity broken
+- `calculation_summary.compliant: false`
+- `calculation_summary.non_compliance_flags[]`: 1 entry citing IET OSG §8.4.4 + BS 7671 §526 top-level + remediation hint "engineer-of-record reterminates endpoint_b at CU-1-WAY-3 to restore ring continuity"
+- `calculation_summary.violation_count_critical: 1` (HIGH counts as critical for INV-10 self-consistency)
+
+- [ ] **Step 3: Build intent-out.json + reasoning.md** (≥150 lines walking the failure end-to-end)
+
+- [ ] **Step 4: Gates + commit**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/small-power/examples/uk-3bed-with-ring-continuity-VIOLATION/
+git commit -m "feat(small-power): C.9 NEW uk-3bed-with-ring-continuity-VIOLATION (INV-14 FAIL HIGH; central engineering value demo)"
+```
+
+Expected: gates 330 → 332.
+
+---
+
+## Task C.10: 5 new evals YAML (Sonnet)
+
+**Why Sonnet:** Mechanical YAML authoring per the special-locations C.3 pattern.
+
+**Files:** Create `electrical/small-power/evals/eval-09..eval-13.yaml` (5 files).
+
+**CRITICAL — eval.schema.json v2 constraints (photometric C.3 + special-locations C.3 lessons):**
+1. **`category`** enum: canonical 9 values (`happy_path / edge_case / compliance_failure / cross_validation / skill_specific / validation_trap / rationale_block / jurisdiction_switch / missing_input`). NO others.
+2. **`severity`** on checks: `critical / warning / info`. NOT high/medium/low.
+3. **Check additionalProperties: false** — no `id:` field. Required: `assertion + description`. Allowed: `assertion + description + severity + standard_ref + matches_inv + matches_nec`.
+
+**Per-eval mapping:**
+
+| File | Category | Severity mapping | INVs | Fixture |
+|---|---|---|---|---|
+| `eval-09-building-diversity-self-consistency.yaml` | `skill_specific` | HIGH→critical | INV-13 | `uk-office-floor-with-building-diversity` (C.5) |
+| `eval-10-ring-continuity.yaml` | `skill_specific` | HIGH→critical | INV-14 + INV-15 | `uk-3bed-with-ring-continuity` (C.8) |
+| `eval-11-topology-ocpd-coordination.yaml` | `validation_trap` | HIGH→critical / MED→warning | INV-16 + INV-17 | `uk-3bed-with-ring-continuity` (C.8) |
+| `eval-12-ev-rcd-type-selection.yaml` | `validation_trap` | HIGH→critical | INV-18 | `uk-ev-charge-domestic` (C.3) |
+| `eval-13-cable-sizing-cascade-integration.yaml` | `cross_validation` | MED→warning | INV-19 | `uk-office-floor-with-building-diversity` (C.5) |
+
+- [ ] **Step 1: Read pattern parent (special-locations eval-03)**
+
+```bash
+cat electrical/special-locations/evals/eval-03-medical-it-required.yaml
+```
+
+- [ ] **Step 2: Inspect fixtures to confirm field paths**
+
+```bash
+python3 -c "
+import json
+for ex in ['uk-office-floor-with-building-diversity', 'uk-3bed-with-ring-continuity', 'uk-ev-charge-domestic']:
+    p = f'electrical/small-power/examples/{ex}/output.json'
+    try:
+        d = json.load(open(p))
+        print(f'=== {ex} ===')
+        print(f'  building_diversity present: {\"building_diversity\" in d}')
+        if 'circuits' in d:
+            circ0 = d['circuits'][0] if d['circuits'] else {}
+            keys = [k for k in circ0.keys() if not k.startswith('_')]
+            print(f'  circuits[0] keys: {keys}')
+        invs = [(i[\"id\"], i[\"passes\"]) for i in d.get('invariants', [])]
+        print(f'  invariants: {invs}')
+    except FileNotFoundError:
+        print(f'{ex}: NOT YET SHIPPED (Phase C dispatch ordering)')
+"
+```
+
+Verify field paths against actual fixtures before writing evals.
+
+- [ ] **Step 3: Write `eval-09-building-diversity-self-consistency.yaml`**
+
+```yaml
+name: small-power building_diversity self-consistency
+skill: small-power
+description: |
+  Verify INV-13: building_diversity.building_type in v2.0 enum {office,
+  industrial, healthcare}; design_density_w_per_m2 within standards-file
+  range OR engineer override documented; building_diversified_demand_a
+  reconciles with per_circuit_demand_inputs[] computation.
+category: skill_specific
+input_fixture: examples/uk-office-floor-with-building-diversity/output.json
+checks:
+  - assertion: ir.building_diversity.building_type in {"office", "industrial", "healthcare"}
+    description: building_type in v2.0 enum per spec §2 deferrals; retail/residential/data-center/hospitality deferred to v2.1
+    severity: critical
+    matches_inv: INV-13
+    standard_ref: IET On-Site Guide 8th Edition Appendix A — Table A1
+  - assertion: ir.building_diversity.design_density_w_per_m2 >= 65 and ir.building_diversity.design_density_w_per_m2 <= 100
+    description: Office profile density within verified standards-file range [65, 100] W/m²
+    severity: critical
+    matches_inv: INV-13
+  - assertion: any(i.id == "INV-13" and i.passes == true for i in ir.invariants)
+    description: INV-13 must PASS on this happy-path fixture
+    severity: critical
+    matches_inv: INV-13
+```
+
+- [ ] **Step 4: Write `eval-10-ring-continuity.yaml`**
+
+```yaml
+name: small-power ring final circuit continuity (INV-14 + INV-15 floor-area cross-check)
+skill: small-power
+description: |
+  Verify INV-14 + INV-15: when topology=ring, both endpoints land at same
+  mcb_way_id; circuit.floor_area_m2 = Σ(rooms_covered[].floor_area_m2)
+  within ±5%.
+category: skill_specific
+input_fixture: examples/uk-3bed-with-ring-continuity/output.json
+checks:
+  - assertion: all(c.ring_endpoints.endpoint_a_xy is not null and c.ring_endpoints.endpoint_b_xy is not null for c in ir.circuits if c.topology == "ring")
+    description: Every ring circuit has both endpoints populated
+    severity: critical
+    matches_inv: INV-14
+  - assertion: all(c.ring_endpoints.continuity_verified == true for c in ir.circuits if c.topology == "ring")
+    description: continuity_verified must be true on every ring circuit
+    severity: critical
+    matches_inv: INV-14
+    standard_ref: IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 (top-level)
+  - assertion: any(i.id == "INV-14" and i.passes == true for i in ir.invariants) and any(i.id == "INV-15" and i.passes == true for i in ir.invariants)
+    description: Both INV-14 and INV-15 PASS on this happy-path fixture
+    severity: critical
+```
+
+- [ ] **Step 5: Write `eval-11-topology-ocpd-coordination.yaml`**
+
+```yaml
+name: small-power OCPD-topology coordination + AMD 2 FCU spur (INV-16 + INV-17)
+skill: small-power
+description: |
+  Verify INV-16 (ring → MCB ≤32A; 2.5mm² radial → ≤20A; 4mm² radial → ≤32A)
+  and INV-17 (every fcu_spurs[] entry: fcu_rating_a ∈ {3,5,13} AND
+  downstream_loads_w ≤ fcu_rating_a × 230V).
+category: validation_trap
+input_fixture: examples/uk-3bed-with-ring-continuity/output.json
+checks:
+  - assertion: all(c.mcb_rating_a <= 32 for c in ir.circuits if c.topology == "ring")
+    description: Ring final circuits MUST have MCB rating ≤ 32 A
+    severity: critical
+    matches_inv: INV-16
+    standard_ref: BS 7671:2018+A2:2022 §433.1.1 + IET On-Site Guide §8.4.4
+  - assertion: all(s.fcu_rating_a in {3, 5, 13} for c in ir.circuits for s in c.fcu_spurs if c.fcu_spurs)
+    description: FCU rating must be one of the 3 standard plug sizes per AMD 2
+    severity: critical
+    matches_inv: INV-17
+  - assertion: all(s.downstream_loads_w <= s.fcu_rating_a * 230 for c in ir.circuits for s in c.fcu_spurs if c.fcu_spurs)
+    description: Downstream loads must not exceed the FCU rating × 230 V
+    severity: warning
+    matches_inv: INV-17
+    standard_ref: IET On-Site Guide §8.4.4 (8th Edition, AMD 2 update)
+```
+
+- [ ] **Step 6: Write `eval-12-ev-rcd-type-selection.yaml`**
+
+```yaml
+name: small-power EV RCD Type A/B selection per Reg 722.531.3.101 (INV-18)
+skill: small-power
+description: |
+  Verify INV-18: rcd_type=type_a when charging_unit_dc_detection_a ≥ 6;
+  rcd_type=type_b otherwise. Type A on a charging unit without 6 mA DC
+  detection is a HIGH safety failure — DC fault current blinds the Type A.
+category: validation_trap
+input_fixture: examples/uk-ev-charge-domestic/output.json
+checks:
+  - assertion: all(c.ev_charge_metadata.rcd_type == "type_a" for c in ir.circuits if c.ev_charge_metadata and c.ev_charge_metadata.charging_unit_dc_detection_a >= 6)
+    description: When charging unit has ≥6mA DC detection, Type A is correct
+    severity: critical
+    matches_inv: INV-18
+    standard_ref: BS 7671:2018+A2:2022 §722.531.3.101 + IET Code of Practice for EV Charging Equipment Installation (4th Ed)
+  - assertion: all(c.ev_charge_metadata.dedicated_circuit == true for c in ir.circuits if c.ev_charge_metadata)
+    description: Every EV circuit must be dedicated per EV-01 rule
+    severity: critical
+    matches_inv: INV-18
+```
+
+- [ ] **Step 7: Write `eval-13-cable-sizing-cascade-integration.yaml`**
+
+```yaml
+name: small-power cable-sizing cascade integration with building_diversity (INV-19)
+skill: small-power
+description: |
+  Verify INV-19: every circuit in building_diversity.per_circuit_demand_inputs[]
+  has a matching entry in consumed_intents.cable_sizing.payload.circuits[]
+  by circuit_id; demand values reconcile within ±5%.
+category: cross_validation
+input_fixture: examples/uk-office-floor-with-building-diversity/output.json
+checks:
+  - assertion: all(any(cs.circuit_id == bd.circuit_id for cs in ir.consumed_intents.cable_sizing.payload.circuits) for bd in ir.building_diversity.per_circuit_demand_inputs)
+    description: Every per_circuit_demand_inputs[] entry has a matching cable_sizing circuit
+    severity: warning
+    matches_inv: INV-19
+  - assertion: any(i.id == "INV-19" and i.passes == true for i in ir.invariants)
+    description: INV-19 must PASS on this happy-path fixture
+    severity: warning
+    matches_inv: INV-19
+```
+
+- [ ] **Step 8: Validate all 5 evals against eval.schema.json**
+
+```bash
+python3 -c "
+import yaml, json, jsonschema, glob
+schema = json.load(open('shared/schemas/core/eval.schema.json'))
+for p in sorted(glob.glob('electrical/small-power/evals/eval-{09,10,11,12,13}-*.yaml')):
+    d = yaml.safe_load(open(p))
+    jsonschema.validate(instance=d, schema=schema)
+    cats = d.get('category')
+    sevs = sorted({c.get('severity') for c in d['checks']})
+    print(f'{p}: OK ({len(d[\"checks\"])} checks; category={cats}; severities={sevs})')
+"
+```
+
+Expected: 5 OK lines; all categories from canonical 9-value enum; severities only in critical/warning/info.
+
+- [ ] **Step 9: Banned-citation grep + gates**
+
+```bash
+grep -nE "(§701\.32|§701\.55|§702\.55\.1|§702\.55\.2|§702\.32|§703\.55|§703\.512|§703\.413|§710\.413\.1\.5|§710\.314|§710\.411\.3\.3|§715\.560\.4|§715\.521|§715\.422|OZEV|3rd Edition|§526\.2|§433\.2|Reg 559)" electrical/small-power/evals/eval-{09,10,11,12,13}-*.yaml && echo FAIL || echo PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+Expected: PASS; gates 332 → 337 (+5 evals).
+
+- [ ] **Step 10: Commit C.10**
+
+```bash
+git add electrical/small-power/evals/eval-{09,10,11,12,13}-*.yaml
+git commit -m "feat(small-power): C.10 5 new evals YAML (eval-09..eval-13; closes INV-13/14/15/16/17/18/19 eval coverage)"
+```
+
+Phase C complete. Next: Phase D ship.
+
+---
+
+[Phase D continues in plan portion 4.]
