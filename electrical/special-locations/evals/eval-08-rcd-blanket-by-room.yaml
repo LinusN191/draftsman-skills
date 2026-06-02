@@ -1,0 +1,48 @@
+name: special-locations §701.411.3.3 RCD blanket protection required for bathroom circuits
+skill: special-locations
+description: |
+  Validation trap verifying that when the room type is bathroom, the
+  electrical_constraints[] array must contain an rcd_blanket_by_room entry with
+  rcd_rating_ma == 30 covering at minimum the lighting and sockets circuit types
+  (INV-04). BS 7671:2018+A2:2022 §701.411.3.3 mandates 30 mA RCD protection for all
+  low-voltage circuits in locations containing a bath or shower. Uses the
+  uk-bathroom-standard-bath-and-shower fixture which correctly declares
+  rcd_blanket_by_room with rcd_rating_ma=30 and sauna_heater_excluded=false.
+  _note: Sauna heater exemption (§703.411.3.3, sauna_heater_excluded=true) is a
+  separate constraint condition; full sauna coverage is deferred to eval-08b in v1.1.
+category: validation_trap
+input_fixture: examples/uk-bathroom-standard-bath-and-shower/output.json
+checks:
+  - assertion: "any(c.constraint_type == 'rcd_blanket_by_room' and c.rcd_rating_ma == 30 for c in ir.electrical_constraints)"
+    description: |
+      §701.411.3.3 requires 30 mA RCD protection for all low-voltage circuits in
+      locations containing a bath or shower. When room.room_type is bathroom the
+      electrical_constraints list must include an rcd_blanket_by_room entry with
+      rcd_rating_ma == 30. Any omission or higher threshold (e.g. 100 mA) directly
+      violates §701.411.3.3 and removes the primary supplemental protection measure
+      required for damp/wet locations.
+    severity: critical
+    matches_inv: INV-04
+    standard_ref: BS 7671:2018+A2:2022 §701.411.3.3
+
+  - assertion: "any(c.constraint_type == 'rcd_blanket_by_room' and 'lighting' in c.applies_to_circuit_types and 'sockets' in c.applies_to_circuit_types for c in ir.electrical_constraints)"
+    description: |
+      §701.411.3.3 blanket protection applies to all LV circuits in the bathroom.
+      The applies_to_circuit_types list must include at minimum lighting and sockets
+      to demonstrate that the constraint is not scoped to a single circuit type.
+      Omitting lighting or sockets from the scope would leave those circuits unprotected
+      by supplemental RCD protection in direct breach of §701.411.3.3.
+    severity: warning
+    matches_inv: INV-04
+    standard_ref: BS 7671:2018+A2:2022 §701.411.3.3
+
+  - assertion: "any(c.constraint_type == 'rcd_blanket_by_room' and c.sauna_heater_excluded == false for c in ir.electrical_constraints)"
+    description: |
+      The sauna heater exemption (§703.411.3.3) applies only to sauna installations
+      and must not be set for a plain bathroom. When room.room_type is bathroom,
+      sauna_heater_excluded must be false to confirm that no circuits have been
+      incorrectly exempted from the 30 mA blanket requirement under a sauna-only
+      clause.
+    severity: warning
+    matches_inv: INV-04
+    standard_ref: BS 7671:2018+A2:2022 §701.411.3.3

@@ -1,0 +1,49 @@
+name: special-locations §701.512.2 whirlpool pump circuit constraint required
+skill: special-locations
+description: |
+  Validation trap verifying that when any anchor_fixtures[] entry has
+  type=="bath_basin" with bath_kind=="whirlpool", the electrical_constraints[]
+  array must contain a whirlpool_pump_circuit entry with pump_position_zone set,
+  requires_local_isolation==true, and ip_rating_min=="IPx5" (INV-06). BS
+  7671:2018+A2:2022 §701 + §701.512.2 requires IP rating suitable for water jets
+  (IPx5) for equipment installed where water jets are used, and §701 requires local
+  isolation to allow safe maintenance access. Uses the
+  uk-bathroom-whirlpool-with-pump fixture which correctly declares both
+  rcd_blanket_by_room and whirlpool_pump_circuit constraints.
+category: validation_trap
+input_fixture: examples/uk-bathroom-whirlpool-with-pump/output.json
+checks:
+  - assertion: "any(c.constraint_type == 'whirlpool_pump_circuit' for c in ir.electrical_constraints)"
+    description: |
+      When the installation includes a whirlpool bath (bath_kind=="whirlpool"), the
+      electrical_constraints list must contain a whirlpool_pump_circuit entry to
+      capture the pump-specific requirements under §701 + §701.512.2. Omission of
+      this constraint means the pump circuit lacks documented IP protection and
+      isolation requirements — a direct safety gap in installations where pressurised
+      water jets present an elevated shock and ingress risk.
+    severity: critical
+    matches_inv: INV-06
+    standard_ref: BS 7671:2018+A2:2022 §701 + §701.512.2
+
+  - assertion: "any(c.constraint_type == 'whirlpool_pump_circuit' and c.ip_rating_min == 'IPx5' for c in ir.electrical_constraints)"
+    description: |
+      §701.512.2 requires that equipment subjected to water jets must have a minimum
+      IP rating of IPx5. The whirlpool_pump_circuit constraint must carry
+      ip_rating_min == "IPx5" to enforce this requirement downstream. Any lower IP
+      rating (e.g. IPx4 splash-proof) would be insufficient for a whirlpool pump
+      position where directed water-jet pressures can be expected.
+    severity: critical
+    matches_inv: INV-06
+    standard_ref: BS 7671:2018+A2:2022 §701.512.2
+
+  - assertion: "any(c.constraint_type == 'whirlpool_pump_circuit' and c.requires_local_isolation == true for c in ir.electrical_constraints)"
+    description: |
+      §701 requires safe isolation provisions for fixed equipment in bathroom
+      installations. The whirlpool_pump_circuit constraint must set
+      requires_local_isolation == true so that a dedicated local isolator is
+      specified for maintenance access without de-energising the entire bathroom
+      distribution. Omission would leave the pump circuit without a documented
+      isolation point, creating a maintenance hazard for servicing the pump motor.
+    severity: warning
+    matches_inv: INV-06
+    standard_ref: BS 7671:2018+A2:2022 §701
