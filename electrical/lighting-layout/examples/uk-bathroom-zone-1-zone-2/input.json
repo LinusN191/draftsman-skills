@@ -1,0 +1,53 @@
+{
+  "_scenario": "UK domestic en-suite bathroom 2700×2100mm with bath+over-bath shower against the south wall. Exercises lighting-layout v1.6.0 Wave-1 cascade — both photometric_grid (INV-11) AND special_locations_zoning (INV-12) are required because room_type=bathroom is in the Part-7 set and mode=full_drawing. Producer-side cascade: special-locations/examples/cascade-lighting-layout-uk-bathroom emits the 5-zone payload + the 30 mA RCD blanket constraint per BS 7671:2018+A2:2022 §701.411.3.3. Consumer-side INV-12 walks the 2 ceiling luminaires against payload.zones[] (point-in-polygon + height inclusion), verifies IP and voltage envelopes, and cascades the (empty) flag list.",
+  "room_type": "bathroom",
+  "room_length_m": 2.7,
+  "room_width_m": 2.1,
+  "ceiling_height_m": 2.25,
+  "working_plane_m": 0.75,
+  "luminaire": {
+    "type": "IPx4 LED Recessed Downlight 1500lm",
+    "symbol": "LED_DOWNLIGHT_IPX4",
+    "lumen_output": 1500,
+    "lumen_type": "design",
+    "wattage_w": 13,
+    "cct_k": 3000,
+    "cri_ra": 90,
+    "ip_rating": "IPx4"
+  },
+  "ceiling_grid_mm": null,
+  "new_build": true,
+  "jurisdiction": "england_wales",
+  "glazed_walls": [],
+  "db_designation": "L1",
+  "entrance_positions": [
+    {"wall": "north", "x_mm": 2400, "door_swing": "inward_right"}
+  ],
+  "anchor_fixtures": [
+    {
+      "anchor_id": "bath_1",
+      "fixture_type": "bath_tray",
+      "position_xyz": {"x_mm": 500, "y_mm": 0, "z_mm": 0},
+      "dimensions_mm": {"length_mm": 1700, "width_mm": 700}
+    },
+    {
+      "anchor_id": "shower_1",
+      "fixture_type": "shower_head",
+      "position_xyz": {"x_mm": 1050, "y_mm": 350, "z_mm": 2100}
+    }
+  ],
+  "shaver_socket_positions": [
+    {"id": "SS01", "x_mm": 50, "y_mm": 1900, "height_aff_mm": 1400}
+  ],
+  "photometric_ies_paths": [
+    {
+      "luminaire_type": "LED_DOWNLIGHT_IPX4",
+      "path": "shared/photometric/ies/LED_DOWNLIGHT_IPX4-1500lm.ies",
+      "_source": "Synthetic 95mm IPx4 LED recessed downlight, 1500 lm, 3000K, CRI 90, narrow-medium distribution per CIBSE LG7 §6.4. verification_status: synthetic_reference_C3. Cascade reference for the lighting-layout consumer INV-11 walk; engineer-of-record substitutes manufacturer IES (e.g. Aurora, JCC, Collingwood IPx4 series) before final design freeze."
+    }
+  ],
+  "_cascade_sources": {
+    "photometric_grid": "electrical/lighting-layout/examples/uk-bathroom-zone-1-zone-2/_synthetic_photometric_intent.json",
+    "special_locations_zoning": "electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom/intent-out.json"
+  }
+}

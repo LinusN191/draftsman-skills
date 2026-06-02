@@ -1,0 +1,174 @@
+{
+  "room_id": "uk-bathroom-zone-1-zone-2",
+  "room_type": "bathroom",
+  "luminaire_summary": {
+    "luminaire_count": 2,
+    "luminaire_wattage_w_each": 13,
+    "luminaire_lumens_each": 1500,
+    "lumen_type": "design",
+    "ip_rating": "IPx4"
+  },
+  "circuits": [
+    {
+      "circuit_id": "C-L01",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "voltage_class": "LV_power",
+      "load_w": 26,
+      "luminaire_count": 2,
+      "mcb_rating_a_suggested": 6
+    }
+  ],
+  "emergency_lighting_present": false,
+  "controls_summary": {
+    "occupancy_sensing": false,
+    "daylight_linking": false,
+    "dimming_protocol": null,
+    "part_l_assessed": true,
+    "part_l_compliant": true
+  },
+  "zones": [
+    {
+      "zone_id": "Z2",
+      "zone_type": "interior",
+      "control": "manual",
+      "luminaire_ids": ["L01", "L02"],
+      "circuit_ids": ["C-L01"]
+    }
+  ],
+  "circuits_topology": [
+    {
+      "circuit_id": "C-L01",
+      "zone_id": "Z2",
+      "row_index": 0,
+      "total_load_w": 26,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 2700, "y_mm": 1900, "wall": "E"}
+    }
+  ],
+  "switches": [
+    {
+      "id": "SW01",
+      "type": "1_gang",
+      "x_mm": 2550,
+      "y_mm": 1900,
+      "height_aff_mm": 1200,
+      "controls_circuit": "C-L01"
+    }
+  ],
+  "consumed_intents": {
+    "photometric_grid": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/lighting-layout/examples/uk-bathroom-zone-1-zone-2/_synthetic_photometric_intent.json",
+      "payload": {
+        "achieved_avg_illuminance_lux": 254,
+        "achieved_min_illuminance_lux": 168,
+        "achieved_uniformity_u0": 0.66,
+        "ugr_max": 18.4,
+        "ugr_target": 22,
+        "uniformity_target": 0.4,
+        "target_illuminance_lux": 200,
+        "task_area_compliant": true,
+        "grid_point_count": 48,
+        "non_compliance_flags": [],
+        "ies_source_summary": {
+          "all_verified": false,
+          "verification_status_lowest": "synthetic_reference_C3"
+        }
+      }
+    },
+    "special_locations_zoning": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom/intent-out.json",
+      "payload": {
+        "zones": [
+          {
+            "zone_id": "zone_bath_1_z0",
+            "zone_type": "bath_zone_0",
+            "source_anchor_id": "bath_1",
+            "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+            "height_min_mm": 0,
+            "height_max_mm": 550,
+            "ip_rating_min": "IPx7",
+            "max_voltage_v": 12,
+            "rcd_required_ma": 30,
+            "isolation_required": true,
+            "allowed_equipment_classes": ["class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated", "shaver_socket", "fixed_heater_230v"]
+          },
+          {
+            "zone_id": "zone_bath_1_z1",
+            "zone_type": "bath_zone_1",
+            "source_anchor_id": "bath_1",
+            "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+            "height_min_mm": 550,
+            "height_max_mm": 2250,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"]
+          },
+          {
+            "zone_id": "zone_shower_1_z1",
+            "zone_type": "bath_zone_1",
+            "source_anchor_id": "shower_1",
+            "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+            "height_min_mm": 0,
+            "height_max_mm": 2100,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"]
+          },
+          {
+            "zone_id": "zone_bath_1_z2",
+            "zone_type": "bath_zone_2",
+            "source_anchor_id": "bath_1",
+            "boundary_plan_polygon_mm": [[-100, -600], [2800, -600], [2800, 1300], [-100, 1300]],
+            "height_min_mm": 0,
+            "height_max_mm": 2250,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v"]
+          },
+          {
+            "zone_id": "zone_shower_1_z2",
+            "zone_type": "bath_zone_2",
+            "source_anchor_id": "shower_1",
+            "boundary_plan_polygon_mm": [[-100, -600], [2800, -600], [2800, 1300], [-100, 1300]],
+            "height_min_mm": 0,
+            "height_max_mm": 2100,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v"]
+          }
+        ],
+        "electrical_constraints": [
+          {
+            "constraint_type": "rcd_blanket_by_room",
+            "rcd_rating_ma": 30,
+            "applies_to_circuit_types": ["lighting", "sockets", "shower_unit", "fixed_equipment", "shaver_socket"],
+            "_clause_citation": "BS 7671:2018 §701.411.3.3"
+          }
+        ],
+        "compliant": true,
+        "zone_count": 5,
+        "constraint_count": 1,
+        "violation_count_critical": 0,
+        "violation_count_high": 0,
+        "non_compliance_flags": []
+      }
+    }
+  }
+}

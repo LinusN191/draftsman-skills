@@ -1,0 +1,22 @@
+{
+  "_note": "SYNTHETIC photometric intent payload built solely to satisfy the D.2 lighting-layout cascade source path. There is no companion electrical/photometric-analysis/examples/cascade-uk-bathroom-zone-1-zone-2/ folder yet — the photometric skill has not been retrofitted to consume Part-7 bathroom lighting layouts in the v1.0 sprint. This file exists so the consumed_intents.photometric_grid.source_path in output.json points to a real, schema-valid payload. When the photometric skill ships its Part-7 retrofit, replace this file with a real cascade-* example reference. INV-11 sub-checks 3 + 4 reference the numbers in this payload; numbers are engineered to be consistent with the 2-luminaire 1500lm IPx4 layout (lumen-method gives ~254 lux on the 5.67 m² floor area with UF=0.6 / MF=0.8).",
+  "intent_version": "1.0.0",
+  "skill": "photometric-analysis",
+  "consumed_lighting_layout_intent": "electrical/lighting-layout/examples/uk-bathroom-zone-1-zone-2/intent-out.json",
+  "photometric_grid": {
+    "achieved_avg_illuminance_lux": 254,
+    "achieved_min_illuminance_lux": 168,
+    "achieved_uniformity_u0": 0.66,
+    "ugr_max": 18.4,
+    "ugr_target": 22,
+    "uniformity_target": 0.4,
+    "target_illuminance_lux": 200,
+    "task_area_compliant": true,
+    "grid_point_count": 48,
+    "non_compliance_flags": [],
+    "ies_source_summary": {
+      "all_verified": false,
+      "verification_status_lowest": "synthetic_reference_C3"
+    }
+  }
+}

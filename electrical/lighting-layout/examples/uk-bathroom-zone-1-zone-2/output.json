@@ -1,0 +1,508 @@
+{
+  "_note": "D.2 (special-locations sprint) — first lighting-layout example to fire INV-12 end-to-end. mode=full_drawing AND room.room_type=bathroom (∈ Part-7 set) triggers the lighting-layout-ir.schema.json third allOf clause, requiring consumed_intents.special_locations_zoning. INV-11 fires (Wave-1 photometric cascade) AND INV-12 fires (Wave-1 special-locations cascade). All 12 INVs PASS with concrete evidence. Cascade producer: electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom (C.2 deliverable). Synthetic photometric source: _synthetic_photometric_intent.json (helper).",
+  "drawing_type": "lighting_layout",
+  "version": "1.6",
+  "mode": "full_drawing",
+  "room": {
+    "length_mm": 2700,
+    "width_mm": 2100,
+    "area_m2": 5.67,
+    "ceiling_height_mm": 2250,
+    "working_plane_mm": 750,
+    "hm_mm": 1500,
+    "room_index": 0.79,
+    "room_type": "bathroom",
+    "environment_type": "damp",
+    "ip_required": "IPx4",
+    "has_windows": false
+  },
+  "luminaire_type": {
+    "symbol": "LED_DOWNLIGHT_IPX4",
+    "description": "95mm IPx4 LED Recessed Downlight, 1500lm, 13W, 3000K, CRI ≥ 90",
+    "lumens": 1500,
+    "lumen_type": "design",
+    "llmf_applied": false,
+    "wattage_w": 13,
+    "cct_k": 3000,
+    "cri_ra": 90,
+    "ip_rating": "IPx4",
+    "lamp_efficacy_lm_per_w": 115.4
+  },
+  "zones": [
+    {
+      "zone_id": "Z2",
+      "label": "Bathroom interior",
+      "zone_type": "interior",
+      "control": "manual",
+      "circuit_id": "C-L01",
+      "circuit_ids": ["C-L01"],
+      "luminaire_ids": ["L01", "L02"],
+      "luminaire_count": 2,
+      "total_load_w": 26
+    }
+  ],
+  "luminaires": [
+    {
+      "id": "L01",
+      "x_mm": 1350,
+      "y_mm": 1050,
+      "zone_id": "Z2",
+      "circuit_id": "C-L01"
+    },
+    {
+      "id": "L02",
+      "x_mm": 1350,
+      "y_mm": 350,
+      "zone_id": "Z2",
+      "circuit_id": "C-L01"
+    }
+  ],
+  "switches": [
+    {
+      "id": "SW01",
+      "type": "1_gang",
+      "x_mm": 2550,
+      "y_mm": 1900,
+      "height_aff_mm": 1200,
+      "controls_circuit": "C-L01",
+      "door_swing": "inward_right",
+      "switch_side": "latch_side"
+    }
+  ],
+  "circuits": [
+    {
+      "circuit_id": "C-L01",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L01", "L02"],
+      "total_load_w": 26,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 0,
+      "homerun_endpoint": {
+        "x_mm": 2700,
+        "y_mm": 1900,
+        "wall": "E"
+      }
+    }
+  ],
+  "controls": {
+    "dimming_protocol": null,
+    "occupancy_sensing": false,
+    "daylight_linking": false,
+    "part_l_assessed": true,
+    "part_l_compliant": true,
+    "part_l_efficacy_target_lm_per_w": 65,
+    "lamp_efficacy_lm_per_w": 115.4
+  },
+  "calculation_summary": {
+    "target_illuminance_lux": 200,
+    "achieved_illuminance_lux": 254,
+    "utilisation_factor": 0.6,
+    "maintenance_factor": 0.8,
+    "lamp_efficacy_lm_per_w": 115.4,
+    "part_l_efficacy_target_lm_per_w": 65,
+    "ugr_status": "UGR ≤ 22 verified by photometric cascade (UGR_max=18.4)",
+    "compliant": true,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "UF = 0.60 from CIBSE SLL standard reflectance table for low-RI small bathroom (RI=0.79, reflectances 0.5/0.5/0.2 — light tiled walls + ceiling)",
+      "MF = 0.80 for clean domestic bathroom on a 3-year cleaning cycle (CIBSE TM 3-25)"
+    ]
+  },
+  "drawing_notes": [
+    "All luminaires: 95mm IPx4 LED recessed downlight, 1500 lm, 13W, 3000K, CRI ≥ 90",
+    "Maintained illuminance: 200 lux task plane per BS EN 12464-1:2021 Table 5.x (washrooms/bathrooms)",
+    "Special locations: bathroom per BS 7671:2018+A2:2022 §701 — see consumed_intents.special_locations_zoning for the 5 zones (bath_1_z0, bath_1_z1, shower_1_z1, bath_1_z2, shower_1_z2)",
+    "Lighting circuit C-L01 protected by 30 mA RCD per BS 7671:2018+A2:2022 §701.411.3.3 (RCD blanket-by-room)",
+    "L01 sits within bath_1_z2 (interior of Zone 2 polygon, height 2250 mm at zone height ceiling) — IPx4 verified, 230 V permitted",
+    "L02 sits within bath_1_z1 over the bath (X 500–2200, Y 0–700, height 550–2250) — IPx4 verified, 230 V Class 2 permitted with 30 mA RCD",
+    "Switch SW01 placed at (2550, 1900, 1200 mm AFF) — outside all §701 zones (north of Zone 2 y=1300 boundary), latch-side adjacent to north entrance",
+    "Shaver socket SS01 at (50, 1900, 1400 mm AFF) — outside all §701 zones; isolating transformer to BS EN 61558-2-5",
+    "Ceiling height 2250 mm matches the §701 Zone 1 vertical ceiling — luminaires sit at the upper boundary, inclusive per §701 zone-table convention"
+  ],
+  "selection_source": {
+    "photometric_source": "ontology_default",
+    "citation": "CIBSE LG7 §6.4 (IPx4 downlight UF + SHR_max) + BS EN 12464-1:2021 §4.4 (LLMF maintenance categories) + BS 7671:2018+A2:2022 §701.512.2 (IPx4 floor in Zone 1)"
+  },
+  "drafting_furniture": {
+    "title_block": {
+      "project_name": "D.2 cascade demo — uk-bathroom-zone-1-zone-2",
+      "drawing_number": "EL-301",
+      "revision": "A",
+      "date": "2026-06-02",
+      "scale": "1:25",
+      "sheet_size": "A3",
+      "font_family": "Arial",
+      "font_size_pt": 10
+    },
+    "scale_bar": {
+      "origin_x_mm": 200,
+      "origin_y_mm": 100,
+      "total_length_mm": 1000,
+      "tick_interval_mm": 250,
+      "font_family": "Arial",
+      "font_size_pt": 8
+    },
+    "dimensions": [
+      {
+        "axis": "horizontal",
+        "start_x_mm": 0,
+        "start_y_mm": 0,
+        "end_x_mm": 2700,
+        "end_y_mm": 0,
+        "text": "2700 mm",
+        "font_family": "Arial",
+        "font_size_pt": 10
+      },
+      {
+        "axis": "vertical",
+        "start_x_mm": 0,
+        "start_y_mm": 0,
+        "end_x_mm": 0,
+        "end_y_mm": 2100,
+        "text": "2100 mm",
+        "font_family": "Arial",
+        "font_size_pt": 10
+      }
+    ],
+    "luminaire_schedule": {
+      "columns": ["Ref", "Manufacturer", "Lumens", "Wattage", "Count"],
+      "rows": [
+        ["LED_DOWNLIGHT_IPX4", "Generic IPx4", "1500", "13W", "2"]
+      ],
+      "font_family": "Arial",
+      "font_size_pt": 8
+    }
+  },
+  "rationale": {
+    "chat_summary": "2 × IPx4 1500 lm downlights for a 2700×2100 mm UK bathroom. Target 200 lx (BS EN 12464-1 Table 5.x) achieved 254 lx (UF=0.60, MF=0.80). Single 6 A Type B MCB on DB L1; 30 mA RCD per §701.411.3.3. Cascade: special-locations payload places L01 in Zone 2 and L02 in bath Zone 1 — both IPx4 verified. Reply to refine, e.g. 'add ceiling-mounted extract fan' or 'split into 2 circuits'.",
+    "sections": [
+      {
+        "title": "Illumination",
+        "summary": "Target 200 lx (bathroom, BS EN 12464-1:2021 Table 5.x); achieved 254 lx maintained.",
+        "decisions": [
+          {
+            "label": "Lux target 200 lx maintained",
+            "summary": "BS EN 12464-1:2021 Table 5.x entry for bathroom/washroom sets 200 lx general illuminance.",
+            "rule": "BS EN 12464-1 Table 5.x entry for bathroom",
+            "code_clause": "BS EN 12464-1:2021 § 5",
+            "inputs": {"room_type": "bathroom"}
+          },
+          {
+            "label": "UGR ≤ 22 verified by photometric cascade",
+            "summary": "Lumen method cannot compute UGR; photometric-analysis cascade returns UGR_max=18.4 ≤ 22 limit (BS EN 12464-1 Table 5.x).",
+            "rule": "Photometric cascade ≥ Table-5 UGR ceiling",
+            "code_clause": "BS EN 12464-1:2021 § 4"
+          }
+        ]
+      },
+      {
+        "title": "Layout",
+        "summary": "2 IPx4 downlights on the 1350 mm centreline — L01 over the open floor (in Zone 2) and L02 directly over the bath (in bath Zone 1).",
+        "decisions": [
+          {
+            "label": "N = 2 downlights at 1500 lm satisfies 200 lx target",
+            "summary": "Lumen method: N = (200 × 5.67) / (1500 × 0.6 × 0.8) = 1.58 → round UP to 2. Achieved E = (2 × 1500 × 0.6 × 0.8) / 5.67 = 254 lx ≥ 200 lx target.",
+            "rule": "Round up; never round down",
+            "code_clause": "CIBSE SLL Code for Lighting 2012",
+            "inputs": {"lux_target": 200, "area_m2": 5.67, "uf": 0.6, "mf": 0.8, "lumens": 1500}
+          }
+        ]
+      },
+      {
+        "title": "Special-locations cascade",
+        "summary": "Bathroom triggers BS 7671:2018+A2:2022 §701 zoning. 5 zones consumed from cascade-lighting-layout-uk-bathroom; both luminaires fall inside §701 zones at the 2250 mm ceiling; both IPx4 — verified by INV-12 sub-check 3.",
+        "decisions": [
+          {
+            "label": "L02 directly over the bath: IPx4 satisfies §701.512.2 Zone 1 floor",
+            "summary": "L02 at (1350, 350, 2250) sits within bath_1_z1 polygon (X 500–2200, Y 0–700, height 550–2250). §701.512.2 sets IPx4 minimum in Zone 1; LED_DOWNLIGHT_IPX4 ip_rating=IPx4 PASS. §701.411.3.3 30 mA RCD blanket cascaded onto C-L01.",
+            "rule": "§701.512.2 IPx4 floor + §701.411.3.3 RCD blanket",
+            "code_clause": "BS 7671:2018+A2:2022 § 701.512.2"
+          },
+          {
+            "label": "L01 in Zone 2 ceiling extension: IPx4 satisfies §701.512.2",
+            "summary": "L01 at (1350, 1050, 2250) sits within bath_1_z2 polygon (X -100..2800, Y -600..1300, height 0–2250). §701.512.2 sets IPx4 minimum in Zone 2; LED_DOWNLIGHT_IPX4 ip_rating=IPx4 PASS. No socket prohibited because L01 is a luminaire not a 230 V socket.",
+            "rule": "§701.512.2 IPx4 floor",
+            "code_clause": "BS 7671:2018+A2:2022 § 701.512.2"
+          }
+        ]
+      },
+      {
+        "title": "Switching",
+        "summary": "Single 1-gang switch on east wall north of Zone 2 boundary, latch-side of north entrance.",
+        "decisions": [
+          {
+            "label": "Switch at (2550, 1900) outside all §701 zones",
+            "summary": "Switch sits OUTSIDE the Zone 2 polygon (y=1900 > zone y_max=1300) — §701.512.3 socket-distance rule does not apply to lighting switches but switch placement still respects engineer's practice of locating switches outside the splash zone.",
+            "rule": "Switch outside Zone 2; latch-side of entrance",
+            "code_clause": "BS 7671:2018+A2:2022 § 701.512.3"
+          }
+        ]
+      },
+      {
+        "title": "Shaver socket",
+        "summary": "Shaver socket at (50, 1900, 1400 mm AFF) — outside all §701 zones; isolation per BS EN 61558-2-5.",
+        "decisions": [
+          {
+            "label": "Shaver socket outside Zone 2 with BS EN 61558-2-5 isolation",
+            "summary": "SS01 at y=1900 > zone y_max=1300 — outside Zone 2 polygon. Shaver socket itself is a permitted fixture per §701.512.3 when supplied via BS EN 61558-2-5 isolating transformer.",
+            "rule": "§701.512.3 shaver socket allowance",
+            "code_clause": "BS 7671:2018+A2:2022 § 701.512.3"
+          }
+        ]
+      },
+      {
+        "title": "Circuits",
+        "summary": "Single 6 A Type B MCB on DB L1; load 26 W well within 80 % continuous-load envelope of 6 A × 230 V × 0.8 = 1104 W; 30 mA RCD per §701.411.3.3 cascaded from the special-locations payload constraint.",
+        "decisions": [
+          {
+            "label": "6 A Type B MCB on DB L1 with 30 mA RCD",
+            "summary": "2 × 13 W = 26 W. 30 mA RCD required by §701.411.3.3 blanket-by-room constraint cascaded from special_locations_zoning.electrical_constraints[0] (rcd_blanket_by_room, 30 mA, applies_to_circuit_types includes 'lighting').",
+            "rule": "BS 7671 §433.1.1 + §701.411.3.3",
+            "code_clause": "BS 7671:2018+A2:2022 § 701.411.3.3"
+          }
+        ]
+      },
+      {
+        "title": "Assumptions",
+        "summary": "Two design assumptions — confirm against the luminaire photometric datasheet + tile reflectance survey before issue.",
+        "decisions": [
+          {
+            "label": "UF = 0.60",
+            "summary": "From CIBSE SLL standard reflectance table 0.5/0.5/0.2 for a low-RI tiled bathroom (RI=0.79).",
+            "rule": "Standard CIBSE reflectance table",
+            "code_clause": "CIBSE SLL Code for Lighting 2012"
+          },
+          {
+            "label": "MF = 0.80",
+            "summary": "Clean domestic bathroom on a 3-year cleaning cycle.",
+            "rule": "CIBSE TM 3-25 / standard MF for clean domestic LED",
+            "code_clause": "CIBSE TM 3-25"
+          }
+        ]
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Lumen method: N=2 luminaires × 1500 lm × UF=0.60 × MF=0.80 / 5.67 m² = achieved_illuminance_lux=254 lux ≥ target 200 lux (Rule 1 PASS). Per [spacing-rules#lumen-method-formula] + ontology LED_DOWNLIGHT_IPX4 UF table at RI=0.79, reflectances 0.5/0.5/0.2."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "S/H ratio: Hm=2250-750=1500 mm, SHR_max=1.5 (LED_DOWNLIGHT_IPX4 ontology default for medium-distribution downlight), limit=2250 mm. With N=2 on the 1350 mm centreline: S_y between luminaires = 1050-350 = 700 mm ≤ 2250 PASS; edge clearances 350 mm (S edge to L02) and 1050 mm (L01 to N edge) within S/2 envelope. Per [spacing-rules#shr-max-default]."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Switch coverage: 1 entrance declared (north wall x=2400), 1 switch emitted (SW01 at (2550, 1900), 1200 mm AFF, latch_side per door_swing=inward_right). switches.length >= entrances.length (Rule 3a PASS). 150 mm from entrance centreline + 200 mm setback from north wall — within reach. Height + latch placement per [switching-rules#height] + [switching-rules#latch-side] (Rule 3b PASS)."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Circuit topology: both L01 (y=1050) and L02 (y=350) on circuit C-L01 span row_index 0 (single 2-luminaire circuit, no Z-pattern possible — |delta|=0 ≤ 1). homerun_endpoint=(2700, 1900, E) sits on east wall (Rule 4b PASS). circuits[0].row_index=0 declared explicitly; reviewer prompt INV-4 sub-check (a) PASS."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Circuit load: total_load_w=26 W ≤ 0.8 × 6 × 230 = 1104 W (6 A MCB, per circuits[0].mcb_rating_a). Rule 5 PASS per BS 7671:2018+A2:2022 §433.1.1 + IET OSG App A 80% continuous-load rule."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Part L compliance: inputs.new_build=true gates the check. lamp_efficacy_lm_per_w=115.4 ≥ part_l_efficacy_target_lm_per_w=65 (Building Regs Part L 2021 Domestic compliance route — Approved Document L Vol 1, lighting efficacy floor for new dwellings). controls.part_l_assessed=true, controls.part_l_compliant=true. Rule 6 PASS."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "Zone assignment: 2 luminaires both in Z2 (interior). Glazed walls = [] -> no perimeter zone needed (consistency PASS per [switching-rules#perimeter-circuit]). No task or emergency zones declared (small domestic bathroom outside the BS 5266-1 emergency lighting scope). Rule 7 PASS per [control-rules#part-l-daylight]."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "selection_source.photometric_source='ontology_default'; citation='CIBSE LG7 §6.4 (IPx4 downlight UF + SHR_max) + BS EN 12464-1:2021 §4.4 (LLMF maintenance categories) + BS 7671:2018+A2:2022 §701.512.2 (IPx4 floor in Zone 1)'. No inputs.photometric_override supplied for this example. Rule 8 PASS."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "drafting_furniture present with all 4 required blocks (title_block + scale_bar + dimensions[2] + luminaire_schedule). All annotations declare font_family='Arial' + explicit font_size_pt ∈ {8, 10}. No {{placeholder}} remnants in any text field. Rule 9 PASS."
+    },
+    {
+      "id": "INV-10",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Schema validation PASSED against shared/schemas/electrical/lighting-layout-ir.schema.json. All top-level required fields populated: drawing_type, version, room, calculation_summary, rationale, invariants, plus full_drawing-mode required: luminaire_type, luminaires, switches, circuits, controls, drawing_notes, zones, drafting_furniture, selection_source, consumed_intents. The 3rd allOf clause (room.room_type='bathroom' ∈ Part-7 set) is satisfied — consumed_intents.special_locations_zoning is present. non_compliance_flags = [] (vacuously valid). Rule 10 PASS."
+    },
+    {
+      "id": "INV-11",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from _synthetic_photometric_intent.json (sub-check 1 PASS). payload.task_area_compliant=true (sub-check 2 PASS). achieved_avg_illuminance_lux=254 vs target=200 (sub-check 3 PASS — photometric matches IR's 254 lx); UGR_max=18.4 ≤ UGR_target=22 satisfies BS EN 12464-1 Table 5.x for bathrooms; uniformity U0=0.66 ≥ target 0.4 PASS. 0 non_compliance_flags cascaded to lighting-layout calculation_summary with _cascaded_from=photometric-analysis attribution (sub-check 4 PASS, vacuously). Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
+    },
+    {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Special-locations cascade resolved from electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom/intent-out.json. Sub-check 1 PASS: consumed_intents.special_locations_zoning present. Sub-check 2 PASS: payload.compliant=true; zone_count=5; violation_count_critical=0; violation_count_high=0. Sub-check 3 PASS: L01 at (1350, 1050, 2250) hits bath_1_z2 polygon (X -100..2800, Y -600..1300, h 0–2250 incl); ip_rating_min=IPx4 matched IPx4 PASS; max_voltage_v=230 ≥ 230 V PASS; luminaire ∉ prohibited [socket_230v] PASS. L02 at (1350, 350, 2250) hits bath_1_z1 polygon (X 500..2200, Y 0..700, h 550..2250 incl); ip_rating_min=IPx4 matched IPx4 PASS; max_voltage_v=230 ≥ 230 V PASS; luminaire ∉ prohibited [socket_230v, switch_230v, luminaire_non_ip_rated] (IPx4 is rated) PASS. Sub-check 4 PASS: payload.non_compliance_flags=[] empty, vacuously nothing to cascade. Per BS 7671:2018+A2:2022 §701.512.2 + §701.411.3.3 + cluster roadmap §6.7."
+    }
+  ],
+  "consumed_intents": {
+    "photometric_grid": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/lighting-layout/examples/uk-bathroom-zone-1-zone-2/_synthetic_photometric_intent.json",
+      "payload": {
+        "achieved_avg_illuminance_lux": 254,
+        "achieved_min_illuminance_lux": 168,
+        "achieved_uniformity_u0": 0.66,
+        "ugr_max": 18.4,
+        "ugr_target": 22,
+        "uniformity_target": 0.4,
+        "target_illuminance_lux": 200,
+        "task_area_compliant": true,
+        "grid_point_count": 48,
+        "non_compliance_flags": [],
+        "ies_source_summary": {
+          "all_verified": false,
+          "verification_status_lowest": "synthetic_reference_C3"
+        }
+      }
+    },
+    "special_locations_zoning": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom/intent-out.json",
+      "payload": {
+        "zones": [
+          {
+            "zone_id": "zone_bath_1_z0",
+            "zone_type": "bath_zone_0",
+            "source_anchor_id": "bath_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+            "height_min_mm": 0,
+            "height_max_mm": 550,
+            "ip_rating_min": "IPx7",
+            "max_voltage_v": 12,
+            "rcd_required_ma": 30,
+            "isolation_required": true,
+            "allowed_equipment_classes": ["class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated", "shaver_socket", "fixed_heater_230v"],
+            "switch_position_min_distance_mm": null,
+            "overlapping_with_zone_ids": [],
+            "_clause_citation": "BS 7671:2018 §701.414.4.5 (SELV ≤12 V in Zone 0) + §701.411.3.3 (30 mA RCD blanket)",
+            "_derivation_note": "Zone 0 is the interior volume of the bath basin per BS 7671:2018 §701 zone-table convention. SELV-only equipment permitted; no socket/switch/non-SELV fixtures permitted."
+          },
+          {
+            "zone_id": "zone_bath_1_z1",
+            "zone_type": "bath_zone_1",
+            "source_anchor_id": "bath_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+            "height_min_mm": 550,
+            "height_max_mm": 2250,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+            "switch_position_min_distance_mm": null,
+            "overlapping_with_zone_ids": ["zone_shower_1_z1"],
+            "_clause_citation": "BS 7671:2018 §701 + §701.411.3.3 (30 mA RCD)",
+            "_derivation_note": "Zone 1 is the vertical projection above the bath polygon to 2250mm AFF per §701 zone-table convention. Overlaps shower_1 zone_1 polygon."
+          },
+          {
+            "zone_id": "zone_shower_1_z1",
+            "zone_type": "bath_zone_1",
+            "source_anchor_id": "shower_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[500, 0], [2200, 0], [2200, 700], [500, 700]],
+            "height_min_mm": 0,
+            "height_max_mm": 2100,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+            "switch_position_min_distance_mm": null,
+            "overlapping_with_zone_ids": ["zone_bath_1_z1"],
+            "_clause_citation": "BS 7671:2018 §701",
+            "_derivation_note": "Zone 1 from shower_1 head at 2100mm AFF: zone extends vertically from floor to shower-head height per §701 zone-table."
+          },
+          {
+            "zone_id": "zone_bath_1_z2",
+            "zone_type": "bath_zone_2",
+            "source_anchor_id": "bath_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[-100, -600], [2800, -600], [2800, 1300], [-100, 1300]],
+            "height_min_mm": 0,
+            "height_max_mm": 2250,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v"],
+            "switch_position_min_distance_mm": 3000,
+            "overlapping_with_zone_ids": ["zone_shower_1_z2"],
+            "_clause_citation": "BS 7671:2018 §701 + §701.512.3 (socket ≥3 m from Zone 1)",
+            "_derivation_note": "Zone 2 = 600mm horizontal extension of Zone 1 polygon per §701 zone-table convention. Socket outlets prohibited within 3m of Zone 1."
+          },
+          {
+            "zone_id": "zone_shower_1_z2",
+            "zone_type": "bath_zone_2",
+            "source_anchor_id": "shower_1",
+            "derivation_clause": "BS 7671:2018 §701",
+            "boundary_plan_polygon_mm": [[-100, -600], [2800, -600], [2800, 1300], [-100, 1300]],
+            "height_min_mm": 0,
+            "height_max_mm": 2100,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": 30,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v"],
+            "switch_position_min_distance_mm": 3000,
+            "overlapping_with_zone_ids": ["zone_bath_1_z2"],
+            "_clause_citation": "BS 7671:2018 §701 + §701.512.3",
+            "_derivation_note": "Zone 2 from shower_1: 600mm horizontal extension of Zone 1; vertical ceiling tied to shower head at 2100mm AFF per §701."
+          }
+        ],
+        "electrical_constraints": [
+          {
+            "constraint_type": "rcd_blanket_by_room",
+            "applies_to_room_polygon": true,
+            "applies_to_zone_ids": null,
+            "_clause_citation": "BS 7671:2018 §701.411.3.3",
+            "_derivation_note": "30 mA RCD protection required for all low-voltage circuits serving locations containing a bath or shower per BS 7671:2018 §701.411.3.3.",
+            "rcd_rating_ma": 30,
+            "applies_to_circuit_types": ["lighting", "sockets", "shower_unit", "fixed_equipment", "shaver_socket"],
+            "sauna_heater_excluded": false
+          }
+        ],
+        "compliant": true,
+        "zone_count": 5,
+        "constraint_count": 1,
+        "violation_count_critical": 0,
+        "violation_count_high": 0,
+        "non_compliance_flags": [],
+        "anchor_source_summary": {
+          "all_extracted": true,
+          "extraction_source_lowest": "architectural_drawing_extraction"
+        }
+      }
+    }
+  }
+}
