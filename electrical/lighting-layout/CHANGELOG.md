@@ -1,6 +1,50 @@
 # Changelog — lighting-layout
 
-## [1.6.0] - 2026-06-01 — Floor plan context portability
+## [1.6.0] - 2026-06-02 — Wave 1: special-locations cascade contract + Floor plan context portability
+
+_Two parallel-shipped deliverables merged into a single version entry. The Wave 1 special-locations cascade contract (the main deliverable) is documented first; the Floor plan context portability changes (originally landed as PR #2 / commit 013861b) are appended below._
+
+
+### Changed
+- `skill.manifest.json` version 1.5.0 → 1.6.0 (additive; backward-compatible IR additions).
+- `consumes_intents[]` extended with `special-locations-zoning` cascade entry
+  (trigger: any room in `rooms[].room_type` matches the Part-7 set —
+  bathroom / shower_room / swimming_pool_hall / sauna / medical_group_0_area /
+  medical_group_1_ward / medical_group_2_theatre / external_landscape).
+  Second downstream-cascade consumer for this skill (joins photometric-grid).
+
+### Added (IR schema — `shared/schemas/electrical/lighting-layout-ir.schema.json`)
+- 3rd `allOf` clause: when any `rooms[].room_type` matches the Part-7 set,
+  `consumed_intents.special_locations_zoning` MUST be populated. Structural
+  enforcement; semantic content enforced by INV-12.
+- `consumed_intents.special_locations_zoning` sub-object with `intent_version`
+  + `source_path` + `payload` via `$ref` to the special-locations zoning
+  intent schema.
+
+### Added (validator)
+- **INV-12 — Special-locations zoning cascade resolved (HIGH)**. 4 sub-checks:
+  (1) cascade structural presence; (2) payload counts reconcile with
+  `payload.zones[]` + `payload.electrical_constraints[]`; (3) luminaire-by-zone
+  IP/voltage gating per `payload.zones[].ip_rating_min` +
+  `max_voltage_v` + `prohibited_fixture_types`; (4) negative coverage for
+  non-applicable Part-7 sub-rules (pool/medical/sauna distinguishers).
+- Evidence cap consistent with shared-schema cap (1200 chars) — no schema
+  change needed; the shared schema already allowed 1200.
+
+### Added (examples)
+- **NEW `examples/uk-bathroom-zone-1-zone-2/`**: UK 2700 × 2100 mm bathroom
+  fixture; 3 IPx4 downlights + extract fan + Zone 2 mirror lamp. Carries
+  the cascaded `payload` and demonstrates INV-12 PASS on a typical
+  domestic § 701 install. Shared fixture with `small-power/uk-bathroom-shaver-and-zone2-sockets`
+  and `db-layout/uk-bathroom-rcd-distribution` — same room, same payload,
+  three IRs cooperating.
+
+### Honest disclosures preserved
+- Cascade is read-only for the lighting consumer: the `payload` is inlined
+  for reproducibility on this golden example, but in a real DraftsMan run
+  the runtime resolves the `source_path` at execution time and reads the
+  upstream `special-locations` intent fresh.
+### Floor plan context portability (PR #2)
 
 ### Changed
 - Replaced previous Sprint 4-AB `architectural_state` section in

@@ -1,6 +1,70 @@
 # Changelog — db-layout
 
-## [1.5.0] - 2026-06-01 — Floor plan context portability
+## [1.5.0] - 2026-06-02 — Wave 1: special-locations cascade contract + Floor plan context portability
+
+_Two parallel-shipped deliverables merged into a single version entry. The Wave 1 special-locations cascade contract (the main deliverable) is documented first; the Floor plan context portability changes (originally landed as PR #2 / commit 013861b) are appended below._
+
+
+### Changed
+- `skill.manifest.json` version 1.4.0 → 1.5.0 (additive; backward-compatible
+  IR additions).
+- `consumes_intents[]` extended with `special-locations-zoning` cascade entry.
+  Trigger: any room served by this board (derived from upstream
+  lighting-layout `room_adjacency_graph` or WI3 `room_context`) matches
+  the Part-7 set (bathroom, shower_room, swimming_pool_hall, sauna,
+  medical_group_0_area, medical_group_1_ward, medical_group_2_theatre,
+  external_landscape).
+
+### Added (IR schema — `electrical/db-layout/schemas/db-layout-ir.schema.json`)
+- New `allOf` clause: when `flags[]` contains the sentinel
+  `part7_zone_present`, `consumed_intents.special_locations_zoning` MUST be
+  populated. Sentinel-pattern enforcement (different from lighting-layout
+  which uses `rooms[].room_type` directly); chosen because db-layout's room
+  model is implicit-via-circuits rather than explicit-rooms-list.
+- `consumed_intents.special_locations_zoning` sub-object: `intent_version` +
+  `source_path` + `payload` via `$ref` to the special-locations zoning intent
+  schema.
+- **Schema cap raise**: `invariants[].evidence.maxLength` 800 → 1200 to
+  accommodate INV-16 cascade evidence (cascade source path + 4 sub-checks
+  + circuits walked + 4 distribution sub-rules with negative coverage).
+  Style-only cap raise per [[feedback-no-trim-non-consequential]]; existing
+  21 example INV evidence blocks all already fit 800. Matches the
+  lighting-layout shared-schema cap.
+
+### Added (validator)
+- **INV-16 — Special-locations distribution cascade resolved (CRITICAL)**.
+  4 sub-checks:
+  (1) cascade structural presence + `payload.compliant: true`;
+  (2) `payload.zone_count` + `payload.constraint_count` reconcile with
+      array lengths;
+  (3) each circuit serving a Part-7 room verified to gain RCD protection
+      per `payload.electrical_constraints[].rcd_rating_ma`;
+  (4) negative-coverage for the 4 distribution sub-rules — only the rule
+      that applies to the room class fires (e.g. § 701 bathroom →
+      rcd_blanket only; no medical IT panel, no pool main bonding, no
+      board-side supplementary bonding terminal).
+- Reviewer prompt extended with cascade-discipline checks.
+
+### Added (examples)
+- **NEW `examples/uk-bathroom-rcd-distribution/`**: UK first-floor consumer
+  unit DB-FF1; 230 V single_phase 60 A switch-disconnector, Form 1 IP2X
+  10-way Hager-style. Scope-cut to the 2 bathroom-serving circuits
+  (C-B1 lighting RCBO 6 A + C-B2 shaver/shower-pump RCBO 16 A); 7 other
+  first-floor circuits flagged as deferred. Per-circuit RCBO topology
+  chosen over grouped main RCD per BS 7671 § 314.1 (avoidance of unwanted
+  disconnection). `flags[]` includes `part7_zone_present` sentinel;
+  triggers the allOf clause non-vacuously. Shared bathroom fixture with
+  `lighting-layout/uk-bathroom-zone-1-zone-2` and
+  `small-power/uk-bathroom-shaver-and-zone2-sockets`.
+
+### Honest disclosures preserved
+- Cascade is read-only for the distribution consumer: payload inlined on
+  this golden example for reproducibility; runtime resolves `source_path`
+  fresh.
+- The new example is a deliberate scope-cut (2 of ~9 actual first-floor
+  circuits) so the Part-7 cascade can be exercised in isolation; the cut
+  is recorded as an INFO flag on `compliance_summary.non_compliance_flags[]`.
+### Floor plan context portability (PR #2)
 
 ### Changed
 - Replaced previous Sprint 4-AB `architectural_state` section in

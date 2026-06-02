@@ -1,6 +1,52 @@
 # Changelog
 
-## [1.2.0] - 2026-06-01 — Floor plan context portability
+## [1.2.0] - 2026-06-02 — Wave 1: special-locations cascade contract + Floor plan context portability
+
+_Two parallel-shipped deliverables merged into a single version entry. The Wave 1 special-locations cascade contract (the main deliverable) is documented first; the Floor plan context portability changes (originally landed as PR #2 / commit 013861b) are appended below._
+
+
+### Changed
+- `skill.manifest.json` version 1.1.0 → 1.2.0 (additive; backward-compatible IR additions).
+- `consumes_intents[]` extended with `special-locations-zoning` cascade entry.
+  Trigger: WI3 `room_context.room_type` matches the Part-7 set OR any
+  `outlets[].room_id` resolves to a Part-7 room. Joins `cable-sizing-results`
+  as the second downstream-cascade consumer for this skill.
+
+### Added (IR schema — `electrical/small-power/schemas/small-power-ir.schema.json`)
+- New `allOf` clause: when `flags[]` contains `part7_zone_present`,
+  `consumed_intents.special_locations_zoning` MUST be populated. Structural
+  enforcement; semantic content enforced by INV-12.
+- `consumed_intents.special_locations_zoning` sub-object with `intent_version`
+  + `source_path` + `payload` mirroring the FLAT shape of the special-locations
+  zoning intent.
+
+### Added (validator)
+- **INV-12 — Special-locations zoning cascade resolved (HIGH)**. 4 sub-checks:
+  (1) cascade structural presence; (2) payload counts reconcile;
+  (3) socket-by-zone gating per `payload.zones[].prohibited_fixture_types` +
+  zone polygon containment per `outlets[].position_xyz_mm`; (4) negative
+  coverage of non-applicable Part-7 sub-rules (medical IT / pool main bonding /
+  sauna heater exemption).
+- IR `invariants[].evidence` cap left at 800 chars for this skill; INV-12
+  evidence engineered to fit the cap in the cascade examples shipped.
+
+### Added (examples)
+- **NEW `examples/uk-bathroom-shaver-and-zone2-sockets/`**: UK 2700 × 2100 mm
+  bathroom; BS EN 61558-2-5 shaver supply unit at 1400 mm AFFL + Zone 2
+  mirror-side proximity outlet. Consumed-intent walked the shaver socket
+  against `prohibited_fixture_types` (sees it is BS EN 61558-2-5, not
+  `socket_230v` — passes Zone 2 gating). Shared bathroom fixture with
+  `lighting-layout/uk-bathroom-zone-1-zone-2` and
+  `db-layout/uk-bathroom-rcd-distribution`.
+
+### Scope note
+- This release wires the cascade contract end-to-end; deeper small-power
+  depth (multi-circuit RCD discrimination, BS 1363-A vs BS EN 60309-2
+  vehicle-charging selection inside the cascade) is deferred to Wave 2.
+- Cascade is read-only for the small-power consumer: payload inlined for
+  reproducibility on golden examples; runtime resolves `source_path`
+  at execution time.
+### Floor plan context portability (PR #2)
 
 ### Changed
 - Replaced previous Sprint 4-AB `architectural_state` section in
