@@ -183,6 +183,35 @@ For every circuit on every board:
 
 **Rationale:** Sprint B INV-12 caught the instantaneous-load misapplication (blanket 0.4 factor on a shower load) but did not enforce per-circuit basis citation. The Sprint D2.3 audit trail closes the gap: every circuit now declares (a) which load-type it falls under, (b) what factor applies, (c) what regulation/standard authorises it. A downstream reviewer (TCS / panel-builder / building-control) can verify each circuit independently without inferring from designation prose.
 
+## INV-16 — Special-locations distribution cascade resolved (HIGH)
+
+**Severity:** HIGH when `flags[]` contains `"part7_zone_present"` (i.e. any room served by this board matches the Part-7 set); N/A otherwise.
+
+**Rule (4 sub-checks):**
+1. `consumed_intents.special_locations_zoning` is present (cascade triggered + resolved).
+2. `consumed_intents.special_locations_zoning.payload.compliant == true` (special-locations' own INVs all PASS upstream).
+3. Thin sanity cross-check: walk `circuits[]`; for each circuit serving a Part-7 room (identifiable via `designation` reference or `consumed_intents.special_locations_zoning.payload.electrical_constraints[]` matching the circuit's downstream zone), verify:
+   - 30 mA RCD present (`rcd.required: true` AND `rcd.sensitivity_ma == 30`) if `electrical_constraints[]` includes `rcd_blanket_by_room` for that zone (per BS 7671:2018+A2:2022 §701.411.3.3 + §703.411.3.3)
+   - Circuit routed via Medical IT panel if `electrical_constraints[]` includes `medical_it_system` for that zone (per BS 7671:2018+A2:2022 §710 + BS EN 61557-8 + HTM 06-01)
+   - Supplementary bonding terminal modelled at the board if `supplementary_equipotential_bonding` constraint present for any served zone (per BS 7671:2018+A2:2022 §710 + §701.415.2)
+   - Main equipotential bond ≥10 mm² at the ME terminal if `pool_main_equipotential_bonding` constraint present for any served zone (per BS 7671:2018+A2:2022 §702.415.1)
+4. Flag cascading: every `payload.non_compliance_flags[]` entry MUST appear in `compliance_summary.non_compliance_flags[]` with `_cascaded_from: "special-locations"` attribution. No silent suppression.
+
+When `flags[]` does not contain `"part7_zone_present"`: trivially PASS (cascade not triggered).
+
+**Validator action:**
+- Check `flags[]` for `"part7_zone_present"`. If absent: INV-16 N/A — trivially PASS.
+- If present and `consumed_intents.special_locations_zoning` is absent: INV-16 FAIL HIGH.
+- Read `consumed_intents.special_locations_zoning.payload`. Verify `compliant == true`. If false: INV-16 FAIL HIGH; cascade flags + add INV-16's own evidence.
+- Walk `circuits[]` for Part-7-serving circuits: evaluate 4 distribution sub-rules per above. Any violation: INV-16 FAIL HIGH.
+- Walk `payload.non_compliance_flags[]`. For each: verify same flag exists in `compliance_summary.non_compliance_flags[]` with `_cascaded_from: "special-locations"`. If any flag missing: INV-16 FAIL HIGH.
+
+**Citation:** Cluster roadmap §6.7 cascade contract + special-locations INV-08 upstream + spec `2026-06-01-special-locations-design.md` §10.3.
+
+**Rationale:** Boards and OCPDs are not zoning artefacts — they are the upstream supply chain. INV-16 binds db-layout to the special-locations spatial-compliance layer at the circuit-supply level: every circuit serving a Part-7 room MUST carry the right protection topology (30 mA RCD for bathroom/sauna; Medical IT for Group 2 OR; main equipotential bond for pools). Without this binding, a board could ship with an inadequate protection scheme and no engineer review would catch it.
+
+---
+
 ### 3. Intent extraction validation
 
 Project the IR down to:
@@ -204,7 +233,7 @@ Emit a single JSON object:
 }
 ```
 
-`valid: true` requires ALL of: schema pass, all 15 invariants pass, both intent projections valid.
+`valid: true` requires ALL of: schema pass, all 16 invariants pass (INV-01 → INV-16), both intent projections valid.
 
 ## Floor plan context
 

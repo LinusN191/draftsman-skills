@@ -38,6 +38,18 @@
       "skill_id": "lighting-layout",
       "intent_name": "lighting-layout",
       "version_constraint": "^1.0"
+    },
+    {
+      "skill_id": "special-locations",
+      "intent_name": "special-locations-zoning",
+      "version_constraint": "^1.0",
+      "trigger": "adjacency.any_room IN ['bathroom', 'shower_room', 'swimming_pool_hall', 'sauna', 'medical_group_0_area', 'medical_group_1_ward', 'medical_group_2_theatre', 'external_landscape']",
+      "consumed_fields": [
+        "electrical_constraints",
+        "compliant",
+        "non_compliance_flags",
+        "anchor_source_summary"
+      ]
     }
   ],
   "standards": [

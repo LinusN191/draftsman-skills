@@ -82,6 +82,23 @@
     "selectivity_tool_call_pending": {
       "type": "boolean",
       "description": "true if any cascade verification in the source IR was deferred to a future fault-level skill invocation"
+    },
+    "consumed_intents": {
+      "type": "object",
+      "description": "Wave 1 cascade inputs mirror. Permissive — downstream consumers may inspect special_locations_zoning.payload.electrical_constraints to verify Part-7 protection topology at the circuit-supply level. Added D.5.",
+      "additionalProperties": false,
+      "properties": {
+        "special_locations_zoning": {
+          "type": "object",
+          "required": ["intent_version", "source_path", "payload"],
+          "additionalProperties": false,
+          "properties": {
+            "intent_version": {"type": "string"},
+            "source_path": {"type": "string"},
+            "payload": {"type": "object"}
+          }
+        }
+      }
     }
   }
 }
