@@ -25,6 +25,20 @@
       "skill_id": "cable-sizing",
       "intent_name": "cable-sizing",
       "version_constraint": "^1.0"
+    },
+    {
+      "skill_id": "special-locations",
+      "intent_name": "special-locations-zoning",
+      "version_constraint": "^1.0",
+      "trigger": "room.room_type IN ['bathroom', 'shower_room', 'swimming_pool_hall', 'sauna', 'medical_group_0_area', 'medical_group_1_ward', 'medical_group_2_theatre', 'external_landscape']",
+      "consumed_fields": [
+        "zones",
+        "electrical_constraints",
+        "compliant",
+        "violation_count_critical",
+        "non_compliance_flags",
+        "anchor_source_summary"
+      ]
     }
   ],
   "standards": [

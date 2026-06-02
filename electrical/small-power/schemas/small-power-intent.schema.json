@@ -10,6 +10,23 @@
     "project_id":         { "type": "string" },
     "intent_version":     { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
     "parent_db_designation": { "type": "string" },
+    "consumed_intents": {
+      "type": "object",
+      "description": "Optional mirror of upstream cascade inputs. Carried through for downstream traceability.",
+      "additionalProperties": false,
+      "properties": {
+        "special_locations_zoning": {
+          "type": "object",
+          "required": ["intent_version", "source_path", "payload"],
+          "additionalProperties": false,
+          "properties": {
+            "intent_version": {"type": "string"},
+            "source_path": {"type": "string"},
+            "payload": {"type": "object"}
+          }
+        }
+      }
+    },
     "circuits": {
       "type": "array",
       "minItems": 1,

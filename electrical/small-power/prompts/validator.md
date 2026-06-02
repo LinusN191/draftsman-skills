@@ -25,7 +25,7 @@ Run JSON-schema validation against `small-power-ir.schema.json`.
 
 ### 2. Cross-field invariants
 
-Run all 11 INV checks below. For each, emit a violation if the rule fails. Severities are either **Hard fail** (blocks `valid: true`) or **Warning** (does not block but appears in `warnings[]`). INV-11 is conditional on cable-sizing intent consumption (v1.1 hybrid mode) — it is a no-op when no cable-sizing intent is consumed.
+Run all 12 INV checks below (INV-01 → INV-12). For each, emit a violation if the rule fails. Severities are either **Hard fail** (blocks `valid: true`) or **Warning** (does not block but appears in `warnings[]`). INV-11 is conditional on cable-sizing intent consumption (v1.1 hybrid mode) — it is a no-op when no cable-sizing intent is consumed. INV-12 is conditional on Part-7 room_type presence — it is N/A when no room uses a Part-7 room_type.
 
 ---
 
@@ -224,6 +224,43 @@ Fix: either correct parent_db.designation + circuit_id so they compose the expec
 
 ---
 
+## INV-12 — Special-locations zoning cascade resolved (HIGH)
+
+**Severity:** HIGH when any `rooms[].room_type IN Part-7 set`; N/A otherwise.
+
+**Rule (4 sub-checks):**
+1. `consumed_intents.special_locations_zoning` is present (cascade triggered + resolved).
+2. `consumed_intents.special_locations_zoning.payload.compliant == true` (special-locations' own INVs all PASS upstream).
+3. Thin sanity cross-check: walk `sockets[] + isolators[] + connection_points[]` across all rooms; for each, find the containing zone in `payload.zones[]` by point-in-polygon + height check. Specifically catches:
+   - 230V socket inside `bath_zone_1` or `bath_zone_2` (≥3 m boundary rule per BS 7671:2018+A2:2022 §701.512.3)
+   - Shaver socket missing BS EN 61558-2-5 compliance flag
+   - Pump/heater isolator outside local-isolation reach (BS 7671:2018+A2:2022 §701 + §710 medical equipment isolation)
+   - 230V socket in `elv_barrier_zone` (voltage above max per BS 7671:2018+A2:2022 §715)
+4. Flag cascading: every `payload.non_compliance_flags[]` entry MUST appear in `compliance_summary.non_compliance_flags[]` with `_cascaded_from: "special-locations"` attribution. No silent suppression.
+
+When no `rooms[].room_type` is in the Part-7 set: trivially PASS (cascade not triggered).
+
+**Validator action:**
+- Read `consumed_intents.special_locations_zoning.payload`. If absent and any room is Part-7-affected: INV-12 FAIL HIGH.
+- Verify `compliant == true`. If false: INV-12 FAIL HIGH; include cascade flags + add INV-12's own evidence.
+- For each socket/isolator/connection_point across all rooms: find containing zone; evaluate 4 sub-rules. Any violation: INV-12 FAIL HIGH.
+- Walk `payload.non_compliance_flags[]`. For each: verify same flag exists in `compliance_summary.non_compliance_flags[]` with `_cascaded_from: "special-locations"`. If any flag missing: INV-12 FAIL HIGH.
+
+**Citation:** Cluster roadmap §6.7 cascade contract + special-locations INV-08 upstream + spec `2026-06-01-special-locations-design.md` §10.2.
+
+**Rationale:** Cable-sizing and building diversity (the D4 depth content scheduled for Wave 2) tell us *how* sockets are loaded. Special-locations tells us *where* sockets are LEGAL. INV-12 binds small-power to the spatial-compliance layer; without it, a 230V socket could ship inside Zone 1 with no engineer review catching it. This wires the cascade for v1.2 ship; the D4 depth engineering content lands in a separate Wave 2 sprint.
+
+**Fail message:**
+
+```
+INV-12: special-locations cascade check failed.
+Sub-check <N>: <DETAIL>.
+Room(s) affected: <ROOM_IDs>. Socket/isolator: <ID>. Zone: <ZONE_NAME>.
+Fix: populate consumed_intents.special_locations_zoning from the upstream special-locations intent-out.json and ensure all non_compliance_flags are cascaded with _cascaded_from attribution.
+```
+
+---
+
 ### 3. Intent extraction validation
 
 Project the IR down to the intent shape declared by `small-power-intent.schema.json` (per generator Step 13). Validate against that schema.
@@ -255,7 +292,7 @@ Emit a single JSON object:
 `valid: true` requires ALL of:
 
 - Schema validation passes
-- INV-01 through INV-09 all pass (no hard fails); INV-10 is warning-only and does not block valid: true; INV-11 (v1.1) must pass when cable-sizing intent is consumed, otherwise it is a no-op
+- INV-01 through INV-09 all pass (no hard fails); INV-10 is warning-only and does not block valid: true; INV-11 (v1.1) must pass when cable-sizing intent is consumed, otherwise it is a no-op; INV-12 (v1.2) must pass when any room.room_type is in the Part-7 set, otherwise it is N/A
 - Intent extraction validates against `small-power-intent.schema.json`
 
 Warnings from INV-06 (unjustified Type B) and INV-10 (drafting standard mismatch) do not block `valid: true` but appear in `warnings[]` for engineer review.
