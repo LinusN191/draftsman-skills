@@ -1506,3 +1506,955 @@ git commit -m "feat(lighting-layout): B.4 generator.md cascade enumeration — 2
 ```
 
 ---
+
+## Phase C — Examples + Evals (13 tasks, Opus-heavy, ~13-17 commits incl. fix-passes)
+
+Goal: retrofit 8 existing examples to declare zone.purpose + mount_type defaults + per_zone_achieved[]; author 4 NEW examples exercising new fields (pendant + mixed-purpose + retail-mixed-mount + per-zone FAIL); author 5 new evals validating INV-13..19 emission.
+
+**Per-example discipline** (locked from Phase C onward):
+
+- output.json validates against `shared/schemas/electrical/lighting-layout-ir.schema.json` Draft-07.
+- All 19 INVs emit (12 existing + 7 new) with N/A-vacuous PASS for unused INVs.
+- 4-place honest disclosure pattern: (1) `input._note` or `_cascade_disclosure`, (2) `compliance_summary.assumptions[]`, (3) `rationale.sections[]` "Honest disclosures" subsection, (4) `reasoning.md` "Honest disclosures" section.
+- Banned-citation grep clean per spec §4 banned list + sprint-specific bans.
+- Cascade payload, when present, byte-identical to producer fixture.
+- Gates bump by +2 per NEW example (output.json + intent-out.json); +0 per retrofit (additive edits to existing files).
+
+### Task C.1: RETROFIT office-open-plan example
+
+**Files:**
+- Modify: `electrical/lighting-layout/examples/office-open-plan/input.json`
+- Modify: `electrical/lighting-layout/examples/office-open-plan/output.json`
+- Modify: `electrical/lighting-layout/examples/office-open-plan/reasoning.md`
+- Modify: `electrical/lighting-layout/examples/office-open-plan/intent-out.json` (if exists)
+
+**Why Opus:** Engineering judgement on which existing zones get `purpose: task` vs `surrounding`; how to populate per_zone_achieved[] from existing achieved_illuminance_lux + zone polygon areas.
+
+- [ ] **Step 1: Read existing example to inventory zones + luminaires + calc state**
+
+Run:
+```bash
+ls electrical/lighting-layout/examples/office-open-plan/
+python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/office-open-plan/output.json'))
+print('zones:', [{'id': z['zone_id'], 'label': z.get('label'), 'has_purpose': 'purpose' in z} for z in d.get('zones', [])])
+print('luminaires sample:', d.get('luminaires', [])[:2])
+print('calc.target_illuminance_lux:', d.get('calculation_summary', {}).get('target_illuminance_lux'))
+print('calc.achieved_illuminance_lux:', d.get('calculation_summary', {}).get('achieved_illuminance_lux'))
+print('room.ceiling_height_mm:', d.get('room', {}).get('ceiling_height_mm'))
+print('room.working_plane_mm:', d.get('room', {}).get('working_plane_mm'))
+"
+```
+
+Expected: existing zones with no purpose; existing luminaires with no mount_type.
+
+- [ ] **Step 2: Edit output.json — add `purpose: "task"` + `em_target_lux` to every zone**
+
+For every zone in `zones[]`, add:
+
+```json
+"purpose": "task",
+"em_target_lux": <copy of room.target_illuminance_lux (e.g. 500 for open_plan)>
+```
+
+(All existing zones default to `task` per ZP-01 backwards-compat rule.)
+
+- [ ] **Step 3: Edit output.json — add `mount_type: "recessed"` to every luminaire**
+
+For every luminaire in `luminaires[]`, add:
+
+```json
+"mount_type": "recessed"
+```
+
+(Existing office luminaires are recessed troffer-style — z_mm + suspension_length_mm omitted per MT-01.)
+
+- [ ] **Step 4: Edit output.json — populate `calculation_summary.per_zone_achieved[]`**
+
+In `calculation_summary`, add:
+
+```json
+"per_zone_achieved": [
+  {
+    "zone_id": "<each existing zone_id>",
+    "purpose": "task",
+    "em_target_lux": <same as zone.em_target_lux>,
+    "em_achieved_lux": <derive from existing achieved_illuminance_lux × 1.0 since all zones share the open-plan task uniformity>,
+    "ratio_compliance": "pass"
+  }
+]
+```
+
+Mark `ratio_compliance: "pass"` for zones where achieved ≥ target; `"marginal"` for 75-99% of target; `"fail"` for <75%.
+
+- [ ] **Step 5: Edit output.json — add INV-13..INV-19 entries to `invariants[]`**
+
+For each of INV-13/14/15/16/17/18/19, add a corresponding entry with `passes: true` + appropriate evidence (per the templates in validator.md B.2). For vacuous PASS cases (no surrounding/background zones; all recessed luminaires), use the vacuous-PASS evidence template.
+
+Example INV-13 entry:
+
+```json
+{
+  "id": "INV-13",
+  "name": "Zone purpose required + valid",
+  "passes": true,
+  "severity": "high",
+  "evidence": "INV-13 verdict: PASS. Zones inspected: 3. Per-zone purpose: Z1 purpose=task em_target_lux=500, Z2 purpose=task em_target_lux=500, Z3 purpose=task em_target_lux=500. Orphan-surrounding check: pass (no surrounding zones). Citation: BS EN 12464-1:2021 §4.2.2.1 (area-definitions.json §4.2.2.x)."
+}
+```
+
+- [ ] **Step 6: Update input.json with `_d5_retrofit_note`**
+
+In `input.json`, add at root (or in an existing `_meta` block if present):
+
+```json
+"_d5_retrofit_note": "Retrofitted by D5 sprint 2026-06-03. All existing zones default to purpose=task per ZP-01 backwards-compat rule. All existing luminaires default to mount_type=recessed per MT-01. per_zone_achieved[] populated from existing achieved_illuminance_lux × task uniformity."
+```
+
+- [ ] **Step 7: Update reasoning.md with §D5 retrofit section**
+
+In `electrical/lighting-layout/examples/office-open-plan/reasoning.md`, APPEND a new section:
+
+```markdown
+## §D5 RETROFIT (2026-06-03)
+
+This example was authored at v1.6.0 with a single `target_illuminance_lux` per room. v1.7.0 splits target into per-zone `em_target_lux` per BS EN 12464-1:2021 §4.2.2 + Table 6. This retrofit applies the backwards-compatibility defaults:
+
+- All zones get `purpose: "task"` (ZP-01 default).
+- All luminaires get `mount_type: "recessed"` (MT-01 default).
+- `per_zone_achieved[]` populated from existing `achieved_illuminance_lux` (the open-plan uniformity factor of 0.6 means task plane achieves the room average).
+
+**Honest disclosures (4-place):**
+
+1. Engineering judgment defaults documented in `input._d5_retrofit_note`.
+2. Compliance assumption added: "v1.6.0 → v1.7.0 retrofit; defaults preserve behaviour."
+3. Rationale section "v1.7 retrofit" added.
+4. This reasoning.md §D5 section.
+```
+
+- [ ] **Step 8: Update intent-out.json (if present) with the same enrichments**
+
+If `intent-out.json` exists, mirror the zone.purpose + mount_type + per_zone_achieved additions in the intent payload shape.
+
+- [ ] **Step 9: Validate retrofit + gates + banned-citation grep**
+
+Run:
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))
+d = json.load(open('electrical/lighting-layout/examples/office-open-plan/output.json'))
+v = jsonschema.Draft7Validator(schema)
+errors = list(v.iter_errors(d))
+if errors:
+    for e in errors[:5]: print('  ERROR:', e.message[:200])
+else:
+    print('OK')
+"
+
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/examples/office-open-plan/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+Expected: `OK` + `BANNED_PASS` + aggregate unchanged (retrofit, no new files).
+
+- [ ] **Step 10: Commit**
+
+```bash
+git add electrical/lighting-layout/examples/office-open-plan/
+git commit -m "feat(lighting-layout): C.1 RETROFIT office-open-plan with v1.7 defaults (purpose=task, mount_type=recessed, per_zone_achieved populated)"
+```
+
+### Task C.2: RETROFIT reception-lobby example
+
+**Files:**
+- Modify: `electrical/lighting-layout/examples/reception-lobby/{input,output,reasoning,intent-out}.{json,md}`
+
+**Why Opus:** Reception lobby is the first non-task room — `purpose: "circulation"` rather than default `task` (per ZP-05). Engineering call.
+
+- [ ] **Step 1: Inventory existing example**
+
+Run:
+```bash
+python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/reception-lobby/output.json'))
+print('room_type:', d.get('room', {}).get('room_type'))
+print('zones:', [{'id': z['zone_id'], 'label': z.get('label')} for z in d.get('zones', [])])
+print('target_illuminance_lux:', d.get('calculation_summary', {}).get('target_illuminance_lux'))
+"
+```
+
+Expected: room_type likely `lobby` or `reception_area`; target ~300 lx per BS EN 12464-1 Table 5 lobby entry.
+
+- [ ] **Step 2: Edit output.json — add `purpose: "circulation"` + `em_target_lux: 300` (or as room.target) to every zone**
+
+(Per ZP-05, circulation zones look up Em from lux-levels.json circulation branch directly; not subject to task/surrounding ratios.)
+
+- [ ] **Step 3: Edit output.json — add `mount_type: "recessed"` to every luminaire (typical lobby downlights)**
+
+- [ ] **Step 4: Populate `per_zone_achieved[]` with purpose: circulation entries**
+
+- [ ] **Step 5: Add INV-13..INV-19 entries (INV-14 + INV-15 vacuous PASS — no surrounding/background; INV-16/17/18 vacuous-PASS since recessed)**
+
+- [ ] **Step 6: Add `_d5_retrofit_note` + reasoning.md §D5 section (mirror C.1 pattern)**
+
+- [ ] **Step 7: Validate + gates + grep + commit**
+
+```bash
+python3 -c "import json, jsonschema; jsonschema.Draft7Validator(json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))).validate(json.load(open('electrical/lighting-layout/examples/reception-lobby/output.json'))); print('OK')"
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/examples/reception-lobby/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/lighting-layout/examples/reception-lobby/
+git commit -m "feat(lighting-layout): C.2 RETROFIT reception-lobby with v1.7 defaults (purpose=circulation per ZP-05, mount_type=recessed)"
+```
+
+### Task C.3: RETROFIT uk-bathroom-zone-1-zone-2 example
+
+**Files:**
+- Modify: `electrical/lighting-layout/examples/uk-bathroom-zone-1-zone-2/{input,output,reasoning,intent-out}.{json,md}`
+
+**Why Opus:** Special-locations cascade preserved (existing INV-12 consumption); zone.purpose split is `task` (vanity) + `circulation` (entry) — judgement call on which existing zones map to which.
+
+- [ ] **Step 1: Inventory + read existing INV-12 cascade payload**
+
+Run:
+```bash
+python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/uk-bathroom-zone-1-zone-2/output.json'))
+print('zones:', [z['zone_id'] + ':' + z.get('label', '?') for z in d.get('zones', [])])
+print('consumed_intents.special_locations_zoning present:', 'special_locations_zoning' in d.get('consumed_intents', {}))
+"
+```
+
+- [ ] **Step 2: Edit output.json — split zone purposes**
+
+For each zone in `zones[]`, assign:
+
+- Zone(s) at the vanity / mirror / sink area → `purpose: "task"`, `em_target_lux: 500` (BS EN 12464-1 §4.2.2.1 + Table 5 bathroom_vanity entry).
+- Zone(s) at the entry / general bathroom area → `purpose: "circulation"`, `em_target_lux: 200` (Table 5 bathroom_general entry).
+
+- [ ] **Step 3: Edit output.json — `mount_type: "recessed"` for all luminaires (typical bathroom downlights)**
+
+- [ ] **Step 4: Populate per_zone_achieved[] preserving special-locations cascade payload byte-identical**
+
+- [ ] **Step 5: Add INV-13..INV-19 entries**
+
+- [ ] **Step 6: Add _d5_retrofit_note + reasoning.md §D5**
+
+- [ ] **Step 7: Verify cascade preserved + validate + gate + commit**
+
+```bash
+python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/uk-bathroom-zone-1-zone-2/output.json'))
+print('cascade payload key preserved:', 'special_locations_zoning' in d.get('consumed_intents', {}))
+"
+python3 -c "import json, jsonschema; jsonschema.Draft7Validator(json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))).validate(json.load(open('electrical/lighting-layout/examples/uk-bathroom-zone-1-zone-2/output.json'))); print('OK')"
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/examples/uk-bathroom-zone-1-zone-2/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/lighting-layout/examples/uk-bathroom-zone-1-zone-2/
+git commit -m "feat(lighting-layout): C.3 RETROFIT uk-bathroom-zone-1-zone-2 with v1.7 defaults (purpose=task vanity + circulation entry, special-locations cascade preserved)"
+```
+
+### Task C.4: RETROFIT uk-multi-entrance-classroom example
+
+**Files:**
+- Modify: `electrical/lighting-layout/examples/uk-multi-entrance-classroom/{input,output,reasoning,intent-out}.{json,md}`
+
+**Why Opus:** Classroom desk zones = task; aisle zones = circulation. Engineering split per zone.
+
+- [ ] **Step 1: Inventory example zones**
+
+Run:
+```bash
+python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/uk-multi-entrance-classroom/output.json'))
+print('zones:', [{'id': z['zone_id'], 'label': z.get('label')} for z in d.get('zones', [])])
+"
+```
+
+- [ ] **Step 2: Edit output.json — desk zones → `purpose: task`, em_target_lux: 300 (BS EN 12464 classroom-task)**
+
+- [ ] **Step 3: Edit output.json — aisle/entry zones → `purpose: circulation`, em_target_lux: 100**
+
+- [ ] **Step 4: mount_type: recessed on all luminaires**
+
+- [ ] **Step 5: Populate per_zone_achieved[]**
+
+- [ ] **Step 6: INV-13..INV-19 entries**
+
+- [ ] **Step 7: _d5_retrofit_note + reasoning.md §D5**
+
+- [ ] **Step 8: Validate + gates + commit**
+
+```bash
+python3 -c "import json, jsonschema; jsonschema.Draft7Validator(json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))).validate(json.load(open('electrical/lighting-layout/examples/uk-multi-entrance-classroom/output.json'))); print('OK')"
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/examples/uk-multi-entrance-classroom/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/lighting-layout/examples/uk-multi-entrance-classroom/
+git commit -m "feat(lighting-layout): C.4 RETROFIT uk-multi-entrance-classroom with v1.7 defaults (purpose=task desks + circulation aisles)"
+```
+
+### Task C.5: RETROFIT uk-open-plan-office-10x8-dali example
+
+**Files:**
+- Modify: `electrical/lighting-layout/examples/uk-open-plan-office-10x8-dali/{input,output,reasoning,intent-out}.{json,md}`
+
+**Why Opus:** First retrofit demonstrating `purpose: surrounding` on perimeter zones (per spec §8.1). Surrounding ratio (INV-14) becomes a non-vacuous PASS here.
+
+- [ ] **Step 1: Inventory zones**
+
+```bash
+python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/uk-open-plan-office-10x8-dali/output.json'))
+print('zones:', [{'id': z['zone_id'], 'label': z.get('label')} for z in d.get('zones', [])])
+"
+```
+
+- [ ] **Step 2: Edit output.json — central desk zones → `purpose: task`, em_target_lux: 500 (open_plan)**
+
+- [ ] **Step 3: Edit output.json — perimeter zones (if any with "perimeter" or "side" label) → `purpose: surrounding`, em_target_lux: 250 (= 500 × 0.5 default ratio per ZP-02)**
+
+If no explicit perimeter zone exists in the v1.6 example, ADD a single new `surrounding` zone wrapping the desk area's perimeter band (≥500mm width per §4.2.2.2). Use plausible polygon coordinates inset 500mm from room walls.
+
+- [ ] **Step 4: `mount_type: recessed` on all luminaires; DALI control preserved**
+
+- [ ] **Step 5: Populate per_zone_achieved[] with separate task + surrounding entries**
+
+- [ ] **Step 6: INV-13..INV-19 — INV-14 has non-vacuous PASS evidence: surrounding em (250) ∈ [500×0.3, 500×0.5] = [150, 250]**
+
+- [ ] **Step 7: _d5_retrofit_note + reasoning.md §D5 explaining the new surrounding zone**
+
+- [ ] **Step 8: Validate + gates + commit**
+
+```bash
+python3 -c "import json, jsonschema; jsonschema.Draft7Validator(json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))).validate(json.load(open('electrical/lighting-layout/examples/uk-open-plan-office-10x8-dali/output.json'))); print('OK')"
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/examples/uk-open-plan-office-10x8-dali/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/lighting-layout/examples/uk-open-plan-office-10x8-dali/
+git commit -m "feat(lighting-layout): C.5 RETROFIT uk-open-plan-office-10x8-dali with v1.7 (task + surrounding split — INV-14 first non-vacuous PASS)"
+```
+
+### Task C.6: RETROFIT uk-part-l-fail-incandescent example
+
+**Files:**
+- Modify: `electrical/lighting-layout/examples/uk-part-l-fail-incandescent/{input,output,reasoning,intent-out}.{json,md}`
+
+**Why Opus:** Part-L failure preserved; D5 additions are orthogonal — confirm no regression on existing Part-L FAIL.
+
+- [ ] **Step 1: Inventory + confirm existing Part-L FAIL state**
+
+Run:
+```bash
+python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/uk-part-l-fail-incandescent/output.json'))
+print('part_l_compliant:', d.get('controls', {}).get('part_l_compliant'))
+print('compliant:', d.get('calculation_summary', {}).get('compliant'))
+"
+```
+
+- [ ] **Step 2: Edit output.json — purpose=task (default), mount_type=recessed (default), per_zone_achieved[] populated**
+
+- [ ] **Step 3: Preserve existing Part-L non_compliance_flags; ADD INV-13..INV-19 entries**
+
+- [ ] **Step 4: _d5_retrofit_note + reasoning.md §D5 noting Part-L FAIL preserved**
+
+- [ ] **Step 5: Validate + gates + commit**
+
+```bash
+python3 -c "
+import json, jsonschema
+d = json.load(open('electrical/lighting-layout/examples/uk-part-l-fail-incandescent/output.json'))
+jsonschema.Draft7Validator(json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))).validate(d)
+print('OK; part_l preserved:', d['controls']['part_l_compliant'])
+"
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/examples/uk-part-l-fail-incandescent/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/lighting-layout/examples/uk-part-l-fail-incandescent/
+git commit -m "feat(lighting-layout): C.6 RETROFIT uk-part-l-fail-incandescent with v1.7 defaults (Part-L failure preserved)"
+```
+
+### Task C.7: RETROFIT uk-undersized-lighting-vs-target example
+
+**Files:**
+- Modify: `electrical/lighting-layout/examples/uk-undersized-lighting-vs-target/{input,output,reasoning,intent-out}.{json,md}`
+
+**Why Opus:** Existing FAIL example with achieved < target; INV-19 will surface this as a per-zone FAIL — choose the appropriate severity band.
+
+- [ ] **Step 1: Inventory existing FAIL state**
+
+```bash
+python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/uk-undersized-lighting-vs-target/output.json'))
+print('target:', d.get('calculation_summary', {}).get('target_illuminance_lux'))
+print('achieved:', d.get('calculation_summary', {}).get('achieved_illuminance_lux'))
+gap_pct = (d['calculation_summary']['target_illuminance_lux'] - d['calculation_summary']['achieved_illuminance_lux']) / d['calculation_summary']['target_illuminance_lux']
+print(f'gap_pct: {gap_pct:.1%}')
+print('compliant:', d['calculation_summary']['compliant'])
+"
+```
+
+- [ ] **Step 2: Edit output.json — purpose=task default, mount_type=recessed default; populate per_zone_achieved[] showing the existing FAIL**
+
+For each zone, set `em_achieved_lux` from the existing achieved; set `ratio_compliance` per INV-19 band (`fail` if gap_pct ≥ 25%, `marginal` if 10-25%).
+
+- [ ] **Step 3: Add INV-19 entry with FAIL verdict + correct severity band per spec §6 (≥25% short = HIGH; 10-25% = MEDIUM)**
+
+- [ ] **Step 4: Preserve existing non_compliance_flags; ADD an INV-19 flag with the per-zone gap data**
+
+- [ ] **Step 5: _d5_retrofit_note + reasoning.md §D5 noting INV-19 now surfaces the existing FAIL at per-zone level**
+
+- [ ] **Step 6: Validate + gates + commit**
+
+```bash
+python3 -c "import json, jsonschema; jsonschema.Draft7Validator(json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))).validate(json.load(open('electrical/lighting-layout/examples/uk-undersized-lighting-vs-target/output.json'))); print('OK')"
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/examples/uk-undersized-lighting-vs-target/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/lighting-layout/examples/uk-undersized-lighting-vs-target/
+git commit -m "feat(lighting-layout): C.7 RETROFIT uk-undersized-lighting-vs-target with v1.7 (INV-19 now surfaces existing FAIL at per-zone level)"
+```
+
+### Task C.8: RETROFIT warehouse-highbay (3D placement migration — only retrofit needing mount_type=suspended)
+
+**Files:**
+- Modify: `electrical/lighting-layout/examples/warehouse-highbay/{input,output,reasoning,intent-out}.{json,md}`
+
+**Why Opus:** First retrofit needing 3D placement migration — highbay luminaires are typically suspended from roof truss. Engineering call on `z_mm` + `suspension_length_mm` derived from existing `room.hm_mm`.
+
+- [ ] **Step 1: Inventory + read existing hm_mm + ceiling_height_mm**
+
+```bash
+python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/warehouse-highbay/output.json'))
+print('ceiling_height_mm:', d.get('room', {}).get('ceiling_height_mm'))
+print('hm_mm:', d.get('room', {}).get('hm_mm'))
+print('working_plane_mm:', d.get('room', {}).get('working_plane_mm'))
+print('zones:', [{'id': z['zone_id'], 'label': z.get('label')} for z in d.get('zones', [])])
+print('luminaires count:', len(d.get('luminaires', [])))
+"
+```
+
+Expected: ceiling typically 8000-10000 mm; hm_mm typically 6000-8000 mm; working plane 1000 mm (floor task).
+
+- [ ] **Step 2: Edit output.json — pick-face zones → `purpose: task`, em_target_lux: 500 (warehouse high rack); aisle zones → `purpose: circulation`, em_target_lux: 75 (car park circulation entry from Table 5)**
+
+- [ ] **Step 3: Edit output.json — every luminaire → `mount_type: "suspended"`, `z_mm: <derived>`, `suspension_length_mm: <derived>`**
+
+Derivation:
+- `z_mm = working_plane_mm + hm_mm` (existing v1.6 hm_mm tells us z above the task plane).
+- `suspension_length_mm = ceiling_height_mm - z_mm` (drop from ceiling).
+
+Example for ceiling=10000mm + hm_mm=8000mm + working_plane=1000mm:
+- z_mm = 1000 + 8000 = 9000 mm
+- suspension_length_mm = 10000 - 9000 = 1000 mm
+- Check INV-17: 9000 > 1000 ✓ ; 9000 + 1000 = 10000 ≤ 10000 ✓
+
+- [ ] **Step 4: Populate per_zone_achieved[]**
+
+- [ ] **Step 5: INV-13..INV-19 entries — INV-16/17/18 now non-vacuous PASS (first retrofit exercising 3D placement)**
+
+- [ ] **Step 6: _d5_retrofit_note + reasoning.md §D5 explaining the 3D migration arithmetic**
+
+- [ ] **Step 7: Validate + gates + commit**
+
+```bash
+python3 -c "import json, jsonschema; jsonschema.Draft7Validator(json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))).validate(json.load(open('electrical/lighting-layout/examples/warehouse-highbay/output.json'))); print('OK')"
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/examples/warehouse-highbay/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/lighting-layout/examples/warehouse-highbay/
+git commit -m "feat(lighting-layout): C.8 RETROFIT warehouse-highbay with v1.7 3D placement (mount_type=suspended + z_mm + suspension_length_mm derived from existing hm_mm; INV-16/17/18 first non-vacuous PASS)"
+```
+
+### Task C.9: NEW uk-pendant-open-plan-office example
+
+**Files:**
+- Create: `electrical/lighting-layout/examples/uk-pendant-open-plan-office/input.json`
+- Create: `electrical/lighting-layout/examples/uk-pendant-open-plan-office/output.json`
+- Create: `electrical/lighting-layout/examples/uk-pendant-open-plan-office/reasoning.md`
+- Create: `electrical/lighting-layout/examples/uk-pendant-open-plan-office/intent-out.json`
+
+**Why Opus:** First fully-pendant example; pendant geometry algebraic identity must hold (`z_mm + suspension_length_mm = ceiling_height_mm`).
+
+**Scenario** (spec §8.2 NEW#1):
+- 12×8 m open-plan office, single tenant, UK jurisdiction.
+- Ceiling 3500 mm; working plane 750 mm.
+- Pendant LED linear luminaires: 6 units, 1200 mm × 200 mm.
+- Suspension drop 800 mm → z_mm = 2700 mm; hm_mm = 2700 - 750 = 1950 mm.
+- Target Em: 500 lx (open_plan task).
+- Achieved Em: 540 lx via lumen-method.
+
+- [ ] **Step 1: Author input.json (engineer brief — same shape as existing v1.6 input shapes)**
+
+Use the existing `electrical/lighting-layout/examples/office-open-plan/input.json` as the template; substitute:
+- room dimensions 12×8 m
+- ceiling_height_mm 3500
+- luminaire description "pendant LED linear"
+- `mount_type_inputs`: array with 6 entries each `{luminaire_id, mount_type: "pendant"}`
+- `suspension_length_inputs`: array with 6 entries each `{luminaire_id, suspension_length_mm: 800}`
+- `zone_purpose_inputs`: array with `{zone_id: "Z1", purpose: "task"}` (single task zone covering desk area)
+
+- [ ] **Step 2: Author output.json**
+
+Full IR structure following the C.1 retrofit template + adding 3D fields. Key fields:
+
+```json
+{
+  "drawing_type": "lighting-layout",
+  "version": "1.7.0",
+  "room": {
+    "length_mm": 12000,
+    "width_mm": 8000,
+    "area_m2": 96,
+    "ceiling_height_mm": 3500,
+    "working_plane_mm": 750,
+    "hm_mm": 1950,
+    "room_type": "open_plan_office",
+    ...
+  },
+  "zones": [
+    {"zone_id": "Z1", "label": "Open desk area", "zone_type": "task", "purpose": "task", "em_target_lux": 500, ...}
+  ],
+  "luminaires": [
+    {"id": "L1", "x_mm": 2000, "y_mm": 2000, "zone_id": "Z1", "circuit_id": "C1", "mount_type": "pendant", "z_mm": 2700, "suspension_length_mm": 800},
+    {"id": "L2", "x_mm": 4000, "y_mm": 2000, "zone_id": "Z1", "circuit_id": "C1", "mount_type": "pendant", "z_mm": 2700, "suspension_length_mm": 800},
+    {"id": "L3", "x_mm": 6000, "y_mm": 2000, "zone_id": "Z1", "circuit_id": "C1", "mount_type": "pendant", "z_mm": 2700, "suspension_length_mm": 800},
+    {"id": "L4", "x_mm": 2000, "y_mm": 6000, "zone_id": "Z1", "circuit_id": "C1", "mount_type": "pendant", "z_mm": 2700, "suspension_length_mm": 800},
+    {"id": "L5", "x_mm": 6000, "y_mm": 6000, "zone_id": "Z1", "circuit_id": "C1", "mount_type": "pendant", "z_mm": 2700, "suspension_length_mm": 800},
+    {"id": "L6", "x_mm": 10000, "y_mm": 6000, "zone_id": "Z1", "circuit_id": "C1", "mount_type": "pendant", "z_mm": 2700, "suspension_length_mm": 800}
+  ],
+  "calculation_summary": {
+    "target_illuminance_lux": 500,
+    "achieved_illuminance_lux": 540,
+    "per_zone_achieved": [
+      {"zone_id": "Z1", "purpose": "task", "em_target_lux": 500, "em_achieved_lux": 540, "ratio_compliance": "pass"}
+    ],
+    "compliant": true,
+    ...
+  },
+  "invariants": [
+    ... all 19 with PASS verdicts ...
+    {"id": "INV-16", "name": "mount_type ↔ z_mm/suspension consistency", "passes": true, "severity": "high", "evidence": "INV-16 verdict: PASS. Luminaires inspected: 6. Pendant geometry: L1..L6 all z_mm=2700, suspension_length_mm=800, ceiling_height_mm=3500, sum=3500, identity holds. Citation: BS EN 60598-2-1 + mount-type-rules.yaml MT-02."},
+    {"id": "INV-17", "name": "Ceiling clearance + working-plane floor", "passes": true, "severity": "high", "evidence": "INV-17 verdict: PASS. Working plane reference: 750 mm AFF. Per-luminaire clearance: L1..L6 z=2700, clearance from working plane = 1950 mm ✓. Per-luminaire ceiling clearance: 2700+800=3500 = ceiling 3500 ✓. Citation: BS EN 12464-1:2021 §4.4 + MT-04."},
+    {"id": "INV-18", "name": "hm_mm derivation consistency", "passes": true, "severity": "medium", "evidence": "INV-18 verdict: PASS. Room hm_mm: 1950. Expected: lowest pendant z=2700 - working_plane 750 = 1950. Drift 0 mm within ±50 mm tolerance. Citation: BS EN 12464-1:2021 §4.4."}
+  ]
+}
+```
+
+- [ ] **Step 3: Author intent-out.json**
+
+Same structure as existing intent payloads; include `mount_type` + `z_mm` + `suspension_length_mm` in the luminaires intent payload (so consumers see the 3D data).
+
+- [ ] **Step 4: Author reasoning.md**
+
+Cover: pendant choice rationale, geometric derivation (z = ceiling - suspension), per-zone Em derivation (single task zone at 500 lx), INV-16/17/18 PASS commentary, 4-place honest disclosure section.
+
+- [ ] **Step 5: Validate + banned-citation grep + gates**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))
+d = json.load(open('electrical/lighting-layout/examples/uk-pendant-open-plan-office/output.json'))
+v = jsonschema.Draft7Validator(schema)
+errors = list(v.iter_errors(d))
+if errors:
+    for e in errors[:5]: print('  ERROR:', e.message[:200])
+else:
+    print('OK')
+"
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/examples/uk-pendant-open-plan-office/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+Expected: `OK` + `BANNED_PASS` + aggregate bumps +2.
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add electrical/lighting-layout/examples/uk-pendant-open-plan-office/
+git commit -m "feat(lighting-layout): C.9 NEW uk-pendant-open-plan-office example (first fully-pendant; INV-16/17/18 PASS with z_mm + suspension_length_mm = ceiling_height_mm identity)"
+```
+
+### Task C.10: NEW uk-mixed-purpose-classroom example
+
+**Files:**
+- Create: `electrical/lighting-layout/examples/uk-mixed-purpose-classroom/{input,output,reasoning,intent-out}.{json,md}`
+
+**Why Opus:** Most complex single example — all 3 zone purposes (task + surrounding + background) coexist; INV-14 and INV-15 both non-vacuous PASS; ratio math must be exact.
+
+**Scenario** (spec §8.2 NEW#2):
+- Classroom 9×7 m, ceiling 3000 mm, working plane 750 mm.
+- Task zone: student desks area (Em = 300 lx).
+- Surrounding zone: teacher desk + 500mm band around student desks (Em = 200 lx = 0.66×300; within [0.3×300=90, 0.5×300=150] band? Actually 200 > 150 — Table 6 simplified rule allows 0.3-0.5 BUT Table 6 ALSO permits 200 lx as Em_surrounding when Em_task = 300 lx per the per-Em-band table. Reference: lux-levels.json or area-definitions.json Table 6 row).
+  - Decision: use Em_surrounding = 150 lx (= 0.5×300, top of ratio band) for clean math.
+- Background zone: back wall display area (Em = max(300/3, 50) = 100 lx).
+
+- [ ] **Step 1: Author input.json with `zone_purpose_inputs` covering all 3 purposes**
+
+```json
+"zone_purpose_inputs": [
+  {"zone_id": "Z1", "purpose": "task"},
+  {"zone_id": "Z2", "purpose": "surrounding", "em_target_lux_override": 150},
+  {"zone_id": "Z3", "purpose": "background"}
+]
+```
+
+- [ ] **Step 2: Author output.json with 3 zones**
+
+```json
+"zones": [
+  {"zone_id": "Z1", "label": "Student desks", "purpose": "task", "em_target_lux": 300, ...},
+  {"zone_id": "Z2", "label": "Teacher area + desk perimeter", "purpose": "surrounding", "em_target_lux": 150, ...},
+  {"zone_id": "Z3", "label": "Rear wall display", "purpose": "background", "em_target_lux": 100, ...}
+]
+```
+
+- [ ] **Step 3: All luminaires recessed (typical classroom)**
+
+- [ ] **Step 4: per_zone_achieved[] with realistic em_achieved values**
+
+- Z1 task: achieved 315 lx → pass
+- Z2 surrounding: achieved 155 lx → pass
+- Z3 background: achieved 105 lx → pass
+
+- [ ] **Step 5: INV entries — INV-13/14/15 all non-vacuous PASS with detailed evidence**
+
+INV-14 evidence example:
+
+```
+INV-14 verdict: PASS. Surrounding zones inspected: 1. Task em reference: 300 lx (from Z1). Per-zone ratio check: Z2 em_target_lux=150, ratio=0.500, band [0.3, 0.5], result: pass (equal to upper band). Citation: BS EN 12464-1:2021 §4.2.2.2 + Table 6.
+```
+
+INV-15 evidence example:
+
+```
+INV-15 verdict: PASS. Background zones inspected: 1. Task em reference: 300 lx (from Z1). Per-zone floor check: Z3 em_target_lux=100, floor=max(300/3, 50)=100 lx, result: pass (equal to floor). Citation: BS EN 12464-1:2021 §4.2.2.3 + Table 6.
+```
+
+- [ ] **Step 6: Author intent-out.json + reasoning.md (cover the 3-purpose split + ratio math + 4-place disclosure)**
+
+- [ ] **Step 7: Validate + grep + gates + commit**
+
+```bash
+python3 -c "import json, jsonschema; jsonschema.Draft7Validator(json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))).validate(json.load(open('electrical/lighting-layout/examples/uk-mixed-purpose-classroom/output.json'))); print('OK')"
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/examples/uk-mixed-purpose-classroom/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/lighting-layout/examples/uk-mixed-purpose-classroom/
+git commit -m "feat(lighting-layout): C.10 NEW uk-mixed-purpose-classroom example (task + surrounding + background all 3 purposes; INV-13/14/15 non-vacuous PASS)"
+```
+
+### Task C.11: NEW uk-retail-display-task-zone example
+
+**Files:**
+- Create: `electrical/lighting-layout/examples/uk-retail-display-task-zone/{input,output,reasoning,intent-out}.{json,md}`
+
+**Why Opus:** Mixed mount_type (pendant accent + recessed downlights); demonstrates heterogeneous luminaire array in a single room.
+
+**Scenario** (spec §8.2 NEW#3):
+- Retail floor 15×10 m, ceiling 4000 mm, working plane 0 mm (floor display).
+- Task zone: high-emphasis goods display island (Em = 1000 lx per Table 5 jewellery/fashion).
+- Circulation zone: customer aisles (Em = 300 lx per Table 5 retail general).
+- Luminaires:
+  - 4 pendant accent lights over display island (z_mm=2500, suspension_length_mm=1500).
+  - 12 recessed downlights in aisles (mount_type=recessed).
+
+- [ ] **Step 1: Author input.json with mixed `mount_type_inputs`**
+
+- [ ] **Step 2: Author output.json**
+
+Zones:
+- Z1 task display: em_target_lux=1000
+- Z2 circulation aisles: em_target_lux=300
+
+Luminaires:
+- L1-L4 pendant over Z1 (z_mm=2500, suspension_length_mm=1500; check 2500+1500=4000 ≤ 4000 ✓)
+- L5-L16 recessed over Z2 (no z_mm needed)
+
+- [ ] **Step 3: per_zone_achieved[]**
+
+- [ ] **Step 4: INV entries — INV-16 non-vacuous PASS demonstrating heterogeneous mount types**
+
+- [ ] **Step 5: intent-out.json + reasoning.md**
+
+- [ ] **Step 6: Validate + grep + gates + commit**
+
+```bash
+python3 -c "import json, jsonschema; jsonschema.Draft7Validator(json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))).validate(json.load(open('electrical/lighting-layout/examples/uk-retail-display-task-zone/output.json'))); print('OK')"
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/examples/uk-retail-display-task-zone/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/lighting-layout/examples/uk-retail-display-task-zone/
+git commit -m "feat(lighting-layout): C.11 NEW uk-retail-display-task-zone example (mixed pendant accent + recessed downlights; INV-16 heterogeneous-mount PASS)"
+```
+
+### Task C.12: NEW uk-per-zone-target-violation FAIL HIGH example
+
+**Files:**
+- Create: `electrical/lighting-layout/examples/uk-per-zone-target-violation/{input,output,reasoning,intent-out}.{json,md}`
+
+**Why Opus:** FAIL-by-design example; INV-19 fires HIGH; compliance: false; honest disclosure of FAIL intent in all 4 places.
+
+**Scenario** (spec §8.2 NEW#4):
+- Open-plan office 10×6 m, ceiling 3000 mm, working plane 750 mm.
+- Task zone Em target 500 lx.
+- Achieved 380 lx (24% short) → INV-19 ratio_compliance: `marginal` (within 25%, MEDIUM band per spec §6).
+- WAIT — spec §8.2 says 24% short — let's recalculate. 380/500 = 0.76, gap = 24%. Per INV-19 bands: 10-25% short = MEDIUM severity (marginal in ratio_compliance enum). To get a true HIGH FAIL, we need gap ≥ 50% (i.e. achieved < 250 lx).
+
+**Decision:** for the FAIL HIGH example, use a more dramatic gap to clearly exercise HIGH severity:
+- Achieved 200 lx (60% short) → INV-19 ratio_compliance: `fail`, severity: HIGH.
+
+- [ ] **Step 1: Author input.json**
+
+Use 500 lx target + supply 200 lx achieved via input gymnastics (engineer-supplied lumen-method values that produce 200 lx; show the math in reasoning).
+
+- [ ] **Step 2: Author output.json — single task zone with achieved 200 lx**
+
+```json
+"calculation_summary": {
+  "target_illuminance_lux": 500,
+  "achieved_illuminance_lux": 200,
+  "per_zone_achieved": [
+    {"zone_id": "Z1", "purpose": "task", "em_target_lux": 500, "em_achieved_lux": 200, "ratio_compliance": "fail"}
+  ],
+  "compliant": false,
+  "non_compliance_flags": [
+    {
+      "id": "INV-19-violation",
+      "severity": "high",
+      "description": "Per-zone task achievement 200 lx is 60% short of 500 lx target. Severity HIGH per INV-19 band (≥50% short).",
+      "clause": "BS EN 12464-1:2021 §4.1 + Table 5"
+    }
+  ]
+}
+```
+
+- [ ] **Step 3: INV-19 entry — `passes: false`, `severity: "high"`, full evidence**
+
+```json
+{
+  "id": "INV-19",
+  "name": "Per-zone achievement",
+  "passes": false,
+  "severity": "high",
+  "evidence": "INV-19 verdict: FAIL (HIGH). Zones inspected: 1. Per-zone achievement: Z1 (task): target=500, achieved=200, gap=300, gap_pct=60.0%, ratio_compliance=fail, severity=HIGH. Aggregate: 0 PASS, 0 marginal, 0 MEDIUM, 1 HIGH. Citation: BS EN 12464-1:2021 §4.1 + Table 5."
+}
+```
+
+- [ ] **Step 4: intent-out.json + reasoning.md emphasising FAIL-by-design intent**
+
+- [ ] **Step 5: 4-place honest disclosure of FAIL-by-design**
+
+In each of the 4 disclosure places, note: "This example is DELIBERATELY FAIL-by-design to exercise INV-19 HIGH-severity band. Real engineering would either add more luminaires or accept the lower target."
+
+- [ ] **Step 6: Validate + grep + gates + commit**
+
+```bash
+python3 -c "
+import json, jsonschema
+d = json.load(open('electrical/lighting-layout/examples/uk-per-zone-target-violation/output.json'))
+jsonschema.Draft7Validator(json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))).validate(d)
+print('OK; compliant:', d['calculation_summary']['compliant'])
+inv19 = [i for i in d['invariants'] if i['id'] == 'INV-19'][0]
+print('INV-19 passes:', inv19['passes'], 'severity:', inv19['severity'])
+"
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/examples/uk-per-zone-target-violation/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add electrical/lighting-layout/examples/uk-per-zone-target-violation/
+git commit -m "feat(lighting-layout): C.12 NEW uk-per-zone-target-violation FAIL HIGH example (INV-19 fires HIGH at 60% gap; compliant=false by design)"
+```
+
+### Task C.13: 5 new evals YAML (eval-09 through eval-13)
+
+**Files:**
+- Create: `electrical/lighting-layout/evals/eval-09-zone-purpose-emit.yaml`
+- Create: `electrical/lighting-layout/evals/eval-10-task-surrounding-ratio.yaml`
+- Create: `electrical/lighting-layout/evals/eval-11-mount-type-3d-consistency.yaml`
+- Create: `electrical/lighting-layout/evals/eval-12-per-zone-achievement-pass.yaml`
+- Create: `electrical/lighting-layout/evals/eval-13-per-zone-achievement-fail.yaml`
+
+**Why Sonnet:** Mechanical YAML authoring against the eval.schema.json contract (matches small-power D4 C.10 precedent).
+
+- [ ] **Step 1: Read existing eval YAML + the eval schema**
+
+Run:
+```bash
+cat electrical/lighting-layout/evals/eval-08-rationale-block.yaml
+cat shared/schemas/core/eval.schema.json | python3 -m json.tool | head -60
+```
+
+Expected: identify the canonical YAML structure (name, skill, category enum, checks with severity+matches_inv).
+
+- [ ] **Step 2: Author `eval-09-zone-purpose-emit.yaml`**
+
+```yaml
+name: zone-purpose-emit
+skill: lighting-layout
+category: skill_specific
+description: |
+  Verifies that every zone in v1.7+ IRs has a purpose field populated per BS EN 12464-1:2021 §4.2.2.
+  Cross-checks against retrofitted examples (default purpose=task) and uk-mixed-purpose-classroom (all 3 purposes).
+input_fixtures:
+  - electrical/lighting-layout/examples/office-open-plan/output.json
+  - electrical/lighting-layout/examples/uk-mixed-purpose-classroom/output.json
+  - electrical/lighting-layout/examples/uk-pendant-open-plan-office/output.json
+checks:
+  - description: "Every zone has purpose enum value"
+    severity: warning
+    matches_inv: "INV-13"
+  - description: "Default purpose=task when not supplied (backwards compat per ZP-01)"
+    severity: info
+    matches_inv: "INV-13"
+  - description: "Orphan surrounding zones blocked (mixed-purpose example has task zone)"
+    severity: warning
+    matches_inv: "INV-13"
+```
+
+- [ ] **Step 3: Author `eval-10-task-surrounding-ratio.yaml`**
+
+```yaml
+name: task-surrounding-ratio
+skill: lighting-layout
+category: skill_specific
+description: |
+  Verifies that surrounding-zone em_target_lux respects the BS EN 12464-1:2021 Table 6 ratio [0.3, 0.5] of task Em.
+  Cross-checks uk-open-plan-office-10x8-dali (perimeter surrounding) and uk-mixed-purpose-classroom.
+input_fixtures:
+  - electrical/lighting-layout/examples/uk-open-plan-office-10x8-dali/output.json
+  - electrical/lighting-layout/examples/uk-mixed-purpose-classroom/output.json
+checks:
+  - description: "Surrounding em_target_lux in [0.3 × task_em, 0.5 × task_em]"
+    severity: warning
+    matches_inv: "INV-14"
+  - description: "Background em_target_lux ≥ max(task_em / 3, 50 lx)"
+    severity: warning
+    matches_inv: "INV-15"
+  - description: "Ratios cite area-definitions.json + Table 6"
+    severity: info
+    matches_inv: "INV-14"
+```
+
+- [ ] **Step 4: Author `eval-11-mount-type-3d-consistency.yaml`**
+
+```yaml
+name: mount-type-3d-consistency
+skill: lighting-layout
+category: validation_trap
+description: |
+  Verifies that pendant/suspended luminaires have z_mm + suspension_length_mm populated with the
+  algebraic identity (pendant) or inequality (suspended) per BS EN 60598-2 + mount-type-rules.yaml.
+input_fixtures:
+  - electrical/lighting-layout/examples/uk-pendant-open-plan-office/output.json
+  - electrical/lighting-layout/examples/uk-retail-display-task-zone/output.json
+  - electrical/lighting-layout/examples/warehouse-highbay/output.json
+checks:
+  - description: "Pendant geometry: z_mm + suspension_length_mm = ceiling_height_mm"
+    severity: warning
+    matches_inv: "INV-16"
+  - description: "Suspended geometry: z_mm + suspension_length_mm ≤ ceiling_height_mm"
+    severity: warning
+    matches_inv: "INV-16"
+  - description: "z_mm > working_plane_mm (no luminaire below task plane)"
+    severity: warning
+    matches_inv: "INV-17"
+  - description: "hm_mm derives from lowest pendant z minus working_plane_mm"
+    severity: info
+    matches_inv: "INV-18"
+```
+
+- [ ] **Step 5: Author `eval-12-per-zone-achievement-pass.yaml`**
+
+```yaml
+name: per-zone-achievement-pass
+skill: lighting-layout
+category: skill_specific
+description: |
+  Verifies per_zone_achieved[] populated + ratio_compliance pass on PASS examples.
+input_fixtures:
+  - electrical/lighting-layout/examples/uk-pendant-open-plan-office/output.json
+  - electrical/lighting-layout/examples/uk-mixed-purpose-classroom/output.json
+  - electrical/lighting-layout/examples/uk-retail-display-task-zone/output.json
+checks:
+  - description: "per_zone_achieved[] populated with one entry per zone"
+    severity: info
+    matches_inv: "INV-19"
+  - description: "ratio_compliance: pass on every zone"
+    severity: info
+    matches_inv: "INV-19"
+  - description: "INV-19 aggregate verdict: PASS"
+    severity: info
+    matches_inv: "INV-19"
+```
+
+- [ ] **Step 6: Author `eval-13-per-zone-achievement-fail.yaml`**
+
+```yaml
+name: per-zone-achievement-fail
+skill: lighting-layout
+category: compliance_failure
+description: |
+  Verifies INV-19 fires HIGH on uk-per-zone-target-violation (FAIL-by-design example, 60% gap).
+input_fixtures:
+  - electrical/lighting-layout/examples/uk-per-zone-target-violation/output.json
+checks:
+  - description: "INV-19 passes: false on FAIL example"
+    severity: critical
+    matches_inv: "INV-19"
+  - description: "INV-19 severity: high (gap_pct ≥ 50% band)"
+    severity: critical
+    matches_inv: "INV-19"
+  - description: "non_compliance_flags[] contains INV-19 HIGH entry"
+    severity: critical
+    matches_inv: "INV-19"
+```
+
+- [ ] **Step 7: Validate all 5 YAML files parse + pass eval.schema.json**
+
+Run:
+```bash
+python3 -c "
+import yaml, json, jsonschema
+schema = json.load(open('shared/schemas/core/eval.schema.json'))
+for f in [
+  'electrical/lighting-layout/evals/eval-09-zone-purpose-emit.yaml',
+  'electrical/lighting-layout/evals/eval-10-task-surrounding-ratio.yaml',
+  'electrical/lighting-layout/evals/eval-11-mount-type-3d-consistency.yaml',
+  'electrical/lighting-layout/evals/eval-12-per-zone-achievement-pass.yaml',
+  'electrical/lighting-layout/evals/eval-13-per-zone-achievement-fail.yaml',
+]:
+    d = yaml.safe_load(open(f))
+    v = jsonschema.Draft202012Validator(schema)
+    errors = list(v.iter_errors(d))
+    if errors:
+        print(f, 'ERRORS:', [e.message[:100] for e in errors[:3]])
+    else:
+        print(f, 'OK')
+"
+```
+
+Expected: all 5 OK.
+
+- [ ] **Step 8: Run golden CI gate (Pass 2)**
+
+Run:
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+Expected: aggregate bumps by +5 (5 new evals).
+
+- [ ] **Step 9: Commit**
+
+```bash
+git add electrical/lighting-layout/evals/eval-09-*.yaml electrical/lighting-layout/evals/eval-10-*.yaml electrical/lighting-layout/evals/eval-11-*.yaml electrical/lighting-layout/evals/eval-12-*.yaml electrical/lighting-layout/evals/eval-13-*.yaml
+git commit -m "feat(lighting-layout): C.13 add 5 new evals for D5 depth features (INV-13/14/15/16/17/18/19 coverage)"
+```
+
+---
