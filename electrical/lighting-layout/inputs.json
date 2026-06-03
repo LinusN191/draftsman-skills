@@ -196,6 +196,58 @@
       "required": false,
       "validator": "board_designation",
       "project_fact_candidate": true
+    },
+    {
+      "id": "zone_purpose_inputs",
+      "label": "For each zone, what is its BS EN 12464-1 area classification (task / surrounding / background / circulation)?",
+      "hint": "BS EN 12464-1:2021 §4.2.2 + Table 6. If absent, all zones default to purpose=task with em_target_lux derived from room.target_illuminance_lux.",
+      "answer_type": "struct_list",
+      "required": false,
+      "default": [],
+      "item_schema": {
+        "type": "object",
+        "properties": {
+          "zone_id": {"type": "string"},
+          "purpose": {"type": "string", "enum": ["task", "surrounding", "background", "circulation"]},
+          "em_target_lux_override": {"type": "number", "minimum": 0, "description": "Optional explicit override; else derived from Em × ratio."}
+        },
+        "required": ["zone_id", "purpose"]
+      },
+      "project_fact_candidate": false
+    },
+    {
+      "id": "mount_type_inputs",
+      "label": "For each luminaire, what is the installation mount type?",
+      "hint": "BS EN 60598-2 series. If absent, all luminaires default to mount_type=recessed (v1.6.0 backwards compatible).",
+      "answer_type": "struct_list",
+      "required": false,
+      "default": [],
+      "item_schema": {
+        "type": "object",
+        "properties": {
+          "luminaire_id": {"type": "string"},
+          "mount_type": {"type": "string", "enum": ["recessed", "surface", "pendant", "suspended", "track"]}
+        },
+        "required": ["luminaire_id", "mount_type"]
+      },
+      "project_fact_candidate": false
+    },
+    {
+      "id": "suspension_length_inputs",
+      "label": "For each pendant or suspended luminaire, what is the suspension drop length from ceiling (mm)?",
+      "hint": "BS EN 60598-2 + manufacturer pendant kit datasheet. Required when mount_type ∈ {pendant, suspended}.",
+      "answer_type": "struct_list",
+      "required": false,
+      "default": [],
+      "item_schema": {
+        "type": "object",
+        "properties": {
+          "luminaire_id": {"type": "string"},
+          "suspension_length_mm": {"type": "integer", "minimum": 0}
+        },
+        "required": ["luminaire_id", "suspension_length_mm"]
+      },
+      "project_fact_candidate": false
     }
   ]
 }
