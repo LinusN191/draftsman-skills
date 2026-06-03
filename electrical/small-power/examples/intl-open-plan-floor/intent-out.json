@@ -1,7 +1,35 @@
 {
   "project_id": "intl-open-plan-floor-eg01",
-  "intent_version": "1.0.0",
+  "intent_version": "2.0.0",
   "parent_db_designation": "DB-FLOOR-01",
+  "building_diversity": {
+    "building_type": "office",
+    "floor_count": 1,
+    "design_density_w_per_m2": 70,
+    "future_expansion_pct": 25,
+    "applies_after": "per_load_diversity",
+    "applies_load_types": [
+      "office_small_power_workstation",
+      "office_meeting_room_av",
+      "office_kitchenette",
+      "office_comms_cabinet_ups",
+      "office_outdoor_amenity",
+      "office_shaver_supply"
+    ],
+    "building_diversified_demand_a": 36.5,
+    "per_circuit_demand_inputs": [
+      {"circuit_id": "C01", "post_per_load_diversity_a": 10.0, "building_factor_applied": 0.66},
+      {"circuit_id": "C02", "post_per_load_diversity_a": 10.0, "building_factor_applied": 0.66},
+      {"circuit_id": "C03", "post_per_load_diversity_a": 6.5,  "building_factor_applied": 0.66},
+      {"circuit_id": "C04", "post_per_load_diversity_a": 6.5,  "building_factor_applied": 0.66},
+      {"circuit_id": "C05", "post_per_load_diversity_a": 11.0, "building_factor_applied": 0.66},
+      {"circuit_id": "C06", "post_per_load_diversity_a": 9.0,  "building_factor_applied": 0.66},
+      {"circuit_id": "C07", "post_per_load_diversity_a": 0.4,  "building_factor_applied": 0.66},
+      {"circuit_id": "C08", "post_per_load_diversity_a": 1.7,  "building_factor_applied": 0.66}
+    ],
+    "_clause_citation": "IEC 60364-3:2008 §31 (assessment of general characteristics — maximum demand) + IEC 60364-1:2005 §132.12 (fundamental principles — design margin) + IET On-Site Guide 8th Edition Appendix A Table A1 (office_small_power_workstation profile, cited as best-available cross-jurisdiction profile reference per honest disclosure)",
+    "_derivation_note": "INT jurisdiction RETROFIT in v2.0.0 D4 (this intent-out was v1.0.0 leaf pre-D4). Honest cross-jurisdiction citation: IEC 60364 does NOT publish a dedicated diversity-factor table — engineer applies IET OSG 8th Ed App A Table A1 office_small_power_workstation profile (diversity_percent=66) as a best-available working reference. Σ 55.1 A × 0.66 = 36.4 A → recorded 36.5 A (0.37% drift within ±5%)."
+  },
   "circuits": [
     {
       "circuit_id": "C01",
