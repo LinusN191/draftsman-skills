@@ -1,7 +1,8 @@
 {
   "project_id": "intl-open-plan-floor-eg01",
+  "_cascade_disclosure": "D4 RETROFIT \u2014 v2.0.0 building_diversity + cable-sizing cascade additions. DEFERRED-POINTER state: consumed_intents.cable_sizing.source_path points at electrical/cable-sizing/examples/intl-open-plan-floor-feeder/intent-out.json \u2014 a producer-side fixture that does NOT yet exist at C.7-ship (D4 sprint). Payload bytes are INLINED byte-identical with the small-power IR diversified_max_load_a values. When the producer fixture lands, source_path will resolve to a real file but the payload bytes are expected to remain unchanged so INV-19 PASS does not regress. This example was originally authored at v1.0.0 (2026-05-19) as a leaf skill (no cascades). The D4 retrofit is purely ADDITIVE \u2014 same 8 circuits, 9 rooms, 8 sockets, same supply, same jurisdiction (INT). Sections 1-8 of reasoning.md remain valid for the v2.0 IR; section 9 documents the retrofit additions.",
   "jurisdiction": "INT",
-  "site_brief": "350 m² commercial open-plan office floor. 400V TPN+E supply per IEC 60364-4-41:2017. 24 workstation positions + 2 meeting rooms + kitchenette + server cabinet area + toilet block + outdoor sockets. Server cabinet small-power is UPS-fed with Type B 30mA RCD per IEC 60364-5-53:2002+A2:2015 §531.3.3 (matches db-layout intl-dbcomms-data shipped policy for IT equipment with DC leakage components).",
+  "site_brief": "350 m\u00b2 commercial open-plan office floor. 400V TPN+E supply per IEC 60364-4-41:2017. 24 workstation positions + 2 meeting rooms + kitchenette + server cabinet area + toilet block + outdoor sockets. Server cabinet small-power is UPS-fed with Type B 30mA RCD per IEC 60364-5-53:2002+A2:2015 \u00a7531.3.3 (matches db-layout intl-dbcomms-data shipped policy for IT equipment with DC leakage components).",
   "supply": {
     "voltage_v": 400,
     "phase_arrangement": "TPN_plus_E",
@@ -14,15 +15,114 @@
     "pfc_at_busbar_ka": 10.0
   },
   "room_briefs": [
-    {"room_id": "workstation-zone-1", "room_type": "office_open_plan", "dimensions_m": {"length": 12.0, "width": 8.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 3.0, "socket_count_target": 12},
-    {"room_id": "workstation-zone-2", "room_type": "office_open_plan", "dimensions_m": {"length": 12.0, "width": 8.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 3.0, "socket_count_target": 12},
-    {"room_id": "meeting-room-1",      "room_type": "meeting_room",     "dimensions_m": {"length": 5.0, "width": 4.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 1.5, "socket_count_target": 3},
-    {"room_id": "meeting-room-2",      "room_type": "meeting_room",     "dimensions_m": {"length": 5.0, "width": 4.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 1.5, "socket_count_target": 3},
-    {"room_id": "kitchenette",         "room_type": "kitchenette_commercial", "dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 2.5, "socket_count_target": 4},
-    {"room_id": "server-room",         "room_type": "server_room",      "dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 2.0, "socket_count_target": 2},
-    {"room_id": "toilet",              "room_type": "toilet_commercial","dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.8}, "special_location": "bathroom_zone_3", "anticipated_loads_kw": 0.1, "socket_count_target": 1},
-    {"room_id": "outdoor-smoking",     "room_type": "external_amenity", "dimensions_m": {"length": 3.0, "width": 2.0, "height": 0.0}, "special_location": "outdoor", "anticipated_loads_kw": 0.2, "socket_count_target": 1},
-    {"room_id": "outdoor-bin",         "room_type": "external_amenity", "dimensions_m": {"length": 3.0, "width": 2.0, "height": 0.0}, "special_location": "outdoor", "anticipated_loads_kw": 0.2, "socket_count_target": 1}
+    {
+      "room_id": "workstation-zone-1",
+      "room_type": "office_open_plan",
+      "dimensions_m": {
+        "length": 12.0,
+        "width": 8.0,
+        "height": 2.8
+      },
+      "special_location": null,
+      "anticipated_loads_kw": 3.0,
+      "socket_count_target": 12
+    },
+    {
+      "room_id": "workstation-zone-2",
+      "room_type": "office_open_plan",
+      "dimensions_m": {
+        "length": 12.0,
+        "width": 8.0,
+        "height": 2.8
+      },
+      "special_location": null,
+      "anticipated_loads_kw": 3.0,
+      "socket_count_target": 12
+    },
+    {
+      "room_id": "meeting-room-1",
+      "room_type": "meeting_room",
+      "dimensions_m": {
+        "length": 5.0,
+        "width": 4.0,
+        "height": 2.8
+      },
+      "special_location": null,
+      "anticipated_loads_kw": 1.5,
+      "socket_count_target": 3
+    },
+    {
+      "room_id": "meeting-room-2",
+      "room_type": "meeting_room",
+      "dimensions_m": {
+        "length": 5.0,
+        "width": 4.0,
+        "height": 2.8
+      },
+      "special_location": null,
+      "anticipated_loads_kw": 1.5,
+      "socket_count_target": 3
+    },
+    {
+      "room_id": "kitchenette",
+      "room_type": "kitchenette_commercial",
+      "dimensions_m": {
+        "length": 3.0,
+        "width": 2.5,
+        "height": 2.8
+      },
+      "special_location": null,
+      "anticipated_loads_kw": 2.5,
+      "socket_count_target": 4
+    },
+    {
+      "room_id": "server-room",
+      "room_type": "server_room",
+      "dimensions_m": {
+        "length": 3.0,
+        "width": 2.5,
+        "height": 2.8
+      },
+      "special_location": null,
+      "anticipated_loads_kw": 2.0,
+      "socket_count_target": 2
+    },
+    {
+      "room_id": "toilet",
+      "room_type": "toilet_commercial",
+      "dimensions_m": {
+        "length": 3.0,
+        "width": 2.5,
+        "height": 2.8
+      },
+      "special_location": "bathroom_zone_3",
+      "anticipated_loads_kw": 0.1,
+      "socket_count_target": 1
+    },
+    {
+      "room_id": "outdoor-smoking",
+      "room_type": "external_amenity",
+      "dimensions_m": {
+        "length": 3.0,
+        "width": 2.0,
+        "height": 0.0
+      },
+      "special_location": "outdoor",
+      "anticipated_loads_kw": 0.2,
+      "socket_count_target": 1
+    },
+    {
+      "room_id": "outdoor-bin",
+      "room_type": "external_amenity",
+      "dimensions_m": {
+        "length": 3.0,
+        "width": 2.0,
+        "height": 0.0
+      },
+      "special_location": "outdoor",
+      "anticipated_loads_kw": 0.2,
+      "socket_count_target": 1
+    }
   ],
   "design_intent": {
     "preferred_topology": "radial",
@@ -31,11 +131,11 @@
     "drawing_scale": "1:100"
   },
   "building_diversity_inputs": {
-    "_d4_retrofit_note": "v2.0.0 D4 RETROFIT (added 2026-06-03). This input block was NOT present in the v1.0.0 ship of this example. Honest disclosure: pre-D4 there was no inputs.json taxonomy item for building_diversity_inputs at all — added in D4 A.2 alongside the IR schema additions in A.1.",
+    "_d4_retrofit_note": "v2.0.0 D4 RETROFIT (added 2026-06-03). This input block was NOT present in the v1.0.0 ship of this example. Honest disclosure: pre-D4 there was no inputs.json taxonomy item for building_diversity_inputs at all \u2014 added in D4 A.2 alongside the IR schema additions in A.1.",
     "building_type": "office",
     "floor_count": 1,
     "design_density_w_per_m2_override": 70,
     "future_expansion_pct_override": 25,
-    "_profile_reference_note": "IEC 60364 does not publish a dedicated diversity-factor table in any verified part (60364-3 assessment of general characteristics covers maximum demand at a principle level only). For INT jurisdiction the engineer-of-record applies the IET On-Site Guide 8th Edition Appendix A Table A1 office_small_power_workstation profile as the best-available working reference — this is widely used internationally for IEC 60364 designs because IEC 60364-1:2005 §132.12 (design margin) and IEC 60364-3 §31 (maximum demand) leave the factor selection to engineering judgement. The IET OSG values are cited here HONESTLY as a cross-jurisdiction reference, not as a binding IEC norm."
+    "_profile_reference_note": "IEC 60364 does not publish a dedicated diversity-factor table in any verified part (60364-3 assessment of general characteristics covers maximum demand at a principle level only). For INT jurisdiction the engineer-of-record applies the IET On-Site Guide 8th Edition Appendix A Table A1 office_small_power_workstation profile as the best-available working reference \u2014 this is widely used internationally for IEC 60364 designs because IEC 60364-1:2005 \u00a7132.12 (design margin) and IEC 60364-3 \u00a731 (maximum demand) leave the factor selection to engineering judgement. The IET OSG values are cited here HONESTLY as a cross-jurisdiction reference, not as a binding IEC norm."
   }
 }

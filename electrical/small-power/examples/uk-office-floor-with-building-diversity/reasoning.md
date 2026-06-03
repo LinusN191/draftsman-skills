@@ -168,6 +168,14 @@ A1 sheet @ 1:100 scale fits the 600 m² floor plate plus the panel schedule + th
 | INV-18 | high | PASS | No ev_charge_metadata circuits → trivially PASS |
 | INV-19 | medium | **PASS (first emit)** | Cable-sizing cascade reconciliation 0.0% on all 10 circuits |
 
+## Honest disclosures (4-place pattern)
+
+Three honest disclosures apply to this example, mirroring the 4-place pattern established across D4 Part-7 examples:
+
+1. **DEFERRED-POINTER cascade** — `consumed_intents.cable_sizing.source_path` points at `electrical/cable-sizing/examples/uk-office-submain-floor3/intent-out.json`, a producer-side fixture that does NOT yet exist at C.5-ship. The payload bytes are INLINED byte-identical with the IR's `diversified_max_load_a` values. When the producer fixture lands, the source_path will resolve to a real file but the payload bytes are expected to remain unchanged so INV-19 PASS does not regress.
+2. **`building_diversity` field is v2.0-only** — consumers running against a v1.x small-power skill will not see this field. The v2.0.0 manifest carries `_v2_breaking_change_note` and status=production. No v1.x consumer existed at sprint close (pre-merge check confirmed).
+3. **INV-19 first-emit discipline** — this is the first small-power example to emit INV-19 PASS evidence. The reconciliation is exact (0.0% drift on all 10 circuits) because the cable_sizing payload was inlined byte-identical with the IR's `diversified_max_load_a` values. Reconciliation prose is at § 5 above ("Honest 4-place disclosure").
+
 ## 10 — Wave 2 → Wave 1 Cascade Promotion
 
 This example is the producer of the building_diversity intent payload that the upstream submain sizing skill consumes. When a downstream switchboard sizing skill is added (post-Wave-2), it will consume `intent-out.json::building_diversity` from this example to size the floor submain MCB at the landlord MCC hop. The intent-out.json mirror block (`additionalProperties: true` per the intent schema) carries the full building_diversity payload byte-identical to the IR block — the schema is permissive on the cascade side so consumer skills can read whatever building_diversity fields they need without the intent schema needing to be re-versioned every time the IR adds a sub-field.

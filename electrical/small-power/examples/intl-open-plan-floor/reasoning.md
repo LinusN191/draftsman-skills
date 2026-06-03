@@ -392,3 +392,11 @@ This retrofit proves three things:
 3. **The INV-19 cable-sizing cascade is also jurisdiction-agnostic** — the cascade contract does not embed BS 7671 semantics, so the cascade lifts cleanly into an IEC 60364 design.
 
 The retrofit is the smallest possible additive change to a v1.0 leaf example that demonstrates the new v2.0 field works under INT. No structural regression to the existing 8 circuits / 9 rooms / 8 special-location info flags / 8 assumptions / ISO 19650 drafting layout.
+
+## Honest disclosures (v2.0 D4 retrofit — 4-place pattern)
+
+Three honest disclosures apply to this D4 retrofit example, completing the 4-place pattern established across all D4 examples:
+
+1. **DEFERRED-POINTER cascade (INT jurisdiction)** — `consumed_intents.cable_sizing.source_path` points at `electrical/cable-sizing/examples/intl-open-plan-floor-feeder/intent-out.json`, a producer-side fixture that does NOT yet exist at C.7-ship. The payload bytes are INLINED byte-identical with the small-power IR's `diversified_max_load_a` values. Reconciliation drift is 0.0% on all 8 circuits. When the producer fixture lands, the source_path resolves to a real file but the payload bytes are expected to remain unchanged — only the source_path repoints transparently. This is the same pattern the UK C.5 and C.6 examples use.
+2. **IEC 60364 diversity-factor citation discipline (INT honest disclosure)** — IEC 60364 does NOT publish a dedicated diversity-factor table in any verified part. The primary binding anchors under INT jurisdiction are IEC 60364-3:2008 §31 + IEC 60364-1:2005 §132.12. The IET On-Site Guide 8th Edition Appendix A Table A1 is cited as a NON-binding cross-jurisdiction working reference for the `office_small_power_workstation.diversity_percent=66` value. BS 7671 §311 is explicitly NOT cited here — this is an INT jurisdiction example. The `_derivation_note` in the IR documents this discipline.
+3. **Retrofit additive-only** — §9.1 above ("Honest retrofit disclosure") documents that sections 1–8 of this reasoning.md remain valid for the v2.0 IR. No existing circuit, room, socket, RCD type, or drafting reference has been renamed or removed. The D4 retrofit adds building_diversity + cable-sizing cascade + INV-19 PASS evidence + all 19 invariants as purely additive fields.

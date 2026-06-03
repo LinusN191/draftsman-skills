@@ -272,6 +272,15 @@ demand AND (b) the EXCLUDED motor + lift contributions that compose
 algebraically, so the submain skill can apply its own substation-
 level diversity (if any) without double-counting.
 
+## Honest disclosures (4-place pattern)
+
+Four honest disclosures apply to this example, mirroring the 4-place pattern established across D4 Part-7 examples:
+
+1. **DEFERRED-POINTER cascade** — `consumed_intents.cable_sizing.source_path` points at `electrical/cable-sizing/examples/uk-warehouse-submain-wh01/intent-out.json`, a producer-side fixture that does NOT yet exist at C.6-ship. The payload bytes are INLINED byte-identical at C.6-ship. When the producer fixture lands, the source_path will resolve to a real file but the payload bytes are expected to remain unchanged so INV-19 PASS does not regress.
+2. **DIV-NN exclusion discipline** — motor circuits (C05 forklift, C06 production-line) and lift circuit (C07 goods lift) are EXCLUDED from `building_diversity.applies_load_types[]`. These carry unity factor per IET OSG App A Table A1 `industrial_motor_duty.diversity_pct=100` + `office_lift_single.diversity_pct=100`. The `building_diversified_demand_a=59.0 A` therefore reflects ONLY the in-scope socket-outlet + ancillary demand. Upstream submain sizing must add the excluded circuits algebraically (59.0 + 21.0 + 21.0 + 24.0 = 125.0 A submain target).
+3. **Banned-citation discipline** — NO Reg 559, §526.2, §433.2, OZEV, 3rd Edition appear as load-bearing citations anywhere in this example. Banned tokens appear ONLY in disambiguation contexts (§8 above).
+4. **`building_diversity` field is v2.0-only** — consumers running against a v1.x small-power skill will not see this field. No v1.x consumer existed at sprint close (pre-merge check confirmed per sprint discipline).
+
 ---
 
 End of reasoning. C.6 PASS criteria:

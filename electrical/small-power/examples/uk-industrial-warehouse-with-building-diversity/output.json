@@ -33,14 +33,70 @@
         "project_id": "uk-industrial-warehouse-with-building-diversity-eg01",
         "intent_version": "1.1.0",
         "circuits": [
-          {"node_id": "DB-WH-01.C01", "design_current_a": 18.5, "selected_csa_mm2": 2.5, "selected_csa_label": "2.5mm² + 1.5mm² CPC PVC T+E", "verified_zs_ohm": 0.58, "voltage_drop_pct": 2.1},
-          {"node_id": "DB-WH-01.C02", "design_current_a": 9.6,  "selected_csa_mm2": 2.5, "selected_csa_label": "2.5mm² + 1.5mm² CPC PVC T+E", "verified_zs_ohm": 0.51, "voltage_drop_pct": 1.2},
-          {"node_id": "DB-WH-01.C03", "design_current_a": 19.6, "selected_csa_mm2": 2.5, "selected_csa_label": "2.5mm² + 1.5mm² CPC PVC T+E", "verified_zs_ohm": 0.62, "voltage_drop_pct": 1.8},
-          {"node_id": "DB-WH-01.C04", "design_current_a": 14.4, "selected_csa_mm2": 2.5, "selected_csa_label": "2.5mm² + 1.5mm² CPC PVC T+E", "verified_zs_ohm": 0.49, "voltage_drop_pct": 1.0},
-          {"node_id": "DB-WH-01.C05", "design_current_a": 21.0, "selected_csa_mm2": 4.0, "selected_csa_label": "4mm² + 4mm² CPC SWA (3-core + E)",      "verified_zs_ohm": 0.34, "voltage_drop_pct": 1.4},
-          {"node_id": "DB-WH-01.C06", "design_current_a": 21.0, "selected_csa_mm2": 4.0, "selected_csa_label": "4mm² + 4mm² CPC SWA (3-core + E)",      "verified_zs_ohm": 0.36, "voltage_drop_pct": 1.5},
-          {"node_id": "DB-WH-01.C07", "design_current_a": 24.0, "selected_csa_mm2": 6.0, "selected_csa_label": "6mm² + 6mm² CPC SWA (3-core + E)",      "verified_zs_ohm": 0.30, "voltage_drop_pct": 1.2},
-          {"node_id": "DB-WH-01.C08", "design_current_a": 22.5, "selected_csa_mm2": 4.0, "selected_csa_label": "4mm² + 4mm² CPC SWA (3-core + E)",      "verified_zs_ohm": 0.32, "voltage_drop_pct": 1.6}
+          {
+            "node_id": "DB-WH-01.C01",
+            "design_current_a": 18.5,
+            "selected_csa_mm2": 2.5,
+            "selected_csa_label": "2.5mm\u00b2 + 1.5mm\u00b2 CPC PVC T+E",
+            "verified_zs_ohm": 0.58,
+            "voltage_drop_pct": 2.1
+          },
+          {
+            "node_id": "DB-WH-01.C02",
+            "design_current_a": 9.6,
+            "selected_csa_mm2": 2.5,
+            "selected_csa_label": "2.5mm\u00b2 + 1.5mm\u00b2 CPC PVC T+E",
+            "verified_zs_ohm": 0.51,
+            "voltage_drop_pct": 1.2
+          },
+          {
+            "node_id": "DB-WH-01.C03",
+            "design_current_a": 19.6,
+            "selected_csa_mm2": 2.5,
+            "selected_csa_label": "2.5mm\u00b2 + 1.5mm\u00b2 CPC PVC T+E",
+            "verified_zs_ohm": 0.62,
+            "voltage_drop_pct": 1.8
+          },
+          {
+            "node_id": "DB-WH-01.C04",
+            "design_current_a": 14.4,
+            "selected_csa_mm2": 2.5,
+            "selected_csa_label": "2.5mm\u00b2 + 1.5mm\u00b2 CPC PVC T+E",
+            "verified_zs_ohm": 0.49,
+            "voltage_drop_pct": 1.0
+          },
+          {
+            "node_id": "DB-WH-01.C05",
+            "design_current_a": 21.0,
+            "selected_csa_mm2": 4.0,
+            "selected_csa_label": "4mm\u00b2 + 4mm\u00b2 CPC SWA (3-core + E)",
+            "verified_zs_ohm": 0.34,
+            "voltage_drop_pct": 1.4
+          },
+          {
+            "node_id": "DB-WH-01.C06",
+            "design_current_a": 21.0,
+            "selected_csa_mm2": 4.0,
+            "selected_csa_label": "4mm\u00b2 + 4mm\u00b2 CPC SWA (3-core + E)",
+            "verified_zs_ohm": 0.36,
+            "voltage_drop_pct": 1.5
+          },
+          {
+            "node_id": "DB-WH-01.C07",
+            "design_current_a": 24.0,
+            "selected_csa_mm2": 6.0,
+            "selected_csa_label": "6mm\u00b2 + 6mm\u00b2 CPC SWA (3-core + E)",
+            "verified_zs_ohm": 0.3,
+            "voltage_drop_pct": 1.2
+          },
+          {
+            "node_id": "DB-WH-01.C08",
+            "design_current_a": 22.5,
+            "selected_csa_mm2": 4.0,
+            "selected_csa_label": "4mm\u00b2 + 4mm\u00b2 CPC SWA (3-core + E)",
+            "verified_zs_ohm": 0.32,
+            "voltage_drop_pct": 1.6
+          }
         ]
       }
     }
@@ -51,181 +107,467 @@
       "cable_sizing_node_id": "DB-WH-01.C01",
       "designation": "Office partition ring final circuit (workstation perimeter, 8 BS 1363 doubles)",
       "topology": "ring",
-      "ocpd": {"rating_a": 32, "type": "RCBO", "curve": "B", "rcd_type": "A", "rcd_sensitivity_ma": 30, "breaking_capacity_ka": 16.0},
-      "cable": {"csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC PVC T+E", "cores": 3, "length_m_total": 42.0, "material": "copper", "insulation": "PVC_70"},
+      "ocpd": {
+        "rating_a": 32,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 16.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm\u00b2 + 1.5mm\u00b2 CPC PVC T+E",
+        "cores": 3,
+        "length_m_total": 42.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
       "ring_endpoints": {
-        "endpoint_a_xy": {"x_mm": 500, "y_mm": 500},
-        "endpoint_b_xy": {"x_mm": 14500, "y_mm": 9500},
+        "endpoint_a_xy": {
+          "x_mm": 500,
+          "y_mm": 500
+        },
+        "endpoint_b_xy": {
+          "x_mm": 14500,
+          "y_mm": 9500
+        },
         "mcb_way_id": "DB-WH-01-W01",
         "continuity_verified": true,
-        "_citation": "IET On-Site Guide 8th Edition §8.4.4 + Appendix H ring final circuit recipe; BS 7671:2018+A2:2022 §526 top-level (sub-clause not transcribed)"
+        "_citation": "IET On-Site Guide 8th Edition \u00a78.4.4 + Appendix H ring final circuit recipe; BS 7671:2018+A2:2022 \u00a7526 top-level (sub-clause not transcribed)"
       },
-      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "rcd_posture": "type_a_30ma_per_\u00a7411_3_3",
       "tool_call_pending_for_zs_verification": false,
       "verified_zs_ohm": 0.58,
       "estimated_max_load_kw": 5.6,
       "diversified_max_load_a": 18.5,
-      "rooms_covered": ["office-partition"]
+      "rooms_covered": [
+        "office-partition"
+      ]
     },
     {
       "circuit_id": "C02",
       "cable_sizing_node_id": "DB-WH-01.C02",
       "designation": "Kitchenette appliances + admin radial (BS 1363 doubles + FCU spurs above worktop)",
       "topology": "radial",
-      "ocpd": {"rating_a": 20, "type": "RCBO", "curve": "C", "rcd_type": "A", "rcd_sensitivity_ma": 30, "breaking_capacity_ka": 16.0},
-      "cable": {"csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC PVC T+E", "cores": 3, "length_m_total": 24.0, "material": "copper", "insulation": "PVC_70"},
-      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "RCBO",
+        "curve": "C",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 16.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm\u00b2 + 1.5mm\u00b2 CPC PVC T+E",
+        "cores": 3,
+        "length_m_total": 24.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_\u00a7411_3_3",
       "tool_call_pending_for_zs_verification": false,
       "verified_zs_ohm": 0.51,
       "estimated_max_load_kw": 2.9,
       "diversified_max_load_a": 9.6,
-      "rooms_covered": ["kitchenette"]
+      "rooms_covered": [
+        "kitchenette"
+      ]
     },
     {
       "circuit_id": "C03",
       "cable_sizing_node_id": "DB-WH-01.C03",
       "designation": "Warehouse high-bay LED lighting + general-purpose socket spurs (industrial radial)",
       "topology": "radial",
-      "ocpd": {"rating_a": 20, "type": "RCBO", "curve": "C", "rcd_type": "A", "rcd_sensitivity_ma": 30, "breaking_capacity_ka": 16.0},
-      "cable": {"csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC PVC T+E", "cores": 3, "length_m_total": 55.0, "material": "copper", "insulation": "PVC_70"},
-      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "RCBO",
+        "curve": "C",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 16.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm\u00b2 + 1.5mm\u00b2 CPC PVC T+E",
+        "cores": 3,
+        "length_m_total": 55.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_\u00a7411_3_3",
       "tool_call_pending_for_zs_verification": false,
       "verified_zs_ohm": 0.62,
       "estimated_max_load_kw": 5.9,
       "diversified_max_load_a": 19.6,
-      "rooms_covered": ["warehouse-floor", "loading-bay"]
+      "rooms_covered": [
+        "warehouse-floor",
+        "loading-bay"
+      ]
     },
     {
       "circuit_id": "C04",
       "cable_sizing_node_id": "DB-WH-01.C04",
-      "designation": "Dispatch UPS comms cabinet — dedicated radial (Type B 30 mA per §531.3.3 SMPS DC-leakage)",
+      "designation": "Dispatch UPS comms cabinet \u2014 dedicated radial (Type B 30 mA per \u00a7531.3.3 SMPS DC-leakage)",
       "topology": "dedicated_radial",
-      "ocpd": {"rating_a": 20, "type": "RCBO", "curve": "C", "rcd_type": "B", "rcd_sensitivity_ma": 30, "breaking_capacity_ka": 16.0},
-      "cable": {"csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC PVC T+E", "cores": 3, "length_m_total": 18.0, "material": "copper", "insulation": "PVC_70"},
-      "rcd_posture": "type_b_30ma_per_§531_3_3",
+      "ocpd": {
+        "rating_a": 20,
+        "type": "RCBO",
+        "curve": "C",
+        "rcd_type": "B",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 16.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm\u00b2 + 1.5mm\u00b2 CPC PVC T+E",
+        "cores": 3,
+        "length_m_total": 18.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_b_30ma_per_\u00a7531_3_3",
       "tool_call_pending_for_zs_verification": false,
       "verified_zs_ohm": 0.49,
       "estimated_max_load_kw": 4.0,
       "diversified_max_load_a": 14.4,
-      "rooms_covered": ["plant-alcove"]
+      "rooms_covered": [
+        "plant-alcove"
+      ]
     },
     {
       "circuit_id": "C05",
       "cable_sizing_node_id": "DB-WH-01.C05",
-      "designation": "Process motor M-01 (11 kW horizontal-axis pillar drill) — dedicated 3-phase radial (industrial_motor_duty, EXCLUDED from building_diversity per BLD-03)",
+      "designation": "Process motor M-01 (11 kW horizontal-axis pillar drill) \u2014 dedicated 3-phase radial (industrial_motor_duty, EXCLUDED from building_diversity per BLD-03)",
       "topology": "dedicated_radial",
-      "ocpd": {"rating_a": 32, "type": "RCBO", "curve": "D", "rcd_type": "A", "rcd_sensitivity_ma": 30, "breaking_capacity_ka": 16.0},
-      "cable": {"csa_mm2_or_awg": "4mm² + 4mm² CPC SWA (3-core + E)", "cores": 5, "length_m_total": 32.0, "material": "copper", "insulation": "XLPE_90"},
-      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "ocpd": {
+        "rating_a": 32,
+        "type": "RCBO",
+        "curve": "D",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 16.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "4mm\u00b2 + 4mm\u00b2 CPC SWA (3-core + E)",
+        "cores": 5,
+        "length_m_total": 32.0,
+        "material": "copper",
+        "insulation": "XLPE_90"
+      },
+      "rcd_posture": "type_a_30ma_per_\u00a7411_3_3",
       "tool_call_pending_for_zs_verification": false,
       "verified_zs_ohm": 0.34,
       "estimated_max_load_kw": 11.0,
       "diversified_max_load_a": 21.0,
-      "rooms_covered": ["warehouse-floor"]
+      "rooms_covered": [
+        "warehouse-floor"
+      ]
     },
     {
       "circuit_id": "C06",
       "cable_sizing_node_id": "DB-WH-01.C06",
-      "designation": "Process motor M-02 (11 kW sheet-metal shear) — dedicated 3-phase radial (industrial_motor_duty, EXCLUDED from building_diversity per BLD-03)",
+      "designation": "Process motor M-02 (11 kW sheet-metal shear) \u2014 dedicated 3-phase radial (industrial_motor_duty, EXCLUDED from building_diversity per BLD-03)",
       "topology": "dedicated_radial",
-      "ocpd": {"rating_a": 32, "type": "RCBO", "curve": "D", "rcd_type": "A", "rcd_sensitivity_ma": 30, "breaking_capacity_ka": 16.0},
-      "cable": {"csa_mm2_or_awg": "4mm² + 4mm² CPC SWA (3-core + E)", "cores": 5, "length_m_total": 36.0, "material": "copper", "insulation": "XLPE_90"},
-      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "ocpd": {
+        "rating_a": 32,
+        "type": "RCBO",
+        "curve": "D",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 16.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "4mm\u00b2 + 4mm\u00b2 CPC SWA (3-core + E)",
+        "cores": 5,
+        "length_m_total": 36.0,
+        "material": "copper",
+        "insulation": "XLPE_90"
+      },
+      "rcd_posture": "type_a_30ma_per_\u00a7411_3_3",
       "tool_call_pending_for_zs_verification": false,
       "verified_zs_ohm": 0.36,
       "estimated_max_load_kw": 11.0,
       "diversified_max_load_a": 21.0,
-      "rooms_covered": ["warehouse-floor"]
+      "rooms_covered": [
+        "warehouse-floor"
+      ]
     },
     {
       "circuit_id": "C07",
       "cable_sizing_node_id": "DB-WH-01.C07",
-      "designation": "Goods lift LF-01 (5-person 630 kg) — dedicated 3-phase radial (office_lift_single, EXCLUDED from building_diversity per cross-skill lift coordination rule)",
+      "designation": "Goods lift LF-01 (5-person 630 kg) \u2014 dedicated 3-phase radial (office_lift_single, EXCLUDED from building_diversity per cross-skill lift coordination rule)",
       "topology": "dedicated_radial",
-      "ocpd": {"rating_a": 40, "type": "RCBO", "curve": "D", "rcd_type": "B", "rcd_sensitivity_ma": 30, "breaking_capacity_ka": 16.0},
-      "cable": {"csa_mm2_or_awg": "6mm² + 6mm² CPC SWA (3-core + E)", "cores": 5, "length_m_total": 28.0, "material": "copper", "insulation": "XLPE_90"},
-      "rcd_posture": "type_b_30ma_per_§531_3_3",
+      "ocpd": {
+        "rating_a": 40,
+        "type": "RCBO",
+        "curve": "D",
+        "rcd_type": "B",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 16.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "6mm\u00b2 + 6mm\u00b2 CPC SWA (3-core + E)",
+        "cores": 5,
+        "length_m_total": 28.0,
+        "material": "copper",
+        "insulation": "XLPE_90"
+      },
+      "rcd_posture": "type_b_30ma_per_\u00a7531_3_3",
       "tool_call_pending_for_zs_verification": false,
-      "verified_zs_ohm": 0.30,
+      "verified_zs_ohm": 0.3,
       "estimated_max_load_kw": 14.0,
       "diversified_max_load_a": 24.0,
-      "rooms_covered": ["loading-bay"]
+      "rooms_covered": [
+        "loading-bay"
+      ]
     },
     {
       "circuit_id": "C08",
       "cable_sizing_node_id": "DB-WH-01.C08",
-      "designation": "Forklift battery charging station — dedicated 3-phase radial (3× BS EN 1175-2 chargers @ 5 kW each)",
+      "designation": "Forklift battery charging station \u2014 dedicated 3-phase radial (3\u00d7 BS EN 1175-2 chargers @ 5 kW each)",
       "topology": "dedicated_radial",
-      "ocpd": {"rating_a": 32, "type": "RCBO", "curve": "C", "rcd_type": "B", "rcd_sensitivity_ma": 30, "breaking_capacity_ka": 16.0},
-      "cable": {"csa_mm2_or_awg": "4mm² + 4mm² CPC SWA (3-core + E)", "cores": 5, "length_m_total": 22.0, "material": "copper", "insulation": "XLPE_90"},
-      "rcd_posture": "type_b_30ma_per_§531_3_3",
+      "ocpd": {
+        "rating_a": 32,
+        "type": "RCBO",
+        "curve": "C",
+        "rcd_type": "B",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 16.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "4mm\u00b2 + 4mm\u00b2 CPC SWA (3-core + E)",
+        "cores": 5,
+        "length_m_total": 22.0,
+        "material": "copper",
+        "insulation": "XLPE_90"
+      },
+      "rcd_posture": "type_b_30ma_per_\u00a7531_3_3",
       "tool_call_pending_for_zs_verification": false,
       "verified_zs_ohm": 0.32,
       "estimated_max_load_kw": 15.0,
       "diversified_max_load_a": 22.5,
-      "rooms_covered": ["loading-bay"]
+      "rooms_covered": [
+        "loading-bay"
+      ]
     }
   ],
   "rooms": [
     {
       "room_id": "warehouse-floor",
       "room_type": "industrial_warehouse",
-      "dimensions_m": {"length": 38.0, "width": 25.0, "height": 6.5},
+      "dimensions_m": {
+        "length": 38.0,
+        "width": 25.0,
+        "height": 6.5
+      },
       "special_location": null,
       "sockets": [
-        {"id": "wh-S01", "type": "BS_4343_3P+N+E_32A_blue", "mount": "wall", "height_mm": 1200, "circuit_id": "C05", "ip_rating": "IP44"},
-        {"id": "wh-S02", "type": "BS_4343_3P+N+E_32A_blue", "mount": "wall", "height_mm": 1200, "circuit_id": "C06", "ip_rating": "IP44"},
-        {"id": "wh-S03", "type": "BS_1363_double_13A",       "mount": "wall", "height_mm": 1100, "circuit_id": "C03", "ip_rating": "IP44"},
-        {"id": "wh-S04", "type": "BS_1363_double_13A",       "mount": "wall", "height_mm": 1100, "circuit_id": "C03", "ip_rating": "IP44"}
+        {
+          "id": "wh-S01",
+          "type": "BS_4343_3P+N+E_32A_blue",
+          "mount": "wall",
+          "height_mm": 1200,
+          "circuit_id": "C05",
+          "ip_rating": "IP44"
+        },
+        {
+          "id": "wh-S02",
+          "type": "BS_4343_3P+N+E_32A_blue",
+          "mount": "wall",
+          "height_mm": 1200,
+          "circuit_id": "C06",
+          "ip_rating": "IP44"
+        },
+        {
+          "id": "wh-S03",
+          "type": "BS_1363_double_13A",
+          "mount": "wall",
+          "height_mm": 1100,
+          "circuit_id": "C03",
+          "ip_rating": "IP44"
+        },
+        {
+          "id": "wh-S04",
+          "type": "BS_1363_double_13A",
+          "mount": "wall",
+          "height_mm": 1100,
+          "circuit_id": "C03",
+          "ip_rating": "IP44"
+        }
       ]
     },
     {
       "room_id": "office-partition",
       "room_type": "office_open_plan",
-      "dimensions_m": {"length": 15.0, "width": 10.0, "height": 2.8},
+      "dimensions_m": {
+        "length": 15.0,
+        "width": 10.0,
+        "height": 2.8
+      },
       "special_location": null,
       "sockets": [
-        {"id": "off-S01", "type": "BS_1363_double_13A", "mount": "wall", "height_mm": 300, "circuit_id": "C01"},
-        {"id": "off-S02", "type": "BS_1363_double_13A", "mount": "wall", "height_mm": 300, "circuit_id": "C01"},
-        {"id": "off-S03", "type": "BS_1363_double_13A", "mount": "wall", "height_mm": 300, "circuit_id": "C01"},
-        {"id": "off-S04", "type": "BS_1363_double_13A", "mount": "wall", "height_mm": 300, "circuit_id": "C01"},
-        {"id": "off-S05", "type": "BS_1363_double_13A", "mount": "wall", "height_mm": 300, "circuit_id": "C01"},
-        {"id": "off-S06", "type": "BS_1363_double_13A", "mount": "wall", "height_mm": 300, "circuit_id": "C01"},
-        {"id": "off-S07", "type": "BS_1363_double_13A", "mount": "wall", "height_mm": 300, "circuit_id": "C01"},
-        {"id": "off-S08", "type": "BS_1363_double_13A", "mount": "wall", "height_mm": 300, "circuit_id": "C01"}
+        {
+          "id": "off-S01",
+          "type": "BS_1363_double_13A",
+          "mount": "wall",
+          "height_mm": 300,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "off-S02",
+          "type": "BS_1363_double_13A",
+          "mount": "wall",
+          "height_mm": 300,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "off-S03",
+          "type": "BS_1363_double_13A",
+          "mount": "wall",
+          "height_mm": 300,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "off-S04",
+          "type": "BS_1363_double_13A",
+          "mount": "wall",
+          "height_mm": 300,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "off-S05",
+          "type": "BS_1363_double_13A",
+          "mount": "wall",
+          "height_mm": 300,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "off-S06",
+          "type": "BS_1363_double_13A",
+          "mount": "wall",
+          "height_mm": 300,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "off-S07",
+          "type": "BS_1363_double_13A",
+          "mount": "wall",
+          "height_mm": 300,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "off-S08",
+          "type": "BS_1363_double_13A",
+          "mount": "wall",
+          "height_mm": 300,
+          "circuit_id": "C01"
+        }
       ]
     },
     {
       "room_id": "kitchenette",
       "room_type": "kitchenette_commercial",
-      "dimensions_m": {"length": 4.0, "width": 3.0, "height": 2.8},
+      "dimensions_m": {
+        "length": 4.0,
+        "width": 3.0,
+        "height": 2.8
+      },
       "special_location": null,
       "sockets": [
-        {"id": "kit-S01", "type": "BS_1363_double_13A",                       "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C02"},
-        {"id": "kit-S02", "type": "BS_1363_double_13A",                       "mount": "above_worktop", "height_mm": 1100, "circuit_id": "C02"},
-        {"id": "kit-S03", "type": "switched_connection_unit_13A_BS_EN_60669", "mount": "wall",          "height_mm": 300,  "circuit_id": "C02", "fed_by_spur": true, "spur_purpose": "under-counter fridge fixed feed", "spur_load_kw": 0.2},
-        {"id": "kit-S04", "type": "switched_connection_unit_13A_BS_EN_60669", "mount": "wall",          "height_mm": 300,  "circuit_id": "C02", "fed_by_spur": true, "spur_purpose": "dishwasher fixed feed",          "spur_load_kw": 1.8}
+        {
+          "id": "kit-S01",
+          "type": "BS_1363_double_13A",
+          "mount": "above_worktop",
+          "height_mm": 1100,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "kit-S02",
+          "type": "BS_1363_double_13A",
+          "mount": "above_worktop",
+          "height_mm": 1100,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "kit-S03",
+          "type": "switched_connection_unit_13A_BS_EN_60669",
+          "mount": "wall",
+          "height_mm": 300,
+          "circuit_id": "C02",
+          "fed_by_spur": true,
+          "spur_purpose": "under-counter fridge fixed feed",
+          "spur_load_kw": 0.2
+        },
+        {
+          "id": "kit-S04",
+          "type": "switched_connection_unit_13A_BS_EN_60669",
+          "mount": "wall",
+          "height_mm": 300,
+          "circuit_id": "C02",
+          "fed_by_spur": true,
+          "spur_purpose": "dishwasher fixed feed",
+          "spur_load_kw": 1.8
+        }
       ]
     },
     {
       "room_id": "loading-bay",
       "room_type": "industrial_loading_bay",
-      "dimensions_m": {"length": 10.0, "width": 6.0, "height": 5.0},
+      "dimensions_m": {
+        "length": 10.0,
+        "width": 6.0,
+        "height": 5.0
+      },
       "special_location": null,
       "sockets": [
-        {"id": "lb-S01", "type": "BS_4343_3P+N+E_32A_blue", "mount": "wall", "height_mm": 1500, "circuit_id": "C08", "ip_rating": "IP44"},
-        {"id": "lb-S02", "type": "BS_4343_3P+N+E_32A_blue", "mount": "wall", "height_mm": 1500, "circuit_id": "C08", "ip_rating": "IP44"},
-        {"id": "lb-S03", "type": "BS_4343_3P+N+E_32A_blue", "mount": "wall", "height_mm": 1500, "circuit_id": "C08", "ip_rating": "IP44"}
+        {
+          "id": "lb-S01",
+          "type": "BS_4343_3P+N+E_32A_blue",
+          "mount": "wall",
+          "height_mm": 1500,
+          "circuit_id": "C08",
+          "ip_rating": "IP44"
+        },
+        {
+          "id": "lb-S02",
+          "type": "BS_4343_3P+N+E_32A_blue",
+          "mount": "wall",
+          "height_mm": 1500,
+          "circuit_id": "C08",
+          "ip_rating": "IP44"
+        },
+        {
+          "id": "lb-S03",
+          "type": "BS_4343_3P+N+E_32A_blue",
+          "mount": "wall",
+          "height_mm": 1500,
+          "circuit_id": "C08",
+          "ip_rating": "IP44"
+        }
       ]
     },
     {
       "room_id": "plant-alcove",
       "room_type": "server_room",
-      "dimensions_m": {"length": 8.0, "width": 5.0, "height": 3.0},
+      "dimensions_m": {
+        "length": 8.0,
+        "width": 5.0,
+        "height": 3.0
+      },
       "special_location": null,
       "sockets": [
-        {"id": "pa-S01", "type": "BS_1363_double_13A", "mount": "wall", "height_mm": 600, "circuit_id": "C04"},
-        {"id": "pa-S02", "type": "BS_1363_double_13A", "mount": "wall", "height_mm": 600, "circuit_id": "C04"}
+        {
+          "id": "pa-S01",
+          "type": "BS_1363_double_13A",
+          "mount": "wall",
+          "height_mm": 600,
+          "circuit_id": "C04"
+        },
+        {
+          "id": "pa-S02",
+          "type": "BS_1363_double_13A",
+          "mount": "wall",
+          "height_mm": 600,
+          "circuit_id": "C04"
+        }
       ]
     }
   ],
@@ -245,14 +587,34 @@
     ],
     "building_diversified_demand_a": 59.0,
     "per_circuit_demand_inputs": [
-      {"circuit_id": "C01", "post_per_load_diversity_a": 18.5, "building_factor_applied": 0.70},
-      {"circuit_id": "C02", "post_per_load_diversity_a": 9.6,  "building_factor_applied": 0.70},
-      {"circuit_id": "C03", "post_per_load_diversity_a": 19.6, "building_factor_applied": 0.70},
-      {"circuit_id": "C04", "post_per_load_diversity_a": 14.4, "building_factor_applied": 0.70},
-      {"circuit_id": "C08", "post_per_load_diversity_a": 22.5, "building_factor_applied": 0.70}
+      {
+        "circuit_id": "C01",
+        "post_per_load_diversity_a": 18.5,
+        "building_factor_applied": 0.7
+      },
+      {
+        "circuit_id": "C02",
+        "post_per_load_diversity_a": 9.6,
+        "building_factor_applied": 0.7
+      },
+      {
+        "circuit_id": "C03",
+        "post_per_load_diversity_a": 19.6,
+        "building_factor_applied": 0.7
+      },
+      {
+        "circuit_id": "C04",
+        "post_per_load_diversity_a": 14.4,
+        "building_factor_applied": 0.7
+      },
+      {
+        "circuit_id": "C08",
+        "post_per_load_diversity_a": 22.5,
+        "building_factor_applied": 0.7
+      }
     ],
-    "_clause_citation": "BS 7671:2018+A2:2022 §311 (maximum demand and diversity) + IET On-Site Guide 8th Edition Appendix A Table A1 (industrial profile + industrial_motor_duty + office_lift_single exclusions) + BS 7671:2018+A2:2022 §132 (fundamental principles) + BS 7671:2018+A2:2022 §552 (rotating machines — motor circuits)",
-    "_derivation_note": "Industrial profile resolved from diversity-factors.json::industrial_diversity (rule_of_thumb: diversity at SUBSTATION level, not per circuit; each motor/process at own rating). DIV-NN exclusion: industrial_motor_duty (C05+C06) + office_lift_single (C07) NEVER in applies_load_types[] — they compose ALGEBRAICALLY at upstream switchboard per industrial_motor_duty.diversity_pct=100 + DIV-NN lift rule (D2.3). building_factor 0.70 on 5 in-scope (C01+C02+C03+C04+C08): Σ post = 84.6 A × 0.70 = 59.22 A → recorded building_diversified_demand_a = 59.0 A (0.37% drift, within INV-13 ±5%). Submain target adds motor+lift algebraically: 59.0+21.0+21.0+24.0 = 125.0 A. INV-19 PASS on all 8 circuits."
+    "_clause_citation": "BS 7671:2018+A2:2022 \u00a7311 (maximum demand and diversity) + IET On-Site Guide 8th Edition Appendix A Table A1 (industrial profile + industrial_motor_duty + office_lift_single exclusions) + BS 7671:2018+A2:2022 \u00a7132 (fundamental principles) + BS 7671:2018+A2:2022 \u00a7552 (rotating machines \u2014 motor circuits)",
+    "_derivation_note": "Industrial profile resolved from diversity-factors.json::industrial_diversity (rule_of_thumb: diversity at SUBSTATION level, not per circuit; each motor/process at own rating). DIV-NN exclusion: industrial_motor_duty (C05+C06) + office_lift_single (C07) NEVER in applies_load_types[] \u2014 they compose ALGEBRAICALLY at upstream switchboard per industrial_motor_duty.diversity_pct=100 + DIV-NN lift rule (D2.3). building_factor 0.70 on 5 in-scope (C01+C02+C03+C04+C08): \u03a3 post = 84.6 A \u00d7 0.70 = 59.22 A \u2192 recorded building_diversified_demand_a = 59.0 A (0.37% drift, within INV-13 \u00b15%). Submain target adds motor+lift algebraically: 59.0+21.0+21.0+24.0 = 125.0 A. INV-19 PASS on all 8 circuits."
   },
   "drawing_layout": {
     "sheet_size": "A1",
@@ -263,59 +625,59 @@
     "compliant": true,
     "non_compliance_flags": [
       {
-        "message": "building_diversity industrial profile resolved from the verified BS 7671 + IET OSG App A Table A1 standards file at building_factor=0.70 applied ONLY to the 5 in-scope load families (office_small_power_workstation + office_lighting + office_kitchenette + industrial_high_bay_lighting + industrial_battery_charging + industrial_comms_cabinet_ups → C01+C02+C03+C04+C08). The 2 process-motor radials (C05+C06 — industrial_motor_duty) and the 1 goods-lift radial (C07 — office_lift_single) are EXCLUDED from applies_load_types[] per the verified industrial_diversity.rule_of_thumb entry: 'Apply diversity at the SUBSTATION level based on demand history, not at individual circuit level. Each motor or process is sized at its own rating.' These three excluded circuits sum to 21.0+21.0+24.0 = 66.0 A and the upstream switchboard sizing skill adds them ALGEBRAICALLY on top of the building_diversified_demand_a — banned: never cite Reg 559 (the D2.3 lift-diversity misattribution catch); the lift exclusion anchor is IET OSG App A Table A1 office_lift_single.diversity_pct=100 entry + the cross-skill DIV-NN lift coordination rule.",
-        "code_clause": "BS 7671:2018+A2:2022 §311 + IET On-Site Guide 8th Edition Appendix A Table A1",
+        "message": "building_diversity industrial profile resolved from the verified BS 7671 + IET OSG App A Table A1 standards file at building_factor=0.70 applied ONLY to the 5 in-scope load families (office_small_power_workstation + office_lighting + office_kitchenette + industrial_high_bay_lighting + industrial_battery_charging + industrial_comms_cabinet_ups \u2192 C01+C02+C03+C04+C08). The 2 process-motor radials (C05+C06 \u2014 industrial_motor_duty) and the 1 goods-lift radial (C07 \u2014 office_lift_single) are EXCLUDED from applies_load_types[] per the verified industrial_diversity.rule_of_thumb entry: 'Apply diversity at the SUBSTATION level based on demand history, not at individual circuit level. Each motor or process is sized at its own rating.' These three excluded circuits sum to 21.0+21.0+24.0 = 66.0 A and the upstream switchboard sizing skill adds them ALGEBRAICALLY on top of the building_diversified_demand_a \u2014 banned: never cite Reg 559 (the D2.3 lift-diversity misattribution catch); the lift exclusion anchor is IET OSG App A Table A1 office_lift_single.diversity_pct=100 entry + the cross-skill DIV-NN lift coordination rule.",
+        "code_clause": "BS 7671:2018+A2:2022 \u00a7311 + IET On-Site Guide 8th Edition Appendix A Table A1",
         "severity": "info"
       },
       {
-        "message": "design_density_w_per_m2_override=90 W/m² for the industrial profile. Industrial design density sits in the 80–150 W/m² typical range per BCO/IET industrial-load guidance, and 90 W/m² is a defensible midpoint for a manufacturing + dispatch envelope. future_expansion_pct_override=30 carried forward to the submain sizing hop per the verified industrial future_expansion_pct_default=30.0 entry — the engineer's override matches the verified default exactly.",
-        "code_clause": "BS 7671:2018+A2:2022 §311 + IET On-Site Guide 8th Edition Appendix A Table A1",
+        "message": "design_density_w_per_m2_override=90 W/m\u00b2 for the industrial profile. Industrial design density sits in the 80\u2013150 W/m\u00b2 typical range per BCO/IET industrial-load guidance, and 90 W/m\u00b2 is a defensible midpoint for a manufacturing + dispatch envelope. future_expansion_pct_override=30 carried forward to the submain sizing hop per the verified industrial future_expansion_pct_default=30.0 entry \u2014 the engineer's override matches the verified default exactly.",
+        "code_clause": "BS 7671:2018+A2:2022 \u00a7311 + IET On-Site Guide 8th Edition Appendix A Table A1",
         "severity": "info"
       },
       {
-        "message": "building_diversified_demand_a=59.0 A reconciles within ±5% against the mathematical product Σ in-scope (84.6 A) × building_factor 0.70 = 59.22 A → drift 0.37%, well within INV-13's ±5% tolerance. Upstream submain sizing target adds the EXCLUDED motor + lift radials algebraically per the verified industrial_motor_duty + office_lift_single diversity_pct=100 entries: 59.0 + 21.0 (C05) + 21.0 (C06) + 24.0 (C07) = 125.0 A. Next ascending standard MCB at the submain hop is 125 A (Iz of the upstream submain cable must accommodate this; sized by the cable-sizing skill at the next hop). The future_expansion_pct=30 carries forward as a separate field for the submain-sizing skill — NOT folded into building_diversified_demand_a so the headroom basis stays transparent.",
-        "code_clause": "BS 7671:2018+A2:2022 §132",
+        "message": "building_diversified_demand_a=59.0 A reconciles within \u00b15% against the mathematical product \u03a3 in-scope (84.6 A) \u00d7 building_factor 0.70 = 59.22 A \u2192 drift 0.37%, well within INV-13's \u00b15% tolerance. Upstream submain sizing target adds the EXCLUDED motor + lift radials algebraically per the verified industrial_motor_duty + office_lift_single diversity_pct=100 entries: 59.0 + 21.0 (C05) + 21.0 (C06) + 24.0 (C07) = 125.0 A. Next ascending standard MCB at the submain hop is 125 A (Iz of the upstream submain cable must accommodate this; sized by the cable-sizing skill at the next hop). The future_expansion_pct=30 carries forward as a separate field for the submain-sizing skill \u2014 NOT folded into building_diversified_demand_a so the headroom basis stays transparent.",
+        "code_clause": "BS 7671:2018+A2:2022 \u00a7132",
         "severity": "info"
       },
       {
-        "message": "INV-19 cable-sizing cascade integration emits PASS on all 8 circuits (including the 3 EXCLUDED-from-building_diversity motor + lift circuits — INV-19 reconciles the cable-sizing payload vs the small-power IR per-circuit demand regardless of whether the circuit is in applies_load_types[]). Drift summary across all 8 circuits: C01 0.0% / C02 0.0% / C03 0.0% / C04 0.0% / C05 0.0% / C06 0.0% / C07 0.0% / C08 0.0% — exact match because the inlined cable_sizing payload mirrors the small-power IR's diversified_max_load_a per circuit (DEFERRED-POINTER cascade pattern).",
-        "code_clause": "BS 7671:2018+A2:2022 §132",
+        "message": "INV-19 cable-sizing cascade integration emits PASS on all 8 circuits (including the 3 EXCLUDED-from-building_diversity motor + lift circuits \u2014 INV-19 reconciles the cable-sizing payload vs the small-power IR per-circuit demand regardless of whether the circuit is in applies_load_types[]). Drift summary across all 8 circuits: C01 0.0% / C02 0.0% / C03 0.0% / C04 0.0% / C05 0.0% / C06 0.0% / C07 0.0% / C08 0.0% \u2014 exact match because the inlined cable_sizing payload mirrors the small-power IR's diversified_max_load_a per circuit (DEFERRED-POINTER cascade pattern).",
+        "code_clause": "BS 7671:2018+A2:2022 \u00a7132",
         "severity": "info"
       },
       {
-        "message": "C05 + C06 process motors selected on Type D MCB curve per BS EN 61009-1 product range — Type D handles motor inrush 10–20× FLC without nuisance tripping (Type B trips at 3–5×, Type C at 5–10×). 11 kW motor FLC ≈ 21.0 A on 400 V 3-phase; 32 A Type D RCBO sized per §433.1.1 In = 32 A ≥ Ib = 21 A and per §552 rotating-machine guidance to accommodate starting transient. Type A RCD 30 mA per §411.3.3 (motors do not present DC-leakage that would blind Type A).",
-        "code_clause": "BS 7671:2018+A2:2022 §552 + §433.1.1",
+        "message": "C05 + C06 process motors selected on Type D MCB curve per BS EN 61009-1 product range \u2014 Type D handles motor inrush 10\u201320\u00d7 FLC without nuisance tripping (Type B trips at 3\u20135\u00d7, Type C at 5\u201310\u00d7). 11 kW motor FLC \u2248 21.0 A on 400 V 3-phase; 32 A Type D RCBO sized per \u00a7433.1.1 In = 32 A \u2265 Ib = 21 A and per \u00a7552 rotating-machine guidance to accommodate starting transient. Type A RCD 30 mA per \u00a7411.3.3 (motors do not present DC-leakage that would blind Type A).",
+        "code_clause": "BS 7671:2018+A2:2022 \u00a7552 + \u00a7433.1.1",
         "severity": "info"
       },
       {
-        "message": "C07 goods lift sized on 40 A Type D RCBO + Type B 30 mA RCD per §531.3.3 — the lift drive variable-frequency-drive (VFD) presents smooth DC residual current that blinds Type A. Lift sized at 14 kW connected (~ 24 A FLC at 400 V 3-phase) with Type D curve for VFD-soft-start inrush headroom. Type B RCD aligns with the BS EN 61800-5-1 VFD product standard's residual-DC characteristic.",
-        "code_clause": "BS 7671:2018+A2:2022 §531.3.3 + §552",
+        "message": "C07 goods lift sized on 40 A Type D RCBO + Type B 30 mA RCD per \u00a7531.3.3 \u2014 the lift drive variable-frequency-drive (VFD) presents smooth DC residual current that blinds Type A. Lift sized at 14 kW connected (~ 24 A FLC at 400 V 3-phase) with Type D curve for VFD-soft-start inrush headroom. Type B RCD aligns with the BS EN 61800-5-1 VFD product standard's residual-DC characteristic.",
+        "code_clause": "BS 7671:2018+A2:2022 \u00a7531.3.3 + \u00a7552",
         "severity": "info"
       },
       {
-        "message": "C04 plant-alcove + C07 lift + C08 battery-charging all apply Type B 30 mA RCD per BS 7671:2018+A2:2022 §531.3.3 — UPS rectifier SMPS (C04), VFD lift drive (C07), and forklift charger SMPS front-ends (C08) all produce smooth DC residual currents that blind Type A/F RCDs.",
-        "code_clause": "BS 7671:2018+A2:2022 §531.3.3",
+        "message": "C04 plant-alcove + C07 lift + C08 battery-charging all apply Type B 30 mA RCD per BS 7671:2018+A2:2022 \u00a7531.3.3 \u2014 UPS rectifier SMPS (C04), VFD lift drive (C07), and forklift charger SMPS front-ends (C08) all produce smooth DC residual currents that blind Type A/F RCDs.",
+        "code_clause": "BS 7671:2018+A2:2022 \u00a7531.3.3",
         "severity": "info"
       },
       {
-        "message": "All Zs verification consumed from the cable_sizing cascade payload's verified_zs_ohm field per circuit (range 0.30–0.62 Ω across the 8 circuits). All values sit below the §411.4.5 0.4 s disconnection-time Zs limit for the RCBO sizes selected (32 A and 20 A and 40 A BS EN 61009 on TN-S supply with 0.18 Ω Ze). No tool_call_pending_for_zs_verification fires on any circuit.",
-        "code_clause": "BS 7671:2018+A2:2022 §411.4.5",
+        "message": "All Zs verification consumed from the cable_sizing cascade payload's verified_zs_ohm field per circuit (range 0.30\u20130.62 \u03a9 across the 8 circuits). All values sit below the \u00a7411.4.5 0.4 s disconnection-time Zs limit for the RCBO sizes selected (32 A and 20 A and 40 A BS EN 61009 on TN-S supply with 0.18 \u03a9 Ze). No tool_call_pending_for_zs_verification fires on any circuit.",
+        "code_clause": "BS 7671:2018+A2:2022 \u00a7411.4.5",
         "severity": "info"
       }
     ],
     "assumptions": [
-      "Utility-declared Ze=0.18 Ω at DB-WH-01 earthing terminal; not yet site-measured (verification per BS 7671:2018+A2:2022 §612.7 at first energisation).",
-      "Utility-declared PSCC=16 kA at DB-WH-01 busbar (industrial-park supply with shorter mains feeder than typical commercial floor); all MCBs/RCBOs selected at 16 kA Icu per BS EN 61009-1 product range to satisfy BS 7671:2018+A2:2022 §434.5.1.",
-      "Office partition modelled as a single ring final circuit C01 on 2.5 mm² + 1.5 mm² CPC PVC T+E per IET OSG 8th Ed Appendix H — 8 perimeter doubles for the admin workstations; ring length 42 m within IET OSG recipe; per-circuit diversified_max_load_a 18.5 A held under the 32 A RCBO rating.",
-      "Kitchenette on C02 20 A radial with 2 FCU spurs (under-counter fridge + dishwasher) per IET OSG 8th Ed §8.4.4 AMD 2; FCU spur load 0.2+1.8=2.0 kW well below the BS 1363 13 A spur limit.",
-      "Two process-motor circuits C05 + C06 each sized at 32 A Type D RCBO on 4 mm² + 4 mm² CPC SWA per BS 7671:2018+A2:2022 §552 rotating-machine guidance — 11 kW @ 400V 3-phase FLC ≈ 21 A, Type D handles 10–20× inrush, In=32 A ≥ Ib=21 A.",
-      "Goods lift C07 sized at 40 A Type D RCBO + Type B 30 mA RCD on 6 mm² + 6 mm² CPC SWA per BS 7671:2018+A2:2022 §531.3.3 — VFD drive presents smooth DC residual that blinds Type A; FLC ≈ 24 A on the 14 kW connected load with VFD soft-start.",
-      "Forklift battery charging C08 sized at 32 A Type C RCBO + Type B 30 mA RCD on 4 mm² + 4 mm² CPC SWA — 3-charger array @ 5 kW each = 15 kW connected; FLC ≈ 22.5 A on 3-phase; Type B for the SMPS charger DC-leakage characteristic.",
-      "Dispatch UPS comms cabinet C04 on a UPS-fed dedicated radial with Type B 30 mA RCD per §531.3.3; cross-skill alignment with db-layout intl-dbcomms-data shipped policy.",
+      "Utility-declared Ze=0.18 \u03a9 at DB-WH-01 earthing terminal; not yet site-measured (verification per BS 7671:2018+A2:2022 \u00a7612.7 at first energisation).",
+      "Utility-declared PSCC=16 kA at DB-WH-01 busbar (industrial-park supply with shorter mains feeder than typical commercial floor); all MCBs/RCBOs selected at 16 kA Icu per BS EN 61009-1 product range to satisfy BS 7671:2018+A2:2022 \u00a7434.5.1.",
+      "Office partition modelled as a single ring final circuit C01 on 2.5 mm\u00b2 + 1.5 mm\u00b2 CPC PVC T+E per IET OSG 8th Ed Appendix H \u2014 8 perimeter doubles for the admin workstations; ring length 42 m within IET OSG recipe; per-circuit diversified_max_load_a 18.5 A held under the 32 A RCBO rating.",
+      "Kitchenette on C02 20 A radial with 2 FCU spurs (under-counter fridge + dishwasher) per IET OSG 8th Ed \u00a78.4.4 AMD 2; FCU spur load 0.2+1.8=2.0 kW well below the BS 1363 13 A spur limit.",
+      "Two process-motor circuits C05 + C06 each sized at 32 A Type D RCBO on 4 mm\u00b2 + 4 mm\u00b2 CPC SWA per BS 7671:2018+A2:2022 \u00a7552 rotating-machine guidance \u2014 11 kW @ 400V 3-phase FLC \u2248 21 A, Type D handles 10\u201320\u00d7 inrush, In=32 A \u2265 Ib=21 A.",
+      "Goods lift C07 sized at 40 A Type D RCBO + Type B 30 mA RCD on 6 mm\u00b2 + 6 mm\u00b2 CPC SWA per BS 7671:2018+A2:2022 \u00a7531.3.3 \u2014 VFD drive presents smooth DC residual that blinds Type A; FLC \u2248 24 A on the 14 kW connected load with VFD soft-start.",
+      "Forklift battery charging C08 sized at 32 A Type C RCBO + Type B 30 mA RCD on 4 mm\u00b2 + 4 mm\u00b2 CPC SWA \u2014 3-charger array @ 5 kW each = 15 kW connected; FLC \u2248 22.5 A on 3-phase; Type B for the SMPS charger DC-leakage characteristic.",
+      "Dispatch UPS comms cabinet C04 on a UPS-fed dedicated radial with Type B 30 mA RCD per \u00a7531.3.3; cross-skill alignment with db-layout intl-dbcomms-data shipped policy.",
       "Cable-sizing intent consumed via DEFERRED-POINTER pattern; consumed_intents.cable_sizing.payload is INLINED at C.6-ship with byte-identical values that the upstream uk-warehouse-submain-wh01 cable-sizing example will emit when it lands.",
-      "building_diversity profile resolved from the verified BS 7671 + IET OSG App A Table A1 industrial_diversity entry at building_factor=0.70 applied ONLY to the 5 in-scope load families (office_small_power_workstation + office_lighting + office_kitchenette + industrial_high_bay_lighting + industrial_battery_charging + industrial_comms_cabinet_ups → C01+C02+C03+C04+C08). The 2 process-motor radials (C05+C06) and the 1 goods-lift radial (C07) are EXCLUDED per the verified industrial_motor_duty.diversity_pct=100 entry + the cross-skill DIV-NN lift coordination rule.",
-      "NO §526.2 sub-clause citation (not transcribed in verified file — only §526 top-level); NO Reg 559 citation for the lift exclusion (that was the D2.3 misattribution catch — the correct anchor is IET OSG App A Table A1 office_lift_single.diversity_pct=100 entry + the DIV-NN cross-skill rule); NO OZEV / 3rd Edition / §433.2 citation — all banned per the C.6 task brief's citation-hygiene requirement.",
-      "building_diversified_demand_a=59.0 A reconciles within 0.37% drift against the mathematical product Σ in-scope (84.6 A) × building_factor 0.70 = 59.22 A — INV-13 sub-check 3 PASS; future_expansion_pct=30 carried forward as separate field for the upstream submain-sizing hop."
+      "building_diversity profile resolved from the verified BS 7671 + IET OSG App A Table A1 industrial_diversity entry at building_factor=0.70 applied ONLY to the 5 in-scope load families (office_small_power_workstation + office_lighting + office_kitchenette + industrial_high_bay_lighting + industrial_battery_charging + industrial_comms_cabinet_ups \u2192 C01+C02+C03+C04+C08). The 2 process-motor radials (C05+C06) and the 1 goods-lift radial (C07) are EXCLUDED per the verified industrial_motor_duty.diversity_pct=100 entry + the cross-skill DIV-NN lift coordination rule.",
+      "NO \u00a7526.2 sub-clause citation (not transcribed in verified file \u2014 only \u00a7526 top-level); NO Reg 559 citation for the lift exclusion (that was the D2.3 misattribution catch \u2014 the correct anchor is IET OSG App A Table A1 office_lift_single.diversity_pct=100 entry + the DIV-NN cross-skill rule); NO OZEV / 3rd Edition / \u00a7433.2 citation \u2014 all banned per the C.6 task brief's citation-hygiene requirement.",
+      "building_diversified_demand_a=59.0 A reconciles within 0.37% drift against the mathematical product \u03a3 in-scope (84.6 A) \u00d7 building_factor 0.70 = 59.22 A \u2014 INV-13 sub-check 3 PASS; future_expansion_pct=30 carried forward as separate field for the upstream submain-sizing hop."
     ]
   },
   "flags": [
@@ -325,89 +687,298 @@
     "DIV-NN-EXCLUSION:office_lift_single"
   ],
   "drawing_notes": [
-    "UK 1200 m² single-tenant industrial warehouse (Leeds Enterprise Park). 8 circuits served from DB-WH-01: C01 office ring final, C02 kitchenette radial, C03 warehouse high-bay + GP-socket radial, C04 dispatch UPS comms (Type B), C05+C06 process motors (Type D + Type A), C07 goods lift (Type D + Type B), C08 forklift battery charging (Type C + Type B).",
-    "C05 + C06 process motors on 32 A Type D RCBO per BS EN 61009-1 — Type D handles 10–20× motor inrush; 11 kW @ 400V 3-phase FLC ≈ 21 A; sized per BS 7671:2018+A2:2022 §552 rotating-machine guidance.",
-    "C07 goods lift on 40 A Type D RCBO + Type B 30 mA per §531.3.3 — VFD drive DC-leakage characteristic mandates Type B.",
-    "C08 forklift battery charging on 32 A Type C RCBO + Type B 30 mA — SMPS charger front-end DC-leakage.",
-    "C04 dispatch UPS comms on Type B 30 mA per §531.3.3 — mirrors the db-layout intl-dbcomms-data shipped policy.",
+    "UK 1200 m\u00b2 single-tenant industrial warehouse (Leeds Enterprise Park). 8 circuits served from DB-WH-01: C01 office ring final, C02 kitchenette radial, C03 warehouse high-bay + GP-socket radial, C04 dispatch UPS comms (Type B), C05+C06 process motors (Type D + Type A), C07 goods lift (Type D + Type B), C08 forklift battery charging (Type C + Type B).",
+    "C05 + C06 process motors on 32 A Type D RCBO per BS EN 61009-1 \u2014 Type D handles 10\u201320\u00d7 motor inrush; 11 kW @ 400V 3-phase FLC \u2248 21 A; sized per BS 7671:2018+A2:2022 \u00a7552 rotating-machine guidance.",
+    "C07 goods lift on 40 A Type D RCBO + Type B 30 mA per \u00a7531.3.3 \u2014 VFD drive DC-leakage characteristic mandates Type B.",
+    "C08 forklift battery charging on 32 A Type C RCBO + Type B 30 mA \u2014 SMPS charger front-end DC-leakage.",
+    "C04 dispatch UPS comms on Type B 30 mA per \u00a7531.3.3 \u2014 mirrors the db-layout intl-dbcomms-data shipped policy.",
     "Layer naming follows BS 1192:2007+A2:2016 discipline-element-modifier: E-POW-OUTLET-WH, E-POW-CIRCUIT-WH, E-POW-DB-WH, E-POW-BDIV-WH.",
-    "building_diversity demand summary panel on the A1 sheet: per-circuit post_per_load_diversity_a for the 5 in-scope families (C01+C02+C03+C04+C08), building_factor 0.70, recorded building_diversified_demand_a 59.0 A (drift 0.37% vs mathematical 59.22 A — INV-13 PASS), motor + lift radials added algebraically (C05+C06+C07 = 66.0 A), upstream submain MCB sizing target 125.0 A → next standard 125 A.",
+    "building_diversity demand summary panel on the A1 sheet: per-circuit post_per_load_diversity_a for the 5 in-scope families (C01+C02+C03+C04+C08), building_factor 0.70, recorded building_diversified_demand_a 59.0 A (drift 0.37% vs mathematical 59.22 A \u2014 INV-13 PASS), motor + lift radials added algebraically (C05+C06+C07 = 66.0 A), upstream submain MCB sizing target 125.0 A \u2192 next standard 125 A.",
     "DIV-NN exclusion discipline visible on the panel: motor + lift radials shown in a separate band with the note 'EXCLUDED from building_factor per IET OSG App A Table A1 + DIV-NN cross-skill coordination rule (banned: never cite Reg 559)'."
   ],
   "rationale": {
-    "chat_summary": "GB 1200 m² single-tenant industrial warehouse. 400V TPN+E TN-S, Ze=0.18Ω, PSCC=16kA. 8 circuits: C01 office ring, C02 kitchenette, C03 high-bay+GP radial, C04 UPS dispatch (Type B), C05+C06 process motors (Type D 32A @ 11 kW), C07 goods lift (Type D+B 40A), C08 forklift charging (Type C+B 32A). NEW v2.0 building_diversity emits INDUSTRIAL profile (BLD-02): building_factor 0.70 ONLY on 5 in-scope circuits (C01..C04+C08); motors (C05+C06) + lift (C07) EXCLUDED per IET OSG App A industrial_motor_duty.diversity_pct=100 + office_lift_single.diversity_pct=100 + DIV-NN cross-skill rule (D1 motor + D2.3 lift). 4-place honest disclosure of exclusion; building_diversified_demand_a = 59.0 A reconciles within ±5%. All 19 INVs PASS. Banned: never cite Reg 559 anchor.",
+    "chat_summary": "GB 1200 m\u00b2 single-tenant industrial warehouse. 400V TPN+E TN-S, Ze=0.18\u03a9, PSCC=16kA. 8 circuits: C01 office ring, C02 kitchenette, C03 high-bay+GP radial, C04 UPS dispatch (Type B), C05+C06 process motors (Type D 32A @ 11 kW), C07 goods lift (Type D+B 40A), C08 forklift charging (Type C+B 32A). NEW v2.0 building_diversity emits INDUSTRIAL profile (BLD-02): building_factor 0.70 ONLY on 5 in-scope circuits (C01..C04+C08); motors (C05+C06) + lift (C07) EXCLUDED per IET OSG App A industrial_motor_duty.diversity_pct=100 + office_lift_single.diversity_pct=100 + DIV-NN cross-skill rule (D1 motor + D2.3 lift). 4-place honest disclosure of exclusion; building_diversified_demand_a = 59.0 A reconciles within \u00b15%. All 19 INVs PASS. Banned: never cite Reg 559 anchor.",
     "sections": [
       {
         "title": "Jurisdiction + Supply",
-        "summary": "GB jurisdiction; BS 7671:2018+A2:2022 + IET On-Site Guide 8th Edition apply. Utility TN-S 400V TPN+E supply at the DB-WH-01 busbar with declared Ze=0.18 Ω and PSCC=16 kA. The 16 kA PSCC reflects a typical industrial-park supply (shorter mains feeder from the substation than the floor-submain commercial supply in C.5). §434.5.1 sets the short-circuit verification rule — all RCBOs Icu ≥ 16 kA via the BS EN 61009-1 product range.",
+        "summary": "GB jurisdiction; BS 7671:2018+A2:2022 + IET On-Site Guide 8th Edition apply. Utility TN-S 400V TPN+E supply at the DB-WH-01 busbar with declared Ze=0.18 \u03a9 and PSCC=16 kA. The 16 kA PSCC reflects a typical industrial-park supply (shorter mains feeder from the substation than the floor-submain commercial supply in C.5). \u00a7434.5.1 sets the short-circuit verification rule \u2014 all RCBOs Icu \u2265 16 kA via the BS EN 61009-1 product range.",
         "decisions": [
-          {"label": "TN-S supply confirmed", "summary": "Utility provides dedicated PE conductor separate from N at the parent DB earthing terminal.", "rule": "TN-S earthing arrangement per BS 7671:2018+A2:2022 §312", "code_clause": "BS 7671:2018+A2:2022 §312"},
-          {"label": "PSCC 16 kA → all RCBOs ≥ 16 kA Icu", "summary": "Declared 16 kA at the DB-WH-01 busbar; every RCBO must have a breaking capacity ≥ 16 kA per §434.5.1; product compliance via BS EN 61009-1.", "rule": "OCPD breaking capacity ≥ prospective fault current", "code_clause": "BS 7671:2018+A2:2022 §434.5.1"}
+          {
+            "label": "TN-S supply confirmed",
+            "summary": "Utility provides dedicated PE conductor separate from N at the parent DB earthing terminal.",
+            "rule": "TN-S earthing arrangement per BS 7671:2018+A2:2022 \u00a7312",
+            "code_clause": "BS 7671:2018+A2:2022 \u00a7312"
+          },
+          {
+            "label": "PSCC 16 kA \u2192 all RCBOs \u2265 16 kA Icu",
+            "summary": "Declared 16 kA at the DB-WH-01 busbar; every RCBO must have a breaking capacity \u2265 16 kA per \u00a7434.5.1; product compliance via BS EN 61009-1.",
+            "rule": "OCPD breaking capacity \u2265 prospective fault current",
+            "code_clause": "BS 7671:2018+A2:2022 \u00a7434.5.1"
+          }
         ]
       },
       {
         "title": "Circuit Topology",
-        "summary": "8 final circuits across the 1200 m² envelope. C01 office ring final per IET OSG §8.4.4 + Appendix H recipe (32 A on 2.5 mm² + 1.5 mm² CPC PVC T+E). C02 kitchenette + admin radial (20 A on 2.5 mm² + 1.5 mm² CPC PVC T+E). C03 warehouse high-bay + GP-socket radial (20 A on 2.5 mm² + 1.5 mm² CPC PVC T+E covering both warehouse-floor and loading-bay rooms). C04 dispatch UPS comms dedicated_radial (20 A Type B). C05 + C06 process motors dedicated_radials on 4 mm² + 4 mm² CPC SWA 5-core (3-phase + N + PE) with Type D curve. C07 goods lift dedicated_radial on 6 mm² + 6 mm² CPC SWA 5-core (3-phase + N + PE) with Type D curve + Type B RCD. C08 forklift battery charging dedicated_radial on 4 mm² + 4 mm² CPC SWA 5-core (3-phase + N + PE) with Type C curve + Type B RCD.",
+        "summary": "8 final circuits across the 1200 m\u00b2 envelope. C01 office ring final per IET OSG \u00a78.4.4 + Appendix H recipe (32 A on 2.5 mm\u00b2 + 1.5 mm\u00b2 CPC PVC T+E). C02 kitchenette + admin radial (20 A on 2.5 mm\u00b2 + 1.5 mm\u00b2 CPC PVC T+E). C03 warehouse high-bay + GP-socket radial (20 A on 2.5 mm\u00b2 + 1.5 mm\u00b2 CPC PVC T+E covering both warehouse-floor and loading-bay rooms). C04 dispatch UPS comms dedicated_radial (20 A Type B). C05 + C06 process motors dedicated_radials on 4 mm\u00b2 + 4 mm\u00b2 CPC SWA 5-core (3-phase + N + PE) with Type D curve. C07 goods lift dedicated_radial on 6 mm\u00b2 + 6 mm\u00b2 CPC SWA 5-core (3-phase + N + PE) with Type D curve + Type B RCD. C08 forklift battery charging dedicated_radial on 4 mm\u00b2 + 4 mm\u00b2 CPC SWA 5-core (3-phase + N + PE) with Type C curve + Type B RCD.",
         "decisions": [
-          {"label": "Type D RCBOs on C05, C06, C07 motor + lift", "summary": "Type D curve handles 10–20× inrush per BS EN 61009-1 — appropriate for 11 kW motors (C05/C06) and VFD-soft-start lift (C07).", "rule": "Motor + VFD inrush handling", "code_clause": "BS 7671:2018+A2:2022 §552 + BS EN 61009-1"},
-          {"label": "Type B 30 mA on C04, C07, C08", "summary": "UPS comms SMPS (C04), VFD lift drive (C07), forklift battery charger SMPS (C08) all present smooth DC residual that blinds Type A.", "rule": "RCD type selection for DC-leakage loads", "code_clause": "BS 7671:2018+A2:2022 §531.3.3"}
+          {
+            "label": "Type D RCBOs on C05, C06, C07 motor + lift",
+            "summary": "Type D curve handles 10\u201320\u00d7 inrush per BS EN 61009-1 \u2014 appropriate for 11 kW motors (C05/C06) and VFD-soft-start lift (C07).",
+            "rule": "Motor + VFD inrush handling",
+            "code_clause": "BS 7671:2018+A2:2022 \u00a7552 + BS EN 61009-1"
+          },
+          {
+            "label": "Type B 30 mA on C04, C07, C08",
+            "summary": "UPS comms SMPS (C04), VFD lift drive (C07), forklift battery charger SMPS (C08) all present smooth DC residual that blinds Type A.",
+            "rule": "RCD type selection for DC-leakage loads",
+            "code_clause": "BS 7671:2018+A2:2022 \u00a7531.3.3"
+          }
         ]
       },
       {
-        "title": "Building Diversity (NEW v2.0 — INDUSTRIAL + DIV-NN exclusion)",
-        "summary": "First emit of v2.0 building_diversity on INDUSTRIAL profile (BLD-02 — distinct from C.5's BLD-01). Resolved from diversity-factors.json::industrial_diversity (rule_of_thumb: diversity at SUBSTATION level, not per circuit; each motor/process at own rating). applies_load_types[] LISTS ONLY 5 in-scope families (C01+C02+C03+C04+C08); motor + lift families DELIBERATELY ABSENT. C05+C06 (industrial_motor_duty diversity_pct=100) and C07 (office_lift_single diversity_pct=100) EXCLUDED — compose ALGEBRAICALLY at upstream switchboard. building_factor 0.70 × Σ in-scope (84.6 A) = 59.22 A → recorded 59.0 A (0.37% drift, INV-13 PASS). Submain target adds excluded: 59.0+21.0+21.0+24.0 = 125.0 A → 125 A standard.",
+        "title": "Building Diversity (NEW v2.0 \u2014 INDUSTRIAL + DIV-NN exclusion)",
+        "summary": "First emit of v2.0 building_diversity on INDUSTRIAL profile (BLD-02 \u2014 distinct from C.5's BLD-01). Resolved from diversity-factors.json::industrial_diversity (rule_of_thumb: diversity at SUBSTATION level, not per circuit; each motor/process at own rating). applies_load_types[] LISTS ONLY 5 in-scope families (C01+C02+C03+C04+C08); motor + lift families DELIBERATELY ABSENT. C05+C06 (industrial_motor_duty diversity_pct=100) and C07 (office_lift_single diversity_pct=100) EXCLUDED \u2014 compose ALGEBRAICALLY at upstream switchboard. building_factor 0.70 \u00d7 \u03a3 in-scope (84.6 A) = 59.22 A \u2192 recorded 59.0 A (0.37% drift, INV-13 PASS). Submain target adds excluded: 59.0+21.0+21.0+24.0 = 125.0 A \u2192 125 A standard.",
         "decisions": [
-          {"label": "Industrial profile building_factor=0.70 applied to 5 in-scope circuits only", "summary": "Resolved from the verified IET OSG App A Table A1 industrial_diversity entry. Applied ONLY to circuits in applies_load_types[] — C01 (office ring), C02 (kitchenette radial), C03 (high-bay + GP radial), C04 (UPS comms), C08 (battery charging). Σ in-scope × 0.70 = 84.6 × 0.70 = 59.22 A → recorded 59.0 A (drift 0.37%, INV-13 PASS).", "rule": "Building diversity per IET OSG App A Table A1 industrial profile", "code_clause": "BS 7671:2018+A2:2022 §311 + IET On-Site Guide 8th Edition Appendix A Table A1", "inputs": {"sigma_in_scope_post_per_load_a": 84.6, "building_factor": 0.70, "mathematical_product_a": 59.22, "recorded_building_diversified_demand_a": 59.0, "drift_pct": 0.37}},
-          {"label": "DIV-NN EXCLUSION — motor + lift circuits never in applies_load_types[]", "summary": "industrial_motor_duty (C05+C06 process motors @ 21.0 A each) + office_lift_single (C07 goods lift @ 24.0 A) are EXCLUDED per the verified industrial_diversity.rule_of_thumb 'Apply diversity at the SUBSTATION level based on demand history, not at individual circuit level' + the verified diversity_pct=100 entries on industrial_motor_duty and office_lift_single. The cross-skill DIV-NN coordination rule from the D1 fault-level motor-superposition sprint and the D2.3 db-layout lift-coordination sprint mandates that motor + lift loads compose ALGEBRAICALLY at the upstream switchboard without per-floor building_factor reduction. Banned: never cite Reg 559 anchor for the lift exclusion — Reg 559 was the D2.3 misattribution catch (sub-clause not transcribed as a lift-diversity authority).", "rule": "DIV-NN cross-skill motor + lift coordination — algebraic addition at upstream MCC", "code_clause": "IET On-Site Guide 8th Edition Appendix A Table A1 (industrial_motor_duty.diversity_pct=100 + office_lift_single.diversity_pct=100) + BS 7671:2018+A2:2022 §552 + §132", "inputs": {"motor_radials_total_a": 42.0, "lift_radial_a": 24.0, "excluded_total_a": 66.0, "verified_anchor": "industrial_diversity.rule_of_thumb + diversity_pct=100 entries", "anti_pattern_blocked_banned": "Reg 559 (D2.3 misattribution catch — never cite as lift anchor)"}},
-          {"label": "Algebraic addition at upstream submain hop", "summary": "building_diversified_demand_a = 59.0 A covers ONLY the 5 in-scope families. The upstream submain MCB at the landlord MCC sums the EXCLUDED motor + lift radials ALGEBRAICALLY on top: 59.0 + 21.0 (C05) + 21.0 (C06) + 24.0 (C07) = 125.0 A. Next ascending standard size 125 A — the future_expansion_pct=30 headroom is carried forward as a separate field for the submain-sizing skill so the basis stays transparent.", "rule": "Cross-skill algebraic summation of EXCLUDED families at upstream hop", "code_clause": "BS 7671:2018+A2:2022 §132", "inputs": {"building_diversified_demand_in_scope_a": 59.0, "motor_a": 42.0, "lift_a": 24.0, "submain_target_a": 125.0, "next_standard_mcb_a": 125}},
-          {"label": "design_density_w_per_m2_override=90 + future_expansion_pct_override=30 carried forward", "summary": "Industrial design density 90 W/m² sits in the 80–150 W/m² typical industrial range. future_expansion_pct=30 matches the verified industrial future_expansion_pct_default=30.0 entry exactly.", "rule": "design density + future expansion within verified industrial range", "code_clause": "IET On-Site Guide 8th Edition Appendix A (industrial_diversity)", "inputs": {"design_density_w_per_m2": 90, "future_expansion_pct": 30, "verified_default": 30.0}}
+          {
+            "label": "Industrial profile building_factor=0.70 applied to 5 in-scope circuits only",
+            "summary": "Resolved from the verified IET OSG App A Table A1 industrial_diversity entry. Applied ONLY to circuits in applies_load_types[] \u2014 C01 (office ring), C02 (kitchenette radial), C03 (high-bay + GP radial), C04 (UPS comms), C08 (battery charging). \u03a3 in-scope \u00d7 0.70 = 84.6 \u00d7 0.70 = 59.22 A \u2192 recorded 59.0 A (drift 0.37%, INV-13 PASS).",
+            "rule": "Building diversity per IET OSG App A Table A1 industrial profile",
+            "code_clause": "BS 7671:2018+A2:2022 \u00a7311 + IET On-Site Guide 8th Edition Appendix A Table A1",
+            "inputs": {
+              "sigma_in_scope_post_per_load_a": 84.6,
+              "building_factor": 0.7,
+              "mathematical_product_a": 59.22,
+              "recorded_building_diversified_demand_a": 59.0,
+              "drift_pct": 0.37
+            }
+          },
+          {
+            "label": "DIV-NN EXCLUSION \u2014 motor + lift circuits never in applies_load_types[]",
+            "summary": "industrial_motor_duty (C05+C06 process motors @ 21.0 A each) + office_lift_single (C07 goods lift @ 24.0 A) are EXCLUDED per the verified industrial_diversity.rule_of_thumb 'Apply diversity at the SUBSTATION level based on demand history, not at individual circuit level' + the verified diversity_pct=100 entries on industrial_motor_duty and office_lift_single. The cross-skill DIV-NN coordination rule from the D1 fault-level motor-superposition sprint and the D2.3 db-layout lift-coordination sprint mandates that motor + lift loads compose ALGEBRAICALLY at the upstream switchboard without per-floor building_factor reduction. Banned: never cite Reg 559 anchor for the lift exclusion \u2014 Reg 559 was the D2.3 misattribution catch (sub-clause not transcribed as a lift-diversity authority).",
+            "rule": "DIV-NN cross-skill motor + lift coordination \u2014 algebraic addition at upstream MCC",
+            "code_clause": "IET On-Site Guide 8th Edition Appendix A Table A1 (industrial_motor_duty.diversity_pct=100 + office_lift_single.diversity_pct=100) + BS 7671:2018+A2:2022 \u00a7552 + \u00a7132",
+            "inputs": {
+              "motor_radials_total_a": 42.0,
+              "lift_radial_a": 24.0,
+              "excluded_total_a": 66.0,
+              "verified_anchor": "industrial_diversity.rule_of_thumb + diversity_pct=100 entries",
+              "anti_pattern_blocked_banned": "Reg 559 (D2.3 misattribution catch \u2014 never cite as lift anchor)"
+            }
+          },
+          {
+            "label": "Algebraic addition at upstream submain hop",
+            "summary": "building_diversified_demand_a = 59.0 A covers ONLY the 5 in-scope families. The upstream submain MCB at the landlord MCC sums the EXCLUDED motor + lift radials ALGEBRAICALLY on top: 59.0 + 21.0 (C05) + 21.0 (C06) + 24.0 (C07) = 125.0 A. Next ascending standard size 125 A \u2014 the future_expansion_pct=30 headroom is carried forward as a separate field for the submain-sizing skill so the basis stays transparent.",
+            "rule": "Cross-skill algebraic summation of EXCLUDED families at upstream hop",
+            "code_clause": "BS 7671:2018+A2:2022 \u00a7132",
+            "inputs": {
+              "building_diversified_demand_in_scope_a": 59.0,
+              "motor_a": 42.0,
+              "lift_a": 24.0,
+              "submain_target_a": 125.0,
+              "next_standard_mcb_a": 125
+            }
+          },
+          {
+            "label": "design_density_w_per_m2_override=90 + future_expansion_pct_override=30 carried forward",
+            "summary": "Industrial design density 90 W/m\u00b2 sits in the 80\u2013150 W/m\u00b2 typical industrial range. future_expansion_pct=30 matches the verified industrial future_expansion_pct_default=30.0 entry exactly.",
+            "rule": "design density + future expansion within verified industrial range",
+            "code_clause": "IET On-Site Guide 8th Edition Appendix A (industrial_diversity)",
+            "inputs": {
+              "design_density_w_per_m2": 90,
+              "future_expansion_pct": 30,
+              "verified_default": 30.0
+            }
+          }
         ]
       },
       {
         "title": "Cable-Sizing Cascade (INV-19 PASS on all 8 circuits)",
-        "summary": "consumed_intents.cable_sizing.payload INLINED at C.6-ship with 8 circuit entries (one per small-power IR circuit, INCLUDING the 3 EXCLUDED-from-building_diversity motor + lift circuits — INV-19 reconciles the cable-sizing payload vs the small-power IR per-circuit demand regardless of whether the circuit is in applies_load_types[]). Every small-power circuit declares cable_sizing_node_id (DB-WH-01.C01..C08) that resolves byte-identically to a payload circuit node_id. Per-circuit diversified_max_load_a reconciles with cable_sizing design_current_a within ±5% on every circuit (0.0% drift — exact match because the cascade payload was inlined from the small-power IR's diversified_max_load_a values).",
+        "summary": "consumed_intents.cable_sizing.payload INLINED at C.6-ship with 8 circuit entries (one per small-power IR circuit, INCLUDING the 3 EXCLUDED-from-building_diversity motor + lift circuits \u2014 INV-19 reconciles the cable-sizing payload vs the small-power IR per-circuit demand regardless of whether the circuit is in applies_load_types[]). Every small-power circuit declares cable_sizing_node_id (DB-WH-01.C01..C08) that resolves byte-identically to a payload circuit node_id. Per-circuit diversified_max_load_a reconciles with cable_sizing design_current_a within \u00b15% on every circuit (0.0% drift \u2014 exact match because the cascade payload was inlined from the small-power IR's diversified_max_load_a values).",
         "decisions": [
-          {"label": "DEFERRED-POINTER cascade source_path", "summary": "source_path 'electrical/cable-sizing/examples/uk-warehouse-submain-wh01/intent-out.json' points to a producer-side fixture that does NOT yet exist at C.6-ship. Honest 4-place disclosure: the payload bytes are inlined now and will remain unchanged when the producer fixture lands.", "rule": "DEFERRED-POINTER + inlined-payload cascade pattern", "code_clause": "BS 7671:2018+A2:2022 §132"},
-          {"label": "INV-19 PASS on motor + lift circuits even though they are EXCLUDED from applies_load_types[]", "summary": "INV-19 reconciles per-circuit demand vs cable_sizing payload across all 8 circuits — the EXCLUDED-from-building_diversity discipline applies ONLY to the building_diversity.applies_load_types[] manifest and the building_diversified_demand_a aggregate, NOT to the per-circuit cable-sizing cascade reconciliation. C05 21.0 vs 21.0 = 0.0% / C06 21.0 vs 21.0 = 0.0% / C07 24.0 vs 24.0 = 0.0% — all within ±5% tolerance. PASS.", "rule": "post_per_load_diversity_a vs cable_sizing design_current_a reconciliation ±5%", "code_clause": "BS 7671:2018+A2:2022 §132"}
+          {
+            "label": "DEFERRED-POINTER cascade source_path",
+            "summary": "source_path 'electrical/cable-sizing/examples/uk-warehouse-submain-wh01/intent-out.json' points to a producer-side fixture that does NOT yet exist at C.6-ship. Honest 4-place disclosure: the payload bytes are inlined now and will remain unchanged when the producer fixture lands.",
+            "rule": "DEFERRED-POINTER + inlined-payload cascade pattern",
+            "code_clause": "BS 7671:2018+A2:2022 \u00a7132"
+          },
+          {
+            "label": "INV-19 PASS on motor + lift circuits even though they are EXCLUDED from applies_load_types[]",
+            "summary": "INV-19 reconciles per-circuit demand vs cable_sizing payload across all 8 circuits \u2014 the EXCLUDED-from-building_diversity discipline applies ONLY to the building_diversity.applies_load_types[] manifest and the building_diversified_demand_a aggregate, NOT to the per-circuit cable-sizing cascade reconciliation. C05 21.0 vs 21.0 = 0.0% / C06 21.0 vs 21.0 = 0.0% / C07 24.0 vs 24.0 = 0.0% \u2014 all within \u00b15% tolerance. PASS.",
+            "rule": "post_per_load_diversity_a vs cable_sizing design_current_a reconciliation \u00b15%",
+            "code_clause": "BS 7671:2018+A2:2022 \u00a7132"
+          }
         ]
       },
       {
         "title": "RCD Posture",
-        "summary": "5 of 8 circuits use Type A 30 mA RCD per §411.3.3 (general socket-outlet + motor radials — motors do not present DC-leakage that would blind Type A). 3 of 8 circuits use Type B 30 mA per §531.3.3: C04 dispatch UPS comms (SMPS DC-leakage), C07 goods lift (VFD smooth DC residual), C08 forklift battery charging (SMPS charger DC-leakage).",
+        "summary": "5 of 8 circuits use Type A 30 mA RCD per \u00a7411.3.3 (general socket-outlet + motor radials \u2014 motors do not present DC-leakage that would blind Type A). 3 of 8 circuits use Type B 30 mA per \u00a7531.3.3: C04 dispatch UPS comms (SMPS DC-leakage), C07 goods lift (VFD smooth DC residual), C08 forklift battery charging (SMPS charger DC-leakage).",
         "decisions": [
-          {"label": "Type A 30 mA on C01, C02, C03, C05, C06", "summary": "General office/warehouse sockets + motor radials. BS 7671 baseline per §411.3.3.", "rule": "Additional protection by 30 mA RCD for socket outlets + motor circuits", "code_clause": "BS 7671:2018+A2:2022 §411.3.3"},
-          {"label": "Type B 30 mA on C04, C07, C08", "summary": "DC-leakage loads (UPS SMPS / VFD lift / battery charger SMPS) — Type B mandatory per §531.3.3.", "rule": "RCD type selection for DC-leakage loads", "code_clause": "BS 7671:2018+A2:2022 §531.3.3"}
+          {
+            "label": "Type A 30 mA on C01, C02, C03, C05, C06",
+            "summary": "General office/warehouse sockets + motor radials. BS 7671 baseline per \u00a7411.3.3.",
+            "rule": "Additional protection by 30 mA RCD for socket outlets + motor circuits",
+            "code_clause": "BS 7671:2018+A2:2022 \u00a7411.3.3"
+          },
+          {
+            "label": "Type B 30 mA on C04, C07, C08",
+            "summary": "DC-leakage loads (UPS SMPS / VFD lift / battery charger SMPS) \u2014 Type B mandatory per \u00a7531.3.3.",
+            "rule": "RCD type selection for DC-leakage loads",
+            "code_clause": "BS 7671:2018+A2:2022 \u00a7531.3.3"
+          }
         ]
       },
       {
         "title": "Compliance + Assumptions + Banned-Citation Discipline",
-        "summary": "compliant=true. 8 non_compliance_flags entries (all info — no D-8 warning since the recorded 59.0 A reconciles within ±5%). 12 assumptions documented including the DEFERRED-POINTER cable-sizing cascade pattern + the future_expansion_pct_override=30 carry-forward + the banned-citation discipline (NO Reg 559 / §526.2 / §433.2 / OZEV / 3rd Edition). Banned-citation grep yields PASS (banned tokens appear only in disambiguation contexts: 'never cite Reg 559' / 'sub-clause not transcribed' / 'banned per the C.6 task brief').",
+        "summary": "compliant=true. 8 non_compliance_flags entries (all info \u2014 no D-8 warning since the recorded 59.0 A reconciles within \u00b15%). 12 assumptions documented including the DEFERRED-POINTER cable-sizing cascade pattern + the future_expansion_pct_override=30 carry-forward + the banned-citation discipline (NO Reg 559 / \u00a7526.2 / \u00a7433.2 / OZEV / 3rd Edition). Banned-citation grep yields PASS (banned tokens appear only in disambiguation contexts: 'never cite Reg 559' / 'sub-clause not transcribed' / 'banned per the C.6 task brief').",
         "decisions": [
-          {"label": "DEFERRED-POINTER cascade honest 4-place disclosure", "summary": "source_path points at not-yet-shipped fixture; payload inlined byte-identical at C.6-ship; will be retrofitted when the upstream cable-sizing example lands.", "rule": "Honest cascade disclosure pattern", "code_clause": "BS 7671:2018+A2:2022 §132"},
-          {"label": "Banned-citation discipline — never cite Reg 559 for lift exclusion", "summary": "The D2.3 sprint caught a Reg 559 misattribution for lift diversity (sub-clause not transcribed as a lift-diversity authority). The correct anchor is IET OSG App A Table A1 office_lift_single.diversity_pct=100 entry + the cross-skill DIV-NN lift coordination rule. C.6 task brief banned: Reg 559 / §526.2 / §433.2 / OZEV / 3rd Edition (all banned tokens, never cite).", "rule": "Citation-hygiene per D2.3 lesson", "code_clause": "IET On-Site Guide 8th Edition Appendix A Table A1"}
+          {
+            "label": "DEFERRED-POINTER cascade honest 4-place disclosure",
+            "summary": "source_path points at not-yet-shipped fixture; payload inlined byte-identical at C.6-ship; will be retrofitted when the upstream cable-sizing example lands.",
+            "rule": "Honest cascade disclosure pattern",
+            "code_clause": "BS 7671:2018+A2:2022 \u00a7132"
+          },
+          {
+            "label": "Banned-citation discipline \u2014 never cite Reg 559 for lift exclusion",
+            "summary": "The D2.3 sprint caught a Reg 559 misattribution for lift diversity (sub-clause not transcribed as a lift-diversity authority). The correct anchor is IET OSG App A Table A1 office_lift_single.diversity_pct=100 entry + the cross-skill DIV-NN lift coordination rule. C.6 task brief banned: Reg 559 / \u00a7526.2 / \u00a7433.2 / OZEV / 3rd Edition (all banned tokens, never cite).",
+            "rule": "Citation-hygiene per D2.3 lesson",
+            "code_clause": "IET On-Site Guide 8th Edition Appendix A Table A1"
+          }
+        ]
+      },
+      {
+        "title": "Honest disclosures",
+        "summary": "Four honest disclosures apply to this example: (1) DEFERRED-POINTER cascade \u2014 the consumed_intents.cable_sizing source_path points at a producer-side fixture (electrical/cable-sizing/examples/uk-warehouse-submain-wh01/intent-out.json) that does not yet exist at C.6-ship; payload bytes inlined byte-identical at C.6-ship. (2) DIV-NN exclusion discipline \u2014 motor and lift circuits (C05 forklift motor, C06 production-line motor, C07 goods lift) are EXCLUDED from building_diversity.applies_load_types[] per IET OSG App A Table A1 industrial_motor_duty.diversity_pct=100 + office_lift_single.diversity_pct=100; these circuits are sized at 100% FLC and are NOT diversity-reduced at the per-floor level. (3) Banned-citation discipline \u2014 NO Reg 559, \u00a7526.2, \u00a7433.2, OZEV, 3rd Edition in this example. (4) Upstream submain algebraic add \u2014 the submitted building_diversified_demand_a (59.0 A) is NOT the full submain sizing current; the EXCLUDED motor + lift circuits add algebraically at the upstream MCC hop.",
+        "decisions": [
+          {
+            "label": "DEFERRED-POINTER cable-sizing cascade (industrial profile)",
+            "summary": "source_path points at not-yet-shipped uk-warehouse-submain-wh01 fixture; payload inlined byte-identical at C.6-ship; reconciliation drift 0.0% on all 8 circuits because the inline was constructed from the same source numbers.",
+            "rule": "Honest cascade disclosure (4-place pattern)",
+            "code_clause": "BS 7671:2018+A2:2022 \u00a7132"
+          },
+          {
+            "label": "DIV-NN exclusion for motor + lift circuits",
+            "summary": "Industrial profile building_diversity applies ONLY to socket-outlet + office-ancillary load types. Motor and lift circuits are excluded and carry unity factor per IET OSG App A Table A1 industrial_motor_duty + office_lift_single entries.",
+            "rule": "IET On-Site Guide 8th Edition Appendix A Table A1 exclusion discipline",
+            "code_clause": "IET On-Site Guide 8th Edition Appendix A Table A1"
+          }
         ]
       }
     ]
   },
   "invariants": [
-    {"id": "INV-01", "passes": true, "severity": "high", "evidence": "C01 is a ring on 2.5 mm² + 1.5 mm² CPC PVC T+E with 32 A RCBO — matches IET OSG 8th Ed Appendix H ring final circuit recipe. C02–C08 are radial or dedicated_radial — INV-01's ring composition rule does not apply. PASSes on the 1 ring + vacuously PASSes on the 7 non-rings."},
-    {"id": "INV-02", "passes": true, "severity": "high", "evidence": "Every circuit's ocpd.breaking_capacity_ka (16.0 on all 8 circuits) is greater than or equal to parent_db.pfc_at_busbar_ka (16.0) per BS 7671:2018+A2:2022 §434.5.1 and BS EN 61009-1 conditional short-circuit ratings. Equality at 16 kA is the §434.5.1 minimum boundary — typical for UK industrial-park supplies with declared PFC ≤16 kA."},
-    {"id": "INV-03", "passes": true, "severity": "high", "evidence": "All 8 circuits carry RCD protection per BS 7671:2018+A2:2022 §411.3.3 (30 mA additional protection for socket-outlets ≤32 A) or §531.3.3 (Type B for DC-leakage loads). C01/C02/C03/C05/C06 Type A; C04/C07/C08 Type B. rcd_posture set to type_a_30ma_per_§411_3_3 or type_b_30ma_per_§531_3_3 on every circuit — schema-valid enum literals."},
-    {"id": "INV-04", "passes": true, "severity": "high", "evidence": "C01 is ring topology (GB jurisdiction supports rings). C02–C08 are radial or dedicated_radial. INV-04's ring-restricted-to-GB/KE rule is satisfied: ring is present and jurisdiction is GB. ring_endpoints is populated on C01 with continuity_verified=true and the IET OSG §8.4.4 citation."},
-    {"id": "INV-05", "passes": true, "severity": "high", "evidence": "Every room appears in at least one circuit's rooms_covered[] (warehouse-floor→C03+C05+C06, office-partition→C01, kitchenette→C02, loading-bay→C03+C07+C08, plant-alcove→C04). Every socket's circuit_id appears in the parent circuit's rooms_covered[] coverage. No orphan rooms; no orphan sockets."},
-    {"id": "INV-06", "passes": true, "severity": "low", "evidence": "All 8 circuits use Type B, C, or D curve appropriate to the load: Type B on C01 ring final (mixed plug-in office loads, no inrush); Type C on C02 kitchenette + C03 high-bay + C04 UPS + C08 battery-charger; Type D on C05+C06 process motors + C07 VFD lift (handles 10–20× motor/VFD inrush). Curve selection per BS EN 61009-1 product range."},
-    {"id": "INV-07", "passes": true, "severity": "high", "evidence": "diversified_max_load_a per circuit (C01: 18.5 / C02: 9.6 / C03: 19.6 / C04: 14.4 / C05: 21.0 / C06: 21.0 / C07: 24.0 / C08: 22.5) is less than or equal to ocpd.rating_a on every circuit (32 A on C01/C05/C06/C08; 20 A on C02/C03/C04; 40 A on C07). All eight diversified loads carry comfortable headroom against their RCBO ratings."},
-    {"id": "INV-08", "passes": true, "severity": "high", "evidence": "All 8 circuits have tool_call_pending_for_zs_verification=false and verified_zs_ohm populated from the consumed cable_sizing payload (range 0.30–0.62 Ω). The cable-sizing cascade was consumed so calc.zs_loop_impedance has already executed at the upstream hop; small-power simply records the verified values per circuit. No TOOL-CALL-PENDING flag fires."},
-    {"id": "INV-09", "passes": true, "severity": "high", "evidence": "All 5 rooms appear in at least one circuit's rooms_covered[]: warehouse-floor, office-partition, kitchenette, loading-bay, plant-alcove. Every socket placed in a room declared in rooms[]. No orphan rooms; no orphan sockets."},
-    {"id": "INV-10", "passes": true, "severity": "low", "evidence": "drawing_layout.drawing_standard=BS 1192:2007+A2:2016 matches the GB jurisdiction expected default for small-power layout drawings. Sheet size A1 + scale 1:100 appropriate for a 1200 m² floor plate plus the panel schedule + the BUILDING-DIVERSITY summary panel + the separate motor + lift exclusion band."},
-    {"id": "INV-11", "passes": true, "severity": "high", "evidence": "consumed_intents.cable_sizing.payload populated with 8 circuit entries (one per small-power IR circuit, INCLUDING the 3 EXCLUDED-from-building_diversity motor + lift circuits). Every small-power circuit declares cable_sizing_node_id (DB-WH-01.C01..C08) that resolves byte-identically to a payload circuit node_id. Per-circuit diversified_max_load_a reconciles with cable_sizing design_current_a within ±5% on every circuit (0.0% drift — exact match because the cascade payload was inlined from the small-power IR's diversified_max_load_a values)."},
-    {"id": "INV-12", "passes": true, "severity": "high", "evidence": "N/A and trivially PASS — no Part-7 room_type appears in rooms[] (no bathroom / shower_room / swimming_pool_hall / sauna / medical_group_*_area / medical_group_*_ward / medical_group_*_theatre / external_landscape). The office WC is below the Part-7 trigger threshold and is not modelled. consumed_intents.special_locations_zoning intentionally absent."},
-    {"id": "INV-13", "passes": true, "severity": "low", "evidence": "Sub-check 1 PASS — building_type='industrial' in v2.0 enum {office,industrial,healthcare}. Sub-check 2 PASS — design_density_w_per_m2=90 sits in the 80–150 W/m² industrial typical range; future_expansion_pct=30 matches verified industrial future_expansion_pct_default=30.0 exactly. Sub-check 3 PASS — Σ(in-scope post_per_load_diversity_a × building_factor_applied) = (18.5+9.6+19.6+14.4+22.5) × 0.70 = 84.6 × 0.70 = 59.22 A; recorded building_diversified_demand_a = 59.0 A → drift (59.22−59.0)/59.22 = 0.37% < 5% INV-13 tolerance. PASS. The DIV-NN exclusion of motor + lift load families from applies_load_types[] is correctly modelled — those 3 EXCLUDED circuits (C05+C06+C07) compose ALGEBRAICALLY at the upstream switchboard per the verified industrial_motor_duty.diversity_pct=100 + office_lift_single.diversity_pct=100 entries + the cross-skill DIV-NN coordination rule (banned: never cite Reg 559 as lift-exclusion anchor — that was the D2.3 misattribution catch)."},
-    {"id": "INV-14", "passes": true, "severity": "high", "evidence": "C01 ring_endpoints populated with endpoint_a_xy=(500, 500) and endpoint_b_xy=(14500, 9500), mcb_way_id=DB-WH-01-W01, continuity_verified=true and IET OSG §8.4.4 citation. INV-14 ring continuity rule satisfied on the only ring final circuit. The 7 non-ring circuits are vacuously PASS."},
-    {"id": "INV-15", "passes": true, "severity": "high", "evidence": "N/A and trivially PASS per validator INV-15 wording — circuit.floor_area_m2 is not populated on any circuit (v2.0 optional field). The rule fires only when both floor_area_m2 AND rooms_covered[] are populated; with floor_area_m2 absent, no reconciliation is computed. The room dimensions in rooms[].dimensions_m carry the floor totals implicitly (38×25 + 15×10 + 4×3 + 10×6 + 8×5 = 1102 m² of programmed space; remainder is circulation outside the small-power scope in the 1200 m² envelope)."},
-    {"id": "INV-16", "passes": true, "severity": "high", "evidence": "C01 ring topology on 2.5 mm² + 1.5 mm² CPC PVC T+E with 32 A RCBO — matches the IET OSG App H ring final circuit recipe (≤32 A). C02 + C03 radial on 2.5 mm² + 1.5 mm² CPC PVC T+E with 20 A RCBO — radial OCPD sized by connected load per §433.1.1, ≤20 A on 2.5 mm² complies. C04 dedicated_radial on 2.5 mm² + 1.5 mm² CPC PVC T+E with 20 A RCBO — dedicated_radial trivially PASSes. C05 + C06 dedicated_radial on 4 mm² SWA with 32 A RCBO — dedicated_radial trivially PASSes. C07 dedicated_radial on 6 mm² SWA with 40 A RCBO — dedicated_radial trivially PASSes (cable-sizing's INV-04 already coordinates). C08 dedicated_radial on 4 mm² SWA with 32 A RCBO — dedicated_radial trivially PASSes."},
-    {"id": "INV-17", "passes": true, "severity": "medium", "evidence": "N/A and trivially PASS per validator INV-17 wording — no circuit has fcu_spurs[] populated as a schema-level circuits[].fcu_spurs[] array. The two FCUs in the kitchenette (under-counter fridge fixed feed + dishwasher fixed feed) are modelled as switched_connection_unit_13A_BS_EN_60669 socket entries with fed_by_spur=true under rooms[].kitchenette.sockets[] — NOT on the circuits[].fcu_spurs[] AMD 2 path because C02 is a radial (not a ring) and the AMD 2 FCU-spur path applies to ring final circuits per IET OSG §8.4.4."},
-    {"id": "INV-18", "passes": true, "severity": "high", "evidence": "N/A and trivially PASS per validator INV-18 wording — no circuit carries ev_charge_metadata (no EV charging on this warehouse; the forklift battery chargers on C08 are industrial battery-charging equipment per BS EN 1175-2, NOT EV charging per BS EN 61851-1, so the schema's allOf clause #2 for load_type matching ev_charge_* does not fire)."},
-    {"id": "INV-19", "passes": true, "severity": "medium", "evidence": "Both building_diversity.per_circuit_demand_inputs[] (5 entries — only the in-scope families) AND consumed_intents.cable_sizing.payload.circuits[] (8 entries — ALL circuits including the EXCLUDED motor + lift radials) are populated. INV-19 reconciles per-circuit demand vs cable_sizing payload across all 8 circuits — the EXCLUDED-from-building_diversity discipline applies ONLY to the applies_load_types[] manifest and the building_diversified_demand_a aggregate, NOT to the per-circuit cable-sizing cascade reconciliation. Drift per circuit: C01 (18.5 vs 18.5 = 0.0%) / C02 (9.6 vs 9.6 = 0.0%) / C03 (19.6 vs 19.6 = 0.0%) / C04 (14.4 vs 14.4 = 0.0%) / C05 (21.0 vs 21.0 = 0.0%) / C06 (21.0 vs 21.0 = 0.0%) / C07 (24.0 vs 24.0 = 0.0%) / C08 (22.5 vs 22.5 = 0.0%). All 8 within ±5% tolerance. PASS."}
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 is a ring on 2.5 mm\u00b2 + 1.5 mm\u00b2 CPC PVC T+E with 32 A RCBO \u2014 matches IET OSG 8th Ed Appendix H ring final circuit recipe. C02\u2013C08 are radial or dedicated_radial \u2014 INV-01's ring composition rule does not apply. PASSes on the 1 ring + vacuously PASSes on the 7 non-rings."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Every circuit's ocpd.breaking_capacity_ka (16.0 on all 8 circuits) is greater than or equal to parent_db.pfc_at_busbar_ka (16.0) per BS 7671:2018+A2:2022 \u00a7434.5.1 and BS EN 61009-1 conditional short-circuit ratings. Equality at 16 kA is the \u00a7434.5.1 minimum boundary \u2014 typical for UK industrial-park supplies with declared PFC \u226416 kA."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All 8 circuits carry RCD protection per BS 7671:2018+A2:2022 \u00a7411.3.3 (30 mA additional protection for socket-outlets \u226432 A) or \u00a7531.3.3 (Type B for DC-leakage loads). C01/C02/C03/C05/C06 Type A; C04/C07/C08 Type B. rcd_posture set to type_a_30ma_per_\u00a7411_3_3 or type_b_30ma_per_\u00a7531_3_3 on every circuit \u2014 schema-valid enum literals."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 is ring topology (GB jurisdiction supports rings). C02\u2013C08 are radial or dedicated_radial. INV-04's ring-restricted-to-GB/KE rule is satisfied: ring is present and jurisdiction is GB. ring_endpoints is populated on C01 with continuity_verified=true and the IET OSG \u00a78.4.4 citation."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Every room appears in at least one circuit's rooms_covered[] (warehouse-floor\u2192C03+C05+C06, office-partition\u2192C01, kitchenette\u2192C02, loading-bay\u2192C03+C07+C08, plant-alcove\u2192C04). Every socket's circuit_id appears in the parent circuit's rooms_covered[] coverage. No orphan rooms; no orphan sockets."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "low",
+      "evidence": "All 8 circuits use Type B, C, or D curve appropriate to the load: Type B on C01 ring final (mixed plug-in office loads, no inrush); Type C on C02 kitchenette + C03 high-bay + C04 UPS + C08 battery-charger; Type D on C05+C06 process motors + C07 VFD lift (handles 10\u201320\u00d7 motor/VFD inrush). Curve selection per BS EN 61009-1 product range."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "high",
+      "evidence": "diversified_max_load_a per circuit (C01: 18.5 / C02: 9.6 / C03: 19.6 / C04: 14.4 / C05: 21.0 / C06: 21.0 / C07: 24.0 / C08: 22.5) is less than or equal to ocpd.rating_a on every circuit (32 A on C01/C05/C06/C08; 20 A on C02/C03/C04; 40 A on C07). All eight diversified loads carry comfortable headroom against their RCBO ratings."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All 8 circuits have tool_call_pending_for_zs_verification=false and verified_zs_ohm populated from the consumed cable_sizing payload (range 0.30\u20130.62 \u03a9). The cable-sizing cascade was consumed so calc.zs_loop_impedance has already executed at the upstream hop; small-power simply records the verified values per circuit. No TOOL-CALL-PENDING flag fires."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All 5 rooms appear in at least one circuit's rooms_covered[]: warehouse-floor, office-partition, kitchenette, loading-bay, plant-alcove. Every socket placed in a room declared in rooms[]. No orphan rooms; no orphan sockets."
+    },
+    {
+      "id": "INV-10",
+      "passes": true,
+      "severity": "low",
+      "evidence": "drawing_layout.drawing_standard=BS 1192:2007+A2:2016 matches the GB jurisdiction expected default for small-power layout drawings. Sheet size A1 + scale 1:100 appropriate for a 1200 m\u00b2 floor plate plus the panel schedule + the BUILDING-DIVERSITY summary panel + the separate motor + lift exclusion band."
+    },
+    {
+      "id": "INV-11",
+      "passes": true,
+      "severity": "high",
+      "evidence": "consumed_intents.cable_sizing.payload populated with 8 circuit entries (one per small-power IR circuit, INCLUDING the 3 EXCLUDED-from-building_diversity motor + lift circuits). Every small-power circuit declares cable_sizing_node_id (DB-WH-01.C01..C08) that resolves byte-identically to a payload circuit node_id. Per-circuit diversified_max_load_a reconciles with cable_sizing design_current_a within \u00b15% on every circuit (0.0% drift \u2014 exact match because the cascade payload was inlined from the small-power IR's diversified_max_load_a values)."
+    },
+    {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "N/A and trivially PASS \u2014 no Part-7 room_type appears in rooms[] (no bathroom / shower_room / swimming_pool_hall / sauna / medical_group_*_area / medical_group_*_ward / medical_group_*_theatre / external_landscape). The office WC is below the Part-7 trigger threshold and is not modelled. consumed_intents.special_locations_zoning intentionally absent."
+    },
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "low",
+      "evidence": "Sub-check 1 PASS \u2014 building_type='industrial' in v2.0 enum {office,industrial,healthcare}. Sub-check 2 PASS \u2014 design_density_w_per_m2=90 sits in the 80\u2013150 W/m\u00b2 industrial typical range; future_expansion_pct=30 matches verified industrial future_expansion_pct_default=30.0 exactly. Sub-check 3 PASS \u2014 \u03a3(in-scope post_per_load_diversity_a \u00d7 building_factor_applied) = (18.5+9.6+19.6+14.4+22.5) \u00d7 0.70 = 84.6 \u00d7 0.70 = 59.22 A; recorded building_diversified_demand_a = 59.0 A \u2192 drift (59.22\u221259.0)/59.22 = 0.37% < 5% INV-13 tolerance. PASS. The DIV-NN exclusion of motor + lift load families from applies_load_types[] is correctly modelled \u2014 those 3 EXCLUDED circuits (C05+C06+C07) compose ALGEBRAICALLY at the upstream switchboard per the verified industrial_motor_duty.diversity_pct=100 + office_lift_single.diversity_pct=100 entries + the cross-skill DIV-NN coordination rule (banned: never cite Reg 559 as lift-exclusion anchor \u2014 that was the D2.3 misattribution catch)."
+    },
+    {
+      "id": "INV-14",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 ring_endpoints populated with endpoint_a_xy=(500, 500) and endpoint_b_xy=(14500, 9500), mcb_way_id=DB-WH-01-W01, continuity_verified=true and IET OSG \u00a78.4.4 citation. INV-14 ring continuity rule satisfied on the only ring final circuit. The 7 non-ring circuits are vacuously PASS."
+    },
+    {
+      "id": "INV-15",
+      "passes": true,
+      "severity": "high",
+      "evidence": "N/A and trivially PASS per validator INV-15 wording \u2014 circuit.floor_area_m2 is not populated on any circuit (v2.0 optional field). The rule fires only when both floor_area_m2 AND rooms_covered[] are populated; with floor_area_m2 absent, no reconciliation is computed. The room dimensions in rooms[].dimensions_m carry the floor totals implicitly (38\u00d725 + 15\u00d710 + 4\u00d73 + 10\u00d76 + 8\u00d75 = 1102 m\u00b2 of programmed space; remainder is circulation outside the small-power scope in the 1200 m\u00b2 envelope)."
+    },
+    {
+      "id": "INV-16",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 ring topology on 2.5 mm\u00b2 + 1.5 mm\u00b2 CPC PVC T+E with 32 A RCBO \u2014 matches the IET OSG App H ring final circuit recipe (\u226432 A). C02 + C03 radial on 2.5 mm\u00b2 + 1.5 mm\u00b2 CPC PVC T+E with 20 A RCBO \u2014 radial OCPD sized by connected load per \u00a7433.1.1, \u226420 A on 2.5 mm\u00b2 complies. C04 dedicated_radial on 2.5 mm\u00b2 + 1.5 mm\u00b2 CPC PVC T+E with 20 A RCBO \u2014 dedicated_radial trivially PASSes. C05 + C06 dedicated_radial on 4 mm\u00b2 SWA with 32 A RCBO \u2014 dedicated_radial trivially PASSes. C07 dedicated_radial on 6 mm\u00b2 SWA with 40 A RCBO \u2014 dedicated_radial trivially PASSes (cable-sizing's INV-04 already coordinates). C08 dedicated_radial on 4 mm\u00b2 SWA with 32 A RCBO \u2014 dedicated_radial trivially PASSes."
+    },
+    {
+      "id": "INV-17",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "N/A and trivially PASS per validator INV-17 wording \u2014 no circuit has fcu_spurs[] populated as a schema-level circuits[].fcu_spurs[] array. The two FCUs in the kitchenette (under-counter fridge fixed feed + dishwasher fixed feed) are modelled as switched_connection_unit_13A_BS_EN_60669 socket entries with fed_by_spur=true under rooms[].kitchenette.sockets[] \u2014 NOT on the circuits[].fcu_spurs[] AMD 2 path because C02 is a radial (not a ring) and the AMD 2 FCU-spur path applies to ring final circuits per IET OSG \u00a78.4.4."
+    },
+    {
+      "id": "INV-18",
+      "passes": true,
+      "severity": "high",
+      "evidence": "N/A and trivially PASS per validator INV-18 wording \u2014 no circuit carries ev_charge_metadata (no EV charging on this warehouse; the forklift battery chargers on C08 are industrial battery-charging equipment per BS EN 1175-2, NOT EV charging per BS EN 61851-1, so the schema's allOf clause #2 for load_type matching ev_charge_* does not fire)."
+    },
+    {
+      "id": "INV-19",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "Both building_diversity.per_circuit_demand_inputs[] (5 entries \u2014 only the in-scope families) AND consumed_intents.cable_sizing.payload.circuits[] (8 entries \u2014 ALL circuits including the EXCLUDED motor + lift radials) are populated. INV-19 reconciles per-circuit demand vs cable_sizing payload across all 8 circuits \u2014 the EXCLUDED-from-building_diversity discipline applies ONLY to the applies_load_types[] manifest and the building_diversified_demand_a aggregate, NOT to the per-circuit cable-sizing cascade reconciliation. Drift per circuit: C01 (18.5 vs 18.5 = 0.0%) / C02 (9.6 vs 9.6 = 0.0%) / C03 (19.6 vs 19.6 = 0.0%) / C04 (14.4 vs 14.4 = 0.0%) / C05 (21.0 vs 21.0 = 0.0%) / C06 (21.0 vs 21.0 = 0.0%) / C07 (24.0 vs 24.0 = 0.0%) / C08 (22.5 vs 22.5 = 0.0%). All 8 within \u00b15% tolerance. PASS."
+    }
   ]
 }
