@@ -1,0 +1,53 @@
+{
+  "_source": "BS EN 12464-1:2021 §4.2.2 (Task area, Immediate surrounding area, Background area) + Table 6",
+  "_note": "Area-classification definitions plus the relationship rules between Em of task / surrounding / background areas. Source-of-truth for INV-14 (surrounding ratio) and INV-15 (background floor).",
+  "_units": {
+    "lux": "lx",
+    "distance": "mm",
+    "ratio": "dimensionless"
+  },
+  "task_area": {
+    "_clause": "BS EN 12464-1:2021 §4.2.2.1",
+    "definition": "The partial area within the workplace in which the visual task is carried out. The task area shall be lit to the maintained illuminance Em given for the relevant task type in Table 5.",
+    "em_source": "Table 5 (per task type)"
+  },
+  "immediate_surrounding_area": {
+    "_clause": "BS EN 12464-1:2021 §4.2.2.2",
+    "definition": "A band of at least 0.5 m width around the task area within the visual field. The illuminance of the immediate surrounding area shall be related to the illuminance of the task area.",
+    "width_min_mm": 500,
+    "em_ratio_to_task_min": 0.3,
+    "em_ratio_to_task_max": 0.5,
+    "em_ratio_to_task_default": 0.5,
+    "_table_reference": "Table 6 — Illuminance of immediate surrounding area"
+  },
+  "background_area": {
+    "_clause": "BS EN 12464-1:2021 §4.2.2.3",
+    "definition": "Adjacent to the immediate surrounding area, the background area shall be a band of at least 3 m width within the limits of the space. The illuminance of the background area shall be related to the illuminance of the immediate surrounding area.",
+    "width_min_mm": 3000,
+    "em_ratio_to_task_min": 0.333,
+    "em_floor_lux_min": 50,
+    "_rule": "Em_background ≥ max(Em_task / 3, 50 lx)",
+    "_table_reference": "Table 6 — Illuminance of background area"
+  },
+  "table_6_ratio_rules": {
+    "_clause": "BS EN 12464-1:2021 Table 6",
+    "task_to_surrounding": {
+      "task_em_lux_500_or_above": {"surrounding_em_lux_required": 500, "_note": "When task Em ≥ 500 lx, surrounding takes its own Em from Table 5 if the surrounding has a different task type; otherwise applies the ratio rule."},
+      "task_em_lux_300": {"surrounding_em_lux_required": 200},
+      "task_em_lux_200": {"surrounding_em_lux_required": 150},
+      "task_em_lux_150": {"surrounding_em_lux_required": 100},
+      "task_em_lux_100": {"surrounding_em_lux_required": 100},
+      "task_em_lux_below_100": {"surrounding_em_lux_required": "Em_task", "_note": "Below 100 lx the surrounding inherits the task Em."}
+    },
+    "task_to_background": {
+      "rule": "Em_background ≥ Em_surrounding / 3 with absolute floor 50 lx",
+      "_simplified": "Em_background ≥ max(Em_task / 3, 50 lx)"
+    },
+    "uniformity_rules": {
+      "task_area_uniformity_min": 0.6,
+      "surrounding_area_uniformity_min": 0.4,
+      "background_area_uniformity_min": 0.1,
+      "_note": "Uniformity U0 = E_min / E_avg per area."
+    }
+  }
+}
