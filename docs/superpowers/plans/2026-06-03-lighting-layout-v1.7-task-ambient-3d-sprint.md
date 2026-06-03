@@ -2458,3 +2458,560 @@ git commit -m "feat(lighting-layout): C.13 add 5 new evals for D5 depth features
 ```
 
 ---
+
+## Phase D — Ship (5 tasks, Sonnet + Opus, ~5-7 commits incl. fix-passes)
+
+Goal: finalise sprint with honest-disclosure sweep, 11-check pre-ship verification fence, CHANGELOGs + memory + tally bump, final cross-sprint integration review, then push-deferred-to-user.
+
+### Task D.1: Honest disclosure 4-place sweep across 12 examples
+
+**Files:**
+- Modify (only if gaps surface): any of the 8 retrofitted + 4 NEW example dirs
+
+**Why Sonnet:** Mechanical audit + targeted fix-ups; matches small-power D4 D.2 precedent.
+
+- [ ] **Step 1: Build the 12-example checklist (one row per example × 4 disclosure places)**
+
+For each example:
+1. `input.json._cascade_disclosure` OR equivalent `_note` / `_d5_retrofit_note`
+2. `output.json.compliance_summary.assumptions[]` containing a v1.7 disclosure entry
+3. `output.json.rationale.sections[]` containing an explicit "Honest disclosures" subsection
+4. `reasoning.md` containing an explicit "Honest disclosures" section
+
+Run:
+```bash
+for ex in office-open-plan reception-lobby uk-bathroom-zone-1-zone-2 uk-multi-entrance-classroom uk-open-plan-office-10x8-dali uk-part-l-fail-incandescent uk-undersized-lighting-vs-target warehouse-highbay uk-pendant-open-plan-office uk-mixed-purpose-classroom uk-retail-display-task-zone uk-per-zone-target-violation; do
+  echo "=== $ex ==="
+  python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/$ex/input.json'))
+print('  P1 input._note/_d5_retrofit_note/_cascade_disclosure:', any(k.startswith('_') and ('note' in k or 'disclosure' in k or 'retrofit' in k) for k in d.keys()))
+"
+  python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/$ex/output.json'))
+print('  P2 output.compliance_summary.assumptions has v1.7 entry:', any('v1.7' in str(a) or 'D5' in str(a) or 'retrofit' in str(a).lower() for a in d.get('compliance_summary', {}).get('assumptions', [])))
+print('  P3 output.rationale section Honest disclosures:', any('honest' in s.get('title', '').lower() or 'disclosure' in s.get('title', '').lower() for s in d.get('rationale', {}).get('sections', [])))
+"
+  grep -q -i "honest disclosure\|^## Honest" "electrical/lighting-layout/examples/$ex/reasoning.md" && echo "  P4 reasoning.md Honest disclosures: PASS" || echo "  P4 reasoning.md Honest disclosures: MISSING"
+done
+```
+
+Expected output: table of 12 examples × 4 places with PASS/MISSING per cell.
+
+- [ ] **Step 2: For each MISSING entry, fill the gap with minimal additive edit**
+
+For any P1 gap: append `"_d5_disclosure_note": "v1.7 D5 retrofit ... defaults applied ..."` (or similar context-appropriate prose) to input.json.
+
+For any P2 gap: append to `output.compliance_summary.assumptions[]`:
+```json
+"v1.7 D5: zone purpose + mount_type + per_zone_achieved populated per BS EN 12464-1:2021 §4.2.2."
+```
+
+For any P3 gap: append to `output.rationale.sections[]`:
+```json
+{
+  "title": "Honest disclosures (v1.7 D5 4-place pattern)",
+  "summary": "This example was retrofitted/authored at v1.7. Defaults applied per ZP-01/MT-01 backwards-compat. per_zone_achieved derived from lumen-method × purpose_uniformity_factor.",
+  "decisions": []
+}
+```
+
+For any P4 gap: append to reasoning.md:
+```markdown
+## Honest disclosures (v1.7 D5 — 4-place pattern)
+
+1. Input note: see `input._d5_disclosure_note`.
+2. Compliance assumption: see `compliance_summary.assumptions[]`.
+3. Rationale section: see "Honest disclosures" subsection in rationale.
+4. This reasoning section.
+```
+
+- [ ] **Step 3: Re-run the audit script to confirm all 12 × 4 cells PASS**
+
+(Repeat Step 1.)
+
+- [ ] **Step 4: Run golden CI gate to confirm no schema regression**
+
+Run:
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+Expected: aggregate unchanged.
+
+- [ ] **Step 5: Commit (only if any edits were made; otherwise note "no edits — all 12 examples already 4-place compliant" and skip commit)**
+
+```bash
+git add electrical/lighting-layout/examples/
+git commit -m "chore(lighting-layout): D.1 honest disclosure sweep — fill 4-place pattern gaps across D5 examples"
+```
+
+### Task D.2: Sonnet 11-check pre-ship verification fence
+
+**Files:**
+- Read-only (no commit unless a CONCERN requires fix-pass)
+
+**Why Sonnet:** Mechanical verification; matches small-power D4 D.3 precedent which caught the manifest update gap as a blocker.
+
+- [ ] **Step 1: Run the 11-check fence — report PASS/CONCERN/FAIL per check + one-line evidence**
+
+The 11 checks:
+
+1. **Banned-citation sweep across all 12 new+retrofit examples**
+
+```bash
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/examples/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo FAIL || echo PASS
+```
+
+2. **Eval schema conformance** — 5 new evals (eval-09..13) pass eval.schema.json (Pass 2 of golden gate)
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | grep -E "Pass 2|eval-(09|10|11|12|13)" | head -10
+```
+
+3. **IR schema conformance** — 12 new/retrofit output.json pass lighting-layout-ir.schema.json
+
+```bash
+for ex in office-open-plan reception-lobby uk-bathroom-zone-1-zone-2 uk-multi-entrance-classroom uk-open-plan-office-10x8-dali uk-part-l-fail-incandescent uk-undersized-lighting-vs-target warehouse-highbay uk-pendant-open-plan-office uk-mixed-purpose-classroom uk-retail-display-task-zone uk-per-zone-target-violation; do
+  python3 -c "
+import json, jsonschema
+try:
+    jsonschema.Draft7Validator(json.load(open('shared/schemas/electrical/lighting-layout-ir.schema.json'))).validate(json.load(open('electrical/lighting-layout/examples/$ex/output.json')))
+    print('$ex: OK')
+except Exception as e:
+    print('$ex: FAIL', str(e)[:100])
+"
+done
+```
+
+4. **Cascade payload byte-equality** — for any example consuming photometric_grid or special_locations_zoning, payload byte-identical to source
+
+```bash
+# For each example with consumed_intents, dict-diff producer vs consumer payload
+for ex in uk-bathroom-zone-1-zone-2; do
+  python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/$ex/output.json'))
+ci = d.get('consumed_intents', {})
+for k, v in ci.items():
+    src = v.get('source_path')
+    if src:
+        try:
+            src_data = json.load(open(src))
+            consumer_payload = v.get('payload', {})
+            print(f'$ex.{k}: byte-equal:', consumer_payload == src_data.get(k.replace('_zoning','_zoning').replace('_grid','_grid'), src_data))
+        except FileNotFoundError:
+            print(f'$ex.{k}: source NOT FOUND (DEFERRED-POINTER)')
+"
+done
+```
+
+5. **INV-13 zone purpose emit** — every D5 example has every zone with `purpose` populated
+
+```bash
+for ex in office-open-plan reception-lobby uk-bathroom-zone-1-zone-2 uk-multi-entrance-classroom uk-open-plan-office-10x8-dali uk-part-l-fail-incandescent uk-undersized-lighting-vs-target warehouse-highbay uk-pendant-open-plan-office uk-mixed-purpose-classroom uk-retail-display-task-zone uk-per-zone-target-violation; do
+  python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/$ex/output.json'))
+zones = d.get('zones', [])
+missing = [z['zone_id'] for z in zones if 'purpose' not in z]
+print('$ex: zones=$(len(zones)), missing_purpose=$(len(missing))')
+" 2>&1
+done
+```
+
+6. **INV-14/15 ratio compliance** — uk-mixed-purpose-classroom satisfies Table 6 bands
+
+```bash
+python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/uk-mixed-purpose-classroom/output.json'))
+zones = {z['zone_id']: z for z in d['zones']}
+task_em = next(z['em_target_lux'] for z in zones.values() if z['purpose'] == 'task')
+for z in zones.values():
+    if z['purpose'] == 'surrounding':
+        ratio = z['em_target_lux'] / task_em
+        print(f'surrounding ratio: {ratio:.3f} ({z[\"em_target_lux\"]} / {task_em}); in [0.3, 0.5]: {0.3 <= ratio <= 0.5}')
+    elif z['purpose'] == 'background':
+        floor = max(task_em / 3, 50)
+        print(f'background em: {z[\"em_target_lux\"]} ≥ floor {floor:.1f}: {z[\"em_target_lux\"] >= floor}')
+"
+```
+
+7. **INV-16/17/18 mount_type 3D consistency** — uk-pendant-open-plan-office + warehouse-highbay + uk-retail-display-task-zone
+
+```bash
+for ex in uk-pendant-open-plan-office warehouse-highbay uk-retail-display-task-zone; do
+  python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/$ex/output.json'))
+ceiling = d['room']['ceiling_height_mm']
+wp = d['room']['working_plane_mm']
+for L in d.get('luminaires', []):
+    if L.get('mount_type') in ('pendant', 'suspended'):
+        z = L.get('z_mm')
+        s = L.get('suspension_length_mm')
+        identity = (z + s == ceiling) if L['mount_type'] == 'pendant' else (z + s <= ceiling)
+        clearance = z > wp
+        print(f'$ex.{L[\"id\"]}: mount={L[\"mount_type\"]}, z={z}, s={s}, identity/inequality={identity}, clearance={clearance}')
+"
+done
+```
+
+8. **INV-19 per-zone achievement bands** — uk-per-zone-target-violation surfaces HIGH; others PASS or marginal
+
+```bash
+for ex in uk-per-zone-target-violation uk-pendant-open-plan-office; do
+  python3 -c "
+import json
+d = json.load(open('electrical/lighting-layout/examples/$ex/output.json'))
+inv19 = [i for i in d['invariants'] if i['id'] == 'INV-19'][0]
+print('$ex: INV-19 passes={inv19[\"passes\"]}, severity={inv19[\"severity\"]}')
+"
+done
+```
+
+9. **Honest disclosure 4-place pattern** — re-verify D.1 fixes stuck (mirror Step 1 of D.1)
+
+10. **Manifest version + status** — small-power skill.manifest.json shows 1.7.0 + production + evals/examples/rules declared
+
+```bash
+python3 -c "
+import json
+m = json.load(open('electrical/lighting-layout/skill.manifest.json'))
+print('version:', m['version'])
+print('status:', m['status'])
+print('evals[]:', len(m.get('evals', [])))
+print('examples[]:', len(m.get('examples', [])))
+print('rules[]:', len(m.get('rules', [])))
+"
+```
+
+Expected: version 1.7.0; status production; evals 13; examples 12; rules 7.
+
+11. **Golden CI gate aggregate green** — `python3 scripts/validate-examples.py` 0 failures + 1 disclosed FP (motor-superposition)
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -10
+```
+
+Expected: aggregate green; bump from pre-sprint baseline by +N where N = ~10 (4 NEW examples × 2 files each + 5 new evals = 13 — actual bump after Phase C is +13 from base).
+
+- [ ] **Step 2: Build a report table**
+
+| # | Check | Status | One-line evidence |
+|---|---|---|---|
+| 1 | Banned-citation sweep | PASS / CONCERN / FAIL | (paste output) |
+| 2 | Eval schema conformance | PASS / CONCERN / FAIL | |
+| ... | | | |
+| 11 | Golden CI gate aggregate | PASS / CONCERN / FAIL | |
+
+- [ ] **Step 3: Decision gate**
+
+- If ALL PASS: D.2 cleared; proceed to D.3.
+- If CONCERNs but no FAIL: judge whether each is ship-acceptable; proceed to D.3 with concerns noted.
+- If any FAIL: STOP; dispatch a fix-pass before D.3.
+
+- [ ] **Step 4: No commit (read-only fence task)**
+
+(D.2 only commits if a fix-pass is dispatched.)
+
+### Task D.3: 2 CHANGELOGs + memory file + MEMORY.md index + CLAUDE.md tally bump
+
+**Files:**
+- Modify: `electrical/lighting-layout/CHANGELOG.md`
+- Modify: `shared/standards/lighting/BSEN12464/README.md` (note A.0 + lux-levels.json augmentation)
+- Modify: `electrical/lighting-layout/README.md` (full v1.7 content — bump from A.5 stub)
+- Create: `/Users/linus/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/sprint-D5-lighting-layout-shipped.md`
+- Modify: `/Users/linus/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/MEMORY.md`
+- Modify: `CLAUDE.md`
+
+**Why Sonnet:** Documentation finalisation; mirrors small-power D4 D.4 precedent.
+
+- [ ] **Step 1: Read existing CHANGELOG.md to match format**
+
+Run:
+```bash
+head -30 electrical/lighting-layout/CHANGELOG.md
+```
+
+- [ ] **Step 2: Add v1.7.0 entry to lighting-layout CHANGELOG.md (at top, after header)**
+
+```markdown
+## [1.7.0] — 2026-06-03
+
+### Added
+- Task/ambient split per BS EN 12464-1:2021 §4.2.2 — `zones[].purpose` enum (`task` / `surrounding` / `background` / `circulation`) + `zones[].em_target_lux`.
+- 3D luminaire placement per BS EN 60598-2 — `luminaires[].mount_type` enum (`recessed` / `surface` / `pendant` / `suspended` / `track`) + `luminaires[].z_mm` + `luminaires[].suspension_length_mm`.
+- `calculation_summary.per_zone_achieved[]` array (one entry per zone: target / achieved / ratio_compliance).
+- 3 new IR schema allOf clauses: pendant/suspended require z_mm + suspension; pendant geometry identity; orphan-surrounding blocked.
+- 7 new INVs (INV-13..INV-19; 6 HIGH + 1 MEDIUM with graded INV-19 severity bands).
+- 3 new reviewer D-checks (D-11 suspension sanity + D-12 background-only room flag + D-13 task-zone density flag).
+- 2 new rules YAML (`zone-purpose-rules.yaml` — 5 ZP-NN rules; `mount-type-rules.yaml` — 4 MT-NN rules).
+- 4 new examples (uk-pendant-open-plan-office + uk-mixed-purpose-classroom + uk-retail-display-task-zone + uk-per-zone-target-violation FAIL HIGH).
+- 5 new evals (eval-09 through eval-13).
+- 1 new verified standards file: `shared/standards/lighting/BSEN12464/area-definitions.json` transcribing §4.2.2.1/2/3 + Table 6.
+
+### Changed
+- 8 existing examples retrofitted with v1.7 default values (purpose=task, mount_type=recessed) per backwards-compat rules ZP-01 / MT-01.
+- `shared/standards/lighting/BSEN12464/lux-levels.json` augmented with `_surrounding_ratio_default: 0.5`, `_background_ratio_default: 0.333`, `_background_min_lx: 50`, `_ratio_source` citation to area-definitions.json.
+
+### Cross-skill
+- Cascade contracts unchanged: photometric-analysis INV-11 and special-locations INV-12 consumption preserved.
+
+### Citations
+- BS EN 12464-1:2021 §4.2.2.1 / §4.2.2.2 / §4.2.2.3 / Table 5 / Table 6 (transcribed in `area-definitions.json` + `lux-levels.json`).
+- BS EN 60598-2-1 (general luminaire) + BS EN 60598-2-2 (recessed) — mount_type discipline.
+- Part L 2021 (UK Building Regulations) — preserved from v1.6.0.
+
+### Sprint
+- D5 sprint: ~28 implementer commits + ~5-7 fix-passes + 4 plan portions + 1 spec = ~38-40 commits.
+- Gates bumped from baseline (pre-D5) by +13: +8 from 4 NEW examples × 2 files + +5 new evals.
+```
+
+- [ ] **Step 3: Add note to `shared/standards/lighting/BSEN12464/README.md`**
+
+Append a short section:
+
+```markdown
+## v1.7 D5 additions (2026-06-03)
+
+- `area-definitions.json` + `area-definitions-reference.md` — BS EN 12464-1:2021 §4.2.2.1 (task) / §4.2.2.2 (surrounding) / §4.2.2.3 (background) / Table 6 (ratio rules).
+- `lux-levels.json` augmented with `_surrounding_ratio_default`, `_background_ratio_default`, `_background_min_lx`, `_ratio_source` keys.
+- Source-of-truth for lighting-layout INV-14 (surrounding ratio) + INV-15 (background floor) + INV-19 (per-zone achievement).
+```
+
+- [ ] **Step 4: Update lighting-layout README.md with full v1.7 content (bump from A.5 stub)**
+
+In `electrical/lighting-layout/README.md`, locate the YAML frontmatter or features section and update:
+
+- Version line: 1.6.0 → 1.7.0.
+- Feature list: add "Task/ambient zone-purpose split per BS EN 12464-1:2021 §4.2.2" + "3D luminaire placement (pendant/suspended) per BS EN 60598-2".
+- INV table: extend to INV-13..INV-19 (7 new rows with name + severity + clause).
+- D-checks table: extend to D-11/12/13.
+- Verified standards table: add `area-definitions.json`.
+
+- [ ] **Step 5: Create the memory file**
+
+Create `/Users/linus/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/sprint-D5-lighting-layout-shipped.md`:
+
+```markdown
+---
+name: sprint-D5-lighting-layout-shipped
+description: lighting-layout v1.7.0 D5 task/ambient + 3D placement sprint shipped 2026-06-03 — Wave 2 second deliverable
+metadata:
+  type: project
+---
+
+# Sprint D5 — lighting-layout v1.7.0 shipped 2026-06-03
+
+**Why:** Wave 2 second deliverable per `[[2026-05-29-lighting-cluster-roadmap]]` §5. Closes task/ambient illuminance split + 3D pendant/suspended placement gaps in lighting-layout v1.6.0 → v1.7.0 production.
+
+**How to apply:** lighting-layout now emits per-zone `em_target_lux` with `purpose: task/surrounding/background/circulation` per BS EN 12464-1:2021 §4.2.2 + Table 6. Pendant/suspended luminaires carry `z_mm + suspension_length_mm` with algebraic identity (`z_mm + suspension_length_mm = ceiling_height_mm` for pendant). Consumer skills (photometric-analysis + special-locations) unchanged.
+
+**What shipped:**
+- 28 implementer commits + ~5-7 fix-passes + 5 spec/portion docs = ~38-40 total
+- 7 new INVs INV-13..INV-19 (6 HIGH + 1 MEDIUM, INV-19 has graded severity bands)
+- 8 retrofit + 4 NEW examples (12 total)
+- 5 new evals (eval-09..13)
+- 2 new rules YAML (zone-purpose + mount-type)
+- 1 new verified standards file (area-definitions.json transcribing §4.2.2.x + Table 6)
+- Manifest 1.6.0 → 1.7.0 (production)
+- Gates bumped +13 (4 NEW examples × 2 files + 5 evals)
+
+**1 disclosed FP held throughout:** motor-superposition functional_audit FP (carry-over from remediation program).
+
+**Push deferred to user authorisation at D.5** per CLAUDE.md shared-state rule.
+
+**Next:** Wave 3 of the lighting cluster roadmap — `emergency-lighting` + `lighting-controls` parallel pair.
+```
+
+- [ ] **Step 6: Append MEMORY.md index entry**
+
+In `/Users/linus/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/MEMORY.md`, ADD a line below the most recent entry:
+
+```markdown
+- [Sprint D5 lighting-layout shipped (Wave 2 second deliverable)](sprint-D5-lighting-layout-shipped.md) — 2026-06-03: v1.7.0 production; task/ambient zone-purpose split + 3D pendant placement; 7 new INVs (INV-13..19); 8 retrofit + 4 NEW examples; 5 new evals; 1 new verified standards file (area-definitions.json); manifest 1.6.0→1.7.0; gates +13 from baseline; 1 disclosed FP held; Wave 2 closes
+```
+
+- [ ] **Step 7: Update CLAUDE.md production tally**
+
+In `/Users/linus/Desktop/DraftsMan SKills/draftsman-skills/CLAUDE.md`, locate the manifest tally line (currently `9 beta + 4 production`) and bump to `9 beta + 5 production`:
+
+Find:
+```
+Manifest tally: **104 total** = 13 shipped (10 beta + 3 production: lighting-layout v1.6.0 + photometric-analysis v1.1.0 + special-locations v1.0.0) + 91 stubs.
+```
+
+(The actual count line was updated to 9 beta + 4 production in D4 sprint. Bump 4 → 5; update lighting-layout version 1.6.0 → 1.7.0.)
+
+Replace with:
+```
+Manifest tally: **104 total** = 14 shipped (9 beta + 5 production: lighting-layout v1.7.0 + photometric-analysis v1.1.0 + special-locations v1.0.1 + small-power v2.0.0 + earthing v1.5.1) + 90 stubs. Tally last updated 2026-06-03 after lighting-layout v1.7.0 ship (Wave 2 second deliverable closes).
+```
+
+- [ ] **Step 8: Run golden CI gate**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+Expected: aggregate unchanged (documentation files not validated).
+
+- [ ] **Step 9: Commit (memory files are outside the repo — not git-tracked)**
+
+```bash
+git add electrical/lighting-layout/CHANGELOG.md electrical/lighting-layout/README.md shared/standards/lighting/BSEN12464/README.md CLAUDE.md
+git commit -m "docs(lighting-layout): D.3 CHANGELOGs + README v1.7 + CLAUDE.md tally bump + memory file (Wave 2 second deliverable closes)"
+```
+
+### Task D.4: Final cross-sprint Opus integration review (adversarial)
+
+**Files:**
+- Read-only — verdict + recommendation only
+
+**Why Opus:** Adversarial review against full sprint surface area; mirrors small-power D4 D.5 precedent (which delivered SHIP-WITH-NOTED-CONCERNS verdict in one pass).
+
+- [ ] **Step 1: Run all 11 review checks (mirror spec §13 process discipline)**
+
+1. **Citation hygiene across all D5 commits** — every BS EN 12464-1 sub-clause cited exists in `shared/standards/lighting/BSEN12464/` verified files (lux-levels.json or area-definitions.json).
+2. **Cascade contract end-to-end** — photometric_grid + special_locations_zoning consumption unchanged.
+3. **INV-13 through INV-19 emit pattern** — every D5 example emits all 19 INVs with N/A-vacuous PASS for unused INVs; no silent drops.
+4. **Manifest 1.7.0 consistency** — version + status + evals/examples/rules arrays match disk state.
+5. **CHANGELOG accuracy** — 1.7.0 entry matches what actually shipped.
+6. **Banned-citation FINAL sweep** — grep across all D5 commits for §526.2 / §433.2 / OZEV / 3rd Edition / Reg 559 / Em_room / "average room lux" outside disambiguation contexts.
+7. **No-trim discipline** — evidence + decisions stayed within maxLength 1200; no engineering content truncated.
+8. **Honest disclosure 4-place pattern** held across all 12 examples (D.1 sweep validation).
+9. **3D placement geometry** — pendant identity holds; suspended inequality holds; recessed/surface/track inherit by convention.
+10. **Per-zone achievement bands** — INV-19 graded severity (HIGH/MEDIUM/INFO) correctly applied per spec §6.
+11. **Gates green** — `python3 scripts/validate-examples.py` 0 failures + functional_audit.py 1 disclosed FP held.
+
+- [ ] **Step 2: Report per-check PASS / CONCERN / FAIL with one-line evidence**
+
+(Build 11-row review table.)
+
+- [ ] **Step 3: Final verdict**
+
+- SHIP: all PASS or only CONCERNs that are documentation-shape / not runtime correctness.
+- SHIP-WITH-NOTED-CONCERNS: 1-3 CONCERNs that are acceptable for ship but flagged for follow-up.
+- FIX-FIRST: any FAIL or CRITICAL CONCERN that blocks ship.
+
+- [ ] **Step 4: If verdict is FIX-FIRST: dispatch fix-pass before D.5. If SHIP or SHIP-WITH-NOTED-CONCERNS: proceed to D.5.**
+
+- [ ] **Step 5: No commit (read-only review)**
+
+### Task D.5: Push deferred to user authorisation
+
+**Files:**
+- No file edits
+
+**Why:** Per CLAUDE.md "shared state" rule, push to `origin/main` requires explicit user authorisation. This task is a checkpoint, not an action.
+
+- [ ] **Step 1: Confirm all D5 commits are local on `main` (no remote push yet)**
+
+```bash
+git log --oneline origin/main..HEAD 2>&1 | head -50 | wc -l
+git log --oneline -5
+```
+
+Expected: ~38-40 commits ahead of `origin/main`; head is the D.3 commit (or D.4 fix-pass if any).
+
+- [ ] **Step 2: Present sprint summary to user**
+
+Compose a brief summary covering:
+- Gates: baseline → final
+- New INVs / new examples / new evals / new rules / new standards files
+- Manifest version bump
+- D.4 verdict line
+- Confirm push is the only remaining action
+
+- [ ] **Step 3: Wait for user "yes push" or equivalent authorisation**
+
+(STOP HERE until user authorises. Do NOT push without explicit go-ahead.)
+
+- [ ] **Step 4: On user authorisation, push to origin/main**
+
+```bash
+git push origin main 2>&1 | tail -5
+```
+
+Expected: clean push (no force, no conflicts).
+
+- [ ] **Step 5: Confirm push succeeded + report final commit SHA range to user**
+
+```bash
+git log --oneline origin/main..HEAD 2>&1 | head -5
+git log --oneline -1
+```
+
+Expected: 0 commits ahead of `origin/main` after push.
+
+- [ ] **Step 6: Final sprint close**
+
+Sprint D5 — lighting-layout v1.7.0 — shipped. Wave 2 of the lighting cluster roadmap closes. Next: Wave 3 (`emergency-lighting` + `lighting-controls` parallel pair).
+
+---
+
+## Self-review (writing-plans skill)
+
+### Spec coverage
+
+| Spec section | Plan task(s) |
+|---|---|
+| §3.1 Combined sprint | Phase D — single v1.7.0 ship |
+| §3.2 Conditional allOf for 3D placement | A.1 step 5 (allOf clauses 1 + 2) |
+| §3.3 Zone purpose enum | A.1 step 2 |
+| §3.4 Standards augmentation | A.3 |
+| §3.5 8 retrofit + 4 NEW | C.1-C.8 + C.9-C.12 |
+| §3.6 Citation pre-work A.0 | A.0 |
+| §4 Verified citations | A.0 transcribes the anchors; B.2 cites them in INV evidence |
+| §5.1 Schema diff (zones/luminaires/calc) | A.1 steps 2 / 3 / 4 |
+| §5.2 lux-levels.json augmentation | A.3 |
+| §5.3 area-definitions.json | A.0 |
+| §6 INV-13..19 with graded INV-19 | B.2 (validator INV sections) + C.7 (graded fail) + C.12 (HIGH band) |
+| §7.1 Generator Steps 13/14/15 | B.1 |
+| §7.2 Validator INV sections | B.2 |
+| §7.3 Reviewer D-11/12/13 | B.3 |
+| §8.1 8 retrofits | C.1-C.8 |
+| §8.2 4 NEW examples | C.9-C.12 |
+| §9 5 new evals | C.13 |
+| §10 Cascade impact (unchanged) | B.4 documents; D.4 verifies |
+| §11 Sprint structure (A/B/C/D phases) | Phase A (6 tasks) / Phase B (4 tasks) / Phase C (13 tasks) / Phase D (5 tasks) — totals 28 |
+| §12 Risk surfaces | C.8 noted (warehouse-highbay 3D) + C.10 noted (mixed-purpose 3-zone) + B.4 acknowledged (no cascade contract change) |
+| §13 Process discipline | sprint-discipline header section |
+| §14 Definition of done | Phase D + D.5 checkpoint |
+
+All 14 spec sections covered.
+
+### Placeholder scan
+
+- No "TBD" / "TODO" raw text.
+- All eval YAML uses concrete eval-09..13 numbers (no eval-XX placeholders).
+- Every step has either inline code/diff content or an exact command — no "implement appropriate X" prose.
+- One acceptable abstraction: `<derived>` placeholders in C.8 step 3 are accompanied by the derivation formula immediately below, matching small-power D4 plan pattern.
+
+### Type / name consistency
+
+- `purpose` enum values: `task / surrounding / background / circulation` — consistent across A.1 (schema), A.2 (inputs), A.4 (rules), B.1 (generator step 13), B.2 (INV-13 evidence), B.3 (D-12 rule), C examples.
+- `mount_type` enum values: `recessed / surface / pendant / suspended / track` — consistent across A.1, A.2, A.4 (MT-01..04), B.1 (step 14), B.2 (INV-16), C examples.
+- `ratio_compliance` enum: `pass / fail / marginal` — consistent across A.1 (schema), B.1 (step 15), B.2 (INV-19 bands), C examples (uk-undersized + uk-per-zone-target-violation).
+- INV numbering: INV-13..INV-19 used consistently in B.2 / C examples / D.4 review checks.
+- D-check numbering: D-11 / D-12 / D-13 used consistently in B.3 / D.4 review checks.
+
+### Issues found and fixed inline
+
+None — self-review found no defects requiring inline fixes.
+
+---
+
+## Execution handoff
+
+Plan complete and saved to [`docs/superpowers/plans/2026-06-03-lighting-layout-v1.7-task-ambient-3d-sprint.md`](2026-06-03-lighting-layout-v1.7-task-ambient-3d-sprint.md).
+
+**Two execution options:**
+
+1. **Subagent-Driven (recommended)** — Fresh subagent per task, two-stage Opus review after each, fast iteration. Matches the D4 sprint precedent that just shipped 30 commits clean.
+2. **Inline Execution** — Execute tasks in this session using executing-plans, batch with checkpoints.
+
+**Which approach?**
