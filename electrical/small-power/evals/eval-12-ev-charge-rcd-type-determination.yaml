@@ -1,0 +1,27 @@
+name: small-power EV RCD Type A/B selection per Reg 722.531.3.101 (INV-18)
+skill: small-power
+description: |
+  Validation-trap: verify INV-18 is emitted on the uk-ev-charge-domestic
+  fixture. rcd_type=type_a is correct when charging_unit_dc_detection_a >= 6
+  (built-in 6 mA DC detection present). Type A on a unit without 6 mA DC
+  detection would be a HIGH safety failure — DC fault current blinds the
+  Type A and violates Reg 722.531.3.101. Also verifies EV-01 dedicated-circuit
+  rule (dedicated_circuit=true required on every EV circuit).
+category: validation_trap
+input_fixture: examples/uk-ev-charge-domestic/output.json
+checks:
+  - assertion: "all(c.ev_charge_metadata.rcd_type == 'type_a' for c in ir.circuits if c.ev_charge_metadata and c.ev_charge_metadata.charging_unit_dc_detection_a >= 6)"
+    description: When charging unit has >=6 mA built-in DC detection, Type A RCD is correct per Reg 722.531.3.101
+    severity: critical
+    matches_inv: INV-18
+    standard_ref: BS 7671:2018+A2:2022 §722.531.3.101 + IET Code of Practice for EV Charging Equipment Installation (4th Edition)
+
+  - assertion: "all(c.ev_charge_metadata.dedicated_circuit == true for c in ir.circuits if c.ev_charge_metadata)"
+    description: Every EV circuit must be a dedicated circuit per IET CoP for EV Charging (4th Ed) EV-01 rule
+    severity: critical
+    matches_inv: INV-18
+
+  - assertion: "any(i.id == 'INV-18' and i.passes == true for i in ir.invariants)"
+    description: INV-18 must PASS on this Type A happy-path EV fixture
+    severity: critical
+    matches_inv: INV-18

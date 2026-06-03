@@ -1,0 +1,21 @@
+name: small-power cable-sizing cascade integration with building_diversity (INV-19)
+skill: small-power
+description: |
+  Verify INV-19 is emitted on the uk-office-floor-with-building-diversity
+  fixture. When building_diversity is present, the cable-sizing intent must
+  have been consumed (meta.consumed_intents includes a cable-sizing entry),
+  and INV-19 confirms the per_circuit_demand_inputs[] values reconcile
+  with cable-sizing design currents within ±5%.
+category: cross_validation
+input_fixture: examples/uk-office-floor-with-building-diversity/output.json
+checks:
+  - assertion: "any(i.intent_type == 'cable-sizing' for i in ir.meta.consumed_intents)"
+    description: meta.consumed_intents[] must include a cable-sizing entry when building_diversity is present (INV-19 pre-condition)
+    severity: warning
+    matches_inv: INV-19
+    standard_ref: IET On-Site Guide 8th Edition Appendix A — Table A1 + BS 7671:2018+A2:2022 §311
+
+  - assertion: "any(i.id == 'INV-19' and i.passes == true for i in ir.invariants)"
+    description: INV-19 must PASS on this happy-path building-diversity fixture
+    severity: warning
+    matches_inv: INV-19

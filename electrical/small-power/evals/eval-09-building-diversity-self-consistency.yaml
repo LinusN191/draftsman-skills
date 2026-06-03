@@ -1,0 +1,25 @@
+name: small-power building_diversity self-consistency
+skill: small-power
+description: |
+  Verify INV-13: building_diversity.building_type in v2.0 enum {office,
+  industrial, healthcare}; design_density_w_per_m2 within standards-file
+  range OR engineer override documented; building_diversified_demand_a
+  reconciles with per_circuit_demand_inputs[] computation.
+category: skill_specific
+input_fixture: examples/uk-office-floor-with-building-diversity/output.json
+checks:
+  - assertion: "ir.building_diversity.building_type in ['office', 'industrial', 'healthcare']"
+    description: building_type in v2.0 enum per spec §2 deferrals; retail/residential/data-center/hospitality deferred to v2.1
+    severity: critical
+    matches_inv: INV-13
+    standard_ref: IET On-Site Guide 8th Edition Appendix A — Table A1
+
+  - assertion: "ir.building_diversity.design_density_w_per_m2 >= 65 and ir.building_diversity.design_density_w_per_m2 <= 100"
+    description: Office profile density within verified standards-file range [65, 100] W/m² per diversity-factors.json::commercial_office_diversity
+    severity: critical
+    matches_inv: INV-13
+
+  - assertion: "any(i.id == 'INV-13' and i.passes == true for i in ir.invariants)"
+    description: INV-13 must PASS on this happy-path office-floor fixture
+    severity: critical
+    matches_inv: INV-13

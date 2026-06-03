@@ -1,0 +1,25 @@
+name: small-power ring final circuit continuity PASS (INV-14 + INV-15 floor-area cross-check)
+skill: small-power
+description: |
+  Verify INV-14 + INV-15 on a PASS fixture: when topology=ring, both
+  endpoints are populated and continuity_verified is true; circuit
+  floor_area_m2 reconciles with rooms_covered sum within ±5%.
+  Uses the uk-3bed-with-ring-continuity happy-path example (2 ring circuits,
+  1 FCU spur on C01).
+category: skill_specific
+input_fixture: examples/uk-3bed-with-ring-continuity/output.json
+checks:
+  - assertion: "all(c.ring_endpoints.endpoint_a_xy is not null and c.ring_endpoints.endpoint_b_xy is not null for c in ir.circuits if c.topology == 'ring')"
+    description: Every ring circuit has both endpoint_a_xy and endpoint_b_xy populated
+    severity: critical
+    matches_inv: INV-14
+    standard_ref: IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 (top-level)
+
+  - assertion: "all(c.ring_endpoints.continuity_verified == true for c in ir.circuits if c.topology == 'ring')"
+    description: continuity_verified must be true on every ring circuit in this PASS fixture
+    severity: critical
+    matches_inv: INV-14
+
+  - assertion: "any(i.id == 'INV-14' and i.passes == true for i in ir.invariants) and any(i.id == 'INV-15' and i.passes == true for i in ir.invariants)"
+    description: Both INV-14 (ring continuity) and INV-15 (floor-area cross-check) must PASS on this happy-path fixture
+    severity: critical

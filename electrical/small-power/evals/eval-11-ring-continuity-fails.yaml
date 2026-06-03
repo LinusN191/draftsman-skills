@@ -1,0 +1,25 @@
+name: small-power ring continuity VIOLATION fires HIGH (INV-14)
+skill: small-power
+description: |
+  Compliance-failure eval verifying that when continuity_verified is false
+  on a ring circuit, INV-14 fires as a HIGH (mapped to severity critical here)
+  non_compliance_flag. Uses the uk-3bed-with-ring-continuity-VIOLATION fixture
+  which deliberately carries continuity_verified=false on at least one ring circuit.
+category: compliance_failure
+input_fixture: examples/uk-3bed-with-ring-continuity-violation/output.json
+checks:
+  - assertion: "any(c.ring_endpoints.continuity_verified == false for c in ir.circuits if c.topology == 'ring')"
+    description: At least one ring circuit must have continuity_verified=false in this VIOLATION fixture
+    severity: critical
+    matches_inv: INV-14
+    standard_ref: IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 (top-level)
+
+  - assertion: "any(i.id == 'INV-14' and i.passes == false for i in ir.invariants)"
+    description: INV-14 must FAIL (passes=false) when ring continuity cannot be verified
+    severity: critical
+    matches_inv: INV-14
+
+  - assertion: "any('INV-14' in f for f in ir.non_compliance_flags)"
+    description: INV-14 violation must appear in non_compliance_flags[]
+    severity: critical
+    matches_inv: INV-14
