@@ -1,0 +1,154 @@
+{
+  "project_id": "uk-industrial-warehouse-with-building-diversity-eg01",
+  "intent_version": "2.0.0",
+  "parent_db_designation": "DB-WH-01",
+  "building_diversity": {
+    "building_type": "industrial",
+    "floor_count": 1,
+    "design_density_w_per_m2": 90,
+    "future_expansion_pct": 30,
+    "applies_after": "per_load_diversity",
+    "applies_load_types": [
+      "office_small_power_workstation",
+      "office_lighting",
+      "office_kitchenette",
+      "industrial_high_bay_lighting",
+      "industrial_battery_charging",
+      "industrial_comms_cabinet_ups"
+    ],
+    "excluded_load_types": [
+      "industrial_motor_duty",
+      "industrial_motor_n_plus_1",
+      "office_lift_single"
+    ],
+    "building_diversified_demand_a": 59.0,
+    "per_circuit_demand_inputs": [
+      {"circuit_id": "C01", "post_per_load_diversity_a": 18.5, "building_factor_applied": 0.70},
+      {"circuit_id": "C02", "post_per_load_diversity_a": 9.6,  "building_factor_applied": 0.70},
+      {"circuit_id": "C03", "post_per_load_diversity_a": 19.6, "building_factor_applied": 0.70},
+      {"circuit_id": "C04", "post_per_load_diversity_a": 14.4, "building_factor_applied": 0.70},
+      {"circuit_id": "C08", "post_per_load_diversity_a": 22.5, "building_factor_applied": 0.70}
+    ],
+    "_excluded_circuit_inputs": [
+      {"circuit_id": "C05", "post_per_load_diversity_a": 21.0, "exclusion_reason": "industrial_motor_duty per IET OSG App A Table A1 (diversity_pct=100 — composes algebraically at upstream switchboard, NOT per-floor building_factor)"},
+      {"circuit_id": "C06", "post_per_load_diversity_a": 21.0, "exclusion_reason": "industrial_motor_duty per IET OSG App A Table A1 (diversity_pct=100 — composes algebraically at upstream switchboard, NOT per-floor building_factor)"},
+      {"circuit_id": "C07", "post_per_load_diversity_a": 24.0, "exclusion_reason": "office_lift_single per IET OSG App A Table A1 (diversity_pct=100 — DIV-NN cross-skill lift coordination rule from D2.3; banned: never cite Reg 559)"}
+    ],
+    "_clause_citation": "BS 7671:2018+A2:2022 §311 + IET On-Site Guide 8th Edition Appendix A Table A1 (industrial profile + industrial_motor_duty + office_lift_single exclusions) + BS 7671:2018+A2:2022 §132 + BS 7671:2018+A2:2022 §552",
+    "_derivation_note": "Industrial profile resolved from diversity-factors.json::industrial_diversity (rule_of_thumb: diversity at SUBSTATION level, not per circuit). DIV-NN exclusion: industrial_motor_duty (C05+C06) + office_lift_single (C07) EXCLUDED from applies_load_types[] per verified diversity_pct=100 entries + cross-skill DIV-NN rule (D1 motor + D2.3 lift). Σ in-scope × 0.70 = 84.6 × 0.70 = 59.22 A → recorded 59.0 A (0.37% drift, INV-13 PASS). Submain target: 59.0 + 21.0 + 21.0 + 24.0 = 125.0 A. Banned: never cite Reg 559 anchor."
+  },
+  "circuits": [
+    {
+      "circuit_id": "C01",
+      "designation": "Office partition ring final circuit",
+      "topology": "ring",
+      "breaker_rating_a": 32,
+      "breaker_type": "RCBO",
+      "breaker_curve": "B",
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC",
+      "estimated_max_load_kw": 5.6,
+      "diversified_max_load_a": 18.5,
+      "rooms_covered": ["office-partition"]
+    },
+    {
+      "circuit_id": "C02",
+      "designation": "Kitchenette appliances + admin radial",
+      "topology": "radial",
+      "breaker_rating_a": 20,
+      "breaker_type": "RCBO",
+      "breaker_curve": "C",
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC",
+      "estimated_max_load_kw": 2.9,
+      "diversified_max_load_a": 9.6,
+      "rooms_covered": ["kitchenette"]
+    },
+    {
+      "circuit_id": "C03",
+      "designation": "Warehouse high-bay LED lighting + GP socket radial",
+      "topology": "radial",
+      "breaker_rating_a": 20,
+      "breaker_type": "RCBO",
+      "breaker_curve": "C",
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC",
+      "estimated_max_load_kw": 5.9,
+      "diversified_max_load_a": 19.6,
+      "rooms_covered": ["warehouse-floor", "loading-bay"]
+    },
+    {
+      "circuit_id": "C04",
+      "designation": "Dispatch UPS comms cabinet — dedicated radial (Type B)",
+      "topology": "dedicated_radial",
+      "breaker_rating_a": 20,
+      "breaker_type": "RCBO",
+      "breaker_curve": "C",
+      "rcd_type": "B",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC",
+      "estimated_max_load_kw": 4.0,
+      "diversified_max_load_a": 14.4,
+      "rooms_covered": ["plant-alcove"]
+    },
+    {
+      "circuit_id": "C05",
+      "designation": "Process motor M-01 (11 kW pillar drill) — dedicated 3P radial (industrial_motor_duty, EXCLUDED from building_diversity)",
+      "topology": "dedicated_radial",
+      "breaker_rating_a": 32,
+      "breaker_type": "RCBO",
+      "breaker_curve": "D",
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2_or_awg": "4mm² + 4mm² CPC SWA",
+      "estimated_max_load_kw": 11.0,
+      "diversified_max_load_a": 21.0,
+      "rooms_covered": ["warehouse-floor"]
+    },
+    {
+      "circuit_id": "C06",
+      "designation": "Process motor M-02 (11 kW sheet-metal shear) — dedicated 3P radial (industrial_motor_duty, EXCLUDED from building_diversity)",
+      "topology": "dedicated_radial",
+      "breaker_rating_a": 32,
+      "breaker_type": "RCBO",
+      "breaker_curve": "D",
+      "rcd_type": "A",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2_or_awg": "4mm² + 4mm² CPC SWA",
+      "estimated_max_load_kw": 11.0,
+      "diversified_max_load_a": 21.0,
+      "rooms_covered": ["warehouse-floor"]
+    },
+    {
+      "circuit_id": "C07",
+      "designation": "Goods lift LF-01 (5-person 630 kg) — dedicated 3P radial (office_lift_single, EXCLUDED from building_diversity)",
+      "topology": "dedicated_radial",
+      "breaker_rating_a": 40,
+      "breaker_type": "RCBO",
+      "breaker_curve": "D",
+      "rcd_type": "B",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2_or_awg": "6mm² + 6mm² CPC SWA",
+      "estimated_max_load_kw": 14.0,
+      "diversified_max_load_a": 24.0,
+      "rooms_covered": ["loading-bay"]
+    },
+    {
+      "circuit_id": "C08",
+      "designation": "Forklift battery charging station — dedicated 3P radial (3× BS EN 1175-2 chargers @ 5 kW)",
+      "topology": "dedicated_radial",
+      "breaker_rating_a": 32,
+      "breaker_type": "RCBO",
+      "breaker_curve": "C",
+      "rcd_type": "B",
+      "rcd_sensitivity_ma": 30,
+      "cable_csa_mm2_or_awg": "4mm² + 4mm² CPC SWA",
+      "estimated_max_load_kw": 15.0,
+      "diversified_max_load_a": 22.5,
+      "rooms_covered": ["loading-bay"]
+    }
+  ]
+}

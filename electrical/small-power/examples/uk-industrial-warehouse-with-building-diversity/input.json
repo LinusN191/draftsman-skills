@@ -1,0 +1,42 @@
+{
+  "_note": "Sprint D4 Phase C.6 example — UK 1200 m² single-occupant industrial warehouse (manufacturing + dispatch). PRIMARY purpose: exercise the v2.0 building_diversity IR field on the INDUSTRIAL profile (BLD-02 — distinct from C.5's office profile BLD-01) AND demonstrate the DIV-NN EXCLUSION discipline from D1 (motor superposition) + D2.3 (lift coordination). The industrial profile per the verified BS 7671 + IET OSG App A Table A1 standards file (shared/standards/electrical/BS7671/diversity-factors.json::industrial_diversity) applies diversity at the SUBSTATION level based on demand history — NOT at individual motor circuit level. Motor circuits are sized at 100% FLC per IET OSG App A motor entry; lift loads sit OUTSIDE the per-floor building_diversity scope per the D2.3 lift-coordination rule (lifts compose separately via the office_lift_* family at the upstream MCC hop). This example therefore declares applies_load_types[] WITHOUT motor or lift entries — the building_factor 0.7 lands ONLY on the office-style ring + radial socket circuits + the forklift-battery-charger radials + the high-bay lighting. The motor radials + the lift circuit emit their pre-diversity post_per_load_diversity_a values as 100% of FLC and the upstream switchboard MCB sums them ALGEBRAICALLY (no diversity reduction) on top of the building_diversified_demand_a. Honest 4-place disclosure documents the DIV-NN exclusion at: (a) building_diversity.applies_load_types[] (positively LIST the included families), (b) building_diversity._derivation_note (negatively NAMES the excluded motor + lift families), (c) compliance_summary.non_compliance_flags[] info entry citing IET OSG App A industrial_diversity rule + the verified industrial_motor_duty diversity_pct=100 entry, (d) rationale.sections building_diversity decision block calling out the DIV-NN motor + lift coordination rules. Banned-citation discipline (banned tokens never cite as authority): never cite Reg 559 for lift exclusion — sub-clause not transcribed and is the D2.3 misattribution catch; use IET OSG App A Table A1 + the DIV-NN rule wording instead.",
+  "project_id": "uk-industrial-warehouse-with-building-diversity-eg01",
+  "jurisdiction": "GB",
+  "site_brief": "UK 1200 m² single-occupant industrial warehouse on Leeds Enterprise Park (single-storey, single-tenant; modest manufacturing + finished-goods dispatch operation). The 1200 m² envelope splits into a 950 m² warehouse floor (forklift movement + racking + 2 small production-line bays), a 150 m² office partition adjacent to the loading bay (8 admin workstations + small kitchenette + WC — WC has no shower so does NOT trigger Part-7 zoning), a 60 m² loading bay (goods-in/out under a 4 m roller door), and a 40 m² plant alcove (UPS-fed dispatch comms cabinet + DB-WH-01 distribution board). Mixed-load circuit families: (a) general BS 1363 socket rings serving the office partition; (b) high-bay LED lighting on dedicated radials (NOT in this skill's circuits[] — out of scope, listed only for the building_diversity applies_load_types[] manifest); (c) two dedicated 3-phase 16 A radials feeding 2× 11 kW process motors (a horizontal-axis pillar drill + a sheet-metal shear) — MOTOR LOADS, treated as industrial_motor_duty at 100% FLC per IET OSG App A; (d) one dedicated 3-phase 32 A radial feeding the single goods lift between the loading bay and the mezzanine racking (the lift is small — 5-person 630 kg capacity — but it's a TRUE lift load); (e) one dedicated radial feeding the forklift battery charging station (3× BS EN 1175-2 forklift chargers @ 5 kW each, total 15 kW on a 32 A 3-phase radial); (f) one dedicated radial feeding the dispatch UPS comms cabinet (Type B 30 mA per §531.3.3). Pre-diversity SUM ≈ 95 kVA / 137 A (3-phase at 400 V) — but the building_factor 0.7 lands ONLY on the office-style + battery-charger + high-bay-lighting subset (NOT on the motor + lift radials), so the coincident demand reduces partially. NO Part-7 zones. NO EV charging. NO medical content.",
+  "supply": {
+    "voltage_v": 400,
+    "phase_arrangement": "TPN_plus_E",
+    "system_type": "TN-S",
+    "ze_declared_ohm": 0.18,
+    "psc_declared_ka": 16.0
+  },
+  "parent_db": {
+    "designation": "DB-WH-01",
+    "pfc_at_busbar_ka": 16.0
+  },
+  "building_diversity_inputs": [
+    {
+      "building_type": "industrial",
+      "floor_count": 1,
+      "design_density_w_per_m2_override": 90,
+      "future_expansion_pct_override": 30
+    }
+  ],
+  "room_briefs": [
+    {"room_id": "warehouse-floor",      "room_type": "industrial_warehouse",     "dimensions_m": {"length": 38.0, "width": 25.0, "height": 6.5}, "special_location": null, "anticipated_loads_kw": 30.0, "socket_count_target": 0},
+    {"room_id": "office-partition",     "room_type": "office_open_plan",          "dimensions_m": {"length": 15.0, "width": 10.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 4.0,  "socket_count_target": 12},
+    {"room_id": "kitchenette",          "room_type": "kitchenette_commercial",    "dimensions_m": {"length": 4.0,  "width": 3.0,  "height": 2.8}, "special_location": null, "anticipated_loads_kw": 2.5,  "socket_count_target": 4},
+    {"room_id": "loading-bay",          "room_type": "industrial_loading_bay",    "dimensions_m": {"length": 10.0, "width": 6.0,  "height": 5.0}, "special_location": null, "anticipated_loads_kw": 5.0,  "socket_count_target": 2},
+    {"room_id": "plant-alcove",         "room_type": "server_room",               "dimensions_m": {"length": 8.0,  "width": 5.0,  "height": 3.0}, "special_location": null, "anticipated_loads_kw": 4.0,  "socket_count_target": 2}
+  ],
+  "design_intent": {
+    "preferred_topology": "auto_by_jurisdiction",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "sheet_size": "A1",
+    "drawing_scale": "1:100"
+  },
+  "_cascade_sources": {
+    "cable_sizing": "electrical/cable-sizing/examples/uk-warehouse-submain-wh01/intent-out.json"
+  },
+  "_cascade_disclosure": "DEFERRED-POINTER state. The cable_sizing cascade source path above points at a producer-side fixture that does NOT yet exist at C.6-ship. At C.6-ship the consumer's consumed_intents.cable_sizing.payload is INLINED with a representative cable-sizing payload covering every circuit (C01..C08) so INV-19 PASSes within ±5% reconciliation against this small-power IR's per-circuit post_per_load_diversity_a. When a real upstream cable-sizing example is later produced, source_path will resolve to that producer file and the payload bytes are expected to remain unchanged. This mirrors the C.5 office-floor example's DEFERRED-POINTER pattern. Honest 4-place disclosure of the DIV-NN motor + lift exclusion: (a) building_diversity.applies_load_types[] positively LISTS the included families; (b) building_diversity._derivation_note negatively NAMES the excluded industrial_motor_duty + industrial_motor_n_plus_1 + office_lift_single families AND cites the verified industrial_diversity rule_of_thumb 'Apply diversity at the SUBSTATION level based on demand history, not at individual circuit level. Each motor or process is sized at its own rating.'; (c) compliance_summary.non_compliance_flags[] info entry cites IET OSG App A Table A1 + the DIV-NN cross-skill coordination rule; (d) rationale.sections building_diversity decision block walks the engineer through why motor + lift loads sit OUTSIDE applies_load_types[] and how the upstream switchboard sums them algebraically on top of the building_diversified_demand_a. banned per task brief: never cite Reg 559 for the lift exclusion — that is the D2.3 misattribution catch; the correct anchor is IET OSG App A Table A1 office_lift_* family + the cross-skill DIV-NN lift coordination rule."
+}
