@@ -1,0 +1,10 @@
+{
+  "project_id": "uk-3bed-with-ring-continuity-violation-eg01",
+  "intent_version": "1.2.0",
+  "parent_db_designation": "CU-MAIN",
+  "circuits": [
+    {"circuit_id": "C01", "designation": "Ground-floor ring final circuit (kitchen + utility + dining + lounge) — VIOLATION: endpoint_b misterminated at CU-MAIN-WAY-2 instead of intended CU-MAIN-WAY-1; physically two radials sharing conductors, not a real ring", "topology": "ring", "breaker_rating_a": 32, "breaker_type": "RCBO", "breaker_curve": "B", "rcd_type": "A", "rcd_sensitivity_ma": 30, "cable_csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC", "estimated_max_load_kw": 5.0, "diversified_max_load_a": 16.0, "rooms_covered": ["kitchen", "utility", "dining", "lounge"]},
+    {"circuit_id": "C02", "designation": "First-floor ring final circuit (3 bedrooms + landing) — VIOLATION: continuity_verified=false because the engineer-of-record never performed the IET OSG Appendix H continuity verification at first fix", "topology": "ring", "breaker_rating_a": 32, "breaker_type": "RCBO", "breaker_curve": "B", "rcd_type": "A", "rcd_sensitivity_ma": 30, "cable_csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC", "estimated_max_load_kw": 2.3, "diversified_max_load_a": 7.0, "rooms_covered": ["bedroom-1", "bedroom-2", "bedroom-3", "landing"]},
+    {"circuit_id": "C03", "designation": "Cooker outlet (dedicated radial, kitchen) — 7 kW hob+oven on 32 A RCBO; INV-14 N/A on dedicated_radial topology", "topology": "dedicated_radial", "breaker_rating_a": 32, "breaker_type": "RCBO", "breaker_curve": "B", "rcd_type": "A", "rcd_sensitivity_ma": 30, "cable_csa_mm2_or_awg": "6mm² T+E", "estimated_max_load_kw": 7.0, "diversified_max_load_a": 25.0, "rooms_covered": ["kitchen"]}
+  ]
+}

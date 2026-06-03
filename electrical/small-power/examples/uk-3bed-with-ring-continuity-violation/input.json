@@ -1,0 +1,53 @@
+{
+  "_note": "Sprint D4 Phase C.9 example — UK 3-bed dwelling DELIBERATELY engineered with broken ring continuity to fire INV-14 FAIL HIGH on BOTH ring final circuits. Same dwelling geometry as the C.8 PASS counterpart (uk-3bed-with-ring-continuity) but with two DIFFERENT install defects: (1) C01 GF ring — endpoint_b terminated at the wrong MCB way at the consumer unit; engineer-of-record recorded the misterminated return leg at CU-MAIN-WAY-2 instead of CU-MAIN-WAY-1 — physically TWO RADIALS sharing conductors, not a real ring; the IR schema's single mcb_way_id field captures the canonical-intended way (CU-MAIN-WAY-1) and the prose evidence makes the misterminated endpoint_b explicit; continuity_verified is set to false to mirror the failed Appendix H test reading. (2) C02 1F ring — both endpoints land at the correct CU-MAIN-WAY-2 but the engineer-of-record never performed the Appendix H continuity verification at first fix (continuity_verified: false) — the install survey was incomplete and the design cannot attest that the ring was correctly closed. INV-14 FIRES HIGH on BOTH rings; compliance_summary.non_compliance_flags[] mirrors as TWO entries (one per ring) with severity=critical (the IR schema enum is {critical, warning, info} — the spec calls for HIGH severity which maps to critical given safety-critical broken ring continuity = real fault-loop hazard). compliance_summary.compliant: false. This is the FAIL counterpart to C.8 (uk-3bed-with-ring-continuity PASS) and exists to demonstrate INV-14 firing the FAIL HIGH path. The output IR is STRUCTURALLY VALID against small-power-ir.schema.json — ring_endpoints is present on both rings, all schema-required fields populated; the engineering is broken, not the schema shape. No Part-7 rooms — consumed_intents.special_locations_zoning intentionally omitted (cascade trigger does not fire).",
+  "project_id": "uk-3bed-with-ring-continuity-violation-eg01",
+  "jurisdiction": "GB",
+  "site_brief": "UK 3-bed 2-storey dwelling, ~95 m² total floor area, TN-C-S DNO supply per BS 7671:2018+A2:2022. Consumer unit CU-MAIN is a 12-way Amendment-3 board with 6 kA Icu busbar. Two ring final circuits intended (CU-MAIN-WAY-1 for GF; CU-MAIN-WAY-2 for 1F) but two install defects discovered at first fix: C01 — endpoint_b misterminated at the wrong MCB way (CU-MAIN-WAY-2 instead of CU-MAIN-WAY-1); C02 — Appendix H continuity verification never performed at first fix. One dedicated radial feeds the cooker outlet at the kitchen (32 A on 6 mm² T+E) — radial topology is unaffected. All sockets are BS 1363 13 A double switched general-purpose outlets unless noted. No bathroom shaver supply or outdoor socket on this design — the dwelling intentionally avoids Part-7 special-location rooms so the example focuses cleanly on the INV-14 FAIL HIGH demonstration. The engineer-of-record's remediation plan: (C01) reterminate endpoint_b at CU-MAIN-WAY-1 and re-test r1+r2+rn end-to-end per IET On-Site Guide Appendix H; (C02) perform the missing Appendix H continuity verification and re-issue Schedule of Test Results.",
+  "supply": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.35,
+    "psc_declared_ka": 6.0
+  },
+  "parent_db": {
+    "designation": "CU-MAIN",
+    "pfc_at_busbar_ka": 6.0
+  },
+  "room_briefs": [
+    {"room_id": "kitchen",   "room_type": "kitchen_domestic", "dimensions_m": {"length": 4.5, "width": 3.5, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 4.5, "socket_count_target": 6},
+    {"room_id": "utility",   "room_type": "utility_domestic", "dimensions_m": {"length": 2.5, "width": 2.0, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 2.0, "socket_count_target": 3},
+    {"room_id": "dining",    "room_type": "dining_domestic",  "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 1.0, "socket_count_target": 4},
+    {"room_id": "lounge",    "room_type": "lounge_domestic",  "dimensions_m": {"length": 5.0, "width": 4.0, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 1.5, "socket_count_target": 6},
+    {"room_id": "landing",   "room_type": "hallway_domestic", "dimensions_m": {"length": 4.0, "width": 1.2, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 0.3, "socket_count_target": 1},
+    {"room_id": "bedroom-1", "room_type": "bedroom_domestic", "dimensions_m": {"length": 4.0, "width": 3.5, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 0.8, "socket_count_target": 4},
+    {"room_id": "bedroom-2", "room_type": "bedroom_domestic", "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 0.6, "socket_count_target": 3},
+    {"room_id": "bedroom-3", "room_type": "bedroom_domestic", "dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 0.6, "socket_count_target": 3}
+  ],
+  "ring_continuity_endpoints": [
+    {
+      "circuit_id": "C01",
+      "endpoint_a_xy": {"x_mm": 200, "y_mm": 200},
+      "endpoint_b_xy": {"x_mm": 8500, "y_mm": 200},
+      "mcb_way_id_intended": "CU-MAIN-WAY-1",
+      "mcb_way_id_endpoint_b_actual": "CU-MAIN-WAY-2",
+      "continuity_verified": false,
+      "_violation": "endpoint_b terminated at wrong CU way — physically TWO RADIALS sharing conductors, not a real ring"
+    },
+    {
+      "circuit_id": "C02",
+      "endpoint_a_xy": {"x_mm": 200, "y_mm": 200},
+      "endpoint_b_xy": {"x_mm": 7200, "y_mm": 200},
+      "mcb_way_id_intended": "CU-MAIN-WAY-2",
+      "mcb_way_id_endpoint_b_actual": "CU-MAIN-WAY-2",
+      "continuity_verified": false,
+      "_violation": "Appendix H continuity verification never performed at first fix — design cannot attest the ring is closed"
+    }
+  ],
+  "design_intent": {
+    "preferred_topology": "auto_by_jurisdiction",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "sheet_size": "A2",
+    "drawing_scale": "1:50"
+  }
+}

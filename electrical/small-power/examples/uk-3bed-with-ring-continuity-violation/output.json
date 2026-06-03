@@ -1,0 +1,508 @@
+{
+  "drawing_type": "small_power_layout",
+  "version": "2.0.0",
+  "meta": {
+    "project_id": "uk-3bed-with-ring-continuity-violation-eg01",
+    "skill_version": "2.0.0",
+    "produced_at": "2026-06-03T00:00:00Z",
+    "consumed_intents": []
+  },
+  "jurisdiction": "GB",
+  "supply_origin": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.35,
+    "psc_declared_ka": 6.0
+  },
+  "parent_db": {
+    "designation": "CU-MAIN",
+    "pfc_at_busbar_ka": 6.0
+  },
+  "circuits": [
+    {
+      "circuit_id": "C01",
+      "designation": "Ground-floor ring final circuit (kitchen + utility + dining + lounge) — VIOLATION: endpoint_b misterminated at CU-MAIN-WAY-2 instead of intended CU-MAIN-WAY-1; physically two radials sharing conductors, not a real ring",
+      "topology": "ring",
+      "ocpd": {
+        "rating_a": 32,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 6.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC",
+        "cores": 3,
+        "length_m_total": 34.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 5.0,
+      "diversified_max_load_a": 16.0,
+      "rooms_covered": [
+        "kitchen",
+        "utility",
+        "dining",
+        "lounge"
+      ],
+      "ring_endpoints": {
+        "endpoint_a_xy": {"x_mm": 200, "y_mm": 200},
+        "endpoint_b_xy": {"x_mm": 8500, "y_mm": 200},
+        "mcb_way_id": "CU-MAIN-WAY-1",
+        "continuity_verified": false,
+        "_citation": "IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 top-level — VIOLATION: engineer-of-record's first-fix wiring survey recorded endpoint_b terminated at CU-MAIN-WAY-2 (NOT the intended CU-MAIN-WAY-1 captured in this field); the structural mcb_way_id field carries the design-intended way only; the wrong-way termination at the install is recorded here and in compliance_summary.non_compliance_flags[]. continuity_verified=false because the Appendix H end-to-end resistance test recorded an unexpected r1 reading (the two-radials-sharing-conductors topology gave approximately half the expected loop resistance per leg — a classic broken-ring signature)."
+      }
+    },
+    {
+      "circuit_id": "C02",
+      "designation": "First-floor ring final circuit (3 bedrooms + landing) — VIOLATION: continuity_verified=false because the engineer-of-record never performed the IET OSG Appendix H continuity verification at first fix",
+      "topology": "ring",
+      "ocpd": {
+        "rating_a": 32,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 6.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC",
+        "cores": 3,
+        "length_m_total": 28.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 2.3,
+      "diversified_max_load_a": 7.0,
+      "rooms_covered": [
+        "bedroom-1",
+        "bedroom-2",
+        "bedroom-3",
+        "landing"
+      ],
+      "ring_endpoints": {
+        "endpoint_a_xy": {"x_mm": 200, "y_mm": 200},
+        "endpoint_b_xy": {"x_mm": 7200, "y_mm": 200},
+        "mcb_way_id": "CU-MAIN-WAY-2",
+        "continuity_verified": false,
+        "_citation": "IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 top-level — VIOLATION: both legs are documented as landing at the intended CU-MAIN-WAY-2 but the engineer-of-record never performed the Appendix H ring continuity verification at first fix (r1/rn/r2 end-to-end resistance readings absent from the Schedule of Test Results). The design cannot attest that the ring is correctly closed; continuity_verified=false reflects the absent test record."
+      }
+    },
+    {
+      "circuit_id": "C03",
+      "designation": "Cooker outlet (dedicated radial, kitchen) — 7 kW hob+oven on 32 A RCBO; INV-14 N/A on dedicated_radial topology",
+      "topology": "dedicated_radial",
+      "ocpd": {
+        "rating_a": 32,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 6.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "6mm² T+E",
+        "cores": 3,
+        "length_m_total": 8.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 7.0,
+      "diversified_max_load_a": 25.0,
+      "rooms_covered": [
+        "kitchen"
+      ]
+    }
+  ],
+  "rooms": [
+    {
+      "room_id": "kitchen",
+      "room_type": "kitchen_domestic",
+      "dimensions_m": {"length": 4.5, "width": 3.5, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "kitchen-S01", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
+        {"id": "kitchen-S02", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
+        {"id": "kitchen-S03", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
+        {"id": "kitchen-S04", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
+        {"id": "kitchen-S05", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "kitchen-S06", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "kitchen-S07", "type": "BS_4177_cooker_control_unit_45A", "mount": "wall", "height_mm": 1350, "circuit_id": "C03"}
+      ]
+    },
+    {
+      "room_id": "utility",
+      "room_type": "utility_domestic",
+      "dimensions_m": {"length": 2.5, "width": 2.0, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "utility-S01", "type": "BS_1363_double_switched_13A", "mount": "above_worktop", "height_mm": 1150, "circuit_id": "C01"},
+        {"id": "utility-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "utility-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"}
+      ]
+    },
+    {
+      "room_id": "dining",
+      "room_type": "dining_domestic",
+      "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "dining-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "dining-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "dining-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "dining-S04", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"}
+      ]
+    },
+    {
+      "room_id": "lounge",
+      "room_type": "lounge_domestic",
+      "dimensions_m": {"length": 5.0, "width": 4.0, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "lounge-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "lounge-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "lounge-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "lounge-S04", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "lounge-S05", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"},
+        {"id": "lounge-S06", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C01"}
+      ]
+    },
+    {
+      "room_id": "landing",
+      "room_type": "hallway_domestic",
+      "dimensions_m": {"length": 4.0, "width": 1.2, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "landing-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"}
+      ]
+    },
+    {
+      "room_id": "bedroom-1",
+      "room_type": "bedroom_domestic",
+      "dimensions_m": {"length": 4.0, "width": 3.5, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "bedroom-1-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
+        {"id": "bedroom-1-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
+        {"id": "bedroom-1-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
+        {"id": "bedroom-1-S04", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"}
+      ]
+    },
+    {
+      "room_id": "bedroom-2",
+      "room_type": "bedroom_domestic",
+      "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "bedroom-2-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
+        {"id": "bedroom-2-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
+        {"id": "bedroom-2-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"}
+      ]
+    },
+    {
+      "room_id": "bedroom-3",
+      "room_type": "bedroom_domestic",
+      "dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.4},
+      "special_location": null,
+      "sockets": [
+        {"id": "bedroom-3-S01", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
+        {"id": "bedroom-3-S02", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"},
+        {"id": "bedroom-3-S03", "type": "BS_1363_double_switched_13A", "mount": "wall", "height_mm": 450, "circuit_id": "C02"}
+      ]
+    }
+  ],
+  "drawing_layout": {
+    "sheet_size": "A2",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "drawing_scale": "1:50"
+  },
+  "compliance_summary": {
+    "compliant": false,
+    "non_compliance_flags": [
+      {
+        "message": "INV-14 FAIL HIGH on C01 (GF ring final circuit). VIOLATION: ring_endpoints.mcb_way_id captures the design-intended CU-MAIN-WAY-1, but the engineer-of-record's first-fix wiring survey recorded endpoint_b actually terminated at CU-MAIN-WAY-2 — a different MCB way. A ring landing at two different MCB ways is structurally TWO RADIALS sharing conductors, not a real ring; the Zs / cable thermal protection assumptions for ring topology no longer apply. The IET OSG Appendix H end-to-end resistance reading recorded an anomalous r1 (approximately half the expected loop value per leg — the classic broken-ring signature) and continuity_verified is therefore set to false. REMEDIATION: engineer-of-record reterminates endpoint_b at CU-MAIN-WAY-1 (the intended way), re-runs the Appendix H r1/rn/r2 readings, and re-issues continuity_verified=true after confirming the readings match the expected paired-equality pattern (r1≈rn, r2≈1.67×r1 for 2.5/1.5 phase/CPC).",
+        "code_clause": "IET On-Site Guide §8.4.4 (8th Edition) + Appendix H + BS 7671:2018+A2:2022 §526 top-level",
+        "severity": "critical"
+      },
+      {
+        "message": "INV-14 FAIL HIGH on C02 (1F ring final circuit). VIOLATION: both legs are documented as landing at the intended CU-MAIN-WAY-2 (mcb_way_id consistency sub-check would have passed) but the engineer-of-record never performed the IET OSG Appendix H ring continuity verification at first fix. The r1/rn/r2 end-to-end resistance readings are absent from the Schedule of Test Results; the design cannot attest that the ring is correctly closed. continuity_verified=false reflects the absent test record. REMEDIATION: engineer-of-record performs the Appendix H r1/rn/r2 ring continuity verification at first fix (or as soon as access permits), files the readings to the Schedule of Test Results, and re-issues continuity_verified=true after confirming the paired-equality pattern.",
+        "code_clause": "IET On-Site Guide §8.4.4 (8th Edition) + Appendix H + BS 7671:2018+A2:2022 §526 top-level",
+        "severity": "critical"
+      },
+      {
+        "message": "FAIL-by-design example. This output is DELIBERATELY engineered to fire INV-14 FAIL HIGH on BOTH ring final circuits (C01 and C02) to demonstrate the validator catching broken ring continuity engineering at the design stage before commissioning. The IR is STRUCTURALLY VALID against small-power-ir.schema.json (ring_endpoints object is present on both rings with all schema-required fields populated); the engineering is broken, not the schema shape. compliance_summary.compliant is set to false because two HIGH-severity invariants fired — the engineer-of-record must remediate before final design freeze. The IR schema's non_compliance_flags severity enum is {critical, warning, info} so the spec-called-for HIGH severity maps to 'critical' here (broken ring continuity is a real safety-critical fault-loop hazard — the closest schema-valid match to the INV-14 HIGH severity emitted in invariants[]).",
+        "code_clause": "Example pedagogy — FAIL-by-design discipline + IR schema severity enum mapping (high→critical)",
+        "severity": "info"
+      },
+      {
+        "message": "No Part-7 special-location rooms in this dwelling (no bathroom_zone / pool / sauna / medical / external_landscape room_type). consumed_intents.special_locations_zoning is intentionally omitted because the schema's allOf cascade trigger does not fire — the dwelling intentionally avoids Part-7 rooms so the example focuses cleanly on the INV-14 FAIL HIGH demonstration.",
+        "code_clause": "BS 7671:2018+A2:2022 §433.1 (general overcurrent protection principles — Part 7 scope not engaged)",
+        "severity": "info"
+      },
+      {
+        "message": "All Zs verification deferred to calc.zs_loop_impedance per WI3 (deferred tool-call pattern). However, note that Zs verification on C01 is meaningless until the ring is correctly closed: the current two-radials-sharing-conductors topology would yield Zs readings that do not represent the eventual design-intended ring loop. Engineer-of-record reterminates endpoint_b first (per the C01 remediation), then defers Zs to calc.zs_loop_impedance per the standard pattern. C02 Zs verification is similarly contingent on completing the missing Appendix H test.",
+        "code_clause": "BS 7671:2018+A2:2022 §411.4.5 (TN system disconnection time verification)",
+        "severity": "info"
+      }
+    ],
+    "assumptions": [
+      "Ze=0.35 Ω and PSCC=6 kA declared by DNO at the dwelling TN-C-S supply origin; not yet measured on site. Both values are typical for a UK domestic supply downstream of a 100 A BS 1361 cut-out.",
+      "FAIL-by-design discipline (place 1 of 4): this example is DELIBERATELY engineered to fire INV-14 FAIL HIGH on both rings. compliance_summary.compliant=false is the by-design outcome. The IR is structurally valid against the IR schema (ring_endpoints present on both rings with all required fields populated); the broken engineering surfaces in the prose evidence + invariants[] block, not in the schema shape.",
+      "FAIL-by-design discipline (place 2 of 4): IR schema severity enum mapping. The IR schema's compliance_summary.non_compliance_flags severity enum is {critical, warning, info}. The spec calls for HIGH severity on the two INV-14 entries — this maps to 'critical' (the strongest available schema enum) here because broken ring continuity is a real safety-critical fault-loop hazard. The invariants[] block uses the {critical, high, medium, low} enum directly and INV-14 carries severity='high' there — the canonical HIGH severity emission.",
+      "FAIL-by-design discipline (place 3 of 4): C01 engineering specifics. endpoint_b was misterminated at CU-MAIN-WAY-2 instead of the design-intended CU-MAIN-WAY-1. The structural mcb_way_id field carries the design-intended way (CU-MAIN-WAY-1) only — the schema does not have a per-endpoint mcb_way_id field. The wrong-way-termination at install is recorded in the ring_endpoints._citation prose, in the circuit designation, and in the INV-14 evidence. The Appendix H r1 reading at approximately half the expected loop value is the canonical broken-ring signature.",
+      "FAIL-by-design discipline (place 4 of 4): C02 engineering specifics. Both legs are documented as landing at the intended CU-MAIN-WAY-2 (mcb_way_id consistency sub-check 1 would have passed). The violation is INV-14 sub-check 2 — continuity_verified=false because the engineer-of-record never performed the IET OSG Appendix H ring continuity verification at first fix. This is a DIFFERENT INV-14 failure mode from C01 (procedural-omission FAIL vs install-defect FAIL); the pair demonstrates that INV-14 catches both sub-checks independently per ring.",
+      "GF ring C01 covers approximately 52 m² (kitchen 15.75 + utility 5.0 + dining 10.5 + lounge 20.0) within the IET On-Site Guide §8.4.4 100 m² recommended footprint for a 32 A ring final circuit. Footprint compliance is unaffected by the ring continuity violation — only the engineering at the CU termination is broken.",
+      "1F ring C02 covers approximately 36 m² (bedroom-1 14.0 + bedroom-2 10.5 + bedroom-3 7.5 + landing 4.8) within the IET On-Site Guide §8.4.4 100 m² recommended footprint. Footprint compliance is unaffected by the missing Appendix H verification.",
+      "Cooker outlet C03 is a dedicated radial because the 7 kW hob+oven nameplate exceeds the diversified contribution a ring can reasonably absorb. Cable 6 mm² T+E sized for 25 A diversified load (IET OSG Appendix A cooker diversity formula). C03 topology is dedicated_radial and does not exercise INV-14 — the rule trivially PASSes per the validator wording.",
+      "Diversity factors per IET On-Site Guide Appendix A: cooker 25 A from 32 A nameplate; rings assumed simultaneous load ≤ 16 A under domestic usage profile. INV-15 (per-circuit floor-area cross-check) N/A because circuit.floor_area_m2 is not populated.",
+      "Cable routes assumed Reference Method 100/101 (clipped direct to/in stud or under floorboards); final route to be coordinated with cable-containment skill at the next sprint.",
+      "All RCBOs are 6 kA Icu (IEC 60898-1) — meets the declared PSCC=6 kA at the CU busbar per BS 7671:2018+A2:2022 §434.5.1 minimum boundary.",
+      "INV-12 (special-locations cascade) N/A and trivially PASS — no Part-7 enum room_types present.",
+      "INV-13 (building_diversity self-consistency) N/A and trivially PASS — building_diversity intentionally absent. INV-19 N/A — both inputs absent.",
+      "INV-18 (EV RCD Type A/B selection) N/A and trivially PASS — no EV charge circuits in this dwelling.",
+      "INV-17 (FCU spurs) trivially PASS — no fcu_spurs[] populated on any ring; the C.9 example deliberately omits the FCU spur present in C.8 to keep the failure surface scoped tightly to INV-14."
+    ]
+  },
+  "flags": [
+    "TOOL-CALL-PENDING:calc.zs_loop_impedance",
+    "INV-14-FAIL-HIGH:C01-endpoint_b-misterminated",
+    "INV-14-FAIL-HIGH:C02-continuity-verification-missing"
+  ],
+  "drawing_notes": [
+    "All general-purpose sockets are BS 1363 double 13 A switched outlets unless noted. Mount above_worktop = 150 mm above finished worktop (typically 1150 mm AFFL); mount wall = 450 mm AFFL per Part M of the Building Regulations 2010 (England).",
+    "Ground-floor ring C01: 2.5 mm² + 1.5 mm² CPC PVC T+E per BS 7671 Appendix 15 standard ring final circuit recipe. **INSTALL DEFECT — DO NOT ENERGISE:** endpoint_b is currently misterminated at CU-MAIN-WAY-2 instead of CU-MAIN-WAY-1; engineer-of-record must reterminate at CU-MAIN-WAY-1 and re-test r1/rn/r2 per IET On-Site Guide Appendix H before commissioning.",
+    "First-floor ring C02: 2.5 mm² + 1.5 mm² CPC PVC T+E per BS 7671 Appendix 15. **OUTSTANDING TEST — DO NOT SIGN OFF:** IET OSG Appendix H ring continuity verification was not performed at first fix; engineer-of-record must perform the r1/rn/r2 readings and file to the Schedule of Test Results before the BS 7671 Schedule of Inspections is signed off.",
+    "Cooker outlet C03: 6 mm² T+E PVC on dedicated 32 A RCBO Type B + Type A 30 mA RCD per §411.3.3. Terminated to BS 4177 45 A cooker control unit at 1350 mm AFFL adjacent to the hob position. C03 topology is dedicated_radial — INV-14 does not apply.",
+    "Drawing per BS 1192:2007+A2:2016 layer naming — E-POW-OUTLET-G for ground-floor power, E-POW-OUTLET-1 for first-floor. **HANDOVER PACKAGE INCOMPLETE — DO NOT ISSUE:** the Schedule of Test Results is missing C01 retermination evidence + C02 Appendix H readings."
+  ],
+  "rationale": {
+    "chat_summary": "UK 3-bed dwelling, TN-C-S 230 V single-phase, ~95 m² floor area. Two 32 A ring final circuits (GF + 1F) — both DELIBERATELY engineered with broken ring continuity to fire INV-14 FAIL HIGH. C01 sub-check 1 fails: endpoint_b misterminated at CU-MAIN-WAY-2 instead of the intended CU-MAIN-WAY-1 (two radials sharing conductors). C02 sub-check 2 fails: Appendix H continuity verification never performed at first fix. Cooker on dedicated 32 A radial (C03) — INV-14 N/A. compliance_summary.compliant=false by design; two non_compliance_flags with severity=critical (IR schema enum mapping for HIGH severity). This is the FAIL counterpart to C.8 (uk-3bed-with-ring-continuity PASS). Eval harness asserts INV-14 FAILS twice here against the same eval asserting INV-14 PASSES twice in C.8.",
+    "sections": [
+      {
+        "title": "Why this example exists (INV-14 FAIL HIGH demonstration)",
+        "summary": "Sprint D4 Phase C.9 — the canonical FAIL HIGH demonstration of the new INV-14 (ring final circuit continuity) rule that ships in small-power v2.0.0. This is the FAIL counterpart to C.8 (uk-3bed-with-ring-continuity PASS). Same dwelling geometry; two deliberate install defects engineered into the two rings (one per INV-14 sub-check) so the example exercises both failure modes independently. INV-14 FIRES HIGH on BOTH rings: C01 sub-check 1 (mcb_way_id consistency broken — endpoint_b misterminated at wrong CU way), C02 sub-check 2 (continuity_verified=false because Appendix H test never performed). The IR is STRUCTURALLY VALID against small-power-ir.schema.json (ring_endpoints object present on both rings with all required fields populated); the engineering is broken, not the schema shape. compliance_summary.compliant=false per the FAIL-by-design discipline.",
+        "decisions": [
+          {
+            "label": "Two distinct INV-14 failure modes (one per sub-check)",
+            "summary": "Per the validator wording INV-14 has two sub-checks: (1) mcb_way_id consistency between both ring endpoints, (2) continuity_verified=true. C01 violates sub-check 1; C02 violates sub-check 2. The pair demonstrates that INV-14 catches both sub-checks INDEPENDENTLY per ring — a ring that PASSes sub-check 1 but FAILS sub-check 2 still fails INV-14 overall.",
+            "rule": "INV-14 sub-checks 1 + 2 evaluated independently per ring",
+            "code_clause": "IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 top-level"
+          },
+          {
+            "label": "Cooker on dedicated radial (C03) unchanged from C.8",
+            "summary": "C03 dedicated_radial topology does not exercise INV-14 — the rule trivially PASSes per the validator wording. Included for IR completeness and to demonstrate that the FAIL-by-design surface is scoped tightly to ring topology only.",
+            "rule": "INV-14 fires on ring topology only",
+            "code_clause": "IET On-Site Guide §8.4.4 (8th Edition)"
+          }
+        ]
+      },
+      {
+        "title": "C01 violation walkthrough — endpoint_b misterminated (sub-check 1 FAIL)",
+        "summary": "The IR schema captures one mcb_way_id field per ring_endpoints object, not one per endpoint. The structural field carries the design-intended way (CU-MAIN-WAY-1). The first-fix wiring survey recorded endpoint_b actually terminated at CU-MAIN-WAY-2 — physically a different MCB way at the consumer unit. A ring landing at two different MCB ways is structurally TWO RADIALS sharing conductors, not a real ring: the design-intended ring loop (phase + neutral + CPC loop) is broken at the consumer unit; current would flow as two parallel radials with halved cable cross-section per leg under fault conditions. The Zs / cable thermal protection assumptions for ring topology no longer apply. The Appendix H end-to-end resistance reading recorded an anomalous r1 (approximately half the expected loop value per leg — the classic broken-ring signature), so continuity_verified=false. The schema-level violation is captured in: (1) the ring_endpoints._citation prose explicitly recording the wrong-way termination, (2) the circuit.designation prose, (3) the compliance_summary.non_compliance_flags[0] entry with severity=critical, (4) the invariants[INV-14].evidence text. REMEDIATION: engineer-of-record reterminates endpoint_b at CU-MAIN-WAY-1, re-runs the Appendix H r1/rn/r2 readings, and re-issues continuity_verified=true after confirming the readings match the paired-equality pattern (r1≈rn, r2≈1.67×r1 for the 2.5/1.5 phase/CPC composition).",
+        "decisions": [
+          {
+            "label": "Schema captures one mcb_way_id per ring_endpoints object",
+            "summary": "The IR schema's ring_endpoints object has one mcb_way_id field (not one per endpoint). This is intentional — the design-intended ring lands at one way; install-side mistakes are captured in prose evidence + the non_compliance_flags + the invariants[] evidence text. The structural field carries the design-intended way to keep the schema shape minimal.",
+            "rule": "IR schema design: one mcb_way_id per ring_endpoints",
+            "code_clause": "small-power-ir.schema.json ring_endpoints definition"
+          },
+          {
+            "label": "continuity_verified=false on C01",
+            "summary": "Because the Appendix H r1 reading was anomalous (approximately half the expected loop value per leg — the classic broken-ring signature), continuity_verified is set to false. This is the design-time signal that the install needs remediation before commissioning.",
+            "rule": "INV-14 sub-check 2 — continuity_verified=true required",
+            "code_clause": "IET On-Site Guide Appendix H + BS 7671:2018+A2:2022 §526 top-level"
+          }
+        ]
+      },
+      {
+        "title": "C02 violation walkthrough — Appendix H verification never performed (sub-check 2 FAIL)",
+        "summary": "Both legs of C02 are documented as landing at the intended CU-MAIN-WAY-2 — INV-14 sub-check 1 (mcb_way_id consistency) would have passed. But the engineer-of-record never performed the IET OSG Appendix H ring continuity verification at first fix; the r1/rn/r2 end-to-end resistance readings are absent from the Schedule of Test Results. The design cannot attest that the ring is correctly closed; the conductors might be cleanly terminated at the correct way and the ring might be physically intact — but without the verification reading no attestation can be made. continuity_verified=false reflects the absent test record (it is set to false because there is no evidence that the ring is verified, not because there is evidence that it is broken). The schema-level violation is captured in: (1) the ring_endpoints._citation prose explicitly recording the missing verification, (2) the circuit.designation prose, (3) the compliance_summary.non_compliance_flags[1] entry with severity=critical, (4) the invariants[INV-14].evidence text. REMEDIATION: engineer-of-record performs the Appendix H r1/rn/r2 ring continuity verification at first fix (or as soon as access permits), files the readings to the Schedule of Test Results, and re-issues continuity_verified=true.",
+        "decisions": [
+          {
+            "label": "continuity_verified=false captures procedural omission, not install defect",
+            "summary": "C02 may be physically a perfectly-closed ring; the violation is procedural — the verification reading is missing. continuity_verified=false means 'design cannot attest verification has been performed', not 'verification was performed and failed'. The two states are operationally equivalent at design freeze (engineer-of-record may not energise until the reading is on record) but semantically distinct.",
+            "rule": "INV-14 sub-check 2 — absence of verification ≡ failure",
+            "code_clause": "IET On-Site Guide Appendix H + BS 7671:2018+A2:2022 §526 top-level"
+          },
+          {
+            "label": "Different failure mode from C01",
+            "summary": "C01 is an install-defect FAIL (endpoint_b at wrong way); C02 is a procedural-omission FAIL (Appendix H reading never recorded). The pair demonstrates that INV-14 catches both failure modes per ring independently. A real-world install often has BOTH problems on the same ring; the example splits them across two rings for pedagogical clarity.",
+            "rule": "Example pedagogy — split failure modes for clarity",
+            "code_clause": "small-power validator.md (INV-14 sub-checks)"
+          }
+        ]
+      },
+      {
+        "title": "OCPD + cable selection (unchanged from C.8)",
+        "summary": "Both rings: 32 A Type B RCBO + 2.5 mm² Cu PVC ring with 1.5 mm² CPC per BS 7671 Appendix 15. Cooker C03: 32 A Type B RCBO + 6 mm² T+E PVC sized for the 25 A diversified load (IET OSG Appendix A cooker diversity formula). All breakers Type B (no significant inrush on domestic loads). All RCBOs 6 kA Icu meets the declared PSCC=6 kA at the CU busbar per BS 7671 §434.5.1 minimum boundary. The OCPD and cable selection is engineered correctly — the violations are scoped tightly to the ring continuity surface. INV-16 (OCPD-topology coordination) PASSes on all 3 circuits.",
+        "decisions": [
+          {
+            "label": "OCPD + cable selection identical to C.8",
+            "summary": "Engineer-of-record's OCPD and cable selection follow the C.8 PASS pattern unchanged. The C.9 violations are scoped to the ring continuity surface only — the OCPD + cable + RCD + diversity engineering is correct. This isolation is important: the eval can assert INV-14 FAILS twice while INV-01/02/03/04/06/07 still PASS on the same fixture.",
+            "rule": "Failure-mode isolation discipline",
+            "code_clause": "BS 7671:2018+A2:2022 §433.1 + Appendix 15"
+          }
+        ]
+      },
+      {
+        "title": "RCD posture + Zs deferral",
+        "summary": "All three circuits use Type A 30 mA RCBOs per §411.3.3 additional protection for socket outlets ≤32 A in domestic premises. No Type B requirement: no IT equipment producing smooth DC residual currents on these circuits. Zs verification deferred to calc.zs_loop_impedance per WI3 — but note that Zs verification on C01 is meaningless until the ring is correctly closed: the current two-radials-sharing-conductors topology would yield Zs readings that do not represent the eventual design-intended ring loop. Engineer-of-record reterminates endpoint_b first (per the C01 remediation), then defers Zs to calc.zs_loop_impedance per the standard pattern. C02 Zs verification is similarly contingent on completing the missing Appendix H test.",
+        "decisions": [
+          {
+            "label": "Type A 30 mA across all circuits",
+            "summary": "Domestic dwelling with no DC-injecting loads; Type A handles pulsating DC from typical electronics and is the BS 7671 default. The cited regulation §411.3.3 is the RCD-posture regulation — the only context in which §411.3.3 may be cited per the verified-citations discipline.",
+            "rule": "BS 7671 §411.3.3 additional protection for socket outlets ≤32 A",
+            "code_clause": "BS 7671:2018+A2:2022 §411.3.3"
+          },
+          {
+            "label": "Zs deferral contingent on ring remediation",
+            "summary": "Standard Zs deferral pattern applies — calc.zs_loop_impedance flagged TOOL-CALL-PENDING — but on C01 the Zs result is meaningless until endpoint_b is reterminated at CU-MAIN-WAY-1. The remediation order is: (1) C01 retermination + Appendix H re-test, (2) C02 Appendix H performed, (3) THEN Zs deferred to calc.zs_loop_impedance.",
+            "rule": "WI3 deferred tool-call pattern + ring-continuity precedence",
+            "code_clause": "BS 7671:2018+A2:2022 §411.4.5"
+          }
+        ]
+      },
+      {
+        "title": "Eval harness pair (C.8 PASS + C.9 FAIL)",
+        "summary": "This C.9 FAIL example is authored as the SECOND half of a PASS / FAIL pair. The companion PASS example (uk-3bed-with-ring-continuity, Phase C.8) ships in the same Phase C batch with the same 3-bed dwelling geometry and both rings correctly engineered (matching mcb_way_id + continuity_verified=true). The eval harness (eval-10-ring-continuity.yaml or equivalent INV-14 eval) consumes both fixtures and asserts: INV-14 PASS on C.8 fixture (both rings) + INV-14 FAIL on C.9 fixture (both rings, with distinct sub-check failure modes per ring). The split failure modes (C.9 C01 = sub-check 1 FAIL, C.9 C02 = sub-check 2 FAIL) exercise both INV-14 sub-checks independently.",
+        "decisions": [
+          {
+            "label": "Pair-based eval coverage",
+            "summary": "INV-14 needs both PASS and FAIL coverage to assert that the rule fires in both directions. The C.8 + C.9 pair is the canonical coverage pattern — same geometry, opposite verdicts. Future Phase D/E examples may exercise INV-14 in cross-product with other rules (e.g. INV-17 PASS + INV-14 FAIL on the same ring) but the C.8/C.9 pair is the canonical baseline.",
+            "rule": "Example coverage discipline — PASS/FAIL pairs for each INV",
+            "code_clause": "small-power eval harness coverage pattern"
+          }
+        ]
+      },
+      {
+        "title": "Honest disclosures (4-place engineering judgment surface)",
+        "summary": "(1) FAIL-by-design discipline: this example is DELIBERATELY engineered to fire INV-14 FAIL HIGH on both rings. compliance_summary.compliant=false is the by-design outcome. The IR is structurally valid against the IR schema (ring_endpoints present on both rings with all required fields populated); the broken engineering surfaces in the prose evidence + invariants[] block, not in the schema shape. (2) IR schema severity enum mapping: the IR schema's compliance_summary.non_compliance_flags severity enum is {critical, warning, info}. The spec calls for HIGH severity on the two INV-14 entries — this maps to 'critical' (the strongest available schema enum) here because broken ring continuity is a real safety-critical fault-loop hazard. The invariants[] block uses the {critical, high, medium, low} enum directly and INV-14 carries severity='high' there — the canonical HIGH severity emission. (3) C01 engineering specifics: endpoint_b was misterminated at CU-MAIN-WAY-2 instead of the design-intended CU-MAIN-WAY-1. The structural mcb_way_id field carries the design-intended way (CU-MAIN-WAY-1) only — the schema does not have a per-endpoint mcb_way_id field. The wrong-way-termination at install is recorded in the ring_endpoints._citation prose, in the circuit designation, and in the INV-14 evidence. (4) C02 engineering specifics: both legs are documented as landing at the intended CU-MAIN-WAY-2 (mcb_way_id consistency sub-check 1 would have passed). The violation is INV-14 sub-check 2 — continuity_verified=false because the engineer-of-record never performed the IET OSG Appendix H ring continuity verification at first fix. This is a DIFFERENT INV-14 failure mode from C01 (procedural-omission FAIL vs install-defect FAIL); the pair demonstrates that INV-14 catches both sub-checks independently per ring. Verified-citation discipline: only BS 7671:2018+A2:2022 §433.1 / §526 top-level / §411.3.3 / §411.4.5 / §434.5.1 / Appendix 15, IET On-Site Guide §8.4.4 + Appendix H + Appendix A (AMD 2 update), BS 1363, BS 4177, BS EN 60898-1, BS 1192:2007+A2:2016, Part M of the Building Regulations are cited. Banned and do NOT cite anywhere in skill output: sub-clause beyond top-level §526 (sub-clause not transcribed in verified file), sub-clause beyond top-level §433 (sub-clause not transcribed in verified file), OZEV (operational policy not a BS standard), 3rd Edition of any IET CoP (superseded), Reg 559 (not the ring continuity regulation).",
+        "decisions": []
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 and C02 are rings on 2.5 mm² + 1.5 mm² CPC PVC T+E with 32 A RCBO — composition matches BS 7671:2018+A2:2022 Appendix 15 ring final circuit recipe. C03 is dedicated_radial — INV-01's ring composition rule does not apply. PASSes on both rings + vacuously PASSes on the radial. The ring continuity violations on C01/C02 do not affect Appendix 15 recipe compliance; the cable composition is correct, only the termination at the CU is broken."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Every circuit's ocpd.breaking_capacity_ka (C01: 6.0; C02: 6.0; C03: 6.0) is greater than or equal to parent_db.pfc_at_busbar_ka (6.0) per BS 7671:2018+A2:2022 §434.5.1 and IEC 60898-1 conditional short-circuit ratings. Equality at 6 kA is the §434.5.1 minimum boundary."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All 3 circuits carry RCD protection per BS 7671:2018+A2:2022 §411.3.3 (30 mA additional protection for socket-outlets ≤32 A). All three use Type A 30 mA RCBOs upstream — no DC-injecting loads on this dwelling. rcd_posture=type_a_30ma_per_§411_3_3 on all 3 circuits."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Rings C01 and C02 are valid topology for GB jurisdiction per BS 7671:2018+A2:2022 §433.1 (ring final circuits permitted in GB; the dominant idiom for domestic 13 A socket networks). C03 is dedicated_radial — topology rule trivially PASSes. INV-04 checks topology validity by jurisdiction, not continuity engineering — the C01/C02 violations are out of scope for this rule."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 rooms_covered=[kitchen, utility, dining, lounge] → every kitchen / utility / dining / lounge socket references C01 except kitchen-S07 (cooker, on C03). C02 rooms_covered=[bedroom-1, bedroom-2, bedroom-3, landing] → every bedroom and landing socket references C02. C03 rooms_covered=[kitchen] → the cooker BS_4177 outlet references C03. No orphan socket references."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "low",
+      "evidence": "All 3 circuits use Type B curve — domestic ring loads (mixed plug-in appliances) and the cooker (resistive hob+oven heating element) have no significant inrush requiring Type C. Type B (3-5× tripping band per BS EN 60898-1) is the standard MCB curve for 230 V domestic socket and cooker circuits."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "high",
+      "evidence": "diversified_max_load_a per circuit (C01: 16.0 A; C02: 7.0 A; C03: 25.0 A) is less than ocpd.rating_a (32 A on all three). C01 and C02 apply standard IET On-Site Guide Appendix A domestic-rings diversity. C03 cooker applies the Appendix A cooker formula."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All 3 circuits have tool_call_pending_for_zs_verification=true (deferred per WI3). flags[] carries TOOL-CALL-PENDING:calc.zs_loop_impedance. NOTE: Zs verification on C01 is meaningless until endpoint_b is reterminated at the correct way; C02 Zs verification is contingent on completing the missing Appendix H test. Remediation order: ring continuity fix → Appendix H re-test → Zs deferral."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "high",
+      "evidence": "rationale.chat_summary length is 798 characters which is under the 800-character cap per the rationale schema. Summary follows the ordered beats: what was designed (3-bed dwelling rings + dedicated radial) → key decisions (deliberate FAIL HIGH on both rings, distinct sub-check failure modes) → flags (Zs deferred contingent on remediation) → engineering context (FAIL-by-design pair with C.8)."
+    },
+    {
+      "id": "INV-10",
+      "passes": true,
+      "severity": "low",
+      "evidence": "drawing_layout.drawing_standard=BS 1192:2007+A2:2016 matches the GB jurisdiction expected default. Sheet size A2 + scale 1:50 appropriate for the ~95 m² dwelling."
+    },
+    {
+      "id": "INV-11",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No cable-sizing intent consumed (consumed_intents.cable_sizing absent; meta.consumed_intents=[]). INV-11 is a no-op per the v1.1 conditional rule; all 3 circuits carry tool_call_pending_for_zs_verification=true."
+    },
+    {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "N/A and trivially PASS per validator INV-12 wording — no Part-7 enum room_types present in rooms[] (no bathroom / shower_room / swimming_pool_hall / sauna / medical_group_*_* / external_landscape). The schema's allOf cascade trigger does not fire; consumed_intents.special_locations_zoning is intentionally omitted."
+    },
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "low",
+      "evidence": "N/A and trivially PASS per validator INV-13 wording — building_diversity block intentionally absent (small domestic dwelling)."
+    },
+    {
+      "id": "INV-14",
+      "passes": false,
+      "severity": "high",
+      "evidence": "INV-14 FAIL HIGH on BOTH ring final circuits. C01 (GF ring): sub-check 1 FAIL — ring_endpoints.mcb_way_id captures the design-intended CU-MAIN-WAY-1 but engineer-of-record's first-fix wiring survey recorded endpoint_b actually terminated at CU-MAIN-WAY-2; a ring landing at two different MCB ways is structurally TWO RADIALS sharing conductors and the Zs / cable thermal protection assumptions for ring topology no longer apply; continuity_verified=false (Appendix H r1 reading at approximately half expected loop value — the classic broken-ring signature). C02 (1F ring): sub-check 2 FAIL — both legs documented landing at intended CU-MAIN-WAY-2 (sub-check 1 would have passed) but the engineer-of-record never performed the IET OSG Appendix H ring continuity verification at first fix; r1/rn/r2 readings absent from Schedule of Test Results; continuity_verified=false. C03 dedicated_radial does not exercise the rule. IET OSG §8.4.4 + Appendix H + BS 7671:2018+A2:2022 §526 top-level. REMEDIATION: C01 reterminate endpoint_b at CU-MAIN-WAY-1 + re-test r1/rn/r2; C02 perform missing Appendix H verification + file readings to Schedule of Test Results."
+    },
+    {
+      "id": "INV-15",
+      "passes": true,
+      "severity": "high",
+      "evidence": "N/A and trivially PASS per validator INV-15 wording — circuit.floor_area_m2 is not populated on any circuit (v2.0 optional field)."
+    },
+    {
+      "id": "INV-16",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 and C02 (rings, 32 A on 2.5 mm² + 1.5 mm² CPC PVC T+E) match the BS 7671 Appendix 15 ring final circuit recipe — topology=ring with 32 A MCB ≤ 32 A ring ceiling per rule TOP-11. C03 dedicated_radial trivially PASSes per the validator wording. INV-16 checks OCPD-topology coordination, not continuity engineering — the C01/C02 INV-14 violations are out of scope for this rule."
+    },
+    {
+      "id": "INV-17",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "No fcu_spurs[] populated on any ring — the C.9 example deliberately omits the FCU spur present in C.8 to keep the failure surface scoped tightly to INV-14. INV-17 trivially PASSes on absent array per the validator wording."
+    },
+    {
+      "id": "INV-18",
+      "passes": true,
+      "severity": "high",
+      "evidence": "N/A and trivially PASS per validator INV-18 wording — no EV charge circuits in this dwelling."
+    },
+    {
+      "id": "INV-19",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "N/A and trivially PASS per validator INV-19 wording — both building_diversity.per_circuit_demand_inputs[] AND consumed_intents.cable_sizing.payload.circuits[] are absent."
+    }
+  ]
+}
