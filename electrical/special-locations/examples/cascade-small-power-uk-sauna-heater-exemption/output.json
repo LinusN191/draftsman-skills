@@ -1,0 +1,223 @@
+{
+  "drawing_type": "special_locations_zoning",
+  "version": "1.0.0",
+  "mode": "full_analysis",
+  "jurisdiction": "GB",
+  "room": {
+    "room_id": "uk-sauna-cascade-small-power-2400x2000",
+    "room_type": "sauna",
+    "length_mm": 2400,
+    "width_mm": 2000,
+    "area_m2": 4.8,
+    "ceiling_height_mm": 2400,
+    "is_wet_room": false,
+    "is_external": false,
+    "ambient_temperature_c": 90
+  },
+  "anchor_fixtures": [
+    {
+      "anchor_id": "heater_1",
+      "fixture_type": "sauna_heater",
+      "position_xyz": {"x_mm": 200, "y_mm": 1600, "z_mm": 0},
+      "dimensions_mm": {"length_mm": 400, "width_mm": 400},
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Sauna heater extracted from architect Rev-B prefabricated cabin plan dated 2026-06-02; 400×400 floor-standing electric heater rated 6 kW per BS EN 60335-2-53; sited at NW corner of sauna cabin per client schedule."
+    }
+  ],
+  "zones": [
+    {
+      "zone_id": "zone_heater_1_z1",
+      "zone_type": "sauna_zone_1",
+      "source_anchor_id": "heater_1",
+      "derivation_clause": "BS 7671:2018 §703",
+      "boundary_plan_polygon_mm": [[0, 1100], [1100, 1100], [1100, 2000], [0, 2000]],
+      "height_min_mm": 0,
+      "height_max_mm": 2400,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": null,
+      "isolation_required": true,
+      "allowed_equipment_classes": ["class_1", "class_2"],
+      "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated", "non_heat_rated_cable_load"],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": ["zone_heater_1_z2"],
+      "_clause_citation": "BS 7671:2018 §703 + §703.411.3.3 (heater excluded)",
+      "_derivation_note": "Zone 1 = heater footprint padded 500mm per §703 zone-table; heat-rated cable; heater circuit excluded from RCD blanket per §703.411.3.3."
+    },
+    {
+      "zone_id": "zone_heater_1_z2",
+      "zone_type": "sauna_zone_2",
+      "source_anchor_id": "heater_1",
+      "derivation_clause": "BS 7671:2018 §703",
+      "boundary_plan_polygon_mm": [[0, 0], [2400, 0], [2400, 2000], [0, 2000]],
+      "height_min_mm": 0,
+      "height_max_mm": 2400,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": ["class_1", "class_2"],
+      "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": ["zone_heater_1_z1", "zone_heater_1_z3"],
+      "_clause_citation": "BS 7671:2018 §703 + §703.411.3.3",
+      "_derivation_note": "Zone 2 = sauna body polygon (full room minus Zone 1); runtime subtracts Zone 1 for plan rendering."
+    },
+    {
+      "zone_id": "zone_heater_1_z3",
+      "zone_type": "sauna_zone_3",
+      "source_anchor_id": "heater_1",
+      "derivation_clause": "BS 7671:2018 §703",
+      "boundary_plan_polygon_mm": [[0, 0], [2400, 0], [2400, 2000], [0, 2000]],
+      "height_min_mm": 1500,
+      "height_max_mm": 2400,
+      "ip_rating_min": "IPx4",
+      "max_voltage_v": 230,
+      "rcd_required_ma": 30,
+      "isolation_required": false,
+      "allowed_equipment_classes": ["class_1", "class_2"],
+      "prohibited_fixture_types": ["socket_230v", "switch_230v", "luminaire_non_ip_rated"],
+      "switch_position_min_distance_mm": null,
+      "overlapping_with_zone_ids": ["zone_heater_1_z2"],
+      "_clause_citation": "BS 7671:2018 §703",
+      "_derivation_note": "Zone 3 = full sauna polygon at height_min=1500mm to ceiling; upper-volume zone for accessories."
+    }
+  ],
+  "electrical_constraints": [
+    {
+      "constraint_type": "rcd_blanket_by_room",
+      "applies_to_room_polygon": true,
+      "applies_to_zone_ids": null,
+      "_clause_citation": "BS 7671:2018 §703.411.3.3",
+      "_derivation_note": "30 mA RCD on all sauna LV circuits EXCEPT sauna heater per §703.411.3.3.",
+      "rcd_rating_ma": 30,
+      "applies_to_circuit_types": ["lighting", "sockets", "control_gear", "thermostat", "extract_fan"],
+      "sauna_heater_excluded": true
+    }
+  ],
+  "existing_fixtures_audit": [
+    {
+      "fixture_id": "heater_circuit_termination",
+      "fixture_type": "sauna_heater_hardwired_termination",
+      "position_xyz": {"x_mm": 200, "y_mm": 1600, "z_mm": 200},
+      "derived_zone_id": "zone_heater_1_z1",
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    }
+  ],
+  "calculation_summary": {
+    "compliant": true,
+    "zone_count": 3,
+    "constraint_count": 1,
+    "violation_count_critical": 0,
+    "violation_count_high": 0,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Cascade producer-side fixture for the small-power C.4 consumer example (uk-sauna-with-heater-exemption). Functionally identical to the existing standalone electrical/special-locations/examples/uk-sauna-with-3-zone-derivation/ fixture but EXPLICITLY tagged as a small-power-consumer cascade source via _special_locations_cascade_source in input.json.",
+      "Sauna heater Zone 1 padding defaulted to 500 mm per §703 zone-table convention.",
+      "Heat-rated cable assumed for all circuits inside the sauna cabin (ambient_temperature_c=90 °C per input).",
+      "Zone 2 polygon shown as full room rectangle in IR; runtime subtracts Zone 1 footprint for plan rendering — overlap with Zone 1 declared accordingly.",
+      "existing_fixtures_audit[] carries 1 entry: the hard-wired sauna heater termination consumed from upstream small-power circuit C01 (rcd_posture='no_rcd_with_documented_§411_exception'). The heater is hard-wired (NOT a socket) so does not trigger Zone 1's prohibited_fixture_types socket_230v rule. The heater circuit is excluded from the §703 RCD blanket per §703.411.3.3 (sauna_heater_excluded=true in the constraint).",
+      "Producer-side intent-out.json's special_locations_zoning block is byte-identical to the payload inlined at C.4-ship in electrical/small-power/examples/uk-sauna-with-heater-exemption/output.json consumed_intents.special_locations_zoning.payload — verified by Python dict equality at D.1 ship."
+    ],
+    "_zone_derivation_engine": "auto_from_anchors_v1.0",
+    "_engineering_judgments": []
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "1 anchor (heater_1) produces 3 zones (z1+z2+z3) per §703 3-zone split. Overlapping pairs declared: z1↔z2 (plan inclusion — runtime subtracts), z2↔z3 (vertical separation but same plan polygon). No silent merges."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "existing_fixtures_audit[] has 1 entry (heater_circuit_termination consumed from upstream small-power C01 dedicated radial), compliance_status=compliant. non_compliance_flags[] is empty. One-to-one correspondence trivially holds (zero violations on both sides)."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No medical_envelope_group_2 zone. §710 medical IT system N/A."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "room_type=sauna; rcd_blanket_by_room constraint present with rcd_rating_ma=30 AND sauna_heater_excluded=true per BS 7671:2018 §703.411.3.3 clause body. Heater exemption is the sauna-specific carve-out — preserves the upstream small-power C01 circuit's no_rcd_with_documented_§411_exception posture."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Not a swimming_pool_hall. §702.415.1 main bonding N/A."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No bath_tray or whirlpool_pump anchor. §701.512.2 whirlpool pump N/A."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No elv_luminaire anchor. §715 elv_separation N/A."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "high",
+      "evidence": "1 fixture audited: heater_circuit_termination (sauna_heater_hardwired_termination, IPx4, 230 V) at (200, 1600, 200). Derived zone z1 (heater inside the 500 mm-padded heater footprint). Sub-rule (a) type_prohibited: sauna_heater_hardwired_termination is NOT in Zone 1's prohibited list (socket_230v/switch_230v/luminaire_non_ip_rated/non_heat_rated_cable_load) — the heater itself is permitted at the heater anchor position by construction. Sub-rule (b) ip_below_min: IPx4 ≥ IPx4. Sub-rule (c) switch_distance_too_close: N/A (not a switch). Sub-rule (d) voltage_above_max: 230 V ≤ 230 V. PASS."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "heater_1 _extraction_source=architectural_drawing_extraction; _provenance_note 196 chars (≥40)."
+    },
+    {
+      "id": "INV-10",
+      "passes": true,
+      "severity": "high",
+      "evidence": "compliant=true ∧ violation_count_critical=0 ∧ non_compliance_flags=[]. Declared overlaps are catalogued cross-references (z1↔z2 plan inclusion; z2↔z3 vertical-separation pair) — not silent merges."
+    }
+  ],
+  "rationale": {
+    "chat_summary": "D.1 producer-side cascade fixture for small-power C.4 (uk-sauna-with-heater-exemption). 2400×2000 mm cabin with 6 kW BS EN 60335-2-53 corner heater. 3 zones per §703 zone-table + rcd_blanket_by_room with sauna_heater_excluded=true per §703.411.3.3. Functionally identical to standalone uk-sauna-with-3-zone-derivation but explicitly tagged as small-power-consumer cascade source. Producer intent-out.special_locations_zoning byte-identical to C.4-ship inlined payload. All 10 INVs PASS.",
+    "sections": [
+      {
+        "title": "Cascade context",
+        "summary": "D.1 producer-side fixture closing the integrity loop for the small-power C.4 example (uk-sauna-with-heater-exemption). At C.4-ship the consumer INLINED its consumed_intents.special_locations_zoning.payload with the cascade payload because this producer fixture did not yet exist (DEFERRED-POINTER state honest-disclosed at C.4-ship). D.1 emits the producer-side intent-out.json byte-identical to that inlined payload — verified by Python dict equality at D.1 ship. The consumer's _cascade_disclosure block in input.json is updated at D.1-ship to drop the DEFERRED-POINTER language; the source_path now resolves to a real file in the repo. The fixture is functionally identical to the existing standalone uk-sauna-with-3-zone-derivation example but explicitly tagged as a small-power-consumer cascade source — the file-tree naming makes the producer-side intent of 'this is the small-power-consumer source' auditable."
+      },
+      {
+        "title": "Standards applied",
+        "summary": "BS 7671:2018+A2:2022 §703 governs sauna zoning. §703.411.3.3 mandates 30 mA RCD blanket on all sauna LV circuits EXCEPT the sauna heater circuit itself — this is the clause body exemption preserved as sauna_heater_excluded=true in the rcd_blanket_by_room constraint. Zone 1 around the heater is padded 500 mm per the §703 zone-table convention. Zone 3 starts at 1500 mm AFFL per §703. BS EN 60335-2-53 (sauna heating appliances) supplies the heater appliance type-test that backs the §411 documented-exception path on the upstream small-power C01 circuit's rcd_posture='no_rcd_with_documented_§411_exception'."
+      },
+      {
+        "title": "Zone derivation logic",
+        "summary": "heater_1 (400×400 at NW corner (200,1600)) produces 3 zones. Zone 1 = footprint + 500 mm padding → unclipped (-300,1100)-(1100,2500), clipped to room polygon = (0,1100)-(1100,2000). Zone 2 = sauna body polygon (full room shown for transparency; runtime subtracts Zone 1 for plan). Zone 3 = full room polygon from height_min=1500 mm to ceiling 2400 mm. Overlap declarations: Zone 1↔Zone 2 (Zone 2 polygon-as-written includes Zone 1 region; runtime subtracts); Zone 2↔Zone 3 (vertical separation — overlap in plan, not in 3D)."
+      },
+      {
+        "title": "Heater-exclusion semantics",
+        "summary": "The rcd_blanket_by_room constraint emits rcd_rating_ma=30 + sauna_heater_excluded=true. The applies_to_circuit_types list (lighting/sockets/control_gear/thermostat/extract_fan) deliberately OMITS the sauna heater circuit — the §703.411.3.3 clause body exempts the heater. Upstream small-power C01 has rcd_posture='no_rcd_with_documented_§411_exception' with rcd_exception_citation routing to §703.411.3.3 + BS EN 60335-2-53. The cascade payload preserves this exemption; small-power INV-12 sub-check 4 verifies the constraint's sauna_heater_excluded=true is honoured by C01."
+      },
+      {
+        "title": "Consumer-side hand-off (small-power INV-12)",
+        "summary": "When small-power v2.0 consumes this intent: sub-check 1 PASS (consumed_intents.special_locations_zoning present); sub-check 2 PASS (payload.compliant=true, zone_count=3, constraint_count=1, all violation counts 0); sub-check 3 PASS (sauna cabin has sockets[]=[] so zone-containment is vacuous on sockets; the hard-wired heater is not a socket — it is a hardwired termination consumed from C01); sub-check 4 PASS (payload.non_compliance_flags=[]; nothing to cascade)."
+      },
+      {
+        "title": "Honest disclosures",
+        "summary": "(1) Three assumptions in calculation_summary.assumptions[] for zone derivation: 500 mm heater padding (engineering convention); heat-rated cable required (ambient 90 °C); Zone 2 polygon-as-written includes Zone 1 region with explicit overlap declaration. (2) The hard-wired heater termination at z=200 mm sits inside Zone 1; sauna_heater_hardwired_termination is NOT in Zone 1's prohibited list (socket_230v/switch_230v/luminaire_non_ip_rated/non_heat_rated_cable_load) — the heater itself is permitted at the heater anchor by construction. (3) No banned §703 sub-clauses used — only verified §703 + §703.411.3.3 per spec §3.2. (4) Payload byte-equality with C.4-ship inlined payload verified at D.1 ship."
+      },
+      {
+        "title": "Failure modes considered",
+        "summary": "If the sauna heater circuit were placed under the RCD blanket (sauna_heater_excluded=false in error), the heater would trip during normal operation due to thermal-pulse residual current — INV-04 would FAIL with sub-rule sauna_heater_excluded_required_true and the small-power C01 rcd_posture='no_rcd_with_documented_§411_exception' would lose its constraint-side anchor. If a generic 230 V socket were placed in Zone 1, INV-08 sub-rule type_prohibited would FAIL. If a non-IP-rated luminaire were placed at any height inside the sauna, INV-08 sub-rule type_prohibited would FAIL (luminaire_non_ip_rated is in all 3 zones' prohibited list)."
+      }
+    ]
+  }
+}

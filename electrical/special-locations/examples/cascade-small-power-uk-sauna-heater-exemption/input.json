@@ -1,0 +1,59 @@
+{
+  "_note": "D.1 producer-side cascade fixture for the small-power C.4 example (uk-sauna-with-heater-exemption). UK 2400×2000 mm domestic sauna cabin with single hard-wired BS EN 60335-2-53 sauna heater (6 kW). Functionally identical to the existing electrical/special-locations/examples/uk-sauna-with-3-zone-derivation/ fixture but EXPLICITLY tagged as a small-power-consumer cascade source via _special_locations_cascade_source. The file-tree naming makes the producer-side intent of 'this is the small-power-consumer source' auditable. The intent-out.json's special_locations_zoning block is byte-identical to the payload inlined at C.4-ship in electrical/small-power/examples/uk-sauna-with-heater-exemption/output.json consumed_intents.special_locations_zoning.payload — verified by Python dict equality at D.1 ship.",
+  "_special_locations_cascade_source": {
+    "standalone_example_dir": "electrical/special-locations/examples/uk-sauna-with-3-zone-derivation (functionally identical; this fixture is the small-power-consumer-tagged twin)",
+    "consumer_skill": "small-power",
+    "consumer_invariant_signalled": "INV-12 (4 sub-check sequence) on rooms[].room_type='sauna' Part-7 enum trigger; §703 3-zone split + rcd_blanket_by_room with sauna_heater_excluded=true cascaded to small-power",
+    "upstream_consumer_intent_location": null,
+    "_note": "No upstream consumer intent — special-locations is the PRODUCER; small-power is the CONSUMER. One-way emission. consumed_lighting_layout_intent in intent-out.json is null."
+  },
+  "jurisdiction": "GB",
+  "anchor_fixtures": [
+    {
+      "id": "heater_1",
+      "type": "sauna_heater",
+      "position": {"x_mm": 200, "y_mm": 1600, "z_floor_mm": 0},
+      "shape_kind": "rectangular",
+      "dimensions": {"length_mm": 400, "width_mm": 400, "height_mm": 800},
+      "_extraction_source": "architectural_drawing_extraction",
+      "_provenance_note": "Sauna heater extracted from architect Rev-B prefabricated cabin plan dated 2026-06-02; 400×400 floor-standing electric heater rated 6 kW per BS EN 60335-2-53; sited at NW corner of sauna cabin per client schedule."
+    }
+  ],
+  "room": {
+    "room_polygon_mm": [
+      {"x_mm": 0, "y_mm": 0},
+      {"x_mm": 2400, "y_mm": 0},
+      {"x_mm": 2400, "y_mm": 2000},
+      {"x_mm": 0, "y_mm": 2000}
+    ],
+    "ceiling_height_mm": 2400,
+    "room_type": "sauna",
+    "floor_finish": "tiles",
+    "is_external": false,
+    "is_wet_room": false,
+    "ambient_temperature_c": 90
+  },
+  "existing_fixtures": [
+    {
+      "fixture_id": "heater_circuit_termination",
+      "type": "sauna_heater_hardwired_termination",
+      "position": {"x_mm": 200, "y_mm": 1600, "z_floor_mm": 200},
+      "ip_rating": "IPX4",
+      "voltage_v": 230,
+      "is_rcd_protected": false,
+      "isolation_path": "§411_exception_per_§703_411_3_3",
+      "_consumed_from": "small-power intent (uk-sauna-with-heater-exemption) circuit C01 (sauna heater dedicated radial; rcd_posture=no_rcd_with_documented_§411_exception; hard-wired BS EN 60335-2-53 heater appliance; circuit excluded from the 30 mA RCD blanket per §703.411.3.3)"
+    }
+  ],
+  "rcd_posture_inputs": [
+    {
+      "circuit_id_hint": "C01",
+      "rcd_posture": "no_rcd_with_documented_§411_exception",
+      "rcd_exception_citation": "BS 7671:2018+A2:2022 §703.411.3.3 (sauna heater circuit excluded from the 30 mA RCD blanket per the verified standards file — see shared/standards/electrical/BS7671/part7-special-locations.json §703 key requirement 'sauna circuits except the heater') + BS EN 60335-2-53 (sauna heating appliances — fault-current characteristics of low-resistance heater elements make 30 mA RCD discrimination impractical without nuisance trips)"
+    },
+    {
+      "circuit_id_hint": "C02",
+      "rcd_posture": "type_a_30ma_per_§411_3_3"
+    }
+  ]
+}

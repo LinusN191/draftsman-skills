@@ -1,0 +1,35 @@
+{
+  "intent_version": "1.0.0",
+  "skill": "special-locations",
+  "consumed_lighting_layout_intent": null,
+  "special_locations_zoning": {
+    "zones": [],
+    "electrical_constraints": [
+      {
+        "constraint_type": "rcd_blanket_by_room",
+        "applies_to_room_polygon": true,
+        "applies_to_zone_ids": null,
+        "_clause_citation": "BS 7671:2018+A2:2022 §722 + §411.3.3 + IET Code of Practice for EV Charging Equipment Installation (4th Edition)",
+        "_derivation_note": "EV charge point dedicated-circuit constraint per §722 + IET CoP 4th Ed. The §722 top-level (no sub-clauses transcribed) plus §411.3.3 mandate a 30 mA RCD upstream of every EV charge point. The IET CoP 4th Ed dedicated-circuit rule forbids shared loads on the EV circuit. The §722.531.3.101 boundary permits Type A upstream iff the BS EN 61851-1 charging unit provides integral DC residual detection ≥6 mA; otherwise Type B is required. Constraint extended with EV-specific fields per additionalProperties:true on the constraints schema.",
+        "dedicated_circuit_required": true,
+        "mode_required": 3,
+        "charging_unit_standard": "BS EN 61851-1",
+        "socket_standard": "BS EN 62196 Type 2 Mennekes",
+        "upstream_rcd_type_min": "A",
+        "charging_unit_dc_detection_a_min": 6,
+        "diversity_factor": 1.0,
+        "outdoor_ip_rating_min": "IP54"
+      }
+    ],
+    "compliant": true,
+    "zone_count": 0,
+    "constraint_count": 1,
+    "violation_count_critical": 0,
+    "violation_count_high": 0,
+    "non_compliance_flags": [],
+    "anchor_source_summary": {
+      "all_extracted": true,
+      "extraction_source_lowest": "architectural_drawing_extraction"
+    }
+  }
+}

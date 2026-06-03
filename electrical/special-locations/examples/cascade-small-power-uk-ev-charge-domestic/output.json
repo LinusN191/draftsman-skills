@@ -1,0 +1,161 @@
+{
+  "drawing_type": "special_locations_zoning",
+  "version": "1.0.0",
+  "mode": "full_analysis",
+  "jurisdiction": "GB",
+  "room": {
+    "room_id": "uk-ev-driveway-5000x3000",
+    "room_type": "external_landscape",
+    "length_mm": 5000,
+    "width_mm": 3000,
+    "area_m2": 15,
+    "ceiling_height_mm": 3000,
+    "is_external": true,
+    "is_wet_room": false,
+    "ambient_temperature_c": 20
+  },
+  "anchor_fixtures": [],
+  "zones": [],
+  "electrical_constraints": [
+    {
+      "constraint_type": "rcd_blanket_by_room",
+      "applies_to_room_polygon": true,
+      "applies_to_zone_ids": null,
+      "_clause_citation": "BS 7671:2018+A2:2022 §722 + §411.3.3 + IET Code of Practice for EV Charging Equipment Installation (4th Edition)",
+      "_derivation_note": "EV charge point dedicated-circuit constraint per §722 + IET CoP 4th Ed. The §722 top-level (no sub-clauses transcribed) plus §411.3.3 mandate a 30 mA RCD upstream of every EV charge point. The IET CoP 4th Ed dedicated-circuit rule forbids shared loads on the EV circuit. The §722.531.3.101 boundary permits Type A upstream iff the BS EN 61851-1 charging unit provides integral DC residual detection ≥6 mA; otherwise Type B is required. Constraint extended with EV-specific fields per additionalProperties:true on the constraints schema.",
+      "dedicated_circuit_required": true,
+      "mode_required": 3,
+      "charging_unit_standard": "BS EN 61851-1",
+      "socket_standard": "BS EN 62196 Type 2 Mennekes",
+      "upstream_rcd_type_min": "A",
+      "charging_unit_dc_detection_a_min": 6,
+      "diversity_factor": 1.0,
+      "outdoor_ip_rating_min": "IP54"
+    }
+  ],
+  "existing_fixtures_audit": [
+    {
+      "fixture_id": "ev_socket_1",
+      "fixture_type": "ev_charge_point_socket_outlet",
+      "position_xyz": {
+        "x_mm": 4800,
+        "y_mm": 1500,
+        "z_mm": 1200
+      },
+      "derived_zone_id": null,
+      "compliance_status": "compliant",
+      "violation_sub_rule": null,
+      "violation_clause": null,
+      "severity": null
+    }
+  ],
+  "calculation_summary": {
+    "compliant": true,
+    "zone_count": 0,
+    "constraint_count": 1,
+    "violation_count_critical": 0,
+    "violation_count_high": 0,
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Cascade producer-side fixture for the small-power C.3 consumer example (uk-ev-charge-domestic). §722 EV charge point is NOT zonal like §701/§702/§703/§710/§715 — no spatial zone is derived. The cascade carries a single rcd_blanket_by_room electrical_constraint extended with EV-specific dedicated-circuit + DC-detection + IP fields (additionalProperties:true on the constraints schema).",
+      "anchor_fixtures[] is intentionally empty — the §722 EV charge point is wall-mounted equipment, not a §701/§702/§703/§710 zone-deriving anchor. The existing_fixtures_audit[] carries 1 ev_charge_point_socket_outlet consumed from the upstream small-power C03 dedicated radial (BS EN 62196 Type 2 Mennekes socket; BS EN 61851-1 charging unit with integral 6 mA DC residual detection).",
+      "Driveway modelled as 5000 × 3000 mm rectangle (matches the small-power C.3 input.json room_briefs.driveway dimensions). room_type='external_landscape' is the Part-7 enum trigger forcing the consumer's allOf clause requiring consumed_intents.special_locations_zoning.",
+      "ambient_temperature_c=20 °C declared at producer level (consistent with a UK driveway external installation). is_external=true; is_wet_room=false. The §722 charge point is exposed to weather but is not classified as a wet location for IPx7-style submersion — IP54 weather-protected enclosure is the §722 minimum carried in the cascade constraint.",
+      "EV-specific constraint fields: dedicated_circuit_required=true (IET CoP 4th Ed dedicated-circuit rule), mode_required=3 (AC charge point Mode 3 per BS EN 61851-1), charging_unit_standard='BS EN 61851-1', socket_standard='BS EN 62196 Type 2 Mennekes', upstream_rcd_type_min='A' (the §722.531.3.101 boundary at 6 mA DC detection permits Type A), charging_unit_dc_detection_a_min=6 (right on the §722.531.3.101 boundary — engineer-of-record commissioning check verifies the manufacturer's declared 6 mA against the on-site product datasheet), diversity_factor=1.0 (no off-peak coincidence credit at domestic 7.4 kW single-phase), outdoor_ip_rating_min='IP54'.",
+      "Producer-side intent-out.json's special_locations_zoning block is byte-identical to the payload inlined at C.3-ship in electrical/small-power/examples/uk-ev-charge-domestic/output.json consumed_intents.special_locations_zoning.payload — verified by Python dict equality at D.1 ship."
+    ],
+    "_zone_derivation_engine": "auto_from_anchors_v1.0",
+    "_engineering_judgments": []
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "0 anchors produce 0 zones — §722 EV charge point is NOT zonal like §701/§702/§703/§710/§715. anchor_fixtures[] empty; zones[] empty. No overlap to declare. Catalogue self-consistency trivially holds (0=0)."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "existing_fixtures_audit[] has 1 entry (ev_socket_1 consumed from upstream small-power C03 dedicated radial), compliance_status=compliant. non_compliance_flags[] is empty. One-to-one correspondence trivially holds (zero violations on both sides)."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No medical_envelope_group_2 zone present (zones[] empty). §710 medical IT system constraint N/A. INV-03 vacuously PASSes."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "room_type='external_landscape', not bathroom/shower_room/sauna. §701.411.3.3 + §703.411.3.3 RCD blanket N/A. The rcd_blanket_by_room constraint emitted here is the §722 EV-specific carve-out (not the §701/§703 blanket). INV-04 vacuously PASSes per spec §7.2."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Not a swimming_pool_hall. §702.415.1 main equipotential bonding N/A."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No bath_tray or whirlpool_pump anchor. §701.512.2 whirlpool pump N/A."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No elv_luminaire anchor present. §715 elv_separation N/A. The driveway is external (is_external=true) but no ELV bollard / SELV lighting circuit is in scope — the EV charge point is at 230 V LV not SELV."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "high",
+      "evidence": "1 fixture audited: ev_socket_1 (ev_charge_point_socket_outlet, IP54, 230 V) at (4800, 1500, 1200). zones[] is empty, so derived_zone_id=null and zone-based sub-rule checks are vacuous: (a) type_prohibited N/A (no zone to prohibit against); (b) ip_below_min N/A (no zone IP minimum); (c) switch_distance_too_close N/A; (d) voltage_above_max N/A. Constraint-level check: the rcd_blanket_by_room constraint with applies_to_room_polygon=true applies to every fixture in the room polygon — ev_socket_1's IP54 ≥ outdoor_ip_rating_min IP54 PASS; constraint's dedicated_circuit_required=true is enforced at the upstream small-power circuit level (C03 dedicated_radial topology + ev_charge_metadata.dedicated_circuit=true). PASS."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "anchor_fixtures[] is empty — no anchor provenance to gate. anchor_source_summary records all_extracted=true and extraction_source_lowest='architectural_drawing_extraction' as the safe default for an empty anchor set (per spec §5.5 the rollup is well-defined on empty anchors)."
+    },
+    {
+      "id": "INV-10",
+      "passes": true,
+      "severity": "high",
+      "evidence": "compliant=true ∧ violation_count_critical=0 ∧ violation_count_high=0 ∧ non_compliance_flags=[] ∧ no silent zone overlaps (0 zones). Self-consistency holds."
+    }
+  ],
+  "rationale": {
+    "chat_summary": "D.1 producer-side cascade fixture for small-power C.3 (uk-ev-charge-domestic). Driveway 5000×3000mm modelled as room_type='external_landscape' (Part-7 enum trigger). §722 EV is NOT zonal — 0 zones derived. 1 rcd_blanket_by_room constraint with EV-specific dedicated-circuit + DC-detection + IP54 fields cascaded to small-power. Producer intent-out.special_locations_zoning byte-identical to C.3-ship inlined payload. All 10 INVs PASS.",
+    "sections": [
+      {
+        "title": "Cascade context",
+        "summary": "D.1 producer-side fixture closing the integrity loop for the small-power C.3 example (uk-ev-charge-domestic). At C.3-ship the consumer INLINED its consumed_intents.special_locations_zoning.payload with the cascade payload because the producer fixture did not yet exist (DEFERRED-POINTER state honest-disclosed at C.3-ship). D.1 emits the producer-side intent-out.json byte-identical to that inlined payload — verified by Python dict equality at D.1 ship. The consumer's _cascade_disclosure block in input.json is updated at D.1-ship to drop the DEFERRED-POINTER language; the source_path now resolves to a real file in the repo."
+      },
+      {
+        "title": "Standards applied",
+        "summary": "BS 7671:2018+A2:2022 §722 (Electric vehicle charging installations) governs the EV charge point. §722 is NOT zonal in the §701 bath / §702 pool / §703 sauna / §710 medical / §715 ELV sense — it is constraint-only. §411.3.3 mandates a 30 mA RCD upstream. §722.531.3.101 permits Type A upstream iff the BS EN 61851-1 charging unit provides integral DC residual detection ≥6 mA; otherwise Type B is required. IET Code of Practice for EV Charging Equipment Installation (4th Edition) supplies the dedicated-circuit rule, the BS EN 62196 Type 2 Mennekes socket convention, the IP54 outdoor minimum, and the diversity-factor=1.0 (no off-peak coincidence credit at domestic single-phase 7.4 kW)."
+      },
+      {
+        "title": "Zone derivation (empty)",
+        "summary": "anchor_fixtures[] is EMPTY because the §722 EV charge point is wall-mounted equipment, not a §701/§702/§703/§710 zone-deriving anchor. zones[] is therefore empty. The Part-7 enum trigger for the consumer's allOf clause fires on room_type='external_landscape' regardless of zone-derivation outcome — the trigger is room-type-driven, not zone-driven. existing_fixtures_audit[] carries 1 entry (ev_socket_1) consumed from the upstream small-power C03 dedicated radial; derived_zone_id=null because no zone exists to contain it; compliance_status=compliant."
+      },
+      {
+        "title": "Electrical constraint (rcd_blanket_by_room EV-extended)",
+        "summary": "1 electrical_constraint of type rcd_blanket_by_room with applies_to_room_polygon=true. Extended fields per additionalProperties:true on the constraints schema: dedicated_circuit_required=true (IET CoP 4th Ed dedicated-circuit rule), mode_required=3 (AC charge point Mode 3 per BS EN 61851-1), charging_unit_standard='BS EN 61851-1', socket_standard='BS EN 62196 Type 2 Mennekes', upstream_rcd_type_min='A' (Type A boundary at 6 mA DC detection), charging_unit_dc_detection_a_min=6 (right on the §722.531.3.101 boundary — engineer-of-record commissioning check verifies the manufacturer-declared value against the on-site product datasheet), diversity_factor=1.0 (no off-peak coincidence credit), outdoor_ip_rating_min='IP54'. The constraint is the cascade payload the small-power consumer reads at INV-12 sub-checks 2-4."
+      },
+      {
+        "title": "Consumer-side hand-off (small-power INV-12)",
+        "summary": "When small-power v2.0 consumes this intent: sub-check 1 PASS (consumed_intents.special_locations_zoning present); sub-check 2 PASS (payload.compliant=true, zone_count=0, constraint_count=1, all violation counts 0); sub-check 3 PASS (the single EV socket BS_EN_62196_Type_2_Mennekes_socket_32A_AC does NOT sit inside any zone — zone_count=0 makes zone-containment vacuous; the cascade constraint applies to the room polygon and the IP rating + dedicated_circuit + DC-detection requirements are met by the small-power C03 dedicated radial topology + ev_charge_metadata block); sub-check 4 PASS (payload.non_compliance_flags=[]; nothing to cascade)."
+      },
+      {
+        "title": "Honest disclosures",
+        "summary": "(1) anchor_fixtures[] empty is intentional and schema-permitted (minItems=0 on the IR's anchor_fixtures array and on the intent payload's zones array). (2) The 6 mA DC residual detection value sits EXACTLY on the §722.531.3.101 Type A boundary; the manufacturer-declared value must be verified against the on-site product datasheet at commissioning — surfaced as a small-power non_compliance_flag severity=info at C.3, not duplicated here at the special-locations IR level (separation of concerns: special-locations emits the constraint envelope, small-power surfaces the borderline-value flag against the as-installed product). (3) anchor_source_summary defaults on the empty anchor set per spec §5.5. (4) Payload byte-equality with C.3-ship inlined payload verified at D.1 ship."
+      }
+    ]
+  }
+}

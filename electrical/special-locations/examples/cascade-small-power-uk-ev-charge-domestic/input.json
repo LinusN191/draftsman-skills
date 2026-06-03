@@ -1,0 +1,55 @@
+{
+  "_note": "D.1 producer-side cascade fixture for the small-power C.3 example (uk-ev-charge-domestic). UK 3-bed dwelling driveway hosting a single 7.4 kW Mode 3 AC EV charge point on the external garage wall. The driveway is modelled as room_type='external_landscape' — the Part-7 enum trigger forcing the small-power consumer's allOf clause requiring consumed_intents.special_locations_zoning. §722 is NOT zonal like §701 bath / §702 pool / §703 sauna / §710 medical / §715 ELV — the EV charge point does NOT derive a spatial zone. Instead the cascade emits 1 electrical_constraint of type rcd_blanket_by_room extended with EV-specific dedicated-circuit + DC-detection fields (additionalProperties: true on the constraints schema permits this). anchor_fixtures[] is empty (no §722-zonal anchor type — the EV charge point is wall-mounted equipment, not a zone-deriving anchor). The cascade is functionally a constraint-only emission. The intent-out.json payload is byte-identical to the payload inlined at C.3-ship in electrical/small-power/examples/uk-ev-charge-domestic/output.json consumed_intents.special_locations_zoning.payload — verified by Python dict equality at D.1 ship.",
+  "_special_locations_cascade_source": {
+    "standalone_example_dir": "electrical/special-locations/examples/uk-external-landscape-elv-lighting (analogous external_landscape pattern; §722 EV is constraint-only, no spatial zones)",
+    "consumer_skill": "small-power",
+    "consumer_invariant_signalled": "INV-12 (4 sub-check sequence) on rooms[].room_type='external_landscape' Part-7 enum trigger; §722 EV-specific dedicated-circuit + DC-detection constraint cascaded to small-power",
+    "upstream_consumer_intent_location": null,
+    "_note": "No upstream consumer intent — special-locations is the PRODUCER in this cascade; small-power is the CONSUMER. The cascade is a one-way special-locations -> small-power emission. consumed_lighting_layout_intent in the intent-out.json is null."
+  },
+  "jurisdiction": "GB",
+  "anchor_fixtures": [],
+  "room": {
+    "room_polygon_mm": [
+      {"x_mm": 0, "y_mm": 0},
+      {"x_mm": 5000, "y_mm": 0},
+      {"x_mm": 5000, "y_mm": 3000},
+      {"x_mm": 0, "y_mm": 3000}
+    ],
+    "ceiling_height_mm": 3000,
+    "room_type": "external_landscape",
+    "floor_finish": "concrete_driveway",
+    "is_external": true,
+    "is_wet_room": false,
+    "ambient_temperature_c": 20
+  },
+  "existing_fixtures": [
+    {
+      "fixture_id": "ev_socket_1",
+      "type": "ev_charge_point_socket_outlet",
+      "position": {
+        "x_mm": 4800,
+        "y_mm": 1500,
+        "z_floor_mm": 1200
+      },
+      "ip_rating": "IP54",
+      "voltage_v": 230,
+      "is_rcd_protected": true,
+      "_consumed_from": "small-power intent (uk-ev-charge-domestic); 7.4 kW Mode 3 AC charge point on dedicated radial C03; BS EN 62196 Type 2 Mennekes socket; BS EN 61851-1 charging unit with integral 6 mA DC residual detection (right on the §722.531.3.101 Type A boundary)"
+    }
+  ],
+  "ev_charge_inputs": [
+    {
+      "circuit_id_hint": "C03",
+      "mode": 3,
+      "charging_unit_standard": "BS EN 61851-1",
+      "socket_standard": "BS EN 62196 Type 2 Mennekes",
+      "upstream_rcd_type_min": "A",
+      "charging_unit_dc_detection_a_min": 6,
+      "dedicated_circuit_required": true,
+      "diversity_factor": 1.0,
+      "outdoor_ip_rating_min": "IP54",
+      "_citation": "BS 7671:2018+A2:2022 §722 + §411.3.3 + IET Code of Practice for EV Charging Equipment Installation (4th Edition)"
+    }
+  ]
+}
