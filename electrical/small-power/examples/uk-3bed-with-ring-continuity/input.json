@@ -1,0 +1,56 @@
+{
+  "_note": "Sprint D4 Phase C.8 example — UK 3-bed dwelling with EXPLICIT ring continuity engineering. PRIMARY purpose: exercise the new circuits[].ring_endpoints block (v2.0) AND demonstrate INV-14 (ring final circuit continuity) PASSING cleanly on both ring final circuits. Both rings (GF + 1F) are correctly engineered with endpoint_a and endpoint_b landing at the SAME mcb_way_id with continuity_verified=true. Secondary purpose: one FCU spur on the GF ring (kitchen under-cabinet hood) exercises INV-17 (AMD 2 FCU spur modelling) PASS — 13 A FCU × 230 V = 2990 W limit; 1800 W downstream gives 40 % headroom. This is the PASS counterpart to uk-3bed-with-ring-continuity-VIOLATION (C.9) which fires INV-14 FAIL HIGH. No Part-7 rooms are present (no bathroom_zone / pool / sauna / medical / external_landscape) so consumed_intents.special_locations_zoning is intentionally omitted — the cascade trigger does not fire and the cascade allOf clause does not require population.",
+  "project_id": "uk-3bed-with-ring-continuity-eg01",
+  "jurisdiction": "GB",
+  "site_brief": "UK 3-bed 2-storey dwelling, ~95 m² total floor area, TN-C-S DNO supply per BS 7671:2018+A2:2022. Consumer unit CU-MAIN is a 12-way Amendment-3 board with 6 kA Icu busbar. Two ring final circuits land at the same MCB way on each ring (CU-MAIN-WAY-1 for GF; CU-MAIN-WAY-2 for 1F) with continuity verified at first fix and end-to-end resistance measurements per IET On-Site Guide Appendix H. One dedicated radial feeds the cooker outlet at the kitchen (32 A on 6 mm² T+E). The GF ring carries one 13 A fused connection unit (FCU) spur for a kitchen under-cabinet appliance (extractor hood, 1800 W downstream). All sockets are BS 1363 13 A double switched general-purpose outlets unless noted. No bathroom shaver supply or outdoor socket on this design — the dwelling intentionally avoids Part-7 special-location rooms so the example focuses cleanly on the ring continuity engineering.",
+  "supply": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.35,
+    "psc_declared_ka": 6.0
+  },
+  "parent_db": {
+    "designation": "CU-MAIN",
+    "pfc_at_busbar_ka": 6.0
+  },
+  "room_briefs": [
+    {"room_id": "kitchen",   "room_type": "kitchen_domestic", "dimensions_m": {"length": 4.5, "width": 3.5, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 4.5, "socket_count_target": 6},
+    {"room_id": "utility",   "room_type": "utility_domestic", "dimensions_m": {"length": 2.5, "width": 2.0, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 2.0, "socket_count_target": 3},
+    {"room_id": "dining",    "room_type": "dining_domestic",  "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 1.0, "socket_count_target": 4},
+    {"room_id": "lounge",    "room_type": "lounge_domestic",  "dimensions_m": {"length": 5.0, "width": 4.0, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 1.5, "socket_count_target": 6},
+    {"room_id": "landing",   "room_type": "hallway_domestic", "dimensions_m": {"length": 4.0, "width": 1.2, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 0.3, "socket_count_target": 1},
+    {"room_id": "bedroom-1", "room_type": "bedroom_domestic", "dimensions_m": {"length": 4.0, "width": 3.5, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 0.8, "socket_count_target": 4},
+    {"room_id": "bedroom-2", "room_type": "bedroom_domestic", "dimensions_m": {"length": 3.5, "width": 3.0, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 0.6, "socket_count_target": 3},
+    {"room_id": "bedroom-3", "room_type": "bedroom_domestic", "dimensions_m": {"length": 3.0, "width": 2.5, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 0.6, "socket_count_target": 3}
+  ],
+  "ring_continuity_endpoints": [
+    {
+      "circuit_id": "C01",
+      "endpoint_a_xy": {"x_mm": 200, "y_mm": 200},
+      "endpoint_b_xy": {"x_mm": 8500, "y_mm": 200},
+      "mcb_way_id": "CU-MAIN-WAY-1"
+    },
+    {
+      "circuit_id": "C02",
+      "endpoint_a_xy": {"x_mm": 200, "y_mm": 200},
+      "endpoint_b_xy": {"x_mm": 7200, "y_mm": 200},
+      "mcb_way_id": "CU-MAIN-WAY-2"
+    }
+  ],
+  "_fcu_spur_intent": [
+    {
+      "circuit_id": "C01",
+      "location_xy": {"x_mm": 4500, "y_mm": 200},
+      "fcu_rating_a": 13,
+      "downstream_loads_w": 1800,
+      "_purpose": "kitchen under-cabinet extractor hood, fixed connection via 13 A switched FCU"
+    }
+  ],
+  "design_intent": {
+    "preferred_topology": "auto_by_jurisdiction",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "sheet_size": "A2",
+    "drawing_scale": "1:50"
+  }
+}
