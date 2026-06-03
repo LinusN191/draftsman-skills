@@ -1,5 +1,25 @@
 # Changelog — earthing
 
+## [1.5.1] - 2026-06-03 — small-power version-constraint widening (pre-merge check fix)
+
+_Patch: no engineering content changes. Manifest-only housekeeping to allow earthing to
+consume small-power v2.x intents (D4 depth sprint promoted small-power 1.2.0 → 2.0.0)._
+
+### Changed
+- `skill.manifest.json` `consumes_intents[]` entry for `small-power`: `version_constraint`
+  widened from `"^1.0"` → `">=1.0"`. The `^1.x` semver constraint would have rejected
+  small-power v2.0.0 intents at runtime once the D4 sprint promoted small-power to 2.0.0.
+  The fix was applied as part of the A.5 pre-merge check in the small-power D4 sprint before
+  any small-power v2.0.0 examples were validated. No other consumer skills were pinned
+  to `^1.x` for small-power at time of fix.
+
+### Unchanged
+- All 6 earthing examples unchanged.
+- All evals unchanged.
+- Prompt chain unchanged.
+- IR schema unchanged.
+- No new engineering content; no new INVs.
+
 ## [1.5.0] - 2026-06-01 — Floor plan context portability
 
 ### Changed

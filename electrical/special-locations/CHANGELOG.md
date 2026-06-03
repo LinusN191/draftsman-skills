@@ -1,5 +1,42 @@
 # Changelog
 
+## [1.0.1] - 2026-06-03 — Wave 2 producer-side cascade fixtures for small-power D4
+
+_Patch: 2 additional producer-side cascade fixtures added to `examples/` to close
+consumer-side integrity loops for small-power v2.0.0 (D4 depth sprint). No schema changes,
+no prompt changes, no IR changes. All existing examples and evals unaffected._
+
+### Added (examples)
+- **`cascade-small-power-uk-ev-charge-domestic/`** (4 files: input.json, output.json,
+  reasoning.md, intent-out.json): Producer source for the small-power
+  `uk-ev-charge-domestic` example. Derives §702/§722 zone intersection for a domestic
+  garage containing an EV charging point; confirms socket-exclusion zone boundaries and
+  the absence of any §702 prohibition on EV dedicated circuits. `_cascaded_from` field
+  set to `"electrical/special-locations/examples/cascade-small-power-uk-ev-charge-domestic"`.
+  Closes small-power C.3 consumer integrity loop.
+- **`cascade-small-power-uk-sauna-heater-exemption/`** (4 files: input.json, output.json,
+  reasoning.md, intent-out.json): Producer source for the small-power
+  `uk-sauna-with-heater-exemption` example. Derives §703 three-zone layout; annotates
+  heater-exemption trigger from `appliance_thermal_protection: true` per
+  BS EN 60335-2-53 §22.106; confirms socket-outlet exclusion outside Zone 3. Closes
+  small-power C.4 consumer integrity loop.
+
+### Unchanged
+- All 8 standalone examples from v1.0.0 unchanged.
+- All 9 v1.0.0 cascade examples unchanged (5 pre-existing special-locations cascade
+  examples + the 4 consumer-skill cascade fixtures shipped with Wave 1).
+- All 8 evals unchanged; gates held at +17 (the 2 new examples are producer-side cascade
+  fixtures, not standalone examples that drive the gate counter independently).
+- No schema changes; no prompt changes; no manifest breaking changes.
+  `skill.manifest.json` minor internal annotation added noting 2 additional example paths.
+
+### Relation to small-power v2.0.0
+Both fixtures are required for the small-power v2.0.0 D4 sprint end-to-end cascade
+contract validation. The special-locations v1.0.1 patch was dispatched within the D4
+sprint as sub-task D.1 to ensure the cascade contract was closed before the
+small-power CHANGELOGs were written. See `[[sprint-D4-small-power-shipped]]` memory for
+the full sprint record.
+
 ## [1.0.0] - 2026-06-01 — Initial production release (Wave 1 second deliverable)
 
 ### Added
