@@ -1,0 +1,536 @@
+{
+  "drawing_type": "small_power_layout",
+  "version": "2.0.0",
+  "meta": {
+    "project_id": "uk-medical-group-2-isolation-sockets-eg01",
+    "skill_version": "2.0.0",
+    "produced_at": "2026-06-03T00:00:00Z",
+    "consumed_intents": [
+      {
+        "intent_type": "special-locations-zoning",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/special-locations"
+      }
+    ]
+  },
+  "jurisdiction": "GB",
+  "supply_origin": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.10,
+    "psc_declared_ka": 6.0
+  },
+  "parent_db": {
+    "designation": "DB-MED-IT-1",
+    "pfc_at_busbar_ka": 6.0
+  },
+  "circuits": [
+    {
+      "circuit_id": "C01",
+      "designation": "Operating theatre Medical-IT-system isolation-socket radial — north wall (3× BS EN 60884-1 isolation-monitored sockets fed from DB-MED-IT-1 isolating transformer 5 kVA per §710 medical IT system; IMD per BS EN 61557-8 alarm response ≤8 s; supplementary bonding ≤0.2 Ω to operating table frame, anaesthesia machine ground, scrub sink, surgical pendant arm, patient monitor chassis per §710 + §701.415.2 cross-ref)",
+      "topology": "dedicated_radial",
+      "ocpd": {
+        "rating_a": 16,
+        "type": "MCB",
+        "curve": "B",
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² + 2.5mm² CPC",
+        "cores": 3,
+        "length_m_total": 14.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "no_rcd_with_documented_§411_exception",
+      "rcd_exception_citation": "BS 7671:2018+A2:2022 §710 (top-level) — Medical IT system circuits SHALL NOT be RCD-protected; first-fault tolerance provided by the IT topology + IMD per BS EN 61557-8 (≤8 s alarm response). The §411.3.3 default 30 mA RCD for socket-outlets ≤32 A is displaced by the §710 top-level rule on Medical IT system circuits.",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 1.5,
+      "diversified_max_load_a": 6.5,
+      "rooms_covered": [
+        "theatre_1"
+      ]
+    },
+    {
+      "circuit_id": "C02",
+      "designation": "Operating theatre Medical-IT-system isolation-socket radial — west wall (2× BS EN 60884-1 isolation-monitored sockets fed from DB-MED-IT-1 isolating transformer per §710 medical IT system; same IMD coverage; HTM 06-01 NHS precedence governs safety-service categorisation as Category 1 no-break)",
+      "topology": "dedicated_radial",
+      "ocpd": {
+        "rating_a": 16,
+        "type": "MCB",
+        "curve": "B",
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² + 2.5mm² CPC",
+        "cores": 3,
+        "length_m_total": 11.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "no_rcd_with_documented_§411_exception",
+      "rcd_exception_citation": "BS 7671:2018+A2:2022 §710 (top-level) — Medical IT system circuits SHALL NOT be RCD-protected; first-fault tolerance provided by the IT topology + IMD per BS EN 61557-8 (≤8 s alarm response). The §411.3.3 default 30 mA RCD for socket-outlets ≤32 A is displaced by the §710 top-level rule on Medical IT system circuits.",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 1.5,
+      "diversified_max_load_a": 6.5,
+      "rooms_covered": [
+        "theatre_1"
+      ]
+    },
+    {
+      "circuit_id": "C03",
+      "designation": "Operating theatre Medical-IT-system isolation-socket radial — east wall (1× BS EN 60884-1 isolation-monitored socket fed from DB-MED-IT-1 isolating transformer per §710 medical IT system; reserved capacity for ancillary surgical equipment)",
+      "topology": "dedicated_radial",
+      "ocpd": {
+        "rating_a": 16,
+        "type": "MCB",
+        "curve": "B",
+        "breaking_capacity_ka": 10.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² + 2.5mm² CPC",
+        "cores": 3,
+        "length_m_total": 9.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "no_rcd_with_documented_§411_exception",
+      "rcd_exception_citation": "BS 7671:2018+A2:2022 §710 (top-level) — Medical IT system circuits SHALL NOT be RCD-protected; first-fault tolerance provided by the IT topology + IMD per BS EN 61557-8 (≤8 s alarm response). The §411.3.3 default 30 mA RCD for socket-outlets ≤32 A is displaced by the §710 top-level rule on Medical IT system circuits.",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 1.0,
+      "diversified_max_load_a": 4.3,
+      "rooms_covered": [
+        "theatre_1"
+      ]
+    }
+  ],
+  "rooms": [
+    {
+      "room_id": "theatre_1",
+      "room_type": "medical_group_2_theatre",
+      "dimensions_m": {
+        "length": 6.0,
+        "width": 5.0,
+        "height": 3.0
+      },
+      "special_location": null,
+      "sockets": [
+        {
+          "id": "theatre-S01",
+          "type": "BS_EN_60884_1_isolation_monitored_socket_230V",
+          "mount": "wall",
+          "height_mm": 1000,
+          "circuit_id": "C01",
+          "ip_rating": "IP44"
+        },
+        {
+          "id": "theatre-S02",
+          "type": "BS_EN_60884_1_isolation_monitored_socket_230V",
+          "mount": "wall",
+          "height_mm": 1000,
+          "circuit_id": "C01",
+          "ip_rating": "IP44"
+        },
+        {
+          "id": "theatre-S03",
+          "type": "BS_EN_60884_1_isolation_monitored_socket_230V",
+          "mount": "wall",
+          "height_mm": 1000,
+          "circuit_id": "C01",
+          "ip_rating": "IP44"
+        },
+        {
+          "id": "theatre-S04",
+          "type": "BS_EN_60884_1_isolation_monitored_socket_230V",
+          "mount": "wall",
+          "height_mm": 1000,
+          "circuit_id": "C02",
+          "ip_rating": "IP44"
+        },
+        {
+          "id": "theatre-S05",
+          "type": "BS_EN_60884_1_isolation_monitored_socket_230V",
+          "mount": "wall",
+          "height_mm": 1000,
+          "circuit_id": "C02",
+          "ip_rating": "IP44"
+        },
+        {
+          "id": "theatre-S06",
+          "type": "BS_EN_60884_1_isolation_monitored_socket_230V",
+          "mount": "wall",
+          "height_mm": 1000,
+          "circuit_id": "C03",
+          "ip_rating": "IP44"
+        }
+      ]
+    }
+  ],
+  "drawing_layout": {
+    "sheet_size": "A2",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "drawing_scale": "1:50"
+  },
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      {
+        "message": "Cascaded from special-locations: medical_it_system constraint from payload electrical_constraints[0] applies to the Group 2 patient envelope (zone_patient_1_envelope_g2). Isolating transformer 5 kVA (within the 3.15–8 kVA plausibility band per cascade D-4; no flag raised). Insulation Monitoring Device (IMD) per BS EN 61557-8 with 8 s alarm response time. Safety service category 1 (no-break) per HTM 06-01 NHS precedence. Equipment standard BS EN 60601 series. No RCD on Medical IT system circuits per §710 (top-level) — the IT system itself provides the fault tolerance; an RCD would defeat continuity of supply during a first earth fault, which is what the IT topology and IMD are designed to allow.",
+        "code_clause": "BS 7671:2018+A2:2022 §710 + BS EN 61557-8 + HTM 06-01",
+        "severity": "info"
+      },
+      {
+        "message": "Cascaded from special-locations: supplementary_equipotential_bonding constraint from payload electrical_constraints[1] applies to the Group 2 patient envelope per §710 + §701.415.2 (cross-ref). Measured 0.15 Ω (≤0.2 Ω limit). Bonding extends to operating table frame, anaesthesia machine ground, scrub sink, surgical pendant arm, patient monitor chassis. Bonding conductor CSA ≥4 mm². The bonding scheme is documented on the earthing-and-bonding drawing (out of scope for this IR).",
+        "code_clause": "BS 7671:2018+A2:2022 §710 + §701.415.2",
+        "severity": "info"
+      },
+      {
+        "message": "HTM 06-01 NHS precedence: hospital sites follow HTM 06-01 as the governing technical memorandum for safety-service categorisation. Operating-table life-support sockets (Category 1 no-break, UPS-backed) are documented as engineer-of-record scope and are intentionally NOT modelled in this small-power IR — the UPS/IPS coordination belongs to a dedicated UPS/IPS skill. The 6 sockets modelled here serve general surgical equipment plug-in from the Medical IT system (not the no-break Cat-1 supply).",
+        "code_clause": "HTM 06-01 (NHS technical memorandum)",
+        "severity": "info"
+      },
+      {
+        "message": "All Zs verification deferred to calc.zs_loop_impedance per WI3; all three circuits have tool_call_pending_for_zs_verification=true and TOOL-CALL-PENDING:calc.zs_loop_impedance is set in flags[]. Note: IT-system Zs interpretation differs from TN systems — first-fault impedance is reported by the IMD rather than tripping an OCPD, and the §710 top-level rule defers continuity-on-first-fault to the IT topology.",
+        "code_clause": "BS 7671:2018+A2:2022 §710 (top-level) + §411.4.5 (TN cross-ref only)",
+        "severity": "info"
+      }
+    ],
+    "assumptions": [
+      "Ze=0.10 Ω and PSCC=6 kA declared by DNO at the building TN-C-S supply origin; not yet measured on site. The building upstream supply is TN-C-S; the Medical IT system is the LOCAL arrangement downstream of the DB-MED-IT-1 isolating transformer, derived from the TN-C-S supply via the 5 kVA isolating transformer. supply_origin.system_type=TN-C-S records the upstream supply origin per the schema enum (which does not enumerate IT as a building-supply value — IT is a downstream local-arrangement property captured in compliance_summary and circuit rcd_posture).",
+      "Patient envelope geometry (1.5 m radius around patient_1 at (3000, 2500), height 0–2500 mm, 12-sided polygon approximation) cascaded from the upstream special-locations payload via the patient_1 anchor.",
+      "BS EN 60884-1 isolation-monitored sockets selected per §710 medical IT system requirements — the socket interlock reports IMD alarm condition locally and disables socket output if isolation degrades below the threshold. The socket type literal `BS_EN_60884_1_isolation_monitored_socket_230V` is distinct from the cascade's `prohibited_fixture_types = [socket_230v_non_medical, switch_230v_non_medical, tnc_circuit]` enum literals, so the §710 envelope prohibition does not apply to these compliant medical-isolation sockets.",
+      "5 kVA isolating transformer rating sits within the 3.15–8 kVA plausibility band per the cascade's D-4 reviewer judgment (no flag raised). 5 kVA covers the 6-socket × 16 A diversified profile with comfortable headroom — peak coincident surgical equipment draw is typically ≤20 A diversified.",
+      "Supplementary equipotential bonding ≤0.2 Ω (measured 0.15 Ω at the bonding terminal). The bonding scheme is documented on the earthing-and-bonding drawing (out of scope for this IR); the constraint is surfaced via compliance_summary.non_compliance_flags[1] as an info-severity cascaded constraint.",
+      "Operating-table life-support sockets (Category 1 no-break per HTM 06-01) are engineer-of-record scope and are intentionally NOT modelled in this small-power IR. The 6 sockets modelled here are general surgical equipment plug-in from the Medical IT system (Category 2 short-break per HTM 06-01 coordination — but the categorisation itself belongs to the UPS/IPS skill, not small-power).",
+      "Cascade source REUSE / integrity-loop disclosure: the consumed special-locations payload comes from `electrical/special-locations/examples/cascade-small-power-uk-medical-group-2-isolation/intent-out.json` — a producer-side fixture that special-locations sprint C.2 authored AS IF a small-power Group 2 medical consumer existed. This consumer example now creates that consumer, closing the producer↔consumer integrity loop. Payload is byte-identical to the source (no engineering-equivalent argument needed — unlike pool-hall C.1).",
+      "v2.0 retrofit context: this is a NEW example authored at v2.0.0 — no v1.x retrofit. All three circuits are `dedicated_radial` topology so no ring_endpoints fields are required (the v2.0 ring_endpoints allOf clause is satisfied vacuously).",
+      "INV-13 (building_diversity self-consistency) is N/A and vacuously PASSes because building_diversity is intentionally absent — this is a single-room 3-circuit §710 cascade demonstration, not a complete building demand calculation. INV-19 (cable-sizing cascade integration with building_diversity) is N/A for the same reason.",
+      "INV-18 N/A — no EV-charge circuit. INV-17 N/A — no FCU spurs (BS EN 60884-1 medical isolation sockets are direct-circuit-fed, not FCU-spur-fed). INV-14 N/A — no ring topology. INV-15 N/A — circuit.floor_area_m2 not populated on any circuit (v2.0 optional field)."
+    ]
+  },
+  "flags": [
+    "TOOL-CALL-PENDING:calc.zs_loop_impedance"
+  ],
+  "drawing_notes": [
+    "Operating theatre (Part 7-710 Group 2 medical location): 6× BS EN 60884-1 isolation-monitored 230 V sockets mounted on the theatre walls at 1000 mm AFFL — 3 on north wall (C01), 2 on west wall (C02), 1 on east wall (C03). All fed from the DB-MED-IT-1 5 kVA isolating transformer per §710 medical IT system.",
+    "Insulation Monitoring Device (IMD) per BS EN 61557-8: alarm response time ≤8 s; IMD alarm signal terminates at the theatre control panel and at the nurse-station annunciator.",
+    "Supplementary equipotential bonding terminal: ≤0.2 Ω (measured 0.15 Ω) to operating table frame, anaesthesia machine ground, scrub sink, surgical pendant arm, patient monitor chassis per §710 + §701.415.2 (cross-ref). Bonding conductor CSA ≥4 mm².",
+    "No RCD on Medical IT system circuits per §710 (top-level): the IT topology + IMD provide first-fault tolerance; an RCD would defeat continuity-of-supply on a first earth fault, which is precisely what the IT system is designed to allow.",
+    "HTM 06-01 NHS precedence: hospital sites follow HTM 06-01 as the governing technical memorandum. Operating-table life-support sockets (Category 1 no-break, UPS-backed) are engineer-of-record scope and are NOT modelled here — the UPS/IPS coordination belongs to a dedicated UPS/IPS skill.",
+    "Equipment connected to these sockets must comply with BS EN 60601 series (medical electrical equipment); this is the device-side standard, not the installation-side standard."
+  ],
+  "rationale": {
+    "chat_summary": "UK NHS operating theatre (Part 7-710 Group 2 medical location, room_type=medical_group_2_theatre exact-match to fire INV-12). Six BS EN 60884-1 isolation-monitored 230 V sockets fed from a Medical IT panel (DB-MED-IT-1, 5 kVA isolating transformer, IMD per BS EN 61557-8 with 8 s alarm response). Three dedicated radials (C01 north 3-socket, C02 west 2-socket, C03 east 1-socket), each 16 A Type B MCB on 2.5 mm² PVC T+E. No RCD per §710 (top-level) — the IT topology + IMD provide first-fault tolerance. Supplementary equipotential bonding ≤0.2 Ω to operating table frame, anaesthesia machine, scrub sink, surgical pendant, patient monitor per §710 + §701.415.2 (cross-ref). HTM 06-01 NHS precedence governs safety-service categorisation; operating-table life-support sockets (Cat-1 no-break, UPS-backed) are engineer-of-record scope, NOT modelled here. consumed_intents.special_locations_zoning carries the cascade payload byte-identical to the producer-side fixture (integrity-loop closure). INV-12 PASS — all 4 sub-checks satisfied.",
+    "sections": [
+      {
+        "title": "Why room_type=medical_group_2_theatre (exact Part-7 enum match)",
+        "summary": "Sprint D.4's binding condition is that the cascade INV (INV-12) must actually fire on this example. The schema's allOf clause and INV-12's wording both pivot on room_type being one of the Part-7 set: {bathroom, shower_room, swimming_pool_hall, sauna, medical_group_0_area, medical_group_1_ward, medical_group_2_theatre, external_landscape}. This example uses the exact medical_group_2_theatre literal so the cascade fires end-to-end. medical_group_2_theatre is the highest-acuity medical Part-7 enum (Group 2 = operating theatre / critical-care, where patient is intentionally invasively connected and supply continuity-on-first-fault is mandatory).",
+        "decisions": [
+          {
+            "label": "room_type literal selection",
+            "summary": "Set rooms[0].room_type=medical_group_2_theatre. The Part 7-710 enum trigger then activates the schema's allOf clause requiring consumed_intents.special_locations_zoning to be populated.",
+            "rule": "Part-7 enum trigger in small-power IR schema allOf clause",
+            "code_clause": "small-power-ir.schema.json allOf"
+          }
+        ]
+      },
+      {
+        "title": "Cascade prerequisite (special-locations payload) — integrity-loop closure",
+        "summary": "consumed_intents.special_locations_zoning carries the 1-zone Group 2 patient envelope payload (zone_patient_1_envelope_g2, derived from the patient_1 anchor) and 2 electrical constraints (medical_it_system + supplementary_equipotential_bonding). The cascade's compliant flag is true, zero non_compliance_flags. Source: electrical/special-locations/examples/cascade-small-power-uk-medical-group-2-isolation/intent-out.json — a producer-side fixture authored by special-locations sprint C.2 AS IF a small-power Group 2 medical consumer existed. This consumer example now creates that consumer, closing the producer↔consumer integrity loop. Payload byte-identical (no engineering-equivalent argument needed).",
+        "decisions": [
+          {
+            "label": "Reuse the producer-side fixture verbatim",
+            "summary": "The cascade source was authored for THIS consumer at producer-side sprint C.2. Copy the special_locations_zoning block verbatim into consumed_intents.special_locations_zoning.payload. No fixture-divergence risk because the source is the exact peer file for this consumer.",
+            "rule": "Producer↔consumer integrity-loop closure",
+            "code_clause": "BS 7671:2018+A2:2022 §710"
+          }
+        ]
+      },
+      {
+        "title": "Socket placement decisions — Medical IT isolation sockets",
+        "summary": "Six BS EN 60884-1 isolation-monitored 230 V sockets at 1000 mm AFFL — 3 on north wall (C01), 2 on west wall (C02), 1 on east wall (C03). All sit within the patient envelope (the 1.5 m radius polygon around patient_1) but the cascade's prohibited_fixture_types = [socket_230v_non_medical, switch_230v_non_medical, tnc_circuit] explicitly distinguishes non-medical 230 V sockets from medical-isolation sockets. The selected type literal `BS_EN_60884_1_isolation_monitored_socket_230V` is the compliant medical-isolation socket, distinct from the prohibited socket_230v_non_medical literal. Sockets at 1000 mm AFFL — convenient height for surgical equipment plug-in (above worktop/instrument trolley level, below shoulder height).",
+        "decisions": [
+          {
+            "label": "BS EN 60884-1 isolation-monitored socket selection",
+            "summary": "BS EN 60884-1 socket type with built-in isolation monitoring and interlock: the socket reports the IMD alarm condition locally and disables socket output if isolation degrades below the alarm threshold. Required interface for Medical IT system circuits per §710.",
+            "rule": "§710 medical IT system socket compatibility",
+            "code_clause": "BS 7671:2018+A2:2022 §710 + BS EN 60884-1"
+          },
+          {
+            "label": "Distinct type literal vs prohibited_fixture_types",
+            "summary": "Cascade payload's prohibited_fixture_types = [socket_230v_non_medical, switch_230v_non_medical, tnc_circuit]. Our type literal `BS_EN_60884_1_isolation_monitored_socket_230V` is not socket_230v_non_medical — the cascade authors deliberately specified the non-medical sub-literal to permit medical-isolation sockets in the envelope.",
+            "rule": "Type literal match against zone prohibition list",
+            "code_clause": "BS 7671:2018+A2:2022 §710"
+          },
+          {
+            "label": "Operating-table life-support sockets out of scope",
+            "summary": "HTM 06-01 NHS technical memorandum categorises operating-table life-support sockets as Category 1 (no-break, UPS-backed). That coordination is engineer-of-record scope and belongs to a dedicated UPS/IPS skill, NOT small-power. The 6 sockets modelled here serve general surgical equipment plug-in from the Medical IT system.",
+            "rule": "HTM 06-01 scope discipline",
+            "code_clause": "HTM 06-01 (NHS technical memorandum)"
+          }
+        ]
+      },
+      {
+        "title": "Circuit topology + RCD posture — IT system requires no RCD",
+        "summary": "Three dedicated_radial circuits — one per wall — each 16 A Type B MCB on 2.5 mm² + 2.5 mm² CPC PVC T+E. CPC sized equal to phase per §710 medical IT system installation practice (larger CPC supports the supplementary bonding network's parallel-path equipotentialisation). No RCD on any circuit per §710 (top-level) — the IT topology + IMD provide first-fault tolerance; an RCD would defeat continuity-of-supply on a first earth fault, which is precisely what the IT system is designed to allow. The IMD alarm (≤8 s response time per BS EN 61557-8) is what notifies staff of the first fault so the second-fault scenario can be prevented by maintenance action.",
+        "decisions": [
+          {
+            "label": "rcd_type=none (no RCD on Medical IT circuits)",
+            "summary": "§710 (top-level) — medical IT system circuits SHALL NOT be RCD-protected. The IT topology + IMD + 8 s alarm response replace the RCD's fault-protection role; an RCD would defeat continuity-of-supply on first earth fault.",
+            "rule": "§710 medical IT first-fault tolerance",
+            "code_clause": "BS 7671:2018+A2:2022 §710"
+          },
+          {
+            "label": "Three radials split by wall (not one ring)",
+            "summary": "Each wall gets its own dedicated_radial circuit. Splitting by wall isolates a faulted wall's sockets without disabling sockets on adjacent walls — critical in an operating theatre where partial-socket-availability is preferred over total loss of socket supply. The 6-socket diversified load (≈18 A) sits comfortably within the 3×16 A radial capacity (48 A combined).",
+            "rule": "Operating-theatre socket-availability redundancy",
+            "code_clause": "BS 7671:2018+A2:2022 §710 + HTM 06-01"
+          },
+          {
+            "label": "CPC sized equal to phase (2.5 mm² CPC on 2.5 mm² phase)",
+            "summary": "Larger CPC supports the supplementary equipotential bonding network's parallel-path equipotentialisation per §710 + §701.415.2 (cross-ref). The bonding terminal at ≤0.2 Ω ties operating table frame, anaesthesia machine, scrub sink, surgical pendant, patient monitor chassis through the CPC network.",
+            "rule": "§710 + §701.415.2 supplementary bonding parallel paths",
+            "code_clause": "BS 7671:2018+A2:2022 §710 + §701.415.2"
+          }
+        ]
+      },
+      {
+        "title": "INV-12 cascade walk (4 sub-checks)",
+        "summary": "Sub-check 1 PASS (consumed_intents.special_locations_zoning present with payload). Sub-check 2 PASS (payload.compliant=true, 1 zone, 2 constraints — medical_it_system + supplementary_equipotential_bonding, 0 flags). Sub-check 3 PASS — walked sockets[]: all 6 theatre sockets are BS_EN_60884_1_isolation_monitored_socket_230V (type literal distinct from the cascade's prohibited socket_230v_non_medical literal). The cascade authors deliberately specified the non-medical sub-literal to permit medical-isolation sockets in the Group 2 envelope. Sub-check 4 PASS — payload.non_compliance_flags[]=[]; nothing to cascade. The compliance_summary.non_compliance_flags[] in this IR contains only info-severity engineering-judgment notes (cascaded constraint summaries + HTM 06-01 precedence note + Zs-deferral note).",
+        "decisions": [
+          {
+            "label": "Sub-check 3 cross-walk (medical-isolation sockets vs non-medical prohibition)",
+            "summary": "All 6 sockets sit within the 1.5 m patient envelope polygon (deliberately — that's where surgical equipment is plugged in). Type literal BS_EN_60884_1_isolation_monitored_socket_230V is distinct from prohibited socket_230v_non_medical literal. The cascade's prohibited-fixture-type list explicitly excludes medical-isolation sockets to permit this exact installation pattern.",
+            "rule": "Point-in-polygon + zone prohibition check (literal-distinct)",
+            "code_clause": "BS 7671:2018+A2:2022 §710"
+          },
+          {
+            "label": "Sub-check 4 (no flags to cascade)",
+            "summary": "payload.non_compliance_flags=[]; the cascade carries zero failures from special-locations. The compliance_summary.non_compliance_flags[] entries in this IR are all info-severity design / engineering-judgment notes — not cascaded failures — and require no _cascaded_from attribution.",
+            "rule": "Cascade flag-cascading rule (vacuous)",
+            "code_clause": "BS 7671:2018+A2:2022 §710"
+          }
+        ]
+      },
+      {
+        "title": "INV-13..INV-19 evaluation",
+        "summary": "INV-13 (building_diversity self-consistency) N/A and vacuously PASS — building_diversity is intentionally absent (this is a single-room 3-circuit §710 cascade demonstration, not a complete building demand calc). INV-14 (ring continuity) N/A — no ring topology in this IR. INV-15 (floor-area cross-check) N/A — circuit.floor_area_m2 field is not populated on any circuit (v2.0 optional field). INV-16 (OCPD-topology coordination) PASS — all 3 dedicated_radial circuits 16 A on 2.5 mm² PVC T+E; validator INV-16 wording trivially PASSes on dedicated_radial. INV-17 (FCU spurs) N/A — no fcu_spurs[] populated; BS EN 60884-1 medical isolation sockets are direct-circuit-fed. INV-18 (EV RCD) N/A — no EV-charge circuit. INV-19 (cable-sizing cascade with building_diversity) N/A — building_diversity absent and no cable-sizing intent consumed.",
+        "decisions": [
+          {
+            "label": "Intentional N/A for INV-13/14/15/17/18/19",
+            "summary": "This example's engineering scope is §710 medical IT cascade resolution + IT-system no-RCD posture + supplementary bonding + integrity-loop closure with producer-side fixture. building_diversity, ring topology, FCU spurs, EV charging, floor_area_m2 cross-checks are out of scope — they belong to other Phase A/B examples that exercise those features. The N/A-and-PASS treatment follows the validator prompt's explicit `N/A and trivially PASS` wording for each.",
+            "rule": "INV scope discipline",
+            "code_clause": "small-power validator.md (INV definitions)"
+          }
+        ]
+      },
+      {
+        "title": "Honest disclosures (integrity-loop + §710 sub-clause coverage)",
+        "summary": "(1) Integrity-loop closure: the cascade source is the producer-side fixture authored by special-locations sprint C.2 AS IF a small-power Group 2 medical consumer existed; this consumer example now creates that consumer, closing the loop. Payload is byte-identical (no engineering-equivalent argument needed). (2) §710 sub-clause coverage: only §710 top-level + §701.415.2 (cross-ref for supplementary bonding) are cited — NO §710 sub-clauses are transcribed per the verified-citations list in the D4 sprint spec. The IMD alarm response (8 s) is cited from BS EN 61557-8, not from a §710 sub-clause. HTM 06-01 NHS precedence is cited as the governing NHS technical memorandum. (3) Operating-table life-support sockets are engineer-of-record scope and intentionally NOT modelled — that's the UPS/IPS skill's domain.",
+        "decisions": []
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All 3 circuits are dedicated_radial — INV-01 (ring composition per BS 7671:2018+A2:2022 Table 7.1) does not apply because there are no ring circuits in this IR. Trivially PASS on the absence of ring topology."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Every circuit's ocpd.breaking_capacity_ka (C01: 10.0; C02: 10.0; C03: 10.0) is greater than or equal to parent_db.pfc_at_busbar_ka (6.0) per BS 7671:2018+A2:2022 §434.5.1 and IEC 60898-1 conditional short-circuit ratings. The 10 kA rating provides 4 kA margin over the 6 kA secondary-side PFC declared at the DB-MED-IT-1 isolating transformer."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All 6 sockets sit on Medical IT system circuits (C01, C02, C03) which DO NOT carry RCD protection per BS 7671:2018+A2:2022 §710 (top-level). The §411.3.3 default 30 mA RCD for socket-outlets ≤32 A is explicitly displaced by the §710 rule prohibiting RCDs on Medical IT system circuits: the IT topology + IMD per BS EN 61557-8 (≤8 s alarm) provide first-fault tolerance instead. rcd_posture=no_rcd_with_documented_§411_exception on all 3 circuits with rcd_exception_citation populated (§710 top-level + BS EN 61557-8 cross-ref) — engineer documented and schema-valid (enum-permitted)."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Theatre (room_type=medical_group_2_theatre, Part 7-710 Group 2 location) carries 6 BS EN 60884-1 isolation-monitored sockets within the patient envelope. The cascade payload's zone_patient_1_envelope_g2 has prohibited_fixture_types=[socket_230v_non_medical, switch_230v_non_medical, tnc_circuit] — explicitly the non-medical sub-literal. Our socket type `BS_EN_60884_1_isolation_monitored_socket_230V` is distinct from socket_230v_non_medical, so the prohibition does not apply. Compliant placement."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01, C02, C03 all topology=dedicated_radial with rooms_covered=[theatre_1]. All 6 theatre sockets (theatre-S01..S06) cross-reference a circuit_id (C01, C02, or C03) that exists in circuits[]. Socket-to-circuit allocation: C01→[S01,S02,S03], C02→[S04,S05], C03→[S06]. No orphan socket references."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "low",
+      "evidence": "All 3 circuits use Type B curve — surgical equipment plug-in loads (anaesthesia machines, patient monitors, light sources) have no significant inrush characteristics. Type B (3–5× tripping band per BS EN 60898-1) is the standard MCB curve for general 230 V sockets with no motor-start load."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "high",
+      "evidence": "diversified_max_load_a per circuit (C01: 6.5 A; C02: 6.5 A; C03: 4.3 A) is less than ocpd.rating_a (16 A on all 3). Diversity applied per IET OSG Appendix A general-sockets profile (peak coincident ≈ 0.5 × Σ-socket-rating for surgical-equipment-plug-in profile; medical equipment is intermittent / standby for most circuits)."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All 3 circuits have tool_call_pending_for_zs_verification=true (deferred per WI3). flags[] carries TOOL-CALL-PENDING:calc.zs_loop_impedance accordingly. Note: IT-system Zs interpretation differs from TN — first-fault impedance is reported by the IMD, not by an OCPD; §710 top-level defers continuity-on-first-fault to the IT topology, so the canonical TN-style Zs check applies only to the OCPD breaking-capacity coordination (not to disconnection-time)."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "high",
+      "evidence": "The single room theatre_1 appears in all 3 circuits' rooms_covered[] (theatre_1→C01, C02, C03). All 6 sockets are placed in theatre_1. No orphan rooms; no orphan sockets."
+    },
+    {
+      "id": "INV-10",
+      "passes": true,
+      "severity": "low",
+      "evidence": "drawing_layout.drawing_standard=BS 1192:2007+A2:2016 matches the GB jurisdiction expected default for small-power layout drawings. Sheet size A2 + scale 1:50 appropriate for the 6 m × 5 m operating theatre with detailed socket + bonding annotation."
+    },
+    {
+      "id": "INV-11",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No cable-sizing intent consumed in this example (consumed_intents.cable_sizing absent). INV-11 is a no-op per the v1.1 conditional rule; all 3 circuits carry tool_call_pending_for_zs_verification=true to defer Zs to calc.zs_loop_impedance."
+    },
+    {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Cascade source: electrical/special-locations/examples/cascade-small-power-uk-medical-group-2-isolation/intent-out.json (producer-side fixture — integrity-loop closure). Sub-check 1 PASS (consumed_intents.special_locations_zoning present). Sub-check 2 PASS (payload.compliant=true, 1 zone zone_patient_1_envelope_g2, 2 constraints medical_it_system + supplementary_equipotential_bonding, 0 flags). Sub-check 3 PASS — walked sockets: all 6 theatre sockets are BS_EN_60884_1_isolation_monitored_socket_230V (distinct from prohibited socket_230v_non_medical literal); the cascade authors deliberately specified the non-medical sub-literal to permit medical-isolation sockets in the Group 2 envelope. Sub-check 4 PASS — payload.non_compliance_flags=[]; nothing to cascade. BS 7671:2018+A2:2022 §710 + BS EN 61557-8 + HTM 06-01."
+    },
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "low",
+      "evidence": "N/A and trivially PASS per validator INV-13 wording — building_diversity block is intentionally absent. This is a single-room 3-circuit §710 medical-IT cascade demonstration example, not a complete building demand calculation; building_diversity belongs to Phase A/B examples that exercise the demand cascade (office/healthcare/industrial profiles)."
+    },
+    {
+      "id": "INV-14",
+      "passes": true,
+      "severity": "high",
+      "evidence": "N/A and trivially PASS per validator INV-14 wording — no circuit has topology=ring. All 3 circuits are dedicated_radial. The ring-endpoints continuity rule (TOP-09) evaluates only on ring topology circuits; with zero rings in this IR, no ring continuity check applies."
+    },
+    {
+      "id": "INV-15",
+      "passes": true,
+      "severity": "high",
+      "evidence": "N/A and trivially PASS per validator INV-15 wording — circuit.floor_area_m2 is not populated on any circuit (v2.0 optional field). The rule fires only when both floor_area_m2 AND rooms_covered[] are populated and demands Σ-tolerance reconciliation; with floor_area_m2 absent, no reconciliation is computed."
+    },
+    {
+      "id": "INV-16",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All 3 circuits are dedicated_radial 16 A on 2.5 mm² + 2.5 mm² CPC PVC T+E — validator INV-16 wording `topology=dedicated_radial → MCB sized by connected load per §433.1.1, validator trivially PASSES on dedicated_radial` applies to all 3. Connected-load coordination: 6.5 A (C01) / 6.5 A (C02) / 4.3 A (C03) diversified << 16 A MCB << 2.5 mm² Iz reference rating; cable-sizing skill (when consumed) would refine Iz with installation correction factors, but the baseline check PASSes."
+    },
+    {
+      "id": "INV-17",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "N/A and trivially PASS per validator INV-17 wording — no circuit has fcu_spurs[] populated. BS EN 60884-1 medical isolation sockets are direct-circuit-fed (not FCU-spur-fed; medical-grade installation practice avoids FCUs on Medical IT circuits because the FCU fuse would interrupt the continuity-on-first-fault property of the IT system). Rule TOP-12 evaluates only when fcu_spurs[] is populated."
+    },
+    {
+      "id": "INV-18",
+      "passes": true,
+      "severity": "high",
+      "evidence": "N/A and trivially PASS per validator INV-18 wording — no circuit has load_type matching ev_charge_*. All 3 circuits are general medical-isolation socket radials. Rule EV-03 evaluates only on EV-charge circuits where ev_charge_metadata is required and the rcd_type ↔ charging_unit_dc_detection_a constraint applies."
+    },
+    {
+      "id": "INV-19",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "N/A and trivially PASS per validator INV-19 wording — both building_diversity.per_circuit_demand_inputs[] AND consumed_intents.cable_sizing.payload.circuits[] are absent. Rule BLD-05 evaluates only when both are present and reconciles post_per_load_diversity_a with cable-sizing's design_current_a within ±5% tolerance."
+    }
+  ],
+  "consumed_intents": {
+    "special_locations_zoning": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/special-locations/examples/cascade-small-power-uk-medical-group-2-isolation/intent-out.json",
+      "payload": {
+        "zones": [
+          {
+            "zone_id": "zone_patient_1_envelope_g2",
+            "zone_type": "medical_envelope_group_2",
+            "source_anchor_id": "patient_1",
+            "derivation_clause": "BS 7671:2018 §710",
+            "boundary_plan_polygon_mm": [
+              [4500, 2500],
+              [4299, 3250],
+              [3750, 3799],
+              [3000, 4000],
+              [2250, 3799],
+              [1701, 3250],
+              [1500, 2500],
+              [1701, 1750],
+              [2250, 1201],
+              [3000, 1000],
+              [3750, 1201],
+              [4299, 1750]
+            ],
+            "height_min_mm": 0,
+            "height_max_mm": 2500,
+            "ip_rating_min": "IPx4",
+            "max_voltage_v": 230,
+            "rcd_required_ma": null,
+            "isolation_required": false,
+            "allowed_equipment_classes": ["class_1", "class_2", "class_3_SELV"],
+            "prohibited_fixture_types": ["socket_230v_non_medical", "switch_230v_non_medical", "tnc_circuit"],
+            "switch_position_min_distance_mm": null,
+            "overlapping_with_zone_ids": [],
+            "_clause_citation": "BS 7671:2018 §710 + HTM 06-01",
+            "_derivation_note": "Group 2 patient envelope per §710: 1.5m radius cylinder around the patient position, 12-sided regular polygon approximation centred at (3000,2500). Height_min=0, height_max=2500mm covers the surgical working volume. RCD-protection NOT applied inside the envelope — Group 2 mandates a medical IT (insulated) system instead per §710. Sockets and switches in the envelope MUST be medical-isolating-socket type connected to the IT system."
+          }
+        ],
+        "electrical_constraints": [
+          {
+            "constraint_type": "medical_it_system",
+            "applies_to_room_polygon": false,
+            "applies_to_zone_ids": ["zone_patient_1_envelope_g2"],
+            "_clause_citation": "BS 7671:2018 §710 + BS EN 61557-8 (IMD 8 s alarm response) + HTM 06-01 (NHS precedence)",
+            "_derivation_note": "Medical IT system required for the Group 2 patient envelope per §710 (no Part 7 sub-clauses valid; §710 top-level only). IMD per BS EN 61557-8 with 8 s alarm response. Isolating transformer at 5 kVA — within the 3.15-8 kVA plausibility band per D-4 (no flag raised). Supplementary bonding ≤0.2 Ω per §710. HTM 06-01 NHS technical memorandum takes precedence in NHS sites and defines safety_service_category 1 (no-break).",
+            "isolating_transformer_va_min": 5000,
+            "insulation_monitoring_device_required": true,
+            "imd_alarm_response_time_s_max": 8,
+            "safety_service_category": 1,
+            "supplementary_bonding_required": true,
+            "supplementary_bonding_max_resistance_ohm": 0.2,
+            "hospital_precedence": "HTM 06-01",
+            "equipment_standard": "BS EN 60601 series",
+            "_verified_cross_refs": ["BS EN 61557-8", "HTM 06-01", "BS EN 60601"]
+          },
+          {
+            "constraint_type": "supplementary_equipotential_bonding",
+            "applies_to_room_polygon": false,
+            "applies_to_zone_ids": ["zone_patient_1_envelope_g2"],
+            "_clause_citation": "BS 7671:2018 §710 + §701.415.2",
+            "_derivation_note": "Supplementary equipotential bonding within the Group 2 patient environment per §710 + §701.415.2. Resistance ≤0.2 Ω (measured 0.15 Ω per input override). Bonding extends to operating table frame, anaesthesia machine ground, scrub sink, and any other metallic touchable surface in the envelope.",
+            "metallic_parts_listed": [
+              "operating table frame",
+              "anaesthesia machine ground",
+              "scrub sink",
+              "surgical pendant arm",
+              "patient monitor chassis"
+            ],
+            "bonding_conductor_csa_min_mm2": 4
+          }
+        ],
+        "compliant": true,
+        "zone_count": 1,
+        "constraint_count": 2,
+        "violation_count_critical": 0,
+        "violation_count_high": 0,
+        "non_compliance_flags": [],
+        "anchor_source_summary": {
+          "all_extracted": true,
+          "extraction_source_lowest": "architectural_drawing_extraction"
+        }
+      }
+    }
+  }
+}

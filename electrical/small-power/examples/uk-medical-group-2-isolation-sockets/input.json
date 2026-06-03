@@ -1,0 +1,30 @@
+{
+  "_note": "Sprint D4 Phase C.2 example — UK NHS operating theatre (Group 2 medical location, 6.0 × 5.0 × 3.0 m). Room recorded as room_type='medical_group_2_theatre' (Part-7 enum exact-match) specifically to fire INV-12's special-locations cascade. Six BS EN 60884-1 isolation-monitored sockets are placed on the theatre walls fed from the Medical IT panel (DB-MED-IT-1) per §710. The Medical IT system carries an Insulation Monitoring Device (IMD) per BS EN 61557-8 with an alarm response time ≤8 s. Supplementary equipotential bonding terminal modelled per §710 + §701.415.2 (cross-ref). Dedicated radial for the operating-table life-support sockets is documented as engineer-of-record concern (HTM 06-01 UPS/IPS coordination) and is NOT modelled in detail — that scope belongs to the dedicated UPS/IPS skill. PASS case: 6 sockets all served by the cascade's medical_it_system constraint; all 4 INV-12 sub-checks resolve to PASS. CLOSES INTEGRITY LOOP: this consumer REUSES the producer fixture `electrical/special-locations/examples/cascade-small-power-uk-medical-group-2-isolation/intent-out.json` that special-locations sprint C.2 authored AS IF small-power had a Group 2 medical consumer — now small-power actually creates that consumer.",
+  "project_id": "uk-medical-group-2-isolation-sockets-eg01",
+  "jurisdiction": "GB",
+  "site_brief": "UK NHS operating theatre (Group 2 medical location) per BS 7671:2018+A2:2022 §710 + HTM 06-01 (NHS technical memorandum, precedence over Wiring Regulations for hospital safety-service categorisation). Theatre footprint 6.0 × 5.0 m, ceiling 3.0 m, single patient position centred at room-local (3000, 2500). The patient envelope per §710 is a 1.5 m radius cylinder around the patient position, height 0–2500 mm — encoded by the cascade as a 12-sided regular polygon approximation. The theatre is supplied from a dedicated Medical IT panel (DB-MED-IT-1, 5 kVA isolating transformer, IMD per BS EN 61557-8 with 8 s alarm response, hospital_precedence=HTM 06-01, safety_service_category=1). Six BS EN 60884-1 isolation-monitored 230 V sockets are placed on the theatre walls (3 on the north wall, 2 on the west wall, 1 on the east wall) for surgical equipment plug-in. Supplementary equipotential bonding ≤0.2 Ω connects the operating table frame, anaesthesia machine ground, scrub sink, surgical pendant arm, and patient monitor chassis per §710 + §701.415.2. The dedicated radial for operating-table life-support sockets (UPS-backed per HTM 06-01 Cat-1 no-break) is documented as engineer-of-record concern and intentionally NOT modelled in this small-power IR — the UPS/IPS coordination scope belongs to a dedicated UPS/IPS skill.",
+  "supply": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.10,
+    "psc_declared_ka": 6.0
+  },
+  "parent_db": {
+    "designation": "DB-MED-IT-1",
+    "pfc_at_busbar_ka": 6.0
+  },
+  "room_briefs": [
+    {"room_id": "theatre_1", "room_type": "medical_group_2_theatre", "dimensions_m": {"length": 6.0, "width": 5.0, "height": 3.0}, "special_location": null, "anticipated_loads_kw": 4.0, "socket_count_target": 6}
+  ],
+  "design_intent": {
+    "preferred_topology": "auto_by_jurisdiction",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "sheet_size": "A2",
+    "drawing_scale": "1:50"
+  },
+  "_cascade_sources": {
+    "special_locations_zoning": "electrical/special-locations/examples/cascade-small-power-uk-medical-group-2-isolation/intent-out.json"
+  },
+  "_cascade_disclosure": "Integrity-loop closure: this consumer REUSES the producer fixture authored by special-locations sprint C.2 at `electrical/special-locations/examples/cascade-small-power-uk-medical-group-2-isolation/intent-out.json`. That fixture was authored AS IF a small-power Group 2 medical consumer existed; small-power C.2 now creates that consumer, closing the producer↔consumer loop. The payload is byte-identical to the source — copied verbatim into consumed_intents.special_locations_zoning.payload. No engineering-equivalent reuse argument is needed (unlike pool-hall C.1) because this fixture was authored for THIS consumer."
+}
