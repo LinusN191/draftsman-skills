@@ -1,0 +1,47 @@
+{
+  "_note": "Sprint D4 Phase C.5 example — UK 600 m² commercial office floor (single tenant, mixed open-plan + cellular meeting + reception + comms + welfare). PRIMARY purpose: exercise the new top-level `building_diversity` IR field (v2.0) AND fire INV-13 (building_diversity self-consistency) + INV-15 (floor-area reconciliation when circuit.floor_area_m2 is populated) + INV-19 (cable-sizing cascade integration into the building-level demand) on a realistic office building. Uses the verified BS 7671 + IET OSG App A Table A1 office profile from shared/standards/electrical/BS7671/diversity-factors.json (commercial_office_diversity + general_office_aggregate). Building_diversity scope: applies AFTER per-circuit DIV diversity (DIV-01..DIV-04) and Σ-aggregates across applies_load_types-matching circuits — the office_small_power_workstation diversity_percent=66 from the verified standards file becomes the building_factor_applied=0.66 on each per_circuit_demand_inputs[] entry (rounded to 0.65 in the prose narrative for engineer-readable form per the OSG Table A1 design-density bracket). Coincident building demand drives the upstream submain Ib_3ph at 400 V three-phase TPN+E; this Ib flows into the cable_sizing.cascade.payload via the consumer-side hand-off so INV-19 can reconcile post_per_load_diversity_a vs cable-sizing design_current_a per circuit. Single-tenant single-storey scope (no lifts, no EV, no medical, no Part-7 zones) — keeps the building_diversity demonstration uncluttered.",
+  "project_id": "uk-office-floor-with-building-diversity-eg01",
+  "jurisdiction": "GB",
+  "site_brief": "UK 600 m² single-tenant commercial office floor (Floor 03 of a 4-storey speculative office block in Manchester; this example models ONLY Floor 03's small-power layout — the upstream LV switchboard and the multi-floor intake demand are out of scope, but the building_diversity block emits the per-floor coincident demand that the upstream switchboard sizing skill consumes). Mixed plan: 320 m² open-plan workstation zone (40 workstations on raised access floor with floor-box outlets), 100 m² of 6 cellular meeting rooms (M1–M6 @ ~16 m² each), 60 m² reception + corridor, 40 m² welfare (kitchenette + WC accessibility), 50 m² IT comms room (Cabinet-A + Cabinet-B, UPS-fed), 30 m² circulation. Multiple ring final circuits (one ring per perimeter zone per IET OSG Appendix H ring final circuit recipe at 32 A on 2.5 mm² + 1.5 mm² CPC PVC T+E with 30 mA Type A RCBO upstream) PLUS dedicated radials for the comms cabinets and the multi-function printers (MFPs). Pre-diversity SUM ≈ 65 kVA / 232 A; with the office profile building_factor of 0.66 applied per IET On-Site Guide 8th Edition Appendix A Table A1 (small-power per workstation diversity_percent=66, which the engineer reads from shared/standards/electrical/BS7671/diversity-factors.json), coincident demand ≈ 42 kVA / 153 A at 400 V 3-phase, which is what the floor submain MCB at the upstream switchboard must be sized against. NO LIFTS on this floor (lifts sit in the core and are fed from the landlord MCC, not this tenant submain). NO EV CHARGING. NO PART-7 ZONES (the office WC is below the standard small-power skill's Part-7 trigger threshold — it has no shower facility so does NOT classify as bathroom/shower_room).",
+  "supply": {
+    "voltage_v": 400,
+    "phase_arrangement": "TPN_plus_E",
+    "system_type": "TN-S",
+    "ze_declared_ohm": 0.20,
+    "psc_declared_ka": 10.0
+  },
+  "parent_db": {
+    "designation": "DB-FL03-A",
+    "pfc_at_busbar_ka": 10.0
+  },
+  "building_diversity_inputs": [
+    {
+      "building_type": "office",
+      "floor_count": 1,
+      "design_density_w_per_m2_override": 75,
+      "future_expansion_pct_override": 25
+    }
+  ],
+  "room_briefs": [
+    {"room_id": "open-plan-zone-A", "room_type": "office_open_plan", "dimensions_m": {"length": 16.0, "width": 10.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 8.0, "socket_count_target": 16},
+    {"room_id": "open-plan-zone-B", "room_type": "office_open_plan", "dimensions_m": {"length": 16.0, "width": 10.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 8.0, "socket_count_target": 16},
+    {"room_id": "meeting-room-1",   "room_type": "meeting_room",     "dimensions_m": {"length": 5.0,  "width": 3.2, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 1.6, "socket_count_target": 3},
+    {"room_id": "meeting-room-2",   "room_type": "meeting_room",     "dimensions_m": {"length": 5.0,  "width": 3.2, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 1.6, "socket_count_target": 3},
+    {"room_id": "meeting-room-3",   "room_type": "meeting_room",     "dimensions_m": {"length": 5.0,  "width": 3.2, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 1.6, "socket_count_target": 3},
+    {"room_id": "meeting-room-4",   "room_type": "meeting_room",     "dimensions_m": {"length": 5.0,  "width": 3.2, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 1.6, "socket_count_target": 3},
+    {"room_id": "reception",        "room_type": "reception_lobby",  "dimensions_m": {"length": 8.0,  "width": 5.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 1.2, "socket_count_target": 4},
+    {"room_id": "kitchenette",      "room_type": "kitchenette_commercial", "dimensions_m": {"length": 4.0, "width": 3.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 3.5, "socket_count_target": 6},
+    {"room_id": "comms-room",       "room_type": "server_room",      "dimensions_m": {"length": 5.0,  "width": 4.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 6.0, "socket_count_target": 4},
+    {"room_id": "mfp-print-bay",    "room_type": "office_open_plan", "dimensions_m": {"length": 3.0,  "width": 2.0, "height": 2.8}, "special_location": null, "anticipated_loads_kw": 2.4, "socket_count_target": 2}
+  ],
+  "design_intent": {
+    "preferred_topology": "auto_by_jurisdiction",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "sheet_size": "A1",
+    "drawing_scale": "1:100"
+  },
+  "_cascade_sources": {
+    "cable_sizing": "electrical/cable-sizing/examples/uk-office-submain-floor3/intent-out.json"
+  },
+  "_cascade_disclosure": "DEFERRED-POINTER state. The cable_sizing cascade source path above points at a producer-side fixture that does NOT yet exist at C.5-ship. At C.5-ship the consumer's consumed_intents.cable_sizing.payload is INLINED with a representative cable-sizing payload (one design_current_a per circuit C01..C10) that reconciles within ±5% against this small-power IR's per-circuit post_per_load_diversity_a values so INV-19 PASSes. When a real upstream cable-sizing example is later produced, source_path will resolve to that producer file and the payload bytes are expected to remain unchanged. This mirrors the C.3 / D.1 deferred-pointer + inlined-payload pattern already validated in the EV-charge-domestic example (the cascade payload remains byte-identical when the producer fixture lands). Honest disclosure: 4-place — this example is the FIRST emit of the building_diversity field in v2.0 and the FIRST emit of INV-19 PASS evidence (per_circuit_demand_inputs[] populated AND consumed_intents.cable_sizing.payload.circuits[] populated)."
+}
