@@ -1,0 +1,616 @@
+{
+  "drawing_type": "small_power_layout",
+  "version": "2.0.0",
+  "meta": {
+    "project_id": "uk-ev-charge-domestic-eg01",
+    "skill_version": "2.0.0",
+    "produced_at": "2026-06-03T00:00:00Z",
+    "consumed_intents": [
+      {
+        "intent_type": "special-locations-zoning",
+        "intent_version": "1.0.0",
+        "produced_by": "electrical/special-locations"
+      }
+    ]
+  },
+  "jurisdiction": "GB",
+  "supply_origin": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.30,
+    "psc_declared_ka": 6.0
+  },
+  "parent_db": {
+    "designation": "CU-MAIN",
+    "pfc_at_busbar_ka": 6.0
+  },
+  "circuits": [
+    {
+      "circuit_id": "C01",
+      "designation": "Ground-floor ring final circuit (kitchen + lounge_dining)",
+      "topology": "ring",
+      "ocpd": {
+        "rating_a": 32,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 6.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC",
+        "cores": 3,
+        "length_m_total": 30.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 4.5,
+      "diversified_max_load_a": 16.0,
+      "rooms_covered": [
+        "kitchen",
+        "lounge_dining"
+      ],
+      "ring_endpoints": {
+        "endpoint_a_xy": {"x_mm": 200, "y_mm": 200},
+        "endpoint_b_xy": {"x_mm": 9800, "y_mm": 7000},
+        "mcb_way_id": "CU-MAIN-WAY-1",
+        "continuity_verified": true,
+        "_citation": "IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 top-level"
+      }
+    },
+    {
+      "circuit_id": "C02",
+      "designation": "First-floor ring final circuit (bedroom_1f + landing)",
+      "topology": "ring",
+      "ocpd": {
+        "rating_a": 32,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 6.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "2.5mm² + 1.5mm² CPC",
+        "cores": 3,
+        "length_m_total": 24.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 1.5,
+      "diversified_max_load_a": 6.5,
+      "rooms_covered": [
+        "bedroom_1f"
+      ],
+      "ring_endpoints": {
+        "endpoint_a_xy": {"x_mm": 200, "y_mm": 200},
+        "endpoint_b_xy": {"x_mm": 7500, "y_mm": 5500},
+        "mcb_way_id": "CU-MAIN-WAY-2",
+        "continuity_verified": true,
+        "_citation": "IET On-Site Guide §8.4.4 (8th Edition) + BS 7671:2018+A2:2022 §526 top-level"
+      }
+    },
+    {
+      "circuit_id": "C03",
+      "designation": "Driveway EV charge point — dedicated radial (7.4 kW Mode 3 AC charge point, BS EN 62196 Type 2 Mennekes socket, BS EN 61851-1 charging unit with integral 6 mA DC residual detection)",
+      "topology": "dedicated_radial",
+      "ocpd": {
+        "rating_a": 32,
+        "type": "RCBO",
+        "curve": "B",
+        "rcd_type": "A",
+        "rcd_sensitivity_ma": 30,
+        "breaking_capacity_ka": 6.0
+      },
+      "cable": {
+        "csa_mm2_or_awg": "6mm² + 6mm² CPC",
+        "cores": 3,
+        "length_m_total": 14.0,
+        "material": "copper",
+        "insulation": "PVC_70"
+      },
+      "rcd_posture": "type_a_30ma_per_§411_3_3",
+      "tool_call_pending_for_zs_verification": true,
+      "estimated_max_load_kw": 7.4,
+      "diversified_max_load_a": 32.0,
+      "rooms_covered": [
+        "driveway"
+      ],
+      "ev_charge_metadata": {
+        "rcd_type": "type_a",
+        "charging_unit_dc_detection_a": 6,
+        "mode": 3,
+        "charging_unit_standard": "BS EN 61851-1",
+        "socket_standard": "BS EN 62196 Type 2 Mennekes",
+        "dedicated_circuit": true,
+        "_citation": "BS 7671:2018+A2:2022 §722 + IET Code of Practice for EV Charging Equipment Installation (4th Edition)"
+      }
+    }
+  ],
+  "rooms": [
+    {
+      "room_id": "driveway",
+      "room_type": "external_landscape",
+      "dimensions_m": {
+        "length": 5.0,
+        "width": 3.0,
+        "height": 0.0
+      },
+      "special_location": "outdoor",
+      "sockets": [
+        {
+          "id": "driveway-EV01",
+          "type": "BS_EN_62196_Type_2_Mennekes_socket_32A_AC",
+          "mount": "external_wall",
+          "height_mm": 1200,
+          "circuit_id": "C03",
+          "ip_rating": "IP54"
+        }
+      ]
+    },
+    {
+      "room_id": "kitchen",
+      "room_type": "kitchen_domestic",
+      "dimensions_m": {
+        "length": 4.5,
+        "width": 3.5,
+        "height": 2.4
+      },
+      "special_location": null,
+      "sockets": [
+        {
+          "id": "kitchen-S01",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "above_worktop",
+          "height_mm": 1150,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "kitchen-S02",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "above_worktop",
+          "height_mm": 1150,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "kitchen-S03",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "above_worktop",
+          "height_mm": 1150,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "kitchen-S04",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        }
+      ]
+    },
+    {
+      "room_id": "lounge_dining",
+      "room_type": "lounge_domestic",
+      "dimensions_m": {
+        "length": 7.0,
+        "width": 4.0,
+        "height": 2.4
+      },
+      "special_location": null,
+      "sockets": [
+        {
+          "id": "lounge-S01",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "lounge-S02",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "lounge-S03",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "lounge-S04",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "lounge-S05",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        },
+        {
+          "id": "lounge-S06",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C01"
+        }
+      ]
+    },
+    {
+      "room_id": "bedroom_1f",
+      "room_type": "bedroom_domestic",
+      "dimensions_m": {
+        "length": 4.0,
+        "width": 3.5,
+        "height": 2.4
+      },
+      "special_location": null,
+      "sockets": [
+        {
+          "id": "bedroom-1f-S01",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "bedroom-1f-S02",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "bedroom-1f-S03",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "bedroom-1f-S04",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "bedroom-1f-S05",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        },
+        {
+          "id": "bedroom-1f-S06",
+          "type": "BS_1363_double_switched_13A",
+          "mount": "wall",
+          "height_mm": 450,
+          "circuit_id": "C02"
+        }
+      ]
+    }
+  ],
+  "drawing_layout": {
+    "sheet_size": "A2",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "drawing_scale": "1:50"
+  },
+  "compliance_summary": {
+    "compliant": true,
+    "non_compliance_flags": [
+      {
+        "message": "EV-charge dedicated circuit C03 carries ev_charge_metadata with rcd_type=type_a + charging_unit_dc_detection_a=6 mA + mode=3 + dedicated_circuit=true. The 6 mA DC residual detection value sits EXACTLY on the §722.531.3.101 boundary that permits Type A upstream per the IET Code of Practice for EV Charging Equipment Installation (4th Edition) allowance. Borderline value flagged for engineer review at commissioning — manufacturer's declared 6 mA must be confirmed by the on-site product datasheet at the install-side check.",
+        "code_clause": "BS 7671:2018+A2:2022 §722 + IET Code of Practice for EV Charging Equipment Installation (4th Edition)",
+        "severity": "info"
+      },
+      {
+        "message": "Driveway is recorded as room_type='external_landscape' (Part-7 enum trigger). The schema's allOf clause REQUIRES consumed_intents.special_locations_zoning to be populated and INV-12 fires the 4 sub-check sequence. Cascade payload INLINED at C.3-ship; source_path points to D.1's not-yet-shipped producer-side fixture cascade-small-power-uk-ev-charge-domestic — D.1 will populate the file byte-identical to the inlined payload.",
+        "code_clause": "BS 7671:2018+A2:2022 §722",
+        "severity": "info"
+      },
+      {
+        "message": "No diversity factor applied to EV circuit C03 — design current is the full 32 A continuous rating per IET Code of Practice for EV Charging Equipment Installation (4th Ed) dedicated-circuit rule (EV charging is treated as a continuous load with no off-peak coincidence credit at a domestic 7.4 kW single-phase installation).",
+        "code_clause": "IET Code of Practice for EV Charging Equipment Installation (4th Edition)",
+        "severity": "info"
+      },
+      {
+        "message": "All Zs verification deferred to calc.zs_loop_impedance per WI3; all three circuits have tool_call_pending_for_zs_verification=true and TOOL-CALL-PENDING:calc.zs_loop_impedance is set in flags[].",
+        "code_clause": "BS 7671:2018+A2:2022 §411.4.5 (TN system disconnection time verification)",
+        "severity": "info"
+      }
+    ],
+    "assumptions": [
+      "Ze=0.30 Ω and PSCC=6 kA declared by DNO at the dwelling TN-C-S supply origin; not yet measured on site. Both values are typical for a UK domestic supply downstream of a 100 A BS 1361 cut-out.",
+      "EV charger is a 7.4 kW Mode 3 AC charge point (single-phase 230 V × 32 A). Manufacturer declares integral DC residual detection at 6 mA per BS EN 61851-1 type-test. Mode 4 (DC fast charging) is out of scope at the UK domestic installation level — Mode 4 charge points exceed typical domestic supply capacity and are commercial-installation territory.",
+      "EV circuit C03 carries rcd_type='type_a' with charging_unit_dc_detection_a=6 mA — the value is right on the §722.531.3.101 boundary that permits Type A when the charging unit provides DC residual detection ≥6 mA. INV-18's rule (rcd_type=type_a iff charging_unit_dc_detection_a≥6) PASSes. The engineer-of-record commissioning check verifies the manufacturer's declared 6 mA against the on-site product datasheet — if the as-installed unit declares a different DC detection value, the rcd_type field must be re-evaluated.",
+      "EV circuit C03 is DEDICATED (no other load, no spurred sockets, no shared topology) per the IET Code of Practice for EV Charging Equipment Installation (4th Ed) dedicated-circuit rule. The ev_charge_metadata.dedicated_circuit=true field is the schema-level marker; the topology=dedicated_radial value is the structural marker; both agree.",
+      "Driveway room_type='external_landscape' is the Part-7 enum trigger for the schema's allOf clause requiring consumed_intents.special_locations_zoning. The EV anchor itself derives 0 spatial zones (§722 is not zonal like §701 bath / §702 pool / §703 sauna / §710 medical / §715 ELV) — the cascade carries 1 electrical_constraint of type rcd_blanket_by_room (extended with EV-specific dedicated-circuit + DC-detection fields per the additionalProperties:true allowance on constraints) and 0 zones.",
+      "DEFERRED-POINTER cascade-source disclosure: at C.3-ship the consumed_intents.special_locations_zoning.source_path points at a producer-side fixture (`electrical/special-locations/examples/cascade-small-power-uk-ev-charge-domestic/intent-out.json`) that does NOT yet exist. D.1 of the Phase D dispatch authors that fixture AFTER C.3 ships. The inlined payload here is what D.1 will emit byte-identical — 0 zones, 1 electrical_constraint (rcd_blanket_by_room extended with EV fields), compliant=true, zero non-compliance flags. At D.1-ship the source_path will resolve to a real file but the payload bytes remain unchanged.",
+      "v2.0 retrofit context: this is a NEW example authored at v2.0.0 — no v1.x retrofit. Rings C01 and C02 carry the v2.0 ring_endpoints block; C03 is dedicated_radial so ring_endpoints does not apply.",
+      "INV-13 (building_diversity self-consistency) is N/A and vacuously PASSes — building_diversity is intentionally absent for this small dwelling example. INV-15 (floor-area cross-check) N/A — circuit.floor_area_m2 not populated. INV-17 (FCU spurs) N/A — no fcu_spurs[] populated. INV-19 (cable-sizing cascade integration) N/A — building_diversity absent and no cable-sizing intent consumed."
+    ]
+  },
+  "flags": [
+    "TOOL-CALL-PENDING:calc.zs_loop_impedance",
+    "part7_zone_present"
+  ],
+  "drawing_notes": [
+    "Driveway external_landscape: 1× BS EN 62196 Type 2 Mennekes 32 A AC socket mounted on the external garage wall at 1200 mm AFFL (within the §722 mounting-height guidance for charge-point sockets), IP54. Fed from CU-MAIN dedicated radial C03.",
+    "EV charge point C03: 32 A RCBO Type B curve curve B + Type A RCD 30 mA upstream per BS 7671:2018+A2:2022 §722.531.3.101 + §411.3.3 — Type A is permitted because the charging unit (BS EN 61851-1 type-tested) provides integral DC residual current detection at 6 mA. If the as-installed unit declares <6 mA DC detection, the RCD MUST be upgraded to Type B at engineer-of-record commissioning verification.",
+    "EV charge point dedicated-circuit rule: no shared loads, no spurred sockets on C03 per the IET Code of Practice for EV Charging Equipment Installation (4th Edition). The 6 mm² + 6 mm² CPC cable is sized for the full 32 A continuous load with no diversity credit applied.",
+    "Ground-floor ring C01: BS 1363 double switched 13 A sockets (4 in kitchen, 6 in lounge_dining) on 32 A RCBO Type B 6 kA + Type A RCD 30 mA per §411.3.3.",
+    "First-floor ring C02: BS 1363 double switched 13 A sockets (6 in bedroom_1f) on 32 A RCBO Type B 6 kA + Type A RCD 30 mA per §411.3.3.",
+    "All Zs verification deferred to calc.zs_loop_impedance per WI3.",
+    "Mode 1 and Mode 2 AC charge points (NOT permitted in this design) — Mode 1 (uncontrolled household-plug charging) and Mode 2 (in-cable control box, household plug) are referenced here ONLY to clarify what is banned in this UK domestic installation; the design uses Mode 3 (dedicated charge point with control pilot and proximity pilot per BS EN 61851-1) exclusively."
+  ],
+  "rationale": {
+    "chat_summary": "UK 3-bed dwelling driveway EV charger — 7.4 kW Mode 3 AC charge point on a dedicated radial (C03) feeding a BS EN 62196 Type 2 Mennekes socket on the external garage wall at 1200 mm AFFL. The charging unit is type-tested per BS EN 61851-1 with manufacturer-declared integral DC residual detection at 6 mA exactly — right on the §722.531.3.101 boundary that permits a Type A 30 mA RCD upstream per the IET Code of Practice for EV Charging Equipment Installation (4th Edition). Two internal rings (C01 GF kitchen+lounge, C02 1F bedroom) carry the dwelling's BS 1363 sockets for IR completeness. No diversity factor on the EV circuit (full 32 A continuous load per IET CoP 4th Ed dedicated-circuit rule). Driveway is room_type=external_landscape — fires the schema's allOf cascade requirement; INV-12's 4 sub-checks all PASS on the inlined cascade payload (D.1 producer-side fixture pending). INV-18 PASSes (rcd_type=type_a iff dc_detection_a≥6; 6=6 satisfies). D-borderline judgment flag emitted in non_compliance_flags[0] for the on-the-boundary 6 mA value.",
+    "sections": [
+      {
+        "title": "Why room_type=external_landscape on the driveway (Part-7 enum trigger)",
+        "summary": "The schema's allOf clause for consumed_intents.special_locations_zoning fires when any room.room_type is one of the Part-7 set {bathroom, shower_room, swimming_pool_hall, sauna, medical_group_0_area, medical_group_1_ward, medical_group_2_theatre, external_landscape}. Of these, external_landscape is the closest available enum literal for a domestic driveway hosting a §722 EV charge point. The Part-7 enum doesn't enumerate 'driveway' or 'ev_charge_area' specifically — external_landscape is the umbrella outdoor Part-7 room_type and is the trigger D.1's producer-side cascade will use byte-identical.",
+        "decisions": [
+          {
+            "label": "room_type literal selection",
+            "summary": "Set rooms[0].room_type=external_landscape. The Part-7 enum trigger then activates the schema's allOf clause requiring consumed_intents.special_locations_zoning to be populated; INV-12 then fires the 4 sub-check sequence.",
+            "rule": "Part-7 enum trigger in small-power IR schema allOf clause",
+            "code_clause": "small-power-ir.schema.json allOf"
+          }
+        ]
+      },
+      {
+        "title": "DEFERRED-POINTER cascade payload (D.1 will populate byte-identical)",
+        "summary": "consumed_intents.special_locations_zoning.payload is INLINED with 0 zones (EV is not a Part-7 spatial zone — §722 is not zonal like §701/§702/§703/§710/§715) and 1 electrical_constraint of type rcd_blanket_by_room. The constraint carries EV-specific extra fields (dedicated_circuit_required=true, mode_required=3, charging_unit_standard='BS EN 61851-1', socket_standard='BS EN 62196 Type 2 Mennekes', upstream_rcd_type_min='A', charging_unit_dc_detection_a_min=6) per the additionalProperties:true allowance on the constraints schema. compliant=true, zone_count=0, constraint_count=1, all violation counts=0, non_compliance_flags=[]. At D.1-ship the source_path resolves to a real producer file but the payload bytes remain unchanged.",
+        "decisions": [
+          {
+            "label": "Inline-with-deferred-pointer pattern",
+            "summary": "Match the D.2 special-locations pattern that earlier sprints used (synthetic photometric helper later replaced by real cascade): inline the payload at consumer ship, then retrofit source_path at producer ship. This unblocks C.3 without forcing serial D.1→C.3 ordering.",
+            "rule": "Producer↔consumer fixture-deferral discipline",
+            "code_clause": "BS 7671:2018+A2:2022 §722"
+          }
+        ]
+      },
+      {
+        "title": "EV-circuit topology + dedicated-circuit rule",
+        "summary": "C03 is topology=dedicated_radial with rooms_covered=[driveway] and a single BS EN 62196 Type 2 Mennekes socket. No spurred sockets, no shared loads on C03 per the IET Code of Practice for EV Charging Equipment Installation (4th Edition) dedicated-circuit rule. The ev_charge_metadata.dedicated_circuit=true field is the schema-level marker; topology=dedicated_radial is the structural marker; both agree. Cable 6 mm² + 6 mm² CPC PVC T+E sized for the full 32 A continuous load (no diversity credit applied).",
+        "decisions": [
+          {
+            "label": "topology=dedicated_radial + dedicated_circuit=true (twin-marker)",
+            "summary": "Both markers must agree on every EV circuit. topology captures the structural circuit type; ev_charge_metadata.dedicated_circuit captures the §722-specific dedicated-circuit rule. Disagreement (e.g. topology=ring + dedicated_circuit=true) would be an internal contradiction — the IET CoP 4th Ed dedicated-circuit rule fundamentally prohibits ring topology for EV charge points (a ring shares a fault path with other loads).",
+            "rule": "EV-circuit dedicated-circuit rule + topology consistency",
+            "code_clause": "BS 7671:2018+A2:2022 §722 + IET Code of Practice for EV Charging Equipment Installation (4th Edition)"
+          },
+          {
+            "label": "No diversity factor (32 A design current = 32 A OCPD)",
+            "summary": "EV charging is a continuous load with no off-peak coincidence credit at a UK domestic 7.4 kW single-phase installation. design current = OCPD rating = 32 A. The cable is sized for the full continuous rating — 6 mm² T+E PVC at the reference Iz comfortably covers 32 A at the typical 14 m run with no installation-method derating issues.",
+            "rule": "IET CoP 4th Ed dedicated-circuit no-diversity rule",
+            "code_clause": "IET Code of Practice for EV Charging Equipment Installation (4th Edition)"
+          }
+        ]
+      },
+      {
+        "title": "RCD Type A/B selection — INV-18 walkthrough + D-borderline flag",
+        "summary": "INV-18's rule per Reg 722.531.3.101 + IET CoP 4th Ed: rcd_type=type_a iff charging_unit_dc_detection_a≥6; rcd_type=type_b iff charging_unit_dc_detection_a<6. Our charging unit's manufacturer declaration says 6 mA exactly. 6≥6 is TRUE — rcd_type=type_a PASSes the rule. This sits right on the boundary, which is engineering-judgment territory: a D-borderline flag is emitted in compliance_summary.non_compliance_flags[0] (severity=info) calling out the on-boundary value for engineer commissioning verification against the as-installed product datasheet. If the on-site product datasheet declares <6 mA DC detection, the rcd_type MUST be re-evaluated to type_b. This is the most common EV-install safety failure surfacing in real EICR findings — engineers defaulting to Type A because it's cheaper without checking the charging unit's DC detection capability.",
+        "decisions": [
+          {
+            "label": "rcd_type=type_a per INV-18 rule",
+            "summary": "Apply rcd_type=type_a iff charging_unit_dc_detection_a≥6 mA. Manufacturer-declared 6 mA exactly satisfies the threshold (6≥6). Validator INV-18 PASSes HIGH severity.",
+            "rule": "INV-18 / EV-03 RCD type selection rule",
+            "code_clause": "BS 7671:2018+A2:2022 §722 + IET Code of Practice for EV Charging Equipment Installation (4th Edition)"
+          },
+          {
+            "label": "D-borderline judgment flag for 6 mA exactly",
+            "summary": "Emit an info-severity non_compliance_flag flagging the on-boundary value (charging_unit_dc_detection_a=6, equal to the §722 threshold). Engineer-of-record verifies against the as-installed product datasheet at commissioning. The validator does not fail; the flag surfaces engineering judgment for the install-side check.",
+            "rule": "D-borderline judgment flag pattern",
+            "code_clause": "BS 7671:2018+A2:2022 §722"
+          }
+        ]
+      },
+      {
+        "title": "Mode-disambiguation negative-coverage (banned modes for this design)",
+        "summary": "(Mode 1 — uncontrolled household-plug charging via a standard BS 1363 socket — is NOT permitted in this design and is banned by IET CoP 4th Ed.) (Mode 2 — in-cable control box on a household plug — is NOT permitted in this design and is banned in UK domestic practice for regular-use charge points.) They are referenced in compliance prose ONLY to clarify what is banned: this UK domestic installation uses Mode 3 (dedicated charge point with control pilot and proximity pilot signalling per BS EN 61851-1) exclusively. The Mode 1 case has no proximity or pilot detection and is universally deprecated for EV charging at any voltage above SELV; do NOT use it. The Mode 2 case uses an in-cable control unit on a domestic 13 A plug — accepted in some jurisdictions only for low-rate emergency charging; do NOT use it in UK domestic practice for any regular-use charge point. Mode 4 (DC fast charging) is out of scope at the UK domestic 7.4 kW level — Mode 4 charge points exceed typical domestic supply capacity and belong to commercial-installation territory.",
+        "decisions": [
+          {
+            "label": "Mode 3 selected; banned modes (Mode 1 and Mode 2) negative-coverage prose",
+            "summary": "Set ev_charge_metadata.mode=3. The drawing notes and rationale prose explicitly NEGATIVE-COVER the banned modes (do NOT use Mode 1; do NOT use Mode 2) to make the design intent auditable.",
+            "rule": "Mode 3 dedicated charge-point selection",
+            "code_clause": "BS 7671:2018+A2:2022 §722 + BS EN 61851-1"
+          }
+        ]
+      },
+      {
+        "title": "INV-12 cascade walkthrough (4 sub-checks)",
+        "summary": "Sub-check 1 PASS — consumed_intents.special_locations_zoning is present with the inlined payload. Sub-check 2 PASS — payload.compliant=true, zone_count=0, constraint_count=1 (rcd_blanket_by_room extended with EV fields), violation_count_critical=0, violation_count_high=0. Sub-check 3 PASS — the single EV socket (BS_EN_62196_Type_2_Mennekes_socket_32A_AC) does NOT sit inside any zone polygon (zone_count=0); the prohibited_fixture_types check is vacuous; the cascade's electrical_constraint applies to room polygon (applies_to_room_polygon=true) with the EV-specific extra fields capturing the §722 + IET CoP 4th Ed dedicated-circuit + DC-detection requirements. Sub-check 4 PASS — payload.non_compliance_flags=[]; nothing to cascade.",
+        "decisions": [
+          {
+            "label": "Sub-check 3 vacuous-zone treatment",
+            "summary": "§722 is not zonal (unlike §701/§702/§703/§710/§715 which derive spatial zones from anchors). The EV cascade therefore has 0 zones and the socket-in-zone check is vacuously PASS. The cascade's electrical_constraint instead applies to the room polygon as a whole.",
+            "rule": "Vacuous zone-containment rule for non-zonal Part-7 constraints",
+            "code_clause": "BS 7671:2018+A2:2022 §722"
+          }
+        ]
+      },
+      {
+        "title": "INV-13..INV-19 evaluation",
+        "summary": "INV-13 (building_diversity self-consistency) N/A and trivially PASS — building_diversity intentionally absent (this is an EV-focus example, not a building-demand example). INV-14 (ring continuity) PASS — C01 and C02 carry ring_endpoints with continuity_verified=true; C03 is dedicated_radial so ring continuity does not apply. INV-15 (floor-area cross-check) N/A — circuit.floor_area_m2 absent on all circuits. INV-16 (OCPD-topology coordination) PASS — C01/C02 rings 32 A on 2.5 mm² + 1.5 mm² CPC; C03 dedicated_radial 32 A on 6 mm² PVC T+E with no diversity. INV-17 (FCU spurs) N/A — no fcu_spurs[] populated. INV-18 (EV RCD) PASS — see the dedicated INV-18 section above. INV-19 (cable-sizing cascade with building_diversity) N/A — both inputs absent.",
+        "decisions": [
+          {
+            "label": "Intentional N/A for INV-13/15/17/19",
+            "summary": "This example's engineering scope is EV depth (ev_charge_metadata, INV-18, §722, IET CoP 4th Ed) + Part-7 cascade trigger via external_landscape room_type. building_diversity, floor_area_m2 cross-check, FCU spurs, and cable-sizing intent integration are out of scope — they belong to other Phase A/B/C examples that exercise those features. The N/A-and-PASS treatment follows the validator prompt's explicit `N/A and trivially PASS` wording for each.",
+            "rule": "INV scope discipline",
+            "code_clause": "small-power validator.md (INV definitions)"
+          }
+        ]
+      },
+      {
+        "title": "Honest disclosures (verified-citation discipline + deferred-pointer cascade + borderline DC detection)",
+        "summary": "(1) Verified-citation discipline: only §722 top-level + §411.3.3 + IET CoP 4th Ed + BS EN 61851-1 + BS EN 62196 are cited. §722 sub-clauses NOT in the verified list are not transcribed (the C.3 spec verified-citations list permits §722 top-level only). Banned and do NOT cite: OZEV (operational policy not a BS standard); banned and do NOT cite: 3rd Edition of the IET CoP (superseded); banned and do NOT cite: Reg 559 (not the EV regulation). (2) Deferred-pointer cascade: source_path points to a producer-side fixture that does NOT yet exist at C.3-ship — D.1 of Phase D authors it AFTER C.3 ships. The inlined payload is what D.1 will emit byte-identical. (3) Borderline DC detection: charging_unit_dc_detection_a=6 mA exactly is on the §722.531.3.101 boundary; engineer-of-record verifies against the as-installed product datasheet at commissioning. (4) Banned-mode negative-coverage: the banned-mode mentions (do NOT use Mode 1; do NOT use Mode 2) appear only in disambiguation prose; the design uses Mode 3 exclusively.",
+        "decisions": []
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 and C02 are rings on 2.5 mm² + 1.5 mm² CPC PVC T+E with 32 A RCBO — composition matches BS 7671:2018+A2:2022 Table 7.1 / Appendix 15 ring final circuit recipe (32 A protected by 30 mA RCD, 2.5 mm² phase, 1.5 mm² CPC PVC). C03 is dedicated_radial — INV-01's ring composition rule does not apply to dedicated_radial. PASSes on both rings + vacuously PASSes on the radial."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Every circuit's ocpd.breaking_capacity_ka (C01: 6.0; C02: 6.0; C03: 6.0) is greater than or equal to parent_db.pfc_at_busbar_ka (6.0) per BS 7671:2018+A2:2022 §434.5.1 and IEC 60898-1 conditional short-circuit ratings. Equality at 6 kA is the §434.5.1 minimum boundary — typical for UK domestic CUs with declared PFC ≤6 kA. Engineer-of-record may upgrade to 10 kA RCBOs for additional margin at the CU swap-out."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All 3 circuits carry RCD protection per BS 7671:2018+A2:2022 §411.3.3 (30 mA additional protection for socket-outlets ≤32 A). C01 and C02 use Type A RCBOs upstream (domestic ring final circuits with mixed appliances). C03 (EV charge dedicated radial) uses Type A 30 mA RCBO upstream per §722.531.3.101 + IET CoP 4th Ed — Type A is permitted because the BS EN 61851-1 charging unit provides integral DC residual detection at 6 mA. rcd_posture=type_a_30ma_per_§411_3_3 on all 3 circuits — schema-valid enum literal."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Driveway (room_type=external_landscape, Part-7 enum trigger) carries 1 EV socket BS_EN_62196_Type_2_Mennekes_socket_32A_AC at 1200 mm AFFL on the external garage wall, IP54. The cascade payload's electrical_constraint applies_to_room_polygon=true with 0 zones; prohibited_fixture_types check is vacuous (no zone polygons). The EV socket is the only fixture in the driveway room and is by design compliant with the cascade constraint (BS EN 61851-1 + BS EN 62196). Kitchen / lounge_dining / bedroom_1f have only standard BS 1363 sockets and are not Part-7 rooms."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 rooms_covered=[kitchen, lounge_dining] → all 4 kitchen sockets + all 6 lounge_dining sockets reference circuit_id=C01. C02 rooms_covered=[bedroom_1f] → all 6 bedroom_1f sockets reference circuit_id=C02. C03 rooms_covered=[driveway] → the single driveway EV socket references circuit_id=C03. No orphan socket references; no socket assigned to a circuit not in its room's coverage set."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "low",
+      "evidence": "All 3 circuits use Type B curve — domestic ring loads (mixed plug-in appliances) and the EV charge point (continuous resistive load through the BS EN 61851-1 control pilot) have no significant inrush requiring Type C. Type B (3–5× tripping band per BS EN 60898-1) is the standard MCB curve for 230 V domestic socket circuits and is the IET CoP 4th Ed recommended curve for EV charge points up to 32 A continuous."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "high",
+      "evidence": "diversified_max_load_a per circuit (C01: 16.0 A; C02: 6.5 A; C03: 32.0 A) is less than or equal to ocpd.rating_a (32 A on all three). C01 and C02 apply standard IET OSG Appendix A domestic-rings diversity (peak coincident ≈ 50% of connected). C03 (EV) is the explicit no-diversity case per IET CoP 4th Ed dedicated-circuit rule — design current = OCPD rating = 32 A exactly. The equality on C03 is the canonical EV dedicated-circuit signature."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All 3 circuits have tool_call_pending_for_zs_verification=true (deferred per WI3). flags[] carries TOOL-CALL-PENDING:calc.zs_loop_impedance. C03's Zs verification is particularly important — the BS EN 61851-1 charging unit reacts to the upstream Zs through its proximity-pilot impedance check; engineer-of-record verifies the §411.4.5 disconnection-time table at commissioning against the calc.zs_loop_impedance tool output."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "high",
+      "evidence": "All 4 rooms appear in at least one circuit's rooms_covered[] (driveway→C03, kitchen→C01, lounge_dining→C01, bedroom_1f→C02). All sockets are placed in a room declared in rooms[]. No orphan rooms; no orphan sockets."
+    },
+    {
+      "id": "INV-10",
+      "passes": true,
+      "severity": "low",
+      "evidence": "drawing_layout.drawing_standard=BS 1192:2007+A2:2016 matches the GB jurisdiction expected default for small-power layout drawings. Sheet size A2 + scale 1:50 appropriate for the dwelling footprint + the external driveway annotation."
+    },
+    {
+      "id": "INV-11",
+      "passes": true,
+      "severity": "high",
+      "evidence": "No cable-sizing intent consumed in this example (consumed_intents.cable_sizing absent). INV-11 is a no-op per the v1.1 conditional rule; all 3 circuits carry tool_call_pending_for_zs_verification=true to defer Zs to calc.zs_loop_impedance. C03's EV cable is sized for the full 32 A continuous load — when a cable-sizing intent is later consumed, INV-11 will reconcile the cable-sizing design_current_a against the small-power diversified_max_load_a (expected match at 32 A exactly for the EV dedicated radial)."
+    },
+    {
+      "id": "INV-12",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Cascade source (DEFERRED-POINTER): electrical/special-locations/examples/cascade-small-power-uk-ev-charge-domestic/intent-out.json (D.1 producer-side fixture pending; payload inlined byte-identical at C.3-ship). Sub-check 1 PASS (consumed_intents.special_locations_zoning present). Sub-check 2 PASS (payload.compliant=true, zone_count=0 — §722 not zonal — constraint_count=1 rcd_blanket_by_room extended with EV fields, zero violations). Sub-check 3 PASS — the single EV socket (BS_EN_62196_Type_2_Mennekes_socket_32A_AC) is the only driveway fixture and is by design compliant with the cascade constraint; zone-containment vacuous on 0 zones. Sub-check 4 PASS — payload.non_compliance_flags=[]; nothing to cascade. BS 7671:2018+A2:2022 §722 + IET Code of Practice for EV Charging Equipment Installation (4th Edition)."
+    },
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "low",
+      "evidence": "N/A and trivially PASS per validator INV-13 wording — building_diversity block intentionally absent. This is an EV-focus example (3-bed dwelling driveway charge point), not a building-demand example; building_diversity belongs to Phase A/B examples that exercise the office/healthcare/industrial demand cascade."
+    },
+    {
+      "id": "INV-14",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 (GF ring) and C02 (1F ring) both carry ring_endpoints with continuity_verified=true and the IET OSG §8.4.4 citation. C03 is dedicated_radial so the ring-endpoints continuity rule (TOP-09) does not apply (validator INV-14 evaluates ring continuity only on ring topology circuits)."
+    },
+    {
+      "id": "INV-15",
+      "passes": true,
+      "severity": "high",
+      "evidence": "N/A and trivially PASS per validator INV-15 wording — circuit.floor_area_m2 is not populated on any circuit (v2.0 optional field). The rule fires only when both floor_area_m2 AND rooms_covered[] are populated and demands Σ-tolerance reconciliation; with floor_area_m2 absent, no reconciliation is computed."
+    },
+    {
+      "id": "INV-16",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C01 (ring, 32 A on 2.5 mm² + 1.5 mm² CPC PVC T+E) and C02 (ring, 32 A on 2.5 mm² + 1.5 mm² CPC PVC T+E) match the BS 7671 Appendix 15 ring final circuit recipe. C03 (dedicated_radial, 32 A on 6 mm² + 6 mm² CPC PVC T+E with no diversity per IET CoP 4th Ed) — validator INV-16 wording `topology=dedicated_radial → MCB sized by connected load per §433.1.1, validator trivially PASSES on dedicated_radial` applies. EV-specific cable-sizing assurance is captured in cable selection: 6 mm² T+E PVC reference Iz comfortably handles the 32 A continuous load at the 14 m run."
+    },
+    {
+      "id": "INV-17",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "N/A and trivially PASS per validator INV-17 wording — no circuit has fcu_spurs[] populated. Rule TOP-12 evaluates only when fcu_spurs[] is populated. The EV charge point is fed by a dedicated radial (no FCU spur) per the IET CoP 4th Ed dedicated-circuit rule; FCU spurs are not appropriate for EV charge points because the FCU fuse would be a single point of failure for the charge-point control electronics."
+    },
+    {
+      "id": "INV-18",
+      "passes": true,
+      "severity": "high",
+      "evidence": "C03 carries ev_charge_metadata with rcd_type=type_a and charging_unit_dc_detection_a=6 mA. Per rule EV-03: rcd_type=type_a iff charging_unit_dc_detection_a≥6. 6≥6 is TRUE → rcd_type=type_a PASSes. The value sits EXACTLY on the §722.531.3.101 boundary that permits Type A when the BS EN 61851-1 charging unit provides integral DC residual detection ≥6 mA. D-borderline judgment flag emitted in compliance_summary.non_compliance_flags[0] (severity=info) calling out the on-boundary value for engineer commissioning verification against the as-installed product datasheet. BS 7671:2018+A2:2022 §722 + IET Code of Practice for EV Charging Equipment Installation (4th Edition)."
+    },
+    {
+      "id": "INV-19",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "N/A and trivially PASS per validator INV-19 wording — both building_diversity.per_circuit_demand_inputs[] AND consumed_intents.cable_sizing.payload.circuits[] are absent. Rule BLD-05 evaluates only when both are present and reconciles post_per_load_diversity_a with cable-sizing's design_current_a within ±5% tolerance."
+    }
+  ],
+  "consumed_intents": {
+    "special_locations_zoning": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/special-locations/examples/cascade-small-power-uk-ev-charge-domestic/intent-out.json",
+      "payload": {
+        "zones": [],
+        "electrical_constraints": [
+          {
+            "constraint_type": "rcd_blanket_by_room",
+            "applies_to_room_polygon": true,
+            "applies_to_zone_ids": null,
+            "_clause_citation": "BS 7671:2018+A2:2022 §722 + §411.3.3 + IET Code of Practice for EV Charging Equipment Installation (4th Edition)",
+            "_derivation_note": "EV charge point dedicated-circuit constraint per §722 + IET CoP 4th Ed. The §722 top-level (no sub-clauses transcribed) plus §411.3.3 mandate a 30 mA RCD upstream of every EV charge point. The IET CoP 4th Ed dedicated-circuit rule forbids shared loads on the EV circuit. The §722.531.3.101 boundary permits Type A upstream iff the BS EN 61851-1 charging unit provides integral DC residual detection ≥6 mA; otherwise Type B is required. Constraint extended with EV-specific fields per additionalProperties:true on the constraints schema.",
+            "dedicated_circuit_required": true,
+            "mode_required": 3,
+            "charging_unit_standard": "BS EN 61851-1",
+            "socket_standard": "BS EN 62196 Type 2 Mennekes",
+            "upstream_rcd_type_min": "A",
+            "charging_unit_dc_detection_a_min": 6,
+            "diversity_factor": 1.0,
+            "outdoor_ip_rating_min": "IP54"
+          }
+        ],
+        "compliant": true,
+        "zone_count": 0,
+        "constraint_count": 1,
+        "violation_count_critical": 0,
+        "violation_count_high": 0,
+        "non_compliance_flags": [],
+        "anchor_source_summary": {
+          "all_extracted": true,
+          "extraction_source_lowest": "architectural_drawing_extraction"
+        }
+      }
+    }
+  }
+}

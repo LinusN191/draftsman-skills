@@ -1,0 +1,44 @@
+{
+  "_note": "Sprint D4 Phase C.3 example — UK 3-bed dwelling driveway EV charger. PRIMARY purpose: exercise the new circuits[].ev_charge_metadata block (v2.0) AND fire INV-18 (EV RCD Type A/B selection per Reg 722.531.3.101) on a single dedicated radial. A secondary handful of internal small-power circuits (1 GF ring + 1 1F ring) is included so the IR is a complete dwelling small-power IR, not a stripped-down single-circuit fixture. The driveway is modelled as room_type='external_landscape' (Part-7 enum trigger) so the schema's allOf clause REQUIRES consumed_intents.special_locations_zoning to be populated; that cascade is INLINED at C.3-ship and will be retrofitted to point at D.1's new producer-side fixture (cascade-small-power-uk-ev-charge-domestic) once D.1 ships. EV charger: 7.4 kW single-phase Mode 3 AC charge point, Type 2 socket per BS EN 62196, charging unit per BS EN 61851-1, with manufacturer-declared integral DC residual detection at 6 mA (right on the §722.531.3.101 boundary that permits a Type A RCD upstream per the IET CoP for EV Charging Equipment Installation 4th Ed allowance).",
+  "project_id": "uk-ev-charge-domestic-eg01",
+  "jurisdiction": "GB",
+  "site_brief": "UK 3-bed dwelling (ground floor + first floor) with an attached driveway and a single 7.4 kW EV charge point mounted on the external garage wall. The driveway is recorded as room_type='external_landscape' specifically to fire INV-12's special-locations cascade (and the schema's structural allOf clause for Part-7 room_types). The EV charger is a single Mode 3 AC charge point connected to a BS EN 62196 Type 2 socket (Mennekes) on a dedicated radial straight from the dwelling consumer unit. Charging unit type-tested per BS EN 61851-1; manufacturer's declaration confirms integral 6 mA DC residual current detection in the charging unit. Per Reg 722.531.3.101 + IET Code of Practice for EV Charging Equipment Installation 4th Edition, a Type A 30 mA RCD upstream is permitted when the charging unit provides DC residual detection ≥6 mA — Type B is the alternative ONLY if the charging unit does NOT provide its own DC detection. The EV circuit is DEDICATED (no other loads share it) per the IET CoP 4th Ed dedicated-circuit rule. NO diversity factor is applied to the EV circuit — the design current is the full 32 A continuous rating. The internal small-power layout carries a standard GF ring (kitchen / utility / dining / lounge) and a 1F ring (3 bedrooms + landing) for IR completeness; they are not the focus of this example.",
+  "supply": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.30,
+    "psc_declared_ka": 6.0
+  },
+  "parent_db": {
+    "designation": "CU-MAIN",
+    "pfc_at_busbar_ka": 6.0
+  },
+  "room_briefs": [
+    {"room_id": "driveway",      "room_type": "external_landscape", "dimensions_m": {"length": 5.0, "width": 3.0, "height": 0.0}, "special_location": "outdoor", "anticipated_loads_kw": 7.4, "socket_count_target": 1},
+    {"room_id": "kitchen",       "room_type": "kitchen_domestic",   "dimensions_m": {"length": 4.5, "width": 3.5, "height": 2.4}, "special_location": null,      "anticipated_loads_kw": 3.0, "socket_count_target": 4},
+    {"room_id": "lounge_dining", "room_type": "lounge_domestic",    "dimensions_m": {"length": 7.0, "width": 4.0, "height": 2.4}, "special_location": null,      "anticipated_loads_kw": 2.0, "socket_count_target": 6},
+    {"room_id": "bedroom_1f",    "room_type": "bedroom_domestic",   "dimensions_m": {"length": 4.0, "width": 3.5, "height": 2.4}, "special_location": null,      "anticipated_loads_kw": 1.5, "socket_count_target": 6}
+  ],
+  "ev_charge_metadata_inputs": [
+    {
+      "circuit_id_hint": "C03",
+      "rcd_type": "type_a",
+      "charging_unit_dc_detection_a": 6,
+      "mode": 3,
+      "charging_unit_standard": "BS EN 61851-1",
+      "socket_standard": "BS EN 62196 Type 2 Mennekes",
+      "dedicated_circuit": true
+    }
+  ],
+  "design_intent": {
+    "preferred_topology": "auto_by_jurisdiction",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "sheet_size": "A2",
+    "drawing_scale": "1:50"
+  },
+  "_cascade_sources": {
+    "special_locations_zoning": "electrical/special-locations/examples/cascade-small-power-uk-ev-charge-domestic/intent-out.json"
+  },
+  "_cascade_disclosure": "DEFERRED-POINTER state. The cascade source path above points at a producer-side fixture that does NOT yet exist at C.3-ship — D.1 of the Phase D dispatch builds `cascade-small-power-uk-ev-charge-domestic/` (4 files) AFTER C.3 ships. At C.3-ship the consumer's consumed_intents.special_locations_zoning.payload is INLINED with the cascade payload that D.1 will emit byte-identical — 0 zones (EV is not a Part-7 spatial zone like bath/pool — §722 is not zonal), 1 electrical_constraint of type `rcd_blanket_by_room` extended with EV-specific dedicated-circuit + DC-detection fields (additionalProperties: true on the constraints schema permits this), compliant=true, zero non-compliance flags. At D.1-ship the source_path will start resolving to a real producer file but the payload bytes remain unchanged — this matches the D.2 special-locations pattern (synthetic photometric helper later replaced by real cascade)."
+}
