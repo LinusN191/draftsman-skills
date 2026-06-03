@@ -1,0 +1,40 @@
+# Zone purpose rules — derive task/surrounding/background/circulation behaviour from BS EN 12464-1:2021 §4.2.2 + Table 6.
+# Authored: 2026-06-03 (D5 sprint A.4)
+# Source-of-truth: shared/standards/lighting/BSEN12464/area-definitions.json
+
+rules:
+  - id: ZP-01
+    summary: Default purpose for unclassified zones is task
+    clause: "BS EN 12464-1:2021 §4.2.2.1"
+    applies_when: "zone.purpose is null OR absent"
+    check: "Set zone.purpose = 'task' for backwards compatibility with v1.6.0 examples. Document the default explicitly in compliance_summary.assumptions[]."
+    severity: info
+    _note: "Backwards-compat default. Engineers may override per WI1 zone_purpose_inputs."
+
+  - id: ZP-02
+    summary: Surrounding em_target_lux ratio-bound to task em
+    clause: "BS EN 12464-1:2021 §4.2.2.2 + Table 6"
+    applies_when: "zone.purpose == 'surrounding'"
+    check: "em_target_lux ∈ [0.3 × Em_task, 0.5 × Em_task]. Default ratio 0.5 from area-definitions.json _surrounding_ratio_default. Honest disclosure: per Table 6 simplified rule (not the per-Em-band table)."
+    severity: high
+
+  - id: ZP-03
+    summary: Background em_target_lux floor
+    clause: "BS EN 12464-1:2021 §4.2.2.3 + Table 6"
+    applies_when: "zone.purpose == 'background'"
+    check: "em_target_lux ≥ max(Em_task / 3, 50 lx). Floor 50 lx is absolute per Table 6. _background_ratio_default 0.333 in lux-levels.json."
+    severity: high
+
+  - id: ZP-04
+    summary: Orphan surrounding zone blocked
+    clause: "BS EN 12464-1:2021 §4.2.2.2 (surrounding is defined RELATIVE to a task area)"
+    applies_when: "any zone has purpose=='surrounding' AND no zone has purpose=='task' in the same room"
+    check: "Reject the IR; surrounding zones cannot exist without a paired task zone. Schema enforces via allOf clause 3."
+    severity: critical
+
+  - id: ZP-05
+    summary: Circulation zones exempt from Table 6 ratio rules
+    clause: "BS EN 12464-1:2021 Table 5 (circulation has its own Em entries)"
+    applies_when: "zone.purpose == 'circulation'"
+    check: "em_target_lux looked up from lux-levels.json circulation branch (e.g. 100 lx main corridor, 50 lx link corridor, 150 lx staircase). NOT subject to task/surrounding/background ratios."
+    severity: info

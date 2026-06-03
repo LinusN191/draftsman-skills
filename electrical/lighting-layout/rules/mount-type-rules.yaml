@@ -1,0 +1,31 @@
+# Mount type rules — luminaire 3D placement geometry per BS EN 60598-2 + repo convention.
+# Authored: 2026-06-03 (D5 sprint A.4)
+
+rules:
+  - id: MT-01
+    summary: Recessed/surface/track inherit z = ceiling_height_mm
+    clause: "Repo convention; BS EN 60598-2-2 (recessed) / BS EN 60598-2-1 (general)"
+    applies_when: "luminaire.mount_type ∈ {recessed, surface, track}"
+    check: "z_mm is OPTIONAL. If absent, runtime renders at z = ceiling_height_mm. INV-16 verifies. hm_mm derives as ceiling_height_mm - working_plane_mm."
+    severity: info
+
+  - id: MT-02
+    summary: Pendant geometry — z_mm + suspension_length_mm = ceiling_height_mm
+    clause: "BS EN 60598-2-1 (general luminaire) + repo geometry convention"
+    applies_when: "luminaire.mount_type == 'pendant'"
+    check: "Both z_mm and suspension_length_mm REQUIRED (allOf clause 1). Algebraic identity: z_mm + suspension_length_mm = ceiling_height_mm. INV-16 verifies. hm_mm derives as z_mm - working_plane_mm."
+    severity: high
+
+  - id: MT-03
+    summary: Suspended geometry — z_mm + suspension_length_mm ≤ ceiling_height_mm
+    clause: "BS EN 60598-2 + repo geometry convention"
+    applies_when: "luminaire.mount_type == 'suspended'"
+    check: "Both z_mm and suspension_length_mm REQUIRED. INEQUALITY: z_mm + suspension_length_mm ≤ ceiling_height_mm (suspended can hang from intermediate purlin). INV-16 + INV-17 verify."
+    severity: high
+
+  - id: MT-04
+    summary: Ceiling clearance + working-plane safety floor
+    clause: "BS EN 12464-1:2021 §4.4 (working plane definition); repo safety convention"
+    applies_when: "any luminaire.mount_type"
+    check: "z_mm > working_plane_mm (no luminaire below task plane — collision risk). z_mm + suspension_length_mm ≤ ceiling_height_mm (physical clearance). INV-17 verifies both inequalities."
+    severity: high
