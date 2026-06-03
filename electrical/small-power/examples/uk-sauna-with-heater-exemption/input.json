@@ -1,0 +1,41 @@
+{
+  "_note": "Sprint D4 Phase C.4 example — UK domestic sauna room with a hard-wired sauna heater. PRIMARY purpose: exercise the documented-§411-exception path on the rcd_posture enum (no_rcd_with_documented_§411_exception) AND demonstrate two distinct rcd_posture values coexisting in the same Part-7 room: the heater circuit takes the §411 exception (BS EN 60335-2-53 hard-wired heater fault-current limits make a 30 mA RCD impractical without nuisance trips), while the sauna-control panel circuit (low-voltage timer/thermostat with door-switch interlock) takes the standard Type A 30 mA path per §411.3.3. The sauna room is modelled as room_type='sauna' (Part-7 enum trigger per the schema's allOf clause) so consumed_intents.special_locations_zoning MUST be populated; INV-12 then fires the 4 sub-check sequence. Cascade source path points at the D.1 producer-side fixture cascade-small-power-uk-sauna-heater-exemption which does NOT yet exist at C.4-ship (DEFERRED-POINTER state mirroring C.3); the inlined payload here is what D.1 will emit byte-identical (3 zones derived from a single sauna_heater anchor per the §703 zone-table convention: sauna_zone_1 around the heater + sauna_zone_2 sauna body + sauna_zone_3 above 1500 mm; 1 electrical_constraint of type rcd_blanket_by_room with sauna_heater_excluded=true per §703.411.3.3).",
+  "project_id": "uk-sauna-with-heater-exemption-eg01",
+  "jurisdiction": "GB",
+  "site_brief": "UK domestic sauna room (prefabricated 2400 × 2000 mm timber cabin sited in a garden room or basement). The hard-wired sauna heater is a 6 kW single-phase appliance compliant with BS EN 60335-2-53 (Particular requirements for sauna heating appliances). Two dedicated radial circuits feed the sauna: (1) C01 sauna heater radial — the heater is hard-wired (no socket) on its own dedicated radial; the BS EN 60335-2-53 heater type test exhibits fault-current characteristics (low-resistance heater elements with rapid thermal inrush at cold start) that make a 30 mA RCD impractical without nuisance trips. Accordingly, the heater circuit takes the documented-§411-exception path on rcd_posture (no_rcd_with_documented_§411_exception) with an explicit rcd_exception_citation referencing §703.411.3.3 (the verified standards file's heater-exclusion language) + BS EN 60335-2-53. (2) C02 sauna-control panel radial — a low-voltage timer/thermostat unit with door-switch interlock, mounted OUTSIDE the sauna cabin on the changing-room wall per §703 key requirement 'All control gear OUTSIDE the sauna'. This circuit takes the standard Type A 30 mA path per §411.3.3 (the control panel is low-current draw, well below the heater's fault-current envelope; no exception required). The two-posture coexistence is the central engineering point: the §411 exception is a NARROW carve-out for the specific equipment that cannot tolerate 30 mA RCD discrimination, NOT a room-wide exemption — sibling circuits in the same Part-7 location still default to Type A 30 mA. No general-purpose 230 V sockets are placed inside the sauna cabin (consistent with §703 key requirement that sauna heater supply is the only cable permitted to pass through the sauna walls; sockets would breach the high-temperature/IPx4 zone constraints anyway). A separate adjacent changing room is intentionally NOT modelled in this example to keep the focus on the two-posture Part-7 demonstration.",
+  "supply": {
+    "voltage_v": 230,
+    "phase_arrangement": "single_phase",
+    "system_type": "TN-C-S",
+    "ze_declared_ohm": 0.35,
+    "psc_declared_ka": 6.0
+  },
+  "parent_db": {
+    "designation": "CU-MAIN",
+    "pfc_at_busbar_ka": 6.0
+  },
+  "room_briefs": [
+    {"room_id": "sauna_cabin", "room_type": "sauna", "dimensions_m": {"length": 2.4, "width": 2.0, "height": 2.4}, "special_location": null, "anticipated_loads_kw": 6.5, "socket_count_target": 0}
+  ],
+  "rcd_posture_inputs": [
+    {
+      "circuit_id_hint": "C01",
+      "rcd_posture": "no_rcd_with_documented_§411_exception",
+      "rcd_exception_citation": "BS 7671:2018+A2:2022 §703.411.3.3 (sauna heater circuit excluded from the 30 mA RCD blanket per the verified standards file — see shared/standards/electrical/BS7671/part7-special-locations.json §703 key requirement 'sauna circuits except the heater') + BS EN 60335-2-53 (sauna heating appliances — fault-current characteristics of low-resistance heater elements make 30 mA RCD discrimination impractical without nuisance trips; the heater appliance type-test certifies the equipment-side safety integrity required for the §411 documented-exception path)"
+    },
+    {
+      "circuit_id_hint": "C02",
+      "rcd_posture": "type_a_30ma_per_§411_3_3"
+    }
+  ],
+  "design_intent": {
+    "preferred_topology": "auto_by_jurisdiction",
+    "drawing_standard": "BS 1192:2007+A2:2016",
+    "sheet_size": "A3",
+    "drawing_scale": "1:50"
+  },
+  "_cascade_sources": {
+    "special_locations_zoning": "electrical/special-locations/examples/cascade-small-power-uk-sauna-heater-exemption/intent-out.json"
+  },
+  "_cascade_disclosure": "DEFERRED-POINTER state (mirrors C.3 pattern). The cascade source path above points at a producer-side fixture that does NOT yet exist at C.4-ship — D.1 of the Phase D dispatch builds cascade-small-power-uk-sauna-heater-exemption/ (4 files) AFTER C.4 ships. At C.4-ship the consumer's consumed_intents.special_locations_zoning.payload is INLINED with the payload that D.1 will emit byte-identical: 3 zones (sauna_zone_1 around the heater anchor, sauna_zone_2 sauna body polygon, sauna_zone_3 above 1500 mm AFFL for accessory mounting) per the §703 zone-table convention; 1 electrical_constraint of type rcd_blanket_by_room with sauna_heater_excluded=true reflecting the verified standards file's heater-exemption language; compliant=true; zero non-compliance flags. At D.1-ship the source_path will resolve to a real producer file but the payload bytes remain unchanged. The producer-side fixture is functionally identical to the existing electrical/special-locations/examples/uk-sauna-with-3-zone-derivation/ fixture but explicitly tagged as a small-power-consumer cascade source — the naming makes the producer-side intent of 'this is the small-power-consumer source' auditable in the file tree."
+}
