@@ -197,6 +197,17 @@
           "total_load_w": {
             "type": "number",
             "minimum": 0
+          },
+          "purpose": {
+            "type": "string",
+            "enum": ["task", "surrounding", "background", "circulation"],
+            "default": "task",
+            "description": "BS EN 12464-1:2021 §4.2.2.x area classification. Default 'task' for backwards compatibility with v1.6.0 examples."
+          },
+          "em_target_lux": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Per-zone maintained illuminance target (lx). Derived from Em (Table 5) × ratio per purpose (Table 6) if not explicit. Cited per BS EN 12464-1:2021 §4.2.2.x."
           }
         }
       }
@@ -229,6 +240,22 @@
           },
           "circuit_id": {
             "type": "string"
+          },
+          "mount_type": {
+            "type": "string",
+            "enum": ["recessed", "surface", "pendant", "suspended", "track"],
+            "default": "recessed",
+            "description": "Luminaire installation type. Default 'recessed' for v1.6.0 backwards compatibility. Pendant/suspended require z_mm + suspension_length_mm (enforced by allOf clause)."
+          },
+          "z_mm": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Height of luminaire emission plane above finished floor (mm). REQUIRED when mount_type ∈ {pendant, suspended}; for recessed/surface/track inherits room.ceiling_height_mm by convention."
+          },
+          "suspension_length_mm": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Drop length from ceiling for pendant/suspended mount (mm). REQUIRED when mount_type ∈ {pendant, suspended}. For pendant: z_mm + suspension_length_mm = ceiling_height_mm (enforced by allOf)."
           }
         }
       }
@@ -590,6 +617,22 @@
           "items": {
             "type": "string"
           }
+        },
+        "per_zone_achieved": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "zone_id": {"type": "string"},
+              "purpose": {"type": "string", "enum": ["task", "surrounding", "background", "circulation"]},
+              "em_target_lux": {"type": "number", "minimum": 0},
+              "em_achieved_lux": {"type": "number", "minimum": 0},
+              "ratio_compliance": {"type": "string", "enum": ["pass", "fail", "marginal"]}
+            },
+            "required": ["zone_id", "purpose", "em_target_lux", "em_achieved_lux", "ratio_compliance"],
+            "additionalProperties": false
+          },
+          "description": "Per-zone target-vs-achieved illuminance. Populated from photometric grid output (INV-11 cascade) + zone polygons. INV-19 evaluates ratio_compliance."
         }
       }
     },
@@ -1009,6 +1052,85 @@
         "properties": {
           "consumed_intents": {
             "required": ["special_locations_zoning"]
+          }
+        }
+      }
+    },
+    {
+      "_comment": "Clause 4 (v1.7): pendant/suspended luminaires require z_mm + suspension_length_mm",
+      "if": {
+        "properties": {
+          "luminaires": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "properties": {
+                "mount_type": {"enum": ["pendant", "suspended"]}
+              },
+              "required": ["mount_type"]
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "luminaires": {
+            "items": {
+              "if": {
+                "properties": {"mount_type": {"enum": ["pendant", "suspended"]}},
+                "required": ["mount_type"]
+              },
+              "then": {
+                "required": ["z_mm", "suspension_length_mm"]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "_comment": "Clause 5 (v1.7): pendant geometry — room.ceiling_height_mm required when any pendant luminaire present.",
+      "if": {
+        "properties": {
+          "luminaires": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "properties": {"mount_type": {"const": "pendant"}},
+              "required": ["mount_type"]
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "room": {"required": ["ceiling_height_mm"]}
+        }
+      }
+    },
+    {
+      "_comment": "Clause 6 (v1.7): surrounding zones require a coexisting task zone (orphan surrounding blocked).",
+      "if": {
+        "properties": {
+          "zones": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "properties": {"purpose": {"const": "surrounding"}},
+              "required": ["purpose"]
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "zones": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "properties": {"purpose": {"const": "task"}},
+              "required": ["purpose"]
+            }
           }
         }
       }
