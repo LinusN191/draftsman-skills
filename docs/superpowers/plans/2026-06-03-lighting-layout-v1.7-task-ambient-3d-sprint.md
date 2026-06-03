@@ -931,3 +931,578 @@ git commit -m "feat(lighting-layout): A.5 manifest bump 1.6.0 → 1.7.0 + declar
 ```
 
 ---
+
+## Phase B — Prompts (4 tasks, all Opus, ~4-6 commits incl. fix-passes)
+
+Goal: extend the three-stage prompt chain (generator → validator → reviewer) with the 7 new INV sections, 3 new generator steps, and 3 new D-checks. All citations cross-reference A.0 (`area-definitions.json`) and existing verified files. B.4 enumerates the cascade contracts referenced in the new generator steps.
+
+### Task B.1: generator.md — Steps 13 / 14 / 15 (zone purpose + 3D placement + per-zone achievement)
+
+**Files:**
+- Modify: `electrical/lighting-layout/prompts/generator.md`
+
+**Why Opus:** Engineering content; step ordering decisions; how to thread per-zone purpose through downstream steps without breaking existing Step 11 (Part-L) and Step 12 (cascade consumption).
+
+- [ ] **Step 1: Read existing generator.md to map current step numbering + identify insertion points**
+
+Run:
+```bash
+grep -nE "^## Step|^# " electrical/lighting-layout/prompts/generator.md | head -25
+wc -l electrical/lighting-layout/prompts/generator.md
+```
+
+Expected: current step list (steps 1..N). Identify the LAST step before the rationale/output emission step (typically the step where calculation_summary is finalised).
+
+- [ ] **Step 2: Append Step 13 — Zone purpose resolution**
+
+In `electrical/lighting-layout/prompts/generator.md`, AFTER the existing last engineering step (likely Step 12 special-locations cascade consumption) and BEFORE the rationale-block / output-emission step, ADD:
+
+```markdown
+## Step 13 — Zone purpose resolution (v1.7 D5)
+
+For every zone in the IR, populate `zone.purpose` per BS EN 12464-1:2021 §4.2.2:
+
+1. **If `zone_purpose_inputs` supplied** (WI1 item — see inputs.json): use the engineer's classification verbatim.
+2. **Else default to `purpose: "task"`** for backwards compatibility with v1.6.0 examples. Document the default explicitly in `compliance_summary.assumptions[]`.
+
+Populate `zone.em_target_lux` per the following rules:
+
+- **`purpose == "task"`** → `em_target_lux` = Em value from `shared/standards/lighting/BSEN12464/lux-levels.json` for the room's `room_type` (existing v1.6.0 behaviour preserved).
+- **`purpose == "surrounding"`** → `em_target_lux` = `task_em × _surrounding_ratio_default` (0.5 per `lux-levels.json` augmentation from A.3). Engineer may override via `em_target_lux_override` in WI1 input; if so, validate against the [0.3, 0.5] band per BS EN 12464-1:2021 Table 6 (INV-14 verifies).
+- **`purpose == "background"`** → `em_target_lux` = `max(task_em × _background_ratio_default, _background_min_lx)` = `max(task_em / 3, 50 lx)` per BS EN 12464-1:2021 §4.2.2.3 + Table 6 (INV-15 verifies).
+- **`purpose == "circulation"`** → `em_target_lux` looked up from `lux-levels.json` circulation branch (e.g. 100 lx main corridor, 50 lx link corridor). Independent of task/surrounding/background ratios per ZP-05.
+
+**Cross-check:** if any zone has `purpose: "surrounding"`, at least one zone in the same room MUST have `purpose: "task"`. Schema enforces via allOf clause 3 (A.1). Validator INV-13 evidence cites BS EN 12464-1:2021 §4.2.2.2 ("surrounding is defined RELATIVE to a task area").
+
+**Citation anchor:** `shared/standards/lighting/BSEN12464/area-definitions.json` (A.0 file).
+```
+
+- [ ] **Step 3: Append Step 14 — Mount type + 3D placement**
+
+In the same file, AFTER Step 13 and BEFORE the rationale-block step, ADD:
+
+```markdown
+## Step 14 — Mount type + 3D placement (v1.7 D5)
+
+For every luminaire in `luminaires[]`, populate `mount_type` per BS EN 60598-2 series:
+
+1. **If `mount_type_inputs` supplied** (WI1 item): use engineer's selection verbatim.
+2. **Else default to `mount_type: "recessed"`** for v1.6.0 backwards compatibility.
+
+For luminaires with `mount_type ∈ {pendant, suspended}`, populate `z_mm` + `suspension_length_mm`:
+
+- **Pendant geometry** (MT-02): `z_mm + suspension_length_mm = ceiling_height_mm` (algebraic identity). If `suspension_length_inputs` supplied for the luminaire, use it; else default to 800mm typical pendant drop (document the default in assumptions).
+- **Suspended geometry** (MT-03): `z_mm + suspension_length_mm ≤ ceiling_height_mm` (suspended can hang from intermediate purlin, e.g. industrial highbay from roof truss vs ceiling).
+
+**Cross-checks** (INV-16 + INV-17 verify):
+
+- `z_mm > working_plane_mm` (no luminaire below the task plane — collision risk).
+- `z_mm + suspension_length_mm ≤ ceiling_height_mm` (physical clearance).
+- For pendant specifically: equality holds.
+
+**Update `room.hm_mm`** (mounting height above task plane):
+
+- For pendant/suspended luminaires: `hm_mm = z_mm - working_plane_mm` (per-luminaire; if luminaires have mixed z values, use the lowest z for hm calc).
+- For recessed/surface/track: `hm_mm = ceiling_height_mm - working_plane_mm` (existing v1.6.0 behaviour).
+
+**Citation anchor:** BS EN 60598-2-1 (general luminaire) + BS EN 60598-2-2 (recessed); repo convention in `mount-type-rules.yaml` (A.4 file).
+```
+
+- [ ] **Step 4: Append Step 15 — Per-zone achievement summary**
+
+In the same file, AFTER Step 14 and BEFORE the rationale-block step, ADD:
+
+```markdown
+## Step 15 — Per-zone achievement summary (v1.7 D5)
+
+Populate `calculation_summary.per_zone_achieved[]` with one entry per zone:
+
+```json
+{
+  "zone_id": "Z1",
+  "purpose": "task",
+  "em_target_lux": 500,
+  "em_achieved_lux": 525,
+  "ratio_compliance": "pass"
+}
+```
+
+**Source of `em_achieved_lux`** in priority order:
+
+1. **Photometric-analysis cascade** (INV-11 / `consumed_intents.photometric_grid`): if present and emitted, derive per-zone achieved Em by intersecting the point grid with the zone polygon. This is the highest-fidelity source.
+2. **Lumen-method calc** (existing v1.6.0 behaviour): if no photometric cascade, use the lumen-method `E_avg = (N × Φ × MF × UF) / A` per room and assume per-zone `em_achieved_lux = E_avg × purpose_uniformity_factor` (0.6 task / 0.4 surrounding / 0.1 background per area-definitions.json uniformity_rules).
+3. **Pending honest disclosure**: if neither photometric nor lumen-method can yield per-zone values (e.g. missing IES + missing Em target), set `em_achieved_lux: 0` with `ratio_compliance: "fail"` AND document the gap in `compliance_summary.assumptions[]` as a pending-photometric disclosure.
+
+**`ratio_compliance` bands** (per spec §6 INV-19):
+
+- `em_achieved_lux ≥ em_target_lux` → `"pass"`.
+- `em_target_lux × 0.75 ≤ em_achieved_lux < em_target_lux` → `"marginal"` (within 25%, INFO severity in INV-19).
+- `em_target_lux × 0.50 ≤ em_achieved_lux < em_target_lux × 0.75` → `"fail"` (25-50% short, MEDIUM severity in INV-19).
+- `em_achieved_lux < em_target_lux × 0.50` → `"fail"` (>50% short, HIGH severity in INV-19).
+
+**Note:** `ratio_compliance` is a tri-state enum on the schema (pass / fail / marginal). The HIGH-vs-MEDIUM split lives in the `non_compliance_flags[]` severity field, not the `ratio_compliance` enum.
+```
+
+- [ ] **Step 5: Validate generator.md renders cleanly + step numbers consistent**
+
+Run:
+```bash
+grep -nE "^## Step" electrical/lighting-layout/prompts/generator.md
+```
+
+Expected: contiguous step sequence (no duplicate / skipped numbers); Step 13 / 14 / 15 present.
+
+- [ ] **Step 6: Run golden CI gate (prompts not validated by gate)**
+
+Run:
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+Expected: aggregate unchanged.
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add electrical/lighting-layout/prompts/generator.md
+git commit -m "feat(lighting-layout): B.1 generator.md — Steps 13/14/15 (zone purpose resolution + mount_type + per-zone achievement summary; cites area-definitions.json from A.0)"
+```
+
+### Task B.2: validator.md — 7 new INV sections (INV-13..INV-19)
+
+**Files:**
+- Modify: `electrical/lighting-layout/prompts/validator.md`
+
+**Why Opus:** Engineering content + citation discipline; every INV section needs verbatim A.0 / lux-levels.json citation; severity ladder is dictated by spec §6 but evidence language is judgement.
+
+- [ ] **Step 1: Read existing validator.md to identify INV-12 (last existing) and the section-after-last-INV insertion point**
+
+Run:
+```bash
+grep -nE "^## INV-|^# " electrical/lighting-layout/prompts/validator.md | head -20
+wc -l electrical/lighting-layout/prompts/validator.md
+```
+
+Expected: INV-01..INV-12 sections present; identify the line AFTER the last INV-12 line (typically a section break or umbrella heading).
+
+- [ ] **Step 2: Append INV-13 section — Zone purpose required + valid**
+
+In `electrical/lighting-layout/prompts/validator.md`, after the INV-12 section, ADD:
+
+```markdown
+## INV-13 — Zone purpose required + valid (HIGH)
+
+**Clause:** BS EN 12464-1:2021 §4.2.2.1 (task area) + §4.2.2.2 (immediate surrounding area) + §4.2.2.3 (background area). Transcribed in `shared/standards/lighting/BSEN12464/area-definitions.json` (A.0 file).
+
+**Check:**
+
+1. Every zone in `zones[]` has `purpose ∈ {task, surrounding, background, circulation}`.
+2. If any zone has `purpose: "surrounding"`, at least one zone in the same room has `purpose: "task"` (orphan surrounding blocked).
+3. `em_target_lux` populated per zone (≥ 0).
+
+**Evidence template** (20–1200 chars per `[[feedback-no-trim-non-consequential]]`):
+
+```
+INV-13 verdict: PASS / FAIL
+Zones inspected: {count}
+Per-zone purpose:
+- {zone_id}: purpose={enum_value}, em_target_lux={value}
+Orphan-surrounding check: {pass | blocked because zone {id} has purpose=surrounding with no task zone in same room}
+Citation: BS EN 12464-1:2021 §4.2.2.1/2/3 (area-definitions.json §4.2.2.x).
+```
+
+**Severity:** HIGH (zone purpose drives every downstream illuminance check).
+
+**Vacuous PASS condition:** if `zones[]` empty (calc-only mode), INV-13 PASSes with evidence noting `zones[] empty — vacuous PASS`.
+```
+
+- [ ] **Step 3: Append INV-14 section — Surrounding ratio compliance**
+
+In the same file, after INV-13, ADD:
+
+```markdown
+## INV-14 — Surrounding ratio compliance (HIGH)
+
+**Clause:** BS EN 12464-1:2021 §4.2.2.2 + Table 6 (transcribed in area-definitions.json `immediate_surrounding_area` + `table_6_ratio_rules.task_to_surrounding`).
+
+**Check:** For every zone with `purpose == "surrounding"`:
+
+- Let `task_em` = `em_target_lux` of any zone in the same room with `purpose == "task"`.
+- Verify `0.3 × task_em ≤ em_target_lux ≤ 0.5 × task_em`.
+- (If `task_em < 100 lx`, surrounding inherits `task_em` per Table 6 row — verify equality.)
+
+**Evidence template:**
+
+```
+INV-14 verdict: PASS / FAIL
+Surrounding zones inspected: {count}
+Task em reference: {value} lx (from zone {task_zone_id})
+Per-zone ratio check:
+- {zone_id}: em_target_lux={value}, ratio={ratio:.3f}, band [0.3, 0.5], result: {pass | fail}
+Citation: BS EN 12464-1:2021 §4.2.2.2 + Table 6 (area-definitions.json).
+```
+
+**Severity:** HIGH.
+
+**Vacuous PASS:** no `surrounding` zones present → INV-14 PASSes with evidence noting `no surrounding zones — vacuous PASS`.
+```
+
+- [ ] **Step 4: Append INV-15 section — Background floor**
+
+In the same file, after INV-14, ADD:
+
+```markdown
+## INV-15 — Background floor (HIGH)
+
+**Clause:** BS EN 12464-1:2021 §4.2.2.3 + Table 6 (transcribed in area-definitions.json `background_area` + `table_6_ratio_rules.task_to_background`).
+
+**Check:** For every zone with `purpose == "background"`:
+
+- Let `task_em` = `em_target_lux` of any task zone in same room.
+- Verify `em_target_lux ≥ max(task_em / 3, 50 lx)`.
+
+**Evidence template:**
+
+```
+INV-15 verdict: PASS / FAIL
+Background zones inspected: {count}
+Task em reference: {value} lx (from zone {task_zone_id})
+Per-zone floor check:
+- {zone_id}: em_target_lux={value}, floor=max({task_em}/3, 50)={floor_value} lx, result: {pass | fail}
+Citation: BS EN 12464-1:2021 §4.2.2.3 + Table 6 (area-definitions.json).
+```
+
+**Severity:** HIGH.
+
+**Vacuous PASS:** no `background` zones → vacuous PASS.
+```
+
+- [ ] **Step 5: Append INV-16 section — mount_type ↔ z_mm/suspension consistency**
+
+In the same file, after INV-15, ADD:
+
+```markdown
+## INV-16 — mount_type ↔ z_mm/suspension consistency (HIGH)
+
+**Clause:** BS EN 60598-2-1 (general luminaire) + BS EN 60598-2-2 (recessed); repo `mount-type-rules.yaml` MT-01/02/03.
+
+**Check:** For every luminaire:
+
+- If `mount_type ∈ {pendant, suspended}`: BOTH `z_mm` AND `suspension_length_mm` are present (schema allOf clause 1 enforces; INV-16 verifies emit).
+- If `mount_type == "pendant"`: `z_mm + suspension_length_mm == ceiling_height_mm` (algebraic identity per MT-02).
+- If `mount_type == "suspended"`: `z_mm + suspension_length_mm ≤ ceiling_height_mm` (inequality per MT-03).
+- If `mount_type ∈ {recessed, surface, track}`: `z_mm` and `suspension_length_mm` MAY be omitted; if present, they inherit ceiling_height_mm convention (MT-01).
+
+**Evidence template:**
+
+```
+INV-16 verdict: PASS / FAIL
+Luminaires inspected: {count}
+Pendant geometry checks:
+- {luminaire_id}: z_mm={value}, suspension_length_mm={value}, ceiling_height_mm={value}, sum={sum}, identity: {pass | fail}
+Suspended geometry checks:
+- {luminaire_id}: sum={sum}, ceiling={ceiling}, inequality: {pass | fail}
+Recessed/surface/track: {count} luminaires, z_mm convention applied.
+Citation: BS EN 60598-2-1 + mount-type-rules.yaml MT-01/02/03.
+```
+
+**Severity:** HIGH.
+
+**Vacuous PASS:** all luminaires are recessed/surface/track with no z_mm → vacuous PASS (geometry inherited from ceiling).
+```
+
+- [ ] **Step 6: Append INV-17 section — Ceiling clearance + working-plane floor**
+
+In the same file, after INV-16, ADD:
+
+```markdown
+## INV-17 — Ceiling clearance + working-plane floor (HIGH)
+
+**Clause:** BS EN 12464-1:2021 §4.4 (working plane definition) + BS EN 60598-2 (luminaire mounting) + repo safety convention in MT-04.
+
+**Check:** For every luminaire (regardless of mount_type):
+
+- `z_mm > working_plane_mm` (luminaire emission plane must be ABOVE the task plane — no collision / occlusion risk).
+- `z_mm + suspension_length_mm ≤ ceiling_height_mm` (physical clearance from ceiling structure; pendant/suspended only — for recessed/surface, this is structurally implied).
+
+**Evidence template:**
+
+```
+INV-17 verdict: PASS / FAIL
+Working plane reference: {working_plane_mm} mm AFF.
+Per-luminaire floor check:
+- {luminaire_id}: z_mm={value}, working_plane={working_plane}, clearance={z - working_plane} mm, result: {pass | fail (luminaire below task plane)}
+Per-luminaire ceiling clearance:
+- {luminaire_id}: z_mm + suspension={sum}, ceiling={ceiling}, result: {pass | fail (luminaire exceeds ceiling)}
+Citation: BS EN 12464-1:2021 §4.4 + BS EN 60598-2 + MT-04.
+```
+
+**Severity:** HIGH.
+```
+
+- [ ] **Step 7: Append INV-18 section — hm_mm derived correctly**
+
+In the same file, after INV-17, ADD:
+
+```markdown
+## INV-18 — hm_mm derivation consistency (MEDIUM)
+
+**Clause:** repo geometry convention (no specific BS EN clause — derived identity); links BS EN 12464-1:2021 §4.4 working plane to BS EN 60598 mounting height.
+
+**Check:** `room.hm_mm` reconciles with luminaire z values per these rules:
+
+- For pendant/suspended luminaires: expected `hm_mm = min(z_mm across pendant/suspended luminaires) - working_plane_mm`.
+- For recessed/surface/track (no pendant/suspended in room): expected `hm_mm = ceiling_height_mm - working_plane_mm`.
+- Tolerance: ±50 mm (engineer-of-record rounding).
+
+**Evidence template:**
+
+```
+INV-18 verdict: PASS / FAIL
+Room hm_mm recorded: {value} mm.
+Expected hm_mm derivation:
+- Lowest pendant/suspended z_mm: {value} (or N/A if all recessed)
+- Working plane: {working_plane_mm}
+- Expected: {calculated_value} mm
+- Drift: {abs(recorded - expected)} mm, tolerance: ±50 mm
+Result: {pass | fail (drift exceeds tolerance)}
+Citation: BS EN 12464-1:2021 §4.4 + repo derivation convention.
+```
+
+**Severity:** MEDIUM (derivation drift is a calc-hygiene issue, not a safety hazard).
+
+**Vacuous PASS:** if `room.hm_mm` absent (calc-only / minimal-room mode), INV-18 PASSes vacuously.
+```
+
+- [ ] **Step 8: Append INV-19 section — Per-zone achievement (graded severity)**
+
+In the same file, after INV-18, ADD:
+
+```markdown
+## INV-19 — Per-zone achievement (graded severity)
+
+**Clause:** BS EN 12464-1:2021 §4.1 (top-level maintained illuminance principle) + Table 5 (per task type Em).
+
+**Check:** For every entry in `calculation_summary.per_zone_achieved[]`:
+
+- Compute `gap = em_target_lux - em_achieved_lux`.
+- Compute `gap_pct = gap / em_target_lux` (when em_target > 0; if em_target == 0, vacuous PASS).
+
+**Severity bands:**
+
+| `gap_pct` range | `ratio_compliance` | non_compliance_flag severity | INV-19 verdict per zone |
+|---|---|---|---|
+| `gap_pct ≤ 0` (achieved ≥ target) | `pass` | none | PASS |
+| `0 < gap_pct < 0.10` | `marginal` | INFO | PASS (within 10%) |
+| `0.10 ≤ gap_pct < 0.25` | `marginal` | INFO | PASS (within 25%) |
+| `0.25 ≤ gap_pct < 0.50` | `fail` | MEDIUM | FAIL (MEDIUM) |
+| `gap_pct ≥ 0.50` | `fail` | HIGH | FAIL (HIGH) |
+
+**Aggregate INV-19 verdict for the IR:** PASS if every zone is PASS or `marginal`; FAIL if any zone is `fail`. INV-19 severity = max severity across all failing zones.
+
+**Evidence template:**
+
+```
+INV-19 verdict: PASS / FAIL ({severity})
+Zones inspected: {count}
+Per-zone achievement:
+- {zone_id} ({purpose}): target={target}, achieved={achieved}, gap={gap}, gap_pct={gap_pct:.1%}, ratio_compliance={enum}, severity={band}
+Aggregate: {n_pass} PASS, {n_marginal} marginal, {n_fail_medium} MEDIUM, {n_fail_high} HIGH.
+Citation: BS EN 12464-1:2021 §4.1 + Table 5 (lux-levels.json).
+```
+
+**Severity:** graded (INFO / MEDIUM / HIGH per band). Default INV-19 severity at the invariant level is HIGH (worst case); per-zone severity attaches to `non_compliance_flags[]`.
+
+**Vacuous PASS:** if `per_zone_achieved[]` empty (no photometric cascade + no lumen calc), INV-19 PASSes vacuously with evidence noting `per_zone_achieved[] empty — calc pending photometric grid`.
+```
+
+- [ ] **Step 9: Update the validator umbrella heading if it counts INVs (e.g. "12 INV checks" → "19 INV checks")**
+
+Run:
+```bash
+grep -nE "12 INV|catalogue of 12|INV-01..INV-12|INV-01 to INV-12" electrical/lighting-layout/prompts/validator.md
+```
+
+If matches found, update to `19` / `INV-01..INV-19` accordingly.
+
+- [ ] **Step 10: Validate validator.md renders + grep for banned citations**
+
+Run:
+```bash
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/prompts/validator.md | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo FAIL || echo PASS
+```
+
+Expected: PASS.
+
+- [ ] **Step 11: Commit**
+
+```bash
+git add electrical/lighting-layout/prompts/validator.md
+git commit -m "feat(lighting-layout): B.2 validator.md — 7 new INV sections (INV-13..INV-19; 6 HIGH + 1 MEDIUM with graded INV-19 severity bands; all cite area-definitions.json from A.0 or lux-levels.json)"
+```
+
+### Task B.3: reviewer.md — 3 new D-checks (D-11 / D-12 / D-13)
+
+**Files:**
+- Modify: `electrical/lighting-layout/prompts/reviewer.md`
+
+**Why Opus:** Judgement-call content; D-checks are reviewer "smell tests" not algorithmic invariants; need carefully-worded thresholds that match spec §7.3.
+
+- [ ] **Step 1: Read existing reviewer.md to identify last D-check + umbrella heading**
+
+Run:
+```bash
+grep -nE "^### D-|^## The [0-9]+ D|^# " electrical/lighting-layout/prompts/reviewer.md | head -20
+```
+
+Expected: existing D-01..D-N sequence and umbrella heading (e.g. "## The 10 D dimensions" or similar).
+
+- [ ] **Step 2: Append D-11 — Suspension length sanity check**
+
+In `electrical/lighting-layout/prompts/reviewer.md`, after the last existing D-N section, ADD:
+
+```markdown
+### D-11 — Suspension length sanity check
+
+**Question:** For every pendant/suspended luminaire, is the `suspension_length_mm` sensible for the ceiling height + room scale?
+
+**Engineering judgement bands:**
+
+- `suspension_length_mm < 100 mm` for `mount_type=pendant`: flag as suspicious — at this drop the luminaire is functionally surface-mounted. Suggest re-classifying.
+- `suspension_length_mm > 2000 mm`: flag as unusual — typical pendant office drops are 500-1200 mm; >2 m suggests atrium / industrial highbay (mount_type=suspended preferred over pendant).
+- `suspension_length_mm > (ceiling_height_mm - working_plane_mm)`: flag as IMPOSSIBLE — luminaire would be below the task plane; INV-17 should already catch this, but reviewer surfaces the edge case as a JSON-shape sanity check.
+
+**Output:** Add a `_d11_review_note` field to `compliance_summary.assumptions[]` if any luminaire falls in a flag band.
+
+**Severity:** info (sanity / smell test, not a compliance check).
+```
+
+- [ ] **Step 3: Append D-12 — Background-only rooms flag**
+
+In the same file, after D-11, ADD:
+
+```markdown
+### D-12 — Background-only rooms flag
+
+**Question:** Does any room have only `background` zones (no `task` zones)?
+
+**Rule:** A room with all zones tagged `background` and no `task` zone is structurally suspicious unless the room is explicitly `circulation` (e.g. corridor, lobby).
+
+**Action:**
+
+- If `room.room_type ∈ {corridor, lobby, staircase, link_corridor}`: PASS — circulation rooms naturally lack task zones.
+- Else: FLAG. Suggest the engineer either (a) re-classify at least one zone as `task`, or (b) change `room.room_type` to a circulation category.
+
+**Output:** Add a `_d12_review_note` to `compliance_summary.assumptions[]` for any flagged room.
+
+**Severity:** warning (structural anomaly, not necessarily a defect).
+```
+
+- [ ] **Step 4: Append D-13 — Task-zone density flag**
+
+In the same file, after D-12, ADD:
+
+```markdown
+### D-13 — Task-zone density flag
+
+**Question:** Does a single room have >70% of its floor area allocated to `task` zones?
+
+**Rule:** BS EN 12464-1:2021 §4.2.2 framing expects task zones to be focal — surrounded by surrounding + background. A room that's 70%+ task is over-allocated; either the surrounding/background zones are missing or the task is over-broad.
+
+**Action:**
+
+- Compute task-zone area as sum of polygon areas for zones with `purpose: task`.
+- If `task_area / room_area > 0.7`: FLAG. Suggest re-allocation: add a `surrounding` zone for desk perimeters, or split the task zone into task + circulation.
+- Exception: small rooms (<10 m²) where the entire floor is the task plane (e.g. cellular office, treatment bay) — PASS with a `_small_room_exception` note.
+
+**Output:** Add a `_d13_review_note` to `compliance_summary.assumptions[]`.
+
+**Severity:** info.
+```
+
+- [ ] **Step 5: Update reviewer umbrella heading if it counts D-checks**
+
+Run:
+```bash
+grep -nE "[0-9]+ D dimensions|D-01..D-[0-9]+|catalogue of [0-9]+ D" electrical/lighting-layout/prompts/reviewer.md
+```
+
+If matches found, bump to the new total (e.g. "10 D dimensions" → "13 D dimensions"; the exact prior count comes from Step 1).
+
+- [ ] **Step 6: Validate reviewer.md + banned citation grep**
+
+Run:
+```bash
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/prompts/reviewer.md | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo FAIL || echo PASS
+```
+
+Expected: PASS.
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add electrical/lighting-layout/prompts/reviewer.md
+git commit -m "feat(lighting-layout): B.3 reviewer.md — 3 new D-checks (D-11 suspension sanity + D-12 background-only room flag + D-13 task-zone density flag)"
+```
+
+### Task B.4: Cascade-prereq context update (4 sources enumerated)
+
+**Files:**
+- Modify: `electrical/lighting-layout/prompts/generator.md` (cascade enumeration section)
+
+**Why Opus:** Engineering content (documenting the cascade sources by the time-of-consumption rules); not a contract change but a clarification of what's consumed where.
+
+- [ ] **Step 1: Read existing cascade-prereq section in generator.md**
+
+Run:
+```bash
+grep -nE "cascade|consumed_intents|photometric|special-locations" electrical/lighting-layout/prompts/generator.md | head -20
+```
+
+Expected: identify existing section that lists/discusses the photometric-analysis (INV-11) and special-locations (INV-12) cascade consumption.
+
+- [ ] **Step 2: Append (or augment existing) cascade enumeration table**
+
+In `electrical/lighting-layout/prompts/generator.md`, at the appropriate cascade section (typically after Step 12 or in a dedicated "Cascade sources" subsection), ADD or UPDATE the enumeration:
+
+```markdown
+## Cascade sources consumed by lighting-layout v1.7
+
+This skill consumes 2 cascade intents. Per-zone achievement (Step 15) primarily relies on the photometric cascade when present.
+
+| Cascade source | Intent skill | Consumed at | INV that verifies | v1.7 usage |
+|---|---|---|---|---|
+| `consumed_intents.photometric_grid` | `photometric-analysis` | Step 15 (per-zone achievement) | INV-11 | Per-zone `em_achieved_lux` derived by intersecting grid points with zone polygons. If absent, fall back to lumen-method × purpose_uniformity_factor (per Step 15 priority list). |
+| `consumed_intents.special_locations_zoning` | `special-locations` | Step 12 (existing) | INV-12 | Unchanged from v1.5.0. Special-locations payload does NOT contain `purpose` or `mount_type` — those are lighting-layout-side concerns. |
+
+**Why no contract change for photometric in v1.7:** photometric-analysis emits the grid + UGR; lighting-layout enriches per-zone Em by polygon-intersection on the consumer side. Photometric does not need to know about `zone.purpose` to do its job. v1.7 is additive on the consumer side only.
+
+**Honest disclosure for v1.7 examples without photometric cascade:** if `consumed_intents.photometric_grid` is absent, populate `per_zone_achieved[]` from the lumen-method × uniformity factor and document the assumption in `compliance_summary.assumptions[]` as "Em_achieved derived from lumen-method × purpose_uniformity_factor; pending full photometric grid solve for production sign-off."
+```
+
+- [ ] **Step 3: Validate generator.md renders + step ordering preserved**
+
+Run:
+```bash
+grep -nE "^## Step|^## Cascade" electrical/lighting-layout/prompts/generator.md | head -25
+```
+
+Expected: cascade-sources section appears after the relevant step (typically Step 12 or between Step 15 and rationale-block); step numbering unchanged.
+
+- [ ] **Step 4: Banned-citation grep**
+
+Run:
+```bash
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" electrical/lighting-layout/prompts/generator.md | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo FAIL || echo PASS
+```
+
+Expected: PASS.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add electrical/lighting-layout/prompts/generator.md
+git commit -m "feat(lighting-layout): B.4 generator.md cascade enumeration — 2 sources (photometric_grid + special_locations_zoning) documented with v1.7 usage notes"
+```
+
+---
