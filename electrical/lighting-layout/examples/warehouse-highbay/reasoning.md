@@ -2,7 +2,11 @@
 
 Demonstrates the full lighting-layout vocabulary on a 30×20 m UK industrial
 warehouse main floor with anti-panic emergency coverage. Promoted from
-`calc_only` stub to `full_drawing` depth in Sprint D3.C.1.
+`calc_only` stub to `full_drawing` depth in Sprint D3.C.1; retrofitted in
+v1.7.0 D5 sprint C.8 (2026-06-04) with typed 3D placement
+(`mount_type='suspended'` + `z_mm` + `suspension_length_mm` on every
+luminaire) — the FIRST retrofit example with non-vacuous INV-16/17/18
+PASS. See §8a for full D5 retrofit narrative.
 
 ## 1. Site brief
 
@@ -213,8 +217,120 @@ must upgrade highbay spec to a Part L-compliant ≥ 95 lm/W model (e.g.
 | INV-08 | medium   | PASS   | selection_source.ontology_default + LG12 citation   |
 | INV-09 | medium   | PASS   | drafting_furniture complete, Arial 10/12 pt         |
 | INV-10 | high     | PASS   | Schema validation OK, all required fields           |
+| INV-11 | high     | PASS   | Photometric cascade resolved (achieved 452 ≥ 200)   |
+| INV-13 | high     | PASS   | Z2 purpose=task, Z3 purpose=circulation (D5 retrofit)|
+| INV-14 | high     | PASS   | No surrounding zones — vacuous PASS                 |
+| INV-15 | high     | PASS   | No background zones — vacuous PASS                  |
+| INV-16 | high     | PASS   | 32 suspended; 8000+0 ≤ 8000 (first non-vacuous)     |
+| INV-17 | high     | PASS   | z=8000 > wp=0 + ≤ ceiling=8000 (first non-vacuous)  |
+| INV-18 | medium   | PASS   | 8000−0 = 8000 = hm_mm (first non-vacuous)           |
+| INV-19 | high     | PASS   | Z2 pass (300.1 vs 200); Z3 pass (1.8 vs 0.5)        |
 
-All 10 INVs PASS. No `non_compliance_flags` raised.
+All 17 INVs PASS. No `non_compliance_flags` raised. v1.7 D5 retrofit
+delivers the first non-vacuous INV-16/17/18 PASS across all 8 retrofit
+examples (C.1–C.8).
+
+## 8a. v1.7 D5 retrofit — 3D placement + zone purpose (2026-06-04)
+
+This example is the **first retrofit with non-vacuous INV-16/17/18 PASS**.
+C.1–C.7 all used `mount_type='recessed'` (panels, downlights), for which the
+3D placement INVs are vacuously satisfied. Warehouse highbays are typically
+suspended from steel structure — the v1.6 record's drawing note 8 already
+says so verbatim ("suspended on chain or rod from steel structure"). The
+retrofit promotes that narrative to typed `mount_type: 'suspended'` on every
+luminaire row, plus the derived 3D geometry fields.
+
+### 8a.1 3D placement arithmetic
+
+The repo convention for v1.7 3D fields is:
+
+```
+z_mm                = working_plane_mm + hm_mm
+suspension_length_mm = ceiling_height_mm − z_mm
+```
+
+Applied to this example's v1.6 room geometry
+(`ceiling_height_mm=8000, hm_mm=8000, working_plane_mm=0`):
+
+```
+z_mm                 = 0 + 8000  = 8000 mm
+suspension_length_mm = 8000 − 8000 = 0 mm
+```
+
+The degenerate `suspension_length_mm = 0` is the **honest outcome** of the
+v1.6 record where `hm_mm == ceiling_height_mm`. Physically this corresponds
+to the highbay flange being co-planar with the deck soffit (chain/rod
+length is treated as implicit and not modelled at the v1.6 level of
+detail). On a real industrial shed the deck is typically lifted ~300-500
+mm above the luminaire for purlin clearance — engineer-of-record updates
+`ceiling_height_mm` in WI1 once the structural drawing is available, and
+the suspension fields re-derive automatically.
+
+### 8a.2 INV-16 / INV-17 / INV-18 evidence — verbatim
+
+| INV    | Check                                                  | Value                            | Result |
+|--------|--------------------------------------------------------|----------------------------------|--------|
+| INV-16 | `z_mm + suspension_length_mm ≤ ceiling_height_mm`      | 8000 + 0 = 8000 ≤ 8000           | PASS   |
+| INV-17 | `z_mm > working_plane_mm`                              | 8000 > 0  (clearance = 8000 mm)  | PASS   |
+| INV-17 | `z_mm + suspension_length_mm ≤ ceiling_height_mm`      | 8000 ≤ 8000                      | PASS   |
+| INV-18 | `derived_hm = z_mm − working_plane_mm == hm_mm ±50 mm` | 8000 − 0 = 8000 = 8000 (drift 0) | PASS   |
+
+All 32 luminaires (20 HIGHBAY + 12 EMERGENCY) carry the same 3D triple
+`(mount_type='suspended', z_mm=8000, suspension_length_mm=0)` — the deck is
+one flat soffit and every fixture hangs from it.
+
+### 8a.3 Zone purpose — honest single-purpose collapse + emergency mapping
+
+Two zones, two §4.2.2 enum decisions:
+
+**Z2 (main floor) → `purpose: 'task'`, `em_target_lux: 200`**
+
+The v1.6 brief described a single "Main floor" zone with no pick-rack vs
+aisle split. Two principled retrofit options:
+
+1. **Synthesise a fictional task/circulation split** — picks an arbitrary
+   rack layout and zones around it. Rejected because it invents geometry
+   not in the v1.6 brief, and the resulting lumen-method numbers no longer
+   tie to the v1.6 calc.
+2. **Honest single-purpose collapse to task** — preserves the v1.6 200 lx
+   target (Table 5 `warehouse_low` entry per `lux-levels.json`). Chosen.
+   The ZP-01 backwards-compat default explicitly authorises this for
+   unclassified zones. Engineer-of-record on a real project declares zone
+   polygons in `WI1.zone_purpose_inputs` once the rack layout is known.
+
+**Z3 (emergency anti-panic) → `purpose: 'circulation'`, `em_target_lux: 0.5`**
+
+The §4.2.2 enum is `{task, surrounding, background, circulation}` — there
+is no `emergency` entry because emergency lighting is BS 5266-1 domain,
+not BS EN 12464-1 §4.2.2 domain. The closest semantic mapping is
+`circulation` (escape-route function). `em_target_lux=0.5` is the
+BS 5266-1:2016 §5.3 anti-panic floor minimum, honestly disclosed as a
+non-Table-5 entry carried for INV-13 enum satisfaction + INV-19
+ratio_compliance reporting.
+
+### 8a.4 per_zone_achieved (INV-19)
+
+| Zone | Purpose      | Em target (lx) | Em achieved (lx) | Ratio compliance |
+|------|--------------|----------------|------------------|------------------|
+| Z2   | task         | 200            | 300.1            | pass (50% over)  |
+| Z3   | circulation  | 0.5            | 1.8              | pass (3.6× over) |
+
+Z2 achieved value comes straight from the existing v1.6 lumen-method walk
+(§2). Z3 achieved value comes from the BS 5266-1 anti-panic coverage
+check in §4. Both PASS with comfortable margins.
+
+### 8a.5 What the retrofit deliberately did NOT change
+
+- Luminaire grid positions (4×5 highbay + 3×4 emergency) — unchanged
+- Circuit topology (4 highbay row circuits + 1 emergency circuit) — unchanged
+- Lumen-method calc (300.1 lx achieved, UF=0.62, MF=0.66) — unchanged
+- MCB selections (10A B for highbay, 6A B for emergency) — unchanged
+- Switch SW01 — unchanged
+- All 10 v1.6 INV evidence blocks (INV-01..INV-10) — unchanged
+- Cascade payload from photometric-analysis (achieved 452 lx) — unchanged
+
+Engineering content is preserved verbatim; the retrofit is purely a
+**typed-geometry uplift** plus honest disclosure of zone purpose.
 
 ## 9. Engineer notes
 

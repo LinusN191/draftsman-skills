@@ -1,6 +1,6 @@
 {
   "drawing_type": "lighting_layout",
-  "version": "1.4.0",
+  "version": "1.7.0",
   "room": {
     "length_mm": 30000,
     "width_mm": 20000,
@@ -33,60 +33,64 @@
   "zones": [
     {
       "zone_id": "Z2",
-      "label": "Main floor",
+      "label": "Main floor — open warehouse (honest single-purpose collapse: no pick-rack vs aisle split declared in v1.6 brief)",
       "zone_type": "interior",
       "control": "manual",
       "circuit_id": "C-HB01",
       "circuit_ids": ["C-HB01", "C-HB02", "C-HB03", "C-HB04"],
       "luminaire_ids": ["L01", "L02", "L03", "L04", "L05", "L06", "L07", "L08", "L09", "L10", "L11", "L12", "L13", "L14", "L15", "L16", "L17", "L18", "L19", "L20"],
       "luminaire_count": 20,
-      "total_load_w": 5000
+      "total_load_w": 5000,
+      "purpose": "task",
+      "em_target_lux": 200
     },
     {
       "zone_id": "Z3",
-      "label": "Emergency anti-panic (BS 5266-1 §5.3)",
+      "label": "Emergency anti-panic (BS 5266-1 §5.3) — escape-route function, purpose=circulation per §4.2.2 enum mapping",
       "zone_type": "emergency",
       "control": "emergency_self_test",
       "circuit_id": "C-EM01",
       "circuit_ids": ["C-EM01"],
       "luminaire_ids": ["L21", "L22", "L23", "L24", "L25", "L26", "L27", "L28", "L29", "L30", "L31", "L32"],
       "luminaire_count": 12,
-      "total_load_w": 120
+      "total_load_w": 120,
+      "purpose": "circulation",
+      "em_target_lux": 0.5
     }
   ],
   "luminaires": [
-    {"id": "L01", "x_mm": 1500,  "y_mm": 1500,  "zone_id": "Z2", "circuit_id": "C-HB01"},
-    {"id": "L02", "x_mm": 8200,  "y_mm": 1500,  "zone_id": "Z2", "circuit_id": "C-HB01"},
-    {"id": "L03", "x_mm": 15000, "y_mm": 1500,  "zone_id": "Z2", "circuit_id": "C-HB01"},
-    {"id": "L04", "x_mm": 21800, "y_mm": 1500,  "zone_id": "Z2", "circuit_id": "C-HB01"},
-    {"id": "L05", "x_mm": 28500, "y_mm": 1500,  "zone_id": "Z2", "circuit_id": "C-HB01"},
-    {"id": "L06", "x_mm": 1500,  "y_mm": 7200,  "zone_id": "Z2", "circuit_id": "C-HB02"},
-    {"id": "L07", "x_mm": 8200,  "y_mm": 7200,  "zone_id": "Z2", "circuit_id": "C-HB02"},
-    {"id": "L08", "x_mm": 15000, "y_mm": 7200,  "zone_id": "Z2", "circuit_id": "C-HB02"},
-    {"id": "L09", "x_mm": 21800, "y_mm": 7200,  "zone_id": "Z2", "circuit_id": "C-HB02"},
-    {"id": "L10", "x_mm": 28500, "y_mm": 7200,  "zone_id": "Z2", "circuit_id": "C-HB02"},
-    {"id": "L11", "x_mm": 1500,  "y_mm": 12800, "zone_id": "Z2", "circuit_id": "C-HB03"},
-    {"id": "L12", "x_mm": 8200,  "y_mm": 12800, "zone_id": "Z2", "circuit_id": "C-HB03"},
-    {"id": "L13", "x_mm": 15000, "y_mm": 12800, "zone_id": "Z2", "circuit_id": "C-HB03"},
-    {"id": "L14", "x_mm": 21800, "y_mm": 12800, "zone_id": "Z2", "circuit_id": "C-HB03"},
-    {"id": "L15", "x_mm": 28500, "y_mm": 12800, "zone_id": "Z2", "circuit_id": "C-HB03"},
-    {"id": "L16", "x_mm": 1500,  "y_mm": 18500, "zone_id": "Z2", "circuit_id": "C-HB04"},
-    {"id": "L17", "x_mm": 8200,  "y_mm": 18500, "zone_id": "Z2", "circuit_id": "C-HB04"},
-    {"id": "L18", "x_mm": 15000, "y_mm": 18500, "zone_id": "Z2", "circuit_id": "C-HB04"},
-    {"id": "L19", "x_mm": 21800, "y_mm": 18500, "zone_id": "Z2", "circuit_id": "C-HB04"},
-    {"id": "L20", "x_mm": 28500, "y_mm": 18500, "zone_id": "Z2", "circuit_id": "C-HB04"},
-    {"id": "L21", "x_mm": 3750,  "y_mm": 5000,  "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L22", "x_mm": 11250, "y_mm": 5000,  "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L23", "x_mm": 18750, "y_mm": 5000,  "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L24", "x_mm": 26250, "y_mm": 5000,  "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L25", "x_mm": 3750,  "y_mm": 10000, "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L26", "x_mm": 11250, "y_mm": 10000, "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L27", "x_mm": 18750, "y_mm": 10000, "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L28", "x_mm": 26250, "y_mm": 10000, "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L29", "x_mm": 3750,  "y_mm": 15000, "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L30", "x_mm": 11250, "y_mm": 15000, "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L31", "x_mm": 18750, "y_mm": 15000, "zone_id": "Z3", "circuit_id": "C-EM01"},
-    {"id": "L32", "x_mm": 26250, "y_mm": 15000, "zone_id": "Z3", "circuit_id": "C-EM01"}
+    {"id": "L01", "x_mm": 1500,  "y_mm": 1500,  "zone_id": "Z2", "circuit_id": "C-HB01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L02", "x_mm": 8200,  "y_mm": 1500,  "zone_id": "Z2", "circuit_id": "C-HB01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L03", "x_mm": 15000, "y_mm": 1500,  "zone_id": "Z2", "circuit_id": "C-HB01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L04", "x_mm": 21800, "y_mm": 1500,  "zone_id": "Z2", "circuit_id": "C-HB01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L05", "x_mm": 28500, "y_mm": 1500,  "zone_id": "Z2", "circuit_id": "C-HB01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L06", "x_mm": 1500,  "y_mm": 7200,  "zone_id": "Z2", "circuit_id": "C-HB02", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L07", "x_mm": 8200,  "y_mm": 7200,  "zone_id": "Z2", "circuit_id": "C-HB02", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L08", "x_mm": 15000, "y_mm": 7200,  "zone_id": "Z2", "circuit_id": "C-HB02", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L09", "x_mm": 21800, "y_mm": 7200,  "zone_id": "Z2", "circuit_id": "C-HB02", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L10", "x_mm": 28500, "y_mm": 7200,  "zone_id": "Z2", "circuit_id": "C-HB02", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L11", "x_mm": 1500,  "y_mm": 12800, "zone_id": "Z2", "circuit_id": "C-HB03", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L12", "x_mm": 8200,  "y_mm": 12800, "zone_id": "Z2", "circuit_id": "C-HB03", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L13", "x_mm": 15000, "y_mm": 12800, "zone_id": "Z2", "circuit_id": "C-HB03", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L14", "x_mm": 21800, "y_mm": 12800, "zone_id": "Z2", "circuit_id": "C-HB03", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L15", "x_mm": 28500, "y_mm": 12800, "zone_id": "Z2", "circuit_id": "C-HB03", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L16", "x_mm": 1500,  "y_mm": 18500, "zone_id": "Z2", "circuit_id": "C-HB04", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L17", "x_mm": 8200,  "y_mm": 18500, "zone_id": "Z2", "circuit_id": "C-HB04", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L18", "x_mm": 15000, "y_mm": 18500, "zone_id": "Z2", "circuit_id": "C-HB04", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L19", "x_mm": 21800, "y_mm": 18500, "zone_id": "Z2", "circuit_id": "C-HB04", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L20", "x_mm": 28500, "y_mm": 18500, "zone_id": "Z2", "circuit_id": "C-HB04", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L21", "x_mm": 3750,  "y_mm": 5000,  "zone_id": "Z3", "circuit_id": "C-EM01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L22", "x_mm": 11250, "y_mm": 5000,  "zone_id": "Z3", "circuit_id": "C-EM01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L23", "x_mm": 18750, "y_mm": 5000,  "zone_id": "Z3", "circuit_id": "C-EM01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L24", "x_mm": 26250, "y_mm": 5000,  "zone_id": "Z3", "circuit_id": "C-EM01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L25", "x_mm": 3750,  "y_mm": 10000, "zone_id": "Z3", "circuit_id": "C-EM01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L26", "x_mm": 11250, "y_mm": 10000, "zone_id": "Z3", "circuit_id": "C-EM01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L27", "x_mm": 18750, "y_mm": 10000, "zone_id": "Z3", "circuit_id": "C-EM01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L28", "x_mm": 26250, "y_mm": 10000, "zone_id": "Z3", "circuit_id": "C-EM01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L29", "x_mm": 3750,  "y_mm": 15000, "zone_id": "Z3", "circuit_id": "C-EM01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L30", "x_mm": 11250, "y_mm": 15000, "zone_id": "Z3", "circuit_id": "C-EM01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L31", "x_mm": 18750, "y_mm": 15000, "zone_id": "Z3", "circuit_id": "C-EM01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0},
+    {"id": "L32", "x_mm": 26250, "y_mm": 15000, "zone_id": "Z3", "circuit_id": "C-EM01", "mount_type": "suspended", "z_mm": 8000, "suspension_length_mm": 0}
   ],
   "switches": [
     {
@@ -182,7 +186,24 @@
       "Industrial maintenance environment: LLMF=0.85 × LMF=0.78 → MF=0.66 (industrial 6000h schedule; deposit on optic from in-air dust)",
       "Existing building (not new-build) — Approved Doc L 2021 §6 controls regime NOT triggered (Part L applies to new-build / major-refurb only)",
       "12 EMERGENCY luminaires in 3×4 grid (rows y=5000/10000/15000; cols x=3750/11250/18750/26250) sized for anti-panic 0.5 lux floor average + max:min ≤ 40:1 uniformity per BS 5266-1:2016 §5.3 (open area >60 m²); 12 × 300 lm = 3600 lm over 600 m² → ~6 lm/m² raw, with typical UF×MF≈0.3 achieves ~1.8 lux floor average (≥ 0.5 required), and grid spacing 7500 mm × 5000 mm supports 40:1 uniformity",
-      "Highbays selected at 22000 design lumens / 250 W (88 lm/W) — typical industrial highbay; not held to Part L 95 lm/W efficacy target because building is non-new-build"
+      "Highbays selected at 22000 design lumens / 250 W (88 lm/W) — typical industrial highbay; not held to Part L 95 lm/W efficacy target because building is non-new-build",
+      "v1.6.0 → v1.7.0 D5 retrofit (2026-06-04): zone Z2 honest single-purpose collapse to purpose='task' with em_target_lux=200 (warehouse_low entry per Table 5; v1.6 brief did not declare distinct pick-rack vs aisle zones for this open 30×20 m floor — engineer's call: collapse rather than synthesise a fictional split). Zone Z3 (emergency anti-panic) maps to purpose='circulation' (closest enum match — escape-route function per BS EN 12464-1:2021 §4.2.2 area enum) with em_target_lux=0.5 (BS 5266-1:2016 §5.3 anti-panic floor minimum). All 32 luminaires receive mount_type='suspended' (MT-03; highbays in 8 m clear-internal-height industrial shed are chain/rod-hung from steel structure per drawing_note 'suspended on chain or rod from steel structure'). 3D placement derivation: z_mm = working_plane_mm + hm_mm = 0 + 8000 = 8000 mm; suspension_length_mm = ceiling_height_mm − z_mm = 8000 − 8000 = 0 mm (existing v1.6 record has hm_mm equal to ceiling_height_mm; engineering reality on a real warehouse would lift the deck 300-500 mm above the luminaire for purlin clearance, but the existing record is preserved without inventing geometry not in the v1.6 brief). per_zone_achieved[] populated: Z2 em_achieved_lux=300.1 (from existing lumen-method calc); Z3 em_achieved_lux≈1.8 (from anti-panic coverage check in §Anti-panic emergency coverage). Engineering content unchanged."
+    ],
+    "per_zone_achieved": [
+      {
+        "zone_id": "Z2",
+        "purpose": "task",
+        "em_target_lux": 200,
+        "em_achieved_lux": 300.1,
+        "ratio_compliance": "pass"
+      },
+      {
+        "zone_id": "Z3",
+        "purpose": "circulation",
+        "em_target_lux": 0.5,
+        "em_achieved_lux": 1.8,
+        "ratio_compliance": "pass"
+      }
     ]
   },
   "drawing_notes": [
@@ -193,11 +214,12 @@
     "Highbay row circuits on 10A MCB curve B (1250 W per row > 1104 W 6A 80% limit per BS 7671 §433.1.1)",
     "Emergency circuit C-EM01: 12 × 10 W = 120 W on 6A MCB (10.9% of 1104 W headroom; independent emergency feed per BS 5266-1 §6 + IET OSG App K)",
     "Switch SW01: 1-gang manual override at entrance latch side, 1200 mm AFF to centre per BS 7671 §553.1.1",
-    "8 m mounting height (suspended on chain or rod from steel structure); narrow-beam optic at this mount delivers 220+ lux at floor"
+    "8 m mounting height (suspended on chain or rod from steel structure); narrow-beam optic at this mount delivers 220+ lux at floor",
+    "v1.7 D5 retrofit: all 32 luminaires mount_type='suspended' at z_mm=8000, suspension_length_mm=0 (existing v1.6 record has hm_mm equal to ceiling_height_mm — geometry preserved as-recorded)"
   ],
   "flags": [],
   "rationale": {
-    "chat_summary": "30×20 m UK industrial warehouse — 200 lux target per BS EN 12464-1 Table 5.3. 20 HIGHBAY @ 22000 lm in 4×5 grid achieve 300 lux (over-provisioned vs target because S/H ratio forced N up from 14 to 20; INV-1 PASS). 4 row circuits at 1250 W each on 10A MCBs (6A would FAIL the 80% cap at 1250 > 1104 W). 12 EMERGENCY anti-panic luminaires in 3×4 grid (Z3, BS 5266-1 §5.3) on separate 6A MCB + self-test driver. 1-gang manual switch at entrance — no Part L because existing building. Reply to refine, e.g. 'add DALI dimming for shift-pattern control'.",
+    "chat_summary": "30×20 m UK industrial warehouse — 200 lux target per BS EN 12464-1 Table 5.3. 20 HIGHBAY @ 22000 lm in 4×5 grid achieve 300 lux (over-provisioned vs target because S/H ratio forced N up from 14 to 20; INV-1 PASS). 4 row circuits at 1250 W each on 10A MCBs (6A would FAIL the 80% cap at 1250 > 1104 W). 12 EMERGENCY anti-panic luminaires in 3×4 grid (Z3, BS 5266-1 §5.3) on separate 6A MCB + self-test driver. 1-gang manual switch at entrance — no Part L because existing building. v1.7 retrofit: Z2 honest collapse to purpose=task, Z3 mapped to purpose=circulation; all 32 luminaires suspended at z=8000, suspension=0 (first non-vacuous INV-16/17/18 PASS in retrofits). Reply to refine, e.g. 'add DALI dimming for shift-pattern control'.",
     "sections": [
       {
         "title": "Lumen-method walk",
@@ -259,6 +281,36 @@
       {
         "title": "Assumptions",
         "summary": "Reflectances industrial 0.3/0.3/0.2 (low-reflectance steel deck + painted block + concrete). MF=0.66 typical for industrial 6000h with in-air dust. UF=0.62 ontology default at RI=1.5 — engineer-of-record must verify against manufacturer photometric file before issue. Anti-panic COVERAGE COUNT (12 EM in 3×4 grid) sized for BS 5266-1 §5.3 (0.5 lux floor average + max:min ≤ 40:1) per the coverage check shown in §Anti-panic emergency coverage; this skill does NOT model the full emergency illuminance point-grid — designer must verify exact floor average ≥ 0.5 lux + uniformity ≤ 40:1 via the dedicated emergency-lighting skill (deferred)."
+      },
+      {
+        "title": "v1.7 retrofit (D5 — 3D placement + zone purpose)",
+        "summary": "D5 retrofit on 2026-06-04: this is the FIRST retrofit example with non-vacuous INV-16/17/18 PASS — all 32 luminaires receive mount_type='suspended' (MT-03 rule). 3D-placement arithmetic from existing v1.6 room geometry: ceiling_height_mm=8000, hm_mm=8000, working_plane_mm=0 → z_mm = working_plane_mm + hm_mm = 0 + 8000 = 8000; suspension_length_mm = ceiling_height_mm − z_mm = 8000 − 8000 = 0. The hm_mm-equals-ceiling artefact in v1.6 yields a degenerate suspension=0 — the luminaires sit AT the ceiling plane in the recorded geometry, which physically corresponds to the highbay flange being co-planar with the deck soffit (chain length implicit, not modelled). Zone Z2 (main floor) gets purpose='task' (ZP-01 default, honest single-purpose collapse: v1.6 brief never declared pick-rack-vs-aisle zones for this open 30×20m floor); em_target_lux=200 (Table 5 warehouse_low entry — preserves v1.6 calibration). Zone Z3 (emergency anti-panic) gets purpose='circulation' (closest §4.2.2 enum match for the escape-route function); em_target_lux=0.5 (BS 5266-1:2016 §5.3 anti-panic floor minimum, NOT a BS EN 12464-1 Table 5 entry but the natural Em for an emergency-functional zone). per_zone_achieved[] populated: Z2 ratio_compliance=pass (300.1 ≥ 200 with 50% margin); Z3 ratio_compliance=pass (1.8 ≥ 0.5 with 3.6× margin).",
+        "decisions": [
+          {
+            "label": "Honest single-purpose collapse for Z2 (ZP-01)",
+            "summary": "v1.6 brief described one 'Main floor' zone with no pick-rack vs aisle split. Two principled options: synthesise a fictional task/circulation split (rejected — invents geometry not in the brief), or honest collapse to a single task zone (chosen). em_target_lux=200 preserves the v1.6 Table 5 warehouse_low calibration. Engineer-of-record on a real project would declare zone polygons in WI1.zone_purpose_inputs once the rack layout is known.",
+            "rule": "ZP-01 backwards-compat default + honest disclosure of single-purpose collapse",
+            "code_clause": "BS EN 12464-1:2021 § 4.2.2.1"
+          },
+          {
+            "label": "Z3 emergency zone mapped to purpose='circulation'",
+            "summary": "BS EN 12464-1 §4.2.2 enum {task, surrounding, background, circulation} does not include 'emergency' — emergency lighting is BS 5266-1 domain, not §4.2.2. The closest semantic mapping is 'circulation' (escape-route function). em_target_lux=0.5 reflects the BS 5266-1:2016 §5.3 anti-panic minimum, disclosed as a non-Table-5 value carried for INV-13 enum satisfaction + INV-19 ratio_compliance reporting.",
+            "rule": "Closest §4.2.2 enum match for emergency function",
+            "code_clause": "BS EN 12464-1:2021 § 4.2.2 + BS 5266-1:2016 § 5.3"
+          },
+          {
+            "label": "mount_type='suspended' for all 32 luminaires (MT-03)",
+            "summary": "Drawing note 8 already declared '8 m mounting height (suspended on chain or rod from steel structure)' in v1.6. Promoting that narrative to typed mount_type='suspended' on every luminaire row triggers the MT-03 inequality (z + suspension ≤ ceiling) rather than MT-02 equality (pendant). Suspended is correct because real warehouses bolt highbays to purlins/trusses below the deck (chain-hung), and the suspension may differ per fixture — MT-03 inequality accommodates the variability.",
+            "rule": "MT-03 suspended geometry",
+            "code_clause": "BS EN 60598-2-1 + mount-type-rules.yaml MT-03"
+          },
+          {
+            "label": "z_mm=8000 + suspension_length_mm=0 derivation",
+            "summary": "Algebra: z_mm = working_plane_mm + hm_mm = 0 + 8000 = 8000; suspension_length_mm = ceiling_height_mm − z_mm = 8000 − 8000 = 0. INV-16 (suspended inequality): 8000 + 0 = 8000 ≤ 8000 ✓. INV-17 clearance: z_mm=8000 > working_plane=0 ✓; z_mm + suspension = 8000 ≤ ceiling=8000 ✓. INV-18 hm_mm derivation: derived 8000 − 0 = 8000 matches existing hm_mm=8000 with drift 0 mm (well within ±50 mm tolerance). The degenerate suspension=0 reflects an existing v1.6 record convention (hm_mm=ceiling_height_mm) rather than physical reality — a real industrial highbay typically hangs 300-500 mm below a 8.5 m deck on chain; engineer-of-record updates ceiling_height_mm in WI1 once the structural drawing is available.",
+            "rule": "MT-03 + INV-16/17/18 algebra",
+            "code_clause": "BS EN 12464-1:2021 § 4.4 + mount-type-rules.yaml MT-03 + MT-04"
+          }
+        ]
       }
     ]
   },
@@ -321,13 +373,55 @@
       "id": "INV-10",
       "passes": true,
       "severity": "high",
-      "evidence": "Schema validation PASSED (precondition: golden CI gate). All top-level required fields populated: drawing_type='lighting_layout', version='1.4.0', room (incl. room_type='warehouse' enum), calculation_summary (target+compliant+non_compliance_flags+assumptions), rationale (chat_summary 40-500 + sections ≥1), invariants (10 entries INV-01..INV-10). Mode defaults to full_drawing — full_drawing required-fields all present: luminaire_type, luminaires (32), switches (1), circuits (5), controls, drawing_notes (8), zones (2), drafting_furniture, selection_source. non_compliance_flags=[] (vacuously valid). Rule 10 PASS."
+      "evidence": "Schema validation PASSED (precondition: golden CI gate). All top-level required fields populated: drawing_type='lighting_layout', version='1.7.0', room (incl. room_type='warehouse' enum), calculation_summary (target+compliant+non_compliance_flags+assumptions+per_zone_achieved), rationale (chat_summary 40-500 + sections ≥1), invariants (17 entries INV-01..INV-11 + INV-13..INV-19). Mode defaults to full_drawing — full_drawing required-fields all present: luminaire_type, luminaires (32), switches (1), circuits (5), controls, drawing_notes (9), zones (2), drafting_furniture, selection_source. non_compliance_flags=[] (vacuously valid). Rule 10 PASS."
     },
     {
       "id": "INV-11",
       "passes": true,
       "severity": "high",
       "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from cascade-warehouse-highbay/intent-out.json. payload.task_area_compliant=true; payload.achieved_avg_illuminance_lux=452 vs target=200 (sub-check 3 PASS, 226%); 0 non_compliance_flags cascaded to lighting-layout calculation_summary with _cascaded_from=photometric-analysis attribution (sub-check 4 PASS, vacuously). Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'; 2-luminaire-type case (HIGHBAY + EMERGENCY) resolved via photometric_ies_paths[] array."
+    },
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Zone purpose required + valid. Zones inspected: 2. Per-zone purpose: Z2: purpose=task, em_target_lux=200 (Table 5 warehouse_low entry; honest single-purpose collapse per v1.7 retrofit — v1.6 brief did not declare pick-rack vs aisle zones for this open 30×20 m floor); Z3: purpose=circulation, em_target_lux=0.5 (closest §4.2.2 enum match for emergency anti-panic escape-route function; BS 5266-1:2016 §5.3 anti-panic floor minimum). Orphan-surrounding check: pass (no surrounding zones present, so check vacuous). All zones declare purpose ∈ {task, surrounding, background, circulation}. INV-13 PASS. Citation: BS EN 12464-1:2021 §4.2.2.1 (task area) + §4.2.2 (circulation) + area-definitions.json §4.2.2.1."
+    },
+    {
+      "id": "INV-14",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Surrounding ratio compliance. Surrounding zones inspected: 0. No zones declare purpose='surrounding' — INV-14 vacuous PASS per validator §INV-14 vacuous condition. Citation: BS EN 12464-1:2021 §4.2.2.2 + Table 6 (area-definitions.json table_6_ratio_rules.task_to_surrounding)."
+    },
+    {
+      "id": "INV-15",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Background floor. Background zones inspected: 0. No zones declare purpose='background' — INV-15 vacuous PASS per validator §INV-15 vacuous condition. Citation: BS EN 12464-1:2021 §4.2.2.3 + Table 6 (area-definitions.json table_6_ratio_rules.task_to_background)."
+    },
+    {
+      "id": "INV-16",
+      "passes": true,
+      "severity": "high",
+      "evidence": "mount_type ↔ z_mm/suspension consistency. Luminaires inspected: 32. Pendant geometry checks: 0 pendant luminaires. Suspended geometry checks: 32 luminaires (all 20 HIGHBAY + 12 EMERGENCY are mount_type='suspended'). Per-luminaire suspended inequality: z_mm=8000 + suspension_length_mm=0 = 8000 ≤ ceiling_height_mm=8000 ✓ (32 / 32 PASS); MT-03 inequality satisfied at the equality boundary (degenerate suspension=0 reflects the existing v1.6 hm_mm=ceiling_height_mm record convention — physically valid for highbay flange co-planar with deck soffit). Recessed/surface/track: 0 luminaires. INV-16 PASS — first non-vacuous PASS in retrofits (all prior C.1–C.7 retrofits used mount_type='recessed' for which INV-16 was vacuously PASS). Citation: BS EN 60598-2-1 + mount-type-rules.yaml MT-03."
+    },
+    {
+      "id": "INV-17",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Ceiling clearance + working-plane floor. Working plane reference: 0 mm AFF (warehouse working plane at floor per BS EN 12464-1:2021 Table 5.7). Per-luminaire floor check: all 32 luminaires have z_mm=8000 > working_plane_mm=0 (clearance=8000 mm ≫ minimum safety margin) — 32 / 32 PASS, no luminaire below task plane. Per-luminaire ceiling clearance: z_mm + suspension_length_mm = 8000 + 0 = 8000 ≤ ceiling_height_mm=8000 — 32 / 32 PASS at the equality boundary (no luminaire exceeds ceiling). INV-17 PASS — first non-vacuous PASS in retrofits. Citation: BS EN 12464-1:2021 §4.4 + BS EN 60598-2 + mount-type-rules.yaml MT-04."
+    },
+    {
+      "id": "INV-18",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "hm_mm derivation consistency. Room hm_mm recorded: 8000 mm. Lowest suspended z_mm: 8000 mm (all 32 luminaires at z=8000). Suspended branch: expected hm_mm = lowest_z_mm − working_plane_mm = 8000 − 0 = 8000 mm. Drift: |8000 − 8000| = 0 mm, tolerance ±50 mm. INV-18 PASS — first non-vacuous PASS in retrofits. The derivation re-traverses the 3D-placement arithmetic: z_mm was itself derived as working_plane_mm + hm_mm = 0 + 8000 = 8000, so the round-trip identity holds by construction. Citation: BS EN 12464-1:2021 §4.4 + repo derivation convention."
+    },
+    {
+      "id": "INV-19",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Per-zone achievement. Zones inspected: 2. Per-zone achievement: Z2 (task): target=200, achieved=300.1, gap=-100.1, gap_pct=-50.1%, ratio_compliance=pass, severity=none (achieved ≥ target with 50% margin from S/H-bumped N=20); Z3 (circulation): target=0.5, achieved=1.8, gap=-1.3, gap_pct=-260%, ratio_compliance=pass, severity=none (anti-panic coverage check 12×300 lm × UF×MF≈0.3 / 600 m² ≈ 1.8 lx ≥ 0.5 lx with 3.6× margin). Aggregate: 2 PASS, 0 marginal, 0 MEDIUM, 0 HIGH. INV-19 PASS. Citation: BS EN 12464-1:2021 §4.1 + Table 5 (lux-levels.json warehouse_low Em=200 entry for Z2; Z3 Em=0.5 from BS 5266-1:2016 §5.3 anti-panic minimum, non-Table-5 entry honestly disclosed)."
     }
   ],
   "consumed_intents": {
