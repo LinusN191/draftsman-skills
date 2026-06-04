@@ -860,7 +860,79 @@ secondary entrances are optional and emitted only if
   master); each switch at correct latch_side + offset + height per
   rules cited.
 
-### Step 13 — Emergency lighting note
+### Step 13 — Zone purpose resolution (v1.7 D5)
+
+For every zone in the IR, populate `zone.purpose` per BS EN 12464-1:2021 §4.2.2:
+
+1. **If `zone_purpose_inputs` supplied** (WI1 item — see inputs.json): use the engineer's classification verbatim.
+2. **Else default to `purpose: "task"`** for backwards compatibility with v1.6.0 examples. Document the default explicitly in `compliance_summary.assumptions[]`.
+
+Populate `zone.em_target_lux` per the following rules:
+
+- **`purpose == "task"`** → `em_target_lux` = Em value from `shared/standards/lighting/BSEN12464/lux-levels.json` for the room's `room_type` (existing v1.6.0 behaviour preserved).
+- **`purpose == "surrounding"`** → `em_target_lux` = `task_em × _surrounding_ratio_default` (0.5 per `lux-levels.json` augmentation from A.3). Engineer may override via `em_target_lux_override` in WI1 input; if so, validate against the [0.3, 0.5] band per BS EN 12464-1:2021 Table 6 (INV-14 verifies).
+- **`purpose == "background"`** → `em_target_lux` = `max(task_em × _background_ratio_default, _background_min_lx)` = `max(task_em / 3, 50 lx)` per BS EN 12464-1:2021 §4.2.2.3 + Table 6 (INV-15 verifies).
+- **`purpose == "circulation"`** → `em_target_lux` looked up from `lux-levels.json` circulation branch (e.g. 100 lx main corridor, 50 lx link corridor). Independent of task/surrounding/background ratios per ZP-05.
+
+**Cross-check:** if any zone has `purpose: "surrounding"`, at least one zone in the same room MUST have `purpose: "task"`. Schema enforces via allOf clause 3 (A.1). Validator INV-13 evidence cites BS EN 12464-1:2021 §4.2.2.2 ("surrounding is defined RELATIVE to a task area").
+
+**Citation anchor:** `shared/standards/lighting/BSEN12464/area-definitions.json` (A.0 file).
+
+### Step 14 — Mount type + 3D placement (v1.7 D5)
+
+For every luminaire in `luminaires[]`, populate `mount_type` per BS EN 60598-2 series:
+
+1. **If `mount_type_inputs` supplied** (WI1 item): use engineer's selection verbatim.
+2. **Else default to `mount_type: "recessed"`** for v1.6.0 backwards compatibility.
+
+For luminaires with `mount_type ∈ {pendant, suspended}`, populate `z_mm` + `suspension_length_mm`:
+
+- **Pendant geometry** (MT-02): `z_mm + suspension_length_mm = ceiling_height_mm` (algebraic identity). If `suspension_length_inputs` supplied for the luminaire, use it; else default to 800mm typical pendant drop (document the default in assumptions).
+- **Suspended geometry** (MT-03): `z_mm + suspension_length_mm ≤ ceiling_height_mm` (suspended can hang from intermediate purlin, e.g. industrial highbay from roof truss vs ceiling).
+
+**Cross-checks** (INV-16 + INV-17 verify):
+
+- `z_mm > working_plane_mm` (no luminaire below the task plane — collision risk).
+- `z_mm + suspension_length_mm ≤ ceiling_height_mm` (physical clearance).
+- For pendant specifically: equality holds.
+
+**Update `room.hm_mm`** (mounting height above task plane):
+
+- For pendant/suspended luminaires: `hm_mm = z_mm - working_plane_mm` (per-luminaire; if luminaires have mixed z values, use the lowest z for hm calc).
+- For recessed/surface/track: `hm_mm = ceiling_height_mm - working_plane_mm` (existing v1.6.0 behaviour).
+
+**Citation anchor:** BS EN 60598-2-1 (general luminaire) + BS EN 60598-2-2 (recessed); repo convention in `mount-type-rules.yaml` (A.4 file).
+
+### Step 15 — Per-zone achievement summary (v1.7 D5)
+
+Populate `calculation_summary.per_zone_achieved[]` with one entry per zone:
+
+```json
+{
+  "zone_id": "Z1",
+  "purpose": "task",
+  "em_target_lux": 500,
+  "em_achieved_lux": 525,
+  "ratio_compliance": "pass"
+}
+```
+
+**Source of `em_achieved_lux`** in priority order:
+
+1. **Photometric-analysis cascade** (INV-11 / `consumed_intents.photometric_grid`): if present and emitted, derive per-zone achieved Em by intersecting the point grid with the zone polygon. This is the highest-fidelity source.
+2. **Lumen-method calc** (existing v1.6.0 behaviour): if no photometric cascade, use the lumen-method `E_avg = (N × Φ × MF × UF) / A` per room and assume per-zone `em_achieved_lux = E_avg × purpose_uniformity_factor` (0.6 task / 0.4 surrounding / 0.1 background per area-definitions.json uniformity_rules).
+3. **Pending honest disclosure**: if neither photometric nor lumen-method can yield per-zone values (e.g. missing IES + missing Em target), set `em_achieved_lux: 0` with `ratio_compliance: "fail"` AND document the gap in `compliance_summary.assumptions[]` as a pending-photometric disclosure.
+
+**`ratio_compliance` bands** (per spec §6 INV-19):
+
+- `em_achieved_lux ≥ em_target_lux` → `"pass"`.
+- `em_target_lux × 0.75 ≤ em_achieved_lux < em_target_lux` → `"marginal"` (within 25%, INFO severity in INV-19).
+- `em_target_lux × 0.50 ≤ em_achieved_lux < em_target_lux × 0.75` → `"fail"` (25-50% short, MEDIUM severity in INV-19).
+- `em_achieved_lux < em_target_lux × 0.50` → `"fail"` (>50% short, HIGH severity in INV-19).
+
+**Note:** `ratio_compliance` is a tri-state enum on the schema (pass / fail / marginal). The HIGH-vs-MEDIUM split lives in the `non_compliance_flags[]` severity field, not the `ratio_compliance` enum.
+
+### Step 16 — Emergency lighting note
 
 Full emergency lighting design is a separate drawing. However, flag for this layout:
 - Whether any specified luminaires are combined general + maintained emergency fittings.
@@ -906,7 +978,7 @@ The IR schema is strict about field names. The LLM has a tendency to generalise 
 
 If the runtime rejects your IR for one of these, re-read this section — most of the time it's a field-naming or type-precision slip, not a structural problem.
 
-### Step 15 — Drafting Furniture Emission (required when mode = full_drawing)
+### Step 17 — Drafting Furniture Emission (required when mode = full_drawing)
 
 The IR `drafting_furniture` block is required per the schema's allOf
 clause when `mode = full_drawing` (default). Emit four annotation
@@ -916,7 +988,7 @@ DXF viewers without Arial typically substitute LiberationSans
 (metric-compatible) — the substitution happens at the viewer/renderer
 layer, not in the IR emission.
 
-#### 15.1 — title_block
+#### 17.1 — title_block
 
 Populate from `inputs.drawing_metadata` (project_name + drawing_number +
 revision + date) and from the lumen-method calculation context (scale +
@@ -944,7 +1016,7 @@ If `inputs.drawing_metadata` is absent, set placeholder values:
 - scale: pick the largest scale that fits the room on the sheet
   (1:50 for ≤15×10 m on A3; 1:100 for larger; 1:200 for warehouse)
 
-#### 15.2 — scale_bar
+#### 17.2 — scale_bar
 
 Place above the room rectangle in the dimension margin (top side;
 y = room.width_mm + 500), aligned toward the right edge of the room:
@@ -964,7 +1036,7 @@ y = room.width_mm + 500), aligned toward the right edge of the room:
 Scale with drawing scale: 2000 mm at 1:50, 4000 mm at 1:100, 6000 mm
 at 1:200. (Paper-space length stays ~30-40 mm.)
 
-#### 15.3 — dimensions[]
+#### 17.3 — dimensions[]
 
 At minimum: room length (horizontal at top or bottom) + room width
 (vertical at left or right). Position 300 mm OUTSIDE the room rectangle
@@ -999,7 +1071,7 @@ For rooms with multiple luminaire rows, optionally add per-row dimension
 lines showing inter-row spacing. Not required by INV-9 (which checks
 only minimum 2 dimensions).
 
-#### 15.4 — luminaire_schedule
+#### 17.4 — luminaire_schedule
 
 Required columns: Ref + Manufacturer + Lumens + Wattage + Count. One
 row per unique luminaire type used in the layout:
@@ -1020,9 +1092,9 @@ row per unique luminaire type used in the layout:
 For multi-type layouts (e.g. general lighting LED_PANEL_600 +
 emergency EMERGENCY luminaires), emit one row per distinct type.
 
-#### 15.5 — calc_only path
+#### 17.5 — calc_only path
 
-If `mode = calc_only`, skip Step 15 entirely. The schema's allOf clause
+If `mode = calc_only`, skip Step 17 entirely. The schema's allOf clause
 only requires drafting_furniture for full_drawing mode.
 
 **INV enforced by this step:**
@@ -1033,7 +1105,7 @@ only requires drafting_furniture for full_drawing mode.
 
 ---
 
-### Step 16 — Emit lighting-layout intent payload
+### Step 18 — Emit lighting-layout intent payload
 
 Per `electrical/lighting-layout/schemas/lighting-layout-intent.schema.json`
 (extended in D3.A.3), emit the intent block downstream consumers
@@ -1043,7 +1115,7 @@ Per `electrical/lighting-layout/schemas/lighting-layout-intent.schema.json`
 compatibility; D3 adds NEW sibling fields `zones[]`,
 `circuits_topology[]`, `switches[]`, and `total_load_per_circuit_w[]`.
 
-#### 16.1 — Intent block template
+#### 18.1 — Intent block template
 
 The intent payload is emitted FLAT — matching
 `electrical/lighting-layout/schemas/lighting-layout-intent.schema.json`
@@ -1125,7 +1197,7 @@ time. Compare against the canonical working example
 > `circuits[].load_w`; a separate flat array is redundant. Do not emit
 > `total_load_per_circuit_w` until the intent schema declares it.
 
-#### 16.2 — Field naming note (avoid collision with legacy `circuits`)
+#### 18.2 — Field naming note (avoid collision with legacy `circuits`)
 
 The intent schema's pre-D3 `circuits[]` (with `voltage_class` +
 `load_w` + `mcb_rating_a_suggested`) is REQUIRED and must remain
@@ -1135,7 +1207,7 @@ populated for backward compatibility. The NEW D3 field is named
 arrays SHOULD reference the same `circuit_id` values one-to-one so
 consumers can join.
 
-#### 16.3 — Downstream consumption
+#### 18.3 — Downstream consumption
 
 - **db-layout** reads `circuits_topology[].mcb_rating_a` +
   `total_load_w` to size the lighting MCB on the consumer unit;
@@ -1147,7 +1219,7 @@ consumers can join.
 - **small-power** is not a direct consumer but may reference `zones[]`
   positions for socket-vs-lighting coordination.
 
-#### 16.4 — calc_only path
+#### 18.4 — calc_only path
 
 If `mode = calc_only`, omit `zones[]`, `circuits_topology[]`,
 `switches[]`, and `total_load_per_circuit_w[]` from the flat intent
@@ -1393,7 +1465,7 @@ This block is consumed by downstream skills (db-layout, cable-containment) witho
 
 ---
 
-## Step 14 (final) — Emit `rationale` block
+## Final Step (rationale) — Emit `rationale` block
 
 After computing the IR (rooms, luminaires, switches, circuits, controls,
 calculation_summary, drawing_notes), populate a `rationale` block at the
