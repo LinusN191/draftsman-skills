@@ -41,22 +41,24 @@
       "circuit_ids": ["C-L01", "C-L02", "C-L03"],
       "luminaire_ids": ["L01","L02","L03","L04","L05","L06","L07","L08","L09","L10","L11","L12"],
       "luminaire_count": 12,
-      "total_load_w": 432
+      "total_load_w": 432,
+      "purpose": "task",
+      "em_target_lux": 500
     }
   ],
   "luminaires": [
-    {"id": "L01", "x_mm": 300,  "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
-    {"id": "L02", "x_mm": 2767, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
-    {"id": "L03", "x_mm": 5233, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
-    {"id": "L04", "x_mm": 7700, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
-    {"id": "L05", "x_mm": 300,  "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L02"},
-    {"id": "L06", "x_mm": 2767, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L02"},
-    {"id": "L07", "x_mm": 5233, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L02"},
-    {"id": "L08", "x_mm": 7700, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L02"},
-    {"id": "L09", "x_mm": 300,  "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L03"},
-    {"id": "L10", "x_mm": 2767, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L03"},
-    {"id": "L11", "x_mm": 5233, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L03"},
-    {"id": "L12", "x_mm": 7700, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L03"}
+    {"id": "L01", "x_mm": 300,  "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L02", "x_mm": 2767, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L03", "x_mm": 5233, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L04", "x_mm": 7700, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L05", "x_mm": 300,  "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L06", "x_mm": 2767, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L07", "x_mm": 5233, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L08", "x_mm": 7700, "y_mm": 3000, "zone_id": "Z2", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L09", "x_mm": 300,  "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L10", "x_mm": 2767, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L11", "x_mm": 5233, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L12", "x_mm": 7700, "y_mm": 5700, "zone_id": "Z2", "circuit_id": "C-L03", "mount_type": "recessed"}
   ],
   "switches": [
     {
@@ -142,12 +144,27 @@
         "reference": "BS EN 12464-1:2021 §4.4 + Table 5.3 row 5.34 private_office",
         "severity": "critical",
         "_cascaded_from": "photometric-analysis"
+      },
+      {
+        "message": "INV-19 per-zone achievement: Z2 task zone target 500 lx, achieved 434 lx → gap_pct 13.2% sits in the 0.10 ≤ gap_pct < 0.25 band per validator §INV-19 table → ratio_compliance='marginal' with INFO severity (within-25%-band; PASS for INV-19 aggregate). Note: INV-19 INFO coexists with INV-1 HIGH FAIL on the same under-provision — INV-1 is the binary lumen-method gate (any shortfall fails); INV-19 grades severity by gap_pct band. Both fire; engineer must act on INV-1 to clear INV-19 too. Remediation: bump to 16 panels OR upgrade to 4500 lm (drives Z2 achieved ≥ 500 lx → INV-19 ratio_compliance='pass' alongside INV-1 PASS).",
+        "reference": "BS EN 12464-1:2021 §4.1 + §4.2.2.1 + Table 6 (area-definitions.json) + validator.md §INV-19 band table",
+        "severity": "info"
       }
     ],
     "assumptions": [
       "UF = 0.62 from CIBSE LG7 §6.2 standard reflectance table 0.7/0.5/0.2 at RI=1.5 (next-lower band for actual RI=1.76)",
       "MF = 0.80 for clean office LED on a 3-year cleaning cycle (CIBSE TM 3-25)",
-      "Engineer specified luminaire = 3500 lm under-spec'd variant of LED_PANEL_600; standard ontology entry is 4500 lm. Specification likely a value-engineering substitution that bypassed lumen-method re-check."
+      "Engineer specified luminaire = 3500 lm under-spec'd variant of LED_PANEL_600; standard ontology entry is 4500 lm. Specification likely a value-engineering substitution that bypassed lumen-method re-check.",
+      "v1.6.0 → v1.7.0 D5 retrofit: zone Z2 defaults to purpose='task' (ZP-01 backwards-compat mapping for a private_office room with a 500 lx Em target — BS EN 12464-1:2021 §4.2.2.1); all 12 LED_PANEL_600 fittings default to mount_type='recessed' (MT-01 — the 600×600 panel is recessed into the 600 mm ceiling grid by definition; z_mm + suspension_length_mm omitted per recessed convention, inherits ceiling_height_mm=2700). per_zone_achieved[] populated with one Z2 entry: target=500 lx, achieved=434 lx, gap_pct=13.2% → ratio_compliance='marginal' (validator §INV-19 0.10 ≤ gap_pct < 0.25 band). The pre-existing INV-1 HIGH FAIL + INV-6 HIGH FAIL + INV-10 HIGH FAIL + INV-11 HIGH FAIL state is PRESERVED VERBATIM — D5 additions are orthogonal to those four failure modes. INV-19 surfaces the SAME under-provision at per-zone level with the §6 graded band-table mapping (INFO severity), coexisting with INV-1's binary HIGH FAIL on the lumen-method gate."
+    ],
+    "per_zone_achieved": [
+      {
+        "zone_id": "Z2",
+        "purpose": "task",
+        "em_target_lux": 500,
+        "em_achieved_lux": 434,
+        "ratio_compliance": "marginal"
+      }
     ]
   },
   "drawing_notes": [
@@ -236,6 +253,36 @@
             "code_clause": "CIBSE TM 3-25"
           }
         ]
+      },
+      {
+        "title": "v1.7 retrofit",
+        "summary": "D5 retrofit (2026-06-04): zone Z2 receives purpose='task' (ZP-01 backwards-compat default — the only valid mapping for a private_office room with a 500 lx Em target) and em_target_lux=500 (mirrors existing calculation_summary.target_illuminance_lux). All 12 LED_PANEL_600 fittings receive mount_type='recessed' (MT-01 default — the 600×600 panel is recessed into the 600 mm ceiling grid by definition). per_zone_achieved[] populated with one entry for Z2: target 500 lx, achieved 434 lx, gap_pct=13.2% → ratio_compliance='marginal' per validator §INV-19 band 0.10 ≤ gap_pct < 0.25 (INFO severity, PASS within-25%). The pre-existing INV-1 + INV-6 + INV-10 + INV-11 FAIL HIGH state is PRESERVED VERBATIM — D5 additions (zone purpose + mount_type + per-zone achievement) are orthogonal to the four pre-existing failure modes. INV-19 INFO marginal surfaces the SAME under-provision at per-zone level with the §6 graded band-table — coexisting with INV-1's binary HIGH FAIL. Both fire simultaneously and both clear simultaneously: remediation (bump to 16 panels OR upgrade to 4500 lm) drives Z2 achieved ≥ 500 lx, flipping INV-1 PASS and INV-19 ratio_compliance='pass' together. This example becomes the canonical demonstration of the lumen-method (binary HIGH) vs per-zone (graded INFO/MEDIUM/HIGH) duality.",
+        "decisions": [
+          {
+            "label": "Default purpose='task' for Z2 (ZP-01)",
+            "summary": "v1.6.0 example pre-dates the §4.2.2 area split. Backwards-compat default ZP-01 maps the single 'Interior' zone to purpose='task' — the only valid interpretation for a private_office room with a 500 lx Em target. em_target_lux=500 mirrors existing calculation_summary.target_illuminance_lux unchanged.",
+            "rule": "ZP-01 backwards-compat default",
+            "code_clause": "BS EN 12464-1:2021 § 4.2.2.1"
+          },
+          {
+            "label": "Default mount_type='recessed' (MT-01)",
+            "summary": "Existing example specifies 600×600 LED recessed panel fittings — recessed into the 600 mm ceiling grid by definition. MT-01 default chosen; z_mm + suspension_length_mm omitted per recessed convention (inherits ceiling_height_mm=2700).",
+            "rule": "MT-01 recessed default",
+            "code_clause": "mount-type-rules.yaml MT-01"
+          },
+          {
+            "label": "INV-19 marginal INFO band (gap_pct 13.2%)",
+            "summary": "Per validator §INV-19 band table: 0.10 ≤ gap_pct=0.132 < 0.25 → ratio_compliance='marginal', severity=INFO, INV-19 verdict per-zone PASS within-25%. Aggregate INV-19 verdict: PASS (1 marginal, 0 fail). Co-exists with INV-1 HIGH FAIL on the binary lumen-method gate — engineer must clear INV-1 to clear INV-19 marginal too.",
+            "rule": "INV-19 band table — 0.10 ≤ gap_pct < 0.25",
+            "code_clause": "BS EN 12464-1:2021 § 4.1 + Table 6 (area-definitions.json) + validator.md §INV-19"
+          },
+          {
+            "label": "Pre-existing FAIL state preserved (D5 orthogonal to INV-1/INV-6/INV-10/INV-11)",
+            "summary": "INV-1 evaluates the lumen-method avg-lux gate (binary). INV-6 evaluates Part L 2021 §6 sub-checks (controls + assessment). INV-10 evaluates non_compliance_flags + compliant=false signalling pair. INV-11 evaluates the photometric cascade per-point min-lux. None of these intersect with the new D5 fields (zones[].purpose, zones[].em_target_lux, luminaires[].mount_type, per_zone_achieved[]). The 3 critical non_compliance_flags + INV-1/INV-6/INV-10/INV-11 FAIL verdicts remain UNCHANGED. INV-19's INFO marginal is appended (4th entry) — it grades the same under-provision but does not collapse INV-1's HIGH binary verdict.",
+            "rule": "D5 / pre-existing FAIL state orthogonality",
+            "code_clause": "BS EN 12464-1:2021 § 4.2.2 + validator.md §INV-1, §INV-6, §INV-10, §INV-11, §INV-19"
+          }
+        ]
       }
     ]
   },
@@ -305,6 +352,48 @@
       "passes": false,
       "severity": "high",
       "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from cascade-uk-undersized-lighting-vs-target/intent-out.json. payload.task_area_compliant=false; payload.achieved_avg_illuminance_lux=434 vs target=500 (sub-check 3 FAIL — 13% deficit; under-spec'd 3500 lm panel substitution); 1 non_compliance_flag cascaded to lighting-layout calculation_summary.non_compliance_flags[] with _cascaded_from='photometric-analysis' attribution (sub-check 4 PASS — flag preserved and attributed). Demonstrates failure-mode end-to-end: lumen-method INV-1 FAIL (avg lux) compounds with photometric INV-11 FAIL (per-point min lux 275 < 0.7×target=350 at NW corner). Engineer-of-record must remediate per cascaded flag's remediation advice before issue. Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
+    },
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Zone purpose required + valid. Zones inspected: 1. Per-zone purpose: Z2: purpose=task, em_target_lux=500. Orphan-surrounding check: pass (no surrounding zones present, so check vacuous). All zones declare purpose ∈ {task, surrounding, background, circulation}. INV-13 PASS. Citation: BS EN 12464-1:2021 §4.2.2.1 (task area) + area-definitions.json §4.2.2.1."
+    },
+    {
+      "id": "INV-14",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Surrounding ratio compliance. Surrounding zones inspected: 0. No zones declare purpose='surrounding' — INV-14 vacuous PASS per validator §INV-14 vacuous condition. Citation: BS EN 12464-1:2021 §4.2.2.2 + Table 6 (area-definitions.json table_6_ratio_rules.task_to_surrounding)."
+    },
+    {
+      "id": "INV-15",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Background floor. Background zones inspected: 0. No zones declare purpose='background' — INV-15 vacuous PASS per validator §INV-15 vacuous condition. Citation: BS EN 12464-1:2021 §4.2.2.3 + Table 6 (area-definitions.json table_6_ratio_rules.task_to_background)."
+    },
+    {
+      "id": "INV-16",
+      "passes": true,
+      "severity": "high",
+      "evidence": "mount_type ↔ z_mm/suspension consistency. Luminaires inspected: 12. Pendant geometry checks: 0 pendant luminaires. Suspended geometry checks: 0 suspended luminaires. Recessed/surface/track: 12 luminaires (all 12 LED_PANEL_600 fittings are mount_type='recessed'), z_mm omitted per MT-01 convention (recessed inherits ceiling_height_mm=2700). INV-16 vacuous PASS — no pendant/suspended geometry to verify. Citation: BS EN 60598-2-2 (recessed) + mount-type-rules.yaml MT-01."
+    },
+    {
+      "id": "INV-17",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Ceiling clearance + working-plane floor. Working plane reference: 750 mm AFF. Per-luminaire floor check: all 12 luminaires are recessed; z_mm not declared and inherits ceiling_height_mm=2700 per MT-01 convention. Inherited z=2700 > working_plane=750 (clearance=1950 mm). Per-luminaire ceiling clearance: recessed luminaires are physically inset into ceiling, suspension_length_mm=0 implied; sum=2700 ≤ ceiling=2700 PASS. INV-17 PASS — no luminaire below task plane, no luminaire exceeds ceiling. Citation: BS EN 12464-1:2021 §4.4 + BS EN 60598-2 + MT-04."
+    },
+    {
+      "id": "INV-18",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "hm_mm derivation consistency. Room hm_mm recorded: 1950 mm. Lowest pendant/suspended z_mm: N/A (no pendant/suspended — all 12 luminaires recessed). Recessed branch: expected hm_mm = ceiling_height_mm − working_plane_mm = 2700 − 750 = 1950 mm. Drift: |1950 − 1950| = 0 mm, tolerance ±50 mm. INV-18 PASS. Citation: BS EN 12464-1:2021 §4.4 + repo derivation convention."
+    },
+    {
+      "id": "INV-19",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Per-zone achievement. Zones inspected: 1. Per-zone achievement: Z2 (task): target=500, achieved=434, gap=66, gap_pct=13.2%, ratio_compliance=marginal, severity=INFO (validator §INV-19 band 0.10 ≤ gap_pct < 0.25 → marginal/INFO/PASS within-25%). Aggregate: 1 PASS (marginal), 0 fail-MEDIUM, 0 fail-HIGH → INV-19 aggregate PASS. Engineering nuance: INV-19 INFO marginal coexists with INV-1 HIGH FAIL on the same under-provision — the two INVs are by-design orthogonal. INV-1 is the binary lumen-method gate (round UP; any shortfall fails HIGH); INV-19 is the §6-graded per-zone band-table roll-up (the same 13.2% shortfall sits in the marginal INFO band). Both fire simultaneously and both clear simultaneously: remediation (bump to 16 panels OR upgrade to 4500 lm) drives Z2 achieved ≥ 500 lx, flipping INV-1 PASS and INV-19 ratio_compliance='pass' together. Citation: BS EN 12464-1:2021 §4.1 + Table 5 (lux-levels.json private_office Em=500 lx) + validator.md §INV-19 band table."
     }
   ],
   "consumed_intents": {

@@ -205,3 +205,85 @@ broken layout — the engineer needs to act on just those two flags.
   emergency lighting on escape routes — delivered by the separate
   emergency-lighting skill (deferred). Adding emergency luminaires
   would not change INV-1 / INV-6 / INV-10 outcomes here.
+
+## 11. v1.7 D5 retrofit — INV-19 surfaces the same FAIL at per-zone level
+
+Retrofitted by the D5 sprint on 2026-06-04. v1.6.0 → v1.7.0 additions are
+orthogonal to the existing INV-1 / INV-6 / INV-10 / INV-11 HIGH FAIL state.
+
+### D5 fields populated
+
+- `zones[].purpose = "task"` — ZP-01 backwards-compat default. Z2 is the
+  only zone (a private_office with 500 lx Em target maps to task per
+  BS EN 12464-1:2021 §4.2.2.1 + area-definitions.json).
+- `zones[].em_target_lux = 500` — mirrors the existing
+  `calculation_summary.target_illuminance_lux` unchanged.
+- `luminaires[*].mount_type = "recessed"` — MT-01 default. The 600×600
+  LED panel is recessed into the 600 mm ceiling grid by definition.
+  `z_mm` + `suspension_length_mm` omitted per recessed convention
+  (recessed luminaire emission plane inherits `ceiling_height_mm`).
+- `calculation_summary.per_zone_achieved[]` — populated with one Z2 entry.
+
+### INV-19 band selection — INFO marginal
+
+```
+gap         = target − achieved = 500 − 434     = 66 lux
+gap_pct     = gap / target = 66 / 500           = 0.132 = 13.2 %
+
+Validator §INV-19 band table:
+| gap_pct range            | ratio_compliance | flag severity | INV verdict   |
+|--------------------------|------------------|---------------|---------------|
+| gap_pct ≤ 0              | pass             | none          | PASS          |
+| 0 < gap_pct < 0.10       | marginal         | INFO          | PASS (<10%)   |
+| 0.10 ≤ gap_pct < 0.25  ← | marginal         | INFO          | PASS (<25%)   |
+| 0.25 ≤ gap_pct < 0.50    | fail             | MEDIUM        | FAIL (MEDIUM) |
+| gap_pct ≥ 0.50           | fail             | HIGH          | FAIL (HIGH)   |
+
+gap_pct = 0.132 sits in row 3 → ratio_compliance='marginal', INFO band,
+INV-19 per-zone PASS within-25 %.
+
+Aggregate INV-19 verdict: PASS (1 marginal, 0 fail).
+```
+
+### Why INV-1 HIGH FAIL coexists with INV-19 INFO marginal
+
+These two INVs are by-design orthogonal:
+
+- **INV-1** is the binary lumen-method gate. The lumen method requires
+  rounding the fitting count UP and any shortfall fails HIGH — the
+  engineer must add fittings OR upgrade lumens to clear it.
+- **INV-19** is the §6-graded per-zone band-table roll-up against the
+  cascade-resolved photometric average. The same 13.2 % shortfall here
+  sits in the marginal INFO band — within the 25 % engineering
+  tolerance band where the layout is recoverable without re-laying.
+
+Both fire simultaneously on the same root cause (value-engineered 3500
+lm panel substitution) and both clear simultaneously: remediation (bump
+to 16 panels in a 4×4 grid OR upgrade to 4500 lm panels keeping the 4×3
+layout) drives Z2 achieved ≥ 500 lx, flipping INV-1 PASS and INV-19
+ratio_compliance='pass' together.
+
+### non_compliance_flags layering (4 entries)
+
+| # | INV    | Severity | Origin               | Subject                                |
+|---|--------|----------|----------------------|----------------------------------------|
+| 1 | INV-1  | critical | native (lumen)       | Avg-lux under-provision (434 < 500)    |
+| 2 | INV-6  | critical | native (Part L)      | part_l_assessed=false on new-build     |
+| 3 | INV-11 | critical | cascaded photometric | Per-point min lux 275 < 350 at NW      |
+| 4 | INV-19 | info     | native (per-zone)    | Z2 gap_pct=13.2 % marginal INFO band   |
+
+All four reference the SAME under-specified 3500 lm panel substitution.
+Each INV catches the failure at a different layer:
+
+- INV-1: lumen-method avg (rounded-up fitting count)
+- INV-6: Part L assessment gate (new-build flag)
+- INV-11: photometric per-point min (cascade)
+- INV-19: per-zone graded band (cascade roll-up)
+
+### Pre-existing FAIL state preserved verbatim
+
+`controls.part_l_compliant=false`, `calculation_summary.compliant=false`,
+INV-1 + INV-6 + INV-10 + INV-11 FAIL HIGH — all UNCHANGED. The 3
+pre-existing critical flags are untouched. The new INV-19 INFO marginal
+entry is appended as the 4th flag. Engineer-of-record must remediate
+the lumen-method gap to clear all four INVs.
