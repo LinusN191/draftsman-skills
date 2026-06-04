@@ -1,0 +1,121 @@
+{
+  "room_id": "uk-pendant-open-plan-office",
+  "room_type": "open_plan_office",
+  "luminaire_summary": {
+    "luminaire_count": 6,
+    "luminaire_wattage_w_each": 105,
+    "luminaire_lumens_each": 15600,
+    "lumen_type": "design",
+    "ip_rating": "IP20",
+    "mount_type": "pendant",
+    "z_mm": 2700,
+    "suspension_length_mm": 800
+  },
+  "circuits": [
+    {
+      "circuit_id": "C-L01",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "voltage_class": "LV_power",
+      "load_w": 210,
+      "luminaire_count": 2,
+      "mcb_rating_a_suggested": 6
+    },
+    {
+      "circuit_id": "C-L02",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "voltage_class": "LV_power",
+      "load_w": 210,
+      "luminaire_count": 2,
+      "mcb_rating_a_suggested": 6
+    },
+    {
+      "circuit_id": "C-L03",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "voltage_class": "LV_power",
+      "load_w": 210,
+      "luminaire_count": 2,
+      "mcb_rating_a_suggested": 6
+    }
+  ],
+  "emergency_lighting_present": false,
+  "controls_summary": {
+    "occupancy_sensing": true,
+    "daylight_linking": false,
+    "dimming_protocol": "DALI",
+    "part_l_assessed": true,
+    "part_l_compliant": true
+  },
+  "zones": [
+    {
+      "zone_id": "Z2",
+      "zone_type": "interior",
+      "control": "dali_master",
+      "luminaire_ids": ["L01", "L02", "L03", "L04", "L05", "L06"],
+      "circuit_ids": ["C-L01", "C-L02", "C-L03"]
+    }
+  ],
+  "circuits_topology": [
+    {
+      "circuit_id": "C-L01",
+      "zone_id": "Z2",
+      "row_index": 0,
+      "total_load_w": 210,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 1333, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L02",
+      "zone_id": "Z2",
+      "row_index": 1,
+      "total_load_w": 210,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 4000, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L03",
+      "zone_id": "Z2",
+      "row_index": 2,
+      "total_load_w": 210,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 6667, "wall": "W"}
+    }
+  ],
+  "switches": [
+    {
+      "id": "SW01",
+      "type": "dali_master",
+      "x_mm": 6600,
+      "y_mm": 200,
+      "height_aff_mm": 1200,
+      "controls_circuit": "C-L01,C-L02,C-L03"
+    }
+  ],
+  "consumed_intents": {
+    "photometric_grid": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/photometric-analysis/examples/cascade-uk-pendant-open-plan-office/intent-out.json",
+      "payload": {
+        "achieved_avg_illuminance_lux": 521,
+        "achieved_min_illuminance_lux": 412,
+        "achieved_uniformity_u0": 0.79,
+        "ugr_max": 17.4,
+        "ugr_target": 19,
+        "uniformity_target": 0.6,
+        "target_illuminance_lux": 500,
+        "task_area_compliant": true,
+        "grid_point_count": 96,
+        "non_compliance_flags": [],
+        "ies_source_summary": {
+          "all_verified": false,
+          "verification_status_lowest": "synthetic_reference_C3"
+        }
+      }
+    }
+  }
+}

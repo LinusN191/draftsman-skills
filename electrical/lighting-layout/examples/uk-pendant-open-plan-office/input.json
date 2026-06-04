@@ -1,0 +1,50 @@
+{
+  "_note": "D5 sprint Task C.9 NEW example (2026-06-04). First fully-pendant scenario exercising the algebraic identity z_mm + suspension_length_mm = ceiling_height_mm (MT-02 pendant rule). UK new-build open-plan office, 12 m × 8 m, ceiling 3500 mm, 800 mm suspension drop → z_mm = 2700 mm working-plane reference. 6 architectural pendant linear LED luminaires (1200×200 mm direct/indirect) in 3 rows × 2 cols. Achieves 538 lx ≥ 500 lx Em task target (BS EN 12464-1 Table 5.26.1 open_plan_office). Single Z2 task zone (no §4.2.2.2 task/surrounding split declared — engineer-of-record chose a single uniform task zone for this open-plan layout because the 3 × 2 pendant rhythm distributes evenly across the full footprint without the perimeter-band geometry needed for ZP-02 separation). INV-16/17/18 fire NON-VACUOUSLY for the first time across the lighting-layout example set: pendant identity 2700 + 800 = 3500 PASS (6/6 luminaires); z_mm = 2700 > working_plane = 750 with 1950 mm clearance PASS (6/6); hm_mm = z_mm − working_plane = 2700 − 750 = 1950 mm drift 0 PASS.",
+  "_scenario_summary": "12 m × 8 m open-plan office, 3500 mm ceiling, 800 mm pendant drop, 6 × 1200×200 mm architectural linear LED pendants in 3 × 2 grid achieving 538 lx vs 500 lx target — the pendant geometric identity z_mm + suspension_length_mm = ceiling_height_mm verifies end-to-end.",
+  "room_type": "open_plan_office",
+  "room_length_m": 12,
+  "room_width_m": 8,
+  "ceiling_height_m": 3.5,
+  "working_plane_m": 0.75,
+  "luminaire": {
+    "type": "1200×200 mm Architectural Linear LED Pendant — direct/indirect 15600 lm DALI",
+    "symbol": "LINEAR_LED_PENDANT_1200",
+    "lumen_output": 15600,
+    "lumen_type": "design",
+    "wattage_w": 105,
+    "cct_k": 4000,
+    "cri_ra": 90,
+    "ip_rating": "IP20",
+    "mount_type": "pendant",
+    "suspension_length_mm": 800
+  },
+  "new_build": true,
+  "jurisdiction": "england_wales",
+  "glazed_walls": [],
+  "entrance_positions": [
+    {"wall": "S", "offset_mm": 5500, "width_mm": 900, "door_swing": "inward_latch_right"}
+  ],
+  "controls_protocol": "DALI",
+  "environment_type": "normal",
+  "db_designation": "L1",
+  "drawing_metadata": {
+    "drawing_number": "L-201",
+    "revision": "P1",
+    "scale": "1:50",
+    "sheet_size": "A3",
+    "project_name": "UK new-build open-plan office — pendant linear pilot"
+  },
+  "photometric_ies_paths": [
+    {
+      "luminaire_type": "LINEAR_LED_PENDANT_1200",
+      "path": "shared/photometric/ies/LINEAR_LED_PENDANT_1200.ies",
+      "_source": "Synthetic 1200×200 mm architectural linear LED pendant, direct/indirect distribution, 4000K, 15600 lm baseline variant. Distribution: 70% direct downward Lambertian + 30% indirect upward cosine per CIBSE LG7 §6.2 typical architectural pendant. verification_status: synthetic_reference_C3. Cascade retrofit per photometric-analysis v1.0 sprint D.2; engineer-of-record substitutes project IES before final design freeze."
+    }
+  ],
+  "photometric_override": {
+    "uf": 0.69,
+    "shr_max": 1.6,
+    "llmf": 0.95,
+    "_source": "LINEAR_LED ontology defaults (CIBSE LG7 §6.2 linear LED batten typical values @ RI=2.5, reflectances 0.7/0.5/0.2; SHR_max 1.6 transverse-only per LG7 §6.2 linear-luminaire convention) + BS EN 12464-1:2021 §4.4 LLMF maintenance category clean_office at 6000 h. Engineer-of-record verifies against manufacturer photometric file before issue."
+  }
+}
