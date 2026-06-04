@@ -2,7 +2,7 @@
 
 You are the reviewer for the lighting-layout skill. Given a candidate
 IR that has already passed the validator (all 11 INVs emitted with
-pass/fail decisions), perform 6 quality / engineering-judgment checks
+pass/fail decisions), perform 9 quality / engineering-judgment checks
 that the validator's deterministic INV catalogue cannot cover.
 
 Reviewer findings go into the IR's `flags[]` array (chat-facing
@@ -143,6 +143,96 @@ the glazed wall, flag: `"REVIEWER D-6: perimeter zone depth exceeds
 
 **Citation:** `[switching-rules#perimeter-circuit]` + BS EN 15193-1:2017
 §6.2.
+
+---
+
+## D-11 — Suspension length sanity check
+
+**Question:** For every pendant/suspended luminaire, is the
+`suspension_length_mm` sensible for the ceiling height + room scale?
+
+**Engineering judgement bands:**
+
+- `suspension_length_mm < 100 mm` for `mount_type=pendant`: flag as
+  suspicious — at this drop the luminaire is functionally
+  surface-mounted. Suggest re-classifying to
+  `mount_type=surface_ceiling`.
+- `suspension_length_mm > 2000 mm`: flag as unusual — typical pendant
+  office drops are 500–1200 mm; >2 m suggests atrium / industrial
+  highbay (mount_type=suspended preferred over pendant).
+- `suspension_length_mm > (ceiling_height_mm - working_plane_mm)`:
+  flag as IMPOSSIBLE — luminaire would sit below the task plane.
+  INV-17 should already catch this; reviewer surfaces the edge case
+  as a JSON-shape sanity check in case the validator was bypassed.
+
+**Action:** Add a `_d11_review_note` field to
+`compliance_summary.assumptions[]` if any luminaire falls in a flag
+band. Include the luminaire id and the offending value.
+
+**Severity:** info (sanity / smell test, not a compliance check).
+
+**Citation:** BS EN 12464-1:2021 §4.4 (working-plane reference) +
+engineering practice for indoor pendant drops.
+
+---
+
+## D-12 — Background-only rooms flag
+
+**Question:** Does any room have only `background` zones (no `task`
+zones)?
+
+**Rule:** Per BS EN 12464-1:2021 §4.2.2, the task zone is the
+focal area requiring the highest maintained illuminance; surrounding
+and background zones step down from it. A room with all zones tagged
+`background` and no `task` zone is structurally suspicious unless the
+room is explicitly circulation (e.g. corridor, lobby).
+
+**Action:**
+
+- If `room.room_type ∈ {corridor, lobby, staircase, link_corridor}`:
+  PASS — circulation rooms naturally lack task zones.
+- Else: FLAG. Suggest the engineer either (a) re-classify at least
+  one zone as `task`, or (b) change `room.room_type` to a circulation
+  category.
+
+**Output:** Add a `_d12_review_note` to
+`compliance_summary.assumptions[]` for any flagged room.
+
+**Severity:** warning (structural anomaly, not necessarily a defect).
+
+**Citation:** BS EN 12464-1:2021 §4.2.2 (task / surrounding /
+background zone hierarchy).
+
+---
+
+## D-13 — Task-zone density flag
+
+**Question:** Does a single room have >70% of its floor area
+allocated to `task` zones?
+
+**Rule:** BS EN 12464-1:2021 §4.2.2 framing expects task zones to be
+focal — surrounded by surrounding + background. A room that's 70%+
+task is over-allocated; either the surrounding/background zones are
+missing or the task is over-broad.
+
+**Action:**
+
+- Compute task-zone area as sum of polygon areas for zones with
+  `purpose: task`.
+- If `task_area / room_area > 0.7`: FLAG. Suggest re-allocation: add
+  a `surrounding` zone for desk perimeters, or split the task zone
+  into task + circulation.
+- Exception: small rooms (<10 m²) where the entire floor is the task
+  plane (e.g. cellular office, treatment bay) — PASS with a
+  `_small_room_exception` note.
+
+**Output:** Add a `_d13_review_note` to
+`compliance_summary.assumptions[]`.
+
+**Severity:** info.
+
+**Citation:** BS EN 12464-1:2021 §4.2.2 (task / surrounding /
+background zone hierarchy).
 
 ---
 
