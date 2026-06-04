@@ -1,7 +1,7 @@
 # Lighting Layout — Validator Prompt
 
 You are the validator for the lighting-layout skill. Given a candidate
-IR (lighting_layout_ir.json), verify that all 12 INVs below PASS or
+IR (lighting_layout_ir.json), verify that all 19 INVs below PASS or
 emit a HIGH/MEDIUM finding per the severity-classification rule.
 
 ## Cascade prerequisite context
@@ -23,7 +23,7 @@ Validate the IR in this order:
    `shared/schemas/electrical/lighting-layout-ir.schema.json` — the
    golden CI gate `scripts/validate-examples.py` does this
    automatically; treat as a precondition).
-2. **Per-INV checks** in numeric order INV-1 → INV-12.
+2. **Per-INV checks** in numeric order INV-1 → INV-19.
 
 For each INV, emit an entry into the IR's `invariants[]` array:
 
@@ -310,11 +310,200 @@ When room.room_type NOT IN Part-7 set OR mode == calc_only: trivially PASS (casc
 
 **Rationale:** Lumen-method gives average illuminance; photometric-analysis gives per-point + UGR; special-locations gives spatial-compliance — the three together close the BS EN 12464-1 §4.4 + Part 7 §701-§715 gaps that lumen-method alone cannot fill. INV-12 binds lighting-layout to the special-locations spatial-compliance layer; without it, a luminaire could ship inside Zone 1 with IP rating below the §701.512.2 minimum and no engineer review would catch it.
 
+## INV-13 — Zone purpose required + valid (HIGH)
+
+**Clause:** BS EN 12464-1:2021 §4.2.2.1 (task area) + §4.2.2.2 (immediate surrounding area) + §4.2.2.3 (background area). Transcribed in `shared/standards/lighting/BSEN12464/area-definitions.json` (A.0 file).
+
+**Check:**
+
+1. Every zone in `zones[]` has `purpose ∈ {task, surrounding, background, circulation}`.
+2. If any zone has `purpose: "surrounding"`, at least one zone in the same room has `purpose: "task"` (orphan surrounding blocked).
+3. `em_target_lux` populated per zone (≥ 0).
+
+**Evidence template** (20–1200 chars per `[[feedback-no-trim-non-consequential]]`):
+
+```
+INV-13 verdict: PASS / FAIL
+Zones inspected: {count}
+Per-zone purpose:
+- {zone_id}: purpose={enum_value}, em_target_lux={value}
+Orphan-surrounding check: {pass | blocked because zone {id} has purpose=surrounding with no task zone in same room}
+Citation: BS EN 12464-1:2021 §4.2.2.1/2/3 (area-definitions.json §4.2.2.x).
+```
+
+**Severity:** HIGH (zone purpose drives every downstream illuminance check).
+
+**Vacuous PASS condition:** if `zones[]` empty (calc-only mode), INV-13 PASSes with evidence noting `zones[] empty — vacuous PASS`.
+
+## INV-14 — Surrounding ratio compliance (HIGH)
+
+**Clause:** BS EN 12464-1:2021 §4.2.2.2 + Table 6 (transcribed in area-definitions.json `immediate_surrounding_area` + `table_6_ratio_rules.task_to_surrounding`).
+
+**Check:** For every zone with `purpose == "surrounding"`:
+
+- Let `task_em` = `em_target_lux` of any zone in the same room with `purpose == "task"`.
+- Verify `0.3 × task_em ≤ em_target_lux ≤ 0.5 × task_em`.
+- (If `task_em < 100 lx`, surrounding inherits `task_em` per Table 6 row — verify equality.)
+
+**Evidence template:**
+
+```
+INV-14 verdict: PASS / FAIL
+Surrounding zones inspected: {count}
+Task em reference: {value} lx (from zone {task_zone_id})
+Per-zone ratio check:
+- {zone_id}: em_target_lux={value}, ratio={ratio:.3f}, band [0.3, 0.5], result: {pass | fail}
+Citation: BS EN 12464-1:2021 §4.2.2.2 + Table 6 (area-definitions.json).
+```
+
+**Severity:** HIGH.
+
+**Vacuous PASS:** no `surrounding` zones present → INV-14 PASSes with evidence noting `no surrounding zones — vacuous PASS`.
+
+## INV-15 — Background floor (HIGH)
+
+**Clause:** BS EN 12464-1:2021 §4.2.2.3 + Table 6 (transcribed in area-definitions.json `background_area` + `table_6_ratio_rules.task_to_background`).
+
+**Check:** For every zone with `purpose == "background"`:
+
+- Let `task_em` = `em_target_lux` of any task zone in same room.
+- Verify `em_target_lux ≥ max(task_em / 3, 50 lx)`.
+
+**Evidence template:**
+
+```
+INV-15 verdict: PASS / FAIL
+Background zones inspected: {count}
+Task em reference: {value} lx (from zone {task_zone_id})
+Per-zone floor check:
+- {zone_id}: em_target_lux={value}, floor=max({task_em}/3, 50)={floor_value} lx, result: {pass | fail}
+Citation: BS EN 12464-1:2021 §4.2.2.3 + Table 6 (area-definitions.json).
+```
+
+**Severity:** HIGH.
+
+**Vacuous PASS:** no `background` zones → vacuous PASS.
+
+## INV-16 — mount_type ↔ z_mm/suspension consistency (HIGH)
+
+**Clause:** BS EN 60598-2-1 (general luminaire) + BS EN 60598-2-2 (recessed); repo `mount-type-rules.yaml` MT-01/02/03.
+
+**Check:** For every luminaire:
+
+- If `mount_type ∈ {pendant, suspended}`: BOTH `z_mm` AND `suspension_length_mm` are present (schema allOf clause 1 enforces; INV-16 verifies emit).
+- If `mount_type == "pendant"`: `z_mm + suspension_length_mm == ceiling_height_mm` (algebraic identity per MT-02).
+- If `mount_type == "suspended"`: `z_mm + suspension_length_mm ≤ ceiling_height_mm` (inequality per MT-03).
+- If `mount_type ∈ {recessed, surface, track}`: `z_mm` and `suspension_length_mm` MAY be omitted; if present, they inherit ceiling_height_mm convention (MT-01).
+
+**Evidence template:**
+
+```
+INV-16 verdict: PASS / FAIL
+Luminaires inspected: {count}
+Pendant geometry checks:
+- {luminaire_id}: z_mm={value}, suspension_length_mm={value}, ceiling_height_mm={value}, sum={sum}, identity: {pass | fail}
+Suspended geometry checks:
+- {luminaire_id}: sum={sum}, ceiling={ceiling}, inequality: {pass | fail}
+Recessed/surface/track: {count} luminaires, z_mm convention applied.
+Citation: BS EN 60598-2-1 + mount-type-rules.yaml MT-01/02/03.
+```
+
+**Severity:** HIGH.
+
+**Vacuous PASS:** all luminaires are recessed/surface/track with no z_mm → vacuous PASS (geometry inherited from ceiling).
+
+## INV-17 — Ceiling clearance + working-plane floor (HIGH)
+
+**Clause:** BS EN 12464-1:2021 §4.4 (working plane definition) + BS EN 60598-2 (luminaire mounting) + repo safety convention in MT-04.
+
+**Check:** For every luminaire (regardless of mount_type):
+
+- `z_mm > working_plane_mm` (luminaire emission plane must be ABOVE the task plane — no collision / occlusion risk).
+- `z_mm + suspension_length_mm ≤ ceiling_height_mm` (physical clearance from ceiling structure; pendant/suspended only — for recessed/surface, this is structurally implied).
+
+**Evidence template:**
+
+```
+INV-17 verdict: PASS / FAIL
+Working plane reference: {working_plane_mm} mm AFF.
+Per-luminaire floor check:
+- {luminaire_id}: z_mm={value}, working_plane={working_plane}, clearance={z - working_plane} mm, result: {pass | fail (luminaire below task plane)}
+Per-luminaire ceiling clearance:
+- {luminaire_id}: z_mm + suspension={sum}, ceiling={ceiling}, result: {pass | fail (luminaire exceeds ceiling)}
+Citation: BS EN 12464-1:2021 §4.4 + BS EN 60598-2 + MT-04.
+```
+
+**Severity:** HIGH.
+
+## INV-18 — hm_mm derivation consistency (MEDIUM)
+
+**Clause:** repo geometry convention (no specific BS EN clause — derived identity); links BS EN 12464-1:2021 §4.4 working plane to BS EN 60598 mounting height.
+
+**Check:** `room.hm_mm` reconciles with luminaire z values per these rules:
+
+- For pendant/suspended luminaires: expected `hm_mm = min(z_mm across pendant/suspended luminaires) - working_plane_mm`.
+- For recessed/surface/track (no pendant/suspended in room): expected `hm_mm = ceiling_height_mm - working_plane_mm`.
+- Tolerance: ±50 mm (engineer-of-record rounding).
+
+**Evidence template:**
+
+```
+INV-18 verdict: PASS / FAIL
+Room hm_mm recorded: {value} mm.
+Expected hm_mm derivation:
+- Lowest pendant/suspended z_mm: {value} (or N/A if all recessed)
+- Working plane: {working_plane_mm}
+- Expected: {calculated_value} mm
+- Drift: {abs(recorded - expected)} mm, tolerance: ±50 mm
+Result: {pass | fail (drift exceeds tolerance)}
+Citation: BS EN 12464-1:2021 §4.4 + repo derivation convention.
+```
+
+**Severity:** MEDIUM (derivation drift is a calc-hygiene issue, not a safety hazard).
+
+**Vacuous PASS:** if `room.hm_mm` absent (calc-only / minimal-room mode), INV-18 PASSes vacuously.
+
+## INV-19 — Per-zone achievement (graded severity)
+
+**Clause:** BS EN 12464-1:2021 §4.1 (top-level maintained illuminance principle) + Table 5 (per task type Em).
+
+**Check:** For every entry in `calculation_summary.per_zone_achieved[]`:
+
+- Compute `gap = em_target_lux - em_achieved_lux`.
+- Compute `gap_pct = gap / em_target_lux` (when em_target > 0; if em_target == 0, vacuous PASS).
+
+**Severity bands:**
+
+| `gap_pct` range | `ratio_compliance` | non_compliance_flag severity | INV-19 verdict per zone |
+|---|---|---|---|
+| `gap_pct ≤ 0` (achieved ≥ target) | `pass` | none | PASS |
+| `0 < gap_pct < 0.10` | `marginal` | INFO | PASS (within 10%) |
+| `0.10 ≤ gap_pct < 0.25` | `marginal` | INFO | PASS (within 25%) |
+| `0.25 ≤ gap_pct < 0.50` | `fail` | MEDIUM | FAIL (MEDIUM) |
+| `gap_pct ≥ 0.50` | `fail` | HIGH | FAIL (HIGH) |
+
+**Aggregate INV-19 verdict for the IR:** PASS if every zone is PASS or `marginal`; FAIL if any zone is `fail`. INV-19 severity = max severity across all failing zones.
+
+**Evidence template:**
+
+```
+INV-19 verdict: PASS / FAIL ({severity})
+Zones inspected: {count}
+Per-zone achievement:
+- {zone_id} ({purpose}): target={target}, achieved={achieved}, gap={gap}, gap_pct={gap_pct:.1%}, ratio_compliance={enum}, severity={band}
+Aggregate: {n_pass} PASS, {n_marginal} marginal, {n_fail_medium} MEDIUM, {n_fail_high} HIGH.
+Citation: BS EN 12464-1:2021 §4.1 + Table 5 (lux-levels.json).
+```
+
+**Severity:** graded (INFO / MEDIUM / HIGH per band). Default INV-19 severity at the invariant level is HIGH (worst case); per-zone severity attaches to `non_compliance_flags[]`.
+
+**Vacuous PASS:** if `per_zone_achieved[]` empty (no photometric cascade + no lumen calc), INV-19 PASSes vacuously with evidence noting `per_zone_achieved[] empty — calc pending photometric grid`.
+
 ---
 
 ## Output
 
-After running all 12 INVs, emit the populated `invariants[]` array as
+After running all 19 INVs, emit the populated `invariants[]` array as
 part of the IR. A failing INV does NOT block emission — the IR ships
 with the failure recorded so downstream skills can react (e.g.
 db-layout sees `INV-5: FAIL` and re-sizes the lighting circuit MCB).
