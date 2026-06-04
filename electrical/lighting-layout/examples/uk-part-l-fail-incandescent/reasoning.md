@@ -239,3 +239,63 @@ automation, both caught by INV-6.
   calculation (out of scope for lighting-layout; lands in the
   energy-statement / compliance skill cluster — stubs already
   declared 2026-05-25).
+
+## §D5 RETROFIT (2026-06-04)
+
+This example was authored at v1.6.0 with a single `target_illuminance_lux`
+per room. v1.7.0 splits target into per-zone `em_target_lux` per
+BS EN 12464-1:2021 §4.2.2 + Table 6. This retrofit applies the
+backwards-compatibility defaults — engineering content unchanged.
+
+- Zone Z2 (the single "Interior" zone) takes `purpose: "task"`
+  (ZP-01 default — the only valid mapping for a private_office room
+  targeting 300 lx) and `em_target_lux: 300` (mirrors existing
+  `calculation_summary.target_illuminance_lux`).
+- All 50 GU10 halogen downlights take `mount_type: "recessed"`
+  (MT-01 default — the fittings are recessed by physical definition);
+  `z_mm` and `suspension_length_mm` remain omitted per the recessed
+  convention (geometry inherits `room.ceiling_height_mm = 2700`).
+- `per_zone_achieved[]` is populated with one entry for Z2:
+  target 300 lx, achieved 343 lx, `ratio_compliance: "pass"`
+  (room-level achievement maps directly to the single task zone —
+  INV-19 PASS).
+- INV-13..INV-19 appended to `invariants[]`. INV-13, INV-17, INV-18,
+  INV-19 are non-vacuous PASS; INV-14, INV-15, INV-16 are vacuous
+  PASS (no surrounding, no background, no pendant/suspended).
+
+**Part-L FAIL state PRESERVED VERBATIM**
+
+D5 additions (zone purpose + mount_type + per-zone achievement) are
+ORTHOGONAL to Part L 2021 §6 efficacy/controls compliance:
+
+| Item                                         | v1.6.0 state | After D5 retrofit | Reason                          |
+|----------------------------------------------|--------------|-------------------|---------------------------------|
+| `controls.part_l_compliant`                  | false        | false             | INV-6 fields untouched          |
+| 3× critical `non_compliance_flags`           | present      | present           | Flag objects untouched          |
+| INV-6 (efficacy + daylight + occupancy)      | FAIL         | FAIL              | Sub-checks evaluate same fields |
+| INV-10 (composite)                           | FAIL         | FAIL              | Depends on INV-6                |
+| INV-1 (lumen-method 343 ≥ 300)               | PASS         | PASS              | Calculation unchanged           |
+| INV-11 (photometric cascade 564 ≥ 500)       | PASS         | PASS              | Cascade payload unchanged       |
+| INV-19 (per-zone achievement Z2 343 ≥ 300)   | n/a          | PASS (new)        | Photometric, not regulatory     |
+
+This example becomes the canonical demonstration that photometric
+INV-19 PASS coexists with regulatory INV-6 FAIL — the layout meets
+its 300 lx target by brute-force fitting count, but ships 2500 W of
+connected lighting load against a 95 lm/W Part L efficacy target.
+INV-6 catches the regulatory gap; INV-19 confirms the photometric
+soundness; they do not double-count.
+
+**Honest disclosures (4-place):**
+
+1. Engineering judgement defaults documented in `input._d5_retrofit_note`.
+2. `output.calculation_summary.assumptions[]` carries the v1.6.0 → v1.7.0
+   retrofit explanation including the Part-L preservation statement.
+3. `output.rationale.sections[]` includes a "v1.7 retrofit" section
+   explaining ZP-01, MT-01, and the D5/Part-L orthogonality.
+4. This `reasoning.md` §D5 RETROFIT section.
+
+No engineering numbers were changed — the v1.6.0 lumen-method walk,
+grid layout, circuit topology, controls state, and Part-L failure
+verdict all remain identical. The retrofit is purely additive
+metadata to align the example with the v1.7.0 zone-purpose /
+mount-type schema while preserving the failure-mode pedagogy.
