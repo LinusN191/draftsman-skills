@@ -175,3 +175,64 @@ All 10 INVs PASS. No `non_compliance_flags` raised.
   `emergency-lighting` skill (deferred). The lighting-layout IR could
   declare an emergency zone Z3 here; the example keeps scope tight to
   general lighting + Part L controls for D3.C.1 demonstration.
+
+## §D5 RETROFIT (2026-06-03)
+
+This example was authored at v1.6.0 with a single `target_illuminance_lux`
+per room. v1.7.0 splits target into per-zone `em_target_lux` per BS EN
+12464-1:2021 §4.2.2 + Table 6. Because a reception lobby is a **circulation
+area** (not a task room), the retrofit takes the ZP-05 branch — not the
+ZP-01 task-default branch used by office-open-plan:
+
+- Both zones (Z1 perimeter and Z2 interior) take `purpose: "circulation"`
+  (ZP-05 default — reception lobby is a circulation area per BS EN
+  12464-1:2021 §4.2.2 + zone-purpose-rules.yaml). `em_target_lux: 300`
+  is looked up from `lux-levels.json` `circulation.lobby` (300 lx
+  maintained, UGR_max 22, Ra ≥ 80). The Z1/Z2 split remains for Part L
+  daylight zoning — it is independent of the §4.2.2 area-purpose typing.
+- Circulation zones are **not subject to** the BS EN 12464-1 §4.2.2
+  task / surrounding / background ratio hierarchy (Table 6). INV-14 (task
+  → surrounding ratio) and INV-15 (task → background floor) are
+  vacuous PASS because no zone declares `purpose='surrounding'` or
+  `purpose='background'`.
+- All 30 luminaires take `mount_type: "recessed"` (MT-01 default — matches
+  the 100 mm recessed LED downlight `luminaire_type.description`); `z_mm`
+  and `suspension_length_mm` remain omitted per the recessed convention
+  (geometry inherits `room.ceiling_height_mm = 2700`).
+- `per_zone_achieved[]` is populated with one entry per zone:
+  Z1 target 300 / achieved 302.4 lx; Z2 target 300 / achieved 302.4 lx;
+  both `ratio_compliance: "pass"`. Both zones share the same achieved
+  illuminance because they sit under one uniform 5×6 grid — there is no
+  per-zone illuminance gradient to compute.
+- INV-13..INV-19 are appended to `invariants[]`:
+  - INV-13 (zone purpose required + valid) non-vacuous PASS — both zones
+    declare `circulation` from the allowed set.
+  - INV-14 (surrounding ratio) and INV-15 (background floor) vacuous PASS
+    — no `surrounding` / `background` zones in a circulation room.
+  - INV-16 (mount geometry consistency) vacuous PASS — no
+    pendant/suspended luminaires to verify.
+  - INV-17 (ceiling clearance + working-plane floor) PASS — recessed
+    inherit gives z=2700, working_plane=0, clearance=2700 mm; no luminaire
+    below plane, none above ceiling.
+  - INV-18 (`hm_mm` derivation drift) PASS — recessed branch gives
+    expected `hm_mm = 2700 − 0 = 2700 mm`; recorded `hm_mm=2700`; drift
+    0 mm, tolerance ±50 mm.
+  - INV-19 (per-zone achievement) PASS — both circulation zones achieve
+    302.4 lx ≥ 300 lx target.
+
+**Honest disclosures (4-place):**
+
+1. Engineering judgement defaults documented in `input._d5_retrofit_note`.
+2. `output.calculation_summary.assumptions[]` carries the v1.6.0 → v1.7.0
+   retrofit explanation.
+3. `output.rationale.sections[]` includes a "v1.7 retrofit" section
+   explaining the ZP-05 circulation-area branch and the MT-01 recessed
+   default for this example.
+4. This `reasoning.md` §D5 section.
+
+No engineering numbers were changed — the v1.6.0 lumen-method walk, grid
+selection, circuits, switch, and Part L zoning all remain identical. The
+retrofit is purely additive metadata to align the example with the v1.7.0
+zone-purpose / mount-type schema and to demonstrate the **ZP-05 circulation
+branch** as a distinct retrofit pattern from the ZP-01 task default shown
+in office-open-plan (C.1).
