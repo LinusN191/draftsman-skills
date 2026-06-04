@@ -1,0 +1,126 @@
+{
+  "room_id": "uk-per-zone-target-violation",
+  "room_type": "private_office",
+  "luminaire_summary": {
+    "luminaire_count": 12,
+    "luminaire_wattage_w_each": 18,
+    "luminaire_lumens_each": 2000,
+    "lumen_type": "design",
+    "ip_rating": "IP20"
+  },
+  "circuits": [
+    {
+      "circuit_id": "C-L01",
+      "db_designation": "L1",
+      "zone_id": "Z1",
+      "voltage_class": "LV_power",
+      "load_w": 72,
+      "luminaire_count": 4,
+      "mcb_rating_a_suggested": 6
+    },
+    {
+      "circuit_id": "C-L02",
+      "db_designation": "L1",
+      "zone_id": "Z1",
+      "voltage_class": "LV_power",
+      "load_w": 72,
+      "luminaire_count": 4,
+      "mcb_rating_a_suggested": 6
+    },
+    {
+      "circuit_id": "C-L03",
+      "db_designation": "L1",
+      "zone_id": "Z1",
+      "voltage_class": "LV_power",
+      "load_w": 72,
+      "luminaire_count": 4,
+      "mcb_rating_a_suggested": 6
+    }
+  ],
+  "emergency_lighting_present": false,
+  "controls_summary": {
+    "occupancy_sensing": true,
+    "daylight_linking": false,
+    "dimming_protocol": "DALI",
+    "part_l_assessed": true,
+    "part_l_compliant": true
+  },
+  "zones": [
+    {
+      "zone_id": "Z1",
+      "zone_type": "interior",
+      "control": "dali_master",
+      "luminaire_ids": ["L01","L02","L03","L04","L05","L06","L07","L08","L09","L10","L11","L12"],
+      "circuit_ids": ["C-L01","C-L02","C-L03"],
+      "purpose": "task",
+      "em_target_lux": 500
+    }
+  ],
+  "circuits_topology": [
+    {
+      "circuit_id": "C-L01",
+      "zone_id": "Z1",
+      "row_index": 0,
+      "total_load_w": 72,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 300, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L02",
+      "zone_id": "Z1",
+      "row_index": 1,
+      "total_load_w": 72,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 3000, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L03",
+      "zone_id": "Z1",
+      "row_index": 2,
+      "total_load_w": 72,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 5700, "wall": "W"}
+    }
+  ],
+  "switches": [
+    {
+      "id": "SW01",
+      "type": "dali_master",
+      "x_mm": 5100,
+      "y_mm": 200,
+      "height_aff_mm": 1200,
+      "controls_circuit": "C-L01,C-L02,C-L03"
+    }
+  ],
+  "consumed_intents": {
+    "photometric_grid": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/photometric-analysis/examples/cascade-uk-per-zone-target-violation/intent-out.json",
+      "payload": {
+        "achieved_avg_illuminance_lux": 200,
+        "achieved_min_illuminance_lux": 128,
+        "achieved_uniformity_u0": 0.64,
+        "ugr_max": 17.6,
+        "ugr_target": 19,
+        "uniformity_target": 0.6,
+        "target_illuminance_lux": 500,
+        "task_area_compliant": false,
+        "grid_point_count": 70,
+        "non_compliance_flags": [
+          {
+            "message": "INV-11 photometric cascade: achieved_avg_illuminance_lux=200 vs target=500 (60% deficit); achieved_min_illuminance_lux=128 at NW corner FAILS BS EN 12464-1 §4.4 per-point requirement (must be ≥ 0.7 × target 500 = 350 lx). Root cause: 2000 lm panel substitution. Remediation per INV-1 / INV-19.",
+            "reference": "BS EN 12464-1:2021 §4.4 + Table 5",
+            "severity": "critical"
+          }
+        ],
+        "ies_source_summary": {
+          "all_verified": false,
+          "verification_status_lowest": "synthetic_reference_C3"
+        }
+      }
+    }
+  }
+}

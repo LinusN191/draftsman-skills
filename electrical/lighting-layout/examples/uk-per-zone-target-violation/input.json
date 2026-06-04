@@ -1,0 +1,34 @@
+{
+  "_note": "D5 sprint Task C.12 NEW example (2026-06-04). FAIL-by-design example exercising INV-19 HIGH-severity band (gap_pct ≥ 50%). 10×6 m UK private office, 60 m², ceiling 3000 mm, working plane 750 mm. Single task zone Z1 with em_target_lux=500 (BS EN 12464-1:2021 Table 5 private_office task entry). Engineer specified 12 × LED_PANEL_600 ultra-low-lumen 2000 lm variant (severely value-engineered substitution from the canonical 4500 lm ontology entry — typical bad spec for a 1×4 retrofit into a shallow ceiling void). Lumen-method achieved 198.4 lx; photometric cascade resolves to 200 lx authoritative. Gap = 500 − 200 = 300 lx; gap_pct = 60.0% — falls in INV-19 HIGH band (gap_pct ≥ 0.50). INV-19 fires FAIL HIGH. INV-1 also fires FAIL HIGH (binary lumen-method gate on the 200 < 500 shortfall). INV-11 fires FAIL HIGH (photometric task_area_compliant=false). All three layered failures cite the SAME root cause (the 2000 lm panel substitution). compliance_summary.compliant=false BY DESIGN. CANONICAL FAIL-BY-DESIGN DISCLOSURE: this example is DELIBERATELY FAIL-by-design to exercise INV-19 HIGH-severity band. Engineer-of-record would either bump to ≥31 panels (lumen-method requires N=31 at 2000 lm) OR replace with 4500 lm panels keeping the 4×3 grid (achieved 558 lx — clears all three INVs simultaneously). Mirrored in output.calculation_summary.assumptions[], output.rationale.sections[], output.calculation_summary.non_compliance_flags[], and reasoning.md.",
+  "room_type": "private_office",
+  "room_length_m": 10,
+  "room_width_m": 6,
+  "ceiling_height_m": 3.0,
+  "working_plane_m": 0.75,
+  "luminaire": {
+    "type": "600x600 LED Recessed Panel — ultra-low-lumen 2000 lm value-engineered variant",
+    "symbol": "LED_PANEL_600",
+    "lumen_output": 2000,
+    "lumen_type": "design",
+    "wattage_w": 18,
+    "cct_k": 4000,
+    "cri_ra": 80,
+    "ip_rating": "IP20"
+  },
+  "ceiling_grid_mm": 600,
+  "new_build": true,
+  "jurisdiction": "england_wales",
+  "glazed_walls": [],
+  "entrance_positions": [
+    {"wall": "S", "offset_mm": 4000, "width_mm": 900, "door_swing": "inward_latch_right"}
+  ],
+  "controls_protocol": "DALI",
+  "db_designation": "L1",
+  "photometric_ies_paths": [
+    {
+      "luminaire_type": "LED_PANEL_600",
+      "path": "shared/photometric/ies/LED_PANEL_600-2000lm.ies",
+      "_source": "Synthetic 600x600mm recessed LED panel, ultra-low-lumen 2000lm value-engineered variant (vs 4500lm ontology default), 4000K, opal diffuser. Distribution: Lambertian cos(theta) per CIBSE LG7 §6.2. verification_status: synthetic_reference_C3 — used to demonstrate the INV-19 HIGH per-zone failure cascade for severely under-spec'd panel substitutions."
+    }
+  ]
+}

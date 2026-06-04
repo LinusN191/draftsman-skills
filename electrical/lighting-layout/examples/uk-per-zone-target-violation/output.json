@@ -1,0 +1,461 @@
+{
+  "_note": "D5 sprint Task C.12 NEW example (2026-06-04). CANONICAL FAIL-BY-DESIGN — this example is DELIBERATELY FAIL-by-design to exercise INV-19 HIGH-severity band (gap_pct ≥ 50%). 10×6 m UK private office, 60 m², single task zone Z1 with em_target_lux=500. Engineer specified 12 × LED_PANEL_600 ultra-low-lumen 2000 lm value-engineered variant. Lumen-method achieved 198.4 lx; photometric cascade resolves to 200 lx. Gap=300 lx → gap_pct=60.0% → INV-19 ratio_compliance='fail', severity HIGH. INV-1 (binary lumen-method gate) + INV-11 (photometric task_area_compliant=false) + INV-19 (per-zone graded HIGH band) all fire on the same root cause (the 2000 lm panel substitution). calculation_summary.compliant=false BY DESIGN. compliance_summary.compliant=false BY DESIGN (mirror). Layout otherwise drawable so the renderer can react to the recorded failures. Engineer-of-record would either bump to ≥31 panels OR replace with 4500 lm panels (achieved 558 lx — clears all three INVs simultaneously). NOT FOR ISSUE; few-shot library FAIL exemplar.",
+  "drawing_type": "lighting_layout",
+  "version": "1.7.0",
+  "room": {
+    "length_mm": 10000,
+    "width_mm": 6000,
+    "area_m2": 60,
+    "ceiling_height_mm": 3000,
+    "working_plane_mm": 750,
+    "hm_mm": 2250,
+    "room_index": 1.67,
+    "room_type": "private_office",
+    "environment_type": "normal",
+    "ip_required": "IP20",
+    "has_windows": false
+  },
+  "luminaire_type": {
+    "symbol": "LED_PANEL_600",
+    "description": "600×600 LED Recessed Panel — ultra-low-lumen 2000 lm value-engineered variant",
+    "lumens": 2000,
+    "lumen_type": "design",
+    "llmf_applied": false,
+    "wattage_w": 18,
+    "cct_k": 4000,
+    "cri_ra": 80,
+    "ip_rating": "IP20",
+    "lamp_efficacy_lm_per_w": 111.1
+  },
+  "selection_source": {
+    "photometric_source": "ontology_default",
+    "citation": "CIBSE LG7 §6.2 (typical recessed LED panel UF + SHR_max) + BS EN 12464-1:2021 §4.4 (LLMF maintenance categories)"
+  },
+  "zones": [
+    {
+      "zone_id": "Z1",
+      "label": "Interior — open private office task area (no glazing)",
+      "zone_type": "interior",
+      "control": "dali_master",
+      "circuit_id": "C-L01",
+      "circuit_ids": ["C-L01", "C-L02", "C-L03"],
+      "luminaire_ids": ["L01","L02","L03","L04","L05","L06","L07","L08","L09","L10","L11","L12"],
+      "luminaire_count": 12,
+      "total_load_w": 216,
+      "purpose": "task",
+      "em_target_lux": 500
+    }
+  ],
+  "luminaires": [
+    {"id": "L01", "x_mm": 300,  "y_mm": 300,  "zone_id": "Z1", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L02", "x_mm": 3433, "y_mm": 300,  "zone_id": "Z1", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L03", "x_mm": 6567, "y_mm": 300,  "zone_id": "Z1", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L04", "x_mm": 9700, "y_mm": 300,  "zone_id": "Z1", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L05", "x_mm": 300,  "y_mm": 3000, "zone_id": "Z1", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L06", "x_mm": 3433, "y_mm": 3000, "zone_id": "Z1", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L07", "x_mm": 6567, "y_mm": 3000, "zone_id": "Z1", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L08", "x_mm": 9700, "y_mm": 3000, "zone_id": "Z1", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L09", "x_mm": 300,  "y_mm": 5700, "zone_id": "Z1", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L10", "x_mm": 3433, "y_mm": 5700, "zone_id": "Z1", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L11", "x_mm": 6567, "y_mm": 5700, "zone_id": "Z1", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L12", "x_mm": 9700, "y_mm": 5700, "zone_id": "Z1", "circuit_id": "C-L03", "mount_type": "recessed"}
+  ],
+  "switches": [
+    {
+      "id": "SW01",
+      "type": "dali_master",
+      "x_mm": 5100,
+      "y_mm": 200,
+      "height_aff_mm": 1200,
+      "controls_circuit": "C-L01,C-L02,C-L03",
+      "door_swing": "inward_latch_right",
+      "switch_side": "latch"
+    }
+  ],
+  "circuits": [
+    {
+      "circuit_id": "C-L01",
+      "db_designation": "L1",
+      "zone_id": "Z1",
+      "luminaire_ids": ["L01", "L02", "L03", "L04"],
+      "total_load_w": 72,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 0,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 300, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L02",
+      "db_designation": "L1",
+      "zone_id": "Z1",
+      "luminaire_ids": ["L05", "L06", "L07", "L08"],
+      "total_load_w": 72,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 1,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 3000, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L03",
+      "db_designation": "L1",
+      "zone_id": "Z1",
+      "luminaire_ids": ["L09", "L10", "L11", "L12"],
+      "total_load_w": 72,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 2,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 5700, "wall": "W"}
+    }
+  ],
+  "controls": {
+    "dimming_protocol": "DALI",
+    "occupancy_sensing": true,
+    "daylight_linking": false,
+    "part_l_assessed": true,
+    "part_l_compliant": true,
+    "part_l_efficacy_target_lm_per_w": 95,
+    "lamp_efficacy_lm_per_w": 111.1,
+    "perimeter_zones": [],
+    "required": ["occupancy"]
+  },
+  "calculation_summary": {
+    "target_illuminance_lux": 500,
+    "achieved_illuminance_lux": 200.0,
+    "utilisation_factor": 0.62,
+    "maintenance_factor": 0.80,
+    "lamp_efficacy_lm_per_w": 111.1,
+    "part_l_efficacy_target_lm_per_w": 95,
+    "ugr_status": "UGR ≤ 19 — confirm from photometric data",
+    "compliant": false,
+    "discovery_status": "complete",
+    "non_compliance_flags": [
+      {
+        "message": "INV-19-violation: Per-zone task achievement 200 lx is 60% short of 500 lx target. Severity HIGH per INV-19 band (gap_pct ≥ 50%). Z1 (task): target=500 lx, achieved=200 lx, gap=300 lx, gap_pct=60.0%, ratio_compliance='fail'. Root cause: engineer specified 12 × LED_PANEL_600 ultra-low-lumen 2000 lm value-engineered variant (vs the 4500 lm ontology default). Remediation: bump to ≥31 panels at 2000 lm (lumen-method N requirement) OR replace with 4500 lm panels keeping the 12-fitting 4×3 grid (achieved 558 lx — clears all three INVs simultaneously) OR accept a lower task target if the room use changes.",
+        "reference": "BS EN 12464-1:2021 §4.1 + Table 5 + validator.md §INV-19 band table",
+        "severity": "critical",
+        "_inv_id": "INV-19-violation"
+      },
+      {
+        "message": "INV-1 lumen-method gate: Achieved illuminance 200 lx < target 500 lx — under-provision by 60.0%. Lumen method requires N = (500×60)/(2000×0.62×0.80) = 30000/992 = 30.24, round UP to 31. Engineer chose 12. Remediation: bump to ≥31 panels OR upgrade to 4500 lm panels and keep the 12-fitting 4×3 layout (achieved 558 lx).",
+        "reference": "BS EN 12464-1:2021 §4 (illuminance criteria) + CIBSE LG7 §6 (lumen method) + [spacing-rules#lumen-method-formula]",
+        "severity": "critical"
+      },
+      {
+        "message": "INV-11 photometric cascade: achieved_avg_illuminance_lux=200 vs target=500 (60% deficit); achieved_min_illuminance_lux=128 at NW corner FAILS BS EN 12464-1 §4.4 per-point requirement (must be ≥ 0.7 × target 500 = 350 lx). Root cause: 2000 lm panel substitution. Remediation per INV-1 / INV-19.",
+        "reference": "BS EN 12464-1:2021 §4.4 + Table 5",
+        "severity": "critical",
+        "_cascaded_from": "photometric-analysis"
+      }
+    ],
+    "assumptions": [
+      "CANONICAL FAIL-BY-DESIGN DISCLOSURE: this example is DELIBERATELY FAIL-by-design to exercise INV-19 HIGH-severity band (gap_pct ≥ 50%). The 2000 lm panel substitution is a wildly value-engineered specification that any real engineer-of-record would either reject outright or pair with a fitting-count bump to ≥31. The example exists in the few-shot library so a downstream generator can pattern-match the INV-19 HIGH FAIL signal and surface the per-zone HIGH band correctly on synthesised IRs.",
+      "UF = 0.62 from CIBSE LG7 §6.2 standard reflectance table 0.7/0.5/0.2 at RI=1.5 (next-lower band for actual RI=1.67)",
+      "MF = 0.80 for clean office LED on a 3-year cleaning cycle (CIBSE TM 3-25)",
+      "Engineer specified luminaire = 2000 lm ultra-low-lumen variant of LED_PANEL_600; canonical ontology entry is 4500 lm. Specification is a wildly value-engineered substitution that bypassed lumen-method re-check — typical bad-spec failure mode for retrofit-into-shallow-ceiling-void scope changes.",
+      "Photometric cascade resolves achieved_avg=200 lx (authoritative). Lumen-method gives 198.4 lx; rounded to 200 lx for the per_zone_achieved entry per the §INV-19 convention that photometric overrides lumen-method when both are present.",
+      "Engineer-of-record remediation paths: (a) bump to ≥31 panels at 2000 lm (lumen-method N requirement) — adds 19 fittings + extra DALI addresses + extra cable; (b) replace with 4500 lm panels keeping 4×3 grid — achieved (12×4500×0.62×0.80)/60 = 446 lx; still 11% short → INV-19 'marginal' INFO + INV-1 PASS; (c) drop to 6000 lm uplift panels at 12 fittings — achieved (12×6000×0.62×0.80)/60 = 595 lx ≥ 500 → all three INVs PASS. Path (c) is the canonical engineering fix."
+    ],
+    "per_zone_achieved": [
+      {
+        "zone_id": "Z1",
+        "purpose": "task",
+        "em_target_lux": 500,
+        "em_achieved_lux": 200,
+        "ratio_compliance": "fail"
+      }
+    ]
+  },
+  "drawing_notes": [
+    "All luminaires: 600×600 LED recessed panel, 2000 design lm, 18W, 4000K, CRI ≥ 80 — ULTRA-LOW-LUMEN VALUE-ENGINEERED VARIANT (NOT canonical 4500 lm)",
+    "DELIBERATELY NON-COMPLIANT LAYOUT — DO NOT ISSUE FOR CONSTRUCTION (achieved 200 lx < 500 lx target; gap_pct=60% INV-19 HIGH band)",
+    "CANONICAL FAIL-BY-DESIGN: this layout is shipped as a few-shot FAIL exemplar so downstream generators learn the INV-19 HIGH-band signal",
+    "Remediation: bump to ≥31 panels at 2000 lm (lumen-method requirement) OR replace with 4500 lm panels keeping the 4×3 grid (achieved 446 lx — still marginal) OR replace with 6000 lm panels (achieved 595 lx — full PASS)",
+    "DALI master switch SW01 at S entrance latch side, 1200 mm AFF — controls all 3 row circuits",
+    "Three 6A Type B MCBs on DB L1, one per row, 72W per circuit (well below 1104W 80%-rule headroom — circuits are LIGHTLY loaded because the panels themselves are under-lumened)",
+    "Part L 2021 §6 compliance ASSESSED — lamp efficacy 111.1 lm/W ≥ 95 lm/W target PASSES the efficacy gate (the failure here is illuminance shortfall, NOT Part L)"
+  ],
+  "flags": [
+    "FAIL-BY-DESIGN: INV-19 HIGH band — 200 lx vs 500 lx target (60% short)",
+    "FAIL-BY-DESIGN: INV-1 lumen-method gate — N=12 vs N=31 required",
+    "FAIL-BY-DESIGN: INV-11 photometric cascade — task_area_compliant=false",
+    "NOT FOR ISSUE — few-shot FAIL exemplar; remediation = replace 2000 lm panels with 6000 lm uplift"
+  ],
+  "rationale": {
+    "chat_summary": "10×6 m UK private office demonstrating INV-19 HIGH-band FAIL. Engineer specified 12 × LED_PANEL_600 ultra-low-lumen 2000 lm value-engineered variant for a 500 lx task target. Achieved 200 lx vs target 500 lx (60% shortfall) → INV-19 ratio_compliance='fail', severity HIGH; INV-1 binary lumen-method gate also FAILS HIGH; INV-11 photometric cascade FAILS HIGH (task_area_compliant=false). compliance_summary.compliant=false BY DESIGN. CANONICAL FAIL-BY-DESIGN — example exists so downstream generators learn the INV-19 HIGH-band signal.",
+    "sections": [
+      {
+        "title": "Why this example exists — CANONICAL FAIL-BY-DESIGN",
+        "summary": "This example is DELIBERATELY FAIL-by-design to exercise INV-19's HIGH-severity band (gap_pct ≥ 50%). The companion uk-undersized-lighting-vs-target example sits in the INFO 'marginal' band (gap_pct=13.2%). This C.12 example pushes the same root cause (value-engineered panel substitution) to the HIGH band by choosing a wildly under-spec'd 2000 lm panel (vs the canonical 4500 lm ontology entry). The few-shot library needs HIGH-band coverage so a downstream generator pattern-matches the band-table mapping correctly on synthesised IRs. compliance_summary.compliant=false BY DESIGN; calculation_summary.compliant=false BY DESIGN; the layout is shipped with three layered FAILs (INV-1 binary + INV-11 photometric + INV-19 per-zone graded HIGH) cited honestly in non_compliance_flags[]."
+      },
+      {
+        "title": "Lumen-method walk",
+        "summary": "A=60 m². Hm=3000−750=2250 mm. RI=(10×6)/(2.25×16)=60/36=1.67 → ontology table key 1.5 (next-lower band per LG7 §6.2). UF=0.62 (LED_PANEL_600 at RI=1.5, reflectances 0.7/0.5/0.2). MF=0.80 (clean office LED). Required N = (Em×A)/(Φ×UF×MF) = (500×60)/(2000×0.62×0.80) = 30000/992 = 30.24 → round UP to 31. Engineer chose N=12 → achieved (lumen-method) = (12×2000×0.62×0.80)/60 = 11904/60 = 198.4 lx. Photometric cascade resolves to 200 lx authoritative. Shortfall vs 500 lx target = 300 lx (60%) → INV-1 FAIL HIGH on the binary gate.",
+        "decisions": [
+          {
+            "label": "Lux target 500 lx maintained",
+            "summary": "BS EN 12464-1:2021 Table 5 entry for private_office sets 500 lx maintained at desk plane.",
+            "rule": "BS EN 12464-1 Table 5 private_office",
+            "code_clause": "BS EN 12464-1:2021 § 5"
+          },
+          {
+            "label": "Engineer N=12 vs lumen-method N=31 (catastrophic under-provision)",
+            "summary": "Engineer specified 12 panels in a 4×3 grid for a 500 lx target with 2000 lm fittings; lumen method requires N=31 (round UP from 30.24). The 2000 lm panel substitution is a wildly value-engineered choice (the canonical LED_PANEL_600 ontology entry is 4500 lm) — INV-1 catches this deterministically. INV-19 also catches it at the per-zone level with HIGH severity (gap_pct 60% ≥ 50% band).",
+            "rule": "Round up; never round down",
+            "code_clause": "CIBSE LG7 §6 + BS EN 12464-1:2021 §4.3"
+          }
+        ]
+      },
+      {
+        "title": "INV-19 HIGH band selection (the protagonist failure)",
+        "summary": "Per validator.md §INV-19 band table: gap = em_target − em_achieved = 500 − 200 = 300 lx. gap_pct = gap / em_target = 300/500 = 0.60 = 60.0%. The band table maps gap_pct ≥ 0.50 → ratio_compliance='fail', flag severity HIGH, INV-19 verdict FAIL (HIGH). The Z1 entry in per_zone_achieved[] records this verbatim. INV-19 aggregate verdict = FAIL (HIGH) because at least one zone (Z1) is fail-HIGH; severity = max severity across all failing zones = HIGH. non_compliance_flags[] entry id='INV-19-violation' with flag-level severity='critical' (the schema enum at the flag level is critical/warning/info; we map INV-19 HIGH severity → critical at flag level while preserving the 'HIGH' wording in the description for INV-19 traceability per validator §INV-19).",
+        "decisions": [
+          {
+            "label": "gap_pct 60% sits in INV-19 HIGH band",
+            "summary": "Validator §INV-19 band table row 5: gap_pct ≥ 0.50 → ratio_compliance='fail', severity HIGH, per-zone verdict FAIL (HIGH). This is the protagonist failure of the example.",
+            "rule": "INV-19 band table — gap_pct ≥ 0.50",
+            "code_clause": "BS EN 12464-1:2021 § 4.1 + Table 5 + validator.md §INV-19"
+          },
+          {
+            "label": "Flag-level severity 'critical' maps INV-19 'HIGH'",
+            "summary": "The schema flag-level enum is critical/warning/info. INV-19 HIGH severity maps to flag-level 'critical'. The flag message preserves the 'HIGH' wording for INV-19 traceability so a reader can follow the band-table mapping without losing the per-zone severity attribution.",
+            "rule": "Flag-level severity = critical for INV-19 HIGH band",
+            "code_clause": "lighting-layout-ir.schema.json non_compliance_flags.severity enum + validator.md §INV-19"
+          }
+        ]
+      },
+      {
+        "title": "INV-1 + INV-11 + INV-19 layered failures on the same root cause",
+        "summary": "Three INVs fire FAIL HIGH on the SAME root cause (the 2000 lm panel substitution): INV-1 (binary lumen-method gate — achieved 200 < target 500 fails); INV-11 (photometric cascade — task_area_compliant=false from the cascade-uk-per-zone-target-violation photometric example); INV-19 (per-zone graded band-table — gap_pct 60% in HIGH band). All three clear simultaneously under the canonical remediation (replace with 6000 lm panels keeping the 12-fitting 4×3 layout → achieved 595 lx ≥ 500). The example demonstrates the layered-failure-detection pattern: lumen-method binary + photometric per-point + per-zone graded all catch the same bad specification at three different layers."
+      },
+      {
+        "title": "S/H ratio check (still PASS despite under-provision)",
+        "summary": "4 cols × 3 rows in 10000×6000 room, 300 mm edge clearance. S_x=(10000−600)/3=3133 mm. S_y=(6000−600)/2=2700 mm. Hm=2250 mm. SHR_max=1.5 (LED_PANEL_600 ontology default). Limit = 1.5 × 2250 = 3375 mm. S_x=3133 ≤ 3375 PASS (93% of limit); S_y=2700 ≤ 3375 PASS (80% of limit). INV-2 PASS — the layout is dimensionally sound; the failure is purely a lumen-output problem (the 2000 lm panel is the wrong panel, not the wrong grid)."
+      },
+      {
+        "title": "Part L (INV-6) PASSES — failure is NOT a Part L gap",
+        "summary": "controls.part_l_assessed=true PASSES Rule 6 sub-check 1. controls.required=['occupancy'] PASSES sub-check 2. glazed_walls=[] → daylight_linking N/A; sub-check 3 PASS. Lamp efficacy 2000/18 = 111.1 lm/W ≥ 95 lm/W target PASSES sub-check 4. controls.part_l_compliant=true. INV-6 PASS — this example's failure is NOT a Part L compliance gap (efficacy is fine; the panels just don't emit enough lumens to hit the illuminance target). The failure is purely the illuminance gate (INV-1 + INV-11 + INV-19) on the 2000 lm panel substitution."
+      },
+      {
+        "title": "Switch placement (INV-3 PASS)",
+        "summary": "Single S-wall entrance (offset 4000 mm, width 900 mm, door_swing=inward_latch_right). Latch frame at x=4000+900=4900. Switch SW01 placed 200 mm to the latch side at (5100, 200), 1200 mm AFF. controls_protocol=DALI → single dali_master switch satisfies INV-3's DALI exception (one master sufficient). switch_side='latch' per [switching-rules#latch-side]. INV-3 PASS."
+      },
+      {
+        "title": "Circuit topology (INV-4 + INV-5 PASS)",
+        "summary": "3 row circuits C-L01..C-L03, one per row of 4 luminaires. Each circuit's luminaire_ids share a single row_index (0, 1, 2 respectively) — no Z-pattern, INV-4 PASS. Each circuit at 4×18=72W ≤ 1104W (6A × 0.8 × 230) — INV-5 PASS, only 6.5% of headroom. Homeruns all exit on W wall at the row's y_mm."
+      },
+      {
+        "title": "Composite INV-10 FAIL",
+        "summary": "non_compliance_flags[] populated with 3 entries (INV-19 + INV-1 + cascaded INV-11), all severity=critical. Rule 10 cross-check: controls.part_l_compliant=true so the 'if part_l_compliant==false: at least one severity=critical entry referencing Part L' clause is vacuously satisfied. But the overall layout is non-compliant (compliant=false, INV-1+INV-11+INV-19 FAIL), so INV-10 composite FAIL HIGH reflects the failed state honestly per the populated non_compliance_flags + compliant=false signalling pair."
+      },
+      {
+        "title": "Remediation guidance",
+        "summary": "Three viable paths: (a) Bump to ≥31 panels at 2000 lm — adds 19 fittings + extra DALI addresses + extra rows of cable, expensive and architecturally crowded. (b) Replace with 4500 lm panels keeping 4×3 grid — achieved (12×4500×0.62×0.80)/60 = 446 lx; still 11% short → INV-19 'marginal' INFO + INV-1 PASS (binary gate is satisfied because the residual gap is <25%, but engineer-of-record may choose a higher-lumen panel for headroom). (c) Replace with 6000 lm uplift panels keeping 4×3 grid — achieved (12×6000×0.62×0.80)/60 = 595 lx ≥ 500 → all three INVs PASS, full compliance. Path (c) is the canonical engineering fix; path (a) is over-engineered; path (b) is a marginal pass that engineer-of-record may accept or reject. Engineer-of-record decision."
+      },
+      {
+        "title": "Assumptions and FAIL-BY-DESIGN disclosure",
+        "summary": "CANONICAL FAIL-BY-DESIGN DISCLOSURE: this example is DELIBERATELY FAIL-by-design to exercise INV-19 HIGH-severity band. The 2000 lm panel substitution is a wildly value-engineered specification that any real engineer-of-record would either reject outright or pair with a fitting-count bump to ≥31. The example exists in the few-shot library so a downstream generator can pattern-match the INV-19 HIGH FAIL signal and surface the per-zone HIGH band correctly on synthesised IRs. UF + SHR_max from CIBSE LG7 standard ontology defaults; engineer must confirm against manufacturer photometric file before issue. MF=0.80 assumes a 3-year cleaning cycle in a clean office.",
+        "decisions": [
+          {
+            "label": "UF = 0.62 (RI=1.5 next-lower band for actual RI=1.67)",
+            "summary": "CIBSE LG7 §6.2 standard reflectance table 0.7/0.5/0.2 for indoor office.",
+            "rule": "Standard CIBSE reflectance table; next-lower RI band",
+            "code_clause": "CIBSE LG7 §6.2 + BS EN 12464-1:2021 §4.4"
+          },
+          {
+            "label": "MF = 0.80",
+            "summary": "Clean office LED on a 3-year cleaning cycle.",
+            "rule": "CIBSE TM 3-25 standard MF for clean office LED",
+            "code_clause": "CIBSE TM 3-25"
+          }
+        ]
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": false,
+      "severity": "high",
+      "evidence": "Lumen method: N=12 LED_PANEL_600 × 2000 lm × UF=0.62 × MF=0.80 / 60 m² = achieved_illuminance_lux=198.4 lux (photometric cascade resolves to 200 lx authoritative) < target 500 lux (Rule 1 FAIL). Shortfall = 300 lux (60.0%). Required N = (500×60)/(2000×0.62×0.80) = 30000/992 = 30.24 → round UP to 31. Remediation: replace with 6000 lm uplift panels keeping the 12-fitting 4×3 layout (achieved 595 lx PASS) OR bump to ≥31 fittings at 2000 lm. CANONICAL FAIL-BY-DESIGN exemplar for INV-19 HIGH-band coverage. Per [spacing-rules#lumen-method-formula] + BS EN 12464-1:2021 §4."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "S/H ratio: Hm=2250 mm, SHR_max=1.5 (LED_PANEL_600 ontology default), limit=3375 mm. 4 cols × 3 rows grid: S_x=(10000−600)/3=3133 mm ≤ 3375 PASS (93% of limit); S_y=(6000−600)/2=2700 mm ≤ 3375 PASS (80% of limit). Layout is dimensionally sound — the failure is purely a lumen-output problem (the 2000 lm panel is the wrong panel, not the wrong grid). Per [spacing-rules#shr-max-default] + CIBSE LG7 §6.2."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Switch coverage: 1 entrance declared (S wall, offset 4000, width 900, door_swing=inward_latch_right), 1 switch emitted (SW01 dali_master). controls_protocol=DALI → INV-3 Rule 1 DALI exception satisfied (one master sufficient). Position (5100, 200) sits 200 mm to the latch side of the latch frame (x=4900); height_aff_mm=1200 within [1150, 1250] band per [switching-rules#height] (BS 7671 §553.1.1 + IET OSG App E §E1.4); switch_side='latch'. Rule 3 PASS."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Circuit topology: 3 row circuits C-L01..C-L03 each feed exactly one row of 4 luminaires sharing single row_index (0, 1, 2 respectively). max(row_indices) − min(row_indices) = 0 per circuit ≤ 1 → no Z-pattern. homerun_endpoints all on W wall (x_mm=0) at row y_mm ∈ {300, 3000, 5700} — all four required keys (x_mm, y_mm, wall) present, wall ∈ {N,S,E,W}. Rule 4a + 4b PASS."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Circuit load: each of C-L01..C-L03 has total_load_w=72 W = 4 × 18 W ≤ 0.8 × 6 A × 230 V = 1104 W (6A MCB limit). All three circuits PASS the 80% continuous-load cap per BS 7671:2018+A2:2022 §433.1.1 + IET OSG App A. 72 W is only 6.5% of headroom — circuits are LIGHTLY loaded because the panels themselves are under-lumened (the wrong-panel substitution shows up at the load layer too: a 4500 lm 36W panel would draw 4× the current at the same fitting count)."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Part L compliance: inputs.new_build=true (private office, new-build commercial) AND jurisdiction=england_wales triggers Part L 2021 §6 enforcement. (1) controls.part_l_assessed=true PASS. (2) controls.required=['occupancy'] includes 'occupancy' PASS. (3) glazed_walls=[] → daylight_linking N/A; vacuous PASS. (4) controls.lamp_efficacy_lm_per_w=111.1 ≥ 95 PASS. All four sub-checks PASS. controls.part_l_compliant=true. Per Approved Doc L 2021 §6 + BS EN 15193-1:2017 §6. Note: this example's failure is NOT a Part L gap — the panels are efficacy-compliant; they just don't emit enough lumens at the panel level."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "Zone assignment: all 12 luminaires reference zone_id=Z1 (interior); 1:1 referential integrity. inputs.glazed_walls=[] → no perimeter zone may exist; zones[]=[Z1] only — consistency PASS per [switching-rules#perimeter-circuit] iff-clause. Zone Z1 control='dali_master' matches interior zone_type. Rule 7 PASS."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "selection_source.photometric_source='ontology_default'; citation='CIBSE LG7 §6.2 (typical recessed LED panel UF + SHR_max) + BS EN 12464-1:2021 §4.4 (LLMF maintenance categories)' — matches ontology LED_PANEL_600.photometric._citation exactly. No inputs.photometric_override supplied; generator fell back to ontology defaults. Rule 8 PASS per ontology._verification_status=engineer_typical_C2."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "drafting_furniture present with all 4 required blocks (title_block + scale_bar + dimensions[2] + luminaire_schedule). All annotations declare font_family='Arial' + explicit font_size_pt ∈ {8, 10}. No {{placeholder}} substrings in any text field. dimensions.length=2 ≥ 2 minimum. Rule 9 PASS."
+    },
+    {
+      "id": "INV-10",
+      "passes": false,
+      "severity": "high",
+      "evidence": "Schema validation PASSED (precondition: golden CI gate). Schema-required fields populated. non_compliance_flags[] populated with 3 entries (INV-19-violation native + INV-1 native + INV-11 cascaded from photometric-analysis), all correct object shape {message, reference, severity ∈ {critical,warning,info}} — severity=critical on all three. Rule 10 sub-check 3 cross-check: controls.part_l_compliant=true so the Part-L cross-check clause is vacuously satisfied. But the layout is non-compliant overall (calculation_summary.compliant=false, with INV-1 + INV-11 + INV-19 FAIL) so INV-10 composite FAIL HIGH per the populated non_compliance_flags + compliant=false signalling pair. CANONICAL FAIL-BY-DESIGN exemplar."
+    },
+    {
+      "id": "INV-11",
+      "passes": false,
+      "severity": "high",
+      "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from cascade-uk-per-zone-target-violation/intent-out.json. payload.task_area_compliant=false; payload.achieved_avg_illuminance_lux=200 vs target=500 (sub-check 3 FAIL — 60.0% deficit; ultra-low-lumen 2000 lm panel substitution); 1 non_compliance_flag cascaded to lighting-layout calculation_summary.non_compliance_flags[] with _cascaded_from='photometric-analysis' attribution (sub-check 4 PASS — flag preserved and attributed). Demonstrates failure-mode end-to-end: lumen-method INV-1 FAIL (avg lux) compounds with photometric INV-11 FAIL (per-point min lux 128 < 0.7×target=350 at NW corner) and per-zone INV-19 FAIL HIGH (gap_pct 60% in HIGH band). Engineer-of-record must remediate per cascaded flag's remediation advice before issue. Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
+    },
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Zone purpose required + valid. Zones inspected: 1. Per-zone purpose: Z1: purpose=task, em_target_lux=500. Orphan-surrounding check: pass (no surrounding zones present, so check vacuous). All zones declare purpose ∈ {task, surrounding, background, circulation}. INV-13 PASS. Citation: BS EN 12464-1:2021 §4.2.2.1 (task area) + area-definitions.json §4.2.2.1 + zone-purpose-rules.yaml ZP-01."
+    },
+    {
+      "id": "INV-14",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Surrounding ratio compliance. Surrounding zones inspected: 0. No zones declare purpose='surrounding' — INV-14 vacuous PASS per validator §INV-14 vacuous condition. Citation: BS EN 12464-1:2021 §4.2.2.2 + Table 6 (area-definitions.json table_6_ratio_rules.task_to_surrounding)."
+    },
+    {
+      "id": "INV-15",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Background floor. Background zones inspected: 0. No zones declare purpose='background' — INV-15 vacuous PASS per validator §INV-15 vacuous condition. Citation: BS EN 12464-1:2021 §4.2.2.3 + Table 6 (area-definitions.json table_6_ratio_rules.task_to_background)."
+    },
+    {
+      "id": "INV-16",
+      "passes": true,
+      "severity": "high",
+      "evidence": "mount_type ↔ z_mm/suspension consistency. Luminaires inspected: 12. Pendant geometry checks: 0 pendant luminaires. Suspended geometry checks: 0 suspended luminaires. Recessed/surface/track: 12 luminaires (all 12 LED_PANEL_600 fittings are mount_type='recessed'), z_mm omitted per MT-01 convention (recessed inherits ceiling_height_mm=3000). INV-16 vacuous PASS — no pendant/suspended geometry to verify. Citation: BS EN 60598-2-2 (recessed) + mount-type-rules.yaml MT-01."
+    },
+    {
+      "id": "INV-17",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Ceiling clearance + working-plane floor. Working plane reference: 750 mm AFF. Per-luminaire floor check: all 12 luminaires are recessed; z_mm not declared and inherits ceiling_height_mm=3000 per MT-01 convention. Inherited z=3000 > working_plane=750 (clearance=2250 mm = hm_mm). Per-luminaire ceiling clearance: recessed luminaires are physically inset into ceiling, suspension_length_mm=0 implied; sum=3000 ≤ ceiling=3000 PASS. INV-17 PASS — no luminaire below task plane, no luminaire exceeds ceiling. Citation: BS EN 12464-1:2021 §4.4 + BS EN 60598-2 + MT-04."
+    },
+    {
+      "id": "INV-18",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "hm_mm derivation consistency. Room hm_mm recorded: 2250 mm. Lowest pendant/suspended z_mm: N/A (no pendant/suspended — all 12 luminaires recessed). Recessed branch: expected hm_mm = ceiling_height_mm − working_plane_mm = 3000 − 750 = 2250 mm. Drift: |2250 − 2250| = 0 mm, tolerance ±50 mm. INV-18 PASS. Citation: BS EN 12464-1:2021 §4.4 + repo derivation convention."
+    },
+    {
+      "id": "INV-19",
+      "passes": false,
+      "severity": "high",
+      "evidence": "INV-19 verdict: FAIL (HIGH). Zones inspected: 1. Per-zone achievement: Z1 (task): target=500, achieved=200, gap=300, gap_pct=60.0%, ratio_compliance=fail, severity=HIGH. Aggregate: 0 PASS, 0 marginal, 0 MEDIUM, 1 HIGH. Citation: BS EN 12464-1:2021 §4.1 + Table 5. CANONICAL FAIL-BY-DESIGN exemplar for INV-19 HIGH-band coverage — the example exists in the few-shot library so a downstream generator pattern-matches the band-table HIGH row (gap_pct ≥ 0.50 → fail / HIGH / FAIL-HIGH) correctly on synthesised IRs. Root cause: engineer specified 12 × LED_PANEL_600 ultra-low-lumen 2000 lm value-engineered variant (vs the 4500 lm ontology default). Remediation: replace with 6000 lm uplift panels keeping the 12-fitting 4×3 layout (achieved 595 lx → ratio_compliance='pass', INV-19 PASS)."
+    }
+  ],
+  "consumed_intents": {
+    "photometric_grid": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/photometric-analysis/examples/cascade-uk-per-zone-target-violation/intent-out.json",
+      "payload": {
+        "achieved_avg_illuminance_lux": 200,
+        "achieved_min_illuminance_lux": 128,
+        "achieved_uniformity_u0": 0.64,
+        "ugr_max": 17.6,
+        "ugr_target": 19,
+        "uniformity_target": 0.6,
+        "target_illuminance_lux": 500,
+        "task_area_compliant": false,
+        "grid_point_count": 70,
+        "non_compliance_flags": [
+          {
+            "message": "INV-11 photometric cascade: achieved_avg_illuminance_lux=200 vs target=500 (60% deficit); achieved_min_illuminance_lux=128 at NW corner FAILS BS EN 12464-1 §4.4 per-point requirement (must be ≥ 0.7 × target 500 = 350 lx). Root cause: 2000 lm panel substitution. Remediation per INV-1 / INV-19.",
+            "reference": "BS EN 12464-1:2021 §4.4 + Table 5",
+            "severity": "critical"
+          }
+        ],
+        "ies_source_summary": {
+          "all_verified": false,
+          "verification_status_lowest": "synthetic_reference_C3"
+        }
+      }
+    }
+  },
+  "drafting_furniture": {
+    "title_block": {
+      "project_name": "UK private office — C.12 FAIL-BY-DESIGN INV-19 HIGH-band demo",
+      "drawing_number": "EL-D5-C12-FAIL-001",
+      "revision": "A",
+      "date": "2026-06-04",
+      "scale": "1:50",
+      "sheet_size": "A3",
+      "font_family": "Arial",
+      "font_size_pt": 10
+    },
+    "scale_bar": {
+      "origin_x_mm": 7500,
+      "origin_y_mm": 6500,
+      "total_length_mm": 2000,
+      "tick_interval_mm": 500,
+      "font_family": "Arial",
+      "font_size_pt": 8
+    },
+    "dimensions": [
+      {
+        "axis": "horizontal",
+        "start_x_mm": 0,
+        "start_y_mm": -300,
+        "end_x_mm": 10000,
+        "end_y_mm": -300,
+        "text": "10000 mm",
+        "font_family": "Arial",
+        "font_size_pt": 10
+      },
+      {
+        "axis": "vertical",
+        "start_x_mm": -300,
+        "start_y_mm": 0,
+        "end_x_mm": -300,
+        "end_y_mm": 6000,
+        "text": "6000 mm",
+        "font_family": "Arial",
+        "font_size_pt": 10
+      }
+    ],
+    "luminaire_schedule": {
+      "columns": ["Ref", "Manufacturer", "Lumens", "Wattage", "Count"],
+      "rows": [["LED_PANEL_600 (2000 lm under-spec)", "Generic", "2000", "18W", "12"]],
+      "font_family": "Arial",
+      "font_size_pt": 8
+    }
+  },
+  "mode": "full_drawing"
+}
