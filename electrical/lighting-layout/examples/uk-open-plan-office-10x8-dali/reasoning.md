@@ -5,7 +5,15 @@ original prompt that produced the bad CAD output. Doubles as the
 spec-level re-test gate AND the few-shot canonical that future
 generators copy from.
 
-All 10 INVs PASS.
+v1.7.0 D5 RETROFIT (2026-06-04). Single Z2 zone split into Z2 task +
+Z3 surrounding per BS EN 12464-1:2021 §4.2.2.2 ≥500 mm perimeter band.
+This is the FIRST example across the lighting-layout example set
+where INV-14 fires non-vacuously: surrounding ratio 250/500 = 0.500
+∈ [0.3, 0.5] PASS (upper boundary of the Table 6 simplified-rule
+band). See §D5 below for the 4-place honest disclosure.
+
+All 19 INVs PASS (10 originals + INV-11 cascade + INV-13..19 v1.7
+area-split; INV-12 was removed in C.0 sprint).
 
 ## 1. Why this example exists
 
@@ -278,6 +286,154 @@ Z-pattern because the IR doesn't allow one to be encoded.
 | 08   | medium | photometric_source=ontology_default; citation matches LED_PANEL_600   |
 | 09   | medium | drafting_furniture complete; Arial + font_size_pt; no placeholders    |
 | 10   | high   | schema PASS; non_compliance_flags=[]; compliant=true; mode=full_drawing|
+
+## D5. v1.7 Retrofit — task + surrounding split (first non-vacuous INV-14 PASS)
+
+D5 sprint (2026-06-04) split the single Z2 zone of v1.6.0 into Z2
+task + Z3 surrounding per BS EN 12464-1:2021 §4.2.2.2. This is the
+**first** example across the lighting-layout example set where INV-14
+fires non-vacuously — every prior retrofit (C.1–C.4) either declared
+only task zones (office-open-plan, classroom) or used circulation
+zones (reception-lobby, bathroom), so INV-14 short-circuited as
+"surrounding zones inspected: 0 — vacuous PASS".
+
+### D5.1. Geometric derivation of the perimeter band
+
+BS EN 12464-1:2021 §4.2.2.2 defines the immediate surrounding area as
+"a band of at least 0.5 m width around the task area within the
+visual field." With no zone polygon in the lighting-layout-ir schema,
+band membership is derived from luminaire (x, y):
+
+```
+Task region   = room footprint inset 500 mm from each wall
+              = [500, 9500] mm × [500, 7500] mm
+              (the task area itself; the surrounding band wraps it)
+
+Surrounding   = the ring between the room walls and the task region's
+band (≥500   inner edge — at least 500 mm wide on each side
+mm wide)
+
+Luminaire band membership rule used here:
+- in Z3 surrounding ⇔ min(x, 10000-x, y, 8000-y) < 1500 mm
+- in Z2 task        ⇔ min(x, 10000-x, y, 8000-y) ≥ 1500 mm
+
+The 1500 mm cut buys a 500 mm safety margin so grid-edge luminaires
+land in the surrounding band rather than straddling the §4.2.2.2
+band/task boundary.
+```
+
+Applied to the 4×5 grid:
+
+| Lum | x_mm | y_mm | min-dist | Zone |
+|-----|------|------|----------|------|
+| L01 | 300  | 300  | 300      | Z3   |
+| L02 | 2650 | 300  | 300      | Z3   |
+| L03 | 5000 | 300  | 300      | Z3   |
+| L04 | 7350 | 300  | 300      | Z3   |
+| L05 | 9700 | 300  | 300      | Z3   |
+| L06 | 300  | 2750 | 300      | Z3   |
+| L07 | 2650 | 2750 | 2650     | Z2   |
+| L08 | 5000 | 2750 | 2750     | Z2   |
+| L09 | 7350 | 2750 | 2650     | Z2   |
+| L10 | 9700 | 2750 | 300      | Z3   |
+| L11 | 300  | 5250 | 300      | Z3   |
+| L12 | 2650 | 5250 | 2650     | Z2   |
+| L13 | 5000 | 5250 | 2750     | Z2   |
+| L14 | 7350 | 5250 | 2650     | Z2   |
+| L15 | 9700 | 5250 | 300      | Z3   |
+| L16 | 300  | 7700 | 300      | Z3   |
+| L17 | 2650 | 7700 | 300      | Z3   |
+| L18 | 5000 | 7700 | 300      | Z3   |
+| L19 | 7350 | 7700 | 300      | Z3   |
+| L20 | 9700 | 7700 | 300      | Z3   |
+
+Result: 6 → Z2 task; 14 → Z3 surrounding.
+
+### D5.2. em_target derivation
+
+```
+Z2 task       em_target_lux = 500
+              (BS EN 12464-1:2021 Table 5.26.1 open-plan office task)
+
+Z3 surrounding em_target_lux = 500 × _surrounding_ratio_default
+                             = 500 × 0.5
+                             = 250 lx
+
+ZP-02 simplified-rule band: [0.3 × 500, 0.5 × 500] = [150, 250]
+INV-14 ratio = em_target_Z3 / em_target_Z2 = 250 / 500 = 0.500
+INV-14 band  = [0.3, 0.5]
+INV-14 result = PASS (equal to upper bound)
+```
+
+The upper-band boundary value (0.5) is selected over the lower (0.3)
+because the 4×5 uniform grid actually delivers the same 804 lx
+everywhere — pulling the surrounding target down to 150 lx would
+understate the design intent. 250 lx documents "the surrounding band
+receives the same illuminance treatment as the task area" while still
+satisfying the §4.2.2.2 floor.
+
+### D5.3. Mount type defaults
+
+All 20 luminaires default to `mount_type='recessed'` per MT-01 —
+matches the user's verbatim prompt phrase "recessed into a 600 mm
+modular ceiling grid". `z_mm` + `suspension_length_mm` omitted
+(recessed inherits `ceiling_height_mm=2700` per MT-01 convention).
+INV-16 + INV-17 vacuously PASS — no pendant/suspended geometry to
+verify.
+
+### D5.4. Circuit topology preserved (mixed-zone feed honest disclosure)
+
+Circuit topology unchanged from v1.6.0: 4 row circuits C-L01..C-L04.
+Each row's 5 luminaires share a single `row_index` → INV-4 PASS held.
+But the new zone split means rows 1 and 2 feed luminaires across BOTH
+Z2 and Z3 (3 task + 2 perimeter each):
+
+```
+C-L01 (row 0): L01..L05 → all Z3 → circuit.zone_id = Z3
+C-L02 (row 1): L06 Z3, L07-L09 Z2, L10 Z3 → predominantly Z2
+              → circuit.zone_id = Z2 (3 task vs 2 perimeter)
+C-L03 (row 2): L11 Z3, L12-L14 Z2, L15 Z3 → predominantly Z2
+              → circuit.zone_id = Z2
+C-L04 (row 3): L16..L20 → all Z3 → circuit.zone_id = Z3
+```
+
+The mixed-zone circuit feed is **honest by design**: a single
+electrical circuit may feed luminaires across §4.2.2 area zones
+because DALI handles per-luminaire dimming on the bus. The circuit
+topology is a wiring construct (BS 7671 §433.1.1 80 % rule, MCB
+ratings, homerun routing); the zone is a §4.2.2 area-classification
+construct (Em targets, surrounding-ratio compliance). The two
+constructs are orthogonal — circuit.zone_id reflects the dominant
+zone of each row for IR ergonomics, but the per-luminaire zone_id is
+the source of truth for INV-7 and INV-19.
+
+### D5.5. per_zone_achieved
+
+```
+Z2 task:        target=500, achieved=804.0 → ratio_compliance=pass
+Z3 surrounding: target=250, achieved=804.0 → ratio_compliance=pass
+```
+
+Both zones inherit the uniform 804 lx achievement from the 4×5
+symmetric grid — the lumen-method assumption that illuminance is
+uniform across the working plane carries through to both zones
+because the luminaires are distributed evenly. In a real photometric
+grid (INV-11), Z3 perimeter cells would typically achieve slightly
+less than Z2 cells due to wall absorption, but the cascade IES
+`synthetic_reference_C3` returns 752 lx uniform — still way above
+both targets. INV-19 PASSes with no marginal flags.
+
+### D5.6. INV-13..19 — summary
+
+| INV  | Result          | Note                                          |
+|------|-----------------|-----------------------------------------------|
+| 13   | PASS            | Z2 task + Z3 surrounding both declare purpose + em |
+| 14   | **PASS** (first non-vacuous) | ratio 0.500 ∈ [0.3, 0.5] upper boundary |
+| 15   | PASS (vacuous)  | no background zone                            |
+| 16   | PASS (vacuous)  | all recessed; no pendant/suspended            |
+| 17   | PASS            | z_mm inherits 2700 (recessed); clearance 1950 |
+| 18   | PASS            | hm_mm=1950 = 2700−750 (recessed branch)       |
+| 19   | PASS (both)     | Z2 804/500 + Z3 804/250 both ratio_compliance=pass |
 
 ## 12. Assumptions
 

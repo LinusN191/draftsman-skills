@@ -1,7 +1,7 @@
 {
-  "_note": "D3.C.3 canonical re-test example — UK new-build open-plan office 10×8 m, 500 lux target, 20 LED panels @ 6000 lm × 48 W in a 4-row × 5-col grid (achieved 804 lux), 4 row circuits 6A curve B, single DALI master switch at S entrance, drawing L-001 P1 1:50 A3 per the user's verbatim original prompt. Closes the bad CAD output: no Z-pattern (4 row circuits all share row_index), no edge-collision (cols at 300/2650/5000/7350/9700), homerun arrows on W wall, full title block + scale bar + dimensions + luminaire schedule emitted. All 10 INVs PASS.",
+  "_note": "D3.C.3 canonical re-test example — UK new-build open-plan office 10×8 m, 500 lux target, 20 LED panels @ 6000 lm × 48 W in a 4-row × 5-col grid (achieved 804 lux), 4 row circuits 6A curve B, single DALI master switch at S entrance, drawing L-001 P1 1:50 A3 per the user's verbatim original prompt. Closes the bad CAD output: no Z-pattern (4 row circuits all share row_index), no edge-collision (cols at 300/2650/5000/7350/9700), homerun arrows on W wall, full title block + scale bar + dimensions + luminaire schedule emitted. v1.6.0 → v1.7.0 D5 RETROFIT (2026-06-04): Z2 split into Z2 task (central 6 luminaires L07-L09 + L12-L14) + new Z3 surrounding (perimeter 14 luminaires L01-L05 + L06,L10,L11,L15 + L16-L20) per BS EN 12464-1:2021 §4.2.2.2 ≥500 mm perimeter band; Z2 em_target=500 (open_plan task), Z3 em_target=250 (= 500 × 0.5 ZP-02 default ratio, upper band of [150, 250] per Table 6 simplified rule). All 20 luminaires default to mount_type='recessed' (MT-01). INV-14 becomes the FIRST non-vacuous PASS in the lighting-layout example set: ratio=0.500 ∈ [0.3, 0.5]. All 19 INVs PASS (10 originals + INV-11 cascade + INV-13..19 v1.7 area-split).",
   "drawing_type": "lighting_layout",
-  "version": "1.4.0",
+  "version": "1.7.0",
   "room": {
     "length_mm": 10000,
     "width_mm": 8000,
@@ -34,37 +34,52 @@
   "zones": [
     {
       "zone_id": "Z2",
-      "label": "Interior — open-plan office (no glazed walls → no perimeter zone)",
+      "label": "Interior — central task area (6 luminaires over desk cluster, inset 500 mm from all walls per §4.2.2.2)",
+      "zone_type": "interior",
+      "control": "dali_master",
+      "circuit_id": "C-L02",
+      "circuit_ids": ["C-L02", "C-L03"],
+      "luminaire_ids": ["L07", "L08", "L09", "L12", "L13", "L14"],
+      "luminaire_count": 6,
+      "total_load_w": 288,
+      "purpose": "task",
+      "em_target_lux": 500
+    },
+    {
+      "zone_id": "Z3",
+      "label": "Surrounding — perimeter band ≥500 mm wide (14 luminaires; N edge row, S edge row, W+E edge columns)",
       "zone_type": "interior",
       "control": "dali_master",
       "circuit_id": "C-L01",
       "circuit_ids": ["C-L01", "C-L02", "C-L03", "C-L04"],
-      "luminaire_ids": ["L01", "L02", "L03", "L04", "L05", "L06", "L07", "L08", "L09", "L10", "L11", "L12", "L13", "L14", "L15", "L16", "L17", "L18", "L19", "L20"],
-      "luminaire_count": 20,
-      "total_load_w": 960
+      "luminaire_ids": ["L01", "L02", "L03", "L04", "L05", "L06", "L10", "L11", "L15", "L16", "L17", "L18", "L19", "L20"],
+      "luminaire_count": 14,
+      "total_load_w": 672,
+      "purpose": "surrounding",
+      "em_target_lux": 250
     }
   ],
   "luminaires": [
-    {"id": "L01", "x_mm": 300,  "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
-    {"id": "L02", "x_mm": 2650, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
-    {"id": "L03", "x_mm": 5000, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
-    {"id": "L04", "x_mm": 7350, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
-    {"id": "L05", "x_mm": 9700, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01"},
-    {"id": "L06", "x_mm": 300,  "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
-    {"id": "L07", "x_mm": 2650, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
-    {"id": "L08", "x_mm": 5000, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
-    {"id": "L09", "x_mm": 7350, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
-    {"id": "L10", "x_mm": 9700, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02"},
-    {"id": "L11", "x_mm": 300,  "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
-    {"id": "L12", "x_mm": 2650, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
-    {"id": "L13", "x_mm": 5000, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
-    {"id": "L14", "x_mm": 7350, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
-    {"id": "L15", "x_mm": 9700, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03"},
-    {"id": "L16", "x_mm": 300,  "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
-    {"id": "L17", "x_mm": 2650, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
-    {"id": "L18", "x_mm": 5000, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
-    {"id": "L19", "x_mm": 7350, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
-    {"id": "L20", "x_mm": 9700, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"}
+    {"id": "L01", "x_mm": 300,  "y_mm": 300,  "zone_id": "Z3", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L02", "x_mm": 2650, "y_mm": 300,  "zone_id": "Z3", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L03", "x_mm": 5000, "y_mm": 300,  "zone_id": "Z3", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L04", "x_mm": 7350, "y_mm": 300,  "zone_id": "Z3", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L05", "x_mm": 9700, "y_mm": 300,  "zone_id": "Z3", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L06", "x_mm": 300,  "y_mm": 2750, "zone_id": "Z3", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L07", "x_mm": 2650, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L08", "x_mm": 5000, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L09", "x_mm": 7350, "y_mm": 2750, "zone_id": "Z2", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L10", "x_mm": 9700, "y_mm": 2750, "zone_id": "Z3", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L11", "x_mm": 300,  "y_mm": 5250, "zone_id": "Z3", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L12", "x_mm": 2650, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L13", "x_mm": 5000, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L14", "x_mm": 7350, "y_mm": 5250, "zone_id": "Z2", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L15", "x_mm": 9700, "y_mm": 5250, "zone_id": "Z3", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L16", "x_mm": 300,  "y_mm": 7700, "zone_id": "Z3", "circuit_id": "C-L04", "mount_type": "recessed"},
+    {"id": "L17", "x_mm": 2650, "y_mm": 7700, "zone_id": "Z3", "circuit_id": "C-L04", "mount_type": "recessed"},
+    {"id": "L18", "x_mm": 5000, "y_mm": 7700, "zone_id": "Z3", "circuit_id": "C-L04", "mount_type": "recessed"},
+    {"id": "L19", "x_mm": 7350, "y_mm": 7700, "zone_id": "Z3", "circuit_id": "C-L04", "mount_type": "recessed"},
+    {"id": "L20", "x_mm": 9700, "y_mm": 7700, "zone_id": "Z3", "circuit_id": "C-L04", "mount_type": "recessed"}
   ],
   "switches": [
     {
@@ -82,7 +97,7 @@
     {
       "circuit_id": "C-L01",
       "db_designation": "L1",
-      "zone_id": "Z2",
+      "zone_id": "Z3",
       "luminaire_ids": ["L01", "L02", "L03", "L04", "L05"],
       "total_load_w": 240,
       "mcb_rating_a": 6,
@@ -115,7 +130,7 @@
     {
       "circuit_id": "C-L04",
       "db_designation": "L1",
-      "zone_id": "Z2",
+      "zone_id": "Z3",
       "luminaire_ids": ["L16", "L17", "L18", "L19", "L20"],
       "total_load_w": 240,
       "mcb_rating_a": 6,
@@ -150,16 +165,33 @@
       "Working plane = 750 mm AFFL (BS EN 12464-1:2021 Table 5.26.1 office task at desk plane per [spacing-rules#working-plane-defaults])",
       "LLMF = 0.95 at 6000 h clean-office category × LMF/RSMF combined → overall MF = 0.80 (CIBSE TM 3-25 standard cleaning interval); engineer to confirm against FM cleaning schedule",
       "DALI master with PIR occupancy detector satisfies Approved Doc L 2021 §6 user-control + automatic-control requirements",
-      "No glazed walls → daylight-linking is N/A and not required by Part L 2021 §6 (perimeter zone Rule 7 vacuously satisfied)",
-      "Lumen-method N = 12.438 rounded UP to 13; bumped to 20 (4 rows × 5 cols) after S/H enforcement loop rejected 13-strip and 16 (4×4) — see reasoning.md §3"
+      "No glazed walls → daylight-linking is N/A and not required by Part L 2021 §6 (perimeter zone Rule 7 vacuously satisfied — the Z2/Z3 split is a §4.2.2.2 task/surrounding split, NOT a daylight-perimeter split)",
+      "Lumen-method N = 12.438 rounded UP to 13; bumped to 20 (4 rows × 5 cols) after S/H enforcement loop rejected 13-strip and 16 (4×4) — see reasoning.md §3",
+      "v1.6.0 → v1.7.0 D5 RETROFIT (4-place honest disclosure, 2026-06-04). PLACE 1 — single zone Z2 split into Z2 task (6 inner luminaires L07-L09 + L12-L14 at x∈{2650,5000,7350} × y∈{2750,5250} — the central rectangle inset 500 mm from all walls per §4.2.2.2) + Z3 surrounding (14 perimeter luminaires within the ≥500 mm perimeter band). The 500 mm-band derivation is notional (no zone polygon in IR schema) — implementer chose the 6 luminaires whose (x, y) both sit ≥1500 mm from any wall, leaving 14 luminaires in the perimeter band. PLACE 2 — Z2 em_target_lux=500 (open_plan_office task, BS EN 12464-1 Table 5.26.1); Z3 em_target_lux=250 = 500 × 0.5 (ZP-02 default ratio per area-definitions.json _surrounding_ratio_default; 0.5 sits at the upper end of the [0.3, 0.5] Table 6 simplified-rule band, equivalent to a 250 lx surrounding floor). PLACE 3 — all 20 luminaires receive mount_type='recessed' per MT-01 (matches existing 600×600 ceiling-grid panel description); z_mm + suspension_length_mm omitted (recessed inherits ceiling_height_mm=2700). PLACE 4 — circuits keep their row-based topology untouched (no Z-pattern remediation lost); circuit.zone_id reflects the *predominant* zone of each row (C-L01 + C-L04 = Z3 fully perimeter; C-L02 + C-L03 = Z2 because 3 task vs 2 perimeter per row — the central 3 columns sit in Z2). Lumen-method calc + S/H enforcement + INV-1..10 + INV-11 cascade unchanged. INV-14 becomes the first non-vacuous PASS across the lighting-layout example set."
+    ],
+    "per_zone_achieved": [
+      {
+        "zone_id": "Z2",
+        "purpose": "task",
+        "em_target_lux": 500,
+        "em_achieved_lux": 804.0,
+        "ratio_compliance": "pass"
+      },
+      {
+        "zone_id": "Z3",
+        "purpose": "surrounding",
+        "em_target_lux": 250,
+        "em_achieved_lux": 804.0,
+        "ratio_compliance": "pass"
+      }
     ]
   },
   "drawing_notes": [
     "All luminaires: 600×600 LED recessed panel, 6000 design lm, 48 W, 4000 K, CRI ≥ 80, DALI-dimmable",
-    "Maintained illuminance 500 lux per BS EN 12464-1:2021 Table 5.26.1 (open-plan office task at desk plane)",
+    "Maintained illuminance 500 lux task (Z2 central area) + 250 lux surrounding (Z3 perimeter band) per BS EN 12464-1:2021 Table 5.26.1 + §4.2.2.2",
     "20 luminaires in 4 rows × 5 columns; row spacing 2467 mm (snapped to 2450/2500), column spacing 2350 mm, 300 mm edge clearance — all S/H ratios ≤ 1.5×Hm = 2925 mm per CIBSE LG7 §6.2",
-    "Achieved 804 lux ≥ 500 target — 60 % headroom (round-UP + grid-symmetry bump combined)",
-    "Single zone Z2 interior on DALI master (no glazed walls → no perimeter zone, daylight-linking N/A)",
+    "Achieved 804 lux ≥ 500 task target (60 % headroom); same 804 lux applies uniformly across Z3 surrounding (target 250 lx — 220 % headroom) because the 4×5 grid distributes uniformly",
+    "Zone Z2 task (6 luminaires L07-L09 + L12-L14, central rectangle) + zone Z3 surrounding (14 luminaires, ≥500 mm perimeter band per §4.2.2.2); both on DALI master (no glazed walls → no perimeter-daylight zone)",
     "4 row circuits C-L01..C-L04, each 5 × 48 W = 240 W on a 6 A MCB curve B (per BS 7671 §433.1.1 + IET OSG App A: 240 W = 22 % of 1104 W 80%-continuous-load cap)",
     "All four homeruns exit on W wall at row y_mm ∈ {300, 2750, 5250, 7700} for parallel routing back to DB L1 — no diagonals, no Z-pattern",
     "Single SW01 DALI master at S entrance latch side (x = 5600 mm, y = 200 mm, 1200 mm AFFL) controls all 4 circuits via the DALI bus per [switching-rules#latch-side] + IET OSG App E §E1.4",
@@ -167,19 +199,19 @@
   ],
   "flags": [],
   "rationale": {
-    "chat_summary": "10×8 m UK new-build open-plan office — 500 lux target per BS EN 12464-1 Table 5.26.1. 20 × 6000 lm LED panels in 4-row × 5-col grid achieve 804 lux (INV-1 PASS, 60 % headroom). Lumen-method N=12.438 → round UP to 13 (prime, would force strip layout) → bumped to 16 (4×4 S_x=3133 FAILS the 1.5×Hm=2925 mm limit) → bumped to 20 (4×5 S_x=2350 + S_y=2467 both PASS). 4 row circuits 6A curve B, all luminaires share row_index per circuit → no Z-pattern (INV-4 PASS). Single SW01 DALI master at S entrance latch side controls all 4 circuits via DALI bus. No glazed walls → no perimeter zone, daylight-linking N/A. Drawing L-001 P1 1:50 A3 per user prompt; full drafting furniture (title block + scale bar + dimensions + luminaire schedule) emitted. All 10 INVs PASS.",
+    "chat_summary": "10×8 m UK new-build open-plan office — 500 lux task target per BS EN 12464-1 Table 5.26.1. 20 × 6000 lm LED panels in 4-row × 5-col grid achieve 804 lux (INV-1 PASS, 60 % headroom). v1.7 D5 retrofit: zone split into Z2 task (central 6 luminaires, em=500) + Z3 surrounding (14 perimeter luminaires within the ≥500 mm §4.2.2.2 band, em=250 = 0.5 × 500 ZP-02). All luminaires recessed (MT-01). INV-14 first non-vacuous PASS: ratio=0.500 ∈ [0.3, 0.5]. INV-19 per-zone achieved 804 lx on both zones (PASS task + PASS surrounding). 4 row circuits 6A curve B, all luminaires share row_index per circuit → no Z-pattern (INV-4 PASS). Single SW01 DALI master at S entrance latch side. No glazed walls → no perimeter-daylight zone, daylight-linking N/A.",
     "sections": [
       {
         "title": "Why this example exists",
-        "summary": "Built verbatim from the original user prompt that produced the bad CAD output (the spec-level re-test gate AND the few-shot canonical future generators copy from). The original CAD showed a Z-pattern daisy-chain, a fourth column flush with the east wall, missing homerun arrow, missing luminaire schedule, missing title block, missing dimensions and scale bar, uneven row spacing, and only 12 luminaires when the lumen-method math demands more. Every one of those visible bugs is closed by a specific D3 invariant — §10 of reasoning.md maps each bug to the INV that catches it."
+        "summary": "Built verbatim from the original user prompt that produced the bad CAD output (the spec-level re-test gate AND the few-shot canonical future generators copy from). The original CAD showed a Z-pattern daisy-chain, a fourth column flush with the east wall, missing homerun arrow, missing luminaire schedule, missing title block, missing dimensions and scale bar, uneven row spacing, and only 12 luminaires when the lumen-method math demands more. Every one of those visible bugs is closed by a specific D3 invariant — §10 of reasoning.md maps each bug to the INV that catches it. The v1.7 D5 retrofit additionally exercises the §4.2.2.2 task/surrounding split — this is the FIRST example in the lighting-layout example set where INV-14 fires non-vacuously (ratio = 0.500 ∈ [0.3, 0.5] PASS)."
       },
       {
         "title": "Lumen-method walk",
         "summary": "A = 80 m². Hm = 2700 − 750 = 1950 mm = 1.95 m. RI = (10 × 8) / (1.95 × 18) = 80 / 35.1 = 2.279 → ontology table key 2.0 (closest band per LG7 §6.2). UF = 0.67 (LED_PANEL_600 at RI=2.0, reflectances 0.7_0.5_0.2). MF = 0.80 (clean office, 3-year cleaning cycle, CIBSE TM 3-25). N = (500 × 80) / (6000 × 0.67 × 0.80) = 40000 / 3216 = 12.438 → round UP to 13. Achieved with final N=20: (20 × 6000 × 0.67 × 0.80) / 80 = 64320 / 80 = 804.0 lux ≥ 500 → INV-1 PASS with 60 % headroom (round-UP from 12.438 + S/H grid-symmetry bump from 13 to 20 combined).",
         "decisions": [
           {
-            "label": "Lux target 500 lx maintained",
-            "summary": "BS EN 12464-1:2021 Table 5.26.1 open-plan office task category sets 500 lx maintained at desk plane (matches user prompt verbatim).",
+            "label": "Lux target 500 lx maintained (Z2 task)",
+            "summary": "BS EN 12464-1:2021 Table 5.26.1 open-plan office task category sets 500 lx maintained at desk plane (matches user prompt verbatim). Z3 surrounding em derived from ZP-02 ratio rule (see Zone purpose split section).",
             "rule": "BS EN 12464-1 Table 5.26.1 office",
             "code_clause": "BS EN 12464-1:2021 § 5"
           },
@@ -204,8 +236,26 @@
         ]
       },
       {
-        "title": "Circuit topology — 4 row circuits, no Z-pattern",
-        "summary": "4 row circuits C-L01..C-L04, one per row. Each circuit's luminaire_ids share single row_index (0, 1, 2, 3 respectively): C-L01 = {L01..L05} row 0; C-L02 = {L06..L10} row 1; C-L03 = {L11..L15} row 2; C-L04 = {L16..L20} row 3. max(row_indices) − min(row_indices) = 0 per circuit ≤ 1 → no Z-pattern, no diagonal jumps. INV-4 Rule 4a PASS. Homeruns all exit on W wall (x_mm=0) at row y_mm ∈ {300, 2750, 5250, 7700} — all four required keys (x_mm, y_mm, wall) present, wall ∈ {N,S,E,W}. INV-4 Rule 4b PASS. INV-5: 240 W per circuit ≤ 1104 W (6A × 0.8 × 230V) → 22 % of headroom — ample spare for future ergonomic task lighting additions.",
+        "title": "Zone purpose split — Z2 task + Z3 surrounding (v1.7 D5)",
+        "summary": "BS EN 12464-1:2021 §4.2.2.2 defines the immediate surrounding area as a band of at least 0.5 m width around the task area. Inset 500 mm from each room wall to bound the task region — task footprint = [500, 9500] × [500, 7500] mm. Cross-referencing the 4×5 luminaire grid: the 6 luminaires whose (x, y) both sit ≥1500 mm from every wall (L07, L08, L09 at y=2750; L12, L13, L14 at y=5250; all at x ∈ {2650, 5000, 7350}) are the central task cluster. The remaining 14 luminaires (row 0 at y=300; row 3 at y=7700; L06/L11 at x=300; L10/L15 at x=9700) sit within the ≥500 mm perimeter band → Z3 surrounding. Z2 em_target=500 (Table 5.26.1 open-plan office task). Z3 em_target = 500 × 0.5 = 250 lx per ZP-02 default ratio (area-definitions.json _surrounding_ratio_default=0.5). 250 lx sits at the upper bound of the [0.3, 0.5] × Em_task band per Table 6 simplified-rule — INV-14 ratio check 0.500 ∈ [0.3, 0.5] PASS (the example demonstrates the upper-band boundary case).",
+        "decisions": [
+          {
+            "label": "Surrounding luminaire selection — geometric 500 mm-band derivation",
+            "summary": "No zone polygon in the lighting-layout-ir schema, so the band membership is derived geometrically from luminaire (x, y). A luminaire is in Z3 if min(x, 10000-x, y, 8000-y) < 1500 mm (the task rectangle inset 500 mm leaves a 500 mm buffer + 1000 mm safety to keep grid-edge luminaires in the surrounding band rather than straddling the boundary). All row-0 + row-3 luminaires plus the west/east column luminaires in rows 1+2 land in Z3 (14 total). The 6 interior luminaires (3 per row × 2 inner rows) land in Z2 (task).",
+            "rule": "§4.2.2.2 perimeter band ≥500 mm + repo convention to push grid-edge luminaires into surrounding rather than task",
+            "code_clause": "BS EN 12464-1:2021 § 4.2.2.2 + area-definitions.json immediate_surrounding_area.width_min_mm"
+          },
+          {
+            "label": "Z3 em_target=250 lx — default ratio 0.5 (upper band)",
+            "summary": "Per ZP-02 the surrounding em is bound to [0.3 × Em_task, 0.5 × Em_task] = [150, 250]. Default ratio per area-definitions.json _surrounding_ratio_default = 0.5 → 250 lx. The upper-band boundary value is selected because the uniform 4×5 grid achieves 804 lx everywhere — pulling the surrounding target down to 0.3 × 500 = 150 lx would understate the design intent. 250 lx documents 'the surrounding receives the same uniform illuminance as the task area' while still satisfying the §4.2.2.2 floor.",
+            "rule": "ZP-02 surrounding ratio rule (simplified Table 6 [0.3, 0.5] band)",
+            "code_clause": "BS EN 12464-1:2021 § 4.2.2.2 + Table 6"
+          }
+        ]
+      },
+      {
+        "title": "Circuit topology — 4 row circuits, no Z-pattern (preserved unchanged)",
+        "summary": "4 row circuits C-L01..C-L04, one per row. Each circuit's luminaire_ids share single row_index (0, 1, 2, 3 respectively): C-L01 = {L01..L05} row 0; C-L02 = {L06..L10} row 1; C-L03 = {L11..L15} row 2; C-L04 = {L16..L20} row 3. max(row_indices) − min(row_indices) = 0 per circuit ≤ 1 → no Z-pattern, no diagonal jumps. INV-4 Rule 4a PASS. Homeruns all exit on W wall (x_mm=0) at row y_mm ∈ {300, 2750, 5250, 7700} — all four required keys (x_mm, y_mm, wall) present, wall ∈ {N,S,E,W}. INV-4 Rule 4b PASS. INV-5: 240 W per circuit ≤ 1104 W (6A × 0.8 × 230V) → 22 % of headroom — ample spare for future ergonomic task lighting additions. circuit.zone_id reflects the predominant zone: C-L01 + C-L04 = Z3 (fully perimeter); C-L02 + C-L03 = Z2 (3 task + 2 perimeter; central row predominantly task). The mixed-zone feed is honest — a single circuit may feed luminaires across Z2 task and Z3 surrounding because DALI handles per-luminaire dimming on the bus; the circuit topology is a wiring construct, the zone is a §4.2.2 area-classification construct.",
         "decisions": [
           {
             "label": "4 row circuits instead of one big circuit (closes Z-pattern bug from original CAD)",
@@ -229,7 +279,7 @@
       },
       {
         "title": "Part L 2021 compliance — no-glazing branch",
-        "summary": "inputs.new_build=true + jurisdiction=england_wales → Approved Doc L 2021 §6 applies. (1) controls.part_l_assessed=true PASS. (2) controls.required=['occupancy'] includes occupancy → DALI + PIR satisfies the automatic-control requirement PASS. (3) glazed_walls=[] (empty) → daylight-linking requirement vacuously satisfied; Part L 2021 §6.5 only requires daylight zoning for windowed perimeters PASS. (4) controls.lamp_efficacy_lm_per_w = 6000 / 48 = 125 ≥ 95 lm/W target PASS. All four sub-checks PASS → controls.part_l_compliant=true → INV-6 PASS.",
+        "summary": "inputs.new_build=true + jurisdiction=england_wales → Approved Doc L 2021 §6 applies. (1) controls.part_l_assessed=true PASS. (2) controls.required=['occupancy'] includes occupancy → DALI + PIR satisfies the automatic-control requirement PASS. (3) glazed_walls=[] (empty) → daylight-linking requirement vacuously satisfied; Part L 2021 §6.5 only requires daylight zoning for windowed perimeters PASS. The Z2/Z3 split is a §4.2.2.2 task/surrounding split, NOT a daylight-perimeter split — Part L §6.5 does not engage. (4) controls.lamp_efficacy_lm_per_w = 6000 / 48 = 125 ≥ 95 lm/W target PASS. All four sub-checks PASS → controls.part_l_compliant=true → INV-6 PASS.",
         "decisions": [
           {
             "label": "No daylight-linking required because glazed_walls=[]",
@@ -240,8 +290,8 @@
         ]
       },
       {
-        "title": "Zone assignment — no perimeter (no glazing)",
-        "summary": "1 zone Z2 interior containing all 20 luminaires, fed by 4 row circuits. Z2.zone_type='interior'; Z2.control='dali_master'. INV-7 Rule 3 (perimeter consistency) is vacuously satisfied because glazed_walls=[] AND zones contains no Z1 perimeter — the iff-clause holds in both directions (no glazing ⇔ no perimeter zone). INV-7 Rule 1 (1:1 luminaire→zone referential integrity) PASS — 20 luminaires each reference exactly Z2."
+        "title": "Zone assignment — task + surrounding (no daylight perimeter)",
+        "summary": "2 zones declared: Z2 task (interior, 6 luminaires, em_target=500); Z3 surrounding (perimeter band, 14 luminaires, em_target=250). Z2.zone_type='interior'; Z3.zone_type='interior' (NOT 'perimeter' — 'perimeter' in this schema means daylight-perimeter, which is gated on glazed_walls per INV-7 Rule 3). INV-7 Rule 3 (perimeter-daylight consistency) is vacuously satisfied because glazed_walls=[] AND no zone declares zone_type='perimeter' — the iff-clause holds in both directions (no glazing ⇔ no daylight-perimeter zone). INV-7 Rule 1 (1:1 luminaire→zone referential integrity) PASS — 20 luminaires each reference exactly one of Z2 or Z3 (6 → Z2, 14 → Z3)."
       },
       {
         "title": "Drafting furniture — every annotation from the user prompt",
@@ -256,8 +306,26 @@
         ]
       },
       {
+        "title": "v1.7 D5 retrofit — first non-vacuous INV-14 PASS",
+        "summary": "D5 retrofit (2026-06-04). Existing single Z2 zone split into Z2 task (6 central luminaires) + Z3 surrounding (14 perimeter luminaires within ≥500 mm §4.2.2.2 band). Z2 em_target=500 (Table 5.26.1); Z3 em_target=250 (= 500 × 0.5 per ZP-02 default ratio — upper band of [0.3, 0.5]). All 20 luminaires receive mount_type='recessed' (MT-01 — matches the existing 600×600 ceiling-grid panel description). per_zone_achieved[2]: Z2 task 500/804 PASS + Z3 surrounding 250/804 PASS (both zones inherit the uniform 804 lx achievement from the symmetric 4×5 grid). This is the FIRST example in the lighting-layout example set where INV-14 fires non-vacuously — surrounding zone present, ratio 250/500 = 0.500 ∈ [0.3, 0.5] band PASS at the upper boundary. INV-13 PASS (Z2 task + Z3 surrounding both declare purpose + em_target_lux). INV-15 vacuous (no background zone). INV-16/17/18 vacuous (no pendant/suspended). INV-19 PASS (both zones achieve uniform 804 lx ≥ target). Engineering content (lumen-method N=20, S/H pass, switch placement, drafting furniture, INV-1..10 + INV-11 cascade) entirely unchanged.",
+        "decisions": [
+          {
+            "label": "Z3 surrounding em_target=250 lx at upper-band boundary (ZP-02 default 0.5)",
+            "summary": "250 lx = 500 × 0.5 — the upper bound of the [0.3, 0.5] ratio band per BS EN 12464-1:2021 Table 6 simplified rule. Selected over the lower-band 0.3 ratio (= 150 lx) because the 4×5 uniform grid actually delivers the same 804 lx across both zones, and the upper boundary value documents the design intent that the surrounding band receives the same illuminance treatment as the task area (no perimeter dimming). INV-14 verifies the ratio non-vacuously.",
+            "rule": "ZP-02 default ratio 0.5 (area-definitions.json _surrounding_ratio_default)",
+            "code_clause": "BS EN 12464-1:2021 §4.2.2.2 + Table 6"
+          },
+          {
+            "label": "All luminaires mount_type='recessed' (MT-01)",
+            "summary": "User's verbatim prompt specifies 'recessed into a 600 mm modular ceiling grid'. MT-01 default of 'recessed' matches; z_mm + suspension_length_mm omitted (recessed inherits ceiling_height_mm=2700 per MT-01 convention). INV-16/17 vacuous PASS (no pendant/suspended geometry to verify).",
+            "rule": "MT-01 recessed default + user prompt verbatim",
+            "code_clause": "mount-type-rules.yaml MT-01 + BS EN 60598-2-2 (recessed luminaire)"
+          }
+        ]
+      },
+      {
         "title": "Assumptions",
-        "summary": "UF + SHR_max from CIBSE LG7 §6.2 ontology defaults (LED_PANEL_600 @ RI=2.0, 0.7/0.5/0.2 reflectances); engineer-of-record must verify against manufacturer photometric file before issue. MF=0.80 assumes a 3-year cleaning cycle in a clean office (CIBSE TM 3-25). DALI + PIR occupancy detection assumed to satisfy Part L §6 — confirm against project lighting controls schedule. Lamp efficacy 125 lm/W derived from inputs lumen_output/wattage_w = 6000/48 (vendor-typical for a mid-range 6000 lm DALI panel)."
+        "summary": "UF + SHR_max from CIBSE LG7 §6.2 ontology defaults (LED_PANEL_600 @ RI=2.0, 0.7/0.5/0.2 reflectances); engineer-of-record must verify against manufacturer photometric file before issue. MF=0.80 assumes a 3-year cleaning cycle in a clean office (CIBSE TM 3-25). DALI + PIR occupancy detection assumed to satisfy Part L §6 — confirm against project lighting controls schedule. Lamp efficacy 125 lm/W derived from inputs lumen_output/wattage_w = 6000/48 (vendor-typical for a mid-range 6000 lm DALI panel). v1.7 D5 retrofit: Z2/Z3 luminaire split derived geometrically from §4.2.2.2 ≥500 mm perimeter band (no zone polygon in IR schema); circuit.zone_id reflects predominant-zone-per-row (C-L01/C-L04 → Z3, C-L02/C-L03 → Z2); the mixed-zone circuit feed is honest because DALI handles per-luminaire dimming on the bus."
       }
     ]
   },
@@ -302,7 +370,7 @@
       "id": "INV-07",
       "passes": true,
       "severity": "medium",
-      "evidence": "Zone assignment: 20 luminaires reference {Z2} only; 1:1 referential integrity (each luminaire to exactly one zone) PASS. Z2 interior has all 20 luminaires (L01-L20) fed by 4 row circuits (C-L01..C-L04). inputs.glazed_walls=[] empty AND zones contains no Z1 perimeter — iff-clause perimeter consistency PASS (no glazing ⇔ no perimeter zone) per [switching-rules#perimeter-circuit]. Zone control protocol matches zone_type: Z2.control='dali_master' is valid for interior with DALI controls_protocol per [control-rules#dali-zoning]."
+      "evidence": "Zone assignment: 20 luminaires reference {Z2, Z3} — 6 → Z2 task (L07-L09, L12-L14) + 14 → Z3 surrounding (L01-L05, L06, L10, L11, L15, L16-L20); 1:1 referential integrity (each luminaire to exactly one zone) PASS. inputs.glazed_walls=[] empty AND no zone declares zone_type='perimeter' (Z2 + Z3 both zone_type='interior') — iff-clause perimeter-daylight consistency PASS (no glazing ⇔ no daylight-perimeter zone). The Z2/Z3 split is a §4.2.2.2 task/surrounding split, NOT a daylight-perimeter split. Zone control protocol matches zone_type: Z2.control + Z3.control = 'dali_master' both valid for interior with DALI controls_protocol per [control-rules#dali-zoning]."
     },
     {
       "id": "INV-08",
@@ -320,13 +388,55 @@
       "id": "INV-10",
       "passes": true,
       "severity": "high",
-      "evidence": "Schema validation PASSED (precondition: golden CI gate). All top-level required fields populated: drawing_type='lighting_layout', version='1.4.0', room (incl. room_type='open_plan_office' enum), calculation_summary (target+compliant+non_compliance_flags+assumptions), rationale (chat_summary 40-500 + sections ≥1), invariants (10 entries INV-01..INV-10). Mode=full_drawing — full_drawing required-fields all present: luminaire_type, luminaires (20), switches (1), circuits (4), controls, drawing_notes (9), zones (1), drafting_furniture, selection_source. non_compliance_flags=[] (vacuously valid). controls.part_l_compliant=true so Rule 3 cross-check trivially PASS. Rule 10 PASS."
+      "evidence": "Schema validation PASSED (precondition: golden CI gate). All top-level required fields populated: drawing_type='lighting_layout', version='1.7.0', room (incl. room_type='open_plan_office' enum), calculation_summary (target+compliant+non_compliance_flags+assumptions+per_zone_achieved), rationale (chat_summary 40-500 + sections ≥1), invariants (19 entries INV-01..INV-19, no INV-12). Mode=full_drawing — full_drawing required-fields all present: luminaire_type, luminaires (20), switches (1), circuits (4), controls, drawing_notes (9), zones (2: Z2 task + Z3 surrounding), drafting_furniture, selection_source. non_compliance_flags=[] (vacuously valid). controls.part_l_compliant=true so Rule 3 cross-check trivially PASS. Rule 10 PASS."
     },
     {
       "id": "INV-11",
       "passes": true,
       "severity": "high",
       "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from cascade-uk-open-plan-office-10x8-dali/intent-out.json. payload.task_area_compliant=true; payload.achieved_avg_illuminance_lux=752 vs target=500 (sub-check 3 PASS, 150% — 6000 lm LED panels with DALI control deliver healthy headroom); 0 non_compliance_flags cascaded to lighting-layout calculation_summary with _cascaded_from=photometric-analysis attribution (sub-check 4 PASS, vacuously). Canonical re-test example from user's verbatim prompt — confirms the pre-D3 bad-CAD bug is fixed across lumen-method (INV-1) + photometric (INV-11) cascade. Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
+    },
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "high",
+      "evidence": "INV-13 verdict: PASS. Zones inspected: 2. Per-zone purpose: Z2: purpose=task, em_target_lux=500; Z3: purpose=surrounding, em_target_lux=250. Orphan-surrounding check: pass (Z3 surrounding is paired with Z2 task in the same room — ZP-04 satisfied). Both zones declare purpose ∈ {task, surrounding, background, circulation}. Citation: BS EN 12464-1:2021 §4.2.2.1 (task area) + §4.2.2.2 (immediate surrounding area) + area-definitions.json §4.2.2.x."
+    },
+    {
+      "id": "INV-14",
+      "passes": true,
+      "severity": "high",
+      "evidence": "INV-14 verdict: PASS. Surrounding zones inspected: 1. Task em reference: 500 lx (from Z2). Per-zone ratio check: Z3 (surrounding): em_target_lux=250, ratio=0.500, band [0.3, 0.5], result: pass (equal to upper band — ZP-02 default ratio 0.5 from area-definitions.json _surrounding_ratio_default). First non-vacuous INV-14 PASS across the lighting-layout example set. Citation: BS EN 12464-1:2021 §4.2.2.2 + Table 6 (area-definitions.json table_6_ratio_rules.task_to_surrounding)."
+    },
+    {
+      "id": "INV-15",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Background floor. Background zones inspected: 0. No zones declare purpose='background' — INV-15 vacuous PASS per validator §INV-15 vacuous condition. The Z2/Z3 split is task + surrounding only; no background tier declared for this open-plan office (background would apply to peripheral non-occupied zones beyond the working area — not present here). Citation: BS EN 12464-1:2021 §4.2.2.3 + Table 6 (area-definitions.json table_6_ratio_rules.task_to_background)."
+    },
+    {
+      "id": "INV-16",
+      "passes": true,
+      "severity": "high",
+      "evidence": "mount_type ↔ z_mm/suspension consistency. Luminaires inspected: 20. Pendant geometry checks: 0 pendant luminaires. Suspended geometry checks: 0 suspended luminaires. Recessed/surface/track: 20 luminaires (all 20 LED panels are mount_type='recessed' per MT-01 — matches user's verbatim prompt 'recessed into a 600 mm modular ceiling grid'), z_mm + suspension_length_mm omitted per MT-01 convention (recessed inherits ceiling_height_mm=2700). INV-16 vacuous PASS — no pendant/suspended geometry to verify. Citation: BS EN 60598-2-1 + BS EN 60598-2-2 (recessed) + mount-type-rules.yaml MT-01."
+    },
+    {
+      "id": "INV-17",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Ceiling clearance + working-plane floor. Working plane reference: 750 mm AFF. Per-luminaire floor check: all 20 luminaires are recessed; z_mm not declared and inherits ceiling_height_mm=2700 per MT-01 convention. Inherited z=2700 > working_plane=750 (clearance=1950 mm = Hm). Per-luminaire ceiling clearance: recessed luminaires are physically inset into ceiling, suspension_length_mm=0 implied; sum=2700 ≤ ceiling=2700 PASS. INV-17 PASS — no luminaire below task plane, no luminaire exceeds ceiling. Citation: BS EN 12464-1:2021 §4.4 + BS EN 60598-2 + mount-type-rules.yaml MT-04."
+    },
+    {
+      "id": "INV-18",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "hm_mm derivation consistency. Room hm_mm recorded: 1950 mm. Lowest pendant/suspended z_mm: N/A (no pendant/suspended — all 20 luminaires recessed). Recessed branch: expected hm_mm = ceiling_height_mm − working_plane_mm = 2700 − 750 = 1950 mm. Drift: |1950 − 1950| = 0 mm, tolerance ±50 mm. INV-18 PASS. Citation: BS EN 12464-1:2021 §4.4 + repo derivation convention."
+    },
+    {
+      "id": "INV-19",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Per-zone achievement. Zones inspected: 2. Per-zone achievement: Z2 (task): target=500, achieved=804.0, gap=-304, gap_pct=-60.8%, ratio_compliance=pass, severity=none (achieved ≥ target); Z3 (surrounding): target=250, achieved=804.0, gap=-554, gap_pct=-221.6%, ratio_compliance=pass, severity=none (achieved ≥ target — uniform 4×5 grid achieves the same 804 lx across both zones). Aggregate: 2 PASS, 0 marginal, 0 MEDIUM, 0 HIGH. INV-19 PASS. Citation: BS EN 12464-1:2021 §4.1 + Table 5 (lux-levels.json open_plan_office entry, Em=500 lx) + §4.2.2.2 + Table 6 (surrounding Em ratio)."
     }
   ],
   "consumed_intents": {

@@ -12,7 +12,7 @@
     {
       "circuit_id": "C-L01",
       "db_designation": "L1",
-      "zone_id": "Z2",
+      "zone_id": "Z3",
       "voltage_class": "LV_power",
       "load_w": 240,
       "luminaire_count": 5,
@@ -39,7 +39,7 @@
     {
       "circuit_id": "C-L04",
       "db_designation": "L1",
-      "zone_id": "Z2",
+      "zone_id": "Z3",
       "voltage_class": "LV_power",
       "load_w": 240,
       "luminaire_count": 5,
@@ -59,14 +59,21 @@
       "zone_id": "Z2",
       "zone_type": "interior",
       "control": "dali_master",
-      "luminaire_ids": ["L01","L02","L03","L04","L05","L06","L07","L08","L09","L10","L11","L12","L13","L14","L15","L16","L17","L18","L19","L20"],
+      "luminaire_ids": ["L07","L08","L09","L12","L13","L14"],
+      "circuit_ids": ["C-L02", "C-L03"]
+    },
+    {
+      "zone_id": "Z3",
+      "zone_type": "interior",
+      "control": "dali_master",
+      "luminaire_ids": ["L01","L02","L03","L04","L05","L06","L10","L11","L15","L16","L17","L18","L19","L20"],
       "circuit_ids": ["C-L01", "C-L02", "C-L03", "C-L04"]
     }
   ],
   "circuits_topology": [
     {
       "circuit_id": "C-L01",
-      "zone_id": "Z2",
+      "zone_id": "Z3",
       "row_index": 0,
       "total_load_w": 240,
       "mcb_rating_a": 6,
@@ -93,7 +100,7 @@
     },
     {
       "circuit_id": "C-L04",
-      "zone_id": "Z2",
+      "zone_id": "Z3",
       "row_index": 3,
       "total_load_w": 240,
       "mcb_rating_a": 6,
