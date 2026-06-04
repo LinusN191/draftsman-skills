@@ -1,5 +1,6 @@
 # lighting-layout — DraftsMan MEP Engineering Skill
 
+**Version:** 1.7.0
 **Status:** Production (reference implementation)
 **Discipline:** Electrical
 **Sub-discipline:** Lighting

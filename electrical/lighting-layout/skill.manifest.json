@@ -1,10 +1,10 @@
 {
   "skill": "lighting-layout",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "discipline": "electrical",
   "subdiscipline": "lighting",
   "chat_type": "drawing",
-  "description": "BS EN 12464-1:2021 compliant interior lighting layout. Produces luminaire placement, circuit assignment, switching positions, and annotation data as structured IR. Checks Part L efficacy, perimeter zone controls, LLMF conversion, IP suitability, and circuit load compliance.",
+  "description": "BS EN 12464-1:2021 compliant interior lighting layout. Produces luminaire placement, circuit assignment, switching positions, and annotation data as structured IR. Checks Part L efficacy, perimeter zone controls, LLMF conversion, IP suitability, and circuit load compliance. v1.7 adds per-zone lux targets (task + surrounding), zone-purpose rules, and mount-type 3D consistency checks.",
   "status": "production",
   "licence": "MIT",
   "inputs_path": "inputs.json",
@@ -54,7 +54,8 @@
     "shared/standards/lighting/BSEN12464/lux-levels.json",
     "shared/standards/electrical/BS7671/circuit-requirements.json",
     "shared/standards/electrical/BS7671/part-l-controls-reference.md",
-    "shared/standards/lighting/emergency-lighting/BSEN1838.json"
+    "shared/standards/lighting/emergency-lighting/BSEN1838.json",
+    "shared/standards/lighting/BSEN12464/area-definitions.json"
   ],
   "ontology": [
     "shared/ontology/room-types/office.json",
@@ -85,7 +86,12 @@
     "electrical/lighting-layout/evals/eval-05-ceiling-grid-alignment.yaml",
     "electrical/lighting-layout/evals/eval-06-part-l-efficacy.yaml",
     "electrical/lighting-layout/evals/eval-07-initial-vs-design-lumens.yaml",
-    "electrical/lighting-layout/evals/eval-08-rationale-block.yaml"
+    "electrical/lighting-layout/evals/eval-08-rationale-block.yaml",
+    "electrical/lighting-layout/evals/eval-09-zone-purpose-emit.yaml",
+    "electrical/lighting-layout/evals/eval-10-task-surrounding-ratio.yaml",
+    "electrical/lighting-layout/evals/eval-11-mount-type-3d-consistency.yaml",
+    "electrical/lighting-layout/evals/eval-12-per-zone-achievement-pass.yaml",
+    "electrical/lighting-layout/evals/eval-13-per-zone-achievement-fail.yaml"
   ],
   "examples": [
     "electrical/lighting-layout/examples/office-open-plan/",
@@ -94,7 +100,12 @@
     "electrical/lighting-layout/examples/uk-undersized-lighting-vs-target/",
     "electrical/lighting-layout/examples/uk-multi-entrance-classroom/",
     "electrical/lighting-layout/examples/uk-part-l-fail-incandescent/",
-    "electrical/lighting-layout/examples/uk-open-plan-office-10x8-dali/"
+    "electrical/lighting-layout/examples/uk-open-plan-office-10x8-dali/",
+    "electrical/lighting-layout/examples/uk-bathroom-zone-1-zone-2/",
+    "electrical/lighting-layout/examples/uk-pendant-open-plan-office/",
+    "electrical/lighting-layout/examples/uk-mixed-purpose-classroom/",
+    "electrical/lighting-layout/examples/uk-retail-display-task-zone/",
+    "electrical/lighting-layout/examples/uk-per-zone-target-violation/"
   ],
   "compatible_runtimes": [
     "DraftsMan >= 1.0",
@@ -113,7 +124,9 @@
     "electrical/lighting-layout/rules/emergency-rules.yaml",
     "electrical/lighting-layout/rules/placement-rules.yaml",
     "electrical/lighting-layout/rules/spacing-rules.yaml",
-    "electrical/lighting-layout/rules/switching-rules.yaml"
+    "electrical/lighting-layout/rules/switching-rules.yaml",
+    "electrical/lighting-layout/rules/zone-purpose-rules.yaml",
+    "electrical/lighting-layout/rules/mount-type-rules.yaml"
   ],
   "constraints": [
     "electrical/lighting-layout/constraints/electrical.yaml",
