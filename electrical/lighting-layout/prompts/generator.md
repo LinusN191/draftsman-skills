@@ -932,6 +932,19 @@ Populate `calculation_summary.per_zone_achieved[]` with one entry per zone:
 
 **Note:** `ratio_compliance` is a tri-state enum on the schema (pass / fail / marginal). The HIGH-vs-MEDIUM split lives in the `non_compliance_flags[]` severity field, not the `ratio_compliance` enum.
 
+## Cascade sources consumed by lighting-layout v1.7
+
+This skill consumes 2 cascade intents. Per-zone achievement (Step 15) primarily relies on the photometric cascade when present.
+
+| Cascade source | Intent skill | Consumed at | INV that verifies | v1.7 usage |
+|---|---|---|---|---|
+| `consumed_intents.photometric_grid` | `photometric-analysis` | Step 15 (per-zone achievement) | INV-11 | Per-zone `em_achieved_lux` derived by intersecting grid points with zone polygons. If absent, fall back to lumen-method × purpose_uniformity_factor (per Step 15 priority list). |
+| `consumed_intents.special_locations_zoning` | `special-locations` | Step 12 (existing) | INV-12 | Unchanged from v1.5.0. Special-locations payload does NOT contain `purpose` or `mount_type` — those are lighting-layout-side concerns. |
+
+**Why no contract change for photometric in v1.7:** photometric-analysis emits the grid + UGR; lighting-layout enriches per-zone Em by polygon-intersection on the consumer side. Photometric does not need to know about `zone.purpose` to do its job. v1.7 is additive on the consumer side only.
+
+**Honest disclosure for v1.7 examples without photometric cascade:** if `consumed_intents.photometric_grid` is absent, populate `per_zone_achieved[]` from the lumen-method × uniformity factor and document the assumption in `compliance_summary.assumptions[]` as "Em_achieved derived from lumen-method × purpose_uniformity_factor; pending full photometric grid solve for production sign-off."
+
 ### Step 16 — Emergency lighting note
 
 Full emergency lighting design is a separate drawing. However, flag for this layout:
