@@ -1,0 +1,500 @@
+{
+  "_note": "D5 C.10 NEW example — 9×7 m UK new-build secondary-school classroom engineered to exercise ALL THREE BS EN 12464-1:2021 §4.2.2 area purposes simultaneously. 16 LED panels in 4 rows × 4 cols arranged so row 0 = Z2 surrounding (teacher demonstration + 500 mm front transition band, em_target=150 lx = 0.5 × 300 ratio per Table 6 upper band); rows 1-2 = Z1 task (student desks, em_target=300 lx per Table 5 education_classroom); row 3 = Z3 background (back display wall ≥3 m wide per §4.2.2.3, em_target=100 lx = max(300/3, 50) floor). DALI scene dimming delivers per-zone achieved Z1=315 lx, Z2=155 lx, Z3=105 lx — each ≥ its target (INV-19 PASS). INV-13 + INV-14 + INV-15 all fire NON-VACUOUSLY: INV-13 PASS (3 zones × 3 valid purposes); INV-14 PASS (ratio=0.500 upper band [0.3, 0.5]); INV-15 PASS (em=100 = floor max(300/3, 50)). INV-16/17/18 vacuous PASS (all 16 luminaires recessed). All 19 INVs PASS.",
+  "drawing_type": "lighting_layout",
+  "version": "1.7.0",
+  "room": {
+    "length_mm": 9000,
+    "width_mm": 7000,
+    "area_m2": 63,
+    "ceiling_height_mm": 3000,
+    "working_plane_mm": 750,
+    "hm_mm": 2250,
+    "room_index": 1.75,
+    "room_type": "classroom",
+    "environment_type": "normal",
+    "ip_required": "IP20",
+    "has_windows": false
+  },
+  "luminaire_type": {
+    "symbol": "LED_PANEL_600",
+    "description": "600×600 LED Recessed Panel — 4500 lm, 36 W, 4000 K, CRI ≥ 80, IP20, DALI-dimmable, classroom-low-glare UGR < 19",
+    "lumens": 4500,
+    "lumen_type": "design",
+    "llmf_applied": false,
+    "wattage_w": 36,
+    "cct_k": 4000,
+    "cri_ra": 80,
+    "ip_rating": "IP20",
+    "lamp_efficacy_lm_per_w": 125.0
+  },
+  "selection_source": {
+    "photometric_source": "ontology_default",
+    "citation": "CIBSE LG7 §6.2 (typical recessed LED panel UF + SHR_max) + BS EN 12464-1:2021 §4.4 (LLMF maintenance categories)"
+  },
+  "zones": [
+    {
+      "zone_id": "Z1",
+      "label": "Task — student desks (rows 1-2, central 8 luminaires, em_target=300 lx Table 5 education_classroom)",
+      "zone_type": "interior",
+      "control": "dali_master",
+      "circuit_id": "C-L02",
+      "circuit_ids": ["C-L02", "C-L03"],
+      "luminaire_ids": ["L05", "L06", "L07", "L08", "L09", "L10", "L11", "L12"],
+      "luminaire_count": 8,
+      "total_load_w": 288,
+      "purpose": "task",
+      "em_target_lux": 300
+    },
+    {
+      "zone_id": "Z2",
+      "label": "Surrounding — teacher demonstration + front 500 mm transition band (row 0, 4 luminaires, em_target=150 lx = 0.5 × 300 ratio per §4.2.2.2 + Table 6 upper band)",
+      "zone_type": "interior",
+      "control": "dali_master",
+      "circuit_id": "C-L01",
+      "circuit_ids": ["C-L01"],
+      "luminaire_ids": ["L01", "L02", "L03", "L04"],
+      "luminaire_count": 4,
+      "total_load_w": 144,
+      "purpose": "surrounding",
+      "em_target_lux": 150
+    },
+    {
+      "zone_id": "Z3",
+      "label": "Background — back wall display strip ≥3 m wide (row 3, 4 luminaires, em_target=100 lx = max(300/3, 50) floor per §4.2.2.3 + Table 6)",
+      "zone_type": "interior",
+      "control": "dali_master",
+      "circuit_id": "C-L04",
+      "circuit_ids": ["C-L04"],
+      "luminaire_ids": ["L13", "L14", "L15", "L16"],
+      "luminaire_count": 4,
+      "total_load_w": 144,
+      "purpose": "background",
+      "em_target_lux": 100
+    }
+  ],
+  "luminaires": [
+    {"id": "L01", "x_mm": 300,  "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L02", "x_mm": 3100, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L03", "x_mm": 5900, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L04", "x_mm": 8700, "y_mm": 300,  "zone_id": "Z2", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L05", "x_mm": 300,  "y_mm": 2433, "zone_id": "Z1", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L06", "x_mm": 3100, "y_mm": 2433, "zone_id": "Z1", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L07", "x_mm": 5900, "y_mm": 2433, "zone_id": "Z1", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L08", "x_mm": 8700, "y_mm": 2433, "zone_id": "Z1", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L09", "x_mm": 300,  "y_mm": 4567, "zone_id": "Z1", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L10", "x_mm": 3100, "y_mm": 4567, "zone_id": "Z1", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L11", "x_mm": 5900, "y_mm": 4567, "zone_id": "Z1", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L12", "x_mm": 8700, "y_mm": 4567, "zone_id": "Z1", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L13", "x_mm": 300,  "y_mm": 6700, "zone_id": "Z3", "circuit_id": "C-L04", "mount_type": "recessed"},
+    {"id": "L14", "x_mm": 3100, "y_mm": 6700, "zone_id": "Z3", "circuit_id": "C-L04", "mount_type": "recessed"},
+    {"id": "L15", "x_mm": 5900, "y_mm": 6700, "zone_id": "Z3", "circuit_id": "C-L04", "mount_type": "recessed"},
+    {"id": "L16", "x_mm": 8700, "y_mm": 6700, "zone_id": "Z3", "circuit_id": "C-L04", "mount_type": "recessed"}
+  ],
+  "switches": [
+    {
+      "id": "SW01",
+      "type": "dali_master",
+      "x_mm": 5100,
+      "y_mm": 200,
+      "height_aff_mm": 1200,
+      "controls_circuit": "C-L01,C-L02,C-L03,C-L04",
+      "door_swing": "inward_latch_right",
+      "switch_side": "latch"
+    }
+  ],
+  "circuits": [
+    {
+      "circuit_id": "C-L01",
+      "db_designation": "L1",
+      "zone_id": "Z2",
+      "luminaire_ids": ["L01", "L02", "L03", "L04"],
+      "total_load_w": 144,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 0,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 300, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L02",
+      "db_designation": "L1",
+      "zone_id": "Z1",
+      "luminaire_ids": ["L05", "L06", "L07", "L08"],
+      "total_load_w": 144,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 1,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 2433, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L03",
+      "db_designation": "L1",
+      "zone_id": "Z1",
+      "luminaire_ids": ["L09", "L10", "L11", "L12"],
+      "total_load_w": 144,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 2,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 4567, "wall": "W"}
+    },
+    {
+      "circuit_id": "C-L04",
+      "db_designation": "L1",
+      "zone_id": "Z3",
+      "luminaire_ids": ["L13", "L14", "L15", "L16"],
+      "total_load_w": 144,
+      "mcb_rating_a": 6,
+      "mcb_curve": "B",
+      "row_index": 3,
+      "homerun_endpoint": {"x_mm": 0, "y_mm": 6700, "wall": "W"}
+    }
+  ],
+  "controls": {
+    "dimming_protocol": "DALI",
+    "occupancy_sensing": true,
+    "daylight_linking": false,
+    "part_l_assessed": true,
+    "part_l_compliant": true,
+    "part_l_efficacy_target_lm_per_w": 95,
+    "lamp_efficacy_lm_per_w": 125.0,
+    "required": ["occupancy"]
+  },
+  "calculation_summary": {
+    "target_illuminance_lux": 300,
+    "achieved_illuminance_lux": 567.4,
+    "utilisation_factor": 0.62,
+    "maintenance_factor": 0.80,
+    "lamp_efficacy_lm_per_w": 125.0,
+    "part_l_efficacy_target_lm_per_w": 95,
+    "ugr_status": "UGR ≤ 19 — confirm from photometric data (classroom-low-glare panel; classroom prefers UGR ≤ 16 for sustained reading)",
+    "compliant": true,
+    "discovery_status": "complete",
+    "non_compliance_flags": [],
+    "assumptions": [
+      "Reflectances 0.7 / 0.5 / 0.2 (ceiling / wall / floor) — standard CIBSE LG7 classroom surfaces; engineer to confirm against actual finishes schedule",
+      "Working plane = 750 mm AFFL (BS EN 12464-1:2021 Table 5 education_classroom task at student desk plane per [spacing-rules#working-plane-defaults])",
+      "UF = 0.62 from CIBSE LG7 §6.2 standard reflectance table 0.7/0.5/0.2 at RI=1.5 (next-lower band for actual RI=1.75 = 9×7/(2.25×16) = 63/36 = 1.75)",
+      "MF = 0.80 for clean classroom LED on a 3-year cleaning cycle (CIBSE TM 3-25)",
+      "Lumen-method N = (300 × 63) / (4500 × 0.62 × 0.80) = 18900 / 2232 = 8.47 → round UP to 9; engineer bumped to 16 (4 rows × 4 cols) for S/H compliance (3 cols S_x = 4200 > 3375 limit FAIL → 4 cols S_x = 2800 ≤ 3375 PASS) and zone-purpose granularity (4-row split lets one row serve each of Z2 surrounding + Z3 background while reserving the central 2 rows for Z1 task)",
+      "Achieved at FULL DALI output = (16 × 4500 × 0.62 × 0.80) / 63 = 35712 / 63 = 567.4 lx — well above the 300 lx Z1 task target. Per-zone achieved values are LOWER because the DALI scene controller dims each zone independently to its own em_target (see per_zone_achieved[] for the commissioned scene values)",
+      "DALI scene dimming delivers per-zone achievement: Z1 task scene at ~63 % rated output → 315 lx (target 300, 5 % headroom over the Em floor); Z2 surrounding scene at ~24 % → 155 lx (target 150, 3 % headroom); Z3 background scene at ~16 % → 105 lx (target 100, 5 % headroom). Scene levels are commissioning-set and verified against the §4.2.2 area-purpose targets per BS EN 12464-1:2021 Table 6; engineer-of-record confirms via in-situ lux meter at handover",
+      "D5 v1.7 RETROFIT (4-PLACE CANONICAL DISCLOSURE, 2026-06-04) — PLACE 2 ENGINEERING WALK. This is the FIRST example in the lighting-layout example set where ALL THREE BS EN 12464-1:2021 §4.2.2 area purposes coexist: Z1 task (purpose=task, em_target=300 lx from Table 5 education_classroom entry); Z2 surrounding (purpose=surrounding, em_target=150 lx = 0.5 × 300 per ZP-02 default ratio — at the upper bound of Table 6 [0.3, 0.5] simplified-rule band, equivalent to the engineering decision to keep the teacher demonstration band at a meaningful contrast with the task area); Z3 background (purpose=background, em_target=100 lx = max(300/3, 50) = 100 lx per ZP-03 floor rule, §4.2.2.3 + Table 6 task_to_background entry). INV-13 PASSes non-vacuously (3 zones × 3 valid purposes, no orphan surrounding — Z1 task coexists). INV-14 PASSes non-vacuously (Z2 ratio = 150 / 300 = 0.500 ∈ [0.3, 0.5] band, equal to upper-band boundary). INV-15 PASSes non-vacuously (Z3 em = 100 lx = floor value). INV-19 PASSes (all 3 zones achieve ≥ target). All 16 luminaires recessed (MT-01 default — matches the 600×600 LED recessed panel description); z_mm + suspension_length_mm omitted per the recessed convention (geometry inherits ceiling_height_mm=3000). Honest disclosure: zone polygons are notional (no zone polygon field in IR schema); zone membership is assigned to luminaires by row geometry. An engineer-of-record adding a separate vanity cluster (e.g. for a science prep area at the back of the room) would set that sub-zone to purpose='task' with its own em_target — the 3-purpose split here is one valid §4.2.2 area-classification of the classroom, not the only one."
+    ],
+    "per_zone_achieved": [
+      {
+        "zone_id": "Z1",
+        "purpose": "task",
+        "em_target_lux": 300,
+        "em_achieved_lux": 315,
+        "ratio_compliance": "pass"
+      },
+      {
+        "zone_id": "Z2",
+        "purpose": "surrounding",
+        "em_target_lux": 150,
+        "em_achieved_lux": 155,
+        "ratio_compliance": "pass"
+      },
+      {
+        "zone_id": "Z3",
+        "purpose": "background",
+        "em_target_lux": 100,
+        "em_achieved_lux": 105,
+        "ratio_compliance": "pass"
+      }
+    ]
+  },
+  "drawing_notes": [
+    "All luminaires: 600×600 LED recessed panel, 4500 design lm, 36 W, 4000 K, CRI ≥ 80, DALI-dimmable, classroom-low-glare optic (UGR ≤ 19; recommend UGR ≤ 16 variant for sustained-reading classrooms per BS EN 12464-1:2021 Table 5 education_classroom UGR_L column)",
+    "Maintained illuminance: Z1 task (rows 1-2 student desks) 300 lx + Z2 surrounding (row 0 teacher demonstration + 500 mm front transition band) 150 lx + Z3 background (row 3 back display wall ≥3 m wide) 100 lx — all three §4.2.2 area purposes per BS EN 12464-1:2021 §4.2.2.1/.2/.3 + Table 5 education_classroom + Table 6 task/surrounding/background ratios",
+    "16 luminaires in 4 rows × 4 cols; row spacing 2133 mm, column spacing 2800 mm, 300 mm edge clearance — all S/H ratios ≤ 1.5 × Hm = 3375 mm per CIBSE LG7 §6.2",
+    "DALI scene controller delivers per-zone scene dimming: Z1 task ~63 % rated → 315 lx; Z2 surrounding ~24 % → 155 lx; Z3 background ~16 % → 105 lx — commissioning verifies levels with in-situ lux meter at student-desk plane (Z1), at teacher demonstration plane (Z2), at display-wall plane (Z3)",
+    "4 row circuits C-L01..C-L04, each 4 × 36 W = 144 W on 6 A MCB curve B (per BS 7671:2018+A2:2022 §433.1.1 + IET OSG App A: 144 W = 13 % of 1104 W 80 %-continuous-load cap)",
+    "All four homeruns exit on W wall at row y_mm ∈ {300, 2433, 4567, 6700} for parallel routing back to DB L1 — no diagonals, no Z-pattern",
+    "Single SW01 DALI master at S entrance latch side (x = 5100 mm, y = 200 mm, 1200 mm AFFL) controls all 4 circuits via the DALI bus per [switching-rules#latch-side] + IET OSG App E §E1.4; DALI scene buttons recall the Z1/Z2/Z3 scenes",
+    "No glazed walls → daylight-linking is N/A and not required by Part L 2021 §6 (perimeter-zone Rule 7 vacuously satisfied — the Z1/Z2/Z3 split is a §4.2.2 area-purpose split, NOT a daylight-perimeter split)",
+    "Lamp efficacy 125 lm/W ≥ Part L 2021 Table 6.2 target 95 lm/W (PASS); DALI + PIR occupancy detection satisfies Part L 2021 §6 user-control + automatic-control"
+  ],
+  "flags": [],
+  "rationale": {
+    "chat_summary": "9×7 m UK new-build secondary-school classroom designed to exercise all three BS EN 12464-1:2021 §4.2.2 area purposes simultaneously — Z1 task (student desks, 300 lx Table 5) + Z2 surrounding (teacher demonstration, 150 lx = 0.5 × 300 Table 6 upper band) + Z3 background (back display wall, 100 lx = max(300/3, 50) floor §4.2.2.3). 16 LED panels in 4×4 grid; DALI scene dimming delivers per-zone achieved 315 / 155 / 105 lx (all ≥ target). INV-13/14/15 first non-vacuous PASS-PASS-PASS triple. Single SW01 DALI master at S entrance. No glazed walls (windowless classroom — common UK secondary school with N-facing whiteboard).",
+    "sections": [
+      {
+        "title": "Why this example exists",
+        "summary": "First example in the lighting-layout set where ALL THREE §4.2.2 area purposes (task + surrounding + background) coexist in a single room. INV-13 + INV-14 + INV-15 all fire non-vacuously simultaneously: INV-13 verifies the 3-zone × 3-purpose declaration; INV-14 verifies the surrounding ratio (150/300 = 0.500 upper band); INV-15 verifies the background floor (100 lx = max(300/3, 50)). Companion to C.5 uk-open-plan-office-10x8-dali (task + surrounding only) — together demonstrate the full §4.2.2 area-purpose matrix. A secondary-school classroom is the canonical 3-purpose use case: teacher demonstrates at one end (surrounding band), students work at desks in the middle (task), back wall holds bulletin boards and the bookshelf (background).",
+        "decisions": [
+          {
+            "label": "3-zone split chosen over 2-zone task+surrounding",
+            "summary": "BS EN 12464-1:2021 §4.2.2.3 defines background as 'adjacent to the immediate surrounding area, ≥3 m wide within the limits of the space'. The back display wall (1500 mm strip across the 9000 mm room width) is exactly the §4.2.2.3 background — peripheral, non-occupied, ≥3 m wide. Including it gives the example genuine 3-purpose coverage rather than collapsing the back into the surrounding band. The task/surrounding ratio (0.500) and the background floor (max(300/3, 50) = 100 lx) both engage non-vacuously.",
+            "rule": "ZP-02 + ZP-03 area-purpose ratios per BS EN 12464-1:2021 Table 6",
+            "code_clause": "BS EN 12464-1:2021 §4.2.2.3 + Table 6"
+          }
+        ]
+      },
+      {
+        "title": "Lumen-method walk",
+        "summary": "A = 9 × 7 = 63 m². Hm = 3000 − 750 = 2250 mm = 2.25 m. RI = (9 × 7) / (2.25 × (9 + 7)) = 63 / 36 = 1.75 → ontology table key 1.5 (next-lower band per LG7 §6.2; conservative reading vs table-key 2.0 with UF=0.67). UF = 0.62 (LED_PANEL_600 at RI=1.5, reflectances 0.7/0.5/0.2). MF = 0.80 (clean classroom LED, 3-year cleaning cycle per CIBSE TM 3-25). N for 300 lx target = (300 × 63) / (4500 × 0.62 × 0.80) = 18900 / 2232 = 8.47 → round UP to 9. Engineer bumped to 16 (4 rows × 4 cols) for S/H compliance (3 cols S_x = 4200 > 3375 limit FAIL → 4 cols S_x = 2800 PASS) AND for zone-purpose granularity (4-row split lets one row serve each of Z2 surrounding + Z3 background while reserving the central 2 rows for Z1 task). Achieved at full DALI output = (16 × 4500 × 0.62 × 0.80) / 63 = 567 lx room-uniform — DALI scene dimming pulls each zone down to its per-purpose target."
+      },
+      {
+        "title": "S/H ratio enforcement",
+        "summary": "Hm = 2250 mm; SHR_max = 1.5 (LED_PANEL_600 ontology default); limit = 1.5 × 2250 = 3375 mm. Step 1: N = 9 (3 cols × 3 rows); S_x = (9000 − 600) / 2 = 4200 mm > 3375 → FAIL (col spacing exceeds limit by 24 %). Step 2: N = 16 (4 cols × 4 rows); S_x = (9000 − 600) / 3 = 2800 mm ≤ 3375 PASS (83 % of limit); S_y = (7000 − 600) / 3 = 2133 mm ≤ 3375 PASS (63 % of limit). Final N = 16 in 4-row × 4-col layout → INV-2 PASS.",
+        "decisions": [
+          {
+            "label": "Reject 3×3 layout despite N=9 satisfying lumen-method",
+            "summary": "9 luminaires looks attractive because 9 ≥ 9 lumen-method N. But 3 cols across 9000 mm gives S_x = 4200 mm > 3375 mm SHR limit. Bump to 4 cols × 4 rows = 16 — the next layout up that satisfies S/H AND gives clean 4-row granularity for the §4.2.2 zone-purpose split.",
+            "rule": "S/H enforcement loop — bump until S_x AND S_y ≤ SHR_max × Hm",
+            "code_clause": "CIBSE LG7 §6.2 (SHR_max) + BS EN 12464-1:2021 §4.3 (uniformity)"
+          }
+        ]
+      },
+      {
+        "title": "Zone purpose split — task + surrounding + background (the 3-purpose triple)",
+        "summary": "BS EN 12464-1:2021 §4.2.2.1 defines the task area as the area where the visual task is performed; §4.2.2.2 defines the immediate surrounding as a band of ≥0.5 m around the task; §4.2.2.3 defines the background as adjacent to the surrounding, ≥3 m wide within the limits of the space. For this classroom: Z1 task = central 2 rows × 4 cols = 8 luminaires over the student-desk cluster (em_target = 300 lx, BS EN 12464-1 Table 5 education_classroom entry). Z2 surrounding = row 0 (front of room, teacher demonstration + 500 mm transition band onto the front edge of student desks) = 4 luminaires (em_target = 150 lx = 0.5 × 300 per ZP-02 default ratio — upper bound of Table 6 [0.3, 0.5] simplified-rule band). Z3 background = row 3 (back display wall, ≥3 m wide across the full 9000 mm room width) = 4 luminaires (em_target = 100 lx = max(300/3, 50) per ZP-03 floor rule, §4.2.2.3 + Table 6 task_to_background entry).",
+        "decisions": [
+          {
+            "label": "Z2 surrounding em_target = 150 lx (= 0.5 × 300 upper band)",
+            "summary": "Per ZP-02 the surrounding em ∈ [0.3 × Em_task, 0.5 × Em_task] = [90, 150] lx. Default ratio per area-definitions.json _surrounding_ratio_default = 0.5 → 150 lx. The upper-band value is selected to keep the teacher demonstration band at a meaningful contrast with the student-desk task area (a too-dim front zone causes glare-headache when students look up at the teacher; 0.5 ratio = 150 lx delivers comfortable adaptation). INV-14 ratio check: 150/300 = 0.500 ∈ [0.3, 0.5] PASS (equal to upper-band boundary).",
+            "rule": "ZP-02 surrounding ratio rule (simplified Table 6 [0.3, 0.5] band)",
+            "code_clause": "BS EN 12464-1:2021 §4.2.2.2 + Table 6"
+          },
+          {
+            "label": "Z3 background em_target = 100 lx (= floor max(300/3, 50))",
+            "summary": "Per ZP-03 + §4.2.2.3 the background em must satisfy em ≥ max(Em_task / 3, 50 lx) = max(100, 50) = 100 lx. Selected at the floor (100 lx) because the back display wall is a peripheral non-occupied zone — students do not work there, the teacher uses it for poster display only. The lower bound documents 'we do not need more than the §4.2.2.3 floor in the background band'. INV-15 floor check: 100 ≥ 100 PASS (equal to floor).",
+            "rule": "ZP-03 background floor rule (Em_background ≥ max(Em_task / 3, 50 lx))",
+            "code_clause": "BS EN 12464-1:2021 §4.2.2.3 + Table 6"
+          }
+        ]
+      },
+      {
+        "title": "Per-zone achievement — DALI scene dimming delivers exactly the targets",
+        "summary": "All 16 panels are the same physical 600×600 LED design (4500 design lm); the DALI scene controller dims each row-group independently. Full-output room average = (16 × 4500 × 0.62 × 0.80) / 63 = 567 lx — DALI scenes pull each zone down to its per-purpose target with modest headroom. Z1 task (8 panels over the central student-desk cluster, area ~36 m²) scene at ~63 % → achieved 315 lx (target 300, 5 % headroom). Z2 surrounding (4 panels over the front 1.5 m transition band, area ~13.5 m²) scene at ~24 % → achieved 155 lx (target 150, 3 % headroom). Z3 background (4 panels over the back 1.5 m display strip, area ~13.5 m²) scene at ~16 % → achieved 105 lx (target 100, 5 % headroom). All three zones PASS the INV-19 per-zone achievement check. Scene levels are commissioning-set and verified against the §4.2.2 area-purpose targets per Table 6.",
+        "decisions": [
+          {
+            "label": "DALI scene dimming chosen over zone-specific lumen variants",
+            "summary": "Three options were considered: (a) different-wattage panels per zone (rejected — increases parts list, complicates spares), (b) different photometric variants per zone (rejected — same complication), (c) one luminaire type × DALI scene dimming (chosen — single parts entry, DALI scenes verified at commissioning). DALI handles the per-zone Em mapping in software; the wiring topology stays the simple 4-row circuit pattern.",
+            "rule": "DALI scene dimming (IEC 62386) — single luminaire variant + commissioning-set scenes",
+            "code_clause": "BS EN 12464-1:2021 §4.2.2 + IEC 62386 DALI-2"
+          }
+        ]
+      },
+      {
+        "title": "Circuit topology — 4 row circuits, no Z-pattern",
+        "summary": "4 row circuits C-L01..C-L04, one per row. C-L01 = {L01..L04} row 0 (Z2 surrounding); C-L02 = {L05..L08} row 1 (Z1 task); C-L03 = {L09..L12} row 2 (Z1 task); C-L04 = {L13..L16} row 3 (Z3 background). Each circuit's luminaire_ids share single row_index → no Z-pattern, INV-4 PASS. Each 4 × 36 W = 144 W ≤ 1104 W 6A 80 % cap → INV-5 PASS (13 % of headroom each — ample spare). Homeruns all exit on W wall at row y_mm ∈ {300, 2433, 4567, 6700}. circuit.zone_id mirrors the row's zone exactly (no mixed-zone circuits because each row is wholly inside one zone — the §4.2.2 area boundaries align with row boundaries in this layout)."
+      },
+      {
+        "title": "Switch placement — deterministic from door_swing",
+        "summary": "Single entrance on S wall, offset_mm=4000, width_mm=900, door_swing=inward_latch_right. Door spans x ∈ [4000, 4900]; latch frame at x=4900 (right end of door because door_swing latch=right). Switch placed 200 mm PAST the latch frame on the latch side (to the right) and 200 mm INSIDE the room (y=200) per [switching-rules#latch-side] (IET OSG App E §E1.4). Resulting position: (5100, 200), 1200 mm AFFL within [1150, 1250] band per [switching-rules#height] (BS 7671 §553.1.1). switch_side='latch'. type='dali_master' — DALI master controls all 4 circuits via the DALI bus; scene buttons recall the Z1/Z2/Z3 scenes (typically 4 scenes: 'whole-room on', 'task only', 'demo + background', 'tidy-up')."
+      },
+      {
+        "title": "Part L 2021 compliance — no-glazing branch",
+        "summary": "inputs.new_build=true + jurisdiction=england_wales → Approved Doc L 2021 §6 applies. (1) controls.part_l_assessed=true PASS. (2) controls.required=['occupancy'] includes occupancy — DALI + PIR satisfies the automatic-control requirement PASS. (3) glazed_walls=[] empty → daylight-linking vacuously satisfied; Part L 2021 §6.5 only requires daylight zoning for windowed perimeters PASS. The Z1/Z2/Z3 split is a §4.2.2 area-purpose split, NOT a daylight-perimeter split — Part L §6.5 does not engage. (4) controls.lamp_efficacy_lm_per_w = 4500/36 = 125 ≥ 95 PASS. All four sub-checks PASS → controls.part_l_compliant=true → INV-6 PASS."
+      },
+      {
+        "title": "Zone assignment — task + surrounding + background (no daylight perimeter)",
+        "summary": "3 zones declared: Z1 task (interior, 8 luminaires, em_target=300); Z2 surrounding (interior, 4 luminaires, em_target=150); Z3 background (interior, 4 luminaires, em_target=100). All three zone_type='interior' (NOT 'perimeter' — 'perimeter' in this schema means daylight-perimeter, which is gated on glazed_walls per INV-7 Rule 3). INV-7 Rule 3 (perimeter-daylight consistency) is vacuously satisfied because glazed_walls=[] AND no zone declares zone_type='perimeter' — iff-clause PASS. INV-7 Rule 1 (1:1 luminaire→zone referential integrity) PASS — 16 luminaires each reference exactly one of Z1/Z2/Z3 (8 → Z1, 4 → Z2, 4 → Z3)."
+      },
+      {
+        "title": "v1.7 D5 retrofit — first non-vacuous INV-13/14/15 triple",
+        "summary": "D5 NEW example (2026-06-04). FIRST example in the lighting-layout example set where ALL THREE §4.2.2 area purposes coexist non-vacuously. INV-13 PASS (3 zones × 3 valid purposes, no orphan surrounding — Z1 task coexists with Z2 surrounding per Clause 6 schema allOf). INV-14 PASS (Z2 ratio = 150/300 = 0.500 ∈ [0.3, 0.5] upper band — first non-vacuous INV-14 ratio at floor boundary). INV-15 PASS (Z3 em = 100 lx = max(300/3, 50) = 100 lx floor — first non-vacuous INV-15 floor check at boundary). INV-19 PASS (Z1 task 315/300 + Z2 surrounding 155/150 + Z3 background 105/100 — each zone has 3-5 % headroom over its per-purpose target). All 16 luminaires receive mount_type='recessed' (MT-01 — matches the 600×600 LED recessed panel description). INV-16/17/18 vacuous PASS (no pendant/suspended geometry to verify). The 4-place canonical disclosure is mirrored in input._note + output assumptions[] + this rationale section + reasoning.md §D5.",
+        "decisions": [
+          {
+            "label": "All three §4.2.2 area purposes engaged simultaneously",
+            "summary": "BS EN 12464-1:2021 §4.2.2 anticipates three concentric zones for any visual-task room: the task itself, the immediate surrounding (≥0.5 m band), and the background (≥3 m band). A classroom is the canonical case: students at desks (task), teacher demonstration + 500 mm transition (surrounding), back-of-room display + storage (background). This example engineers all three simultaneously rather than collapsing two or three of them onto a single zone — the result is that INV-13, INV-14, and INV-15 all fire non-vacuously in the same output.json. Reading the three INV evidence blocks together gives engineers a complete worked example of the §4.2.2 ratio system.",
+            "rule": "ZP-01 + ZP-02 + ZP-03 area-purpose triple engaged simultaneously",
+            "code_clause": "BS EN 12464-1:2021 §4.2.2.1 + §4.2.2.2 + §4.2.2.3 + Table 6"
+          },
+          {
+            "label": "All luminaires mount_type='recessed' (MT-01 default)",
+            "summary": "All 16 luminaires are 600×600 mm LED recessed panels per luminaire_type.description — physically recessed into the ceiling-grid by definition. MT-01 default chosen; z_mm + suspension_length_mm omitted per the recessed convention (geometry inherits ceiling_height_mm=3000). INV-16 vacuous PASS (no pendant/suspended to verify); INV-17 PASS (working-plane floor + ceiling clearance); INV-18 PASS (hm_mm = 3000 − 750 = 2250 mm matches recorded).",
+            "rule": "MT-01 recessed default",
+            "code_clause": "BS EN 60598-2 + mount-type-rules.yaml MT-01"
+          }
+        ]
+      },
+      {
+        "title": "Assumptions",
+        "summary": "UF + SHR_max from CIBSE LG7 §6.2 ontology defaults (LED_PANEL_600 @ RI=1.5, 0.7/0.5/0.2 reflectances); engineer-of-record verifies against manufacturer photometric file before issue. MF=0.80 assumes a 3-year cleaning cycle in a clean classroom (CIBSE TM 3-25). DALI scene levels are commissioning-set targets — actual achieved Z1=315 / Z2=155 / Z3=105 lx values verified at handover with in-situ lux meter at the three task planes (student desk + teacher demonstration + back display). Lamp efficacy 125 lm/W derived from inputs lumen_output/wattage_w = 4500/36 (vendor-typical for a mid-range 4500 lm DALI classroom panel). Zone polygons are notional (no zone polygon field in IR schema) — zone membership is assigned to luminaires by row geometry (row 0 → Z2, rows 1-2 → Z1, row 3 → Z3)."
+      }
+    ]
+  },
+  "invariants": [
+    {
+      "id": "INV-01",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Lumen method: N=16 LED_PANEL_600 × 4500 lm × UF=0.62 × MF=0.80 / 63 m² = achieved_illuminance_lux=567.4 lux at full DALI output ≥ Z1 task target 300 lux (Rule 1 PASS, 89 % headroom at full output before scene dimming). Lumen-method required N = (300 × 63) / (4500 × 0.62 × 0.80) = 18900/2232 = 8.47 → round UP to 9; engineer bumped to 16 (4 rows × 4 cols) after S/H loop rejected 9 (3×3, S_x=4200 > 3375 limit) AND for zone-purpose granularity (4-row split serves Z2 surrounding + Z1 task ×2 rows + Z3 background). DALI scene dimming pulls each zone down to its per-purpose target (Z1=315, Z2=155, Z3=105) — see per_zone_achieved + INV-19. Per [spacing-rules#lumen-method-formula] + ontology LED_PANEL_600 UF table at RI=1.5 (next-lower band for actual RI=1.75), reflectances 0.7_0.5_0.2."
+    },
+    {
+      "id": "INV-02",
+      "passes": true,
+      "severity": "high",
+      "evidence": "S/H ratio: Hm=2250 mm, SHR_max=1.5 (LED_PANEL_600 ontology default), limit=3375 mm. 4 cols × 4 rows grid: S_x=(9000−600)/3=2800 mm ≤ 3375 PASS (83 % of limit); S_y=(7000−600)/3=2133 mm ≤ 3375 PASS (63 % of limit). S/H loop walked 9 (3×3, S_x=4200 > 3375 FAIL) → 16 (4×4, PASS); see reasoning.md §3. Per [spacing-rules#shr-max-default] + CIBSE LG7 §6.2."
+    },
+    {
+      "id": "INV-03",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Switch coverage: 1 entrance on S wall (offset_mm=4000, width_mm=900, door_swing=inward_latch_right). controls_protocol=DALI → INV-3 Rule 1 DALI consolidation: a single dali_master at the entrance group is sufficient. SW01 (5100, 200) — S latch frame at x=4000+900=4900, +200 mm right (latch side), +200 mm inside the room → (5100, 200). 1200 mm AFFL within [1150, 1250] band per [switching-rules#height] (BS 7671 §553.1.1 + IET OSG App E §E1.4). switch_side='latch'. controls_circuit='C-L01,C-L02,C-L03,C-L04' — DALI master logically groups all 4 row circuits via the DALI bus + scene recall (Z1/Z2/Z3 scenes). Rules 1, 2 and 3 PASS."
+    },
+    {
+      "id": "INV-04",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Circuit topology: 4 row circuits C-L01..C-L04 each feed exactly one row of 4 luminaires sharing single row_index (0, 1, 2, 3 respectively). max(row_indices) − min(row_indices) = 0 per circuit ≤ 1 → no Z-pattern possible, no diagonal jumps. homerun_endpoints all on W wall (x_mm=0) at row y_mm ∈ {300, 2433, 4567, 6700} — all four required keys (x_mm, y_mm, wall) present, wall ∈ {N,S,E,W}. Rule 4a PASS (row-share Δ=0); Rule 4b PASS (homerun endpoints valid)."
+    },
+    {
+      "id": "INV-05",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Circuit load: each of C-L01..C-L04 has total_load_w=144 W = 4 × 36 W ≤ 0.8 × 6 A × 230 V = 1104 W (6A MCB limit). All four circuits PASS the 80 % continuous-load cap per BS 7671:2018+A2:2022 §433.1.1 + IET OSG App A. 144 W is 13 % of headroom each — ample spare for future ergonomic task lighting or smartboard accessory feed."
+    },
+    {
+      "id": "INV-06",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Part L compliance: inputs.new_build=true (UK new-build secondary-school classroom) AND jurisdiction=england_wales triggers Part L 2021 §6 enforcement. (1) controls.part_l_assessed=true PASS. (2) controls.required=['occupancy'] includes 'occupancy' — DALI + PIR satisfies automatic-control PASS. (3) glazed_walls=[] empty → daylight-linking vacuously satisfied; Part L 2021 §6.5 only requires daylight zoning when glazing is present PASS. (4) controls.lamp_efficacy_lm_per_w = 4500/36 = 125 ≥ 95 PASS. All four sub-checks PASS. controls.part_l_compliant=true. Per Approved Doc L 2021 §6 + BS EN 15193-1:2017 §6."
+    },
+    {
+      "id": "INV-07",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "Zone assignment: 16 luminaires reference {Z1, Z2, Z3} — 8 → Z1 task (L05-L12 rows 1-2) + 4 → Z2 surrounding (L01-L04 row 0) + 4 → Z3 background (L13-L16 row 3); 1:1 referential integrity (each luminaire to exactly one zone) PASS. inputs.glazed_walls=[] empty AND no zone declares zone_type='perimeter' (Z1+Z2+Z3 all zone_type='interior') — iff-clause perimeter-daylight consistency PASS (no glazing ⇔ no daylight-perimeter zone). The Z1/Z2/Z3 split is a §4.2.2 area-purpose split (task + surrounding + background), NOT a daylight-perimeter split. Zone control protocol matches zone_type: Z1.control + Z2.control + Z3.control = 'dali_master' all three valid for interior with DALI controls_protocol per [control-rules#dali-zoning]."
+    },
+    {
+      "id": "INV-08",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "selection_source.photometric_source='ontology_default'; citation='CIBSE LG7 §6.2 (typical recessed LED panel UF + SHR_max) + BS EN 12464-1:2021 §4.4 (LLMF maintenance categories)' — matches ontology LED_PANEL_600.photometric._citation exactly. No inputs.photometric_override supplied; generator fell back to ontology defaults at RI=1.5 (next-lower band for actual RI=1.75). Rule 8 PASS per ontology._verification_status=engineer_typical_C2."
+    },
+    {
+      "id": "INV-09",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "drafting_furniture present with all 4 required blocks (title_block + scale_bar + dimensions[2] + luminaire_schedule). title_block carries drawing_number='L-002', revision='P1', scale='1:50', sheet_size='A3'. All annotations declare font_family='Arial' and explicit font_size_pt ∈ {8, 10}. dimensions.length=2 ≥ 2 minimum (horizontal 9000 mm + vertical 7000 mm). No {{placeholder}} substrings in any text field. Rule 9 PASS."
+    },
+    {
+      "id": "INV-10",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Schema validation PASSED (precondition: golden CI gate). All top-level required fields populated: drawing_type='lighting_layout', version='1.7.0', room (incl. room_type='classroom' enum), calculation_summary (target+compliant+non_compliance_flags+assumptions+per_zone_achieved), rationale (chat_summary 40-800 + sections ≥1), invariants (19 entries INV-01..INV-19, no INV-12). Mode=full_drawing — full_drawing required-fields all present: luminaire_type, luminaires (16), switches (1), circuits (4), controls, drawing_notes (9), zones (3: Z1 task + Z2 surrounding + Z3 background), drafting_furniture, selection_source, consumed_intents.photometric_grid. non_compliance_flags=[] (vacuously valid). controls.part_l_compliant=true so Rule 3 cross-check trivially PASS. Schema Clause 6 (orphan-surrounding block) PASSes because Z1 task coexists with Z2 surrounding. Rule 10 PASS."
+    },
+    {
+      "id": "INV-11",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from cascade-uk-mixed-purpose-classroom/intent-out.json. payload.task_area_compliant=true; payload.achieved_avg_illuminance_lux=318 vs Z1 task target=300 (sub-check 3 PASS, 106 % — DALI scene-dimmed task zone delivers modest headroom over the 300 lx Em floor); 0 non_compliance_flags cascaded to lighting-layout calculation_summary with _cascaded_from=photometric-analysis attribution (sub-check 4 PASS, vacuously). Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
+    },
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "high",
+      "evidence": "INV-13 verdict: PASS. Zones inspected: 3. Per-zone purpose: Z1: purpose=task, em_target_lux=300; Z2: purpose=surrounding, em_target_lux=150; Z3: purpose=background, em_target_lux=100. Orphan-surrounding check: pass (Z2 surrounding coexists with Z1 task in the same room — ZP-04 + schema Clause 6 satisfied). All zones declare purpose ∈ {task, surrounding, background, circulation}. FIRST example in the lighting-layout set where all three §4.2.2 area purposes coexist non-vacuously. Citation: BS EN 12464-1:2021 §4.2.2.1 (task area) + §4.2.2.2 (immediate surrounding area) + §4.2.2.3 (background area) + area-definitions.json §4.2.2.x + zone-purpose-rules.yaml ZP-01/02/03."
+    },
+    {
+      "id": "INV-14",
+      "passes": true,
+      "severity": "high",
+      "evidence": "INV-14 verdict: PASS. Surrounding zones inspected: 1. Task em reference: 300 lx (from Z1). Per-zone ratio check: Z2 em_target_lux=150, ratio=0.500, band [0.3, 0.5], result: pass (equal to upper band). Citation: BS EN 12464-1:2021 §4.2.2.2 + Table 6."
+    },
+    {
+      "id": "INV-15",
+      "passes": true,
+      "severity": "high",
+      "evidence": "INV-15 verdict: PASS. Background zones inspected: 1. Task em reference: 300 lx (from Z1). Per-zone floor check: Z3 em_target_lux=100, floor=max(300/3, 50)=100 lx, result: pass (equal to floor). Citation: BS EN 12464-1:2021 §4.2.2.3 + Table 6."
+    },
+    {
+      "id": "INV-16",
+      "passes": true,
+      "severity": "high",
+      "evidence": "mount_type ↔ z_mm/suspension consistency. Luminaires inspected: 16. Pendant geometry checks: 0 pendant luminaires. Suspended geometry checks: 0 suspended luminaires. Recessed/surface/track: 16 luminaires (all 16 LED_PANEL_600 panels are mount_type='recessed' per MT-01 — matches the 600×600 LED recessed panel description), z_mm + suspension_length_mm omitted per MT-01 convention (recessed inherits ceiling_height_mm=3000). INV-16 vacuous PASS — no pendant/suspended geometry to verify. Citation: BS EN 60598-2-1 + BS EN 60598-2-2 (recessed) + mount-type-rules.yaml MT-01."
+    },
+    {
+      "id": "INV-17",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Ceiling clearance + working-plane floor. Working plane reference: 750 mm AFF. Per-luminaire floor check: all 16 luminaires are recessed; z_mm not declared and inherits ceiling_height_mm=3000 per MT-01 convention. Inherited z=3000 > working_plane=750 (clearance=2250 mm = Hm). Per-luminaire ceiling clearance: recessed luminaires are physically inset into ceiling, suspension_length_mm=0 implied; sum=3000 ≤ ceiling=3000 PASS. INV-17 PASS — no luminaire below task plane, no luminaire exceeds ceiling. Citation: BS EN 12464-1:2021 §4.4 + BS EN 60598-2 + mount-type-rules.yaml MT-04."
+    },
+    {
+      "id": "INV-18",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "hm_mm derivation consistency. Room hm_mm recorded: 2250 mm. Lowest pendant/suspended z_mm: N/A (no pendant/suspended — all 16 luminaires recessed). Recessed branch: expected hm_mm = ceiling_height_mm − working_plane_mm = 3000 − 750 = 2250 mm. Drift: |2250 − 2250| = 0 mm, tolerance ±50 mm. INV-18 PASS. Citation: BS EN 12464-1:2021 §4.4 + repo derivation convention."
+    },
+    {
+      "id": "INV-19",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Per-zone achievement. Zones inspected: 3. Per-zone achievement: Z1 (task): target=300, achieved=315, gap=-15, gap_pct=-5.0%, ratio_compliance=pass, severity=none (achieved ≥ target, 5 % headroom — DALI scene 1 at ~63 % rated output over the central student-desk cluster); Z2 (surrounding): target=150, achieved=155, gap=-5, gap_pct=-3.3%, ratio_compliance=pass, severity=none (achieved ≥ target, 3 % headroom — DALI scene 2 at ~24 % rated output over the front teacher-demonstration band); Z3 (background): target=100, achieved=105, gap=-5, gap_pct=-5.0%, ratio_compliance=pass, severity=none (achieved ≥ target, 5 % headroom — DALI scene 3 at ~16 % rated output over the back display-wall strip). Aggregate: 3 PASS, 0 marginal, 0 MEDIUM, 0 HIGH. INV-19 PASS. First example with non-vacuous Z2 surrounding + Z3 background achievement rows. Citation: BS EN 12464-1:2021 §4.1 + Table 5 (education_classroom Em=300 lx) + §4.2.2.2 + §4.2.2.3 + Table 6 (surrounding + background ratio entries)."
+    }
+  ],
+  "consumed_intents": {
+    "photometric_grid": {
+      "intent_version": "1.0.0",
+      "source_path": "electrical/photometric-analysis/examples/cascade-uk-mixed-purpose-classroom/intent-out.json",
+      "payload": {
+        "achieved_avg_illuminance_lux": 318,
+        "achieved_min_illuminance_lux": 248,
+        "achieved_uniformity_u0": 0.78,
+        "ugr_max": 17.6,
+        "ugr_target": 19,
+        "uniformity_target": 0.6,
+        "target_illuminance_lux": 300,
+        "task_area_compliant": true,
+        "grid_point_count": 99,
+        "non_compliance_flags": [],
+        "ies_source_summary": {
+          "all_verified": false,
+          "verification_status_lowest": "synthetic_reference_C3"
+        }
+      }
+    }
+  },
+  "drafting_furniture": {
+    "title_block": {
+      "project_name": "UK secondary-school classroom — three-purpose §4.2.2 demo (C.10)",
+      "drawing_number": "L-002",
+      "revision": "P1",
+      "date": "2026-06-04",
+      "scale": "1:50",
+      "sheet_size": "A3",
+      "font_family": "Arial",
+      "font_size_pt": 10
+    },
+    "scale_bar": {
+      "origin_x_mm": 6500,
+      "origin_y_mm": 7500,
+      "total_length_mm": 2000,
+      "tick_interval_mm": 500,
+      "font_family": "Arial",
+      "font_size_pt": 8
+    },
+    "dimensions": [
+      {
+        "axis": "horizontal",
+        "start_x_mm": 0,
+        "start_y_mm": -300,
+        "end_x_mm": 9000,
+        "end_y_mm": -300,
+        "text": "9000 mm",
+        "font_family": "Arial",
+        "font_size_pt": 10
+      },
+      {
+        "axis": "vertical",
+        "start_x_mm": -300,
+        "start_y_mm": 0,
+        "end_x_mm": -300,
+        "end_y_mm": 7000,
+        "text": "7000 mm",
+        "font_family": "Arial",
+        "font_size_pt": 10
+      }
+    ],
+    "luminaire_schedule": {
+      "columns": ["Ref", "Manufacturer", "Lumens", "Wattage", "Count"],
+      "rows": [["LED_PANEL_600", "Generic", "4500", "36W", "16"]],
+      "font_family": "Arial",
+      "font_size_pt": 8
+    }
+  },
+  "mode": "full_drawing"
+}

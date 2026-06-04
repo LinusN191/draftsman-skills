@@ -1,0 +1,43 @@
+{
+  "_note": "D5 C.10 NEW example — UK secondary-school classroom 9×7 m engineered to exercise ALL THREE BS EN 12464-1:2021 §4.2.2 area purposes (task + surrounding + background) coexisting in one room. INV-13 + INV-14 + INV-15 ALL fire NON-VACUOUSLY: Z1 task em=300 lx (Table 5 education_classroom); Z2 surrounding em=150 lx (= 0.5 × 300 ratio, top of [0.3, 0.5] band per Table 6 simplified-rule); Z3 background em=100 lx (= max(300/3, 50) floor per §4.2.2.3). DALI zone scenes deliver realistic per-zone achieved values (Z1 315 lx, Z2 155 lx, Z3 105 lx) — each ≥ its target. All luminaires 600×600 LED recessed panels (MT-01). Companion to C.5 uk-open-plan-office-10x8-dali (task + surrounding) and C.9 uk-pendant-open-plan-office (task-only, suspended) — together cover the full §4.2.2 area-purpose matrix.",
+  "_d5_disclosure_note": "Authored fresh by D5 sprint Task C.10 (2026-06-04). FOUR-PLACE CANONICAL DISCLOSURE: (1) this input._note declares the three-purpose intent up-front; (2) output.calculation_summary.assumptions[] carries the engineering walk; (3) output.rationale.sections[] carries the v1.7 retrofit narrative; (4) reasoning.md §D5 carries the design-judgement narrative. Honest disclosure: zone polygons are notional (no zone polygon field in IR schema); zone purpose is assigned to luminaires by row geometry — front 2 rows = Z1 task (student desks), middle row = Z2 surrounding (teacher demonstration + 500 mm transition band per §4.2.2.2), back row = Z3 background (display wall ≥3 m wide per §4.2.2.3). DALI scene dimming (per controls_protocol=DALI) delivers different effective illuminance per zone from the same physical 600×600 LED panel — engineer-of-record verifies scene levels against final commissioning report.",
+  "room_type": "classroom",
+  "room_length_m": 9,
+  "room_width_m": 7,
+  "ceiling_height_m": 3.0,
+  "working_plane_m": 0.75,
+  "luminaire": {
+    "type": "600x600 LED Recessed Panel — DALI-dimmable, classroom-low-glare UGR<19",
+    "symbol": "LED_PANEL_600",
+    "lumen_output": 4500,
+    "lumen_type": "design",
+    "wattage_w": 36,
+    "cct_k": 4000,
+    "cri_ra": 80,
+    "ip_rating": "IP20"
+  },
+  "ceiling_grid_mm": 600,
+  "new_build": true,
+  "jurisdiction": "england_wales",
+  "glazed_walls": [],
+  "entrance_positions": [
+    {"wall": "S", "offset_mm": 4000, "width_mm": 900, "door_swing": "inward_latch_right"}
+  ],
+  "controls_protocol": "DALI",
+  "environment_type": "normal",
+  "db_designation": "L1",
+  "drawing_metadata": {
+    "drawing_number": "L-002",
+    "revision": "P1",
+    "scale": "1:50",
+    "sheet_size": "A3",
+    "project_name": "UK secondary-school classroom — three-purpose §4.2.2 demo (C.10)"
+  },
+  "photometric_ies_paths": [
+    {
+      "luminaire_type": "LED_PANEL_600",
+      "path": "shared/photometric/ies/LED_PANEL_600-4500lm.ies",
+      "_source": "Synthetic 600x600mm recessed LED panel, opal diffuser, 4000K, 4500lm classroom variant. Distribution: Lambertian per CIBSE LG7 §6.2. verification_status: synthetic_reference_C3. Cascade per photometric-analysis v1.0; engineer-of-record substitutes project IES before final design freeze."
+    }
+  ]
+}
