@@ -38,7 +38,9 @@
       "circuit_ids": ["C-L01"],
       "luminaire_ids": ["L01", "L02"],
       "luminaire_count": 2,
-      "total_load_w": 26
+      "total_load_w": 26,
+      "purpose": "circulation",
+      "em_target_lux": 200
     }
   ],
   "luminaires": [
@@ -47,14 +49,16 @@
       "x_mm": 1350,
       "y_mm": 1050,
       "zone_id": "Z2",
-      "circuit_id": "C-L01"
+      "circuit_id": "C-L01",
+      "mount_type": "recessed"
     },
     {
       "id": "L02",
       "x_mm": 1350,
       "y_mm": 350,
       "zone_id": "Z2",
-      "circuit_id": "C-L01"
+      "circuit_id": "C-L01",
+      "mount_type": "recessed"
     }
   ],
   "switches": [
@@ -108,7 +112,17 @@
     "assumptions": [
       "UF = 0.60 from CIBSE SLL standard reflectance table for low-RI small bathroom (RI=0.79, reflectances 0.5/0.5/0.2 — light tiled walls + ceiling)",
       "MF = 0.80 for clean domestic bathroom on a 3-year cleaning cycle (CIBSE TM 3-25)",
-      "Photometric cascade resolved from electrical/photometric-analysis/examples/cascade-uk-bathroom-zone-1-zone-2 (Part-7 retrofit) — replaces the D.2 synthetic helper"
+      "Photometric cascade resolved from electrical/photometric-analysis/examples/cascade-uk-bathroom-zone-1-zone-2 (Part-7 retrofit) — replaces the D.2 synthetic helper",
+      "v1.6.0 → v1.7.0 D5 retrofit: zone Z2 defaults to purpose='circulation' per ZP-05 (a small domestic bathroom is treated as a circulation/general-occupancy area — Em sourced from the BS EN 12464-1:2021 Table 5 bathroom/washroom 200 lx entry, NOT subject to the §4.2.2 task/surrounding/background ratio rules). Honest disclosure: this example carries no separate vanity task zone — the entire room footprint is treated as one general bathroom zone with no mirror/sink anchor in inputs.anchor_fixtures (only bath_1 + shower_1 are declared). An engineer-of-record splitting Z2 into a vanity sub-zone over a future mirror would set that sub-zone to purpose='task' with em_target_lux=500 per BS EN 12464-1 Table 5 bathroom_vanity, leaving the entry side at purpose='circulation' / em_target_lux=200. All 2 luminaires default to mount_type='recessed' per MT-01 (matches the 95 mm IPx4 LED recessed downlight description); per_zone_achieved[] populated from existing achieved_illuminance_lux=254 lx. Defaults preserve v1.6.0 behaviour — no change to lumen-method calc, layout, or §701 zoning."
+    ],
+    "per_zone_achieved": [
+      {
+        "zone_id": "Z2",
+        "purpose": "circulation",
+        "em_target_lux": 200,
+        "em_achieved_lux": 254,
+        "ratio_compliance": "pass"
+      }
     ]
   },
   "drawing_notes": [
@@ -282,6 +296,24 @@
             "code_clause": "CIBSE TM 3-25"
           }
         ]
+      },
+      {
+        "title": "v1.7 retrofit",
+        "summary": "D5 retrofit (2026-06-04): zone Z2 (the single Bathroom interior) receives purpose='circulation' (ZP-05 — a small domestic bathroom with no vanity anchor is treated as a circulation/general-occupancy area) and em_target_lux=200 (BS EN 12464-1:2021 Table 5 bathroom/washroom 200 lx entry — matches the v1.6.0 target byte-identical); both luminaires receive mount_type='recessed' (MT-01 default — matches the 95 mm IPx4 LED recessed downlight description); per_zone_achieved[] populated from existing achieved_illuminance_lux=254 for Z2. Engineering content unchanged. §701 zone mapping and INV-12 cascade payload byte-identical.",
+        "decisions": [
+          {
+            "label": "Default purpose='circulation' for Z2 (ZP-05)",
+            "summary": "Per zone-purpose-rules.yaml ZP-05, a general bathroom interior is a circulation area: Em is sourced from BS EN 12464-1:2021 Table 5 (bathroom/washroom 200 lx entry) and the §4.2.2 task/surrounding/background ratio hierarchy does NOT apply (INV-14 + INV-15 vacuous). The example carries no vanity/mirror/sink anchor in inputs.anchor_fixtures (only bath_1 + shower_1) so there is no separate task zone over which to layer a surrounding ratio. The plan-template split (vanity → task 500 lx, entry → circulation 200 lx) collapses here onto a single circulation zone because the room has no vanity. An engineer-of-record adding a future vanity sub-zone over a mirror would set that sub-zone to purpose='task' with em_target_lux=500 per BS EN 12464-1 Table 5 bathroom_vanity.",
+            "rule": "ZP-05 circulation-area default",
+            "code_clause": "BS EN 12464-1:2021 § 4.2.2"
+          },
+          {
+            "label": "Default mount_type='recessed' (MT-01)",
+            "summary": "Both luminaires are 95 mm IPx4 LED recessed downlights (per luminaire_type.description) — physically recessed by definition. MT-01 default chosen; z_mm + suspension_length_mm omitted per the recessed convention (geometry inherits ceiling_height_mm=2250). The §701 Zone 1 / Zone 2 vertical ceiling at 2250 mm AFF still bounds both luminaires inclusively — INV-12 sub-check 3 cascade walk is unchanged.",
+            "rule": "MT-01 recessed default",
+            "code_clause": "BS EN 60598-2-2"
+          }
+        ]
       }
     ]
   },
@@ -357,6 +389,48 @@
       "passes": true,
       "severity": "high",
       "evidence": "Special-locations cascade resolved from electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom/intent-out.json. Sub-check 1 PASS: consumed_intents.special_locations_zoning present. Sub-check 2 PASS: payload.compliant=true; zone_count=5; violation_count_critical=0; violation_count_high=0. Sub-check 3 PASS: L01 at (1350, 1050, 2250) hits bath_1_z2 polygon (X -100..2800, Y -600..1300, h 0–2250 incl); ip_rating_min=IPx4 matched IPx4 PASS; max_voltage_v=230 ≥ 230 V PASS; luminaire ∉ prohibited [socket_230v] PASS. L02 at (1350, 350, 2250) hits bath_1_z1 polygon (X 500..2200, Y 0..700, h 550..2250 incl); ip_rating_min=IPx4 matched IPx4 PASS; max_voltage_v=230 ≥ 230 V PASS; luminaire ∉ prohibited [socket_230v, switch_230v, luminaire_non_ip_rated] (IPx4 is rated) PASS. Sub-check 4 PASS: payload.non_compliance_flags=[] empty, vacuously nothing to cascade. Per BS 7671:2018+A2:2022 §701.512.2 + §701.411.3.3 + cluster roadmap §6.7."
+    },
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Zone purpose required + valid. Zones inspected: 1. Per-zone purpose: Z2: purpose=circulation, em_target_lux=200. Orphan-surrounding check: pass (no surrounding zones present, so check vacuous). All zones declare purpose ∈ {task, surrounding, background, circulation}. INV-13 PASS. Citation: BS EN 12464-1:2021 §4.2.2 (circulation area; general bathroom) + area-definitions.json §4.2.2 + zone-purpose-rules.yaml ZP-05."
+    },
+    {
+      "id": "INV-14",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Surrounding ratio compliance. Surrounding zones inspected: 0. No zones declare purpose='surrounding' — INV-14 vacuous PASS per validator §INV-14 vacuous condition. Circulation zones are not subject to task/surrounding ratios (ZP-05). Citation: BS EN 12464-1:2021 §4.2.2.2 + Table 6 (area-definitions.json table_6_ratio_rules.task_to_surrounding)."
+    },
+    {
+      "id": "INV-15",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Background floor. Background zones inspected: 0. No zones declare purpose='background' — INV-15 vacuous PASS per validator §INV-15 vacuous condition. Circulation zones are not subject to task/background ratios (ZP-05). Citation: BS EN 12464-1:2021 §4.2.2.3 + Table 6 (area-definitions.json table_6_ratio_rules.task_to_background)."
+    },
+    {
+      "id": "INV-16",
+      "passes": true,
+      "severity": "high",
+      "evidence": "mount_type ↔ z_mm/suspension consistency. Luminaires inspected: 2. Pendant geometry checks: 0 pendant luminaires. Suspended geometry checks: 0 suspended luminaires. Recessed/surface/track: 2 luminaires (both 95 mm IPx4 LED downlights are mount_type='recessed'), z_mm omitted per MT-01 convention (recessed inherits ceiling_height_mm=2250). INV-16 vacuous PASS — no pendant/suspended geometry to verify. Citation: BS EN 60598-2-1 + mount-type-rules.yaml MT-01."
+    },
+    {
+      "id": "INV-17",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Ceiling clearance + working-plane floor. Working plane reference: 750 mm AFF. Per-luminaire floor check: both luminaires are recessed; z_mm not declared and inherits ceiling_height_mm=2250 per MT-01 convention. Inherited z=2250 > working_plane=750 (clearance=1500 mm = hm_mm). Per-luminaire ceiling clearance: recessed luminaires are physically inset into ceiling, suspension_length_mm=0 implied; sum=2250 ≤ ceiling=2250 PASS. Cross-check vs §701 Zone 1/Zone 2 vertical ceiling: bath_1_z1 height_max=2250 mm and bath_1_z2 height_max=2250 mm both match the inherited z exactly — both luminaires sit at the upper inclusive boundary (INV-12 sub-check 3 unchanged). INV-17 PASS — no luminaire below task plane, no luminaire exceeds ceiling. Citation: BS EN 12464-1:2021 §4.4 + BS EN 60598-2 + MT-04."
+    },
+    {
+      "id": "INV-18",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "hm_mm derivation consistency. Room hm_mm recorded: 1500 mm. Lowest pendant/suspended z_mm: N/A (no pendant/suspended — both luminaires recessed). Recessed branch: expected hm_mm = ceiling_height_mm − working_plane_mm = 2250 − 750 = 1500 mm. Drift: |1500 − 1500| = 0 mm, tolerance ±50 mm. INV-18 PASS. Citation: BS EN 12464-1:2021 §4.4 + repo derivation convention."
+    },
+    {
+      "id": "INV-19",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Per-zone achievement. Zones inspected: 1. Per-zone achievement: Z2 (circulation): target=200, achieved=254, gap=-54, gap_pct=-27.0%, ratio_compliance=pass, severity=none (achieved ≥ target). Aggregate: 1 PASS, 0 marginal, 0 MEDIUM, 0 HIGH. INV-19 PASS. Citation: BS EN 12464-1:2021 §4.1 + Table 5 (bathroom/washroom 200 lx entry)."
     }
   ],
   "consumed_intents": {

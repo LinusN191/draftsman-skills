@@ -293,3 +293,102 @@ This is the key contract for Wave 1 cascade: every downstream skill
 that consumes the `lighting-layout` intent gets the full upstream
 cascade chain for free, without having to re-resolve the
 photometric-analysis or special-locations cascade themselves.
+
+## §D5 RETROFIT (2026-06-04)
+
+This example was authored at v1.6.0 with a single
+`target_illuminance_lux` per room. v1.7.0 splits target into per-zone
+`em_target_lux` per BS EN 12464-1:2021 §4.2.2 + Table 6. This retrofit
+applies the backwards-compatibility defaults without changing any
+engineering numbers or the Wave-1 cascade payloads.
+
+**Zone purpose decision**
+
+The single Z2 "Bathroom interior" zone receives `purpose: "circulation"`
+(ZP-05) and `em_target_lux: 200`. Justification:
+
+- The plan-template recipe is *vanity → task (500 lx) / entry →
+  circulation (200 lx)*. This bathroom carries no vanity anchor in
+  `inputs.anchor_fixtures` — only `bath_1` + `shower_1` are declared.
+  There is no mirror, sink, or vanity counter over which to layer a
+  500 lx task sub-zone.
+- The scenario is therefore a single general-occupancy bathroom zone.
+  Per `zone-purpose-rules.yaml` ZP-05, a circulation/general-occupancy
+  area takes its Em directly from BS EN 12464-1:2021 Table 5 (200 lx
+  bathroom/washroom entry) — not subject to the §4.2.2.2 /
+  §4.2.2.3 task/surrounding/background ratio rules.
+- `em_target_lux=200` matches the v1.6.0 `target_illuminance_lux=200`
+  byte-identical. No engineering judgement was traded.
+- An engineer-of-record adding a future vanity sub-zone over a mirror
+  would split Z2 into a vanity task sub-zone (`purpose="task"`,
+  `em_target_lux=500` per BS EN 12464-1 Table 5 bathroom_vanity) and
+  an entry circulation sub-zone (`purpose="circulation"`,
+  `em_target_lux=200`). That is the canonical Table-5 split; this
+  example collapses it onto one circulation zone for the reason above.
+
+**Mount-type decision**
+
+Both luminaires receive `mount_type: "recessed"` (MT-01 default — the
+95 mm IPx4 LED recessed downlight is physically recessed by
+definition per `luminaire_type.description`). `z_mm` and
+`suspension_length_mm` are omitted per the recessed convention —
+geometry inherits `room.ceiling_height_mm = 2250`. The §701 Zone 1
+and Zone 2 vertical ceiling at 2250 mm AFF still bounds both
+luminaires inclusively, so the INV-12 sub-check 3 cascade walk
+(point-in-polygon + height inclusion) is unchanged from v1.6.0.
+
+**per_zone_achieved[] population**
+
+One entry for Z2: `target=200`, `achieved=254`, `ratio_compliance="pass"`
+(room-level achievement maps directly to the single circulation zone
+— INV-19 PASS by a 27% margin).
+
+**INV-13..INV-19 walk**
+
+- **INV-13 PASS** — Z2 declares `purpose="circulation"` ∈ enum, no
+  orphan surrounding present.
+- **INV-14 PASS (vacuous)** — no surrounding zone declared. ZP-05
+  exempts circulation zones from the task-to-surrounding ratio anyway.
+- **INV-15 PASS (vacuous)** — no background zone declared. ZP-05
+  exempts circulation zones from the task-to-background ratio anyway.
+- **INV-16 PASS (vacuous)** — no pendant or suspended luminaire.
+  Both are recessed; MT-01 omits `z_mm` and `suspension_length_mm`.
+- **INV-17 PASS** — recessed inheritance gives `z=2250 mm` for both
+  luminaires; `z > working_plane (2250 > 750)` and `z ≤
+  ceiling_height_mm (2250 ≤ 2250)`. The 2250 mm match also pins
+  both luminaires to the upper inclusive boundary of bath_1_z1 /
+  bath_1_z2 in the §701 cascade, so INV-12 sub-check 3 stays valid.
+- **INV-18 PASS** — `hm_mm = ceiling_height_mm − working_plane_mm =
+  2250 − 750 = 1500 mm`. Recorded `room.hm_mm = 1500`. Drift 0 mm.
+- **INV-19 PASS** — Z2 (circulation): `target=200`, `achieved=254`,
+  `ratio_compliance="pass"`, severity none.
+
+**Cascade integrity**
+
+`consumed_intents.special_locations_zoning.payload` and
+`consumed_intents.photometric_grid.payload` are preserved
+byte-identical from the C.2 producer cascade
+(`electrical/special-locations/examples/cascade-lighting-layout-uk-bathroom/intent-out.json`)
+and the Part-7 photometric retrofit
+(`electrical/photometric-analysis/examples/cascade-uk-bathroom-zone-1-zone-2/intent-out.json`).
+SHA-256 of the special-locations payload pre-edit equals SHA-256
+post-edit
+(`e03c3ff33d433789048379c58e9d44072e8892aeb3f10dbc86fcc99b05715cf4`).
+INV-11 and INV-12 evidence strings unchanged.
+
+**Honest disclosures (4-place)**
+
+1. Engineering judgement defaults documented in
+   `input._d5_retrofit_note`.
+2. `output.calculation_summary.assumptions[]` carries the v1.6.0 →
+   v1.7.0 retrofit explanation including the no-vanity collapse.
+3. `output.rationale.sections[]` includes a "v1.7 retrofit" section
+   explaining ZP-05 and MT-01 default choices for this example.
+4. This `reasoning.md` §D5 section.
+
+No engineering numbers were changed — the v1.6.0 lumen-method walk
+(N=2 round-up, achieved 254 lx, S/H 700 mm within 2250 mm envelope),
+the §701 zone mapping, the 6 A Type B + 30 mA RCD circuit, and the
+photometric / special-locations cascade payloads all remain
+identical. The retrofit is purely additive metadata to align the
+example with the v1.7.0 zone-purpose / mount-type schema.
