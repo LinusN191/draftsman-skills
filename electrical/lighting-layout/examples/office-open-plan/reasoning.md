@@ -55,3 +55,40 @@ E = (20 × 4500 × 0.67 × 0.80) / 80 = 48,240 / 80 = 603 lux ✓ (≥ 500)
 20 × 36W = 720W total. 720W < 1840W → 1 circuit.
 Circuit L1-Z2: all 20 luminaires, 720W on DB L1.
 Switch position: latch side of main door, 1200mm AFF.
+
+## §D5 RETROFIT (2026-06-03)
+
+This example was authored at v1.6.0 with a single `target_illuminance_lux` per room.
+v1.7.0 splits target into per-zone `em_target_lux` per BS EN 12464-1:2021 §4.2.2 +
+Table 6. This retrofit applies the backwards-compatibility defaults:
+
+- Zone Z2 (the single "Interior" zone) takes `purpose: "task"` (ZP-01 default — the
+  only valid mapping for an open_plan_office room targeting 500 lx) and
+  `em_target_lux: 500` (BS EN 12464-1:2021 Table 5 open_plan_office entry).
+- All 20 luminaires take `mount_type: "recessed"` (MT-01 default — matches the
+  600×600 ceiling-grid LED panel description); `z_mm` and `suspension_length_mm`
+  remain omitted per the recessed convention (geometry inherits
+  `room.ceiling_height_mm = 3000`).
+- `per_zone_achieved[]` is populated with one entry for Z2: target 500 lx,
+  achieved 603 lx, `ratio_compliance: "pass"` (room-level achievement maps
+  directly to the single task zone — INV-19 PASS).
+- INV-13..INV-19 are appended to `invariants[]`. INV-13 and INV-19 are
+  non-vacuous PASS (single task zone with achieved ≥ target). INV-14, INV-15,
+  INV-16 are vacuous PASS (no surrounding, no background, no
+  pendant/suspended). INV-17 and INV-18 are non-vacuous PASS using the
+  recessed inherit-ceiling geometry (hm_mm derives cleanly from
+  3000 − 750 = 2250 mm).
+
+**Honest disclosures (4-place):**
+
+1. Engineering judgement defaults documented in `input._d5_retrofit_note`.
+2. `output.calculation_summary.assumptions[]` carries the v1.6.0 → v1.7.0
+   retrofit explanation.
+3. `output.rationale.sections[]` includes a "v1.7 retrofit" section explaining
+   ZP-01 and MT-01 default choices for this example.
+4. This `reasoning.md` §D5 section.
+
+No engineering numbers were changed — the v1.6.0 lumen-method walk, grid
+selection, circuit, and switch all remain identical. The retrofit is purely
+additive metadata to align the example with the v1.7.0 zone-purpose / mount-type
+schema.
