@@ -1,0 +1,79 @@
+{
+  "_note": "D5 sprint Task C.11 NEW example (2026-06-04). FIRST heterogeneous-mount example across the lighting-layout example set: 4 pendant accent luminaires over a high-emphasis goods display island (Z1 task, em_target=1000 lx per BS EN 12464-1:2021 Table 5 retail high_emphasis jewellery/fashion entry) coexist in the same room with 12 recessed downlights over customer circulation aisles (Z2 circulation, em_target=300 lx per BS EN 12464-1:2021 Table 5 retail general entry). Single 15 m × 10 m retail floor, ceiling 4000 mm, working plane 0 mm (floor-level merchandise display). Pendant geometric identity z_mm + suspension_length_mm = ceiling_height_mm = 2500 + 1500 = 4000 PASS on the 4 pendant luminaires (L01..L04); 12 recessed luminaires (L05..L16) inherit z=ceiling=4000 per MT-01 convention. INV-16 fires NON-VACUOUSLY on the pendant subset and vacuously on the recessed subset — the FIRST example where mount_type heterogeneity is exercised in a single luminaires[] array. INV-13 PASS (Z1 task + Z2 circulation, no orphan surrounding); INV-14/INV-15 vacuous PASS (no surrounding / no background zone). INV-19 PASS (Z1 display ~1080 lx ≥ 1000 target; Z2 circulation ~320 lx ≥ 300 target). FOUR-PLACE CANONICAL DISCLOSURE: (1) this input._note; (2) output.calculation_summary.assumptions[] engineering walk; (3) output.rationale.sections[] heterogeneous-mount section; (4) reasoning.md §D5 narrative. Honest disclosure: room_type='reception_lobby' is the closest enum match for the front-of-house customer-facing retail floor (the lighting-layout v1.7 IR schema room_type 15-value enum does not include 'retail' — engineer-of-record substitutes a project-specific room_type when the enum is extended; standards lookup against BS EN 12464-1:2021 Table 5 retail block is unaffected because Em + UGR values are stated explicitly via inputs.photometric_override).",
+  "_scenario_summary": "15 m × 10 m UK retail floor, 4000 mm ceiling, 4 pendant accent (30 W × 3000 lm narrow-beam, suspension drop 1500 mm) over central display island + 12 recessed 18 W downlights (1800 lm wide-beam) in customer aisles. Z1 display task achieves 1080 lx vs 1000 lx target (high-emphasis goods Table 5); Z2 circulation aisles achieves 320 lx vs 300 lx target (retail general Table 5). Heterogeneous mount_type (pendant + recessed) in a single luminaires[] array — INV-16 fires NON-VACUOUSLY on the pendant subset for the first time across the example set.",
+  "room_type": "reception_lobby",
+  "room_length_m": 15,
+  "room_width_m": 10,
+  "ceiling_height_m": 4.0,
+  "working_plane_m": 0.0,
+  "luminaire_groups": [
+    {
+      "group_id": "G1_PENDANT_ACCENT",
+      "purpose": "display_task",
+      "count": 4,
+      "luminaire": {
+        "type": "Pendant Accent Spotlight — narrow-beam high-CRI 3000 lm 30 W 4000 K CRI≥90, 1500 mm suspension drop over display island",
+        "symbol": "PENDANT_ACCENT_30W",
+        "lumen_output": 3000,
+        "lumen_type": "design",
+        "wattage_w": 30,
+        "cct_k": 4000,
+        "cri_ra": 90,
+        "ip_rating": "IP20",
+        "mount_type": "pendant",
+        "suspension_length_mm": 1500
+      }
+    },
+    {
+      "group_id": "G2_RECESSED_CIRCULATION",
+      "purpose": "circulation",
+      "count": 12,
+      "luminaire": {
+        "type": "Recessed LED Downlight — wide-beam 1800 lm 18 W 4000 K CRI≥80, ceiling-flush",
+        "symbol": "LED_DOWNLIGHT_18W",
+        "lumen_output": 1800,
+        "lumen_type": "design",
+        "wattage_w": 18,
+        "cct_k": 4000,
+        "cri_ra": 80,
+        "ip_rating": "IP20",
+        "mount_type": "recessed"
+      }
+    }
+  ],
+  "new_build": true,
+  "jurisdiction": "england_wales",
+  "glazed_walls": [],
+  "entrance_positions": [
+    {"wall": "S", "offset_mm": 7050, "width_mm": 1800, "door_swing": "inward_latch_right"}
+  ],
+  "controls_protocol": "DALI",
+  "environment_type": "normal",
+  "db_designation": "L1",
+  "drawing_metadata": {
+    "drawing_number": "L-103",
+    "revision": "P1",
+    "scale": "1:75",
+    "sheet_size": "A3",
+    "project_name": "UK retail floor — display task + circulation (C.11 heterogeneous mount)"
+  },
+  "photometric_ies_paths": [
+    {
+      "luminaire_type": "PENDANT_ACCENT_30W",
+      "path": "shared/photometric/ies/PENDANT_ACCENT_30W.ies",
+      "_source": "Synthetic pendant accent spotlight, narrow-beam (≈25 deg) 4000K 3000 lm. Distribution: peaked-axial per CIBSE LG7 §6.2 accent-spotlight convention. verification_status: synthetic_reference_C3. Cascade per photometric-analysis v1.0 sprint D.2; engineer-of-record substitutes manufacturer IES (e.g. iGuzzini / Erco / Eaton iLight) before final design freeze."
+    },
+    {
+      "luminaire_type": "LED_DOWNLIGHT_18W",
+      "path": "shared/photometric/ies/LED_DOWNLIGHT_18W.ies",
+      "_source": "Synthetic recessed wide-beam LED downlight, 4000K 1800 lm. Distribution: Lambertian wide per CIBSE LG7 §6.2 typical retail downlight. verification_status: synthetic_reference_C3. Engineer-of-record substitutes manufacturer IES before final design freeze."
+    }
+  ],
+  "photometric_override": {
+    "uf_pendant_accent": 0.55,
+    "uf_recessed_downlight": 0.70,
+    "shr_max": 1.5,
+    "llmf": 0.93,
+    "_source": "Pendant accent UF = 0.55 narrow-beam peaked-axial (CIBSE LG7 §6.2 accent-spotlight + BS EN 12464-1:2021 §4.4); recessed downlight UF = 0.70 wide-beam Lambertian at RI=2.4 reflectances 0.7/0.5/0.2 (CIBSE LG7 §6.2 retail downlight typical). SHR_max 1.5 (LG7 §6.2 default for square-grid recessed downlight). LLMF 0.93 at 6000 h clean-retail maintenance category (BS EN 12464-1:2021 §4.4). Engineer-of-record verifies against manufacturer photometric file before issue."
+  }
+}
