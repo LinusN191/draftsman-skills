@@ -228,3 +228,61 @@ All 10 INVs PASS. No `non_compliance_flags` raised.
   treatment may need a different fitting at the front-of-room
   whiteboard wall — out of scope, flagged for acoustics + integrated
   design review skills.
+
+## §D5 — v1.7 retrofit (2026-06-04)
+
+**Honest disclosure: this example collapses the plan-template
+desk-vs-aisle split onto a single task area covering the whole
+classroom.** The retrofit adds three v1.7 fields to the v1.6.0
+output without changing any v1.6.0 engineering content:
+
+1. **`zones[].purpose = "task"`** on BOTH Z1 and Z2 (ZP-01 default).
+   The Z1/Z2 boundary is a **control-zone split** (Z1 daylight-linked
+   perimeter on the glazed S wall under Approved Doc L 2021 §6;
+   Z2 occupancy-controlled interior), **NOT** a §4.2.2
+   visual-task-category split. Both zones serve student desks at the
+   same 700 mm working plane with the same 300 lx maintained-illuminance
+   target per BS EN 12464-1:2021 Table 5 education_classroom.
+   `inputs.anchor_fixtures` carries no marked desk polygon and no
+   marked aisle polygon — the entire 10×8 m teaching footprint is
+   one task area. An engineer-of-record adding a front-of-room
+   teacher-demonstration strip OR a back-of-room cloakroom/storage
+   zone would set those sub-zones to `purpose='circulation'` with
+   `em_target_lux=100` (BS EN 12464-1 Table 5 circulation entry) and
+   leave the central student-desk area at `purpose='task'` / 300 lx.
+
+2. **`zones[].em_target_lux = 300`** on both zones. Sourced from
+   BS EN 12464-1:2021 Table 5 (education_classroom entry) and matches
+   the v1.6.0 `calculation_summary.target_illuminance_lux=300`
+   byte-identical. INV-1 PASS evidence unchanged.
+
+3. **`luminaires[].mount_type = "recessed"`** on all 16 panels
+   (MT-01 default). All 16 are 600×600 mm LED recessed panels (per
+   `luminaire_type.description`) — physically recessed into the
+   ceiling-grid by definition. `z_mm` + `suspension_length_mm` omitted
+   per the recessed convention; geometry inherits
+   `ceiling_height_mm=3000`. INV-16 vacuous PASS (no pendant/suspended
+   to verify); INV-17 PASS (working-plane floor + ceiling clearance);
+   INV-18 PASS (hm_mm = 3000 − 700 = 2300 mm matches recorded).
+
+4. **`calculation_summary.per_zone_achieved[]`** populated with two
+   rows — Z1 and Z2 — both at `em_achieved_lux=446`. The 4×4 grid
+   lights both zones uniformly; there is no zone-specific lumen-method
+   recalc to break that uniformity. Both `ratio_compliance="pass"`
+   with severity none (446 ≥ 300, 49 % headroom). INV-19 PASS.
+
+| New INV | Severity | Status | Evidence                                                           |
+|---------|----------|--------|--------------------------------------------------------------------|
+| INV-13  | high     | PASS   | Both Z1 and Z2 declare purpose='task' with em_target_lux=300       |
+| INV-14  | high     | PASS   | Vacuous — no surrounding zones (control-split is not task-split)   |
+| INV-15  | high     | PASS   | Vacuous — no background zones                                      |
+| INV-16  | high     | PASS   | Vacuous — all 16 luminaires recessed (no pendant/suspended)        |
+| INV-17  | high     | PASS   | Inherited z=3000 > working_plane=700; clearance=2300=hm_mm         |
+| INV-18  | medium   | PASS   | hm_mm=2300 matches ceiling_height−working_plane=3000−700           |
+| INV-19  | high     | PASS   | Both zones 446 ≥ 300 target, 49 % headroom each                    |
+
+The retrofit disclosure is mirrored in **four places** for
+auditability: (a) `input.json._d5_retrofit_note`,
+(b) `output.json.calculation_summary.assumptions[]`,
+(c) `output.json.rationale.sections[]` v1.7 retrofit section,
+and (d) this §D5 reasoning block.

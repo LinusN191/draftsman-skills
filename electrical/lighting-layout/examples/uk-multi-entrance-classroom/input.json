@@ -1,5 +1,6 @@
 {
   "_note": "D3.C.2 example #2 — clean compliant secondary-school classroom with 3 entrances on different walls. Exercises INV-3 multi-entrance coverage + INV-7 zone assignment (Z1 perimeter on glazed S wall + Z2 interior). All 10 INVs PASS — demonstrates the happy path for multi-entrance + perimeter-zone scenarios.",
+  "_d5_retrofit_note": "Retrofitted by D5 sprint 2026-06-04. v1.6.0 → v1.7.0: BOTH existing zones Z1 and Z2 default to purpose='task' per ZP-01 backwards-compat rule (BS EN 12464-1:2021 §4.2.2.1) with em_target_lux=300 (Table 5 education_classroom). Honest disclosure: the Z1/Z2 split is a CONTROL-zone split (Z1 daylight-linked perimeter + Z2 occupancy-controlled interior) NOT a §4.2.2 visual-task-category split — the whole teaching footprint is one task area at desk plane, so the plan-template desk-vs-aisle split collapses onto a single uniform task. All 16 LED panels default to mount_type='recessed' per MT-01; per_zone_achieved[] populated from the room-uniform achieved_illuminance_lux=446 lx (4×4 grid lights both zones uniformly; no zone-specific lumen-method recalc). Engineering content unchanged; honest disclosure mirrored in output.calculation_summary.assumptions[], output.rationale.sections[], and reasoning.md §D5.",
   "room_type": "classroom",
   "room_length_m": 10,
   "room_width_m": 8,

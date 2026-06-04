@@ -41,7 +41,9 @@
       "circuit_ids": ["C-L01"],
       "luminaire_ids": ["L01", "L02", "L03", "L04"],
       "luminaire_count": 4,
-      "total_load_w": 144
+      "total_load_w": 144,
+      "purpose": "task",
+      "em_target_lux": 300
     },
     {
       "zone_id": "Z2",
@@ -52,26 +54,28 @@
       "circuit_ids": ["C-L02", "C-L03", "C-L04"],
       "luminaire_ids": ["L05", "L06", "L07", "L08", "L09", "L10", "L11", "L12", "L13", "L14", "L15", "L16"],
       "luminaire_count": 12,
-      "total_load_w": 432
+      "total_load_w": 432,
+      "purpose": "task",
+      "em_target_lux": 300
     }
   ],
   "luminaires": [
-    {"id": "L01", "x_mm": 300,  "y_mm": 300,  "zone_id": "Z1", "circuit_id": "C-L01"},
-    {"id": "L02", "x_mm": 3433, "y_mm": 300,  "zone_id": "Z1", "circuit_id": "C-L01"},
-    {"id": "L03", "x_mm": 6567, "y_mm": 300,  "zone_id": "Z1", "circuit_id": "C-L01"},
-    {"id": "L04", "x_mm": 9700, "y_mm": 300,  "zone_id": "Z1", "circuit_id": "C-L01"},
-    {"id": "L05", "x_mm": 300,  "y_mm": 2767, "zone_id": "Z2", "circuit_id": "C-L02"},
-    {"id": "L06", "x_mm": 3433, "y_mm": 2767, "zone_id": "Z2", "circuit_id": "C-L02"},
-    {"id": "L07", "x_mm": 6567, "y_mm": 2767, "zone_id": "Z2", "circuit_id": "C-L02"},
-    {"id": "L08", "x_mm": 9700, "y_mm": 2767, "zone_id": "Z2", "circuit_id": "C-L02"},
-    {"id": "L09", "x_mm": 300,  "y_mm": 5233, "zone_id": "Z2", "circuit_id": "C-L03"},
-    {"id": "L10", "x_mm": 3433, "y_mm": 5233, "zone_id": "Z2", "circuit_id": "C-L03"},
-    {"id": "L11", "x_mm": 6567, "y_mm": 5233, "zone_id": "Z2", "circuit_id": "C-L03"},
-    {"id": "L12", "x_mm": 9700, "y_mm": 5233, "zone_id": "Z2", "circuit_id": "C-L03"},
-    {"id": "L13", "x_mm": 300,  "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
-    {"id": "L14", "x_mm": 3433, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
-    {"id": "L15", "x_mm": 6567, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"},
-    {"id": "L16", "x_mm": 9700, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04"}
+    {"id": "L01", "x_mm": 300,  "y_mm": 300,  "zone_id": "Z1", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L02", "x_mm": 3433, "y_mm": 300,  "zone_id": "Z1", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L03", "x_mm": 6567, "y_mm": 300,  "zone_id": "Z1", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L04", "x_mm": 9700, "y_mm": 300,  "zone_id": "Z1", "circuit_id": "C-L01", "mount_type": "recessed"},
+    {"id": "L05", "x_mm": 300,  "y_mm": 2767, "zone_id": "Z2", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L06", "x_mm": 3433, "y_mm": 2767, "zone_id": "Z2", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L07", "x_mm": 6567, "y_mm": 2767, "zone_id": "Z2", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L08", "x_mm": 9700, "y_mm": 2767, "zone_id": "Z2", "circuit_id": "C-L02", "mount_type": "recessed"},
+    {"id": "L09", "x_mm": 300,  "y_mm": 5233, "zone_id": "Z2", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L10", "x_mm": 3433, "y_mm": 5233, "zone_id": "Z2", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L11", "x_mm": 6567, "y_mm": 5233, "zone_id": "Z2", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L12", "x_mm": 9700, "y_mm": 5233, "zone_id": "Z2", "circuit_id": "C-L03", "mount_type": "recessed"},
+    {"id": "L13", "x_mm": 300,  "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04", "mount_type": "recessed"},
+    {"id": "L14", "x_mm": 3433, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04", "mount_type": "recessed"},
+    {"id": "L15", "x_mm": 6567, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04", "mount_type": "recessed"},
+    {"id": "L16", "x_mm": 9700, "y_mm": 7700, "zone_id": "Z2", "circuit_id": "C-L04", "mount_type": "recessed"}
   ],
   "switches": [
     {
@@ -177,7 +181,24 @@
       "UF = 0.62 from CIBSE LG7 §6.2 standard reflectance table 0.7/0.5/0.2 at RI=1.5 (next-lower band for actual RI=1.93)",
       "MF = 0.80 for clean classroom LED on a 3-year cleaning cycle (CIBSE TM 3-25)",
       "Working plane = 700 mm (BS EN 12464-1:2021 Table 5.x classroom — task at student desk height)",
-      "Lumen-method N=10.75 → round UP to 11; bumped to 16 for 4×4 grid symmetry + S/H margin"
+      "Lumen-method N=10.75 → round UP to 11; bumped to 16 for 4×4 grid symmetry + S/H margin",
+      "v1.6.0 → v1.7.0 D5 retrofit: BOTH zones Z1 and Z2 default to purpose='task' (ZP-01) with em_target_lux=300 (BS EN 12464-1:2021 Table 5 education_classroom 300 lx entry — matches the v1.6.0 target byte-identical). Honest disclosure: this classroom does NOT split into separate task and circulation zones — the Z1/Z2 boundary is a CONTROL-zone split (Z1 daylight-linked perimeter under §6 Part L; Z2 occupancy-controlled interior), NOT a §4.2.2 visual-task-category split. The whole teaching footprint is one task area at desk plane — student desks fill the room (no marked desk-vs-aisle furniture polygon in inputs); the plan-template split (desks → task, aisles/entry → circulation) collapses here because the classroom IS the task area. An engineer-of-record adding a separate front-of-room teacher-circulation strip OR a back-of-room storage/cloakroom zone would set those sub-zones to purpose='circulation' with em_target_lux=100 (BS EN 12464-1 Table 5 circulation entry). All 16 luminaires default to mount_type='recessed' (MT-01 — matches the 600×600 mm LED recessed panel description); per_zone_achieved[] populated from the uniform-grid achieved_illuminance_lux=446 lx (the 4×4 grid lights both zones uniformly; no zone-specific lumen-method recalc). Defaults preserve v1.6.0 behaviour — no change to lumen-method calc, layout, switch/circuit topology, or INV-1..INV-11."
+    ],
+    "per_zone_achieved": [
+      {
+        "zone_id": "Z1",
+        "purpose": "task",
+        "em_target_lux": 300,
+        "em_achieved_lux": 446,
+        "ratio_compliance": "pass"
+      },
+      {
+        "zone_id": "Z2",
+        "purpose": "task",
+        "em_target_lux": 300,
+        "em_achieved_lux": 446,
+        "ratio_compliance": "pass"
+      }
     ]
   },
   "drawing_notes": [
@@ -261,6 +282,24 @@
             "code_clause": "CIBSE LG7 §6.2 + BS EN 12464-1:2021 §4.4"
           }
         ]
+      },
+      {
+        "title": "v1.7 retrofit",
+        "summary": "D5 retrofit (2026-06-04): both zones Z1 (perimeter daylight-linked) and Z2 (interior occupancy) receive purpose='task' (ZP-01 default) and em_target_lux=300 (BS EN 12464-1:2021 Table 5 education_classroom 300 lx entry — matches the v1.6.0 target byte-identical); all 16 luminaires receive mount_type='recessed' (MT-01 default — matches the 600×600 mm LED recessed panel description); per_zone_achieved[] populated from the room-uniform achieved_illuminance_lux=446 lx (the 4×4 grid lights both zones uniformly, no zone-specific lumen-method recalc). Engineering content unchanged. INV-1..INV-11 walk byte-identical to v1.6.0; only the new INV-13..INV-19 are added.",
+        "decisions": [
+          {
+            "label": "Both zones get purpose='task' (NOT a desk-vs-aisle split)",
+            "summary": "The classroom's Z1/Z2 boundary is a CONTROL-zone split (Z1 daylight-linked perimeter on the glazed S wall under Approved Doc L 2021 §6; Z2 occupancy-controlled interior), NOT a §4.2.2 visual-task-category split. The entire 10×8 m teaching footprint is one task area at student desk plane — inputs.anchor_fixtures carries no marked desk polygon or aisle polygon, and the four entrances (S main + N fire-exit + W adjoining-room + glazed S wall) frame the room rather than carving out a separate circulation strip. Honest disclosure: the plan-template split (desks → task, aisles/entry → circulation) collapses here because the classroom IS the task area — students at desks fill the room. An engineer-of-record adding a separate front-of-room teacher-demonstration strip OR a back-of-room cloakroom/storage zone would set those sub-zones to purpose='circulation' with em_target_lux=100 (BS EN 12464-1 Table 5 circulation entry) and leave the central student-desk area at purpose='task' / em_target_lux=300.",
+            "rule": "ZP-01 backwards-compat default (whole room is one task area)",
+            "code_clause": "BS EN 12464-1:2021 § 4.2.2.1"
+          },
+          {
+            "label": "Default mount_type='recessed' (MT-01)",
+            "summary": "All 16 luminaires are 600×600 mm LED recessed panels (per luminaire_type.description) — physically recessed into the ceiling-grid by definition. MT-01 default chosen; z_mm + suspension_length_mm omitted per the recessed convention (geometry inherits ceiling_height_mm=3000).",
+            "rule": "MT-01 recessed default",
+            "code_clause": "BS EN 60598-2 + mount-type-rules.yaml MT-01"
+          }
+        ]
       }
     ]
   },
@@ -330,6 +369,48 @@
       "passes": true,
       "severity": "high",
       "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from cascade-uk-multi-entrance-classroom/intent-out.json. payload.task_area_compliant=true; payload.achieved_avg_illuminance_lux=482 vs target=300 (sub-check 3 PASS, 161% — classroom over-spec acceptable for visual-task strain headroom); 0 non_compliance_flags cascaded to lighting-layout calculation_summary with _cascaded_from=photometric-analysis attribution (sub-check 4 PASS, vacuously). Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
+    },
+    {
+      "id": "INV-13",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Zone purpose required + valid. Zones inspected: 2. Per-zone purpose: Z1: purpose=task, em_target_lux=300; Z2: purpose=task, em_target_lux=300. Orphan-surrounding check: pass (no surrounding zones present, so check vacuous). All zones declare purpose ∈ {task, surrounding, background, circulation}. INV-13 PASS. Citation: BS EN 12464-1:2021 §4.2.2.1 (task area) + area-definitions.json §4.2.2.1 + zone-purpose-rules.yaml ZP-01."
+    },
+    {
+      "id": "INV-14",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Surrounding ratio compliance. Surrounding zones inspected: 0. No zones declare purpose='surrounding' — INV-14 vacuous PASS per validator §INV-14 vacuous condition. The Z1/Z2 split is a control-zone split (daylight vs occupancy), not a §4.2.2.2 task-vs-surrounding split. Citation: BS EN 12464-1:2021 §4.2.2.2 + Table 6 (area-definitions.json table_6_ratio_rules.task_to_surrounding)."
+    },
+    {
+      "id": "INV-15",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Background floor. Background zones inspected: 0. No zones declare purpose='background' — INV-15 vacuous PASS per validator §INV-15 vacuous condition. Citation: BS EN 12464-1:2021 §4.2.2.3 + Table 6 (area-definitions.json table_6_ratio_rules.task_to_background)."
+    },
+    {
+      "id": "INV-16",
+      "passes": true,
+      "severity": "high",
+      "evidence": "mount_type ↔ z_mm/suspension consistency. Luminaires inspected: 16. Pendant geometry checks: 0 pendant luminaires. Suspended geometry checks: 0 suspended luminaires. Recessed/surface/track: 16 luminaires (all 16 LED_PANEL_600 panels are mount_type='recessed'), z_mm omitted per MT-01 convention (recessed inherits ceiling_height_mm=3000). INV-16 vacuous PASS — no pendant/suspended geometry to verify. Citation: BS EN 60598-2-1 + mount-type-rules.yaml MT-01."
+    },
+    {
+      "id": "INV-17",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Ceiling clearance + working-plane floor. Working plane reference: 700 mm AFF. Per-luminaire floor check: all 16 luminaires are recessed; z_mm not declared and inherits ceiling_height_mm=3000 per MT-01 convention. Inherited z=3000 > working_plane=700 (clearance=2300 mm = hm_mm). Per-luminaire ceiling clearance: recessed luminaires are physically inset into ceiling, suspension_length_mm=0 implied; sum=3000 ≤ ceiling=3000 PASS. INV-17 PASS — no luminaire below task plane, no luminaire exceeds ceiling. Citation: BS EN 12464-1:2021 §4.4 + BS EN 60598-2 + MT-04."
+    },
+    {
+      "id": "INV-18",
+      "passes": true,
+      "severity": "medium",
+      "evidence": "hm_mm derivation consistency. Room hm_mm recorded: 2300 mm. Lowest pendant/suspended z_mm: N/A (no pendant/suspended — all 16 luminaires recessed). Recessed branch: expected hm_mm = ceiling_height_mm − working_plane_mm = 3000 − 700 = 2300 mm. Drift: |2300 − 2300| = 0 mm, tolerance ±50 mm. INV-18 PASS. Citation: BS EN 12464-1:2021 §4.4 + repo derivation convention."
+    },
+    {
+      "id": "INV-19",
+      "passes": true,
+      "severity": "high",
+      "evidence": "Per-zone achievement. Zones inspected: 2. Per-zone achievement: Z1 (task): target=300, achieved=446, gap=-146, gap_pct=-48.7%, ratio_compliance=pass, severity=none (achieved ≥ target). Z2 (task): target=300, achieved=446, gap=-146, gap_pct=-48.7%, ratio_compliance=pass, severity=none (achieved ≥ target). The 4×4 grid lights both zones uniformly — no zone-specific lumen-method recalc; both rows of per_zone_achieved[] inherit the room-averaged 446 lx. Aggregate: 2 PASS, 0 marginal, 0 MEDIUM, 0 HIGH. INV-19 PASS. Citation: BS EN 12464-1:2021 §4.1 + Table 5 (education_classroom 300 lx entry)."
     }
   ],
   "consumed_intents": {
