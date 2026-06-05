@@ -1041,3 +1041,473 @@ git commit -m "feat(docs): F.4 ORCHESTRATION.md — public-facing skill orchestr
 ```
 
 ---
+
+### Task F.5: Extend `scripts/validate-examples.py` to 4-pass gate + 4 lint sub-passes
+
+**Files:**
+- Modify: `scripts/validate-examples.py`
+
+**Why Sonnet:** Largest mechanical task in Sprint F (~200-300 lines of Python). Wires together the contract enforcement: new Pass 4 (manifest metaschema validation) + 4 lint sub-passes implementing the 5 risk-catching mechanisms from spec §8.
+
+- [ ] **Step 1: Inspect current 3-pass structure**
+
+Run:
+```bash
+grep -nE "^def |^Pass [1-3]" scripts/validate-examples.py | head -20
+wc -l scripts/validate-examples.py
+```
+
+Expected: identify the pass functions (`validate_examples_pass`, `validate_evals_pass`, `validate_inputs_pass`) + main() orchestration block.
+
+- [ ] **Step 2: Add Pass 4 — Manifest metaschema validation**
+
+In `scripts/validate-examples.py`, AFTER the existing `validate_inputs_pass` function and BEFORE `main()`, ADD:
+
+```python
+def validate_manifests_pass(skill_dirs: list) -> tuple:
+    """Pass 4 — Manifest metaschema validation.
+
+    Validate every electrical/*/skill.manifest.json (and other disciplines)
+    against shared/schemas/core/skill-manifest.schema.json.
+
+    Returns (total_manifests, total_failures, report_lines).
+    """
+    results = defaultdict(list)
+    total_manifests = 0
+    total_failures = 0
+
+    schema_path = "shared/schemas/core/skill-manifest.schema.json"
+    try:
+        with open(schema_path) as f:
+            schema = json.load(f)
+    except FileNotFoundError:
+        return (0, 0, [f"\n## Pass 4: SKIP — {schema_path} not found"])
+    except json.JSONDecodeError as e:
+        return (1, 1, [f"\n## Pass 4: FAIL — {schema_path} JSON parse: {e}"])
+
+    for skill_dir in skill_dirs:
+        skill_name = os.path.basename(skill_dir)
+        manifest_path = f"{skill_dir}/skill.manifest.json"
+        if not os.path.exists(manifest_path):
+            continue
+        total_manifests += 1
+        try:
+            with open(manifest_path) as f:
+                manifest = json.load(f)
+        except json.JSONDecodeError as e:
+            results[skill_name].append(("JSON-PARSE", manifest_path, str(e)[:200]))
+            total_failures += 1
+            continue
+        try:
+            jsonschema.validate(manifest, schema)
+            results[skill_name].append(("PASS", skill_name, ""))
+        except jsonschema.ValidationError as e:
+            total_failures += 1
+            path = ".".join(str(p) for p in list(e.absolute_path)[:6])
+            results[skill_name].append(("FAIL", skill_name, f"{path}: {e.message[:160]}"))
+
+    lines = ["\n## Pass 4: Manifest Metaschema"]
+    for skill in sorted(results.keys()):
+        for kind, name, msg in results[skill]:
+            if kind == "PASS":
+                lines.append(f"  PASS {skill}")
+            else:
+                lines.append(f"  {kind} {skill}: {msg}")
+    return (total_manifests, total_failures, lines)
+```
+
+- [ ] **Step 3: Add Lint sub-pass 1 — Manifest field name typo detector**
+
+In `scripts/validate-examples.py`, after `validate_manifests_pass`, ADD:
+
+```python
+# Canonical manifest field set (from skill-manifest.schema.json properties)
+KNOWN_MANIFEST_FIELDS = frozenset([
+    "skill", "version", "discipline", "subdiscipline", "chat_type",
+    "description", "status", "scope", "placement_convention",
+    "licence", "inputs_path", "outputs", "output_schema",
+    "produces_intents", "produces_intent_schema", "consumes_intents",
+    "standards", "ontology", "symbols", "calculations",
+    "prompts", "evals", "examples", "validation",
+    "rules", "constraints",
+    # Internal underscore-prefixed fields permitted as documentation
+])
+
+def suggest_field(unknown: str, known: frozenset) -> str:
+    """Levenshtein-edit-distance heuristic: return the closest known field if within 2 edits."""
+    def edit_distance(a, b):
+        if len(a) > len(b): a, b = b, a
+        previous = list(range(len(a) + 1))
+        for i, cb in enumerate(b):
+            current = [i + 1]
+            for j, ca in enumerate(a):
+                insertions = previous[j + 1] + 1
+                deletions = current[j] + 1
+                substitutions = previous[j] + (ca != cb)
+                current.append(min(insertions, deletions, substitutions))
+            previous = current
+        return previous[-1]
+    candidates = sorted(known, key=lambda k: edit_distance(unknown, k))
+    if candidates and edit_distance(unknown, candidates[0]) <= 2:
+        return candidates[0]
+    return ""
+
+
+def lint_manifest_fields(skill_dirs: list) -> tuple:
+    """Lint sub-pass: flag unknown manifest fields with suggested spelling.
+
+    Returns (total_unknowns, report_lines). NOT a failure; informational.
+    """
+    findings = []
+    total_unknowns = 0
+    for skill_dir in skill_dirs:
+        skill_name = os.path.basename(skill_dir)
+        manifest_path = f"{skill_dir}/skill.manifest.json"
+        if not os.path.exists(manifest_path):
+            continue
+        try:
+            with open(manifest_path) as f:
+                manifest = json.load(f)
+        except json.JSONDecodeError:
+            continue
+        for k in manifest.keys():
+            if k.startswith("_"):
+                continue  # internal documentation fields permitted
+            if k not in KNOWN_MANIFEST_FIELDS:
+                total_unknowns += 1
+                suggestion = suggest_field(k, KNOWN_MANIFEST_FIELDS)
+                hint = f" (did you mean: '{suggestion}'?)" if suggestion else ""
+                findings.append(f"  LINT {skill_name}: unknown field '{k}'{hint}")
+    lines = ["\n## Lint 1: Manifest field-name typos"]
+    if total_unknowns == 0:
+        lines.append("  PASS — no unknown fields across all manifests")
+    else:
+        lines.extend(findings)
+    return (total_unknowns, lines)
+```
+
+- [ ] **Step 4: Add Lint sub-pass 2 — `grounded_source` two-tier validation**
+
+After `lint_manifest_fields`, ADD:
+
+```python
+# Tier 1: closed enum for canonical bindings (from inputs.schema.json grounded_source.oneOf[0].enum)
+CANONICAL_GROUNDED_SOURCES = frozenset([
+    "room.type", "room.area_m2", "room.bbox.length", "room.bbox.width",
+    "room.centroid.x", "room.centroid.y", "room.mounting_height", "room.polygon",
+    "project.building_type", "project.code_basis", "project.jurisdiction",
+    "project.units", "project.ceiling_height_mm", "project.project_id",
+])
+
+# Tier 2: pattern for project.<custom> bindings
+import re
+PROJECT_CUSTOM_PATTERN = re.compile(r"^project\.[a-z_]+$")
+
+
+def lint_grounded_sources(skill_dirs: list) -> tuple:
+    """Lint sub-pass: enumerate every grounded_source binding used across all inputs.json
+    files. Tier 1 (canonical) = silent PASS. Tier 2 (project.<custom>) = flagged for
+    orchestrator-confirmation. Invalid binding = FAIL.
+
+    Returns (total_custom_bindings + total_failures, report_lines).
+    """
+    findings = []
+    total_custom = 0
+    total_failures = 0
+    for skill_dir in skill_dirs:
+        skill_name = os.path.basename(skill_dir)
+        inputs_path = f"{skill_dir}/inputs.json"
+        if not os.path.exists(inputs_path):
+            continue
+        try:
+            with open(inputs_path) as f:
+                inputs = json.load(f)
+        except json.JSONDecodeError:
+            continue
+        items = inputs.get("items") or inputs.get("inputs") or []
+        if not isinstance(items, list):
+            # legacy input_groups[] shape
+            continue
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            gs = item.get("grounded_source")
+            if not gs:
+                continue
+            if gs in CANONICAL_GROUNDED_SOURCES:
+                continue  # silent PASS
+            if PROJECT_CUSTOM_PATTERN.match(gs):
+                total_custom += 1
+                findings.append(f"  LINT {skill_name}.{item.get('id', '?')}: custom binding '{gs}' (confirm orchestrator can provide this)")
+            else:
+                total_failures += 1
+                findings.append(f"  FAIL {skill_name}.{item.get('id', '?')}: invalid grounded_source '{gs}'")
+    lines = ["\n## Lint 2: grounded_source two-tier validation"]
+    if total_custom == 0 and total_failures == 0:
+        lines.append("  PASS — all grounded_source bindings are canonical")
+    else:
+        lines.extend(findings)
+    return (total_failures, lines)  # only failures count toward exit; custom is informational
+```
+
+- [ ] **Step 5: Add Lint sub-pass 3 — Example-deprecation lint**
+
+After `lint_grounded_sources`, ADD:
+
+```python
+def lint_dropped_items_orphaned(skill_dirs: list) -> tuple:
+    """Lint sub-pass: for each skill, identify items in examples/*/input.json that
+    were DROPPED from inputs.json (i.e. present in example inputs but absent from
+    the current canonical inputs.json items list). Stale references are LINT
+    warnings; not failures unless explicitly configured.
+
+    Returns (total_orphans, report_lines).
+    """
+    findings = []
+    total_orphans = 0
+    for skill_dir in skill_dirs:
+        skill_name = os.path.basename(skill_dir)
+        inputs_path = f"{skill_dir}/inputs.json"
+        if not os.path.exists(inputs_path):
+            continue
+        try:
+            with open(inputs_path) as f:
+                inputs = json.load(f)
+        except json.JSONDecodeError:
+            continue
+        items = inputs.get("items") or inputs.get("inputs") or []
+        canonical_ids = set()
+        for item in items:
+            if isinstance(item, dict) and "id" in item:
+                canonical_ids.add(item["id"])
+        # legacy input_groups[] shape — flatten
+        for grp in inputs.get("input_groups", []):
+            for item in grp.get("items", []):
+                if isinstance(item, dict) and "id" in item:
+                    canonical_ids.add(item["id"])
+        if not canonical_ids:
+            continue
+        for example_input in sorted(glob.glob(f"{skill_dir}/examples/*/input.json")):
+            example_name = os.path.basename(os.path.dirname(example_input))
+            try:
+                with open(example_input) as f:
+                    ex = json.load(f)
+            except json.JSONDecodeError:
+                continue
+            # Look for top-level fields that look like input IDs (not metadata-prefixed)
+            for k in ex.keys():
+                if k.startswith("_"):
+                    continue
+                if k in {"engineer_inputs", "anchor_fixtures", "items"}:
+                    continue
+                # canonical_ids may not include all engineer-supplied fields; only flag
+                # fields that LOOK like they were items but are now absent
+                # Heuristic: top-level scalar/list values that match no canonical id
+                # AND match common dropped-item patterns (room_type, room_length_mm, jurisdiction)
+                if k in {"room_type", "room_length_mm", "room_width_mm", "jurisdiction", "building_type", "project_id"} and k not in canonical_ids:
+                    total_orphans += 1
+                    findings.append(f"  LINT {skill_name}.examples.{example_name}: stale field '{k}' (dropped from inputs.json; consider moving to engineer_inputs or removing)")
+    lines = ["\n## Lint 3: Dropped-item orphans in examples"]
+    if total_orphans == 0:
+        lines.append("  PASS — no orphaned dropped fields detected")
+    else:
+        lines.extend(findings)
+    return (0, lines)  # informational; not gate-failing
+```
+
+- [ ] **Step 6: Add Lint sub-pass 4 — Cascade-byte-equality SHA-256 check**
+
+After `lint_dropped_items_orphaned`, ADD:
+
+```python
+import hashlib
+
+def lint_cascade_byte_equality(skill_dirs: list) -> tuple:
+    """Lint sub-pass: for every example with consumed_intents[X].source_path, hash
+    the producer's intent-out.json payload and compare against the consumer's inlined
+    payload. SHA-256 mismatch = FAIL (cascade contract drift).
+
+    Returns (total_mismatches, report_lines).
+    """
+    findings = []
+    total_checked = 0
+    total_mismatches = 0
+    for skill_dir in skill_dirs:
+        skill_name = os.path.basename(skill_dir)
+        for output_path in sorted(glob.glob(f"{skill_dir}/examples/*/output.json")):
+            example_name = os.path.basename(os.path.dirname(output_path))
+            try:
+                with open(output_path) as f:
+                    out = json.load(f)
+            except json.JSONDecodeError:
+                continue
+            consumed = out.get("consumed_intents", {})
+            if not isinstance(consumed, dict):
+                continue
+            for cascade_key, cascade in consumed.items():
+                if not isinstance(cascade, dict):
+                    continue
+                src_path = cascade.get("source_path")
+                payload = cascade.get("payload")
+                if not src_path or payload is None:
+                    continue
+                if not os.path.exists(src_path):
+                    # source intentionally absent (DEFERRED-POINTER) — skip
+                    continue
+                try:
+                    with open(src_path) as f:
+                        src = json.load(f)
+                except json.JSONDecodeError:
+                    continue
+                # Source intent-out.json may have the payload at top level OR under the cascade key
+                src_payload = src.get(cascade_key, src)
+                # Canonicalise both via json.dumps with sort_keys for deterministic byte-equality
+                consumer_bytes = json.dumps(payload, sort_keys=True, ensure_ascii=False).encode()
+                producer_bytes = json.dumps(src_payload, sort_keys=True, ensure_ascii=False).encode()
+                consumer_hash = hashlib.sha256(consumer_bytes).hexdigest()[:16]
+                producer_hash = hashlib.sha256(producer_bytes).hexdigest()[:16]
+                total_checked += 1
+                if consumer_hash != producer_hash:
+                    total_mismatches += 1
+                    findings.append(f"  FAIL {skill_name}.examples.{example_name}.{cascade_key}: byte-equality mismatch (consumer={consumer_hash} producer={producer_hash})")
+    lines = ["\n## Lint 4: Cascade byte-equality (SHA-256)"]
+    if total_checked == 0:
+        lines.append("  SKIP — no cascade payloads found")
+    elif total_mismatches == 0:
+        lines.append(f"  PASS — {total_checked} cascade payloads byte-identical to producer fixtures")
+    else:
+        lines.extend(findings)
+    return (total_mismatches, lines)
+```
+
+- [ ] **Step 7: Wire Pass 4 + 4 lint sub-passes into `main()`**
+
+Locate the `main()` function in `scripts/validate-examples.py`. After the existing 3 passes are tallied, ADD:
+
+```python
+    # Pass 4 — Manifest metaschema
+    p4_total, p4_failures, p4_lines = validate_manifests_pass(skill_dirs)
+
+    # Lint sub-passes (do not gate exit unless tier-2 invalid binding or cascade mismatch)
+    l1_unknowns, l1_lines = lint_manifest_fields(skill_dirs)
+    l2_failures, l2_lines = lint_grounded_sources(skill_dirs)
+    l3_orphans, l3_lines = lint_dropped_items_orphaned(skill_dirs)
+    l4_mismatches, l4_lines = lint_cascade_byte_equality(skill_dirs)
+
+    # Aggregate
+    total_failures = (existing_failures + p4_failures + l2_failures + l4_mismatches)
+    aggregate = (existing_total + p4_total)
+
+    # Print all sections
+    for line in p4_lines + l1_lines + l2_lines + l3_lines + l4_lines:
+        print(line)
+
+    print(f"\n=== AGGREGATE: {aggregate - total_failures}/{aggregate} pass ({total_failures} failures) ===")
+
+    if total_failures > 0:
+        sys.exit(1)
+    sys.exit(0)
+```
+
+(Adapt the exact variable names to match the existing harness — search for `aggregate` / `total_failures` references in the existing `main()` and follow that pattern.)
+
+- [ ] **Step 8: Update the harness module docstring**
+
+In `scripts/validate-examples.py`, locate the top docstring (currently describes 3 passes) and REPLACE with:
+
+```python
+"""Golden-example schema validation harness — 4-pass + 4 lint sub-passes.
+
+Pass 1 — Example outputs: validate every examples/*/output.json against the
+         parent skill's IR schema.
+Pass 2 — Eval files: validate every evals/eval-*.yaml against
+         shared/schemas/core/eval.schema.json.
+Pass 3 — Inputs files: validate each skill's inputs.json against
+         shared/schemas/core/inputs.schema.json.
+Pass 4 — Manifests: validate each skill's skill.manifest.json against
+         shared/schemas/core/skill-manifest.schema.json (added Sprint F).
+
+Lint sub-passes (Sprint F additions):
+  Lint 1 — Manifest field-name typo detector (suggest-spelling for unknowns)
+  Lint 2 — grounded_source two-tier validation (closed enum + project.* pattern)
+  Lint 3 — Dropped-item orphan detector (stale fields in examples/*/input.json)
+  Lint 4 — Cascade byte-equality (SHA-256 producer vs consumer payload)
+
+Pass 1 recursively strips $ref nodes before validation — focuses on inline
+schema-shape bugs rather than external-ref resolution.
+Passes 2/3/4 do NOT strip $refs because those schemas use internal $ref nodes.
+
+Returns exit 0 on full pass across all four passes + zero gate-failing lint
+findings, exit 1 on any failure.
+"""
+```
+
+- [ ] **Step 9: Smoke-test the 4-pass gate against current repo state**
+
+Run:
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -40
+```
+
+Expected: Pass 1/2/3 unchanged (354/354 from end of D5). Pass 4 reports per-skill manifest validation (some manifests may flag missing `consumes_intents` if any skill lacks it — fix-pass at F.6). Lint sub-passes report PASS or LINT findings (informational).
+
+If Pass 4 FAILs any manifest, do NOT block the commit at F.5 — defer fix-pass to F.6 task. F.5 commits the harness extension; F.6 commits the manifest fixes.
+
+- [ ] **Step 10: Commit**
+
+```bash
+git add scripts/validate-examples.py
+git commit -m "feat(gate): F.5 extend golden CI to 4-pass + 4 lint sub-passes — Pass 4 manifest metaschema + lint for field typos + grounded_source two-tier + example orphans + cascade SHA-256 byte-equality (implements spec §8 risk-catching mechanisms)"
+```
+
+### Task F.6: Run extended gate against 8 existing manifests; fix-pass any drift
+
+**Files:**
+- Modify: any `electrical/<skill>/skill.manifest.json` that fails Pass 4 metaschema validation
+
+**Why Sonnet:** Mechanical fix-pass — match small-power D4 D.3 precedent which caught the manifest evals/examples drift.
+
+- [ ] **Step 1: Run the 4-pass gate; capture Pass 4 + Lint 1 output**
+
+Run:
+```bash
+python3 scripts/validate-examples.py 2>&1 | grep -E "^## Pass 4|^## Lint 1|FAIL|LINT" | head -40
+```
+
+Expected: list of any Pass 4 manifest metaschema failures (e.g. missing required field) + Lint 1 unknown-field flags.
+
+- [ ] **Step 2: For each FAIL, edit the offending manifest to satisfy the metaschema**
+
+Typical fixes:
+- Missing `discipline` → add `"discipline": "electrical"`
+- Missing `produces_intents` → add `"produces_intents": []`
+- Missing `consumes_intents` → add `"consumes_intents": []`
+- `status` typo → fix to one of `stub | beta | production`
+- `version` not semver → fix to `MAJOR.MINOR.PATCH`
+
+For each LINT 1 unknown-field flag:
+- If field is a typo (e.g. `stauts`) → fix to canonical spelling
+- If field is intentional → it's already prefixed with `_` (internal) OR will be added to `KNOWN_MANIFEST_FIELDS` in a follow-up
+
+- [ ] **Step 3: Re-run gate to confirm all 8 manifests PASS Pass 4**
+
+Run:
+```bash
+python3 scripts/validate-examples.py 2>&1 | grep -E "^## Pass 4|^  (PASS|FAIL)" | head -20
+```
+
+Expected: 8 PASS entries; 0 FAIL.
+
+- [ ] **Step 4: Commit (only if edits were made; otherwise note "no edits — all 8 manifests already pass" and skip commit)**
+
+```bash
+git add electrical/*/skill.manifest.json
+git commit -m "fix(manifests): F.6 fix-pass — bring 8 existing manifests into Pass 4 metaschema compliance"
+```
+
+If no edits needed:
+```bash
+echo "F.6: no edits — all 8 manifests already pass Pass 4 metaschema validation"
+```
+
+---
