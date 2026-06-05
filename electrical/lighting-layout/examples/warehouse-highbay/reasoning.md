@@ -230,7 +230,7 @@ All 17 INVs PASS. No `non_compliance_flags` raised. v1.7 D5 retrofit
 delivers the first non-vacuous INV-16/17/18 PASS across all 8 retrofit
 examples (C.1–C.8).
 
-## 8a. v1.7 D5 retrofit — 3D placement + zone purpose (2026-06-04)
+## v1.7 Honest disclosure — D5 retrofit: 3D placement + zone purpose (2026-06-04)
 
 This example is the **first retrofit with non-vacuous INV-16/17/18 PASS**.
 C.1–C.7 all used `mount_type='recessed'` (panels, downlights), for which the

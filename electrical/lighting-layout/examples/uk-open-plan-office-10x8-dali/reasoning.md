@@ -287,7 +287,7 @@ Z-pattern because the IR doesn't allow one to be encoded.
 | 09   | medium | drafting_furniture complete; Arial + font_size_pt; no placeholders    |
 | 10   | high   | schema PASS; non_compliance_flags=[]; compliant=true; mode=full_drawing|
 
-## D5. v1.7 Retrofit — task + surrounding split (first non-vacuous INV-14 PASS)
+## v1.7 Honest disclosure — D5 retrofit: task + surrounding split (first non-vacuous INV-14 PASS)
 
 D5 sprint (2026-06-04) split the single Z2 zone of v1.6.0 into Z2
 task + Z3 surrounding per BS EN 12464-1:2021 §4.2.2.2. This is the

@@ -190,7 +190,7 @@ uniform-plane illuminance — per CIBSE LG7 §6.2 accent convention.
 | **INV-17** ceiling clearance + working-plane floor | NON-VACUOUS PASS on pendant: 4/4 pendants have `z_mm = 2500 > working_plane = 0` (clearance 2500 mm); `z_mm + suspension = 4000 ≤ ceiling = 4000` PASS (boundary equality). Recessed subset trivially satisfies. |
 | **INV-18** hm_mm derivation consistency | NON-VACUOUS PASS with **HONEST DISCLOSURE** of mixed-mount pick: `expected_hm = lowest_pendant_z_mm − working_plane_mm = 2500 − 0 = 2500 mm`. Recorded `hm_mm = 2500 mm`. Drift = 0 mm ≤ ±50 mm tolerance. **Mixed-mount governance: lowest emission plane sets Hm.** |
 
-## D5 — 4-place canonical honest disclosure
+## v1.7 Honest disclosure — D5 4-place canonical disclosure
 
 Mirrored in `input._note` + `output.calculation_summary.assumptions[]` +
 `output.rationale.sections[]` + this reasoning §D5.

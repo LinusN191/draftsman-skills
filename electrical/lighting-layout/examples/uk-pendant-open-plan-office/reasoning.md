@@ -99,7 +99,7 @@ Per **CIBSE LG7 §6.2** the S/H check applies transverse to the linear luminaire
 
 These three invariants now form a closed proof: the pendant emission plane is **above** the working plane (INV-17 floor), the suspension fits **inside** the ceiling cavity (INV-17 ceiling + INV-16 identity), and the cavity height **propagates correctly** into the lumen-method via `hm_mm` (INV-18). Until C.9 this proof chain was vacuous across every shipped example.
 
-## 7. 4-place canonical honest disclosure
+## v1.7 Honest disclosure — 4-place canonical D5 disclosure
 
 Mirrored in `output.calculation_summary.assumptions[]` and `output.rationale.sections[]`.
 

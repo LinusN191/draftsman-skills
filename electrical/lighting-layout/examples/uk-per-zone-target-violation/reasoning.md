@@ -271,7 +271,7 @@ fingerprint: the engineer's panel-substitution shows up at exactly
 the three layers designed to catch it, while every other INV
 (spacing, switches, circuits, Part L, zones, mount, ceiling) passes.
 
-## 11. v1.7 fields and FAIL-BY-DESIGN disclosure
+## v1.7 Honest disclosure — D5 fields and FAIL-BY-DESIGN disclosure
 
 This example is shipped at v1.7.0 with the new D5 fields populated
 from the start (not a retrofit):

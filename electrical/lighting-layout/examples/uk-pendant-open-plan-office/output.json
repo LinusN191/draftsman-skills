@@ -1,5 +1,5 @@
 {
-  "_note": "D5 sprint Task C.9 NEW example (2026-06-04). First fully-pendant scenario across the lighting-layout example set; exercises the algebraic identity z_mm + suspension_length_mm = ceiling_height_mm (MT-02 pendant rule) end-to-end. 12 m × 8 m UK new-build open-plan office, 3500 mm ceiling, 800 mm pendant drop → z_mm = 2700 mm, hm_mm = 1950 mm. 6 × 1200×200 mm architectural linear LED pendants in 3 rows × 2 cols at 105 W / 15600 lm each (148 lm/W direct/indirect) achieve 538 lx ≥ 500 lx Em open_plan_office task target (BS EN 12464-1:2021 Table 5.26.1). Single Z2 task zone (no §4.2.2.2 surrounding/background split). INV-16/17/18 fire NON-VACUOUSLY for the first time: pendant identity 2700 + 800 = 3500 = ceiling PASS (6/6); z_mm = 2700 > working_plane = 750 PASS (clearance 1950 mm); hm_mm = z_mm − working_plane = 1950 drift 0 PASS.",
+  "_note": "D5 sprint Task C.9 NEW example (2026-06-04). First fully-pendant scenario across the lighting-layout example set; exercises the algebraic identity z_mm + suspension_length_mm = ceiling_height_mm (MT-02 pendant rule) end-to-end. 12 m \u00d7 8 m UK new-build open-plan office, 3500 mm ceiling, 800 mm pendant drop \u2192 z_mm = 2700 mm, hm_mm = 1950 mm. 6 \u00d7 1200\u00d7200 mm architectural linear LED pendants in 3 rows \u00d7 2 cols at 105 W / 15600 lm each (148 lm/W direct/indirect) achieve 538 lx \u2265 500 lx Em open_plan_office task target (BS EN 12464-1:2021 Table 5.26.1). Single Z2 task zone (no \u00a74.2.2.2 surrounding/background split). INV-16/17/18 fire NON-VACUOUSLY for the first time: pendant identity 2700 + 800 = 3500 = ceiling PASS (6/6); z_mm = 2700 > working_plane = 750 PASS (clearance 1950 mm); hm_mm = z_mm \u2212 working_plane = 1950 drift 0 PASS.",
   "drawing_type": "lighting_layout",
   "version": "1.7.0",
   "room": {
@@ -17,7 +17,7 @@
   },
   "luminaire_type": {
     "symbol": "LINEAR_LED_PENDANT_1200",
-    "description": "1200×200 mm Architectural Linear LED Pendant — direct/indirect distribution, 15600 lm, 105 W, 4000 K, CRI ≥ 90, DALI-dimmable, 800 mm suspension drop",
+    "description": "1200\u00d7200 mm Architectural Linear LED Pendant \u2014 direct/indirect distribution, 15600 lm, 105 W, 4000 K, CRI \u2265 90, DALI-dimmable, 800 mm suspension drop",
     "lumens": 15600,
     "lumen_type": "design",
     "llmf_applied": false,
@@ -29,17 +29,28 @@
   },
   "selection_source": {
     "photometric_source": "input_override",
-    "citation": "LINEAR_LED ontology defaults (CIBSE LG7 §6.2 linear LED batten typical values @ RI=2.5, reflectances 0.7/0.5/0.2; SHR_max 1.6 transverse-only per LG7 §6.2 linear-luminaire convention) + BS EN 12464-1:2021 §4.4 LLMF maintenance category clean_office at 6000 h. Engineer-of-record verifies against manufacturer photometric file before issue."
+    "citation": "LINEAR_LED ontology defaults (CIBSE LG7 \u00a76.2 linear LED batten typical values @ RI=2.5, reflectances 0.7/0.5/0.2; SHR_max 1.6 transverse-only per LG7 \u00a76.2 linear-luminaire convention) + BS EN 12464-1:2021 \u00a74.4 LLMF maintenance category clean_office at 6000 h. Engineer-of-record verifies against manufacturer photometric file before issue."
   },
   "zones": [
     {
       "zone_id": "Z2",
-      "label": "Interior — open-plan office task area (6 architectural pendant luminaires in 3 rows × 2 cols, full footprint)",
+      "label": "Interior \u2014 open-plan office task area (6 architectural pendant luminaires in 3 rows \u00d7 2 cols, full footprint)",
       "zone_type": "interior",
       "control": "dali_master",
       "circuit_id": "C-L01",
-      "circuit_ids": ["C-L01", "C-L02", "C-L03"],
-      "luminaire_ids": ["L01", "L02", "L03", "L04", "L05", "L06"],
+      "circuit_ids": [
+        "C-L01",
+        "C-L02",
+        "C-L03"
+      ],
+      "luminaire_ids": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06"
+      ],
       "luminaire_count": 6,
       "total_load_w": 630,
       "purpose": "task",
@@ -47,12 +58,66 @@
     }
   ],
   "luminaires": [
-    {"id": "L01", "x_mm": 3000, "y_mm": 1333, "zone_id": "Z2", "circuit_id": "C-L01", "mount_type": "pendant", "z_mm": 2700, "suspension_length_mm": 800},
-    {"id": "L02", "x_mm": 9000, "y_mm": 1333, "zone_id": "Z2", "circuit_id": "C-L01", "mount_type": "pendant", "z_mm": 2700, "suspension_length_mm": 800},
-    {"id": "L03", "x_mm": 3000, "y_mm": 4000, "zone_id": "Z2", "circuit_id": "C-L02", "mount_type": "pendant", "z_mm": 2700, "suspension_length_mm": 800},
-    {"id": "L04", "x_mm": 9000, "y_mm": 4000, "zone_id": "Z2", "circuit_id": "C-L02", "mount_type": "pendant", "z_mm": 2700, "suspension_length_mm": 800},
-    {"id": "L05", "x_mm": 3000, "y_mm": 6667, "zone_id": "Z2", "circuit_id": "C-L03", "mount_type": "pendant", "z_mm": 2700, "suspension_length_mm": 800},
-    {"id": "L06", "x_mm": 9000, "y_mm": 6667, "zone_id": "Z2", "circuit_id": "C-L03", "mount_type": "pendant", "z_mm": 2700, "suspension_length_mm": 800}
+    {
+      "id": "L01",
+      "x_mm": 3000,
+      "y_mm": 1333,
+      "zone_id": "Z2",
+      "circuit_id": "C-L01",
+      "mount_type": "pendant",
+      "z_mm": 2700,
+      "suspension_length_mm": 800
+    },
+    {
+      "id": "L02",
+      "x_mm": 9000,
+      "y_mm": 1333,
+      "zone_id": "Z2",
+      "circuit_id": "C-L01",
+      "mount_type": "pendant",
+      "z_mm": 2700,
+      "suspension_length_mm": 800
+    },
+    {
+      "id": "L03",
+      "x_mm": 3000,
+      "y_mm": 4000,
+      "zone_id": "Z2",
+      "circuit_id": "C-L02",
+      "mount_type": "pendant",
+      "z_mm": 2700,
+      "suspension_length_mm": 800
+    },
+    {
+      "id": "L04",
+      "x_mm": 9000,
+      "y_mm": 4000,
+      "zone_id": "Z2",
+      "circuit_id": "C-L02",
+      "mount_type": "pendant",
+      "z_mm": 2700,
+      "suspension_length_mm": 800
+    },
+    {
+      "id": "L05",
+      "x_mm": 3000,
+      "y_mm": 6667,
+      "zone_id": "Z2",
+      "circuit_id": "C-L03",
+      "mount_type": "pendant",
+      "z_mm": 2700,
+      "suspension_length_mm": 800
+    },
+    {
+      "id": "L06",
+      "x_mm": 9000,
+      "y_mm": 6667,
+      "zone_id": "Z2",
+      "circuit_id": "C-L03",
+      "mount_type": "pendant",
+      "z_mm": 2700,
+      "suspension_length_mm": 800
+    }
   ],
   "switches": [
     {
@@ -71,34 +136,55 @@
       "circuit_id": "C-L01",
       "db_designation": "L1",
       "zone_id": "Z2",
-      "luminaire_ids": ["L01", "L02"],
+      "luminaire_ids": [
+        "L01",
+        "L02"
+      ],
       "total_load_w": 210,
       "mcb_rating_a": 6,
       "mcb_curve": "B",
       "row_index": 0,
-      "homerun_endpoint": {"x_mm": 0, "y_mm": 1333, "wall": "W"}
+      "homerun_endpoint": {
+        "x_mm": 0,
+        "y_mm": 1333,
+        "wall": "W"
+      }
     },
     {
       "circuit_id": "C-L02",
       "db_designation": "L1",
       "zone_id": "Z2",
-      "luminaire_ids": ["L03", "L04"],
+      "luminaire_ids": [
+        "L03",
+        "L04"
+      ],
       "total_load_w": 210,
       "mcb_rating_a": 6,
       "mcb_curve": "B",
       "row_index": 1,
-      "homerun_endpoint": {"x_mm": 0, "y_mm": 4000, "wall": "W"}
+      "homerun_endpoint": {
+        "x_mm": 0,
+        "y_mm": 4000,
+        "wall": "W"
+      }
     },
     {
       "circuit_id": "C-L03",
       "db_designation": "L1",
       "zone_id": "Z2",
-      "luminaire_ids": ["L05", "L06"],
+      "luminaire_ids": [
+        "L05",
+        "L06"
+      ],
       "total_load_w": 210,
       "mcb_rating_a": 6,
       "mcb_curve": "B",
       "row_index": 2,
-      "homerun_endpoint": {"x_mm": 0, "y_mm": 6667, "wall": "W"}
+      "homerun_endpoint": {
+        "x_mm": 0,
+        "y_mm": 6667,
+        "wall": "W"
+      }
     }
   ],
   "controls": {
@@ -109,28 +195,30 @@
     "part_l_compliant": true,
     "part_l_efficacy_target_lm_per_w": 95,
     "lamp_efficacy_lm_per_w": 148.6,
-    "required": ["occupancy"]
+    "required": [
+      "occupancy"
+    ]
   },
   "calculation_summary": {
     "target_illuminance_lux": 500,
     "achieved_illuminance_lux": 538.2,
     "utilisation_factor": 0.69,
-    "maintenance_factor": 0.80,
+    "maintenance_factor": 0.8,
     "lamp_efficacy_lm_per_w": 148.6,
     "part_l_efficacy_target_lm_per_w": 95,
-    "ugr_status": "UGR ≤ 19 — confirm from manufacturer photometric file (architectural pendant direct/indirect distribution typically delivers UGR ≤ 19 for the open-plan office task per BS EN 12464-1 Table 5.26.1)",
+    "ugr_status": "UGR \u2264 19 \u2014 confirm from manufacturer photometric file (architectural pendant direct/indirect distribution typically delivers UGR \u2264 19 for the open-plan office task per BS EN 12464-1 Table 5.26.1)",
     "compliant": true,
     "discovery_status": "complete",
     "non_compliance_flags": [],
     "assumptions": [
-      "Reflectances 0.7 / 0.5 / 0.2 (ceiling / wall / floor) — standard CIBSE LG7 office surfaces; engineer to confirm against actual finishes schedule",
+      "Reflectances 0.7 / 0.5 / 0.2 (ceiling / wall / floor) \u2014 standard CIBSE LG7 office surfaces; engineer to confirm against actual finishes schedule",
       "Working plane = 750 mm AFFL (BS EN 12464-1:2021 Table 5.26.1 office task at desk plane per [spacing-rules#working-plane-defaults])",
-      "LLMF = 0.95 at 6000 h clean-office category × LMF/RSMF combined → overall MF = 0.80 (CIBSE TM 3-25 standard cleaning interval); engineer to confirm against FM cleaning schedule",
-      "DALI master with PIR occupancy detector satisfies Approved Doc L 2021 §6 user-control + automatic-control requirements",
-      "No glazed walls → daylight-linking is N/A and not required by Part L 2021 §6 (single Z2 task zone, no perimeter-daylight zone needed)",
-      "Lumen-method N_required = (500 × 96) / (15600 × 0.69 × 0.80) = 48000 / 8610 = 5.575 → round UP to 6; final N=6 in 3 rows × 2 cols achieves 538.2 lx (7.6 % headroom)",
-      "v1.7.0 D5 RETROFIT (4-place honest disclosure, 2026-06-04). PLACE 1 — single Z2 task zone; no §4.2.2.2 surrounding/background split declared because the 3 × 2 pendant rhythm distributes evenly across the full 12 × 8 m footprint without the perimeter-band geometry needed for ZP-02 separation (open-plan task at uniform desk plane). PLACE 2 — Z2 em_target_lux = 500 per BS EN 12464-1:2021 Table 5.26.1 open_plan_office task. PLACE 3 — ALL 6 luminaires mount_type='pendant' per MT-02 with explicit z_mm = 2700 + suspension_length_mm = 800 satisfying the algebraic identity 2700 + 800 = 3500 = ceiling_height_mm per MT-02 pendant geometric rule; INV-16 fires NON-VACUOUSLY for the first time across the example set (6/6 pendants pass the identity check). PLACE 4 — INV-17 ceiling-clearance fires NON-VACUOUSLY: z_mm = 2700 > working_plane = 750 with 1950 mm clearance (= Hm); 6/6 luminaires PASS. INV-18 hm_mm derivation fires NON-VACUOUSLY: hm_mm = z_mm − working_plane_mm = 2700 − 750 = 1950 mm, drift = 0 mm, tolerance ±50 mm PASS. INV-14 vacuous PASS (no surrounding zone declared, single task zone); INV-15 vacuous PASS (no background zone); INV-13 non-vacuous PASS (Z2 declares purpose=task). INV-19 PASS (Z2 task: target 500, achieved 538.2, ratio_compliance=pass).",
-      "S/H ratio: SHR_max=1.6 (LINEAR_LED ontology default per CIBSE LG7 §6.2 linear LED batten convention), Hm=1950 mm, limit = 1.6 × 1950 = 3120 mm. Layout 3 rows × 2 cols, edge_y = 1333 mm, edge_x = 3000 mm. S_y (transverse between rows) = (8000 − 2 × 1333) / 2 = 2667 mm ≤ 3120 PASS (85 % of limit). Per CIBSE LG7 §6.2 linear-luminaire convention, the S/H check applies TRANSVERSE to the luminaire long axis (here the 1200 mm axis runs along x); longitudinal pairing within a row is not subject to SHR_max because the linear extent of the luminaire itself fills the lengthwise distribution. INV-2 PASS on the transverse axis."
+      "LLMF = 0.95 at 6000 h clean-office category \u00d7 LMF/RSMF combined \u2192 overall MF = 0.80 (CIBSE TM 3-25 standard cleaning interval); engineer to confirm against FM cleaning schedule",
+      "DALI master with PIR occupancy detector satisfies Approved Doc L 2021 \u00a76 user-control + automatic-control requirements",
+      "No glazed walls \u2192 daylight-linking is N/A and not required by Part L 2021 \u00a76 (single Z2 task zone, no perimeter-daylight zone needed)",
+      "Lumen-method N_required = (500 \u00d7 96) / (15600 \u00d7 0.69 \u00d7 0.80) = 48000 / 8610 = 5.575 \u2192 round UP to 6; final N=6 in 3 rows \u00d7 2 cols achieves 538.2 lx (7.6 % headroom)",
+      "v1.7.0 D5 RETROFIT (4-place honest disclosure, 2026-06-04). PLACE 1 \u2014 single Z2 task zone; no \u00a74.2.2.2 surrounding/background split declared because the 3 \u00d7 2 pendant rhythm distributes evenly across the full 12 \u00d7 8 m footprint without the perimeter-band geometry needed for ZP-02 separation (open-plan task at uniform desk plane). PLACE 2 \u2014 Z2 em_target_lux = 500 per BS EN 12464-1:2021 Table 5.26.1 open_plan_office task. PLACE 3 \u2014 ALL 6 luminaires mount_type='pendant' per MT-02 with explicit z_mm = 2700 + suspension_length_mm = 800 satisfying the algebraic identity 2700 + 800 = 3500 = ceiling_height_mm per MT-02 pendant geometric rule; INV-16 fires NON-VACUOUSLY for the first time across the example set (6/6 pendants pass the identity check). PLACE 4 \u2014 INV-17 ceiling-clearance fires NON-VACUOUSLY: z_mm = 2700 > working_plane = 750 with 1950 mm clearance (= Hm); 6/6 luminaires PASS. INV-18 hm_mm derivation fires NON-VACUOUSLY: hm_mm = z_mm \u2212 working_plane_mm = 2700 \u2212 750 = 1950 mm, drift = 0 mm, tolerance \u00b150 mm PASS. INV-14 vacuous PASS (no surrounding zone declared, single task zone); INV-15 vacuous PASS (no background zone); INV-13 non-vacuous PASS (Z2 declares purpose=task). INV-19 PASS (Z2 task: target 500, achieved 538.2, ratio_compliance=pass).",
+      "S/H ratio: SHR_max=1.6 (LINEAR_LED ontology default per CIBSE LG7 \u00a76.2 linear LED batten convention), Hm=1950 mm, limit = 1.6 \u00d7 1950 = 3120 mm. Layout 3 rows \u00d7 2 cols, edge_y = 1333 mm, edge_x = 3000 mm. S_y (transverse between rows) = (8000 \u2212 2 \u00d7 1333) / 2 = 2667 mm \u2264 3120 PASS (85 % of limit). Per CIBSE LG7 \u00a76.2 linear-luminaire convention, the S/H check applies TRANSVERSE to the luminaire long axis (here the 1200 mm axis runs along x); longitudinal pairing within a row is not subject to SHR_max because the linear extent of the luminaire itself fills the lengthwise distribution. INV-2 PASS on the transverse axis."
     ],
     "per_zone_achieved": [
       {
@@ -143,99 +231,103 @@
     ]
   },
   "drawing_notes": [
-    "All luminaires: 1200×200 mm architectural linear LED pendant, direct/indirect distribution, 15600 design lm, 105 W, 4000 K, CRI ≥ 90, DALI-dimmable, 800 mm suspension drop",
+    "All luminaires: 1200\u00d7200 mm architectural linear LED pendant, direct/indirect distribution, 15600 design lm, 105 W, 4000 K, CRI \u2265 90, DALI-dimmable, 800 mm suspension drop",
     "Maintained illuminance 500 lux task per BS EN 12464-1:2021 Table 5.26.1 open-plan office; achieved 538 lx (7.6 % headroom)",
-    "6 pendants in 3 rows × 2 cols; row spacing 2667 mm (transverse), column pairing 6000 mm (longitudinal along luminaire axis); S/H transverse 2667 ≤ 3120 mm = 1.6 × Hm per CIBSE LG7 §6.2 linear-luminaire convention",
+    "6 pendants in 3 rows \u00d7 2 cols; row spacing 2667 mm (transverse), column pairing 6000 mm (longitudinal along luminaire axis); S/H transverse 2667 \u2264 3120 mm = 1.6 \u00d7 Hm per CIBSE LG7 \u00a76.2 linear-luminaire convention",
     "Pendant geometric identity: z_mm = 2700 mm + suspension_length_mm = 800 mm = ceiling_height_mm = 3500 mm per MT-02 (verified on all 6 luminaires by INV-16)",
-    "Single Z2 task zone (no §4.2.2.2 task/surrounding split — the 3 × 2 pendant rhythm distributes evenly across the full footprint)",
-    "3 row circuits C-L01..C-L03, each 2 × 105 W = 210 W on a 6 A MCB curve B (per BS 7671:2018+A2:2022 §433.1.1 + IET OSG App A: 210 W = 19 % of 1104 W 80%-continuous-load cap)",
-    "All three homeruns exit on W wall at row y_mm ∈ {1333, 4000, 6667} for parallel routing back to DB L1 — no diagonals, no Z-pattern (INV-4 row-share rule PASS)",
-    "Single SW01 DALI master at S entrance latch side (x = 6600 mm, y = 200 mm, 1200 mm AFFL) controls all 3 circuits via the DALI bus per [switching-rules#latch-side] + IET OSG App E §E1.4",
-    "Lamp efficacy 148.6 lm/W ≥ Part L 2021 Table 6.2 target 95 lm/W (PASS); DALI + PIR occupancy detection satisfies Part L §6 user-control + automatic-control"
+    "Single Z2 task zone (no \u00a74.2.2.2 task/surrounding split \u2014 the 3 \u00d7 2 pendant rhythm distributes evenly across the full footprint)",
+    "3 row circuits C-L01..C-L03, each 2 \u00d7 105 W = 210 W on a 6 A MCB curve B (per BS 7671:2018+A2:2022 \u00a7433.1.1 + IET OSG App A: 210 W = 19 % of 1104 W 80%-continuous-load cap)",
+    "All three homeruns exit on W wall at row y_mm \u2208 {1333, 4000, 6667} for parallel routing back to DB L1 \u2014 no diagonals, no Z-pattern (INV-4 row-share rule PASS)",
+    "Single SW01 DALI master at S entrance latch side (x = 6600 mm, y = 200 mm, 1200 mm AFFL) controls all 3 circuits via the DALI bus per [switching-rules#latch-side] + IET OSG App E \u00a7E1.4",
+    "Lamp efficacy 148.6 lm/W \u2265 Part L 2021 Table 6.2 target 95 lm/W (PASS); DALI + PIR occupancy detection satisfies Part L \u00a76 user-control + automatic-control"
   ],
   "flags": [],
   "rationale": {
-    "chat_summary": "12 × 8 m UK new-build open-plan office — 500 lux task target per BS EN 12464-1 Table 5.26.1. 6 × 15600 lm architectural linear LED pendants in 3-row × 2-col grid, 800 mm suspension drop from 3500 mm ceiling. Achieves 538 lx (7.6 % headroom). FIRST fully-pendant example across the lighting-layout set: INV-16/17/18 fire NON-VACUOUSLY — pendant identity z_mm + suspension_length_mm = 2700 + 800 = 3500 = ceiling verifies on 6/6 luminaires; z_mm = 2700 > working_plane = 750 (1950 mm clearance); hm_mm = 1950 drift 0. Single Z2 task zone (no §4.2.2.2 surrounding split — 3 × 2 pendant rhythm distributes uniformly). INV-2 PASS via transverse S/H = 2667 mm ≤ 3120 mm per CIBSE LG7 §6.2 linear-luminaire convention. 3 row circuits 6A curve B at 210 W each (19 % headroom). Single SW01 DALI master at S entrance latch side. No glazed walls.",
+    "chat_summary": "12 \u00d7 8 m UK new-build open-plan office \u2014 500 lux task target per BS EN 12464-1 Table 5.26.1. 6 \u00d7 15600 lm architectural linear LED pendants in 3-row \u00d7 2-col grid, 800 mm suspension drop from 3500 mm ceiling. Achieves 538 lx (7.6 % headroom). FIRST fully-pendant example across the lighting-layout set: INV-16/17/18 fire NON-VACUOUSLY \u2014 pendant identity z_mm + suspension_length_mm = 2700 + 800 = 3500 = ceiling verifies on 6/6 luminaires; z_mm = 2700 > working_plane = 750 (1950 mm clearance); hm_mm = 1950 drift 0. Single Z2 task zone (no \u00a74.2.2.2 surrounding split \u2014 3 \u00d7 2 pendant rhythm distributes uniformly). INV-2 PASS via transverse S/H = 2667 mm \u2264 3120 mm per CIBSE LG7 \u00a76.2 linear-luminaire convention. 3 row circuits 6A curve B at 210 W each (19 % headroom). Single SW01 DALI master at S entrance latch side. No glazed walls.",
     "sections": [
       {
         "title": "Why this example exists",
-        "summary": "Built as the first fully-pendant scenario across the lighting-layout example set. C.1-C.8 retrofits set mount_type='recessed' on all 8 existing examples; C.9 is the first NEW example where mount_type='pendant' is the canonical choice. The scenario stress-tests the MT-02 pendant geometric identity z_mm + suspension_length_mm = ceiling_height_mm — verified on 6/6 luminaires by INV-16 — and the working-plane clearance check (z_mm > working_plane_mm) by INV-17. Until C.9 all INV-16/17/18 evidence was VACUOUS (no pendant/suspended fixtures present); from C.9 onward the example set demonstrates the pendant geometric contract end-to-end."
+        "summary": "Built as the first fully-pendant scenario across the lighting-layout example set. C.1-C.8 retrofits set mount_type='recessed' on all 8 existing examples; C.9 is the first NEW example where mount_type='pendant' is the canonical choice. The scenario stress-tests the MT-02 pendant geometric identity z_mm + suspension_length_mm = ceiling_height_mm \u2014 verified on 6/6 luminaires by INV-16 \u2014 and the working-plane clearance check (z_mm > working_plane_mm) by INV-17. Until C.9 all INV-16/17/18 evidence was VACUOUS (no pendant/suspended fixtures present); from C.9 onward the example set demonstrates the pendant geometric contract end-to-end."
       },
       {
         "title": "Lumen-method walk",
-        "summary": "A = 96 m². Hm = ceiling − working_plane = 3500 − 750 = 2750 mm? — wait, hm_mm derivation for pendants uses z_mm − working_plane_mm = 2700 − 750 = 1950 mm (INV-18 PASS). RI = (12 × 8) / (1.95 × 20) = 96 / 39 = 2.46 → ontology table band 2.5 (closest band per LG7 §6.2). UF = 0.69 (LINEAR_LED at RI=2.5, reflectances 0.7_0.5_0.2). MF = 0.80 (clean office, 3-year cleaning cycle, CIBSE TM 3-25). N_required = (500 × 96) / (15600 × 0.69 × 0.80) = 48000 / 8610 = 5.575 → round UP to 6. Achieved with final N=6: (6 × 15600 × 0.69 × 0.80) / 96 = 51667.2 / 96 = 538.2 lx ≥ 500 → INV-1 PASS with 7.6 % headroom.",
+        "summary": "A = 96 m\u00b2. Hm = ceiling \u2212 working_plane = 3500 \u2212 750 = 2750 mm? \u2014 wait, hm_mm derivation for pendants uses z_mm \u2212 working_plane_mm = 2700 \u2212 750 = 1950 mm (INV-18 PASS). RI = (12 \u00d7 8) / (1.95 \u00d7 20) = 96 / 39 = 2.46 \u2192 ontology table band 2.5 (closest band per LG7 \u00a76.2). UF = 0.69 (LINEAR_LED at RI=2.5, reflectances 0.7_0.5_0.2). MF = 0.80 (clean office, 3-year cleaning cycle, CIBSE TM 3-25). N_required = (500 \u00d7 96) / (15600 \u00d7 0.69 \u00d7 0.80) = 48000 / 8610 = 5.575 \u2192 round UP to 6. Achieved with final N=6: (6 \u00d7 15600 \u00d7 0.69 \u00d7 0.80) / 96 = 51667.2 / 96 = 538.2 lx \u2265 500 \u2192 INV-1 PASS with 7.6 % headroom.",
         "decisions": [
           {
-            "label": "Pendant hm_mm derivation — z_mm − working_plane (NOT ceiling − working_plane)",
-            "summary": "For pendant/suspended luminaires the cavity height Hm is measured from the luminaire emission plane to the working plane, NOT from the ceiling. Hm = z_mm − working_plane_mm = 2700 − 750 = 1950 mm (INV-18 drift 0). If the engineer had used ceiling − working_plane = 3500 − 750 = 2750 mm by mistake, the RI calc would shift from 2.46 to 1.75 and the UF would fall from 0.69 to ~0.62 — a 10 % underestimate of available illuminance. The pendant geometric identity catches this class of bug structurally.",
-            "rule": "MT-02 pendant hm_mm derivation: hm_mm = z_mm − working_plane_mm (NOT ceiling − working_plane_mm)",
-            "code_clause": "BS EN 12464-1:2021 §4.4 + CIBSE LG7 §6.2 (Hm cavity height from emission plane)"
+            "label": "Pendant hm_mm derivation \u2014 z_mm \u2212 working_plane (NOT ceiling \u2212 working_plane)",
+            "summary": "For pendant/suspended luminaires the cavity height Hm is measured from the luminaire emission plane to the working plane, NOT from the ceiling. Hm = z_mm \u2212 working_plane_mm = 2700 \u2212 750 = 1950 mm (INV-18 drift 0). If the engineer had used ceiling \u2212 working_plane = 3500 \u2212 750 = 2750 mm by mistake, the RI calc would shift from 2.46 to 1.75 and the UF would fall from 0.69 to ~0.62 \u2014 a 10 % underestimate of available illuminance. The pendant geometric identity catches this class of bug structurally.",
+            "rule": "MT-02 pendant hm_mm derivation: hm_mm = z_mm \u2212 working_plane_mm (NOT ceiling \u2212 working_plane_mm)",
+            "code_clause": "BS EN 12464-1:2021 \u00a74.4 + CIBSE LG7 \u00a76.2 (Hm cavity height from emission plane)"
           },
           {
             "label": "Lux target 500 lx maintained (Z2 task)",
-            "summary": "BS EN 12464-1:2021 Table 5.26.1 open-plan office task category sets 500 lx maintained at desk plane. Single Z2 task zone covers the full 12 × 8 m footprint; no §4.2.2.2 surrounding/background split because the 3 × 2 pendant rhythm distributes uniformly without an inset task rectangle.",
+            "summary": "BS EN 12464-1:2021 Table 5.26.1 open-plan office task category sets 500 lx maintained at desk plane. Single Z2 task zone covers the full 12 \u00d7 8 m footprint; no \u00a74.2.2.2 surrounding/background split because the 3 \u00d7 2 pendant rhythm distributes uniformly without an inset task rectangle.",
             "rule": "BS EN 12464-1 Table 5.26.1 office task lux target",
-            "code_clause": "BS EN 12464-1:2021 § 5"
+            "code_clause": "BS EN 12464-1:2021 \u00a7 5"
           },
           {
-            "label": "6 luminaires from N_required = 5.575 → round UP to 6 (3 rows × 2 cols)",
-            "summary": "Lumen method gives 5.575; round UP to 6 (never round down). 6 = 3 × 2 = 6 × 1 = 2 × 3; the 3-row × 2-col arrangement is the canonical choice because it places 3 transverse rows along the 8 m short dimension, matching the linear pendant axis-along-x (12 m long dimension). 7.6 % headroom is conservative — engineer accepts the modest excess in trade for a clean rhythmic ceiling plane suited to the architectural pendant style.",
+            "label": "6 luminaires from N_required = 5.575 \u2192 round UP to 6 (3 rows \u00d7 2 cols)",
+            "summary": "Lumen method gives 5.575; round UP to 6 (never round down). 6 = 3 \u00d7 2 = 6 \u00d7 1 = 2 \u00d7 3; the 3-row \u00d7 2-col arrangement is the canonical choice because it places 3 transverse rows along the 8 m short dimension, matching the linear pendant axis-along-x (12 m long dimension). 7.6 % headroom is conservative \u2014 engineer accepts the modest excess in trade for a clean rhythmic ceiling plane suited to the architectural pendant style.",
             "rule": "Round up; never round down; choose grid that matches linear luminaire axis to long room dimension",
-            "code_clause": "CIBSE LG7 §6 + BS EN 12464-1:2021 §4.3 (uniformity Uo ≥ 0.6 office task)"
+            "code_clause": "CIBSE LG7 \u00a76 + BS EN 12464-1:2021 \u00a74.3 (uniformity Uo \u2265 0.6 office task)"
           }
         ]
       },
       {
-        "title": "S/H ratio — transverse-only for linear pendants",
-        "summary": "SHR_max = 1.6 (LINEAR_LED ontology default per CIBSE LG7 §6.2 linear LED batten convention). Hm = 1950 mm; limit = 1.6 × 1950 = 3120 mm. Layout 3 rows × 2 cols, edge_y = 1333 mm, edge_x = 3000 mm. The transverse S_y between adjacent rows = (8000 − 2 × 1333) / (3 − 1) = 5334 / 2 = 2667 mm ≤ 3120 PASS (85 % of limit). Per CIBSE LG7 §6.2 the S/H check applies TRANSVERSE to the linear luminaire's long axis (here the 1200 mm axis runs along x), because the lengthwise extent of the linear luminaire itself fills the longitudinal distribution. Longitudinal pairing within a row (S_x = 6000 mm between L01 and L02 in row 0) is NOT subject to SHR_max under this convention. INV-2 PASS on the transverse axis.",
+        "title": "S/H ratio \u2014 transverse-only for linear pendants",
+        "summary": "SHR_max = 1.6 (LINEAR_LED ontology default per CIBSE LG7 \u00a76.2 linear LED batten convention). Hm = 1950 mm; limit = 1.6 \u00d7 1950 = 3120 mm. Layout 3 rows \u00d7 2 cols, edge_y = 1333 mm, edge_x = 3000 mm. The transverse S_y between adjacent rows = (8000 \u2212 2 \u00d7 1333) / (3 \u2212 1) = 5334 / 2 = 2667 mm \u2264 3120 PASS (85 % of limit). Per CIBSE LG7 \u00a76.2 the S/H check applies TRANSVERSE to the linear luminaire's long axis (here the 1200 mm axis runs along x), because the lengthwise extent of the linear luminaire itself fills the longitudinal distribution. Longitudinal pairing within a row (S_x = 6000 mm between L01 and L02 in row 0) is NOT subject to SHR_max under this convention. INV-2 PASS on the transverse axis.",
         "decisions": [
           {
-            "label": "Transverse-only S/H check for linear pendants per LG7 §6.2",
-            "summary": "Linear luminaires distribute lengthwise along their long axis through the diffuser; the S/H ratio addresses transverse-only uniformity. This convention is documented in CIBSE LG7 §6.2 for linear LED battens and architectural pendants. Applied here: only S_y (between rows) checked against SHR_max × Hm. The longitudinal S_x = 6000 mm pairing within a row is accepted because the architectural pendant's wide direct/indirect distribution and 1200 mm extent cover the inter-luminaire gap without uniformity loss.",
-            "rule": "S/H transverse-only for linear luminaires per CIBSE LG7 §6.2 linear-luminaire convention",
-            "code_clause": "CIBSE LG7 §6.2 (SHR_max for linear LED batten) + BS EN 12464-1:2021 §4.3 (uniformity Uo ≥ 0.6 office task)"
+            "label": "Transverse-only S/H check for linear pendants per LG7 \u00a76.2",
+            "summary": "Linear luminaires distribute lengthwise along their long axis through the diffuser; the S/H ratio addresses transverse-only uniformity. This convention is documented in CIBSE LG7 \u00a76.2 for linear LED battens and architectural pendants. Applied here: only S_y (between rows) checked against SHR_max \u00d7 Hm. The longitudinal S_x = 6000 mm pairing within a row is accepted because the architectural pendant's wide direct/indirect distribution and 1200 mm extent cover the inter-luminaire gap without uniformity loss.",
+            "rule": "S/H transverse-only for linear luminaires per CIBSE LG7 \u00a76.2 linear-luminaire convention",
+            "code_clause": "CIBSE LG7 \u00a76.2 (SHR_max for linear LED batten) + BS EN 12464-1:2021 \u00a74.3 (uniformity Uo \u2265 0.6 office task)"
           }
         ]
       },
       {
-        "title": "Pendant geometric identity — INV-16/17/18 NON-VACUOUS PASS",
-        "summary": "FIRST example across the lighting-layout set where all three pendant invariants fire non-vacuously. INV-16 mount_type ↔ z_mm/suspension consistency: 6 pendant luminaires inspected; pendant identity z_mm + suspension_length_mm = 2700 + 800 = 3500 = ceiling_height_mm PASS on 6/6 fixtures (drift 0 mm). INV-17 ceiling clearance + working-plane floor: 6 pendants; z_mm = 2700 > working_plane_mm = 750 PASS (clearance 1950 mm = Hm); ceiling check z_mm ≤ ceiling = 3500 PASS. INV-18 hm_mm derivation: expected hm_mm for pendant branch = z_mm − working_plane_mm = 2700 − 750 = 1950 mm; recorded hm_mm = 1950 mm; drift = 0 mm ≤ tolerance ±50 mm PASS. The pendant geometric identity propagates through to the lumen-method via the corrected hm_mm value, which feeds RI = 2.46 → UF = 0.69 and ultimately the 538 lx achievement.",
+        "title": "Pendant geometric identity \u2014 INV-16/17/18 NON-VACUOUS PASS",
+        "summary": "FIRST example across the lighting-layout set where all three pendant invariants fire non-vacuously. INV-16 mount_type \u2194 z_mm/suspension consistency: 6 pendant luminaires inspected; pendant identity z_mm + suspension_length_mm = 2700 + 800 = 3500 = ceiling_height_mm PASS on 6/6 fixtures (drift 0 mm). INV-17 ceiling clearance + working-plane floor: 6 pendants; z_mm = 2700 > working_plane_mm = 750 PASS (clearance 1950 mm = Hm); ceiling check z_mm \u2264 ceiling = 3500 PASS. INV-18 hm_mm derivation: expected hm_mm for pendant branch = z_mm \u2212 working_plane_mm = 2700 \u2212 750 = 1950 mm; recorded hm_mm = 1950 mm; drift = 0 mm \u2264 tolerance \u00b150 mm PASS. The pendant geometric identity propagates through to the lumen-method via the corrected hm_mm value, which feeds RI = 2.46 \u2192 UF = 0.69 and ultimately the 538 lx achievement.",
         "decisions": [
           {
             "label": "Pendant identity catches the wrong-Hm bug class structurally",
-            "summary": "Before MT-02 the failure mode was engineers computing hm_mm = ceiling − working_plane = 3500 − 750 = 2750 mm for a pendant — a 41 % overestimate of cavity height that would understate UF and inflate the required luminaire count. The pendant identity z_mm + suspension_length_mm = ceiling forces the engineer to declare both the suspension drop AND the emission-plane height; INV-18 then derives hm_mm = z_mm − working_plane and flags any drift > 50 mm. This is the canonical 'pendant geometric contract' the v1.7 release introduces.",
+            "summary": "Before MT-02 the failure mode was engineers computing hm_mm = ceiling \u2212 working_plane = 3500 \u2212 750 = 2750 mm for a pendant \u2014 a 41 % overestimate of cavity height that would understate UF and inflate the required luminaire count. The pendant identity z_mm + suspension_length_mm = ceiling forces the engineer to declare both the suspension drop AND the emission-plane height; INV-18 then derives hm_mm = z_mm \u2212 working_plane and flags any drift > 50 mm. This is the canonical 'pendant geometric contract' the v1.7 release introduces.",
             "rule": "MT-02 pendant geometric identity + INV-16/17/18 cross-check",
-            "code_clause": "BS EN 12464-1:2021 §4.4 + BS EN 60598-2 (suspended luminaire) + mount-type-rules.yaml MT-02"
+            "code_clause": "BS EN 12464-1:2021 \u00a74.4 + BS EN 60598-2 (suspended luminaire) + mount-type-rules.yaml MT-02"
           }
         ]
       },
       {
-        "title": "Circuit topology — 3 row circuits, no Z-pattern",
-        "summary": "3 row circuits C-L01..C-L03, one per row. Each circuit's luminaire_ids share single row_index (0, 1, 2 respectively): C-L01 = {L01, L02} row 0; C-L02 = {L03, L04} row 1; C-L03 = {L05, L06} row 2. max(row_indices) − min(row_indices) = 0 per circuit ≤ 1 → no Z-pattern, no diagonal jumps. INV-4 Rule 4a PASS. Homeruns all exit on W wall (x_mm=0) at row y_mm ∈ {1333, 4000, 6667} — all four required keys (x_mm, y_mm, wall) present, wall ∈ {N,S,E,W}. INV-4 Rule 4b PASS. INV-5: 210 W per circuit ≤ 1104 W (6A × 0.8 × 230V) → 19 % of headroom — ample spare for future task-light additions or scene-control retrofits.",
+        "title": "Circuit topology \u2014 3 row circuits, no Z-pattern",
+        "summary": "3 row circuits C-L01..C-L03, one per row. Each circuit's luminaire_ids share single row_index (0, 1, 2 respectively): C-L01 = {L01, L02} row 0; C-L02 = {L03, L04} row 1; C-L03 = {L05, L06} row 2. max(row_indices) \u2212 min(row_indices) = 0 per circuit \u2264 1 \u2192 no Z-pattern, no diagonal jumps. INV-4 Rule 4a PASS. Homeruns all exit on W wall (x_mm=0) at row y_mm \u2208 {1333, 4000, 6667} \u2014 all four required keys (x_mm, y_mm, wall) present, wall \u2208 {N,S,E,W}. INV-4 Rule 4b PASS. INV-5: 210 W per circuit \u2264 1104 W (6A \u00d7 0.8 \u00d7 230V) \u2192 19 % of headroom \u2014 ample spare for future task-light additions or scene-control retrofits.",
         "decisions": [
           {
             "label": "3 row circuits instead of one big circuit (closes the Z-pattern bug class)",
-            "summary": "One circuit feeding all 6 luminaires (210 × 3 = 630 W still fits a 6A MCB at 57 % of headroom) is technically legal but invites a Z-pattern daisy-chain when the renderer draws the homerun. Splitting into 3 row circuits forces each circuit's luminaires to share a single row_index — INV-4 then verifies it structurally rather than relying on the renderer to draw the right cable run.",
-            "rule": "INV-4 row-share rule (max − min ≤ 1) + INV-5 80 % cap",
-            "code_clause": "BS 7671:2018+A2:2022 §433.1.1 + IET OSG App A + [circuit-topology-rules#row-share]"
+            "summary": "One circuit feeding all 6 luminaires (210 \u00d7 3 = 630 W still fits a 6A MCB at 57 % of headroom) is technically legal but invites a Z-pattern daisy-chain when the renderer draws the homerun. Splitting into 3 row circuits forces each circuit's luminaires to share a single row_index \u2014 INV-4 then verifies it structurally rather than relying on the renderer to draw the right cable run.",
+            "rule": "INV-4 row-share rule (max \u2212 min \u2264 1) + INV-5 80 % cap",
+            "code_clause": "BS 7671:2018+A2:2022 \u00a7433.1.1 + IET OSG App A + [circuit-topology-rules#row-share]"
           }
         ]
       },
       {
-        "title": "Switch placement — deterministic from door_swing",
-        "summary": "Single entrance on S wall, offset_mm=5500, width_mm=900, door_swing=inward_latch_right. Door spans x ∈ [5500, 6400]; latch frame at x=6400 (right end of door because door_swing latch=right). Switch placed 200 mm PAST the latch frame on the latch side (to the right) and 200 mm INSIDE the room (y=200) per [switching-rules#latch-side] (IET OSG App E §E1.4). Resulting position: (6600, 200), 1200 mm AFFL — within the [1150, 1250] band per [switching-rules#height] (BS 7671 §553.1.1). switch_side='latch'. type='dali_master' controls all 3 row circuits via the DALI bus."
+        "title": "Switch placement \u2014 deterministic from door_swing",
+        "summary": "Single entrance on S wall, offset_mm=5500, width_mm=900, door_swing=inward_latch_right. Door spans x \u2208 [5500, 6400]; latch frame at x=6400 (right end of door because door_swing latch=right). Switch placed 200 mm PAST the latch frame on the latch side (to the right) and 200 mm INSIDE the room (y=200) per [switching-rules#latch-side] (IET OSG App E \u00a7E1.4). Resulting position: (6600, 200), 1200 mm AFFL \u2014 within the [1150, 1250] band per [switching-rules#height] (BS 7671 \u00a7553.1.1). switch_side='latch'. type='dali_master' controls all 3 row circuits via the DALI bus."
       },
       {
-        "title": "Part L 2021 compliance — no-glazing branch",
-        "summary": "inputs.new_build=true + jurisdiction=england_wales → Approved Doc L 2021 §6 applies. (1) controls.part_l_assessed=true PASS. (2) controls.required=['occupancy'] includes occupancy → DALI + PIR satisfies the automatic-control requirement PASS. (3) glazed_walls=[] (empty) → daylight-linking requirement vacuously satisfied; Part L 2021 §6.5 only requires daylight zoning for windowed perimeters PASS. (4) controls.lamp_efficacy_lm_per_w = 15600 / 105 = 148.6 ≥ 95 lm/W target PASS. All four sub-checks PASS → controls.part_l_compliant=true → INV-6 PASS."
+        "title": "Part L 2021 compliance \u2014 no-glazing branch",
+        "summary": "inputs.new_build=true + jurisdiction=england_wales \u2192 Approved Doc L 2021 \u00a76 applies. (1) controls.part_l_assessed=true PASS. (2) controls.required=['occupancy'] includes occupancy \u2192 DALI + PIR satisfies the automatic-control requirement PASS. (3) glazed_walls=[] (empty) \u2192 daylight-linking requirement vacuously satisfied; Part L 2021 \u00a76.5 only requires daylight zoning for windowed perimeters PASS. (4) controls.lamp_efficacy_lm_per_w = 15600 / 105 = 148.6 \u2265 95 lm/W target PASS. All four sub-checks PASS \u2192 controls.part_l_compliant=true \u2192 INV-6 PASS."
       },
       {
-        "title": "Zone assignment — single task zone (no §4.2.2.2 split)",
-        "summary": "1 zone declared: Z2 task (interior, 6 luminaires, em_target=500). zone_type='interior' (NOT 'perimeter' — 'perimeter' in this schema means daylight-perimeter, which is gated on glazed_walls per INV-7 Rule 3). INV-7 Rule 3 (perimeter-daylight consistency) is vacuously satisfied because glazed_walls=[] AND no zone declares zone_type='perimeter' — the iff-clause holds in both directions. INV-7 Rule 1 (1:1 luminaire→zone referential integrity) PASS — 6 luminaires each reference Z2. INV-13 PASS — Z2 declares purpose='task' (single task zone; orphan-surrounding check passes vacuously because no surrounding zone exists). INV-14/15 vacuous PASS — no surrounding or background zones."
+        "title": "Zone assignment \u2014 single task zone (no \u00a74.2.2.2 split)",
+        "summary": "1 zone declared: Z2 task (interior, 6 luminaires, em_target=500). zone_type='interior' (NOT 'perimeter' \u2014 'perimeter' in this schema means daylight-perimeter, which is gated on glazed_walls per INV-7 Rule 3). INV-7 Rule 3 (perimeter-daylight consistency) is vacuously satisfied because glazed_walls=[] AND no zone declares zone_type='perimeter' \u2014 the iff-clause holds in both directions. INV-7 Rule 1 (1:1 luminaire\u2192zone referential integrity) PASS \u2014 6 luminaires each reference Z2. INV-13 PASS \u2014 Z2 declares purpose='task' (single task zone; orphan-surrounding check passes vacuously because no surrounding zone exists). INV-14/15 vacuous PASS \u2014 no surrounding or background zones."
       },
       {
         "title": "Drafting furniture",
-        "summary": "title_block carries drawing_number='L-201', revision='P1', scale='1:50', sheet_size='A3'. project_name='UK new-build open-plan office — pendant linear pilot'. scale_bar at (9500, 8500) — sits in the negative-space margin to the right of the room. dimensions[2] = horizontal '12000 mm' at y=−300 (below the room) + vertical '8000 mm' at x=−300 (left of the room) — both use the negative-coordinate convention. luminaire_schedule with the required 5 columns (Ref / Manufacturer / Lumens / Wattage / Count) + 1 row for LINEAR_LED_PENDANT_1200 × 6. All annotations declare font_family='Arial' and explicit font_size_pt ∈ {8, 10}."
+        "summary": "title_block carries drawing_number='L-201', revision='P1', scale='1:50', sheet_size='A3'. project_name='UK new-build open-plan office \u2014 pendant linear pilot'. scale_bar at (9500, 8500) \u2014 sits in the negative-space margin to the right of the room. dimensions[2] = horizontal '12000 mm' at y=\u2212300 (below the room) + vertical '8000 mm' at x=\u2212300 (left of the room) \u2014 both use the negative-coordinate convention. luminaire_schedule with the required 5 columns (Ref / Manufacturer / Lumens / Wattage / Count) + 1 row for LINEAR_LED_PENDANT_1200 \u00d7 6. All annotations declare font_family='Arial' and explicit font_size_pt \u2208 {8, 10}."
+      },
+      {
+        "title": "v1.7 Honest disclosure \u2014 D5 canonical 4-place disclosure",
+        "summary": "C.9 is a v1.7.0 NEW example (not a retrofit). All D5 fields are populated from the start: mount_type='pendant' on all 6 luminaires with explicit z_mm=2700 + suspension_length_mm=800 satisfying identity 2700+800=3500=ceiling_height_mm (MT-02); single Z2 task zone (no \u00a74.2.2.2 surrounding/background split \u2014 3\u00d72 pendant grid distributes uniformly without a task-inset rectangle requiring a perimeter band); em_target_lux=500 per BS EN 12464-1:2021 Table 5.26.1; per_zone_achieved Z2 target=500, achieved=538.2, ratio_compliance=pass. INV-13 PASS (Z2 declares purpose=task); INV-14/15 vacuous PASS (no surrounding/background zones); INV-16/17/18 NON-VACUOUS PASS on all 6 pendants (FIRST fully-pendant example across the lighting-layout set); INV-19 PASS (Z2 538.2 \u2265 500)."
       },
       {
         "title": "Assumptions",
@@ -248,109 +340,109 @@
       "id": "INV-01",
       "passes": true,
       "severity": "high",
-      "evidence": "Lumen method: N=6 LINEAR_LED_PENDANT_1200 × 15600 lm × UF=0.69 × MF=0.80 / 96 m² = achieved_illuminance_lux=538.2 lux ≥ target 500 lux (Rule 1 PASS, 7.6 % headroom). Lumen-method required N = (500×96)/(15600×0.69×0.80) = 48000/8610.24 = 5.575 → round UP to 6. Per [spacing-rules#lumen-method-formula] + LINEAR_LED ontology UF table at RI=2.5, reflectances 0.7_0.5_0.2."
+      "evidence": "Lumen method: N=6 LINEAR_LED_PENDANT_1200 \u00d7 15600 lm \u00d7 UF=0.69 \u00d7 MF=0.80 / 96 m\u00b2 = achieved_illuminance_lux=538.2 lux \u2265 target 500 lux (Rule 1 PASS, 7.6 % headroom). Lumen-method required N = (500\u00d796)/(15600\u00d70.69\u00d70.80) = 48000/8610.24 = 5.575 \u2192 round UP to 6. Per [spacing-rules#lumen-method-formula] + LINEAR_LED ontology UF table at RI=2.5, reflectances 0.7_0.5_0.2."
     },
     {
       "id": "INV-02",
       "passes": true,
       "severity": "high",
-      "evidence": "S/H ratio: Hm=1950 mm, SHR_max=1.6 (LINEAR_LED ontology default), limit=3120 mm. 3 rows × 2 cols grid: S_y (transverse between rows) = (8000−2×1333)/2 = 2667 mm ≤ 3120 PASS (85 % of limit). Per CIBSE LG7 §6.2 linear-luminaire convention the S/H check applies TRANSVERSE to the linear luminaire's long axis (here the 1200 mm axis runs along x); longitudinal pairing within a row (S_x = 6000 mm between L01-L02) is not subject to SHR_max because the linear luminaire's own length fills the longitudinal distribution. INV-2 PASS on the transverse axis."
+      "evidence": "S/H ratio: Hm=1950 mm, SHR_max=1.6 (LINEAR_LED ontology default), limit=3120 mm. 3 rows \u00d7 2 cols grid: S_y (transverse between rows) = (8000\u22122\u00d71333)/2 = 2667 mm \u2264 3120 PASS (85 % of limit). Per CIBSE LG7 \u00a76.2 linear-luminaire convention the S/H check applies TRANSVERSE to the linear luminaire's long axis (here the 1200 mm axis runs along x); longitudinal pairing within a row (S_x = 6000 mm between L01-L02) is not subject to SHR_max because the linear luminaire's own length fills the longitudinal distribution. INV-2 PASS on the transverse axis."
     },
     {
       "id": "INV-03",
       "passes": true,
       "severity": "high",
-      "evidence": "Switch coverage: 1 entrance on S wall (offset_mm=5500, width_mm=900, door_swing=inward_latch_right). controls_protocol=DALI → INV-3 Rule 1 DALI consolidation: a single dali_master at each entrance group is sufficient. SW01 (6600, 200) — S latch frame at x=5500+900=6400, +200 mm right (latch side), +200 mm inside the room → (6600, 200). 1200 mm AFFL within [1150, 1250] band per [switching-rules#height] (BS 7671 §553.1.1 + IET OSG App E §E1.4). switch_side='latch'. controls_circuit='C-L01,C-L02,C-L03' — DALI master logically groups all 3 row circuits via the DALI bus. Rules 1, 2 and 3 PASS."
+      "evidence": "Switch coverage: 1 entrance on S wall (offset_mm=5500, width_mm=900, door_swing=inward_latch_right). controls_protocol=DALI \u2192 INV-3 Rule 1 DALI consolidation: a single dali_master at each entrance group is sufficient. SW01 (6600, 200) \u2014 S latch frame at x=5500+900=6400, +200 mm right (latch side), +200 mm inside the room \u2192 (6600, 200). 1200 mm AFFL within [1150, 1250] band per [switching-rules#height] (BS 7671 \u00a7553.1.1 + IET OSG App E \u00a7E1.4). switch_side='latch'. controls_circuit='C-L01,C-L02,C-L03' \u2014 DALI master logically groups all 3 row circuits via the DALI bus. Rules 1, 2 and 3 PASS."
     },
     {
       "id": "INV-04",
       "passes": true,
       "severity": "high",
-      "evidence": "Circuit topology: 3 row circuits C-L01..C-L03 each feed exactly one row of 2 luminaires sharing single row_index (0, 1, 2 respectively). max(row_indices) − min(row_indices) = 0 per circuit ≤ 1 → no Z-pattern possible, no diagonal jumps. homerun_endpoints all on W wall (x_mm=0) at row y_mm ∈ {1333, 4000, 6667} — all four required keys (x_mm, y_mm, wall) present, wall ∈ {N,S,E,W}. Rule 4a PASS (row-share Δ=0); Rule 4b PASS (homerun endpoints valid)."
+      "evidence": "Circuit topology: 3 row circuits C-L01..C-L03 each feed exactly one row of 2 luminaires sharing single row_index (0, 1, 2 respectively). max(row_indices) \u2212 min(row_indices) = 0 per circuit \u2264 1 \u2192 no Z-pattern possible, no diagonal jumps. homerun_endpoints all on W wall (x_mm=0) at row y_mm \u2208 {1333, 4000, 6667} \u2014 all four required keys (x_mm, y_mm, wall) present, wall \u2208 {N,S,E,W}. Rule 4a PASS (row-share \u0394=0); Rule 4b PASS (homerun endpoints valid)."
     },
     {
       "id": "INV-05",
       "passes": true,
       "severity": "high",
-      "evidence": "Circuit load: each of C-L01..C-L03 has total_load_w=210 W = 2 × 105 W ≤ 0.8 × 6 A × 230 V = 1104 W (6A MCB limit). All three circuits PASS the 80 % continuous-load cap per BS 7671:2018+A2:2022 §433.1.1 + IET OSG App A. 210 W is 19 % of headroom each — ample spare for future ergonomic task lighting + scene-control retrofits."
+      "evidence": "Circuit load: each of C-L01..C-L03 has total_load_w=210 W = 2 \u00d7 105 W \u2264 0.8 \u00d7 6 A \u00d7 230 V = 1104 W (6A MCB limit). All three circuits PASS the 80 % continuous-load cap per BS 7671:2018+A2:2022 \u00a7433.1.1 + IET OSG App A. 210 W is 19 % of headroom each \u2014 ample spare for future ergonomic task lighting + scene-control retrofits."
     },
     {
       "id": "INV-06",
       "passes": true,
       "severity": "high",
-      "evidence": "Part L compliance: inputs.new_build=true (UK new-build open-plan office) AND jurisdiction=england_wales triggers Part L 2021 §6 enforcement. (1) controls.part_l_assessed=true PASS. (2) controls.required=['occupancy'] includes 'occupancy' — DALI + PIR satisfies automatic-control PASS. (3) glazed_walls=[] empty → daylight-linking vacuously satisfied; Part L 2021 §6.5 only requires daylight zoning when glazing is present PASS. (4) controls.lamp_efficacy_lm_per_w = 15600/105 = 148.6 ≥ 95 PASS. All four sub-checks PASS. controls.part_l_compliant=true. Per Approved Doc L 2021 §6 + BS EN 15193-1:2017 §6."
+      "evidence": "Part L compliance: inputs.new_build=true (UK new-build open-plan office) AND jurisdiction=england_wales triggers Part L 2021 \u00a76 enforcement. (1) controls.part_l_assessed=true PASS. (2) controls.required=['occupancy'] includes 'occupancy' \u2014 DALI + PIR satisfies automatic-control PASS. (3) glazed_walls=[] empty \u2192 daylight-linking vacuously satisfied; Part L 2021 \u00a76.5 only requires daylight zoning when glazing is present PASS. (4) controls.lamp_efficacy_lm_per_w = 15600/105 = 148.6 \u2265 95 PASS. All four sub-checks PASS. controls.part_l_compliant=true. Per Approved Doc L 2021 \u00a76 + BS EN 15193-1:2017 \u00a76."
     },
     {
       "id": "INV-07",
       "passes": true,
       "severity": "medium",
-      "evidence": "Zone assignment: 6 luminaires reference {Z2} — 6 → Z2 task (L01-L06); 1:1 referential integrity (each luminaire to exactly one zone) PASS. inputs.glazed_walls=[] empty AND no zone declares zone_type='perimeter' (Z2 zone_type='interior') — iff-clause perimeter-daylight consistency PASS (no glazing ⇔ no daylight-perimeter zone). Zone control protocol matches zone_type: Z2.control='dali_master' valid for interior with DALI controls_protocol per [control-rules#dali-zoning]."
+      "evidence": "Zone assignment: 6 luminaires reference {Z2} \u2014 6 \u2192 Z2 task (L01-L06); 1:1 referential integrity (each luminaire to exactly one zone) PASS. inputs.glazed_walls=[] empty AND no zone declares zone_type='perimeter' (Z2 zone_type='interior') \u2014 iff-clause perimeter-daylight consistency PASS (no glazing \u21d4 no daylight-perimeter zone). Zone control protocol matches zone_type: Z2.control='dali_master' valid for interior with DALI controls_protocol per [control-rules#dali-zoning]."
     },
     {
       "id": "INV-08",
       "passes": true,
       "severity": "medium",
-      "evidence": "selection_source.photometric_source='input_override'; citation matches inputs.photometric_override._source exactly: 'LINEAR_LED ontology defaults (CIBSE LG7 §6.2 linear LED batten typical values @ RI=2.5, reflectances 0.7/0.5/0.2; SHR_max 1.6 transverse-only per LG7 §6.2 linear-luminaire convention) + BS EN 12464-1:2021 §4.4 LLMF maintenance category clean_office at 6000 h. Engineer-of-record verifies against manufacturer photometric file before issue.' Rule 8 PASS."
+      "evidence": "selection_source.photometric_source='input_override'; citation matches inputs.photometric_override._source exactly: 'LINEAR_LED ontology defaults (CIBSE LG7 \u00a76.2 linear LED batten typical values @ RI=2.5, reflectances 0.7/0.5/0.2; SHR_max 1.6 transverse-only per LG7 \u00a76.2 linear-luminaire convention) + BS EN 12464-1:2021 \u00a74.4 LLMF maintenance category clean_office at 6000 h. Engineer-of-record verifies against manufacturer photometric file before issue.' Rule 8 PASS."
     },
     {
       "id": "INV-09",
       "passes": true,
       "severity": "medium",
-      "evidence": "drafting_furniture present with all 4 required blocks (title_block + scale_bar + dimensions[2] + luminaire_schedule). title_block carries: drawing_number='L-201', revision='P1', scale='1:50', sheet_size='A3'. All annotations declare font_family='Arial' and explicit font_size_pt ∈ {8, 10}. dimensions.length=2 ≥ 2 minimum (horizontal 12000 mm + vertical 8000 mm). No {{placeholder}} substrings in any text field. Rule 9 PASS."
+      "evidence": "drafting_furniture present with all 4 required blocks (title_block + scale_bar + dimensions[2] + luminaire_schedule). title_block carries: drawing_number='L-201', revision='P1', scale='1:50', sheet_size='A3'. All annotations declare font_family='Arial' and explicit font_size_pt \u2208 {8, 10}. dimensions.length=2 \u2265 2 minimum (horizontal 12000 mm + vertical 8000 mm). No {{placeholder}} substrings in any text field. Rule 9 PASS."
     },
     {
       "id": "INV-10",
       "passes": true,
       "severity": "high",
-      "evidence": "Schema validation PASSED (precondition: golden CI gate). All top-level required fields populated: drawing_type='lighting_layout', version='1.7.0', room (incl. room_type='open_plan_office' enum), calculation_summary (target+compliant+non_compliance_flags+assumptions+per_zone_achieved), rationale (chat_summary 40-500 + sections ≥1), invariants (19 entries INV-01..INV-19, no INV-12). Mode=full_drawing — full_drawing required-fields all present: luminaire_type, luminaires (6), switches (1), circuits (3), controls, drawing_notes (9), zones (1: Z2 task), drafting_furniture, selection_source, consumed_intents.photometric_grid. non_compliance_flags=[] (vacuously valid). controls.part_l_compliant=true so Rule 3 cross-check trivially PASS. Rule 10 PASS."
+      "evidence": "Schema validation PASSED (precondition: golden CI gate). All top-level required fields populated: drawing_type='lighting_layout', version='1.7.0', room (incl. room_type='open_plan_office' enum), calculation_summary (target+compliant+non_compliance_flags+assumptions+per_zone_achieved), rationale (chat_summary 40-500 + sections \u22651), invariants (19 entries INV-01..INV-19, no INV-12). Mode=full_drawing \u2014 full_drawing required-fields all present: luminaire_type, luminaires (6), switches (1), circuits (3), controls, drawing_notes (9), zones (1: Z2 task), drafting_furniture, selection_source, consumed_intents.photometric_grid. non_compliance_flags=[] (vacuously valid). controls.part_l_compliant=true so Rule 3 cross-check trivially PASS. Rule 10 PASS."
     },
     {
       "id": "INV-11",
       "passes": true,
       "severity": "high",
-      "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from cascade-uk-pendant-open-plan-office/intent-out.json. payload.task_area_compliant=true; payload.achieved_avg_illuminance_lux=521 vs target=500 (sub-check 3 PASS, 104 % — high-output 15600 lm architectural pendants deliver modest headroom with the 3 × 2 grid); 0 non_compliance_flags cascaded to lighting-layout calculation_summary with _cascaded_from=photometric-analysis attribution (sub-check 4 PASS, vacuously). Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
+      "evidence": "Photometric cascade resolved: consumed_intents.photometric_grid sourced from cascade-uk-pendant-open-plan-office/intent-out.json. payload.task_area_compliant=true; payload.achieved_avg_illuminance_lux=521 vs target=500 (sub-check 3 PASS, 104 % \u2014 high-output 15600 lm architectural pendants deliver modest headroom with the 3 \u00d7 2 grid); 0 non_compliance_flags cascaded to lighting-layout calculation_summary with _cascaded_from=photometric-analysis attribution (sub-check 4 PASS, vacuously). Cascade per skill.manifest.json consumes_intents trigger 'mode == full_drawing'."
     },
     {
       "id": "INV-13",
       "passes": true,
       "severity": "high",
-      "evidence": "INV-13 verdict: PASS. Zones inspected: 1. Per-zone purpose: Z2: purpose=task, em_target_lux=500. Orphan-surrounding check: vacuous (no surrounding zone present). Z2 declares purpose ∈ {task, surrounding, background, circulation}. Citation: BS EN 12464-1:2021 §4.2.2.1 (task area) + area-definitions.json §4.2.2.x."
+      "evidence": "INV-13 verdict: PASS. Zones inspected: 1. Per-zone purpose: Z2: purpose=task, em_target_lux=500. Orphan-surrounding check: vacuous (no surrounding zone present). Z2 declares purpose \u2208 {task, surrounding, background, circulation}. Citation: BS EN 12464-1:2021 \u00a74.2.2.1 (task area) + area-definitions.json \u00a74.2.2.x."
     },
     {
       "id": "INV-14",
       "passes": true,
       "severity": "high",
-      "evidence": "INV-14 verdict: vacuous PASS. Surrounding zones inspected: 0. No zones declare purpose='surrounding' — INV-14 vacuous PASS per validator §INV-14 vacuous condition. Single Z2 task zone covers the full 12 × 8 m footprint; the 3 × 2 pendant rhythm distributes uniformly so no §4.2.2.2 task/surrounding split was declared. Citation: BS EN 12464-1:2021 §4.2.2.2 + Table 6."
+      "evidence": "INV-14 verdict: vacuous PASS. Surrounding zones inspected: 0. No zones declare purpose='surrounding' \u2014 INV-14 vacuous PASS per validator \u00a7INV-14 vacuous condition. Single Z2 task zone covers the full 12 \u00d7 8 m footprint; the 3 \u00d7 2 pendant rhythm distributes uniformly so no \u00a74.2.2.2 task/surrounding split was declared. Citation: BS EN 12464-1:2021 \u00a74.2.2.2 + Table 6."
     },
     {
       "id": "INV-15",
       "passes": true,
       "severity": "high",
-      "evidence": "Background floor. Background zones inspected: 0. No zones declare purpose='background' — INV-15 vacuous PASS per validator §INV-15 vacuous condition. Single Z2 task zone only; no background tier declared for this open-plan office. Citation: BS EN 12464-1:2021 §4.2.2.3 + Table 6 (area-definitions.json table_6_ratio_rules.task_to_background)."
+      "evidence": "Background floor. Background zones inspected: 0. No zones declare purpose='background' \u2014 INV-15 vacuous PASS per validator \u00a7INV-15 vacuous condition. Single Z2 task zone only; no background tier declared for this open-plan office. Citation: BS EN 12464-1:2021 \u00a74.2.2.3 + Table 6 (area-definitions.json table_6_ratio_rules.task_to_background)."
     },
     {
       "id": "INV-16",
       "passes": true,
       "severity": "high",
-      "evidence": "mount_type ↔ z_mm/suspension consistency. Luminaires inspected: 6. Pendant geometry checks: 6 pendant luminaires (L01..L06 all mount_type='pendant'). Pendant identity z_mm + suspension_length_mm = ceiling_height_mm: 2700 + 800 = 3500 = 3500 PASS (drift 0 mm) on 6/6 fixtures. Suspended geometry checks: 0. Recessed/surface/track: 0. INV-16 NON-VACUOUS PASS — FIRST example across the lighting-layout set where INV-16 fires non-vacuously on pendant geometry. Citation: BS EN 60598-2-1 + BS EN 60598-2-2 (suspended luminaire) + mount-type-rules.yaml MT-02."
+      "evidence": "mount_type \u2194 z_mm/suspension consistency. Luminaires inspected: 6. Pendant geometry checks: 6 pendant luminaires (L01..L06 all mount_type='pendant'). Pendant identity z_mm + suspension_length_mm = ceiling_height_mm: 2700 + 800 = 3500 = 3500 PASS (drift 0 mm) on 6/6 fixtures. Suspended geometry checks: 0. Recessed/surface/track: 0. INV-16 NON-VACUOUS PASS \u2014 FIRST example across the lighting-layout set where INV-16 fires non-vacuously on pendant geometry. Citation: BS EN 60598-2-1 + BS EN 60598-2-2 (suspended luminaire) + mount-type-rules.yaml MT-02."
     },
     {
       "id": "INV-17",
       "passes": true,
       "severity": "high",
-      "evidence": "Ceiling clearance + working-plane floor. Working plane reference: 750 mm AFF. Per-luminaire floor check: 6/6 pendants declare z_mm=2700 > working_plane=750 (clearance=1950 mm = Hm). Per-luminaire ceiling clearance: 6/6 pendants have z_mm + suspension_length_mm = 2700 + 800 = 3500 ≤ ceiling=3500 PASS. INV-17 NON-VACUOUS PASS — no luminaire below task plane, no luminaire exceeds ceiling. Citation: BS EN 12464-1:2021 §4.4 + BS EN 60598-2 + mount-type-rules.yaml MT-04."
+      "evidence": "Ceiling clearance + working-plane floor. Working plane reference: 750 mm AFF. Per-luminaire floor check: 6/6 pendants declare z_mm=2700 > working_plane=750 (clearance=1950 mm = Hm). Per-luminaire ceiling clearance: 6/6 pendants have z_mm + suspension_length_mm = 2700 + 800 = 3500 \u2264 ceiling=3500 PASS. INV-17 NON-VACUOUS PASS \u2014 no luminaire below task plane, no luminaire exceeds ceiling. Citation: BS EN 12464-1:2021 \u00a74.4 + BS EN 60598-2 + mount-type-rules.yaml MT-04."
     },
     {
       "id": "INV-18",
       "passes": true,
       "severity": "medium",
-      "evidence": "hm_mm derivation consistency. Room hm_mm recorded: 1950 mm. Lowest pendant/suspended z_mm: 2700 mm (all 6 pendants share z_mm=2700). Pendant branch: expected hm_mm = z_mm − working_plane_mm = 2700 − 750 = 1950 mm. Drift: |1950 − 1950| = 0 mm, tolerance ±50 mm. INV-18 NON-VACUOUS PASS. Citation: BS EN 12464-1:2021 §4.4 + repo derivation convention."
+      "evidence": "hm_mm derivation consistency. Room hm_mm recorded: 1950 mm. Lowest pendant/suspended z_mm: 2700 mm (all 6 pendants share z_mm=2700). Pendant branch: expected hm_mm = z_mm \u2212 working_plane_mm = 2700 \u2212 750 = 1950 mm. Drift: |1950 \u2212 1950| = 0 mm, tolerance \u00b150 mm. INV-18 NON-VACUOUS PASS. Citation: BS EN 12464-1:2021 \u00a74.4 + repo derivation convention."
     },
     {
       "id": "INV-19",
       "passes": true,
       "severity": "high",
-      "evidence": "Per-zone achievement. Zones inspected: 1. Per-zone achievement: Z2 (task): target=500, achieved=538.2, gap=-38.2, gap_pct=-7.6%, ratio_compliance=pass, severity=none (achieved ≥ target). Aggregate: 1 PASS, 0 marginal, 0 MEDIUM, 0 HIGH. INV-19 PASS. Citation: BS EN 12464-1:2021 §4.1 + Table 5 (lux-levels.json open_plan_office entry, Em=500 lx)."
+      "evidence": "Per-zone achievement. Zones inspected: 1. Per-zone achievement: Z2 (task): target=500, achieved=538.2, gap=-38.2, gap_pct=-7.6%, ratio_compliance=pass, severity=none (achieved \u2265 target). Aggregate: 1 PASS, 0 marginal, 0 MEDIUM, 0 HIGH. INV-19 PASS. Citation: BS EN 12464-1:2021 \u00a74.1 + Table 5 (lux-levels.json open_plan_office entry, Em=500 lx)."
     }
   ],
   "consumed_intents": {
@@ -377,7 +469,7 @@
   },
   "drafting_furniture": {
     "title_block": {
-      "project_name": "UK new-build open-plan office — pendant linear pilot",
+      "project_name": "UK new-build open-plan office \u2014 pendant linear pilot",
       "drawing_number": "L-201",
       "revision": "P1",
       "date": "2026-06-04",
@@ -417,8 +509,22 @@
       }
     ],
     "luminaire_schedule": {
-      "columns": ["Ref", "Manufacturer", "Lumens", "Wattage", "Count"],
-      "rows": [["LINEAR_LED_PENDANT_1200", "Generic", "15600", "105W", "6"]],
+      "columns": [
+        "Ref",
+        "Manufacturer",
+        "Lumens",
+        "Wattage",
+        "Count"
+      ],
+      "rows": [
+        [
+          "LINEAR_LED_PENDANT_1200",
+          "Generic",
+          "15600",
+          "105W",
+          "6"
+        ]
+      ],
       "font_family": "Arial",
       "font_size_pt": 8
     }

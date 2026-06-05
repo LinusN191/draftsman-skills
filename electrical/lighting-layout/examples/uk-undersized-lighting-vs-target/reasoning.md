@@ -206,7 +206,7 @@ broken layout — the engineer needs to act on just those two flags.
   emergency-lighting skill (deferred). Adding emergency luminaires
   would not change INV-1 / INV-6 / INV-10 outcomes here.
 
-## 11. v1.7 D5 retrofit — INV-19 surfaces the same FAIL at per-zone level
+## v1.7 Honest disclosure — D5 retrofit: INV-19 surfaces the same FAIL at per-zone level
 
 Retrofitted by the D5 sprint on 2026-06-04. v1.6.0 → v1.7.0 additions are
 orthogonal to the existing INV-1 / INV-6 / INV-10 / INV-11 HIGH FAIL state.
