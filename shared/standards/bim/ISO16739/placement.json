@@ -1,0 +1,30 @@
+{
+  "_source": "ISO 16739:2018 (IFC 4 final), buildingSMART specification",
+  "_source_url": "https://standards.buildingsmart.org/IFC/RELEASE/IFC4/FINAL/HTML/schema/ifcgeometricconstraintresource/lexical/",
+  "_access_date": "2026-06-05",
+  "_note": "IfcLocalPlacement is the parent-relative positioning entity that justifies the placement_convention enum in skill-manifest.schema.json (F.2). room_local_mm corresponds to position relative to IfcSpace; floor_local_mm to IfcBuildingStorey; site_local_mm to IfcSite; none_topological to logical placement (no spatial coords).",
+  "entities": {
+    "IfcLocalPlacement": {
+      "definition": "Local placement of a product (e.g. IfcSpace, IfcDistributionElement) within its parent space. Parent-relative; chains up to IfcSite for absolute world coordinate transformation.",
+      "key_attributes": {
+        "PlacementRelTo": "Reference to the parent placement (typically IfcLocalPlacement of the containing space/storey/site). NULL at the root (IfcSite).",
+        "RelativePlacement": "Reference to an IfcAxis2Placement (2D or 3D coordinate frame) defining the placement relative to PlacementRelTo."
+      }
+    },
+    "IfcAxis2Placement3D": {
+      "definition": "3D coordinate frame defined by a Location (origin) + Axis (Z direction) + RefDirection (X direction in the XY plane). Y direction derived as Z cross X.",
+      "key_attributes": {
+        "Location": "Reference to IfcCartesianPoint (origin in parent coordinate frame)",
+        "Axis": "Optional reference to IfcDirection (Z axis; defaults to +Z)",
+        "RefDirection": "Optional reference to IfcDirection (X axis in XY plane; defaults to +X)"
+      }
+    }
+  },
+  "placement_convention_mapping": {
+    "description": "How skill-manifest.schema.json placement_convention enum maps to IFC parent-relative placement chain",
+    "room_local_mm": "Skill output positions are relative to the room's IfcSpace.ObjectPlacement (IfcLocalPlacement). Orchestrator transforms by chaining IfcSpace to IfcBuildingStorey to IfcBuilding to IfcSite to get world coordinates.",
+    "floor_local_mm": "Skill output positions are relative to the floor's IfcBuildingStorey.ObjectPlacement. Chain: IfcBuildingStorey to IfcBuilding to IfcSite.",
+    "site_local_mm": "Skill output positions are relative to IfcSite.ObjectPlacement (root). No further transform needed; positions are world coordinates.",
+    "none_topological": "No IfcLocalPlacement attached. Output is logical / topological (e.g. SLD circuit diagram, schematic graph). Not placed on the BIM model."
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "_source": "ISO 16739:2018 (IFC 4 final), buildingSMART specification",
+  "_source_url": "https://standards.buildingsmart.org/IFC/RELEASE/IFC4/FINAL/HTML/schema/ifcexternalreferenceresource/lexical/",
+  "_access_date": "2026-06-05",
+  "_note": "Entities used to attach OmniClass Table 13 codes to IfcSpace instances via IfcRelAssociatesClassification.",
+  "entities": {
+    "IfcClassification": {
+      "definition": "Source of a classification system (e.g. OmniClass, UniClass, MasterFormat).",
+      "key_attributes": {
+        "Source": "Source / publisher of the classification (e.g. 'CSI / Construction Specifications Institute')",
+        "Edition": "Edition of the classification (e.g. '2012', '2019')",
+        "EditionDate": "Date of the edition",
+        "Name": "Name of the classification (e.g. 'OmniClass Table 13 — Spaces by Function')",
+        "Description": "Description of the classification scope",
+        "Location": "URL or URI of the classification source",
+        "ReferenceTokens": "Tokens used to construct hierarchical codes (e.g. '-' and ' ' for OmniClass 13-XX XX XX XX XX)"
+      }
+    },
+    "IfcClassificationReference": {
+      "definition": "Reference to a specific classification entry within an IfcClassification source.",
+      "key_attributes": {
+        "Location": "URL or URI of the specific classification entry",
+        "Identification": "The verbatim classification code (e.g. '13-37 31 21 11')",
+        "Name": "Human-readable name (e.g. 'Operating Room — General')",
+        "ReferencedSource": "Reference to the parent IfcClassification entity",
+        "Description": "Optional description",
+        "Sort": "Optional sort order"
+      }
+    },
+    "IfcRelAssociatesClassification": {
+      "definition": "Relationship that associates one or more IfcSpace (or other) instances with an IfcClassificationReference.",
+      "key_attributes": {
+        "RelatingClassification": "Reference to the IfcClassificationReference",
+        "RelatedObjects": "Array of object instances (e.g. IfcSpace) classified by RelatingClassification"
+      }
+    }
+  },
+  "consumption_pattern": {
+    "description": "Run-time pattern for attaching OmniClass codes to IfcSpace instances",
+    "example": {
+      "ifc_classification": {
+        "Source": "CSI / Construction Specifications Institute",
+        "Edition": "2012",
+        "Name": "OmniClass Table 13 — Spaces by Function",
+        "Location": "https://www.csiresources.org/omniclass/"
+      },
+      "ifc_classification_reference": {
+        "ReferencedSource": "<reference to ifc_classification above>",
+        "Identification": "13-37 31 21 11",
+        "Name": "Operating Room — General"
+      },
+      "ifc_rel_associates_classification": {
+        "RelatingClassification": "<reference to ifc_classification_reference above>",
+        "RelatedObjects": ["<reference to IfcSpace instance>"]
+      }
+    }
+  }
+}
