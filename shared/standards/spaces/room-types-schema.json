@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "draftsman-skills/shared/standards/spaces/room-types-schema.json",
+  "title": "RoomTypeEntry",
+  "description": "Per-entry metaschema for shared/standards/spaces/room-types/*.json files. Validates the ~600 OmniClass Table 13-derived entries authored across 7 parent_category files.",
+  "type": "object",
+  "required": ["canonical_id", "omniclass_code", "parent_category", "_verification_status"],
+  "properties": {
+    "canonical_id": {
+      "type": "string",
+      "pattern": "^[a-z]+(\\.[a-z0-9_]+)+$",
+      "description": "Snake_case dotted identifier used as Room.type in SkillInput. Format: parent_category.sub_category.entry_name. Examples: office.open_plan, healthcare.operating_theatre_general, residential.bedroom_master."
+    },
+    "omniclass_code": {
+      "type": "string",
+      "pattern": "^13-[0-9]{2}( [0-9]{2}){0,4}$",
+      "description": "OmniClass Table 13 verbatim 5-segment 13-digit code. Format: 13-XX XX XX XX XX. Sourced from declared public mirror per sprint-X-source-provenance.md."
+    },
+    "parent_category": {
+      "type": "string",
+      "enum": ["residential", "commercial", "institutional", "industrial", "transport", "external", "agricultural"]
+    },
+    "parent_path": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "maxItems": 3,
+      "description": "Hierarchical drill-down path (3-level max). E.g. [institutional, healthcare, treatment]. First element MUST equal parent_category."
+    },
+    "common_aliases": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Non-canonical synonyms from architectural practice. Powers fuzzy-match lookup for orchestrators receiving non-canonical strings from drawing parsers. E.g. ['operating room', 'OR', 'theatre', 'surgery suite']."
+    },
+    "ifc_space_type": {
+      "type": "string",
+      "enum": ["PARKING", "GFA", "BERTHING", "EXTERNAL", "INTERNAL", "USERDEFINED", "NOTDEFINED"],
+      "description": "Coarse IfcSpaceTypeEnum value per ISO 16739. Mostly INTERNAL (indoor) or EXTERNAL (outdoor)."
+    },
+    "_verification_status": {
+      "type": "string",
+      "enum": ["mirror_sourced", "occs_verified", "inferred"],
+      "description": "Per-entry sourcing record. mirror_sourced=default (verbatim from declared mirror URL). occs_verified=cross-checked against OCCS canonical PDF (back-fill). inferred=synthesised from hierarchy (MUST honest-disclose in _inference_note)."
+    },
+    "_inference_note": {
+      "type": "string",
+      "description": "REQUIRED when _verification_status=inferred. Explains the inference (e.g. 'parent code 13-37 31 00 00 present in mirror; child code synthesised from OmniClass numbering pattern')."
+    },
+    "_source_mirror": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL of the mirror this entry was sourced from (per-entry override if not the primary declared in sprint-X-source-provenance.md)."
+    },
+    "cross_references": {
+      "type": "object",
+      "properties": {
+        "bs_en_12464_1": {
+          "type": ["string", "null"],
+          "description": "Key path into shared/standards/lighting/BSEN12464/lux-levels.json (e.g. 'office.open_plan') OR null if no match."
+        },
+        "cibse_lg": {
+          "type": ["string", "null"],
+          "description": "Null until Sprint Y back-fills paid CIBSE source."
+        },
+        "ashrae_90_1": {
+          "type": ["string", "null"],
+          "description": "Key path into shared/standards/energy/ASHRAE-90-1/lpd-table-9-6-1.json OR null."
+        },
+        "ashrae_62_1": {
+          "type": ["string", "null"],
+          "description": "Key path into shared/standards/hvac/ASHRAE-62-1/ventilation-rates.json OR null."
+        },
+        "nrm2": {
+          "type": ["string", "null"],
+          "description": "Null until Sprint Y back-fills paid NRM2 source."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
