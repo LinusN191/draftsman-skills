@@ -1,7 +1,7 @@
 {
   "_source": "OmniClass Table 13 — Spaces by Function (publicly-available mirror, see _source/OmniClass-Table-13-source-notes.md for URL + edition + access date)",
   "_edition": "2012-05-16",
-  "_note": "Master index pointing to per-parent_category files under room-types/. One file per ACTUAL OmniClass Table 13 level-2 parent (16 total). Codes transcribed from publicly-available OmniClass Table 13 secondary mirror (https://pdfcoffee.com/omniclass-13-2012-05-16-pdf-free.html, accessed 2026-06-05), not the canonical OCCS PDF. Re-architected 2026-06-05 from a 7-category planner split (residential / commercial / institutional / industrial / transport / external / agricultural) after X.B.1 discovered T13 does NOT publish residential codes (T13 = Spaces by Function; residential entities live in T11 Construction Entities by Function, deferred to a future sprint). entry_count_target fields below are mirror-coverage estimates summing to ~250 total. Per-entry _verification_status field records sourcing. Future Sprint Y back-fill from canonical OCCS PDF (CSI license) will extend coverage and raise _verification_status to occs_verified.",
+  "_note": "Master index pointing to per-parent_category files under room-types/. 13 room-type-applicable OmniClass Table 13 level-2 parents (down from 16 after Phase X.B scope reduction dropped 3 construction-element parents: void_areas 13-13, wall_spaces 13-15, encroachment_spaces 13-17 — see _source/OmniClass-Table-13-source-notes.md §Phase X.B scope reduction). Codes transcribed from publicly-available OmniClass Table 13 secondary mirror (https://pdfcoffee.com/omniclass-13-2012-05-16-pdf-free.html, accessed 2026-06-05), not the canonical OCCS PDF. Re-architected 2026-06-05 from a 7-category planner split (residential / commercial / institutional / industrial / transport / external / agricultural) after X.B.1 discovered T13 does NOT publish residential codes (T13 = Spaces by Function; residential entities live in T11 Construction Entities by Function, deferred to a future sprint). entry_count_target fields below are mirror-coverage estimates summing to ~230 total (was ~250 before 3-category exclusion). Per-entry _verification_status field records sourcing. Future Sprint Y back-fill from canonical OCCS PDF (CSI license) will extend coverage and raise _verification_status to occs_verified.",
   "_units": {
     "code_format": "OmniClass 13-XX XX XX XX XX (5-segment 13-digit notation)",
     "canonical_id_format": "snake_case dotted path (parent_category.sub_category.entry_name)"
@@ -14,24 +14,6 @@
       "path": "room-types/space_planning_types.json",
       "entry_count_target": 18,
       "description": "Generic space planning units (rentable / usable / common / building gross area definitions)"
-    },
-    "void_areas": {
-      "parent_code": "13-13",
-      "path": "room-types/void_areas.json",
-      "entry_count_target": 8,
-      "description": "Vertical and horizontal voids (shafts, atria, light wells, double-height volumes)"
-    },
-    "wall_spaces": {
-      "parent_code": "13-15",
-      "path": "room-types/wall_spaces.json",
-      "entry_count_target": 6,
-      "description": "Wall thickness allowances and interstitial wall spaces"
-    },
-    "encroachment_spaces": {
-      "parent_code": "13-17",
-      "path": "room-types/encroachment_spaces.json",
-      "entry_count_target": 6,
-      "description": "Encroachments into adjacent spaces (columns, projections, balconies)"
     },
     "parking_spaces": {
       "parent_code": "13-21",

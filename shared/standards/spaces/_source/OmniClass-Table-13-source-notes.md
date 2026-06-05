@@ -111,6 +111,18 @@ Residential dwelling spaces are out-of-scope for Phase X. A future sprint will:
 2. Decide whether residential *spaces* (as opposed to *entities*) belong in a new table-11-derived schema, a Uniclass 2015 Table SL (Spaces/Locations) bridge, or a hybrid.
 3. Re-introduce a residential entry-set under whichever schema route is chosen, without polluting the T13-only `room-types/` directory.
 
+## Phase X.B scope reduction (2026-06-05) — 13 room-type-applicable categories
+
+After mid-sprint pivot to 16 actual T13 parents, 3 are excluded as not room-type-applicable for the SkillInput.Room.type contract:
+
+- **13-13 Void Areas** — construction-element concern (gaps in walls / mechanical chases). Not a "room type" an orchestrator would pass to a skill.
+- **13-15 Wall Spaces** — construction-element concern (wall panels / partitions). Not a room type.
+- **13-17 Encroachment Spaces** — construction-element concern (overhangs / projections). Not a room type.
+
+Phase X.B now covers 13 categories: 13-11 + 13-21 + 13-23 + 13-25 + 13-31 + 13-33 + 13-35 + 13-37 + 13-41 + 13-45 + 13-47 + 13-49 + 13-51.
+
+If future runtime needs the construction-element categories for non-room-type purposes (e.g. wall-panel BOQ), they can be added in a follow-up sprint.
+
 ## Known transcription gaps
 
 (populated by X.B.* implementer reports when mirror coverage < target; currently empty pending X.B task execution)

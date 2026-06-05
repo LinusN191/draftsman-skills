@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "draftsman-skills/shared/standards/spaces/room-types-schema.json",
   "title": "RoomTypeEntry",
-  "description": "Per-entry metaschema for shared/standards/spaces/room-types/*.json files. Validates entries authored across the 16 actual OmniClass Table 13 parent_category files (one per T13 level-2 parent code). NOTE: residential is intentionally absent — T13 (Spaces by Function) does not publish residential codes; residential spaces live in OmniClass Table 11 (Construction Entities by Function) which is deferred to a future sprint.",
+  "description": "Per-entry metaschema for shared/standards/spaces/room-types/*.json files. Validates entries authored across the 13 room-type-applicable OmniClass Table 13 parent_category files (one per T13 level-2 parent code). NOTE: residential is intentionally absent — T13 (Spaces by Function) does not publish residential codes; residential spaces live in OmniClass Table 11 (Construction Entities by Function) which is deferred to a future sprint. Three construction-element parents (13-13 Void Areas, 13-15 Wall Spaces, 13-17 Encroachment Spaces) are also excluded as not Room.type-applicable — see _source/OmniClass-Table-13-source-notes.md §Phase X.B scope reduction.",
   "type": "object",
   "required": ["canonical_id", "omniclass_code", "parent_category", "_verification_status"],
   "properties": {
@@ -20,9 +20,6 @@
       "type": "string",
       "enum": [
         "space_planning_types",
-        "void_areas",
-        "wall_spaces",
-        "encroachment_spaces",
         "parking_spaces",
         "facility_service_spaces",
         "circulation_spaces",
@@ -36,7 +33,7 @@
         "environmentally_controlled_spaces",
         "healthcare_spaces"
       ],
-      "description": "Snake_case canonical name of the OmniClass Table 13 level-2 parent. One of the 16 verbatim T13 parents (per pdfcoffee mirror 2026-06-05 + NIBS NBIMS-US V3 §2.4.4.3 wrapper). MUST match the level-2 segment of omniclass_code (e.g. parent_category=healthcare_spaces ↔ omniclass_code starts with 13-51)."
+      "description": "Snake_case canonical name of the OmniClass Table 13 level-2 parent. One of the 13 room-type-applicable T13 parents (per pdfcoffee mirror 2026-06-05 + NIBS NBIMS-US V3 §2.4.4.3 wrapper). Three construction-element parents excluded (void_areas 13-13, wall_spaces 13-15, encroachment_spaces 13-17) — see source-notes §Phase X.B scope reduction. MUST match the level-2 segment of omniclass_code (e.g. parent_category=healthcare_spaces ↔ omniclass_code starts with 13-51)."
     },
     "parent_code": {
       "type": "string",
