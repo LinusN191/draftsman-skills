@@ -49,8 +49,10 @@ _Wave 2 second deliverable. Adds zone-purpose semantics (task / surrounding / ba
   `luminaire.hm_mm` (mounting height above working plane) = `z_mm −
   working_plane_mm` ± 5 mm tolerance.
 - **INV-19 — Per-zone achievement (graded severity, INFO/MEDIUM/HIGH)**:
-  graded per band — `gap_pct < 5 %` → INFO; `5–15 %` → MEDIUM; `> 15 %` →
-  HIGH; aggregate FAIL if any zone is `fail`.
+  graded per band — `gap_pct ≤ 0` (achieved ≥ target) → none (PASS);
+  `0 < gap_pct < 0.10` → INFO; `0.10 ≤ gap_pct < 0.25` → INFO;
+  `0.25 ≤ gap_pct < 0.50` → MEDIUM; `gap_pct ≥ 0.50` → HIGH;
+  aggregate FAIL if any zone `ratio_compliance = fail`.
 
 ### Added (reviewer — `prompts/reviewer.md`)
 - **D-11 — Suspension length sanity check**: pendant suspension_length_mm
@@ -91,7 +93,7 @@ New (exercise new D5 features):
 - `uk-per-zone-target-violation` — INV-19 FAIL path with graded HIGH gap
   demonstrating non_compliance_flags severity bands.
 - `uk-undersized-lighting-vs-target` — photometric cascade path demonstrating
-  INV-19 MEDIUM band (gap 5–15 %).
+  INV-19 INFO/marginal band (gap 10–25 %; actual 13.2 %).
 
 ### Added (evals — 5 new)
 - `eval-09-zone-purpose-emit.yaml` — INV-13 PASS: valid zone purposes emitted.
@@ -102,7 +104,7 @@ New (exercise new D5 features):
 - `eval-12-per-zone-achievement-pass.yaml` — INV-19 PASS: all zones meet
   target within tolerance.
 - `eval-13-per-zone-achievement-fail.yaml` — INV-19 FAIL: HIGH band triggered
-  on > 15 % gap zone.
+  on ≥ 50 % gap zone (canonical example: uk-per-zone-target-violation at 60 % gap).
 
 ### Changed (inputs.json)
 - Items 16–19 added covering zone-purpose interview questions:
