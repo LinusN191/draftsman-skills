@@ -896,3 +896,546 @@ git commit -m "feat(standards): X.A.3 NEW ISO 16739 IFC standards layer subset �
 ```
 
 ---
+
+## Phase X.B — OmniClass per-category transcription (7 tasks, ~25-35 commits)
+
+Goal: transcribe ~600 OmniClass Table 13 entries from the declared public mirror across 7 per-category files. X.B.1 (residential) is Opus to establish the per-entry authoring pattern; X.B.2-7 are Sonnet once the pattern is stable.
+
+### Per-task discipline (locked, applies to ALL X.B.* tasks)
+
+Every X.B.* task follows this acceptance gate:
+
+1. Implementer consults the primary mirror declared in `docs/superpowers/specs/sprint-X-source-provenance.md` §1
+2. Each entry transcribed gets a `_verification_status` value reflecting actual sourcing
+3. **NO FABRICATION** — if mirror coverage is incomplete for a category, ship what's verified; flag gaps in `shared/standards/spaces/_source/OmniClass-Table-13-source-notes.md` "Known transcription gaps" section
+4. Per-entry validates against `shared/standards/spaces/room-types-schema.json`
+5. Banned-citation grep clean
+6. cross_references stay `null` for cibse_lg / nrm2 (paid source deferred to Sprint Y); ashrae_90_1 / ashrae_62_1 stay `null` until X.D.1 back-fill; bs_en_12464_1 populated for lighting-relevant entries that match existing lux-levels.json keys
+
+### Task X.B.1: Author `residential.json` (~80 entries) — Opus pattern-setter
+
+**Files:**
+- Create: `shared/standards/spaces/room-types/residential.json`
+
+**Why Opus:** First per-category transcription sets the per-entry authoring pattern that X.B.2-7 follow; engineering judgement on canonical_id naming conventions for new domains (residential isn't in our existing BS EN 12464-1 transcription); failure here ripples to all subsequent X.B tasks.
+
+- [ ] **Step 1: Read source provenance + master index + schema to confirm contract**
+
+```bash
+cat docs/superpowers/specs/sprint-X-source-provenance.md | head -40
+cat shared/standards/spaces/room-types.json | python3 -m json.tool | head -30
+cat shared/standards/spaces/room-types-schema.json | python3 -m json.tool | head -50
+```
+
+Expected: confirm primary mirror URL declared at X.A.0; confirm residential entry_count_target=80; confirm schema requires canonical_id + omniclass_code + parent_category + _verification_status.
+
+- [ ] **Step 2: Survey the residential sub-categories on the primary mirror**
+
+Identify OmniClass Table 13 residential sub-categories. Typical structure:
+
+- `13-25 11 ...` Single-family dwelling
+- `13-25 13 ...` Multi-family dwelling
+- `13-25 15 ...` Dormitory
+- `13-25 17 ...` Residential hotel / motel / hostel
+- `13-25 21 ...` Residential ancillary (garage, basement, attic, etc.)
+
+(The actual OmniClass numbering verbatim from the mirror — do NOT invent codes.)
+
+For each sub-category, enumerate the leaf-level entries (rooms within dwellings: bedroom_master, bedroom_secondary, kitchen, dining, living, family_room, bathroom_master, bathroom_secondary, en_suite, study, utility, garage_attached, garage_detached, etc.).
+
+- [ ] **Step 3: Author `shared/standards/spaces/room-types/residential.json`**
+
+Create the file with this structure:
+
+```json
+{
+  "_source": "OmniClass Table 13 — Residential sub-categories (verbatim from primary mirror declared in sprint-X-source-provenance.md §1)",
+  "_source_url": "<copy verbatim primary mirror URL>",
+  "_access_date": "2026-06-05",
+  "_parent_category": "residential",
+  "_entry_count": 80,
+  "_entry_count_target": 80,
+  "_coverage_actual_pct": 100,
+  "_note": "Per-entry _verification_status records sourcing per spec sprint-X-source-provenance.md §4. cross_references.cibse_lg and cross_references.nrm2 stay null per Sprint X deferral.",
+  "entries": [
+    {
+      "canonical_id": "residential.single_family.bedroom_master",
+      "omniclass_code": "<verbatim from mirror>",
+      "parent_category": "residential",
+      "parent_path": ["residential", "single_family", "bedrooms"],
+      "common_aliases": ["master bedroom", "primary bedroom", "main bedroom", "master suite"],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "mirror_sourced",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    }
+  ]
+}
+```
+
+Note the entries[] array shape: each entry is a complete per-entry record validated by `room-types-schema.json`.
+
+**Target entries** (~80 — implementer fills from mirror; this list is the EXPECTED set for the gate's "entry_count_target" comparison; actual entry count may drop if mirror coverage is incomplete):
+
+- `residential.single_family.bedroom_master`
+- `residential.single_family.bedroom_secondary`
+- `residential.single_family.kitchen`
+- `residential.single_family.dining`
+- `residential.single_family.living`
+- `residential.single_family.family_room`
+- `residential.single_family.bathroom_master`
+- `residential.single_family.bathroom_secondary`
+- `residential.single_family.en_suite`
+- `residential.single_family.powder_room`
+- `residential.single_family.study`
+- `residential.single_family.home_office`
+- `residential.single_family.utility`
+- `residential.single_family.laundry`
+- `residential.single_family.pantry`
+- `residential.single_family.foyer`
+- `residential.single_family.hallway`
+- `residential.single_family.staircase`
+- `residential.single_family.garage_attached`
+- `residential.single_family.garage_detached`
+- `residential.single_family.basement_finished`
+- `residential.single_family.basement_unfinished`
+- `residential.single_family.attic_finished`
+- `residential.single_family.attic_storage`
+- `residential.single_family.conservatory`
+- `residential.single_family.porch_enclosed`
+- `residential.single_family.balcony`
+- `residential.single_family.deck`
+- `residential.single_family.patio`
+- `residential.single_family.workshop`
+- `residential.single_family.cellar_wine`
+- `residential.single_family.cellar_storage`
+- `residential.multi_family.apartment_studio`
+- `residential.multi_family.apartment_one_bedroom`
+- `residential.multi_family.apartment_two_bedroom`
+- `residential.multi_family.apartment_three_bedroom`
+- `residential.multi_family.apartment_penthouse`
+- `residential.multi_family.lobby_residential`
+- `residential.multi_family.corridor_residential`
+- `residential.multi_family.bin_store`
+- `residential.multi_family.bicycle_store`
+- `residential.multi_family.parking_garage_residential`
+- `residential.multi_family.refuse_area`
+- `residential.multi_family.plant_room_residential`
+- `residential.multi_family.communal_lounge`
+- `residential.multi_family.communal_laundry`
+- `residential.multi_family.communal_garden`
+- `residential.multi_family.roof_terrace_communal`
+- `residential.dormitory.bedroom_single`
+- `residential.dormitory.bedroom_shared`
+- `residential.dormitory.bathroom_shared`
+- `residential.dormitory.kitchen_shared`
+- `residential.dormitory.lounge_communal`
+- `residential.dormitory.study_room`
+- `residential.dormitory.warden_office`
+- `residential.dormitory.reception_dormitory`
+- `residential.hotel.guest_room_standard`
+- `residential.hotel.guest_room_suite`
+- `residential.hotel.guest_room_family`
+- `residential.hotel.guest_bathroom`
+- `residential.hotel.lobby_hotel`
+- `residential.hotel.concierge`
+- `residential.hotel.lounge_guest`
+- `residential.hotel.business_centre`
+- `residential.hotel.breakfast_room`
+- `residential.hotel.spa_treatment`
+- `residential.hotel.fitness_room_guest`
+- `residential.hotel.housekeeping`
+- `residential.hotel.linen_store`
+- `residential.hotel.luggage_store`
+- `residential.hostel.dorm_room`
+- `residential.hostel.private_room`
+- `residential.hostel.kitchen_communal`
+- `residential.hostel.lounge_communal`
+- `residential.ancillary.cloakroom`
+- `residential.ancillary.boot_room`
+- `residential.ancillary.mud_room`
+- `residential.ancillary.snug`
+- `residential.ancillary.games_room`
+- `residential.ancillary.media_room`
+- `residential.ancillary.gym_home`
+- `residential.ancillary.sauna_home`
+
+(80 canonical_ids in the target list.)
+
+- [ ] **Step 4: Validate residential.json against room-types-schema.json**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/standards/spaces/room-types-schema.json'))
+d = json.load(open('shared/standards/spaces/room-types/residential.json'))
+print(f'entries: {len(d[\"entries\"])}')
+print(f'target: {d[\"_entry_count_target\"]}')
+print(f'coverage: {d[\"_coverage_actual_pct\"]}%')
+errors = 0
+for i, entry in enumerate(d['entries']):
+    try:
+        jsonschema.validate(entry, schema)
+    except jsonschema.ValidationError as e:
+        errors += 1
+        print(f'  entry {i} ({entry.get(\"canonical_id\", \"?\")}): FAIL {e.message[:120]}')
+if errors == 0:
+    print('All entries PASS schema validation')
+"
+```
+
+Expected: entries=80 (or implementer-reported actual); coverage=100% (or actual %); 0 schema validation errors.
+
+- [ ] **Step 5: Banned-citation grep + canonical_id uniqueness check**
+
+```bash
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/room-types/residential.json | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 -c "
+import json
+d = json.load(open('shared/standards/spaces/room-types/residential.json'))
+ids = [e['canonical_id'] for e in d['entries']]
+dupes = [i for i in ids if ids.count(i) > 1]
+print(f'duplicate canonical_ids: {set(dupes) if dupes else \"none\"}')
+"
+```
+
+Expected: BANNED_PASS; 0 duplicates.
+
+- [ ] **Step 6: Gates**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+Expected: aggregate unchanged (the per-category files are not yet validated by gate — Pass 5 wired at X.E.1).
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add shared/standards/spaces/room-types/residential.json
+git commit -m "feat(standards): X.B.1 NEW residential.json — ~80 OmniClass Table 13 residential entries (single_family + multi_family + dormitory + hotel + hostel + ancillary; sets per-entry authoring pattern for X.B.2-7)"
+```
+
+### Task X.B.2: Author `commercial.json` (~120 entries) — Sonnet
+
+**Files:**
+- Create: `shared/standards/spaces/room-types/commercial.json`
+
+**Why Sonnet:** Per-entry pattern locked by X.B.1; mechanical transcription with the established schema.
+
+- [ ] **Step 1: Read X.B.1 residential.json for the established pattern**
+
+```bash
+python3 -c "
+import json
+d = json.load(open('shared/standards/spaces/room-types/residential.json'))
+print('header keys:', [k for k in d.keys() if k.startswith('_')])
+print('first entry shape:', list(d['entries'][0].keys()))
+"
+```
+
+Expected: header has _source / _source_url / _access_date / _parent_category / _entry_count / _entry_count_target / _coverage_actual_pct / _note; entry shape: canonical_id + omniclass_code + parent_category + parent_path + common_aliases + ifc_space_type + _verification_status + cross_references.
+
+- [ ] **Step 2: Author `commercial.json`**
+
+Follow the exact pattern from X.B.1. Set `_parent_category: "commercial"` and `_entry_count_target: 120`. OmniClass Table 13 commercial sub-categories typically include:
+
+- `13-15 11 ...` Office (open_plan, private, conference, reception_desk, filing_copying, archive, print_room, server_room_office, post_room, mail_room, etc.)
+- `13-15 13 ...` Retail (general, high_emphasis_jewellery, grocery, checkout, fitting_room, stockroom_retail, etc.)
+- `13-15 15 ...` Banking (banking_hall, atm_lobby, vault, bank_office, etc.)
+- `13-15 17 ...` Hospitality / restaurant (restaurant_dining, bar, kitchen_commercial, kitchen_prep, kitchen_back, walk_in_cool, walk_in_freeze, banquet_hall, etc.)
+- `13-15 19 ...` Personal services (hair_salon, beauty_treatment, nail_salon, tanning_booth, etc.)
+
+**Target canonical_ids** (the implementer enumerates from the mirror; the following ~120 ids represent the expected breadth):
+
+(...) — 120 canonical_ids spanning the 5+ commercial sub-categories.
+
+The implementer authors the full 120 entries from the mirror following the X.B.1 pattern exactly.
+
+- [ ] **Step 3: Validate against schema**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/standards/spaces/room-types-schema.json'))
+d = json.load(open('shared/standards/spaces/room-types/commercial.json'))
+print(f'entries: {len(d[\"entries\"])}, target: {d[\"_entry_count_target\"]}')
+errors = 0
+for entry in d['entries']:
+    try:
+        jsonschema.validate(entry, schema)
+    except jsonschema.ValidationError as e:
+        errors += 1
+        print(f'  {entry.get(\"canonical_id\", \"?\")}: FAIL {e.message[:120]}')
+if errors == 0: print('All entries PASS')
+"
+```
+
+Expected: entries ≈ 120; 0 schema errors.
+
+- [ ] **Step 4: Banned-citation grep + uniqueness + gates**
+
+```bash
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/room-types/commercial.json | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 -c "
+import json
+d = json.load(open('shared/standards/spaces/room-types/commercial.json'))
+ids = [e['canonical_id'] for e in d['entries']]
+dupes = [i for i in ids if ids.count(i) > 1]
+print(f'duplicate canonical_ids: {set(dupes) if dupes else \"none\"}')
+"
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+Expected: BANNED_PASS; 0 duplicates; aggregate unchanged.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add shared/standards/spaces/room-types/commercial.json
+git commit -m "feat(standards): X.B.2 NEW commercial.json — ~120 OmniClass Table 13 commercial entries (office + retail + banking + hospitality + personal_services)"
+```
+
+### Task X.B.3: Author `institutional.json` (~150 entries) — Sonnet
+
+**Files:**
+- Create: `shared/standards/spaces/room-types/institutional.json`
+
+**Why Sonnet:** Per-entry pattern established; largest single per-category file (~150 entries spanning healthcare specialty + education + cultural + civic + religious).
+
+- [ ] **Step 1: Author `institutional.json` following X.B.1 pattern**
+
+Set `_parent_category: "institutional"` and `_entry_count_target: 150`. OmniClass Table 13 institutional sub-categories typically include:
+
+- `13-37 11 ...` Education primary (classroom_primary, classroom_secondary, science_lab, art_studio, music_room, gymnasium_school, library_school, refectory_school, head_office, staff_room, sick_bay, nursery_classroom, etc.)
+- `13-37 13 ...` Education higher (lecture_theatre, seminar_room, laboratory_specialised, library_university, refectory_university, faculty_office, research_office, etc.)
+- `13-37 31 ...` Healthcare (operating_theatre_general + cardiac + neuro + ortho, recovery_room, icu_general + cardiac + neuro + neonatal, a_and_e, x_ray, mri, ct, ultrasound, pharmacy, dispensary, ward_general + isolation + maternity + paediatric + psychiatric, consulting_room, treatment_room, dental_surgery, laboratory_pathology, mortuary, etc.)
+- `13-37 51 ...` Cultural (museum_gallery, museum_storage, library_public, theatre_auditorium, theatre_stage, theatre_backstage, concert_hall, cinema_auditorium, art_studio_public, etc.)
+- `13-37 71 ...` Civic (courtroom, court_office, prison_cell, prison_workshop, police_office, fire_station_bay, etc.)
+- `13-37 91 ...` Religious (worship_hall, prayer_room, vestry, chapel, mosque_prayer_hall, etc.)
+
+**Target canonical_ids** (~150 ids; implementer enumerates from mirror).
+
+- [ ] **Step 2: Schema validation + canonical_id uniqueness + banned grep + gates + commit**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/standards/spaces/room-types-schema.json'))
+d = json.load(open('shared/standards/spaces/room-types/institutional.json'))
+print(f'entries: {len(d[\"entries\"])}, target: {d[\"_entry_count_target\"]}')
+ids = [e['canonical_id'] for e in d['entries']]
+print(f'duplicates: {set(i for i in ids if ids.count(i) > 1) or \"none\"}')
+errors = 0
+for entry in d['entries']:
+    try: jsonschema.validate(entry, schema)
+    except: errors += 1
+print(f'schema errors: {errors}')
+"
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/room-types/institutional.json | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add shared/standards/spaces/room-types/institutional.json
+git commit -m "feat(standards): X.B.3 NEW institutional.json — ~150 OmniClass Table 13 institutional entries (education + healthcare specialty + cultural + civic + religious)"
+```
+
+### Task X.B.4: Author `industrial.json` (~130 entries) — Sonnet
+
+**Files:**
+- Create: `shared/standards/spaces/room-types/industrial.json`
+
+**Why Sonnet:** Per-entry pattern established.
+
+- [ ] **Step 1: Author `industrial.json`**
+
+Set `_parent_category: "industrial"` and `_entry_count_target: 130`. OmniClass Table 13 industrial sub-categories typically include:
+
+- Manufacturing (assembly_coarse / medium / fine / very_fine, machine_shop, fabrication_metal / wood / plastic, paint_booth, welding_area, etc.)
+- Warehouse (warehouse_low / medium / high_rack, pick_face, dispatch, cold_storage, freezer_storage, hazmat_store, etc.)
+- Processing (food_processing, chemical_processing, pharmaceutical_processing, etc.)
+- Utility (plant_room_heating / cooling / ventilation, electrical_switchroom, generator_room, transformer_room, server_room_data_centre, telecoms_room, water_treatment, etc.)
+- Workshop (electrical_workshop, mechanical_workshop, carpentry_workshop, vehicle_service_bay, etc.)
+
+**Target canonical_ids** (~130 ids).
+
+- [ ] **Step 2: Schema validation + uniqueness + banned grep + gates + commit**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/standards/spaces/room-types-schema.json'))
+d = json.load(open('shared/standards/spaces/room-types/industrial.json'))
+print(f'entries: {len(d[\"entries\"])}, target: {d[\"_entry_count_target\"]}')
+ids = [e['canonical_id'] for e in d['entries']]
+print(f'duplicates: {set(i for i in ids if ids.count(i) > 1) or \"none\"}')
+errors = 0
+for entry in d['entries']:
+    try: jsonschema.validate(entry, schema)
+    except: errors += 1
+print(f'schema errors: {errors}')
+"
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/room-types/industrial.json | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add shared/standards/spaces/room-types/industrial.json
+git commit -m "feat(standards): X.B.4 NEW industrial.json — ~130 OmniClass Table 13 industrial entries (manufacturing + warehouse + processing + utility + workshop)"
+```
+
+### Task X.B.5: Author `transport.json` (~60 entries) — Sonnet
+
+**Files:**
+- Create: `shared/standards/spaces/room-types/transport.json`
+
+**Why Sonnet:** Per-entry pattern established.
+
+- [ ] **Step 1: Author `transport.json`**
+
+Set `_parent_category: "transport"` and `_entry_count_target: 60`. OmniClass Table 13 transport sub-categories typically include:
+
+- Rail (station_concourse, platform_rail, ticket_hall, waiting_room_rail, baggage_handling_rail, signal_room, etc.)
+- Aviation (terminal_concourse, gate_lounge, baggage_claim, security_screening, customs_immigration, retail_airport, hangar, control_tower, etc.)
+- Road (bus_station, coach_terminal, taxi_rank_indoor, motorway_service_area, fuel_station_shop, etc.)
+- Marine (ferry_terminal, port_terminal, cruise_terminal, waiting_room_marine, etc.)
+- Parking (car_park_multi_storey, car_park_underground, car_park_surface_covered, car_park_bay, ramp_parking, ev_charging_bay, motorbike_parking, etc.)
+
+**Target canonical_ids** (~60 ids).
+
+- [ ] **Step 2: Schema validation + uniqueness + banned grep + gates + commit**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/standards/spaces/room-types-schema.json'))
+d = json.load(open('shared/standards/spaces/room-types/transport.json'))
+print(f'entries: {len(d[\"entries\"])}, target: {d[\"_entry_count_target\"]}')
+ids = [e['canonical_id'] for e in d['entries']]
+print(f'duplicates: {set(i for i in ids if ids.count(i) > 1) or \"none\"}')
+errors = 0
+for entry in d['entries']:
+    try: jsonschema.validate(entry, schema)
+    except: errors += 1
+print(f'schema errors: {errors}')
+"
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/room-types/transport.json | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add shared/standards/spaces/room-types/transport.json
+git commit -m "feat(standards): X.B.5 NEW transport.json — ~60 OmniClass Table 13 transport entries (rail + aviation + road + marine + parking)"
+```
+
+### Task X.B.6: Author `external.json` (~40 entries) — Sonnet
+
+**Files:**
+- Create: `shared/standards/spaces/room-types/external.json`
+
+**Why Sonnet:** Per-entry pattern established.
+
+- [ ] **Step 1: Author `external.json`**
+
+Set `_parent_category: "external"` and `_entry_count_target: 40`. OmniClass Table 13 external sub-categories typically include:
+
+- Outdoor work (loading_dock_external, builders_yard, scaffold_storage, plant_compound, etc.)
+- Landscape (garden, lawn, paved_courtyard, playground, sports_court_external, allotment, etc.)
+- Circulation (pedestrian_walkway, cycle_path, vehicle_drive, service_road, refuse_collection_point, etc.)
+- Building envelope (roof_terrace, roof_plant, fire_escape_external, external_corridor, atrium_external, etc.)
+- External amenity (swimming_pool_outdoor, paddling_pool, hot_tub_external, etc.)
+
+**Target canonical_ids** (~40 ids).
+
+- [ ] **Step 2: Schema validation + uniqueness + banned grep + gates + commit**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/standards/spaces/room-types-schema.json'))
+d = json.load(open('shared/standards/spaces/room-types/external.json'))
+print(f'entries: {len(d[\"entries\"])}, target: {d[\"_entry_count_target\"]}')
+ids = [e['canonical_id'] for e in d['entries']]
+print(f'duplicates: {set(i for i in ids if ids.count(i) > 1) or \"none\"}')
+errors = 0
+for entry in d['entries']:
+    try: jsonschema.validate(entry, schema)
+    except: errors += 1
+print(f'schema errors: {errors}')
+"
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/room-types/external.json | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add shared/standards/spaces/room-types/external.json
+git commit -m "feat(standards): X.B.6 NEW external.json — ~40 OmniClass Table 13 external entries (outdoor_work + landscape + circulation + envelope + amenity)"
+```
+
+### Task X.B.7: Author `agricultural.json` (~20 entries) — Sonnet
+
+**Files:**
+- Create: `shared/standards/spaces/room-types/agricultural.json`
+
+**Why Sonnet:** Per-entry pattern established; smallest per-category file.
+
+- [ ] **Step 1: Author `agricultural.json`**
+
+Set `_parent_category: "agricultural"` and `_entry_count_target: 20`. OmniClass Table 13 agricultural sub-categories typically include:
+
+- Livestock (cattle_shed, sheep_pen, pig_sty, poultry_house, dairy_parlour, equine_stable, etc.)
+- Crops (greenhouse, polytunnel, grain_store, crop_packing_shed, etc.)
+- Processing (food_processing_farm, dairy_processing, abattoir, fish_processing, etc.)
+- Storage agricultural (feed_store, fodder_loft, slurry_pit, manure_store, etc.)
+
+**Target canonical_ids** (~20 ids).
+
+- [ ] **Step 2: Schema validation + uniqueness + banned grep + gates + commit**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/standards/spaces/room-types-schema.json'))
+d = json.load(open('shared/standards/spaces/room-types/agricultural.json'))
+print(f'entries: {len(d[\"entries\"])}, target: {d[\"_entry_count_target\"]}')
+ids = [e['canonical_id'] for e in d['entries']]
+print(f'duplicates: {set(i for i in ids if ids.count(i) > 1) or \"none\"}')
+errors = 0
+for entry in d['entries']:
+    try: jsonschema.validate(entry, schema)
+    except: errors += 1
+print(f'schema errors: {errors}')
+"
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/room-types/agricultural.json | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add shared/standards/spaces/room-types/agricultural.json
+git commit -m "feat(standards): X.B.7 NEW agricultural.json — ~20 OmniClass Table 13 agricultural entries (livestock + crops + processing + storage_agricultural)"
+```
+
+### Phase X.B end-of-phase cross-check
+
+After all 7 X.B.* tasks ship, verify:
+
+```bash
+python3 -c "
+import json, glob
+total = 0
+target = 0
+for f in sorted(glob.glob('shared/standards/spaces/room-types/*.json')):
+    d = json.load(open(f))
+    n = len(d['entries'])
+    t = d['_entry_count_target']
+    total += n
+    target += t
+    print(f'  {f}: {n}/{t}')
+print(f'TOTAL: {total}/{target} ({100*total/target:.1f}%)')
+
+# Global uniqueness across all 7 categories
+all_ids = []
+for f in sorted(glob.glob('shared/standards/spaces/room-types/*.json')):
+    d = json.load(open(f))
+    all_ids.extend(e['canonical_id'] for e in d['entries'])
+dupes = set(i for i in all_ids if all_ids.count(i) > 1)
+print(f'global canonical_id duplicates: {dupes if dupes else \"none\"}')
+"
+```
+
+Expected: 7 lines per file; TOTAL ≈ 600/600; 0 global duplicates.
+
+If TOTAL < 540 (90% coverage), the X.E.4 final review verdict downgrades to SHIP-WITH-NOTED-CONCERNS; gaps documented in source-notes.
+
+---
