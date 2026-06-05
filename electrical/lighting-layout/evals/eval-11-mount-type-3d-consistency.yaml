@@ -1,0 +1,29 @@
+name: mount-type-3d-consistency
+skill: lighting-layout
+category: validation_trap
+description: |
+  Verifies that pendant/suspended luminaires have z_mm + suspension_length_mm populated with the
+  algebraic identity (pendant) or inequality (suspended) per BS EN 60598-2 + mount-type-rules.yaml.
+  Also checks z_mm > working_plane_mm and hm_mm derivation.
+input_fixtures:
+  - electrical/lighting-layout/examples/uk-pendant-open-plan-office/output.json
+  - electrical/lighting-layout/examples/uk-retail-display-task-zone/output.json
+  - electrical/lighting-layout/examples/warehouse-highbay/output.json
+checks:
+  - assertion: "ir.invariants[*].id contains 'INV-16'"
+    description: "Pendant geometry: z_mm + suspension_length_mm = ceiling_height_mm"
+    severity: warning
+    matches_inv: "INV-16"
+    standard_ref: "BS EN 60598-2 + mount-type-rules.yaml"
+  - assertion: "ir.luminaires[*].z_mm >= 0"
+    description: "Suspended geometry: z_mm + suspension_length_mm <= ceiling_height_mm"
+    severity: warning
+    matches_inv: "INV-16"
+  - assertion: "ir.invariants[*].id contains 'INV-17'"
+    description: "z_mm > working_plane_mm (no luminaire below task plane)"
+    severity: warning
+    matches_inv: "INV-17"
+  - assertion: "ir.invariants[*].id contains 'INV-18'"
+    description: "hm_mm derives from lowest pendant z minus working_plane_mm"
+    severity: info
+    matches_inv: "INV-18"

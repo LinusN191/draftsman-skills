@@ -1,0 +1,23 @@
+name: per-zone-achievement-pass
+skill: lighting-layout
+category: skill_specific
+description: |
+  Verifies per_zone_achieved[] is populated with one entry per zone and ratio_compliance
+  passes on PASS examples. INV-19 aggregate verdict must be PASS across these fixtures.
+input_fixtures:
+  - electrical/lighting-layout/examples/uk-pendant-open-plan-office/output.json
+  - electrical/lighting-layout/examples/uk-mixed-purpose-classroom/output.json
+  - electrical/lighting-layout/examples/uk-retail-display-task-zone/output.json
+checks:
+  - assertion: "ir.calculation_summary.per_zone_achieved.length >= 1"
+    description: "per_zone_achieved[] populated with one entry per zone"
+    severity: info
+    matches_inv: "INV-19"
+  - assertion: "ir.calculation_summary.compliant == true"
+    description: "ratio_compliance: pass on every zone"
+    severity: info
+    matches_inv: "INV-19"
+  - assertion: "ir.invariants[*].id contains 'INV-19'"
+    description: "INV-19 aggregate verdict: PASS"
+    severity: info
+    matches_inv: "INV-19"

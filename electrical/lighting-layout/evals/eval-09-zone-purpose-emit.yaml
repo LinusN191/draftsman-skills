@@ -1,0 +1,24 @@
+name: zone-purpose-emit
+skill: lighting-layout
+category: skill_specific
+description: |
+  Verifies that every zone in v1.7+ IRs has a purpose field populated per BS EN 12464-1:2021 §4.2.2.
+  Cross-checks retrofitted examples (default purpose=task) and uk-mixed-purpose-classroom (all 3 purposes).
+input_fixtures:
+  - electrical/lighting-layout/examples/office-open-plan/output.json
+  - electrical/lighting-layout/examples/uk-mixed-purpose-classroom/output.json
+  - electrical/lighting-layout/examples/uk-pendant-open-plan-office/output.json
+checks:
+  - assertion: "ir.zones[*].purpose all_equal 'task'"
+    description: "Every zone has purpose enum value"
+    severity: warning
+    matches_inv: "INV-13"
+    standard_ref: "BS EN 12464-1:2021 §4.2.2"
+  - assertion: "ir.zones[*].purpose not_contains null"
+    description: "Default purpose=task when not supplied (backwards compat per ZP-01)"
+    severity: info
+    matches_inv: "INV-13"
+  - assertion: "ir.invariants[*].id contains 'INV-13'"
+    description: "Orphan surrounding zones blocked (mixed-purpose example has task zone)"
+    severity: warning
+    matches_inv: "INV-13"

@@ -1,0 +1,25 @@
+name: task-surrounding-ratio
+skill: lighting-layout
+category: skill_specific
+description: |
+  Verifies that surrounding-zone em_target_lux respects the BS EN 12464-1:2021 Table 6 ratio [0.3, 0.5] of task Em,
+  and background em_target_lux >= max(task_em / 3, 50 lx). Cross-checks uk-open-plan-office-10x8-dali
+  (perimeter surrounding) and uk-mixed-purpose-classroom.
+input_fixtures:
+  - electrical/lighting-layout/examples/uk-open-plan-office-10x8-dali/output.json
+  - electrical/lighting-layout/examples/uk-mixed-purpose-classroom/output.json
+checks:
+  - assertion: "ir.invariants[*].id contains 'INV-14'"
+    description: "Surrounding em_target_lux in [0.3 x task_em, 0.5 x task_em]"
+    severity: warning
+    matches_inv: "INV-14"
+    standard_ref: "BS EN 12464-1:2021 Table 6"
+  - assertion: "ir.invariants[*].id contains 'INV-15'"
+    description: "Background em_target_lux >= max(task_em / 3, 50 lx)"
+    severity: warning
+    matches_inv: "INV-15"
+    standard_ref: "BS EN 12464-1:2021 Table 6"
+  - assertion: "ir.calculation_summary.assumptions contains 'surrounding'"
+    description: "Ratios cite area-definitions.json + Table 6"
+    severity: info
+    matches_inv: "INV-14"

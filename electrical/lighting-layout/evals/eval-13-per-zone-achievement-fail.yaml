@@ -1,0 +1,20 @@
+name: per-zone-achievement-fail
+skill: lighting-layout
+category: compliance_failure
+description: |
+  Verifies INV-19 fires HIGH on uk-per-zone-target-violation (FAIL-by-design example, 60% gap).
+  Checks that passes=false, severity=high, and non_compliance_flags[] carries the INV-19 HIGH entry.
+input_fixture: electrical/lighting-layout/examples/uk-per-zone-target-violation/output.json
+checks:
+  - assertion: "ir.calculation_summary.compliant == false"
+    description: "INV-19 passes: false on FAIL example"
+    severity: critical
+    matches_inv: "INV-19"
+  - assertion: "ir.non_compliance_flags[*].inv_id contains 'INV-19'"
+    description: "INV-19 severity: high (gap_pct >= 50% band)"
+    severity: critical
+    matches_inv: "INV-19"
+  - assertion: "ir.non_compliance_flags.length >= 1"
+    description: "non_compliance_flags[] contains INV-19 HIGH entry"
+    severity: critical
+    matches_inv: "INV-19"
