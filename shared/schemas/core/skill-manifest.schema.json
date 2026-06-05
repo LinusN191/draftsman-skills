@@ -1,0 +1,132 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "draftsman-skills/skill-manifest.schema.json",
+  "title": "SkillManifest",
+  "description": "Metaschema for skill.manifest.json. Required core fields + optional scope/placement_convention enums. additionalProperties: true preserves existing manifest fields not yet enumerated; manifest-lint sub-pass flags unknowns.",
+  "type": "object",
+  "required": ["skill", "version", "discipline", "produces_intents", "consumes_intents"],
+  "properties": {
+    "skill": {
+      "type": "string",
+      "description": "Skill identifier (matches directory name, e.g. 'lighting-layout')."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version (major.minor.patch)."
+    },
+    "discipline": {
+      "type": "string",
+      "enum": ["electrical", "mechanical", "plumbing", "fire-protection", "coordination", "documents"]
+    },
+    "subdiscipline": {
+      "type": "string"
+    },
+    "chat_type": {
+      "type": "string",
+      "description": "Skill's chat archetype (e.g. 'drawing-skill', 'calc-skill', 'document-skill')."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10
+    },
+    "status": {
+      "type": "string",
+      "enum": ["stub", "beta", "production"]
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["room", "floor", "building"],
+      "description": "Iteration unit. Orchestrator constructs ONE SkillInput per unit per invocation. Optional for back-compat with un-migrated skills; legacy path activates when absent."
+    },
+    "placement_convention": {
+      "type": "string",
+      "enum": ["room_local_mm", "floor_local_mm", "site_local_mm", "none_topological"],
+      "description": "Coordinate frame for emitted positions. ISO 16739 IfcLocalPlacement-aligned. Optional for back-compat."
+    },
+    "licence": {
+      "type": "string"
+    },
+    "last_updated": {
+      "type": "string",
+      "description": "ISO 8601 date of last manifest update (e.g. '2026-06-05')."
+    },
+    "changelog": {
+      "type": "string",
+      "description": "Path to CHANGELOG.md relative to skill root."
+    },
+    "inputs_path": {
+      "type": "string"
+    },
+    "inputs": {
+      "type": "array",
+      "description": "Legacy inline inputs array (pre-inputs.json migration)."
+    },
+    "outputs": {
+      "type": "array"
+    },
+    "output_schema": {
+      "type": "string"
+    },
+    "produces_intents": {
+      "type": "array"
+    },
+    "produces_intent_schema": {
+      "type": "string"
+    },
+    "produces_intent_schemas": {
+      "type": "object",
+      "description": "Map of intent name to schema path (multi-intent variant)."
+    },
+    "consumes_intents": {
+      "type": "array"
+    },
+    "standards": {
+      "type": "array"
+    },
+    "ontology": {
+      "type": "array"
+    },
+    "symbols": {
+      "type": "array"
+    },
+    "calculations": {
+      "type": "array"
+    },
+    "prompts": {
+      "type": "object"
+    },
+    "evals": {
+      "type": "array"
+    },
+    "examples": {
+      "type": "array"
+    },
+    "validation": {
+      "type": "object"
+    },
+    "rules": {
+      "type": "array"
+    },
+    "constraints": {
+      "type": "array"
+    },
+    "templates": {
+      "type": "array",
+      "description": "Output templates (e.g. SVG label templates)."
+    },
+    "docs": {
+      "type": "array",
+      "description": "Supplementary documentation paths."
+    },
+    "compatible_runtimes": {
+      "type": "array",
+      "description": "Runtime version constraints for this skill."
+    },
+    "_v2_breaking_change_note": {
+      "type": "string",
+      "description": "Migration note for v2 breaking changes (informational field only)."
+    }
+  },
+  "additionalProperties": true
+}
