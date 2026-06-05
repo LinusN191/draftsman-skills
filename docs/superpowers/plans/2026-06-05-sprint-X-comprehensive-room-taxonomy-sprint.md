@@ -1439,3 +1439,621 @@ Expected: 7 lines per file; TOTAL ≈ 600/600; 0 global duplicates.
 If TOTAL < 540 (90% coverage), the X.E.4 final review verdict downgrades to SHIP-WITH-NOTED-CONCERNS; gaps documented in source-notes.
 
 ---
+
+## Phase X.C — Energy + ventilation standards transcription (2 tasks, ~15-20 commits)
+
+Goal: author the ASHRAE 90.1 Table 9.6.1 (LPD) + ASHRAE 62.1 (ventilation rates) source files that will be cross-referenced from room-types entries at X.D.1. Same source-discipline rules as X.B: implementer cites real public mirror URLs; no fabrication; per-entry verification status.
+
+### Task X.C.1: Author ASHRAE 90.1 Table 9.6.1 LPD transcription
+
+**Files:**
+- Create: `shared/standards/energy/ASHRAE-90-1/README.md`
+- Create: `shared/standards/energy/ASHRAE-90-1/lpd-table-9-6-1.json`
+- Create: `shared/standards/energy/ASHRAE-90-1/reference.md`
+
+**Why Opus:** First ASHRAE transcription; pattern-set for X.C.2; engineering judgement on which edition (2019 most-cited) + which space type taxonomy ASHRAE uses (it differs from OmniClass; cross-walk happens at X.D.1).
+
+- [ ] **Step 1: Survey publicly-accessible ASHRAE 90.1 Table 9.6.1 sources**
+
+ASHRAE 90.1 Table 9.6.1 (Lighting Power Densities by Space-by-Space Method) is widely cited. Candidate sources:
+
+- **ASHRAE direct:** ashrae.org sometimes free for specific tables
+- **Whole Building Design Guide** (NIBS): cites Table 9.6.1 in lighting-energy chapters
+- **GSA / NCAR / DOE building energy publications**
+- **State energy code mirrors** (CEC Title 24 references ASHRAE 90.1; California Energy Commission docs)
+- **PNNL (Pacific Northwest National Laboratory)** prototype-building reports
+
+Pick the most-cited publicly-accessible mirror. Declare edition (2019 typical) + URL + access date.
+
+- [ ] **Step 2: Create the folder + README**
+
+```bash
+mkdir -p shared/standards/energy/ASHRAE-90-1
+```
+
+Create `shared/standards/energy/ASHRAE-90-1/README.md`:
+
+```markdown
+# ASHRAE 90.1 Table 9.6.1 — Lighting Power Density (LPD) by Space Type
+
+Transcription of ASHRAE Standard 90.1 Table 9.6.1 (LPD allowances using the Space-by-Space Method).
+
+**Source:** <verbatim mirror URL declared at X.C.1>
+**Edition:** <2019 / 2022 — verbatim>
+**Access date:** 2026-06-05
+**Coverage:** ~120 space types
+
+Used by `shared/standards/spaces/room-types/*.json` entries' `cross_references.ashrae_90_1` field (back-filled at X.D.1).
+
+## When to extend
+
+Future ASHRAE editions (2025+) — back-fill new entries here; bump `_edition` field.
+```
+
+- [ ] **Step 3: Author `lpd-table-9-6-1.json`**
+
+```json
+{
+  "_source": "ASHRAE Standard 90.1 Table 9.6.1 — Lighting Power Density Allowances Using the Space-by-Space Method",
+  "_source_url": "<verbatim mirror URL>",
+  "_access_date": "2026-06-05",
+  "_edition": "2019",
+  "_units": {
+    "lpd": "W/m² (watts per square metre)",
+    "lpd_imperial": "W/ft² (watts per square foot)",
+    "imperial_to_metric": "Divide W/ft² by 0.0929 to get W/m²"
+  },
+  "_note": "ASHRAE 90.1 uses its own space-type taxonomy (e.g. 'office_open_plan', 'classroom_general', 'corridor_general'). Cross-walked to room-types canonical_ids at X.D.1.",
+  "entries": {
+    "office.open_plan": {
+      "lpd_wpm2": 6.9,
+      "lpd_wpft2": 0.64,
+      "_ashrae_space_label": "Office — Open Plan",
+      "_verification_status": "mirror_sourced"
+    },
+    "office.private_office": {
+      "lpd_wpm2": 11.0,
+      "lpd_wpft2": 1.02,
+      "_ashrae_space_label": "Office — Private",
+      "_verification_status": "mirror_sourced"
+    }
+  }
+}
+```
+
+Implementer transcribes ~120 entries from the declared mirror. Each entry uses ASHRAE's snake_case space label as the key (e.g. `office.open_plan`); cross-walked to room-types canonical_ids at X.D.1.
+
+- [ ] **Step 4: Author `reference.md` companion**
+
+```markdown
+# ASHRAE 90.1 Table 9.6.1 — Reference
+
+Companion to `lpd-table-9-6-1.json`. Source: ASHRAE Standard 90.1 Table 9.6.1, edition <declared>.
+
+## Coverage
+
+~120 space types from ASHRAE's Space-by-Space Method. Used for Lighting Power Density (LPD) compliance checks in:
+
+- US jurisdiction (NEC / ASHRAE 90.1 mandate)
+- LEED Energy Atmosphere credits
+- ENERGY STAR submissions
+- International projects citing ASHRAE 90.1 (e.g. Middle East, Asia-Pacific where ASHRAE is the de-facto standard)
+
+## How room-types entries cross-reference
+
+The `cross_references.ashrae_90_1` field on each room-types entry contains the key path into this file's `entries` dict. Example: room-types entry `commercial.office.open_plan` has `cross_references.ashrae_90_1: "office.open_plan"`.
+
+Some room-types entries have no ASHRAE 90.1 equivalent (e.g. residential rooms — ASHRAE 90.1 covers commercial/institutional only). Those entries' `cross_references.ashrae_90_1` stay `null`.
+
+## When LPD values may be inaccurate
+
+- Edition drift: ASHRAE updates 90.1 every 3 years. If runtime needs current edition, re-source from latest publicly-accessible mirror.
+- Units: LPD values converted between W/m² and W/ft² may carry rounding (0.0929 conversion factor).
+- Space-type ambiguity: ASHRAE's "office_open_plan" may map to OmniClass's "office.open_plan" but the lighting allowances assume specific design conditions; engineers must verify per-project.
+```
+
+- [ ] **Step 5: Validate JSON parses + structure**
+
+```bash
+python3 -c "
+import json
+d = json.load(open('shared/standards/energy/ASHRAE-90-1/lpd-table-9-6-1.json'))
+print('parse OK')
+print('_edition:', d['_edition'])
+print('_source_url:', d['_source_url'][:60])
+print(f'entries: {len(d[\"entries\"])}')
+# Spot-check one entry
+first_key = list(d['entries'].keys())[0]
+print(f'sample entry ({first_key}):', d['entries'][first_key])
+"
+```
+
+Expected: parse OK; _edition set; _source_url present; entries ≈ 120; sample entry has lpd_wpm2 + lpd_wpft2 + _ashrae_space_label + _verification_status.
+
+- [ ] **Step 6: Banned-citation grep + gates + commit**
+
+```bash
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/energy/ASHRAE-90-1/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add shared/standards/energy/ASHRAE-90-1/
+git commit -m "feat(standards): X.C.1 NEW ASHRAE 90.1 Table 9.6.1 LPD transcription — ~120 commercial/institutional space types with W/m² and W/ft² values (edition 2019 from publicly-accessible mirror)"
+```
+
+### Task X.C.2: Author ASHRAE 62.1 ventilation rates transcription
+
+**Files:**
+- Create: `shared/standards/hvac/ASHRAE-62-1/README.md`
+- Create: `shared/standards/hvac/ASHRAE-62-1/ventilation-rates.json`
+- Create: `shared/standards/hvac/ASHRAE-62-1/reference.md`
+
+**Why Opus:** Same engineering-judgement reasoning as X.C.1; ASHRAE 62.1 uses a separate taxonomy from 90.1 (occupancy categories + space types); pattern locks the ventilation cross-reference structure for X.D.1.
+
+- [ ] **Step 1: Survey publicly-accessible ASHRAE 62.1 sources**
+
+ASHRAE Standard 62.1 (Ventilation for Acceptable Indoor Air Quality). Candidate sources:
+
+- ASHRAE direct (sometimes free for specific tables)
+- GSA / NCAR / DOE building energy publications
+- State mechanical code references (e.g. International Mechanical Code references 62.1)
+- BIM/HVAC engineering tools' citations
+
+- [ ] **Step 2: Create folder + README + reference.md (mirror X.C.1 pattern)**
+
+```bash
+mkdir -p shared/standards/hvac/ASHRAE-62-1
+```
+
+- [ ] **Step 3: Author `ventilation-rates.json`**
+
+```json
+{
+  "_source": "ASHRAE Standard 62.1 — Ventilation for Acceptable Indoor Air Quality, Table 6-1 (Minimum Ventilation Rates in Breathing Zone)",
+  "_source_url": "<verbatim mirror URL>",
+  "_access_date": "2026-06-05",
+  "_edition": "2019",
+  "_units": {
+    "rp_lps_person": "L/s per person (people outdoor air rate)",
+    "ra_lps_m2": "L/s per m² (area outdoor air rate)",
+    "rp_cfm_person": "cfm per person (imperial)",
+    "ra_cfm_ft2": "cfm per ft² (imperial)",
+    "default_occupancy": "people per 100 m² (default for design occupancy when actual unknown)",
+    "air_class": "1 / 2 / 3 / 4 — Air class for recirculation control"
+  },
+  "_note": "Total outdoor air rate Vbz = Rp × Pz + Ra × Az where Pz=people count, Az=area. Cross-walked to room-types canonical_ids at X.D.1.",
+  "entries": {
+    "office.open_plan": {
+      "rp_lps_person": 2.5,
+      "ra_lps_m2": 0.3,
+      "rp_cfm_person": 5,
+      "ra_cfm_ft2": 0.06,
+      "default_occupancy_per_100m2": 5,
+      "air_class": 1,
+      "_ashrae_space_label": "Office space",
+      "_verification_status": "mirror_sourced"
+    }
+  }
+}
+```
+
+Implementer transcribes ~150 entries from declared mirror.
+
+- [ ] **Step 4: Validate + grep + gates + commit**
+
+```bash
+python3 -c "
+import json
+d = json.load(open('shared/standards/hvac/ASHRAE-62-1/ventilation-rates.json'))
+print(f'entries: {len(d[\"entries\"])}, edition: {d[\"_edition\"]}')
+first = list(d['entries'].keys())[0]
+print(f'sample: {first} = {d[\"entries\"][first]}')
+"
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/hvac/ASHRAE-62-1/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add shared/standards/hvac/ASHRAE-62-1/
+git commit -m "feat(standards): X.C.2 NEW ASHRAE 62.1 ventilation rates transcription — ~150 space types with Rp + Ra + default occupancy + air class (edition 2019 from publicly-accessible mirror)"
+```
+
+---
+
+## Phase X.D — Cross-reference back-fill + contract features (3 tasks, ~15-20 commits)
+
+Goal: back-fill `cross_references` on all 600 room-types entries (X.D.1) + add the `room.classification` field to SkillInput per IfcClassificationReference structure (X.D.2) + author fuzzy-match reference spec (X.D.3).
+
+### Task X.D.1: Cross-reference back-fill across 600 room-types entries
+
+**Files:**
+- Modify: `shared/standards/spaces/room-types/*.json` (all 7 per-category files)
+
+**Why Sonnet:** Mechanical cross-walk via Python script; spot-check sample reviewed by Opus at X.E.4.
+
+- [ ] **Step 1: Author the cross-walk Python script (one-off, lives in task transcript not in repo)**
+
+The implementer authors a Python script that:
+
+1. Reads `shared/standards/lighting/BSEN12464/lux-levels.json` and extracts the 27 BS EN 12464-1 keys (e.g. `office.open_plan`, `circulation.lobby`)
+2. Reads `shared/standards/energy/ASHRAE-90-1/lpd-table-9-6-1.json` and extracts ASHRAE space labels
+3. Reads `shared/standards/hvac/ASHRAE-62-1/ventilation-rates.json` and extracts ASHRAE space labels
+4. For each room-types entry: scan canonical_id + common_aliases for matches against the 3 source key sets; populate `cross_references` accordingly
+5. Match heuristic: exact suffix match (e.g. room-types `commercial.office.open_plan` → BS EN 12464-1 `office.open_plan`) + alias-based fallback (common_aliases includes "open plan office" → ASHRAE "Office — Open Plan")
+
+```python
+import json
+import glob
+
+# Source key sets
+bs_en_keys = set()
+d = json.load(open('shared/standards/lighting/BSEN12464/lux-levels.json'))
+for cat, sub in d.items():
+    if not cat.startswith('_') and isinstance(sub, dict):
+        for k in sub:
+            if not k.startswith('_'):
+                bs_en_keys.add(f'{cat}.{k}')
+
+ashrae_90_keys = set(json.load(open('shared/standards/energy/ASHRAE-90-1/lpd-table-9-6-1.json'))['entries'].keys())
+ashrae_62_keys = set(json.load(open('shared/standards/hvac/ASHRAE-62-1/ventilation-rates.json'))['entries'].keys())
+
+def find_match(canonical_id, common_aliases, key_set):
+    # Match 1: exact suffix
+    for k in key_set:
+        if canonical_id.endswith(f'.{k}') or canonical_id == k:
+            return k
+    # Match 2: last 2 path segments match
+    parts = canonical_id.split('.')
+    for k in key_set:
+        if k == '.'.join(parts[-2:]):
+            return k
+    # Match 3: alias match (case-insensitive normalized)
+    for alias in common_aliases:
+        normalized = alias.lower().replace(' ', '_').replace('-', '_')
+        for k in key_set:
+            if k.endswith(f'.{normalized}'):
+                return k
+    return None
+
+# Back-fill each room-types file
+total_back_filled = {'bs_en_12464_1': 0, 'ashrae_90_1': 0, 'ashrae_62_1': 0}
+for f in sorted(glob.glob('shared/standards/spaces/room-types/*.json')):
+    d = json.load(open(f))
+    for entry in d['entries']:
+        cid = entry['canonical_id']
+        aliases = entry.get('common_aliases', [])
+        bs_match = find_match(cid, aliases, bs_en_keys)
+        a90_match = find_match(cid, aliases, ashrae_90_keys)
+        a62_match = find_match(cid, aliases, ashrae_62_keys)
+        if bs_match:
+            entry['cross_references']['bs_en_12464_1'] = bs_match
+            total_back_filled['bs_en_12464_1'] += 1
+        if a90_match:
+            entry['cross_references']['ashrae_90_1'] = a90_match
+            total_back_filled['ashrae_90_1'] += 1
+        if a62_match:
+            entry['cross_references']['ashrae_62_1'] = a62_match
+            total_back_filled['ashrae_62_1'] += 1
+    json.dump(d, open(f, 'w'), indent=2, ensure_ascii=False)
+
+print(f'Back-filled cross-references: {total_back_filled}')
+```
+
+- [ ] **Step 2: Run the cross-walk script**
+
+Run the script. Report back-fill counts.
+
+Expected: bs_en_12464_1 matches ~20-30 (only lighting-relevant rooms match the 27 BS EN keys); ashrae_90_1 matches ~80-100; ashrae_62_1 matches ~100-130.
+
+- [ ] **Step 3: Spot-check 30 random entries (5% of ~600) for cross-reference accuracy**
+
+```bash
+python3 -c "
+import json, glob, random
+random.seed(42)
+all_entries = []
+for f in sorted(glob.glob('shared/standards/spaces/room-types/*.json')):
+    d = json.load(open(f))
+    all_entries.extend((f.split('/')[-1], e) for e in d['entries'])
+sample = random.sample(all_entries, min(30, len(all_entries)))
+for filename, entry in sample:
+    cid = entry['canonical_id']
+    refs = entry['cross_references']
+    populated = {k: v for k, v in refs.items() if v is not None}
+    print(f'  {cid} ({filename}): {populated}')
+"
+```
+
+Inspect manually: each populated cross-reference must be a real key in the target source file. False matches caught here.
+
+- [ ] **Step 4: Validate all 7 files still pass schema after back-fill**
+
+```bash
+python3 -c "
+import json, jsonschema, glob
+schema = json.load(open('shared/standards/spaces/room-types-schema.json'))
+total_errors = 0
+for f in sorted(glob.glob('shared/standards/spaces/room-types/*.json')):
+    d = json.load(open(f))
+    for entry in d['entries']:
+        try: jsonschema.validate(entry, schema)
+        except jsonschema.ValidationError as e:
+            total_errors += 1
+            print(f'  {f}:{entry[\"canonical_id\"]}: {e.message[:100]}')
+print(f'total schema errors after back-fill: {total_errors}')
+"
+```
+
+Expected: 0 schema errors.
+
+- [ ] **Step 5: Banned-citation grep + gates + commit**
+
+```bash
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/room-types/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add shared/standards/spaces/room-types/
+git commit -m "feat(standards): X.D.1 cross-reference back-fill — populate cross_references.bs_en_12464_1 + ashrae_90_1 + ashrae_62_1 on ~600 room-types entries where matching source entries exist (cibse_lg + nrm2 stay null per Sprint X deferral)"
+```
+
+### Task X.D.2: F.1 SkillInput schema — add `Room.classification` field
+
+**Files:**
+- Modify: `shared/schemas/core/skill-input.schema.json`
+- Modify: `shared/schemas/core/skill-input.reference.md`
+
+**Why Opus:** Schema design judgement; adds IfcClassificationReference structure to Room; must preserve back-compat with existing Sprint F.1 schema users.
+
+- [ ] **Step 1: Read current Room definition**
+
+```bash
+python3 -c "
+import json
+s = json.load(open('shared/schemas/core/skill-input.schema.json'))
+room = s['definitions']['Room']
+print('Room.required:', room.get('required'))
+print('Room.properties:', list(room['properties'].keys()))
+print('Room.additionalProperties:', room.get('additionalProperties'))
+"
+```
+
+Expected: required `[room_id, type, area_m2, bbox]`; properties include room_id, type, area_m2, bbox, polygon, centroid, mounting_height.
+
+- [ ] **Step 2: Add `classification` property to Room.properties**
+
+Edit `shared/schemas/core/skill-input.schema.json`. Locate `definitions.Room.properties` and APPEND:
+
+```json
+"classification": {
+  "type": "object",
+  "description": "Optional BIM IfcClassificationReference structure for round-tripping room.type via IFC. Auto-derivable by orchestrator from Room.type via shared/standards/spaces/room-types/*.json lookup (look up canonical_id → omniclass_code). Orchestrators populating this directly carry the canonical reference inline for downstream BIM export.",
+  "properties": {
+    "source": {
+      "type": "string",
+      "default": "OmniClass-Table-13",
+      "description": "Classification source identifier. Default 'OmniClass-Table-13' matches Sprint X taxonomy."
+    },
+    "edition": {
+      "type": "string",
+      "description": "Classification edition (e.g. '2012', '2019')."
+    },
+    "code": {
+      "type": "string",
+      "pattern": "^13-[0-9]{2}( [0-9]{2}){0,4}$",
+      "description": "Verbatim classification code. For OmniClass Table 13: 5-segment 13-digit notation 13-XX XX XX XX XX."
+    },
+    "reference_uri": {
+      "type": "string",
+      "format": "uri",
+      "description": "Optional URI to the canonical classification entry (e.g. OmniClass.org page for the code)."
+    }
+  },
+  "additionalProperties": false
+}
+```
+
+- [ ] **Step 3: Update `skill-input.reference.md` to document the new field**
+
+Edit `shared/schemas/core/skill-input.reference.md`. In the "## Building / Floor / Room fields" → "### Room" subsection, ADD a bullet:
+
+```markdown
+- `classification`: optional BIM IfcClassificationReference structure (`{source, edition, code, reference_uri}`). Auto-derivable by orchestrator from `type` via `shared/standards/spaces/room-types/*.json` lookup. Populate inline when downstream BIM export is required.
+```
+
+- [ ] **Step 4: Validate schema parses + new property present + still well-formed**
+
+```bash
+python3 -c "
+import json, jsonschema
+s = json.load(open('shared/schemas/core/skill-input.schema.json'))
+room = s['definitions']['Room']
+print('classification present:', 'classification' in room['properties'])
+print('classification properties:', list(room['properties']['classification']['properties'].keys()))
+jsonschema.Draft7Validator.check_schema(s)
+print('schema still well-formed: OK')
+"
+```
+
+Expected: present True; properties [source, edition, code, reference_uri]; well-formed OK.
+
+- [ ] **Step 5: Test backwards-compatibility — F.1 fixtures still validate**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/schemas/core/skill-input.schema.json'))
+# Pre-X.D.2 valid fixture (no classification)
+fixture = {
+    'scope': 'room',
+    'floor': {'id': 'FL-01'},
+    'room': {
+        'room_id': 'R-1',
+        'type': 'office.open_plan',
+        'area_m2': 96.0,
+        'bbox': {'length': 12.0, 'width': 8.0}
+    },
+    'project_facts': {'jurisdiction': 'GB'}
+}
+try:
+    jsonschema.validate(fixture, schema)
+    print('pre-X.D.2 fixture: PASS (back-compat preserved)')
+except Exception as e:
+    print(f'pre-X.D.2 fixture: FAIL {str(e)[:150]}')
+# Post-X.D.2 fixture (with classification)
+fixture['room']['classification'] = {
+    'source': 'OmniClass-Table-13',
+    'edition': '2012',
+    'code': '13-15 11 23 11',
+    'reference_uri': 'https://example.com/omniclass/13-15-11-23-11'
+}
+try:
+    jsonschema.validate(fixture, schema)
+    print('post-X.D.2 fixture with classification: PASS')
+except Exception as e:
+    print(f'post-X.D.2 fixture: FAIL {str(e)[:150]}')
+"
+```
+
+Expected: both PASS.
+
+- [ ] **Step 6: Banned-citation grep + gates + commit**
+
+```bash
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/schemas/core/skill-input.schema.json shared/schemas/core/skill-input.reference.md | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo FAIL || echo PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add shared/schemas/core/skill-input.schema.json shared/schemas/core/skill-input.reference.md
+git commit -m "feat(schemas): X.D.2 add Room.classification field — IfcClassificationReference structure (source + edition + code + reference_uri) for BIM round-tripping; backwards-compatible with Sprint F.1 fixtures"
+```
+
+### Task X.D.3: Fuzzy-match reference spec
+
+**Files:**
+- Create: `shared/standards/spaces/fuzzy-match-reference.md`
+
+**Why Sonnet:** Mechanical algorithm spec authoring; self-contained reference; orchestrators implement engines per `[[runtime-project-boundary]]`.
+
+- [ ] **Step 1: Author `shared/standards/spaces/fuzzy-match-reference.md`**
+
+```markdown
+# Room-Type Fuzzy-Match Reference
+
+Reference algorithm + test fixtures for orchestrators implementing fuzzy lookup of non-canonical `Room.type` strings against the canonical taxonomy at `shared/standards/spaces/room-types/*.json`.
+
+Per `[[runtime-project-boundary]]`, this skills repo ships the ALGORITHM SPEC + TEST FIXTURES. Orchestrators (DraftsMan runtime / Claude CLI / MCP servers / future tooling) implement the engine in their own runtime layer.
+
+## When fuzzy match is needed
+
+Architectural drawing parsers typically emit room labels like "Open Plan Office", "Master Bedroom", "Operating Theatre 1", "ICU Bay 3" — NOT the canonical `office.open_plan` / `residential.single_family.bedroom_master` / `institutional.healthcare.operating_theatre_general` / `institutional.healthcare.icu_general` snake_case form. The orchestrator MUST normalize before passing to a skill via `Room.type`.
+
+## Algorithm — 4-tier match priority
+
+For each non-canonical input string `s`:
+
+### Tier 1: Exact match (highest priority)
+
+If `s` already equals a `canonical_id` in any room-types/*.json file: return that canonical_id.
+
+```python
+if s in canonical_ids_set:
+    return s
+```
+
+### Tier 2: Snake_case normalization match
+
+Normalize `s` to snake_case + check exact match.
+
+```python
+normalized = s.strip().lower().replace(' ', '_').replace('-', '_')
+# Remove common suffix numbers ("Operating Theatre 1" → "operating_theatre")
+normalized = re.sub(r'_\d+$', '', normalized)
+for cid in canonical_ids_set:
+    # Match against last 1-3 segments of canonical_id (suffix match)
+    parts = cid.split('.')
+    for n in range(1, 4):
+        if '.'.join(parts[-n:]) == normalized or '_'.join(parts[-n:]) == normalized:
+            return cid
+```
+
+### Tier 3: Alias match
+
+Check `common_aliases[]` arrays across all room-types entries.
+
+```python
+for entry in all_room_types_entries:
+    for alias in entry.get('common_aliases', []):
+        alias_normalized = alias.strip().lower().replace(' ', '_').replace('-', '_')
+        if alias_normalized == normalized:
+            return entry['canonical_id']
+```
+
+### Tier 4: Levenshtein distance fallback (≤2 edits)
+
+For unmatched strings, compute Levenshtein edit distance against canonical_ids + aliases. Return closest if distance ≤ 2 edits (catches typos).
+
+```python
+def levenshtein(a, b):
+    # Standard dynamic-programming Levenshtein implementation
+    ...
+
+best_match = None
+best_distance = float('inf')
+for candidate in canonical_ids_set | all_aliases_set:
+    d = levenshtein(normalized, candidate)
+    if d < best_distance and d <= 2:
+        best_distance = d
+        best_match = canonical_to_match.get(candidate, candidate)
+return best_match  # may be None
+```
+
+### Tier 5: Embedding-similarity fallback (optional, runtime-specific)
+
+If the orchestrator has an LLM available, compute semantic embedding similarity between `normalized` and all `canonical_id` + alias strings. Return closest if cosine similarity > 0.85.
+
+This is OPTIONAL — only orchestrators with LLM access implement it; CLI tools without LLMs stop at Tier 4.
+
+## Test fixtures
+
+Orchestrators verify their fuzzy-match implementation against these input/expected-output pairs:
+
+| Input string | Expected canonical_id | Match tier |
+|---|---|---|
+| `office.open_plan` | `office.open_plan` | 1 (exact) |
+| `Open Plan Office` | `office.open_plan` (or commercial-prefixed variant) | 2 or 3 |
+| `master bedroom` | `residential.single_family.bedroom_master` | 3 (alias) |
+| `Operating Theatre 1` | `institutional.healthcare.operating_theatre_general` (or similar) | 2 (after suffix-number strip) |
+| `OR` | `institutional.healthcare.operating_theatre_general` | 3 (alias) |
+| `corridoor` (typo) | `circulation.main_corridor` | 4 (Levenshtein ≤2) |
+| `WC` | `sanitary.toilet_wc` | 3 (alias) |
+| `Toilet` | `sanitary.toilet_wc` | 3 (alias) |
+| `data center` | `industrial.utility.server_room_data_centre` (US→UK normalization) | 3 (alias) or 5 (embedding) |
+| `unknown space type xyz` | `null` (no match) | - |
+
+Orchestrators MUST cover Tier 1-4 at minimum. Tier 5 (embeddings) is optional uplift.
+
+## When to fall back to engineer override
+
+If fuzzy match returns `null` (no candidate within Tier 4 thresholds), the orchestrator prompts the engineer to either:
+
+1. Select a canonical_id from a dropdown
+2. Map the unknown label to a canonical_id manually
+3. Pass through with `Room.type: "unknown.userdefined"` (graceful fallback)
+
+The graceful fallback `unknown.userdefined` is reserved for orchestrator use only — never appears in room-types/*.json.
+
+## Citation
+
+Algorithm pattern derived from common fuzzy-string-matching practice. Levenshtein distance per Levenshtein (1966). Embedding-similarity per modern LLM cosine-similarity convention.
+```
+
+- [ ] **Step 2: Validate file renders**
+
+```bash
+wc -l shared/standards/spaces/fuzzy-match-reference.md
+```
+
+Expected: ~110-140 lines.
+
+- [ ] **Step 3: Banned-citation grep + gates + commit**
+
+```bash
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/fuzzy-match-reference.md | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo FAIL || echo PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add shared/standards/spaces/fuzzy-match-reference.md
+git commit -m "feat(standards): X.D.3 NEW fuzzy-match-reference.md — 4-tier algorithm spec (exact + snake_case + alias + Levenshtein ≤2) + 10 test fixtures + optional embedding tier 5; orchestrators implement engines per runtime-project-boundary"
+```
+
+---
