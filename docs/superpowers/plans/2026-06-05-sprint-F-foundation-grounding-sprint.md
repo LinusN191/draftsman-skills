@@ -1511,3 +1511,360 @@ echo "F.6: no edits — all 8 manifests already pass Pass 4 metaschema validatio
 ```
 
 ---
+
+### Task F.7: Sonnet 7-check pre-ship verification fence + CHANGELOG + memory
+
+**Files:**
+- Read-only verification + Modify: CHANGELOG.md (repo root), CLAUDE.md, memory files
+
+**Why Sonnet:** Mechanical verification + documentation closure. Matches D5 D.2 + D.3 fence pattern.
+
+- [ ] **Step 1: Run the 7 checks per spec §9 Sprint F pre-ship fence**
+
+Check 1 — SkillInput schema validates ≥1 fixture per scope tier:
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/schemas/core/skill-input.schema.json'))
+# Author 3 inline test fixtures
+room_fixture = {
+    'scope': 'room',
+    'floor': {'id': 'FL-01'},
+    'room': {'room_id': 'R-1', 'type': 'office.open_plan', 'area_m2': 96.0,
+             'bbox': {'length': 12.0, 'width': 8.0}},
+    'project_facts': {'jurisdiction': 'GB'}
+}
+floor_fixture = {
+    'scope': 'floor',
+    'floor': {'id': 'FL-01'},
+    'rooms': [{'room_id': 'R-1', 'type': 'office.open_plan', 'area_m2': 96.0,
+               'bbox': {'length': 12.0, 'width': 8.0}}],
+    'project_facts': {'jurisdiction': 'GB'}
+}
+building_fixture = {
+    'scope': 'building',
+    'building': {'id': 'BLD-001'},
+    'floors': [{'id': 'FL-01'}],
+    'project_facts': {'jurisdiction': 'GB'}
+}
+for name, fixture in [('room', room_fixture), ('floor', floor_fixture), ('building', building_fixture)]:
+    try:
+        jsonschema.validate(fixture, schema)
+        print(f'  Check 1.{name}: PASS')
+    except Exception as e:
+        print(f'  Check 1.{name}: FAIL {str(e)[:120]}')
+"
+```
+
+Expected: 3 PASS lines.
+
+Check 2 — Manifest metaschema validates 8 existing manifests:
+```bash
+python3 scripts/validate-examples.py 2>&1 | grep -E "^## Pass 4|^  (PASS|FAIL)" | head -15
+```
+
+Expected: 8 PASS entries; 0 FAIL.
+
+Check 3 — `grounded_source` two-tier validation works:
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/schemas/core/inputs.schema.json'))
+canonical = {'id': 'x', 'label': 'x', 'answer_type': 'text', 'grounded_source': 'room.type'}
+custom = {'id': 'x', 'label': 'x', 'answer_type': 'text', 'grounded_source': 'project.client_name'}
+invalid = {'id': 'x', 'label': 'x', 'answer_type': 'text', 'grounded_source': 'invalid.binding'}
+item_schema = schema['definitions']['InputItem']
+for name, item in [('canonical', canonical), ('custom', custom), ('invalid', invalid)]:
+    try:
+        jsonschema.validate(item, item_schema)
+        print(f'  Check 3.{name}: PASS validation')
+    except Exception as e:
+        print(f'  Check 3.{name}: FAIL validation')
+"
+```
+
+Expected: canonical PASS; custom PASS (matches pattern); invalid FAIL.
+
+Check 4 — ORCHESTRATION.md renders + references resolve:
+```bash
+wc -l ORCHESTRATION.md
+for ref in shared/schemas/core/skill-input.schema.json shared/schemas/core/skill-manifest.schema.json shared/schemas/core/inputs.schema.json docs/superpowers/specs/2026-06-05-skillinput-contract-grounding-design.md docs/superpowers/specs/skill-input-design-rationale.md; do
+  [ -f "$ref" ] && echo "  Check 4.$ref: PASS" || echo "  Check 4.$ref: MISSING"
+done
+```
+
+Expected: ORCHESTRATION.md ~240+ lines; all 5 referenced files present.
+
+Check 5 — 4-pass gate green:
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -5
+```
+
+Expected: AGGREGATE shows pass count + 0 failures.
+
+Check 6 — Manifest lint produces 0 unknown-field flags:
+```bash
+python3 scripts/validate-examples.py 2>&1 | grep -A 10 "Lint 1" | head -12
+```
+
+Expected: `Lint 1: PASS — no unknown fields across all manifests`.
+
+Check 7 — Banned-citation grep clean across all new/modified files:
+```bash
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/schemas/core/skill-input.schema.json shared/schemas/core/skill-input.reference.md shared/schemas/core/skill-manifest.schema.json shared/schemas/core/inputs.schema.json ORCHESTRATION.md scripts/validate-examples.py docs/superpowers/specs/skill-input-design-rationale.md 2>/dev/null | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo FAIL || echo PASS
+```
+
+Expected: PASS.
+
+- [ ] **Step 2: Build 7-check report**
+
+| # | Check | Result | Evidence |
+|---|---|---|---|
+| 1 | SkillInput schema validates 3 fixtures | PASS/FAIL | (room PASS / floor PASS / building PASS) |
+| 2 | Manifest metaschema validates 8 existing | PASS/FAIL | (N PASS / 0 FAIL or N FAIL) |
+| 3 | grounded_source two-tier validation works | PASS/FAIL | (canonical PASS / custom PASS / invalid FAIL) |
+| 4 | ORCHESTRATION.md renders + refs resolve | PASS/FAIL | (line count + 5 refs PASS) |
+| 5 | 4-pass gate green | PASS/FAIL | (AGGREGATE N/N pass) |
+| 6 | Manifest lint = 0 unknown fields | PASS/FAIL | (PASS or list of unknowns) |
+| 7 | Banned-citation grep clean | PASS/FAIL | (grep exit code) |
+
+- [ ] **Step 3: If any FAIL, dispatch a fix-pass (do NOT fix here)**
+
+Read-only fence. If FAILs, name the specific files + corrections needed.
+
+- [ ] **Step 4: If all PASS, write CHANGELOG entry**
+
+Create or append to `CHANGELOG.md` at repo root:
+
+```markdown
+# CHANGELOG
+
+## [Sprint F — Foundation: SkillInput Contract Grounding] — 2026-06-05
+
+### Added
+- `shared/schemas/core/skill-input.schema.json` — orchestrator → skill payload metaschema (Draft-07, tagged-union by scope, 27-value room.type enum)
+- `shared/schemas/core/skill-input.reference.md` — companion reference with BIM/IFC justification
+- `shared/schemas/core/skill-manifest.schema.json` — skill.manifest.json metaschema with `scope` + `placement_convention` enums + manifest field validation
+- `ORCHESTRATION.md` at repo root — public-facing iteration contract for arbitrary agents (DraftsMan / Claude CLI / MCP servers / future tooling)
+- `docs/superpowers/specs/skill-input-design-rationale.md` — BIM/IFC + room.type taxonomy + two-tier grounded_source rationale
+
+### Changed
+- `shared/schemas/core/inputs.schema.json` — extended `InputItem` with `grounded_source` two-tier validation (closed enum for 14 canonical bindings + `project.<custom>` pattern fallback)
+- `scripts/validate-examples.py` — extended from 3-pass to 4-pass gate (added Pass 4 manifest metaschema) + 4 new lint sub-passes:
+  - Lint 1: Manifest field-name typo detector (suggest-spelling for unknowns)
+  - Lint 2: grounded_source two-tier validation
+  - Lint 3: Dropped-item orphan detector in examples
+  - Lint 4: Cascade byte-equality (SHA-256 producer vs consumer)
+
+### Sprint
+- Sprint F (Foundation) of 3-sprint group (F → W1 → W2)
+- W1 (Wave 1: lighting-layout + small-power grounding) comes next
+- W2 (Wave 2+3: db-layout + arc-flash-labelling + schematic + sld + earthing) follows W1
+
+### Cross-skill
+- No skill manifests or inputs.json files in `electrical/` modified by this sprint (foundation-only)
+- All 8 existing skills validated against new metaschema; 0 forced edits required (clean F.6)
+```
+
+- [ ] **Step 5: Write the memory file**
+
+Create `/Users/linus/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/sprint-F-foundation-shipped.md`:
+
+```markdown
+---
+name: sprint-F-foundation-shipped
+description: Sprint F Foundation shipped 2026-06-05 — SkillInput contract grounding foundation layer; 4-pass gate live; W1 + W2 sprints come next
+metadata:
+  type: project
+---
+
+# Sprint F — SkillInput Contract Grounding Foundation shipped 2026-06-05
+
+**Why:** First of 3 sprints in the public skill-orchestration contract migration (F → W1 → W2). Lands the contract surface (SkillInput + manifest metaschema + grounded_source two-tier validation + ORCHESTRATION.md + 4-pass gate) BEFORE any per-skill migration touches `electrical/`. Per `[[runtime-project-boundary]]` discipline + design spec at `docs/superpowers/specs/2026-06-05-skillinput-contract-grounding-design.md` (commit `2dd01f1`).
+
+**How to apply:** The 4-pass gate at `scripts/validate-examples.py` is now the contract enforcer for all subsequent migration sprints. W1 + W2 implementer tasks must pass the 4-pass gate + 4 lint sub-passes per task. The closed grammar for `grounded_source` is validated by the metaschema; new canonical bindings require updating both `inputs.schema.json` enum AND `scripts/validate-examples.py CANONICAL_GROUNDED_SOURCES`.
+
+**What shipped:**
+- 10 implementer commits + ~3-5 fix-passes + 3 portion/spec docs = ~15-18 total
+- 4 new shared/schemas/core/ files (skill-input.schema, skill-input.reference, skill-manifest.schema, design-rationale)
+- 1 modified shared/schemas/core/inputs.schema.json (grounded_source addition)
+- 1 new ORCHESTRATION.md at repo root
+- 1 modified scripts/validate-examples.py (3-pass → 4-pass + 4 lint sub-passes)
+- 27-value room.type snake_case enum locked (matches lux-levels.json taxonomy)
+- 14 canonical grounded_source bindings + project.<custom> pattern fallback
+- 4-pass gate green; 0 forced manifest edits at F.6
+
+**Sprint discipline preserved throughout:**
+- Sonnet for mechanical / Opus for judgment
+- Two-stage Opus review per task
+- 7-check verification fence at F.7
+- Final Opus integration review at F.8
+- Push deferred to user authorisation at F.9
+
+**Next:** Sprint W1 (Wave 1: lighting-layout 1.7.0 → 1.8.0 + small-power 2.0.0 → 2.1.0 grounding). After W1 ships, Sprint W2 (Wave 2+3: 5 remaining skills) follows.
+
+**1 disclosed FP held throughout:** motor-superposition functional_audit FP (carry-over from remediation program; unchanged by F).
+```
+
+- [ ] **Step 6: Append MEMORY.md index entry**
+
+In `/Users/linus/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/MEMORY.md`, ADD a line below the most recent entry (Sprint D5 lighting-layout):
+
+```markdown
+- [Sprint F Foundation shipped (SkillInput contract grounding foundation)](sprint-F-foundation-shipped.md) — 2026-06-05: public skill-orchestration contract; 4-pass gate live; SkillInput + manifest metaschema + grounded_source two-tier validation + ORCHESTRATION.md; 0 forced manifest edits; W1 + W2 sprints come next (per-skill migration)
+```
+
+- [ ] **Step 7: Update CLAUDE.md to note 4-pass gate + foundation layer**
+
+In `/Users/linus/Desktop/DraftsMan SKills/draftsman-skills/CLAUDE.md`, find the "## Golden CI gate" section and update from "3-pass" to "4-pass + 4 lint sub-passes" with description of new Pass 4 + lint sub-passes.
+
+- [ ] **Step 8: Run final gate check**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -5
+```
+
+Expected: 4-pass + lints green; 0 failures.
+
+- [ ] **Step 9: Commit (memory files are outside repo — Write tool only)**
+
+```bash
+git add CHANGELOG.md CLAUDE.md
+git commit -m "docs: F.7 Sprint F CHANGELOG + CLAUDE.md 4-pass gate note + memory file (foundation layer shipped)"
+```
+
+### Task F.8: Final cross-sprint Opus integration review
+
+**Files:**
+- Read-only — verdict + recommendation only
+
+**Why Opus:** Adversarial review against full Sprint F surface area. Mirrors D5 D.4 pattern.
+
+- [ ] **Step 1: Run all 11 integration review checks**
+
+1. **Contract surface complete** — SkillInput schema + manifest metaschema + inputs.schema extension + ORCHESTRATION.md all shipped
+2. **Tagged-union scope discriminator correct** — RoomScopeInput / FloorScopeInput / BuildingScopeInput each require their scope-specific fields
+3. **Room.type enum matches lux-levels.json** — 27 canonical values, no drift
+4. **grounded_source two-tier validation works** — canonical PASS, custom PASS, invalid FAIL
+5. **Manifest metaschema additionalProperties: true** — preserves existing fields; lint catches typos
+6. **placement_convention enum 4 values** — room_local_mm / floor_local_mm / site_local_mm / none_topological
+7. **4-pass gate aggregates correctly** — Pass 1+2+3+4 all reported; exit 0 on full pass
+8. **4 lint sub-passes implement spec §8 risks** — manifest typos / grounded_source / orphans / cascade SHA-256
+9. **ORCHESTRATION.md covers all 3 scope tiers** — room iteration + floor iteration + building iteration pseudocode
+10. **8 existing manifests pass Pass 4** — 0 forced edits at F.6 (validates back-compat with un-migrated skills)
+11. **Banned-citation grep clean** — no banned tokens in any Sprint F deliverable
+
+- [ ] **Step 2: Build 11-check verdict table + final verdict**
+
+PASS / SHIP-WITH-NOTED-CONCERNS / FIX-FIRST.
+
+- [ ] **Step 3: If FIX-FIRST: dispatch fix-pass. If PASS or SHIP-WITH-CONCERNS: proceed to F.9.**
+
+- [ ] **Step 4: No commit (read-only review)**
+
+### Task F.9: Push deferred to user authorisation
+
+**Files:**
+- No file edits
+
+**Why:** Per CLAUDE.md "shared state" rule, push to `origin/main` requires explicit user authorisation. Checkpoint, not action.
+
+- [ ] **Step 1: Confirm all Sprint F commits are local on `main`**
+
+```bash
+git log --oneline origin/main..HEAD | head -20
+git log --oneline -3
+```
+
+Expected: 12-15 commits ahead of `origin/main`; HEAD is F.8 commit (or F.8-fix-pass if any).
+
+- [ ] **Step 2: Present sprint summary to user**
+
+Compose a brief summary covering:
+- Gates: 354 baseline → final (Pass 4 adds ~8 manifest validations = ~362 or similar; aggregate green)
+- New files (5 shared/schemas/core/, 1 ORCHESTRATION.md, 1 design rationale)
+- Modified files (inputs.schema.json, validate-examples.py, CHANGELOG.md, CLAUDE.md)
+- 4-pass + 4 lint sub-passes live
+- 0 forced manifest edits at F.6 (clean back-compat)
+- F.8 verdict line
+- Confirm push is the only remaining action
+
+- [ ] **Step 3: Wait for user "yes push" or equivalent authorisation**
+
+STOP HERE until user authorises. Do NOT push without explicit go-ahead.
+
+- [ ] **Step 4: On authorisation, push to origin/main**
+
+```bash
+git push origin main 2>&1 | tail -5
+```
+
+Expected: clean push.
+
+- [ ] **Step 5: Confirm + final report**
+
+```bash
+git log --oneline origin/main..HEAD | head -5
+```
+
+Expected: 0 commits ahead post-push.
+
+- [ ] **Step 6: Sprint F close**
+
+Sprint F shipped. Foundation layer of the SkillInput contract grounding live. Sprint W1 (Wave 1: lighting-layout + small-power grounding) is the next step.
+
+---
+
+## Self-review (writing-plans skill)
+
+### Spec coverage
+
+| Spec section | Plan task(s) |
+|---|---|
+| §3.3 4 foundation additions | F.1 (skill-input.schema) + F.2 (skill-manifest.schema) + F.3 (inputs.schema extension) + F.4 (ORCHESTRATION.md) |
+| §3.4 placement_convention enum | F.2 schema property + F.4 placement transforms section |
+| §4 contract surface | F.1 + F.2 + F.3 + F.4 collectively define what each skill declares |
+| §6.1 SkillInput schema with 27-value room.type | F.0 rationale + F.1 schema; canonical 27 values listed |
+| §6.2 Manifest metaschema | F.2 schema authoring |
+| §6.3 grounded_source two-tier | F.3 extension + F.5 Lint 2 validation |
+| §6.4 ORCHESTRATION.md sections | F.4 authors all 7 sections (contract / iteration / grounding / worked example / placement transforms / engineer-input layering / MCP integration) |
+| §7 Sprint F task table (F.0-F.9) | 10 implementer tasks with model assignments matching the "Why" column |
+| §8 5 risk mitigations | F.5 Lint 1 (Risk 1) + F.5 Lint 2 (Risk 2) + F.5 Lint 3 (Risk 3) + F.1 schema enum (Risk 4) + F.5 Lint 4 (Risk 5) |
+| §9 7-check pre-ship fence | F.7 runs all 7 checks |
+| §10 cost estimate (~10-12 commits) | 10 implementer tasks + ~3-5 fix-pass budget |
+| §11 process discipline | sprint-discipline header section |
+| §12 Definition of done | F.7 + F.8 + F.9 checkpoint |
+
+All 13 spec sections covered.
+
+### Placeholder scan
+
+- No "TBD" / "TODO" raw text.
+- Every step has either inline code/diff content or an exact command.
+- 7-check + 11-check tables present with PASS/FAIL columns + evidence rows.
+- F.5 includes complete Python function bodies (not "implement appropriate validation").
+
+### Type / name consistency
+
+- `SkillInput` shape (RoomScopeInput / FloorScopeInput / BuildingScopeInput) consistent across F.1 schema + F.4 ORCHESTRATION.md examples + F.7 Check 1 fixtures.
+- `placement_convention` enum (room_local_mm / floor_local_mm / site_local_mm / none_topological) consistent across F.2 schema + F.4 placement transforms + F.7 Check 4.
+- `grounded_source` two-tier (closed enum + project.<custom> pattern) consistent across F.3 schema + F.5 Lint 2 + F.7 Check 3.
+- 14 canonical bindings consistent across F.3 + F.5 (CANONICAL_GROUNDED_SOURCES frozenset matches inputs.schema.json oneOf[0].enum).
+- 27 canonical room.type values consistent across F.0 rationale + F.1 schema enum + ORCHESTRATION.md worked example.
+
+### Issues found and fixed inline
+
+None — self-review found no defects requiring inline fixes.
+
+---
+
+## Execution handoff
+
+Plan complete and saved to [`docs/superpowers/plans/2026-06-05-sprint-F-foundation-grounding-sprint.md`](2026-06-05-sprint-F-foundation-grounding-sprint.md).
+
+**Two execution options:**
+
+1. **Subagent-Driven (recommended)** — Fresh subagent per task, two-stage Opus review after each. Matches the D4/D5 precedent (both shipped clean with 0-7 fix-passes).
+2. **Inline Execution** — Execute tasks in this session using executing-plans, batch with checkpoints.
+
+**Which approach?**
