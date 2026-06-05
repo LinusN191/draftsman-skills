@@ -1,5 +1,116 @@
 # Changelog — lighting-layout
 
+## [1.7.0] - 2026-06-05 — Wave 2: task/ambient zone-purpose split + 3D pendant placement
+
+_Wave 2 second deliverable. Adds zone-purpose semantics (task / surrounding / background), 3D luminaire placement fields, per-zone lux achievement tracking, 7 new invariants (INV-13..19), 3 new reviewer D-checks, 5 new evals, 12 examples (8 retrofit + 4 new), and 1 new verified standards file. Additive minor bump; existing IRs remain valid (all new fields optional)._
+
+### Changed
+- `skill.manifest.json` version 1.6.0 → 1.7.0 (additive; backward-compatible IR additions).
+
+### Added (IR schema — `schemas/lighting-layout-ir.schema.json`)
+- **`zones[].purpose`** — required string enum when `zones[]` is present:
+  `task | surrounding | background`. Aligns to BS EN 12464-1:2021 §4.2.2.
+- **`zones[].em_target_lux`** — optional integer; emergency maintained lux
+  target for this zone (BS EN 12464-1:2021 Table 5 + BS EN 1838:2013 §5.3).
+- **`luminaires[].mount_type`** — optional string enum:
+  `surface | recessed | pendant | suspended | track | pole | wall`.
+- **`luminaires[].z_mm`** — optional integer; mounting height above finished
+  floor level in mm.
+- **`luminaires[].suspension_length_mm`** — optional integer; rod/cable drop
+  from ceiling in mm.
+- **`calc.per_zone_achieved[]`** — optional array; per-zone lux achievement
+  records keyed to `zone_id`, carrying `achieved_lux`, `target_lux`,
+  `ratio_compliance`, and `gap_pct`. Populated when photometric-grid cascade
+  present (INV-11) or lumen-balance calc available; vacuously empty otherwise.
+- **allOf clause 3** — pendant/suspended `mount_type` requires both `z_mm`
+  AND `suspension_length_mm` to be present (structural enforcement; semantic
+  verification by INV-16).
+- **allOf clause 4** — pendant identity constraint: if `mount_type = pendant`,
+  then `suspension_length_mm > 0`.
+- **allOf clause 5** — orphan-surrounding blocked: a zone with
+  `purpose = surrounding` MUST NOT exist without at least one `task` zone in
+  the same room (structural + INV-14 semantic enforcement).
+
+### Added (validator — `prompts/validator.md`)
+- **INV-13 — Zone purpose required + valid (HIGH)**: every zone has a
+  `purpose` from the allowed enum; surrounding zones have a task sibling.
+- **INV-14 — Surrounding ratio compliance (HIGH)**: surrounding-zone target
+  ≥ ⅓ task-zone target per BS EN 12464-1:2021 §4.2.2.2 (Table 4.2).
+- **INV-15 — Background floor (HIGH)**: background-zone target ≥ ⅓
+  surrounding-zone target per §4.2.2.3; if no surrounding zone then ≥ ⅓ of
+  lowest task zone.
+- **INV-16 — mount_type ↔ z_mm/suspension consistency (HIGH)**: pendant and
+  suspended luminaires carry both `z_mm` and `suspension_length_mm`; surface
+  and recessed never carry `suspension_length_mm`.
+- **INV-17 — Ceiling clearance + working-plane floor (HIGH)**: `z_mm` ≤
+  `room.ceiling_height_mm`; for pendant/suspended `z_mm` ≥ `working_plane_mm`
+  + 2000 mm (2 m headroom clearance).
+- **INV-18 — hm_mm derivation consistency (MEDIUM)**: when `z_mm` present,
+  `luminaire.hm_mm` (mounting height above working plane) = `z_mm −
+  working_plane_mm` ± 5 mm tolerance.
+- **INV-19 — Per-zone achievement (graded severity, INFO/MEDIUM/HIGH)**:
+  graded per band — `gap_pct < 5 %` → INFO; `5–15 %` → MEDIUM; `> 15 %` →
+  HIGH; aggregate FAIL if any zone is `fail`.
+
+### Added (reviewer — `prompts/reviewer.md`)
+- **D-11 — Suspension length sanity check**: pendant suspension_length_mm
+  should be < (ceiling_height_mm − 2100); flag where clearance < 200 mm.
+- **D-12 — Background-only rooms flag**: rooms containing only background
+  zones with no task zone are unusual; reviewer notes for engineer sign-off.
+- **D-13 — Task-zone density flag**: task zones covering < 20 % of total room
+  area trigger a reviewer comment on whether coverage intent is met.
+
+### Added (rules)
+- `rules/zone-purpose-rules.yaml` — zone-purpose hierarchy rules, ratio
+  thresholds, and enforcement mapping to INV-13/14/15.
+- `rules/mount-type-rules.yaml` — 3D placement rules, mount_type enum
+  definitions, suspension geometry constraints, and enforcement mapping to
+  INV-16/17/18.
+
+### Added (verified standards file)
+- `shared/standards/lighting/BSEN12464/area-definitions.json` —
+  machine-readable transcription of BS EN 12464-1:2021 §4.2.2.1/2/3 and
+  Table 6 area-type/purpose definitions. Joins existing `lux-levels.json`.
+
+### Added (examples — 8 retrofit + 4 new = 12 total)
+Retrofit (zone-purpose + mount_type fields backfilled):
+- `office-open-plan` — zones purpose + mount_type surface
+- `reception-lobby` — zones purpose + mount_type surface/wall
+- `warehouse-highbay` — zones purpose + mount_type pole
+- `uk-open-plan-office-10x8-dali` — zones purpose + mount_type recessed
+- `uk-mixed-purpose-classroom` — zones purpose + task/surrounding split
+- `uk-multi-entrance-classroom` — zones purpose + mount_type surface
+- `uk-part-l-fail-incandescent` — zones purpose backfill
+- `uk-bathroom-zone-1-zone-2` — zones purpose + mount_type surface/wall
+
+New (exercise new D5 features):
+- `uk-pendant-open-plan-office` — pendant luminaires (z_mm + suspension),
+  INV-16/17/18 PASS path, per_zone_achieved populated via photometric cascade.
+- `uk-retail-display-task-zone` — task/surrounding split across retail floor
+  and display bay; INV-14 ratio enforcement.
+- `uk-per-zone-target-violation` — INV-19 FAIL path with graded HIGH gap
+  demonstrating non_compliance_flags severity bands.
+- `uk-undersized-lighting-vs-target` — photometric cascade path demonstrating
+  INV-19 MEDIUM band (gap 5–15 %).
+
+### Added (evals — 5 new)
+- `eval-09-zone-purpose-emit.yaml` — INV-13 PASS: valid zone purposes emitted.
+- `eval-10-task-surrounding-ratio.yaml` — INV-14 PASS/FAIL: surrounding ≥ ⅓
+  task enforcement.
+- `eval-11-mount-type-3d-consistency.yaml` — INV-16 PASS: pendant fields
+  present; INV-17 clearance.
+- `eval-12-per-zone-achievement-pass.yaml` — INV-19 PASS: all zones meet
+  target within tolerance.
+- `eval-13-per-zone-achievement-fail.yaml` — INV-19 FAIL: HIGH band triggered
+  on > 15 % gap zone.
+
+### Changed (inputs.json)
+- Items 16–19 added covering zone-purpose interview questions:
+  - WI-16: Is task lighting required in specific sub-zones?
+  - WI-17: Confirm surrounding-zone area boundary.
+  - WI-18: Pendant/suspended luminaire mounting height or suspension length.
+  - WI-19: Per-zone lux target confirmation from photometric report.
+
 ## [1.6.0] - 2026-06-02 — Wave 1: special-locations cascade contract + Floor plan context portability
 
 _Two parallel-shipped deliverables merged into a single version entry. The Wave 1 special-locations cascade contract (the main deliverable) is documented first; the Floor plan context portability changes (originally landed as PR #2 / commit 013861b) are appended below._
