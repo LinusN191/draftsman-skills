@@ -84,6 +84,34 @@
         "item_schema": {
           "type": "object",
           "description": "Required when answer_type=struct_list; JSON Schema for each list element. Depth 1 only — no nested struct_list."
+        },
+        "grounded_source": {
+          "description": "Closed-grammar binding to a SkillInput field. Orchestrator auto-fills this item from the parsed model. Two-tier validation: closed enum for canonical room.* + project.* bindings; pattern fallback for project.<custom> bindings (manifest-lint flags those for orchestrator-confirmation). Uses anyOf so canonical project.* values satisfy both tiers without conflict.",
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "room.type",
+                "room.area_m2",
+                "room.bbox.length",
+                "room.bbox.width",
+                "room.centroid.x",
+                "room.centroid.y",
+                "room.mounting_height",
+                "room.polygon",
+                "project.building_type",
+                "project.code_basis",
+                "project.jurisdiction",
+                "project.units",
+                "project.ceiling_height_mm",
+                "project.project_id"
+              ]
+            },
+            {
+              "type": "string",
+              "pattern": "^project\\.[a-z_]+$"
+            }
+          ]
         }
       },
       "allOf": [
