@@ -1,0 +1,191 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "draftsman-skills/skill-input.schema.json",
+  "title": "SkillInput",
+  "description": "Payload an orchestrator constructs per skill invocation. Tagged-union by scope (room | floor | building). See ORCHESTRATION.md for worked examples.",
+  "oneOf": [
+    { "$ref": "#/definitions/RoomScopeInput" },
+    { "$ref": "#/definitions/FloorScopeInput" },
+    { "$ref": "#/definitions/BuildingScopeInput" }
+  ],
+  "definitions": {
+    "RoomScopeInput": {
+      "type": "object",
+      "required": ["scope", "floor", "room", "project_facts"],
+      "properties": {
+        "scope": { "const": "room" },
+        "floor": { "$ref": "#/definitions/Floor" },
+        "room": { "$ref": "#/definitions/Room" },
+        "project_facts": { "$ref": "#/definitions/ProjectFacts" },
+        "engineer_inputs": {
+          "type": "object",
+          "description": "Engineer-supplied items NOT covered by grounded_source bindings. Orchestrator merges engineer_inputs over grounded values."
+        }
+      },
+      "additionalProperties": false
+    },
+    "FloorScopeInput": {
+      "type": "object",
+      "required": ["scope", "floor", "rooms", "project_facts"],
+      "properties": {
+        "scope": { "const": "floor" },
+        "floor": { "$ref": "#/definitions/Floor" },
+        "rooms": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Room" }
+        },
+        "project_facts": { "$ref": "#/definitions/ProjectFacts" },
+        "engineer_inputs": { "type": "object" }
+      },
+      "additionalProperties": false
+    },
+    "BuildingScopeInput": {
+      "type": "object",
+      "required": ["scope", "building", "floors", "project_facts"],
+      "properties": {
+        "scope": { "const": "building" },
+        "building": { "$ref": "#/definitions/Building" },
+        "floors": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Floor" }
+        },
+        "project_facts": { "$ref": "#/definitions/ProjectFacts" },
+        "engineer_inputs": { "type": "object" }
+      },
+      "additionalProperties": false
+    },
+    "Building": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string" },
+        "label": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "Floor": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string" },
+        "building_label": { "type": "string" },
+        "level_name": { "type": "string" },
+        "origin_xy_mm": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "Floor origin in site coords (mm). Used for floor_local_mm placement transform."
+        }
+      },
+      "additionalProperties": true
+    },
+    "Room": {
+      "type": "object",
+      "required": ["room_id", "type", "area_m2", "bbox"],
+      "properties": {
+        "room_id": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": [
+            "office.open_plan",
+            "office.private_office",
+            "office.conference",
+            "office.reception_desk",
+            "office.filing_copying",
+            "office.archive",
+            "circulation.main_corridor",
+            "circulation.link_corridor",
+            "circulation.lobby",
+            "circulation.staircase",
+            "sanitary.toilet_wc",
+            "sanitary.first_aid",
+            "industrial.warehouse_low",
+            "industrial.warehouse_high",
+            "industrial.workshop",
+            "industrial.car_park_bays",
+            "industrial.car_park_ramp",
+            "healthcare.ward_general",
+            "healthcare.ward_examination",
+            "healthcare.consultation",
+            "education.classroom",
+            "education.classroom_board",
+            "education.laboratory",
+            "education.sports_hall",
+            "retail.general",
+            "retail.high_emphasis",
+            "retail.checkout"
+          ],
+          "description": "Snake_case room type per shared/standards/lighting/BSEN12464/lux-levels.json. Orchestrators MUST normalize before passing. See skill-input-design-rationale.md for the 27-value taxonomy."
+        },
+        "area_m2": { "type": "number", "minimum": 0 },
+        "bbox": {
+          "type": "object",
+          "required": ["length", "width"],
+          "properties": {
+            "length": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Room length in metres (orchestrator's drawing units; convert to mm in skill if needed)."
+            },
+            "width": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Room width in metres."
+            },
+            "min_xy": {
+              "type": "array",
+              "items": { "type": "number" },
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "Bottom-left corner of bbox in floor coords (m). Used for room_local_mm placement transform."
+            }
+          },
+          "additionalProperties": true
+        },
+        "polygon": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": { "type": "number" },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "description": "Room polygon vertices in floor-local coords (m). Closed polygon (last == first)."
+        },
+        "centroid": {
+          "type": "object",
+          "properties": {
+            "x": { "type": "number" },
+            "y": { "type": "number" }
+          }
+        },
+        "mounting_height": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Working plane / mounting reference height in mm if known per-room."
+        }
+      },
+      "additionalProperties": true
+    },
+    "ProjectFacts": {
+      "type": "object",
+      "properties": {
+        "building_type": { "type": "string" },
+        "code_basis": { "type": "string" },
+        "jurisdiction": {
+          "type": "string",
+          "enum": ["GB", "KE", "INT", "US"],
+          "description": "Standards jurisdiction per CLAUDE.md (GB=BS 7671 / KE=KS 1700 / INT=IEC 60364 / US=NEC)."
+        },
+        "units": {
+          "type": "string",
+          "enum": ["metric", "imperial"]
+        },
+        "ceiling_height_mm": { "type": "number", "minimum": 0 },
+        "project_id": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  }
+}
