@@ -2,14 +2,14 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "draftsman-skills/shared/standards/spaces/room-types-schema.json",
   "title": "RoomTypeEntry",
-  "description": "Per-entry metaschema for shared/standards/spaces/room-types/*.json files. Validates the ~600 OmniClass Table 13-derived entries authored across 7 parent_category files.",
+  "description": "Per-entry metaschema for shared/standards/spaces/room-types/*.json files. Validates entries authored across the 16 actual OmniClass Table 13 parent_category files (one per T13 level-2 parent code). NOTE: residential is intentionally absent — T13 (Spaces by Function) does not publish residential codes; residential spaces live in OmniClass Table 11 (Construction Entities by Function) which is deferred to a future sprint.",
   "type": "object",
   "required": ["canonical_id", "omniclass_code", "parent_category", "_verification_status"],
   "properties": {
     "canonical_id": {
       "type": "string",
       "pattern": "^[a-z]+(\\.[a-z0-9_]+)+$",
-      "description": "Snake_case dotted identifier used as Room.type in SkillInput. Format: parent_category.sub_category.entry_name. Examples: office.open_plan, healthcare.operating_theatre_general, residential.bedroom_master."
+      "description": "Snake_case dotted identifier used as Room.type in SkillInput. Format: parent_category.sub_category.entry_name. Examples: healthcare_spaces.operating_theatre_general, education_and_training_spaces.classroom_general, parking_spaces.surface_lot."
     },
     "omniclass_code": {
       "type": "string",
@@ -18,14 +18,37 @@
     },
     "parent_category": {
       "type": "string",
-      "enum": ["residential", "commercial", "institutional", "industrial", "transport", "external", "agricultural"]
+      "enum": [
+        "space_planning_types",
+        "void_areas",
+        "wall_spaces",
+        "encroachment_spaces",
+        "parking_spaces",
+        "facility_service_spaces",
+        "circulation_spaces",
+        "education_and_training_spaces",
+        "recreation_spaces",
+        "government_spaces",
+        "artistic_spaces",
+        "museum_spaces",
+        "library_spaces",
+        "spiritual_spaces",
+        "environmentally_controlled_spaces",
+        "healthcare_spaces"
+      ],
+      "description": "Snake_case canonical name of the OmniClass Table 13 level-2 parent. One of the 16 verbatim T13 parents (per pdfcoffee mirror 2026-06-05 + NIBS NBIMS-US V3 §2.4.4.3 wrapper). MUST match the level-2 segment of omniclass_code (e.g. parent_category=healthcare_spaces ↔ omniclass_code starts with 13-51)."
+    },
+    "parent_code": {
+      "type": "string",
+      "pattern": "^13-[0-9]{2}$",
+      "description": "OPTIONAL convenience field — verbatim T13 level-2 parent code (e.g. '13-31' for education_and_training_spaces). Consumers can lookup by code OR by snake_case parent_category name. MUST equal the level-2 segment of omniclass_code when present."
     },
     "parent_path": {
       "type": "array",
       "items": {"type": "string"},
       "minItems": 1,
       "maxItems": 3,
-      "description": "Hierarchical drill-down path (3-level max). E.g. [institutional, healthcare, treatment]. First element MUST equal parent_category."
+      "description": "Hierarchical drill-down path (3-level max). E.g. [healthcare_spaces, treatment, operating_theatre]. First element MUST equal parent_category."
     },
     "common_aliases": {
       "type": "array",

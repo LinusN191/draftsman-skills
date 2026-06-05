@@ -1,7 +1,7 @@
 {
   "_source": "OmniClass Table 13 — Spaces by Function (publicly-available mirror, see _source/OmniClass-Table-13-source-notes.md for URL + edition + access date)",
   "_edition": "2012-05-16",
-  "_note": "Master index pointing to per-parent_category files under room-types/. Codes transcribed from publicly-available OmniClass Table 13 secondary mirror (https://pdfcoffee.com/omniclass-13-2012-05-16-pdf-free.html, accessed 2026-06-05), not the canonical OCCS PDF. Secondary mirror coverage is ~250-300 entries (~40-50% of aspirational 600-entry target); entry_count_target fields below are aspirational. Per-entry _verification_status field records sourcing. Future Sprint Y back-fill from canonical OCCS PDF (CSI license) will extend coverage to ~600 entries and raise _verification_status to occs_verified.",
+  "_note": "Master index pointing to per-parent_category files under room-types/. One file per ACTUAL OmniClass Table 13 level-2 parent (16 total). Codes transcribed from publicly-available OmniClass Table 13 secondary mirror (https://pdfcoffee.com/omniclass-13-2012-05-16-pdf-free.html, accessed 2026-06-05), not the canonical OCCS PDF. Re-architected 2026-06-05 from a 7-category planner split (residential / commercial / institutional / industrial / transport / external / agricultural) after X.B.1 discovered T13 does NOT publish residential codes (T13 = Spaces by Function; residential entities live in T11 Construction Entities by Function, deferred to a future sprint). entry_count_target fields below are mirror-coverage estimates summing to ~250 total. Per-entry _verification_status field records sourcing. Future Sprint Y back-fill from canonical OCCS PDF (CSI license) will extend coverage and raise _verification_status to occs_verified.",
   "_units": {
     "code_format": "OmniClass 13-XX XX XX XX XX (5-segment 13-digit notation)",
     "canonical_id_format": "snake_case dotted path (parent_category.sub_category.entry_name)"
@@ -9,40 +9,101 @@
   "_schema": "room-types-schema.json",
   "_source_notes": "_source/OmniClass-Table-13-source-notes.md",
   "categories": {
-    "residential": {
-      "path": "room-types/residential.json",
-      "entry_count_target": 80,
-      "description": "Single-family / multi-family / dormitory / hotel-style residential spaces"
+    "space_planning_types": {
+      "parent_code": "13-11",
+      "path": "room-types/space_planning_types.json",
+      "entry_count_target": 18,
+      "description": "Generic space planning units (rentable / usable / common / building gross area definitions)"
     },
-    "commercial": {
-      "path": "room-types/commercial.json",
-      "entry_count_target": 120,
-      "description": "Office / retail / banking / hospitality / restaurant"
+    "void_areas": {
+      "parent_code": "13-13",
+      "path": "room-types/void_areas.json",
+      "entry_count_target": 8,
+      "description": "Vertical and horizontal voids (shafts, atria, light wells, double-height volumes)"
     },
-    "institutional": {
-      "path": "room-types/institutional.json",
-      "entry_count_target": 150,
-      "description": "Healthcare / education / cultural / civic / religious"
+    "wall_spaces": {
+      "parent_code": "13-15",
+      "path": "room-types/wall_spaces.json",
+      "entry_count_target": 6,
+      "description": "Wall thickness allowances and interstitial wall spaces"
     },
-    "industrial": {
-      "path": "room-types/industrial.json",
-      "entry_count_target": 130,
-      "description": "Manufacturing / warehouse / processing / utility"
+    "encroachment_spaces": {
+      "parent_code": "13-17",
+      "path": "room-types/encroachment_spaces.json",
+      "entry_count_target": 6,
+      "description": "Encroachments into adjacent spaces (columns, projections, balconies)"
     },
-    "transport": {
-      "path": "room-types/transport.json",
-      "entry_count_target": 60,
-      "description": "Rail / aviation / road / marine / parking"
+    "parking_spaces": {
+      "parent_code": "13-21",
+      "path": "room-types/parking_spaces.json",
+      "entry_count_target": 14,
+      "description": "Vehicle parking (surface, structured, valet, drop-off, EV, accessible)"
     },
-    "external": {
-      "path": "room-types/external.json",
-      "entry_count_target": 40,
-      "description": "Outdoor work / landscape / circulation"
+    "facility_service_spaces": {
+      "parent_code": "13-23",
+      "path": "room-types/facility_service_spaces.json",
+      "entry_count_target": 22,
+      "description": "Mechanical / electrical / janitorial / loading / waste / IT service rooms"
     },
-    "agricultural": {
-      "path": "room-types/agricultural.json",
-      "entry_count_target": 20,
-      "description": "Livestock / crops / processing"
+    "circulation_spaces": {
+      "parent_code": "13-25",
+      "path": "room-types/circulation_spaces.json",
+      "entry_count_target": 16,
+      "description": "Corridors, lobbies, stairs, elevator lobbies, vestibules"
+    },
+    "education_and_training_spaces": {
+      "parent_code": "13-31",
+      "path": "room-types/education_and_training_spaces.json",
+      "entry_count_target": 24,
+      "description": "Classrooms, lecture halls, labs, libraries-as-instructional, training rooms"
+    },
+    "recreation_spaces": {
+      "parent_code": "13-33",
+      "path": "room-types/recreation_spaces.json",
+      "entry_count_target": 18,
+      "description": "Gymnasiums, pools, courts, fitness, locker rooms, recreational"
+    },
+    "government_spaces": {
+      "parent_code": "13-35",
+      "path": "room-types/government_spaces.json",
+      "entry_count_target": 14,
+      "description": "Courtrooms, council chambers, detention, civic offices"
+    },
+    "artistic_spaces": {
+      "parent_code": "13-37",
+      "path": "room-types/artistic_spaces.json",
+      "entry_count_target": 16,
+      "description": "Theatres, concert halls, studios, rehearsal, backstage"
+    },
+    "museum_spaces": {
+      "parent_code": "13-41",
+      "path": "room-types/museum_spaces.json",
+      "entry_count_target": 12,
+      "description": "Galleries, exhibition halls, collections storage, conservation"
+    },
+    "library_spaces": {
+      "parent_code": "13-45",
+      "path": "room-types/library_spaces.json",
+      "entry_count_target": 10,
+      "description": "Reading rooms, stacks, archives, study carrels"
+    },
+    "spiritual_spaces": {
+      "parent_code": "13-47",
+      "path": "room-types/spiritual_spaces.json",
+      "entry_count_target": 10,
+      "description": "Sanctuaries, chapels, meditation, prayer, fellowship"
+    },
+    "environmentally_controlled_spaces": {
+      "parent_code": "13-49",
+      "path": "room-types/environmentally_controlled_spaces.json",
+      "entry_count_target": 22,
+      "description": "Cleanrooms, cold storage, anechoic, EMI-shielded, vivariums"
+    },
+    "healthcare_spaces": {
+      "parent_code": "13-51",
+      "path": "room-types/healthcare_spaces.json",
+      "entry_count_target": 34,
+      "description": "Operating theatres, patient rooms, imaging, treatment, clinical support"
     }
   }
 }
