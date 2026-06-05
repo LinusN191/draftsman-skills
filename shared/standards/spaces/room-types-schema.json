@@ -8,8 +8,8 @@
   "properties": {
     "canonical_id": {
       "type": "string",
-      "pattern": "^[a-z]+(\\.[a-z0-9_]+)+$",
-      "description": "Snake_case dotted identifier used as Room.type in SkillInput. Format: parent_category.sub_category.entry_name. Examples: healthcare_spaces.operating_theatre_general, education_and_training_spaces.classroom_general, parking_spaces.surface_lot."
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
+      "description": "Snake_case dotted identifier used as Room.type in SkillInput. Format: parent_category.sub_category.entry_name. First segment matches the parent_category enum (snake_case names with underscores). Examples: healthcare_spaces.operating_theatre_general, education_and_training_spaces.classroom_general, parking_spaces.surface_lot, space_planning_types.planned_work_space."
     },
     "omniclass_code": {
       "type": "string",
