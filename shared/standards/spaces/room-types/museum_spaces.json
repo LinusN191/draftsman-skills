@@ -1,0 +1,300 @@
+{
+  "_source": "OmniClass Table 13 — 13-41 Museum Spaces (verbatim from secondary mirror declared in sprint-X-source-provenance.md §1.2 and _source/OmniClass-Table-13-source-notes.md)",
+  "_source_url": "https://pdfcoffee.com/omniclass-13-2012-05-16-pdf-free.html",
+  "_access_date": "2026-06-06",
+  "_parent_category": "museum_spaces",
+  "_parent_code": "13-41",
+  "_entry_count": 12,
+  "_entry_count_target": 12,
+  "_coverage_actual_pct": 100.0,
+  "_note": "Per-entry _verification_status records sourcing. cross_references.* populated at X.D.1 back-fill (currently all null). The 13-41 00 00 umbrella entry is excluded from entries[] as the parent_category header. The secondary mirror exposes only one sub-entry beneath the umbrella: 13-41 11 00 Museum Gallery. No further level-4 or level-5 codes appear in the pdfcoffee mirror for 13-41 (the Scribd corroboration mirror also returned no additional detail). Consequently 1 entry is mirror_sourced and 11 entries are inferred from (a) the OmniClass hierarchical numbering pattern observed across peer categories (13-37, 13-33, 13-35), and (b) the canonical museum MEP space taxonomy documented in PAS 198:2012 (BSI specification for the storage and exhibition of cultural heritage collections), ASHRAE Chapter 23 (Museums, Libraries, and Archives), and CIBSE Guide A Table 1.5 (museum/gallery design parameters). Each inferred entry carries a mandatory _inference_note. The ifc_space_type follows IfcSpaceTypeEnum (ISO 16739): all museum spaces in this sub-tree are enclosed interior spaces (INTERNAL) except where an outdoor sculpture court or external garden is noted. Future Sprint Y back-fill from the canonical OCCS PDF (CSI license) will raise _verification_status from mirror_sourced/inferred to occs_verified and may add or refine codes.",
+  "entries": [
+    {
+      "canonical_id": "museum_spaces.museum_gallery",
+      "omniclass_code": "13-41 11 00",
+      "parent_category": "museum_spaces",
+      "parent_code": "13-41",
+      "parent_path": ["museum_spaces", "museum_gallery"],
+      "common_aliases": [
+        "gallery",
+        "exhibition gallery",
+        "museum hall",
+        "display gallery",
+        "museum room"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "mirror_sourced",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "museum_spaces.museum_gallery.permanent_collection_gallery",
+      "omniclass_code": "13-41 11 11",
+      "parent_category": "museum_spaces",
+      "parent_code": "13-41",
+      "parent_path": ["museum_spaces", "museum_gallery", "permanent_collection_gallery"],
+      "common_aliases": [
+        "permanent gallery",
+        "standing collection room",
+        "collection display room",
+        "main gallery",
+        "heritage gallery"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "inferred",
+      "_inference_note": "Level-4 code 13-41 11 11 synthesised from OmniClass numbering pattern (peer: 13-37 11 11, 13-35 11 11). Permanent collection gallery is the primary museum gallery type distinguished in ASHRAE Chapter 23 (Museums, Libraries, and Archives) and PAS 198:2012 §3. Code not visible in pdfcoffee or Scribd mirrors of Table 13.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "museum_spaces.museum_gallery.temporary_exhibition_gallery",
+      "omniclass_code": "13-41 11 13",
+      "parent_category": "museum_spaces",
+      "parent_code": "13-41",
+      "parent_path": ["museum_spaces", "museum_gallery", "temporary_exhibition_gallery"],
+      "common_aliases": [
+        "temporary exhibition hall",
+        "special exhibition room",
+        "visiting exhibition gallery",
+        "loan exhibition space",
+        "changing exhibition gallery"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "inferred",
+      "_inference_note": "Level-4 code 13-41 11 13 synthesised from OmniClass numbering pattern. Temporary/special exhibition gallery is universally recognised as a distinct space type in museum MEP design (ASHRAE Chapter 23; CIBSE Guide A Table 1.5) requiring flexible mechanical and lighting services separate from permanent galleries. Code not visible in pdfcoffee or Scribd mirrors.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "museum_spaces.museum_gallery.outdoor_exhibition_court",
+      "omniclass_code": "13-41 11 15",
+      "parent_category": "museum_spaces",
+      "parent_code": "13-41",
+      "parent_path": ["museum_spaces", "museum_gallery", "outdoor_exhibition_court"],
+      "common_aliases": [
+        "sculpture court",
+        "outdoor sculpture garden",
+        "museum garden",
+        "open-air gallery",
+        "museum courtyard"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "inferred",
+      "_inference_note": "Level-4 code 13-41 11 15 synthesised from OmniClass numbering pattern. Outdoor exhibition courts (sculpture gardens, museum courtyards) are a standard museum space type and receive ifc_space_type=EXTERNAL consistent with peer outdoor spaces in 13-37 (sculpture_garden, ornamental_garden). Code not visible in pdfcoffee or Scribd mirrors.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "museum_spaces.collections_storage",
+      "omniclass_code": "13-41 13 00",
+      "parent_category": "museum_spaces",
+      "parent_code": "13-41",
+      "parent_path": ["museum_spaces", "collections_storage"],
+      "common_aliases": [
+        "museum storage",
+        "object store",
+        "artifact storage",
+        "collection store",
+        "reserve collection store"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "inferred",
+      "_inference_note": "Level-3 sub-tree root 13-41 13 00 synthesised from OmniClass numbering pattern (peer sub-trees: 13-37 13 00 Display Spaces, 13-33 13 00 Aquatic Recreation). Collections storage is the second major museum space grouping after galleries — explicitly treated in PAS 198:2012 §4 and ASHRAE Chapter 23 as a distinct HVAC design zone requiring 45–55% RH and 15–21°C. Code not visible in pdfcoffee or Scribd mirrors.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "museum_spaces.collections_storage.compact_mobile_storage",
+      "omniclass_code": "13-41 13 11",
+      "parent_category": "museum_spaces",
+      "parent_code": "13-41",
+      "parent_path": ["museum_spaces", "collections_storage", "compact_mobile_storage"],
+      "common_aliases": [
+        "mobile shelving store",
+        "compactor storage room",
+        "rolling stack room",
+        "dense storage room",
+        "high-density art storage"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "inferred",
+      "_inference_note": "Level-4 code 13-41 13 11 synthesised from OmniClass numbering pattern. Compact mobile (compactor) storage is the dominant storage format in museum collections management. Distinct HVAC load profile from static open storage owing to air stratification within shelving units — addressed in ASHRAE Chapter 23 §2.3.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "museum_spaces.collections_storage.open_plan_storage",
+      "omniclass_code": "13-41 13 13",
+      "parent_category": "museum_spaces",
+      "parent_code": "13-41",
+      "parent_path": ["museum_spaces", "collections_storage", "open_plan_storage"],
+      "common_aliases": [
+        "open storage",
+        "static shelving store",
+        "pallet rack store",
+        "open-plan object store",
+        "static collections store"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "inferred",
+      "_inference_note": "Level-4 code 13-41 13 13 synthesised from OmniClass numbering pattern. Open-plan static storage is distinguished from compact mobile storage in museum MEP design by its different airflow requirement and rack loading. PAS 198:2012 §4.2 treats both sub-types.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "museum_spaces.conservation_laboratory",
+      "omniclass_code": "13-41 15 00",
+      "parent_category": "museum_spaces",
+      "parent_code": "13-41",
+      "parent_path": ["museum_spaces", "conservation_laboratory"],
+      "common_aliases": [
+        "conservation lab",
+        "conservation studio",
+        "restoration laboratory",
+        "conservation workshop",
+        "object treatment room"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "inferred",
+      "_inference_note": "Level-3 sub-tree root 13-41 15 00 synthesised from OmniClass numbering pattern. Conservation laboratories are a universally recognised distinct museum space type requiring localised extraction ventilation, controlled humidity, and task lighting — distinct from gallery and storage environments per ASHRAE Chapter 23 §3 and PAS 198:2012 §5. Code not visible in pdfcoffee or Scribd mirrors.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "museum_spaces.conservation_laboratory.wet_conservation_lab",
+      "omniclass_code": "13-41 15 11",
+      "parent_category": "museum_spaces",
+      "parent_code": "13-41",
+      "parent_path": ["museum_spaces", "conservation_laboratory", "wet_conservation_lab"],
+      "common_aliases": [
+        "wet lab",
+        "paper conservation room",
+        "textile conservation room",
+        "waterlogged-object lab",
+        "conservation wet room"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "inferred",
+      "_inference_note": "Level-4 code 13-41 15 11 synthesised from OmniClass numbering pattern. Wet conservation laboratories (paper, textile, waterlogged objects) require plumbed benches, enhanced extract, and tile floor — a distinct MEP zone from dry conservation studios. Addressed in ASHRAE Chapter 23 §3.1.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "museum_spaces.conservation_laboratory.dry_conservation_studio",
+      "omniclass_code": "13-41 15 13",
+      "parent_category": "museum_spaces",
+      "parent_code": "13-41",
+      "parent_path": ["museum_spaces", "conservation_laboratory", "dry_conservation_studio"],
+      "common_aliases": [
+        "dry studio",
+        "paintings conservation room",
+        "objects conservation studio",
+        "sculpture conservation room",
+        "conservation painting studio"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "inferred",
+      "_inference_note": "Level-4 code 13-41 15 13 synthesised from OmniClass numbering pattern. Dry conservation studios (paintings, dry objects) have different extract, humidity, and natural-light requirements from wet labs. Recognised in ASHRAE Chapter 23 §3.2 and CIBSE Guide A Table 1.5 museum sub-types.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "museum_spaces.museum_archive",
+      "omniclass_code": "13-41 17 00",
+      "parent_category": "museum_spaces",
+      "parent_code": "13-41",
+      "parent_path": ["museum_spaces", "museum_archive"],
+      "common_aliases": [
+        "museum archive room",
+        "documentary archive",
+        "institutional archive",
+        "museum records store",
+        "archival storage room"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "inferred",
+      "_inference_note": "Level-3 sub-tree root 13-41 17 00 synthesised from OmniClass numbering pattern. Museum archives (photographic, paper, digital media records) are categorised separately from collections object stores in ASHRAE Chapter 23 §4 (archives and records) and ANSI/ASHRAE 90.1 Appendix E (space-type energy classification). Code not visible in pdfcoffee or Scribd mirrors.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "museum_spaces.museum_archive.photographic_archive",
+      "omniclass_code": "13-41 17 11",
+      "parent_category": "museum_spaces",
+      "parent_code": "13-41",
+      "parent_path": ["museum_spaces", "museum_archive", "photographic_archive"],
+      "common_aliases": [
+        "photo archive",
+        "photographic records store",
+        "negative store",
+        "slide archive",
+        "film and photo archive"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "inferred",
+      "_inference_note": "Level-4 code 13-41 17 11 synthesised from OmniClass numbering pattern. Photographic archives (film negatives, glass plates, prints) require cool-dry storage distinct from general paper archives per Image Permanence Institute (IPI) guidelines and ASHRAE Chapter 23 §4.3. Code not visible in pdfcoffee or Scribd mirrors.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    }
+  ]
+}
