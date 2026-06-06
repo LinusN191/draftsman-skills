@@ -1,0 +1,910 @@
+{
+  "_source": "Uniclass 2015 Table SL — Retail rooms (verbatim from primary NBS Source mirror declared in sprint-Z-source-provenance.md §1, supplemented by buildig/uniclass-2015 community CSV v1.22)",
+  "_source_url": "https://uniclass.thenbs.com/taxon/sl",
+  "_access_date": "2026-06-06",
+  "_parent_category": "retail",
+  "_parent_code": "SL_20_50",
+  "_taxonomy_source": "Uniclass-2015-SL",
+  "_entry_count": 32,
+  "_entry_count_target": 30,
+  "_coverage_actual_pct": 106.7,
+  "_note": "Per-entry _verification_status records sourcing. Primary NBS leaf codes recruited from SL_20_50 Commercial spaces (20 verbatim codes, all confirmed present on NBS Source primary mirror 2026-06-06 — the SL_20_50 page notes 'No current codes' under Uniclass v1.35 April 2026 meaning these codes remain in taxonomy as superseded leaf nodes; retained as nbs_sourced per sprint-Z-source-provenance.md §2): SL_20_50_03 Ambient wholesale spaces, SL_20_50_05 Auction rooms, SL_20_50_10 Beauty salons, SL_20_50_12 Checkout points, SL_20_50_22 Department store shop floors, SL_20_50_29 Financial and professional services outlets (commercial.json scope), SL_20_50_30 Fitting rooms, SL_20_50_32 Food and drink outlets, SL_20_50_36 Hair and beauty salons, SL_20_50_37 Hair salons, SL_20_50_47 Livestock auction rooms, SL_20_50_51 Market stalls, SL_20_50_55 Motor vehicle showrooms, SL_20_50_70 Refrigerated wholesale spaces, SL_20_50_72 Retail kiosks, SL_20_50_74 Retail spaces (NBS mirror only — post-v1.22, absent from buildig CSV), SL_20_50_85 Supermarket shop floors, SL_20_50_86 Tan spray booths, SL_20_50_87 Tattoo and piercing parlours, SL_20_50_96 Waste and scrap yards (out of scope for retail room taxonomy). Retail-support SL_90 codes recruited from buildig CSV v1.22: SL_90_10_71 Retail circulation spaces, SL_90_50_35 General storerooms, SL_90_50_36 Goods stores, SL_90_20_16 Customer service counter areas, SL_90_20_85 Staff rooms, SL_90_20_69 Queuing areas. Engineering-consensus canonical_ids for retail sub-types not individually enumerated in Uniclass v1.35 (boutique_shopfloor, jewellery_display, electronics_display, fashion_floor, click_and_collect, loading_back_of_house, covered_arcade) cite BS EN 12464-1:2021 §5.27 retail sub-clauses (maintained illuminance + display accent), BCSC (British Council of Shopping Centres) Retail Design Guidelines 4th edition §4.3 adjacency norms, and CIBSE SLL Lighting Guide LG-01:2018 (retail lighting) as engineering authority. SL_20_50_29 Financial and professional services outlets and SL_20_50_55 Motor vehicle showrooms are technically within SL_20_50 scope but assigned to commercial.json (banking hall, financial services, motor vehicle showroom entries); excluded here to avoid inter-file duplication. cross_references.cibse_lg + nrm2 stay null per Sprint Z deferral; building_type_codes back-filled at Z.D.1.",
+  "entries": [
+    {
+      "canonical_id": "retail.shopfloor.general_shopfloor",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_74",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "shopfloor",
+        "general"
+      ],
+      "common_aliases": [
+        "retail floor",
+        "shop floor",
+        "sales area",
+        "trading floor",
+        "selling floor"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_74 'Retail spaces' is the verbatim leaf code under SL_20_50 Commercial spaces. Present on NBS primary mirror 2026-06-06; absent from buildig CSV v1.22 (post-v1.22 addition). Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.shopfloor.department_store_floor",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_22",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "shopfloor",
+        "department"
+      ],
+      "common_aliases": [
+        "department store",
+        "department floor",
+        "multi-department shop floor",
+        "large format retail floor",
+        "anchor store floor"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_22 'Department store shop floors' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.shopfloor.supermarket_floor",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_85",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "shopfloor",
+        "food"
+      ],
+      "common_aliases": [
+        "supermarket",
+        "grocery store floor",
+        "superstore floor",
+        "food retail floor",
+        "hypermarket floor"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_85 'Supermarket shop floors' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.shopfloor.retail_kiosk",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_72",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "shopfloor",
+        "kiosk"
+      ],
+      "common_aliases": [
+        "retail kiosk",
+        "pop-up retail unit",
+        "mall kiosk",
+        "island unit",
+        "concession kiosk"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_72 'Retail kiosks' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.shopfloor.boutique_shopfloor",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_74",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "shopfloor",
+        "boutique"
+      ],
+      "common_aliases": [
+        "boutique",
+        "specialty shop",
+        "independent retail unit",
+        "small format retail",
+        "unit shop floor"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "Boutique / small-format specialty shop is not individually enumerated in Uniclass SL v1.35. Closest NBS leaf is SL_20_50_74 Retail spaces. Sub-type differentiation follows BCSC Retail Design Guidelines 4th edition §4.3 (unit shop adjacency and shopfront depth norms for specialty tenants) and BS EN 12464-1:2021 §5.27.3 (retail display accent ratio ≥ 3:1 ambient). CIBSE SLL LG-01:2018 §3.4 boutique accent lighting benchmarks apply.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.display.jewellery_display",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_74",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "display",
+        "jewellery"
+      ],
+      "common_aliases": [
+        "jewellery shop",
+        "jeweller",
+        "watch and jewellery display",
+        "precious goods display",
+        "goldsmith floor"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "Jewellery display / precious goods retail is not individually enumerated in Uniclass SL v1.35. Closest NBS leaf is SL_20_50_74 Retail spaces. Sub-type differentiation follows BS EN 12464-1:2021 §5.27.4 (jewellery and precious goods retail: Em 1000 lx maintained task illuminance; display accent ratio ≥ 10:1) and CIBSE SLL LG-01:2018 §5.2 (high-sparkle display cabinets). BCSC Retail Design Guidelines 4th edition §6.1 security and display adjacency requirements apply.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.display.electronics_display",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_74",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "display",
+        "electronics"
+      ],
+      "common_aliases": [
+        "electronics shop",
+        "consumer electronics floor",
+        "tech retail floor",
+        "appliance showroom",
+        "phone and tablet retail"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "Consumer electronics display retail is not individually enumerated in Uniclass SL v1.35. Closest NBS leaf is SL_20_50_74 Retail spaces. Sub-type differentiation follows BS EN 12464-1:2021 §5.27.3 (general retail, Em 500 lx maintained) supplemented by CIBSE SLL LG-01:2018 §4.3 (display wall uniformity Ra ≥ 80 for accurate screen colour rendering). BCSC Retail Design Guidelines 4th edition §5.4 power-density and data-cabling allowances for electronics tenants apply.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.display.fashion_floor",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_74",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "display",
+        "fashion"
+      ],
+      "common_aliases": [
+        "fashion retail",
+        "clothing store floor",
+        "apparel floor",
+        "garment retail floor",
+        "fashion shop"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "Fashion / clothing retail floor is not individually enumerated in Uniclass SL v1.35. Closest NBS leaf is SL_20_50_74 Retail spaces. Sub-type differentiation follows BS EN 12464-1:2021 §5.27.3 (retail, Em 500 lx maintained; Ra ≥ 80 for colour rendering of textiles) and CIBSE SLL LG-01:2018 §3.5 (fashion retail: high CRI and vertical illuminance on hanging rails). BCSC Retail Design Guidelines 4th edition §4.5 fitting-room adjacency and rail density norms apply.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.service_point.checkout_point",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_12",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "service_point",
+        "checkout"
+      ],
+      "common_aliases": [
+        "checkout",
+        "till point",
+        "POS area",
+        "cash desk",
+        "payment counter"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_12 'Checkout points' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.service_point.customer_service_desk",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_90_20_16",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "service_point",
+        "customer_service"
+      ],
+      "common_aliases": [
+        "customer service desk",
+        "information desk",
+        "help point",
+        "concierge desk",
+        "customer care counter"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_90_20_16 'Customer service counter areas' is the verbatim leaf code under SL_90_20 Common spaces (buildig CSV v1.22 confirmed). Used here as the canonical anchor for retail customer service desk. BS EN 12464-1:2021 §5.27.3 retail task illuminance applies; BCSC Retail Design Guidelines 4th edition §7.2 customer service adjacency norms.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.service_point.returns_counter",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_90_20_16",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "service_point",
+        "returns"
+      ],
+      "common_aliases": [
+        "returns desk",
+        "returns counter",
+        "refund desk",
+        "exchange counter",
+        "after-sales service counter"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "Returns / refund counter is not individually enumerated in Uniclass SL v1.35. Closest NBS leaf is SL_90_20_16 Customer service counter areas. Sub-type differentiation follows BCSC Retail Design Guidelines 4th edition §7.3 (returns processing adjacency to stockroom and checkout) and BS EN 12464-1:2021 §5.27.3 (retail task illuminance Em 500 lx maintained). Operationally distinct from checkout: returns require barcode scanning, product inspection, and back-of-house proximity.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.service_point.click_and_collect",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_90_20_16",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "service_point",
+        "click_and_collect"
+      ],
+      "common_aliases": [
+        "click and collect point",
+        "BOPIS counter",
+        "order collection desk",
+        "online order pickup",
+        "omnichannel collection point"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "Click-and-collect / BOPIS (buy online, pick up in store) counter is not enumerated in Uniclass SL v1.35 (post-2012 omnichannel format). Closest NBS leaf is SL_90_20_16 Customer service counter areas. Sub-type differentiation follows BCSC Retail Design Guidelines 4th edition §7.4 (omnichannel collection zone adjacency to stockroom; dedicated queuing allocation) and BS EN 12464-1:2021 §5.27.3 (retail task illuminance Em 500 lx maintained). CIBSE SLL LG-01:2018 §6.1 secondary circulation illuminance applies to adjacent queuing zone.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.fitting.fitting_room",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_30",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "fitting",
+        "changing"
+      ],
+      "common_aliases": [
+        "fitting room",
+        "changing room",
+        "dressing room",
+        "try-on cubicle",
+        "trial room"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_30 'Fitting rooms' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.support.stockroom_retail",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_90_50_35",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "support",
+        "storage"
+      ],
+      "common_aliases": [
+        "stockroom",
+        "stock room",
+        "back-of-house storage",
+        "retail store",
+        "goods holding area"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_90_50_35 'General storerooms' is the verbatim leaf code under SL_90_50 Storage spaces (buildig CSV v1.22 confirmed). Used here as the canonical anchor for retail stockroom. BCSC Retail Design Guidelines 4th edition §8.1 back-of-house stockroom area-per-unit-frontage ratios apply. BS EN 12464-1:2021 §5.27.6 stockroom/storage illuminance (Em 100 lx minimum) applies.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.support.goods_receiving",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_90_50_36",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "support",
+        "receiving"
+      ],
+      "common_aliases": [
+        "goods receiving area",
+        "delivery bay",
+        "goods in",
+        "receiving dock",
+        "unloading area"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_90_50_36 'Goods stores' is the verbatim leaf code under SL_90_50 Storage spaces (buildig CSV v1.22 confirmed). Used here as the canonical anchor for retail goods receiving / delivery bay. BCSC Retail Design Guidelines 4th edition §8.2 loading-dock access and segregation from public circulation apply. BS EN 12464-1:2021 §5.27.6 goods handling illuminance (Em 200 lx) applies.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.support.loading_back_of_house",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_90_50_36",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "support",
+        "loading"
+      ],
+      "common_aliases": [
+        "loading bay",
+        "service yard",
+        "back of house",
+        "BOH service area",
+        "service access zone"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "Retail back-of-house / loading area is not individually enumerated in Uniclass SL v1.35. Closest NBS leaf is SL_90_50_36 Goods stores. Sub-type differentiation (dedicated loading dock distinct from goods store) follows BCSC Retail Design Guidelines 4th edition §8.3 (service zone segregation from public realm; minimum vehicle turning radius) and BS EN 12464-1:2021 §5.27.6 (goods handling, Em 200 lx). CDM Regulations 2015 safe traffic management at loading zones applies.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.support.staff_room_retail",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_90_20_85",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "support",
+        "staff"
+      ],
+      "common_aliases": [
+        "staff room",
+        "staff break room",
+        "employee rest room",
+        "crew room",
+        "staff welfare area"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_90_20_85 'Staff rooms' is the verbatim leaf code under SL_90_20 Common spaces (buildig CSV v1.22 confirmed). Used here as the canonical anchor for retail staff welfare room. Workplace (Health, Safety and Welfare) Regulations 1992 Regulation 25 (rest facilities) applies. BS EN 12464-1:2021 §5.3.14 (break rooms, Em 200 lx) applies.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.support.manager_office_retail",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_74",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "support",
+        "management"
+      ],
+      "common_aliases": [
+        "manager's office",
+        "store manager office",
+        "retail office",
+        "back office retail",
+        "store administration office"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "Retail store manager / back-office is not individually enumerated in Uniclass SL v1.35. Closest NBS leaf is SL_20_50_74 Retail spaces (the broader retail space anchor). Sub-type differentiation follows BCSC Retail Design Guidelines 4th edition §9.1 (store management office adjacency to stockroom + CCTV monitoring station) and BS EN 12464-1:2021 §5.3.1 (office workspace, Em 500 lx maintained). Fire safety compliance with RRFSO 2005 management office requirements applies.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.circulation.retail_circulation",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_90_10_71",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "circulation",
+        "main_aisle"
+      ],
+      "common_aliases": [
+        "retail aisle",
+        "main mall aisle",
+        "shopping corridor",
+        "circulation route retail",
+        "pedestrian retail circulation"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_90_10_71 'Retail circulation spaces' is the verbatim leaf code under SL_90_10 Circulation spaces (buildig CSV v1.22 confirmed). Specifically covers circulation routes within retail buildings and malls. BS EN 12464-1:2021 §5.27.1 (circulation zones adjacent to retail, Em 300 lx) and BCSC Retail Design Guidelines 4th edition §3.2 (aisle width minima, dwell-zone lighting) apply.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.circulation.covered_arcade",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_90_10_71",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "circulation",
+        "arcade"
+      ],
+      "common_aliases": [
+        "covered arcade",
+        "shopping arcade",
+        "galeria",
+        "glazed arcade",
+        "Victorian arcade"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "Covered shopping arcade is not individually enumerated in Uniclass SL v1.35. Closest NBS leaf is SL_90_10_71 Retail circulation spaces. Sub-type differentiation (glazed or enclosed arcade with unit frontages on both sides) follows BCSC Retail Design Guidelines 4th edition §3.4 (arcade width, natural daylighting, fire escape) and BS EN 12464-1:2021 §5.27.1 (retail circulation, Em 300 lx; task variation for daylit atriums). CDM Regulations 2015 atrium maintenance access and glazing replacement procedures apply.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.circulation.queuing_area",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_90_20_69",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "circulation",
+        "queuing"
+      ],
+      "common_aliases": [
+        "queuing zone",
+        "waiting queue",
+        "checkout queue",
+        "queue management area",
+        "line-up zone"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_90_20_69 'Queuing areas' is the verbatim leaf code under SL_90_20 Common spaces (buildig CSV v1.22 confirmed). Used here for retail queuing zones adjacent to checkout, customer service, and click-and-collect. BS EN 12464-1:2021 §5.27.3 (retail circulation/queuing, Em 300 lx) and BCSC Retail Design Guidelines 4th edition §7.1 (queue-management stanchion clearances) apply.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.outdoor.market_stall",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_51",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "outdoor",
+        "market"
+      ],
+      "common_aliases": [
+        "market stall",
+        "market stand",
+        "street market pitch",
+        "traders stall",
+        "covered market pitch"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_51 'Market stalls' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2. ifc_space_type EXTERNAL reflects open-air market stall configuration; covered-market variants share the same canonical_id but are served by INTERNAL lighting circuits.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.wholesale.ambient_wholesale",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_03",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "wholesale",
+        "ambient"
+      ],
+      "common_aliases": [
+        "ambient wholesale",
+        "cash and carry",
+        "wholesale floor",
+        "bulk-buy retail",
+        "club warehouse floor"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_03 'Ambient wholesale spaces' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2. Ambient denotes non-refrigerated bulk storage and selling floor (dry goods, hardware, general merchandise).",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.wholesale.refrigerated_wholesale",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_70",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "wholesale",
+        "refrigerated"
+      ],
+      "common_aliases": [
+        "refrigerated wholesale",
+        "cold store retail",
+        "chilled wholesale floor",
+        "frozen wholesale space",
+        "temperature-controlled wholesale"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_70 'Refrigerated wholesale spaces' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2. Covers temperature-controlled food wholesale environments (0–8 °C ambient; specialist luminaires to IP65 minimum per BS EN 60529).",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.food_outlet.food_drink_outlet",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_32",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "food_outlet",
+        "general"
+      ],
+      "common_aliases": [
+        "food and drink outlet",
+        "café",
+        "snack bar",
+        "food court unit",
+        "quick service restaurant"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_32 'Food and drink outlets' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2. Covers retail-context food/beverage units (café concessions, food court stalls, vending areas) distinct from standalone hospitality restaurants.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.personal_care.hair_salon",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_37",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "personal_care",
+        "hair"
+      ],
+      "common_aliases": [
+        "hair salon",
+        "hairdresser",
+        "barber shop",
+        "haircutting salon",
+        "coiffeur"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_37 'Hair salons' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2. NB: SL_20_50_36 'Hair and beauty salons' is also present and covers combined hair+beauty operations; this entry covers hair-only establishments.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.personal_care.hair_and_beauty_salon",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_36",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "personal_care",
+        "hair_and_beauty"
+      ],
+      "common_aliases": [
+        "hair and beauty salon",
+        "beauty salon",
+        "nail salon",
+        "spa retail",
+        "wellness salon"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_36 'Hair and beauty salons' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2. NB: SL_20_50_10 'Beauty salons' is also present and covers beauty-only establishments; SL_20_50_36 covers the combined format.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.personal_care.beauty_salon",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_10",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "personal_care",
+        "beauty"
+      ],
+      "common_aliases": [
+        "beauty salon",
+        "beauty parlour",
+        "aesthetics studio",
+        "cosmetic treatment room",
+        "skin care salon"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_10 'Beauty salons' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2. Covers beauty-only studios (facials, manicure, lash treatments) excluding hair services.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.personal_care.tan_spray_booth",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_86",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "personal_care",
+        "tanning"
+      ],
+      "common_aliases": [
+        "spray tan booth",
+        "tanning booth",
+        "spray tan cubicle",
+        "sunless tanning pod",
+        "misting booth"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_86 'Tan spray booths' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2. Mechanical ventilation requirements per CIBSE Guide B2:2016 §6 (local exhaust ventilation for spray aerosol containment) apply.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.personal_care.tattoo_parlour",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_87",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "personal_care",
+        "tattoo"
+      ],
+      "common_aliases": [
+        "tattoo parlour",
+        "tattoo studio",
+        "piercing parlour",
+        "body art studio",
+        "tattooist"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_87 'Tattoo and piercing parlours' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2. Local authority special treatment premises licensing under Local Government (Miscellaneous Provisions) Act 1982 applies.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.auction.auction_room",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_05",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "auction",
+        "general"
+      ],
+      "common_aliases": [
+        "auction room",
+        "auction house",
+        "saleroom",
+        "bidding room",
+        "auction gallery"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_05 'Auction rooms' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2. Covers general goods auction rooms (antiques, fine art, general household — excluding livestock).",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "retail.auction.livestock_auction_room",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_20_50_47",
+      "parent_category": "retail",
+      "parent_path": [
+        "retail",
+        "auction",
+        "livestock"
+      ],
+      "common_aliases": [
+        "livestock auction ring",
+        "cattle auction",
+        "livestock market ring",
+        "mart ring",
+        "stock auction room"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_20_50_47 'Livestock auction rooms' is the verbatim leaf code under SL_20_50 Commercial spaces. Confirmed in buildig CSV v1.22 and NBS primary mirror. Uniclass v1.35 marks SL_20_50 as 'No current codes'; code retained verbatim per sprint-Z-source-provenance.md §2. Animal welfare standards under the Welfare of Animals (Transport) (England) Order 2006 and market-auction hygiene requirements apply.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    }
+  ]
+}
