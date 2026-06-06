@@ -164,6 +164,32 @@
           "type": "number",
           "minimum": 0,
           "description": "Working plane / mounting reference height in mm if known per-room."
+        },
+        "classification": {
+          "type": "object",
+          "description": "Optional BIM IfcClassificationReference structure for round-tripping room.type via IFC. Auto-derivable by orchestrator from Room.type via shared/standards/spaces/room-types/*.json lookup (look up canonical_id → omniclass_code). Orchestrators populating this directly carry the canonical reference inline for downstream BIM export.",
+          "properties": {
+            "source": {
+              "type": "string",
+              "default": "OmniClass-Table-13",
+              "description": "Classification source identifier. Default 'OmniClass-Table-13' matches Sprint X taxonomy."
+            },
+            "edition": {
+              "type": "string",
+              "description": "Classification edition (e.g. '2012', '2019')."
+            },
+            "code": {
+              "type": "string",
+              "pattern": "^13-[0-9]{2}( [0-9]{2}){0,4}$",
+              "description": "Verbatim classification code. For OmniClass Table 13: 5-segment 13-digit notation 13-XX XX XX XX XX."
+            },
+            "reference_uri": {
+              "type": "string",
+              "format": "uri",
+              "description": "Optional URI to the canonical classification entry (e.g. OmniClass.org page for the code)."
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": true

@@ -39,6 +39,11 @@ The `scope` field is the `oneOf` discriminator. Schema validation fails if shape
 - `polygon`: closed polygon vertices in floor-local metres (last vertex == first vertex)
 - `centroid`: room centroid `{x, y}` in floor-local metres
 - `mounting_height`: working-plane or mounting reference height in mm if known per-room
+- `classification`: optional BIM `IfcClassificationReference` structure for BIM round-tripping. Auto-derivable by the orchestrator from `Room.type` via the canonical room-types catalogue lookup (`shared/standards/spaces/room-types/*.json` — match `canonical_id` and read `omniclass_code`). When supplied directly, the inline reference is carried through to IFC export. Sub-fields:
+  - `source`: classification source identifier (default `"OmniClass-Table-13"` matching Sprint X taxonomy)
+  - `edition`: classification edition (e.g. `"2012"`, `"2019"`)
+  - `code`: verbatim classification code; for OmniClass Table 13 the 5-segment 13-digit notation `13-XX XX XX XX XX` (regex-validated)
+  - `reference_uri`: optional URI to the canonical classification entry (e.g. OmniClass.org page for the code)
 
 `additionalProperties: true` — skills may attach extra room metadata (e.g. `reflectance_ceiling`, `maintenance_factor`).
 
