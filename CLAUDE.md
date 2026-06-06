@@ -57,13 +57,17 @@ The established workflow. The `superpowers:*` skills are loaded on demand — do
 
 ## Golden CI gate
 
-`scripts/validate-examples.py` runs on every push and PR to `main`. Three passes:
+`scripts/validate-examples.py` runs on every push and PR to `main`. **6 passes + 1 lint sub-pass** (extended in Sprint X from the original 3-pass; Sprint F.5 will extend further to 7-pass + 5 lint when resumed):
 
 - **Pass 1** — every `examples/*/output.json` validated against the parent skill's `schemas/<skill>-ir.schema.json`.
 - **Pass 2** — every `evals/eval-*.yaml` validated against `shared/schemas/core/eval.schema.json`.
 - **Pass 3** — each skill's `inputs.json` validated against `shared/schemas/core/inputs.schema.json`.
+- **Pass 4** — `shared/standards/spaces/ashrae/ashrae-90.1-table-9.5.2.1-lpd.json` schema validation (added Sprint X).
+- **Pass 5** — `shared/standards/spaces/ashrae/ashrae-62.1-table-6-1-ventilation.json` schema validation (added Sprint X).
+- **Pass 6** — `shared/standards/spaces/ifc/` subset file schema validation (added Sprint X).
+- **Lint 1** — room-type `snake_case` pattern conformance across room-types catalogue entries (added Sprint X).
 
-Aggregate exit 0 only when all three passes are 100% green. Sprint 3-W2 (W/W2a/W2b) cleared the schema-fragmentation backlog; remaining work documented in `[[sprint-3w-shipped]]` / `[[sprint-3w2a-shipped]]` / `[[sprint-3w2b-shipped]]` memory files. Any new skill PR must add new evals and `inputs.json` and pass all three.
+Aggregate exit 0 only when all passes and lint sub-passes are 100% green. Sprint 3-W2 (W/W2a/W2b) cleared the schema-fragmentation backlog; Sprint X extended the gate to cover the room-types taxonomy and IFC subset. Any new skill PR must add new evals and `inputs.json` and pass all passes.
 
 Workflow: `.github/workflows/validate-examples.yml`. Local run: `python3 scripts/validate-examples.py`.
 
