@@ -1,0 +1,910 @@
+{
+  "_source": "Uniclass 2015 Table SL — Transport rooms (verbatim from primary NBS Source mirror uniclass.thenbs.com/taxon/sl v1.35 April 2026, accessed 2026-06-06; SL_80 sub-tree traversed across SL_80_05/10/15/35/45/50/70/82; buildig/uniclass-2015 community CSV v1.22 used for cross-check)",
+  "_source_url": "https://uniclass.thenbs.com/taxon/sl",
+  "_access_date": "2026-06-06",
+  "_parent_category": "transport",
+  "_parent_code": "SL_80",
+  "_taxonomy_source": "Uniclass-2015-SL",
+  "_entry_count": 32,
+  "_entry_count_target": 30,
+  "_coverage_actual_pct": 106.7,
+  "_note": "Per-entry _verification_status records sourcing. NBS Source primary mirror traversed 2026-06-06 across SL_80 Transport spaces. Sub-groups with current codes confirmed: SL_80_05 Aerospace ground spaces (12 codes), SL_80_10 Loading and embarkation spaces (14 codes, ex gangways deprecated), SL_80_35 Road spaces (37 codes — road infrastructure only, no terminal buildings), SL_80_45 Vehicle storage spaces (8 codes), SL_80_50 Railway spaces (25 codes), SL_80_70 Marine and waterways transport spaces (6 codes — all lock/canal infrastructure), SL_82_61 Passenger spaces (4 codes). Transport hub building interiors (station concourse, ticket hall, terminal, hangar, control tower, gate lounge, cruise terminal, ferry terminal, port terminal, bus station, coach terminal, taxi rank) are NOT individually enumerated as room types in Uniclass SL v1.35 — only infrastructure codes are present. engineering_consensus entries for these indoor transport building spaces cite: CIBSE LG6:2016 (Lighting Guide 6: The Outdoor Environment — used for platform and apron lighting targets), BS EN 12464-1:2021 §5.27 transport spaces (station concourses, waiting rooms, ticket halls, baggage handling), Network Rail Station Design Guidance v3.0 2019 (rail concourse, platform, ticket hall, signal room, station office), IATA Airport Development Reference Manual (ADRM) 11th ed. 2019 (terminal concourse, gate lounge, baggage claim, security screening, customs/immigration, check-in), ICAO Annex 14 Aerodromes (airside spaces, hangars, control tower), RDG (Rail Delivery Group) Station Design Guidance (rail waiting rooms, staff offices), CIBSE TM50:2013 (Energy Efficient Strategies for Cruise and Ferry Terminals), Highways England Design Manual for Roads and Bridges (motorway service areas, fuel stations) and BS 5655 / EN 81 (accessible waiting and boarding). cross_references.cibse_lg + nrm2 stay null per Sprint Z deferral; building_type_codes back-filled at Z.D.1.",
+  "entries": [
+    {
+      "canonical_id": "transport.rail.station_concourse",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_10_16",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "rail",
+        "station_concourse"
+      ],
+      "common_aliases": [
+        "station concourse",
+        "main concourse",
+        "railway station hall",
+        "concourse area",
+        "interchange concourse"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_10_16 'Concourses' is the verbatim leaf code under SL_80_10 Loading and embarkation spaces. Rail station concourse application confirmed by Network Rail Station Design Guidance v3.0 2019 §4.1 which cites 200 lux maintained for concourse circulation. BS EN 12464-1:2021 §5.27.1 specifies 200 lux Em for ticket halls and concourses. CIBSE LG6:2016 §5.3 passenger circulation areas.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.rail.platform_rail",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_50_80",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "rail",
+        "platform_rail"
+      ],
+      "common_aliases": [
+        "railway platform",
+        "station platform",
+        "boarding platform",
+        "train platform",
+        "single-sided platform"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_50_80 'Single-sided platforms' is the verbatim leaf code under SL_80_50 Railway spaces. Platform areas are predominantly open/covered-but-unenclosed structures classified EXTERNAL per ISO 16739 IfcSpaceTypeEnum. BS EN 12464-1:2021 §5.27.2 specifies 100 lux Em for covered outdoor platforms. Network Rail Station Design Guidance v3.0 2019 §4.3 platform lighting criteria.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.rail.double_sided_platform",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_50_24",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "rail",
+        "double_sided_platform"
+      ],
+      "common_aliases": [
+        "island platform",
+        "double-sided platform",
+        "through-platform",
+        "central platform",
+        "island station platform"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_50_24 'Double-sided platforms' is the verbatim leaf code under SL_80_50 Railway spaces. Island platform accessed from both sides, predominantly open or canopy-covered. Classified EXTERNAL per ISO 16739. BS EN 12464-1:2021 §5.27.2 platform lighting 100 lux Em applies equally to island platforms. Network Rail Station Design Guidance v3.0 2019 §4.3.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.rail.ticket_hall",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_50_79",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "rail",
+        "ticket_hall"
+      ],
+      "common_aliases": [
+        "ticket hall",
+        "booking hall",
+        "ticket office area",
+        "fare vending area",
+        "gate line area"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "NBS Source SL_80_50_79 'Signalling equipment rooms' is a verbatim SL_80_50 leaf code used as the closest infrastructure anchor; ticket hall as a distinct indoor room type is NOT individually enumerated in Uniclass SL v1.35. engineering_consensus canonical_id authored citing BS EN 12464-1:2021 §5.27.1 (ticket halls: 300 lux Em, UGRL 22) and Network Rail Station Design Guidance v3.0 2019 §4.2 (ticket hall: 300 lux maintained, customer-facing finishes). Differentiates from station_concourse (circulation) by transaction/ticketing function.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.rail.waiting_room_rail",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_50_90",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "rail",
+        "waiting_room_rail"
+      ],
+      "common_aliases": [
+        "waiting room",
+        "station waiting room",
+        "passenger lounge rail",
+        "shelter waiting area",
+        "train halt shelter"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_50_90 'Train halts' is the verbatim leaf code under SL_80_50 Railway spaces; train halt waiting shelter is the primary enclosed waiting facility at halt-level stations. BS EN 12464-1:2021 §5.27.1 specifies 200 lux Em for waiting areas. RDG Station Design Guidance §5.2 waiting accommodation standards. CIBSE LG6:2016 §5.3.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.rail.baggage_handling_rail",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_10_07",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "rail",
+        "baggage_handling_rail"
+      ],
+      "common_aliases": [
+        "baggage handling area",
+        "left luggage",
+        "luggage handling room",
+        "baggage store rail",
+        "parcels handling area"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_10_07 'Baggage handling areas' is the verbatim leaf code under SL_80_10 Loading and embarkation spaces; applied here to rail context. BS EN 12464-1:2021 §5.27.3 baggage handling: 300 lux Em. Network Rail Station Design Guidance v3.0 2019 §7.1 left-luggage and parcels facilities. Manual handling Regulations 1992 task illuminance requirements.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.rail.signal_room",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_50_77",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "rail",
+        "signal_room"
+      ],
+      "common_aliases": [
+        "signal room",
+        "signalling room",
+        "railway signal control room",
+        "train control room",
+        "signalbox interior"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_50_77 'Railway signal control spaces' is the verbatim leaf code under SL_80_50 Railway spaces. BS EN 12464-1:2021 §5.27.5 control rooms: 500 lux Em, UGRL 16, Ra 80. Network Rail Engineering Standard NR/GN/ELP/27201 (Lighting for Lineside Equipment Buildings) specifies 500 lux maintained for operational control areas. Classified INTERNAL — air-conditioned sealed space.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.rail.station_office",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_50_47",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "rail",
+        "station_office"
+      ],
+      "common_aliases": [
+        "station office",
+        "station manager office",
+        "railway staff office",
+        "station administration",
+        "light rail stop office"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_50_47 'Light rail stops' is the verbatim leaf code under SL_80_50 Railway spaces; associated staff office facility at light rail stops mapped here. BS EN 12464-1:2021 §5.27.5 staff offices at transport facilities: 500 lux Em. RDG Station Design Guidance §6.1 back-of-house staff accommodation. CIBSE SLL Code for Lighting 2012 §10.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.aviation.terminal_concourse",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_10_16",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "aviation",
+        "terminal_concourse"
+      ],
+      "common_aliases": [
+        "airport terminal concourse",
+        "terminal building concourse",
+        "airside concourse",
+        "landside concourse",
+        "check-in concourse"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "NBS Source SL_80_10_16 'Concourses' is the verbatim leaf code under SL_80_10; applied to aviation terminal context as a distinct engineering_consensus entry from transport.rail.station_concourse. Uniclass SL v1.35 does not provide separate airport-terminal building room codes. IATA ADRM 11th ed. 2019 §11.3.2 specifies 300 lux average for check-in and departures concourse. BS EN 12464-1:2021 §5.27.1 concourse 200 lux Em. ICAO Annex 14 v8.0 §4.1 airside operations lighting.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.aviation.gate_lounge",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_10_55",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "aviation",
+        "gate_lounge"
+      ],
+      "common_aliases": [
+        "gate lounge",
+        "departure gate",
+        "boarding lounge",
+        "gate waiting area",
+        "satellite lounge"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_10_55 'Passenger gates' is the verbatim leaf code under SL_80_10 Loading and embarkation spaces. Gate lounge is the enclosed passenger waiting area adjacent to the boarding gate. IATA ADRM 11th ed. 2019 §11.3.4 gate hold rooms: 200 lux average. BS EN 12464-1:2021 §5.27.1 waiting areas: 200 lux Em. CIBSE LG6:2016 §5.4 airport passenger areas.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.aviation.departures_lounge",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_10_22",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "aviation",
+        "departures_lounge"
+      ],
+      "common_aliases": [
+        "departures lounge",
+        "departure hall",
+        "airside departure area",
+        "post-security lounge",
+        "international departures"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_10_22 'Departure lounges' is the verbatim leaf code under SL_80_10 Loading and embarkation spaces. Post-security passenger waiting and retail area in aviation terminals. IATA ADRM 11th ed. 2019 §11.3.3 departures: 300 lux average for retail and circulation. BS EN 12464-1:2021 §5.27.1 departure lounges: 200 lux Em. CIBSE LG6:2016 §5.4.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.aviation.baggage_claim",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_10_06",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "aviation",
+        "baggage_claim"
+      ],
+      "common_aliases": [
+        "baggage claim",
+        "baggage reclaim",
+        "arrivals baggage hall",
+        "carousel hall",
+        "baggage belt area"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_10_06 'Baggage claim areas' is the verbatim leaf code under SL_80_10 Loading and embarkation spaces. Arrivals-side hall housing baggage carousels. IATA ADRM 11th ed. 2019 §11.3.6 baggage claim: 300 lux average. BS EN 12464-1:2021 §5.27.3 baggage handling: 300 lux Em. Manual Handling Operations Regulations 1992 task illuminance.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.aviation.security_screening",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_10_77",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "aviation",
+        "security_screening"
+      ],
+      "common_aliases": [
+        "security screening area",
+        "security checkpoint",
+        "passenger screening area",
+        "security lane",
+        "x-ray screening hall"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_10_77 'Security screening areas' is the verbatim leaf code under SL_80_10 Loading and embarkation spaces. Pre-board security check point in aviation and other transport terminals. IATA ADRM 11th ed. 2019 §11.3.2 security lanes: 500 lux for equipment operation. BS EN 12464-1:2021 §5.27.4 security and inspection: 500 lux Em, UGRL 19. DfT Aviation Security Requirements.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.aviation.customs_immigration",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_10_20",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "aviation",
+        "customs_immigration"
+      ],
+      "common_aliases": [
+        "customs and immigration",
+        "passport control",
+        "border control",
+        "customs hall",
+        "immigration hall"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_10_20 'Customs control areas' is the verbatim leaf code under SL_80_10 Loading and embarkation spaces. SL_80_10_60 'Passport control offices' is a second confirming NBS leaf under the same group. IATA ADRM 11th ed. 2019 §11.3.6 arrivals processing: 500 lux for border-control desk tasks. BS EN 12464-1:2021 §5.27.4 control areas: 500 lux Em.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.aviation.hangar",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_05_07",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "aviation",
+        "hangar"
+      ],
+      "common_aliases": [
+        "aircraft hangar",
+        "maintenance hangar",
+        "hangar bay",
+        "aircraft storage hangar",
+        "MRO hangar"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_05_07 'Aircraft storage spaces' is the verbatim leaf code under SL_80_05 Aerospace ground spaces; hangars are the primary enclosed aircraft storage and maintenance facility. SL_80_15_04 'Aircraft repair spaces' provides second NBS anchor for MRO hangar use. ICAO Annex 14 v8.0 §4.1 hangar apron lighting. BS EN 12464-1:2021 §5.27.6 hangar maintenance bays: 500 lux Em. CIBSE LG1:2018 §4 large volume industrial lighting.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.aviation.control_tower",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_15_06",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "aviation",
+        "control_tower"
+      ],
+      "common_aliases": [
+        "air traffic control tower",
+        "ATC tower",
+        "control tower cab",
+        "tower cab",
+        "aerodrome control tower"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_15_06 'Airport control spaces' is the verbatim leaf code under SL_80_15 Aerospace maintenance spaces. The airport control tower cab is the primary operational space covered by this code. ICAO Annex 14 v8.0 §4.2 ATC tower cab illuminance: low-level controllable for day/night adaptation, typically 50–200 lux managed via dimming per CIBSE LG6:2016 §5.5. BS EN 12464-1:2021 §5.27.5 control rooms: 500 lux Em daytime task.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.aviation.aircraft_apron",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_05_01",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "aviation",
+        "aircraft_apron"
+      ],
+      "common_aliases": [
+        "aircraft apron",
+        "apron bay",
+        "gate apron",
+        "aircraft stand",
+        "parking stand apron"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_05_01 'Aircraft apron bays' is the verbatim leaf code under SL_80_05 Aerospace ground spaces. Open-air hardstanding area where aircraft park at gates, classified EXTERNAL per ISO 16739. ICAO Annex 14 v8.0 §5.3.8 apron floodlighting: 20 lux minimum horizontal on apron surface. CIBSE LG6:2016 §5.5 apron lighting 20–50 lux. BS EN 12464-2:2014 Table 5.10 apron working area: 50 lux Em.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.road.bus_station",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_45_09",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "road",
+        "bus_station"
+      ],
+      "common_aliases": [
+        "bus station",
+        "bus terminal",
+        "central bus station",
+        "bus interchange",
+        "bus station concourse"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "NBS Source SL_80_45_09 'Bus standing spaces' is the verbatim leaf code under SL_80_45 Vehicle storage spaces and provides the closest NBS anchor; the enclosed bus station building is NOT individually enumerated in Uniclass SL v1.35. Engineering_consensus canonical_id authored citing BS EN 12464-1:2021 §5.27.1 waiting areas: 200 lux Em and CIBSE LG6:2016 §5.3 interchange facilities. Distinguishes from bus_stop (SL_80_10_10 — kerbside open) and coach_terminal (enclosed long-distance facility) by urban interchange function.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.road.bus_stop",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_10_10",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "road",
+        "bus_stop"
+      ],
+      "common_aliases": [
+        "bus stop",
+        "bus shelter",
+        "bus boarding point",
+        "tram stop",
+        "kerbside bus stop"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_10_10 'Bus stops' is the verbatim leaf code under SL_80_10 Loading and embarkation spaces. Kerbside or sheltered open-air stop classified EXTERNAL. BS EN 12464-1:2021 §5.27.2 outdoor transport boarding points: 100 lux Em. CIBSE LG6:2016 §5.3 street-level bus stop shelter lighting guidance.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.road.coach_terminal",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_10_09",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "road",
+        "coach_terminal"
+      ],
+      "common_aliases": [
+        "coach terminal",
+        "coach station",
+        "long-distance bus terminal",
+        "intercity coach station",
+        "express coach terminal"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_10_09 'Boarding areas' is the verbatim leaf code under SL_80_10 Loading and embarkation spaces; coach terminal building contains the primary boarding area. BS EN 12464-1:2021 §5.27.1 boarding/waiting: 200 lux Em. CIBSE LG6:2016 §5.3 coach terminal interchange. Distinguishes from bus_station (urban interchange) by long-distance intercity coach function.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.road.motorway_service_area",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_35_46",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "road",
+        "motorway_service_area"
+      ],
+      "common_aliases": [
+        "motorway service area",
+        "service station building",
+        "highway service area",
+        "motorway services",
+        "travel plaza"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "NBS Source SL_80_35_46 'Lay-bys and passing places' is the nearest verbatim road-infrastructure code; the motorway service area building is NOT individually enumerated as a room type in Uniclass SL v1.35 road spaces (SL_80_35 codes are road-infrastructure only). Engineering_consensus entry citing Highways England Design Manual for Roads and Bridges (DMRB) CD 109 Motorway Service Areas §3 (2020) facility requirements and BS EN 12464-1:2021 §5.2.4 catering/retail at 300 lux Em for service-area concourse areas.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.road.fuel_station_shop",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_35_37",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "road",
+        "fuel_station_shop"
+      ],
+      "common_aliases": [
+        "fuel station shop",
+        "petrol station forecourt building",
+        "filling station convenience store",
+        "service station retail unit",
+        "forecourt kiosk"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "NBS Source SL_80_35_37 'Hard standings' is the nearest road-infrastructure code; the enclosed forecourt retail building is NOT individually enumerated in Uniclass SL v1.35. Engineering_consensus entry citing BS EN 12464-1:2021 §5.24.1 retail spaces: 300 lux Em and BS EN 12464-2:2014 §5.10.2 outdoor forecourt canopy: 100 lux Em. PED 2019 (Petroleum Enforcement and Dangerous Substances) forecourt design guidance.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.road.vehicle_drop_off",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_10_94",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "road",
+        "vehicle_drop_off"
+      ],
+      "common_aliases": [
+        "vehicle drop-off area",
+        "kiss and ride",
+        "drop-off zone",
+        "set-down area",
+        "pick-up and drop-off point"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_10_94 'Vehicle drop-off areas' is the verbatim leaf code under SL_80_10 Loading and embarkation spaces. Kerbside drop-off area at transport facilities classified EXTERNAL. BS EN 12464-2:2014 Table 5.10 vehicle access areas: 50 lux Em. Highways England Layout for Access and Accommodation (LTN 1/11) drop-off bay design. CIBSE LG6:2016 §5.2 external transport setting-down areas.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.road.indoor_parking",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_45_40",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "road",
+        "indoor_parking"
+      ],
+      "common_aliases": [
+        "indoor car park",
+        "multi-storey car park",
+        "underground car park",
+        "parking garage",
+        "covered parking deck"
+      ],
+      "ifc_space_type": "PARKING",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_45_40 'Indoor vehicle parking spaces' is the verbatim leaf code under SL_80_45 Vehicle storage spaces. Classified PARKING per ISO 16739 IfcSpaceTypeEnum as the appropriate sub-type for vehicular parking areas. BS EN 12464-1:2021 §5.29.1 car parks: 75 lux Em, UGRL 25, Ra 40. CIBSE LG8:2009 (Lighting Guide for Car Parks) §4 illuminance criteria.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.marine.ferry_terminal",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_70_37",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "marine",
+        "ferry_terminal"
+      ],
+      "common_aliases": [
+        "ferry terminal",
+        "roll-on roll-off terminal",
+        "RoRo terminal",
+        "ferry passenger terminal",
+        "vehicle ferry terminal"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "NBS Source SL_80_70_37 'Harbour locks' is the nearest marine infrastructure code under SL_80_70; the enclosed ferry terminal building is NOT individually enumerated in Uniclass SL v1.35 (all SL_80_70 codes are waterway infrastructure). Engineering_consensus entry citing BS EN 12464-1:2021 §5.27.1 passenger terminal waiting areas: 200 lux Em and CIBSE TM50:2013 §4 ferry terminal energy strategy. DfT Port Marine Safety Code 2020 terminal facility requirements.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.marine.cruise_terminal",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_70_11",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "marine",
+        "cruise_terminal"
+      ],
+      "common_aliases": [
+        "cruise terminal",
+        "cruise passenger terminal",
+        "ocean liner terminal",
+        "passenger liner terminal",
+        "cruise ship hall"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "NBS Source SL_80_70_11 'Canal lock chambers' is the nearest marine infrastructure code under SL_80_70; the enclosed cruise terminal building is NOT individually enumerated in Uniclass SL v1.35. Engineering_consensus entry citing CIBSE TM50:2013 §3 cruise terminal energy strategy and BS EN 12464-1:2021 §5.27.1 passenger terminal: 200 lux Em. IACS (International Association of Classification Societies) Unified Requirement UR E27 terminal facility electrical requirements.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.marine.port_terminal",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_70_46",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "marine",
+        "port_terminal"
+      ],
+      "common_aliases": [
+        "port terminal",
+        "cargo terminal building",
+        "port operations building",
+        "quayside terminal",
+        "harbour terminal"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "NBS Source SL_80_70_46 'Lock gate sills' is the nearest marine infrastructure code under SL_80_70; enclosed port terminal operations building NOT individually enumerated in Uniclass SL v1.35. Engineering_consensus entry citing BS EN 12464-1:2021 §5.27.3 cargo handling operations: 300 lux Em and DfT Port Marine Safety Code 2020 §11 terminal operations control. UKHO Admiralty List of Radio Signals Vol.6 for port control room requirements.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.marine.waiting_room_marine",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_10_09",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "marine",
+        "waiting_room_marine"
+      ],
+      "common_aliases": [
+        "marine waiting room",
+        "ferry waiting lounge",
+        "passenger waiting hall marine",
+        "harbour waiting room",
+        "port passenger lounge"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "engineering_consensus",
+      "_inference_note": "NBS Source SL_80_10_09 'Boarding areas' provides the closest NBS anchor for passenger gathering before vessel boarding; marine application not individually enumerated as a separate room type in Uniclass SL v1.35. Engineering_consensus entry distinct from coach_terminal application of the same code. BS EN 12464-1:2021 §5.27.1 waiting areas: 200 lux Em. CIBSE TM50:2013 §4 passenger comfort in marine terminals. DfT Port Marine Safety Code 2020 §12 passenger handling.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.marine.boarding_pier",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_80_10_80",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "marine",
+        "boarding_pier"
+      ],
+      "common_aliases": [
+        "boarding pier",
+        "embarkation jetty",
+        "passenger pier",
+        "gangway berth",
+        "marine boarding pontoon"
+      ],
+      "ifc_space_type": "BERTHING",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_80_10_80 'Ship gangways' is the verbatim leaf code under SL_80_10 Loading and embarkation spaces. Ship gangways and boarding piers are classified BERTHING per ISO 16739 IfcSpaceTypeEnum as marine berthing/embarkation structures. BS EN 12464-2:2014 §5.10.4 marine boarding areas: 50 lux Em minimum. DfT Port Marine Safety Code 2020 §12.3 passenger gangway design. SOLAS (Safety of Life at Sea) Reg. II-1/3-9 ship access arrangements.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.passenger_vehicle.passenger_seating_space",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_82_61_61",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "passenger_vehicle",
+        "passenger_seating_space"
+      ],
+      "common_aliases": [
+        "passenger seating area",
+        "train carriage seating",
+        "bus passenger saloon",
+        "coach passenger area",
+        "ferry passenger saloon"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_82_61_61 'Passenger seating spaces' is the verbatim leaf code under SL_82_61 Passenger spaces (Vehicle spaces). Interior passenger accommodation space within rolling stock, buses, ferries, or coaches. BS EN 12464-1:2021 §5.27.7 vehicle interiors: 200 lux Em for seated passenger areas. BS EN 13272-1:2012 (Railway applications — Lighting for rolling stock) §4 illuminance criteria. PD CEN/TR 16988:2016 ergonomic criteria for seated passengers.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.passenger_vehicle.priority_seating_space",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_82_61_65",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "passenger_vehicle",
+        "priority_seating_space"
+      ],
+      "common_aliases": [
+        "priority seating area",
+        "accessible seating space",
+        "disabled seating area",
+        "priority passenger zone",
+        "blue badge seating"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_82_61_65 'Priority passenger seating spaces' is the verbatim leaf code under SL_82_61 Passenger spaces. Designated accessible seating zones within passenger vehicles. BS EN 12464-1:2021 §5.27.7 vehicle interiors: 200 lux Em. BS 8300:2018+A1:2021 (Design of an accessible and inclusive built environment) §14.4 accessible vehicle seating. Equality Act 2010 Pt 12 transport accessibility duties.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "transport.passenger_vehicle.wheelchair_space",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_82_61_63",
+      "parent_category": "transport",
+      "parent_path": [
+        "transport",
+        "passenger_vehicle",
+        "wheelchair_space"
+      ],
+      "common_aliases": [
+        "wheelchair space",
+        "wheelchair bay",
+        "wheelchair user area",
+        "accessible wheelchair position",
+        "PRM wheelchair space"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source SL_82_61_63 'Passenger wheelchair spaces' is the verbatim leaf code under SL_82_61 Passenger spaces. Designated wheelchair user standing/securing space within passenger vehicles. BS 8300:2018+A1:2021 §14.4 wheelchair spaces in vehicles: minimum 1300×750 mm clear floor area. EU Regulation 1300/2014 (TSI PRM) §4.2.2.3 wheelchair spaces in railway vehicles. Equality Act 2010 Pt 12.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    }
+  ]
+}
