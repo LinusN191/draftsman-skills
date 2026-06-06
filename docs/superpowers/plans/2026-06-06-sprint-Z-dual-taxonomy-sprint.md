@@ -777,3 +777,446 @@ git commit -m "fix(standards): Z.A.3 Sprint X back-compat sweep — add taxonomy
 ```
 
 ---
+
+## Phase Z.B — Uniclass 2015 SL per-category transcription (7 tasks, ~25-30 commits)
+
+Goal: transcribe ~270 Uniclass SL entries from declared NBS Source / mirror across 7 per-category files covering the building types T13 lacks. Z.B.1 (residential) is Opus to establish per-entry authoring pattern; Z.B.2-7 are Sonnet once pattern stable.
+
+### Per-task discipline (locked from Z.A.0)
+
+Every Z.B.* task follows this acceptance gate:
+
+1. Implementer consults primary Uniclass SL mirror declared in `sprint-Z-source-provenance.md` §1
+2. Each entry gets `taxonomy_source: "Uniclass-2015-SL"` + `uniclass_code` matching pattern `^SL_[0-9]{2}_[0-9]{2}_[0-9]{2}$` verbatim from mirror
+3. Each entry's `_verification_status` ∈ `{nbs_sourced, engineering_consensus, inferred}` per Z.A.0 §3
+4. **NO FABRICATION** of Uniclass codes — ship verified entries only; document gaps in source-notes
+5. Per-entry validates against extended `room-types-schema.json`
+6. Banned-citation grep clean
+7. `cross_references.*` populated for matching ASHRAE 90.1 / 62.1 / BS EN 12464-1 entries at Z.D.1 (Z.B leaves null)
+8. `building_type_codes[]` populated at Z.D.1 (Z.B leaves absent or empty)
+
+### Task Z.B.1: Author residential.json (~60 entries) — Opus pattern-setter
+
+**Files:**
+- Create: `shared/standards/spaces/room-types-uniclass-sl/residential.json`
+
+**Why Opus:** First Uniclass SL transcription sets the per-entry authoring pattern for Z.B.2-7; engineering judgement on canonical_id naming for residential rooms (no precedent in T13 spaces-by-function); engineering consensus discipline (residential bedrooms / kitchens may not all be NBS-source-verbatim).
+
+- [ ] **Step 1: Read prerequisites**
+
+```bash
+cat docs/superpowers/specs/sprint-Z-source-provenance.md | head -60
+cat shared/standards/spaces/room-types-schema.json | python3 -m json.tool | head -80
+cat shared/standards/spaces/_source/Uniclass-2015-SL-source-notes.md
+```
+
+- [ ] **Step 2: WebFetch the declared Uniclass SL primary mirror**
+
+WebFetch the URL declared at Z.A.0. Extract all residential SL entries (codes matching `SL_25_XX_XX` pattern — Uniclass SL_25 is the typical residential prefix; verify against mirror).
+
+Typical residential coverage:
+- **Single-family dwelling rooms:** bedroom_master / bedroom_secondary / bedroom_guest / kitchen / dining / living_room / family_room / bathroom_master / bathroom_secondary / en_suite / powder_room / study / utility / laundry / pantry / hallway / staircase / cloakroom / garage_attached / basement / attic / conservatory / porch / balcony / patio / deck / boot_room / mud_room / snug / games_room / media_room
+- **Multi-family / apartment:** studio / one_bedroom / two_bedroom / three_bedroom / penthouse / lobby_residential / corridor_residential / bin_store / bicycle_store / communal_lounge / communal_laundry
+- **Dormitory / student housing:** bedroom_single / bedroom_shared / bathroom_shared / kitchen_shared / lounge_communal / study_room
+- **Sheltered / care home:** care_room / shared_lounge / activity_room / staff_office
+
+- [ ] **Step 3: Author the file**
+
+Create `shared/standards/spaces/room-types-uniclass-sl/residential.json`:
+
+```json
+{
+  "_source": "Uniclass 2015 Table SL — Residential rooms (verbatim from primary NBS Source mirror declared in sprint-Z-source-provenance.md §1)",
+  "_source_url": "<verbatim primary mirror URL>",
+  "_access_date": "2026-06-06",
+  "_parent_category": "residential",
+  "_taxonomy_source": "Uniclass-2015-SL",
+  "_entry_count": <actual count from mirror>,
+  "_entry_count_target": 60,
+  "_coverage_actual_pct": <100 × actual / 60>,
+  "_note": "Per-entry _verification_status records sourcing (nbs_sourced / engineering_consensus / inferred). cross_references.cibse_lg + nrm2 stay null per Sprint Z deferral. building_type_codes populated at Z.D.1 cross-reference back-fill.",
+  "entries": [
+    {
+      "canonical_id": "residential.single_family.bedroom_master",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "<verbatim from mirror, e.g. SL_25_10_15>",
+      "parent_category": "residential",
+      "parent_path": ["residential", "single_family", "bedrooms"],
+      "common_aliases": ["master bedroom", "primary bedroom", "main bedroom", "master suite"],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    }
+  ]
+}
+```
+
+For each canonical_id transcribed: use actual Uniclass code verbatim from mirror. For canonical_ids the mirror doesn't cover but engineering authority cites (e.g. CIBSE LG10 §3 lists "snug" as common UK residential room): use `_verification_status: engineering_consensus` with `_inference_note` citing the authority + invented `uniclass_code` synthesised from the SL_25 prefix pattern (per Z.A.0 §7 engineering consensus discipline — Uniclass synthesis allowed when NBS partial AND engineering citation present).
+
+- [ ] **Step 4: Validate against extended schema**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/standards/spaces/room-types-schema.json'))
+d = json.load(open('shared/standards/spaces/room-types-uniclass-sl/residential.json'))
+print(f'entries: {len(d[\"entries\"])}/{d[\"_entry_count_target\"]} ({d[\"_coverage_actual_pct\"]}%)')
+ns = sum(1 for e in d['entries'] if e['_verification_status'] == 'nbs_sourced')
+ec = sum(1 for e in d['entries'] if e['_verification_status'] == 'engineering_consensus')
+inf = sum(1 for e in d['entries'] if e['_verification_status'] == 'inferred')
+print(f'nbs_sourced: {ns}, engineering_consensus: {ec}, inferred: {inf}')
+errors = 0
+for entry in d['entries']:
+    try: jsonschema.validate(entry, schema)
+    except jsonschema.ValidationError as e:
+        errors += 1
+        print(f'  {entry.get(\"canonical_id\", \"?\")}: FAIL {e.message[:120]}')
+if errors == 0: print('All entries PASS schema validation')
+ids = [e['canonical_id'] for e in d['entries']]
+print(f'duplicates: {set(i for i in ids if ids.count(i) > 1) or \"none\"}')
+"
+```
+
+Expected: 0 schema errors; mix of nbs_sourced + engineering_consensus declared.
+
+- [ ] **Step 5: Banned-citation grep**
+
+```bash
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/room-types-uniclass-sl/residential.json | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+```
+
+- [ ] **Step 6: Gate**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+Expected: 649 + N entries (where N = actual residential count).
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add shared/standards/spaces/room-types-uniclass-sl/residential.json
+git commit -m "feat(standards): Z.B.1 NEW residential.json — Uniclass 2015 SL residential rooms (single-family + multi-family + dormitory + sheltered care; sets per-entry authoring pattern for Z.B.2-7; mix of nbs_sourced + engineering_consensus per Z.A.0 §7 discipline)"
+```
+
+### Task Z.B.2: Author commercial.json (~40 entries) — Sonnet
+
+**Files:**
+- Create: `shared/standards/spaces/room-types-uniclass-sl/commercial.json`
+
+**Why Sonnet:** Per-entry pattern set by Z.B.1; commercial offices have well-established Uniclass coverage.
+
+- [ ] **Step 1: Read Z.B.1 as template**
+
+```bash
+python3 -m json.tool shared/standards/spaces/room-types-uniclass-sl/residential.json | head -40
+```
+
+- [ ] **Step 2: WebFetch Uniclass SL commercial section + author commercial.json**
+
+Set `_parent_category: "commercial"`, `_entry_count_target: 40`. Typical coverage:
+- Office types: open_plan_office / private_office / executive_office / shared_office / hot_desking / quiet_room / phone_booth / focus_pod / collaboration_space
+- Meeting rooms: small / medium / large / boardroom / videoconference / training_room
+- Support: reception / waiting / mail_room / printing / archive / filing / break_room
+- Banking: banking_hall / atm_lobby / vault / safe_deposit / bank_office / advisor_room
+
+Each entry uses `parent_category: "commercial"`, `ifc_space_type: "INTERNAL"`.
+
+- [ ] **Step 3: Validate + uniqueness + grep + gate + commit**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/standards/spaces/room-types-schema.json'))
+d = json.load(open('shared/standards/spaces/room-types-uniclass-sl/commercial.json'))
+print(f'entries: {len(d[\"entries\"])}/{d[\"_entry_count_target\"]} ({d[\"_coverage_actual_pct\"]}%)')
+errors = 0
+for entry in d['entries']:
+    try: jsonschema.validate(entry, schema)
+    except: errors += 1
+print(f'schema errors: {errors}')
+ids = [e['canonical_id'] for e in d['entries']]
+print(f'duplicates: {set(i for i in ids if ids.count(i) > 1) or \"none\"}')
+"
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/room-types-uniclass-sl/commercial.json | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add shared/standards/spaces/room-types-uniclass-sl/commercial.json
+git commit -m "feat(standards): Z.B.2 NEW commercial.json — Uniclass 2015 SL commercial rooms (office types + meeting rooms + support + banking)"
+```
+
+### Task Z.B.3: Author retail.json (~30 entries) — Sonnet
+
+**Files:**
+- Create: `shared/standards/spaces/room-types-uniclass-sl/retail.json`
+
+**Why Sonnet:** Pattern stable.
+
+- [ ] **Step 1: Author retail.json**
+
+Set `_parent_category: "retail"`, `_entry_count_target: 30`. Typical coverage:
+- Sales floor types: general_shopfloor / department_store_floor / showroom / boutique
+- Specialty: jewellery_display / electronics_display / fashion_floor / grocery_aisle
+- Service points: checkout / customer_service_desk / returns_counter / click_and_collect
+- Support: fitting_room / stockroom_retail / loading_back_of_house / staff_room_retail / manager_office_retail
+- Outdoor / circulation retail: covered_arcade / pedestrianised_street_retail / market_stall
+
+- [ ] **Step 2: Validate + grep + gate + commit**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/standards/spaces/room-types-schema.json'))
+d = json.load(open('shared/standards/spaces/room-types-uniclass-sl/retail.json'))
+print(f'entries: {len(d[\"entries\"])}/{d[\"_entry_count_target\"]} ({d[\"_coverage_actual_pct\"]}%)')
+errors = 0
+for entry in d['entries']:
+    try: jsonschema.validate(entry, schema)
+    except: errors += 1
+print(f'schema errors: {errors}')
+ids = [e['canonical_id'] for e in d['entries']]
+print(f'duplicates: {set(i for i in ids if ids.count(i) > 1) or \"none\"}')
+"
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/room-types-uniclass-sl/retail.json | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add shared/standards/spaces/room-types-uniclass-sl/retail.json
+git commit -m "feat(standards): Z.B.3 NEW retail.json — Uniclass 2015 SL retail rooms (sales floor types + specialty + service points + support)"
+```
+
+### Task Z.B.4: Author hospitality.json (~40 entries) — Sonnet
+
+**Files:**
+- Create: `shared/standards/spaces/room-types-uniclass-sl/hospitality.json`
+
+- [ ] **Step 1: Author hospitality.json**
+
+Set `_parent_category: "hospitality"`, `_entry_count_target: 40`. Typical coverage:
+- Hotel guest accommodation: guest_room_standard / guest_room_suite / guest_room_family / guest_room_accessible / penthouse_suite / guest_bathroom / guest_powder_room
+- Hotel public areas: lobby_hotel / concierge_desk / business_centre / lounge_guest / breakfast_room / fitness_room_guest / spa_treatment
+- Hotel back-of-house: housekeeping / linen_store / luggage_store / staff_canteen_hotel / banqueting_kitchen / dishwash_area
+- Restaurant / dining: restaurant_dining / fine_dining / casual_dining / cafe_seating / coffee_bar
+- Bar / drinks: cocktail_bar / pub_bar / wine_bar / outdoor_terrace_drinks
+- Function: banquet_hall / wedding_function / conference_room / breakout_room
+
+Hotel guest_room entries use `ifc_space_type: "INTERNAL"`; outdoor terrace uses `EXTERNAL`.
+
+- [ ] **Step 2: Validate + grep + gate + commit (mirrors Z.B.3 pattern; substitute file path)**
+
+```bash
+git add shared/standards/spaces/room-types-uniclass-sl/hospitality.json
+git commit -m "feat(standards): Z.B.4 NEW hospitality.json — Uniclass 2015 SL hospitality rooms (hotel guest accommodation + public areas + back-of-house + restaurant + bar + function)"
+```
+
+### Task Z.B.5: Author industrial.json (~50 entries) — Sonnet
+
+**Files:**
+- Create: `shared/standards/spaces/room-types-uniclass-sl/industrial.json`
+
+- [ ] **Step 1: Author industrial.json**
+
+Set `_parent_category: "industrial"`, `_entry_count_target: 50`. Typical coverage:
+- Manufacturing: assembly_line / fabrication_metal / fabrication_wood / fabrication_plastic / paint_booth / welding_bay / machine_shop / press_room
+- Processing: food_processing / chemical_processing / pharmaceutical_processing / petroleum_processing
+- Warehouse: warehouse_low_rack / warehouse_high_rack / warehouse_pick_face / cold_storage / freezer_storage / hazmat_storage / bonded_warehouse / dispatch_area / goods_inwards
+- Workshop: electrical_workshop / mechanical_workshop / carpentry_workshop / vehicle_service_bay / fitter_workshop
+- Industrial support: tool_crib / safety_office / quality_control_office / industrial_canteen / industrial_changing_room
+- Outdoor industrial: yard_storage / scaffold_compound / plant_compound
+
+- [ ] **Step 2: Validate + grep + gate + commit**
+
+```bash
+git add shared/standards/spaces/room-types-uniclass-sl/industrial.json
+git commit -m "feat(standards): Z.B.5 NEW industrial.json — Uniclass 2015 SL industrial rooms (manufacturing + processing + warehouse + workshop + support + outdoor)"
+```
+
+### Task Z.B.6: Author agricultural.json (~20 entries) — Sonnet
+
+**Files:**
+- Create: `shared/standards/spaces/room-types-uniclass-sl/agricultural.json`
+
+- [ ] **Step 1: Author agricultural.json**
+
+Set `_parent_category: "agricultural"`, `_entry_count_target: 20`. Typical coverage:
+- Livestock: cattle_shed / sheep_pen / pig_sty / poultry_house / dairy_parlour / equine_stable / milking_parlour
+- Crops: greenhouse / polytunnel / grain_store / crop_packing_shed / drying_room
+- Processing on-farm: dairy_processing / abattoir / fish_processing / cheese_aging / cidery_press_room / brewery
+- Storage agricultural: feed_store / fodder_loft / slurry_pit / manure_store / silo
+
+`ifc_space_type` typically `INTERNAL`; outdoor pens use `EXTERNAL`.
+
+- [ ] **Step 2: Validate + grep + gate + commit**
+
+```bash
+git add shared/standards/spaces/room-types-uniclass-sl/agricultural.json
+git commit -m "feat(standards): Z.B.6 NEW agricultural.json — Uniclass 2015 SL agricultural rooms (livestock + crops + processing + storage)"
+```
+
+### Task Z.B.7: Author transport.json (~30 entries) — Sonnet
+
+**Files:**
+- Create: `shared/standards/spaces/room-types-uniclass-sl/transport.json`
+
+- [ ] **Step 1: Author transport.json**
+
+Set `_parent_category: "transport"`, `_entry_count_target: 30`. Typical coverage:
+- Rail: station_concourse / platform_rail / ticket_hall / waiting_room_rail / baggage_handling_rail / signal_room / station_office
+- Aviation: terminal_concourse / gate_lounge / baggage_claim / security_screening / customs_immigration / retail_airport / hangar / control_tower / departures_lounge
+- Road: bus_station / coach_terminal / taxi_rank_indoor / motorway_service_area / fuel_station_shop / car_rental_desk
+- Marine: ferry_terminal / port_terminal / cruise_terminal / waiting_room_marine / boarding_pier
+
+`ifc_space_type` mostly `INTERNAL`; piers/platforms may be `EXTERNAL` or `BERTHING` per IfcSpaceTypeEnum.
+
+- [ ] **Step 2: Validate + grep + gate + commit**
+
+```bash
+git add shared/standards/spaces/room-types-uniclass-sl/transport.json
+git commit -m "feat(standards): Z.B.7 NEW transport.json — Uniclass 2015 SL transport rooms (rail + aviation + road + marine)"
+```
+
+### Phase Z.B end-of-phase cross-check
+
+After all 7 Z.B.* tasks ship:
+
+```bash
+python3 -c "
+import json, glob
+total = 0
+target = 0
+for f in sorted(glob.glob('shared/standards/spaces/room-types-uniclass-sl/*.json')):
+    d = json.load(open(f))
+    n = len(d['entries'])
+    t = d['_entry_count_target']
+    total += n
+    target += t
+    print(f'  {f.split(chr(47))[-1]}: {n}/{t} ({100*n/t:.0f}%)')
+print(f'TOTAL Uniclass SL: {total}/{target} ({100*total/target:.1f}%)')
+# Global canonical_id uniqueness across BOTH T13 and SL catalogues
+all_ids = []
+for f in sorted(glob.glob('shared/standards/spaces/room-types/*.json') + glob.glob('shared/standards/spaces/room-types-uniclass-sl/*.json')):
+    d = json.load(open(f))
+    all_ids.extend(e['canonical_id'] for e in d.get('entries', []))
+dupes = set(i for i in all_ids if all_ids.count(i) > 1)
+print(f'global canonical_id duplicates across T13+SL: {dupes if dupes else \"none\"}')
+"
+```
+
+Expected: 7 lines (one per category); TOTAL ~210-270 (target 270; expect 70-100% coverage); 0 global duplicates.
+
+If TOTAL < 220 (≈80% coverage), Z.E.3 final review verdict downgrades to SHIP-WITH-NOTED-CONCERNS; gaps documented in source-notes.
+
+---
+
+## Phase Z.C — OmniClass T11 building types (1 task, ~3-5 commits)
+
+Goal: transcribe ~70 OmniClass T11 building-type entries from declared mirror. Provides the cross-reference targets for SL room `building_type_codes[]` field (back-filled at Z.D.1).
+
+### Task Z.C.1: Author construction-entities-by-function.json — Opus
+
+**Files:**
+- Create: `shared/standards/spaces/building-types-t11/construction-entities-by-function.json`
+
+**Why Opus:** OmniClass T11 is a different taxonomy from T13 (building-level not room-level); needs careful pattern setup; ~70 entries spanning all top-level T11 classes.
+
+- [ ] **Step 1: Read Z.A.0 T11 provenance + Z.A.2 master index target**
+
+```bash
+grep -A 5 "OmniClass Table 11" docs/superpowers/specs/sprint-Z-source-provenance.md | head -20
+python3 -c "import json; d = json.load(open('shared/standards/spaces/room-types.json')); print(d['taxonomies']['OmniClass-Table-11']['categories']['construction_entities'])"
+```
+
+- [ ] **Step 2: WebFetch T11 mirror; extract all top-level + level-3 child entries**
+
+T11 top-level classes (per Sprint Z source survey expectations — verify against mirror):
+- 11-11 Residential entities
+- 11-13 Commercial entities (offices / banking / retail)
+- 11-15 Industrial entities (manufacturing / process / warehouse)
+- 11-16 Mixed-use entities
+- 11-17 Transportation entities (rail / aviation / road / marine)
+- 11-21 Educational entities
+- 11-23 Recreation entities
+- 11-25 Healthcare entities
+- 11-31 Civic / government entities
+- 11-33 Religious entities
+- 11-35 Cultural entities (museums / theatres)
+- 11-37 Agricultural entities
+
+Per parent class: enumerate the level-3 entries the mirror exposes. For residential: single_family_detached / single_family_attached / multi_family_low_rise / multi_family_high_rise / mobile_home / dormitory / hotel / motel. For commercial: office_low_rise / office_high_rise / retail_strip_mall / shopping_centre / restaurant / bank / convention_centre. Etc.
+
+- [ ] **Step 3: Author the file**
+
+Create `shared/standards/spaces/building-types-t11/construction-entities-by-function.json`:
+
+```json
+{
+  "_source": "OmniClass Table 11 — Construction Entities by Function (verbatim from primary mirror declared in sprint-Z-source-provenance.md §2)",
+  "_source_url": "<verbatim>",
+  "_access_date": "2026-06-06",
+  "_parent_category": "construction_entities",
+  "_taxonomy_source": "OmniClass-Table-11",
+  "_entry_count": <actual>,
+  "_entry_count_target": 70,
+  "_coverage_actual_pct": <100 × actual / 70>,
+  "_note": "Building-level taxonomy. Used for cross-reference rollup from Uniclass SL room entries via building_type_codes[]. Per-entry _verification_status records sourcing.",
+  "entries": [
+    {
+      "canonical_id": "construction_entities.residential.single_family_detached",
+      "taxonomy_source": "OmniClass-Table-11",
+      "omniclass_code": "<verbatim from mirror, e.g. 11-11 11 11>",
+      "parent_category": "construction_entities",
+      "parent_path": ["construction_entities", "residential"],
+      "common_aliases": ["single-family home", "detached house", "free-standing residence"],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "mirror_sourced",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    }
+  ]
+}
+```
+
+- [ ] **Step 4: Validate against schema + uniqueness**
+
+```bash
+python3 -c "
+import json, jsonschema
+schema = json.load(open('shared/standards/spaces/room-types-schema.json'))
+d = json.load(open('shared/standards/spaces/building-types-t11/construction-entities-by-function.json'))
+print(f'entries: {len(d[\"entries\"])}/{d[\"_entry_count_target\"]} ({d[\"_coverage_actual_pct\"]}%)')
+ms = sum(1 for e in d['entries'] if e['_verification_status'] == 'mirror_sourced')
+inf = sum(1 for e in d['entries'] if e['_verification_status'] == 'inferred')
+print(f'mirror_sourced: {ms}, inferred: {inf}')
+errors = 0
+for entry in d['entries']:
+    try: jsonschema.validate(entry, schema)
+    except jsonschema.ValidationError as e:
+        errors += 1
+        print(f'  {entry.get(\"canonical_id\", \"?\")}: FAIL {e.message[:120]}')
+if errors == 0: print('All entries PASS')
+ids = [e['canonical_id'] for e in d['entries']]
+print(f'duplicates: {set(i for i in ids if ids.count(i) > 1) or \"none\"}')
+"
+```
+
+Expected: 0 schema errors; entries close to 70.
+
+- [ ] **Step 5: Banned-citation grep + gate + commit**
+
+```bash
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/building-types-t11/construction-entities-by-function.json | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+git add shared/standards/spaces/building-types-t11/construction-entities-by-function.json
+git commit -m "feat(standards): Z.C.1 NEW construction-entities-by-function.json — OmniClass T11 building-level taxonomy (~70 entries across residential + commercial + industrial + mixed_use + transportation + educational + recreation + healthcare + civic + religious + cultural + agricultural top-level classes; cross-reference targets for Uniclass SL room building_type_codes)"
+```
+
+---
