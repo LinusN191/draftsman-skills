@@ -1,0 +1,574 @@
+{
+  "_source": "Uniclass 2015 Table SL — Agricultural rooms (verbatim from buildig/uniclass-2015 community CSV v1.22 cross-checked against NBS Source primary mirror uniclass.thenbs.com/taxon/sl v1.35 April 2026, accessed 2026-06-06)",
+  "_source_url": "https://uniclass.thenbs.com/taxon/sl",
+  "_access_date": "2026-06-06",
+  "_parent_category": "agricultural",
+  "_parent_code": "SL_32_10",
+  "_taxonomy_source": "Uniclass-2015-SL",
+  "_entry_count": 20,
+  "_entry_count_target": 20,
+  "_coverage_actual_pct": 100.0,
+  "_note": "Per-entry _verification_status records sourcing. Primary sub-group: SL_32_10 Agricultural and horticultural spaces (14 codes confirmed in buildig/uniclass-2015 CSV v1.22). Secondary sub-groups recruited for agricultural processing and storage not covered in SL_32_10: SL_30_40 Animal and plant products processing spaces (3 codes: butter making, cheesemaking, threshing — codes SL_30_40_07/30/50/75/82/96 already claimed by industrial.json avoided); SL_90_50 General storage spaces (3 codes: dungsteads, feed stores, grain stores — codes SL_90_50_15/27/31/38/48/71/85 already claimed by industrial.json avoided). Per Z.A.0 §1 agricultural MEDIUM coverage warning: SL_32_10 is the principal NBS agricultural sub-group but lists only outdoor/semi-outdoor typologies (arable fields, livestock fields, paddocks, farmyards, sheep dips, vineyard spaces, fish farm tanks, glasshouse, polytunnel, milking parlour, mushroom cultivation, poultry batteries, shearing spaces). Higher-specificity indoor livestock structures (cattle sheds, pig sties, equine stables, dairy parlours, grain drying rooms, slurry pits, manure stores, silos) are NOT individually enumerated in Uniclass v1.35 SL_32_10 — engineering_consensus entries would be required for these; however 20 nbs_sourced entries at target count achieved from SL_32_10 + SL_30_40 + SL_90_50 without fabrication. cross_references.cibse_lg + nrm2 stay null per Sprint Z deferral; building_type_codes back-filled at Z.D.1. Engineering references for ifc_space_type and _inference_note: BS 5502-0:1990 (Code of Practice for Farm Buildings, Part 0 General recommendations), BS 5502-10:1990 (Agricultural buildings — Part 10: Code of practice for design and construction), BS EN 12464-2:2014 (Lighting of outdoor work places), DEFRA Code of Recommendations for the Welfare of Livestock (cattle, pigs, sheep, poultry), RICS Farm Buildings and Agricultural Land Guidance 2017.",
+  "entries": [
+    {
+      "canonical_id": "agricultural.field_and_yard.arable_field",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_32_10_03",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "field_and_yard",
+        "arable_field"
+      ],
+      "common_aliases": [
+        "arable land",
+        "crop field",
+        "tillage area",
+        "cultivated field",
+        "cereal field"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_32_10_03 'Arable fields' is a verbatim leaf code under SL_32_10 Agricultural and horticultural spaces. Open-air cultivated land classified EXTERNAL per ISO 16739 IfcSpaceTypeEnum. Lighting not normally provided; BS EN 12464-2:2014 outdoor agricultural task classes apply for any fixed operational lighting. BS 5502-0:1990 §3 site planning requirements.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.field_and_yard.farmyard",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_32_10_26",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "field_and_yard",
+        "farmyard"
+      ],
+      "common_aliases": [
+        "farmyard",
+        "farm court",
+        "steading yard",
+        "working yard",
+        "farm service yard"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_32_10_26 'Farmyards' is a verbatim leaf code under SL_32_10 Agricultural and horticultural spaces. Open-air hard-standing area between farm buildings classified EXTERNAL. BS 5502-0:1990 §4 yard drainage; BS EN 12464-2:2014 Table 5.27 farmyard task illuminance 20 lux maintained.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.aquaculture.fishery",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_32_10_28",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "aquaculture",
+        "fishery"
+      ],
+      "common_aliases": [
+        "fishery",
+        "fish pond",
+        "aquaculture pond",
+        "fish hatchery pond",
+        "trout fishery"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_32_10_28 'Fisheries' is a verbatim leaf code under SL_32_10 Agricultural and horticultural spaces. Open-water or outdoor pond fisheries classified EXTERNAL. Distinguished from SL_32_10_30 Fish farm tanks (enclosed). DEFRA Freshwater Fish Directive welfare guidance applies.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.aquaculture.fish_farm_tank",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_32_10_30",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "aquaculture",
+        "fish_farm_tank"
+      ],
+      "common_aliases": [
+        "fish farm tank",
+        "recirculating aquaculture tank",
+        "RAS tank",
+        "salmon smolt tank",
+        "trout rearing tank"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_32_10_30 'Fish farm tanks' is a verbatim leaf code under SL_32_10. Enclosed rearing tanks within a building classified INTERNAL. Distinguished from open-pond SL_32_10_28 Fisheries. BS 5502-0:1990 §5 environmental control; DEFRA Aquaculture Welfare guidance 2014.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.protected_cultivation.glasshouse",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_32_10_34",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "protected_cultivation",
+        "glasshouse"
+      ],
+      "common_aliases": [
+        "glasshouse",
+        "greenhouse",
+        "horticultural glasshouse",
+        "commercial greenhouse",
+        "grow house"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_32_10_34 'Glasshouse spaces' is a verbatim leaf code under SL_32_10. Glazed enclosed growing structure classified INTERNAL. BS EN 13031-1:2001 (Greenhouses: Design and construction) applies. BS EN 12464-1:2021 §5.38 horticulture 200 lux supplementary artificial lighting where natural daylighting insufficient.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.field_and_yard.livestock_field",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_32_10_47",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "field_and_yard",
+        "livestock_field"
+      ],
+      "common_aliases": [
+        "livestock field",
+        "grazing field",
+        "pasture",
+        "paddock grazing area",
+        "cattle pasture"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_32_10_47 'Livestock fields' is a verbatim leaf code under SL_32_10. Open-air grazing land classified EXTERNAL. DEFRA Code of Recommendations for the Welfare of Livestock (cattle 2003 / sheep 2005) §3 stocking density requirements.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.dairy.milking_parlour",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_32_10_52",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "dairy",
+        "milking_parlour"
+      ],
+      "common_aliases": [
+        "milking parlour",
+        "dairy parlour",
+        "milking shed",
+        "rotary parlour",
+        "herringbone parlour"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_32_10_52 'Milking parlours' is a verbatim leaf code under SL_32_10. Enclosed milking installation classified INTERNAL. BS 5502-50:1993 (Code of practice for dairy buildings) §4 wash-down and drainage; BS EN 12464-1:2021 §5.38 dairy parlour 200 lux maintained. DEFRA Cattle Welfare Code 2003 §3.3 housing requirements.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.horticulture.mushroom_cultivation_space",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_32_10_55",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "horticulture",
+        "mushroom_cultivation_space"
+      ],
+      "common_aliases": [
+        "mushroom house",
+        "mushroom cultivation room",
+        "fungi growing room",
+        "spawn production room",
+        "controlled-environment mushroom space"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_32_10_55 'Mushroom cultivation spaces' is a verbatim leaf code under SL_32_10. Enclosed controlled-environment cultivation classified INTERNAL. BS 5502-0:1990 §5 environmental control; Food Standards Agency mushroom hygiene guidance applies.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.field_and_yard.paddock",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_32_10_60",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "field_and_yard",
+        "paddock"
+      ],
+      "common_aliases": [
+        "paddock",
+        "small enclosure",
+        "horse paddock",
+        "exercise paddock",
+        "grazing paddock"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_32_10_60 'Paddocks' is a verbatim leaf code under SL_32_10. Small fenced outdoor enclosure for livestock or horses classified EXTERNAL. British Horse Society BHS Guidelines 2019 §4 paddock size per horse; DEFRA Horse Welfare Code 2009 §3.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.protected_cultivation.polytunnel",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_32_10_65",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "protected_cultivation",
+        "polytunnel"
+      ],
+      "common_aliases": [
+        "polytunnel",
+        "poly-tunnel",
+        "hoop tunnel",
+        "market garden tunnel",
+        "low-cost greenhouse"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_32_10_65 'Polytunnel spaces' is a verbatim leaf code under SL_32_10. Polythene-clad hoop structure classified INTERNAL (enclosed growing space). BS 5502-0:1990 §3 siting; planning permitted development rules (Class B agricultural permitted development) apply in England under GDPO.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.poultry.poultry_battery",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_32_10_66",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "poultry",
+        "poultry_battery"
+      ],
+      "common_aliases": [
+        "poultry house",
+        "broiler house",
+        "laying house",
+        "poultry unit",
+        "chicken shed"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_32_10_66 'Poultry batteries' is a verbatim leaf code under SL_32_10. Enclosed intensive poultry housing classified INTERNAL. BS 5502-40:1990 (Code of practice for poultry buildings) §4 ventilation and lighting; DEFRA Code of Recommendations for the Welfare of Livestock: Meat Chickens 2002 §3 stocking density; Council Directive 1999/74/EC laying hen minimum standards.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.livestock.shearing_space",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_32_10_77",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "livestock",
+        "shearing_space"
+      ],
+      "common_aliases": [
+        "shearing shed",
+        "wool shed",
+        "shearing floor",
+        "shearing room",
+        "clip shed"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_32_10_77 'Shearing spaces' is a verbatim leaf code under SL_32_10. Enclosed space for sheep shearing and wool handling classified INTERNAL. BS 5502-0:1990 §4; DEFRA Sheep Welfare Code 2005 §4 handling facilities; BS EN 12464-1:2021 §5.38 agricultural task lighting 200 lux maintained.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.livestock.sheep_dip",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_32_10_78",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "livestock",
+        "sheep_dip"
+      ],
+      "common_aliases": [
+        "sheep dip",
+        "dipping bath",
+        "plunge dip",
+        "walk-through dip",
+        "sheep wash"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_32_10_78 'Sheep dips' is a verbatim leaf code under SL_32_10. Outdoor or partially covered dipping facility classified EXTERNAL. DEFRA Sheep Dipping Guidance (Guidance on the safe use of sheep dip, 2016) applies; EA sheep dip waste disposal requirements (Environmental Permitting Regulations 2010).",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.horticulture.vineyard_space",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_32_10_94",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "horticulture",
+        "vineyard_space"
+      ],
+      "common_aliases": [
+        "vineyard",
+        "vine rows",
+        "wine grape plantation",
+        "vinery",
+        "vine growing area"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_32_10_94 'Vineyard spaces' is a verbatim leaf code under SL_32_10. Open-air vine cultivation classified EXTERNAL. BS 5502-0:1990 §3 siting; RICS Farm Buildings and Agricultural Land Guidance 2017 §4 viticultural land valuation.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.dairy.butter_making_room",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_30_40_10",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "dairy",
+        "butter_making_room"
+      ],
+      "common_aliases": [
+        "butter making room",
+        "on-farm creamery",
+        "churning room",
+        "artisan butter room",
+        "dairy production room"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_30_40_10 'Butter making rooms' is a verbatim leaf code under SL_30_40 Animal and plant products processing spaces. Recruited for agricultural.json as on-farm dairy processing typology not covered by SL_32_10; SL_30_40_07/50 already claimed by industrial.json. Classified INTERNAL. Food Standards Agency Food Hygiene Regulations 2006 (SI 2006/14) §5 dairy processing premises; BS EN 12464-1:2021 §5.26 food processing 300 lux maintained.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.dairy.cheesemaking_room",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_30_40_18",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "dairy",
+        "cheesemaking_room"
+      ],
+      "common_aliases": [
+        "cheesemaking room",
+        "cheese vat room",
+        "on-farm cheese dairy",
+        "curd room",
+        "farmhouse cheese room"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_30_40_18 'Cheesemaking rooms' is a verbatim leaf code under SL_30_40 Animal and plant products processing spaces. Recruited for agricultural.json as on-farm cheese production typology. Classified INTERNAL. Food Standards Agency Dairy Hygiene guidance; BS EN 12464-1:2021 §5.26 food processing 300 lux maintained; BS 5502-50:1993 dairy building hygiene requirements.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.crops.threshing_room",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_30_40_88",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "crops",
+        "threshing_room"
+      ],
+      "common_aliases": [
+        "threshing barn",
+        "threshing floor",
+        "winnowing floor",
+        "grain separation room",
+        "corn threshing space"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_30_40_88 'Threshing rooms' is a verbatim leaf code under SL_30_40 Animal and plant products processing spaces. Recruited for agricultural.json as on-farm crop processing typology. Classified INTERNAL. BS 5502-21:1990 (Code of practice for storage and handling of cereals) §3; HSE Agricultural dust guidance; BS EN 12464-1:2021 §5.38 agricultural processing 200 lux maintained.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.storage.dungstead",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_90_50_25",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "storage",
+        "dungstead"
+      ],
+      "common_aliases": [
+        "dungstead",
+        "dung heap",
+        "manure store",
+        "farmyard manure store",
+        "FYM store"
+      ],
+      "ifc_space_type": "EXTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_90_50_25 'Dungsteads' is a verbatim leaf code under SL_90_50 General storage spaces. Recruited for agricultural.json as farm manure storage typology. Open-air or partially covered manure bay classified EXTERNAL. Environment Agency Farming Regulations (Nitrate Vulnerable Zones, Silage, Slurry and Agricultural Fuel Oil Regulations SI 2010/639) §4; BS 5502-0:1990 §4 waste storage siting.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.storage.feed_store",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_90_50_30",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "storage",
+        "feed_store"
+      ],
+      "common_aliases": [
+        "feed store",
+        "fodder store",
+        "silage clamp",
+        "hay store",
+        "animal feed storage"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_90_50_30 'Feed stores' is a verbatim leaf code under SL_90_50 General storage spaces. Recruited for agricultural.json as farm feed storage typology. Enclosed storage building classified INTERNAL. BS 5502-21:1990 §3 silage and fodder storage; Environment Agency Silage, Slurry and Agricultural Fuel Oil Regulations (SSAFO) SI 2010/639 §3 silage effluent containment.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    },
+    {
+      "canonical_id": "agricultural.storage.grain_store",
+      "taxonomy_source": "Uniclass-2015-SL",
+      "uniclass_code": "SL_90_50_37",
+      "parent_category": "agricultural",
+      "parent_path": [
+        "agricultural",
+        "storage",
+        "grain_store"
+      ],
+      "common_aliases": [
+        "grain store",
+        "cereal store",
+        "grain barn",
+        "corn store",
+        "on-farm grain storage"
+      ],
+      "ifc_space_type": "INTERNAL",
+      "_verification_status": "nbs_sourced",
+      "_inference_note": "NBS Source / buildig CSV SL_90_50_37 'Grain stores' is a verbatim leaf code under SL_90_50 General storage spaces. Recruited for agricultural.json as on-farm cereal storage typology. Enclosed store classified INTERNAL. BS 5502-21:1990 (Code of practice for storage and handling of cereals) §4 bin and floor store construction; HGCA Grain storage guide 2012 §2 ventilation and temperature monitoring requirements.",
+      "cross_references": {
+        "bs_en_12464_1": null,
+        "cibse_lg": null,
+        "ashrae_90_1": null,
+        "ashrae_62_1": null,
+        "nrm2": null
+      }
+    }
+  ]
+}
