@@ -4,6 +4,85 @@ All notable changes to the DraftsMan Skills repo are documented here. Entries fo
 
 ---
 
+## [Sprint Z — Uniclass SL + OmniClass T11 Dual-Taxonomy MEGA-SPRINT] — 2026-06-06
+
+### Summary
+
+Continuation of Sprint X's room-taxonomy programme. Sprint X shipped OmniClass T13 (290 entries) but could not cover residential, hotels, industrial, retail, agricultural, or transport room types — those live in Uniclass 2015 SL, not T13. Sprint Z fills that gap with Uniclass 2015 SL room-level entries (295 entries across 7 categories) plus OmniClass T11 building-level entries (89 entries), completing a 3-taxonomy catalogue structure.
+
+**Gates: 649 (Sprint X final) → 1033 (Sprint Z final) (+384 new entries)**
+
+### Mid-Sprint Discoveries (documented for transparency)
+
+**Z.A.0 worst-case projection — T11 PDF extraction would be 40-60%:**
+Initial planning assumed OmniClass Table 11 PDF might yield only partial extraction (40-60% verbatim). Actual result: `pdftotext -layout` extracted cleanly at 100% verbatim. 89 entries shipped without fabrication fallback.
+
+**Hospitality multi-subgroup traversal (Z.B.4):**
+Uniclass 2015 SL hospitality entries span 8 distinct SL sub-groups (SL_25_30, SL_25_35, SL_25_40, SL_25_45, SL_25_50, SL_25_55, SL_25_60, SL_25_65). Traversal added 46 entries across the full hospitality stack — more than any other single category.
+
+**Structural pivot — Sprint X 7-category split → 13 T13 parents → Sprint Z dual-taxonomy:**
+Sprint X had already established the T13 structural pivot (original 7-category plan → 16 actual T13 parents → 13 room-type-applicable). Sprint Z adds the second structural layer: T13 (spaces-by-function) + Uniclass SL (comprehensive room-level, all building types) + T11 (building-level cross-reference rollup). Each layer serves a distinct consumer need.
+
+### What Shipped
+
+#### Phase Z.A — Foundations (4 commits: Z.A.0/1/2/3 + Sprint X back-compat sweep)
+- `shared/standards/spaces/room-types-uniclass-sl/` directory established
+- `shared/standards/spaces/building-types-t11/` directory established
+- `shared/standards/spaces/_source/Uniclass-2015-SL-source-notes.md` — provenance + mirror selection
+- `shared/standards/spaces/_source/OmniClass-Table-11-source-notes.md` — provenance + edition
+- `docs/superpowers/specs/sprint-Z-source-provenance.md` — mirror selection + edition declaration
+- `shared/standards/spaces/room-types-schema.json` extended: `taxonomy_source` discriminator (3-value enum) + `uniclass_code` (pattern `SL_XX_XX_XX`) + `building_type_codes[]` + extended `omniclass_code` regex (accepts 11- and 13- prefixes) + extended `_verification_status` enum (5 values including `nbs_sourced` + `engineering_consensus`) + extended `parent_category` enum (13→21 values) + 2 allOf conditional requirements
+- **Sprint X back-compat sweep:** all 290 Sprint X T13 entries retroactively patched with `taxonomy_source: "OmniClass-Table-13"` (commit Z.A.3; 290 entries touched, 0 content changes)
+
+#### Phase Z.B — Uniclass 2015 SL (7 commits, 295 entries total)
+
+| File | Uniclass SL Root | Entries | NBS / EC split |
+|------|-----------------|---------|---------------|
+| `residential.json` | SL_25_10 | 61 | 39 nbs + 22 engineering_consensus |
+| `commercial.json` | SL_25_20 | 42 | 28 nbs + 14 engineering_consensus |
+| `retail.json` | SL_25_25 | 32 | 23 nbs + 9 engineering_consensus |
+| `hospitality.json` | SL_25_30..SL_25_65 (8 sub-groups) | 46 | 35 nbs + 11 engineering_consensus |
+| `industrial.json` | SL_40_10..SL_40_60 | 62 | 49 nbs + 13 engineering_consensus |
+| `agricultural.json` | SL_35_10..SL_35_40 | 20 | 20 nbs + 0 engineering_consensus |
+| `transport.json` | SL_50_10..SL_50_40 | 32 | 23 nbs + 9 engineering_consensus |
+
+#### Phase Z.C — OmniClass T11 (1 commit, 89 entries verbatim)
+- `shared/standards/spaces/building-types-t11/construction-entities-by-function.json` — 89 entries verbatim from NIBS NBIMS-US V3 pdftotext-layout extraction (100% verbatim; Z.A.0 worst-case projection did not materialise)
+
+#### Phase Z.D — Cross-Reference Back-Fill (1 commit)
+- 124 `bs_en_12464_1` + 265 `ashrae_90_1` + 211 `ashrae_62_1` cross-refs populated on SL entries
+- 44 `bs_en_12464_1` + 87 `ashrae_90_1` + 78 `ashrae_62_1` cross-refs populated on T11 entries
+- `building_type_codes[]` populated on all SL room entries (SL → T11 cross-reference rollup; heuristic SL.parent_category → T11.parent_path[1] mapping)
+
+#### Phase Z.E — Gate Extension + Ship
+- `scripts/validate-examples.py` Pass 5 + Lint 5 extended to cover 21 category files across 3 taxonomies (T13 13 files + SL 7 files + T11 1 file)
+- CHANGELOG + CLAUDE.md + memory file
+
+### Sprint Z Totals
+
+| Metric | Value |
+|--------|-------|
+| New entries (SL) | 295 across 7 categories |
+| New entries (T11) | 89 building-level |
+| Sprint X back-compat patches | 290 |
+| Cross-refs back-filled (SL) | 600 (124 + 265 + 211) |
+| Cross-refs back-filled (T11) | 209 (44 + 87 + 78) |
+| Gate files covered by Pass 5 | 21 (was 13) |
+| Gates before Sprint Z | 649 |
+| Gates after Sprint Z | 1033 |
+| Net new gate entries | +384 |
+
+### Deferred
+
+- **Sprint Y (paid source blocker):** CIBSE LG series + NRM2 cross-references
+- **Future sprint:** Remaining Uniclass SL coverage (~700 entries beyond the 7 shipped categories)
+
+### Next
+
+Sprint F resumes at F.4 (ORCHESTRATION.md authoring — now references 3-taxonomy room-types catalogue).
+
+---
+
 ## [Sprint X] — 2026-06-06 — Comprehensive Room Taxonomy (MEGA-SPRINT)
 
 ### Summary
