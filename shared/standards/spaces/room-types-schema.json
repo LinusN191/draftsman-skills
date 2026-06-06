@@ -2,19 +2,34 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "draftsman-skills/shared/standards/spaces/room-types-schema.json",
   "title": "RoomTypeEntry",
-  "description": "Per-entry metaschema for shared/standards/spaces/room-types/*.json files. Validates entries authored across the 13 room-type-applicable OmniClass Table 13 parent_category files (one per T13 level-2 parent code). NOTE: residential is intentionally absent — T13 (Spaces by Function) does not publish residential codes; residential spaces live in OmniClass Table 11 (Construction Entities by Function) which is deferred to a future sprint. Three construction-element parents (13-13 Void Areas, 13-15 Wall Spaces, 13-17 Encroachment Spaces) are also excluded as not Room.type-applicable — see _source/OmniClass-Table-13-source-notes.md §Phase X.B scope reduction.",
+  "description": "Per-entry metaschema for shared/standards/spaces/room-types/*.json files. Validates entries authored across the 13 room-type-applicable OmniClass Table 13 parent_category files (one per T13 level-2 parent code), plus OmniClass Table 11 construction-entity entries, and Uniclass 2015 Table SL entries. taxonomy_source discriminates between the three taxonomies; omniclass_code required for OmniClass entries; uniclass_code required for Uniclass entries (enforced via allOf). NOTE: residential is absent from T13 (Spaces by Function); residential spaces live in OmniClass Table 11 (Construction Entities by Function) and Uniclass 2015 SL. Three construction-element parents (13-13 Void Areas, 13-15 Wall Spaces, 13-17 Encroachment Spaces) excluded as not Room.type-applicable — see _source/OmniClass-Table-13-source-notes.md §Phase X.B scope reduction.",
   "type": "object",
-  "required": ["canonical_id", "omniclass_code", "parent_category", "_verification_status"],
+  "required": ["canonical_id", "taxonomy_source", "parent_category", "_verification_status"],
   "properties": {
     "canonical_id": {
       "type": "string",
       "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
       "description": "Snake_case dotted identifier used as Room.type in SkillInput. Format: parent_category.sub_category.entry_name. First segment matches the parent_category enum (snake_case names with underscores). Examples: healthcare_spaces.operating_theatre_general, education_and_training_spaces.classroom_general, parking_spaces.surface_lot, space_planning_types.planned_work_space."
     },
+    "taxonomy_source": {
+      "type": "string",
+      "enum": ["OmniClass-Table-13", "OmniClass-Table-11", "Uniclass-2015-SL"],
+      "description": "Source taxonomy discriminator. OmniClass entries require omniclass_code; Uniclass entries require uniclass_code (enforced via allOf)."
+    },
     "omniclass_code": {
       "type": "string",
-      "pattern": "^13-[0-9]{2}( [0-9]{2}){0,4}$",
-      "description": "OmniClass Table 13 verbatim 5-segment 13-digit code. Format: 13-XX XX XX XX XX. Sourced from declared public mirror per sprint-X-source-provenance.md."
+      "pattern": "^1[13]-[0-9]{2}( [0-9]{2}){0,4}$",
+      "description": "OmniClass Table 13 or Table 11 verbatim 5-segment code. Format: 13-XX XX XX XX XX (T13 Spaces by Function) or 11-XX XX XX XX XX (T11 Construction Entities by Function). Sourced from declared public mirror per sprint-X-source-provenance.md. Required when taxonomy_source is OmniClass-Table-13 or OmniClass-Table-11."
+    },
+    "uniclass_code": {
+      "type": "string",
+      "pattern": "^SL_[0-9]{2}_[0-9]{2}_[0-9]{2}$",
+      "description": "Uniclass 2015 Table SL 6-digit notation (SL_XX_XX_XX). Required when taxonomy_source = Uniclass-2015-SL."
+    },
+    "building_type_codes": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^11-[0-9]{2}( [0-9]{2}){0,4}$"},
+      "description": "Optional. SL room entries reference OmniClass T11 building codes for rollup (e.g. residential.bedroom_master → [11-11 11 11] single-family residence)."
     },
     "parent_category": {
       "type": "string",
@@ -31,9 +46,17 @@
         "library_spaces",
         "spiritual_spaces",
         "environmentally_controlled_spaces",
-        "healthcare_spaces"
+        "healthcare_spaces",
+        "residential",
+        "commercial",
+        "retail",
+        "hospitality",
+        "industrial",
+        "agricultural",
+        "transport",
+        "construction_entities"
       ],
-      "description": "Snake_case canonical name of the OmniClass Table 13 level-2 parent. One of the 13 room-type-applicable T13 parents (per pdfcoffee mirror 2026-06-05 + NIBS NBIMS-US V3 §2.4.4.3 wrapper). Three construction-element parents excluded (void_areas 13-13, wall_spaces 13-15, encroachment_spaces 13-17) — see source-notes §Phase X.B scope reduction. MUST match the level-2 segment of omniclass_code (e.g. parent_category=healthcare_spaces ↔ omniclass_code starts with 13-51)."
+      "description": "Snake_case canonical name of the taxonomy level-2 parent. For T13 entries: one of the 13 room-type-applicable T13 parents (per pdfcoffee mirror 2026-06-05 + NIBS NBIMS-US V3 §2.4.4.3 wrapper) — three construction-element parents excluded. For T11 entries: construction_entities. For Uniclass SL entries: residential, commercial, retail, hospitality, industrial, agricultural, transport, or one of the 13 T13 names. MUST match the level-2 segment of the applicable code (e.g. parent_category=healthcare_spaces ↔ omniclass_code starts with 13-51)."
     },
     "parent_code": {
       "type": "string",
@@ -59,8 +82,8 @@
     },
     "_verification_status": {
       "type": "string",
-      "enum": ["mirror_sourced", "occs_verified", "inferred"],
-      "description": "Per-entry sourcing record. mirror_sourced=default (verbatim from declared mirror URL). occs_verified=cross-checked against OCCS canonical PDF (back-fill). inferred=synthesised from hierarchy (MUST honest-disclose in _inference_note)."
+      "enum": ["mirror_sourced", "occs_verified", "inferred", "nbs_sourced", "engineering_consensus"],
+      "description": "Per-entry sourcing record. mirror_sourced=default (verbatim from declared OmniClass mirror URL). occs_verified=cross-checked against OCCS canonical PDF (back-fill). inferred=synthesised from hierarchy (MUST honest-disclose in _inference_note). nbs_sourced=verbatim from NBS Source / designingbuildings Uniclass mirror (Uniclass entries). engineering_consensus=Uniclass-style code synthesised citing CIBSE / ASHRAE / BS engineering authority when NBS Source coverage is partial (MUST honest-disclose in _inference_note)."
     },
     "_inference_note": {
       "type": "string",
@@ -98,5 +121,31 @@
       "additionalProperties": false
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "taxonomy_source": {
+            "enum": ["OmniClass-Table-13", "OmniClass-Table-11"]
+          }
+        }
+      },
+      "then": {
+        "required": ["omniclass_code"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taxonomy_source": {
+            "const": "Uniclass-2015-SL"
+          }
+        }
+      },
+      "then": {
+        "required": ["uniclass_code"]
+      }
+    }
+  ]
 }
