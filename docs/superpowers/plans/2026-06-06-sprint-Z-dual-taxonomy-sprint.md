@@ -1220,3 +1220,657 @@ git commit -m "feat(standards): Z.C.1 NEW construction-entities-by-function.json
 ```
 
 ---
+
+## Phase Z.D — Cross-references + ASHRAE/BS EN back-fill on new entries (1 task, ~3-5 commits)
+
+Goal: back-fill `cross_references` on all new Uniclass SL (~210-270 entries) + OmniClass T11 (~70 entries) where matching ASHRAE 90.1 / ASHRAE 62.1 / BS EN 12464-1 entries exist; populate `building_type_codes[]` on SL room entries pointing at typical-containing T11 building entries.
+
+### Task Z.D.1: Cross-reference back-fill — Sonnet
+
+**Files:**
+- Modify: all `shared/standards/spaces/room-types-uniclass-sl/*.json` (7 files)
+- Modify: `shared/standards/spaces/building-types-t11/construction-entities-by-function.json`
+
+**Why Sonnet:** Mechanical cross-walk via Python script (matches Sprint X X.D.1 pattern) + manual review for building_type_codes mapping (SL room → T11 building heuristic).
+
+- [ ] **Step 1: Read existing source key sets (BS EN + ASHRAE)**
+
+```bash
+python3 -c "
+import json
+bs = json.load(open('shared/standards/lighting/BSEN12464/lux-levels.json'))
+bs_keys = set()
+for cat, sub in bs.items():
+    if not cat.startswith('_') and isinstance(sub, dict):
+        for k in sub:
+            if not k.startswith('_'):
+                bs_keys.add(f'{cat}.{k}')
+a90 = json.load(open('shared/standards/energy/ASHRAE-90-1/lpd-table-9-6-1.json'))
+a62 = json.load(open('shared/standards/hvac/ASHRAE-62-1/ventilation-rates.json'))
+print(f'BS EN 12464-1 keys: {len(bs_keys)}')
+print(f'ASHRAE 90.1 keys: {len(a90[\"entries\"])}')
+print(f'ASHRAE 62.1 keys: {len(a62[\"entries\"])}')
+"
+```
+
+- [ ] **Step 2: Author and run cross-reference back-fill script**
+
+Run this Python one-liner (does NOT go in repo — one-off):
+
+```bash
+python3 << 'EOF'
+import json, glob
+
+# Load source key sets
+bs_keys = set()
+bs = json.load(open('shared/standards/lighting/BSEN12464/lux-levels.json'))
+for cat, sub in bs.items():
+    if not cat.startswith('_') and isinstance(sub, dict):
+        for k in sub:
+            if not k.startswith('_'):
+                bs_keys.add(f'{cat}.{k}')
+ashrae_90_keys = set(json.load(open('shared/standards/energy/ASHRAE-90-1/lpd-table-9-6-1.json'))['entries'].keys())
+ashrae_62_keys = set(json.load(open('shared/standards/hvac/ASHRAE-62-1/ventilation-rates.json'))['entries'].keys())
+
+def find_match(canonical_id, common_aliases, key_set):
+    for k in key_set:
+        if canonical_id.endswith(f'.{k}') or canonical_id == k:
+            return k
+    parts = canonical_id.split('.')
+    for k in key_set:
+        if k == '.'.join(parts[-2:]):
+            return k
+    for alias in common_aliases:
+        normalized = alias.lower().replace(' ', '_').replace('-', '_')
+        for k in key_set:
+            if k.endswith(f'.{normalized}') or k == normalized:
+                return k
+    return None
+
+# Back-fill SL files
+totals = {'bs_en_12464_1': 0, 'ashrae_90_1': 0, 'ashrae_62_1': 0}
+for f in sorted(glob.glob('shared/standards/spaces/room-types-uniclass-sl/*.json') + glob.glob('shared/standards/spaces/building-types-t11/*.json')):
+    d = json.load(open(f))
+    for entry in d.get('entries', []):
+        cid = entry['canonical_id']
+        aliases = entry.get('common_aliases', [])
+        bs = find_match(cid, aliases, bs_keys)
+        a90 = find_match(cid, aliases, ashrae_90_keys)
+        a62 = find_match(cid, aliases, ashrae_62_keys)
+        if bs: entry['cross_references']['bs_en_12464_1'] = bs; totals['bs_en_12464_1'] += 1
+        if a90: entry['cross_references']['ashrae_90_1'] = a90; totals['ashrae_90_1'] += 1
+        if a62: entry['cross_references']['ashrae_62_1'] = a62; totals['ashrae_62_1'] += 1
+    json.dump(d, open(f, 'w'), indent=2, ensure_ascii=False)
+
+print(f'Back-filled cross-references on Sprint Z new entries: {totals}')
+EOF
+```
+
+Expected: BS EN ~30-50 matches, ASHRAE 90.1 ~100-150 matches, ASHRAE 62.1 ~80-120 matches (Uniclass SL covers many more building-type-aware spaces than T13 did).
+
+- [ ] **Step 3: Populate `building_type_codes[]` on SL room entries**
+
+For each Uniclass SL room entry, populate `building_type_codes[]` with the OmniClass T11 codes for typical-containing buildings:
+
+```bash
+python3 << 'EOF'
+import json, glob
+
+# Load T11 codes by parent_path leaf (e.g. residential.single_family_detached → 11-11 11 11)
+t11 = json.load(open('shared/standards/spaces/building-types-t11/construction-entities-by-function.json'))
+t11_by_path = {}
+for entry in t11['entries']:
+    # Map last parent_path element to omniclass_code
+    path = entry.get('parent_path', [])
+    if len(path) >= 2:
+        # e.g. construction_entities.residential.single_family_detached
+        # → key: residential → multiple codes possible; build a list
+        cat = path[1]  # residential / commercial / industrial / etc.
+        t11_by_path.setdefault(cat, []).append(entry['omniclass_code'])
+
+# Mapping heuristic: SL parent_category → T11 sub-category
+sl_to_t11 = {
+    'residential': 'residential',
+    'commercial': 'commercial',
+    'retail': 'commercial',
+    'hospitality': 'commercial',  # hotels are commercial in T11
+    'industrial': 'industrial',
+    'agricultural': 'agricultural',
+    'transport': 'transportation',
+}
+
+# Apply mapping
+for f in sorted(glob.glob('shared/standards/spaces/room-types-uniclass-sl/*.json')):
+    d = json.load(open(f))
+    parent_cat = d.get('_parent_category')
+    t11_sub = sl_to_t11.get(parent_cat)
+    if t11_sub and t11_sub in t11_by_path:
+        codes = t11_by_path[t11_sub]
+        for entry in d.get('entries', []):
+            entry['building_type_codes'] = codes
+    json.dump(d, open(f, 'w'), indent=2, ensure_ascii=False)
+
+print('building_type_codes populated on all SL room entries')
+EOF
+```
+
+Note: this heuristic assigns ALL T11 codes from the matching parent class to every SL room in that parent. Implementer may refine to specific T11 codes per SL entry (e.g. residential.bedroom_master → only single-family + multi-family codes, not dormitory). Acceptable to ship the broad heuristic for v1 and refine later.
+
+- [ ] **Step 4: Spot-check 20 random SL entries for cross-references**
+
+```bash
+python3 -c "
+import json, glob, random
+random.seed(42)
+all_entries = []
+for f in sorted(glob.glob('shared/standards/spaces/room-types-uniclass-sl/*.json')):
+    d = json.load(open(f))
+    all_entries.extend((f.split('/')[-1], e) for e in d['entries'])
+sample = random.sample(all_entries, min(20, len(all_entries)))
+for filename, entry in sample:
+    cid = entry['canonical_id']
+    refs = entry['cross_references']
+    populated = {k: v for k, v in refs.items() if v is not None}
+    btc = entry.get('building_type_codes', [])
+    print(f'  {cid} ({filename})')
+    print(f'    cross_refs: {populated}')
+    print(f'    building_type_codes: {btc[:3]}{\"...\" if len(btc) > 3 else \"\"}')
+"
+```
+
+- [ ] **Step 5: Validate all SL + T11 files still pass schema**
+
+```bash
+python3 -c "
+import json, jsonschema, glob
+schema = json.load(open('shared/standards/spaces/room-types-schema.json'))
+total_errors = 0
+for f in sorted(glob.glob('shared/standards/spaces/room-types-uniclass-sl/*.json') + glob.glob('shared/standards/spaces/building-types-t11/*.json')):
+    d = json.load(open(f))
+    for entry in d.get('entries', []):
+        try: jsonschema.validate(entry, schema)
+        except jsonschema.ValidationError as e:
+            total_errors += 1
+            print(f'  {f.split(chr(47))[-1]}: {entry[\"canonical_id\"]}: {e.message[:100]}')
+print(f'total schema errors after back-fill: {total_errors}')
+"
+```
+
+Expected: 0 schema errors.
+
+- [ ] **Step 6: Banned-citation grep + gate**
+
+```bash
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/room-types-uniclass-sl/ shared/standards/spaces/building-types-t11/ | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo BANNED_FAIL || echo BANNED_PASS
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add shared/standards/spaces/room-types-uniclass-sl/ shared/standards/spaces/building-types-t11/
+git commit -m "feat(standards): Z.D.1 cross-reference back-fill — populate cross_references.{bs_en_12464_1, ashrae_90_1, ashrae_62_1} on ~270 Uniclass SL entries + ~70 OmniClass T11 entries where matching source entries exist; populate building_type_codes[] on SL room entries via heuristic SL.parent_category → T11.parent_path[1] mapping"
+```
+
+---
+
+## Phase Z.E — Gate extension + ship (5 tasks, ~10-12 commits)
+
+Goal: wire the new catalogues into the gate (Z.E.1) + CHANGELOG + memory (Z.E.2) + final adversarial review with 5% fabrication spot-check (Z.E.3) + optional fix-pass (Z.E.4) + push deferred (Z.E.5).
+
+### Task Z.E.1: Extend `scripts/validate-examples.py` Pass 5 + Lint 5 to cover SL + T11
+
+**Files:**
+- Modify: `scripts/validate-examples.py`
+
+**Why Sonnet:** Mechanical Python extension; pattern locked by Sprint X X.E.1 which already added Pass 5 + Lint 5 — Sprint Z extends the file globs.
+
+- [ ] **Step 1: Inspect current Pass 5 + Lint 5 implementation**
+
+```bash
+grep -n "def validate_room_types_pass\|def lint_canonical_room_type_membership\|room-types/" scripts/validate-examples.py | head -10
+```
+
+Expected: Pass 5 currently globs `shared/standards/spaces/room-types/*.json` (Sprint X T13 only); Lint 5 builds canonical_ids set from same glob.
+
+- [ ] **Step 2: Extend Pass 5 glob to include SL + T11 directories**
+
+Edit `scripts/validate-examples.py`. In `validate_room_types_pass()`, change:
+
+```python
+for f_path in sorted(glob.glob("shared/standards/spaces/room-types/*.json")):
+```
+
+to:
+
+```python
+for f_path in sorted(
+    glob.glob("shared/standards/spaces/room-types/*.json")
+    + glob.glob("shared/standards/spaces/room-types-uniclass-sl/*.json")
+    + glob.glob("shared/standards/spaces/building-types-t11/*.json")
+):
+```
+
+- [ ] **Step 3: Extend Lint 5 canonical_ids set to include SL + T11 IDs**
+
+In `lint_canonical_room_type_membership()`, change:
+
+```python
+for f in sorted(glob.glob("shared/standards/spaces/room-types/*.json")):
+```
+
+to:
+
+```python
+for f in sorted(
+    glob.glob("shared/standards/spaces/room-types/*.json")
+    + glob.glob("shared/standards/spaces/room-types-uniclass-sl/*.json")
+    + glob.glob("shared/standards/spaces/building-types-t11/*.json")
+):
+```
+
+- [ ] **Step 4: Update module docstring**
+
+Update the top docstring to declare 7-pass + 1 lint state. Locate the existing docstring (added at Sprint X X.E.1) and update Pass 5 description:
+
+```python
+Pass 5 — Room-types entries across 3 catalogues (room-types-schema.json):
+         + OmniClass T13 (shared/standards/spaces/room-types/*.json) — Sprint X
+         + Uniclass 2015 SL (shared/standards/spaces/room-types-uniclass-sl/*.json) — Sprint Z
+         + OmniClass T11 (shared/standards/spaces/building-types-t11/*.json) — Sprint Z
+
+Lint 5 — Canonical room.type membership across all 3 catalogues
+```
+
+- [ ] **Step 5: Smoke-test extended gate**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -40
+```
+
+Expected:
+- Pass 5 reports per-file PASS/FAIL across 13 T13 files + 7 SL files + 1 T11 file = 21 files
+- All entries validate (gates ~649 + ~340 Sprint Z new entries = ~989/989)
+- Lint 5 reports SKIP or PASS
+
+- [ ] **Step 6: Banned-citation grep**
+
+```bash
+grep -nE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" scripts/validate-examples.py | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo FAIL || echo PASS
+```
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add scripts/validate-examples.py
+git commit -m "feat(gate): Z.E.1 extend Pass 5 + Lint 5 to validate Uniclass 2015 SL (room-types-uniclass-sl/) + OmniClass T11 (building-types-t11/) entries (Sprint Z catalogue additions; 21 total category files validated; canonical membership extended to ~600 IDs across 3 taxonomies)"
+```
+
+### Task Z.E.2: CHANGELOG + memory + CLAUDE.md + MEMORY.md
+
+**Files:**
+- Modify: `CHANGELOG.md` (repo root)
+- Modify: `CLAUDE.md`
+- Create: `/Users/linus/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/sprint-Z-dual-taxonomy-shipped.md`
+- Modify: `/Users/linus/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/MEMORY.md`
+
+**Why Sonnet:** Mechanical documentation closure.
+
+- [ ] **Step 1: Add Sprint Z entry to CHANGELOG.md**
+
+In `CHANGELOG.md`, add at top (after header):
+
+```markdown
+## [Sprint Z — Uniclass SL + OmniClass T11 Dual-Taxonomy MEGA-SPRINT] — 2026-06-XX
+
+### Added
+- `shared/standards/spaces/room-types-uniclass-sl/` — NEW directory; 7 per-category files (~270 Uniclass 2015 SL entries):
+  - residential.json (~60: bedrooms / kitchens / bathrooms / single-family / multi-family / dormitory)
+  - commercial.json (~40: offices / meeting rooms / receptions / banking)
+  - retail.json (~30: shopfloor / fitting / stockroom / checkout)
+  - hospitality.json (~40: hotel guest rooms / restaurants / bars / function)
+  - industrial.json (~50: manufacturing / processing / workshop / warehouse)
+  - agricultural.json (~20: livestock / crops / processing)
+  - transport.json (~30: rail / aviation / road / marine)
+- `shared/standards/spaces/building-types-t11/construction-entities-by-function.json` — NEW; ~70 OmniClass T11 building-type entries
+- `shared/standards/spaces/_source/Uniclass-2015-SL-source-notes.md` — provenance
+- `shared/standards/spaces/_source/OmniClass-Table-11-source-notes.md` — provenance
+- `docs/superpowers/specs/sprint-Z-source-provenance.md` — mirror selection + edition declaration
+
+### Changed
+- `shared/standards/spaces/room-types-schema.json` — added `taxonomy_source` discriminator (3-value enum) + `uniclass_code` (pattern SL_XX_XX_XX) + `building_type_codes[]` + extended `omniclass_code` regex (accepts 11- and 13- prefixes) + extended `_verification_status` enum (5 values incl. nbs_sourced + engineering_consensus) + extended `parent_category` enum (13→21 values) + 2 allOf conditional requirements
+- `shared/standards/spaces/room-types.json` — re-architected master index for 3-taxonomy structure (T13 + SL + T11)
+- `shared/standards/spaces/README.md` — 3-taxonomy documentation
+- All 290 Sprint X T13 entries retroactively patched with `taxonomy_source: "OmniClass-Table-13"` (Z.A.3 back-compat sweep)
+- `cross_references` back-filled on all new SL + T11 entries
+- `building_type_codes[]` populated on SL room entries (SL → T11 cross-reference rollup)
+- `scripts/validate-examples.py` — Pass 5 + Lint 5 extended to validate all 21 category files across 3 taxonomies
+
+### Sprint
+- Sprint Z runs AFTER Sprint X (shipped `23556eb..18deb71`) and BEFORE Sprint F resumes at F.4
+- ~50-60 commits across 18 implementer tasks + ~6-10 fix-passes + 3 portion docs
+
+### Deferred to future sprints
+- CIBSE LG series + Guide A cross-references — Sprint Y (paid)
+- NRM2 cross-references — Sprint Y (paid)
+- Full Uniclass coverage (Sprint Z only covers 7 target categories ~270 entries; ~700 remaining Uniclass SL entries deferred when needed)
+```
+
+- [ ] **Step 2: Update CLAUDE.md golden-CI gate section**
+
+Update gate description from Sprint X state ("6-pass + 1 lint") to Sprint Z state ("Pass 5 covers 3-taxonomy room-types catalogue across 21 category files"):
+
+```bash
+grep -nE "golden CI gate|6-pass|Pass 5" CLAUDE.md | head -5
+```
+
+Edit relevant section to note 3-taxonomy room-types coverage.
+
+- [ ] **Step 3: Create memory file**
+
+Create `/Users/linus/.claude/projects/-Users-linus-Desktop-DraftsMan-SKills-draftsman-skills/memory/sprint-Z-dual-taxonomy-shipped.md`:
+
+```markdown
+---
+name: sprint-Z-dual-taxonomy-shipped
+description: Sprint Z Dual Taxonomy shipped 2026-06-XX — ~270 Uniclass 2015 SL room-level entries (residential/commercial/retail/hospitality/industrial/agricultural/transport) + ~70 OmniClass T11 building-level entries; closes Sprint X coverage gap; F.1 retrofit already done; Sprint F resumes at F.4
+metadata:
+  type: project
+---
+
+# Sprint Z — Uniclass SL + OmniClass T11 Dual Taxonomy shipped 2026-06-XX
+
+**Why:** Sprint X audit surfaced ~60-70% of common building types (residential / hotels / offices / retail / restaurants / industrial / warehouses / agricultural) not covered by OmniClass T13. Mid-design discovery confirmed T11 is BUILDING-level only (not room-level). Pivoted to dual-taxonomy: Uniclass 2015 SL (room-level) + T11 (building-level cross-references).
+
+**How to apply:** Skills now reference 3-taxonomy room-types catalogue: OmniClass T13 (spaces-by-function) + Uniclass SL (comprehensive room-level) + OmniClass T11 (building-level rollup). SkillInput Room.type pattern-validated; canonical membership at Lint 5 against ~600 IDs across 3 taxonomies. SL room entries carry `building_type_codes[]` for rollup. orchestrators consume room-types.json master index + select taxonomy per consumer need.
+
+**What shipped:**
+- 18 implementer commits + ~6-10 fix-passes + 3 portion docs + 1 spec = ~30-40 total
+- 7 Uniclass SL per-category files (~270 entries)
+- 1 OmniClass T11 building-types file (~70 entries)
+- Schema extended with taxonomy_source discriminator + uniclass_code pattern + building_type_codes
+- All 290 Sprint X T13 entries retroactively patched with taxonomy_source
+- ~340 Sprint Z new entries + cross_references back-filled
+- Gate Pass 5 extended to validate 21 category files; Lint 5 canonical membership covers ~600 IDs
+
+**Coverage actual:** Sprint Z covers the 7 missing categories from Sprint X audit. Combined T13 + SL + T11 ≈ 560-600 entries across 21 files.
+
+**Deferred:** CIBSE LG series + NRM2 (paid) → Sprint Y. Full Uniclass coverage (~700 more) → future sprint.
+
+**Gates:** 649 (Sprint X baseline) → ~989 (Sprint Z final, +340 new entries).
+
+**Next:** Sprint F RESUMES at F.4 (ORCHESTRATION.md authoring — now references 3 catalogues). After Sprint F, Sprint W1 (lighting + small-power grounding) follows.
+```
+
+- [ ] **Step 4: Append MEMORY.md index entry**
+
+In `MEMORY.md`, add a line below Sprint X entry:
+
+```markdown
+- [Sprint Z Dual Taxonomy shipped (Uniclass SL + T11)](sprint-Z-dual-taxonomy-shipped.md) — 2026-06-XX: ~270 Uniclass 2015 SL room-level entries across 7 categories (residential/commercial/retail/hospitality/industrial/agricultural/transport) + ~70 OmniClass T11 building-level entries + 3-taxonomy schema extension (taxonomy_source discriminator) + Sprint X back-compat sweep + cross-ref back-fill + building_type_codes rollup; gates 649→~989; Sprint F resumes at F.4
+```
+
+- [ ] **Step 5: Gate check + commit**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -5
+git add CHANGELOG.md CLAUDE.md
+git commit -m "docs: Z.E.2 Sprint Z CHANGELOG + CLAUDE.md gate note + memory file (dual-taxonomy shipped: ~270 Uniclass SL + ~70 T11 entries; 3-taxonomy structure; Sprint F resumes at F.4)"
+```
+
+### Task Z.E.3: Final cross-sprint Opus integration review (8-check fence + 5% fabrication spot-check)
+
+**Files:**
+- Read-only — verdict + recommendation only
+
+**Why Opus:** Adversarial review against full Sprint Z surface area. Critical: SPOT-CHECK 5% of Uniclass SL codes against NBS Source mirror + 5% of T11 codes against pdfcoffee mirror for fabrication detection.
+
+- [ ] **Step 1: Run the 8-check fence**
+
+**Check 1 — Schema valid**
+
+```bash
+python3 -c "import json, jsonschema; s = json.load(open('shared/standards/spaces/room-types-schema.json')); jsonschema.Draft7Validator.check_schema(s); print('Check 1: PASS')"
+```
+
+**Check 2 — 8 new category files validate**
+
+```bash
+python3 -c "
+import json, glob
+total = 0
+ec = 0
+for f in sorted(glob.glob('shared/standards/spaces/room-types-uniclass-sl/*.json') + glob.glob('shared/standards/spaces/building-types-t11/*.json')):
+    d = json.load(open(f))
+    total += len(d.get('entries', []))
+    ec += sum(1 for e in d.get('entries', []) if e.get('_verification_status') == 'engineering_consensus')
+print(f'Check 2: total Sprint Z entries = {total}; engineering_consensus = {ec} ({100*ec/total if total else 0:.1f}%)')
+print(f'Check 2 verdict: PASS if ≥220 entries; SHIP-WITH-NOTED-CONCERNS if <220 (~80% threshold)')
+"
+```
+
+**Check 3 — Sprint X back-compat preserved**
+
+```bash
+python3 -c "
+import json, glob
+all_x = []
+missing_ts = 0
+for f in sorted(glob.glob('shared/standards/spaces/room-types/*.json')):
+    d = json.load(open(f))
+    for e in d.get('entries', []):
+        all_x.append(e)
+        if e.get('taxonomy_source') != 'OmniClass-Table-13':
+            missing_ts += 1
+print(f'Check 3: Sprint X T13 entries = {len(all_x)}; missing taxonomy_source=OmniClass-Table-13: {missing_ts}')
+print(f'Check 3 verdict: {\"PASS\" if missing_ts == 0 and len(all_x) == 290 else \"FAIL\"}')
+"
+```
+
+**Check 4 — Gate aggregate**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | tail -3
+```
+
+**Check 5 — Lint 5 canonical membership extended**
+
+```bash
+python3 scripts/validate-examples.py 2>&1 | grep -A 3 "Lint 5" | head -5
+```
+
+**Check 6 — F.1 retrofit still clean (no Z regression)**
+
+```bash
+python3 -c "
+import json
+s = json.load(open('shared/schemas/core/skill-input.schema.json'))
+room = s['definitions']['Room']
+rt = room['properties']['type']
+print(f'Check 6.a Room.type uses pattern: {\"pattern\" in rt and \"enum\" not in rt}')
+print(f'Check 6.b Room.classification present: {\"classification\" in room[\"properties\"]}')
+"
+```
+
+**Check 7 — Banned-citation grep clean across all Sprint Z deliverables**
+
+```bash
+grep -rnE "(§526\.2|§433\.2|OZEV|3rd Edition|Reg 559|Em_room|average room lux)" shared/standards/spaces/room-types-uniclass-sl/ shared/standards/spaces/building-types-t11/ shared/standards/spaces/_source/Uniclass-2015-SL-source-notes.md shared/standards/spaces/_source/OmniClass-Table-11-source-notes.md docs/superpowers/specs/sprint-Z-source-provenance.md scripts/validate-examples.py 2>/dev/null | grep -v "do NOT\|never cite\|banned\|NOT cite" && echo "Check 7: FAIL" || echo "Check 7: PASS"
+```
+
+**Check 8 — FAB: 5% spot-check fabrication detection (CRITICAL)**
+
+Sample 15 random Sprint Z entries (5% of ~340), verify against declared mirrors:
+
+```bash
+python3 -c "
+import json, glob, random
+random.seed(42)
+all_codes = []
+for f in sorted(glob.glob('shared/standards/spaces/room-types-uniclass-sl/*.json') + glob.glob('shared/standards/spaces/building-types-t11/*.json')):
+    d = json.load(open(f))
+    for entry in d['entries']:
+        ts = entry.get('taxonomy_source')
+        code = entry.get('uniclass_code') if ts == 'Uniclass-2015-SL' else entry.get('omniclass_code')
+        all_codes.append((entry['canonical_id'], code, ts, entry.get('_verification_status'), entry.get('_inference_note', '')[:80]))
+sample = random.sample(all_codes, min(15, len(all_codes)))
+print('Sprint Z spot-check sample (15 random codes — verify against declared mirrors per sprint-Z-source-provenance.md §1/§2):')
+for cid, code, ts, status, inf in sample:
+    print(f'  {cid:60s} {code:18s} {ts:20s} {status:22s}')
+"
+```
+
+Reviewer manually consults the declared mirror URLs and verifies sampled codes exist there. **For mirror_sourced + nbs_sourced entries:** verify code in mirror. **For engineering_consensus entries:** verify `_inference_note` cites engineering authority. **For inferred entries:** verify `_inference_note` populated. Any fabrication = FIX-FIRST.
+
+- [ ] **Step 2: Build 8-check verdict table**
+
+| # | Check | Result | Evidence |
+|---|---|---|---|
+| 1 | Schema valid | PASS/FAIL | Draft-07 well-formed |
+| 2 | 8 new category files validate ≥220 entries | PASS/CONCERN/FAIL | (N/220 ≈ ~340 expected) |
+| 3 | Sprint X back-compat preserved | PASS/FAIL | (290 entries all have taxonomy_source=T13) |
+| 4 | Gate aggregate | PASS/FAIL | (~989/989 expected) |
+| 5 | Lint 5 canonical membership covers 3 taxonomies | PASS/FAIL | (Lint 5 output) |
+| 6 | F.1 retrofit clean (no Z regression) | PASS/FAIL | (Room.type pattern + classification) |
+| 7 | Banned-citation grep clean | PASS/FAIL | (grep exit) |
+| 8 | FAB spot-check fabrication detection | PASS/FAIL | (manual per-code mirror verification) |
+
+- [ ] **Step 3: Final verdict**
+
+- **PASS:** all 8 checks PASS + spot-check passes
+- **SHIP-WITH-NOTED-CONCERNS:** Check 2 CONCERN (<220 entries) OR engineering_consensus >20% but all other checks PASS + spot-check passes
+- **FIX-FIRST:** any check FAIL or fabrication detected
+
+- [ ] **Step 4: No commit (read-only review)**
+
+If FIX-FIRST: name the specific fix-pass needed; dispatch as Z.E.4.
+
+### Task Z.E.4: Conditional fix-pass (per Z.E.3 verdict)
+
+**Files:**
+- (Whatever Z.E.3 verdict identified as needing fix)
+
+**Why Sonnet:** Fix-pass dispatched only if Z.E.3 verdict = FIX-FIRST. Each fix-pass is task-specific (e.g. fabrication found → re-source entries; schema regression → roll back specific change).
+
+- [ ] **Step 1: If no fix-pass needed, skip to Z.E.5**
+
+If Z.E.3 verdict = PASS or SHIP-WITH-NOTED-CONCERNS, this task is a no-op.
+
+- [ ] **Step 2: If fix-pass needed, apply per Z.E.3 specific dispatch**
+
+Implementer applies the specific fix identified at Z.E.3. Re-run the 8-check fence to confirm clearance.
+
+- [ ] **Step 3: Commit the fix-pass**
+
+```bash
+git add <files modified>
+git commit -m "fix(standards): Z.E.4 fix-pass per Z.E.3 verdict — <specific fix description>"
+```
+
+### Task Z.E.5: Push deferred to user authorisation
+
+**Files:**
+- No file edits
+
+**Why:** Per CLAUDE.md "shared state" rule, push to `origin/main` requires explicit user authorisation.
+
+- [ ] **Step 1: Confirm Sprint Z commits local on main**
+
+```bash
+git log --oneline origin/main..HEAD | head -30 | wc -l
+git log --oneline -5
+```
+
+Expected: ~50-60 commits ahead of `origin/main`.
+
+- [ ] **Step 2: Compose sprint summary for user**
+
+Cover:
+- Gates: 649 (Sprint X baseline) → final (~989 expected)
+- ~270 Uniclass SL entries + ~70 T11 entries actual vs target
+- Schema extension with taxonomy_source discriminator
+- Sprint X T13 back-compat sweep (290 entries patched)
+- cross_references + building_type_codes back-filled
+- Z.E.3 verdict
+- Confirm push is only remaining action
+
+- [ ] **Step 3: Wait for user "yes push" authorisation**
+
+STOP. Do NOT push without explicit go-ahead.
+
+- [ ] **Step 4: On authorisation, push**
+
+```bash
+git push origin main 2>&1 | tail -5
+```
+
+- [ ] **Step 5: Confirm + final report**
+
+```bash
+git log --oneline origin/main..HEAD | head -5
+```
+
+Expected: 0 commits ahead post-push.
+
+- [ ] **Step 6: Sprint Z close**
+
+Sprint Z shipped. Sprint F can RESUME at F.4 (ORCHESTRATION.md now references all 3 catalogues — T13 + SL + T11). After Sprint F ships, Sprint W1 (lighting-layout + small-power grounding) follows.
+
+---
+
+## Self-review (writing-plans skill)
+
+### Spec coverage
+
+| Spec section | Plan task(s) |
+|---|---|
+| §1 Mission (dual-taxonomy + 3-catalogue contract) | All Z phases |
+| §2 Mid-design discovery (T11 building-only) | Z.A.0 provenance documents this; spec §2 is the rationale |
+| §3.1 Two new taxonomies + discriminator | Z.A.1 schema extension |
+| §3.2 Uniclass SL scope (7 categories) | Z.B.1-7 (7 tasks) |
+| §3.3 OmniClass T11 scope (1 file) | Z.C.1 |
+| §3.4 Source authority | Z.A.0 |
+| §3.5 Cross-references (SL → T11 rollup) | Z.D.1 building_type_codes back-fill |
+| §3.6 Schema discriminator + allOf | Z.A.1 step 2 |
+| §4.1 Modified existing files | Z.A.1 schema + Z.A.2 master index + Z.A.2 README + Z.A.3 sweep + Z.E.1 gate |
+| §4.2 NEW files | Z.A.2 source-notes + Z.B.1-7 SL + Z.C.1 T11 |
+| §5 Per-entry shape with taxonomy_source + uniclass_code + building_type_codes + allOf | Z.A.1 schema + every Z.B/Z.C entry |
+| §6 Sprint structure (5 phases × 18 tasks) | Phase Z.A 4 tasks + Z.B 7 + Z.C 1 + Z.D 1 + Z.E 5 = 18 ✓ |
+| §8 Definition of done (10 items) | Z.E.3 8-check fence verifies items 1-9; item 10 verified at Z.E.5 |
+| §9 Risk surfaces (6 items) | Per-task fabrication-prevention + Z.E.3 spot-check + Sprint X back-compat sweep + engineering_consensus discipline |
+| §10 Process discipline | Sprint discipline header section |
+| §11 Out of scope | Z.A.0 §4 documents CIBSE + NRM2 deferral |
+
+All 11 spec sections covered.
+
+### Placeholder scan
+
+- No raw "TBD" / "TODO" / "implement later".
+- The Uniclass SL canonical_ids listed in Z.B.* steps are **target lists** for the implementer (matches Sprint X pattern); actual entries come from mirror survey at execution time. This is intentional per the fabrication-prevention contract: ship what mirror provides, document gaps.
+- Every code-step has actual code or command needed.
+
+### Type / name consistency
+
+- `taxonomy_source` enum values: `OmniClass-Table-13 / OmniClass-Table-11 / Uniclass-2015-SL` consistent across Z.A.1 schema + Z.A.2 master index + Z.A.3 sweep + Z.B.* + Z.C.1 + Z.E.1 lint extension.
+- `_verification_status` enum: `mirror_sourced / occs_verified / inferred / nbs_sourced / engineering_consensus` consistent across Z.A.1 schema + Z.A.0 provenance + Z.B.* + Z.C.1.
+- `parent_category` enum: 21 values (13 T13 + 7 SL + 1 T11) consistent across Z.A.1 schema + Z.A.2 master index + Z.B.* per-category file `_parent_category` values + Z.C.1.
+- `uniclass_code` pattern: `^SL_[0-9]{2}_[0-9]{2}_[0-9]{2}$` consistent across Z.A.1 schema + all Z.B.* entries.
+- `omniclass_code` pattern: `^1[13]-[0-9]{2}( [0-9]{2}){0,4}$` (accepts both 11- and 13- prefixes) consistent across Z.A.1 schema + Z.C.1 + Sprint X T13 entries (which use 13- prefix).
+- `building_type_codes[]` pattern (T11-only references): `^11-[0-9]{2}( [0-9]{2}){0,4}$` consistent across Z.A.1 schema + Z.D.1 back-fill.
+
+### Issues found and fixed inline
+
+None — self-review found no defects requiring inline fixes.
+
+---
+
+## Execution handoff
+
+Plan complete and saved to [`docs/superpowers/plans/2026-06-06-sprint-Z-dual-taxonomy-sprint.md`](2026-06-06-sprint-Z-dual-taxonomy-sprint.md).
+
+**Two execution options:**
+
+1. **Subagent-Driven (recommended)** — Fresh subagent per task, two-stage Opus review, matches Sprint X precedent (41 commits shipped clean with 2 recovery commits + SHIP-WITH-NOTED-CONCERNS verdict). Critical: Z.E.3 fabrication spot-check is the unique-to-Sprint-Z review gate (matches Sprint X X.E.4 5% spot-check pattern).
+2. **Inline Execution** — Execute tasks in this session using executing-plans, batch with checkpoints.
+
+**Which approach?**
