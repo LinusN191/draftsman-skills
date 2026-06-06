@@ -5,7 +5,10 @@ Pass 1 — Example outputs (IR schema)
 Pass 2 — Eval files (eval.schema.json)
 Pass 3 — Inputs files (inputs.schema.json)
 Pass 4 — Intent emissions (skill intent schemas) [added Sprint D round-3]
-Pass 5 — Room-types entries (room-types-schema.json) [added Sprint X.E.1]
+Pass 5 — Room-types entries across 3 catalogues (room-types-schema.json):
+         + OmniClass T13 (shared/standards/spaces/room-types/*.json) — Sprint X
+         + Uniclass 2015 SL (shared/standards/spaces/room-types-uniclass-sl/*.json) — Sprint Z
+         + OmniClass T11 (shared/standards/spaces/building-types-t11/*.json) — Sprint Z
 Pass 6 — ASHRAE source files (parse + structure) [added Sprint X.E.1]
 Pass 7 — ISO 16739 IFC subset (parse + structure) [added Sprint X.E.1]
 
@@ -14,7 +17,7 @@ Lint sub-passes:
   Lint 2 — grounded_source two-tier validation [Sprint F.5]
   Lint 3 — Dropped-item orphans in examples [Sprint F.5]
   Lint 4 — Cascade byte-equality SHA-256 [Sprint F.5]
-  Lint 5 — Canonical room.type membership [added Sprint X.E.1]
+  Lint 5 — Canonical room.type membership across all 3 catalogues [added Sprint X.E.1; extended Sprint Z.E.1]
 
 Pass 1 recursively strips $ref nodes before validation — focuses on inline
 schema-shape bugs rather than external-ref resolution (rationale, intent, etc.).
@@ -354,10 +357,13 @@ def validate_intents_pass(skill_dirs: list) -> tuple:
 
 
 def validate_room_types_pass() -> tuple:
-    """Pass 5 — Room-types schema validation.
+    """Pass 5 — Room-types schema validation (3 catalogues).
 
-    Validate every entry in every shared/standards/spaces/room-types/*.json file
-    against shared/standards/spaces/room-types-schema.json.
+    Validate every entry across all 3 room-type catalogues against
+    shared/standards/spaces/room-types-schema.json:
+      - OmniClass T13: shared/standards/spaces/room-types/*.json
+      - Uniclass 2015 SL: shared/standards/spaces/room-types-uniclass-sl/*.json
+      - OmniClass T11: shared/standards/spaces/building-types-t11/*.json
 
     Returns (total_entries, total_failures, report_lines).
     """
@@ -372,7 +378,11 @@ def validate_room_types_pass() -> tuple:
     except FileNotFoundError:
         return (0, 0, [f"\n## Pass 5: SKIP — {schema_path} not found"])
 
-    for f_path in sorted(glob.glob("shared/standards/spaces/room-types/*.json")):
+    for f_path in sorted(
+        glob.glob("shared/standards/spaces/room-types/*.json")
+        + glob.glob("shared/standards/spaces/room-types-uniclass-sl/*.json")
+        + glob.glob("shared/standards/spaces/building-types-t11/*.json")
+    ):
         f_name = os.path.basename(f_path)
         try:
             with open(f_path) as f:
@@ -503,7 +513,11 @@ def lint_canonical_room_type_membership(skill_dirs: list) -> tuple:
     # Load canonical IDs
     canonical_ids = set()
     aliases_to_canonical = {}
-    for f in sorted(glob.glob("shared/standards/spaces/room-types/*.json")):
+    for f in sorted(
+        glob.glob("shared/standards/spaces/room-types/*.json")
+        + glob.glob("shared/standards/spaces/room-types-uniclass-sl/*.json")
+        + glob.glob("shared/standards/spaces/building-types-t11/*.json")
+    ):
         try:
             with open(f) as fh:
                 d = json.load(fh)
@@ -633,7 +647,7 @@ def main(repo_root="."):
         print(line)
     print(f"\nSubtotal: {it_tot - it_fail}/{it_tot} pass ({it_fail} failures)\n")
 
-    print("=== Pass 5 — Room-types schema (13 category files) ===\n")
+    print("=== Pass 5 — Room-types schema (3 catalogues: T13 + SL + T11; 21 category files) ===\n")
     for line in p5_lines:
         print(line)
     print(f"\nSubtotal: {p5_total - p5_failures}/{p5_total} entries pass ({p5_failures} failures)\n")
