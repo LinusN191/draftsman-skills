@@ -87,36 +87,8 @@
         "room_id": { "type": "string" },
         "type": {
           "type": "string",
-          "enum": [
-            "office.open_plan",
-            "office.private_office",
-            "office.conference",
-            "office.reception_desk",
-            "office.filing_copying",
-            "office.archive",
-            "circulation.main_corridor",
-            "circulation.link_corridor",
-            "circulation.lobby",
-            "circulation.staircase",
-            "sanitary.toilet_wc",
-            "sanitary.first_aid",
-            "industrial.warehouse_low",
-            "industrial.warehouse_high",
-            "industrial.workshop",
-            "industrial.car_park_bays",
-            "industrial.car_park_ramp",
-            "healthcare.ward_general",
-            "healthcare.ward_examination",
-            "healthcare.consultation",
-            "education.classroom",
-            "education.classroom_board",
-            "education.laboratory",
-            "education.sports_hall",
-            "retail.general",
-            "retail.high_emphasis",
-            "retail.checkout"
-          ],
-          "description": "Snake_case room type per shared/standards/lighting/BSEN12464/lux-levels.json. Orchestrators MUST normalize before passing. See skill-input-design-rationale.md for the 27-value taxonomy."
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
+          "description": "Snake_case canonical_id from shared/standards/spaces/room-types/*.json (~290-entry catalogue). Format: parent_category.sub_category.entry_name. Examples: facility_service_spaces.restroom, healthcare_spaces.operating_theatre, education_and_training_spaces.classroom. Canonical membership enforced at gate-time via Lint sub-pass 5 against the catalogue. See ORCHESTRATION.md + shared/standards/spaces/README.md for the full taxonomy reference."
         },
         "area_m2": { "type": "number", "minimum": 0 },
         "bbox": {

@@ -33,7 +33,7 @@ The `scope` field is the `oneOf` discriminator. Schema validation fails if shape
 ### Room
 
 - `room_id`: unique room identifier within the floor
-- `type`: snake_case room type from the 27-value enum (see taxonomy below)
+- `type`: snake_case canonical_id from the `shared/standards/spaces/room-types/*.json` catalogue (see taxonomy section below)
 - `area_m2`: net internal area in square metres
 - `bbox`: bounding box with `length` + `width` (m) + optional `min_xy` (bottom-left corner in floor-local coords in m)
 - `polygon`: closed polygon vertices in floor-local metres (last vertex == first vertex)
@@ -47,21 +47,11 @@ The `scope` field is the `oneOf` discriminator. Schema validation fails if shape
 
 `additionalProperties: true` — skills may attach extra room metadata (e.g. `reflectance_ceiling`, `maintenance_factor`).
 
-## Room.type — 27-value taxonomy
+## Room.type — catalogue taxonomy
 
-Sourced from `shared/standards/lighting/BSEN12464/lux-levels.json`. Orchestrators MUST normalize free-text room names to these values before invoking a skill.
+- `type`: snake_case canonical_id from `shared/standards/spaces/room-types/*.json` catalogue (~290 entries spanning 13 OmniClass Table 13 parent categories). Format: `parent_category.sub_category.entry_name`. Canonical membership enforced at gate-time. Examples: `facility_service_spaces.restroom`, `healthcare_spaces.operating_theatre`, `education_and_training_spaces.classroom`. For non-canonical drawing labels (e.g. "Master Bedroom" from architectural parsers), orchestrators implement fuzzy-match per `shared/standards/spaces/fuzzy-match-reference.md`.
 
-| Category | Values |
-|---|---|
-| `office` | `open_plan`, `private_office`, `conference`, `reception_desk`, `filing_copying`, `archive` |
-| `circulation` | `main_corridor`, `link_corridor`, `lobby`, `staircase` |
-| `sanitary` | `toilet_wc`, `first_aid` |
-| `industrial` | `warehouse_low`, `warehouse_high`, `workshop`, `car_park_bays`, `car_park_ramp` |
-| `healthcare` | `ward_general`, `ward_examination`, `consultation` |
-| `education` | `classroom`, `classroom_board`, `laboratory`, `sports_hall` |
-| `retail` | `general`, `high_emphasis`, `checkout` |
-
-Pass as `category.subcategory` (e.g. `"office.open_plan"`, `"industrial.warehouse_high"`).
+All values that satisfied the former 27-value enum (e.g. `"office.open_plan"`, `"industrial.warehouse_high"`) remain valid — they satisfy the `^[a-z]+(\.[a-z0-9_]+)+$` pattern and are present in the catalogue. Orchestrators normalizing free-text room names should target the canonical_id entries in the catalogue; the fuzzy-match reference covers common architectural-parser variants.
 
 ## ProjectFacts
 
