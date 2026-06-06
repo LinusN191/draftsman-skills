@@ -1,19 +1,27 @@
 #!/usr/bin/env python3
-"""Golden-example schema validation harness — 3-pass.
+"""Golden-example schema validation harness — 6-pass + 1 lint sub-pass (Sprint X) / 7-pass + 5 lint sub-passes (Sprint F.5 final).
 
-Pass 1 — Example outputs: validate every examples/*/output.json against the
-         parent skill's IR schema.
-Pass 2 — Eval files: validate every evals/eval-*.yaml against
-         shared/schemas/core/eval.schema.json.
-Pass 3 — Inputs files: validate each skill's inputs.json against
-         shared/schemas/core/inputs.schema.json.
+Pass 1 — Example outputs (IR schema)
+Pass 2 — Eval files (eval.schema.json)
+Pass 3 — Inputs files (inputs.schema.json)
+Pass 4 — Intent emissions (skill intent schemas) [added Sprint D round-3]
+Pass 5 — Room-types entries (room-types-schema.json) [added Sprint X.E.1]
+Pass 6 — ASHRAE source files (parse + structure) [added Sprint X.E.1]
+Pass 7 — ISO 16739 IFC subset (parse + structure) [added Sprint X.E.1]
+
+Lint sub-passes:
+  Lint 1 — Manifest field-name typos [Sprint F.5]
+  Lint 2 — grounded_source two-tier validation [Sprint F.5]
+  Lint 3 — Dropped-item orphans in examples [Sprint F.5]
+  Lint 4 — Cascade byte-equality SHA-256 [Sprint F.5]
+  Lint 5 — Canonical room.type membership [added Sprint X.E.1]
 
 Pass 1 recursively strips $ref nodes before validation — focuses on inline
 schema-shape bugs rather than external-ref resolution (rationale, intent, etc.).
 Passes 2 and 3 do NOT strip $refs because those schemas use internal $ref nodes
 (#/definitions/Check, #/definitions/InputItem) that are load-bearing.
 
-Returns exit 0 on full pass across all three passes, exit 1 on any failure.
+Returns exit 0 on full pass + zero gate-failing lint findings; exit 1 on any failure.
 """
 import json
 import sys
@@ -345,6 +353,231 @@ def validate_intents_pass(skill_dirs: list) -> tuple:
     return total_intents, total_failures, lines
 
 
+def validate_room_types_pass() -> tuple:
+    """Pass 5 — Room-types schema validation.
+
+    Validate every entry in every shared/standards/spaces/room-types/*.json file
+    against shared/standards/spaces/room-types-schema.json.
+
+    Returns (total_entries, total_failures, report_lines).
+    """
+    results = defaultdict(list)
+    total_entries = 0
+    total_failures = 0
+
+    schema_path = "shared/standards/spaces/room-types-schema.json"
+    try:
+        with open(schema_path) as f:
+            schema = json.load(f)
+    except FileNotFoundError:
+        return (0, 0, [f"\n## Pass 5: SKIP — {schema_path} not found"])
+
+    for f_path in sorted(glob.glob("shared/standards/spaces/room-types/*.json")):
+        f_name = os.path.basename(f_path)
+        try:
+            with open(f_path) as f:
+                d = json.load(f)
+        except json.JSONDecodeError as e:
+            results[f_name].append(("JSON-PARSE", f_path, str(e)[:200]))
+            total_failures += 1
+            continue
+        for i, entry in enumerate(d.get("entries", [])):
+            total_entries += 1
+            try:
+                jsonschema.validate(entry, schema)
+                # Silent PASS at entry level; per-file PASS reported below
+            except jsonschema.ValidationError as e:
+                total_failures += 1
+                cid = entry.get("canonical_id", f"entry[{i}]")
+                results[f_name].append(("FAIL", cid, e.message[:160]))
+
+    lines = ["\n## Pass 5: Room-types schema validation"]
+    for f_name in sorted(results.keys()):
+        failures = results[f_name]
+        if not failures:
+            lines.append(f"  PASS {f_name}")
+        else:
+            for kind, name, msg in failures:
+                lines.append(f"  {kind} {f_name}.{name}: {msg}")
+    if not results:
+        lines.append("  PASS — all room-types entries validate")
+    return (total_entries, total_failures, lines)
+
+
+def validate_ashrae_pass() -> tuple:
+    """Pass 6 — ASHRAE source files parse + structure check.
+
+    Validate that shared/standards/energy/ASHRAE-90-1/lpd-table-9-6-1.json and
+    shared/standards/hvac/ASHRAE-62-1/ventilation-rates.json parse, have _source +
+    _edition + entries fields populated.
+
+    Returns (total_files, total_failures, report_lines).
+    """
+    results = []
+    total_files = 0
+    total_failures = 0
+
+    checks = [
+        ("ASHRAE-90-1", "shared/standards/energy/ASHRAE-90-1/lpd-table-9-6-1.json"),
+        ("ASHRAE-62-1", "shared/standards/hvac/ASHRAE-62-1/ventilation-rates.json"),
+    ]
+    for name, path in checks:
+        if not os.path.exists(path):
+            results.append(("SKIP", name, f"file not found: {path}"))
+            continue
+        total_files += 1
+        try:
+            with open(path) as f:
+                d = json.load(f)
+        except json.JSONDecodeError as e:
+            results.append(("JSON-PARSE", name, str(e)[:200]))
+            total_failures += 1
+            continue
+        for required in ["_source", "_edition", "entries"]:
+            if required not in d:
+                results.append(("FAIL", name, f"missing required key: {required}"))
+                total_failures += 1
+                break
+        else:
+            results.append(("PASS", name, f"{len(d['entries'])} entries"))
+
+    lines = ["\n## Pass 6: ASHRAE source files"]
+    for kind, name, msg in results:
+        lines.append(f"  {kind} {name}: {msg}")
+    return (total_files, total_failures, lines)
+
+
+def validate_ifc_pass() -> tuple:
+    """Pass 7 — ISO 16739 IFC subset parse check.
+
+    Validate that shared/standards/bim/ISO16739/{space-types,classification,placement}.json
+    parse and have _source + _source_url fields.
+
+    Returns (total_files, total_failures, report_lines).
+    """
+    results = []
+    total_files = 0
+    total_failures = 0
+
+    files = [
+        "shared/standards/bim/ISO16739/space-types.json",
+        "shared/standards/bim/ISO16739/classification.json",
+        "shared/standards/bim/ISO16739/placement.json",
+    ]
+    for path in files:
+        name = os.path.basename(path)
+        if not os.path.exists(path):
+            results.append(("SKIP", name, f"file not found: {path}"))
+            continue
+        total_files += 1
+        try:
+            with open(path) as f:
+                d = json.load(f)
+        except json.JSONDecodeError as e:
+            results.append(("JSON-PARSE", name, str(e)[:200]))
+            total_failures += 1
+            continue
+        for required in ["_source", "_source_url"]:
+            if required not in d:
+                results.append(("FAIL", name, f"missing required key: {required}"))
+                total_failures += 1
+                break
+        else:
+            results.append(("PASS", name, "valid"))
+
+    lines = ["\n## Pass 7: ISO 16739 IFC subset"]
+    for kind, name, msg in results:
+        lines.append(f"  {kind} {name}: {msg}")
+    return (total_files, total_failures, lines)
+
+
+def lint_canonical_room_type_membership(skill_dirs: list) -> tuple:
+    """Lint sub-pass 5 — Canonical room.type membership check.
+
+    Scan every examples/*/{output,intent-out,input}.json file across all skills for
+    room.type values. Check each against the union of canonical_id values across
+    shared/standards/spaces/room-types/*.json. Report PASS / FAIL / SUGGEST.
+
+    Returns (total_fail_count, report_lines).
+    """
+    # Load canonical IDs
+    canonical_ids = set()
+    aliases_to_canonical = {}
+    for f in sorted(glob.glob("shared/standards/spaces/room-types/*.json")):
+        try:
+            with open(f) as fh:
+                d = json.load(fh)
+            for entry in d.get("entries", []):
+                canonical_ids.add(entry["canonical_id"])
+                for alias in entry.get("common_aliases", []):
+                    aliases_to_canonical[alias.lower().strip()] = entry["canonical_id"]
+        except (json.JSONDecodeError, KeyError):
+            continue
+
+    if not canonical_ids:
+        return (0, ["\n## Lint 5: Canonical room.type membership", "  SKIP — no room-types catalogue found"])
+
+    # Scan all skill example files
+    total_checked = 0
+    total_fail = 0
+    total_suggest = 0
+    findings = []
+    for skill_dir in skill_dirs:
+        skill_name = os.path.basename(skill_dir)
+        for ex_glob in [f"{skill_dir}/examples/*/output.json",
+                        f"{skill_dir}/examples/*/intent-out.json",
+                        f"{skill_dir}/examples/*/input.json"]:
+            for ex_path in sorted(glob.glob(ex_glob)):
+                ex_name = os.path.basename(os.path.dirname(ex_path))
+                file_kind = os.path.basename(ex_path)
+                try:
+                    with open(ex_path) as f:
+                        d = json.load(f)
+                except json.JSONDecodeError:
+                    continue
+                # Find room.type values only — the NEW canonical field (room.type).
+                # The legacy field (room.room_type) predates the Sprint X catalogue and
+                # is NOT checked here; Lint 5 fires only when the new room.type key is
+                # populated, so existing examples that still carry room_type will SKIP.
+                room_type_values = []
+                if isinstance(d.get("room"), dict) and "type" in d["room"]:
+                    room_type_values.append(("room.type", d["room"]["type"]))
+                for rt_path, rt_val in room_type_values:
+                    if not isinstance(rt_val, str):
+                        continue
+                    total_checked += 1
+                    if rt_val in canonical_ids:
+                        pass  # Silent PASS
+                    elif rt_val.lower().strip() in aliases_to_canonical:
+                        canonical = aliases_to_canonical[rt_val.lower().strip()]
+                        total_suggest += 1
+                        findings.append(
+                            f"  SUGGEST {skill_name}.{ex_name}.{file_kind} "
+                            f"({rt_path}='{rt_val}'): not canonical; matches alias of '{canonical}'"
+                        )
+                    else:
+                        total_fail += 1
+                        findings.append(
+                            f"  FAIL {skill_name}.{ex_name}.{file_kind} "
+                            f"({rt_path}='{rt_val}'): not in canonical catalogue + no alias match"
+                        )
+
+    lines = ["\n## Lint 5: Canonical room.type membership"]
+    if total_checked == 0:
+        lines.append("  SKIP — no room.type values found in example files")
+    elif total_fail == 0 and total_suggest == 0:
+        lines.append(f"  PASS — {total_checked} room.type values all canonical")
+    else:
+        lines.append(
+            f"  Checked: {total_checked}; PASS: {total_checked - total_fail - total_suggest}; "
+            f"SUGGEST: {total_suggest}; FAIL: {total_fail}"
+        )
+        lines.extend(findings[:20])  # Cap output at 20 findings
+        if len(findings) > 20:
+            lines.append(f"  ... and {len(findings) - 20} more findings (output truncated)")
+    return (total_fail, lines)
+
+
 def main(repo_root="."):
     os.chdir(repo_root)
     skill_dirs = discover_skill_dirs()
@@ -368,6 +601,18 @@ def main(repo_root="."):
     in_tot, in_fail, in_lines = validate_inputs_pass(skill_dirs, inputs_schema)
     it_tot, it_fail, it_lines = validate_intents_pass(skill_dirs)
 
+    # Pass 5 — Room-types schema
+    p5_total, p5_failures, p5_lines = validate_room_types_pass()
+
+    # Pass 6 — ASHRAE source files
+    p6_total, p6_failures, p6_lines = validate_ashrae_pass()
+
+    # Pass 7 — ISO 16739 IFC subset
+    p7_total, p7_failures, p7_lines = validate_ifc_pass()
+
+    # Lint 5 — Canonical room.type membership
+    l5_failures, l5_lines = lint_canonical_room_type_membership(skill_dirs)
+
     print("=== Pass 1 — Example outputs ===\n")
     for line in ex_lines:
         print(line)
@@ -388,8 +633,28 @@ def main(repo_root="."):
         print(line)
     print(f"\nSubtotal: {it_tot - it_fail}/{it_tot} pass ({it_fail} failures)\n")
 
-    total = ex_tot + ev_tot + in_tot + it_tot
-    total_fail = ex_fail + ev_fail + in_fail + it_fail
+    print("=== Pass 5 — Room-types schema (13 category files) ===\n")
+    for line in p5_lines:
+        print(line)
+    print(f"\nSubtotal: {p5_total - p5_failures}/{p5_total} entries pass ({p5_failures} failures)\n")
+
+    print("=== Pass 6 — ASHRAE source files ===\n")
+    for line in p6_lines:
+        print(line)
+    print(f"\nSubtotal: {p6_total - p6_failures}/{p6_total} files pass ({p6_failures} failures)\n")
+
+    print("=== Pass 7 — ISO 16739 IFC subset ===\n")
+    for line in p7_lines:
+        print(line)
+    print(f"\nSubtotal: {p7_total - p7_failures}/{p7_total} files pass ({p7_failures} failures)\n")
+
+    print("=== Lint 5 — Canonical room.type membership ===\n")
+    for line in l5_lines:
+        print(line)
+    print()
+
+    total = ex_tot + ev_tot + in_tot + it_tot + p5_total + p6_total + p7_total
+    total_fail = ex_fail + ev_fail + in_fail + it_fail + p5_failures + p6_failures + p7_failures + l5_failures
     print(f"=== AGGREGATE: {total - total_fail}/{total} pass ({total_fail} failures) ===")
     sys.exit(0 if total_fail == 0 else 1)
 
