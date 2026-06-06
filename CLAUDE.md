@@ -57,17 +57,23 @@ The established workflow. The `superpowers:*` skills are loaded on demand — do
 
 ## Golden CI gate
 
-`scripts/validate-examples.py` runs on every push and PR to `main`. **6 passes + 1 lint sub-pass** (extended in Sprint X from the original 3-pass; Pass 5 extended in Sprint Z to cover all 21 category files across the 3-taxonomy room-types catalogue):
+`scripts/validate-examples.py` runs on every push and PR to `main`. **8 passes + 5 lint sub-passes** (extended progressively: Sprint 3-W2 added Pass 4; Sprint X added Passes 5-8 + Lint 5; Sprint F added Pass 5 manifest metaschema + Lint 1-4):
 
 - **Pass 1** — every `examples/*/output.json` validated against the parent skill's `schemas/<skill>-ir.schema.json`.
 - **Pass 2** — every `evals/eval-*.yaml` validated against `shared/schemas/core/eval.schema.json`.
 - **Pass 3** — each skill's `inputs.json` validated against `shared/schemas/core/inputs.schema.json`.
-- **Pass 4** — `shared/standards/spaces/ashrae/ashrae-90.1-table-9.5.2.1-lpd.json` schema validation (added Sprint X).
-- **Pass 5** — room-types entries across **3 taxonomies** (added Sprint X; extended Sprint Z to 21 category files): OmniClass T13 `room-types/*.json` (13 files, Sprint X) + Uniclass 2015 SL `room-types-uniclass-sl/*.json` (7 files, Sprint Z) + OmniClass T11 `building-types-t11/*.json` (1 file, Sprint Z).
-- **Pass 6** — `shared/standards/spaces/ifc/` subset file schema validation (added Sprint X).
-- **Lint 1** — canonical room-type `snake_case` pattern conformance across all 3 taxonomy catalogue entries (added Sprint X; extended Sprint Z to cover ~600 IDs across T13 + SL + T11).
+- **Pass 4** — intent emissions: every `produces_intents[]` fixture validated against `shared/schemas/core/intent.schema.json`.
+- **Pass 5** — all 104 `skill.manifest.json` files validated against `shared/schemas/core/skill-manifest.schema.json` (added Sprint F).
+- **Pass 6** — room-types entries across **3 taxonomies** (added Sprint X; extended Sprint Z to 21 category files): OmniClass T13 `room-types/*.json` (13 files) + Uniclass 2015 SL `room-types-uniclass-sl/*.json` (7 files) + OmniClass T11 `building-types-t11/*.json` (1 file).
+- **Pass 7** — ASHRAE source file schema validation (added Sprint X).
+- **Pass 8** — `shared/standards/spaces/ifc/` ISO 16739 IFC subset file schema validation (added Sprint X).
+- **Lint 1** — manifest field-name typo detection across all 104 manifests (added Sprint F).
+- **Lint 2** — `grounded_source` two-tier validation: canonical bindings vs `project.<custom>` pattern (added Sprint F).
+- **Lint 3** — dropped-item orphan detection: examples must not reference inputs.json items that no longer exist (added Sprint F).
+- **Lint 4** — cascade byte-equality (SHA-256): cascade payloads must be byte-identical to their producer fixtures (added Sprint F).
+- **Lint 5** — canonical `room.type` `snake_case` pattern conformance across all 3 taxonomy catalogue entries (added Sprint X; extended Sprint Z to cover ~674 IDs across T13 + SL + T11).
 
-Aggregate exit 0 only when all passes and lint sub-passes are 100% green. Sprint 3-W2 (W/W2a/W2b) cleared the schema-fragmentation backlog; Sprint X extended the gate to cover the room-types taxonomy and IFC subset; Sprint Z extended Pass 5 + Lint 1 to the full 3-taxonomy catalogue (1033 gates total). Any new skill PR must add new evals and `inputs.json` and pass all passes.
+Aggregate exit 0 only when all passes and lint sub-passes are 100% green. Sprint 3-W2 (W/W2a/W2b) cleared the schema-fragmentation backlog; Sprint X extended the gate to cover the room-types taxonomy and IFC subset; Sprint Z extended Pass 6 + Lint 5 to the full 3-taxonomy catalogue; Sprint F added Pass 5 manifest metaschema + Lint 1-4 (1137 gates total at Sprint F close). Any new skill PR must add new evals and `inputs.json` and pass all passes.
 
 Workflow: `.github/workflows/validate-examples.yml`. Local run: `python3 scripts/validate-examples.py`.
 

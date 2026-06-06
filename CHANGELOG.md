@@ -4,6 +4,36 @@ All notable changes to the DraftsMan Skills repo are documented here. Entries fo
 
 ---
 
+## [Sprint F — Foundation (SkillInput Contract Grounding)] — 2026-06-06
+
+### Added
+- `shared/schemas/core/skill-input.schema.json` (F.1) + `shared/schemas/core/skill-input-reference.md` — orchestrator → skill payload metaschema with tagged-union by scope (room / floor / building); F.1 retrofit at Sprint X.E.2 replaced hardcoded 27-value Room.type enum with `snake_case` pattern (backwards-compatible; open set for catalogue members)
+- `shared/schemas/core/skill-manifest.schema.json` (F.2) — manifest metaschema with `scope` + `placement_convention` enums; discipline enum extended with `commissioning` + `compliance` at F.6 fix-pass; `validation` field broadened to `oneOf[array, object]`
+- `ORCHESTRATION.md` at repo root (F.4) — public-facing iteration contract for arbitrary agents; references 3-catalogue room.type taxonomy (OmniClass T13 + Uniclass SL + OmniClass T11) from Sprint X + Z
+- `docs/superpowers/specs/skill-input-design-rationale.md` (F.0) — BIM/IFC + room.type enum + grounded_source rationale
+
+### Changed
+- `shared/schemas/core/inputs.schema.json` (F.3) — extended `InputItem` with `grounded_source` two-tier validation: closed enum for canonical bindings (`room.*`, `floor.*`, `building.*`, `project.*`, `mep.*`, `site.*`) + `project.<custom>` pattern for project-specific fields
+- `scripts/validate-examples.py` (F.5 + F.6) — extended to **8 passes + 5 lint sub-passes**: Pass 5 manifest metaschema + Lint 1 manifest field-name typos + Lint 2 grounded_source validation + Lint 3 dropped-item orphans + Lint 4 cascade SHA-256 byte-equality (Pass 5/6/7/8 renumbering incorporates Sprint X additions)
+- 92 stub manifests across electrical/mechanical/plumbing/fire-protection/coordination/documents/commissioning/compliance — added `produces_intents: []` / `consumes_intents: []` empty arrays for Pass 5 compliance (F.6 fix-pass)
+- 5 `_derivation_note` strings in db-layout uk-bathroom cascade — realigned to byte-identical producer fixture strings (Lint 4 SHA-256 fix, F.6 fix-pass)
+- `electrical/schematic/skill.manifest.json` — corrected discipline field from `documents` to `electrical` (F.6 fix-pass)
+
+### Sprint Discipline
+- Sprint F (Foundation) is the first of a 3-sprint group (F → W1 → W2)
+- F paused at F.3 (commit `08b6e38`) for Sprint X (OmniClass T13 — 290 entries) + Sprint Z (Uniclass 2015 SL — 295 entries + OmniClass T11 — 89 entries). Both mid-sprint taxonomies shipped + pushed.
+- F resumed at F.4. F.5 + F.6 closed the gate extension chapter.
+- Sprint discipline held: Sonnet for mechanical tasks (schema edits, manifest fixes), Opus for judgment (design rationale, ORCHESTRATION.md engineering content); two-stage review per task; fix-pass commits per spec.
+
+### Gates
+- Sprint X baseline: 354 → Sprint X final: 649 → Sprint Z final: 1033 → Sprint F final: **1137**
+
+### Next
+- Sprint W1 — lighting-layout 1.7.0 → 1.8.0 + small-power 2.0.0 → 2.1.0 SkillInput grounding
+- Sprint W2 — 5 remaining shipped skills grounded: db-layout / arc-flash-labelling / schematic / sld / earthing
+
+---
+
 ## [Sprint Z — Uniclass SL + OmniClass T11 Dual-Taxonomy MEGA-SPRINT] — 2026-06-06
 
 ### Summary
