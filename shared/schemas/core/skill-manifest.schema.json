@@ -17,7 +17,7 @@
     },
     "discipline": {
       "type": "string",
-      "enum": ["electrical", "mechanical", "plumbing", "fire-protection", "coordination", "documents"]
+      "enum": ["electrical", "mechanical", "plumbing", "fire-protection", "coordination", "documents", "commissioning", "compliance"]
     },
     "subdiscipline": {
       "type": "string"
@@ -103,7 +103,11 @@
       "type": "array"
     },
     "validation": {
-      "type": "object"
+      "description": "Validation rules: either an array of rule file paths (legacy) or an object map.",
+      "oneOf": [
+        {"type": "array"},
+        {"type": "object"}
+      ]
     },
     "rules": {
       "type": "array"
